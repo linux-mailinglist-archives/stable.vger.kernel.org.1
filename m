@@ -1,237 +1,200 @@
-Return-Path: <stable+bounces-204403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E5CCECB79
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 01:56:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBA1CECC46
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 03:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68657300101F
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 00:56:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD418300DCB8
+	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 02:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3E950276;
-	Thu,  1 Jan 2026 00:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426691C84BC;
+	Thu,  1 Jan 2026 02:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izqx+Hks"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yHa0VJdU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3B124469E
-	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 00:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A741A9F83;
+	Thu,  1 Jan 2026 02:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767228970; cv=none; b=e5rTpqM8ErLo9WzOccW/9AAbtEtydIgPGifatBtK41X9ZMTZsZnPCweizD6DjXSBwqqm/1JBBm/yWUOuLNAdVtgS5Ij52Uxds2BefUEusst65qZe+jq2iouioiGSQHmv4vyZhHegmgu4xfJ+WMT5jXG8QqJxHgPEu5BSXIbhKsQ=
+	t=1767234613; cv=none; b=vFxoT3sUDYPceOf+awY6H50j53yMw4pkAhuZMh6HH08LKJGXm0DDXi2PPwCYwB6AfHss2XsLPBCbJ60xr4AFbDRjdLH2/SY68zCRVheKBD6Le+Wp5Hze9f7ezWQrw8Ar6r368eGiBbQnEQkycVfkDnjJgdSDrEREgyjzp7Xpdpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767228970; c=relaxed/simple;
-	bh=AI8Q41tZLS4pcS5kEI2gnLpufrVEd3XmkAkQJu569Js=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bpYvJg2nhKLkHTyneJ+tULFBRbTColTLUzBlX9x6oKuIKgY0g1uBsbeJ3z+U7ijZ97YYwR0Tk4RZA/aPDiAmcZhTe1XsSKIndvuhf9pKfFgV3+RZP0/qLC0BBh8zCddihih0tm6+xFp5iR/Zau4rrkbftwK02npAeQIz6NBsx4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izqx+Hks; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-78f89501423so126552817b3.1
-        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 16:56:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767228968; x=1767833768; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pyNFHU4ughVI0kV2KMWlLZk3LMIAUnwijKyFOE7M0sE=;
-        b=izqx+HksRFjCHvaRequLiDPF8GuzCD18yyHqEPMGhQQvREu4kxTHHL47fCD0TvOn9T
-         AvrHkFRB/soLnUkDTDSTIplXflBVyvxEmVho+XVBhwIoJMPqwxwplzm5NCMbbDK3ZaOX
-         hwgEes2eCoyY3ClVhpZ7V5r8ukciGaGAZskJqZAWVs/kyy48M5iMh89ObJt5LDkiXE7h
-         RHomYHcAF/Y0Tn2tk3NAVxO53W88cs/HRHDhUsGEHxc57LSuJhIFVvtj8ltwEwdq+XrE
-         iXKpEnMizFRDCXDNIbfUFq0MAM9f9+UwmwBzdVyo4ftKJgEU8eFbpDlUJK3oHMzrGDE7
-         ny5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767228968; x=1767833768;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pyNFHU4ughVI0kV2KMWlLZk3LMIAUnwijKyFOE7M0sE=;
-        b=eJqjqsUmYMcSNs48lRvLp6SAClQLtrJJLqTlZlbQ+qI2VJvSwaUgUodOX9hG0hLdRq
-         3XCMebKASvoYdjz8aTAyXNxCOy2ImzsYGno1L1t5J1yKJTm0aHD5NfoO5yYomJatlHpm
-         QKvLEsRBF0K0Kbvh8dH6zim0C3EymM2DVt0nARDEUNjTg9/5NRma8pd+22u48xM7RMxQ
-         eZFei+ZJlvSq+FeQq8saQE0kP2pOJMMIpX2mA2o8E2tx1XvjTvH/EJkC3nTXGBygo8jF
-         bC1d77TTBYd52onDLDaAFi5fk9x1AFcDAItBAC0Uipom006pMn1iM2PEtqsrUaFfqj1o
-         22pg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTgXr4AhLDYOkZzPaop8IEQ1IB3YeZOeZq96oFLB0BPynG2ojbPWQG45iOSHg8iISG+Crf/sQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0jEjdlOPHq+G5itf80JeZoQFQQI8XDk+b5y8qKkr6KUXg6+Jr
-	HYabDFhzB7cjamy07R4flMLXpQWWeiJey2o+EPNAgKZdnGDUModQMasNgqFl+yh24AludD9Mhb/
-	ohYv9DQ5qrtpwUoyb9yOHnUr16oDtbHM=
-X-Gm-Gg: AY/fxX5r1ZJv8l/ZDlPeJ9rX43kzzH0G4Oi+UNmMB+4T0h45kOiURfTMCZdGaVAns62
-	2Ih8x67LRgvclZ7pBo4loUt1WNUqGfI++xWf0jz8chAh9Lruprzgo7nXh1v1+aFWIKdEccL5W9m
-	FTHUJICuok94Fmx+qxDH7D49coDFwMafJy1GIzNog4VENZo/5yTY9E4p/uyOoOoxQjF8tmaRQBL
-	KBGpYEeSxNSsyeZTd0AeTDF0BTo2BdvadS9/V1ShC2JOMf6NR6vAB4fjHLi3Fu2vJWA232v
-X-Google-Smtp-Source: AGHT+IFJClY5cvw4t2ao24FSwxCQPmReOjoGPKIaWPe4wwUUqq+ToMWXrNF7UTqHic2eYD1gI6W3btX1uZ28DHWmf3Q=
-X-Received: by 2002:a05:690e:e85:b0:646:7b7c:2faf with SMTP id
- 956f58d0204a3-6467b7c3083mr28119251d50.20.1767228967798; Wed, 31 Dec 2025
- 16:56:07 -0800 (PST)
+	s=arc-20240116; t=1767234613; c=relaxed/simple;
+	bh=oSt2XV2wFTQQykOA1KDDTOAzuHJ1cHjhZGK0S33zcY4=;
+	h=Date:To:From:Subject:Message-Id; b=YlC2KsVx2mi/PkCme+lTHzuQdkowdBdfUmI6NqlE3jUpq3YHfmf+s1z34tHNpyOCZ51tAGl1a9Lhh3j3/ZuSCo/j7x3o2VmjVhtYsV5W20jmFMzP9yzeCQtElDkJspF0ga6swMLYaq3HYF8ro5iU+hfqYaIW2taBccD+CiosYzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yHa0VJdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310DEC113D0;
+	Thu,  1 Jan 2026 02:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767234612;
+	bh=oSt2XV2wFTQQykOA1KDDTOAzuHJ1cHjhZGK0S33zcY4=;
+	h=Date:To:From:Subject:From;
+	b=yHa0VJdUf0ims0lZGO920GYyJeXhgpkY7Kmj4q1GSOuxDtd4MUBZ8YksvTD1xN7pZ
+	 MRHQ2G5BmqFR24XOg3yDwkhOW/NZkNigePFXsMse1y/EfrMfu2saGHd7WxwWvQHHpR
+	 xmH4wyEHi368VACo3RNlW3DZJroVne8fI/EmlpAU=
+Date: Wed, 31 Dec 2025 18:30:11 +9900
+To: mm-commits@vger.kernel.org,zohar@linux.ibm.com,yifei.l.liu@oracle.com,tglx@linutronix.de,stable@vger.kernel.org,sourabhjain@linux.ibm.com,sohil.mehta@intel.com,rppt@kernel.org,paul.x.webb@oracle.com,noodles@fb.com,mingo@redhat.com,joel.granados@kernel.org,jbohac@suse.cz,hpa@zytor.com,henry.willard@oracle.com,guoweikang.kernel@gmail.com,graf@amazon.com,bp@alien8.de,bhe@redhat.com,ardb@kernel.org,harshit.m.mogalapalli@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ima-verify-the-previous-kernels-ima-buffer-lies-in-addressable-ram.patch added to mm-nonmm-unstable branch
+Message-Id: <20260101023012.310DEC113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAHOvCC6F5zLnBF=v7G5k1WdDZZmkBAK94ixzLiPF0W53wdtyeA@mail.gmail.com>
- <20251231152617.82118-1-sj@kernel.org>
-In-Reply-To: <20251231152617.82118-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Thu, 1 Jan 2026 09:55:56 +0900
-X-Gm-Features: AQt7F2oDGlk4DOh69AZQt05dl7jK2z1FaYePTiI_hMVFnytUE4ig0iBuv4p53UE
-Message-ID: <CAHOvCC4_unsc9u4kEDBTNxfS3rsiQi5QBTaiu3fGDcGrdryyBA@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "# 6 . 14 . x" <stable@vger.kernel.org>, 
-	damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 1 Jan 2026 at 00:26, SeongJae Park <sj@kernel.org> wrote:
->
-> On Wed, 31 Dec 2025 14:27:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
->
-> > On Wed, 31 Dec 2025 at 10:25, SeongJae Park <sj@kernel.org> wrote:
-> > >
-> > > On Mon, 29 Dec 2025 19:45:14 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > >
-> > > > On Mon, 29 Dec 2025 18:41:28 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > >
-> > > > > On Mon, 29 Dec 2025 17:45:30 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > > >
-> > > > > > On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > > > >
-> > > > [...]
-> > > > > > I will send a new version of this fix soon.
-> > > > >
-> > > > > So far, I got two fixup ideas.
-> > > > >
-> > > > > The first one is keeping the current code as is, and additionally modifying
-> > > > > kdamond_call() to protect all call_control object accesses under
-> > > > > ctx->call_controls_lock protection.
-> > > > >
-> > > > > The second one is reverting this patch, and doing the DAMON running status
-> > > > > check before adding the damon_call_control object, but releasing the
-> > > > > kdamond_lock after the object insertion is done.
-> > > > >
-> > > > > I'm in favor of the second one at the moment, as it seems more simple.
-> > > >
-> > > > I don't really like both approaches because those implicitly add locking rules.
-> > > > If the first approach is taken, damon_call() callers should aware they should
-> > > > not register callback functions that can hold call_controls_lock.  If the
-> > > > second approach is taken, we should avoid holding kdamond_lock while holding
-> > > > damon_call_control lock.  The second implicit rule seems easier to keep to me,
-> > > > but I want to avoid that if possible.
-> > > >
-> > > > The third idea I just got is, keeping this patch as is, and moving the final
-> > > > kdamond_call() invocation to be made _before_ the ctx->kdamond reset.  That
-> > > > removes the race condition between the final kdamond_call() and
-> > > > damon_call_handle_inactive_ctx(), without introducing new locking rules.
-> > >
-> > > I just posted the v2 [1] with the third idea.
-> > >
-> > > [1] https://lore.kernel.org/20251231012315.75835-1-sj@kernel.org
-> >
-> > I generally agree with what you've said so far.  However, it's inefficient
-> > to continue executing damon_call_handle_inactive_ctx() while kdamond is
-> > "off".  There's no need to add a new damon_call_handle_inactive_ctx()
-> > function.
->
-> As I mentioned before on other threads with you, we care not only efficiency
-> but also maintainability of the code.  The inefficiency you are saying about
-> happens only in corner cases because damon_call() is not usually called while
-> kdamond is off.  So the gain of making this efficient is not that big.
 
-The overhead isn't that high, but I think it's better to keep things
-simple.
-I think it's better to use list_add_tail() when kdamond is "on".
+The patch titled
+     Subject: ima: verify the previous kernel's IMA buffer lies in addressable RAM
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ima-verify-the-previous-kernels-ima-buffer-lies-in-addressable-ram.patch
 
->
-> Meanwhile, to avoid this, as I mentioned on the previous reply to the first and
-> the second idea of the fix, we need to add locking rule, which makes the code
-> bit difficult to maintain.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ima-verify-the-previous-kernels-ima-buffer-lies-in-addressable-ram.patch
 
-I think it's better to solve it with the existing kdamond_call(ctx,
-cancel=true) rather than adding the damon_call_handle_inactive_ctx().
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
->
-> I therefore think the v2 is a good tradeoff.
->
-> > As shown below, it's better to call list_add only when kdamond
-> > is "on" (true), and then use the existing code to end with
-> > kdamond_call(ctx, true) when kdamond is "off."
-> >
-> > +static void kdamond_call(struct damon_ctx *ctx, bool cancel);
-> > +
-> >  /**
-> >   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-> >   * @ctx:       DAMON context to call the function for.
-> > @@ -1496,14 +1475,17 @@ int damon_call(struct damon_ctx *ctx, struct
-> > damon_call_control *control)
-> >         control->canceled = false;
-> >         INIT_LIST_HEAD(&control->list);
-> >
-> > -       if (damon_is_running(ctx)) {
-> > -               mutex_lock(&ctx->call_controls_lock);
-> > +       mutex_lock(&ctx->call_controls_lock);
-> > +       if (ctx->kdamond) {
->
-> This is wrong.  You shouldn't access ctx->kdamond without holding
-> ctx->kdamond_lock.  Please read the comment about kdamond_lock field on damon.h
-> file.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-That's right, I misjudged.
-I've reorganized the code below.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
->
-> >                 list_add_tail(&control->list, &ctx->call_controls);
-> > -               mutex_unlock(&ctx->call_controls_lock);
-> >         } else {
-> > -               /* return damon_call_handle_inactive_ctx(ctx, control); */
-> > +               mutex_unlock(&ctx->call_controls_lock);
-> > +               if (!list_empty_careful(&ctx->call_controls))
-> > +                       kdamond_call(ctx, true);
-> >                 return -EINVAL;
-> >         }
-> > +       mutex_unlock(&ctx->call_controls_lock);
-> > +
-> >         if (control->repeat)
-> >                 return 0;
-> >         wait_for_completion(&control->completion);
->
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-+static void kdamond_call(struct damon_ctx *ctx, bool cancel);
+------------------------------------------------------
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: ima: verify the previous kernel's IMA buffer lies in addressable RAM
+Date: Tue, 30 Dec 2025 22:16:07 -0800
+
+Patch series "Address page fault in ima_restore_measurement_list()", v3.
+
+When the second-stage kernel is booted via kexec with a limiting command
+line such as "mem=<size>" we observe a pafe fault that happens.
+
+    BUG: unable to handle page fault for address: ffff97793ff47000
+    RIP: ima_restore_measurement_list+0xdc/0x45a
+    #PF: error_code(0x0000)  not-present page
+
+This happens on x86_64 only, as this is already fixed in aarch64 in
+commit: cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
+against memory bounds")
+
+
+This patch (of 3):
+
+When the second-stage kernel is booted with a limiting command line (e.g. 
+"mem=<size>"), the IMA measurement buffer handed over from the previous
+kernel may fall outside the addressable RAM of the new kernel.  Accessing
+such a buffer can fault during early restore.
+
+Introduce a small generic helper, ima_validate_range(), which verifies
+that a physical [start, end] range for the previous-kernel IMA buffer lies
+within addressable memory:
+	- On x86, use pfn_range_is_mapped().
+	- On OF based architectures, use page_is_ram().
+
+Link: https://lkml.kernel.org/r/20251231061609.907170-1-harshit.m.mogalapalli@oracle.com
+Link: https://lkml.kernel.org/r/20251231061609.907170-2-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: guoweikang <guoweikang.kernel@gmail.com>
+Cc: Henry Willard <henry.willard@oracle.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Bohac <jbohac@suse.cz>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Jonathan McDowell <noodles@fb.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Paul Webb <paul.x.webb@oracle.com>
+Cc: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Yifei Liu <yifei.l.liu@oracle.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/ima.h                |    1 
+ security/integrity/ima/ima_kexec.c |   35 +++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
+
+--- a/include/linux/ima.h~ima-verify-the-previous-kernels-ima-buffer-lies-in-addressable-ram
++++ a/include/linux/ima.h
+@@ -69,6 +69,7 @@ static inline int ima_measure_critical_d
+ #ifdef CONFIG_HAVE_IMA_KEXEC
+ int __init ima_free_kexec_buffer(void);
+ int __init ima_get_kexec_buffer(void **addr, size_t *size);
++int ima_validate_range(phys_addr_t phys, size_t size);
+ #endif
+ 
+ #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+--- a/security/integrity/ima/ima_kexec.c~ima-verify-the-previous-kernels-ima-buffer-lies-in-addressable-ram
++++ a/security/integrity/ima/ima_kexec.c
+@@ -12,6 +12,8 @@
+ #include <linux/kexec.h>
+ #include <linux/of.h>
+ #include <linux/ima.h>
++#include <linux/mm.h>
++#include <linux/overflow.h>
+ #include <linux/reboot.h>
+ #include <asm/page.h>
+ #include "ima.h"
+@@ -294,3 +296,36 @@ void __init ima_load_kexec_buffer(void)
+ 		pr_debug("Error restoring the measurement list: %d\n", rc);
+ 	}
+ }
 +
- /**
-  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-  * @ctx:       DAMON context to call the function for.
-@@ -1457,11 +1459,15 @@ int damon_call(struct damon_ctx *ctx, struct
-damon_call_control *control)
-        control->canceled = false;
-        INIT_LIST_HEAD(&control->list);
++/*
++ * ima_validate_range - verify a physical buffer lies in addressable RAM
++ * @phys: physical start address of the buffer from previous kernel
++ * @size: size of the buffer
++ *
++ * On success return 0. On failure returns -EINVAL so callers can skip
++ * restoring.
++ */
++int ima_validate_range(phys_addr_t phys, size_t size)
++{
++	unsigned long start_pfn, end_pfn;
++	phys_addr_t end_phys;
++
++	if (check_add_overflow(phys, (phys_addr_t)size - 1, &end_phys))
++		return -EINVAL;
++
++	start_pfn = PHYS_PFN(phys);
++	end_pfn = PHYS_PFN(end_phys);
++
++#ifdef CONFIG_X86
++	if (!pfn_range_is_mapped(start_pfn, end_pfn))
++#else
++	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn))
++#endif
++	{
++		pr_warn("IMA: previous kernel measurement buffer %pa (size 0x%zx) lies outside available memory\n",
++			&phys, size);
++		return -EINVAL;
++	}
++
++	return 0;
++}
+_
 
--       mutex_lock(&ctx->call_controls_lock);
--       list_add_tail(&control->list, &ctx->call_controls);
--       mutex_unlock(&ctx->call_controls_lock);
--       if (!damon_is_running(ctx))
-+       if (damon_is_running(ctx)) {
-+               mutex_lock(&ctx->call_controls_lock);
-+               list_add_tail(&control->list, &ctx->call_controls);
-+               mutex_unlock(&ctx->call_controls_lock);
-+       } else {
-+               if (!list_empty_careful(&ctx->call_controls))
-+                       kdamond_call(ctx, true);
-                return -EINVAL;
-+       }
-        if (control->repeat)
-                return 0;
-        wait_for_completion(&control->completion);
+Patches currently in -mm which might be from harshit.m.mogalapalli@oracle.com are
 
+ima-verify-the-previous-kernels-ima-buffer-lies-in-addressable-ram.patch
+of-kexec-refactor-ima_get_kexec_buffer-to-use-ima_validate_range.patch
+x86-kexec-add-a-sanity-check-on-previous-kernels-ima-kexec-buffer.patch
 
-Thanks,
-JaeJoon
-
->
-> Thanks,
-> SJ
->
-> [...]
 
