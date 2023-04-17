@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-56039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C173891B63F
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 07:40:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7F791B641
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 07:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F37B1B230B8
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 05:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDF91284F6E
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 05:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DD3487B1;
-	Fri, 28 Jun 2024 05:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D7E4D8C3;
+	Fri, 28 Jun 2024 05:40:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.priv.miraclelinux.com (202x210x215x66.ap202.ftth.ucom.ne.jp [202.210.215.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AC21D54A;
-	Fri, 28 Jun 2024 05:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7E128DBC;
+	Fri, 28 Jun 2024 05:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.210.215.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719553221; cv=none; b=jg3oodxsrn7kiLKkMFrANYPmA1YMR23FQVAEZjwEiepB7TVDuYn2tGbUrZ36nxGNx3k1tnR0qElbDNXsYnSY4EY6WwbdQXHy8EOzUEi+j+lcbx5PUkPWBnTbBDu0VzWioikeBzaMlzYTzjji6oRKO5rkHEgPdqsmsB3GAmR25xw=
+	t=1719553222; cv=none; b=R0QZJN23l8iReoCPngH354pxW/7lfR9DW0F8e9jaVNVnL/6WOUIWpnlKTE5MTA/vY2P2IGwKejcVFvqtJ0kdeP++lm/hVcdPjOoZvqgx7hL01loXLX7opOhu4rK6VjRGKs8hSuJ4fd/i1qhNmzWn9K5eK+k+i9vGcwUifJI7r6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719553221; c=relaxed/simple;
-	bh=hSDqgkLjKFK4TA7YN0xs5q/SM2ZEv2dSe3VZ+7G7ML4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=azwa0fEHfaZrkcwUCDyT6Hu5tCFvx8vOpXbTvqfyPi4NyD6oTem+vuq0T5KRbCGW8fYLuNKOg+9OIqnWOOVXl261vVOBFI0HpubwMA9goPc55EnzPuzDmKi8MAtmeTO8mnswtGZSCx+CppMeQtaF1b00h2ADCaxPwT1xExZqJLU=
+	s=arc-20240116; t=1719553222; c=relaxed/simple;
+	bh=0sNYBCFxwwSn4mreE3io6zw++WBvVZZ9Q8zHdUApboQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=g9TWvq6RIT+vCU0wAZ3I3M80HzEO45ij3fZecDfJzFvxBybxbdGISKZ1cPulryDcXYKHUVD6T9z1hksQvbzOmG+p3veSEY2JX1Yt4aLXTgC3feUYmMh+cVfD5RrY/V+Q8XLPhdMQVcyzq7AZApoCln6PNEfWUggL6erkBor1a78=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=miraclelinux.com; spf=pass smtp.mailfrom=miraclelinux.com; arc=none smtp.client-ip=202.210.215.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=miraclelinux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraclelinux.com
 Received: from cip-lava-a.miraclelinux.com (cip-lava-a.miraclelinux.com [10.2.1.116])
-	by smtp.priv.miraclelinux.com (Postfix) with ESMTP id 5C1D71400F3;
-	Fri, 28 Jun 2024 14:40:18 +0900 (JST)
+	by smtp.priv.miraclelinux.com (Postfix) with ESMTP id 05C91140103;
+	Fri, 28 Jun 2024 14:40:19 +0900 (JST)
 From: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
 To: netdev@vger.kernel.org
 Cc: stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	hiraku.toyooka@miraclelinux.com,
-	Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 5.15 1/3] ipv6: annotate some data-races around sk->sk_prot
-Date: Mon, 17 Apr 2023 16:53:46 +0000
-Message-Id: <20230417165348.26189-2-kazunori.kobayashi@miraclelinux.com>
+Subject: [PATCH 5.15 2/3] ipv6: Fix data races around sk->sk_prot.
+Date: Mon, 17 Apr 2023 16:53:47 +0000
+Message-Id: <20230417165348.26189-3-kazunori.kobayashi@miraclelinux.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230417165348.26189-1-kazunori.kobayashi@miraclelinux.com>
 References: <20230417165348.26189-1-kazunori.kobayashi@miraclelinux.com>
@@ -51,112 +51,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 086d49058cd8471046ae9927524708820f5fd1c7 upstream.
+commit 364f997b5cfe1db0d63a390fe7c801fa2b3115f6 upstream.
 
-IPv6 has this hack changing sk->sk_prot when an IPv6 socket
-is 'converted' to an IPv4 one with IPV6_ADDRFORM option.
+Commit 086d49058cd8 ("ipv6: annotate some data-races around sk->sk_prot")
+fixed some data-races around sk->sk_prot but it was not enough.
 
-This operation is only performed for TCP and UDP, knowing
-their 'struct proto' for the two network families are populated
-in the same way, and can not disappear while a reader
-might use and dereference sk->sk_prot.
+Some functions in inet6_(stream|dgram)_ops still access sk->sk_prot
+without lock_sock() or rtnl_lock(), so they need READ_ONCE() to avoid
+load tearing.
 
-If we think about it all reads of sk->sk_prot while
-either socket lock or RTNL is not acquired should be using READ_ONCE().
-
-Also note that other layers like MPTCP, XFRM, CHELSIO_TLS also
-write over sk->sk_prot.
-
-BUG: KCSAN: data-race in inet6_recvmsg / ipv6_setsockopt
-
-write to 0xffff8881386f7aa8 of 8 bytes by task 26932 on cpu 0:
- do_ipv6_setsockopt net/ipv6/ipv6_sockglue.c:492 [inline]
- ipv6_setsockopt+0x3758/0x3910 net/ipv6/ipv6_sockglue.c:1019
- udpv6_setsockopt+0x85/0x90 net/ipv6/udp.c:1649
- sock_common_setsockopt+0x5d/0x70 net/core/sock.c:3489
- __sys_setsockopt+0x209/0x2a0 net/socket.c:2180
- __do_sys_setsockopt net/socket.c:2191 [inline]
- __se_sys_setsockopt net/socket.c:2188 [inline]
- __x64_sys_setsockopt+0x62/0x70 net/socket.c:2188
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x44/0xd0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-read to 0xffff8881386f7aa8 of 8 bytes by task 26911 on cpu 1:
- inet6_recvmsg+0x7a/0x210 net/ipv6/af_inet6.c:659
- ____sys_recvmsg+0x16c/0x320
- ___sys_recvmsg net/socket.c:2674 [inline]
- do_recvmmsg+0x3f5/0xae0 net/socket.c:2768
- __sys_recvmmsg net/socket.c:2847 [inline]
- __do_sys_recvmmsg net/socket.c:2870 [inline]
- __se_sys_recvmmsg net/socket.c:2863 [inline]
- __x64_sys_recvmmsg+0xde/0x160 net/socket.c:2863
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x44/0xd0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-value changed: 0xffffffff85e0e980 -> 0xffffffff85e01580
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 26911 Comm: syz-executor.3 Not tainted 5.17.0-rc2-syzkaller-00316-g0457e5153e0e-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
 ---
- net/ipv6/af_inet6.c      | 24 ++++++++++++++++++------
- net/ipv6/ipv6_sockglue.c |  6 ++++--
- 2 files changed, 22 insertions(+), 8 deletions(-)
+ net/core/sock.c          |  6 ++++--
+ net/ipv4/af_inet.c       | 23 ++++++++++++++++-------
+ net/ipv6/ipv6_sockglue.c |  4 ++--
+ 3 files changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 8e0c33b683010..bbfa5d3a16f01 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -452,11 +452,14 @@ int inet6_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 62e376f09f957..399d0b801b097 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3413,7 +3413,8 @@ int sock_common_getsockopt(struct socket *sock, int level, int optname,
  {
  	struct sock *sk = sock->sk;
- 	u32 flags = BIND_WITH_LOCK;
-+	const struct proto *prot;
- 	int err = 0;
  
+-	return sk->sk_prot->getsockopt(sk, level, optname, optval, optlen);
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	return READ_ONCE(sk->sk_prot)->getsockopt(sk, level, optname, optval, optlen);
+ }
+ EXPORT_SYMBOL(sock_common_getsockopt);
+ 
+@@ -3440,7 +3441,8 @@ int sock_common_setsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 
+-	return sk->sk_prot->setsockopt(sk, level, optname, optval, optlen);
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	return READ_ONCE(sk->sk_prot)->setsockopt(sk, level, optname, optval, optlen);
+ }
+ EXPORT_SYMBOL(sock_common_setsockopt);
+ 
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 487f75993bf4f..110ac22d3ce20 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -565,22 +565,27 @@ int inet_dgram_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		       int addr_len, int flags)
+ {
+ 	struct sock *sk = sock->sk;
++	const struct proto *prot;
+ 	int err;
+ 
+ 	if (addr_len < sizeof(uaddr->sa_family))
+ 		return -EINVAL;
++
 +	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
 +	prot = READ_ONCE(sk->sk_prot);
- 	/* If the socket has its own bind function then use it. */
--	if (sk->sk_prot->bind)
--		return sk->sk_prot->bind(sk, uaddr, addr_len);
-+	if (prot->bind)
-+		return prot->bind(sk, uaddr, addr_len);
++
+ 	if (uaddr->sa_family == AF_UNSPEC)
+-		return sk->sk_prot->disconnect(sk, flags);
++		return prot->disconnect(sk, flags);
  
- 	if (addr_len < SIN6_LEN_RFC2133)
- 		return -EINVAL;
-@@ -572,6 +575,7 @@ int inet6_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 	void __user *argp = (void __user *)arg;
- 	struct sock *sk = sock->sk;
- 	struct net *net = sock_net(sk);
-+	const struct proto *prot;
- 
- 	switch (cmd) {
- 	case SIOCADDRT:
-@@ -589,9 +593,11 @@ int inet6_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 	case SIOCSIFDSTADDR:
- 		return addrconf_set_dstaddr(net, argp);
- 	default:
--		if (!sk->sk_prot->ioctl)
-+		/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+		prot = READ_ONCE(sk->sk_prot);
-+		if (!prot->ioctl)
- 			return -ENOIOCTLCMD;
--		return sk->sk_prot->ioctl(sk, cmd, arg);
-+		return prot->ioctl(sk, cmd, arg);
+ 	if (BPF_CGROUP_PRE_CONNECT_ENABLED(sk)) {
+-		err = sk->sk_prot->pre_connect(sk, uaddr, addr_len);
++		err = prot->pre_connect(sk, uaddr, addr_len);
+ 		if (err)
+ 			return err;
  	}
- 	/*NOTREACHED*/
- 	return 0;
-@@ -653,11 +659,14 @@ INDIRECT_CALLABLE_DECLARE(int udpv6_sendmsg(struct sock *, struct msghdr *,
- int inet6_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+ 
+ 	if (data_race(!inet_sk(sk)->inet_num) && inet_autobind(sk))
+ 		return -EAGAIN;
+-	return sk->sk_prot->connect(sk, uaddr, addr_len);
++	return prot->connect(sk, uaddr, addr_len);
+ }
+ EXPORT_SYMBOL(inet_dgram_connect);
+ 
+@@ -743,10 +748,11 @@ EXPORT_SYMBOL(inet_stream_connect);
+ int inet_accept(struct socket *sock, struct socket *newsock, int flags,
+ 		bool kern)
+ {
+-	struct sock *sk1 = sock->sk;
++	struct sock *sk1 = sock->sk, *sk2;
+ 	int err = -EINVAL;
+-	struct sock *sk2 = sk1->sk_prot->accept(sk1, flags, &err, kern);
+ 
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	sk2 = READ_ONCE(sk1->sk_prot)->accept(sk1, flags, &err, kern);
+ 	if (!sk2)
+ 		goto do_err;
+ 
+@@ -834,12 +840,15 @@ ssize_t inet_sendpage(struct socket *sock, struct page *page, int offset,
+ 		      size_t size, int flags)
  {
  	struct sock *sk = sock->sk;
 +	const struct proto *prot;
@@ -164,55 +154,37 @@ index 8e0c33b683010..bbfa5d3a16f01 100644
  	if (unlikely(inet_send_prepare(sk)))
  		return -EAGAIN;
  
--	return INDIRECT_CALL_2(sk->sk_prot->sendmsg, tcp_sendmsg, udpv6_sendmsg,
+-	if (sk->sk_prot->sendpage)
+-		return sk->sk_prot->sendpage(sk, page, offset, size, flags);
 +	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
 +	prot = READ_ONCE(sk->sk_prot);
-+	return INDIRECT_CALL_2(prot->sendmsg, tcp_sendmsg, udpv6_sendmsg,
- 			       sk, msg, size);
++	if (prot->sendpage)
++		return prot->sendpage(sk, page, offset, size, flags);
+ 	return sock_no_sendpage(sock, page, offset, size, flags);
  }
- 
-@@ -667,13 +676,16 @@ int inet6_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		  int flags)
- {
- 	struct sock *sk = sock->sk;
-+	const struct proto *prot;
- 	int addr_len = 0;
- 	int err;
- 
- 	if (likely(!(flags & MSG_ERRQUEUE)))
- 		sock_rps_record_flow(sk);
- 
--	err = INDIRECT_CALL_2(sk->sk_prot->recvmsg, tcp_recvmsg, udpv6_recvmsg,
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	prot = READ_ONCE(sk->sk_prot);
-+	err = INDIRECT_CALL_2(prot->recvmsg, tcp_recvmsg, udpv6_recvmsg,
- 			      sk, msg, size, flags & MSG_DONTWAIT,
- 			      flags & ~MSG_DONTWAIT, &addr_len);
- 	if (err >= 0)
+ EXPORT_SYMBOL(inet_sendpage);
 diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
-index 197e12d5607f1..485d381aa4475 100644
+index 485d381aa4475..b8970fdeb0dda 100644
 --- a/net/ipv6/ipv6_sockglue.c
 +++ b/net/ipv6/ipv6_sockglue.c
-@@ -475,7 +475,8 @@ static int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
+@@ -475,7 +475,7 @@ static int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
  				sock_prot_inuse_add(net, sk->sk_prot, -1);
  				sock_prot_inuse_add(net, &tcp_prot, 1);
  				local_bh_enable();
--				sk->sk_prot = &tcp_prot;
-+				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
-+				WRITE_ONCE(sk->sk_prot, &tcp_prot);
+-				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
++				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
+ 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
  				icsk->icsk_af_ops = &ipv4_specific;
  				sk->sk_socket->ops = &inet_stream_ops;
- 				sk->sk_family = PF_INET;
-@@ -489,7 +490,8 @@ static int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
+@@ -490,7 +490,7 @@ static int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
  				sock_prot_inuse_add(net, sk->sk_prot, -1);
  				sock_prot_inuse_add(net, prot, 1);
  				local_bh_enable();
--				sk->sk_prot = prot;
-+				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
-+				WRITE_ONCE(sk->sk_prot, prot);
+-				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
++				/* Paired with READ_ONCE(sk->sk_prot) in inet6_dgram_ops */
+ 				WRITE_ONCE(sk->sk_prot, prot);
  				sk->sk_socket->ops = &inet_dgram_ops;
  				sk->sk_family = PF_INET;
- 			}
 -- 
 2.39.2
 
