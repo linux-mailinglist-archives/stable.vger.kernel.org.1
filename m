@@ -2,103 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B4B6EFB4A
-	for <lists+stable@lfdr.de>; Wed, 26 Apr 2023 21:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8672D6EFB55
+	for <lists+stable@lfdr.de>; Wed, 26 Apr 2023 21:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbjDZTrG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Apr 2023 15:47:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35586 "EHLO
+        id S233831AbjDZTud (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Apr 2023 15:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjDZTrG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Apr 2023 15:47:06 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 873621FD3;
-        Wed, 26 Apr 2023 12:47:04 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id C748E1C0AAC; Wed, 26 Apr 2023 21:47:02 +0200 (CEST)
-Date:   Wed, 26 Apr 2023 21:47:02 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 4.19 00/29] 4.19.282-rc1 review
-Message-ID: <ZEl/trjF1Ic76/Ye@duo.ucw.cz>
-References: <20230424131121.155649464@linuxfoundation.org>
- <CA+G9fYstB_fROK9LHYuQ8dc2ArieGGAW_x69eEX-eAi5xMeE3Q@mail.gmail.com>
+        with ESMTP id S233615AbjDZTuc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Apr 2023 15:50:32 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C3A1724;
+        Wed, 26 Apr 2023 12:50:27 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33QJoDbg054373;
+        Wed, 26 Apr 2023 14:50:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1682538613;
+        bh=Wiv2S7gjejSKEt/wuagHsMCgQ8Xvj9Mat37+5l7d5k4=;
+        h=From:To:CC:Subject:Date;
+        b=idu2ipbLblnVVeIbR9IFwHHqoeoymtXpF1D6UeBttB3vOZ0CBOu1pWjm4leu9y4aY
+         1XkXuRXOGYDiF035TaeeQgWbcA5QSWXvtJQzmC+K7nd17OeyWj9z+oHgBun3XCSfJO
+         M4+RGHZRe1BjtBqyToUm5/kvvqQf7dIRvh5ORQa4=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33QJoD2P048430
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Apr 2023 14:50:13 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Wed, 26
+ Apr 2023 14:50:13 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Wed, 26 Apr 2023 14:50:12 -0500
+Received: from localhost (ileaxei01-snat.itg.ti.com [10.180.69.5])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33QJoCuq019926;
+        Wed, 26 Apr 2023 14:50:12 -0500
+From:   Reid Tonking <reidt@ti.com>
+To:     <tony@atomide.com>, <aaro.koskinen@iki.fi>, <jmkrzyszt@gmail.com>,
+        <vigneshr@ti.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <stable@vger.kernel.org>, Reid Tonking <reidt@ti.com>
+Subject: [PATCH v2] i2c: omap: Fix standard mode false ACK readings
+Date:   Wed, 26 Apr 2023 14:49:56 -0500
+Message-ID: <20230426194956.689756-1-reidt@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="OWk6w+3ksRt9gcp3"
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYstB_fROK9LHYuQ8dc2ArieGGAW_x69eEX-eAi5xMeE3Q@mail.gmail.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Using standard mode, rare false ACK responses were appearing with
+i2cdetect tool. This was happening due to NACK interrupt triggering
+ISR thread before register access interrupt was ready. Removing the
+NACK interrupt's ability to trigger ISR thread lets register access
+ready interrupt do this instead.
 
---OWk6w+3ksRt9gcp3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: <stable@vger.kernel.org> # v3.7+
+Fixes: 3b2f8f82dad7 ("i2c: omap: switch to threaded IRQ support")
+Signed-off-by: Reid Tonking <reidt@ti.com>
+---
+ drivers/i2c/busses/i2c-omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi!
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 2b4e2be51318..4199f57a6bf2 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1058,7 +1058,7 @@ omap_i2c_isr(int irq, void *dev_id)
+ 	u16 stat;
+ 
+ 	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG);
++	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+ 
+ 	if (stat & mask)
+ 		ret = IRQ_WAKE_THREAD;
+-- 
+2.34.1
 
-This should be show stopper, actually:
-
-> FYI, This is not a show stopper but worth reporting.
-
-
-> NOTE:
-> Following kernel warning notices on stable rc  4.19.282-rc1 from the
-> previous releases 4.19.279-rc1 noticed on arm64, i386 and x86_64. After
-> this kernel warning the system is still stable and up and running.
->=20
-> This kernel is built with kselftest ftrace merge configs with all
-> required Kconfigs.
->=20
-> [    0.000000] Linux version 4.19.279-rc1 (tuxmake@tuxmake) (gcc
-> version 11.3.0 (Debian 11.3.0-11)) #1 SMP @1679324856
-> ...
-> [    0.145911] ftrace: allocating 48590 entries in 190 pages
-> ...
->=20
-> [    2.880223] WARNING: CPU: 0 PID: 0 at
-> include/trace/events/lock.h:13 lock_acquire+0x142/0x150
-> [    2.881454] WARNING: CPU: 1 PID: 0 at
-> include/trace/events/lock.h:58 lock_release+0x1af/0x280
-
-This indicates locking problem somewhere in cpuidle / ftrace.
-
-I skimmed the patches, and I do not see anything obvious there. Is
-there chance to do a bisection?
-
-Best regards,
-								Pavel
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---OWk6w+3ksRt9gcp3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZEl/tgAKCRAw5/Bqldv6
-8hTCAKCghHkeqrkyD6ZQHjmVWa/tdORG0ACgj5XcrDhQ6VmVOjUgYwVE11PddDk=
-=FNqj
------END PGP SIGNATURE-----
-
---OWk6w+3ksRt9gcp3--
