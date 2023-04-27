@@ -2,169 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD246F0BE8
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 20:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB40E6F0C9E
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 21:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243932AbjD0S2x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 14:28:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47294 "EHLO
+        id S245027AbjD0TfP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 15:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244519AbjD0S2r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 14:28:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3264A3C28
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 11:28:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682620083;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=T+CX4GL4gGpxnXf/hJ5GWtmKz7MYbRhiiF9QJ1pFsSM=;
-        b=a1eZ71D8JL690dJxNvx3V0s/zChcOcJ2O5u1JBGf60gEzNFsh1uj2UQbQ13VJVFlrO0Ggz
-        Js6sCWAsCqV3MjEbUC3AXKOQdcCS6XDgujo5lQv/XKD5itgjceQFS0cpnRQV1hU6c/riXi
-        YExhl3sLbcVtBr+AYMZuPrzulSuFxKI=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-1ZevWYynPLuJ2DMh5Og0-Q-1; Thu, 27 Apr 2023 14:27:56 -0400
-X-MC-Unique: 1ZevWYynPLuJ2DMh5Og0-Q-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-751319bd93cso492554885a.0
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 11:27:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682620076; x=1685212076;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T+CX4GL4gGpxnXf/hJ5GWtmKz7MYbRhiiF9QJ1pFsSM=;
-        b=TnApPHjfEudZU9GSw9ZNfXYommtjZLBzE39lXk6gCAynT7jP6RBVlXi/SLI+IE9Vhf
-         ZBhLD5Z2/ftpqMaCG17l2noToM5g+tPbsuRdaGm7frD8y3EG91YQ+t+BgGO7Owa1MpcA
-         j9dsB96BlEBinBT1MhUN8tBw0NkzHM4GniXI1Fek1YZg8gBX6QyTnKfnYGLkkfPC8ANo
-         MSUt2JPL4e82BGTbOvLle9FLFmF0yZDhQDHPMUNsvw2reqJDYFAyKX5r3d9qwKXZh0fR
-         akn7var8qcyUN50pc5tbr+yhR54evMk4BhvBd7leU6cFDTZ30FVXaamX3w3IRhbUXvjJ
-         TMqg==
-X-Gm-Message-State: AC+VfDwnaDnpMvQxYcJXYDBtG0gI1iVxD8KFvYAJtbyh5YBlUiOJkvax
-        cove5cCJ7/UxlTKYFZP0KBNUVIZjkGcNvcHCTit5SdUIrUJhWaX2gpBsX3nZ0lstzmp5fT7CL/8
-        MbtG0ZoGw0Pjy81nI
-X-Received: by 2002:a05:6214:2aa3:b0:5ef:6103:1475 with SMTP id js3-20020a0562142aa300b005ef61031475mr11387355qvb.20.1682620075766;
-        Thu, 27 Apr 2023 11:27:55 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5vITNttbiX9o2HcGScMwOU1JSe1VuR1YaYTjTVSHMXZNPeaKjyjfa3hzA7JN/b3DzJWeMzfA==
-X-Received: by 2002:a05:6214:2aa3:b0:5ef:6103:1475 with SMTP id js3-20020a0562142aa300b005ef61031475mr11387327qvb.20.1682620075431;
-        Thu, 27 Apr 2023 11:27:55 -0700 (PDT)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id k25-20020a0c9719000000b005ef529dc39esm4016014qvd.108.2023.04.27.11.27.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 11:27:55 -0700 (PDT)
-Date:   Thu, 27 Apr 2023 11:27:53 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] tpm: Prevent hwrng from activating during resume
-Message-ID: <3r4dorqzh7nrcsqmsedmt47iimqrh52dfzgrmkjduqglhwufkt@3svji6cfdsug>
-References: <20230426172928.3963287-1-jarkko@kernel.org>
- <20230426172928.3963287-3-jarkko@kernel.org>
+        with ESMTP id S245053AbjD0TfN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 15:35:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FEC10F3
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 12:35:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4057E63F14
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 19:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24230C4339B;
+        Thu, 27 Apr 2023 19:35:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682624111;
+        bh=I6bjmJKyg+OsI5C9yWHH3qaPQ1SmKzUJt4SHAnBFRZI=;
+        h=From:Date:Subject:To:Cc:From;
+        b=XierVmVdpa9Cp39YuWLeh+yshOeehlTOz9gNsgUitHVikKGFTxIiAKZkigJbZrsrg
+         vgQa+Q3Ck2JIRvcGCVf3wpvIWrAypEQdMXGq1d1TO+aixd+IJz/1+t1VFZyja6lkkM
+         MyoDXHe54cW6Tg9mh9XJ060LVRxv1g7MZMunUP5XiW6dIOZNp7+H4dBL9gwCtU6h+/
+         Qg3IGXNqxWg5xgmmNvPpl+LSW9OUfesBRR/jjrB2ZTx7ori0yCkmb3fldCh/4J2gPe
+         Ai+yXz746miKIZ6kO6lUawp5qy9F5179DlH2rfO5zvywSC/rpSwUudk3SS1HDoSanB
+         wr23RJp6sCcPQ==
+From:   Nathan Chancellor <nathan@kernel.org>
+Date:   Thu, 27 Apr 2023 12:34:53 -0700
+Subject: [PATCH] powerpc/boot: Disable power10 features after BOOTAFLAGS
+ assignment
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230426172928.3963287-3-jarkko@kernel.org>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230427-remove-power10-args-from-boot-aflags-clang-v1-1-9107f7c943bc@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFzOSmQC/x2OwQqDMBBEf0Vy7kKM0kp/pfSwSTcaMFnZFS2I/
+ 97Y45thHnMYJUmk5tkcRmhLmrhUaG+NCROWkSB9KhtnXWd79wChzBvBwjtJawFlVIjCGTzzChh
+ nrEGY6xTcfQh9R0NoYzBV6FEJvGAJ06XMqCvJVSxCMX3/L17v8/wBDfVlOJUAAAA=
+To:     mpe@ellerman.id.au
+Cc:     npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        ndesaulniers@google.com, trix@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev,
+        patches@lists.linux.dev, stable@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2693; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=I6bjmJKyg+OsI5C9yWHH3qaPQ1SmKzUJt4SHAnBFRZI=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDCle5/I47l3VVrhda/xi+qvzUqkHPLpLjyWoL7h32nDxZ
+ 0XFY7urOkpZGMQ4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEUl8z/OF2N5n/qTdontgL
+ j/9b712ou3PowoKTqg/552x/apAX9DCekeF31rJjPwrXT1okOJnber27/ht53bCIeqOQgo7b8Wv
+ 3TuQDAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Apr 26, 2023 at 08:29:28PM +0300, Jarkko Sakkinen wrote:
-> Set TPM_CHIP_FLAG_SUSPENDED in tpm_pm_suspend() and reset in
-> tpm_pm_resume(). While the flag is set, tpm_hwrng() gives back zero bytes.
-> This prevents hwrng from racing during resume.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6e592a065d51 ("tpm: Move Linux RNG connection to hwrng")
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+When building the boot wrapper assembly files with clang after
+commit 648a1783fe25 ("powerpc/boot: Fix boot wrapper code generation
+with CONFIG_POWER10_CPU"), the following warnings appear for each file
+built:
 
+  '-prefixed' is not a recognized feature for this target (ignoring feature)
+  '-pcrel' is not a recognized feature for this target (ignoring feature)
 
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com
+While it is questionable whether or not LLVM should be emitting a
+warning when passed negative versions of code generation flags when
+building assembly files (since it does not emit a warning for the
+altivec and vsx flags), it is easy enough to work around this by just
+moving the disabled flags to BOOTCFLAGS after the assignment of
+BOOTAFLAGS, so that they are not added when building assembly files.
+Do so to silence the warnings.
 
-> ---
->  drivers/char/tpm/tpm-chip.c      |  4 ++++
->  drivers/char/tpm/tpm-interface.c | 10 ++++++++++
->  include/linux/tpm.h              | 13 +++++++------
->  3 files changed, 21 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-> index 6fdfa65a00c3..6f5ee27aeda1 100644
-> --- a/drivers/char/tpm/tpm-chip.c
-> +++ b/drivers/char/tpm/tpm-chip.c
-> @@ -572,6 +572,10 @@ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
->  {
->  	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
->  
-> +	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
-> +	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-> +		return 0;
-> +
->  	return tpm_get_random(chip, data, max);
->  }
->  
-> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-> index 7e513b771832..0f941cb32eb1 100644
-> --- a/drivers/char/tpm/tpm-interface.c
-> +++ b/drivers/char/tpm/tpm-interface.c
-> @@ -412,6 +412,8 @@ int tpm_pm_suspend(struct device *dev)
->  	}
->  
->  suspended:
-> +	chip->flags |= TPM_CHIP_FLAG_SUSPENDED;
-> +
->  	if (rc)
->  		dev_err(dev, "Ignoring error %d while suspending\n", rc);
->  	return 0;
-> @@ -429,6 +431,14 @@ int tpm_pm_resume(struct device *dev)
->  	if (chip == NULL)
->  		return -ENODEV;
->  
-> +	chip->flags &= ~TPM_CHIP_FLAG_SUSPENDED;
-> +
-> +	/*
-> +	 * Guarantee that SUSPENDED is written last, so that hwrng does not
-> +	 * activate before the chip has been fully resumed.
-> +	 */
-> +	wmb();
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(tpm_pm_resume);
-> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-> index 4dc97b9f65fb..d7073dc45444 100644
-> --- a/include/linux/tpm.h
-> +++ b/include/linux/tpm.h
-> @@ -274,13 +274,14 @@ enum tpm2_cc_attrs {
->  #define TPM_VID_ATML     0x1114
->  
->  enum tpm_chip_flags {
-> -	TPM_CHIP_FLAG_TPM2		= BIT(1),
-> -	TPM_CHIP_FLAG_IRQ		= BIT(2),
-> -	TPM_CHIP_FLAG_VIRTUAL		= BIT(3),
-> -	TPM_CHIP_FLAG_HAVE_TIMEOUTS	= BIT(4),
-> -	TPM_CHIP_FLAG_ALWAYS_POWERED	= BIT(5),
-> +	TPM_CHIP_FLAG_SUSPENDED			= BIT(0),
-> +	TPM_CHIP_FLAG_TPM2			= BIT(1),
-> +	TPM_CHIP_FLAG_IRQ			= BIT(2),
-> +	TPM_CHIP_FLAG_VIRTUAL			= BIT(3),
-> +	TPM_CHIP_FLAG_HAVE_TIMEOUTS		= BIT(4),
-> +	TPM_CHIP_FLAG_ALWAYS_POWERED		= BIT(5),
->  	TPM_CHIP_FLAG_FIRMWARE_POWER_MANAGED	= BIT(6),
-> -	TPM_CHIP_FLAG_FIRMWARE_UPGRADE	= BIT(7),
-> +	TPM_CHIP_FLAG_FIRMWARE_UPGRADE		= BIT(7),
->  };
->  
->  #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
-> -- 
-> 2.39.2
-> 
+Cc: stable@vger.kernel.org
+Fixes: 648a1783fe25 ("powerpc/boot: Fix boot wrapper code generation with CONFIG_POWER10_CPU")
+Link: https://github.com/ClangBuiltLinux/linux/issues/1839
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+I do not think that 648a1783fe25 is truly to blame for this but the
+Fixes tag will help the stable team ensure that this change gets
+backported with 648a1783fe25. This is the minimal fix for the problem
+but the true fix is separating AFLAGS and CFLAGS, which should be done
+by this in-flight series by Nick:
+
+https://lore.kernel.org/20230426055848.402993-1-npiggin@gmail.com/
+---
+ arch/powerpc/boot/Makefile | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 85cde5bf04b7..771b79423bbc 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -34,8 +34,6 @@ endif
+ 
+ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
+-		 $(call cc-option,-mno-prefixed) $(call cc-option,-mno-pcrel) \
+-		 $(call cc-option,-mno-mma) \
+ 		 $(call cc-option,-mno-spe) $(call cc-option,-mspe=no) \
+ 		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
+ 		 $(LINUXINCLUDE)
+@@ -71,6 +69,10 @@ BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
+ 
+ BOOTARFLAGS	:= -crD
+ 
++BOOTCFLAGS	+= $(call cc-option,-mno-prefixed) \
++		   $(call cc-option,-mno-pcrel) \
++		   $(call cc-option,-mno-mma)
++
+ ifdef CONFIG_CC_IS_CLANG
+ BOOTCFLAGS += $(CLANG_FLAGS)
+ BOOTAFLAGS += $(CLANG_FLAGS)
+
+---
+base-commit: 169f8997968ab620d750d9a45e15c5288d498356
+change-id: 20230427-remove-power10-args-from-boot-aflags-clang-268c43e8c1fc
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
