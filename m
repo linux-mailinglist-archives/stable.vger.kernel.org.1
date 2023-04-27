@@ -2,123 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 299216F02B8
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 10:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32C966F02BF
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 10:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242755AbjD0IlN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 04:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50608 "EHLO
+        id S243094AbjD0InD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 04:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243215AbjD0Ik6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 04:40:58 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED1A4ED8
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 01:40:57 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 8E42C5C0225;
-        Thu, 27 Apr 2023 04:40:56 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Thu, 27 Apr 2023 04:40:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1682584856; x=1682671256; bh=bL
-        /TnZJi6O3rmqL+8gm01PXeH4Tqnqf2D6c8CMpT/SM=; b=DHEOMPdkDyqoZNBOGO
-        99bQckwcmHcBmc5Mspqh7Y36YKl6KPj/oEGcUZgD19O9BBeKkj8u1UnorFb4jXwV
-        TDZI+DxuUscOLjh+XircyJgQ7jrxavmgYD+ZahqaHE8qgfCXL2DP7ATbjBtbwBq4
-        KD/4HFBdxctXDfkq1SL5lljMt5jzC2sMPrT067r56rx4okKW48/4uFXLTNjv/iu4
-        idJOsG/EO965DAQ2imrLuFIZxDsQDpDNT4B0IEBqkWV9Q9WLO0uwq7IZwApWV67c
-        2jzKq0w0JYMD+uVwS3XgZksra0jkkxMOFAMm+2T0tTI/1UIrGveNjJlgFq7W3NG2
-        URRw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1682584856; x=1682671256; bh=bL/TnZJi6O3rm
-        qL+8gm01PXeH4Tqnqf2D6c8CMpT/SM=; b=Dje4XTg6O6LEClF76rxmSyIMWhCAj
-        jsWWd6ksNByiU77km+kCe4ehApu4OXGlUxeUxs+13INFqCeTMf6eHDRor0iPh8t6
-        QWu8iP48JeTBiVtEn+YjQza7J7/1uJMGLH3JsHkhjuKOu/DEN7JOJjXK7F6O2UcI
-        wZDL60NM26BQK7QN64362IbE0ha2rQVZy04C42Q/DN6DtOX/7O2WmmkgH9pE6LTx
-        KJK50cmBaANfLQgv/DxqgxIedsSL4Hn/OtEbHi1GveC+dsTvHox8IbI7GRIB6GHf
-        WfSacR1Ese+UE9PEKnALX4EeA8n47v2SSCraXquVjZISAUo5Lwn0igoLQ==
-X-ME-Sender: <xms:GDVKZI922ZaIJGYAeHksITB1Uac5xdfPHn4WKhDlUhP0ZCos5TUH1w>
-    <xme:GDVKZAsR5jD-D9Vnm7c8psnCHlZC5LXODMJjnJ3iXGHvEqQRPc9z0xwIVzR-cGLM8
-    r31u-LuKPVwVw>
-X-ME-Received: <xmr:GDVKZOB7ybyanIpdN8ID4oCENL0Xk_AuG5CwmskEFi6-x6GOYqL012uZ39AGTFO7cFxzw7k8iKzSyhpYdfLJuPemnq_XSSt4L3SrNw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeduiedgtdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:GDVKZIdqeB53hWylvxvG05QVQTpHPJTxAUNX0boZ9Uzrah0bMa3m8g>
-    <xmx:GDVKZNNpsquDNJRxOyzUZ5uWjS4VXz0kjhQXOxCi0bnmIqQKwtfI6A>
-    <xmx:GDVKZCk9dW9v8JW-lW4TNAzygriIItnwDJ8o8ratcnxMoDyuAoYx5Q>
-    <xmx:GDVKZJCdXQQLAPbcfz_LnhIErxhuSBKzCshStAIzYH2BkmTv_uk5Aw>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Apr 2023 04:40:55 -0400 (EDT)
-Date:   Thu, 27 Apr 2023 10:40:53 +0200
-From:   Greg KH <greg@kroah.com>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     stable@vger.kernel.org,
-        syzbot+a7c1ec5b1d71ceaa5186@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.2.y] mm/mempolicy: fix use-after-free of VMA iterator
-Message-ID: <2023042738-humorous-handprint-cd6c@gregkh>
-References: <2023042253-speed-jolliness-682f@gregkh>
- <20230424153108.3354538-1-Liam.Howlett@oracle.com>
+        with ESMTP id S243056AbjD0InC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 04:43:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82674C01
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 01:43:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5696F63BAC
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 08:43:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D10DC433D2;
+        Thu, 27 Apr 2023 08:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1682584980;
+        bh=fttL0CPp91PzpTiH+zXIDwEu+bCr/U7Kn8G4mxErfLQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=o4fAClIrM3xlx7NIzkS2rkkNscySdrqJ4UOyWBEMZ9k0M6ydeD9/cP0qK/jLhmqtE
+         U3ts4xhJSOFTfiKfQDqIMDZdMhn8oolJix2fsxPye8D257Rs6AgWlZ7jgKcJ0JKNHJ
+         A/1yPOUHsX612iwiz47SXjVc3jageT2B+uScra4k=
+Date:   Thu, 27 Apr 2023 10:42:58 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc:     Sasha Levin <sashal@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        stable@vger.kernel.org, mptcp@lists.linux.dev,
+        Christoph Paasch <cpaasch@apple.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 6.1 0/2] mptcp: Stable backports for v6.1.26
+Message-ID: <2023042750-reappear-anteater-bbcf@gregkh>
+References: <20230424-upstream-stable-20230424-conflicts-6-1-v1-0-b054457d3646@tessares.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230424153108.3354538-1-Liam.Howlett@oracle.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230424-upstream-stable-20230424-conflicts-6-1-v1-0-b054457d3646@tessares.net>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Apr 24, 2023 at 11:31:08AM -0400, Liam R. Howlett wrote:
-> [ Upstream commit f4e9e0e69468583c2c6d9d5c7bfc975e292bf188 ]
+On Mon, Apr 24, 2023 at 04:09:07PM +0200, Matthieu Baerts wrote:
+> Hi Greg, Sasha,
 > 
-> set_mempolicy_home_node() iterates over a list of VMAs and calls
-> mbind_range() on each VMA, which also iterates over the singular list of
-> the VMA passed in and potentially splits the VMA.  Since the VMA iterator
-> is not passed through, set_mempolicy_home_node() may now point to a stale
-> node in the VMA tree.  This can result in a UAF as reported by syzbot.
+> Recently, 2 patches related to MPTCP have not been backported to v6.1
+> tree due to conflicts:
 > 
-> Avoid the stale maple tree node by passing the VMA iterator through to the
-> underlying call to split_vma().
+>  - 2a6a870e44dd ("mptcp: stops worker on unaccepted sockets at listener close") [1]
+>  - 63740448a32e ("mptcp: fix accept vs worker race") [2]
 > 
-> mbind_range() is also overly complicated, since there are two calling
-> functions and one already handles iterating over the VMAs.  Simplify
-> mbind_range() to only handle merging and splitting of the VMAs.
+> I then here resolved the conflicts, documented what I did in each patch
+> and ran our tests suite. Everything seems OK.
 > 
-> Align the new loop in do_mbind() and existing loop in
-> set_mempolicy_home_node() to use the reduced mbind_range() function.  This
-> allows for a single location of the range calculation and avoids
-> constantly looking up the previous VMA (since this is a loop over the
-> VMAs).
+> These patches are based on top of the latest linux-stable-rc/linux-6.1.y
+> version.
 > 
-> Link: https://lore.kernel.org/linux-mm/000000000000c93feb05f87e24ad@google.com/
-> Fixes: 66850be55e8e ("mm/mempolicy: use vma iterator & maple state instead of vma linked list")
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Reported-by: syzbot+a7c1ec5b1d71ceaa5186@syzkaller.appspotmail.com
->   Link: https://lkml.kernel.org/r/20230410152205.2294819-1-Liam.Howlett@oracle.com
-> Tested-by: syzbot+a7c1ec5b1d71ceaa5186@syzkaller.appspotmail.com
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit f4e9e0e69468583c2c6d9d5c7bfc975e292bf188)
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> (cherry picked from commit 905e8727c6aca577a8151105a6e0912591649690)
+> Do you mind adding these two patches to v6.1 queue please?
+> 
+> [1] https://lore.kernel.org/r/2023042259-gravity-hate-a9a3@gregkh
+> [2] https://lore.kernel.org/r/2023042215-chastise-scuba-8478@gregkh
+> 
+> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+> ---
+> Paolo Abeni (2):
+>       mptcp: stops worker on unaccepted sockets at listener close
+>       mptcp: fix accept vs worker race
+> 
+>  net/mptcp/protocol.c | 74 +++++++++++++++++++++++++++++++++---------------
+>  net/mptcp/protocol.h |  2 ++
+>  net/mptcp/subflow.c  | 80 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  3 files changed, 130 insertions(+), 26 deletions(-)
+> ---
+> base-commit: e4ff6ff54dea67f94036a357201b0f9807405cc6
+> change-id: 20230424-upstream-stable-20230424-conflicts-6-1-f325fe76c540
+> 
+> Best regards,
+> -- 
+> Matthieu Baerts <matthieu.baerts@tessares.net>
 
-There is no such commit in Linus's tree.  Please be more careful in the
-future...
+Both now queued up, thanks.
 
+greg k-h
