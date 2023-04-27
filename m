@@ -2,205 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21AA26F0DC5
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 23:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55E4B6F0F03
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 01:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbjD0VbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 17:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
+        id S1344105AbjD0XdX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 19:33:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjD0VbI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 17:31:08 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6748A1FFF;
-        Thu, 27 Apr 2023 14:31:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
-        t=1682631014; i=ps.report@gmx.net;
-        bh=gG9ay1JgOrFpa75yqkO8/mg6sCJdAOlXhrWdSjos4Rc=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=MlVU8TYUp2EpIPuIX9gQziILxwmdTFs1pEqs8qzhuGBFDonMtXDeuZDH6W7CucaOU
-         Ae780tAnMkXDGwGa4ok18+J7hOmJbq16g/K3wNE5DZQ+NXXHnWges+PaAH1jpf+xAI
-         AuwZxJR0+t4UAweUcyVuUu38ZECMHpGD15yZx4sNipYS9I2oIQx+OE+S39t65NUIY3
-         CJ6AZCg9ud2601ASsXTiZuqjnOqOPh676k8z1d4TbjnLgWwx31MFSTLAaVxG6Pe0Lm
-         Xg48nM86Wb/cVBepNaHaCbB2zc4uAOLjbaxzRyVcvhLcxN/n3yADtzfJtBMFIOseB2
-         e4khuyqpgT8SA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost ([62.216.209.88]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MG9kM-1q4E0Y1qMW-00Ga6y; Thu, 27
- Apr 2023 23:30:14 +0200
-Date:   Thu, 27 Apr 2023 23:30:10 +0200
-From:   Peter Seiderer <ps.report@gmx.net>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Konrad =?UTF-8?B?R3LDpGZl?= <k.graefe@gateware.de>,
-        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        Felipe Balbi <balbi@ti.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
-Message-ID: <20230427233010.15f7677d@gmx.net>
-In-Reply-To: <d1a14976-5f53-3373-0695-e10e6a9371de@rasmusvillemoes.dk>
-References: <2023042625-rendition-distort-fe06@gregkh>
-        <20230427115120.241954-1-k.graefe@gateware.de>
-        <d1a14976-5f53-3373-0695-e10e6a9371de@rasmusvillemoes.dk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-suse-linux-gnu)
+        with ESMTP id S229508AbjD0XdW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 19:33:22 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1624524F;
+        Thu, 27 Apr 2023 16:32:47 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 3C52E1FEFA;
+        Thu, 27 Apr 2023 23:32:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1682638366;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=vlp/Rv+SFv3x38FVekbx/u55bHGOziVKYfn31F1U83g=;
+        b=Oc6gNs8DyFaEKSt5TixDG+EcWCZtI+JoHC98gWHktdYcvL3gPM3k9puDoW9Ww9lTYgfUvU
+        0tzJW25tLFHTNAc8hBAU6cNs6lc1WwTQE7HFrIH3FSB2aHZPmRW7ONcKhczl1C87HRXUoJ
+        yWBNxbNVe08rb0m5Tn6LIzBaj6d41qU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1682638366;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=vlp/Rv+SFv3x38FVekbx/u55bHGOziVKYfn31F1U83g=;
+        b=Aji2uaydvXAV+Y6+o9iMrP2oIEz0vmaDg8RoQwsc6mOVNGsiOXm9kmy6x60Q4HGa7En/zd
+        r9fvdLw+PuqzF4Dw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0512913910;
+        Thu, 27 Apr 2023 23:32:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id x05TAB4GS2StEAAAMHmgww
+        (envelope-from <dsterba@suse.cz>); Thu, 27 Apr 2023 23:32:46 +0000
+Date:   Fri, 28 Apr 2023 01:32:29 +0200
+From:   David Sterba <dsterba@suse.cz>
+To:     Qu Wenruo <wqu@suse.com>
+Cc:     linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: properly reject clear_cache and v1 cache for
+ block-group-tree
+Message-ID: <20230427233229.GK19619@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <832315ce8d970a393a2948e4cc21690a1d9e1cac.1682559926.git.wqu@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:C5ubCS4kTqwQG0zMkeM9Cx269CvGy7tm1IRw5EQmFC0sLeq5tQ2
- W/38OEF2KyLzn3ZHt9agTt+W3x/9J/HZEvDVxlLn5W+JN+gdwIUts1Hr8UzwtOsVyOvUVuM
- 1VlTXob5BUMfzi/LK1exvZbqsvAywdyCqkxbbXVduO4OkMrdkRKiLi+XaSlK8KlPEkTMKXe
- 2Cpt3pZnQ1S6Rp81XCPqQ==
-UI-OutboundReport: notjunk:1;M01:P0:KkGXVEgS7Jo=;VcS/xSULeBpNuNKhc5QmPmSP7sl
- 4LknYtRg4l4a2VD9+yYYuQAMLjkle+aOGS+mQD+CiueIbG5TitW1ok48WRKw5lARXLxkCsYYg
- mxJyW4b50FnyxderVFNW0tECC7269XeTpG/p/Ccap2kusTDrbB/fI1Kh2Wmn0OfRPZJCQSgu4
- XpWttUlBTDjmKrUmPgTZsE2Cwrj8AwnsYmlWefu08lpJ7FOWCjJzCKFHUje8tJVyCBYENQzMj
- oegWn1fYEa8GCB6P6RsJk2CzXR8EfbOwK/2uPO/5Vq9CxSFUgsHzIsLna2USFBBGGTfGdUufh
- II+344944Bxfdtz7cZ9yjtsYUEfZh9bld0QfFDw0qmrGEtPowy09g9xpxoeJKtey4/wdSrxF5
- 7FEsQ1RPJEhJWqJAMkzweAbCwyER2VZkG7s5UdVjLQyMq4Qjv5pwx/Tll8RONGLqQi912oSPM
- LRqrUMkM62QdEMp4BxcwQStbrIVvMUkyp+DCkh7S9A3l7i7CUrlHVeWVuzi1ys09ISFORxHVW
- Kou68tm/Pja6CJV3AFv/zZOE11NXqU/mF49tDsObcgFWo3BLxpI//W83TPCwcZpye99KAa/ly
- 9+hY3Ry41s37meKJT2z3wnB8rhd4oR5D0gFNMXEtb898HXEhY303Y4XR8cIoL6jckf03A6n7A
- A+boePCoH3788cIouzOwOOCl49zgWAG7GigJQowUckEfi0ILKWf2ngeN4XJ6z0Sm61yIMVjgu
- QWtqL8nvvxO6Ubh+QA5kq6MyiQmOl1BNiLBmTfaWQtnJxsV9GRxL4jV5Yi7kdInCVu/k52tiH
- PAkrnwKqyOfXVWA297GdghVKJbLNEHpk1OuMcmbqQJcX16AnEWC8cQiYQVQfRGUSqEGmV/jXw
- 1eNZCUZRpMjcCIznQ9kCDcJx5UAiLNSt7mhl6lGLxH1EPoYZcvl/yCcReRlwJHt7kxwUcWQuJ
- n9FkBVTv8f4jFndshaciuMOX+O8=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <832315ce8d970a393a2948e4cc21690a1d9e1cac.1682559926.git.wqu@suse.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello Rasmus, Konrad, *,
+On Thu, Apr 27, 2023 at 09:45:32AM +0800, Qu Wenruo wrote:
+> [BUG]
+> With block-group-tree feature enabled, mounting it with clear_cache
+> would cause the following transaction abort at mount or remount:
+> 
+>  BTRFS info (device dm-4): force clearing of disk cache
+>  BTRFS info (device dm-4): using free space tree
+>  BTRFS info (device dm-4): auto enabling async discard
+>  BTRFS info (device dm-4): clearing free space tree
+>  BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE (0x1)
+>  BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE_VALID (0x2)
+>  BTRFS error (device dm-4): block-group-tree feature requires fres-space-tree and no-holes
+>  BTRFS error (device dm-4): super block corruption detected before writing it to disk
+>  BTRFS: error (device dm-4) in write_all_supers:4288: errno=-117 Filesystem corrupted (unexpected superblock corruption detected)
+>  BTRFS warning (device dm-4: state E): Skipping commit of aborted transaction.
+> 
+> [CAUSE]
+> For block-group-tree feature, we have an artificial dependency on
+> free-space-tree.
+> 
+> This means if we detects block-group-tree without v2 cache, we consider
+> it a corruption and cause the problem.
+> 
+> For clear_cache mount option, it would temporary disable v2 cache, then
+> re-enable it.
+> 
+> But unfortunately for that temporary v2 cache disabled status, we refuse
+> to write a superblock with bg tree only flag, thus leads to the above
+> transaction abortion.
+> 
+> [FIX]
+> For now, just reject clear_cache and v1 cache mount option for block
+> group tree.
+> So now we got a graceful rejection other than a transaction abort:
+> 
+>  BTRFS info (device dm-4): force clearing of disk cache
+>  BTRFS error (device dm-4): cannot disable free space tree with block-group-tree feature
+>  BTRFS error (device dm-4): open_ctree failed
+> 
+> Cc: stable@vger.kernel.org # 6.1+
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+> For the proper fix, we need to change the behavior of clear_cache and v1
+> cache switch.
+> 
+> For pure clear_cache without switch cache version, we should allow
+> rebuilding v2 cache without fully disable v2 cache.
 
-On Thu, 27 Apr 2023 14:35:19 +0200, Rasmus Villemoes <linux@rasmusvillemoes=
-.dk> wrote:
+There was an issue to clarify docs about the space caches and it's a
+mess, once we had v2 the number of states has increased and it's
+becoming user unfriendly. At least we have the block-group-tree and
+free-space-tree tied together and this should be the focus of the
+feature compatibility.
 
-> On 27/04/2023 13.51, Konrad Gr=C3=A4fe wrote:
-> > The CDC-ECM specification requires an USB gadget to send the host MAC
-> > address as uppercase hex string. This change adds the appropriate
-> > modifier.
-> >=20
-> > Cc: stable@vger.kernel.org =20
->=20
-> Why cc stable?
->=20
-> > Signed-off-by: Konrad Gr=C3=A4fe <k.graefe@gateware.de>
-> > ---
-> > Added in v3
-> >=20
-> >  lib/vsprintf.c | 18 +++++++++++++++---
-> >  1 file changed, 15 insertions(+), 3 deletions(-) =20
->=20
-> The diffstat here, or for some other patch in the same series,
-> definitely ought to mention lib/test_printf.c.
->=20
-> > diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> > index be71a03c936a..8aee1caabd9e 100644
-> > --- a/lib/vsprintf.c
-> > +++ b/lib/vsprintf.c
-> > @@ -1269,9 +1269,10 @@ char *mac_address_string(char *buf, char *end, u=
-8 *addr,
-> >  {
-> >  	char mac_addr[sizeof("xx:xx:xx:xx:xx:xx")];
-> >  	char *p =3D mac_addr;
-> > -	int i;
-> > +	int i, pos;
-> >  	char separator;
-> >  	bool reversed =3D false;
-> > +	bool uppercase =3D false;
-> > =20
-> >  	if (check_pointer(&buf, end, addr, spec))
-> >  		return buf;
-> > @@ -1281,6 +1282,10 @@ char *mac_address_string(char *buf, char *end, u=
-8 *addr,
-> >  		separator =3D '-';
-> >  		break;
-> > =20
-> > +	case 'U':
-> > +		uppercase =3D true;
-> > +		break;
-> > +
-> >  	case 'R':
-> >  		reversed =3D true;
-> >  		fallthrough; =20
->=20
-> This seems broken, and I'm surprised the compiler doesn't warn about
-> separator possibly being uninitialized further down. I'm also surprised
-> your testing hasn't caught this. For reference, the full switch
-> statement is currently
+I think it should be acceptable to slightly change the behaviour for
+some obscure combination v1/v2/clear/bgt and either reject some of them
+or suggest more than one step how to do it. E.g. first fully convert
+from v1 to v2 and then to bgt, or allow v2/bgt/clear in one go.
 
-Compiler (gcc) does not warn because of Makefile:
-
-  1038 # Enabled with W=3D2, disabled by default as noisy
-  1039 ifdef CONFIG_CC_IS_GCC
-  1040 KBUILD_CFLAGS +=3D -Wno-maybe-uninitialized
-  1041 endif
-
-With this commented:
-
-  lib/vsprintf.c: In function =E2=80=98mac_address_string=E2=80=99:
-  lib/vsprintf.c:1310:30: warning: =E2=80=98separator=E2=80=99 may be used =
-uninitialized [-Wmaybe-uninitialized]
-   1310 |                         *p++ =3D separator;
-        |                         ~~~~~^~~~~~~~~~~
-  lib/vsprintf.c:1273:14: note: =E2=80=98separator=E2=80=99 was declared he=
-re
-   1273 |         char separator;
-        |              ^~~~~~~~~
-
-Regards,
-Peter
-
->=20
->         switch (fmt[1]) {
->         case 'F':
->                 separator =3D '-';
->                 break;
->=20
->         case 'R':
->                 reversed =3D true;
->                 fallthrough;
->=20
->         default:
->                 separator =3D ':';
->                 break;
->         }
->=20
-> > @@ -1292,9 +1297,14 @@ char *mac_address_string(char *buf, char *end, u=
-8 *addr,
-> > =20
-> >  	for (i =3D 0; i < 6; i++) {
-> >  		if (reversed)
-> > -			p =3D hex_byte_pack(p, addr[5 - i]);
-> > +			pos =3D 5 - i;
-> > +		else
-> > +			pos =3D i;
-> > +
-> > +		if (uppercase)
-> > +			p =3D hex_byte_pack_upper(p, addr[pos]);
-> >  		else
-> > -			p =3D hex_byte_pack(p, addr[i]);
-> > +			p =3D hex_byte_pack(p, addr[pos]); =20
->=20
-> I think this becomes quite hard to follow. We have string_upper() in
-> linux/string_helpers.h, so I'd rather just leave this loop alone and do
->=20
->   if (uppercase)
->     string_upper(mac_addr, mac_addr);
->=20
-> after the nul-termination.
->=20
-> Rasmus
->=20
-
+Added to misc-next, thanks.
