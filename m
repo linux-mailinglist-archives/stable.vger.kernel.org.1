@@ -2,72 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 581B56F03A7
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 11:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12B36F03BC
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 11:54:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243391AbjD0Jtf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 05:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35300 "EHLO
+        id S243385AbjD0Jxr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 05:53:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243343AbjD0Jtd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 05:49:33 -0400
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED8B133
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 02:49:32 -0700 (PDT)
-Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-4403aef7f1fso2966257e0c.2
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 02:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682588971; x=1685180971;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wto9pKIHtHAM2Ad2u4MUsD4JSmys3BuIyF+J3wWcMGM=;
-        b=oT7AHjre3+bsN732m6l/hI8c99enC6un8zE2DHUJm9fvFZLatJqrEi2XJ+UAjpW3cH
-         SeUpPvx51YcPejWfxeA3rB024LQnOWWSM1oLZ1+KpcX5JSXbEX7z3n/f9PwDtXhr/s2T
-         6+jv2/P4tHAc+WQhJrWv6VQznbRv4XZIl4Sw0Dsku+z48i6Tj5dpQonL+Hwh4f0d22eM
-         2d/b5hnqWTMEOmg2rXOB71wGBVE7OstRfnlbj8rk9sURGoXDfyZXkLCoIa0iyimVU8Tb
-         jPFWFMaCq5Uv6BhRevvHIqTIMYe7cx2IX9EaWcfq5D8TGNTtai+OIu/v/QkcZ9FTqw7l
-         DHvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682588971; x=1685180971;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wto9pKIHtHAM2Ad2u4MUsD4JSmys3BuIyF+J3wWcMGM=;
-        b=Ttui4s6OOZkmM8iFEqxsMjzqA48D2EedKgUvkT4M5aguqTWQ4WCtTdL7iVDjJ8zOYD
-         3nv5EzIY/08IxKu6KCKLxcRH4u3Dz/gK+jBHyoLshmwmvgaZMwM/whwdjqIQXnO1NFII
-         wHUbrDW4dH6M47Kg5dUOeN0mnhIFkjXypdxknIwmzHUNpUqAPjheFR4WAW/RWaWxKFQU
-         zwrZ8vxjMSrKlNJznjQeo9rqbib2vuU8sGzuDM/vwj3uZ1lhstFYeBSu75QTekEmLU89
-         m/2N/LBF5rHzeRmd2NotwDF6PrLqcCmHXu4fkSI0nzsaxrdfAY8QxSg19T371/I9Ji1r
-         bkdA==
-X-Gm-Message-State: AC+VfDws2XriUjGCimGEXDT4B86E/tImSFt69thgK5WU8MGCoDA/pYWW
-        MMDHDdOEN9kG9DZmWO7g+fcG77ZwiKD8rm3SAvhxs3qFkdU08ZCGSceQDtGF
-X-Google-Smtp-Source: ACHHUZ5HX63/p5uxT2f2OVWtxJuwIq2uMgzazAFLwRisk67JONp/X53bDBJdfyKQMjn1/Xrf6T1WwUVBQji0McvNddo=
-X-Received: by 2002:a1f:c406:0:b0:440:3793:6ab2 with SMTP id
- u6-20020a1fc406000000b0044037936ab2mr209235vkf.13.1682588970772; Thu, 27 Apr
- 2023 02:49:30 -0700 (PDT)
+        with ESMTP id S243419AbjD0Jxp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 05:53:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2994229
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 02:53:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85AFE62630
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 09:53:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981E2C4339C;
+        Thu, 27 Apr 2023 09:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1682589214;
+        bh=d2vlnCXAQk3zlAeoOdHY3S6KoTiqIR4uFvsT0I8Wz74=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e283D839YuFENta1GKZzFC5NhhJZzt1mSrwSSQbLoUhBSQ/QY3MGdDn5anZNzQOdv
+         8Pp2slZ/eflfmA7A6iqiNu19S2QIoN3m1qzRhlt/pqmlUskgB9QUz4vhTqzw12WPwu
+         D+LKkIahH/7dCL+DuOQpAymPtBeNxaJMEs5OAT2Q=
+Date:   Thu, 27 Apr 2023 11:53:31 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc:     Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.2.11 3/3] riscv: No need to relocate the dtb as it lies
+ in the fixmap region
+Message-ID: <2023042756-aggregate-distance-1d1a@gregkh>
+References: <20230424150354.195572-1-alexghiti@rivosinc.com>
+ <20230424150354.195572-4-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-References: <20230424131121.155649464@linuxfoundation.org> <CA+G9fYstB_fROK9LHYuQ8dc2ArieGGAW_x69eEX-eAi5xMeE3Q@mail.gmail.com>
- <20230426170945.0ec0f1ef@gandalf.local.home> <20230426181415.17c893f5@gandalf.local.home>
-In-Reply-To: <20230426181415.17c893f5@gandalf.local.home>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 27 Apr 2023 10:49:19 +0100
-Message-ID: <CA+G9fYtd=dJEM=+xOHA9Egs88r+gEfrnW_gFnTFm4of5uTQ7mA@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/29] 4.19.282-rc1 review
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230424150354.195572-4-alexghiti@rivosinc.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,207 +51,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Steven,
+On Mon, Apr 24, 2023 at 05:03:54PM +0200, Alexandre Ghiti wrote:
+> commit 1b50f956c8fe9082bdee4a9cfd798149c52f7043 upstream.
+> 
+> We used to access the dtb via its linear mapping address but now that the
+> dtb early mapping was moved in the fixmap region, we can keep using this
+> address since it is present in swapper_pg_dir, and remove the dtb
+> relocation.
+> 
+> Note that the relocation was wrong anyway since early_memremap() is
+> restricted to 256K whereas the maximum fdt size is 2MB.
+> 
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Cc: <stable@vger.kernel.org> # 6.2.x
 
-On Wed, 26 Apr 2023 at 23:14, Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> On Wed, 26 Apr 2023 17:09:45 -0400
-> Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> > Now the question is, why is this triggering on 4.19 but not in latest
-> > mainline?
->
-> I found it, I backported this patch and the warning goes away (at least for
-> me). Can you add this and see if it makes the warning go away for you too?
+You dropped everyone else's s-o-b for this patch, why?
 
-I have applied this patch on stable-rc 4.19 branch and tested on
-- arm64: Juno-r2
- - x86_64 device
+Please don't do that.  Please fix up all of these series and resend.
 
-and the reported problem has been resolved.
+thanks,
 
-Thanks for finding a quick fix patch.
-
->
-> -- Steve
->
-> From: Peter Zijlstra <peterz@infradead.org>
-> Date: Fri, 7 Aug 2020 20:50:19 +0200
-> Subject: [PATCH] sched,idle,rcu: Push rcu_idle deeper into the idle path
->
-> commit 1098582a0f6c4e8fd28da0a6305f9233d02c9c1d upstream.
->
-> Lots of things take locks, due to a wee bug, rcu_lockdep didn't notice
-> that the locking tracepoints were using RCU.
->
-> Push rcu_idle_{enter,exit}() as deep as possible into the idle paths,
-> this also resolves a lot of _rcuidle()/RCU_NONIDLE() usage.
->
-> Specifically, sched_clock_idle_wakeup_event() will use ktime which
-> will use seqlocks which will tickle lockdep, and
-> stop_critical_timings() uses lock.
->
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Tested-by: Marco Elver <elver@google.com>
-> Link: https://lkml.kernel.org/r/20200821085348.310943801@infradead.org
-
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-
-test log:
-  - https://lkft.validation.linaro.org/scheduler/job/6380295#L1418
-  - https://lkft.validation.linaro.org/scheduler/job/6380303#L1443
-
-> ---
->  drivers/cpuidle/cpuidle.c | 12 ++++++++----
->  kernel/sched/idle.c       | 22 ++++++++--------------
->  2 files changed, 16 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-> index 2d182dc1b49e..01bde6dec13a 100644
-> --- a/drivers/cpuidle/cpuidle.c
-> +++ b/drivers/cpuidle/cpuidle.c
-> @@ -140,13 +140,14 @@ static void enter_s2idle_proper(struct cpuidle_driver *drv,
->          * executing it contains RCU usage regarded as invalid in the idle
->          * context, so tell RCU about that.
->          */
-> -       RCU_NONIDLE(tick_freeze());
-> +       tick_freeze();
->         /*
->          * The state used here cannot be a "coupled" one, because the "coupled"
->          * cpuidle mechanism enables interrupts and doing that with timekeeping
->          * suspended is generally unsafe.
->          */
->         stop_critical_timings();
-> +       rcu_idle_enter();
->         drv->states[index].enter_s2idle(dev, drv, index);
->         if (WARN_ON_ONCE(!irqs_disabled()))
->                 local_irq_disable();
-> @@ -155,7 +156,8 @@ static void enter_s2idle_proper(struct cpuidle_driver *drv,
->          * first CPU executing it calls functions containing RCU read-side
->          * critical sections, so tell RCU about that.
->          */
-> -       RCU_NONIDLE(tick_unfreeze());
-> +       rcu_idle_exit();
-> +       tick_unfreeze();
->         start_critical_timings();
->
->         time_end = ns_to_ktime(local_clock());
-> @@ -224,16 +226,18 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
->         /* Take note of the planned idle state. */
->         sched_idle_set_state(target_state);
->
-> -       trace_cpu_idle_rcuidle(index, dev->cpu);
-> +       trace_cpu_idle(index, dev->cpu);
->         time_start = ns_to_ktime(local_clock());
->
->         stop_critical_timings();
-> +       rcu_idle_enter();
->         entered_state = target_state->enter(dev, drv, index);
-> +       rcu_idle_exit();
->         start_critical_timings();
->
->         sched_clock_idle_wakeup_event();
->         time_end = ns_to_ktime(local_clock());
-> -       trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, dev->cpu);
-> +       trace_cpu_idle(PWR_EVENT_EXIT, dev->cpu);
->
->         /* The cpu is no longer idle or about to enter idle. */
->         sched_idle_set_state(NULL);
-> diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-> index 44a17366c8ec..4e3d149d64ad 100644
-> --- a/kernel/sched/idle.c
-> +++ b/kernel/sched/idle.c
-> @@ -53,17 +53,18 @@ __setup("hlt", cpu_idle_nopoll_setup);
->
->  static noinline int __cpuidle cpu_idle_poll(void)
->  {
-> +       trace_cpu_idle(0, smp_processor_id());
-> +       stop_critical_timings();
->         rcu_idle_enter();
-> -       trace_cpu_idle_rcuidle(0, smp_processor_id());
->         local_irq_enable();
-> -       stop_critical_timings();
->
->         while (!tif_need_resched() &&
-> -               (cpu_idle_force_poll || tick_check_broadcast_expired()))
-> +              (cpu_idle_force_poll || tick_check_broadcast_expired()))
->                 cpu_relax();
-> -       start_critical_timings();
-> -       trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
-> +
->         rcu_idle_exit();
-> +       start_critical_timings();
-> +       trace_cpu_idle(PWR_EVENT_EXIT, smp_processor_id());
->
->         return 1;
->  }
-> @@ -90,7 +91,9 @@ void __cpuidle default_idle_call(void)
->                 local_irq_enable();
->         } else {
->                 stop_critical_timings();
-> +               rcu_idle_enter();
->                 arch_cpu_idle();
-> +               rcu_idle_exit();
->                 start_critical_timings();
->         }
->  }
-> @@ -148,7 +151,6 @@ static void cpuidle_idle_call(void)
->
->         if (cpuidle_not_available(drv, dev)) {
->                 tick_nohz_idle_stop_tick();
-> -               rcu_idle_enter();
->
->                 default_idle_call();
->                 goto exit_idle;
-> @@ -166,19 +168,15 @@ static void cpuidle_idle_call(void)
->
->         if (idle_should_enter_s2idle() || dev->use_deepest_state) {
->                 if (idle_should_enter_s2idle()) {
-> -                       rcu_idle_enter();
->
->                         entered_state = cpuidle_enter_s2idle(drv, dev);
->                         if (entered_state > 0) {
->                                 local_irq_enable();
->                                 goto exit_idle;
->                         }
-> -
-> -                       rcu_idle_exit();
->                 }
->
->                 tick_nohz_idle_stop_tick();
-> -               rcu_idle_enter();
->
->                 next_state = cpuidle_find_deepest_state(drv, dev);
->                 call_cpuidle(drv, dev, next_state);
-> @@ -195,8 +193,6 @@ static void cpuidle_idle_call(void)
->                 else
->                         tick_nohz_idle_retain_tick();
->
-> -               rcu_idle_enter();
-> -
->                 entered_state = call_cpuidle(drv, dev, next_state);
->                 /*
->                  * Give the governor an opportunity to reflect on the outcome
-> @@ -212,8 +208,6 @@ static void cpuidle_idle_call(void)
->          */
->         if (WARN_ON_ONCE(irqs_disabled()))
->                 local_irq_enable();
-> -
-> -       rcu_idle_exit();
->  }
->
->  /*
-> --
-> 2.39.2
-
-- Naresh
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+greg k-h
