@@ -2,134 +2,205 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB40E6F0C9E
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 21:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21AA26F0DC5
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 23:31:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245027AbjD0TfP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 15:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60926 "EHLO
+        id S229832AbjD0VbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 17:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245053AbjD0TfN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 15:35:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FEC10F3
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 12:35:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4057E63F14
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 19:35:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24230C4339B;
-        Thu, 27 Apr 2023 19:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682624111;
-        bh=I6bjmJKyg+OsI5C9yWHH3qaPQ1SmKzUJt4SHAnBFRZI=;
-        h=From:Date:Subject:To:Cc:From;
-        b=XierVmVdpa9Cp39YuWLeh+yshOeehlTOz9gNsgUitHVikKGFTxIiAKZkigJbZrsrg
-         vgQa+Q3Ck2JIRvcGCVf3wpvIWrAypEQdMXGq1d1TO+aixd+IJz/1+t1VFZyja6lkkM
-         MyoDXHe54cW6Tg9mh9XJ060LVRxv1g7MZMunUP5XiW6dIOZNp7+H4dBL9gwCtU6h+/
-         Qg3IGXNqxWg5xgmmNvPpl+LSW9OUfesBRR/jjrB2ZTx7ori0yCkmb3fldCh/4J2gPe
-         Ai+yXz746miKIZ6kO6lUawp5qy9F5179DlH2rfO5zvywSC/rpSwUudk3SS1HDoSanB
-         wr23RJp6sCcPQ==
-From:   Nathan Chancellor <nathan@kernel.org>
-Date:   Thu, 27 Apr 2023 12:34:53 -0700
-Subject: [PATCH] powerpc/boot: Disable power10 features after BOOTAFLAGS
- assignment
+        with ESMTP id S229508AbjD0VbI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 17:31:08 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6748A1FFF;
+        Thu, 27 Apr 2023 14:31:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1682631014; i=ps.report@gmx.net;
+        bh=gG9ay1JgOrFpa75yqkO8/mg6sCJdAOlXhrWdSjos4Rc=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=MlVU8TYUp2EpIPuIX9gQziILxwmdTFs1pEqs8qzhuGBFDonMtXDeuZDH6W7CucaOU
+         Ae780tAnMkXDGwGa4ok18+J7hOmJbq16g/K3wNE5DZQ+NXXHnWges+PaAH1jpf+xAI
+         AuwZxJR0+t4UAweUcyVuUu38ZECMHpGD15yZx4sNipYS9I2oIQx+OE+S39t65NUIY3
+         CJ6AZCg9ud2601ASsXTiZuqjnOqOPh676k8z1d4TbjnLgWwx31MFSTLAaVxG6Pe0Lm
+         Xg48nM86Wb/cVBepNaHaCbB2zc4uAOLjbaxzRyVcvhLcxN/n3yADtzfJtBMFIOseB2
+         e4khuyqpgT8SA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost ([62.216.209.88]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MG9kM-1q4E0Y1qMW-00Ga6y; Thu, 27
+ Apr 2023 23:30:14 +0200
+Date:   Thu, 27 Apr 2023 23:30:10 +0200
+From:   Peter Seiderer <ps.report@gmx.net>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Konrad =?UTF-8?B?R3LDpGZl?= <k.graefe@gateware.de>,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Felipe Balbi <balbi@ti.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+Message-ID: <20230427233010.15f7677d@gmx.net>
+In-Reply-To: <d1a14976-5f53-3373-0695-e10e6a9371de@rasmusvillemoes.dk>
+References: <2023042625-rendition-distort-fe06@gregkh>
+        <20230427115120.241954-1-k.graefe@gateware.de>
+        <d1a14976-5f53-3373-0695-e10e6a9371de@rasmusvillemoes.dk>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230427-remove-power10-args-from-boot-aflags-clang-v1-1-9107f7c943bc@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFzOSmQC/x2OwQqDMBBEf0Vy7kKM0kp/pfSwSTcaMFnZFS2I/
- 97Y45thHnMYJUmk5tkcRmhLmrhUaG+NCROWkSB9KhtnXWd79wChzBvBwjtJawFlVIjCGTzzChh
- nrEGY6xTcfQh9R0NoYzBV6FEJvGAJ06XMqCvJVSxCMX3/L17v8/wBDfVlOJUAAAA=
-To:     mpe@ellerman.id.au
-Cc:     npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        ndesaulniers@google.com, trix@redhat.com,
-        linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev,
-        patches@lists.linux.dev, stable@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2693; i=nathan@kernel.org;
- h=from:subject:message-id; bh=I6bjmJKyg+OsI5C9yWHH3qaPQ1SmKzUJt4SHAnBFRZI=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDCle5/I47l3VVrhda/xi+qvzUqkHPLpLjyWoL7h32nDxZ
- 0XFY7urOkpZGMQ4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEUl8z/OF2N5n/qTdontgL
- j/9b712ou3PowoKTqg/552x/apAX9DCekeF31rJjPwrXT1okOJnber27/ht53bCIeqOQgo7b8Wv
- 3TuQDAA==
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:C5ubCS4kTqwQG0zMkeM9Cx269CvGy7tm1IRw5EQmFC0sLeq5tQ2
+ W/38OEF2KyLzn3ZHt9agTt+W3x/9J/HZEvDVxlLn5W+JN+gdwIUts1Hr8UzwtOsVyOvUVuM
+ 1VlTXob5BUMfzi/LK1exvZbqsvAywdyCqkxbbXVduO4OkMrdkRKiLi+XaSlK8KlPEkTMKXe
+ 2Cpt3pZnQ1S6Rp81XCPqQ==
+UI-OutboundReport: notjunk:1;M01:P0:KkGXVEgS7Jo=;VcS/xSULeBpNuNKhc5QmPmSP7sl
+ 4LknYtRg4l4a2VD9+yYYuQAMLjkle+aOGS+mQD+CiueIbG5TitW1ok48WRKw5lARXLxkCsYYg
+ mxJyW4b50FnyxderVFNW0tECC7269XeTpG/p/Ccap2kusTDrbB/fI1Kh2Wmn0OfRPZJCQSgu4
+ XpWttUlBTDjmKrUmPgTZsE2Cwrj8AwnsYmlWefu08lpJ7FOWCjJzCKFHUje8tJVyCBYENQzMj
+ oegWn1fYEa8GCB6P6RsJk2CzXR8EfbOwK/2uPO/5Vq9CxSFUgsHzIsLna2USFBBGGTfGdUufh
+ II+344944Bxfdtz7cZ9yjtsYUEfZh9bld0QfFDw0qmrGEtPowy09g9xpxoeJKtey4/wdSrxF5
+ 7FEsQ1RPJEhJWqJAMkzweAbCwyER2VZkG7s5UdVjLQyMq4Qjv5pwx/Tll8RONGLqQi912oSPM
+ LRqrUMkM62QdEMp4BxcwQStbrIVvMUkyp+DCkh7S9A3l7i7CUrlHVeWVuzi1ys09ISFORxHVW
+ Kou68tm/Pja6CJV3AFv/zZOE11NXqU/mF49tDsObcgFWo3BLxpI//W83TPCwcZpye99KAa/ly
+ 9+hY3Ry41s37meKJT2z3wnB8rhd4oR5D0gFNMXEtb898HXEhY303Y4XR8cIoL6jckf03A6n7A
+ A+boePCoH3788cIouzOwOOCl49zgWAG7GigJQowUckEfi0ILKWf2ngeN4XJ6z0Sm61yIMVjgu
+ QWtqL8nvvxO6Ubh+QA5kq6MyiQmOl1BNiLBmTfaWQtnJxsV9GRxL4jV5Yi7kdInCVu/k52tiH
+ PAkrnwKqyOfXVWA297GdghVKJbLNEHpk1OuMcmbqQJcX16AnEWC8cQiYQVQfRGUSqEGmV/jXw
+ 1eNZCUZRpMjcCIznQ9kCDcJx5UAiLNSt7mhl6lGLxH1EPoYZcvl/yCcReRlwJHt7kxwUcWQuJ
+ n9FkBVTv8f4jFndshaciuMOX+O8=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When building the boot wrapper assembly files with clang after
-commit 648a1783fe25 ("powerpc/boot: Fix boot wrapper code generation
-with CONFIG_POWER10_CPU"), the following warnings appear for each file
-built:
+Hello Rasmus, Konrad, *,
 
-  '-prefixed' is not a recognized feature for this target (ignoring feature)
-  '-pcrel' is not a recognized feature for this target (ignoring feature)
+On Thu, 27 Apr 2023 14:35:19 +0200, Rasmus Villemoes <linux@rasmusvillemoes=
+.dk> wrote:
 
-While it is questionable whether or not LLVM should be emitting a
-warning when passed negative versions of code generation flags when
-building assembly files (since it does not emit a warning for the
-altivec and vsx flags), it is easy enough to work around this by just
-moving the disabled flags to BOOTCFLAGS after the assignment of
-BOOTAFLAGS, so that they are not added when building assembly files.
-Do so to silence the warnings.
+> On 27/04/2023 13.51, Konrad Gr=C3=A4fe wrote:
+> > The CDC-ECM specification requires an USB gadget to send the host MAC
+> > address as uppercase hex string. This change adds the appropriate
+> > modifier.
+> >=20
+> > Cc: stable@vger.kernel.org =20
+>=20
+> Why cc stable?
+>=20
+> > Signed-off-by: Konrad Gr=C3=A4fe <k.graefe@gateware.de>
+> > ---
+> > Added in v3
+> >=20
+> >  lib/vsprintf.c | 18 +++++++++++++++---
+> >  1 file changed, 15 insertions(+), 3 deletions(-) =20
+>=20
+> The diffstat here, or for some other patch in the same series,
+> definitely ought to mention lib/test_printf.c.
+>=20
+> > diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> > index be71a03c936a..8aee1caabd9e 100644
+> > --- a/lib/vsprintf.c
+> > +++ b/lib/vsprintf.c
+> > @@ -1269,9 +1269,10 @@ char *mac_address_string(char *buf, char *end, u=
+8 *addr,
+> >  {
+> >  	char mac_addr[sizeof("xx:xx:xx:xx:xx:xx")];
+> >  	char *p =3D mac_addr;
+> > -	int i;
+> > +	int i, pos;
+> >  	char separator;
+> >  	bool reversed =3D false;
+> > +	bool uppercase =3D false;
+> > =20
+> >  	if (check_pointer(&buf, end, addr, spec))
+> >  		return buf;
+> > @@ -1281,6 +1282,10 @@ char *mac_address_string(char *buf, char *end, u=
+8 *addr,
+> >  		separator =3D '-';
+> >  		break;
+> > =20
+> > +	case 'U':
+> > +		uppercase =3D true;
+> > +		break;
+> > +
+> >  	case 'R':
+> >  		reversed =3D true;
+> >  		fallthrough; =20
+>=20
+> This seems broken, and I'm surprised the compiler doesn't warn about
+> separator possibly being uninitialized further down. I'm also surprised
+> your testing hasn't caught this. For reference, the full switch
+> statement is currently
 
-Cc: stable@vger.kernel.org
-Fixes: 648a1783fe25 ("powerpc/boot: Fix boot wrapper code generation with CONFIG_POWER10_CPU")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1839
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-I do not think that 648a1783fe25 is truly to blame for this but the
-Fixes tag will help the stable team ensure that this change gets
-backported with 648a1783fe25. This is the minimal fix for the problem
-but the true fix is separating AFLAGS and CFLAGS, which should be done
-by this in-flight series by Nick:
+Compiler (gcc) does not warn because of Makefile:
 
-https://lore.kernel.org/20230426055848.402993-1-npiggin@gmail.com/
----
- arch/powerpc/boot/Makefile | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+  1038 # Enabled with W=3D2, disabled by default as noisy
+  1039 ifdef CONFIG_CC_IS_GCC
+  1040 KBUILD_CFLAGS +=3D -Wno-maybe-uninitialized
+  1041 endif
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 85cde5bf04b7..771b79423bbc 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -34,8 +34,6 @@ endif
- 
- BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
--		 $(call cc-option,-mno-prefixed) $(call cc-option,-mno-pcrel) \
--		 $(call cc-option,-mno-mma) \
- 		 $(call cc-option,-mno-spe) $(call cc-option,-mspe=no) \
- 		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
- 		 $(LINUXINCLUDE)
-@@ -71,6 +69,10 @@ BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
- 
- BOOTARFLAGS	:= -crD
- 
-+BOOTCFLAGS	+= $(call cc-option,-mno-prefixed) \
-+		   $(call cc-option,-mno-pcrel) \
-+		   $(call cc-option,-mno-mma)
-+
- ifdef CONFIG_CC_IS_CLANG
- BOOTCFLAGS += $(CLANG_FLAGS)
- BOOTAFLAGS += $(CLANG_FLAGS)
+With this commented:
 
----
-base-commit: 169f8997968ab620d750d9a45e15c5288d498356
-change-id: 20230427-remove-power10-args-from-boot-aflags-clang-268c43e8c1fc
+  lib/vsprintf.c: In function =E2=80=98mac_address_string=E2=80=99:
+  lib/vsprintf.c:1310:30: warning: =E2=80=98separator=E2=80=99 may be used =
+uninitialized [-Wmaybe-uninitialized]
+   1310 |                         *p++ =3D separator;
+        |                         ~~~~~^~~~~~~~~~~
+  lib/vsprintf.c:1273:14: note: =E2=80=98separator=E2=80=99 was declared he=
+re
+   1273 |         char separator;
+        |              ^~~~~~~~~
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+Regards,
+Peter
+
+>=20
+>         switch (fmt[1]) {
+>         case 'F':
+>                 separator =3D '-';
+>                 break;
+>=20
+>         case 'R':
+>                 reversed =3D true;
+>                 fallthrough;
+>=20
+>         default:
+>                 separator =3D ':';
+>                 break;
+>         }
+>=20
+> > @@ -1292,9 +1297,14 @@ char *mac_address_string(char *buf, char *end, u=
+8 *addr,
+> > =20
+> >  	for (i =3D 0; i < 6; i++) {
+> >  		if (reversed)
+> > -			p =3D hex_byte_pack(p, addr[5 - i]);
+> > +			pos =3D 5 - i;
+> > +		else
+> > +			pos =3D i;
+> > +
+> > +		if (uppercase)
+> > +			p =3D hex_byte_pack_upper(p, addr[pos]);
+> >  		else
+> > -			p =3D hex_byte_pack(p, addr[i]);
+> > +			p =3D hex_byte_pack(p, addr[pos]); =20
+>=20
+> I think this becomes quite hard to follow. We have string_upper() in
+> linux/string_helpers.h, so I'd rather just leave this loop alone and do
+>=20
+>   if (uppercase)
+>     string_upper(mac_addr, mac_addr);
+>=20
+> after the nul-termination.
+>=20
+> Rasmus
+>=20
 
