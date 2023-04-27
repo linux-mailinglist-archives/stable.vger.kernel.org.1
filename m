@@ -2,129 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A696F0714
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 16:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB266F0749
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 16:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243664AbjD0OP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 10:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35690 "EHLO
+        id S243751AbjD0O0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 10:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243284AbjD0OP5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 10:15:57 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C717E2120;
-        Thu, 27 Apr 2023 07:15:55 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 866531FE3F;
-        Thu, 27 Apr 2023 14:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1682604954; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Il+yD+2lfaLcjR30nIENVgJ22FZJ2MalcSOfRbNauAQ=;
-        b=lUVjqm3Yguq+EVReYw6PKR5y5UazXbk4fNyWxP/8DO1B81BNhuJnCykepn7ZRjNjmnKe00
-        S3+pJDrzmH9//ugqGmT/j5kY8jnNF2nn4W/7SyEZaFr4zTmOPmIa+Bd8ABIVOriR3NPaSU
-        F/3t6lZyZjfX3meojUl5UQ2muc/jb54=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1682604954;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Il+yD+2lfaLcjR30nIENVgJ22FZJ2MalcSOfRbNauAQ=;
-        b=NqcuF5KJZVx5kpXGiXxv5BAd7l20u/IWqEXqhHAM7SMK8f41dygb3hYuElQqbTgH4rfN1t
-        6jnfB6yxorXmgYDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 58ADB13910;
-        Thu, 27 Apr 2023 14:15:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 7YEUFZqDSmR+EwAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Thu, 27 Apr 2023 14:15:54 +0000
-Message-ID: <d193613d-150d-bdaa-da7a-62bc088fae5e@suse.cz>
-Date:   Thu, 27 Apr 2023 16:15:53 +0200
+        with ESMTP id S243662AbjD0O0X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 10:26:23 -0400
+Received: from www484.your-server.de (www484.your-server.de [78.47.237.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518BA83;
+        Thu, 27 Apr 2023 07:26:11 -0700 (PDT)
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www484.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1ps2ZS-0008uX-8N; Thu, 27 Apr 2023 16:26:06 +0200
+Received: from [2003:ca:6730:e8f8:a2c4:4e1c:f83c:db4b]
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1ps2ZR-0009eG-Hz; Thu, 27 Apr 2023 16:26:05 +0200
+Message-ID: <b8ca96d0-d1e3-4f2f-5541-a6c82489243a@gateware.de>
+Date:   Thu, 27 Apr 2023 16:26:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH for v6.3 regression] mm/mremap: fix vm_pgoff in
- vma_merge() case 3
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Felipe Balbi <balbi@ti.com>
+Cc:     stable@vger.kernel.org
+References: <2023042625-rendition-distort-fe06@gregkh>
+ <20230427115120.241954-1-k.graefe@gateware.de>
+ <d1a14976-5f53-3373-0695-e10e6a9371de@rasmusvillemoes.dk>
 Content-Language: en-US
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>, lstoakes@gmail.com,
-        regressions@lists.linux.dev, linux-mm@kvack.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Fabian Vogt <fvogt@suse.com>, stable@vger.kernel.org
-References: <20230427140959.27655-1-vbabka@suse.cz>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230427140959.27655-1-vbabka@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   =?UTF-8?Q?Konrad_Gr=c3=a4fe?= <k.graefe@gateware.de>
+In-Reply-To: <d1a14976-5f53-3373-0695-e10e6a9371de@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: k.graefe@gateware.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26889/Thu Apr 27 09:25:48 2023)
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        NO_DNS_FOR_FROM,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 4/27/23 16:09, Vlastimil Babka wrote:
-> |later. Alternatively it could be added to mm/mm-stable and upcoming 6.4
-> pull request, but then the stable backport would need adjustment. It's up to
-> Linus and Andrew. |
 
-This version applies on mm/mm-stable. Paragraph about case 8 is removed
-as that case sets vma_pgoff explicitly itself.
+On 27.04.23 14:35, Rasmus Villemoes wrote:
+> On 27/04/2023 13.51, Konrad Gräfe wrote:
+>> The CDC-ECM specification requires an USB gadget to send the host MAC
+>> address as uppercase hex string. This change adds the appropriate
+>> modifier.
+>>
+>> Cc: stable@vger.kernel.org
+> 
+> Why cc stable?
 
-----8<----
-From dea6d87bdad1fbb21f987dba96c55195fb88e7b4 Mon Sep 17 00:00:00 2001
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Thu, 27 Apr 2023 15:28:41 +0200
-Subject: [PATCH] mm/mremap: fix vm_pgoff in vma_merge() case 3
+I believe the second patch matches the criteria but it uses this one.
 
-After upgrading build guests to v6.3, rpm started segfaulting for
-specific packages, which was bisected to commit 0503ea8f5ba7 ("mm/mmap:
-remove __vma_adjust()"). rpm is doing many mremap() operations with file
-mappings of its db. The problem is that in vma_merge() case 3 (we merge
-with the next vma, expanding it downwards) vm_pgoff is not adjusted as
-it should when vm_start changes. As a result the rpm process most likely
-sees data from the wrong offset of the file. Fix the vm_pgoff
-calculation.
-
-Reported-and-bisected-by: Jiri Slaby <jirislaby@kernel.org>
-Reported-and-tested-by: Fabian Vogt <fvogt@suse.com>
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1210903
-Fixes: 0503ea8f5ba7 ("mm/mmap: remove __vma_adjust()")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
----
- mm/mmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 536bbb8fa0ae..5522130ae606 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1008,7 +1008,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 			vma = next;			/* case 3 */
- 			vma_start = addr;
- 			vma_end = next->vm_end;
--			vma_pgoff = next->vm_pgoff;
-+			vma_pgoff = next->vm_pgoff - pglen;
- 			if (curr) {			/* case 8 */
- 				vma_pgoff = curr->vm_pgoff;
- 				remove = curr;
--- 
-2.40.0
-
-
+> 
+>> Signed-off-by: Konrad Gräfe <k.graefe@gateware.de>
+>> ---
+>> Added in v3
+>>
+>>   lib/vsprintf.c | 18 +++++++++++++++---
+>>   1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> The diffstat here, or for some other patch in the same series,
+> definitely ought to mention lib/test_printf.c.
+> 
+>> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+>> index be71a03c936a..8aee1caabd9e 100644
+>> --- a/lib/vsprintf.c
+>> +++ b/lib/vsprintf.c
+>> @@ -1269,9 +1269,10 @@ char *mac_address_string(char *buf, char *end, u8 *addr,
+>>   {
+>>   	char mac_addr[sizeof("xx:xx:xx:xx:xx:xx")];
+>>   	char *p = mac_addr;
+>> -	int i;
+>> +	int i, pos;
+>>   	char separator;
+>>   	bool reversed = false;
+>> +	bool uppercase = false;
+>>   
+>>   	if (check_pointer(&buf, end, addr, spec))
+>>   		return buf;
+>> @@ -1281,6 +1282,10 @@ char *mac_address_string(char *buf, char *end, u8 *addr,
+>>   		separator = '-';
+>>   		break;
+>>   
+>> +	case 'U':
+>> +		uppercase = true;
+>> +		break;
+>> +
+>>   	case 'R':
+>>   		reversed = true;
+>>   		fallthrough;
+> 
+> This seems broken, and I'm surprised the compiler doesn't warn about
+> separator possibly being uninitialized further down. I'm also surprised
+> your testing hasn't caught this. For reference, the full switch
+> statement is currently
+> 
+>          switch (fmt[1]) {
+>          case 'F':
+>                  separator = '-';
+>                  break;
+> 
+>          case 'R':
+>                  reversed = true;
+>                  fallthrough;
+> 
+>          default:
+>                  separator = ':';
+>                  break;
+>          }
+> 
+>> @@ -1292,9 +1297,14 @@ char *mac_address_string(char *buf, char *end, u8 *addr,
+>>   
+>>   	for (i = 0; i < 6; i++) {
+>>   		if (reversed)
+>> -			p = hex_byte_pack(p, addr[5 - i]);
+>> +			pos = 5 - i;
+>> +		else
+>> +			pos = i;
+>> +
+>> +		if (uppercase)
+>> +			p = hex_byte_pack_upper(p, addr[pos]);
+>>   		else
+>> -			p = hex_byte_pack(p, addr[i]);
+>> +			p = hex_byte_pack(p, addr[pos]);
+> 
+> I think this becomes quite hard to follow. We have string_upper() in
+> linux/string_helpers.h, so I'd rather just leave this loop alone and do
+> 
+>    if (uppercase)
+>      string_upper(mac_addr, mac_addr);
+> 
+> after the nul-termination.
+> 
+> Rasmus
+> 
