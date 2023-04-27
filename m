@@ -2,53 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B7376EFF08
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 03:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2821F6EFF7B
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 05:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242556AbjD0Bpz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 26 Apr 2023 21:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51670 "EHLO
+        id S242792AbjD0DFc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 26 Apr 2023 23:05:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232094AbjD0Bpy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 26 Apr 2023 21:45:54 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2577A3C2F;
-        Wed, 26 Apr 2023 18:45:52 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id A6A1121A25;
-        Thu, 27 Apr 2023 01:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1682559950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=bAdAj2f7hwBdihybW+C4eNHtleVU3mjSH49OccF/PGU=;
-        b=AhsdGmNop5e1k4EhilVzdSD87fkMUclLAkcZb2hCgH6HgS3VKrbeq5hpqbV6Hwh8Yfafl+
-        +boNuTvRye8JiUKnhVj5CnNbne/DaBQDzlWLpGEn0PAkVGNmnSI5oTNukz1zIBumvXcDMx
-        P5pt4cQBV+kscURhFta9VnLtbUDHvXo=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C3A06138F9;
-        Thu, 27 Apr 2023 01:45:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id V2q3Is3TSWSEGAAAMHmgww
-        (envelope-from <wqu@suse.com>); Thu, 27 Apr 2023 01:45:49 +0000
-From:   Qu Wenruo <wqu@suse.com>
-To:     linux-btrfs@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: [PATCH] btrfs: properly reject clear_cache and v1 cache for block-group-tree
-Date:   Thu, 27 Apr 2023 09:45:32 +0800
-Message-Id: <832315ce8d970a393a2948e4cc21690a1d9e1cac.1682559926.git.wqu@suse.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S233414AbjD0DFb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 26 Apr 2023 23:05:31 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B3635B3;
+        Wed, 26 Apr 2023 20:05:30 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-51b0f9d7d70so7931826a12.1;
+        Wed, 26 Apr 2023 20:05:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682564730; x=1685156730;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ove/sTJ8+x/q60am/+KMhPIYHnt+EFjkrJyhwIn48Nk=;
+        b=raTJxDo6NHuN1i4W6/Vl6x/jV++XY9DomGczVyWxak/EnC5sunEIIoypQnfdLjlp+d
+         5aSIfjwfILrNgKOrVO6x+ouEJdYq/+sH5GFzTf/25xH2Lelrq2ddHWX+tx6Rcvz4oGmR
+         +YU5ahqcI51YXd0SugsrUxSkAyAomhKk748mTe+LgiCxkO0Wvcq/nc5ObiSQDR3eOD6m
+         g3tFs2Sufh+im2umEEC8LqY4IdCRz0H8ZG9QxThAaWZI187ZE08VaxXozT0waT7iRumz
+         ugc61A69a53XjCCVoyQyVXhaxHT82PMp5Lkw/WP72Oc6X/unmUsmI6PcqUxscrEtUUfr
+         FAvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682564730; x=1685156730;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ove/sTJ8+x/q60am/+KMhPIYHnt+EFjkrJyhwIn48Nk=;
+        b=TOZzqypjL8ykUstXct4D3iQuHxPWIQoZlrcAqWQW7k/gZm5mdtdh3kpMkbyI5nMYWy
+         DVI1Vtuw1l7AVRfH4Q3U6YZd2jGa7p3pyY4aljp/vcUvoRS+AvojIAHw7+XWvnu4Je8T
+         cFBd3JYYLTjQNWuHqFrY+AfswXVO9UlkiZfNlj2l/EuewoZShjsCO7MJdURS1pexX0ED
+         J2bqhLbJNYhjxRGgAjzOGw0Lhx2DfVqcvirql0MeU+QZzbbUNQFzDHRIezT1NZqeSDc7
+         /imFMofp/2ZSJ1+SD3HCZWWN5ULWUzorImWG6plTdg/AOTVEsZ56KTkn/O1/OYTnGFk5
+         qWcw==
+X-Gm-Message-State: AC+VfDy+u28AUmCORSShuBIiiRoyakQjNZEIQuEIBs3NX0XhZoZ1G/V9
+        ccYRel9byAGIR5N/ZsWaSb4=
+X-Google-Smtp-Source: ACHHUZ65kwaPer2wxQ9EcrHZ03Fe/dmOpR6twng8E0U+ezwpDAjF7cvN1RVn8B+v26FZAyJlptuKaQ==
+X-Received: by 2002:a17:90b:3585:b0:247:1e13:90ef with SMTP id mm5-20020a17090b358500b002471e1390efmr348505pjb.20.1682564729636;
+        Wed, 26 Apr 2023 20:05:29 -0700 (PDT)
+Received: from bangji.hsd1.ca.comcast.net ([2601:647:6700:7f00:6ebf:37fc:fc60:b353])
+        by smtp.gmail.com with ESMTPSA id f12-20020a170902684c00b001a6d08eb054sm10575168pln.78.2023.04.26.20.05.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Apr 2023 20:05:29 -0700 (PDT)
+Sender: Namhyung Kim <namhyung@gmail.com>
+From:   Namhyung Kim <namhyung@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>,
+        Sandipan Das <sandipan.das@amd.com>, stable@vger.kernel.org
+Subject: [PATCH] perf/x86: Fix missing sample size update on AMD BRS
+Date:   Wed, 26 Apr 2023 20:05:27 -0700
+Message-ID: <20230427030527.580841-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,74 +76,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[BUG]
-With block-group-tree feature enabled, mounting it with clear_cache
-would cause the following transaction abort at mount or remount:
+It missed to convert a PERF_SAMPLE_BRANCH_STACK user to call the new
+perf_sample_save_brstack() helper in order to update the dyn_size.
+This affects AMD Zen3 machines with the branch-brs event.
 
- BTRFS info (device dm-4): force clearing of disk cache
- BTRFS info (device dm-4): using free space tree
- BTRFS info (device dm-4): auto enabling async discard
- BTRFS info (device dm-4): clearing free space tree
- BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE (0x1)
- BTRFS info (device dm-4): clearing compat-ro feature flag for FREE_SPACE_TREE_VALID (0x2)
- BTRFS error (device dm-4): block-group-tree feature requires fres-space-tree and no-holes
- BTRFS error (device dm-4): super block corruption detected before writing it to disk
- BTRFS: error (device dm-4) in write_all_supers:4288: errno=-117 Filesystem corrupted (unexpected superblock corruption detected)
- BTRFS warning (device dm-4: state E): Skipping commit of aborted transaction.
-
-[CAUSE]
-For block-group-tree feature, we have an artificial dependency on
-free-space-tree.
-
-This means if we detects block-group-tree without v2 cache, we consider
-it a corruption and cause the problem.
-
-For clear_cache mount option, it would temporary disable v2 cache, then
-re-enable it.
-
-But unfortunately for that temporary v2 cache disabled status, we refuse
-to write a superblock with bg tree only flag, thus leads to the above
-transaction abortion.
-
-[FIX]
-For now, just reject clear_cache and v1 cache mount option for block
-group tree.
-So now we got a graceful rejection other than a transaction abort:
-
- BTRFS info (device dm-4): force clearing of disk cache
- BTRFS error (device dm-4): cannot disable free space tree with block-group-tree feature
- BTRFS error (device dm-4): open_ctree failed
-
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Fixes: eb55b455ef9c ("perf/core: Add perf_sample_save_brstack() helper")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 ---
-For the proper fix, we need to change the behavior of clear_cache and v1
-cache switch.
+ arch/x86/events/core.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-For pure clear_cache without switch cache version, we should allow
-rebuilding v2 cache without fully disable v2 cache.
----
- fs/btrfs/super.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-index 581845bc206a..eefae0318d4f 100644
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -826,7 +826,12 @@ int btrfs_parse_options(struct btrfs_fs_info *info, char *options,
- 	    !btrfs_test_opt(info, CLEAR_CACHE)) {
- 		btrfs_err(info, "cannot disable free space tree");
- 		ret = -EINVAL;
--
-+	}
-+	if (btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE) &&
-+	    (btrfs_test_opt(info, CLEAR_CACHE) ||
-+	     !btrfs_test_opt(info, FREE_SPACE_TREE))) {
-+		btrfs_err(info, "cannot disable free space tree with block-group-tree feature");
-+		ret = -EINVAL;
- 	}
- 	if (!ret)
- 		ret = btrfs_check_mountopts_zoned(info);
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index d096b04bf80e..9d248703cbdd 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1703,10 +1703,8 @@ int x86_pmu_handle_irq(struct pt_regs *regs)
+ 
+ 		perf_sample_data_init(&data, 0, event->hw.last_period);
+ 
+-		if (has_branch_stack(event)) {
+-			data.br_stack = &cpuc->lbr_stack;
+-			data.sample_flags |= PERF_SAMPLE_BRANCH_STACK;
+-		}
++		if (has_branch_stack(event))
++			perf_sample_save_brstack(&data, event, &cpuc->lbr_stack);
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			x86_pmu_stop(event, 0);
 -- 
-2.39.2
+2.40.1.495.gc816e09b53d-goog
 
