@@ -2,506 +2,202 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EE246F0A16
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 18:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030976F0AB3
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 19:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243932AbjD0QmX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 12:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35716 "EHLO
+        id S243457AbjD0RVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 13:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244042AbjD0QmW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 12:42:22 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ECCA421E
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 09:42:19 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-63b620188aeso10103438b3a.0
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 09:42:19 -0700 (PDT)
+        with ESMTP id S243368AbjD0RVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 13:21:52 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9919DE9
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 10:21:51 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-63b7b54642cso6234382b3a.0
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 10:21:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1682613738; x=1685205738;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jUYTgiohC1NSo3aj/2mccWFzgjg0WZbQfgt3w4HU6w0=;
-        b=y45SqVKqsSUAKybN/jk3FJ+Zp/xTvyjM+XIMKOQY3+5iGOp0AAJkhLkJ4OfH097kO+
-         WkTog2vGRq+pVy7xcG/bhIMVsYBEv5M/p2sNfjBkbXDmskHla+/5EGdpEHJCsPwdspMU
-         bJQS8uiVISuFDR7dhcIcdOqE38ljmSSstbAnUrulcIBGXFC3yF5NTbQNkWHayPc3EoF/
-         po1avwa6NzpCakOQ6YaMjX396DhNZVE/9gPG2TDPeR5cKnSZvl8kgkJRwM59omfievsj
-         g1pdfOAv/BkJG5Xbkt6vhsmnDMn68UDfxUA8/wcBg8UKPHrHD0bSe3A34QtgI7r9tOSf
-         8m3A==
+        d=arista.com; s=google; t=1682616111; x=1685208111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PNtL1ToyaDI49KILneoIml17t1O23zAqm7k615OmH8s=;
+        b=EypZ5APoR9XMiLmVdsSgmTIo1krz2s63NHHb+2JdoeWKmy8NKzNHq+xEcjyw6/7wCC
+         CRn/9cHQEb1ZzEkUQ6MIdZSgSuXwEH4IPNL172raD7ogdGAffM1iyPFEmPnwq8B9aOBj
+         V0WUz+Vxf4tLD47CPZdLOUyByErJVaeSaYL/fVHwiS52+t6VENbDNIx6Ju3G2x9eHkCd
+         ZA23Nes1ntH6miZpUktyde7XNROemSs9yKx5Dd0h3WD93SY11Krfkhi/ZPP+aWIdcbO8
+         ecIljWJzamKikq8iWAufJXjCyitVbFFMI48zws+izarItifLqH8tjB6I/GEYaVV6I9Tv
+         XapA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682613739; x=1685205739;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1682616111; x=1685208111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jUYTgiohC1NSo3aj/2mccWFzgjg0WZbQfgt3w4HU6w0=;
-        b=WUGTmD9OzqwvcgJ85jjr4siX2+o8HxCewIxLeYD9hDSznCsEDeD05Ugber4gkx05Np
-         14W3kuA98Hbg+z2lia9+q0eadXVke4sBdbqhhaRD3C7GBlgsniJPIdkpZB6MQZF6zzOA
-         YJLNSC21aV5/I3Eul18DAcZD48m1jLTPAdRbFGXAYzg2hI880vbSoCNNf5PgDEvB53Q3
-         odbwNfhkmofQGV/LbsDdj7OI0KZMPwKnlvWQGxETj5EqpIAPL88d6kOw+lCnQ3YGGbm4
-         mGtLG9vpgyFC6q3nJEmrlwpEUuSTHvlltDbhi8Cixpe4SATn48zmmNf+gx555h1vfgEG
-         ipxw==
-X-Gm-Message-State: AC+VfDzg4iuRDfpB2M7LZf1S6kFC7V8fWME06AZZJQSO2zeBXH/AseaQ
-        Lr4kHZZf7OgQQM7CAkoto4888T8R/01J+JC2QyM=
-X-Google-Smtp-Source: ACHHUZ6jZTKMsrI6Gt41h3kxtB5B+Hs6Fxg5N3BikxmLvixKw02wKso5vT0hxQKcZNjSGNilJwKuTg==
-X-Received: by 2002:a05:6a21:3387:b0:ef:a31b:af8b with SMTP id yy7-20020a056a21338700b000efa31baf8bmr2861975pzb.24.1682613738518;
-        Thu, 27 Apr 2023 09:42:18 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id q10-20020a63d60a000000b0051eff0a70d7sm11361757pgg.94.2023.04.27.09.42.17
+        bh=PNtL1ToyaDI49KILneoIml17t1O23zAqm7k615OmH8s=;
+        b=LgLFMiOiStEUiLUzlBE1Z7c3xIaMvvWVVvc9AoFlftLouYCk3n8qppO0ppiKdPq9yr
+         cReZ0v8NbSXIzoPisEjouSCYnjFM6k/Er+dwCYq8CRnBGkzA4aQeUe6vPekue8xR37Y/
+         F4ruhFriuvzOtLYSTI+8nGbaRkGW1PtT69+gefV5fRTX5E5Dd4Mk3T0eBYI0lXjbHZ2n
+         gqUNKGW6F+JQH+h5EpT7Olr4PcbavtESpWWut9M2pZbfOBIETRdEnTz8W1g0StahtKgq
+         VWCGpDxNxj1JY99gTeuWI75iUzxJnX1wNvYhXtXGWFCAbjA4/KTKGOrFkH8iqOSpGqoH
+         tkPQ==
+X-Gm-Message-State: AC+VfDyMjknUcFew2l4z1o9+45RLvSQvwNN88DXOYQN+D5btddd15nQ4
+        2gTFpJc39fs4yWxj2ltYZOjRb6beiBO5ZFVWK+Deo27H
+X-Google-Smtp-Source: ACHHUZ4KeeACGoIbUAVTXrFepdSEFNiZsiSKQTqi0VOiieCL8Lb13DFQfZ1LiYB8kF4DFNJcTDpqNw==
+X-Received: by 2002:a05:6a00:181e:b0:624:7c9a:c832 with SMTP id y30-20020a056a00181e00b006247c9ac832mr3832092pfa.8.1682616110582;
+        Thu, 27 Apr 2023 10:21:50 -0700 (PDT)
+Received: from localhost.localdomain (2603-8081-76f0-8ce0-7554-9eea-496e-b331.res6.spectrum.com. [2603:8081:76f0:8ce0:7554:9eea:496e:b331])
+        by smtp.gmail.com with ESMTPSA id y136-20020a62ce8e000000b0063d63d48215sm13438810pfg.3.2023.04.27.10.21.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 09:42:17 -0700 (PDT)
-Message-ID: <644aa5e9.630a0220.eeea6.71f4@mx.google.com>
-Date:   Thu, 27 Apr 2023 09:42:17 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 27 Apr 2023 10:21:50 -0700 (PDT)
+From:   Can Sun <cansun@arista.com>
+To:     stable@vger.kernel.org
+Cc:     Filipe Manana <fdmanana@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>, Can Sun <cansun@arista.com>
+Subject: [BACKPORT PATCH 5.10.y] x86/fpu: Prevent FPU state corruption
+Date:   Thu, 27 Apr 2023 12:21:34 -0500
+Message-Id: <20230427172134.75628-1-cansun@arista.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.176-369-g3210d913e968
-X-Kernelci-Report-Type: test
-Subject: stable-rc/queue/5.10 baseline: 123 runs,
- 7 regressions (v5.10.176-369-g3210d913e968)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/5.10 baseline: 123 runs, 7 regressions (v5.10.176-369-g3210=
-d913e968)
-
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-imx6q-var-dt6customboard     | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-stm32mp157c-dk2              | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.10/ker=
-nel/v5.10.176-369-g3210d913e968/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.10
-  Describe: v5.10.176-369-g3210d913e968
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      3210d913e9686b72ad439260108c5456c244a9fb =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a6eea27f8753a7f2e8622
-
-  Results:     51 PASS, 4 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a6eea27f8753a7f2e8657
-        failing since 72 days (last pass: v5.10.167-127-g921934d621e4, firs=
-t fail: v5.10.167-139-gf9519a5a1701)
-
-    2023-04-27T12:47:23.495085  <8>[   19.931286] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 394081_1.5.2.4.1>
-    2023-04-27T12:47:23.605996  / # #
-    2023-04-27T12:47:23.708748  export SHELL=3D/bin/sh
-    2023-04-27T12:47:23.709236  #
-    2023-04-27T12:47:23.810709  / # export SHELL=3D/bin/sh. /lava-394081/en=
-vironment
-    2023-04-27T12:47:23.811187  =
-
-    2023-04-27T12:47:23.913013  / # . /lava-394081/environment/lava-394081/=
-bin/lava-test-runner /lava-394081/1
-    2023-04-27T12:47:23.914553  =
-
-    2023-04-27T12:47:23.917476  / # /lava-394081/bin/lava-test-runner /lava=
--394081/1
-    2023-04-27T12:47:24.024407  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a6df067485338692e85e9
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cubi=
-etruck.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cubi=
-etruck.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a6df067485338692e85ee
-        failing since 91 days (last pass: v5.10.165-76-g5c2e982fcf18, first=
- fail: v5.10.165-77-g4600242c13ed)
-
-    2023-04-27T12:43:13.215189  <8>[   11.014282] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3537303_1.5.2.4.1>
-    2023-04-27T12:43:13.327056  / # #
-    2023-04-27T12:43:13.430647  export SHELL=3D/bin/sh
-    2023-04-27T12:43:13.431741  #
-    2023-04-27T12:43:13.534089  / # export SHELL=3D/bin/sh. /lava-3537303/e=
-nvironment
-    2023-04-27T12:43:13.535474  =
-
-    2023-04-27T12:43:13.638139  / # . /lava-3537303/environment/lava-353730=
-3/bin/lava-test-runner /lava-3537303/1
-    2023-04-27T12:43:13.639917  =
-
-    2023-04-27T12:43:13.640375  / # <3>[   11.370877] Bluetooth: hci0: comm=
-and 0x0c03 tx timeout
-    2023-04-27T12:43:13.644613  /lava-3537303/bin/lava-test-runner /lava-35=
-37303/1 =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a6d853d5a5aa83a2e8604
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a6d853d5a5aa83a2e8609
-        failing since 28 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-04-27T12:41:14.970563  + set +x
-
-    2023-04-27T12:41:14.977082  <8>[   10.674371] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10142458_1.4.2.3.1>
-
-    2023-04-27T12:41:15.081553  / # #
-
-    2023-04-27T12:41:15.182148  export SHELL=3D/bin/sh
-
-    2023-04-27T12:41:15.182323  #
-
-    2023-04-27T12:41:15.282861  / # export SHELL=3D/bin/sh. /lava-10142458/=
-environment
-
-    2023-04-27T12:41:15.283077  =
-
-
-    2023-04-27T12:41:15.383632  / # . /lava-10142458/environment/lava-10142=
-458/bin/lava-test-runner /lava-10142458/1
-
-    2023-04-27T12:41:15.383968  =
-
-
-    2023-04-27T12:41:15.388164  / # /lava-10142458/bin/lava-test-runner /la=
-va-10142458/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a6d5f64b2d3bb902e8622
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a6d5f64b2d3bb902e8627
-        failing since 28 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-04-27T12:40:53.268178  <8>[   12.347244] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10142457_1.4.2.3.1>
-
-    2023-04-27T12:40:53.271549  + set +x
-
-    2023-04-27T12:40:53.375742  / # #
-
-    2023-04-27T12:40:53.476463  export SHELL=3D/bin/sh
-
-    2023-04-27T12:40:53.476638  #
-
-    2023-04-27T12:40:53.577148  / # export SHELL=3D/bin/sh. /lava-10142457/=
-environment
-
-    2023-04-27T12:40:53.577326  =
-
-
-    2023-04-27T12:40:53.677857  / # . /lava-10142457/environment/lava-10142=
-457/bin/lava-test-runner /lava-10142457/1
-
-    2023-04-27T12:40:53.678162  =
-
-
-    2023-04-27T12:40:53.683592  / # /lava-10142457/bin/lava-test-runner /la=
-va-10142457/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-imx6q-var-dt6customboard     | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a6d73141d89849d2e85f6
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-imx6=
-q-var-dt6customboard.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-imx6=
-q-var-dt6customboard.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a6d73141d89849d2e85fb
-        new failure (last pass: v5.10.149-456-g9acbbc5f6af9)
-
-    2023-04-27T12:40:56.120394  / # #
-    2023-04-27T12:40:56.222295  export SHELL=3D/bin/sh
-    2023-04-27T12:40:56.222810  #
-    2023-04-27T12:40:56.324196  / # export SHELL=3D/bin/sh. /lava-3537301/e=
-nvironment
-    2023-04-27T12:40:56.324732  =
-
-    2023-04-27T12:40:56.426085  / # . /lava-3537301/environment/lava-353730=
-1/bin/lava-test-runner /lava-3537301/1
-    2023-04-27T12:40:56.426774  =
-
-    2023-04-27T12:40:56.432515  / # /lava-3537301/bin/lava-test-runner /lav=
-a-3537301/1
-    2023-04-27T12:40:56.522417  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-04-27T12:40:56.522786  + cd /lava-3537301/1/tests/1_bootrr =
-
-    ... (17 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-stm32mp157c-dk2              | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a6d5d64b2d3bb902e8614
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-stm3=
-2mp157c-dk2.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-stm3=
-2mp157c-dk2.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a6d5d64b2d3bb902e8619
-        failing since 84 days (last pass: v5.10.147-29-g9a9285d3dc114, firs=
-t fail: v5.10.165-149-ge30e8271d674)
-
-    2023-04-27T12:40:42.060328  <8>[   11.668617] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3537293_1.5.2.4.1>
-    2023-04-27T12:40:42.167334  / # #
-    2023-04-27T12:40:42.269117  export SHELL=3D/bin/sh
-    2023-04-27T12:40:42.269555  #
-    2023-04-27T12:40:42.370896  / # export SHELL=3D/bin/sh. /lava-3537293/e=
-nvironment
-    2023-04-27T12:40:42.371373  =
-
-    2023-04-27T12:40:42.472737  / # . /lava-3537293/environment/lava-353729=
-3/bin/lava-test-runner /lava-3537293/1
-    2023-04-27T12:40:42.473493  =
-
-    2023-04-27T12:40:42.477455  / # /lava-3537293/bin/lava-test-runner /lav=
-a-3537293/1
-    2023-04-27T12:40:42.543355  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644a730b85cd66c11b2e8621
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-sun8=
-i-h3-libretech-all-h3-cc.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--369-g3210d913e968/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-sun8=
-i-h3-libretech-all-h3-cc.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644a730b85cd66c11b2e8626
-        failing since 84 days (last pass: v5.10.165-139-gefb57ce0f880, firs=
-t fail: v5.10.165-149-ge30e8271d674)
-
-    2023-04-27T13:04:54.622356  / # #
-    2023-04-27T13:04:54.724067  export SHELL=3D/bin/sh
-    2023-04-27T13:04:54.724426  #
-    2023-04-27T13:04:54.825832  / # export SHELL=3D/bin/sh. /lava-3537292/e=
-nvironment
-    2023-04-27T13:04:54.826385  =
-
-    2023-04-27T13:04:54.927818  / # . /lava-3537292/environment/lava-353729=
-2/bin/lava-test-runner /lava-3537292/1
-    2023-04-27T13:04:54.928602  =
-
-    2023-04-27T13:04:54.933741  / # /lava-3537292/bin/lava-test-runner /lav=
-a-3537292/1
-    2023-04-27T13:04:54.997873  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-04-27T13:04:55.032558  + cd /lava-3537292/1/tests/1_bootrr =
-
-    ... (10 line(s) more)  =
-
- =20
+[ Upstream commit 59f5ede3bc0f00eb856425f636dab0c10feb06d8 ]
+
+The FPU usage related to task FPU management is either protected by
+disabling interrupts (switch_to, return to user) or via fpregs_lock() which
+is a wrapper around local_bh_disable(). When kernel code wants to use the
+FPU then it has to check whether it is possible by calling irq_fpu_usable().
+
+But the condition in irq_fpu_usable() is wrong. It allows FPU to be used
+when:
+
+   !in_interrupt() || interrupted_user_mode() || interrupted_kernel_fpu_idle()
+
+The latter is checking whether some other context already uses FPU in the
+kernel, but if that's not the case then it allows FPU to be used
+unconditionally even if the calling context interrupted a fpregs_lock()
+critical region. If that happens then the FPU state of the interrupted
+context becomes corrupted.
+
+Allow in kernel FPU usage only when no other context has in kernel FPU
+usage and either the calling context is not hard interrupt context or the
+hard interrupt did not interrupt a local bottomhalf disabled region.
+
+It's hard to find a proper Fixes tag as the condition was broken in one way
+or the other for a very long time and the eager/lazy FPU changes caused a
+lot of churn. Picked something remotely connected from the history.
+
+This survived undetected for quite some time as FPU usage in interrupt
+context is rare, but the recent changes to the random code unearthed it at
+least on a kernel which had FPU debugging enabled. There is probably a
+higher rate of silent corruption as not all issues can be detected by the
+FPU debugging code. This will be addressed in a subsequent change.
+
+Fixes: 5d2bd7009f30 ("x86, fpu: decouple non-lazy/eager fpu restore from xsave")
+Reported-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Can Sun <cansun@arista.com>
+Link: https://lore.kernel.org/r/20220501193102.588689270@linutronix.de
+
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 571220ac8bea..835b948095cd 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -25,17 +25,7 @@
+  */
+ union fpregs_state init_fpstate __read_mostly;
+ 
+-/*
+- * Track whether the kernel is using the FPU state
+- * currently.
+- *
+- * This flag is used:
+- *
+- *   - by IRQ context code to potentially use the FPU
+- *     if it's unused.
+- *
+- *   - to debug kernel_fpu_begin()/end() correctness
+- */
++/* Track in-kernel FPU usage */
+ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+ 
+ /*
+@@ -43,42 +33,37 @@ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+  */
+ DEFINE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
+ 
+-static bool kernel_fpu_disabled(void)
+-{
+-	return this_cpu_read(in_kernel_fpu);
+-}
+-
+-static bool interrupted_kernel_fpu_idle(void)
+-{
+-	return !kernel_fpu_disabled();
+-}
+-
+-/*
+- * Were we in user mode (or vm86 mode) when we were
+- * interrupted?
+- *
+- * Doing kernel_fpu_begin/end() is ok if we are running
+- * in an interrupt context from user mode - we'll just
+- * save the FPU state as required.
+- */
+-static bool interrupted_user_mode(void)
+-{
+-	struct pt_regs *regs = get_irq_regs();
+-	return regs && user_mode(regs);
+-}
+-
+ /*
+  * Can we use the FPU in kernel mode with the
+  * whole "kernel_fpu_begin/end()" sequence?
+- *
+- * It's always ok in process context (ie "not interrupt")
+- * but it is sometimes ok even from an irq.
+  */
+ bool irq_fpu_usable(void)
+ {
+-	return !in_interrupt() ||
+-		interrupted_user_mode() ||
+-		interrupted_kernel_fpu_idle();
++	if (WARN_ON_ONCE(in_nmi()))
++		return false;
++
++	/* In kernel FPU usage already active? */
++	if (this_cpu_read(in_kernel_fpu))
++		return false;
++
++	/*
++	 * When not in NMI or hard interrupt context, FPU can be used in:
++	 *
++	 * - Task context except from within fpregs_lock()'ed critical
++	 *   regions.
++	 *
++	 * - Soft interrupt processing context which cannot happen
++	 *   while in a fpregs_lock()'ed critical region.
++	 */
++	if (!in_irq())
++		return true;
++
++	/*
++	 * In hard interrupt context it's safe when soft interrupts
++	 * are enabled, which means the interrupt did not hit in
++	 * a fpregs_lock()'ed critical region.
++	 */
++	return !softirq_count();
+ }
+ EXPORT_SYMBOL(irq_fpu_usable);
+ 
