@@ -2,141 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7DCF6F0872
-	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 17:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4D416F08C5
+	for <lists+stable@lfdr.de>; Thu, 27 Apr 2023 17:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243876AbjD0Pfv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 11:35:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56612 "EHLO
+        id S243525AbjD0Pwb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 27 Apr 2023 11:52:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232630AbjD0Pfu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 11:35:50 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F123BFF;
-        Thu, 27 Apr 2023 08:35:48 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-b99f374179bso5432256276.3;
-        Thu, 27 Apr 2023 08:35:48 -0700 (PDT)
+        with ESMTP id S244064AbjD0Pwb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 11:52:31 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3AA40CF
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 08:52:27 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-63b5c48ea09so7038859b3a.1
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 08:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682609748; x=1685201748;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PsZyi0a0Qyzd4XEPp5AQRM/aaSWc36m3XhoaZ/NYbBo=;
-        b=dydtZn8dDiSwkv+/AK1cPkzFY7whtzPac7kF5OSf2RNdj+p5ORD4Vo8beDMBEPtaBm
-         6VnuDrLefwunnYWyrvpHkeSMBfOPMnvj3tctgGiGQli+JA3sp/bysou8mNlRvQIsVjP5
-         n/TGQ99mmdKg5axbl3+FgKW8RkYXYDs9ru/U1Urh9k9pfkbUz1+Nmo3T60afTcCqAjB5
-         Oa92XsZBy4ZjP2+ryTNrSMsBKQw2STWe6lVkd/XCJeU/TH0KwjhO20t9B+/JrDPiWj+p
-         fTYZekcdY5jNH8BnSrjZ9t4DQX9eEuwax5iPeXAiZfagK2922HXzwh0T6cMrktk4D9Qx
-         0OzQ==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1682610747; x=1685202747;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YcufeqbvquNFCxvr1S7CFFCsXy9oGB7399l92dVhjbk=;
+        b=q/jrLfvsm8PTcz+12bAPIMVfz+DLUoRf7QYBm/JLECevS0ovap02JYKsvefKc23dXc
+         0UEB9PMzLurOUIP+MQUsTmuJv7mpoDges4q2J+1JLApgma77okiCgYk/1LyRP5QGmvQf
+         RUyL1wBuoRGT1zqQ3mdqMCEJsVbENhejLaPl0iBjMX/OAnO02Qh2eJrSgL6zpv9FbCrc
+         5gLOB88x5D+qgCFNX3+fRTW9PWMMcZWeFBKWuKvyO84ThaK9zQuXfexRxDnfiME0cWdy
+         BFxdatrzmhL9ev5MHEEASO/dSVZoUFPMVH3gKz/qd5OT0SS7BJJJQ8ZaiZ9EBpX/eE0R
+         7YUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682609748; x=1685201748;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PsZyi0a0Qyzd4XEPp5AQRM/aaSWc36m3XhoaZ/NYbBo=;
-        b=iuhJqJGLkIieF2G2znFonRMoyY+Vr/jo/E5cYbvveldAF46WafsFc6eQUZ8dQuHHy6
-         RVARLQKdpQqlW/P2Ts3m/tLLFy6LzsMkNQ70cNP9rSJ2atb+ZEMXaMHw6ZFB3iEmS3fW
-         V48bGLMHGVS7EbAvfTnQXMFnXSFoE/r6lsvZ19k9jigVVGuOwzJFrJDWytZFFYquk/sq
-         5cXG1qLEUqyZnzhiKO+Ur24BNKw92CJVPEeXbatvArcJJMM5rfP0ZsPy0Pv32hKcCAdt
-         MrZBM1Ng2vfqCmHyujT8RLBO6dp0RquHF8ZIfGt9H544n6Pmrwap5YkMahJ7RKJ5YsKc
-         8zuw==
-X-Gm-Message-State: AC+VfDzhigmVOmUvvYRFUPOlkndEZMt0KoKanLvrPS2RMB6k6tTu68oH
-        LYZOoj6j/ZAryTxU66zzY38dsM5gCecjfb8rPg58hZOnEbxA6w==
-X-Google-Smtp-Source: ACHHUZ7HlMu1I4+r3L/J09BkBgctpOSx5nEnN0PSN7OjMbq/Qf+tQ8g/Sgo59BnZoxyvqWaf0MhbUQoIxzP0CTbnSH8=
-X-Received: by 2002:a25:24c4:0:b0:b99:15c0:770b with SMTP id
- k187-20020a2524c4000000b00b9915c0770bmr1334413ybk.38.1682609748005; Thu, 27
- Apr 2023 08:35:48 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682610747; x=1685202747;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YcufeqbvquNFCxvr1S7CFFCsXy9oGB7399l92dVhjbk=;
+        b=Yn0ldEID6UG6bpyK9LjovKVZ9Eeltfx2ieHK7EUQLB1lHcQ+bSgIBt3IsOm7gqO0HM
+         O6qAGyrThMuNMlgeyxkp8S6rZid/3MaIVsdU61hNTmaprtP2O/9ORDDlnA1cmrjCBKvy
+         EBwOYD+POt99STMPu/vurnT+DHSd1pr3FuROvqEHBeVGO736PDD9bHpT4/S3tW3yMqN6
+         YoMEtU9Ry6F40co0hgmaCDXZy37bp2knJYxJoCCGzJ50g0qVJFt04h5FKBPvpyP2pOrC
+         pY5krAxFu0p4byLGO+JnTzl7iEtppNtKbjkzH3Hl0RFvoT1rwqnHum9+1TyxyERnc9h6
+         lHpQ==
+X-Gm-Message-State: AC+VfDwHbEOKIYAYqTxwXirJZ6PVsBNJbYAMaQMbvZADxnuMKUqdCnqz
+        wrRgO5gYf+U/lyn6b57Kc90X4N1Omdg36zQxuSE=
+X-Google-Smtp-Source: ACHHUZ7uEYaBIIYPm9al8m4LAcxopEXnfgjM4Nj/otD6UZYtcvH+L7Qj2M2eZyeVmkAoabVTzsCs+g==
+X-Received: by 2002:a05:6a00:2da2:b0:63d:4920:c101 with SMTP id fb34-20020a056a002da200b0063d4920c101mr2518333pfb.30.1682610746834;
+        Thu, 27 Apr 2023 08:52:26 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id d17-20020aa78691000000b0063f0c9eadc7sm12719449pfo.200.2023.04.27.08.52.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Apr 2023 08:52:26 -0700 (PDT)
+Message-ID: <644a9a3a.a70a0220.53690.a74c@mx.google.com>
+Date:   Thu, 27 Apr 2023 08:52:26 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <CAK4BXn0ngZRmzx1bodAF8nmYj0PWdUXzPGHofRrsyZj8MBpcVA@mail.gmail.com>
- <2023041711-overcoat-fantastic-c817@gregkh> <CAK4BXn30dd3oCwcF2yVb5nNnjR21=8J2_po-gSUuArd5y=f9Ww@mail.gmail.com>
- <CAJZ5v0g+PAOZs47LCrxRswZoCmHbGfBg3_cr13Y8zWPXDjgm3A@mail.gmail.com> <a3b89478-2d37-1b25-94e0-0e12396f6fd4@redhat.com>
-In-Reply-To: <a3b89478-2d37-1b25-94e0-0e12396f6fd4@redhat.com>
-From:   =?UTF-8?B?0KDRg9GB0LXQsiDQn9GD0YLQuNC9?= 
-        <rockeraliexpress@gmail.com>
-Date:   Thu, 27 Apr 2023 21:05:37 +0530
-Message-ID: <CAK4BXn37Ns8Z8g4ysKoOZJaVa8K+mFQm5PupAanQwmz07ygW9A@mail.gmail.com>
-Subject: Re: REGRESSION: ThinkPad W530 dim backlight with recent changes
- introduced in Linux 6.1.24
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.14.311-136-ga32a901a6dcd
+X-Kernelci-Report-Type: test
+Subject: stable-rc/queue/4.14 baseline: 98 runs,
+ 1 regressions (v4.14.311-136-ga32a901a6dcd)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> This patch should not change the maximum brightness. But you may need
-to adjust the brightness once after changing to a new kernel with
-the patch because the range / brightness-curve may be different.
+stable-rc/queue/4.14 baseline: 98 runs, 1 regressions (v4.14.311-136-ga32a9=
+01a6dcd)
 
-This patch does change the display brightness curve but it is very
-buggy and does not change the brightness as soon as set. There is a
-very significant delay in brightness transition on the laptop due to
-this patch. Also it is worth mentioning that this patch also messes up
-color contrast of the display causing significantly deeper blacks on
-the display.
+Regressions Summary
+-------------------
 
-> I would expect you to be able to get back your old brightness level
-then and this should persist over reboots after you have adjusted
-it once.
->what happens if you use e.g. Fn + F9 to increase the brightness
+platform         | arch | lab          | compiler | defconfig          | re=
+gressions
+-----------------+------+--------------+----------+--------------------+---=
+---------
+meson8b-odroidc1 | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1 =
+         =
 
-Here are the attached pictures explaining the situation.
-100% brightness on Kernel 6.3-rc7 - https://i.imgur.com/eQK890s.jpg
-100% brightness on Kernel 6.1.22 - https://i.imgur.com/1rgNtxJ.jpg
 
-Thanks.
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F4.14/ker=
+nel/v4.14.311-136-ga32a901a6dcd/plan/baseline/
 
-On Fri, Apr 21, 2023 at 12:05=E2=80=AFAM Hans de Goede <hdegoede@redhat.com=
-> wrote:
->
-> Hi =D0=A0=D1=83=D1=81=D0=B5=D0=B2 =D0=9F=D1=83=D1=82=D0=B8=D0=BD,
->
-> On 4/20/23 19:02, Rafael J. Wysocki wrote:
-> > CC: Hans
-> >
-> > On Thu, Apr 20, 2023 at 6:38=E2=80=AFPM =D0=A0=D1=83=D1=81=D0=B5=D0=B2 =
-=D0=9F=D1=83=D1=82=D0=B8=D0=BD <rockeraliexpress@gmail.com> wrote:
-> >>
-> >>> Any reason why you didn't cc: the developers of that commit?
-> >> Sorry I did not realise I should have done that.
-> >>
-> >>> Do you also have this issue on the latest 6.3-rc release?
-> >> Yes I have tested it recently by installing the latest 6.3-rc7 kernel
-> >> , and I do encounter the same issue there. I have linked the
-> >> screenshots below referring the same.
-> >> Kernel 6.3.0-rc7 with 43% brightness - https://i.imgur.com/5LqsEJb.jpg
-> >>
-> >>> That's what this commit does, right?
-> >> According to the commit , it was pushed to fix backlight controls
-> >> which were broken on Lenovo Thinkpad W530 while using NVIDIA. It was
-> >> not intended to reduce the backlight intensity on W530. Backlight is
-> >> dimmer than before even when using the laptop in Intel iGPU mode.
->
-> This patch should not change the maximum brightness. But you may need
-> to adjust the brightness once after changing to a new kernel with
-> the patch because the range / brightness-curve may be different.
->
-> On the imgur URL your display brightness shows as being at 43%,
-> what happens if you use e.g. Fn + F9 to increase the brightness ?
->
-> I would expect you to be able to get back your old brightness level
-> then and this should persist over reboots after you have adjusted
-> it once.
->
-> If adjusting it does not help / work then we will need to revert
-> the patch causing this.
->
-> Regards,
->
-> Hans
->
->
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/4.14
+  Describe: v4.14.311-136-ga32a901a6dcd
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      a32a901a6dcd252af0b10c6cf332014ed758fd7e =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform         | arch | lab          | compiler | defconfig          | re=
+gressions
+-----------------+------+--------------+----------+--------------------+---=
+---------
+meson8b-odroidc1 | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1 =
+         =
+
+
+  Details:     https://kernelci.org/test/plan/id/644a7745eb12ff91b12e85f3
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: multi_v7_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-4.14/v4.14.311=
+-136-ga32a901a6dcd/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-meso=
+n8b-odroidc1.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-4.14/v4.14.311=
+-136-ga32a901a6dcd/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-meso=
+n8b-odroidc1.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230414.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/644a7745eb12ff91b12e8=
+5f4
+        failing since 438 days (last pass: v4.14.266-18-g18b83990eba9, firs=
+t fail: v4.14.266-28-g7d44cfe0255d) =
+
+ =20
