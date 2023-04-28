@@ -2,47 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 767536F16A9
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 335096F16BE
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230262AbjD1L3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:29:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56392 "EHLO
+        id S1345752AbjD1LaI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:30:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345515AbjD1L3P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:15 -0400
+        with ESMTP id S1345844AbjD1LaG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:30:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ECA755A1
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33EB59F7;
+        Fri, 28 Apr 2023 04:30:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A7E76412D
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279D1C433EF;
-        Fri, 28 Apr 2023 11:29:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BCA664301;
+        Fri, 28 Apr 2023 11:30:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B37BC433D2;
+        Fri, 28 Apr 2023 11:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681353;
-        bh=hvxjM5f5q1niMWOteYyz2Zsd9iMhBDHR9DuvG+0DBkw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zDQkMJmSMo+rlAbPPm7pifMiXrX0NHV+dg4eoUWNr4GFL/Bc5Hi+vxyv44efZfGew
-         aSkM/X7u7lDM8Iihw6kIHFz8fRpftg8fRpdGRmj21r6s3eK/RTl55hQAW+LJkisSTf
-         VdEZklF0eZAL5P4/VkqvuN/tYpJpWDOeuKf/S76E=
+        s=korg; t=1682681403;
+        bh=hi6LvnQT2lEUem2/Uqw8NbA5f523DEKv1R81iVhRCmc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=r5v+LdmDlcpEGI+03BTBmc4awicoKoSSNFqc3+8KJ3LuprUXovxnWS6i+dEalCj9D
+         0dUevmqPfsrtMyGXUU+LhSqxUkHnzjc4pVCy80keHGhKiz1te/dp2J1Jx5NOWev90/
+         4L2cudA/liE5uE5W4SViH7oD9SpfmseH2Rcf1+b0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, k2ci <kernel-bot@kylinos.cn>,
-        Genjian Zhang <zhanggenjian@kylinos.cn>,
-        David Sterba <dsterba@suse.com>,
-        Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Subject: [PATCH 6.1 11/16] btrfs: fix uninitialized variable warnings
-Date:   Fri, 28 Apr 2023 13:28:03 +0200
-Message-Id: <20230428112040.427041572@linuxfoundation.org>
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: [PATCH 5.15 00/13] 5.15.110-rc1 review
+Date:   Fri, 28 Apr 2023 13:28:04 +0200
+Message-Id: <20230428112039.133978540@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
-References: <20230428112040.063291126@linuxfoundation.org>
-User-Agent: quilt/0.67
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.110-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.15.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.15.110-rc1
+X-KernelTest-Deadline: 2023-04-30T11:20+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -55,61 +63,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Genjian Zhang <zhanggenjian@kylinos.cn>
+This is the start of the stable review cycle for the 5.15.110 release.
+There are 13 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-commit 8ba7d5f5ba931be68a94b8c91bcced1622934e7a upstream.
+Responses should be made by Sun, 30 Apr 2023 11:20:30 +0000.
+Anything received after that time might be too late.
 
-There are some warnings on older compilers (gcc 10, 7) or non-x86_64
-architectures (aarch64).  As btrfs wants to enable -Wmaybe-uninitialized
-by default, fix the warnings even though it's not necessary on recent
-compilers (gcc 12+).
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.110-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+and the diffstat can be found below.
 
-../fs/btrfs/volumes.c: In function ‘btrfs_init_new_device’:
-../fs/btrfs/volumes.c:2703:3: error: ‘seed_devices’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
- 2703 |   btrfs_setup_sprout(fs_info, seed_devices);
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+thanks,
 
-../fs/btrfs/send.c: In function ‘get_cur_inode_state’:
-../include/linux/compiler.h:70:32: error: ‘right_gen’ may be used uninitialized in this function [-Werror=maybe-uninitialized]
-   70 |   (__if_trace.miss_hit[1]++,1) :  \
-      |                                ^
-../fs/btrfs/send.c:1878:6: note: ‘right_gen’ was declared here
- 1878 |  u64 right_gen;
-      |      ^~~~~~~~~
+greg k-h
 
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ update changelog ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-Cc: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/btrfs/send.c    |    2 +-
- fs/btrfs/volumes.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -1658,7 +1658,7 @@ static int get_cur_inode_state(struct se
- 	int left_ret;
- 	int right_ret;
- 	u64 left_gen;
--	u64 right_gen;
-+	u64 right_gen = 0;
- 	struct btrfs_inode_info info;
- 
- 	ret = get_inode_info(sctx->send_root, ino, &info);
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2631,7 +2631,7 @@ int btrfs_init_new_device(struct btrfs_f
- 	struct super_block *sb = fs_info->sb;
- 	struct rcu_string *name;
- 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
--	struct btrfs_fs_devices *seed_devices;
-+	struct btrfs_fs_devices *seed_devices = NULL;
- 	u64 orig_super_total_bytes;
- 	u64 orig_super_num_devices;
- 	int ret = 0;
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.15.110-rc1
+
+Alexandre Ghiti <alexghiti@rivosinc.com>
+    riscv: No need to relocate the dtb as it lies in the fixmap region
+
+Alexandre Ghiti <alexghiti@rivosinc.com>
+    riscv: Do not set initial_boot_params to the linear address of the dtb
+
+Alexandre Ghiti <alexghiti@rivosinc.com>
+    riscv: Move early dtb mapping into the fixmap region
+
+Matthieu Baerts <matthieu.baerts@tessares.net>
+    selftests: mptcp: join: fix "invalid address, ADD_ADDR timeout"
+
+Stephen Boyd <swboyd@chromium.org>
+    driver core: Don't require dynamic_debug for initcall_debug probe timing
+
+Arınç ÜNAL <arinc.unal@arinc9.com>
+    USB: serial: option: add UNISOC vendor and TOZED LT70C product
+
+Ruihan Li <lrh2000@pku.edu.cn>
+    bluetooth: Perform careful capability checks in hci_sock_ioctl()
+
+Daniel Vetter <daniel.vetter@ffwll.ch>
+    drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
+
+Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+    wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    KVM: arm64: Fix buffer overflow in kvm_arm_set_fw_reg()
+
+David Matlack <dmatlack@google.com>
+    KVM: arm64: Retry fault if vma_lookup() results become invalid
+
+SeongJae Park <sjpark@amazon.de>
+    selftests/kselftest/runner/run_one(): allow running non-executable files
+
+Kai-Heng Feng <kai.heng.feng@canonical.com>
+    PCI/ASPM: Remove pcie_aspm_pm_state_change()
+
+
+-------------
+
+Diffstat:
+
+ Documentation/riscv/vm-layout.rst                  |  2 +-
+ Makefile                                           |  4 +-
+ arch/arm64/kvm/mmu.c                               | 47 +++++++--------
+ arch/arm64/kvm/psci.c                              |  2 +
+ arch/riscv/include/asm/fixmap.h                    |  8 +++
+ arch/riscv/include/asm/pgtable.h                   |  8 ++-
+ arch/riscv/kernel/setup.c                          |  6 +-
+ arch/riscv/mm/init.c                               | 68 ++++++++++++----------
+ drivers/base/dd.c                                  |  7 ++-
+ drivers/gpu/drm/drm_fb_helper.c                    |  3 +
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |  5 ++
+ drivers/pci/pci.c                                  |  3 -
+ drivers/pci/pci.h                                  |  2 -
+ drivers/pci/pcie/aspm.c                            | 19 ------
+ drivers/usb/serial/option.c                        |  6 ++
+ net/bluetooth/hci_sock.c                           |  9 ++-
+ tools/testing/selftests/kselftest/runner.sh        | 28 +++++----
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    |  2 +-
+ 18 files changed, 124 insertions(+), 105 deletions(-)
 
 
