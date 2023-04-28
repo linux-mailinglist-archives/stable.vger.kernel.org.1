@@ -2,57 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA7D6F20A4
-	for <lists+stable@lfdr.de>; Sat, 29 Apr 2023 00:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3BB86F20B0
+	for <lists+stable@lfdr.de>; Sat, 29 Apr 2023 00:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346594AbjD1WCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 18:02:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34210 "EHLO
+        id S1346680AbjD1WGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 18:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjD1WCO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 18:02:14 -0400
-Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 891C3FB
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 15:02:12 -0700 (PDT)
-Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-44054215485so186116e0c.3
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 15:02:12 -0700 (PDT)
+        with ESMTP id S1346461AbjD1WGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 18:06:38 -0400
+Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6AB422E
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 15:06:34 -0700 (PDT)
+Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-43f9c6767e8so182196e0c.3
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 15:06:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682719331; x=1685311331;
+        d=linaro.org; s=google; t=1682719594; x=1685311594;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H4V4fWCdh5vAMScKzf2MsQ7kTvtaQZRkLxgm/CZVADY=;
-        b=hTTblH6TYlpLAmysHUI1ipY4o3wPLKmOsTRPQXHBa2h+BlC0WLsH+kn+fP+IZMNcUn
-         YIFJ2iAy7gw8M2ZcXah2tvSHCvM+31XOByL1ga68MhKccoKNj+/T6cDFtJV1dKsgz7YX
-         0YcAxjPA+QA60BeKAj4jG/U0MNnSVw4Ik01RUPKMWAXiQzg8z7ffWo4d2x15RXRrvacb
-         EoWRPl9gU8K/DLgAk4B57r73WchA9Sm3mjfWG5mXeYyDYxJIaf9mjGvMCze1L1SmtyT8
-         mirh/kM1dz9LyW4WRbV7Q0CMIvrxfWDfrXdxD2h7XOsDhOGUkKpjgrGqDF1tG/Ws7mV8
-         OrnA==
+        bh=y9K80hMY7rCwgO/zSjWmhZpx2GzE+k3UH+Jmat1R7EM=;
+        b=eUdmhOS79VIY5PrysVQqlPafNuT/qALkQnqdcWynQ67fm1IZQ1W7ies/ytItECnulr
+         fxyFIxIQoYh34/d2eAfy14S9vgM7Ln5iWH61RDHu1z2eYTNInmszAeKKPoPUw36F1ns8
+         Emw5rl7DGmCe9P2aHSKvzH4WTCt/g406DTlkTQY1S51pCzTku9khoiAgNT/yRTahDlrR
+         8w1yrQceLKbB/OupRj5WzNCfIzE5XTlHjwG3nZotpEI23CFb8ys3pgEz20z7V2nch59L
+         XYpL0J82kvlJ5kdUlcLJVf1K3a/QMz6PJ7ags7OEPUVLTRV0FaqhVKnySx+mnsLv0gSd
+         6USQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682719331; x=1685311331;
+        d=1e100.net; s=20221208; t=1682719594; x=1685311594;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H4V4fWCdh5vAMScKzf2MsQ7kTvtaQZRkLxgm/CZVADY=;
-        b=AnFUK5BMxKq+lH5r3oq06uAJa2430Xj4NxqpK4NjZdmO9la6cyS9k7bzp7neh7dCNN
-         TKjBtN0aKMQL4YJnz8gCLPSxMfbCEJgDq6CrKHgrVv/NDai69oMp4LXh6TQzD7Rx/nEW
-         t0h4FX2crCk8F21XAP21cpgcbQpGsz+DbqzAZqMYYYUUDG9rinIAbXjNW/kq9CYWas4h
-         HbA1ujALDnj54wcgn6PNUo9MNCy0LkgPfelxNWZ4hRBT5KoTvjO7lM/Clfd55s6yegfL
-         fNKwA1+CH9ebVjcy6Lpj7L0eZt+taALJKWzqMlFD/K/6Dx78vV+DHBxk+0TDky8N95cO
-         tPSA==
-X-Gm-Message-State: AC+VfDwk9EQvzwwFt+4AWkQFi3iTuhLyHvw2Q4VmP+yh8ghkpUJzcRwV
-        hf57SKj15ftTN1PRZsA3L2wZ3TnDrjJZw0Z8fVQiGmXO/jMmOWbo7I7WrYJj
-X-Google-Smtp-Source: ACHHUZ4KMZQw81GlX4zGgLgdzHHbV7hpKnhTMesF9GuOxXRTaAQEVvP69R6i4H4omBxnLB5ycgpeslfPexYDPsKtdxQ=
-X-Received: by 2002:a1f:ca47:0:b0:440:448c:27a0 with SMTP id
- a68-20020a1fca47000000b00440448c27a0mr3049086vkg.8.1682719331456; Fri, 28 Apr
- 2023 15:02:11 -0700 (PDT)
+        bh=y9K80hMY7rCwgO/zSjWmhZpx2GzE+k3UH+Jmat1R7EM=;
+        b=K0jc1QB4STX41sj9+L5sUeaw4r3fYn1uYRomj81FaHtwlBPNSQCaqCGg/bFFf+Pxay
+         gVVmLke4QDxVXWPkrUJGMXCGIjzlRZvGLef2e1bbdL/bGmlqLqYcazc121J+0YUvDbby
+         BwgHA3bDttzv5atExEpSSwGvBDo74iLMcZeXLSWr1Yr+tdEgV0OxV3420fm/8xAVXXz2
+         c15tO1GGjQVtBzcFlR78F9PAT9+5lqi38p2WPbPBMMZW67jPQlXI4jtFPQlmpjxXw/Q2
+         LUVG1eTojAAq0vp1Z07o3StyCy6pemQMB6TBG+sJIpFNS2E2JJZakkVLSROEBYBUuFLm
+         z0PQ==
+X-Gm-Message-State: AC+VfDzlLlnVougcY+l+nz3tHImEMzfoZ0WZACKU/UCBeLkz8NwybaHu
+        6YL9P0nEEkFZ6s5GbNEcQAHXX3xIXtcc9CTTYudVxQ==
+X-Google-Smtp-Source: ACHHUZ5U9duRLvzuJpV5ogK40dUyZPN2Ti0VROanHSH27hht8Wm1VUbD5/57xwqbIsd/Qby3+Apina5jK2QL792Wv1s=
+X-Received: by 2002:a1f:4ac4:0:b0:43f:bcad:db6b with SMTP id
+ x187-20020a1f4ac4000000b0043fbcaddb6bmr2810332vka.10.1682719593906; Fri, 28
+ Apr 2023 15:06:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230428112040.137898986@linuxfoundation.org>
-In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
+References: <20230428112040.063291126@linuxfoundation.org>
+In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 28 Apr 2023 23:02:00 +0100
-Message-ID: <CA+G9fYuTDZ36Z9qDHUDKQGj6Mm56xxiT_+M64fda4J+dj+=JNQ@mail.gmail.com>
-Subject: Re: [PATCH 6.2 00/15] 6.2.14-rc1 review
+Date:   Fri, 28 Apr 2023 23:06:22 +0100
+Message-ID: <CA+G9fYtLzqqLrr45dO5NS=AQar1P+zeNa4puGwALU-BVeoqChw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/16] 6.1.27-rc1 review
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
@@ -75,8 +75,8 @@ X-Mailing-List: stable@vger.kernel.org
 On Fri, 28 Apr 2023 at 12:29, Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.2.14 release.
-> There are 15 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.27 release.
+> There are 16 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -85,15 +85,16 @@ On Fri, 28 Apr 2023 at 12:29, Greg Kroah-Hartman
 >
 > The whole patch series can be found in one patch at:
 >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.2.14-rc1.gz
+6.1.27-rc1.gz
 > or in the git tree and branch at:
 >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.2.y
+-rc.git linux-6.1.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
+
 
 Results from Linaro=E2=80=99s test farm.
 No regressions on arm64, arm, x86_64, and i386.
@@ -101,39 +102,39 @@ No regressions on arm64, arm, x86_64, and i386.
 Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
 ## Build
-* kernel: 6.2.14-rc1
+* kernel: 6.1.27-rc1
 * git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.2.y
-* git commit: a451b003c3066aade2071a362d5d6d4a62c6da48
-* git describe: v6.2.9-624-ga451b003c306
+* git branch: linux-6.1.y
+* git commit: 58b654bf36db7c89178300adbb034ce63301b685
+* git describe: v6.1.22-591-g58b654bf36db
 * test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.2.y/build/v6.2.9=
--624-ga451b003c306
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.2=
+2-591-g58b654bf36db
 
-## Test Regressions (compared to v6.2.9-608-g9e5d20c13940)
+## Test Regressions (compared to v6.1.22-574-ge4ff6ff54dea)
 
-## Metric Regressions (compared to v6.2.9-608-g9e5d20c13940)
+## Metric Regressions (compared to v6.1.22-574-ge4ff6ff54dea)
 
-## Test Fixes (compared to v6.2.9-608-g9e5d20c13940)
+## Test Fixes (compared to v6.1.22-574-ge4ff6ff54dea)
 
-## Metric Fixes (compared to v6.2.9-608-g9e5d20c13940)
+## Metric Fixes (compared to v6.1.22-574-ge4ff6ff54dea)
 
 ## Test result summary
-total: 195174, pass: 163280, fail: 3868, skip: 27724, xfail: 302
+total: 158499, pass: 138000, fail: 3707, skip: 16470, xfail: 322
 
 ## Build Summary
 * arc: 5 total, 5 passed, 0 failed
-* arm: 141 total, 140 passed, 1 failed
-* arm64: 49 total, 49 passed, 0 failed
-* i386: 37 total, 36 passed, 1 failed
+* arm: 145 total, 144 passed, 1 failed
+* arm64: 48 total, 48 passed, 0 failed
+* i386: 35 total, 34 passed, 1 failed
 * mips: 26 total, 26 passed, 0 failed
 * parisc: 6 total, 6 passed, 0 failed
 * powerpc: 34 total, 34 passed, 0 failed
-* riscv: 22 total, 22 passed, 0 failed
+* riscv: 12 total, 12 passed, 0 failed
 * s390: 12 total, 12 passed, 0 failed
 * sh: 12 total, 12 passed, 0 failed
 * sparc: 6 total, 6 passed, 0 failed
-* x86_64: 42 total, 42 passed, 0 failed
+* x86_64: 40 total, 40 passed, 0 failed
 
 ## Test suites summary
 * boot
@@ -150,7 +151,6 @@ total: 195174, pass: 163280, fail: 3868, skip: 27724, xfail: 302
 * kselftest-cpufreq
 * kselftest-drivers-dma-buf
 * kselftest-efivarfs
-* kselftest-exec
 * kselftest-filesystems
 * kselftest-filesystems-binderfs
 * kselftest-firmware
@@ -198,10 +198,7 @@ total: 195174, pass: 163280, fail: 3868, skip: 27724, xfail: 302
 * kselftest-tmpfs
 * kselftest-tpm2
 * kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
 * kselftest-vm
-* kselftest-watchdog
 * kselftest-x86
 * kselftest-zram
 * kunit
