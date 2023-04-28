@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 161666F1698
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB0BC6F16AD
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjD1L2h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55390 "EHLO
+        id S1345600AbjD1L31 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345500AbjD1L2d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF4F527C
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:32 -0700 (PDT)
+        with ESMTP id S1345607AbjD1L30 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FBFE59F2
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDC9A63910
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DE2C433EF;
-        Fri, 28 Apr 2023 11:28:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97BD66420D
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB001C433EF;
+        Fri, 28 Apr 2023 11:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681311;
-        bh=oV2Sx8WR+OBUk97E11P04I05mKcvjMkEKE2O3zCZ1d0=;
+        s=korg; t=1682681364;
+        bh=iHZwOF0KDqQ5mOUaDe0VinwfF9hu7mLA39+jUjCqmSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x/PXxA9zISCkxTPaJiqBYVqVAlxzTf+Dqad+I7iW4uxu5RQjmiTOeXtAm5HRspcYd
-         n9ZzAoPufhZyz/N32nkq82FhUcJaB0ExFkS/0pghv/OH/PnjVB34H+a7VQiiHDOlvk
-         gKo/iAmYkN4G80AlwPCm112hHjhxbAeMfggokmhU=
+        b=HYIVarNfV6nVNu1o3HbHN6un9cnhmbmNNNEY/HGMS8rBB4Ans+Tm8L+1uZ7I+yrNk
+         80TavayTy9W/6J149YddgeOkWZapt4Y2siPmpYT2Cnj3sNRy16Llt7Nrq5Sn9XNHxe
+         mEk6ANMglbCpppyJ1igDioRAiHRzjH8vnds+e7ks=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.2 11/15] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
+        David Matlack <dmatlack@google.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 03/16] KVM: arm64: Retry fault if vma_lookup() results become invalid
 Date:   Fri, 28 Apr 2023 13:27:55 +0200
-Message-Id: <20230428112040.487343947@linuxfoundation.org>
+Message-Id: <20230428112040.172369153@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
-References: <20230428112040.137898986@linuxfoundation.org>
+In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
+References: <20230428112040.063291126@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,90 +56,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: David Matlack <dmatlack@google.com>
 
-commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
+commit 13ec9308a85702af7c31f3638a2720863848a7f2 upstream.
 
-Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
-SL8563. The modem supports the NCM mode. Interface 0 is used for running
-the AT commands. Interface 12 is the ADB interface.
+Read mmu_invalidate_seq before dropping the mmap_lock so that KVM can
+detect if the results of vma_lookup() (e.g. vma_shift) become stale
+before it acquires kvm->mmu_lock. This fixes a theoretical bug where a
+VMA could be changed by userspace after vma_lookup() and before KVM
+reads the mmu_invalidate_seq, causing KVM to install page table entries
+based on a (possibly) no-longer-valid vma_shift.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1782 ProdID=4055 Rev=04.04
-S:  Manufacturer=Unisoc Phone
-S:  Product=Unisoc Phone
-S:  SerialNumber=<redacted>
-C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Re-order the MMU cache top-up to earlier in user_mem_abort() so that it
+is not done after KVM has read mmu_invalidate_seq (i.e. so as to avoid
+inducing spurious fault retries).
 
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
+This bug has existed since KVM/ARM's inception. It's unlikely that any
+sane userspace currently modifies VMAs in such a way as to trigger this
+race. And even with directed testing I was unable to reproduce it. But a
+sufficiently motivated host userspace might be able to exploit this
+race.
+
+Fixes: 94f8e6418d39 ("KVM: ARM: Handle guest faults in KVM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reported-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230313235454.2964067-1-dmatlack@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+[will: Use FSC_PERM instead of ESR_ELx_FSC_PERM]
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/kvm/mmu.c |   47 +++++++++++++++++++++--------------------------
+ 1 file changed, 21 insertions(+), 26 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -595,6 +595,11 @@ static void option_instat_callback(struc
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1179,6 +1179,20 @@ static int user_mem_abort(struct kvm_vcp
+ 	}
  
-+/* UNISOC (Spreadtrum) products */
-+#define UNISOC_VENDOR_ID			0x1782
-+/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
-+#define TOZED_PRODUCT_LT70C			0x4055
+ 	/*
++	 * Permission faults just need to update the existing leaf entry,
++	 * and so normally don't require allocations from the memcache. The
++	 * only exception to this is when dirty logging is enabled at runtime
++	 * and a write fault needs to collapse a block entry into a table.
++	 */
++	if (fault_status != FSC_PERM ||
++	    (logging_active && write_fault)) {
++		ret = kvm_mmu_topup_memory_cache(memcache,
++						 kvm_mmu_cache_min_pages(kvm));
++		if (ret)
++			return ret;
++	}
 +
- /* Device flags */
++	/*
+ 	 * Let's check if we will get back a huge page backed by hugetlbfs, or
+ 	 * get block mapping for device MMIO region.
+ 	 */
+@@ -1234,36 +1248,17 @@ static int user_mem_abort(struct kvm_vcp
+ 		fault_ipa &= ~(vma_pagesize - 1);
  
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2225,6 +2230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+ 	gfn = fault_ipa >> PAGE_SHIFT;
+-	mmap_read_unlock(current->mm);
+-
+-	/*
+-	 * Permission faults just need to update the existing leaf entry,
+-	 * and so normally don't require allocations from the memcache. The
+-	 * only exception to this is when dirty logging is enabled at runtime
+-	 * and a write fault needs to collapse a block entry into a table.
+-	 */
+-	if (fault_status != FSC_PERM || (logging_active && write_fault)) {
+-		ret = kvm_mmu_topup_memory_cache(memcache,
+-						 kvm_mmu_cache_min_pages(kvm));
+-		if (ret)
+-			return ret;
+-	}
+ 
+-	mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+ 	/*
+-	 * Ensure the read of mmu_invalidate_seq happens before we call
+-	 * gfn_to_pfn_prot (which calls get_user_pages), so that we don't risk
+-	 * the page we just got a reference to gets unmapped before we have a
+-	 * chance to grab the mmu_lock, which ensure that if the page gets
+-	 * unmapped afterwards, the call to kvm_unmap_gfn will take it away
+-	 * from us again properly. This smp_rmb() interacts with the smp_wmb()
+-	 * in kvm_mmu_notifier_invalidate_<page|range_end>.
++	 * Read mmu_invalidate_seq so that KVM can detect if the results of
++	 * vma_lookup() or __gfn_to_pfn_memslot() become stale prior to
++	 * acquiring kvm->mmu_lock.
+ 	 *
+-	 * Besides, __gfn_to_pfn_memslot() instead of gfn_to_pfn_prot() is
+-	 * used to avoid unnecessary overhead introduced to locate the memory
+-	 * slot because it's always fixed even @gfn is adjusted for huge pages.
++	 * Rely on mmap_read_unlock() for an implicit smp_rmb(), which pairs
++	 * with the smp_wmb() in kvm_mmu_invalidate_end().
+ 	 */
+-	smp_rmb();
++	mmu_seq = vcpu->kvm->mmu_invalidate_seq;
++	mmap_read_unlock(current->mm);
+ 
+ 	pfn = __gfn_to_pfn_memslot(memslot, gfn, false, NULL,
+ 				   write_fault, &writable, NULL);
 
 
