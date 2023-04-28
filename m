@@ -2,30 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B216B6F11F0
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 08:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E80C6F1207
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 08:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345385AbjD1Gtj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 02:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
+        id S1345424AbjD1G5G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 02:57:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345341AbjD1Gti (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 02:49:38 -0400
-Received: from www484.your-server.de (www484.your-server.de [78.47.237.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C845B30E8;
-        Thu, 27 Apr 2023 23:49:34 -0700 (PDT)
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www484.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <k.graefe@gateware.de>)
-        id 1psHv7-000KXf-R2; Fri, 28 Apr 2023 08:49:29 +0200
-Received: from [2003:ca:6730:e8f8:9fd6:4f62:9dbd:374f] (helo=tethys.gateware.dom)
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <k.graefe@gateware.de>)
-        id 1psHv7-0005zg-3u; Fri, 28 Apr 2023 08:49:29 +0200
-From:   =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>
-To:     Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        with ESMTP id S1345418AbjD1G5F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 02:57:05 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA1431FFB
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 23:57:03 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2a8c51ba511so90693641fa.1
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 23:57:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1682665022; x=1685257022;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1kJlvIqcTMDqaxW/AEohe0PhfCoogquhxNv0DiWrFl4=;
+        b=hJrB/747zFXzcSCMIBOVwV3xa6T2YgbhBZZsKRIA/c4J5g6210WKxzAKVyb1IeYyfF
+         umxdRhqdsw4ysLjMPiAvx5b08DYGj8cKn0FR9Os+zGbzDwEotIS3QI5JL52sQdjdHIm7
+         HgklUG96wfRfvY0rLT96m2UDMaHmlcj0Zt5rI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682665022; x=1685257022;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1kJlvIqcTMDqaxW/AEohe0PhfCoogquhxNv0DiWrFl4=;
+        b=WfiJ3GdGjdsCykPxipQMtHcxYFulAxdAf7DrJKGrbrHcR09tcTy0u+ZD4tuqLPEmVC
+         Xdv0vOhGb7ggRfO1UGy7Jlg5Fh6srHy/wtPJ4qVK35gih4V7tJAq9b+YuB4bau5ODme8
+         4sym65deyL92eGG6dSvTVHVxCf/7ZY7plhLYL0tUnm3MXYKI7K75HSYLwjvWQqDBBwIY
+         73CZlSK3ic8nDdj2yM69N/j26yyziMUBNg6C8S8kcJE/WNoZWw7b4TAoKOVr/FWEiJeF
+         sPKpXe/16zLA6lGOMndzvKesgRloDZSBY3kzEzsTBT5R/fG+aVCLT9mQjzlozykYmDFU
+         L/3w==
+X-Gm-Message-State: AC+VfDx/i7nh1itVO8ZvwC1eXGQulwW8XV3W8xvPfcgGmV1uXeBHp4Qb
+        FmOBjXuRHJ6qB0JJaXl5QRkDag==
+X-Google-Smtp-Source: ACHHUZ6g6AxxBbf7Sw+PzyY8NXopLVuAvHozwPPBKPyF1ze7pXoradtPdGYIMWg6QbQJ4i3geVRLcQ==
+X-Received: by 2002:a2e:7c12:0:b0:2a8:db03:83f7 with SMTP id x18-20020a2e7c12000000b002a8db0383f7mr1145785ljc.32.1682665022157;
+        Thu, 27 Apr 2023 23:57:02 -0700 (PDT)
+Received: from [172.16.11.116] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id u19-20020a2e8553000000b0029839faa74fsm3214063ljj.134.2023.04.27.23.57.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Apr 2023 23:57:01 -0700 (PDT)
+Message-ID: <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
+Date:   Fri, 28 Apr 2023 08:56:59 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+Content-Language: en-US, da
+To:     =?UTF-8?Q?Konrad_Gr=c3=a4fe?= <k.graefe@gateware.de>,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Petr Mladek <pmladek@suse.com>,
         Steven Rostedt <rostedt@goodmis.org>,
@@ -34,78 +63,42 @@ To:     Quentin Schulz <quentin.schulz@theobroma-systems.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
         Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Cc:     =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>,
-        stable@vger.kernel.org
-Subject: [PATCH v4 2/2] usb: gadget: u_ether: Fix host MAC address case
-Date:   Fri, 28 Apr 2023 08:49:05 +0200
-Message-Id: <20230428064905.145858-2-k.graefe@gateware.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230428064905.145858-1-k.graefe@gateware.de>
-References: <20230427115120.241954-2-k.graefe@gateware.de>
- <20230428064905.145858-1-k.graefe@gateware.de>
-MIME-Version: 1.0
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Felipe Balbi <balbi@ti.com>
+Cc:     stable@vger.kernel.org
+References: <2023042625-rendition-distort-fe06@gregkh>
+ <20230427115120.241954-1-k.graefe@gateware.de>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+In-Reply-To: <20230427115120.241954-1-k.graefe@gateware.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: k.graefe@gateware.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26889/Thu Apr 27 09:25:48 2023)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The CDC-ECM specification [1] requires to send the host MAC address as
-an uppercase hexadecimal string in chapter "5.4 Ethernet Networking
-Functional Descriptor":
-    The Unicode character is chosen from the set of values 30h through
-    39h and 41h through 46h (0-9 and A-F).
+On 27/04/2023 13.51, Konrad Gräfe wrote:
+> The CDC-ECM specification requires an USB gadget to send the host MAC
+> address as uppercase hex string. This change adds the appropriate
+> modifier.
 
-However, snprintf(.., "%pm", ..) generates a lowercase MAC address
-string. While most host drivers are tolerant to this, UsbNcm.sys on
-Windows 10 is not. Instead it uses a different MAC address with all
-bytes set to zero including and after the first byte containing a
-lowercase letter. On Windows 11 Microsoft fixed it, but apparently they
-did not backport the fix.
+Thinking more about it, I'm not sure this is appropriate, not for a
+single user like this. vsprintf() should not and cannot satisfy all
+possible string formatting requirements for the whole kernel. The %pX
+extensions are convenient for use with printk() and friends where one
+needs what in other languages would be "string interpolation" (because
+then the caller doesn't need to deal with temporary stack buffers and
+pass them as %s arguments), but for single items like this, snprintf()
+is not necessarily the right tool for the job.
 
-This change fixes the issue by using "%pmU" to generate an uppercase hex
-string to comply with the specification.
+In this case, the caller can just as well call string_upper() on the
+result, or not use sprintf() at all and do a tiny loop with
+hex_byte_pack_upper().
 
-[1]: https://www.usb.org/document-library/class-definitions-communication-devices-12, file ECM120.pdf
-
-Fixes: bcd4a1c40bee ("usb: gadget: u_ether: construct with default values and add setters/getters")
-Cc: stable@vger.kernel.org
-Signed-off-by: Konrad Gräfe <k.graefe@gateware.de>
----
-
-Changes since v3: None
-
-Changes since v2:
-* Add uppercase MAC address format string and use that instead of
-  manually uppercasing the resulting MAC address string.
-
-Changes since v1:
-* Fixed checkpatch.pl warnings
-
- drivers/usb/gadget/function/u_ether.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index 6956ad8ba8dd..70e6b825654c 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -963,7 +963,7 @@ int gether_get_host_addr_cdc(struct net_device *net, char *host_addr, int len)
- 		return -EINVAL;
- 
- 	dev = netdev_priv(net);
--	snprintf(host_addr, len, "%pm", dev->host_mac);
-+	snprintf(host_addr, len, "%pmU", dev->host_mac);
- 
- 	return strlen(host_addr);
- }
--- 
-2.34.1
+Rasmus
 
