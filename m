@@ -2,49 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE1A6F16A0
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F386F16A7
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234872AbjD1L25 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55848 "EHLO
+        id S1345383AbjD1L3M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:29:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbjD1L2y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B3A2711
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:53 -0700 (PDT)
+        with ESMTP id S229707AbjD1L3K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3119159FD
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB76C614C3
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEF3C433D2;
-        Fri, 28 Apr 2023 11:28:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4AA76420D
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF70C433D2;
+        Fri, 28 Apr 2023 11:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681332;
-        bh=89AJIlv+eX2RQSjWzPOy1cjiYsERvx7x59ojXBCMBz8=;
+        s=korg; t=1682681348;
+        bh=Op2dXB//TRDl8Ibmf7f1Vl/mOLmzqoYEyjRsfAgm2Zw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=flzTVMOek3tpxhUxKds5T00lrffRf1nPBr6jvrzx/lVUK2oiFvZWrtuEj82B7QpY1
-         iW6erxpfWp0sb6tEazao5EXwwXdEx2h0qNCzroxBDuJuFR3CIeI/202HxCUWDpSTsk
-         ZNC+hZ99YAgTUoY5TB4bNJx+fklCoyRymmUqEAeo=
+        b=QnZybIG8LSSvR1CgzcetbYg1Vv1568D+uEN1vz1j0DJlZmPR3Ffgt4lUFf85jbD+O
+         ezXg5oIzoSSat96381abGNl+SHsiSAK3P5z/dEZVXWuorOyEZsTMGUnSnhL9Bnbaee
+         FwxzgFiP+wtW3pJyXUfVJBbdQhe3weuZjtJkxZII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.2 08/15] bluetooth: Perform careful capability checks in hci_sock_ioctl()
-Date:   Fri, 28 Apr 2023 13:27:52 +0200
-Message-Id: <20230428112040.399688213@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        SeongJae Park <sj@kernel.org>, David Gow <davidgow@google.com>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Arthur Grillo <arthurgrillo@riseup.net>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.1 01/16] um: Only disable SSE on clang to work around old GCC bugs
+Date:   Fri, 28 Apr 2023 13:27:53 +0200
+Message-Id: <20230428112040.110376428@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
-References: <20230428112040.137898986@linuxfoundation.org>
+In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
+References: <20230428112040.063291126@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,50 +59,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+From: David Gow <davidgow@google.com>
 
-commit 25c150ac103a4ebeed0319994c742a90634ddf18 upstream.
+commit a3046a618a284579d1189af8711765f553eed707 upstream.
 
-Previously, capability was checked using capable(), which verified that the
-caller of the ioctl system call had the required capability. In addition,
-the result of the check would be stored in the HCI_SOCK_TRUSTED flag,
-making it persistent for the socket.
+As part of the Rust support for UML, we disable SSE (and similar flags)
+to match the normal x86 builds. This both makes sense (we ideally want a
+similar configuration to x86), and works around a crash bug with SSE
+generation under Rust with LLVM.
 
-However, malicious programs can abuse this approach by deliberately sharing
-an HCI socket with a privileged task. The HCI socket will be marked as
-trusted when the privileged task occasionally makes an ioctl call.
+However, this breaks compiling stdlib.h under gcc < 11, as the x86_64
+ABI requires floating-point return values be stored in an SSE register.
+gcc 11 fixes this by only doing register allocation when a function is
+actually used, and since we never use atof(), it shouldn't be a problem:
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
 
-This problem can be solved by using sk_capable() to check capability, which
-ensures that not only the current task but also the socket opener has the
-specified capability, thus reducing the risk of privilege escalation
-through the previously identified vulnerability.
+Nevertheless, only disable SSE on clang setups, as that's a simple way
+of working around everyone's bugs.
 
-Cc: stable@vger.kernel.org
-Fixes: f81f5b2db869 ("Bluetooth: Send control open and close messages for HCI raw sockets")
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 884981867947 ("rust: arch/um: Disable FP/SIMD instruction to match x86")
+Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Link: https://lore.kernel.org/linux-um/6df2ecef9011d85654a82acd607fdcbc93ad593c.camel@huaweicloud.com/
+Tested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Tested-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: David Gow <davidgow@google.com>
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Tested-by: Arthur Grillo <arthurgrillo@riseup.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sock.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/Makefile.um |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -1003,7 +1003,14 @@ static int hci_sock_ioctl(struct socket
- 	if (hci_sock_gen_cookie(sk)) {
- 		struct sk_buff *skb;
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -3,9 +3,14 @@ core-y += arch/x86/crypto/
  
--		if (capable(CAP_NET_ADMIN))
-+		/* Perform careful checks before setting the HCI_SOCK_TRUSTED
-+		 * flag. Make sure that not only the current task but also
-+		 * the socket opener has the required capability, since
-+		 * privileged programs can be tricked into making ioctl calls
-+		 * on HCI sockets, and the socket should not be marked as
-+		 * trusted simply because the ioctl caller is privileged.
-+		 */
-+		if (sk_capable(sk, CAP_NET_ADMIN))
- 			hci_sock_set_flag(sk, HCI_SOCK_TRUSTED);
+ #
+ # Disable SSE and other FP/SIMD instructions to match normal x86
++# This is required to work around issues in older LLVM versions, but breaks
++# GCC versions < 11. See:
++# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
+ #
++ifeq ($(CONFIG_CC_IS_CLANG),y)
+ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
++endif
  
- 		/* Send event to monitor */
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
 
 
