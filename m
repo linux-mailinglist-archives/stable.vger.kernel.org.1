@@ -2,79 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17BD96F1226
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 09:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D72466F1243
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 09:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233492AbjD1HNT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 03:13:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60218 "EHLO
+        id S229993AbjD1HT2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 03:19:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbjD1HNR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 03:13:17 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD2F3C01;
-        Fri, 28 Apr 2023 00:13:12 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S1345483AbjD1HTY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 03:19:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4274419D;
+        Fri, 28 Apr 2023 00:19:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 428511FFFA;
-        Fri, 28 Apr 2023 07:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1682665991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LJ+TMkCiDgfegvvsz0b3841mXTh3rnZkeHoyCdZ3g2o=;
-        b=W9kYRwWGdploRnynCxhQA6nn/OPsw3CdOInic8+pvp7oDcet2eShcDStKef/Ma72D5kMp5
-        UZKPdwh88ZSsAnYG5r/die/XpbmsAO+GjZ6/fTaD4HG3bAyUtYN5zzdnI7kaTWpJCLHYXH
-        I9BsMVyxKILhHqhDrWtTZ08UPT5OcmQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1682665991;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LJ+TMkCiDgfegvvsz0b3841mXTh3rnZkeHoyCdZ3g2o=;
-        b=hI0/yIUG0x80oyE863aFGoetKlHqs9fMKCgzSEVLD5N7r6P4oduv/mBvD++Lt7TDCNEvNn
-        irMGXGwb/GBARwBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0F36D138FA;
-        Fri, 28 Apr 2023 07:13:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 60bxAgdyS2SzTQAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Fri, 28 Apr 2023 07:13:11 +0000
-Message-ID: <dbe9d5cc-80ed-7fcf-f0dc-197ed8885676@suse.cz>
-Date:   Fri, 28 Apr 2023 09:13:10 +0200
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90C93611B9;
+        Fri, 28 Apr 2023 07:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736EFC4339C;
+        Fri, 28 Apr 2023 07:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1682666362;
+        bh=SBNac9jS/BNRjGAVVN/JSSN0yPxOjtUBPHY5Mv3soH8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oQccHbknLU/UZyOV6gPCWgClywqH+bzAnio+39gZpuQ3d+ZnPpZ3bQWZ240uny4fD
+         HxJARrL3JyA6bTkL4CaoAuaIQox5L/svg7saVXXbsV+UynGV7jjOOhUgJ4KwhPi1jx
+         NavFzDtn3nTyzphYDAoo5kGu8groasq8DMDmk/MI=
+Date:   Fri, 28 Apr 2023 09:19:19 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Konrad =?iso-8859-1?Q?Gr=E4fe?= <k.graefe@gateware.de>,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Felipe Balbi <balbi@ti.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+Message-ID: <2023042842-embattled-collected-8638@gregkh>
+References: <2023042625-rendition-distort-fe06@gregkh>
+ <20230427115120.241954-1-k.graefe@gateware.de>
+ <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH for v6.3 regression] mm/mremap: fix vm_pgoff in
- vma_merge() case 3
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Greg KH <greg@kroah.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>, lstoakes@gmail.com,
-        regressions@lists.linux.dev, linux-mm@kvack.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Fabian Vogt <fvogt@suse.com>, stable@vger.kernel.org
-References: <20230427140959.27655-1-vbabka@suse.cz>
- <2023042719-stratus-pavestone-505e@gregkh>
- <3cc6e10c-f054-a30a-bf87-966098ccb7bf@suse.cz>
- <CAHk-=wgdGzy6-3jzN6Kvtz1QxStTZBZPz1zy9i4gM9nbe5FGbA@mail.gmail.com>
- <CAHk-=whwoKFbrCGXW9uwX3SPOezLdOKstuLAju1KTi5Ryq+ZcQ@mail.gmail.com>
-Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <CAHk-=whwoKFbrCGXW9uwX3SPOezLdOKstuLAju1KTi5Ryq+ZcQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+In-Reply-To: <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -83,38 +61,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 4/28/23 04:53, Linus Torvalds wrote:
-> Hi Vlastimil,
-
-Hi Linus,
-
-> On Thu, Apr 27, 2023 at 8:12â€¯AM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
->>
->> Ack. It's in my tree as commit 7e7757876f25 right now (not pushed out
->> yet, will do the usual build tests and look around for other things
->> pending).
+On Fri, Apr 28, 2023 at 08:56:59AM +0200, Rasmus Villemoes wrote:
+> On 27/04/2023 13.51, Konrad Gräfe wrote:
+> > The CDC-ECM specification requires an USB gadget to send the host MAC
+> > address as uppercase hex string. This change adds the appropriate
+> > modifier.
 > 
-> Gaah. I just merged Andrew's MM tree, and while it had a lot of small
-> conflicts (and the ext4 ones were annoying semantic ones), the only
-> one that was in *confusing* code was the one introduced by this
-> one-liner fix.
-> 
-> I'm pretty sure I did the right thing, particularly given your other
-> patch for the mm tree, but please humor me and take a look at it?
+> Thinking more about it, I'm not sure this is appropriate, not for a
+> single user like this. vsprintf() should not and cannot satisfy all
+> possible string formatting requirements for the whole kernel. The %pX
+> extensions are convenient for use with printk() and friends where one
+> needs what in other languages would be "string interpolation" (because
+> then the caller doesn't need to deal with temporary stack buffers and
+> pass them as %s arguments), but for single items like this, snprintf()
+> is not necessarily the right tool for the job.
 
-Sure, took a look and looks correct to me, thanks!
+But sprintf() already creates mac address strings today, adding
+yet-another-modifier makes it so that we don't have to hand-roll this
+type of logic in the individual drivers that require it.
 
-> That 'vma_merge()' function is the function from hell.
+thanks,
 
-Yeah, unfortunately. But despite the bugs, I believe Liam's changes in 6.3
-improved it a lot, as with __vma_adjust() it was much worse (it did e.g.
-things like "swap(vma, expand)" in some cases). And hopefully the cleanups
-from me and Lorenzo in the mm 6.4 pull request improved readability too,
-even though it made the merge tricky.
-
-> I haven't pushed out yet because it's still going through my build
-> tests, but it should be out soon.
-> 
->                        Linus
-
+greg k-h
