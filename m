@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E25D6F16B4
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD666F16A8
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345607AbjD1L3m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56924 "EHLO
+        id S229707AbjD1L3O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345500AbjD1L3l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB5855A3
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:40 -0700 (PDT)
+        with ESMTP id S1345515AbjD1L3N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D609E59E4
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4827B6412D
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B692C433EF;
-        Fri, 28 Apr 2023 11:29:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 708D0638BD
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834C5C433EF;
+        Fri, 28 Apr 2023 11:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681379;
-        bh=VzS9K1HGyzT9KF8NrGlE5FVGca0OTCZDTYDcV3IK+yw=;
+        s=korg; t=1682681350;
+        bh=89AJIlv+eX2RQSjWzPOy1cjiYsERvx7x59ojXBCMBz8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zdclHyebRrGkNe934W4dKoA/vBa08lx6KiJcgsq4BMgYKmm+68ZJc9Dm/w7oYjMa3
-         AioL893bp/9s6egWciysXDOpTvFznpr+5PVBDwIZLbU9vDH1E40+3lfdENwhG847be
-         xYo3jBrhSkNU57wkaAAvSZ2XKYPFBQ+Tz/9r73P8=
+        b=uQ8TFB8wx/4ksh2GawT4iHaWoa6ccyYCpmNA8/9GG6Sgqq+o0JxELTu20NUv9fHHN
+         UMUeAYIbmTS5xkq0SmAHB88pwFNjc43P6Qt9rTUVnXIyUbu7gjrtAxyBVvBdhJ5vVB
+         b65CDWL6OeUU0owendjvM09Ifw4qZkJh1Iy2IiXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.1 09/16] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
-Date:   Fri, 28 Apr 2023 13:28:01 +0200
-Message-Id: <20230428112040.368822235@linuxfoundation.org>
+        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 10/16] bluetooth: Perform careful capability checks in hci_sock_ioctl()
+Date:   Fri, 28 Apr 2023 13:28:02 +0200
+Message-Id: <20230428112040.398139972@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
 References: <20230428112040.063291126@linuxfoundation.org>
@@ -43,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,54 +53,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-commit 782eea0c89f7d071d6b56ecfa1b8b0c81164b9be upstream.
+commit 25c150ac103a4ebeed0319994c742a90634ddf18 upstream.
 
-commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-changed the policy such that I2C touchpads may be able to wake up the
-system by default if the system is configured as such.
+Previously, capability was checked using capable(), which verified that the
+caller of the ioctl system call had the required capability. In addition,
+the result of the check would be stored in the HCI_SOCK_TRUSTED flag,
+making it persistent for the socket.
 
-However on Clevo NL5xNU there is a mistake in the ACPI tables that the
-TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
-triggered but connected to a pull up. As soon as the system suspends the
-touchpad loses power and then the system wakes up.
+However, malicious programs can abuse this approach by deliberately sharing
+an HCI socket with a privileged task. The HCI socket will be marked as
+trusted when the privileged task occasionally makes an ioctl call.
 
-To avoid this problem, introduce a quirk for this model that will prevent
-the wakeup capability for being set for GPIO 9.
+This problem can be solved by using sk_capable() to check capability, which
+ensures that not only the current task but also the socket opener has the
+specified capability, thus reducing the risk of privilege escalation
+through the previously identified vulnerability.
 
-This patch is analoge to a very similar patch for NL5xRU, just the DMI
-string changed.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: f81f5b2db869 ("Bluetooth: Send control open and close messages for HCI raw sockets")
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/bluetooth/hci_sock.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1607,6 +1607,19 @@ static const struct dmi_system_id gpioli
- 		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
- 		 */
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "ELAN0415:00@9",
-+		},
-+	},
-+	{
-+		/*
-+		 * Spurious wakeups from TP_ATTN# pin
-+		 * Found in BIOS 1.7.8
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -1003,7 +1003,14 @@ static int hci_sock_ioctl(struct socket
+ 	if (hci_sock_gen_cookie(sk)) {
+ 		struct sk_buff *skb;
+ 
+-		if (capable(CAP_NET_ADMIN))
++		/* Perform careful checks before setting the HCI_SOCK_TRUSTED
++		 * flag. Make sure that not only the current task but also
++		 * the socket opener has the required capability, since
++		 * privileged programs can be tricked into making ioctl calls
++		 * on HCI sockets, and the socket should not be marked as
++		 * trusted simply because the ioctl caller is privileged.
 +		 */
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
- 		},
- 		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++		if (sk_capable(sk, CAP_NET_ADMIN))
+ 			hci_sock_set_flag(sk, HCI_SOCK_TRUSTED);
+ 
+ 		/* Send event to monitor */
 
 
