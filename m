@@ -2,285 +2,282 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9626F1F19
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 22:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CEE6F1FF8
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 23:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346493AbjD1UFB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 16:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38792 "EHLO
+        id S1345685AbjD1VH7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 17:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346460AbjD1UFA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 16:05:00 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557A4213C
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 13:04:59 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-63b733fd00bso354891b3a.0
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 13:04:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1682712298; x=1685304298;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iQrAfF07srJvGGA/FlmbQzij1pWlORRqsJkQtwWG3a4=;
-        b=Ab4U24CylwSfvYWmMuXL4VuUSPjzAqstuB39yfTRIecfSTEaNys3U0j5miXfYmbiIY
-         HgFG64tyw7WqCMQUCflvIzEACudRZpavFykiw4SUv7+Q1eyBQLi5kL//opEGKNW+Nrwf
-         8vRvnwYU46zikaGO98bOIFICuHlGTMHM7vGEuelvNL7ZwhOGm6CakDXuwETJXg3PLRah
-         DFdyLHa6LGkAqmodvcmOgL2ONEYtyf6yQoxJSwVUMlVysLF4QTf5yZ9J58aNLrh1mlie
-         8JlkQBiGvVMk4/rOAJSac3Ag9eMGyqS2k1m5A3G2m/DmIgIDS/kMyd5U5dyW+jbzKaZX
-         BgDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682712298; x=1685304298;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iQrAfF07srJvGGA/FlmbQzij1pWlORRqsJkQtwWG3a4=;
-        b=M3xnYb8jXK5ovnDIMbOMafQi7OCNRBWoZ/a96KZX0kRUAnIJPQzmZp08IWP0axNV5Z
-         phIrWOWJ5wJ19fPfakSu5O5gPmhw9PDi21f99hEmXv1FbT+wxypPLaogeyiWj50JQFwN
-         VUg3jAkon2ydF+1C+zXtuJGIvcsyzKr/aluaSGdjmhGAVAOgIpEvTVbfWI3lUxf2NhhV
-         psPQ4Df5yUjNq995zBiuAG9rSjbGSOM2w1jb9HwmFGQZsOrXoEIWa5+W/I7UBn1aCWoE
-         c40RIg0R8QZJUFnKCmDdbMS2tfVaB/4X2s7am3CfQ2H56ZY0PP4758jQbKgVMwdTKZ2o
-         Bkmg==
-X-Gm-Message-State: AC+VfDy8F/QmNDNMTUOBGaw6cDh0m8NueDQIU9fEJnNOFrHRU65Zli8x
-        JaoOFPeyVGHGVyW214kLHGmUEKlOIHFTcWv0DcQ=
-X-Google-Smtp-Source: ACHHUZ4hZwCwuOBJIP/mlDliKxn8YaJtx9mPF3yMy5MfvDYhESvFg7+SccoptuKE4V04+NkFvFfQmA==
-X-Received: by 2002:a05:6a20:4412:b0:f2:a0d1:af6c with SMTP id ce18-20020a056a20441200b000f2a0d1af6cmr8620413pzb.0.1682712298219;
-        Fri, 28 Apr 2023 13:04:58 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id b3-20020a631b03000000b0050f93a3586fsm13275022pgb.37.2023.04.28.13.04.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Apr 2023 13:04:57 -0700 (PDT)
-Message-ID: <644c26e9.630a0220.67042.bf06@mx.google.com>
-Date:   Fri, 28 Apr 2023 13:04:57 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229943AbjD1VH6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 17:07:58 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D228AE69;
+        Fri, 28 Apr 2023 14:07:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1682716077; x=1714252077;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tD9qOeu/Elao5wbiibECWMxhAjUFS+S00Z29+QgzHWY=;
+  b=0cBRFESvMDKkFk0gzVm2l7rdlHZNQvPl7r6R/QV/o2IhKjWbcYn5YPcC
+   6TpKTWJFVtuE81D8LI7FRVfWy7X2sNdv4JTvoXQTURjcBgVvnCm/SDVJv
+   uqkTer/n0T3xDpBmaMSSq9c6vwPHbALHOEmUGOFE5RuuMniLgjDHWVCDk
+   0MWOEDgQJgXYlYOp1OnJPnubpCpTku3uT2RUzO5SNFvjl/whJr7KiK4/U
+   w3UQqVjpc3jSl+4RaApKuETVpVYlAJQxTXstNsj8QMKWKfi41szAuXc/q
+   KqG0Yt8Jv8S4WDV0HAau+7sc7cyLx0J666PzwlhzPbyzTdM7XGz6LEbLo
+   w==;
+X-IronPort-AV: E=Sophos;i="5.99,235,1677567600"; 
+   d="scan'208";a="211700208"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 28 Apr 2023 14:07:56 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 28 Apr 2023 14:07:55 -0700
+Received: from localhost (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.21 via Frontend
+ Transport; Fri, 28 Apr 2023 14:07:54 -0700
+From:   Sagar Biradar <sagar.biradar@microchip.com>
+To:     Don Brace <don.brace@microchip.com>,
+        Sagar Biradar <sagar.biradar@microchip.com>,
+        Gilbert Wu <gilbert.wu@microchip.com>,
+        <linux-scsi@vger.kernel.org>,
+        Martin Petersen <martin.petersen@oracle.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Brian King <brking@linux.vnet.ibm.com>,
+        <stable@vger.kernel.org>, Tom White <tom.white@microchip.com>
+Subject: [PATCH v2] aacraid: reply queue mapping to CPUs based of IRQ affinity
+Date:   Fri, 28 Apr 2023 14:07:51 -0700
+Message-ID: <20230428210751.29722-1-sagar.biradar@microchip.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.176-372-gc1ed79b00c93
-X-Kernelci-Report-Type: test
-Subject: stable-rc/queue/5.10 baseline: 76 runs,
- 3 regressions (v5.10.176-372-gc1ed79b00c93)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/5.10 baseline: 76 runs, 3 regressions (v5.10.176-372-gc1ed7=
-9b00c93)
+Fix the IO hang that arises because of MSIx vector not
+having a mapped online CPU upon receiving completion.
+This patch sets up a reply queue mapping to CPUs based on the
+IRQ affinity retrieved using pci_irq_get_affinity() API.
+
+aac_setup_reply_map() is an explicit mapping for internally
+generated (non-SCSI) cmds.
+The SCSI cmds take the blk_mq route, and the non-SCSI cmds are mapped
+to the reply_map.
+
+Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
+Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
+---
+ drivers/scsi/aacraid/aacraid.h  |  1 +
+ drivers/scsi/aacraid/comminit.c | 32 ++++++++++++++++++++++++++++++++
+ drivers/scsi/aacraid/commsup.c  |  6 +++++-
+ drivers/scsi/aacraid/linit.c    | 25 +++++++++++++++++++++++++
+ drivers/scsi/aacraid/src.c      | 13 +++++++++++--
+ 5 files changed, 74 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
+index 5e115e8b2ba4..20f8560a3038 100644
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -1678,6 +1678,7 @@ struct aac_dev
+ 	u32			handle_pci_error;
+ 	bool			init_reset;
+ 	u8			soft_reset_support;
++	unsigned int		*reply_map;
+ };
+ 
+ #define aac_adapter_interrupt(dev) \
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index bd99c5492b7d..6f4e40cdaade 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -33,6 +33,8 @@
+ 
+ #include "aacraid.h"
+ 
++void aac_setup_reply_map(struct aac_dev *dev);
++
+ struct aac_common aac_config = {
+ 	.irq_mod = 1
+ };
+@@ -630,6 +632,9 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 
+ 	if (aac_is_src(dev))
+ 		aac_define_int_mode(dev);
++
++	aac_setup_reply_map(dev);
++
+ 	/*
+ 	 *	Ok now init the communication subsystem
+ 	 */
+@@ -658,3 +663,30 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+ 	return dev;
+ }
+ 
++/*
++ * aac_setup_reply_map -  This is an explicit mapping for
++ * internally generated (non-SCSI) cmds which need to be
++ * serviced outside of IO requests.
++ * The SCSI cmds take the blk_mq mechanism,
++ * and the non-SCSI cmds are mapped to the reply_map.
++ */
++void aac_setup_reply_map(struct aac_dev *dev)
++{
++	const struct cpumask *mask;
++	unsigned int i, cpu = 1;
++
++	for (i = 1; i < dev->max_msix; i++) {
++		mask = pci_irq_get_affinity(dev->pdev, i);
++		if (!mask)
++			goto fallback;
++
++		for_each_cpu(cpu, mask) {
++			dev->reply_map[cpu] = i;
++		}
++	}
++	return;
++
++fallback:
++	for_each_possible_cpu(cpu)
++		dev->reply_map[cpu] = 0;
++}
+diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
+index deb32c9f4b3e..3f062e4013ab 100644
+--- a/drivers/scsi/aacraid/commsup.c
++++ b/drivers/scsi/aacraid/commsup.c
+@@ -223,8 +223,12 @@ int aac_fib_setup(struct aac_dev * dev)
+ struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd *scmd)
+ {
+ 	struct fib *fibptr;
++	u32 blk_tag;
++	int i;
+ 
+-	fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
++	blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
++	i = blk_mq_unique_tag_to_tag(blk_tag);
++	fibptr = &dev->fibs[i];
+ 	/*
+ 	 *	Null out fields that depend on being zero at the start of
+ 	 *	each I/O
+diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
+index 5ba5c18b77b4..077adbcde909 100644
+--- a/drivers/scsi/aacraid/linit.c
++++ b/drivers/scsi/aacraid/linit.c
+@@ -34,6 +34,7 @@
+ #include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/msdos_partition.h>
++#include <linux/blk-mq-pci.h>
+ 
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_cmnd.h>
+@@ -505,6 +506,16 @@ static int aac_slave_configure(struct scsi_device *sdev)
+ 	return 0;
+ }
+ 
++static void aac_map_queues(struct Scsi_Host *shost)
++{
++	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
++
++	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
++				aac->pdev, 0);
++}
++
++
++
+ /**
+  *	aac_change_queue_depth		-	alter queue depths
+  *	@sdev:	SCSI device we are considering
+@@ -1489,6 +1500,7 @@ static struct scsi_host_template aac_driver_template = {
+ 	.bios_param			= aac_biosparm,
+ 	.shost_groups			= aac_host_groups,
+ 	.slave_configure		= aac_slave_configure,
++	.map_queues			= aac_map_queues,
+ 	.change_queue_depth		= aac_change_queue_depth,
+ 	.sdev_groups			= aac_dev_groups,
+ 	.eh_abort_handler		= aac_eh_abort,
+@@ -1668,6 +1680,14 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto out_free_host;
+ 	}
+ 
++	aac->reply_map = kzalloc(sizeof(unsigned int) * nr_cpu_ids,
++				GFP_KERNEL);
++	if (!aac->reply_map) {
++		error = -ENOMEM;
++		dev_err(&pdev->dev, "reply_map allocation failed\n");
++		goto out_free_host;
++	}
++
+ 	spin_lock_init(&aac->fib_lock);
+ 
+ 	mutex_init(&aac->ioctl_mutex);
+@@ -1776,6 +1796,8 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	shost->max_lun = AAC_MAX_LUN;
+ 
+ 	pci_set_drvdata(pdev, shost);
++	shost->nr_hw_queues = aac->max_msix;
++	shost->host_tagset = 1;
+ 
+ 	error = scsi_add_host(shost, &pdev->dev);
+ 	if (error)
+@@ -1797,6 +1819,8 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 				  aac->comm_addr, aac->comm_phys);
+ 	kfree(aac->queues);
+ 	aac_adapter_ioremap(aac, 0);
++	/* By now we should have configured the reply_map */
++	kfree(aac->reply_map);
+ 	kfree(aac->fibs);
+ 	kfree(aac->fsa_dev);
+  out_free_host:
+@@ -1918,6 +1942,7 @@ static void aac_remove_one(struct pci_dev *pdev)
+ 
+ 	aac_adapter_ioremap(aac, 0);
+ 
++	kfree(aac->reply_map);
+ 	kfree(aac->fibs);
+ 	kfree(aac->fsa_dev);
+ 
+diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
+index 11ef58204e96..46c0f4df995d 100644
+--- a/drivers/scsi/aacraid/src.c
++++ b/drivers/scsi/aacraid/src.c
+@@ -493,6 +493,8 @@ static int aac_src_deliver_message(struct fib *fib)
+ #endif
+ 
+ 	u16 vector_no;
++	struct scsi_cmnd *scmd;
++	u32 blk_tag;
+ 
+ 	atomic_inc(&q->numpending);
+ 
+@@ -505,8 +507,15 @@ static int aac_src_deliver_message(struct fib *fib)
+ 		if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
+ 			&& dev->sa_firmware)
+ 			vector_no = aac_get_vector(dev);
+-		else
+-			vector_no = fib->vector_no;
++		else {
++			if (!fib->vector_no || !fib->callback_data) {
++				vector_no = dev->reply_map[raw_smp_processor_id()];
++			} else {
++				scmd = (struct scsi_cmnd *)fib->callback_data;
++				blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
++				vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
++			}
++		}
+ 
+ 		if (native_hba) {
+ 			if (fib->flags & FIB_CONTEXT_FLAG_NATIVE_HBA_TMF) {
+-- 
+2.29.0
 
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.10/ker=
-nel/v5.10.176-372-gc1ed79b00c93/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.10
-  Describe: v5.10.176-372-gc1ed79b00c93
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      c1ed79b00c93fb5b44e3b5267fbef715833ce0f8 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644bf20cd1d5c1f0242e85e7
-
-  Results:     51 PASS, 4 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--372-gc1ed79b00c93/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--372-gc1ed79b00c93/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644bf20cd1d5c1f0242e861d
-        failing since 73 days (last pass: v5.10.167-127-g921934d621e4, firs=
-t fail: v5.10.167-139-gf9519a5a1701)
-
-    2023-04-28T16:19:04.368176  <8>[   19.046872] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 398754_1.5.2.4.1>
-    2023-04-28T16:19:04.478369  / # #
-    2023-04-28T16:19:04.581689  export SHELL=3D/bin/sh
-    2023-04-28T16:19:04.582620  #
-    2023-04-28T16:19:04.684735  / # export SHELL=3D/bin/sh. /lava-398754/en=
-vironment
-    2023-04-28T16:19:04.685706  =
-
-    2023-04-28T16:19:04.787872  / # . /lava-398754/environment/lava-398754/=
-bin/lava-test-runner /lava-398754/1
-    2023-04-28T16:19:04.789477  =
-
-    2023-04-28T16:19:04.793817  / # /lava-398754/bin/lava-test-runner /lava=
--398754/1
-    2023-04-28T16:19:04.902354  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644bed15fa3e9d9ef92e8622
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--372-gc1ed79b00c93/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--372-gc1ed79b00c93/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644bed15fa3e9d9ef92e8627
-        failing since 29 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-04-28T15:57:59.750431  + set +x
-
-    2023-04-28T15:57:59.756943  <8>[   17.672153] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10152831_1.4.2.3.1>
-
-    2023-04-28T15:57:59.861020  / # #
-
-    2023-04-28T15:57:59.961563  export SHELL=3D/bin/sh
-
-    2023-04-28T15:57:59.961744  #
-
-    2023-04-28T15:58:00.062222  / # export SHELL=3D/bin/sh. /lava-10152831/=
-environment
-
-    2023-04-28T15:58:00.062419  =
-
-
-    2023-04-28T15:58:00.162908  / # . /lava-10152831/environment/lava-10152=
-831/bin/lava-test-runner /lava-10152831/1
-
-    2023-04-28T15:58:00.163168  =
-
-
-    2023-04-28T15:58:00.167497  / # /lava-10152831/bin/lava-test-runner /la=
-va-10152831/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/644bed13b7df6dce3f2e8608
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--372-gc1ed79b00c93/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--372-gc1ed79b00c93/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230414.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/644bed13b7df6dce3f2e860d
-        failing since 29 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-04-28T15:57:48.963087  + set +x
-
-    2023-04-28T15:57:48.969883  <8>[   11.965718] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10152803_1.4.2.3.1>
-
-    2023-04-28T15:57:49.073536  / # #
-
-    2023-04-28T15:57:49.174236  export SHELL=3D/bin/sh
-
-    2023-04-28T15:57:49.174436  #
-
-    2023-04-28T15:57:49.274945  / # export SHELL=3D/bin/sh. /lava-10152803/=
-environment
-
-    2023-04-28T15:57:49.275149  =
-
-
-    2023-04-28T15:57:49.375631  / # . /lava-10152803/environment/lava-10152=
-803/bin/lava-test-runner /lava-10152803/1
-
-    2023-04-28T15:57:49.375922  =
-
-
-    2023-04-28T15:57:49.381224  / # /lava-10152803/bin/lava-test-runner /la=
-va-10152803/1
- =
-
-    ... (12 line(s) more)  =
-
- =20
