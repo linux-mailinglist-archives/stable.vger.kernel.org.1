@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D19096F168D
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 562D56F168E
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239875AbjD1L2O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54618 "EHLO
+        id S236229AbjD1L2S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229805AbjD1L2K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5395459C0
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:09 -0700 (PDT)
+        with ESMTP id S230341AbjD1L2N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33EC558A
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D73736130B
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0D2C4339B;
-        Fri, 28 Apr 2023 11:28:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F6546130B
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC2BC433EF;
+        Fri, 28 Apr 2023 11:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681288;
-        bh=bvvK0FZOOJPNcBFWnT98CrXg6kgZ6IaaBvnrFFwtlbc=;
+        s=korg; t=1682681290;
+        bh=0DsxCSbGbC9gI6BouZZXD/ALBonxx1qWLe0ITHZCZ8k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iBK5CO4jDlRrv2GPqObg5ZCGx6fngN/sCWpEv/82l19qKcZXM+rw9spLDup2qVCu1
-         nIlbxbyB13dojAE2p3oi+QqVqZsrdlUC9PLEXsyyWN/wH0EIOm88bF4Uzb2J8DPDL3
-         bG3HSwp70au/3ats9E2TaUZkmTtZ7N6SygH3FNUk=
+        b=d6512+kpc1gxInAuxGZxVeSa/jFUibxwxImi1U5GaoM2GHpknPR5ybqMglEmbLs2p
+         BNszLY1tQKL9R7FMX2DSc+5N8EoLpMamgMq9Fq864v6BrB79EOWqW6HPah6WM0GkXK
+         00jpaz8pOs8Jj5sQ9lkndmTW/HpmsUo+7E3wZ2L4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 6.3 04/11] fsverity: explicitly check for buffer overflow in build_merkle_tree()
-Date:   Fri, 28 Apr 2023 13:27:39 +0200
-Message-Id: <20230428112040.046587104@linuxfoundation.org>
+        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.3 05/11] gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
+Date:   Fri, 28 Apr 2023 13:27:40 +0200
+Message-Id: <20230428112040.076293369@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230428112039.886496777@linuxfoundation.org>
 References: <20230428112039.886496777@linuxfoundation.org>
@@ -42,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,64 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 39049b69ec9fc125fa1f314165dcc86f72cb72ec upstream.
+commit 782eea0c89f7d071d6b56ecfa1b8b0c81164b9be upstream.
 
-The new Merkle tree construction algorithm is a bit fragile in that it
-may overflow the 'root_hash' array if the tree actually generated does
-not match the calculated tree parameters.
+commit 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+changed the policy such that I2C touchpads may be able to wake up the
+system by default if the system is configured as such.
 
-This should never happen unless there is a filesystem bug that allows
-the file size to change despite deny_write_access(), or a bug in the
-Merkle tree logic itself.  Regardless, it's fairly easy to check for
-buffer overflow here, so let's do so.
+However on Clevo NL5xNU there is a mistake in the ACPI tables that the
+TP_ATTN# signal connected to GPIO 9 is configured as ActiveLow and level
+triggered but connected to a pull up. As soon as the system suspends the
+touchpad loses power and then the system wakes up.
 
-This is a robustness improvement only; this case is not currently known
-to be reachable.  I've added a Fixes tag anyway, since I recommend that
-this be included in kernels that have the mentioned commit.
+To avoid this problem, introduce a quirk for this model that will prevent
+the wakeup capability for being set for GPIO 9.
 
-Fixes: 56124d6c87fd ("fsverity: support enabling with tree block size < PAGE_SIZE")
+This patch is analoge to a very similar patch for NL5xRU, just the DMI
+string changed.
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230328041505.110162-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/verity/enable.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpio/gpiolib-acpi.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/verity/enable.c
-+++ b/fs/verity/enable.c
-@@ -13,6 +13,7 @@
- 
- struct block_buffer {
- 	u32 filled;
-+	bool is_root_hash;
- 	u8 *data;
- };
- 
-@@ -24,6 +25,14 @@ static int hash_one_block(struct inode *
- 	struct block_buffer *next = cur + 1;
- 	int err;
- 
-+	/*
-+	 * Safety check to prevent a buffer overflow in case of a filesystem bug
-+	 * that allows the file size to change despite deny_write_access(), or a
-+	 * bug in the Merkle tree logic itself
-+	 */
-+	if (WARN_ON_ONCE(next->is_root_hash && next->filled != 0))
-+		return -EINVAL;
-+
- 	/* Zero-pad the block if it's shorter than the block size. */
- 	memset(&cur->data[cur->filled], 0, params->block_size - cur->filled);
- 
-@@ -97,6 +106,7 @@ static int build_merkle_tree(struct file
- 		}
- 	}
- 	buffers[num_levels].data = root_hash;
-+	buffers[num_levels].is_root_hash = true;
- 
- 	BUILD_BUG_ON(sizeof(level_offset) != sizeof(params->level_start));
- 	memcpy(level_offset, params->level_start, sizeof(level_offset));
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1624,6 +1624,19 @@ static const struct dmi_system_id gpioli
+ 		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+ 		 */
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ELAN0415:00@9",
++		},
++	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 1.7.8
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
++		 */
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
+ 		},
+ 		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
 
 
