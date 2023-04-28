@@ -2,78 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E80C6F1207
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 08:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17BD96F1226
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 09:13:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345424AbjD1G5G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 02:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
+        id S233492AbjD1HNT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 03:13:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345418AbjD1G5F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 02:57:05 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA1431FFB
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 23:57:03 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2a8c51ba511so90693641fa.1
-        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 23:57:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1682665022; x=1685257022;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1kJlvIqcTMDqaxW/AEohe0PhfCoogquhxNv0DiWrFl4=;
-        b=hJrB/747zFXzcSCMIBOVwV3xa6T2YgbhBZZsKRIA/c4J5g6210WKxzAKVyb1IeYyfF
-         umxdRhqdsw4ysLjMPiAvx5b08DYGj8cKn0FR9Os+zGbzDwEotIS3QI5JL52sQdjdHIm7
-         HgklUG96wfRfvY0rLT96m2UDMaHmlcj0Zt5rI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682665022; x=1685257022;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1kJlvIqcTMDqaxW/AEohe0PhfCoogquhxNv0DiWrFl4=;
-        b=WfiJ3GdGjdsCykPxipQMtHcxYFulAxdAf7DrJKGrbrHcR09tcTy0u+ZD4tuqLPEmVC
-         Xdv0vOhGb7ggRfO1UGy7Jlg5Fh6srHy/wtPJ4qVK35gih4V7tJAq9b+YuB4bau5ODme8
-         4sym65deyL92eGG6dSvTVHVxCf/7ZY7plhLYL0tUnm3MXYKI7K75HSYLwjvWQqDBBwIY
-         73CZlSK3ic8nDdj2yM69N/j26yyziMUBNg6C8S8kcJE/WNoZWw7b4TAoKOVr/FWEiJeF
-         sPKpXe/16zLA6lGOMndzvKesgRloDZSBY3kzEzsTBT5R/fG+aVCLT9mQjzlozykYmDFU
-         L/3w==
-X-Gm-Message-State: AC+VfDx/i7nh1itVO8ZvwC1eXGQulwW8XV3W8xvPfcgGmV1uXeBHp4Qb
-        FmOBjXuRHJ6qB0JJaXl5QRkDag==
-X-Google-Smtp-Source: ACHHUZ6g6AxxBbf7Sw+PzyY8NXopLVuAvHozwPPBKPyF1ze7pXoradtPdGYIMWg6QbQJ4i3geVRLcQ==
-X-Received: by 2002:a2e:7c12:0:b0:2a8:db03:83f7 with SMTP id x18-20020a2e7c12000000b002a8db0383f7mr1145785ljc.32.1682665022157;
-        Thu, 27 Apr 2023 23:57:02 -0700 (PDT)
-Received: from [172.16.11.116] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id u19-20020a2e8553000000b0029839faa74fsm3214063ljj.134.2023.04.27.23.57.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Apr 2023 23:57:01 -0700 (PDT)
-Message-ID: <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
-Date:   Fri, 28 Apr 2023 08:56:59 +0200
+        with ESMTP id S229680AbjD1HNR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 03:13:17 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD2F3C01;
+        Fri, 28 Apr 2023 00:13:12 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 428511FFFA;
+        Fri, 28 Apr 2023 07:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1682665991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LJ+TMkCiDgfegvvsz0b3841mXTh3rnZkeHoyCdZ3g2o=;
+        b=W9kYRwWGdploRnynCxhQA6nn/OPsw3CdOInic8+pvp7oDcet2eShcDStKef/Ma72D5kMp5
+        UZKPdwh88ZSsAnYG5r/die/XpbmsAO+GjZ6/fTaD4HG3bAyUtYN5zzdnI7kaTWpJCLHYXH
+        I9BsMVyxKILhHqhDrWtTZ08UPT5OcmQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1682665991;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LJ+TMkCiDgfegvvsz0b3841mXTh3rnZkeHoyCdZ3g2o=;
+        b=hI0/yIUG0x80oyE863aFGoetKlHqs9fMKCgzSEVLD5N7r6P4oduv/mBvD++Lt7TDCNEvNn
+        irMGXGwb/GBARwBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0F36D138FA;
+        Fri, 28 Apr 2023 07:13:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 60bxAgdyS2SzTQAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Fri, 28 Apr 2023 07:13:11 +0000
+Message-ID: <dbe9d5cc-80ed-7fcf-f0dc-197ed8885676@suse.cz>
+Date:   Fri, 28 Apr 2023 09:13:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
-Content-Language: en-US, da
-To:     =?UTF-8?Q?Konrad_Gr=c3=a4fe?= <k.graefe@gateware.de>,
-        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-        Felipe Balbi <balbi@ti.com>
-Cc:     stable@vger.kernel.org
-References: <2023042625-rendition-distort-fe06@gregkh>
- <20230427115120.241954-1-k.graefe@gateware.de>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-In-Reply-To: <20230427115120.241954-1-k.graefe@gateware.de>
+Subject: Re: [PATCH for v6.3 regression] mm/mremap: fix vm_pgoff in
+ vma_merge() case 3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Greg KH <greg@kroah.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>, lstoakes@gmail.com,
+        regressions@lists.linux.dev, linux-mm@kvack.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Fabian Vogt <fvogt@suse.com>, stable@vger.kernel.org
+References: <20230427140959.27655-1-vbabka@suse.cz>
+ <2023042719-stratus-pavestone-505e@gregkh>
+ <3cc6e10c-f054-a30a-bf87-966098ccb7bf@suse.cz>
+ <CAHk-=wgdGzy6-3jzN6Kvtz1QxStTZBZPz1zy9i4gM9nbe5FGbA@mail.gmail.com>
+ <CAHk-=whwoKFbrCGXW9uwX3SPOezLdOKstuLAju1KTi5Ryq+ZcQ@mail.gmail.com>
+Content-Language: en-US
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <CAHk-=whwoKFbrCGXW9uwX3SPOezLdOKstuLAju1KTi5Ryq+ZcQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,23 +83,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 27/04/2023 13.51, Konrad Gräfe wrote:
-> The CDC-ECM specification requires an USB gadget to send the host MAC
-> address as uppercase hex string. This change adds the appropriate
-> modifier.
+On 4/28/23 04:53, Linus Torvalds wrote:
+> Hi Vlastimil,
 
-Thinking more about it, I'm not sure this is appropriate, not for a
-single user like this. vsprintf() should not and cannot satisfy all
-possible string formatting requirements for the whole kernel. The %pX
-extensions are convenient for use with printk() and friends where one
-needs what in other languages would be "string interpolation" (because
-then the caller doesn't need to deal with temporary stack buffers and
-pass them as %s arguments), but for single items like this, snprintf()
-is not necessarily the right tool for the job.
+Hi Linus,
 
-In this case, the caller can just as well call string_upper() on the
-result, or not use sprintf() at all and do a tiny loop with
-hex_byte_pack_upper().
+> On Thu, Apr 27, 2023 at 8:12 AM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+>>
+>> Ack. It's in my tree as commit 7e7757876f25 right now (not pushed out
+>> yet, will do the usual build tests and look around for other things
+>> pending).
+> 
+> Gaah. I just merged Andrew's MM tree, and while it had a lot of small
+> conflicts (and the ext4 ones were annoying semantic ones), the only
+> one that was in *confusing* code was the one introduced by this
+> one-liner fix.
+> 
+> I'm pretty sure I did the right thing, particularly given your other
+> patch for the mm tree, but please humor me and take a look at it?
 
-Rasmus
+Sure, took a look and looks correct to me, thanks!
+
+> That 'vma_merge()' function is the function from hell.
+
+Yeah, unfortunately. But despite the bugs, I believe Liam's changes in 6.3
+improved it a lot, as with __vma_adjust() it was much worse (it did e.g.
+things like "swap(vma, expand)" in some cases). And hopefully the cleanups
+from me and Lorenzo in the mm 6.4 pull request improved readability too,
+even though it made the merge tricky.
+
+> I haven't pushed out yet because it's still going through my build
+> tests, but it should be out soon.
+> 
+>                        Linus
 
