@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F26916F16B0
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99FB86F16A6
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233549AbjD1L3f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:29:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56806 "EHLO
+        id S243551AbjD1L3K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:29:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345500AbjD1L3e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:34 -0400
+        with ESMTP id S1345515AbjD1L3J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 620165B86
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0919259EF
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB0836412D
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F06C433D2;
-        Fri, 28 Apr 2023 11:29:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30EE7642F3
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D0AC4339B;
+        Fri, 28 Apr 2023 11:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681369;
-        bh=J1pVn6benT5Br3zvPQHdVecG4Z4mpUkQeh2rFDjD/G8=;
+        s=korg; t=1682681345;
+        bh=kA3of7tF/mD8Ay1LHXmqclwdUdrojt7a6Vd0QPBI0t8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yr0xBiJp/F2QUN2K0g70ltv0q9DHBBK31F5DsPATsX3B+amcvkdJQyF8Ea7mH2wsh
-         g3cpVqlBkv5qHjMqonJr65O+rJxW4wIaOWkgk6A8sEw5BsXPK3Yrk7KK0a80mzPtvt
-         AJ4AtPEzrEkdIKu61rBh6c6XE0WpuChSFtMD+3lI=
+        b=13FO4EBOBrzc8+NAWnTpBHivisLFxC5dVV0ywIXuPiegU0XAfqnE/spJ5ok3jp7C3
+         wekgA5VuIlk7NdlSn52BlFwMxPlSOgTjwz3GInoEgAI0C2Lc0o7FTzXb9iv6ZOElZ8
+         tLJbrxWql//QsVTMGGeIM2N2B+CkODZoxTJqCyjA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 05/16] mptcp: stops worker on unaccepted sockets at listener close
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.2 13/15] riscv: Move early dtb mapping into the fixmap region
 Date:   Fri, 28 Apr 2023 13:27:57 +0200
-Message-Id: <20230428112040.251384476@linuxfoundation.org>
+Message-Id: <20230428112040.562002816@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
-References: <20230428112040.063291126@linuxfoundation.org>
+In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
+References: <20230428112040.137898986@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,192 +54,251 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 2a6a870e44dd88f1a6a2893c65ef756a9edfb4c7 upstream.
+commit ef69d2559fe91f23d27a3d6fd640b5641787d22e upstream.
 
-This is a partial revert of the blamed commit, with a relevant
-change: mptcp_subflow_queue_clean() now just change the msk
-socket status and stop the worker, so that the UaF issue addressed
-by the blamed commit is not re-introduced.
+riscv establishes 2 virtual mappings:
 
-The above prevents the mptcp worker from running concurrently with
-inet_csk_listen_stop(), as such race would trigger a warning, as
-reported by Christoph:
+- early_pg_dir maps the kernel which allows to discover the system
+  memory
+- swapper_pg_dir installs the final mapping (linear mapping included)
 
-RSP: 002b:00007f784fe09cd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-WARNING: CPU: 0 PID: 25807 at net/ipv4/inet_connection_sock.c:1387 inet_csk_listen_stop+0x664/0x870 net/ipv4/inet_connection_sock.c:1387
-RAX: ffffffffffffffda RBX: 00000000006bc050 RCX: 00007f7850afd6a9
-RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000004
-Modules linked in:
-RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00000000006bc05c
-R13: fffffffffffffea8 R14: 00000000006bc050 R15: 000000000001fe40
+We used to map the dtb in early_pg_dir using DTB_EARLY_BASE_VA, and this
+mapping was not carried over in swapper_pg_dir. It happens that
+early_init_fdt_scan_reserved_mem() must be called before swapper_pg_dir is
+setup otherwise we could allocate reserved memory defined in the dtb.
+And this function initializes reserved_mem variable with addresses that
+lie in the early_pg_dir dtb mapping: when those addresses are reused
+with swapper_pg_dir, this mapping does not exist and then we trap.
 
- </TASK>
-CPU: 0 PID: 25807 Comm: syz-executor.7 Not tainted 6.2.0-g778e54711659 #7
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:inet_csk_listen_stop+0x664/0x870 net/ipv4/inet_connection_sock.c:1387
-RAX: 0000000000000000 RBX: ffff888100dfbd40 RCX: 0000000000000000
-RDX: ffff8881363aab80 RSI: ffffffff81c494f4 RDI: 0000000000000005
-RBP: ffff888126dad080 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888100dfe040
-R13: 0000000000000001 R14: 0000000000000000 R15: ffff888100dfbdd8
-FS:  00007f7850a2c800(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b32d26000 CR3: 000000012fdd8006 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- __tcp_close+0x5b2/0x620 net/ipv4/tcp.c:2875
- __mptcp_close_ssk+0x145/0x3d0 net/mptcp/protocol.c:2427
- mptcp_destroy_common+0x8a/0x1c0 net/mptcp/protocol.c:3277
- mptcp_destroy+0x41/0x60 net/mptcp/protocol.c:3304
- __mptcp_destroy_sock+0x56/0x140 net/mptcp/protocol.c:2965
- __mptcp_close+0x38f/0x4a0 net/mptcp/protocol.c:3057
- mptcp_close+0x24/0xe0 net/mptcp/protocol.c:3072
- inet_release+0x53/0xa0 net/ipv4/af_inet.c:429
- __sock_release+0x4e/0xf0 net/socket.c:651
- sock_close+0x15/0x20 net/socket.c:1393
- __fput+0xff/0x420 fs/file_table.c:321
- task_work_run+0x8b/0xe0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x113/0x120 kernel/entry/common.c:203
- __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x1d/0x40 kernel/entry/common.c:296
- do_syscall_64+0x46/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f7850af70dc
-RAX: 0000000000000000 RBX: 0000000000000004 RCX: 00007f7850af70dc
-RDX: 00007f7850a2c800 RSI: 0000000000000002 RDI: 0000000000000003
-RBP: 00000000006bd980 R08: 0000000000000000 R09: 00000000000018a0
-R10: 00000000316338a4 R11: 0000000000000293 R12: 0000000000211e31
-R13: 00000000006bc05c R14: 00007f785062c000 R15: 0000000000211af0
+The previous "fix" was incorrect as early_init_fdt_scan_reserved_mem()
+must be called before swapper_pg_dir is set up otherwise we could
+allocate in reserved memory defined in the dtb.
 
-Fixes: 0a3f4f1f9c27 ("mptcp: fix UaF in listener shutdown")
-Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/371
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+So move the dtb mapping in the fixmap region which is established in
+early_pg_dir and handed over to swapper_pg_dir.
+
+Fixes: 922b0375fc93 ("riscv: Fix memblock reservation for device tree blob")
+Fixes: 8f3a2b4a96dc ("RISC-V: Move DT mapping outof fixmap")
+Fixes: 50e63dd8ed92 ("riscv: fix reserved memory setup")
+Reported-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/all/f8e67f82-103d-156c-deb0-d6d6e2756f5e@microchip.com/
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20230329081932.79831-2-alexghiti@rivosinc.com
+Cc: stable@vger.kernel.org # 6.2.x
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    6 ++++
- net/mptcp/protocol.h |    1 
- net/mptcp/subflow.c  |   72 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 79 insertions(+)
+ Documentation/riscv/vm-layout.rst |    6 +--
+ arch/riscv/include/asm/fixmap.h   |    8 ++++
+ arch/riscv/include/asm/pgtable.h  |    8 +++-
+ arch/riscv/kernel/setup.c         |    1 
+ arch/riscv/mm/init.c              |   61 +++++++++++++++++++++-----------------
+ 5 files changed, 51 insertions(+), 33 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2380,6 +2380,12 @@ static void __mptcp_close_ssk(struct soc
- 		mptcp_subflow_drop_ctx(ssk);
- 	} else {
- 		/* otherwise tcp will dispose of the ssk and subflow ctx */
-+		if (ssk->sk_state == TCP_LISTEN) {
-+			tcp_set_state(ssk, TCP_CLOSE);
-+			mptcp_subflow_queue_clean(sk, ssk);
-+			inet_csk_listen_stop(ssk);
-+		}
-+
- 		__tcp_close(ssk, 0);
- 
- 		/* close acquired an extra ref */
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -615,6 +615,7 @@ void mptcp_close_ssk(struct sock *sk, st
- 		     struct mptcp_subflow_context *subflow);
- void __mptcp_subflow_send_ack(struct sock *ssk);
- void mptcp_subflow_reset(struct sock *ssk);
-+void mptcp_subflow_queue_clean(struct sock *sk, struct sock *ssk);
- void mptcp_sock_graft(struct sock *sk, struct socket *parent);
- struct socket *__mptcp_nmpc_socket(const struct mptcp_sock *msk);
- bool __mptcp_close(struct sock *sk, long timeout);
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1758,6 +1758,78 @@ static void subflow_state_change(struct
- 	}
- }
- 
-+void mptcp_subflow_queue_clean(struct sock *listener_sk, struct sock *listener_ssk)
-+{
-+	struct request_sock_queue *queue = &inet_csk(listener_ssk)->icsk_accept_queue;
-+	struct mptcp_sock *msk, *next, *head = NULL;
-+	struct request_sock *req;
-+
-+	/* build a list of all unaccepted mptcp sockets */
-+	spin_lock_bh(&queue->rskq_lock);
-+	for (req = queue->rskq_accept_head; req; req = req->dl_next) {
-+		struct mptcp_subflow_context *subflow;
-+		struct sock *ssk = req->sk;
-+
-+		if (!sk_is_mptcp(ssk))
-+			continue;
-+
-+		subflow = mptcp_subflow_ctx(ssk);
-+		if (!subflow || !subflow->conn)
-+			continue;
-+
-+		/* skip if already in list */
-+		msk = mptcp_sk(subflow->conn);
-+		if (msk->dl_next || msk == head)
-+			continue;
-+
-+		sock_hold(subflow->conn);
-+		msk->dl_next = head;
-+		head = msk;
-+	}
-+	spin_unlock_bh(&queue->rskq_lock);
-+	if (!head)
-+		return;
-+
-+	/* can't acquire the msk socket lock under the subflow one,
-+	 * or will cause ABBA deadlock
+--- a/Documentation/riscv/vm-layout.rst
++++ b/Documentation/riscv/vm-layout.rst
+@@ -47,7 +47,7 @@ RISC-V Linux Kernel SV39
+                                                               | Kernel-space virtual memory, shared between all processes:
+   ____________________________________________________________|___________________________________________________________
+                     |            |                  |         |
+-   ffffffc6fee00000 | -228    GB | ffffffc6feffffff |    2 MB | fixmap
++   ffffffc6fea00000 | -228    GB | ffffffc6feffffff |    6 MB | fixmap
+    ffffffc6ff000000 | -228    GB | ffffffc6ffffffff |   16 MB | PCI io
+    ffffffc700000000 | -228    GB | ffffffc7ffffffff |    4 GB | vmemmap
+    ffffffc800000000 | -224    GB | ffffffd7ffffffff |   64 GB | vmalloc/ioremap space
+@@ -83,7 +83,7 @@ RISC-V Linux Kernel SV48
+                                                               | Kernel-space virtual memory, shared between all processes:
+   ____________________________________________________________|___________________________________________________________
+                     |            |                  |         |
+-   ffff8d7ffee00000 |  -114.5 TB | ffff8d7ffeffffff |    2 MB | fixmap
++   ffff8d7ffea00000 |  -114.5 TB | ffff8d7ffeffffff |    6 MB | fixmap
+    ffff8d7fff000000 |  -114.5 TB | ffff8d7fffffffff |   16 MB | PCI io
+    ffff8d8000000000 |  -114.5 TB | ffff8f7fffffffff |    2 TB | vmemmap
+    ffff8f8000000000 |  -112.5 TB | ffffaf7fffffffff |   32 TB | vmalloc/ioremap space
+@@ -119,7 +119,7 @@ RISC-V Linux Kernel SV57
+                                                               | Kernel-space virtual memory, shared between all processes:
+   ____________________________________________________________|___________________________________________________________
+                     |            |                  |         |
+-   ff1bfffffee00000 | -57     PB | ff1bfffffeffffff |    2 MB | fixmap
++   ff1bfffffea00000 | -57     PB | ff1bfffffeffffff |    6 MB | fixmap
+    ff1bffffff000000 | -57     PB | ff1bffffffffffff |   16 MB | PCI io
+    ff1c000000000000 | -57     PB | ff1fffffffffffff |    1 PB | vmemmap
+    ff20000000000000 | -56     PB | ff5fffffffffffff |   16 PB | vmalloc/ioremap space
+--- a/arch/riscv/include/asm/fixmap.h
++++ b/arch/riscv/include/asm/fixmap.h
+@@ -22,6 +22,14 @@
+  */
+ enum fixed_addresses {
+ 	FIX_HOLE,
++	/*
++	 * The fdt fixmap mapping must be PMD aligned and will be mapped
++	 * using PMD entries in fixmap_pmd in 64-bit and a PGD entry in 32-bit.
 +	 */
-+	release_sock(listener_ssk);
++	FIX_FDT_END,
++	FIX_FDT = FIX_FDT_END + FIX_FDT_SIZE / PAGE_SIZE - 1,
 +
-+	for (msk = head; msk; msk = next) {
-+		struct sock *sk = (struct sock *)msk;
++	/* Below fixmaps will be mapped using fixmap_pte */
+ 	FIX_PTE,
+ 	FIX_PMD,
+ 	FIX_PUD,
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -87,9 +87,13 @@
+ 
+ #define FIXADDR_TOP      PCI_IO_START
+ #ifdef CONFIG_64BIT
+-#define FIXADDR_SIZE     PMD_SIZE
++#define MAX_FDT_SIZE	 PMD_SIZE
++#define FIX_FDT_SIZE	 (MAX_FDT_SIZE + SZ_2M)
++#define FIXADDR_SIZE     (PMD_SIZE + FIX_FDT_SIZE)
+ #else
+-#define FIXADDR_SIZE     PGDIR_SIZE
++#define MAX_FDT_SIZE	 PGDIR_SIZE
++#define FIX_FDT_SIZE	 MAX_FDT_SIZE
++#define FIXADDR_SIZE     (PGDIR_SIZE + FIX_FDT_SIZE)
+ #endif
+ #define FIXADDR_START    (FIXADDR_TOP - FIXADDR_SIZE)
+ 
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -283,7 +283,6 @@ void __init setup_arch(char **cmdline_p)
+ 	else
+ 		pr_err("No DTB found in kernel mappings\n");
+ #endif
+-	early_init_fdt_scan_reserved_mem();
+ 	misc_mem_init();
+ 
+ 	init_resources();
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -57,7 +57,6 @@ unsigned long empty_zero_page[PAGE_SIZE
+ EXPORT_SYMBOL(empty_zero_page);
+ 
+ extern char _start[];
+-#define DTB_EARLY_BASE_VA      PGDIR_SIZE
+ void *_dtb_early_va __initdata;
+ uintptr_t _dtb_early_pa __initdata;
+ 
+@@ -236,6 +235,14 @@ static void __init setup_bootmem(void)
+ 	set_max_mapnr(max_low_pfn - ARCH_PFN_OFFSET);
+ 
+ 	reserve_initrd_mem();
 +
-+		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
-+		next = msk->dl_next;
-+		msk->dl_next = NULL;
++	/*
++	 * No allocation should be done before reserving the memory as defined
++	 * in the device tree, otherwise the allocation could end up in a
++	 * reserved region.
++	 */
++	early_init_fdt_scan_reserved_mem();
 +
-+		/* prevent the stack from later re-schedule the worker for
-+		 * this socket
-+		 */
-+		inet_sk_state_store(sk, TCP_CLOSE);
-+		release_sock(sk);
-+
-+		/* lockdep will report a false positive ABBA deadlock
-+		 * between cancel_work_sync and the listener socket.
-+		 * The involved locks belong to different sockets WRT
-+		 * the existing AB chain.
-+		 * Using a per socket key is problematic as key
-+		 * deregistration requires process context and must be
-+		 * performed at socket disposal time, in atomic
-+		 * context.
-+		 * Just tell lockdep to consider the listener socket
-+		 * released here.
-+		 */
-+		mutex_release(&listener_sk->sk_lock.dep_map, _RET_IP_);
-+		mptcp_cancel_work(sk);
-+		mutex_acquire(&listener_sk->sk_lock.dep_map, 0, 0, _RET_IP_);
-+
-+		sock_put(sk);
-+	}
-+
-+	/* we are still under the listener msk socket lock */
-+	lock_sock_nested(listener_ssk, SINGLE_DEPTH_NESTING);
-+}
-+
- static int subflow_ulp_init(struct sock *sk)
+ 	/*
+ 	 * If DTB is built in, no need to reserve its memblock.
+ 	 * Otherwise, do reserve it but avoid using
+@@ -279,9 +286,6 @@ pgd_t trampoline_pg_dir[PTRS_PER_PGD] __
+ static pte_t fixmap_pte[PTRS_PER_PTE] __page_aligned_bss;
+ 
+ pgd_t early_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+-static p4d_t __maybe_unused early_dtb_p4d[PTRS_PER_P4D] __initdata __aligned(PAGE_SIZE);
+-static pud_t __maybe_unused early_dtb_pud[PTRS_PER_PUD] __initdata __aligned(PAGE_SIZE);
+-static pmd_t __maybe_unused early_dtb_pmd[PTRS_PER_PMD] __initdata __aligned(PAGE_SIZE);
+ 
+ #ifdef CONFIG_XIP_KERNEL
+ #define pt_ops			(*(struct pt_alloc_ops *)XIP_FIXUP(&pt_ops))
+@@ -626,9 +630,6 @@ static void __init create_p4d_mapping(p4
+ #define trampoline_pgd_next	(pgtable_l5_enabled ?			\
+ 		(uintptr_t)trampoline_p4d : (pgtable_l4_enabled ?	\
+ 		(uintptr_t)trampoline_pud : (uintptr_t)trampoline_pmd))
+-#define early_dtb_pgd_next	(pgtable_l5_enabled ?			\
+-		(uintptr_t)early_dtb_p4d : (pgtable_l4_enabled ?	\
+-		(uintptr_t)early_dtb_pud : (uintptr_t)early_dtb_pmd))
+ #else
+ #define pgd_next_t		pte_t
+ #define alloc_pgd_next(__va)	pt_ops.alloc_pte(__va)
+@@ -636,7 +637,6 @@ static void __init create_p4d_mapping(p4
+ #define create_pgd_next_mapping(__nextp, __va, __pa, __sz, __prot)	\
+ 	create_pte_mapping(__nextp, __va, __pa, __sz, __prot)
+ #define fixmap_pgd_next		((uintptr_t)fixmap_pte)
+-#define early_dtb_pgd_next	((uintptr_t)early_dtb_pmd)
+ #define create_p4d_mapping(__pmdp, __va, __pa, __sz, __prot) do {} while(0)
+ #define create_pud_mapping(__pmdp, __va, __pa, __sz, __prot) do {} while(0)
+ #define create_pmd_mapping(__pmdp, __va, __pa, __sz, __prot) do {} while(0)
+@@ -860,32 +860,28 @@ static void __init create_kernel_page_ta
+  * this means 2 PMD entries whereas for 32-bit kernel, this is only 1 PGDIR
+  * entry.
+  */
+-static void __init create_fdt_early_page_table(pgd_t *pgdir, uintptr_t dtb_pa)
++static void __init create_fdt_early_page_table(pgd_t *pgdir,
++					       uintptr_t fix_fdt_va,
++					       uintptr_t dtb_pa)
  {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
+-#ifndef CONFIG_BUILTIN_DTB
+ 	uintptr_t pa = dtb_pa & ~(PMD_SIZE - 1);
+ 
+-	create_pgd_mapping(early_pg_dir, DTB_EARLY_BASE_VA,
+-			   IS_ENABLED(CONFIG_64BIT) ? early_dtb_pgd_next : pa,
+-			   PGDIR_SIZE,
+-			   IS_ENABLED(CONFIG_64BIT) ? PAGE_TABLE : PAGE_KERNEL);
+-
+-	if (pgtable_l5_enabled)
+-		create_p4d_mapping(early_dtb_p4d, DTB_EARLY_BASE_VA,
+-				   (uintptr_t)early_dtb_pud, P4D_SIZE, PAGE_TABLE);
+-
+-	if (pgtable_l4_enabled)
+-		create_pud_mapping(early_dtb_pud, DTB_EARLY_BASE_VA,
+-				   (uintptr_t)early_dtb_pmd, PUD_SIZE, PAGE_TABLE);
++#ifndef CONFIG_BUILTIN_DTB
++	/* Make sure the fdt fixmap address is always aligned on PMD size */
++	BUILD_BUG_ON(FIX_FDT % (PMD_SIZE / PAGE_SIZE));
+ 
+-	if (IS_ENABLED(CONFIG_64BIT)) {
+-		create_pmd_mapping(early_dtb_pmd, DTB_EARLY_BASE_VA,
++	/* In 32-bit only, the fdt lies in its own PGD */
++	if (!IS_ENABLED(CONFIG_64BIT)) {
++		create_pgd_mapping(early_pg_dir, fix_fdt_va,
++				   pa, MAX_FDT_SIZE, PAGE_KERNEL);
++	} else {
++		create_pmd_mapping(fixmap_pmd, fix_fdt_va,
+ 				   pa, PMD_SIZE, PAGE_KERNEL);
+-		create_pmd_mapping(early_dtb_pmd, DTB_EARLY_BASE_VA + PMD_SIZE,
++		create_pmd_mapping(fixmap_pmd, fix_fdt_va + PMD_SIZE,
+ 				   pa + PMD_SIZE, PMD_SIZE, PAGE_KERNEL);
+ 	}
+ 
+-	dtb_early_va = (void *)DTB_EARLY_BASE_VA + (dtb_pa & (PMD_SIZE - 1));
++	dtb_early_va = (void *)fix_fdt_va + (dtb_pa & (PMD_SIZE - 1));
+ #else
+ 	/*
+ 	 * For 64-bit kernel, __va can't be used since it would return a linear
+@@ -1055,7 +1051,8 @@ asmlinkage void __init setup_vm(uintptr_
+ 	create_kernel_page_table(early_pg_dir, true);
+ 
+ 	/* Setup early mapping for FDT early scan */
+-	create_fdt_early_page_table(early_pg_dir, dtb_pa);
++	create_fdt_early_page_table(early_pg_dir,
++				    __fix_to_virt(FIX_FDT), dtb_pa);
+ 
+ 	/*
+ 	 * Bootime fixmap only can handle PMD_SIZE mapping. Thus, boot-ioremap
+@@ -1097,6 +1094,16 @@ static void __init setup_vm_final(void)
+ 	u64 i;
+ 
+ 	/* Setup swapper PGD for fixmap */
++#if !defined(CONFIG_64BIT)
++	/*
++	 * In 32-bit, the device tree lies in a pgd entry, so it must be copied
++	 * directly in swapper_pg_dir in addition to the pgd entry that points
++	 * to fixmap_pte.
++	 */
++	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
++
++	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
++#endif
+ 	create_pgd_mapping(swapper_pg_dir, FIXADDR_START,
+ 			   __pa_symbol(fixmap_pgd_next),
+ 			   PGDIR_SIZE, PAGE_TABLE);
 
 
