@@ -2,115 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEFE26F11B1
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 08:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1078D6F11EE
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 08:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345366AbjD1GP2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 02:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
+        id S1345347AbjD1Gti (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 02:49:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345367AbjD1GPX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 02:15:23 -0400
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4764497;
-        Thu, 27 Apr 2023 23:15:22 -0700 (PDT)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-94f1a6e66c9so1758155166b.2;
-        Thu, 27 Apr 2023 23:15:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682662520; x=1685254520;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nKg0o2X3zUwk7C1FxgskinEP8Y3FsAVaj1+iPRtrTLM=;
-        b=DfpPhoYuY+1M0VOVESKi7HUBK86c31lLLpecVQQSXmt5KNhLhnVjOeUyoETm1qmrte
-         fIvugI5XhS3pBkhenmdhDQnSaRjQS50w+7GAzpvqgJIqmMwGq5V3Ic/47NzqK+ONkVx+
-         aV2SnVKfB2BXahW79MdTYWYuC58FxndAoMRhoSvcULDuohApe6CGXJQjAenZ5gP1S5Yy
-         OAFPrID59GYPIQ720YFGW5ticDh/J0ceimSGiNWrdmI0X//vxYb8rb2NNwdVEnQPNeTz
-         JU7Fdk3/240l8gmUNOcym4d3E1r441DFtVF/JkNeDXLirOjo5HmzvbjlQ4M1cMILtYwy
-         XL6A==
-X-Gm-Message-State: AC+VfDyKGx4Q57O1Pqz6//Pt9tlVKWtabYhWcVIPJU5HRpFN6i1nku98
-        wKF2mas91/LgXi29IFmmL10=
-X-Google-Smtp-Source: ACHHUZ6EMvsXSqUHkSdrzd/E0ByCGNrcKMWu7/ohpHqyvp5f/plsxP+8DlyngVbdVoo0IoCjp1iLbg==
-X-Received: by 2002:a17:907:9347:b0:94e:ed5d:8777 with SMTP id bv7-20020a170907934700b0094eed5d8777mr4092020ejc.25.1682662520293;
-        Thu, 27 Apr 2023 23:15:20 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id 26-20020a170906101a00b0095729352bf3sm9256078ejm.215.2023.04.27.23.15.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Apr 2023 23:15:19 -0700 (PDT)
-Message-ID: <a21cbbb4-6fe0-c154-6064-517dad716aa0@kernel.org>
-Date:   Fri, 28 Apr 2023 08:15:18 +0200
+        with ESMTP id S1345251AbjD1Gth (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 02:49:37 -0400
+Received: from www484.your-server.de (www484.your-server.de [78.47.237.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C858330F1;
+        Thu, 27 Apr 2023 23:49:34 -0700 (PDT)
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www484.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1psHv7-000KXe-Jc; Fri, 28 Apr 2023 08:49:29 +0200
+Received: from [2003:ca:6730:e8f8:9fd6:4f62:9dbd:374f] (helo=tethys.gateware.dom)
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1psHv6-0005zg-Tg; Fri, 28 Apr 2023 08:49:28 +0200
+From:   =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>
+To:     Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>,
+        stable@vger.kernel.org
+Subject: [PATCH v4 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+Date:   Fri, 28 Apr 2023 08:49:04 +0200
+Message-Id: <20230428064905.145858-1-k.graefe@gateware.de>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230427115120.241954-2-k.graefe@gateware.de>
+References: <20230427115120.241954-2-k.graefe@gateware.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH for v6.3 regression] mm/mremap: fix vm_pgoff in
- vma_merge() case 3
-Content-Language: en-US
-To:     Greg KH <greg@kroah.com>, Vlastimil Babka <vbabka@suse.cz>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>, lstoakes@gmail.com,
-        regressions@lists.linux.dev, linux-mm@kvack.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Fabian Vogt <fvogt@suse.com>, stable@vger.kernel.org
-References: <20230427140959.27655-1-vbabka@suse.cz>
- <2023042719-stratus-pavestone-505e@gregkh>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <2023042719-stratus-pavestone-505e@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: k.graefe@gateware.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26889/Thu Apr 27 09:25:48 2023)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 27. 04. 23, 16:27, Greg KH wrote:
-> On Thu, Apr 27, 2023 at 04:09:59PM +0200, Vlastimil Babka wrote:
->> After upgrading build guests to v6.3, rpm started segfaulting for
->> specific packages, which was bisected to commit 0503ea8f5ba7 ("mm/mmap:
->> remove __vma_adjust()"). rpm is doing many mremap() operations with file
->> mappings of its db. The problem is that in vma_merge() case 3 (we merge
->> with the next vma, expanding it downwards) vm_pgoff is not adjusted as
->> it should when vm_start changes. As a result the rpm process most likely
->> sees data from the wrong offset of the file. Fix the vm_pgoff
->> calculation.
->>
->> For case 8 this is a non-functional change as the resulting vm_pgoff is
->> the same.
->>
->> Reported-and-bisected-by: Jiri Slaby <jirislaby@kernel.org>
->> Reported-and-tested-by: Fabian Vogt <fvogt@suse.com>
->> Link: https://bugzilla.suse.com/show_bug.cgi?id=1210903
->> Fixes: 0503ea8f5ba7 ("mm/mmap: remove __vma_adjust()")
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> Cc: <stable@vger.kernel.org>
->> ---
->> Hi, I'm sending this patch on top of v6.3 as I think it should be
->> applied and backported to 6.3-stable rather sooner than later.
->> This means there would be a small conflict when merging mm/mm-stable
->> later. Alternatively it could be added to mm/mm-stable and upcoming 6.4
->> pull request, but then the stable backport would need adjustment.
->> It's up to Linus and Andrew.
-> 
-> That's not how the stable tree works, sorry, it needs to be in Linus's
-> tree _first_.
+The CDC-ECM specification requires an USB gadget to send the host MAC
+address as uppercase hex string. This change adds the appropriate
+modifier.
 
-In upstream as:
-commit 7e7757876f258d99266e7b3c559639289a2a45fe
-Author: Vlastimil Babka <vbabka@suse.cz>
-Date:   Thu Apr 27 16:09:59 2023 +0200
+Cc: stable@vger.kernel.org
+Signed-off-by: Konrad Gräfe <k.graefe@gateware.de>
+---
 
-     mm/mremap: fix vm_pgoff in vma_merge() case 3
+Changes since v3:
+* Added documentation
+* Added test cases
+* Use string_upper() after conversion to simplify conversion loop
+* Fixed maybe-uninitalized variable warning
 
-Please queue for 6.3.1.
+Added in v3
 
-thanks,
+ Documentation/core-api/printk-formats.rst | 15 ++++++++++-----
+ lib/test_printf.c                         |  2 ++
+ lib/vsprintf.c                            |  5 +++++
+ 3 files changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
+index dbe1aacc79d0..1ec682bdfe94 100644
+--- a/Documentation/core-api/printk-formats.rst
++++ b/Documentation/core-api/printk-formats.rst
+@@ -298,11 +298,13 @@ MAC/FDDI addresses
+ 
+ ::
+ 
+-	%pM	00:01:02:03:04:05
+-	%pMR	05:04:03:02:01:00
+-	%pMF	00-01-02-03-04-05
+-	%pm	000102030405
+-	%pmR	050403020100
++	%pM	00:01:02:03:aa:bb
++	%pMR	aa:bb:03:02:01:00
++	%pMF	00-01-02-03-aa-bb
++	%pMU	00:01:02:03:AA:BB
++	%pm	00010203aabb
++	%pmR	bbaa03020100
++	%pmU	00010203AABB
+ 
+ For printing 6-byte MAC/FDDI addresses in hex notation. The ``M`` and ``m``
+ specifiers result in a printed address with (M) or without (m) byte
+@@ -316,6 +318,9 @@ For Bluetooth addresses the ``R`` specifier shall be used after the ``M``
+ specifier to use reversed byte order suitable for visual interpretation
+ of Bluetooth addresses which are in the little endian order.
+ 
++For uppercase hex notation the ``U`` specifier shall be used after the ``M``
++and ``m`` specifiers.
++
+ Passed by reference.
+ 
+ IPv4 addresses
+diff --git a/lib/test_printf.c b/lib/test_printf.c
+index 46b4e6c414a3..7f4de2ecafbc 100644
+--- a/lib/test_printf.c
++++ b/lib/test_printf.c
+@@ -416,9 +416,11 @@ mac(void)
+ 	const u8 addr[6] = {0x2d, 0x48, 0xd6, 0xfc, 0x7a, 0x05};
+ 
+ 	test("2d:48:d6:fc:7a:05", "%pM", addr);
++	test("2D:48:D6:FC:7A:05", "%pMU", addr);
+ 	test("05:7a:fc:d6:48:2d", "%pMR", addr);
+ 	test("2d-48-d6-fc-7a-05", "%pMF", addr);
+ 	test("2d48d6fc7a05", "%pm", addr);
++	test("2D48D6FC7A05", "%pmU", addr);
+ 	test("057afcd6482d", "%pmR", addr);
+ }
+ 
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index be71a03c936a..c82616c335e0 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -1301,6 +1301,9 @@ char *mac_address_string(char *buf, char *end, u8 *addr,
+ 	}
+ 	*p = '\0';
+ 
++	if (fmt[1] == 'U')
++		string_upper(mac_addr, mac_addr);
++
+ 	return string_nocheck(buf, end, mac_addr, spec);
+ }
+ 
+@@ -2280,6 +2283,7 @@ char *rust_fmt_argument(char *buf, char *end, void *ptr);
+  * - 'MF' For a 6-byte MAC FDDI address, it prints the address
+  *       with a dash-separated hex notation
+  * - '[mM]R' For a 6-byte MAC address, Reverse order (Bluetooth)
++ * - '[mM]U' For a 6-byte MAC address in uppercase hex
+  * - 'I' [46] for IPv4/IPv6 addresses printed in the usual way
+  *       IPv4 uses dot-separated decimal without leading 0's (1.2.3.4)
+  *       IPv6 uses colon separated network-order 16 bit hex with leading 0's
+@@ -2407,6 +2411,7 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
+ 	case 'M':			/* Colon separated: 00:01:02:03:04:05 */
+ 	case 'm':			/* Contiguous: 000102030405 */
+ 					/* [mM]F (FDDI) */
++					/* [mM]U (Uppercase hex) */
+ 					/* [mM]R (Reverse order; Bluetooth) */
+ 		return mac_address_string(buf, end, ptr, spec, fmt);
+ 	case 'I':			/* Formatted IP supported
 -- 
-js
-suse labs
+2.34.1
 
