@@ -2,109 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7AE6F10BC
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 05:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD32D6F1119
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 06:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344988AbjD1DPL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 27 Apr 2023 23:15:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52620 "EHLO
+        id S1345338AbjD1EqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 00:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344986AbjD1DPJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 27 Apr 2023 23:15:09 -0400
-Received: from gnuweeb.org (gnuweeb.org [51.81.211.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED00E75;
-        Thu, 27 Apr 2023 20:15:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gnuweeb.org;
-        s=default; t=1682651705;
-        bh=aQE8eazy0RcIqT818s9oCMYv7+qMqDDlz9r6IgAFmKc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=e2ybsKO+E+m6itkBHmI/dkUGZqEn9fKjOzrl7AHdwjHB6SvqkExdt66Jentr95E7O
-         3GduXr2qD6yURkzE89G39LD02dFGsX2Bu73AZLynVFR7ndEjoSkYOr0/AFXqX/NNOv
-         GIqGivpINfzR1/8uVm/6sY7aTbEnsXTO0Cf8ulGPstddfY/6IP4iNKpClFWgxtzVnU
-         Zkugh4j+3QeydSvdXJ7wpoQm61SsHVTyYMNAr8k/l/b8esSM03zO4/WRWa8JSNkXPT
-         EnP+Pj9zegDgr+mQekB+fZelcY2lvypjgYBuBbpcxbYeHfb5tMrq1NO+ZopmZpJJ08
-         VhwyJdB87x6IA==
-Received: from biznet-home.integral.gnuweeb.org (unknown [182.253.183.144])
-        by gnuweeb.org (Postfix) with ESMTPSA id 18B2E245A10;
-        Fri, 28 Apr 2023 10:15:01 +0700 (WIB)
-Date:   Fri, 28 Apr 2023 10:14:58 +0700
-From:   Ammar Faizi <ammarfaizi2@gnuweeb.org>
-To:     David Sterba <dsterba@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Sterba <dsterba@suse.com>, Qu Wenruo <wqu@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>, Memet <zxce3@gnuweeb.org>,
-        Linux Btrfs Mailing List <linux-btrfs@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        GNU/Weeb Mailing List <gwml@vger.gnuweeb.org>
-Subject: Re: [GIT PULL] Btrfs updates for 6.3
-Message-ID: <ZEs6Mnx0s/siIZwv@biznet-home.integral.gnuweeb.org>
-References: <cover.1676908729.git.dsterba@suse.com>
- <CAHk-=wh6-qpZ=yzseD_CQn8Gc+nGDLrufFxSFvVO2qK6+8fGUw@mail.gmail.com>
- <4b35f3a4-9972-b7f0-287f-165a817c0f73@gnuweeb.org>
- <20230425145412.GC19619@suse.cz>
+        with ESMTP id S229502AbjD1EqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 00:46:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7C22696
+        for <stable@vger.kernel.org>; Thu, 27 Apr 2023 21:46:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F411F634BC
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:46:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5E4C433EF;
+        Fri, 28 Apr 2023 04:46:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1682657178;
+        bh=A6UoyBfXXjCTt4t89SXMJW1R125z01cnN3jkKijKcYI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WFeO5AXy9KqtoRk6omAj5s4gcsa8oKKF/euEfXbdWlajryvyDTYfE3VDgAlV3aH9F
+         f0uITjcKJMFnPDBjC2vlOFjGBknLnFzzd/FE7cwxqEvZxoOpBDwi392mTro6HhF+7W
+         IgreCHmyDBaRemxGtON1utwkTpTNTRLeWciCx9K4=
+Date:   Fri, 28 Apr 2023 06:46:15 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc:     Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.2.11 3/3] riscv: No need to relocate the dtb as it lies
+ in the fixmap region
+Message-ID: <ZEtPl3h2Ucy3ry9L@kroah.com>
+References: <20230424150354.195572-1-alexghiti@rivosinc.com>
+ <20230424150354.195572-4-alexghiti@rivosinc.com>
+ <2023042756-aggregate-distance-1d1a@gregkh>
+ <CAHVXubgTt4K+Vp0jmd+KyjNYVYKJ+32EhPNbM=1ObxwSoyaKnQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230425145412.GC19619@suse.cz>
-X-Bpl:  hUx9VaHkTWcLO7S8CQCslj6OzqBx2hfLChRz45nPESx5VSB/xuJQVOKOB1zSXE3yc9ntP27bV1M1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHVXubgTt4K+Vp0jmd+KyjNYVYKJ+32EhPNbM=1ObxwSoyaKnQ@mail.gmail.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Apr 25, 2023 at 04:54:12PM +0200, David Sterba wrote:
-> On Sun, Apr 23, 2023 at 09:27:30AM +0700, Ammar Faizi wrote:
-> > On 2/21/23 4:02 AM, Linus Torvalds wrote:
-> > > On Mon, Feb 20, 2023 at 11:26 AM David Sterba <dsterba@suse.com> wrote:
-> > >> Other:
-> > >>
-> > >> - locally enable -Wmaybe-uninitialized after fixing all warnings
-> > > 
-> > > I've pulled this, but I strongly suspect this change will get reverted.
-> > > 
-> > > I bet neither you nor linux-next is testing even _remotely_ a big
-> > > chunk of the different compiler versions that are out there, and the
-> > > reason flags like '-Wmaybe-uninitialized' get undone is because some
-> > > random compiler version on some random config and target archiecture
-> > > gives completely nonsensical warnings for odd reasons.
-> > > 
-> > > But hey, maybe the btrfs code is special.
-> > 
-> > Maybe it's too late for 6.3. So please fix this in 6.4 and backport it to
-> > 6.3 stable.
+On Thu, Apr 27, 2023 at 05:23:33PM +0200, Alexandre Ghiti wrote:
+> Hi Greg,
 > 
-> Fix for this warning is in 6.4 pull request, there's no CC:stable tag
-> but we can ask to add it once the code lands in master.
+> On Thu, Apr 27, 2023 at 11:53 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Apr 24, 2023 at 05:03:54PM +0200, Alexandre Ghiti wrote:
+> > > commit 1b50f956c8fe9082bdee4a9cfd798149c52f7043 upstream.
+> > >
+> > > We used to access the dtb via its linear mapping address but now that the
+> > > dtb early mapping was moved in the fixmap region, we can keep using this
+> > > address since it is present in swapper_pg_dir, and remove the dtb
+> > > relocation.
+> > >
+> > > Note that the relocation was wrong anyway since early_memremap() is
+> > > restricted to 256K whereas the maximum fdt size is 2MB.
+> > >
+> > > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> > > Cc: <stable@vger.kernel.org> # 6.2.x
+> >
+> > You dropped everyone else's s-o-b for this patch, why?
+> 
+> Sorry for that, I'll fix it. Should I add the s-o-b even for the
+> patches that I had to adapt?
 
-It landed in master.
+Yes, you _have_ to do that :)
 
-[ Adding stable team to the Cc list ]
+thanks,
 
-Hi Greg and stable team, could you please backport:
-
-  commit 8ba7d5f5ba931be68a94b8c91bcced1622934e7a upstream
-  ("btrfs: fix uninitialized variable warnings")
-
-to v6.3 to fix gcc (10, 9, 7) build error?
-
-The fs/btrfs/volumes.c hunk won't apply cleanly, but it can auto-merge:
-
-  $ git cherry-pick 8ba7d5f5ba931be68a94b8c91bcced1622934e7a
-  Auto-merging fs/btrfs/volumes.c
-  [detached HEAD 572410288a1070c1] btrfs: fix uninitialized variable warnings
-   Author: Genjian Zhang <zhanggenjian@kylinos.cn>
-   Date: Fri Mar 24 10:08:38 2023 +0800
-   2 files changed, 2 insertions(+), 2 deletions(-)
-
-Thanks,
-
--- 
-Ammar Faizi
-
+greg k-h
