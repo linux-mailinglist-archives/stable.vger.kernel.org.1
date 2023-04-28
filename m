@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0986F169A
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747096F168A
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbjD1L2k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55390 "EHLO
+        id S239314AbjD1L2F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:28:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241070AbjD1L2j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:39 -0400
+        with ESMTP id S239683AbjD1L2D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3DC44C2D
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097154EC3
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BA176122E
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD74C433D2;
-        Fri, 28 Apr 2023 11:28:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEA546130B
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC047C433EF;
+        Fri, 28 Apr 2023 11:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681316;
-        bh=Op2dXB//TRDl8Ibmf7f1Vl/mOLmzqoYEyjRsfAgm2Zw=;
+        s=korg; t=1682681280;
+        bh=SzFv4zlER1A25L9p9vxeu0uSQeLIUj2q0TKJMQucMwQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gZECbyPkEt5u54HlVKjg5ghm8YnoDZ9rMlqBE72xsaStKUv35QSUCrs+/oZ35Qhvy
-         muXej5cD9X+BeqteiVGfJibtS9G8Dspyq+cf/4d3vZXW586BmNuw8ledAi2cy6ixt/
-         U8ydHmUUYtTihytarmOoVBvkQv377Av7t4PWewqo=
+        b=ikUNhV0tBSa378GwRP0n8Jso17iWGuwCupPeTo0vyNPiaoO9ZgNx8o3/YJ0z5AZzM
+         p9y17ICT7B7mK7P1vMFBHSKd1mU02JK/3cS/njCphMWYfPIidxszUVluwb3ztGeXzN
+         Wdf1UADm2hIaKwfMP/b/eYEmIB4bi1DGUt6yD9Hc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        SeongJae Park <sj@kernel.org>, David Gow <davidgow@google.com>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Arthur Grillo <arthurgrillo@riseup.net>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.2 02/15] um: Only disable SSE on clang to work around old GCC bugs
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Brian Norris <briannorris@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Boyd <swboyd@chromium.org>
+Subject: [PATCH 6.3 11/11] driver core: Dont require dynamic_debug for initcall_debug probe timing
 Date:   Fri, 28 Apr 2023 13:27:46 +0200
-Message-Id: <20230428112040.217604155@linuxfoundation.org>
+Message-Id: <20230428112040.258496774@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
-References: <20230428112040.137898986@linuxfoundation.org>
+In-Reply-To: <20230428112039.886496777@linuxfoundation.org>
+References: <20230428112039.886496777@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,54 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Gow <davidgow@google.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-commit a3046a618a284579d1189af8711765f553eed707 upstream.
+commit e2f06aa885081e1391916367f53bad984714b4db upstream.
 
-As part of the Rust support for UML, we disable SSE (and similar flags)
-to match the normal x86 builds. This both makes sense (we ideally want a
-similar configuration to x86), and works around a crash bug with SSE
-generation under Rust with LLVM.
+Don't require the use of dynamic debug (or modification of the kernel to
+add a #define DEBUG to the top of this file) to get the printk message
+about driver probe timing. This printk is only emitted when
+initcall_debug is enabled on the kernel commandline, and it isn't
+immediately obvious that you have to do something else to debug boot
+timing issues related to driver probe. Add a comment too so it doesn't
+get converted back to pr_debug().
 
-However, this breaks compiling stdlib.h under gcc < 11, as the x86_64
-ABI requires floating-point return values be stored in an SSE register.
-gcc 11 fixes this by only doing register allocation when a function is
-actually used, and since we never use atof(), it shouldn't be a problem:
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
-
-Nevertheless, only disable SSE on clang setups, as that's a simple way
-of working around everyone's bugs.
-
-Fixes: 884981867947 ("rust: arch/um: Disable FP/SIMD instruction to match x86")
-Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
-Link: https://lore.kernel.org/linux-um/6df2ecef9011d85654a82acd607fdcbc93ad593c.camel@huaweicloud.com/
-Tested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
-Tested-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: David Gow <davidgow@google.com>
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Tested-by: Arthur Grillo <arthurgrillo@riseup.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: eb7fbc9fb118 ("driver core: Add missing '\n' in log messages")
+Cc: stable <stable@kernel.org>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230412225842.3196599-1-swboyd@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Makefile.um |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/base/dd.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/x86/Makefile.um
-+++ b/arch/x86/Makefile.um
-@@ -3,9 +3,14 @@ core-y += arch/x86/crypto/
- 
- #
- # Disable SSE and other FP/SIMD instructions to match normal x86
-+# This is required to work around issues in older LLVM versions, but breaks
-+# GCC versions < 11. See:
-+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
- #
-+ifeq ($(CONFIG_CC_IS_CLANG),y)
- KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
- KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
-+endif
- 
- ifeq ($(CONFIG_X86_32),y)
- START := 0x8048000
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -708,7 +708,12 @@ static int really_probe_debug(struct dev
+ 	calltime = ktime_get();
+ 	ret = really_probe(dev, drv);
+ 	rettime = ktime_get();
+-	pr_debug("probe of %s returned %d after %lld usecs\n",
++	/*
++	 * Don't change this to pr_debug() because that requires
++	 * CONFIG_DYNAMIC_DEBUG and we want a simple 'initcall_debug' on the
++	 * kernel commandline to print this all the time at the debug level.
++	 */
++	printk(KERN_DEBUG "probe of %s returned %d after %lld usecs\n",
+ 		 dev_name(dev), ret, ktime_us_delta(rettime, calltime));
+ 	return ret;
+ }
 
 
