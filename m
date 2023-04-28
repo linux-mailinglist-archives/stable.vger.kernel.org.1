@@ -2,75 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4E86F1270
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 09:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A787D6F12DC
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 09:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbjD1HgV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 03:36:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43612 "EHLO
+        id S1345652AbjD1Hxw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 03:53:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230025AbjD1HgU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 03:36:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0085126BC;
-        Fri, 28 Apr 2023 00:36:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CCB86416E;
-        Fri, 28 Apr 2023 07:36:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76526C433D2;
-        Fri, 28 Apr 2023 07:36:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682667378;
-        bh=mzgSqMupDXVzsWnPg4AuzcSqXsmJxNaSF5qDcycX6AQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EmpUgvO29Yft7dbzvDv7iRAvX9Pc3gxG0YYxFPRwfNs8VeIttYWN/VMwF32Ni7+za
-         qGvoqJ4Km81wQfhL3RdNmfCT17aHmyT5cg/GTFMBzH0zefbuN0E+Ox7AdJ/W4OV9ml
-         /rw77kF3sNmn6KBwFCYPjipRNsc1KdRnHQP6kNks=
-Date:   Fri, 28 Apr 2023 09:36:15 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>, lstoakes@gmail.com,
-        regressions@lists.linux.dev, linux-mm@kvack.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Fabian Vogt <fvogt@suse.com>, stable@vger.kernel.org
-Subject: Re: [PATCH for v6.3 regression] mm/mremap: fix vm_pgoff in
- vma_merge() case 3
-Message-ID: <2023042802-frolic-racing-112b@gregkh>
-References: <20230427140959.27655-1-vbabka@suse.cz>
- <2023042719-stratus-pavestone-505e@gregkh>
- <3cc6e10c-f054-a30a-bf87-966098ccb7bf@suse.cz>
- <CAHk-=wgdGzy6-3jzN6Kvtz1QxStTZBZPz1zy9i4gM9nbe5FGbA@mail.gmail.com>
+        with ESMTP id S1345731AbjD1Hxs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 03:53:48 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44EE4233
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 00:53:14 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-146-RO6yIwq1NPCn28Piz-Aq2A-1; Fri, 28 Apr 2023 08:46:15 +0100
+X-MC-Unique: RO6yIwq1NPCn28Piz-Aq2A-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 28 Apr
+ 2023 08:46:14 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Fri, 28 Apr 2023 08:46:14 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Rasmus Villemoes' <linux@rasmusvillemoes.dk>,
+        =?utf-8?B?S29ucmFkIEdyw6RmZQ==?= <k.graefe@gateware.de>,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Felipe Balbi <balbi@ti.com>
+CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+Thread-Topic: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+Thread-Index: AQHZeZ6mT7/jda5LSEivIvi7ndHGNq9AV0+Q
+Date:   Fri, 28 Apr 2023 07:46:14 +0000
+Message-ID: <954a3b8d5be0487e8ead23bef450fabe@AcuMS.aculab.com>
+References: <2023042625-rendition-distort-fe06@gregkh>
+ <20230427115120.241954-1-k.graefe@gateware.de>
+ <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
+In-Reply-To: <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=wgdGzy6-3jzN6Kvtz1QxStTZBZPz1zy9i4gM9nbe5FGbA@mail.gmail.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Apr 27, 2023 at 08:12:40AM -0700, Linus Torvalds wrote:
-> On Thu, Apr 27, 2023 at 7:39 AM Vlastimil Babka <vbabka@suse.cz> wrote:
-> >
-> > Sorry, I wasn't clear what I meant here. I didn't intend to bypass that
-> > stable rule that I'm aware of, just that it might be desirable to get this
-> > fix to Linus's tree faster so that stable tree can also take it soon.
-> 
-> Ack. It's in my tree as commit 7e7757876f25 right now (not pushed out
-> yet, will do the usual build tests and look around for other things
-> pending).
+RnJvbTogUmFzbXVzIFZpbGxlbW9lcw0KPiBTZW50OiAyOCBBcHJpbCAyMDIzIDA3OjU3DQo+IA0K
+PiBPbiAyNy8wNC8yMDIzIDEzLjUxLCBLb25yYWQgR3LDpGZlIHdyb3RlOg0KPiA+IFRoZSBDREMt
+RUNNIHNwZWNpZmljYXRpb24gcmVxdWlyZXMgYW4gVVNCIGdhZGdldCB0byBzZW5kIHRoZSBob3N0
+IE1BQw0KPiA+IGFkZHJlc3MgYXMgdXBwZXJjYXNlIGhleCBzdHJpbmcuIFRoaXMgY2hhbmdlIGFk
+ZHMgdGhlIGFwcHJvcHJpYXRlDQo+ID4gbW9kaWZpZXIuDQo+IA0KPiBUaGlua2luZyBtb3JlIGFi
+b3V0IGl0LCBJJ20gbm90IHN1cmUgdGhpcyBpcyBhcHByb3ByaWF0ZSwgbm90IGZvciBhDQo+IHNp
+bmdsZSB1c2VyIGxpa2UgdGhpcy4gdnNwcmludGYoKSBzaG91bGQgbm90IGFuZCBjYW5ub3Qgc2F0
+aXNmeSBhbGwNCj4gcG9zc2libGUgc3RyaW5nIGZvcm1hdHRpbmcgcmVxdWlyZW1lbnRzIGZvciB0
+aGUgd2hvbGUga2VybmVsLiBUaGUgJXBYDQo+IGV4dGVuc2lvbnMgYXJlIGNvbnZlbmllbnQgZm9y
+IHVzZSB3aXRoIHByaW50aygpIGFuZCBmcmllbmRzIHdoZXJlIG9uZQ0KPiBuZWVkcyB3aGF0IGlu
+IG90aGVyIGxhbmd1YWdlcyB3b3VsZCBiZSAic3RyaW5nIGludGVycG9sYXRpb24iIChiZWNhdXNl
+DQo+IHRoZW4gdGhlIGNhbGxlciBkb2Vzbid0IG5lZWQgdG8gZGVhbCB3aXRoIHRlbXBvcmFyeSBz
+dGFjayBidWZmZXJzIGFuZA0KPiBwYXNzIHRoZW0gYXMgJXMgYXJndW1lbnRzKSwgYnV0IGZvciBz
+aW5nbGUgaXRlbXMgbGlrZSB0aGlzLCBzbnByaW50ZigpDQo+IGlzIG5vdCBuZWNlc3NhcmlseSB0
+aGUgcmlnaHQgdG9vbCBmb3IgdGhlIGpvYi4NCj4gDQo+IEluIHRoaXMgY2FzZSwgdGhlIGNhbGxl
+ciBjYW4ganVzdCBhcyB3ZWxsIGNhbGwgc3RyaW5nX3VwcGVyKCkgb24gdGhlDQo+IHJlc3VsdCwg
+b3Igbm90IHVzZSBzcHJpbnRmKCkgYXQgYWxsIGFuZCBkbyBhIHRpbnkgbG9vcCB3aXRoDQo+IGhl
+eF9ieXRlX3BhY2tfdXBwZXIoKS4NCg0KT3Igc25wcmludGYgd2l0aCAiJTAyWDolMDJYOiUwMlg6
+JTAyWDolMDJYOiUwMlgiLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2Vz
+aWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVL
+DQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-Thanks, I've grabbed it now for the 6.3.y tree.
-
-greg k-h
