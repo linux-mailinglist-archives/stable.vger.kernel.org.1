@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24A96F16AE
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7D016F1699
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345599AbjD1L3a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56600 "EHLO
+        id S240398AbjD1L2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345621AbjD1L33 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9688155A3
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:29:27 -0700 (PDT)
+        with ESMTP id S239483AbjD1L2f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F028159F5
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 329716420D
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4666BC433D2;
-        Fri, 28 Apr 2023 11:29:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FFF0614C3
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CFAC433D2;
+        Fri, 28 Apr 2023 11:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681366;
-        bh=I8fzXVLWx+5cs6wQMdcqu3QQighOHe1MMoBgcxKJvI8=;
+        s=korg; t=1682681313;
+        bh=4cfFJ7sb4McT8g3qXWpfk7aWMkzr8XGX+lpqZ6JRo5o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o49LUAw4X3SgwsduliFBwCTtKkXx8NJugquC/+0BR59p4B4YE6iqKKAY27Hm8rhqb
-         c16ay6aUy8urdiDyEtSZ/10v3GZ3t2IZC8IE3sRUa6OkwKXNd0GZFs40WocuyGDu+z
-         z6KV/nIVmDwS8X9n8THRlsbhQjQuNF8gNnaPOork=
+        b=FsKSjFaL6xpxmi8RUbvo8HykqnnJ1E1iu2vD3JvnGmXxacvbg6PQWICCHcROmLIJQ
+         h0BNw4UzqhkbAutop4J0I5X6xYtmDFp0ovKYHqS/IJEFTBjCH0W0RtQTKTpoj5GXIR
+         XylUvG8i+XK6f4ebkUuetttDGIEvugiH0fSg1aBo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        syzbot+a7c1ec5b1d71ceaa5186@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 04/16] mm/mempolicy: fix use-after-free of VMA iterator
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Brian Norris <briannorris@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Boyd <swboyd@chromium.org>
+Subject: [PATCH 6.2 12/15] driver core: Dont require dynamic_debug for initcall_debug probe timing
 Date:   Fri, 28 Apr 2023 13:27:56 +0200
-Message-Id: <20230428112040.210767326@linuxfoundation.org>
+Message-Id: <20230428112040.523238335@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
-References: <20230428112040.063291126@linuxfoundation.org>
+In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
+References: <20230428112040.137898986@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,211 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-commit f4e9e0e69468583c2c6d9d5c7bfc975e292bf188 upstream.
+commit e2f06aa885081e1391916367f53bad984714b4db upstream.
 
-set_mempolicy_home_node() iterates over a list of VMAs and calls
-mbind_range() on each VMA, which also iterates over the singular list of
-the VMA passed in and potentially splits the VMA.  Since the VMA iterator
-is not passed through, set_mempolicy_home_node() may now point to a stale
-node in the VMA tree.  This can result in a UAF as reported by syzbot.
+Don't require the use of dynamic debug (or modification of the kernel to
+add a #define DEBUG to the top of this file) to get the printk message
+about driver probe timing. This printk is only emitted when
+initcall_debug is enabled on the kernel commandline, and it isn't
+immediately obvious that you have to do something else to debug boot
+timing issues related to driver probe. Add a comment too so it doesn't
+get converted back to pr_debug().
 
-Avoid the stale maple tree node by passing the VMA iterator through to the
-underlying call to split_vma().
-
-mbind_range() is also overly complicated, since there are two calling
-functions and one already handles iterating over the VMAs.  Simplify
-mbind_range() to only handle merging and splitting of the VMAs.
-
-Align the new loop in do_mbind() and existing loop in
-set_mempolicy_home_node() to use the reduced mbind_range() function.  This
-allows for a single location of the range calculation and avoids
-constantly looking up the previous VMA (since this is a loop over the
-VMAs).
-
-Link: https://lore.kernel.org/linux-mm/000000000000c93feb05f87e24ad@google.com/
-Fixes: 66850be55e8e ("mm/mempolicy: use vma iterator & maple state instead of vma linked list")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: syzbot+a7c1ec5b1d71ceaa5186@syzkaller.appspotmail.com
-  Link: https://lkml.kernel.org/r/20230410152205.2294819-1-Liam.Howlett@oracle.com
-Tested-by: syzbot+a7c1ec5b1d71ceaa5186@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Fixes: eb7fbc9fb118 ("driver core: Add missing '\n' in log messages")
+Cc: stable <stable@kernel.org>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230412225842.3196599-1-swboyd@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempolicy.c |  113 ++++++++++++++++++++++++++-------------------------------
- 1 file changed, 52 insertions(+), 61 deletions(-)
+ drivers/base/dd.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -784,70 +784,56 @@ static int vma_replace_policy(struct vm_
- 	return err;
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -718,7 +718,12 @@ static int really_probe_debug(struct dev
+ 	calltime = ktime_get();
+ 	ret = really_probe(dev, drv);
+ 	rettime = ktime_get();
+-	pr_debug("probe of %s returned %d after %lld usecs\n",
++	/*
++	 * Don't change this to pr_debug() because that requires
++	 * CONFIG_DYNAMIC_DEBUG and we want a simple 'initcall_debug' on the
++	 * kernel commandline to print this all the time at the debug level.
++	 */
++	printk(KERN_DEBUG "probe of %s returned %d after %lld usecs\n",
+ 		 dev_name(dev), ret, ktime_us_delta(rettime, calltime));
+ 	return ret;
  }
- 
--/* Step 2: apply policy to a range and do splits. */
--static int mbind_range(struct mm_struct *mm, unsigned long start,
--		       unsigned long end, struct mempolicy *new_pol)
-+/* Split or merge the VMA (if required) and apply the new policy */
-+static int mbind_range(struct vma_iterator *vmi, struct vm_area_struct *vma,
-+		struct vm_area_struct **prev, unsigned long start,
-+		unsigned long end, struct mempolicy *new_pol)
- {
--	MA_STATE(mas, &mm->mm_mt, start, start);
--	struct vm_area_struct *prev;
--	struct vm_area_struct *vma;
--	int err = 0;
-+	struct vm_area_struct *merged;
-+	unsigned long vmstart, vmend;
- 	pgoff_t pgoff;
-+	int err;
- 
--	prev = mas_prev(&mas, 0);
--	if (unlikely(!prev))
--		mas_set(&mas, start);
-+	vmend = min(end, vma->vm_end);
-+	if (start > vma->vm_start) {
-+		*prev = vma;
-+		vmstart = start;
-+	} else {
-+		vmstart = vma->vm_start;
-+	}
- 
--	vma = mas_find(&mas, end - 1);
--	if (WARN_ON(!vma))
-+	if (mpol_equal(vma_policy(vma), new_pol))
- 		return 0;
- 
--	if (start > vma->vm_start)
--		prev = vma;
-+	pgoff = vma->vm_pgoff + ((vmstart - vma->vm_start) >> PAGE_SHIFT);
-+	merged = vma_merge(vma->vm_mm, *prev, vmstart, vmend, vma->vm_flags,
-+			   vma->anon_vma, vma->vm_file, pgoff, new_pol,
-+			   vma->vm_userfaultfd_ctx, anon_vma_name(vma));
-+	if (merged) {
-+		*prev = merged;
-+		/* vma_merge() invalidated the mas */
-+		mas_pause(&vmi->mas);
-+		return vma_replace_policy(merged, new_pol);
-+	}
- 
--	for (; vma; vma = mas_next(&mas, end - 1)) {
--		unsigned long vmstart = max(start, vma->vm_start);
--		unsigned long vmend = min(end, vma->vm_end);
--
--		if (mpol_equal(vma_policy(vma), new_pol))
--			goto next;
--
--		pgoff = vma->vm_pgoff +
--			((vmstart - vma->vm_start) >> PAGE_SHIFT);
--		prev = vma_merge(mm, prev, vmstart, vmend, vma->vm_flags,
--				 vma->anon_vma, vma->vm_file, pgoff,
--				 new_pol, vma->vm_userfaultfd_ctx,
--				 anon_vma_name(vma));
--		if (prev) {
--			/* vma_merge() invalidated the mas */
--			mas_pause(&mas);
--			vma = prev;
--			goto replace;
--		}
--		if (vma->vm_start != vmstart) {
--			err = split_vma(vma->vm_mm, vma, vmstart, 1);
--			if (err)
--				goto out;
--			/* split_vma() invalidated the mas */
--			mas_pause(&mas);
--		}
--		if (vma->vm_end != vmend) {
--			err = split_vma(vma->vm_mm, vma, vmend, 0);
--			if (err)
--				goto out;
--			/* split_vma() invalidated the mas */
--			mas_pause(&mas);
--		}
--replace:
--		err = vma_replace_policy(vma, new_pol);
-+	if (vma->vm_start != vmstart) {
-+		err = split_vma(vma->vm_mm, vma, vmstart, 1);
- 		if (err)
--			goto out;
--next:
--		prev = vma;
-+			return err;
-+		/* split_vma() invalidated the mas */
-+		mas_pause(&vmi->mas);
- 	}
- 
--out:
--	return err;
-+	if (vma->vm_end != vmend) {
-+		err = split_vma(vma->vm_mm, vma, vmend, 0);
-+		if (err)
-+			return err;
-+		/* split_vma() invalidated the mas */
-+		mas_pause(&vmi->mas);
-+	}
-+
-+	*prev = vma;
-+	return vma_replace_policy(vma, new_pol);
- }
- 
- /* Set the process memory policy */
-@@ -1259,6 +1245,8 @@ static long do_mbind(unsigned long start
- 		     nodemask_t *nmask, unsigned long flags)
- {
- 	struct mm_struct *mm = current->mm;
-+	struct vm_area_struct *vma, *prev;
-+	struct vma_iterator vmi;
- 	struct mempolicy *new;
- 	unsigned long end;
- 	int err;
-@@ -1328,7 +1316,13 @@ static long do_mbind(unsigned long start
- 		goto up_out;
- 	}
- 
--	err = mbind_range(mm, start, end, new);
-+	vma_iter_init(&vmi, mm, start);
-+	prev = vma_prev(&vmi);
-+	for_each_vma_range(vmi, vma, end) {
-+		err = mbind_range(&vmi, vma, &prev, start, end, new);
-+		if (err)
-+			break;
-+	}
- 
- 	if (!err) {
- 		int nr_failed = 0;
-@@ -1489,10 +1483,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node,
- 		unsigned long, home_node, unsigned long, flags)
- {
- 	struct mm_struct *mm = current->mm;
--	struct vm_area_struct *vma;
-+	struct vm_area_struct *vma, *prev;
- 	struct mempolicy *new;
--	unsigned long vmstart;
--	unsigned long vmend;
- 	unsigned long end;
- 	int err = -ENOENT;
- 	VMA_ITERATOR(vmi, mm, start);
-@@ -1521,9 +1513,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node,
- 	if (end == start)
- 		return 0;
- 	mmap_write_lock(mm);
-+	prev = vma_prev(&vmi);
- 	for_each_vma_range(vmi, vma, end) {
--		vmstart = max(start, vma->vm_start);
--		vmend   = min(end, vma->vm_end);
- 		new = mpol_dup(vma_policy(vma));
- 		if (IS_ERR(new)) {
- 			err = PTR_ERR(new);
-@@ -1547,7 +1538,7 @@ SYSCALL_DEFINE4(set_mempolicy_home_node,
- 		}
- 
- 		new->home_node = home_node;
--		err = mbind_range(mm, vmstart, vmend, new);
-+		err = mbind_range(&vmi, vma, &prev, start, end, new);
- 		mpol_put(new);
- 		if (err)
- 			break;
 
 
