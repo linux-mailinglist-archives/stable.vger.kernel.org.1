@@ -2,55 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C533E6F16A2
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C80C56F1688
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345433AbjD1L3D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
+        id S240226AbjD1L2E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:28:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229707AbjD1L3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:29:00 -0400
+        with ESMTP id S239314AbjD1L2C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF84455B1;
-        Fri, 28 Apr 2023 04:28:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682162728
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:27:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44D09642D3;
-        Fri, 28 Apr 2023 11:28:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB87C433D2;
-        Fri, 28 Apr 2023 11:28:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4871A6122E
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C657C433EF;
+        Fri, 28 Apr 2023 11:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681337;
-        bh=GQnPPeDlWGJnpFYTkdfaqwb0WGUmEcE90CGfngGMWmc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=CodU4k5CCRiu+LHftNnK+IpT+DSsv+wPtR4Mn6337/A08GOKw9XSZuoaZ5/kjacwh
-         U5SsLpphennstitMzWCZQpxxRwJViTsIsiMZn6wVp1wzMPzY4nyJWWq87KPBZvMzqZ
-         3wDNgmV2rPi+J712RQ3/yiPA327sjbNBec6U/juI=
+        s=korg; t=1682681277;
+        bh=oV2Sx8WR+OBUk97E11P04I05mKcvjMkEKE2O3zCZ1d0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JBPUn7GF+u5miUf1s7BNR+MxGugYBsZbw2EtPCaxbzWt7bkm4EJpgwoQiqJkEu1m9
+         vJFyBGe65VbWA7NPIP5IxZs7wkgpEXYLT00kEjkQdkOKGQmyrhftLdQBog6q31kTGN
+         F0H/m8s9hneL2Ubc5DngebTswwcEiQ15WG1nFW7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: [PATCH 6.2 00/15] 6.2.14-rc1 review
-Date:   Fri, 28 Apr 2023 13:27:44 +0200
-Message-Id: <20230428112040.137898986@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.3 10/11] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+Date:   Fri, 28 Apr 2023 13:27:45 +0200
+Message-Id: <20230428112040.229974242@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
+In-Reply-To: <20230428112039.886496777@linuxfoundation.org>
+References: <20230428112039.886496777@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.2.14-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.2.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.2.14-rc1
-X-KernelTest-Deadline: 2023-04-30T11:20+00:00
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -63,99 +54,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 6.2.14 release.
-There are 15 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-Responses should be made by Sun, 30 Apr 2023 11:20:30 +0000.
-Anything received after that time might be too late.
+commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.2.14-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.2.y
-and the diffstat can be found below.
+Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
+SL8563. The modem supports the NCM mode. Interface 0 is used for running
+the AT commands. Interface 12 is the ADB interface.
 
-thanks,
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1782 ProdID=4055 Rev=04.04
+S:  Manufacturer=Unisoc Phone
+S:  Product=Unisoc Phone
+S:  SerialNumber=<redacted>
+C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
+E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-greg k-h
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.2.14-rc1
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: No need to relocate the dtb as it lies in the fixmap region
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Do not set initial_boot_params to the linear address of the dtb
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Move early dtb mapping into the fixmap region
-
-Stephen Boyd <swboyd@chromium.org>
-    driver core: Don't require dynamic_debug for initcall_debug probe timing
-
-Arınç ÜNAL <arinc.unal@arinc9.com>
-    USB: serial: option: add UNISOC vendor and TOZED LT70C product
-
-Genjian Zhang <zhanggenjian@kylinos.cn>
-    btrfs: fix uninitialized variable warnings
-
-Marek Vasut <marex@denx.de>
-    wifi: brcmfmac: add Cypress 43439 SDIO ids
-
-Ruihan Li <lrh2000@pku.edu.cn>
-    bluetooth: Perform careful capability checks in hci_sock_ioctl()
-
-Werner Sembach <wse@tuxedocomputers.com>
-    gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
-
-Daniel Vetter <daniel.vetter@ffwll.ch>
-    drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
-
-Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-    wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
-
-Liam R. Howlett <Liam.Howlett@oracle.com>
-    mm/mempolicy: fix use-after-free of VMA iterator
-
-Ziwei Dai <ziwei.dai@unisoc.com>
-    rcu/kvfree: Avoid freeing new kfree_rcu() memory after old grace period
-
-David Gow <davidgow@google.com>
-    um: Only disable SSE on clang to work around old GCC bugs
-
-David Gow <davidgow@google.com>
-    rust: arch/um: Disable FP/SIMD instruction to match x86
-
-
--------------
-
-Diffstat:
-
- Documentation/riscv/vm-layout.rst                  |   6 +-
- Makefile                                           |   4 +-
- arch/riscv/include/asm/fixmap.h                    |   8 ++
- arch/riscv/include/asm/pgtable.h                   |   8 +-
- arch/riscv/kernel/setup.c                          |   6 +-
- arch/riscv/mm/init.c                               |  82 +++++++--------
- arch/x86/Makefile.um                               |  11 ++
- drivers/base/dd.c                                  |   7 +-
- drivers/gpio/gpiolib-acpi.c                        |  13 +++
- drivers/gpu/drm/drm_fb_helper.c                    |   3 +
- .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  |   9 +-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c         |   5 +
- drivers/usb/serial/option.c                        |   6 ++
- fs/btrfs/send.c                                    |   2 +-
- fs/btrfs/volumes.c                                 |   2 +-
- include/linux/mmc/sdio_ids.h                       |   5 +-
- kernel/rcu/tree.c                                  |  27 +++--
- mm/mempolicy.c                                     | 115 ++++++++++-----------
- net/bluetooth/hci_sock.c                           |   9 +-
- 19 files changed, 194 insertions(+), 134 deletions(-)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -595,6 +595,11 @@ static void option_instat_callback(struc
+ #define SIERRA_VENDOR_ID			0x1199
+ #define SIERRA_PRODUCT_EM9191			0x90d3
+ 
++/* UNISOC (Spreadtrum) products */
++#define UNISOC_VENDOR_ID			0x1782
++/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
++#define TOZED_PRODUCT_LT70C			0x4055
++
+ /* Device flags */
+ 
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2225,6 +2230,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
