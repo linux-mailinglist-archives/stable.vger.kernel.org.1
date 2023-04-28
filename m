@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C80C56F1688
-	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E546F1696
+	for <lists+stable@lfdr.de>; Fri, 28 Apr 2023 13:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240226AbjD1L2E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 28 Apr 2023 07:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54586 "EHLO
+        id S1345360AbjD1L2d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 28 Apr 2023 07:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239314AbjD1L2C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:02 -0400
+        with ESMTP id S234872AbjD1L21 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 28 Apr 2023 07:28:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682162728
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:27:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA012701
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 04:28:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4871A6122E
-        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:27:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C657C433EF;
-        Fri, 28 Apr 2023 11:27:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6AC763860
+        for <stable@vger.kernel.org>; Fri, 28 Apr 2023 11:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0856C4339B;
+        Fri, 28 Apr 2023 11:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682681277;
-        bh=oV2Sx8WR+OBUk97E11P04I05mKcvjMkEKE2O3zCZ1d0=;
+        s=korg; t=1682681306;
+        bh=TGacCA78SpAnhDpnDr4rgr74iXcfKsborm+MBtYH6hU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JBPUn7GF+u5miUf1s7BNR+MxGugYBsZbw2EtPCaxbzWt7bkm4EJpgwoQiqJkEu1m9
-         vJFyBGe65VbWA7NPIP5IxZs7wkgpEXYLT00kEjkQdkOKGQmyrhftLdQBog6q31kTGN
-         F0H/m8s9hneL2Ubc5DngebTswwcEiQ15WG1nFW7w=
+        b=Q0tBWhUBPcupmPb2d7KzeaoUcheYPIAcMW9eiFVJAbh+vy18KVUwaiMYaFyISPXAf
+         U7YG16zd1zD8NyNgeYuXAN1HGoCxLXaazKj7USlg1lG7QPki5aTGabt/qWUUgrElWk
+         kBb5Lm4HlIJOxyqq9XDLuBVfGtsqDWvlrMKK9MDM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.3 10/11] USB: serial: option: add UNISOC vendor and TOZED LT70C product
+        patches@lists.linux.dev, David Gow <davidgow@google.com>,
+        =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= 
+        <sergio.collado@gmail.com>, Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.2 01/15] rust: arch/um: Disable FP/SIMD instruction to match x86
 Date:   Fri, 28 Apr 2023 13:27:45 +0200
-Message-Id: <20230428112040.229974242@linuxfoundation.org>
+Message-Id: <20230428112040.188522448@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230428112039.886496777@linuxfoundation.org>
-References: <20230428112039.886496777@linuxfoundation.org>
+In-Reply-To: <20230428112040.137898986@linuxfoundation.org>
+References: <20230428112040.137898986@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -54,90 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: David Gow <davidgow@google.com>
 
-commit a095edfc15f0832e046ae23964e249ef5c95af87 upstream.
+commit 8849818679478933dd1d9718741f4daa3f4e8b86 upstream.
 
-Add UNISOC vendor ID and TOZED LT70-C modem which is based from UNISOC
-SL8563. The modem supports the NCM mode. Interface 0 is used for running
-the AT commands. Interface 12 is the ADB interface.
+The kernel disables all SSE and similar FP/SIMD instructions on
+x86-based architectures (partly because we shouldn't be using floats in
+the kernel, and partly to avoid the need for stack alignment, see:
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53383 )
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1782 ProdID=4055 Rev=04.04
-S:  Manufacturer=Unisoc Phone
-S:  Product=Unisoc Phone
-S:  SerialNumber=<redacted>
-C:  #Ifs=14 Cfg#= 1 Atr=c0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=10 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=11 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=12 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#=13 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=88(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 7 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+UML does not do the same thing, which isn't in itself a problem, but
+does add to the list of differences between UML and "normal" x86 builds.
 
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20230417152003.243248-1-arinc.unal@arinc9.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+In addition, there was a crash bug with LLVM < 15 / rustc < 1.65 when
+building with SSE, so disabling it fixes rust builds with earlier
+compiler versions, see:
+https://github.com/Rust-for-Linux/linux/pull/881
+
+Signed-off-by: David Gow <davidgow@google.com>
+Reviewed-by: Sergio González Collado <sergio.collado@gmail.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
+ arch/x86/Makefile.um |    6 ++++++
  1 file changed, 6 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -595,6 +595,11 @@ static void option_instat_callback(struc
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -1,6 +1,12 @@
+ # SPDX-License-Identifier: GPL-2.0
+ core-y += arch/x86/crypto/
  
-+/* UNISOC (Spreadtrum) products */
-+#define UNISOC_VENDOR_ID			0x1782
-+/* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
-+#define TOZED_PRODUCT_LT70C			0x4055
++#
++# Disable SSE and other FP/SIMD instructions to match normal x86
++#
++KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
++KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
 +
- /* Device flags */
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
  
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2225,6 +2230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
 
 
