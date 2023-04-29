@@ -2,70 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B78F76F2626
-	for <lists+stable@lfdr.de>; Sat, 29 Apr 2023 22:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 943CD6F2709
+	for <lists+stable@lfdr.de>; Sun, 30 Apr 2023 00:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbjD2UD7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Apr 2023 16:03:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40622 "EHLO
+        id S230266AbjD2Wpw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Apr 2023 18:45:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjD2UD7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Apr 2023 16:03:59 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DFC1BE4
-        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 13:03:58 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-95f4c5cb755so222067666b.0
-        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 13:03:57 -0700 (PDT)
+        with ESMTP id S229498AbjD2Wpv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Apr 2023 18:45:51 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F96E7C
+        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 15:45:50 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1a6670671e3so10416345ad.0
+        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 15:45:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682798636; x=1685390636;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C+z24Pl7od6xO10XmMEfecsYemTIfW+XARlPRi62dVY=;
-        b=Uib+gTNhT2HDpCrOnbr2/u42YT/LvAGe8niYqHRwlsFMJpF1p1YA2C848RaFJ6M+6s
-         Q3JKLE4YO9cf9E8cZ1IOefduLd3XcCgIALt4S4vuuMqPRkMtps4Si9cocZu61G5A3ZIB
-         dnP4pSgbTXate1f+AeESU77l9SOSFD2fM6JpAq/IhSdWyEgWXh8wwKtdXPQo25R2W/z0
-         gVmMZPnb0x8Cnk6ve92Ld/zfZGq/uybrjBZZzjayIQgh5pD6jaztdukWHQqDlaCE0wX1
-         nmPXIhp1ZZG8uGt4a0O8Rtc/QcZ7uYbp3nsxnM35k7WqpI1RrgVkkhLVWh9YWD0iyngk
-         rouw==
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682808350; x=1685400350;
+        h=to:from:cc:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:to:cc:subject:date:message-id:reply-to;
+        bh=eGCdcEw4y5HNnkhElsF0KTMoRMbJurRvg+ykIaF0fnM=;
+        b=z5L4bEHAGNgH118ITQtSKmlKGvPaxpoArwxZzsTi+6vozFKhBltOSkrtKNavulM3s4
+         FFwp7u/TiLcPp+8NPx1JKuey3EeNh2sB8iRu973EDEirpGzTWoF7eotxboovKQ2IuPhh
+         26/s4mmZX6xCahlQ/9oJbD9apM5Tq2foOw1MWkWeqtPoY9yZexXpQgJ3YlXL9pJXrAWp
+         ZeVJUuMI+ArGIVLT1Y8E68UEqX5Dz3WyUkW+HqMCleHqwwnKx6fpP1FMybGiDeTmebk3
+         qhmOGfg7KsROEThc/axQT+67ZrULBVTtLVvvep8LBNlzHBwcW4hPl0YS1S7W2Q97skB3
+         FgYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682798636; x=1685390636;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C+z24Pl7od6xO10XmMEfecsYemTIfW+XARlPRi62dVY=;
-        b=Fc07cKuwUXf4ge11WwGfb+e4p9OmvA5hHyepuw12LHmOrnzosxucNEQ8ehXcLkt9KI
-         37iwgV+1KvLe9aegTLs65QGqvJ6iwecHKgcV7KIXMEim3H5FhU5HORcjGZPlXaJnoRr2
-         kKE/rQaZ1qfYWcEGwVz5sUHqeGVNZigb5uFn7oINlWB+Zau5MqbIqB4U3RPSTWkwf2jX
-         D6+U9b9FhwhPqmqfFdnHx+Pa46GVCqOPARD83uwQ7DSCKdmakU05mnykTojd83afa5Wo
-         ayR2edq+qHAmoAhLmpQ4y5L7JPd/TGPrMGYGInGweY/vnQZh0Px+gId4EqJDXjSmtu95
-         7C5A==
-X-Gm-Message-State: AC+VfDxIAtxbNYXyLZVvKUJehA49HrqlABnxWB8B4OiPgbxVWQPwuD6p
-        47h0Rzh9movHzylzk8jLq6uQawpo10BakbJHbw==
-X-Google-Smtp-Source: ACHHUZ6T4d5EXEJXcj+KQf822LqTcRY8R/PdeVHL/E1rgAgy8KsYVhDn1D1CgG77y1Xyxd0aMngBJPICDtqV305xIow=
-X-Received: by 2002:a17:906:fe45:b0:94f:adb2:171f with SMTP id
- wz5-20020a170906fe4500b0094fadb2171fmr8763362ejb.28.1682798636225; Sat, 29
- Apr 2023 13:03:56 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682808350; x=1685400350;
+        h=to:from:cc:content-transfer-encoding:mime-version:message-id:date
+         :subject:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eGCdcEw4y5HNnkhElsF0KTMoRMbJurRvg+ykIaF0fnM=;
+        b=d85kEbRH25GN+aurTSGjME9gC29nrXkhqs0a6AmGID4Jo/nm1FmmQgO3B8L7fslb6G
+         zox9wE/QchkOTIYGnNaJbOs/MY92TtyksKXJeorx48aF8BMfRmNdu6/t04vWo+xVmci+
+         oJL7jiTbd4HsdSOMM4v6lcJAd2v+VqDUXcQ5pCOJ7ccxvBmOXgIHMhME9Y2tj7jQUB+J
+         xtaHj38m61me7lN0JQwVNN7wumUnAWhxuxns/JJ+0F5ZhH8zp8pfVYMgswDKL7tCCXzS
+         GQVuW1oixTPMskeVHeNVktWF+TedJLcc4e7LrskKkO1wcAS9N/hVjhFEtPRotDwKCSSB
+         SCNQ==
+X-Gm-Message-State: AC+VfDwI5hXwKIviiiB/ZUsKxZuOpnAY/mNU0mgJrce8KUihPMJmlJZ4
+        wdxtetDzpBoSvENwzLYUlZiPURmkfOPDTXyfrv0=
+X-Google-Smtp-Source: ACHHUZ60tTYPb8KYCToDDbrlNHJSlUBu3Y7sAxneHBQsOxvIRhiOi13UkEb+U0wzsaE9np4L9rZPcQ==
+X-Received: by 2002:a17:902:f649:b0:1a6:67e1:4d2c with SMTP id m9-20020a170902f64900b001a667e14d2cmr9185757plg.6.1682808350025;
+        Sat, 29 Apr 2023 15:45:50 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id q11-20020a170902788b00b001a943c41c37sm13899975pll.7.2023.04.29.15.45.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Apr 2023 15:45:49 -0700 (PDT)
+Subject: [PATCH linux-5.15.y] RISC-V: Fix up a cherry-pick warning in setup_vm_final()
+Date:   Sat, 29 Apr 2023 15:43:31 -0700
+Message-Id: <20230429224330.18699-1-palmer@rivosinc.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Received: by 2002:a17:907:98c:b0:906:449c:e24 with HTTP; Sat, 29 Apr 2023
- 13:03:55 -0700 (PDT)
-Reply-To: pmichae7707@gmail.com
-From:   paul michael <pm9568521@gmail.com>
-Date:   Sat, 29 Apr 2023 21:03:55 +0100
-Message-ID: <CACSDF=9LfQAd6Jkp3JvY7v39tyP7c3ScmDq9AThkN1EEcsfXQQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+Cc:        stable@vger.kernel.org, linux-riscv@lists.infradead.org,
+           Palmer Dabbelt <palmer@rivosinc.com>,
+           kernel test robot <lkp@intel.com>
+From:   Palmer Dabbelt <palmer@rivosinc.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Every time I retest your email, it tells me to check with my ISP or
-Log onto incoming mail server (POP3): Your e-mail server rejected .
-Kindly verify if your email is still valid for us to talk.
+This triggers a -Wdeclaration-after-statement as the code has changed a
+bit since upstream.  It might be better to hoist the whole block up, but
+this is a smaller change so I went with it.
+
+arch/riscv/mm/init.c:755:16: warning: mixing declarations and code is a C99 extension [-Wdeclaration-after-statement]
+            unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
+                          ^
+    1 warning generated.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304300429.SXZOA5up-lkp@intel.com/
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+---
+I haven't even build tested this one, but it looks simple enough that I figured
+I'd just send it.  Be warned, though: I broke glibc and missed a merged
+conflict yesterday...
+---
+ arch/riscv/mm/init.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index e800d7981e99..8d67f43f1865 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -717,6 +717,7 @@ static void __init setup_vm_final(void)
+ 	uintptr_t va, map_size;
+ 	phys_addr_t pa, start, end;
+ 	u64 i;
++	unsigned long idx;
+ 
+ 	/**
+ 	 * MMU is enabled at this point. But page table setup is not complete yet.
+@@ -735,7 +736,7 @@ static void __init setup_vm_final(void)
+ 	 * directly in swapper_pg_dir in addition to the pgd entry that points
+ 	 * to fixmap_pte.
+ 	 */
+-	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
++	idx = pgd_index(__fix_to_virt(FIX_FDT));
+ 
+ 	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
+ #endif
+-- 
+2.40.0
+
