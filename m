@@ -2,113 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBE8E6F2410
-	for <lists+stable@lfdr.de>; Sat, 29 Apr 2023 11:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A115F6F245F
+	for <lists+stable@lfdr.de>; Sat, 29 Apr 2023 12:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230414AbjD2J5N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Apr 2023 05:57:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
+        id S229610AbjD2K4P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 29 Apr 2023 06:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230463AbjD2J5L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Apr 2023 05:57:11 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4685119A0
-        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 02:57:10 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-959a3e2dd27so142492166b.3
-        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 02:57:10 -0700 (PDT)
+        with ESMTP id S229458AbjD2K4O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 29 Apr 2023 06:56:14 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E251737
+        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 03:56:13 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2a8bae45579so6683491fa.0
+        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 03:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1682762229; x=1685354229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lpQfY7AACWviz6/E7CAwrIowOwi9JzyFzIOfbt2aass=;
-        b=Q1/7eaNWgw4brmZ/sm7WNy5F0OBQXKJ0UTYnreg1fJKN3LN5HMmSfwsqJZAPmYhN62
-         C2gjDfvzYekHC/ogxUzGRYBqpNuj0+kC70yZaT5UgtP5leKmFzqQdyV5GqPSBpcS8OyR
-         Sy5wTT+ul7hE3C7z6dfvbP9oDxyefB6EYLlVsQwnlmewsEhXhG7gsmaRNTai3vVPONhB
-         VOS+RE5V5tFy01QAQULpMmXUoDrvrIr7USbw7Gdm09ahiT2mGye1lB60JXswuFhnegin
-         UcaLwTncJJMJWDsNtw6Nae8NnQtMotM6cGTe1vMOfmkr7D4GtJSI/0YIdNLfVWXi+NwE
-         oy6g==
+        d=gmail.com; s=20221208; t=1682765771; x=1685357771;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :reply-to:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xpFpHPrlBzxjQNXmyCpRnWgUSDJxwQtxmcSzkiEKFxY=;
+        b=TRY0yPmd+xo9PAMgU/wTT8Iz8eP6FfinDoB6eFeHPY9+IquXMPhjYfkJgRszXNkrsS
+         981RddSQsX50Z6izQCPtXqLJ1/Bbe1GUFf1eBjLobzd6baCI7rC26pgfB26eLNNs0ZdG
+         XQNmwpMxLB9zQ27MIfEWBcaCQQhdCloHbuFkfLowt3iCZVZCFnNFRAH3D0QkjaZcteJ2
+         FOnVDhVls31E2ckiU3tLXvW9cSWKjv/xZiS4fR2gAaMpBcJTDTLu5n3Nl3aCSXN5XvqS
+         V2W/QvJkK+b8tKCUwv3jQ+egrwpSfpdubBo6lPm8XlsQeDdyvGnXa1xTR7QbcPUtljvr
+         dXdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682762229; x=1685354229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lpQfY7AACWviz6/E7CAwrIowOwi9JzyFzIOfbt2aass=;
-        b=EfEWGFOTJZInNbi3QQtnhdZUqlS855IP/+82iZ2eO8ZthKYb6BB3UZqyAAP18Sfpxz
-         kDYboP3rWjuh1lkYX+hjjGIqf959f/OtKRHffb3HSLAV2z/u5YcgQ5QlBKUFtK0wL92N
-         tAd6a9tHwiPoX8pyQJL9Dfa+NrPrYzuPqweH6hzpaQh74sgwGcROf1n0NM7WUBs4+k/p
-         TJwuB6CbJBlScH01U2M19W2T2gkBnk9365Rp6VV0sgx2Rb0/0pmY3jHoKJKoVt12GxVh
-         or4xcvYDzgqVy36nbt8hS1/EGeNLbZ8CeEVdkcF+D9HJIZm0TneHyQdesXVJXp8bugef
-         1DKQ==
-X-Gm-Message-State: AC+VfDzk0OeYWsUttokIP36YNYkk9X63/90N0/1zjhp4vmPTJ5hFyhoC
-        +2lP6/fGgrP4o+cevS+Wk9HEIxsUU5fG2+PhquPAfg==
-X-Google-Smtp-Source: ACHHUZ4EXYi5QDB+q5VRUifKkFH2w78bL0lgC/7RQt7DxsjxqRQ88FUksIUK8WnuY+8k6PPn3xMUnxTcZbLHk0U+8MQ=
-X-Received: by 2002:a17:906:eec8:b0:94f:444c:fc25 with SMTP id
- wu8-20020a170906eec800b0094f444cfc25mr7523328ejb.12.1682762228664; Sat, 29
- Apr 2023 02:57:08 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682765771; x=1685357771;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xpFpHPrlBzxjQNXmyCpRnWgUSDJxwQtxmcSzkiEKFxY=;
+        b=kG0Q/LcKkw7GpLwK/UVm1OWNTqUv5z0IaFly31In3PlHWRy7cAHTAcIpXviTsSDws/
+         t4fKG1JpzaQSlyRY1nxgDopuMWFdyieY0hS9TqCPmucRabkixYXhC2DSOqmSd0npVzi5
+         h+k5DPzkPVVPjEzLJKeZ9mmCnFMo9oE05ENpzxi1ciRsVS1gZowfuOXfG6EHVNLok3Fo
+         G/1RDYl+yetDttOSEnbxH4Y9rgi8z9eCxMSrQM2ec6MYXfTOjmTJIxCNJ5WO826HBxOM
+         ZNCD24u6yU2Qz/joXgSzXUPNjxEOR3qOrmOoZgBuIhMReQs2bTNnzNk4KlM/OZ4+zqKU
+         UouA==
+X-Gm-Message-State: AC+VfDxjCONuMmZ/Yg/TdC411beGmuF3yc9KZqRC7BgPVI3zaiKYTqzY
+        aZSLimHFsuH6LkF8RSLqlm9t4BuVz3h3qSflB3M=
+X-Google-Smtp-Source: ACHHUZ5REBDyFgSJCH5VZ2ScGA3k+SFq2DyYNVd45yDSdXp1A2NChYVtDCktsHOiAeMrzYLGoUVqerNlqNphxGY7l8c=
+X-Received: by 2002:a05:651c:146:b0:2a8:c4d0:b135 with SMTP id
+ c6-20020a05651c014600b002a8c4d0b135mr2165957ljd.49.1682765771657; Sat, 29 Apr
+ 2023 03:56:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230428112040.063291126@linuxfoundation.org>
-In-Reply-To: <20230428112040.063291126@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Sat, 29 Apr 2023 18:56:57 +0900
-Message-ID: <CAKL4bV6FnuQGS6pr=-BANTVgp0kAHbNSeCtujZikeCmcANc7dQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/16] 6.1.27-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Reply-To: jolinewilliam86@gmail.com
+Sender: annwilliam297@gmail.com
+Received: by 2002:a05:6022:8401:b0:3b:cff0:28c7 with HTTP; Sat, 29 Apr 2023
+ 03:56:11 -0700 (PDT)
+From:   Joline William <jolinewilliam88@gmail.com>
+Date:   Sat, 29 Apr 2023 10:56:11 +0000
+X-Google-Sender-Auth: _vhcMC057Srvev6_ktG7ZknCG1U
+Message-ID: <CANvyKwkVcxLmHjj4A6sUbNzJUcFfO34jb_P4cskU0FHuBP2ZEQ@mail.gmail.com>
+Subject: Da MISS Joline William
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+Meu querido
 
-On Fri, Apr 28, 2023 at 8:30=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.27 release.
-> There are 16 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 30 Apr 2023 11:20:30 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.27-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Eu sou a Srta. Joline William, do Canad=C3=A1, escrevendo da Costa do Marfi=
+m.
+   Por favor, quero que voc=C3=AA me ajude a investir um total de 8,5
+milh=C3=B5es de d=C3=B3lares que herdei de meu falecido pai. Oferecerei a v=
+oc=C3=AA
+35% imediatamente ap=C3=B3s receber o fundo em sua conta.
 
-6.1.27-rc1 tested.
+Vou atualizar quando ouvir de voc=C3=AA
 
-x86_64
+seu amor para sempre
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P, arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Senhorita Joline William
