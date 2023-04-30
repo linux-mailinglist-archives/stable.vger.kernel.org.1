@@ -2,113 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 943CD6F2709
-	for <lists+stable@lfdr.de>; Sun, 30 Apr 2023 00:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99E9F6F27A8
+	for <lists+stable@lfdr.de>; Sun, 30 Apr 2023 07:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbjD2Wpw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 29 Apr 2023 18:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
+        id S230307AbjD3FDS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Apr 2023 01:03:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjD2Wpv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 29 Apr 2023 18:45:51 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F96E7C
-        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 15:45:50 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1a6670671e3so10416345ad.0
-        for <stable@vger.kernel.org>; Sat, 29 Apr 2023 15:45:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682808350; x=1685400350;
-        h=to:from:cc:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGCdcEw4y5HNnkhElsF0KTMoRMbJurRvg+ykIaF0fnM=;
-        b=z5L4bEHAGNgH118ITQtSKmlKGvPaxpoArwxZzsTi+6vozFKhBltOSkrtKNavulM3s4
-         FFwp7u/TiLcPp+8NPx1JKuey3EeNh2sB8iRu973EDEirpGzTWoF7eotxboovKQ2IuPhh
-         26/s4mmZX6xCahlQ/9oJbD9apM5Tq2foOw1MWkWeqtPoY9yZexXpQgJ3YlXL9pJXrAWp
-         ZeVJUuMI+ArGIVLT1Y8E68UEqX5Dz3WyUkW+HqMCleHqwwnKx6fpP1FMybGiDeTmebk3
-         qhmOGfg7KsROEThc/axQT+67ZrULBVTtLVvvep8LBNlzHBwcW4hPl0YS1S7W2Q97skB3
-         FgYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682808350; x=1685400350;
-        h=to:from:cc:content-transfer-encoding:mime-version:message-id:date
-         :subject:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eGCdcEw4y5HNnkhElsF0KTMoRMbJurRvg+ykIaF0fnM=;
-        b=d85kEbRH25GN+aurTSGjME9gC29nrXkhqs0a6AmGID4Jo/nm1FmmQgO3B8L7fslb6G
-         zox9wE/QchkOTIYGnNaJbOs/MY92TtyksKXJeorx48aF8BMfRmNdu6/t04vWo+xVmci+
-         oJL7jiTbd4HsdSOMM4v6lcJAd2v+VqDUXcQ5pCOJ7ccxvBmOXgIHMhME9Y2tj7jQUB+J
-         xtaHj38m61me7lN0JQwVNN7wumUnAWhxuxns/JJ+0F5ZhH8zp8pfVYMgswDKL7tCCXzS
-         GQVuW1oixTPMskeVHeNVktWF+TedJLcc4e7LrskKkO1wcAS9N/hVjhFEtPRotDwKCSSB
-         SCNQ==
-X-Gm-Message-State: AC+VfDwI5hXwKIviiiB/ZUsKxZuOpnAY/mNU0mgJrce8KUihPMJmlJZ4
-        wdxtetDzpBoSvENwzLYUlZiPURmkfOPDTXyfrv0=
-X-Google-Smtp-Source: ACHHUZ60tTYPb8KYCToDDbrlNHJSlUBu3Y7sAxneHBQsOxvIRhiOi13UkEb+U0wzsaE9np4L9rZPcQ==
-X-Received: by 2002:a17:902:f649:b0:1a6:67e1:4d2c with SMTP id m9-20020a170902f64900b001a667e14d2cmr9185757plg.6.1682808350025;
-        Sat, 29 Apr 2023 15:45:50 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id q11-20020a170902788b00b001a943c41c37sm13899975pll.7.2023.04.29.15.45.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Apr 2023 15:45:49 -0700 (PDT)
-Subject: [PATCH linux-5.15.y] RISC-V: Fix up a cherry-pick warning in setup_vm_final()
-Date:   Sat, 29 Apr 2023 15:43:31 -0700
-Message-Id: <20230429224330.18699-1-palmer@rivosinc.com>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S229644AbjD3FDR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 01:03:17 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F98F19AC;
+        Sat, 29 Apr 2023 22:03:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682830995; x=1714366995;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=q7SEF4bArk/xxwIRZ987yc+xrZpMH3afDQGaBkiO/LA=;
+  b=EfFc+EaXNGNfs9iV4vt9Ow16OpkrOuxBVu82jt2OApTno4NTjDIllNNt
+   vDWA6ZTBw3LaonwfIHfw0OUHb70RapzPj2tQJHAnyH46gt8n2fJ06ehwK
+   6VaQk5YMi/dTTH1Fcfhln3vEFNZKL8GsXYMO0FW7+WQ5LGwPSdsbnW/ba
+   yNMCNzE7z3L+c+0IXbJzrx9zimvt7Dx/u8uBguMAbQ6vG2s3gDR6Oh/p3
+   tFSmxK4whzZNjGX1zgXMK8seNzpKzIK8ItV6+O6akqlW32HNXMu/G8bHj
+   BDB6rrQAdx4lEy6eB31xtA1hIdfRyn8AfLNfn8u0IRxtjFO+7GFzKe3i2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10695"; a="411108972"
+X-IronPort-AV: E=Sophos;i="5.99,238,1677571200"; 
+   d="scan'208";a="411108972"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2023 22:03:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10695"; a="941652643"
+X-IronPort-AV: E=Sophos;i="5.99,238,1677571200"; 
+   d="scan'208";a="941652643"
+Received: from naamamex-mobl.ger.corp.intel.com (HELO [10.13.12.36]) ([10.13.12.36])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2023 22:03:08 -0700
+Message-ID: <7733369a-c3a6-89d4-fb32-ab2bcdc1def0@linux.intel.com>
+Date:   Sun, 30 Apr 2023 08:03:06 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc:        stable@vger.kernel.org, linux-riscv@lists.infradead.org,
-           Palmer Dabbelt <palmer@rivosinc.com>,
-           kernel test robot <lkp@intel.com>
-From:   Palmer Dabbelt <palmer@rivosinc.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [Intel-wired-lan] [PATCH net 1/1] igc: read before write to
+ SRRCTL register
+Content-Language: en-US
+To:     Song Yoong Siang <yoong.siang.song@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Vedang Patel <vedang.patel@intel.com>,
+        Jithu Joseph <jithu.joseph@intel.com>,
+        Andre Guedes <andre.guedes@intel.com>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Stanislav Fomichev <sdf@google.com>
+Cc:     xdp-hints@xdp-project.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org
+References: <20230413151222.1864307-1-yoong.siang.song@intel.com>
+From:   "naamax.meir" <naamax.meir@linux.intel.com>
+In-Reply-To: <20230413151222.1864307-1-yoong.siang.song@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This triggers a -Wdeclaration-after-statement as the code has changed a
-bit since upstream.  It might be better to hoist the whole block up, but
-this is a smaller change so I went with it.
+On 4/13/2023 18:12, Song Yoong Siang wrote:
+> igc_configure_rx_ring() function will be called as part of XDP program
+> setup. If Rx hardware timestamp is enabled prio to XDP program setup,
+> this timestamp enablement will be overwritten when buffer size is
+> written into SRRCTL register.
+> 
+> Thus, this commit read the register value before write to SRRCTL
+> register. This commit is tested by using xdp_hw_metadata bpf selftest
+> tool. The tool enables Rx hardware timestamp and then attach XDP program
+> to igc driver. It will display hardware timestamp of UDP packet with
+> port number 9092. Below are detail of test steps and results.
+> 
+> Command on DUT:
+>    sudo ./xdp_hw_metadata <interface name>
+> 
+> Command on Link Partner:
+>    echo -n skb | nc -u -q1 <destination IPv4 addr> 9092
+> 
+> Result before this patch:
+>    skb hwtstamp is not found!
+> 
+> Result after this patch:
+>    found skb hwtstamp = 1677762212.590696226
+> 
+> Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
+> Cc: <stable@vger.kernel.org> # 5.14+
+> Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+> ---
+>   drivers/net/ethernet/intel/igc/igc_base.h | 7 +++++--
+>   drivers/net/ethernet/intel/igc/igc_main.c | 5 ++++-
+>   2 files changed, 9 insertions(+), 3 deletions(-)
 
-arch/riscv/mm/init.c:755:16: warning: mixing declarations and code is a C99 extension [-Wdeclaration-after-statement]
-            unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
-                          ^
-    1 warning generated.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202304300429.SXZOA5up-lkp@intel.com/
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
----
-I haven't even build tested this one, but it looks simple enough that I figured
-I'd just send it.  Be warned, though: I broke glibc and missed a merged
-conflict yesterday...
----
- arch/riscv/mm/init.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index e800d7981e99..8d67f43f1865 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -717,6 +717,7 @@ static void __init setup_vm_final(void)
- 	uintptr_t va, map_size;
- 	phys_addr_t pa, start, end;
- 	u64 i;
-+	unsigned long idx;
- 
- 	/**
- 	 * MMU is enabled at this point. But page table setup is not complete yet.
-@@ -735,7 +736,7 @@ static void __init setup_vm_final(void)
- 	 * directly in swapper_pg_dir in addition to the pgd entry that points
- 	 * to fixmap_pte.
- 	 */
--	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
-+	idx = pgd_index(__fix_to_virt(FIX_FDT));
- 
- 	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
- #endif
--- 
-2.40.0
-
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
