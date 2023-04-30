@@ -2,179 +2,247 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 486476F27DF
-	for <lists+stable@lfdr.de>; Sun, 30 Apr 2023 08:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA296F2815
+	for <lists+stable@lfdr.de>; Sun, 30 Apr 2023 10:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230355AbjD3Gty (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 30 Apr 2023 02:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35404 "EHLO
+        id S229565AbjD3IkI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Apr 2023 04:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjD3Gty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 02:49:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39CE81B8;
-        Sat, 29 Apr 2023 23:49:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D19860A2A;
-        Sun, 30 Apr 2023 06:49:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876F4C433EF;
-        Sun, 30 Apr 2023 06:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682837390;
-        bh=pwOCPEg+HScTv6sM47dUx/NLcjpZWowJc8Ut3PoBeK0=;
-        h=Date:From:To:Cc:Subject:From;
-        b=qv4JkBypIq1wXeBJCNTi9S5nVmPEDKiuDWbe/E1PsKPqgCryK6vYYhzF4sd7pJsuL
-         DpOMAP2cu5net9SpSRMnAxIjxXT3oW3sIq2MzI8sDpO+l/6HVC54ketKVex6S3VSrK
-         D9lHbAz5h4Y3U7cumrtztGLCV5zKdEaKH3YgKPSsumYUdq946RCAocAfW7HbqDWQ+A
-         fF2gvUS6c+CY8VltQJfoePZCrOigOBvidBfKsxvIUl53iNbBqWq09PQdJJ119YIDAz
-         hyFzRx6GzpGLirxVntyEjiJAAyhoIs2QrwTkokxboGf4jJ3xefXmB7jNB+lGP6wvmw
-         CVvp3FwkPGl1A==
-Date:   Sat, 29 Apr 2023 23:49:48 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, tools@linux.kernel.org,
-        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-        Willy Tarreau <w@1wt.eu>
-Subject: [ANNOUNCE] New script that finds partially-backported patchsets
-Message-ID: <20230430064948.GA36600@sol.localdomain>
+        with ESMTP id S229451AbjD3IkH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 04:40:07 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D59A12E;
+        Sun, 30 Apr 2023 01:40:05 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-94ed7e49541so237209766b.1;
+        Sun, 30 Apr 2023 01:40:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682844003; x=1685436003;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I3Hvi+/q4RUZKL1A7LgyM+XkMkTIi9bnr2yqRkdk38g=;
+        b=DON0nl7pmcNTQk7eKxlz5/W2nO6FKuY4MdAgP42JnI7sNJYkFV4xig2FXGO/FwGfyu
+         fYAeXsjmPTKWQqHz+Ei8N+80esgjV5u36+M3Cypq5eVyBy+Vtn2WOFmzLQ8xH/Ovn11O
+         SGMwwpmvOEbjXqaEdHRMuvORCiXC0WyAV8Zku9HrhuxW+0mG/sdxRcwUNoUrVTnyy+ou
+         Z/9PHA3ebgqAYD/TFFat35R0RV489y3t+ojgd2hrHzT5X4KH9zuW2Vbr/e30foXvJtt3
+         mAb6HhvbRDP8JA7c9EmxmO2qvjbpjru0YQdMsNyrF1cg8zxOD34eyMCfqHVTTN9ClKEa
+         fuow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682844003; x=1685436003;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I3Hvi+/q4RUZKL1A7LgyM+XkMkTIi9bnr2yqRkdk38g=;
+        b=lLpVull1c1WD5oy2JnYi0Smkuag8v1YQ/nWl3Ylwdu7GbhOk4LrpTj3YTLuPpVM/X0
+         QN3btD/NqqbsyrKRV6m8icnOo8r0TBgZOORfEycsPQI9QPAZOi6oM08GSDCkjK+Dzg5c
+         8ySghvZAphZDAdphNrPdqgesVOk6ctQ8ZK3+ZO/zVq+OCH8ERJt1RAaHIIZBdhmCjFCw
+         O/5cQTqqqOJUu0cH9+hPcmDPcjbtxEiHem+bDUyta1pEgq0IH4VIe/i1dbnTHBsSEIY/
+         4SWFbdYjXMbgzsWTVBLB8DU3EL5lg4t3k2LfU3TFqqcXwAlX5Z0opkWW23pK1n0M33TK
+         GDBQ==
+X-Gm-Message-State: AC+VfDwTX+aQwAEa0tBQ2TavpYS7PDrh6HPrOiye9I/xqh10Rfxr7rI+
+        cNOpavYdUwmsQp7nSVqjDsU0aMshv/7wULIfZ6EBGylwKDQ=
+X-Google-Smtp-Source: ACHHUZ6e1oJig7PJkA9vpA5ErPbQKBDXPcUiAWr1CX/+ahE8l/l6J017YD33pfCrTJBu6+8fKU1CTtH++xfzlLVIhVw=
+X-Received: by 2002:a17:907:3686:b0:928:796d:71e8 with SMTP id
+ bi6-20020a170907368600b00928796d71e8mr9913055ejc.3.1682844002544; Sun, 30 Apr
+ 2023 01:40:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230418014506.95428-1-xiubli@redhat.com> <877cu9w9ti.fsf@brahms.olymp>
+ <008bc17d-d5fb-107e-4405-ebacc1568890@redhat.com> <87r0sgt39x.fsf@brahms.olymp>
+In-Reply-To: <87r0sgt39x.fsf@brahms.olymp>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Sun, 30 Apr 2023 10:39:50 +0200
+Message-ID: <CAOi1vP_VH-w_09nHf4CtqcAv06_JhecZEXjGep3oEf9VSP=Hfw@mail.gmail.com>
+Subject: Re: [PATCH v3] ceph: fix potential use-after-free bug when trimming caps
+To:     =?UTF-8?Q?Lu=C3=ADs_Henriques?= <lhenriques@suse.de>
+Cc:     Xiubo Li <xiubli@redhat.com>, ceph-devel@vger.kernel.org,
+        jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Wed, Apr 20, 2023 at 3:22=E2=80=AFPM Lu=C3=ADs Henriques <lhenriques@sus=
+e.de> wrote:
+>
+> Xiubo Li <xiubli@redhat.com> writes:
+>
+> > On 4/18/23 22:20, Lu=C3=ADs Henriques wrote:
+> >> xiubli@redhat.com writes:
+> >>
+> >>> From: Xiubo Li <xiubli@redhat.com>
+> >>>
+> >>> When trimming the caps and just after the 'session->s_cap_lock' is
+> >>> released in ceph_iterate_session_caps() the cap maybe removed by
+> >>> another thread, and when using the stale cap memory in the callbacks
+> >>> it will trigger use-after-free crash.
+> >>>
+> >>> We need to check the existence of the cap just after the 'ci->i_ceph_=
+lock'
+> >>> being acquired. And do nothing if it's already removed.
+> >> Your patch seems to be OK, but I'll be honest: the locking is *so* com=
+plex
+> >> that I can say for sure it really solves any problem :-(
+> >>
+> >> ceph_put_cap() uses mdsc->caps_list_lock to protect the list, but I ca=
+n't
+> >> be sure that holding ci->i_ceph_lock will protect a race in the case
+> >> you're trying to solve.
+> >
+> > The 'mdsc->caps_list_lock' will protect the members in mdsc:
+> >
+> >         /*
+> >          * Cap reservations
+> >          *
+> >          * Maintain a global pool of preallocated struct ceph_caps, ref=
+erenced
+> >          * by struct ceph_caps_reservations.  This ensures that we prea=
+llocate
+> >          * memory needed to successfully process an MDS response. (If a=
+n MDS
+> >          * sends us cap information and we fail to process it, we will =
+have
+> >          * problems due to the client and MDS being out of sync.)
+> >          *
+> >          * Reservations are 'owned' by a ceph_cap_reservation context.
+> >          */
+> >         spinlock_t      caps_list_lock;
+> >         struct          list_head caps_list; /* unused (reserved or
+> >                                                 unreserved) */
+> >         struct          list_head cap_wait_list;
+> >         int             caps_total_count;    /* total caps allocated */
+> >         int             caps_use_count;      /* in use */
+> >         int             caps_use_max;        /* max used caps */
+> >         int             caps_reserve_count;  /* unused, reserved */
+> >         int             caps_avail_count;    /* unused, unreserved */
+> >         int             caps_min_count;      /* keep at least this many
+> >
+> > Not protecting the cap list in session or inode.
+> >
+> >
+> > And the racy is between the session's cap list and inode's cap rbtree a=
+nd both
+> > are holding the same 'cap' reference.
+> >
+> > So in 'ceph_iterate_session_caps()' after getting the 'cap' and releasi=
+ng the
+> > 'session->s_cap_lock', just before passing the 'cap' to _cb() another t=
+hread
+> > could continue and release the 'cap'. Then the 'cap' should be stale no=
+w and
+> > after being passed to _cb() the 'cap' when dereferencing it will crash =
+the
+> > kernel.
+> >
+> > And if the 'cap' is stale, it shouldn't exist in the inode's cap rbtree=
+. Please
+> > note the lock order will be:
+> >
+> > 1, spin_lock(&ci->i_ceph_lock)
+> >
+> > 2, spin_lock(&session->s_cap_lock)
+> >
+> >
+> > Before:
+> >
+> > ThreadA: ThreadB:
+> >
+> > __ceph_remove_caps() -->
+> >
+> >     spin_lock(&ci->i_ceph_lock)
+> >
+> >     ceph_remove_cap() --> ceph_iterate_session_caps() -->
+> >
+> >         __ceph_remove_cap() --> spin_lock(&session->s_cap_lock);
+> >
+> > cap =3D list_entry(p, struct ceph_cap, session_caps);
+> >
+> > spin_unlock(&session->s_cap_lock);
+> >
+> >             spin_lock(&session->s_cap_lock);
+> >
+> >             // remove it from the session's cap list
+> >
+> >             list_del_init(&cap->session_caps);
+> >
+> >             spin_unlock(&session->s_cap_lock);
+> >
+> >             ceph_put_cap()
+> >
+> > trim_caps_cb('cap') -->   // the _cb() could be deferred after ThreadA =
+finished
+> > 'ceph_put_cap()'
+> >
+> > spin_unlock(&ci->i_ceph_lock) dreference cap->xxx will trigger crash
+> >
+> >
+> >
+> > With this patch:
+> >
+> > ThreadA: ThreadB:
+> >
+> > __ceph_remove_caps() -->
+> >
+> >     spin_lock(&ci->i_ceph_lock)
+> >
+> >     ceph_remove_cap() --> ceph_iterate_session_caps() -->
+> >
+> >         __ceph_remove_cap() --> spin_lock(&session->s_cap_lock);
+> >
+> > cap =3D list_entry(p, struct ceph_cap, session_caps);
+> >
+> > ci_node =3D &cap->ci_node;
+> >
+> > spin_unlock(&session->s_cap_lock);
+> >
+> >             spin_lock(&session->s_cap_lock);
+> >
+> >             // remove it from the session's cap list
+> >
+> >             list_del_init(&cap->session_caps);
+> >
+> >             spin_unlock(&session->s_cap_lock);
+> >
+> >             ceph_put_cap()
+> >
+> > trim_caps_cb('ci_node') -->
+> >
+> > spin_unlock(&ci->i_ceph_lock)
+> >
+> > spin_lock(&ci->i_ceph_lock)
+> >
+> > cap =3D rb_entry(ci_node, struct ceph_cap, ci_node);    // This is bugg=
+y in this
+> > version, we should use the 'mds' instead and I will fix it.
+> >
+> > if (!cap)  { release the spin lock and return directly }
+> >
+> > spin_unlock(&ci->i_ceph_lock)
+>
+> Thanks a lot for taking the time to explain all of this.  Much
+> appreciated.  It all seems to make sense, and, again, I don't have any
+> real objection to your patch.  It's just that I still find the whole
+> locking to be too complex, and every change that is made to it looks like
+> walking on a mine field :-)
+>
+> > While we should switch to use the 'mds' of the cap instead of the 'ci_n=
+ode',
+> > which is buggy. I will fix it in next version.
+>
+> Yeah, I've took a quick look at v4 and it looks like it fixes this.
 
-As I promised on the "AUTOSEL process" centi-thread
-(https://lore.kernel.org/stable/20230226034256.771769-12-sashal@kernel.org/T/#u),
-I've developed some new scripts that can be found at
-https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/stable-tools.git :
+Hi Lu=C3=ADs,
 
-- `find-orig-patch`: Finds the original patch email from a git commit.
-   It first checks for a matching "Message-Id:" or "Link:" from the git commit.
-   If that fails, it falls back to a search of https://lore.kernel.org by
-   commit title and uses some heuristics to try to find the right patch email.
+Do you mind if I put this down as a Reviewed-by? ;)
 
-- `find-orig-series`: Like find-orig-patch but outputs the full series.
+Thanks,
 
-- `find-missing-prereqs`: Finds commits that were backported without previous
-  patches in their original series also being backported.  It accepts a range of
-  git commits.  I also added an option to filter the results by AUTOSEL only.
-
-For more information, see the README at
-https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/stable-tools.git/tree/README.md
-
-Note: since it wasn't clear where to put these or how to integrate them into
-anything else, for now this is a completely standalone project.  Perhaps the
-find-orig-patch functionality would be a nice feature for b4, but the more
-stable-kernel-maintenance-specific logic should be in a separate project.  BTW,
-I used the same language and license as b4: Python and GPLv2+.
-
-I wrote some regression tests that show that find-missing-prereqs is able to
-detect the missing patches for a couple examples of missed backports that broke
-users, including the recent blk-cgroup one
-(https://lore.kernel.org/linux-block/CAOCAAm4reGhz400DSVrh0BetYD3Ljr2CZen7_3D4gXYYdB4SKQ@mail.gmail.com/T/#u).
-
-For another example, at the end of this email I've also pasted the output of
-'find-missing-prereqs v6.1.24..v6.1.26', which covers the last couple weeks of
-6.1.  I don't immediately see anything super interesting in there, and it picked
-up a few very long patchsets which is a bit annoying (maybe very long patchsets
-generally aren't interesting and should be skipped?).  But it's just an example.
-
-Something that could be built on top of this is a script that applies the
-patches from the stable-queue repository for each stable kernel version, and
-generates a report about each one.  BTW, I can work on these scripts more, but
-what I can't commit to doing is manually sending out reports every week...  I
-hope that this can be automated and/or adopted by the stable maintainers.
-
-Here's the output of 'find-missing-prereqs v6.1.24..v6.1.26':
-
-The following commit(s):
-  [PATCH 24/33] commit 779fd2a575cc ("drm/amd/display: Pass the right info to drm_dp_remove_payload")
-... are backported without earlier commit(s) in series:
-  [PATCH 1/33] commit de534c1cb031 ("drm/amd/display: Add height granularity limitation for dsc slice height calculation")
-  [PATCH 2/33] commit aee0c07a74d3 ("drm/amd/display: Unify DC logging for BW Alloc")
-  [PATCH 3/33] commit 67d198da2fd4 ("drm/amd/display: When blanking during init loop to find OPP index")
-  [PATCH 4/33] commit c93aa7f33e94 ("drm/amd/display: 3.2.225")
-  [PATCH 5/33] commit 0db13eae41fc ("drm/amd/display: Add minimum Z8 residency debug option")
-  [PATCH 6/33] commit 0215ce9057ed ("drm/amd/display: Update minimum stutter residency for DCN314 Z8")
-  [PATCH 7/33] commit c0a561d96a28 ("drm/amd/display: Drop CONFIG_DRM_AMD_DC_HDR")
-  [PATCH 8/33] commit 11efe095dfe0 ("drm/amd/display: Fix no-DCN build")
-  [PATCH 9/33] commit ab487ea8910d ("drm/amd/display: fix typo in dc_dsc_config_options structure")
-  [PATCH 10/33] commit 1e88eb1b2c25 ("drm/amd/display: Drop CONFIG_DRM_AMD_DC_HDCP")
-  [PATCH 11/33] commit efa4c4df864e ("drm/amd/display: call remove_stream_from_ctx from res_pool funcs")
-  [PATCH 12/33] commit 84c03df58d8b ("drm/amd/display: Build DSC without DCN config")
-  [PATCH 13/33] commit 36516001a7c9 ("drm/amd/display: move dc_link functions in accessories folder to dc_link_exports")
-  [PATCH 14/33] commit 76f5dc40ebb1 ("drm/amd/display: move dc_link functions in link root folder to dc_link_exports")
-  [PATCH 15/33] commit 6455cb522191 ("drm/amd/display: link link_dp_dpia_bw.o in makefile")
-  [PATCH 16/33] commit 202a3816f37e ("drm/amd/display: move dc_link functions in protocols folder to dc_link_exports")
-  [PATCH 17/33] commit 788c6e2ce5c7 ("drm/amd/display: replace all dc_link function call in link with link functions")
-  [PATCH 18/33] commit 34fd6df78869 ("drm/amd/display: Simplify register offsets")
-  [PATCH 19/33] commit 2b02d746c181 ("drm/amd/display: Keep PHY active for dp config")
-  [PATCH 21/33] commit bf77fda02411 ("drm/amd/display: Drop unnecessary DCN guards")
-  [PATCH 22/33] commit 4652ae7a51b7 ("drm/amd/display: Rename DCN config to FP")
-  [PATCH 23/33] commit de930140bb57 ("drm/amd/display: Update to correct min FCLK when construction BB")
-Original patch series is "[PATCH 00/33] DC Patches Mar 6th, 2023"
-(https://lore.kernel.org/r/20230303154022.2667-1-qingqing.zhuo@amd.com)
-
-The following commit(s):
-  [PATCH 2/4] commit 3570f3cc4aab ("RDMA/erdma: Update default EQ depth to 4096 and max_send_wr to 8192")
-  [PATCH 3/4] commit d682c9bc41fa ("RDMA/erdma: Inline mtt entries into WQE if supported")
-  [PATCH 4/4] commit 132918e08e86 ("RDMA/erdma: Defer probing if netdevice can not be found")
-... are backported without earlier commit(s) in series:
-  [PATCH 1/4] commit 3fe26c0493e4 ("RDMA/erdma: Fix some typos")
-Original patch series is "[PATCH for-rc 0/4] RDMA/erdma: erdma fixes 3-20-2023"
-(https://lore.kernel.org/r/20230320084652.16807-1-chengyou@linux.alibaba.com)
-
-The following commit(s):
-  [PATCH 15/26] commit 361b02e68181 ("KVM: arm64: Initialise hypervisor copies of host symbols unconditionally")
-... are backported without earlier commit(s) in series:
-  [PATCH 1/26] commit 0f4f7ae10ee4 ("KVM: arm64: Move hyp refcount manipulation helpers to common header file")
-  [PATCH 2/26] commit 72a5bc0f153c ("KVM: arm64: Allow attaching of non-coalescable pages to a hyp pool")
-  [PATCH 3/26] commit 8e6bcc3a4502 ("KVM: arm64: Back the hypervisor 'struct hyp_page' array for all memory")
-  [PATCH 4/26] commit 0d16d12eb26e ("KVM: arm64: Fix-up hyp stage-1 refcounts for all pages mapped at EL2")
-  [PATCH 5/26] commit 33bc332d4061 ("KVM: arm64: Unify identifiers used to distinguish host and hypervisor")
-  [PATCH 6/26] commit 1ed5c24c26f4 ("KVM: arm64: Implement do_donate() helper for donating memory")
-  [PATCH 7/26] commit 43c1ff8b7501 ("KVM: arm64: Prevent the donation of no-map pages")
-  [PATCH 8/26] commit 9926cfce8dcb ("KVM: arm64: Add helpers to pin memory shared with the hypervisor at EL2")
-  [PATCH 9/26] commit 4d968b12e6bb ("KVM: arm64: Include asm/kvm_mmu.h in nvhe/mem_protect.h")
-  [PATCH 10/26] commit 1c80002e3264 ("KVM: arm64: Add hyp_spinlock_t static initializer")
-  [PATCH 11/26] commit 5304002dc375 ("KVM: arm64: Rename 'host_kvm' to 'host_mmu'")
-  [PATCH 12/26] commit a1ec5c70d3f6 ("KVM: arm64: Add infrastructure to create and track pKVM instances at EL2")
-  [PATCH 13/26] commit 9d0c063a4d1d ("KVM: arm64: Instantiate pKVM hypervisor VM and vCPU structures from EL1")
-  [PATCH 14/26] commit aa6948f82f0b ("KVM: arm64: Add per-cpu fixmap infrastructure at EL2")
-Original patch series is "[PATCH v6 00/26] KVM: arm64: Introduce pKVM hyp VM and vCPU state at EL2"
-(https://lore.kernel.org/r/20221110190259.26861-1-will@kernel.org)
-
-The following commit(s):
-  [PATCH 2/2] commit 2fcfd51add22 ("Bluetooth: SCO: Fix possible circular locking dependency sco_sock_getsockopt")
-... are backported without earlier commit(s) in series:
-  [PATCH 1/2] commit 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
-
-The following commit(s):
-  [PATCH 3/4] commit 5620eeb379d1 ("tracing: Add trace_array_puts() to write into instance")
-... are backported without earlier commit(s) in series:
-  [PATCH 1/4] commit cb1f98c5e574 ("tracing: Add creation of instances at boot command line")
-  [PATCH 2/4] commit c4846480831e ("tracing: Add enabling of events to boot instances")
-Original patch series is "[PATCH v2 0/4] tracing: Addition of tracing instances via kernel command line"
-(https://lore.kernel.org/r/20230207172849.461894073@goodmis.org)
-
-The following commit(s):
-  [PATCH 36/66] commit 4ac57c3fe2c0 ("drm/amd/display: set dcn315 lb bpp to 48")
-... are backported without earlier commit(s) in series:
-  [PATCH 31/66] commit 0b5dfe12755f ("drm/amd/display: fix a divided-by-zero error")
-  [PATCH 35/66] commit 1e994cc0956b ("drm/amd/display: limit timing for single dimm memory")
-Original patch series is "[PATCH 00/66] DC Patches Apr 17th, 2023"
-(https://lore.kernel.org/r/20230414155330.5215-1-Qingqing.Zhuo@amd.com)
-
+                Ilya
