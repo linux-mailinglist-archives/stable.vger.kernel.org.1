@@ -2,110 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0A76F3121
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 14:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D57496F3133
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 14:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232588AbjEAMpC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 1 May 2023 08:45:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38694 "EHLO
+        id S232455AbjEAMuu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 1 May 2023 08:50:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232621AbjEAMpA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 08:45:00 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049F6171E
-        for <stable@vger.kernel.org>; Mon,  1 May 2023 05:44:33 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-63b5ce4f069so2923756b3a.1
-        for <stable@vger.kernel.org>; Mon, 01 May 2023 05:44:32 -0700 (PDT)
+        with ESMTP id S232391AbjEAMut (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 08:50:49 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16D610EA;
+        Mon,  1 May 2023 05:50:48 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1aae5c2423dso16638205ad.3;
+        Mon, 01 May 2023 05:50:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1682945067; x=1685537067;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U+/m/Q8rJDfBtNlvA5MoeSZihLHMU+hMCap0lrbB/rs=;
-        b=cwwHyIgX4KWvvBvY8nSBkLAFNRsKMYzp6WW1Di0i93YYJQgPlYiPsZZCu6Q8jvx894
-         ycO1ma38TjwwxCTgtSZueTlcY4Th+uxr3S4GZBnOqQEH/2pBTsxgbr9pWx/8L3JZczbj
-         MnpoznAqXqI5UK+Sm37GsXne1PqltuZm1m4Xu8tVG+/im46OIrq2m1j0tSR/GAxO8Bh4
-         VdlXDlQkolJTQQTRdSXDTZdb4WP2mQUEn80kYCVF+/O11w7FZ444LzumBUmo4iRb4nVZ
-         uU5vUU+SbF4ykTZ8FxZUOcJJPtSPqDIpmNPWpIGo5upiSDMbV64yvLxaou3JoJtoNA5f
-         aYLw==
+        d=gmail.com; s=20221208; t=1682945448; x=1685537448;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EwELIRKAHNm5iJVhYK2ZdBO1ZolCnrOqU0qcbC+0lwU=;
+        b=T6t2ELZ5f4JYz9xB/8mCO7Jdnhli4M69GZtETvcJyky9QGHltdL/bcrDqLutJMRE89
+         arMb05ulDD+57eul6j7Wl7gYfPS3e0UQX9R/lXGIcaXmlyR6JoyypUQ152E84eiDOR+l
+         kqbM+wJOsFZrS2WABgdhY/2uEux96MWZU0PlF9yi8/kW5kJinTz9L9pg10YwalMAObuF
+         PVEpEICcZnv6JuguTqAkrW0PXJiTi9tLY73vJ+T+8tE9dUGb8g2JBeTysjEN+dbslU0b
+         pOeHwdB3UKiXR4IXRXbBgW7sAU40fi1I35//qWFON3t5ZvWYm2R6TdVlMIsKikocWDLp
+         kRmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682945067; x=1685537067;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20221208; t=1682945448; x=1685537448;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U+/m/Q8rJDfBtNlvA5MoeSZihLHMU+hMCap0lrbB/rs=;
-        b=TQiEtNbUuHQlXrndTiT+dYYY9OT91N956zZ2/d7z476ftgUVt4Q36UKKAnDPCkuKYt
-         bIPPpqSYcpI/rZlJd0T/bX9rbj/FBcb01PSrqXAfiVWBc5OU6B/JtKJB9cSH/pEvv+Al
-         KwxHTYx1SSu6GknumGPvpSc14H+X4oeTp8aGLDuM/xOpMVWI+rjSYmgqlGVk4zOyEpZB
-         nrdPEJZ94J2Eedw1dinidaam44iHwFPFf/aneTmMYPV1T1LrOjWLZMyFALdi8BdO+qjE
-         y6ulOUqvFR6WEpCHom/4omNae/QiQUmaBY4gsUQqoi0F72QKq7znB01vsxt2HxWmFiDS
-         VCBQ==
-X-Gm-Message-State: AC+VfDwDpmFEm6b/iYHGSToJQ6vTBmZeDTqt1bx+g2cU+tsaVCMAsqUw
-        Et4o0DBsrWpUK4fHUlAmwh6X7Q==
-X-Google-Smtp-Source: ACHHUZ7UwoeVcV7NcPNRh+PYPFK4S9ad6FQ4bVggkB4CDQoyhbAx7EDtp4SCD00iu4lmGkebBwMNsA==
-X-Received: by 2002:a05:6a20:6f03:b0:f8:b39b:b24e with SMTP id gt3-20020a056a206f0300b000f8b39bb24emr14578405pzb.11.1682945067231;
-        Mon, 01 May 2023 05:44:27 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id v17-20020a62c311000000b005a8bf239f5csm19690294pfg.193.2023.05.01.05.44.26
+        bh=EwELIRKAHNm5iJVhYK2ZdBO1ZolCnrOqU0qcbC+0lwU=;
+        b=dr0IGdwL/HyC5QNPx4SAzHmKKiVwmXxr5lpQbBBIMP9fxYZtImBBgxysLdbkJViwWR
+         2fO/QNjgoiHIGlF6RPPn+7F078toqfBsl2D580FCesgF5xjbFjWe8o06Qog/TekI2BQ0
+         Atorb33xLH8QpUAo2zco1XMarrfaT7FwwTeBhQL0XXLHX2LfnfX7AMQHzCzRxsoFMfrX
+         nQraH3KQ4JY7DFVWTP4yeSe60YUZDOb/THB2CQ8XxrVRoxsedr5rwiEeu4rZ2nZKV3U/
+         buWH4CHaI33HYnauiVdo209gzJ+JhTd8/a01QUBIHmi4QDQfRpn7Py9i2scg5QDuRFeU
+         o+9A==
+X-Gm-Message-State: AC+VfDzPnOzox9jglFwT0OJR3raY7VerGt6HDy54bXurf2vNT+wguNdJ
+        83VJv8JLu9toLYwnO99DfZA=
+X-Google-Smtp-Source: ACHHUZ7wz8w7qpe15Q1dZYqVc/oJ7rXHCQIKJ7OkHfP6Yd/pX/FlKcy8GGym+w/XycFcSpB6gLTRcw==
+X-Received: by 2002:a17:903:18b:b0:1a5:167f:620f with SMTP id z11-20020a170903018b00b001a5167f620fmr13455068plg.15.1682945448226;
+        Mon, 01 May 2023 05:50:48 -0700 (PDT)
+Received: from debian.me (subs02-180-214-232-68.three.co.id. [180.214.232.68])
+        by smtp.gmail.com with ESMTPSA id gb9-20020a17090b060900b0024dee500736sm2648554pjb.57.2023.05.01.05.50.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 May 2023 05:44:26 -0700 (PDT)
-Date:   Mon, 01 May 2023 05:44:26 -0700 (PDT)
-X-Google-Original-Date: Mon, 01 May 2023 05:44:09 PDT (-0700)
-Subject:     Re: [PATCH v6 4/4] risc/purgatory: Add linker script
-In-Reply-To: <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
-CC:     ebiederm@xmission.com, prudo@linux.vnet.ibm.com, dyoung@redhat.com,
-        akpm@linux-foundation.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, nathan@kernel.org, trix@redhat.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, bhe@redhat.com, prudo@redhat.com,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        zwisler@google.com, rostedt@goodmis.org, horms@kernel.org,
-        ndesaulniers@google.com, llvm@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        ribalda@chromium.org, stable@vger.kernel.org
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     ribalda@chromium.org
-Message-ID: <mhng-6809e805-0a92-401b-af74-fef93eeda1ae@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 01 May 2023 05:50:47 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 482DC106237; Mon,  1 May 2023 19:50:44 +0700 (WIB)
+Date:   Mon, 1 May 2023 19:50:44 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Acid Bong <acidbong@tilde.cafe>, regressions@lists.linux.dev
+Cc:     stable@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Message-ID: <ZE+1pKbfy1l/tTo6@debian.me>
+References: <CRVU11I7JJWF.367PSO4YAQQEI@bong>
+ <5f445dab-a152-bcaa-4462-1665998c3e2e@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="o8j3sON65QrdRjDT"
+Content-Disposition: inline
+In-Reply-To: <5f445dab-a152-bcaa-4462-1665998c3e2e@gmail.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 01 May 2023 05:38:22 PDT (-0700), ribalda@chromium.org wrote:
-> If PGO is enabled, the purgatory ends up with multiple .text sections.
-> This is not supported by kexec and crashes the system.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
->  arch/riscv/purgatory/Makefile | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
-> index 5730797a6b40..cf3a44121a90 100644
-> --- a/arch/riscv/purgatory/Makefile
-> +++ b/arch/riscv/purgatory/Makefile
-> @@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
->  CFLAGS_string.o := -D__DISABLE_EXPORTS
->  CFLAGS_ctype.o := -D__DISABLE_EXPORTS
->
-> +# When profile optimization is enabled, llvm emits two different overlapping
-> +# text sections, which is not supported by kexec. Remove profile optimization
-> +# flags.
-> +KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-> +
->  # When linking purgatory.ro with -r unresolved symbols are not checked,
->  # also link a purgatory.chk binary without -r to check for unresolved symbols.
->  PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+--o8j3sON65QrdRjDT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Apr 14, 2023 at 02:51:47PM +0700, Bagas Sanjaya wrote:
+> On 4/14/23 02:35, Acid Bong wrote:
+> > The issue appeared when I was using pf-kernel with genpatches and
+> > updated from 6.1-pf2 to 6.1-pf3 (corresponding to vanilla versions 6.1.3
+> > -> 6.1.6). I used that fork until 6.2-pf2, but since then (early March)
+> > moved to vanilla sources and started following the 6.1.y branch when it
+> > was declared LTS. And the issue was present on all of them.
+> >=20
+> > The hang was last detected 3 days ago on 6.1.22 and today on 6.1.23.
+> >=20
+>=20
+> Have you tried testing latest mainline to see if commits which are
+> backported to 6.1.y cause your regression?
+>=20
+
+#regzbot poke
+
+Acid Bong, have you successfully bisected to find the culprit commit?
+How about swapping the hardware? I'm poking because the thread looks
+stale for a while.
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--o8j3sON65QrdRjDT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZE+1nwAKCRD2uYlJVVFO
+o8f7AP0eyxbUWhfWrmZsy8qwszcvI3TYLD3Dt/xIRbiuZ8d7hQD+KOmcPzg4n8zf
+S06EBMian+f5balo8uwcqvk6MomLXAo=
+=iMRM
+-----END PGP SIGNATURE-----
+
+--o8j3sON65QrdRjDT--
