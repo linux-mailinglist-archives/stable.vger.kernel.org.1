@@ -2,41 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A916F2F2A
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 09:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 092116F303F
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 12:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232227AbjEAHdd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 1 May 2023 03:33:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38430 "EHLO
+        id S232214AbjEAKhi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 1 May 2023 06:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232086AbjEAHdc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 03:33:32 -0400
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF1210C6
-        for <stable@vger.kernel.org>; Mon,  1 May 2023 00:33:28 -0700 (PDT)
-Received: (Authenticated sender: alex@ghiti.fr)
-        by mail.gandi.net (Postfix) with ESMTPSA id A24406000B;
-        Mon,  1 May 2023 07:33:25 +0000 (UTC)
-Message-ID: <dc9c1ba9-a6b5-67f0-4499-f044fbca92f1@ghiti.fr>
-Date:   Mon, 1 May 2023 09:33:25 +0200
+        with ESMTP id S229816AbjEAKhh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 06:37:37 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D10D6A8;
+        Mon,  1 May 2023 03:37:35 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 4E0B122A14;
+        Mon,  1 May 2023 10:37:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1682937454; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+USmuIu8nZgFSeGyPz1ENqL8sRj74XuW/hqALw8SSj8=;
+        b=yEfejQmAFSNu3tS9Z6hgc4e6pHpmjBLaixJuAr8D3iHDNNpgzI9cNtZD7Ndi90s77Lz9KA
+        37r1ZlDgMWuaxEyLpUXbpFp0aIuWHb5AwUdiThjVKI9tIJpMvY1b5voaf6TNt+D+CQFOFn
+        KcTwddl/Lm+EFszDXqLDWl6TiA3N2m8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1682937454;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+USmuIu8nZgFSeGyPz1ENqL8sRj74XuW/hqALw8SSj8=;
+        b=ZERuFFx9U1fgSTro+P4f6UMOQUJK/QCoHElIdDnWLwBqL6dYoh1W9L0/u8aC80L7PxnG5b
+        GBUwwo3DD8m0ULDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D0DCA13587;
+        Mon,  1 May 2023 10:37:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id u58JMG2WT2SIMwAAMHmgww
+        (envelope-from <lhenriques@suse.de>); Mon, 01 May 2023 10:37:33 +0000
+Received: from localhost (brahms.olymp [local])
+        by brahms.olymp (OpenSMTPD) with ESMTPA id a40b48ce;
+        Mon, 1 May 2023 10:37:29 +0000 (UTC)
+From:   =?utf-8?Q?Lu=C3=ADs_Henriques?= <lhenriques@suse.de>
+To:     Ilya Dryomov <idryomov@gmail.com>
+Cc:     Xiubo Li <xiubli@redhat.com>, ceph-devel@vger.kernel.org,
+        jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] ceph: fix potential use-after-free bug when trimming
+ caps
+References: <20230418014506.95428-1-xiubli@redhat.com>
+        <877cu9w9ti.fsf@brahms.olymp>
+        <008bc17d-d5fb-107e-4405-ebacc1568890@redhat.com>
+        <87r0sgt39x.fsf@brahms.olymp>
+        <CAOi1vP_VH-w_09nHf4CtqcAv06_JhecZEXjGep3oEf9VSP=Hfw@mail.gmail.com>
+Date:   Mon, 01 May 2023 11:37:28 +0100
+In-Reply-To: <CAOi1vP_VH-w_09nHf4CtqcAv06_JhecZEXjGep3oEf9VSP=Hfw@mail.gmail.com>
+        (Ilya Dryomov's message of "Sun, 30 Apr 2023 10:39:50 +0200")
+Message-ID: <878re8tk0n.fsf@brahms.olymp>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH linux-5.15.y] RISC-V: Fix up a cherry-pick warning in
- setup_vm_final()
-To:     Palmer Dabbelt <palmer@rivosinc.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, linux-riscv@lists.infradead.org,
-        kernel test robot <lkp@intel.com>
-References: <20230429224330.18699-1-palmer@rivosinc.com>
-Content-Language: en-US
-From:   Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20230429224330.18699-1-palmer@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,82 +80,187 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Palmer,
+Ilya Dryomov <idryomov@gmail.com> writes:
 
-On 4/30/23 00:43, Palmer Dabbelt wrote:
-> This triggers a -Wdeclaration-after-statement as the code has changed a
-> bit since upstream.  It might be better to hoist the whole block up, but
-> this is a smaller change so I went with it.
+> On Wed, Apr 20, 2023 at 3:22=E2=80=AFPM Lu=C3=ADs Henriques <lhenriques@s=
+use.de> wrote:
+>>
+>> Xiubo Li <xiubli@redhat.com> writes:
+>>
+>> > On 4/18/23 22:20, Lu=C3=ADs Henriques wrote:
+>> >> xiubli@redhat.com writes:
+>> >>
+>> >>> From: Xiubo Li <xiubli@redhat.com>
+>> >>>
+>> >>> When trimming the caps and just after the 'session->s_cap_lock' is
+>> >>> released in ceph_iterate_session_caps() the cap maybe removed by
+>> >>> another thread, and when using the stale cap memory in the callbacks
+>> >>> it will trigger use-after-free crash.
+>> >>>
+>> >>> We need to check the existence of the cap just after the 'ci->i_ceph=
+_lock'
+>> >>> being acquired. And do nothing if it's already removed.
+>> >> Your patch seems to be OK, but I'll be honest: the locking is *so* co=
+mplex
+>> >> that I can say for sure it really solves any problem :-(
+>> >>
+>> >> ceph_put_cap() uses mdsc->caps_list_lock to protect the list, but I c=
+an't
+>> >> be sure that holding ci->i_ceph_lock will protect a race in the case
+>> >> you're trying to solve.
+>> >
+>> > The 'mdsc->caps_list_lock' will protect the members in mdsc:
+>> >
+>> >         /*
+>> >          * Cap reservations
+>> >          *
+>> >          * Maintain a global pool of preallocated struct ceph_caps, re=
+ferenced
+>> >          * by struct ceph_caps_reservations.  This ensures that we pre=
+allocate
+>> >          * memory needed to successfully process an MDS response. (If =
+an MDS
+>> >          * sends us cap information and we fail to process it, we will=
+ have
+>> >          * problems due to the client and MDS being out of sync.)
+>> >          *
+>> >          * Reservations are 'owned' by a ceph_cap_reservation context.
+>> >          */
+>> >         spinlock_t      caps_list_lock;
+>> >         struct          list_head caps_list; /* unused (reserved or
+>> >                                                 unreserved) */
+>> >         struct          list_head cap_wait_list;
+>> >         int             caps_total_count;    /* total caps allocated */
+>> >         int             caps_use_count;      /* in use */
+>> >         int             caps_use_max;        /* max used caps */
+>> >         int             caps_reserve_count;  /* unused, reserved */
+>> >         int             caps_avail_count;    /* unused, unreserved */
+>> >         int             caps_min_count;      /* keep at least this many
+>> >
+>> > Not protecting the cap list in session or inode.
+>> >
+>> >
+>> > And the racy is between the session's cap list and inode's cap rbtree =
+and both
+>> > are holding the same 'cap' reference.
+>> >
+>> > So in 'ceph_iterate_session_caps()' after getting the 'cap' and releas=
+ing the
+>> > 'session->s_cap_lock', just before passing the 'cap' to _cb() another =
+thread
+>> > could continue and release the 'cap'. Then the 'cap' should be stale n=
+ow and
+>> > after being passed to _cb() the 'cap' when dereferencing it will crash=
+ the
+>> > kernel.
+>> >
+>> > And if the 'cap' is stale, it shouldn't exist in the inode's cap rbtre=
+e. Please
+>> > note the lock order will be:
+>> >
+>> > 1, spin_lock(&ci->i_ceph_lock)
+>> >
+>> > 2, spin_lock(&session->s_cap_lock)
+>> >
+>> >
+>> > Before:
+>> >
+>> > ThreadA: ThreadB:
+>> >
+>> > __ceph_remove_caps() -->
+>> >
+>> >     spin_lock(&ci->i_ceph_lock)
+>> >
+>> >     ceph_remove_cap() --> ceph_iterate_session_caps() -->
+>> >
+>> >         __ceph_remove_cap() --> spin_lock(&session->s_cap_lock);
+>> >
+>> > cap =3D list_entry(p, struct ceph_cap, session_caps);
+>> >
+>> > spin_unlock(&session->s_cap_lock);
+>> >
+>> >             spin_lock(&session->s_cap_lock);
+>> >
+>> >             // remove it from the session's cap list
+>> >
+>> >             list_del_init(&cap->session_caps);
+>> >
+>> >             spin_unlock(&session->s_cap_lock);
+>> >
+>> >             ceph_put_cap()
+>> >
+>> > trim_caps_cb('cap') -->   // the _cb() could be deferred after ThreadA=
+ finished
+>> > 'ceph_put_cap()'
+>> >
+>> > spin_unlock(&ci->i_ceph_lock) dreference cap->xxx will trigger crash
+>> >
+>> >
+>> >
+>> > With this patch:
+>> >
+>> > ThreadA: ThreadB:
+>> >
+>> > __ceph_remove_caps() -->
+>> >
+>> >     spin_lock(&ci->i_ceph_lock)
+>> >
+>> >     ceph_remove_cap() --> ceph_iterate_session_caps() -->
+>> >
+>> >         __ceph_remove_cap() --> spin_lock(&session->s_cap_lock);
+>> >
+>> > cap =3D list_entry(p, struct ceph_cap, session_caps);
+>> >
+>> > ci_node =3D &cap->ci_node;
+>> >
+>> > spin_unlock(&session->s_cap_lock);
+>> >
+>> >             spin_lock(&session->s_cap_lock);
+>> >
+>> >             // remove it from the session's cap list
+>> >
+>> >             list_del_init(&cap->session_caps);
+>> >
+>> >             spin_unlock(&session->s_cap_lock);
+>> >
+>> >             ceph_put_cap()
+>> >
+>> > trim_caps_cb('ci_node') -->
+>> >
+>> > spin_unlock(&ci->i_ceph_lock)
+>> >
+>> > spin_lock(&ci->i_ceph_lock)
+>> >
+>> > cap =3D rb_entry(ci_node, struct ceph_cap, ci_node);    // This is bug=
+gy in this
+>> > version, we should use the 'mds' instead and I will fix it.
+>> >
+>> > if (!cap)  { release the spin lock and return directly }
+>> >
+>> > spin_unlock(&ci->i_ceph_lock)
+>>
+>> Thanks a lot for taking the time to explain all of this.  Much
+>> appreciated.  It all seems to make sense, and, again, I don't have any
+>> real objection to your patch.  It's just that I still find the whole
+>> locking to be too complex, and every change that is made to it looks like
+>> walking on a mine field :-)
+>>
+>> > While we should switch to use the 'mds' of the cap instead of the 'ci_=
+node',
+>> > which is buggy. I will fix it in next version.
+>>
+>> Yeah, I've took a quick look at v4 and it looks like it fixes this.
 >
-> arch/riscv/mm/init.c:755:16: warning: mixing declarations and code is a C99 extension [-Wdeclaration-after-statement]
->              unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
->                            ^
->      1 warning generated.
+> Hi Lu=C3=ADs,
 >
-> Reported-by: kernel test robot <lkp@intel.com>
-> Link: https://lore.kernel.org/oe-kbuild-all/202304300429.SXZOA5up-lkp@intel.com/
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> ---
-> I haven't even build tested this one, but it looks simple enough that I figured
-> I'd just send it.  Be warned, though: I broke glibc and missed a merged
-> conflict yesterday...
-> ---
->   arch/riscv/mm/init.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index e800d7981e99..8d67f43f1865 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -717,6 +717,7 @@ static void __init setup_vm_final(void)
->   	uintptr_t va, map_size;
->   	phys_addr_t pa, start, end;
->   	u64 i;
-> +	unsigned long idx;
->   
->   	/**
->   	 * MMU is enabled at this point. But page table setup is not complete yet.
-> @@ -735,7 +736,7 @@ static void __init setup_vm_final(void)
->   	 * directly in swapper_pg_dir in addition to the pgd entry that points
->   	 * to fixmap_pte.
->   	 */
-> -	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
-> +	idx = pgd_index(__fix_to_virt(FIX_FDT));
->   
->   	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
->   #endif
+> Do you mind if I put this down as a Reviewed-by? ;)
 
-The above results to in rv64:
+Sure, feel free to add my
 
-../arch/riscv/mm/init.c: In function ‘setup_vm_final’:
-../arch/riscv/mm/init.c:720:16: warning: unused variable ‘idx’ 
-[-Wunused-variable]
-   720 |  unsigned long idx;
+Reviewed-by: Lu=C3=ADs Henriques <lhenriques@suse.de>
 
+(Sorry, forgot to send that explicitly.)
 
-The following fixes this warning:
-
-
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 8d67f43f1865..e69d82d573f1 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -717,7 +717,7 @@ static void __init setup_vm_final(void)
-         uintptr_t va, map_size;
-         phys_addr_t pa, start, end;
-         u64 i;
--       unsigned long idx;
-+       unsigned long idx __maybe_unused;
-
-         /**
-          * MMU is enabled at this point. But page table setup is not 
-complete yet.
-
-
-Let me know if you want me to send a proper patch as I'm the one to 
-blame here.
-
-Thanks for your patch,
-
-Alex
-
+Cheers,
+--=20
+Lu=C3=ADs
