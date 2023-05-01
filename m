@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70C3E6F2DFD
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 05:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C18016F2DFB
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 05:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233440AbjEADSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 30 Apr 2023 23:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43752 "EHLO
+        id S232999AbjEADSH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Apr 2023 23:18:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233158AbjEADRD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 23:17:03 -0400
+        with ESMTP id S233161AbjEADRE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 23:17:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CE01BFE;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE886A79;
         Sun, 30 Apr 2023 20:07:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EF9261735;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 096F461800;
+        Mon,  1 May 2023 03:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48677C4339E;
         Mon,  1 May 2023 03:06:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEEFC433EF;
-        Mon,  1 May 2023 03:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682910417;
-        bh=DcjXekO6d7vfiiA44MWWCEOPfLjA8/jcAX3MbvESGyc=;
+        s=k20201202; t=1682910419;
+        bh=JayhGJ+wvicz/0HtZ+mIEHy5D+aoDtGqENBOibQMLH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tv68HYR0WRx1mbAsgZfkQLVzPxNSn8bhz1+kDubU/fBLzSUsguecd+yUnAlIl0vXx
-         wlFls98h7W4BDmrgbEZIz8SRHqT5UC38xtPZARXLx//hdyxm0iydmQrHy8kzJelnFn
-         zhMFnX3eEQMwc3tSpig4St2z7xyPWDs0SCv0ZrehoCUHpDhPf5ukKusMTSFLoWih2h
-         Ihx1Y+OlOuvyMEB3lhbHNdsZTEPwNhmcXI0ZCUsID+okhBN6pIkFbeWni9a0yjJQZK
-         u5gSMvumF1NXQZmvKB9UJrk90Ror5XpBHyTOvjFzA/q2Rv72KC+GKNVTAexRucE/89
-         2PoLkRnc0TvyA==
+        b=GqvI3QWQswA2guzQIoqYSbRbnQFOyD2Ap4cJRWkc8K8+VRDtDKZBYBKc2LRkn04F0
+         BY2J05IYkQBNDMunBcv4mBfsA+pDyJrcgGTmDsuAkpKZn1E2z3zwL5uWEOD2xNStSy
+         X+1bdzmzbUhBFqmGjsUJllzl9wKv0gv4GdMwmeo/37KmpraXFERTjR9KoZpH2a+FJC
+         7PEP4/4zFlXiiZdjXJ4EwcgMuRMRxjJoG10S0Ima0V6M6Xdzr3Ehx+TTH3ys+dY3B4
+         jRAQsoXwGRReRBiJqOC7xe3isxjnAJxFr3YLGYIE2Bs8pM/IBslyP7lQjea2prT+B7
+         chyZs6uinQtzg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Armin Wolf <W_Armin@gmx.de>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 3/6] ACPI: EC: Fix oops when removing custom query handlers
-Date:   Sun, 30 Apr 2023 23:06:49 -0400
-Message-Id: <20230501030653.3255321-3-sashal@kernel.org>
+Cc:     Nur Hussein <hussein@unixcat.org>,
+        Thierry Reding <treding@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>, thierry.reding@gmail.com,
+        mperttunen@nvidia.com, airlied@gmail.com, daniel@ffwll.ch,
+        jonathanh@nvidia.com, dri-devel@lists.freedesktop.org,
+        linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 4/6] drm/tegra: Avoid potential 32-bit integer overflow
+Date:   Sun, 30 Apr 2023 23:06:50 -0400
+Message-Id: <20230501030653.3255321-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230501030653.3255321-1-sashal@kernel.org>
 References: <20230501030653.3255321-1-sashal@kernel.org>
@@ -57,38 +59,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Nur Hussein <hussein@unixcat.org>
 
-[ Upstream commit e5b492c6bb900fcf9722e05f4a10924410e170c1 ]
+[ Upstream commit 2429b3c529da29d4277d519bd66d034842dcd70c ]
 
-When removing custom query handlers, the handler might still
-be used inside the EC query workqueue, causing a kernel oops
-if the module holding the callback function was already unloaded.
+In tegra_sor_compute_config(), the 32-bit value mode->clock is
+multiplied by 1000, and assigned to the u64 variable pclk. We can avoid
+a potential 32-bit integer overflow by casting mode->clock to u64 before
+we do the arithmetic and assignment.
 
-Fix this by flushing the EC query workqueue when removing
-custom query handlers.
-
-Tested on a Acer Travelmate 4002WLMi
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Nur Hussein <hussein@unixcat.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/tegra/sor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index f8fc30be68711..1dedab328c464 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1135,6 +1135,7 @@ static void acpi_ec_remove_query_handlers(struct acpi_ec *ec,
- void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit)
+diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
+index 352ae52be3418..76451c8bfb46b 100644
+--- a/drivers/gpu/drm/tegra/sor.c
++++ b/drivers/gpu/drm/tegra/sor.c
+@@ -709,7 +709,7 @@ static int tegra_sor_compute_config(struct tegra_sor *sor,
+ 				    struct drm_dp_link *link)
  {
- 	acpi_ec_remove_query_handlers(ec, false, query_bit);
-+	flush_workqueue(ec_query_wq);
- }
- EXPORT_SYMBOL_GPL(acpi_ec_remove_query_handler);
- 
+ 	const u64 f = 100000, link_rate = link->rate * 1000;
+-	const u64 pclk = mode->clock * 1000;
++	const u64 pclk = (u64)mode->clock * 1000;
+ 	u64 input, output, watermark, num;
+ 	struct tegra_sor_params params;
+ 	u32 num_syms_per_line;
 -- 
 2.39.2
 
