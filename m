@@ -2,121 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D57496F3133
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 14:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ABAB6F3160
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 15:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232455AbjEAMuu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 1 May 2023 08:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42822 "EHLO
+        id S232208AbjEANDv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 1 May 2023 09:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232391AbjEAMut (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 08:50:49 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16D610EA;
-        Mon,  1 May 2023 05:50:48 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1aae5c2423dso16638205ad.3;
-        Mon, 01 May 2023 05:50:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682945448; x=1685537448;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EwELIRKAHNm5iJVhYK2ZdBO1ZolCnrOqU0qcbC+0lwU=;
-        b=T6t2ELZ5f4JYz9xB/8mCO7Jdnhli4M69GZtETvcJyky9QGHltdL/bcrDqLutJMRE89
-         arMb05ulDD+57eul6j7Wl7gYfPS3e0UQX9R/lXGIcaXmlyR6JoyypUQ152E84eiDOR+l
-         kqbM+wJOsFZrS2WABgdhY/2uEux96MWZU0PlF9yi8/kW5kJinTz9L9pg10YwalMAObuF
-         PVEpEICcZnv6JuguTqAkrW0PXJiTi9tLY73vJ+T+8tE9dUGb8g2JBeTysjEN+dbslU0b
-         pOeHwdB3UKiXR4IXRXbBgW7sAU40fi1I35//qWFON3t5ZvWYm2R6TdVlMIsKikocWDLp
-         kRmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682945448; x=1685537448;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EwELIRKAHNm5iJVhYK2ZdBO1ZolCnrOqU0qcbC+0lwU=;
-        b=dr0IGdwL/HyC5QNPx4SAzHmKKiVwmXxr5lpQbBBIMP9fxYZtImBBgxysLdbkJViwWR
-         2fO/QNjgoiHIGlF6RPPn+7F078toqfBsl2D580FCesgF5xjbFjWe8o06Qog/TekI2BQ0
-         Atorb33xLH8QpUAo2zco1XMarrfaT7FwwTeBhQL0XXLHX2LfnfX7AMQHzCzRxsoFMfrX
-         nQraH3KQ4JY7DFVWTP4yeSe60YUZDOb/THB2CQ8XxrVRoxsedr5rwiEeu4rZ2nZKV3U/
-         buWH4CHaI33HYnauiVdo209gzJ+JhTd8/a01QUBIHmi4QDQfRpn7Py9i2scg5QDuRFeU
-         o+9A==
-X-Gm-Message-State: AC+VfDzPnOzox9jglFwT0OJR3raY7VerGt6HDy54bXurf2vNT+wguNdJ
-        83VJv8JLu9toLYwnO99DfZA=
-X-Google-Smtp-Source: ACHHUZ7wz8w7qpe15Q1dZYqVc/oJ7rXHCQIKJ7OkHfP6Yd/pX/FlKcy8GGym+w/XycFcSpB6gLTRcw==
-X-Received: by 2002:a17:903:18b:b0:1a5:167f:620f with SMTP id z11-20020a170903018b00b001a5167f620fmr13455068plg.15.1682945448226;
-        Mon, 01 May 2023 05:50:48 -0700 (PDT)
-Received: from debian.me (subs02-180-214-232-68.three.co.id. [180.214.232.68])
-        by smtp.gmail.com with ESMTPSA id gb9-20020a17090b060900b0024dee500736sm2648554pjb.57.2023.05.01.05.50.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 May 2023 05:50:47 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 482DC106237; Mon,  1 May 2023 19:50:44 +0700 (WIB)
-Date:   Mon, 1 May 2023 19:50:44 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Acid Bong <acidbong@tilde.cafe>, regressions@lists.linux.dev
-Cc:     stable@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Message-ID: <ZE+1pKbfy1l/tTo6@debian.me>
-References: <CRVU11I7JJWF.367PSO4YAQQEI@bong>
- <5f445dab-a152-bcaa-4462-1665998c3e2e@gmail.com>
+        with ESMTP id S230401AbjEANDu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 09:03:50 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC4EF18E;
+        Mon,  1 May 2023 06:03:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1682946226; i=rwarsow@gmx.de;
+        bh=27FP0cCiehVy8hLWLcH6XQvkDYxeiixIs7dZCX/Qovg=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=Hy8LyqC0edXx99qbJ+6RdD2F/846q8PDzqpJuXnOGraCsgtHU2D+KIqeABMSIpU+0
+         jhFV5U7iHDJXvYxiC/SPD8l1z0l4czw8hj/lsasBuI7aEkG+1wvLFCNQPWxkSSZeiR
+         5PDfCfvq0lpkBmx44CcgEO8aAH7wRH4ouTU0HZxYAPZIC72/wDgKXmROz4UHyCi+Yf
+         rSO7Age/8NC04ReYa40252b/AyWkpZK6qfTvD46FU4JtOb7lTXSminhEBh/QAdA//7
+         awtVLKgcMfHIvhMeL9fLQel6cRauHNSQcIt83FPBOpyFNjQfsQMDdEtOSHqsKn+vt+
+         OPMGc2kXyxJ7g==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.231]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N95eJ-1qMEJ30PR9-0168J6; Mon, 01
+ May 2023 15:03:46 +0200
+Message-ID: <f0497747-2318-7355-6ea6-ff01f9eb97ef@gmx.de>
+Date:   Mon, 1 May 2023 15:03:45 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="o8j3sON65QrdRjDT"
-Content-Disposition: inline
-In-Reply-To: <5f445dab-a152-bcaa-4462-1665998c3e2e@gmail.com>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+From:   Ronald Warsow <rwarsow@gmx.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: Linux 6.3.1
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:UDaDsvLNzvyy5oTZ+O1q2DKTdpWveNIHQwPIpgpeZhW+d++W615
+ BZ6BgaKpvLQL3DRrnDsyRnKrBgkpwQHWvJS+nApC8DUhpjixaWhH7aY9oqRK2IcBeTjvRsG
+ 6ggZ5WYigw3yNhiYMCWuKPx2MzHIazCnlFrbDrmkGfgVN6oGr68OkxzYVH1bdtB+qkPcF0+
+ pCrQJSyxwCkEynz9vSdcQ==
+UI-OutboundReport: notjunk:1;M01:P0:wRZDy5XAjB4=;ZwAAUoCaA7Ioj87pje3+XBwB1Iv
+ x10ucoroP2FqS/+yqzamnKpe2vy7iwkCBkwcfF2+E+fAD+8VN9Q/J0Fz6Z2LUX7RTIO09+AbN
+ WvO9lS5yMcnB0bKgbHPGfWKCVoLlXh2g5XhQQjYQgdkKtxCQXg3hIOVkHi/FtVbnwyErKSAXF
+ WodESyEuvzIuY6brdj+Bl8p1RNfc5pLkzcHWqQD8Y5wWOy0eAtev/2hn6ugp7C4A0wdxn4i/b
+ fkF1m0ld0fobDEYB4CDb4KCQIAuTRQly6kAfYtr/r2UioRQk+VjhmATrorchLQrRQY5Z7izNB
+ zO6WjxnzhOXpfzilsfzTnz8f6eeC14u0TedMLBnwXdf8QimnX3tkOobiWDVDiOO18WCxFa4Um
+ Zlw7XJEM9UnsYJuGqjo+7PAMGIjdADgFMJ1m328JPmifiCvViyIWQpWCIu3kQE/n5jU1SVB48
+ 7qlTb9R2G8I+ixSWnUA8ecwk81v1LUwt94DEvhfkm/KsTIu64h9jyytSSvUtaAlBV71A27WUl
+ PFIGDtGJY8IcAlktxy7WoqaXcCzDz8b/rpvhyjauIyuh3u3f21fH8bd1NCHCecnG+NSjYA9FA
+ GmUyfExKxxG3YvYDlBTaM7lLwAaLi6qmdKRVCGEPYWrHcGz7wb3oMJrUbJDUu/wLuwJ8uakzP
+ +706iMA5djwzYMFREmhL42V0ytjETqOXSyxLAUr1PRZ6bBcUtRcxJhRIwiSTQpN5cJFV6/bMo
+ Us7WUX1RGp2IwGvTpt0Oi/JTKtT9K8ZpfA4vnAH9pKbO4kPuXpvLQC4GK22IbWk40LwCrrmFu
+ +zFVEtL1O9sPckKEEvD0BHDxMoljCceFk6wYn60XjWVLcLZaSlGYg1lM7L0qiK3nm7FpfxA7m
+ njIGZKU2YLNGkI+BAlrngVYZefo5jQ/q217iHGIIZyB3XUX2bFPHU5yt1T4zWHLY6/AWBfnx5
+ uCL63EOE/pyhwQvMfhAwBT3+jDA=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Greg
 
---o8j3sON65QrdRjDT
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+fetching new kernels via script:
 
-On Fri, Apr 14, 2023 at 02:51:47PM +0700, Bagas Sanjaya wrote:
-> On 4/14/23 02:35, Acid Bong wrote:
-> > The issue appeared when I was using pf-kernel with genpatches and
-> > updated from 6.1-pf2 to 6.1-pf3 (corresponding to vanilla versions 6.1.3
-> > -> 6.1.6). I used that fork until 6.2-pf2, but since then (early March)
-> > moved to vanilla sources and started following the 6.1.y branch when it
-> > was declared LTS. And the issue was present on all of them.
-> >=20
-> > The hang was last detected 3 days ago on 6.1.22 and today on 6.1.23.
-> >=20
->=20
-> Have you tried testing latest mainline to see if commits which are
-> backported to 6.1.y cause your regression?
->=20
+https://git.kernel.org/pub/scm/linux/kernel/git/mricon/korg-helpers.git/tree/get-verified-tarball
 
-#regzbot poke
+it seems
+https://cdn.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
 
-Acid Bong, have you successfully bisected to find the culprit commit?
-How about swapping the hardware? I'm poking because the thread looks
-stale for a while.
+doesn't contain a hash for 6.3.1
 
-Thanks.
 
---=20
-An old man doll... just what I always wanted! - Clara
+Ronald Warsow
 
---o8j3sON65QrdRjDT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZE+1nwAKCRD2uYlJVVFO
-o8f7AP0eyxbUWhfWrmZsy8qwszcvI3TYLD3Dt/xIRbiuZ8d7hQD+KOmcPzg4n8zf
-S06EBMian+f5balo8uwcqvk6MomLXAo=
-=iMRM
------END PGP SIGNATURE-----
-
---o8j3sON65QrdRjDT--
