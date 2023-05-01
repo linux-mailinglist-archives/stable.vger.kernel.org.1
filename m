@@ -2,171 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 427B16F363D
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 20:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810426F3885
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 21:55:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232773AbjEASuT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 1 May 2023 14:50:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35494 "EHLO
+        id S232699AbjEATzV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 1 May 2023 15:55:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232632AbjEASuS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 14:50:18 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3C31986
-        for <stable@vger.kernel.org>; Mon,  1 May 2023 11:50:17 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-50bcb229adaso1090746a12.2
-        for <stable@vger.kernel.org>; Mon, 01 May 2023 11:50:17 -0700 (PDT)
+        with ESMTP id S230433AbjEATzT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 15:55:19 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D34BA2107
+        for <stable@vger.kernel.org>; Mon,  1 May 2023 12:55:17 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-559f1819c5dso30970297b3.0
+        for <stable@vger.kernel.org>; Mon, 01 May 2023 12:55:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1682967015; x=1685559015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QJsDytAkzpo1N72CvaRaEHpBmg/KeBVFFxmvg3mMNXA=;
-        b=RG31kh6Cuw6wynQJXlRZdlHS6Sy38NOCv2IPwyN2RVan1ucfixhr/eeq6GYiC6Tb6Q
-         T9mEelkOfkQK5rfL+FpivpcFRBjlw7CV7K6gIVv3qPHycIxkYQBO4lClPb3ScOzMYmtH
-         4n9Ry/dlC8wf1wzePrd5W77gn70GyRXY4iU5c=
+        d=chromium.org; s=google; t=1682970917; x=1685562917;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=A6/Qwr73DpjqVyRdRECBbxXjLLTahq/uJGnivC6mAq8=;
+        b=nOGV79JHEufvcYn2AKhdk79/ViXSWov22Cy33zWA1Gtst+eCDvoVa3OWWz5HNIcCII
+         UZejZi5Uegh9PTt5hwbCSATYVQ0siN0O+UgoBQWNisA50H9K9bZk9Wrc9Z0OQeeEfA/+
+         +yThvmo2Fno7BKwBTkUAF3LbTzoNv7/LwN0wU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682967015; x=1685559015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QJsDytAkzpo1N72CvaRaEHpBmg/KeBVFFxmvg3mMNXA=;
-        b=SWvmAYTNJN1LBWOQaLN/6LkH1iI1gmB4VAVytvaglqqN84drBPQrHAao0PiOV4FGwI
-         fW0l9bOPtQ4KG6VeJvYCb73oVColD7v+erWrKqb44MnOj9OQL2yG1d6k+xbaOxXSQvgP
-         pmrz8Hft8HPKjsQIFyv2kdP9qViabEA+U9pwcvKRG5BWxBHnEt5ethwRC9CcQNZfMGDl
-         5wUuBEsLT5bTG9liLpqaNhZNZ7aVFAJ8FRVmrcOzaD2S1tNaW/j8O1uF+tWUInbTUz5r
-         e/MAShYoPVq2RxF65cApj1tiONOfXloS7Zxj+qNOkEeGE8w50gfc2ywCKfQAdE44Rree
-         7h1g==
-X-Gm-Message-State: AC+VfDz+o8HXNIOYbyYSN6HRGJluAAopXSnYu2oIKtxFC67YFghPRnAj
-        S2qhDecBJMxd518dhTlt/gOUvahPb2WkkVH+dZInwg==
-X-Google-Smtp-Source: ACHHUZ6iJmtn6HAAdUQGVbkfk2VCCIG3IjJ3nYGctm8lbbW/h7aUtPBHKO8oWb+PC8/YPZiDPu0t5g==
-X-Received: by 2002:a17:907:3f02:b0:94f:865d:f81f with SMTP id hq2-20020a1709073f0200b0094f865df81fmr13619764ejc.17.1682967015204;
-        Mon, 01 May 2023 11:50:15 -0700 (PDT)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
-        by smtp.gmail.com with ESMTPSA id qb25-20020a1709077e9900b00959b810efcbsm10263304ejc.36.2023.05.01.11.50.12
+        d=1e100.net; s=20221208; t=1682970917; x=1685562917;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A6/Qwr73DpjqVyRdRECBbxXjLLTahq/uJGnivC6mAq8=;
+        b=arV54IN9tyk5XqEJejzzw3Acd8CEQ8H8o17PTW0a66maB2OoxbOgXh3BXpCf8H3kU/
+         plRnJc/xPDecyJ73t8rge2UoGdCuzIXr3I944nBD6Mxoc13NNbAw3wk2zPLYUsuVk/DY
+         9nMAO1nzATxOVtnM3Clme7cJMvXPZK14sk7F8YmKbuY67dqjW8lYf8tm0Y+9bSxlI1Pg
+         e8Vt6hmhL8wx6qqahuRfghm+XuMvlzkdqEpIaf7Ij1i9mHMCvvUWB8cOWTxcLelkuGUw
+         NtWPMqXTGT1f8jqkxdbCNmzo0eJtYEpZTpLaSSfEMpTyq/D4MuinX9wF+ShND+xJTyRf
+         W4kw==
+X-Gm-Message-State: AC+VfDz69U+ERORbuExvYZbClPh+tfgssnCqnUg4PJw8AqzDrYYrI+t7
+        BssVnc90VSn23BvwDJ4NrawMWSbA+UOb7jqTt8w0Ww==
+X-Google-Smtp-Source: ACHHUZ5Micsge5qcUkvACeh5qZkv599FhCeGkBYRYQhhbxuGHuyNnb0MS4tz8zmYPzwW51tDOt02Yw==
+X-Received: by 2002:a0d:d853:0:b0:555:d12a:b5fa with SMTP id a80-20020a0dd853000000b00555d12ab5famr13747603ywe.5.1682970916877;
+        Mon, 01 May 2023 12:55:16 -0700 (PDT)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
+        by smtp.gmail.com with ESMTPSA id d144-20020a814f96000000b00559f1cb8444sm1568657ywb.70.2023.05.01.12.55.16
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 May 2023 11:50:13 -0700 (PDT)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-50bceaf07b8so393335a12.3
-        for <stable@vger.kernel.org>; Mon, 01 May 2023 11:50:12 -0700 (PDT)
-X-Received: by 2002:aa7:d8cb:0:b0:50b:cff8:ff1f with SMTP id
- k11-20020aa7d8cb000000b0050bcff8ff1fmr310706eds.42.1682967012421; Mon, 01 May
- 2023 11:50:12 -0700 (PDT)
+        Mon, 01 May 2023 12:55:16 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-b9e66ce80acso7568276.3
+        for <stable@vger.kernel.org>; Mon, 01 May 2023 12:55:16 -0700 (PDT)
+X-Received: by 2002:a05:6a20:a28a:b0:e6:f7e8:1e4d with SMTP id
+ a10-20020a056a20a28a00b000e6f7e81e4dmr13625249pzl.33.1682970895325; Mon, 01
+ May 2023 12:54:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <000000000000de34bd05f3c6fe19@google.com> <0000000000001ec6ce05fa9a4bf7@google.com>
-In-Reply-To: <0000000000001ec6ce05fa9a4bf7@google.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 1 May 2023 11:49:55 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whWUZyiFvHpkC35DXo713GKFjqCWwY1uCs3tbMJ6QXeWg@mail.gmail.com>
-Message-ID: <CAHk-=whWUZyiFvHpkC35DXo713GKFjqCWwY1uCs3tbMJ6QXeWg@mail.gmail.com>
-Subject: Re: [syzbot] [xfs?] BUG: unable to handle kernel paging request in clear_user_rep_good
-To:     syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>,
-        Borislav Petkov <bp@suse.de>, stable <stable@vger.kernel.org>
-Cc:     almaz.alexandrovich@paragon-software.com, clm@fb.com,
-        djwong@kernel.org, dsterba@suse.com, hch@infradead.org,
-        josef@toxicpanda.com, linux-btrfs@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com,
-        willy@infradead.org
+References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
+ <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org> <20230501-cottage-overjoyed-1aeb9d72d309@spud>
+In-Reply-To: <20230501-cottage-overjoyed-1aeb9d72d309@spud>
+From:   Ricardo Ribalda <ribalda@chromium.org>
+Date:   Mon, 1 May 2023 21:54:43 +0200
+X-Gmail-Original-Message-ID: <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
+Message-ID: <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/4] risc/purgatory: Add linker script
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Eric Biederman <ebiederm@xmission.com>,
+        Philipp Rudo <prudo@linux.vnet.ibm.com>,
+        Dave Young <dyoung@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        Philipp Rudo <prudo@redhat.com>, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Ross Zwisler <zwisler@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Simon Horman <horms@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Added Borislav and stable people ]
+Hi Conor
 
-On Sun, Apr 30, 2023 at 9:31=E2=80=AFPM syzbot
-<syzbot+401145a9a237779feb26@syzkaller.appspotmail.com> wrote:
+On Mon, 1 May 2023 at 19:41, Conor Dooley <conor@kernel.org> wrote:
 >
-> syzbot suspects this issue was fixed by commit:
+> Hey Ricardo,
+>
+> On Mon, May 01, 2023 at 02:38:22PM +0200, Ricardo Ribalda wrote:
+> > If PGO is enabled, the purgatory ends up with multiple .text sections.
+> > This is not supported by kexec and crashes the system.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+> >  arch/riscv/purgatory/Makefile | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
+> > index 5730797a6b40..cf3a44121a90 100644
+> > --- a/arch/riscv/purgatory/Makefile
+> > +++ b/arch/riscv/purgatory/Makefile
+> > @@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
+> >  CFLAGS_string.o := -D__DISABLE_EXPORTS
+> >  CFLAGS_ctype.o := -D__DISABLE_EXPORTS
+> >
+> > +# When profile optimization is enabled, llvm emits two different overlapping
+> > +# text sections, which is not supported by kexec. Remove profile optimization
+> > +# flags.
+> > +KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
+>
+> With the caveat of not being au fait with the workings of either PGO or
+> of purgatory, how come you modify KBUILD_CFLAGS here rather than the
+> purgatory specific PURGATORY_CFLAGS that are used later in the file?
 
-Indeed.
+Definitely, not a Makefile expert here, but when I tried this:
 
-My initial reaction was "no, that didn't fix anything, it just cleaned
-stuff up", but it turns out that yes, it did in fact fix a real bug in
-the process.
+@@ -35,6 +40,7 @@ PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
+ PURGATORY_CFLAGS := -mcmodel=large -ffreestanding
+-fno-zero-initialized-in-bss -g0
+ PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
+ PURGATORY_CFLAGS += -fno-stack-protector
++PURGATORY_CFLAGS := $(filter-out -fprofile-sample-use=%
+-fprofile-use=%,$(KBUILD_CFLAGS))
 
-The fix was not intentional, but the cleanup actually got rid of buggy code=
-.
+It did not work.
 
-So here's the automatic marker for syzbot:
+Fixes: bde971a83bbf ("KVM: arm64: nvhe: Fix build with profile optimization")
 
-#syz fix: x86: don't use REP_GOOD or ERMS for user memory clearing
+does this approach, so this is what I tried and worked.
 
-and the reason for the bug - in case people care - is that the old
-clear_user_rep_good (which no longer exists after that commit) had the
-exception entry pointing to the wrong instruction.
+Thanks!
+>
+> Cheers,
+> Conor.
+>
+> > +
+> >  # When linking purgatory.ro with -r unresolved symbols are not checked,
+> >  # also link a purgatory.chk binary without -r to check for unresolved symbols.
+> >  PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
+> >
+> > --
+> > 2.40.1.495.gc816e09b53d-goog
+> >
+> >
+> > _______________________________________________
+> > linux-riscv mailing list
+> > linux-riscv@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-riscv
 
-The buggy code did:
 
-    .Lrep_good_bytes:
-            mov %edx, %ecx
-            rep stosb
 
-and the exception entry weas
-
-        _ASM_EXTABLE_UA(.Lrep_good_bytes, .Lrep_good_exit)
-
-so the exception entry pointed at the register move instruction, not
-at the actual "rep stosb" that does the user space store.
-
-End result: if you had a situation where you *should* return -EFAULT,
-and you triggered that "last final bytes" case, instead of the
-exception handling dealing with it properly and fixing it up, you got
-that kernel oops.
-
-The bug goes back to commit 0db7058e8e23 ("x86/clear_user: Make it
-faster") from about a year ago, which made it into v6.1.
-
-It only affects old hardware that doesn't have the ERMS capability
-flag, which *probably* means that it's mostly only triggerable in
-virtualization (since pretty much any CPU from the last decade has
-ERMS, afaik).
-
-Borislav - opinions? This needs fixing for v6.1..v6.3, and the options are:
-
- (1) just fix up the exception entry. I think this is literally this
-one-liner, but somebody should double-check me. I did *not* actually
-test this:
-
-    --- a/arch/x86/lib/clear_page_64.S
-    +++ b/arch/x86/lib/clear_page_64.S
-    @@ -142,8 +142,8 @@ SYM_FUNC_START(clear_user_rep_good)
-            and $7, %edx
-            jz .Lrep_good_exit
-
-    -.Lrep_good_bytes:
-            mov %edx, %ecx
-    +.Lrep_good_bytes:
-            rep stosb
-
-     .Lrep_good_exit:
-
-   because the only use of '.Lrep_good_bytes' is that exception table entry=
-.
-
- (2) backport just that one commit for clear_user
-
-     In this case we should probably do commit e046fe5a36a9 ("x86: set
-FSRS automatically on AMD CPUs that have FSRM") too, since that commit
-changes the decision to use 'rep stosb' to check FSRS.
-
- (3) backport the entire series of commits:
-
-        git log --oneline v6.3..034ff37d3407
-
-Or we could even revert that commit 0db7058e8e23, but it seems silly
-to revert when we have so many ways to fix it, including a one-line
-code movement.
-
-Borislav / stable people? Opinions?
-
-                         Linus
+-- 
+Ricardo Ribalda
