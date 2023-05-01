@@ -2,275 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEC046F30CE
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 14:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0029C6F30D1
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 14:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232323AbjEAMSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 1 May 2023 08:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51692 "EHLO
+        id S232411AbjEAMYG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 1 May 2023 08:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232269AbjEAMSP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 08:18:15 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFAB7110;
-        Mon,  1 May 2023 05:18:10 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f19afc4f60so13415155e9.1;
-        Mon, 01 May 2023 05:18:10 -0700 (PDT)
+        with ESMTP id S231736AbjEAMYF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 1 May 2023 08:24:05 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8681C1A6
+        for <stable@vger.kernel.org>; Mon,  1 May 2023 05:24:04 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-5ef420b51adso11477276d6.0
+        for <stable@vger.kernel.org>; Mon, 01 May 2023 05:24:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1682943489; x=1685535489;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TKOi6LM1kKTQWb9QHMseRnSD81FNpSSz9n8no1TsPoA=;
-        b=DStuGwhgf+XAmaZdL/VuSRnWfrUZ931RbcB7X1gU2ja9CoPF/PsQ4gMhJAa1ZJav/7
-         orXQY0MXIIH/n0veyQWBimU9Ifs5yKqZ/Ifk2T7BBq0EwCXd/awydK+qnd3PgxsTipKF
-         dQVsxzwAjKIvhq5xy4LdHvGbhzd32fVLlrEIX14rFPJ45ZbEhInfPPCX5694oFs0FlmN
-         r1NbKTRFDiZueO+5xOWApL5I1CymmRdiDH8ln3PGi/JaIfdnyLw4xJbO6L60GW0/HeXr
-         dBfEOFck1FSCuh4jjmDFhLZR3e2f2RRKzXFVfGenmSfHoQFdMopeOYJ59XFm89jToVxk
-         lK9Q==
+        d=gmail.com; s=20221208; t=1682943843; x=1685535843;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+IMQyG08SdQLNbyRHdHEj2dhFYoHP3MS5X9DSwFtrnk=;
+        b=krSJBXJUhf5SWfhB4vJbJuaOV6mQ2xffj2gv26YaIi3Rt5OHUGhBv5UfgE7IQG4+rX
+         t3WqIOy2MREcWvCW772kfU/UmWgT/TPzGiN4fzYZ6B9GbFS12lCuu2lMqhlHbfli5TlB
+         vUCrSgrPhN88uIYznEi1n83QchYeJyDQLpxCPcVBFI+6oNKb/5w0ebhgIuelPSHKp60E
+         Jx7EF88oePkzoyTvw9//bAjHZiBJ6PkNK17ktr1Mm5rozDZQpGrELfgHpIwpPcHC4ijG
+         DhxFegh9uCarDnqXTUHoZNH0g7o2n/b1TRAF0w0nNNblPh1pHdxJ9yXgf25n/Dtn2gcr
+         XAow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682943489; x=1685535489;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TKOi6LM1kKTQWb9QHMseRnSD81FNpSSz9n8no1TsPoA=;
-        b=g4TsHTXltUA/Sd0Jij3fpSoFzq20zh6nfWOcDKEf4UBGQ/WUZucu/7FkUYlRlcT++4
-         VfrKpinseTSQz5OLy/RkPFAU/1zTv+iHXz5JbjUHOKO5GekBL1lJkTgi4S5CPwQK+9G0
-         E+BdpPDyy85VYkfzojVAaB4BgGu46X87l4p3hVQ3PDvbpXrOFOOCqNE7NloaBNiue5Oy
-         TQK9lZF/C0tn9YzJQfSc8Ii1EMdZCBOXI+6YdUq7xdjkSZwPNZlXZSDmtv2nBKoJ3s8S
-         oM/jcbByWd3mYbYAr+ZUpcVJye+naIZ8+RnbbOYkBm5G9Z2uQsgSiwb1zwHWEgkXg3EO
-         BhHQ==
-X-Gm-Message-State: AC+VfDz348uVuSI7KphQmhTtRWL9xgT+YRAqeRSOk32/XBaTyhIJ507A
-        0GZyYv52Z/HpiqiaVw4Bfyc=
-X-Google-Smtp-Source: ACHHUZ7lRvCpoNF3LXFIFi9pPlvPIbD+GdBTfomXiiYOAeNs+o1ObDpDBxXDUP8YMYYxrkoxjYM9dA==
-X-Received: by 2002:a7b:cbd5:0:b0:3f0:8108:406 with SMTP id n21-20020a7bcbd5000000b003f081080406mr9927202wmi.28.1682943489120;
-        Mon, 01 May 2023 05:18:09 -0700 (PDT)
-Received: from [192.168.1.10] (95f1f744.skybroadband.com. [149.241.247.68])
-        by smtp.googlemail.com with ESMTPSA id l9-20020a05600c1d0900b003f17eded97bsm36408414wms.19.2023.05.01.05.18.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 May 2023 05:18:08 -0700 (PDT)
-Message-ID: <f5d78c30-7410-ef8e-74fc-51fccb6fd066@googlemail.com>
-Date:   Mon, 1 May 2023 13:18:07 +0100
+        d=1e100.net; s=20221208; t=1682943843; x=1685535843;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+IMQyG08SdQLNbyRHdHEj2dhFYoHP3MS5X9DSwFtrnk=;
+        b=dSo7HpyqWc9rR+NnPmjbLXSShkQ6P+RLKkxTTwxGfeMuH21t4XGY7mCx+1+z93AVSC
+         UKR2D/KGHachB+UNRgfGFbJjQ1eWfjYCxJRtlkBFoyA/Fgp1JXMVrkVeISlZ+x14xr9Y
+         fuX2Rd3tzJfj5i7d19Q7zbDpHtwtbi4Rhyz0j6L06wWkZEx8zKy1wiN7uZybx6HPAqPf
+         rGvqtsB+NNgUCWYadJ+WO1JOSG87dTCQAwIBDs1SppJVuJenAiSplW3EjRN7NzPklTTV
+         ajdTv71FO5rW7PA3qpJsMTnpleMhdqzAT0WSMGOTk5aYt6qLIaCys9zZ5S9ceOWdU076
+         69Ag==
+X-Gm-Message-State: AC+VfDzTFWT9AG8BgGwgh90r9sPxy1QfNILf6c6n3ZjW49FqW9Gnk6wj
+        xa14DSUdPcKSbYL6j9R+oXyYOvvcVNbbJiHnHMs=
+X-Google-Smtp-Source: ACHHUZ7/sYnGTAYpgVOlH8ccCGOOKWCBLY7BZszFG2+7kg2kQuZl7hW7kbn3jym7b+yuk1KMGAsEwSaP01oYsorq7nI=
+X-Received: by 2002:a05:6214:3011:b0:5f9:ba55:395f with SMTP id
+ ke17-20020a056214301100b005f9ba55395fmr17891252qvb.52.1682943843506; Mon, 01
+ May 2023 05:24:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: Linux 6.1.27
-From:   Chris Clayton <chris2553@googlemail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org
-Cc:     lwn@lwn.net, jslaby@suse.cz, Jason@zx2c4.com
-References: <2023050145-jacket-oversleep-bf26@gregkh>
- <177ba955-e71b-d962-6adf-328b7936a979@googlemail.com>
-Content-Language: en-GB
-In-Reply-To: <177ba955-e71b-d962-6adf-328b7936a979@googlemail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a0c:aa56:0:b0:5ef:5e02:42fb with HTTP; Mon, 1 May 2023
+ 05:24:02 -0700 (PDT)
+From:   "Moha;ed Faye Lamine" <m.fayechambersl@gmail.com>
+Date:   Mon, 1 May 2023 12:24:02 +0000
+Message-ID: <CAAZjU91x0MCXvL8AbcnfzLVQ424Yv8bWm_CyWGpsTfAmyZrRVg@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,MONEY_FRAUD_8,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_MONEY_PERCENT,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:f2d listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [m.fayechambersl[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi again.
+-- 
+Director
 
 
-On 01/05/2023 07:34, Chris Clayton wrote:
-> Hi Greg,
-> 
-> On 01/05/2023 00:38, Greg Kroah-Hartman wrote:
->> I'm announcing the release of the 6.1.27 kernel.
->>
->> All users of the 6.1 kernel series must upgrade.
->>
->> The updated 6.1.y git tree can be found at:
->> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.1.y
->> and can be browsed at the normal kernel.org git web browser:
->> 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
->>
->> thanks,
->>
->> greg k-h
->>
->> ------------
->>
->>  Documentation/riscv/vm-layout.rst                           |    4 
->>  Makefile                                                    |    2 
->>  arch/arm64/kvm/mmu.c                                        |   47 ++--
->>  arch/riscv/include/asm/fixmap.h                             |    8 
->>  arch/riscv/include/asm/pgtable.h                            |    8 
->>  arch/riscv/kernel/setup.c                                   |    6 
->>  arch/riscv/mm/init.c                                        |   82 +++-----
->>  arch/x86/Makefile.um                                        |    5 
->>  drivers/base/dd.c                                           |    7 
->>  drivers/gpio/gpiolib-acpi.c                                 |   13 +
->>  drivers/gpu/drm/drm_fb_helper.c                             |    3 
->>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c |    5 
->>  drivers/phy/broadcom/phy-brcm-usb.c                         |    4 
->>  drivers/usb/serial/option.c                                 |    6 
->>  fs/btrfs/send.c                                             |    2 
->>  fs/btrfs/volumes.c                                          |    2 
->>  mm/mempolicy.c                                              |  115 +++++-------
->>  net/bluetooth/hci_sock.c                                    |    9 
->>  net/mptcp/protocol.c                                        |   74 +++++--
->>  net/mptcp/protocol.h                                        |    2 
->>  net/mptcp/subflow.c                                         |   80 ++++++++
->>  21 files changed, 308 insertions(+), 176 deletions(-)
->>
->> Alexandre Ghiti (3):
->>       riscv: Move early dtb mapping into the fixmap region
->>       riscv: Do not set initial_boot_params to the linear address of the dtb
->>       riscv: No need to relocate the dtb as it lies in the fixmap region
->>
->> Arınç ÜNAL (1):
->>       USB: serial: option: add UNISOC vendor and TOZED LT70C product
->>
->> Daniel Vetter (1):
->>       drm/fb-helper: set x/yres_virtual in drm_fb_helper_check_var
->>
->> David Gow (1):
->>       um: Only disable SSE on clang to work around old GCC bugs
->>
->> David Matlack (1):
->>       KVM: arm64: Retry fault if vma_lookup() results become invalid
->>
->> Florian Fainelli (1):
->>       phy: phy-brcm-usb: Utilize platform_get_irq_byname_optional()
->>
->> Genjian Zhang (1):
->>       btrfs: fix uninitialized variable warnings
->>
->> Greg Kroah-Hartman (1):
->>       Linux 6.1.27
->>
->> Jisoo Jang (1):
->>       wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
->>
->> Liam R. Howlett (1):
->>       mm/mempolicy: fix use-after-free of VMA iterator
->>
->> Paolo Abeni (2):
->>       mptcp: stops worker on unaccepted sockets at listener close
->>       mptcp: fix accept vs worker race
->>
->> Ruihan Li (1):
->>       bluetooth: Perform careful capability checks in hci_sock_ioctl()
->>
->> Stephen Boyd (1):
->>       driver core: Don't require dynamic_debug for initcall_debug probe timing
->>
->> Werner Sembach (1):
->>       gpiolib: acpi: Add a ignore wakeup quirk for Clevo NL5xNU
->>
->>
->>
-> 
-> 6.1.27 FTBFS thusly:
-> 
-> drivers/net/wireguard/timers.c: In function 'wg_expired_retransmit_handshake':
-> <command-line>: error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
-> [-Werror=format=]
-> <command-line>: note: in expansion of macro 'KBUILD_MODNAME'
-> ./include/linux/dynamic_debug.h:223:29: note: in expansion of macro 'pr_fmt'
->   223 |                 func(&id, ##__VA_ARGS__);                       \
->       |                             ^~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:247:9: note: in expansion of macro '__dynamic_func_call_cls'
->   247 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:249:9: note: in expansion of macro '_dynamic_func_call_cls'
->   249 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:268:9: note: in expansion of macro '_dynamic_func_call'
->   268 |         _dynamic_func_call(fmt, __dynamic_pr_debug,             \
->       |         ^~~~~~~~~~~~~~~~~~
-> ./include/linux/printk.h:581:9: note: in expansion of macro 'dynamic_pr_debug'
->   581 |         dynamic_pr_debug(fmt, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~
-> drivers/net/wireguard/timers.c:47:17: note: in expansion of macro 'pr_debug'
->    47 |                 pr_debug("%s: Handshake for peer %llu (%pISpfsc) did not complete after %d attempts, giving up\n",
->       |                 ^~~~~~~~
-> <command-line>: error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
-> [-Werror=format=]
-> <command-line>: note: in expansion of macro 'KBUILD_MODNAME'
-> ./include/linux/dynamic_debug.h:223:29: note: in expansion of macro 'pr_fmt'
->   223 |                 func(&id, ##__VA_ARGS__);                       \
->       |                             ^~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:247:9: note: in expansion of macro '__dynamic_func_call_cls'
->   247 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:249:9: note: in expansion of macro '_dynamic_func_call_cls'
->   249 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:268:9: note: in expansion of macro '_dynamic_func_call'
->   268 |         _dynamic_func_call(fmt, __dynamic_pr_debug,             \
->       |         ^~~~~~~~~~~~~~~~~~
-> ./include/linux/printk.h:581:9: note: in expansion of macro 'dynamic_pr_debug'
->   581 |         dynamic_pr_debug(fmt, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~
-> drivers/net/wireguard/timers.c:65:17: note: in expansion of macro 'pr_debug'
->    65 |                 pr_debug("%s: Handshake for peer %llu (%pISpfsc) did not complete after %d seconds, retrying
-> (try %d)\n",
->       |                 ^~~~~~~~
-> drivers/net/wireguard/timers.c: In function 'wg_expired_new_handshake':
-> <command-line>: error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
-> [-Werror=format=]
-> <command-line>: note: in expansion of macro 'KBUILD_MODNAME'
-> ./include/linux/dynamic_debug.h:223:29: note: in expansion of macro 'pr_fmt'
->   223 |                 func(&id, ##__VA_ARGS__);                       \
->       |                             ^~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:247:9: note: in expansion of macro '__dynamic_func_call_cls'
->   247 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:249:9: note: in expansion of macro '_dynamic_func_call_cls'
->   249 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:268:9: note: in expansion of macro '_dynamic_func_call'
->   268 |         _dynamic_func_call(fmt, __dynamic_pr_debug,             \
->       |         ^~~~~~~~~~~~~~~~~~
-> ./include/linux/printk.h:581:9: note: in expansion of macro 'dynamic_pr_debug'
->   581 |         dynamic_pr_debug(fmt, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~
-> drivers/net/wireguard/timers.c:95:9: note: in expansion of macro 'pr_debug'
->    95 |         pr_debug("%s: Retrying handshake with peer %llu (%pISpfsc) because we stopped hearing back after %d
-> seconds\n",
->       |         ^~~~~~~~
-> drivers/net/wireguard/timers.c: In function 'wg_queued_expired_zero_key_material':
-> <command-line>: error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
-> [-Werror=format=]
-> <command-line>: note: in expansion of macro 'KBUILD_MODNAME'
-> ./include/linux/dynamic_debug.h:223:29: note: in expansion of macro 'pr_fmt'
->   223 |                 func(&id, ##__VA_ARGS__);                       \
->       |                             ^~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:247:9: note: in expansion of macro '__dynamic_func_call_cls'
->   247 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:249:9: note: in expansion of macro '_dynamic_func_call_cls'
->   249 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/dynamic_debug.h:268:9: note: in expansion of macro '_dynamic_func_call'
->   268 |         _dynamic_func_call(fmt, __dynamic_pr_debug,             \
->       |         ^~~~~~~~~~~~~~~~~~
-> ./include/linux/printk.h:581:9: note: in expansion of macro 'dynamic_pr_debug'
->   581 |         dynamic_pr_debug(fmt, ##__VA_ARGS__)
->       |         ^~~~~~~~~~~~~~~~
-> drivers/net/wireguard/timers.c:127:9: note: in expansion of macro 'pr_debug'
->   127 |         pr_debug("%s: Zeroing out all keys for peer %llu (%pISpfsc), since we haven't received a new one in %d
-> seconds\n",
->       |         ^~~~~~~~
-> 
-> 
-> There's a patch to drivers/net/wireguard/timers.c that fixes these errors and you can find it at
-> 2d4ee16d969c97996e80e4c9cb6de0acaff22c9f in Linus' tree.
-> 
-> I don't know if it's necessary. but I guess I can say:
-> 
-> Tested-by: Chris Clayton <chris2553@googlemail.com>
-> 
+  I am Moyamba Susan looking forward to
+investing in a lucrative business
+  venture in your country.
 
-The patch is needed in 5.15.110 too.
+  Meanwhile, i need to be sure you can
+offer the assistance i need as a
+  business partner.I would like you to
+transfer US$6.5 million on my behalf
+  which is deposited by my late father
+.
 
-Chris
+  please can you help , to have this
+fund transferred to your country and
+  we will fly to join you after the
+transfer of the money?.I will give you
+  the 20% of the total fund for your
+assistance investment.
+
+  Please reply to susanmoyamba1@yahoo.com
+to assure me of your partnership
+  otherwise ignore.
+
+  You will receive specifications and
+details when i receive your response.
+
+
+  Best regards,
+
+  Moyamba Susan
