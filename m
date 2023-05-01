@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2468B6F2CB9
-	for <lists+stable@lfdr.de>; Mon,  1 May 2023 05:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C92886F2CBF
+	for <lists+stable@lfdr.de>; Mon,  1 May 2023 05:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232562AbjEADDl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 30 Apr 2023 23:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49448 "EHLO
+        id S232554AbjEADEJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 30 Apr 2023 23:04:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232547AbjEADDH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 23:03:07 -0400
+        with ESMTP id S232559AbjEADDh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 30 Apr 2023 23:03:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44EE54230;
-        Sun, 30 Apr 2023 20:00:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF51212C;
+        Sun, 30 Apr 2023 20:01:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4DA960EA5;
-        Mon,  1 May 2023 02:59:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAF6C4339B;
-        Mon,  1 May 2023 02:59:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51365616DB;
+        Mon,  1 May 2023 02:59:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F44C433A7;
+        Mon,  1 May 2023 02:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682909983;
-        bh=IjRiUvLYQP+9kc1hC+PvjP2DMMMkl/v+LroeMGs/n30=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uvmIci96yyl8uSa9P6VujKLD0jOJPLe7jvuT6W7gD3Op4hxr1B7txLMyuwE7rswRH
-         yXb7Ss+F3fW/oMuztqfZjum6Y/DuamuduJdO2FWBTUFEzZZ3INxzFtx8B5v9EtV4uA
-         9gPRLFLsVcGYtbPERjKt8Pyi1yxPLrkbsTpdZWSd8MCSbtu+KnZdodGyVvdZukEKyY
-         dMj7b/NNjSEj/hcxcNw0TzCeZ2zESOn3jPvL+opQHgSV7wAvyvUCS7BmRGJVx0U3uk
-         VqeNP7cx7fRnMZkwY7hFTlA36NnLavt97aIDiVdKtzHSsLRkFjV93YMTYk866l+Bgw
-         EhT/EZNU6RlYQ==
+        s=k20201202; t=1682909988;
+        bh=BtlnXcSRm/rre6eCabVHchSdoSEbnBIthAn8DRjtqNY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=StCvtOd7RGUguulXonFQapNVUXlDND26VffdaaNET+HLkCo3vwY+07XHAqefMFMPQ
+         Bl7vt1xZ7WNDFmYLcIqihWcNgmDPz7CS6TvKafT4Mj5YQU6Q+7uuW9u0+GEnKj6qIO
+         WJfEKoOnMIZSxJD0y38+G3DSWbD1ECHtWlSULrV6ejmNBuAC1YSsxn2WaO+hs7lZ49
+         192bPl+IE758wduoJU163sNZfD6oKGLfJayXl9fOW3x20zYLcLCTcC3IS0ueWDonKw
+         64Ki0qDWnSneiCBVzpVpwl/Z6+Xop+iNdXepsZMlMQ4dGbO5IARIWlDA8RTlnTIo2M
+         jWP8fopY6RD7w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Aleksandr Mezin <mezin.alexander@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.3 44/44] hwmon: (nzxt-smart2) add another USB ID
-Date:   Sun, 30 Apr 2023 22:56:32 -0400
-Message-Id: <20230501025632.3253067-44-sashal@kernel.org>
+Cc:     Jani Nikula <jani.nikula@intel.com>,
+        Iaroslav Boliukin <iam@lach.pw>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Sasha Levin <sashal@kernel.org>,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.2 01/37] drm/displayid: add displayid_get_header() and check bounds better
+Date:   Sun, 30 Apr 2023 22:59:09 -0400
+Message-Id: <20230501025945.3253774-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230501025632.3253067-1-sashal@kernel.org>
-References: <20230501025632.3253067-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -57,44 +58,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksandr Mezin <mezin.alexander@gmail.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 4a148e9b1ee04e608263fa9536a96214d5561220 ]
+[ Upstream commit 5bacecc3c56131c31f18b23d366f2184328fd9cf ]
 
-This seems to be a new revision of the device. RGB controls have changed,
-but this driver doesn't touch them anyway.
+Add a helper to get a pointer to struct displayid_header. To be
+pedantic, add buffer overflow checks to not touch the base if that
+itself would overflow.
 
-Fan speed control reported to be working with existing userspace (hidraw)
-software, so I assume it's compatible. Fan channel count is the same.
-
-Recently added (0x1e71, 0x2019) seems to be the same device.
-
-Discovered in liquidctl project:
-
-https://github.com/liquidctl/liquidctl/issues/541
-
-Signed-off-by: Aleksandr Mezin <mezin.alexander@gmail.com>
-Link: https://lore.kernel.org/r/20230219105924.333007-1-mezin.alexander@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Iaroslav Boliukin <iam@lach.pw>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/4a03b3a5132642d3cdb6d4c2641422955a917292.1676580180.git.jani.nikula@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nzxt-smart2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_displayid.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/nzxt-smart2.c b/drivers/hwmon/nzxt-smart2.c
-index 2b93ba89610ae..a8e72d8fd0605 100644
---- a/drivers/hwmon/nzxt-smart2.c
-+++ b/drivers/hwmon/nzxt-smart2.c
-@@ -791,7 +791,8 @@ static const struct hid_device_id nzxt_smart2_hid_id_table[] = {
- 	{ HID_USB_DEVICE(0x1e71, 0x2009) }, /* NZXT RGB & Fan Controller */
- 	{ HID_USB_DEVICE(0x1e71, 0x200e) }, /* NZXT RGB & Fan Controller */
- 	{ HID_USB_DEVICE(0x1e71, 0x2010) }, /* NZXT RGB & Fan Controller */
--	{ HID_USB_DEVICE(0x1e71, 0x2019) }, /* NZXT RGB & Fan Controller */
-+	{ HID_USB_DEVICE(0x1e71, 0x2011) }, /* NZXT RGB & Fan Controller (6 RGB) */
-+	{ HID_USB_DEVICE(0x1e71, 0x2019) }, /* NZXT RGB & Fan Controller (6 RGB) */
- 	{},
- };
+diff --git a/drivers/gpu/drm/drm_displayid.c b/drivers/gpu/drm/drm_displayid.c
+index 38ea8203df45b..7d03159dc1461 100644
+--- a/drivers/gpu/drm/drm_displayid.c
++++ b/drivers/gpu/drm/drm_displayid.c
+@@ -7,13 +7,28 @@
+ #include <drm/drm_edid.h>
+ #include <drm/drm_print.h>
  
++static const struct displayid_header *
++displayid_get_header(const u8 *displayid, int length, int index)
++{
++	const struct displayid_header *base;
++
++	if (sizeof(*base) > length - index)
++		return ERR_PTR(-EINVAL);
++
++	base = (const struct displayid_header *)&displayid[index];
++
++	return base;
++}
++
+ static int validate_displayid(const u8 *displayid, int length, int idx)
+ {
+ 	int i, dispid_length;
+ 	u8 csum = 0;
+ 	const struct displayid_header *base;
+ 
+-	base = (const struct displayid_header *)&displayid[idx];
++	base = displayid_get_header(displayid, length, idx);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
+ 
+ 	DRM_DEBUG_KMS("base revision 0x%x, length %d, %d %d\n",
+ 		      base->rev, base->bytes, base->prod_id, base->ext_count);
 -- 
 2.39.2
 
