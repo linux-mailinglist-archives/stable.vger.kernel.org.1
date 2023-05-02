@@ -2,123 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D95F6F3EDC
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 10:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1676F3F00
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 10:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233589AbjEBIMp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 04:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58568 "EHLO
+        id S232991AbjEBISq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 04:18:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233367AbjEBIMm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 04:12:42 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EB149FC
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 01:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683015161; x=1714551161;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=aRI90Oy+HqlK84Xuqr7+48kIlZ9I7LkLkQI16YjvfpU=;
-  b=iHMn81zIsEhL+wjmqqMFlFFTYkYICf+Yllh18xUL4Ign7huzT4WssNbr
-   1N4Prz/wEKGxDNRc+7tFmCphWiJ4Ovp5BQddY22JidhZgkjFIKjyEKlva
-   mdSTUriGIDavCoPqjVdwgsS9M5Bpf5/160Lv8XGtyEUyb66QmyzWJeEUP
-   manaWnoJW0nowJAIfVyVFZ2TQg1ErFSyDqSFP/NLgNw9WljF8LJ3Ew9iy
-   zZ19tMAIW9pmF9Gjgb+TtWHJ66AqN1hm7/iop+hWyyhnNiCV9X2E2sVnQ
-   KD5Ra6vfU+9lQ8ysX81sNHUXzw7l52SFAknoVDSexoiMGznY03xG2pHJ1
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10697"; a="411472087"
-X-IronPort-AV: E=Sophos;i="5.99,243,1677571200"; 
-   d="scan'208";a="411472087"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 01:12:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10697"; a="1025966257"
-X-IronPort-AV: E=Sophos;i="5.99,243,1677571200"; 
-   d="scan'208";a="1025966257"
-Received: from xinpan-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.35.163])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 01:12:38 -0700
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     intel-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH 1/2] drm/dsc: fix
- drm_edp_dsc_sink_output_bpp() DPCD high byte usage
-In-Reply-To: <c2617e8c-c2d5-0b86-b400-570d3f808454@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230406134615.1422509-1-jani.nikula@intel.com>
- <c2617e8c-c2d5-0b86-b400-570d3f808454@intel.com>
-Date:   Tue, 02 May 2023 11:12:36 +0300
-Message-ID: <871qjz2lu3.fsf@intel.com>
+        with ESMTP id S233001AbjEBISo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 04:18:44 -0400
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2133.outbound.protection.outlook.com [40.107.113.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3358527C;
+        Tue,  2 May 2023 01:18:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IPInOPtJzXT1YtCpYBKNuersz2liK5TvWTj2/tbCC4MLXV1wscGV74l0RcOsY3OW3svcJDJ5VyIX1GdMDJDfElh1zSx3Rr5CytgQ9iQRAuZoUzU0gMtm2QVV5mFsPiv4rwtnjxXW0qgVfspXebocjF41tVBuyOQT1Jof1UYRYVzcFevzzy9F6x+Cfv7oSUzF0Vwh2RbSusPC3Ce+YYYM9+PYjD8RVzLn+5l9sioEHP1+q+vDR6gMy6pNBm2r87xxejbjkM1f6zKLjO+xgGcIEJ2RCGjUVJLkPulVqEF9QuIbTQtx2Bh2ybRApyLq424Q7VKtyYNUkvF0jTw1anEwXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UD/hOXs/YQBMYlcm5KW6nGYh2Lb/9+RRE3iHP5IVNcM=;
+ b=Z0qM2tKBKA2kiLKJgm0UhFghuXhZWzt2uDoEg2fgIipEgD1g7QKBpISFQltGBUvY/PalTVu0c3OOPT9Qyg91QE85r5oVSHwFiRs0rUMCoGTdzYHSWr6V3g7ks6Q/eEqphQwfWE44ujkS5zLwM86zDAbPsq+1W75LleDDK5ZZIcwBx03s1JYyBkSCJEW8m68HLti2LdXPCryrpF37PSCKn7sIHIojQqT/zZCtbWarotvZpRVQM33TBaVp02/VCEaSdKOAILD3y55LmKz/6cFinYG+o+oI3r/vl4aMZyKhcLEojJ/61C0lhVQIVd/+Tw3km+zY3quSQJ+EOaQf0/sKiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UD/hOXs/YQBMYlcm5KW6nGYh2Lb/9+RRE3iHP5IVNcM=;
+ b=CQ8PwqDL0Fyykew9hy1sz1eTEN6zQfchXCVF3NXKEoADNZfaEFrcwFZhWLQylimxjhAdYo0qqZO+5QUey2OPM++DuD1/SI77BddeDI/n1eHHAQ2fqIyM1otV/HtbAOevJsrMIB2bK51r0BSCqQxxT9C5veFVNYSirMtuWZFj+Mk=
+Received: from TY2PR01MB3788.jpnprd01.prod.outlook.com (2603:1096:404:dd::14)
+ by OS0PR01MB5908.jpnprd01.prod.outlook.com (2603:1096:604:bc::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.31; Tue, 2 May
+ 2023 08:17:23 +0000
+Received: from TY2PR01MB3788.jpnprd01.prod.outlook.com
+ ([fe80::8b5:5f09:5a0f:370]) by TY2PR01MB3788.jpnprd01.prod.outlook.com
+ ([fe80::8b5:5f09:5a0f:370%7]) with mapi id 15.20.6340.031; Tue, 2 May 2023
+ 08:17:22 +0000
+From:   Chris Paterson <Chris.Paterson2@renesas.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     "patches@lists.linux.dev" <patches@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux@roeck-us.net" <linux@roeck-us.net>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "patches@kernelci.org" <patches@kernelci.org>,
+        "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
+        "pavel@denx.de" <pavel@denx.de>,
+        "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+        "sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>,
+        "srw@sladewatkins.net" <srw@sladewatkins.net>,
+        "rwarsow@gmx.de" <rwarsow@gmx.de>
+Subject: RE: [PATCH 6.3 00/11] 6.3.1-rc1 review
+Thread-Topic: [PATCH 6.3 00/11] 6.3.1-rc1 review
+Thread-Index: AQHZecSAhY/A+/BXt06nX6tf+CFVy69GfCjA
+Date:   Tue, 2 May 2023 08:17:22 +0000
+Message-ID: <TY2PR01MB3788F80BD4C36EB891F69F34B76F9@TY2PR01MB3788.jpnprd01.prod.outlook.com>
+References: <20230428112039.886496777@linuxfoundation.org>
+In-Reply-To: <20230428112039.886496777@linuxfoundation.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY2PR01MB3788:EE_|OS0PR01MB5908:EE_
+x-ms-office365-filtering-correlation-id: 4eabb216-4baa-4a80-b1a2-08db4ae5a7ee
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wlZCWbjSXBGrO1NXCuCSOZgV1fo/fl0t7sRqIJS5xLs/bbqlns36gRFf62heNjfO129eiQc2H3rIMZ5GDOsAuI82VQzMZ+PiKzhCSMaNRWyNDHTVkhQpPUMOr0nd9M+83OCX55A/Agm+UXTW6VR77SHzFyg5wEMsv84vKtCg6j8NcAb5AjzdKiHoTxMxrKMPLchYHbQGHhzeDkDySOIsfCyFYRR2NwUNpO/TjCPxG1CKdWkxTKZ8Gc+a+SCfRLMlIOlr+dkgxQ4+IerIhOy18nTUQutEa+5PUi3h9GscdFzjXCCQChcj4MhMrB5n33aCuYpfPs1cjco18p7E7xcLAlUQFTtZmNjUEiMTFDRI6X8YhY+JuNW/ZRq0w9k8/yjdXtsmpR4phLrJIDn+xPRW37T2BRKf757XmUnKfLBAsuDueGVmwvKuI6KDGpaweB2+sV9ubyubo/0QGfeCvkX1XEQhRhfGBuECj26RJzlaZJ2GxQUPS4r6YqBCQ45QGMQapy4/LwaoW4cHK+3brPgr9QmDTcrImuJ/jWiM6uLPg7ssIJ5XTFERVUrkzZX6gqFUV1IA0L7iJ+Ab2esRHuqqax2/eT2hySu/0Aktm3OVvpo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY2PR01MB3788.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(376002)(346002)(396003)(366004)(39860400002)(451199021)(966005)(7696005)(9686003)(478600001)(71200400001)(110136005)(6506007)(54906003)(186003)(26005)(7416002)(4744005)(2906002)(33656002)(38100700002)(316002)(4326008)(76116006)(8936002)(66476007)(66946007)(66446008)(122000001)(38070700005)(41300700001)(8676002)(64756008)(5660300002)(66556008)(52536014)(86362001)(55016003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-3?Q?gCGJI85jlTq0Ggqj2kDvHmrRUblRLFxhnUQfuGyCi2oi1SRculmmmMI3Yq?=
+ =?iso-8859-3?Q?SMRDZQK7LftFFmt8V15gj4hqifnM2KaCUoaWvPd2peavv+j3KUeGleVskk?=
+ =?iso-8859-3?Q?7NR77spvz+uwZppVwqDoDKo+JsnLJhIwL7KSio9LuahFDtBaFz58Ct8Smn?=
+ =?iso-8859-3?Q?+ZOrIvnSx89U3lXVVXEMkpD6Wmpsnl7eUqT8l1E5c4M5UjdeEVGQaYJJRy?=
+ =?iso-8859-3?Q?tPAK6HgaH3VL2p6m9EtY7u+1TEowK5WPtldIMWNyeLKDfAn9NUJLYxi78K?=
+ =?iso-8859-3?Q?FWseCBMWTC5ipsAs4K0cq2W+dJhYiD8w1x9u729V8X94j1Hg8xOOlyvN3W?=
+ =?iso-8859-3?Q?rZtWVkL0dkG4mZ3/IAQhcpSS1KRfVApxSxCwBg9IlSuusjGuVVZ25ZbWFX?=
+ =?iso-8859-3?Q?lTye1rMT+rSAgoGAgvLnau8ktu1TkZDlsEkGaauVIKc40cLZ23QtKN4Md2?=
+ =?iso-8859-3?Q?NvjTfG5YvePZb/ksJfwoJ43G+saFiXhqt4uaV+pCdpKgRTwhrHVS1I4aQD?=
+ =?iso-8859-3?Q?zMcfqIY4LHO5jNsdYnLZeD87SPivbMm375pUUZZGOlo2h3tnZ1OKO/6o6N?=
+ =?iso-8859-3?Q?IVFykeX9SBWR9vV3DdoYqt5i6zomo1L5dabeqP0aEqhdexvVYKiDwxQZkv?=
+ =?iso-8859-3?Q?4vY0V6D9fdk+j/QQWJSABvm0MYqYJqXu4PSZJFtXo8yETKKL3JXFKtp0DD?=
+ =?iso-8859-3?Q?Y466rWKh3WBUzbGCuJCH0wCM6Pp991n4fBqMnt8tv6cQAAb94DRTr0gak7?=
+ =?iso-8859-3?Q?m3bKoszmRS+fpFwn3Iy6JKm1uVtqHCUUJW0QMbX7uSQCfOAGCoZkrIKwnh?=
+ =?iso-8859-3?Q?ef95ZzjMNZxjrJocO9dT5Y8eG1MKHonCG9k4p+XXqK4+wI7abFnoCgXUno?=
+ =?iso-8859-3?Q?wR6Fl5CT44u/82jZpRcBFacdOW6FIRi7n0gHHI71czDHtG3sDMdntfEy02?=
+ =?iso-8859-3?Q?+Ql0uHf26BH/jngZgGuU1H3rrIV5iTWqCEH2dllKusNb7qk5j+c7MWSYI6?=
+ =?iso-8859-3?Q?3ogZkkiUmT/BYAc7TRUt0426kY7i3Gdxcclh0bGdvsDBZMcmCP0FZjrmql?=
+ =?iso-8859-3?Q?5HigMzPqZR0gMAR8gHOSsuPL4z9egFO1QE1ZR07Z9cr+cRpjC4+irwlebt?=
+ =?iso-8859-3?Q?EiDMDHW/HcpxdvXwER/0ZdgRtaDA7X7So1rGu1J9i09LTAqfPT+8UfVgKA?=
+ =?iso-8859-3?Q?znLtvJhPs+Vu1VevYlMcPMzHRim5X8QCYt5K2l5RS/2oPP1zt5wDXPyuXK?=
+ =?iso-8859-3?Q?E1kWfNdKeYdumAkmEGzySRLOK1qGa7zxOsh0dRXnX3sJqfZpS9MmNVo3k1?=
+ =?iso-8859-3?Q?bdvO7lQgpUl+l5AN/X4E1VsPHr1c60vqRU3rPa54ldLBCA0lD5WlI7MIlT?=
+ =?iso-8859-3?Q?AjSvMVg9+XTEAJHXVeXn7yTP6A2PT/8OxlGP9JURtEv1jk1vYOV1b/GM3E?=
+ =?iso-8859-3?Q?VYBlsgdAC0jQ7vXWWuFzf7sv9tbRcSNsbSi0t3uYDgpz9dc1EBwl0DXOEA?=
+ =?iso-8859-3?Q?e7bCpG3UDFnXCo04MmTowcD0tpEaGeNfVqfwj+C4q77H0Xl7xT0QIruEhw?=
+ =?iso-8859-3?Q?aL60uITWFlSZztcCv+dhtO6sNI0h6daB9p2p/5YqYQ4ZovFO3bFd/yyh2H?=
+ =?iso-8859-3?Q?vxq/NcBr1UsopK8JGNmdmEohN6qZ1wnkvQ5PFHzxApjZ5n9O93Z6COxA?=
+ =?iso-8859-3?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-3"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY2PR01MB3788.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4eabb216-4baa-4a80-b1a2-08db4ae5a7ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 May 2023 08:17:22.7866
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kBQNjnFyZJL4sNX+qswsZxTaGj2qFF5/61Y2xsSnHPsDrUUH2WG/SGkS2x7/jR44WBlobUDBJ+98bAgHV3s46klCxF8vaq7fMqDOyE+J4WA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS0PR01MB5908
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 20 Apr 2023, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com> wrote:
-> LGTM.
->
-> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Hello Greg,
 
-Thanks for the reviews, pushed these a week+ ago.
+> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Sent: Friday, April 28, 2023 12:28 PM
+>=20
+> This is the start of the stable review cycle for the 6.3.1 release.
+> There are 11 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Sun, 30 Apr 2023 11:20:30 +0000.
+> Anything received after that time might be too late.
 
-BR,
-Jani.
+Sorry it's late. Weekend & national holidays in the UK etc...
 
+CIP configurations built and booted with Linux 6.3.1-rc1 (f45bb34ed520):
+https://gitlab.com/cip-project/cip-kernel/linux-cip/-/pipelines/854248852/
 
->
-> On 4/6/2023 7:16 PM, Jani Nikula wrote:
->> The operator precedence between << and & is wrong, leading to the high
->> byte being completely ignored. For example, with the 6.4 format, 32
->> becomes 0 and 24 becomes 8. Fix it, and remove the slightly confusing
->> and unnecessary DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT macro while at it.
->>
->> Fixes: 0575650077ea ("drm/dp: DRM DP helper/macros to get DP sink DSC parameters")
->> Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
->> Cc: Manasi Navare <navaremanasi@google.com>
->> Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
->> Cc: <stable@vger.kernel.org> # v5.0+
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> ---
->>   include/drm/display/drm_dp.h        | 1 -
->>   include/drm/display/drm_dp_helper.h | 5 ++---
->>   2 files changed, 2 insertions(+), 4 deletions(-)
->>
->> diff --git a/include/drm/display/drm_dp.h b/include/drm/display/drm_dp.h
->> index 358db4a9f167..89d5a700b04d 100644
->> --- a/include/drm/display/drm_dp.h
->> +++ b/include/drm/display/drm_dp.h
->> @@ -286,7 +286,6 @@
->>   
->>   #define DP_DSC_MAX_BITS_PER_PIXEL_HI        0x068   /* eDP 1.4 */
->>   # define DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK  (0x3 << 0)
->> -# define DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT 8
->>   # define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  0x06
->>   # define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  0x08
->>   
->> diff --git a/include/drm/display/drm_dp_helper.h b/include/drm/display/drm_dp_helper.h
->> index 533d3ee7fe05..86f24a759268 100644
->> --- a/include/drm/display/drm_dp_helper.h
->> +++ b/include/drm/display/drm_dp_helper.h
->> @@ -181,9 +181,8 @@ static inline u16
->>   drm_edp_dsc_sink_output_bpp(const u8 dsc_dpcd[DP_DSC_RECEIVER_CAP_SIZE])
->>   {
->>   	return dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_LOW - DP_DSC_SUPPORT] |
->> -		(dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_HI - DP_DSC_SUPPORT] &
->> -		 DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK <<
->> -		 DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT);
->> +		((dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_HI - DP_DSC_SUPPORT] &
->> +		  DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK) << 8);
->>   }
->>   
->>   static inline u32
+Tested-by: Chris Paterson (CIP) <chris.paterson2@renesas.com>
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Kind regards, Chris
