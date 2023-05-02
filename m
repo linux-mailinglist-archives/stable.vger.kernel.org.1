@@ -2,48 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C82B6F3F09
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 10:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0BF06F3F54
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 10:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233666AbjEBIUG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 04:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35912 "EHLO
+        id S233661AbjEBIjg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 04:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233786AbjEBIUE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 04:20:04 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2FCF526F;
-        Tue,  2 May 2023 01:19:44 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 9AB0A1C0AAC; Tue,  2 May 2023 10:19:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1683015548;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=amEFe/AE8jRh6/Xwc3QzQAWClDEiUJE0RbFRN3x/zrA=;
-        b=ohp4qkGeHKc9LrlWEsJdYNeZsW7Ilzal+Wd6cQH8k0HFQEOpeltRuLwimI4wIq2QV5oR72
-        lxSFJhGeJQRsLZVme5A6pkHN5DqlPIx5nFcg5ls1osn76DcKzoGRTafKt5RuE04gWD4Uo9
-        uVlpVcBDKxHxA2H6/Y89MJmMy+zdrSc=
-Date:   Tue, 2 May 2023 10:19:07 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
- condition between FLAG and CNTR reads
-Message-ID: <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
-References: <20230411155220.9754-1-william.gray@linaro.org>
- <20230411155220.9754-5-william.gray@linaro.org>
- <ZD1MZO3KpRmuzy42@fedora>
+        with ESMTP id S233588AbjEBIjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 04:39:35 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64ACF10B;
+        Tue,  2 May 2023 01:39:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683016774; x=1714552774;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NQ7UtzDQj6DonGb4HNH9Xd0QLx15TZUY6naY4Em3T/4=;
+  b=SDxPQPNTI1UiE+Gjvi6MBbYz18+/PhndnXY33X92I6K7Lg4mtHV2QVKu
+   9gVXqKhOPHuIk0TsdildpgTIzFGyT+hK7BWA/B78egWo8NZj/xWSB19TX
+   ofDYeVqxtLDPF45dNVoUAijM3dm+hJGRq8Nl5n1DEc6HkqUk3JNGCPW/S
+   eZ8bHAh9AXE/zjtSfHwTOdvZ3VSOdJHaTvrF3rtQIS8TPbmAUX4a6akja
+   t2inhdOvTkjmnCy64/XTomCV5bInZcW25cyFs0tyVPawCKqSXS5Xoy1KU
+   Uq27sCKUKJFiy0BAMek+6DBK3kj1d3LjeoQDEqwog3r/P45sB/B5nMI0r
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10697"; a="350421628"
+X-IronPort-AV: E=Sophos;i="5.99,243,1677571200"; 
+   d="scan'208";a="350421628"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 01:39:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10697"; a="728850171"
+X-IronPort-AV: E=Sophos;i="5.99,243,1677571200"; 
+   d="scan'208";a="728850171"
+Received: from rmasarlx-mobl1.gar.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.34.132])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 01:39:31 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Shaohua Li <shaohua.li@intel.com>,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
+Subject: [PATCH 1/1] PCI/ASPM: Handle link retraining race
+Date:   Tue,  2 May 2023 11:39:23 +0300
+Message-Id: <20230502083923.34562-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="YuWiOo1iHaN3h6UL"
-Content-Disposition: inline
-In-Reply-To: <ZD1MZO3KpRmuzy42@fedora>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,44 +62,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Implementation Note at the end of PCIe r6.0.1 sec 7.5.3.7 recommends
+handling LTSSM race to ensure link retraining acquires correct
+parameters from the LNKCTL register. According to the implementation
+note, LTSSM might transition into Recovery or Configuration state
+independently of the driver requesting it, and if retraining due to
+such an event is still ongoing, the value written into the LNKCTL
+register might not be considered by the link retraining.
 
---YuWiOo1iHaN3h6UL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ensure link training bit is clear before toggling link retraining bit
+to meet the requirements of the Implementation Note.
 
-Hi!
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
+---
+ drivers/pci/pcie/aspm.c | 37 +++++++++++++++++++++++++++----------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-> On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
-> > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
-> >=20
-> > The Counter (CNTR) register is 24 bits wide, but we can have an
-> > effective 25-bit count value by setting bit 24 to the XOR of the Borrow
-> > flag and Carry flag. The flags can be read from the FLAG register, but a
-> > race condition exists: the Borrow flag and Carry flag are instantaneous
-> > and could change by the time the count value is read from the CNTR
-> > register.
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 66d7514ca111..dde1ef13d0d1 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -193,12 +193,37 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	link->clkpm_disable = blacklist ? 1 : 0;
+ }
+ 
++static bool pcie_wait_for_retrain(struct pci_dev *pdev)
++{
++	unsigned long end_jiffies;
++	u16 reg16;
++
++	/* Wait for link training end. Break out after waiting for timeout */
++	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
++	do {
++		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
++		if (!(reg16 & PCI_EXP_LNKSTA_LT))
++			break;
++		msleep(1);
++	} while (time_before(jiffies, end_jiffies));
++
++	return !(reg16 & PCI_EXP_LNKSTA_LT);
++}
++
+ static bool pcie_retrain_link(struct pcie_link_state *link)
+ {
+ 	struct pci_dev *parent = link->pdev;
+-	unsigned long end_jiffies;
+ 	u16 reg16;
+ 
++	/*
++	 * Ensure the updated LNKCTL parameters are used during link
++	 * training by checking that there is no ongoing link training to
++	 * avoid LTSSM race as recommended in Implementation Note at the end
++	 * of PCIe r6.0.1 sec 7.5.3.7.
++	 */
++	if (!pcie_wait_for_retrain(parent))
++		return false;
++
+ 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+ 	reg16 |= PCI_EXP_LNKCTL_RL;
+ 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+@@ -212,15 +237,7 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
+ 		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+ 	}
+ 
+-	/* Wait for link training end. Break out after waiting for timeout */
+-	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
+-	do {
+-		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
+-		if (!(reg16 & PCI_EXP_LNKSTA_LT))
+-			break;
+-		msleep(1);
+-	} while (time_before(jiffies, end_jiffies));
+-	return !(reg16 & PCI_EXP_LNKSTA_LT);
++	return pcie_wait_for_retrain(parent);
+ }
+ 
+ /*
+-- 
+2.30.2
 
-> > Since the race condition could result in an incorrect 25-bit count
-> > value, remove support for 25-bit count values from this driver.
-
-I believe usual solution is to read the carry, read the counter, and
-read the carry again. If old_carry =3D new_carry, we are pretty sure we
-did not hit the race, and can use 25 bit value.
-
-Best regards,
-									Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---YuWiOo1iHaN3h6UL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZFDHewAKCRAw5/Bqldv6
-8vlpAKCFBg45QB+KFONqyP6+X7EHhS4IYgCeJ8GNZyQWfm63Nnq+NBigLvYUKPY=
-=GwcR
------END PGP SIGNATURE-----
-
---YuWiOo1iHaN3h6UL--
