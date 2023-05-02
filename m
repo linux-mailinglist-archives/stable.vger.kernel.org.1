@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97A6F6F4087
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 11:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A68D66F41DB
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 12:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjEBJ5x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 05:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49322 "EHLO
+        id S233899AbjEBKje (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 06:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjEBJ5x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 05:57:53 -0400
+        with ESMTP id S234038AbjEBKjM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 06:39:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F3CE75
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 02:57:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F61B4C0E;
+        Tue,  2 May 2023 03:38:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E38DF62289
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 09:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53668C4339B
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 09:57:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BA0F622BE;
+        Tue,  2 May 2023 10:38:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA69C433D2;
+        Tue,  2 May 2023 10:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683021471;
-        bh=dNXpVSFxLo0kOwHD5ahHuxyK3xj+TAJZVxS8uAILxwc=;
-        h=From:Date:Subject:To:From;
-        b=OksHxGrRyfZecF6jHxOGFJ8c1ged+4hcy7jxaa/AIfzWw3DXh4jfTQMfEyhJ1m0SS
-         HLV6Rkbp1ebAbovxTwfkmLoaTAv+cxAimG2hS5WdDT2JOauL43jssAG+3n4rXLJWvP
-         K2Dlqa113W//23/rXdFs98ck76aWuzFBTzUUhNF1I8UqI10f5z0GvMoyUWAxG+Jrsn
-         hA+RUzuD2K3rOQVt+VnrnbO3Q5EZTdJ+sSiKyQn9XAqmtjuAhbVOCzO6w59G5+/5TT
-         KLmw4KU6+8MF/eploabdaGROpHObZiaCiYCbp0RXUgmmEl4fqayfyGtkBXIaUB3eA4
-         EvAP1JN4xpmLg==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4f004cc54f4so4645631e87.3
-        for <stable@vger.kernel.org>; Tue, 02 May 2023 02:57:51 -0700 (PDT)
-X-Gm-Message-State: AC+VfDz12tVkEd7EygPrBU2Z2U9z0+inVM3nvOEIjle7Spwuoyb5uvdD
-        8u6qNbRBTKP/1goUSz8vzKua1SMFLtkLja1Yb9E=
-X-Google-Smtp-Source: ACHHUZ50e58uhl4adw4J0Fym003fC8EzVeSJ6Ci/hOGNje7sGtT2yRnEbwpND+m4zwqwhCtNZzpOg0zVW9qytW4zVZI=
-X-Received: by 2002:a19:5502:0:b0:4f0:20bd:2126 with SMTP id
- n2-20020a195502000000b004f020bd2126mr2815610lfe.54.1683021469354; Tue, 02 May
- 2023 02:57:49 -0700 (PDT)
+        s=k20201202; t=1683023930;
+        bh=wFErpi5cswaNrmCHXUKcLKuE14JY4SYvJDJ1O2W7YCM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=RnvNWesz5byE6Wv0rjtyrWor3M4fsdZCmx4Ou0ssG2rdCcDrLp711q14htRAbHfqS
+         R943ikJPOEifUGbUtiGarnZYjWHqWPWkc3UehJQiO22X/MWPrCc4DTd7Kj7brvBDHt
+         QqscPql7hFkA42CIGLA+aIzbxRz3g/n5X47/ZOZro1p8R+1FHXLkP6Mi6Y2w6yoJf4
+         35zvTt8H2i0l1Dnj2MyBFLtoldaPmqmfWBzf4e4Gg7ln71v+e4hO9Qq+kmSnj/sEKh
+         hr7A5McDhIzR9uf5nIFHUiolSKQHU8sFERnUFGjuhbNjgtu5qY1909AeQM5bnYiS8O
+         kkI8UcGLywTtg==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1ptnPJ-00038x-3w; Tue, 02 May 2023 12:38:53 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>
+Cc:     Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH 1/2] phy: qcom-qmp-combo: fix init-count imbalance
+Date:   Tue,  2 May 2023 12:38:09 +0200
+Message-Id: <20230502103810.12061-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230502103810.12061-1-johan+linaro@kernel.org>
+References: <20230502103810.12061-1-johan+linaro@kernel.org>
 MIME-Version: 1.0
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 2 May 2023 11:57:38 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHCN0CuB86RpE_y=2KOo=KR80KjBzEMTPkmxxn8=D4uaA@mail.gmail.com>
-Message-ID: <CAMj1kXHCN0CuB86RpE_y=2KOo=KR80KjBzEMTPkmxxn8=D4uaA@mail.gmail.com>
-Subject: stable backports for arm64 shadow call stack pointer hardening patches
-To:     "# 3.4.x" <stable@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,12 +59,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Please backport the following changes to stable kernels v5.10 and newer:
+The init counter is not decremented on initialisation errors, which
+prevents retrying initialisation and can lead to the runtime suspend
+callback attempting to disable resources that have never been enabled.
 
-2198d07c509f1db4 arm64: Always load shadow stack pointer directly from
-the task struct
-59b37fe52f499557 arm64: Stash shadow stack pointer in the task struct
-on interrupt
+Add the missing decrement on initialisation errors so that the counter
+reflects the state of the device.
 
-Thanks,
-Ard.
+Fixes: e78f3d15e115 ("phy: qcom-qmp: new qmp phy driver for qcom-chipsets")
+Cc: stable@vger.kernel.org	# 4.12
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+index c1483e157af4..ae412d64b426 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -2487,7 +2487,7 @@ static int qmp_combo_com_init(struct qmp_combo *qmp)
+ 	ret = regulator_bulk_enable(cfg->num_vregs, qmp->vregs);
+ 	if (ret) {
+ 		dev_err(qmp->dev, "failed to enable regulators, err=%d\n", ret);
+-		goto err_unlock;
++		goto err_decrement_count;
+ 	}
+ 
+ 	ret = reset_control_bulk_assert(cfg->num_resets, qmp->resets);
+@@ -2537,7 +2537,8 @@ static int qmp_combo_com_init(struct qmp_combo *qmp)
+ 	reset_control_bulk_assert(cfg->num_resets, qmp->resets);
+ err_disable_regulators:
+ 	regulator_bulk_disable(cfg->num_vregs, qmp->vregs);
+-err_unlock:
++err_decrement_count:
++	qmp->init_count--;
+ 	mutex_unlock(&qmp->phy_mutex);
+ 
+ 	return ret;
+-- 
+2.39.2
+
