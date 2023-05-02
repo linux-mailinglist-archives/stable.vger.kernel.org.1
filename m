@@ -2,146 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0BF06F3F54
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 10:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36FE26F4037
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 11:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233661AbjEBIjg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 04:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45884 "EHLO
+        id S233167AbjEBJdK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 05:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233588AbjEBIjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 04:39:35 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64ACF10B;
-        Tue,  2 May 2023 01:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683016774; x=1714552774;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=NQ7UtzDQj6DonGb4HNH9Xd0QLx15TZUY6naY4Em3T/4=;
-  b=SDxPQPNTI1UiE+Gjvi6MBbYz18+/PhndnXY33X92I6K7Lg4mtHV2QVKu
-   9gVXqKhOPHuIk0TsdildpgTIzFGyT+hK7BWA/B78egWo8NZj/xWSB19TX
-   ofDYeVqxtLDPF45dNVoUAijM3dm+hJGRq8Nl5n1DEc6HkqUk3JNGCPW/S
-   eZ8bHAh9AXE/zjtSfHwTOdvZ3VSOdJHaTvrF3rtQIS8TPbmAUX4a6akja
-   t2inhdOvTkjmnCy64/XTomCV5bInZcW25cyFs0tyVPawCKqSXS5Xoy1KU
-   Uq27sCKUKJFiy0BAMek+6DBK3kj1d3LjeoQDEqwog3r/P45sB/B5nMI0r
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10697"; a="350421628"
-X-IronPort-AV: E=Sophos;i="5.99,243,1677571200"; 
-   d="scan'208";a="350421628"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 01:39:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10697"; a="728850171"
-X-IronPort-AV: E=Sophos;i="5.99,243,1677571200"; 
-   d="scan'208";a="728850171"
-Received: from rmasarlx-mobl1.gar.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.34.132])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 01:39:31 -0700
-From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        Shaohua Li <shaohua.li@intel.com>,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
-Subject: [PATCH 1/1] PCI/ASPM: Handle link retraining race
-Date:   Tue,  2 May 2023 11:39:23 +0300
-Message-Id: <20230502083923.34562-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S232197AbjEBJdJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 05:33:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46564C08
+        for <stable@vger.kernel.org>; Tue,  2 May 2023 02:32:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1683019945;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qGbrqqVaDpm05AHuHwpsi1G8xPM+DXbg5Uuq7VcQFf0=;
+        b=FnLPvUMGHeF2UYdCOXxDN5MZVj/S9yqjGViCRDEfm/V6hLlL7F6DhRkl/mf9r7WBY+yeCd
+        o5+52E6zsVbOmSN89IFBAVsxc+0Gw1ifDzenM/YfR+QtR7e6X2MxltSMi+L7D7d1b0VX4R
+        P5Gt3WQa72yfVytH7VAa0yvzVHQycns=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-IlzlPgWxO--2g3zvTLc2kQ-1; Tue, 02 May 2023 05:32:24 -0400
+X-MC-Unique: IlzlPgWxO--2g3zvTLc2kQ-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3f315735edeso99814815e9.1
+        for <stable@vger.kernel.org>; Tue, 02 May 2023 02:32:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683019943; x=1685611943;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qGbrqqVaDpm05AHuHwpsi1G8xPM+DXbg5Uuq7VcQFf0=;
+        b=QhsaQQxTxI5dcbNntT2KEOdcQPNXV6DH7z4r7uv+nK6JO/KjuJyPEPjNK6+Z6LG6J5
+         qgbmvWB0PO2qgPY8esd3F76ttpobpWFNkJjQbhQ4Vx94LbqQSYAlBA8SCMX9aRRKGrWl
+         2yqmdZfCYn8udLrgd8hyOmGpe+GkOz9lBXKZ/L39X/5fFQ3Gsf2NGKLw3d3agxe98Diz
+         ZCv7I1awVusAfITzAqHbbMnfM7eFgVGT5WG2NhKKqz3AnHi2W6xPWoFTFpX6DL4uY8y9
+         U+IF3yY+3oW8TqLndp204bcb1bCj/mOv20qcHkIIiGajHA+l84nIYYSoGuhPJbhAWZYo
+         LSlw==
+X-Gm-Message-State: AC+VfDwdwkGvlJmXcX6jzILpjgBH4Ou3jVUZgj+KDDhDqd2Al4cFc+a/
+        jcpQgFLGrauVW+jitUZtbJwHWiwaDcAuHflSj8IP2WIwYglj3pNd+LcoOWSMEehIRzJLStsCU/M
+        2r69WPqYREl9Ll4sa
+X-Received: by 2002:adf:ed4c:0:b0:2fa:d00d:cab8 with SMTP id u12-20020adfed4c000000b002fad00dcab8mr10523011wro.18.1683019942996;
+        Tue, 02 May 2023 02:32:22 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5Ny0SyxqPYdHROomDFuM2aXgIRoSLjZ8P4kUjzBL7vSVfqP59DeMhAr12tCEWBDTuCR61IBQ==
+X-Received: by 2002:adf:ed4c:0:b0:2fa:d00d:cab8 with SMTP id u12-20020adfed4c000000b002fad00dcab8mr10522995wro.18.1683019942677;
+        Tue, 02 May 2023 02:32:22 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id h16-20020a5d5490000000b00304b5b2f5ffsm12180965wrv.53.2023.05.02.02.32.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 May 2023 02:32:22 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Daniel Vetter <daniel@ffwll.ch>, Zack Rusin <zackr@vmware.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        David Airlie <airlied@linux.ie>, stable@vger.kernel.org,
+        Gurchetan Singh <gurchetansingh@chromium.org>,
+        krastevm@vmware.com, ppaalanen@gmail.com,
+        dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        spice-devel@lists.freedesktop.org,
+        Dave Airlie <airlied@redhat.com>,
+        virtualization@lists.linux-foundation.org, mombasawalam@vmware.com,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Bilal Elmoussaoui <belmouss@redhat.com>
+Subject: Re: [PATCH v2 1/8] drm: Disable the cursor plane on atomic contexts
+ with virtualized drivers
+In-Reply-To: <YvPfedG/uLQNFG7e@phenom.ffwll.local>
+References: <20220712033246.1148476-1-zack@kde.org>
+ <20220712033246.1148476-2-zack@kde.org>
+ <YvPfedG/uLQNFG7e@phenom.ffwll.local>
+Date:   Tue, 02 May 2023 11:32:21 +0200
+Message-ID: <87lei7xemy.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Implementation Note at the end of PCIe r6.0.1 sec 7.5.3.7 recommends
-handling LTSSM race to ensure link retraining acquires correct
-parameters from the LNKCTL register. According to the implementation
-note, LTSSM might transition into Recovery or Configuration state
-independently of the driver requesting it, and if retraining due to
-such an event is still ongoing, the value written into the LNKCTL
-register might not be considered by the link retraining.
+Daniel Vetter <daniel@ffwll.ch> writes:
 
-Ensure link training bit is clear before toggling link retraining bit
-to meet the requirements of the Implementation Note.
+> On Mon, Jul 11, 2022 at 11:32:39PM -0400, Zack Rusin wrote:
+>> From: Zack Rusin <zackr@vmware.com>
+>> 
+>> Cursor planes on virtualized drivers have special meaning and require
+>> that the clients handle them in specific ways, e.g. the cursor plane
+>> should react to the mouse movement the way a mouse cursor would be
+>> expected to and the client is required to set hotspot properties on it
+>> in order for the mouse events to be routed correctly.
+>> 
+>> This breaks the contract as specified by the "universal planes". Fix it
+>> by disabling the cursor planes on virtualized drivers while adding
+>> a foundation on top of which it's possible to special case mouse cursor
+>> planes for clients that want it.
+>> 
+>> Disabling the cursor planes makes some kms compositors which were broken,
+>> e.g. Weston, fallback to software cursor which works fine or at least
+>> better than currently while having no effect on others, e.g. gnome-shell
+>> or kwin, which put virtualized drivers on a deny-list when running in
+>> atomic context to make them fallback to legacy kms and avoid this issue.
+>> 
+>> Signed-off-by: Zack Rusin <zackr@vmware.com>
+>> Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal plane list (v2)")
 
-Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
----
- drivers/pci/pcie/aspm.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+[...]
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 66d7514ca111..dde1ef13d0d1 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -193,12 +193,37 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
- }
- 
-+static bool pcie_wait_for_retrain(struct pci_dev *pdev)
-+{
-+	unsigned long end_jiffies;
-+	u16 reg16;
-+
-+	/* Wait for link training end. Break out after waiting for timeout */
-+	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-+	do {
-+		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
-+		if (!(reg16 & PCI_EXP_LNKSTA_LT))
-+			break;
-+		msleep(1);
-+	} while (time_before(jiffies, end_jiffies));
-+
-+	return !(reg16 & PCI_EXP_LNKSTA_LT);
-+}
-+
- static bool pcie_retrain_link(struct pcie_link_state *link)
- {
- 	struct pci_dev *parent = link->pdev;
--	unsigned long end_jiffies;
- 	u16 reg16;
- 
-+	/*
-+	 * Ensure the updated LNKCTL parameters are used during link
-+	 * training by checking that there is no ongoing link training to
-+	 * avoid LTSSM race as recommended in Implementation Note at the end
-+	 * of PCIe r6.0.1 sec 7.5.3.7.
-+	 */
-+	if (!pcie_wait_for_retrain(parent))
-+		return false;
-+
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
- 	reg16 |= PCI_EXP_LNKCTL_RL;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-@@ -212,15 +237,7 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
- 		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
- 	}
- 
--	/* Wait for link training end. Break out after waiting for timeout */
--	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
--	do {
--		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
--		if (!(reg16 & PCI_EXP_LNKSTA_LT))
--			break;
--		msleep(1);
--	} while (time_before(jiffies, end_jiffies));
--	return !(reg16 & PCI_EXP_LNKSTA_LT);
-+	return pcie_wait_for_retrain(parent);
- }
- 
- /*
+>> diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
+>> index f6159acb8856..c4cd7fc350d9 100644
+>> --- a/include/drm/drm_drv.h
+>> +++ b/include/drm/drm_drv.h
+>> @@ -94,6 +94,16 @@ enum drm_driver_feature {
+>>  	 * synchronization of command submission.
+>>  	 */
+>>  	DRIVER_SYNCOBJ_TIMELINE         = BIT(6),
+>> +	/**
+>> +	 * @DRIVER_VIRTUAL:
+>> +	 *
+>> +	 * Driver is running on top of virtual hardware. The most significant
+>> +	 * implication of this is a requirement of special handling of the
+>> +	 * cursor plane (e.g. cursor plane has to actually track the mouse
+>> +	 * cursor and the clients are required to set hotspot in order for
+>> +	 * the cursor planes to work correctly).
+>> +	 */
+>> +	DRIVER_VIRTUAL                  = BIT(7),
+>
+> I think the naming here is unfortunate, because people will vonder why
+> e.g. vkms doesn't set this, and then add it, and confuse stuff completely.
+>
+> Also it feels a bit wrong to put this onto the driver, when really it's a
+> cursor flag. I guess you can make it some kind of flag in the drm_plane
+> structure, or a new plane type, but putting it there instead of into the
+> "random pile of midlayer-mistake driver flags" would be a lot better.
+>
+> Otherwise I think the series looks roughly how I'd expect it to look.
+> -Daniel
+>
+
+AFAICT this is the only remaining thing to be addressed for this series ?
+
+Zack, are you planning to re-spin a v3 of this patch-set? Asking because
+we want to take virtio-gpu out of the atomic KMS deny list in mutter, but
+first need this to land.
+
+If you think that won't be able to do it in the short term, Bilal (Cc'ed)
+or me would be glad to help with that.
+
 -- 
-2.30.2
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
