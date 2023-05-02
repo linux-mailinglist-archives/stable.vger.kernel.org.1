@@ -2,119 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3782B6F4B1F
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 22:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 984046F4B3D
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 22:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229923AbjEBUPv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 16:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48440 "EHLO
+        id S229993AbjEBUUg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 16:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229920AbjEBUPm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 16:15:42 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D19710FF
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 13:15:19 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-52057b3d776so2202246a12.2
-        for <stable@vger.kernel.org>; Tue, 02 May 2023 13:15:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683058519; x=1685650519;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z9wYmb61AJq/t/dK34/IZzNXoE4VD6rl22PB6n6jMeY=;
-        b=gcsGiuf/S6OuDUr8Od48tj8Ivy2DjLGoO0/dyF3QZd7rkh8mhqN/ovUHeDqR4GQn7/
-         pnmcaVNjTrz9bMdMxSm1X8STAYooDLQe0RQ6hT5Sm0tjsfp7gEW9xKi5C1FmX8tHhqDQ
-         w2Y93qPy9N2eBmcq6BmnnsM0LSKrly3WCYw6ZclzcDQs50WpOfSOPPWsFBxS0aRZSH1B
-         d3yfjQ1uE61JIabCTxO4B+0L2FulkACw/0IGcKPK28dMHiX+7EEGscHy2zHkksUxvgNV
-         gVmuBZj1N+HMIvlY19PPIdQD1gJEHS7NKf6PSnmAttVM8ACBZw7DNLAGJzVFpKSaHD9q
-         OXzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683058519; x=1685650519;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z9wYmb61AJq/t/dK34/IZzNXoE4VD6rl22PB6n6jMeY=;
-        b=XnuDr2kZgtx3ZsJ5izzQ6XGXP8fX6jICu81IoR1toWBP3KYeHViWcpHVuzvp5xPfL8
-         csnJ2GJyv7VDfn37pXi0xg3IRy6K02paoxcVZVj1eMCjzXRLhAS+cwfPpX46DP4ZdxSo
-         pdR8WLYN700xrnRYdPy5fuOGyM4SukLHutTGv3gTRRGunmALOR4oMytXD9cqleNDuKl9
-         VDzIp1BzHN2SkZWK0tqeiyGUVzXYqCE8x1gR+bDk0/BXcvxae1820QSx+K8sEZ/ziQzg
-         7nKsU4waxGzHmsDKEfBD3Co3uqBjJRU934u7/p5Gh0zOrrzCEQCL3uWZDIpG+9NJTPUK
-         VFZw==
-X-Gm-Message-State: AC+VfDzfThqlPpMTG6dSDmfXfgmtXqPFd+6cHlyZjNbvcAcpn/bF5Msw
-        Y0Wa2lbBzzh4jo+/nqCbSuK/5trS1xY=
-X-Google-Smtp-Source: ACHHUZ5S+IjxqSZd8Ji0qyauzBmf29G1+Ebdz/7FhLvvYLKttlaIV2l27XCCK8KHBed3JoKvAZpUzrWE/B8=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:8bc1:0:b0:528:7198:21c7 with SMTP id
- j184-20020a638bc1000000b00528719821c7mr4653168pge.10.1683058518761; Tue, 02
- May 2023 13:15:18 -0700 (PDT)
-Date:   Tue, 2 May 2023 13:15:17 -0700
-In-Reply-To: <20230419071711.GA493399@google.com>
-Mime-Version: 1.0
-References: <20220909185557.21255-1-risbhat@amazon.com> <A0B41A72-984A-4984-81F3-B512DFF92F59@amazon.com>
- <YynoDtKjvDx0vlOR@kroah.com> <YyrSKtN2VqnAuevk@kroah.com> <20230419071711.GA493399@google.com>
-Message-ID: <ZFFt/ZMqQ1RHnY4e@google.com>
-Subject: Re: [PATCH 0/9] KVM backports to 5.10
-From:   Sean Christopherson <seanjc@google.com>
-To:     Lee Jones <lee@kernel.org>
-Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        Rishabh Bhatnagar <risbhat@amazon.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Suraj Jitindar Singh <surajjs@amazon.com>,
-        Mike Bacco <mbacco@amazon.com>, "bp@alien8.de" <bp@alien8.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "vkuznets@redhat.com" <vkuznets@redhat.com>,
-        "wanpengli@tencent.com" <wanpengli@tencent.com>,
-        "jmattson@google.com" <jmattson@google.com>,
-        "joro@8bytes.org" <joro@8bytes.org>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229991AbjEBUUf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 16:20:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA52198C;
+        Tue,  2 May 2023 13:20:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA3BC61EC7;
+        Tue,  2 May 2023 20:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB86C433EF;
+        Tue,  2 May 2023 20:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1683058833;
+        bh=Er00lxemRAH2CJdQ9ZSEv7BEzN3I9d2HxtrMb/tD+jc=;
+        h=Date:To:From:Subject:From;
+        b=1/uv7E8H/UcPGT29gcy8gPO+d+qL55r7kFTNMcN7Kn4xaOTF333c/mNmYfKf+QA/c
+         3THWc3c4CQK825yOU+JpMey4QZL1u25UWnx3FT6/C08ednygKI3cbE5U7Jwi073ZIN
+         P1xl6aE9KdHc/5ojYNmoHZzW2Cn1WTMQIua4HhdU=
+Date:   Tue, 02 May 2023 13:20:31 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org,
+        stable@vger.kernel.org, peterx@redhat.com, lstoakes@gmail.com,
+        jhubbard@nvidia.com, hch@lst.de, david@redhat.com, jack@suse.cz,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-do-not-reclaim-private-data-from-pinned-page.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230502202033.4FB86C433EF@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Apr 19, 2023, Lee Jones wrote:
-> On Wed, 21 Sep 2022, gregkh@linuxfoundation.org wrote:
-> 
-> > On Tue, Sep 20, 2022 at 06:19:26PM +0200, gregkh@linuxfoundation.org wrote:
-> > > On Tue, Sep 20, 2022 at 03:34:04PM +0000, Bhatnagar, Rishabh wrote:
-> > > > Gentle reminder to review this patch series.
-> > > 
-> > > Gentle reminder to never top-post :)
-> > > 
-> > > Also, it's up to the KVM maintainers if they wish to review this or not.
-> > > I can't make them care about old and obsolete kernels like 5.10.y.  Why
-> > > not just use 5.15.y or newer?
-> > 
-> > Given the lack of responses here from the KVM developers, I'll drop this
-> > from my mbox and wait for them to be properly reviewed and resend before
-> > considering them for a stable release.
-> 
-> KVM maintainers,
-> 
-> Would someone be kind enough to take a look at this for Greg please?
-> 
-> Note that at least one of the patches in this set has been identified as
-> a fix for a serious security issue regarding the compromise of guest
-> kernels due to the mishandling of flush operations.
 
-A minor note, the security issue is serious _if_ the bug can be exploited, which
-as is often the case for KVM, is a fairly big "if".  Jann's PoC relied on collusion
-between host userspace and the guest kernel, and as Jann called out, triggering
-the bug on a !PREEMPT host kernel would be quite difficult in practice.
+The patch titled
+     Subject: mm: do not reclaim private data from pinned page
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-do-not-reclaim-private-data-from-pinned-page.patch
 
-I don't want to downplay the seriousness of compromising guest security, but CVSS
-scores for KVM CVEs almost always fail to account for the multitude of factors in
-play.  E.g. CVE-2023-30456 also had a score of 7.8, and that bug required disabling
-EPT, which pretty much no one does when running untrusted guest code.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-do-not-reclaim-private-data-from-pinned-page.patch
 
-In other words, take the purported severity with a grain of salt.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> Please could someone confirm or otherwise that this is relevant for
-> v5.10.y and older?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jan Kara <jack@suse.cz>
+Subject: mm: do not reclaim private data from pinned page
+Date: Fri, 28 Apr 2023 14:41:40 +0200
+
+If the page is pinned, there's no point in trying to reclaim it. 
+Furthermore if the page is from the page cache we don't want to reclaim
+fs-private data from the page because the pinning process may be writing
+to the page at any time and reclaiming fs private info on a dirty page can
+upset the filesystem (see link below).
+
+Link: https://lore.kernel.org/linux-mm/20180103100430.GE4911@quack2.suse.cz
+Link: https://lkml.kernel.org/r/20230428124140.30166-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmscan.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+--- a/mm/vmscan.c~mm-do-not-reclaim-private-data-from-pinned-page
++++ a/mm/vmscan.c
+@@ -1967,6 +1967,16 @@ retry:
+ 			}
+ 		}
+ 
++		/*
++		 * Folio is unmapped now so it cannot be newly pinned anymore.
++		 * No point in trying to reclaim folio if it is pinned.
++		 * Furthermore we don't want to reclaim underlying fs metadata
++		 * if the folio is pinned and thus potentially modified by the
++		 * pinning process as that may upset the filesystem.
++		 */
++		if (folio_maybe_dma_pinned(folio))
++			goto activate_locked;
++
+ 		mapping = folio_mapping(folio);
+ 		if (folio_test_dirty(folio)) {
+ 			/*
+_
+
+Patches currently in -mm which might be from jack@suse.cz are
+
+mm-do-not-reclaim-private-data-from-pinned-page.patch
+
