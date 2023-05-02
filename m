@@ -2,95 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 828AB6F3DE9
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 08:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F37FE6F3E68
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 09:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233286AbjEBGzf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 02:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
+        id S229457AbjEBHcG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 03:32:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233588AbjEBGzH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 02:55:07 -0400
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959D249F2
-        for <stable@vger.kernel.org>; Mon,  1 May 2023 23:55:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1683010501; x=1714546501;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version:subject;
-  bh=ja+JOU/7heFYoS/+eOxCjX6HTqTjKKxenwFLCMVLk9o=;
-  b=PBQNpnn0XHgKrV4y2lgS8QimK/b5jFgfewE4ZRmbLMN+eWoBaKBbSmjl
-   ztEhH65IwLy0WUnp4H2C8TPt1OA/RkyN4mgESeoC0+GUkHg/763prNEBx
-   7Qy+Ecj7DsQT5Ehd2hyZ9u56Yf9befJxcjfyaCEbB/tfB7vzistMqSFL8
-   c=;
-X-IronPort-AV: E=Sophos;i="5.99,243,1677542400"; 
-   d="scan'208";a="327057805"
-Subject: Re: [PATCH 5.10 0/1] Request to cherry-pick 026d0d27c488 to 5.10.y
-Thread-Topic: [PATCH 5.10 0/1] Request to cherry-pick 026d0d27c488 to 5.10.y
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 06:54:59 +0000
-Received: from EX19MTAUWC001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com (Postfix) with ESMTPS id 8BA79817F5;
-        Tue,  2 May 2023 06:54:58 +0000 (UTC)
-Received: from EX19D023UWA002.ant.amazon.com (10.13.139.65) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Tue, 2 May 2023 06:54:58 +0000
-Received: from EX19D023UWA003.ant.amazon.com (10.13.139.33) by
- EX19D023UWA002.ant.amazon.com (10.13.139.65) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 2 May 2023 06:54:58 +0000
-Received: from EX19D023UWA003.ant.amazon.com ([fe80::2d45:e73:b7a8:15de]) by
- EX19D023UWA003.ant.amazon.com ([fe80::2d45:e73:b7a8:15de%6]) with mapi id
- 15.02.1118.026; Tue, 2 May 2023 06:54:57 +0000
-From:   "Kiselev, Oleg" <okiselev@amazon.com>
-To:     Meena Shanmugam <meenashanmugam@google.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "sashal@kernel.org" <sashal@kernel.org>,
-        "tytso@mit.edu" <tytso@mit.edu>
-Thread-Index: AQHZfLardOFdg0PchU69+akxnSROqa9GFzYA
-Date:   Tue, 2 May 2023 06:54:57 +0000
-Message-ID: <450069D4-6F18-4C51-B9E4-EBB8F1C8A5BA@amazon.com>
-References: <20230502052554.3068013-1-meenashanmugam@google.com>
-In-Reply-To: <20230502052554.3068013-1-meenashanmugam@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.94.223.98]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <21408E3E028D2F42B263D99BC8E505C3@amazon.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S233421AbjEBHcF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 03:32:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C526F49E6;
+        Tue,  2 May 2023 00:32:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 38BCB616D1;
+        Tue,  2 May 2023 07:32:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57593C433D2;
+        Tue,  2 May 2023 07:31:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683012719;
+        bh=kbruTmo20DpxTDB0eWn7jlMNnZFnWEFG3y1RqNeyt7o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fM7m0la+bi7iQHrLY30pSwMz1UnofrX3isig85wK0wZcHx44ghsTrDiXdtFM6DPSx
+         RZSx+LExuXVwLWd0y1MzCHVBpOGv4FTQiz0MqEqq0gWV++TlVMPeaxzETDid0gFeGW
+         Rsbt4ZrvPW1iEu/ImxDjqMTJ5HGnVU1j0QqkmCiQ=
+Date:   Tue, 2 May 2023 16:31:56 +0900
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Chris Clayton <chris2553@googlemail.com>
+Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+        jslaby@suse.cz
+Subject: Re: Linux 6.3.1
+Message-ID: <2023050201-bluish-habitable-474a@gregkh>
+References: <2023050123-resubmit-silica-ac32@gregkh>
+ <c2ac55a4-aaf5-2f49-be08-d326fe0c17f8@googlemail.com>
+ <2023050202-slouchy-princess-e7dd@gregkh>
+ <2023050225-brutishly-enlarging-c54e@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023050225-brutishly-enlarging-c54e@gregkh>
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-TWVlbmEsIA0KDQpUaGlzIHBhdGNoIGltcGxpY2l0bHkgcmVsaWVzIG9uIGNvcnJlY3RuZXNzIG9m
-IHRoZSBvdmVyaGVhZCBmaWVsZCBpbiB0aGUgc3VwZXJibG9jay4gIEluIHRoZSBvbGRlciBrZXJu
-ZWxzLCBvbmxpbmUgcmVzaXplIG5lZ2xlY3RlZCB0byB1cGRhdGUgdGhlIG92ZXJoZWFkIGZpZWxk
-LiAgVGVkIChvciBMdWNhcz8pIGZpeGVkIHRoYXQsIGJ1dCBJIGRvbid0IGtub3cgaWYgdGhhdCBw
-YXRjaCBnb3QgY2hlcnJ5LXBpY2tlZCBmb3IgdGhlIG9sZGVyIHN0YWJsZSByZWxlYXNlcy4gIEkg
-ZG9uJ3QgdGhpbmsgbXkgcGF0Y2ggd2lsbCB3b3JrIHJpZ2h0IHdpdGhvdXQgdGhvc2UgZml4ZXMu
-DQoNCu+7v09uIDUvMS8yMywgMTA6MjYgUE0sICJNZWVuYSBTaGFubXVnYW0iIDxtZWVuYXNoYW5t
-dWdhbUBnb29nbGUuY29tIDxtYWlsdG86bWVlbmFzaGFubXVnYW1AZ29vZ2xlLmNvbT4+IHdyb3Rl
-Og0KDQoNCkNBVVRJT046IFRoaXMgZW1haWwgb3JpZ2luYXRlZCBmcm9tIG91dHNpZGUgb2YgdGhl
-IG9yZ2FuaXphdGlvbi4gRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5s
-ZXNzIHlvdSBjYW4gY29uZmlybSB0aGUgc2VuZGVyIGFuZCBrbm93IHRoZSBjb250ZW50IGlzIHNh
-ZmUuDQoNCg0KDQoNCg0KDQpUaGUgY29tbWl0IDAyNmQwZDI3YzQ4OCAoZXh0NDogcmVkdWNlIGNv
-bXB1dGF0aW9uIG9mIG92ZXJoZWFkIGR1cmluZw0KcmVzaXplKSByZWR1Y2VzIHRoZSB0aW1lIHRh
-a2VuIHRvIHJlc2l6ZSBsYXJnZSBiaWdhbGxvYw0KZmlsZXN5c3RlbXMocmVkdWNlcyAzKyBob3Vy
-cyB0byBtaWxsaXNlY29uZHMgZm9yIGEgNjRUQiBGUykuIFRoaXMgaXMgYQ0KZ29vZCBjYW5kaWRh
-dGUgdG8gY2hlcnJ5LXBpY2sgdG8gc3RhYmxlIHJlbGVhc2VzLg0KDQoNCktpc2VsZXYsIE9sZWcg
-KDEpOg0KZXh0NDogcmVkdWNlIGNvbXB1dGF0aW9uIG9mIG92ZXJoZWFkIGR1cmluZyByZXNpemUN
-Cg0KDQpmcy9leHQ0L3Jlc2l6ZS5jIHwgMjMgKysrKysrKysrKysrKysrKysrKysrLS0NCjEgZmls
-ZSBjaGFuZ2VkLCAyMSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KDQoNCi0tDQoyLjQw
-LjEuNDk1LmdjODE2ZTA5YjUzZC1nb29nDQoNCg0KDQoNCg0K
+On Tue, May 02, 2023 at 08:43:47AM +0900, Greg Kroah-Hartman wrote:
+> On Tue, May 02, 2023 at 06:40:03AM +0900, Greg Kroah-Hartman wrote:
+> > On Mon, May 01, 2023 at 07:22:56AM +0100, Chris Clayton wrote:
+> > > 6.3.1 FTBFS thusly:
+> > 
+> > What is "FTBFS"?
+> > 
+> > > drivers/net/wireguard/timers.c: In function 'wg_expired_retransmit_handshake':
+> > > <command-line>: error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
+> > > [-Werror=format=]
+> > > <command-line>: note: in expansion of macro 'KBUILD_MODNAME'
+> > > ./include/linux/dynamic_debug.h:223:29: note: in expansion of macro 'pr_fmt'
+> > >   223 |                 func(&id, ##__VA_ARGS__);                       \
+> > >       |                             ^~~~~~~~~~~
+> > 
+> > <snip>
+> > 
+> > > There's a patch to drivers/net/wireguard/timers.c that fixes these errors and you can find it at
+> > > 2d4ee16d969c97996e80e4c9cb6de0acaff22c9f in Linus' tree.
+> > 
+> > Thanks for this report, we'll queue it up soon.
+> 
+> Odd, that commit is in 6.2 already, so how are you applying this to
+> 6.3.y?
+
+And this is only a gcc13 issue, right?  So it's not a regression, it's
+always been there, nothing new caused it in this release from what I can
+tell.
+
+Actually I don't see how this is an issue in 6.3.1 anyway, as again, the
+proposed fix you gave is in 6.2, so what really is happening here?
+
+confused,
+
+greg k-h
