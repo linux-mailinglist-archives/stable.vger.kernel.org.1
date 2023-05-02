@@ -2,89 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5826F4AD8
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 22:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF35A6F4B0A
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 22:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjEBUDz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 16:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39464 "EHLO
+        id S229878AbjEBUMc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 16:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjEBUDy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 16:03:54 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B809F1997;
-        Tue,  2 May 2023 13:03:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683057829; x=1714593829;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=DyYgu8EaagPkfyeH/Mvma9nZqR7FqJ8nacbfBWhR9Wc=;
-  b=QvHfI0K6mPtT159OUS3L5OZj81wiqTs/FsuptJA5e1VOM4dev3i3+4+b
-   ip3fd0X7lmH3A2MFYqu0aveCNccTAosJ8r/kNvQSlQF/7MnLOWHYs3fbO
-   Dg6W7WeNPaMGOClHDySUFi4pCl8EzVrZaVQfbeltF12yp+poBaTA0PTYG
-   EunkPNME7KP/sAsOiZHiH9Yz5zhHbCKABGpE5pqvY0BzTR2CtfdIHj9xB
-   X3ox3iaQPEbJuo8i6RSh9EuP/VKofSQ5PYL+/+VdYlINLgmwRfNgBZtKI
-   KClvTCjA2CplXH9VB4kbsfFDUz/RwPM0yRX1UcuRLT/GugWIOMt2B6E41
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="350567698"
-X-IronPort-AV: E=Sophos;i="5.99,245,1677571200"; 
-   d="scan'208";a="350567698"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 13:03:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="942578101"
-X-IronPort-AV: E=Sophos;i="5.99,245,1677571200"; 
-   d="scan'208";a="942578101"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 02 May 2023 13:03:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ptwDv-008DIu-06;
-        Tue, 02 May 2023 23:03:43 +0300
-Date:   Tue, 2 May 2023 23:03:42 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Konrad =?iso-8859-1?Q?Gr=E4fe?= <k.graefe@gateware.de>
-Cc:     Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        with ESMTP id S229666AbjEBUMb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 16:12:31 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE81198C
+        for <stable@vger.kernel.org>; Tue,  2 May 2023 13:12:30 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-b9968fb4a8cso7918841276.0
+        for <stable@vger.kernel.org>; Tue, 02 May 2023 13:12:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683058349; x=1685650349;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PxtEaaNRJEnS8gUq7TvU2r4SfUgelfPOgo5JiP3hUpo=;
+        b=BYEMeUVTavoTcRxgokm9LZOiUo7JnHslNZEV71QJ15VCAvQjDYwvQHxDp2GbTG40ky
+         jG2xF68/iZX42EldBxCWvGasW0z36zT9XC1HFjr04Y697ZGrsWbiwH2FA3zv1TtdktJI
+         55wsjAMD/JNIzadT0P2aX0LbJlXXDdBrpC+GmJBScI84NR/3vbTpABptoKLhg91pELnJ
+         ZuB7VbtRpx+HBXi/6wB6WZLOPfNdjpWyFCMJQiN1NG7xXqLQAt3cQH0KBgMiTmqWaWDl
+         TLaP3TxZgsfeHl6em2N7yxiTF+tiX72e521bm6Gb7UjxnkW8hG3L0ZbkQZOAvzPTQcE6
+         FxIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683058349; x=1685650349;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PxtEaaNRJEnS8gUq7TvU2r4SfUgelfPOgo5JiP3hUpo=;
+        b=Hc2tLTS+/OkxI53E2BY3lL+Xf1NvKTCK6JNr2nW1kVbg0xCtCaYO8/YI1IvFoMT3uh
+         sUuLd10N3u9T3uJzQf+pG5eO8gfEaAsM7Vc/LBZSQ+F1dJ6MxGQg1kCJcDDlS1Rx9ueO
+         3DER1j3AnmvDIeLXfbQaAVGnPCUyd1iJw8ZngFvUBxYpNdDMUUrlOaTVMVfQHZseS9FY
+         Uj6qE3FzCAE75KFYkjs9q05dWF5IZ70X5JrgWhwY318afbOdh9kfUR/YQfb2gvIvYHTH
+         EhgMTGiGVf7tYRih9lFa72wrzrPt3Bpt6qcB7pjucGPgNz+4ZROscXhgvU7wXvrS82IM
+         KLVg==
+X-Gm-Message-State: AC+VfDzlb75AObP2JPnDWrLYCi1zYq5MXamJyi/94dyIPWkKYIOdtvpY
+        jpsHcp8JF8YY8nZfKDX3ODFhbhUptlsJ9w==
+X-Google-Smtp-Source: ACHHUZ71vmhsscaNHlobIISSRxVBPUvmF6vJFmZpp0ShentSMNd8RVevcFg864koEGGNqYEDfNo3/RpT+CLYXQ==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a25:adcf:0:b0:b9d:894f:c9a8 with SMTP id
+ d15-20020a25adcf000000b00b9d894fc9a8mr5202420ybe.0.1683058349442; Tue, 02 May
+ 2023 13:12:29 -0700 (PDT)
+Date:   Tue,  2 May 2023 20:12:17 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
+Message-ID: <20230502201220.1756319-1-cmllamas@google.com>
+Subject: [PATCH 1/3] Revert "binder_alloc: add missing mmap_lock calls when
+ using the VMA"
+From:   Carlos Llamas <cmllamas@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Liam Howlett <liam.howlett@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
         stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
-Message-ID: <ZFFsni5znI4hS953@smile.fi.intel.com>
-References: <20230427115120.241954-2-k.graefe@gateware.de>
- <20230428064905.145858-1-k.graefe@gateware.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230428064905.145858-1-k.graefe@gateware.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Apr 28, 2023 at 08:49:04AM +0200, Konrad Gräfe wrote:
-> The CDC-ECM specification requires an USB gadget to send the host MAC
-> address as uppercase hex string. This change adds the appropriate
-> modifier.
+This reverts commit 44e602b4e52f70f04620bbbf4fe46ecb40170bde.
 
-Why not teaching %ph to provide an uppercase? Would be much more useful than
-this.
+This caused a performance regression particularly when pages are getting
+reclaimed. We don't need to acquire the mmap_lock to determine when the
+binder buffer has been fully initialized. A subsequent patch will bring
+back the lockless approach for this.
 
+[cmllamas: resolved trivial conflicts with renaming of alloc->mm]
+
+Fixes: 44e602b4e52f ("binder_alloc: add missing mmap_lock calls when using the VMA")
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder_alloc.c | 31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index 55a3c3c2409f..92c814ec44fe 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -380,15 +380,12 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
+ 	size_t size, data_offsets_size;
+ 	int ret;
+ 
+-	mmap_read_lock(alloc->mm);
+ 	if (!binder_alloc_get_vma(alloc)) {
+-		mmap_read_unlock(alloc->mm);
+ 		binder_alloc_debug(BINDER_DEBUG_USER_ERROR,
+ 				   "%d: binder_alloc_buf, no vma\n",
+ 				   alloc->pid);
+ 		return ERR_PTR(-ESRCH);
+ 	}
+-	mmap_read_unlock(alloc->mm);
+ 
+ 	data_offsets_size = ALIGN(data_size, sizeof(void *)) +
+ 		ALIGN(offsets_size, sizeof(void *));
+@@ -916,25 +913,17 @@ void binder_alloc_print_pages(struct seq_file *m,
+ 	 * Make sure the binder_alloc is fully initialized, otherwise we might
+ 	 * read inconsistent state.
+ 	 */
+-
+-	mmap_read_lock(alloc->mm);
+-	if (binder_alloc_get_vma(alloc) == NULL) {
+-		mmap_read_unlock(alloc->mm);
+-		goto uninitialized;
+-	}
+-
+-	mmap_read_unlock(alloc->mm);
+-	for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
+-		page = &alloc->pages[i];
+-		if (!page->page_ptr)
+-			free++;
+-		else if (list_empty(&page->lru))
+-			active++;
+-		else
+-			lru++;
++	if (binder_alloc_get_vma(alloc) != NULL) {
++		for (i = 0; i < alloc->buffer_size / PAGE_SIZE; i++) {
++			page = &alloc->pages[i];
++			if (!page->page_ptr)
++				free++;
++			else if (list_empty(&page->lru))
++				active++;
++			else
++				lru++;
++		}
+ 	}
+-
+-uninitialized:
+ 	mutex_unlock(&alloc->mutex);
+ 	seq_printf(m, "  pages: %d:%d:%d\n", active, lru, free);
+ 	seq_printf(m, "  pages high watermark: %zu\n", alloc->pages_high);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.1.495.gc816e09b53d-goog
 
