@@ -2,125 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 603B76F44CB
-	for <lists+stable@lfdr.de>; Tue,  2 May 2023 15:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F06A6F44D7
+	for <lists+stable@lfdr.de>; Tue,  2 May 2023 15:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234198AbjEBNNO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 09:13:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50330 "EHLO
+        id S233977AbjEBNOX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 09:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233833AbjEBNNE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 09:13:04 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16CDAE4D;
-        Tue,  2 May 2023 06:13:03 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3063afa2372so334043f8f.0;
-        Tue, 02 May 2023 06:13:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1683033181; x=1685625181;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XZcW7jrDnKC9zCPrP6gmsLXf/LWgkWKa62M80P78wRk=;
-        b=YfvFf2RMimcatujhspMXgRbTMWLWNEqGOBD+sRVLbkdNrULlEHTxyxNa+qiTJdH88o
-         jgnKTvfml/t7VMIsWvUPC10KNIMqp9DYe1uHb9YX/vJz0yFAZ0iZRyn0lAoELvFLaJUi
-         6EPSnuZ41QceUcDMvG3lQEZ80tm6k9adJEh83QljY5m4sd7AlWhPu40TMms0Gc59Wyub
-         HCdX/tXkLtJWDMu5IJSlqMqbr5wuShzCQZw/zOYRUIFmM3UqMgu3XI8+PEC32DUHwhgF
-         9qLeOpIN3Ws8RBZVet/tOFxArkUmkH41p8Pcii6h5jHfXzkyw75GEzjlV5fdX3PoqYtV
-         seJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683033181; x=1685625181;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XZcW7jrDnKC9zCPrP6gmsLXf/LWgkWKa62M80P78wRk=;
-        b=THjfWwt4uM5h92ijfXkRswuV1OyNyc3O5Cs2bxNYHz06p7BGp9buOVTC/1dj/jg5UB
-         hRS2D3PSwiYjHdoxLIrCiXUvf2pRvt4pz14ljGLJN9pVIwVFhzKK00BfFVnzYc0YSYmU
-         fYj3Q9SO0dmkGMiGgNNs5Zjf/Lwy05IZL762nhkK5EEsKzsMJxrwfvsw2bu8oGoYWDPx
-         OjUf2wOBICOJ73T2znMJCFuhzBTmdfE/qF08hozKhdxoGKRqRGIq5iM6EOAP1Zs98m6k
-         SsLYPLYQTWWoJBI6tXhAIYJEQJek96Dp+9s0TMAPuh1CJQW3iD8qMSNQ56WWMyTDmU6Z
-         5w1Q==
-X-Gm-Message-State: AC+VfDyPplrpMHd1p2X/abbJTl3TUSv82vRHz1jhCJ9EEnFY3Y84Hs+J
-        ybR0W2iOvLidlSpGCOO2e5E=
-X-Google-Smtp-Source: ACHHUZ5446mWo3My56TAv/HJSNT+pnZWvcmYHPKTRVAp/CrpHU3NQDvM192LBGNK4/V0Fv+dtUKc/w==
-X-Received: by 2002:adf:e892:0:b0:304:a274:e17d with SMTP id d18-20020adfe892000000b00304a274e17dmr11891682wrm.63.1683033181304;
-        Tue, 02 May 2023 06:13:01 -0700 (PDT)
-Received: from [192.168.1.10] (95f1f744.skybroadband.com. [149.241.247.68])
-        by smtp.googlemail.com with ESMTPSA id j5-20020a5d6045000000b0030626f69ee7sm7942188wrt.38.2023.05.02.06.13.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 May 2023 06:13:00 -0700 (PDT)
-Message-ID: <c7842e46-fc41-c989-b5e7-ec504cd0c8f2@googlemail.com>
-Date:   Tue, 2 May 2023 14:12:58 +0100
+        with ESMTP id S233664AbjEBNOV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 09:14:21 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9645E55AE;
+        Tue,  2 May 2023 06:13:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683033239; x=1714569239;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=UKS6eb6mm7wnEJz0YAhtu/APb6Zrywv1tOaxnDfoKl8=;
+  b=YCe01avSvMO1vEYvkeOqKZm6X50q9Gn2NQW1W2qu6XI+bY5BVoiNyYhy
+   qa7oIfoM3dRt2lPQ9ZHqw7q2GC36HW3eZH8W2qZ8nApHjIL/1cSmNcERF
+   AEu9fdgP0zUagPscI1IvHzusuxzpCV2b814xkcv45xdH/SGoB0lIkdZFi
+   A36RMUfhqYYg0kWLfhWdMxax2XZr2taC0uyNMQ7vLIdngR+6oInE7/E8w
+   mLrDcJ0vXRgNQpF2PGUUO4AhTEmBCeLPro/EAEoQYoQRy4a9rBjQQXc98
+   uYpKnqDS8/SbOBw1+abOawKEmYhf9AnZo9NyqKurUUCDJH2h2rDjshd7a
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="347210487"
+X-IronPort-AV: E=Sophos;i="5.99,244,1677571200"; 
+   d="scan'208";a="347210487"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 06:13:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="690278833"
+X-IronPort-AV: E=Sophos;i="5.99,244,1677571200"; 
+   d="scan'208";a="690278833"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.70])
+  by orsmga007.jf.intel.com with SMTP; 02 May 2023 06:13:56 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 02 May 2023 16:13:55 +0300
+Date:   Tue, 2 May 2023 16:13:55 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Kurt Garloff <kurt@garloff.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org
+Subject: Re: 6.1.23: 0fc6fea41c71 breaks GPD Pocket 3 modeset
+Message-ID: <ZFEMkypQy1I4vprK@intel.com>
+References: <4115dc28-45b6-cad1-1e38-39e5a0484a8a@garloff.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: Linux 6.3.1
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz
-References: <2023050123-resubmit-silica-ac32@gregkh>
- <c2ac55a4-aaf5-2f49-be08-d326fe0c17f8@googlemail.com>
- <2023050202-slouchy-princess-e7dd@gregkh>
- <2023050225-brutishly-enlarging-c54e@gregkh>
- <2023050201-bluish-habitable-474a@gregkh>
-Content-Language: en-GB
-From:   Chris Clayton <chris2553@googlemail.com>
-In-Reply-To: <2023050201-bluish-habitable-474a@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4115dc28-45b6-cad1-1e38-39e5a0484a8a@garloff.de>
+X-Patchwork-Hint: comment
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Sat, Apr 29, 2023 at 09:55:45PM +0200, Kurt Garloff wrote:
+> Hi Ville,
+> 
+> While
+> 0fc6fea41c71 drm/i915: Disable DC states for all commits
+> (cherry picked from commit 41b4c7fe72b6105a4b49395eea9aa40cef94288d)
+> does look correct to me, it does break modesetting on the GPD Pocket 3,
+> a i7-1195G7 laptop. I run the kernel with
+> fbcon=rotate:1 video=DSI-1:panel_orientation=right_side_up \
+> mem_sleep_default=s2idle
+> No special i915 parameters.
+> Hardware is described here:
+> https://wiki.archlinux.org/title/GPD_Pocket_3
+> 
+> I disected this patch which was merged (backported) for 6.1.23.
+> I currently run 6.1.26 with it reverted.
+> 
+> Without reverting it, when fbcon is switched to show the splash
+> screen (GPD logo with Ubuntu added in on working kernels), the
+> screen remains black (backlight on, but nothing displayed) and
+> nothing happens any more.
 
-On 02/05/2023 08:31, Greg Kroah-Hartman wrote:
-> On Tue, May 02, 2023 at 08:43:47AM +0900, Greg Kroah-Hartman wrote:
->> On Tue, May 02, 2023 at 06:40:03AM +0900, Greg Kroah-Hartman wrote:
->>> On Mon, May 01, 2023 at 07:22:56AM +0100, Chris Clayton wrote:
->>>> 6.3.1 FTBFS thusly:
->>>
->>> What is "FTBFS"?
->>>
->>>> drivers/net/wireguard/timers.c: In function 'wg_expired_retransmit_handshake':
->>>> <command-line>: error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
->>>> [-Werror=format=]
->>>> <command-line>: note: in expansion of macro 'KBUILD_MODNAME'
->>>> ./include/linux/dynamic_debug.h:223:29: note: in expansion of macro 'pr_fmt'
->>>>   223 |                 func(&id, ##__VA_ARGS__);                       \
->>>>       |                             ^~~~~~~~~~~
->>>
->>> <snip>
->>>
->>>> There's a patch to drivers/net/wireguard/timers.c that fixes these errors and you can find it at
->>>> 2d4ee16d969c97996e80e4c9cb6de0acaff22c9f in Linus' tree.
->>>
->>> Thanks for this report, we'll queue it up soon.
->>
->> Odd, that commit is in 6.2 already, so how are you applying this to
->> 6.3.y?
-> 
-> And this is only a gcc13 issue, right?  So it's not a regression, it's
-> always been there, nothing new caused it in this release from what I can
-> tell.
-> 
-> Actually I don't see how this is an issue in 6.3.1 anyway, as again, the
-> proposed fix you gave is in 6.2, so what really is happening here?
+Please file a bug at
+https://gitlab.freedesktop.org/drm/intel/issues/new
 
-You seem not to have seen the email I sent shortly after my original report. In that email I apologised for the noise
-because, due to a caffeine deficiency, I had reported the problem against the wrong kernel version and that it actually
-occurs 6.1.27. gcc13 spits it out as a warning, but kernel build system is setbup to treat warnings as errors, so the
-build fails.
+Boot both kernels (revert vs. no revert), passing
+'drm.debug=0xe log_buf_len=4M' to the kernel cmdline,
+and attach the resulting dmesg from each to the bug.
 
-Chris
-> 
-> confused,
-> 
-> greg k-h
+Also would be good if you try to reproduce on the
+latest drm-tip (git://anongit.freedesktop.org/drm-tip drm-tip)
+as well.
+
+-- 
+Ville Syrjälä
+Intel
