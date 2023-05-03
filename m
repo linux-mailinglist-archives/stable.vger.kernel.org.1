@@ -2,150 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D2A16F4DAC
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 01:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544B56F4E06
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 02:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjEBXiJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 19:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
+        id S229830AbjECAND (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 20:13:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjEBXiI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 19:38:08 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C4F3591;
-        Tue,  2 May 2023 16:38:06 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4f00d41df22so722671e87.1;
-        Tue, 02 May 2023 16:38:06 -0700 (PDT)
+        with ESMTP id S230092AbjECANC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 20:13:02 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0222D4E
+        for <stable@vger.kernel.org>; Tue,  2 May 2023 17:13:00 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-b9da6374fa2so5574653276.0
+        for <stable@vger.kernel.org>; Tue, 02 May 2023 17:13:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683070685; x=1685662685;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6OQxInFdspH8goMZiAQFIMKvayrdCwcSWW5RpkKMAVs=;
-        b=rxwYpimfPHfiaLUYvMZSGzeu4lLfKnxa5lLprs1ayA/SCOBpxHk76Z9C11I8IEn3dk
-         bvKtFzBQjuaO7sSg7VoB/a66Yx4qUm7oNzsQZg+NYWiHvaWHJzELhwr8BjrxRDuQYS5s
-         3vyaGyN4Cs+yK1CHUTrjIbxgiQKJuWLU9SLTAcYz7AESzItR112/2AAGDOxZkjLt+O1p
-         QYs0Y+oemevj0PRP29NY3VH7oUI25qZHohWrIHDxASGXkng+oLUCTGSksk6HINPZFBg8
-         PdWRd9bakYmdTgmieZUgVFLievAojX48jBlp21kqCQ6tAFERmuvgNGt/+57haHzg9mJ0
-         J+dQ==
+        d=linaro.org; s=google; t=1683072779; x=1685664779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mszgk8kcqy9NacUC4irOM12AZRObXiNESQ4V20e6ClI=;
+        b=qkgJTaRvQKsXbiUwxdR3cT+heU6eWtN2ZDfoZliUoVM3UUesOjfboFzSIbw96Vvx2w
+         MxIkoM1/YWtStBrFDCUhLYNrimJUQjgXNyu8++TCdUp5zbSvGP7ir48Fa6G5YkEcnHG8
+         76j9FSe0Aed0Qj+mmm03ukANqEXDzhNh0pemxCieZSLeU5vL+MRRmn8mxVYiHkxNGxTK
+         naQD23AexjHkDnbBPT9szvXCrdZyM3Quk8A0Yw+V2NFhQr9FzqkGuAwu1Az48PGG9aGE
+         dfLWBQvEw8ifReBVNDhaxCg7amUoPQeGnUfZ02ghdhQ9zXmlfO3WtouD1+l+UZ21+rNx
+         iuyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683070685; x=1685662685;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6OQxInFdspH8goMZiAQFIMKvayrdCwcSWW5RpkKMAVs=;
-        b=S9knXRWL64xvtEmtjf12waDRPwOCTmfoiFZkJwmurL6pdr1SM2Xsm+lsx1/eu1veIl
-         liWa2ieaCUJUosXPsgDmWydWCJHcpTcqAczyjk38M7nSfddWymLrc0onF+oPwTG1k5sH
-         Wv1kA8G5IE/BpCKti2g3hQRewtwKkHcuxz8G4/x707/kwoJrHk0/gIGuLigx2IQX1Wda
-         PTkNplfkUd1S28qyLztEe1pZLiJId3vny3+xMkUjxjz2CdtQ11DUk8QhFys1HF1zai5H
-         m/ntE/OOEMJm/HuaOb5c1RApeTzM4w2qMXJCcLdv6t92YZOs92jrmdpc+Wacm0grFWe6
-         OpFg==
-X-Gm-Message-State: AC+VfDx/PQPZrQdK/L6JbzcKq1sbABQsfVMpyhI5hB9laajdaPjZm/6O
-        dodklSFPRKYheJ2yiAaQQryCluRfLGi6bcPCs/Q=
-X-Google-Smtp-Source: ACHHUZ4Su0H7dh/63X/8lI+nOZziTVVMVxrq4qKi72IDv95LwiyE0a3aXRPOPr3H8pU/DCEKRH1kU/UtdNkbvhmMJNw=
-X-Received: by 2002:a05:6512:3f1c:b0:4ec:9d13:9d09 with SMTP id
- y28-20020a0565123f1c00b004ec9d139d09mr51247lfa.34.1683070684774; Tue, 02 May
- 2023 16:38:04 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683072779; x=1685664779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mszgk8kcqy9NacUC4irOM12AZRObXiNESQ4V20e6ClI=;
+        b=Jr5beVNs733lOu0M1SkpeDol7JGzFSOLQZG+xMYxrj3Nr3hWDBVNhdUH02rQrRwgL1
+         qw3Sh6KfQ1w4O9pV7MV6DEb5h2WXlWqYvs0Q3Ur1wkbYESm0yo4UN9BkUsw/NPftjuvf
+         v509b5IadL7L6O1t/fCBUzHBZtUnLa1O7wxgRJeSaoe48j2YiaReFQmCUc22/0uyYEwd
+         vJYlOReYoY0VtTvsC5piNZwDEhy4pwdE1G4jw55zRFlcG7t04EP9qipRteMocUzasKpj
+         /2NgLczGCGeEEuKO5fYr9P+KQLY7k+TrB9P25jcSHKDvgETS/x9uHqcooIlroUoJg2WF
+         nvTQ==
+X-Gm-Message-State: AC+VfDykhUgzra8TvzPvhk7Rl070ynzwhMaJ8Qxb38lc8FfWxrTPltAM
+        OGhWfExw9pNgBkGDv9rjQKx/Aw==
+X-Google-Smtp-Source: ACHHUZ6+77di1oBaEHkzxiJH5sZPfohzbAFdZ/RMHcUZtaO3531dWEiuxivGrRiaQP+a6IrJMVm3jg==
+X-Received: by 2002:a25:760a:0:b0:b9d:8a4e:e79f with SMTP id r10-20020a25760a000000b00b9d8a4ee79fmr15053557ybc.40.1683072779462;
+        Tue, 02 May 2023 17:12:59 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id c82-20020a251c55000000b00b9a7f23c2b8sm2658208ybc.24.2023.05.02.17.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 May 2023 17:12:58 -0700 (PDT)
+Date:   Tue, 2 May 2023 20:12:56 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
+Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
+ condition between FLAG and CNTR reads
+Message-ID: <ZFGnCJipt1Dwlxvo@fedora>
+References: <20230411155220.9754-1-william.gray@linaro.org>
+ <20230411155220.9754-5-william.gray@linaro.org>
+ <ZD1MZO3KpRmuzy42@fedora>
+ <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
 MIME-Version: 1.0
-References: <20230424124852.12625-1-johan+linaro@kernel.org> <20230424124852.12625-2-johan+linaro@kernel.org>
-In-Reply-To: <20230424124852.12625-2-johan+linaro@kernel.org>
-From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date:   Tue, 2 May 2023 16:37:51 -0700
-Message-ID: <CABBYNZLBQjWVb=z8mffi4RmeKS-+RDLV+XF8bR2MiJ-ZOaFVHA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] Bluetooth: fix debugfs registration
-To:     Johan Hovold <johan+linaro@kernel.org>
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4aIilrXIIJYE6/fg"
+Content-Disposition: inline
+In-Reply-To: <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Johan,
 
-On Mon, Apr 24, 2023 at 5:50=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
-rg> wrote:
->
-> Since commit ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for
-> unconfigured controllers") the debugfs interface for unconfigured
-> controllers will be created when the controller is configured.
->
-> There is however currently nothing preventing a controller from being
-> configured multiple time (e.g. setting the device address using btmgmt)
-> which results in failed attempts to register the already registered
-> debugfs entries:
->
->         debugfs: File 'features' in directory 'hci0' already present!
->         debugfs: File 'manufacturer' in directory 'hci0' already present!
->         debugfs: File 'hci_version' in directory 'hci0' already present!
->         ...
->         debugfs: File 'quirk_simultaneous_discovery' in directory 'hci0' =
-already present!
->
-> Add a controller flag to avoid trying to register the debugfs interface
-> more than once.
->
-> Fixes: ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for unconfi=
-gured controllers")
-> Cc: stable@vger.kernel.org      # 4.0
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  include/net/bluetooth/hci.h | 1 +
->  net/bluetooth/hci_sync.c    | 3 +++
->  2 files changed, 4 insertions(+)
->
-> diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-> index 400f8a7d0c3f..b8bca65bcd79 100644
-> --- a/include/net/bluetooth/hci.h
-> +++ b/include/net/bluetooth/hci.h
-> @@ -335,6 +335,7 @@ enum {
->  enum {
->         HCI_SETUP,
->         HCI_CONFIG,
-> +       HCI_DEBUGFS_CREATED,
->         HCI_AUTO_OFF,
->         HCI_RFKILLED,
->         HCI_MGMT,
-> diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> index 632be1267288..a8785126df75 100644
-> --- a/net/bluetooth/hci_sync.c
-> +++ b/net/bluetooth/hci_sync.c
-> @@ -4501,6 +4501,9 @@ static int hci_init_sync(struct hci_dev *hdev)
->             !hci_dev_test_flag(hdev, HCI_CONFIG))
->                 return 0;
->
-> +       if (hci_dev_test_and_set_flag(hdev, HCI_DEBUGFS_CREATED))
-> +               return 0;
+--4aIilrXIIJYE6/fg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Can't we just use HCI_SETUP like we do with in create_basic:
+On Tue, May 02, 2023 at 10:19:07AM +0200, Pavel Machek wrote:
+> Hi!
+>=20
+> > On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
+> > > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
+> > >=20
+> > > The Counter (CNTR) register is 24 bits wide, but we can have an
+> > > effective 25-bit count value by setting bit 24 to the XOR of the Borr=
+ow
+> > > flag and Carry flag. The flags can be read from the FLAG register, bu=
+t a
+> > > race condition exists: the Borrow flag and Carry flag are instantaneo=
+us
+> > > and could change by the time the count value is read from the CNTR
+> > > register.
+>=20
+> > > Since the race condition could result in an incorrect 25-bit count
+> > > value, remove support for 25-bit count values from this driver.
+>=20
+> I believe usual solution is to read the carry, read the counter, and
+> read the carry again. If old_carry =3D new_carry, we are pretty sure we
+> did not hit the race, and can use 25 bit value.
+>=20
+> Best regards,
+> 									Pavel
+> --=20
+> People of Russia, stop Putin before his war on Ukraine escalates.
 
-    if (hci_dev_test_flag(hdev, HCI_SETUP))
-        hci_debugfs_create_basic(hdev);
+That solution might work if the counter only increases, but if the
+counter is straddling the zero threshold then the Carry bit will toggle
+as the count overflows, underflows, and overflows again. For example:
 
-Actually we might as well move these checks directly inside the
-hci_debugfs function to make sure these only take effect during the
-setup/first init.
+    * START
+        * Carry=3D0,Count=3DMAX
+    * > Counting up...
+        * Carry=3D1,Count=3D0
+    * DRIVER READS Carry=3D1
+    * > Counting down...
+        * Carry=3D1,Count=3DMAX
+    * > Counting up...
+        * Carry=3D0,Count=3D0
+    * > Counting up...
+        * Carry=3D0,Count=3D42
+    * DRIVER READS Count=3D42
+    * > Counting down...
+        * Carry=3D1,Count=3DMAX
+    * DRIVER READS Carry=3D1
+        * old_carry =3D new_carry
+    * FINAL COUNT: Carry=3D1,Count=3D42
+        * This was never a state the counter actually reported
 
->         hci_debugfs_create_common(hdev);
->
->         if (lmp_bredr_capable(hdev))
-> --
-> 2.39.2
->
+Ultimately, the issue is that we have no way to get both Carry and Count
+atomically from the device. As long as there's a race condition there,
+we can't prevent possibly misinterpreting the Carry and Count values, so
+we unfortunately cannot ensure that our 25-bit Count value is an actual
+state the counter reported.
 
+William Breathitt Gray
 
---=20
-Luiz Augusto von Dentz
+--4aIilrXIIJYE6/fg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZFGnCAAKCRC1SFbKvhIj
+KwBgAQDGGMzTRsI9z7a069Eb50Vdm0UUKd5QReSBVCHZCJ0l3gEAq4lqY0R935IJ
+rMzdfqgEfGs/j+7TB1AMIqXxcWcLQgA=
+=m5Zn
+-----END PGP SIGNATURE-----
+
+--4aIilrXIIJYE6/fg--
