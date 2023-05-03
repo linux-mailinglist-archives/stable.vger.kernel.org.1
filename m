@@ -2,307 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3506F527A
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 10:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD556F52B9
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 10:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbjECIB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 04:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57540 "EHLO
+        id S229498AbjECIJa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 04:09:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjECIBZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 04:01:25 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07C4198E
-        for <stable@vger.kernel.org>; Wed,  3 May 2023 01:01:22 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2a8ba693f69so49298481fa.0
-        for <stable@vger.kernel.org>; Wed, 03 May 2023 01:01:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683100881; x=1685692881;
-        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aC5JTQzavwe1IpCo8NCgQ6eNbVp0oKweu2nb0GoUyrI=;
-        b=QJ7+ozXbcgO8CCQtRst8f/e3e1p2/+V2OIG3eKWpYwv94gcuX0JomMeYBhyCrp9aEB
-         tGRmWkyLNqii612vys+J6zPwBwEReqxyD8i+b5KmBKeTeDw+nH5WNXSNJyIIFOE69oSJ
-         rmmHjMmDh4uD91pafBrSTTyNRa7RdTqV96FZM8fzjrHBEV9xqFAeHLW+dzwkNd/1QhQF
-         SVi8hVsl2jsxl59jXD8LrxXBjm0r0vlZAImrBwn/CqgLQUQUSgsRNYsX9hLGx96IepFN
-         +x6r4JEVmMp8VBcVXB+DOXUhqKWwjK92XAFoxBzi1Met2HTdZXq+miAHK6qwDCmI0J6x
-         R0VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683100881; x=1685692881;
-        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aC5JTQzavwe1IpCo8NCgQ6eNbVp0oKweu2nb0GoUyrI=;
-        b=IvE/iZKexUDtDaoXHh9sAJ03Ci4rXSMdYnbo7ZTsRffA4k3JRityJ7dTFNaQhKVs1f
-         tN40ELIsE7JVIBqD0tZat6wD1GdmHzV0P2QjBwnLGDwLVz48DhV7NQiY54hWNnCG1wAa
-         Mcuhy/R2CZ40Ow0Cv493w41jOAALXr2azSiIXTaKqXLWmK41AykEzLQtyfX/ReYsU67I
-         AU0ru0N7Ac4/+Ys7LgxZIlUykgzFAyqxXFWFoB2fmAkyMKR2CVjeiiuTnM6rLnZbPi3k
-         z3kP/sTa1q9g/OWT9ax34qQ3PFnXbdV9IIGwq+BBnpnLQP0hn3eoxQSRizVhlBiImIjp
-         RHCQ==
-X-Gm-Message-State: AC+VfDw6JJ0Ks1Sa5Act+LhCrZFzvHMcZUzARPH1DgLN0s6pQG7h6Eg9
-        ha2bSVBJii/kvKuDppgl9Rg=
-X-Google-Smtp-Source: ACHHUZ69Pr0CUvY4Nm5MCiaVA88rmsDAKz/1z9qhu2lK8333DnsmKk6eadZqrF2EueM9rbVwBohoug==
-X-Received: by 2002:a2e:864d:0:b0:298:9fb5:9f20 with SMTP id i13-20020a2e864d000000b002989fb59f20mr5633682ljj.26.1683100880988;
-        Wed, 03 May 2023 01:01:20 -0700 (PDT)
-Received: from eldfell ([194.136.85.206])
-        by smtp.gmail.com with ESMTPSA id z8-20020a2e7e08000000b002a777ce224dsm5806800ljc.138.2023.05.03.01.01.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 01:01:20 -0700 (PDT)
-Date:   Wed, 3 May 2023 11:01:16 +0300
-From:   Pekka Paalanen <ppaalanen@gmail.com>
-To:     Javier Martinez Canillas <javierm@redhat.com>
-Cc:     Zack Rusin <zackr@vmware.com>, "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        Maaz Mombasawala <mombasawalam@vmware.com>,
-        "airlied@redhat.com" <airlied@redhat.com>,
-        "airlied@linux.ie" <airlied@linux.ie>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "gurchetansingh@chromium.org" <gurchetansingh@chromium.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "kraxel@redhat.com" <kraxel@redhat.com>,
-        Martin Krastev <krastevm@vmware.com>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "belmouss@redhat.com" <belmouss@redhat.com>,
-        "spice-devel@lists.freedesktop.org" 
-        <spice-devel@lists.freedesktop.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>,
-        Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>,
-        Jonas =?UTF-8?B?w4VkYWhs?= <jadahl@gmail.com>
-Subject: Re: [PATCH v2 1/8] drm: Disable the cursor plane on atomic contexts
- with virtualized drivers
-Message-ID: <20230503110116.54c5b3d7@eldfell>
-In-Reply-To: <87y1m5x3bt.fsf@minerva.mail-host-address-is-not-set>
-References: <20220712033246.1148476-1-zack@kde.org>
-        <20220712033246.1148476-2-zack@kde.org>
-        <YvPfedG/uLQNFG7e@phenom.ffwll.local>
-        <87lei7xemy.fsf@minerva.mail-host-address-is-not-set>
-        <0dd2fa763aa0e659c8cbae94f283d8101450082a.camel@vmware.com>
-        <87y1m5x3bt.fsf@minerva.mail-host-address-is-not-set>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
+        with ESMTP id S229581AbjECIJ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 04:09:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6484ECB;
+        Wed,  3 May 2023 01:09:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0607262B73;
+        Wed,  3 May 2023 08:07:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D272C433EF;
+        Wed,  3 May 2023 08:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683101277;
+        bh=EBb5xgIZZfYqj/z+N72o+F70JjDbzDj6lUwAS2EJY+M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PWwD3NbO1wlU1UVmtLRmLDPs1X+Gc/1/KAG3f0UCJ15uB4m0xgJgk1LWL50F/jl6R
+         ExPkmKVObRYZgML5ZEUijewzNBWOg/8MOWRMoaiD8y6cLqsbq9Fwb2An0JUsjvUlm2
+         1n6q4Qi4C6pQXJOvVFXk2KR8dPCKJ6WAku73dLLBrMZsv2RwmX125HL2IXivIpnhEJ
+         VyG1GUjT0eqfojow6Nqglm3K0ra+JrJ9Q7bjv7qFK75YkUIdwPDNaEmF9cYoAMorqE
+         HQQqZ2qOPhvDsnQV3zdEZmLc4GIJDXX5r304UrScmCcXR5AM/fc5HWq06I9hOQNY8U
+         h8YInPrI2cm3A==
+Date:   Wed, 3 May 2023 11:07:53 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        edumazet@google.com, netdev@vger.kernel.org,
+        Song Yoong Siang <yoong.siang.song@intel.com>,
+        sasha.neftin@intel.com, maciej.fijalkowski@intel.com,
+        magnus.karlsson@intel.com, ast@kernel.org, daniel@iogearbox.net,
+        hawk@kernel.org, john.fastabend@gmail.com, bpf@vger.kernel.org,
+        stable@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Naama Meir <naamax.meir@linux.intel.com>
+Subject: Re: [PATCH net 1/1] igc: read before write to SRRCTL register
+Message-ID: <20230503080753.GE525452@unreal>
+References: <20230502154806.1864762-1-anthony.l.nguyen@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Aanyz/d7FPDr+yADOKDullE";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230502154806.1864762-1-anthony.l.nguyen@intel.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---Sig_/Aanyz/d7FPDr+yADOKDullE
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 03 May 2023 09:48:54 +0200
-Javier Martinez Canillas <javierm@redhat.com> wrote:
-
-> Zack Rusin <zackr@vmware.com> writes:
->=20
-> > On Tue, 2023-05-02 at 11:32 +0200, Javier Martinez Canillas wrote: =20
-> >> !! External Email
-> >>=20
-> >> Daniel Vetter <daniel@ffwll.ch> writes:
-> >>  =20
-> >> > On Mon, Jul 11, 2022 at 11:32:39PM -0400, Zack Rusin wrote: =20
-> >> > > From: Zack Rusin <zackr@vmware.com>
-> >> > >=20
-> >> > > Cursor planes on virtualized drivers have special meaning and requ=
-ire
-> >> > > that the clients handle them in specific ways, e.g. the cursor pla=
-ne
-> >> > > should react to the mouse movement the way a mouse cursor would be
-> >> > > expected to and the client is required to set hotspot properties o=
-n it
-> >> > > in order for the mouse events to be routed correctly.
-> >> > >=20
-> >> > > This breaks the contract as specified by the "universal planes". F=
-ix it
-> >> > > by disabling the cursor planes on virtualized drivers while adding
-> >> > > a foundation on top of which it's possible to special case mouse c=
-ursor
-> >> > > planes for clients that want it.
-> >> > >=20
-> >> > > Disabling the cursor planes makes some kms compositors which were =
-broken,
-> >> > > e.g. Weston, fallback to software cursor which works fine or at le=
-ast
-> >> > > better than currently while having no effect on others, e.g. gnome=
--shell
-> >> > > or kwin, which put virtualized drivers on a deny-list when running=
- in
-> >> > > atomic context to make them fallback to legacy kms and avoid this =
-issue.
-> >> > >=20
-> >> > > Signed-off-by: Zack Rusin <zackr@vmware.com>
-> >> > > Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal pl=
-ane list
-> >> > > (v2)") =20
-> >>=20
-> >> [...]
-> >>  =20
-> >> > > diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
-> >> > > index f6159acb8856..c4cd7fc350d9 100644
-> >> > > --- a/include/drm/drm_drv.h
-> >> > > +++ b/include/drm/drm_drv.h
-> >> > > @@ -94,6 +94,16 @@ enum drm_driver_feature {
-> >> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * synchronization of command submis=
-sion.
-> >> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> >> > > =C2=A0=C2=A0=C2=A0=C2=A0 DRIVER_SYNCOBJ_TIMELINE=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D BIT(6),
-> >> > > +=C2=A0=C2=A0=C2=A0 /**
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * @DRIVER_VIRTUAL:
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 *
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * Driver is running on top of virtual ha=
-rdware. The most significant
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * implication of this is a requirement o=
-f special handling of the
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * cursor plane (e.g. cursor plane has to=
- actually track the mouse
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * cursor and the clients are required to=
- set hotspot in order for
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * the cursor planes to work correctly).
-> >> > > +=C2=A0=C2=A0=C2=A0=C2=A0 */
-> >> > > +=C2=A0=C2=A0=C2=A0 DRIVER_VIRTUAL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-=3D BIT(7), =20
-> >> >=20
-> >> > I think the naming here is unfortunate, because people will vonder w=
-hy
-> >> > e.g. vkms doesn't set this, and then add it, and confuse stuff compl=
-etely.
-> >> >=20
-> >> > Also it feels a bit wrong to put this onto the driver, when really i=
-t's a
-> >> > cursor flag. I guess you can make it some kind of flag in the drm_pl=
-ane
-> >> > structure, or a new plane type, but putting it there instead of into=
- the
-> >> > "random pile of midlayer-mistake driver flags" would be a lot better.
-> >> >=20
-> >> > Otherwise I think the series looks roughly how I'd expect it to look.
-> >> > -Daniel
-> >> >  =20
-> >>=20
-> >> AFAICT this is the only remaining thing to be addressed for this serie=
-s ? =20
-> >
-> > No, there was more. tbh I haven't had the time to think about whether t=
-he above
-> > makes sense to me, e.g. I'm not sure if having virtualized drivers expo=
-se "support
-> > universal planes" and adding another plane which is not universal (the =
-only
-> > "universal" plane on them being the default one) makes more sense than =
-a flag that
-> > says "this driver requires a cursor in the cursor plane". There's certa=
-inly a huge
-> > difference in how userspace would be required to handle it and it's way=
- uglier with
-> > two different cursor planes. i.e. there's a lot of ways in which this c=
-ould be
-> > cleaner in the kernel but they all require significant changes to users=
-pace, that go
-> > way beyond "attach hotspot info to this plane". I'd like to avoid appro=
-aches that
-> > mean running with atomic kms requires completely separate paths for vir=
-tualized
-> > drivers because no one will ever support and maintain it.
-> >
-> > It's not a trivial thing because it's fundamentally hard to untangle th=
-e fact the
-> > virtualized drivers have been advertising universal plane support witho=
-ut ever
-> > supporting universal planes. Especially because most new userspace in g=
-eneral checks
-> > for "universal planes" to expose atomic kms paths.
-> > =20
->=20
-> After some discussion on the #dri-devel, your approach makes sense and the
-> only contention point is the name of the driver feature flag name. The one
-> you are using (DRIVER_VIRTUAL) seems to be too broad and generic (the fact
-> that vkms won't set and is a virtual driver as well, is a good example).
->=20
-> Maybe something like DRIVER_CURSOR_HOTSPOT or DRIVER_CURSOR_COMMANDEERING
-> would be more accurate and self explanatory ?
->=20
-> > The other thing blocking this series was the testing of all the edge ca=
-ses, I think
-> > Simon and Pekka had some ideas for things to test (e.g. run mutter with=
- support for
-> > this and wayland without support for this in at the same time in differ=
-ent consoles
-> > and see what happens). I never had the time to do that either.
-> > =20
->=20
-> I understand that every new feature needs tests but I fail to see why
-> the bar is higher for this feature than others? I would prefer if this
-> series are not blocked due some potential issues on hypothetical corner
-> cases that might not happen in practice. Or do people really run two or
-> more compositors on different console and switch between them ?
-
-I have no recollection at all about what was talked about this, but in
-certain virtualized cases you will always have two display systems
-simultaneously:
-- the guest display system which uses the nested KMS driver in the
-  guest VM, which presents to
-- a VM viewer application on the host, which presents via Wayland to
-- the host display system which uses a hardware KMS driver.
-
-Maybe it was more like that to test?
-
+On Tue, May 02, 2023 at 08:48:06AM -0700, Tony Nguyen wrote:
+> From: Song Yoong Siang <yoong.siang.song@intel.com>
+> 
+> igc_configure_rx_ring() function will be called as part of XDP program
+> setup. If Rx hardware timestamp is enabled prio to XDP program setup,
+> this timestamp enablement will be overwritten when buffer size is
+> written into SRRCTL register.
+> 
+> Thus, this commit read the register value before write to SRRCTL
+> register. This commit is tested by using xdp_hw_metadata bpf selftest
+> tool. The tool enables Rx hardware timestamp and then attach XDP program
+> to igc driver. It will display hardware timestamp of UDP packet with
+> port number 9092. Below are detail of test steps and results.
+> 
+> Command on DUT:
+>   sudo ./xdp_hw_metadata <interface name>
+> 
+> Command on Link Partner:
+>   echo -n skb | nc -u -q1 <destination IPv4 addr> 9092
+> 
+> Result before this patch:
+>   skb hwtstamp is not found!
+> 
+> Result after this patch:
+>   found skb hwtstamp = 1677800973.642836757
+> 
+> Optionally, read PHC to confirm the values obtained are almost the same:
+> Command:
+>   sudo ./testptp -d /dev/ptp0 -g
+> Result:
+>   clock time: 1677800973.913598978 or Fri Mar  3 07:49:33 2023
+> 
+> Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
+> Cc: <stable@vger.kernel.org> # 5.14+
+> Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+> Reviewed-by: Jesper Dangaard Brouer <brouer@redhat.com>
+> Tested-by: Jesper Dangaard Brouer <brouer@redhat.com>
+> Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> ---
+>  drivers/net/ethernet/intel/igc/igc_base.h | 11 ++++++++---
+>  drivers/net/ethernet/intel/igc/igc_main.c |  7 +++++--
+>  2 files changed, 13 insertions(+), 5 deletions(-)
+> 
 
 Thanks,
-pq
-
-> >> Zack, are you planning to re-spin a v3 of this patch-set? Asking becau=
-se
-> >> we want to take virtio-gpu out of the atomic KMS deny list in mutter, =
-but
-> >> first need this to land.
-> >>=20
-> >> If you think that won't be able to do it in the short term, Bilal (Cc'=
-ed)
-> >> or me would be glad to help with that. =20
-> >
-> > This has been on my todo for a while I just never had the time to go th=
-rough all the
-> > remaining issues. Fundamentally it's not so much a technical issue anym=
-ore, it's
-> > about picking the least broken solution and trying to make the best out=
- of a pretty
-> > bad situation. In general it's hard to paint a bikeshed if all you have=
- is a million
-> > shades of gray ;)
-> > =20
->=20
-> Agreed. And I believe that other than the driver cap name, everyone agrees
-> with the color of your bikeshed :)
->=20
-
-
---Sig_/Aanyz/d7FPDr+yADOKDullE
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmRSFMwACgkQI1/ltBGq
-qqeTkRAAni4ZKBVkfh3TIaK/YQ9NppBuzwrD9KFeTZJwL1M12ON1GZmJe07XU+5a
-nfzMmwEtb0p37eBo5bWhdlIhg43VzYUe9BG/DGgEaXTU70YbjYGEjVsAqEl+luCa
-r1a/s7ppN+xRYmGcCPVKBl8iP1Bah+MxCPFtCGF2JESR4n3hJmrRmZYMQJnGF5DD
-A7sZLBFraYKNH5CVYH8dpoEZrk5l/TJy1IaL4WcBaNDe+4CZa8K3oDax/aRIAwUf
-/0TKw9VePlcJWWNzFXfca4QzUjxhcJG+HufW9WGoqXOJqg7hrjHrzPTvEUQzHPQe
-1UcgPBy6uQf8T9oOB7VHr0PgfN4CYo6zsr62ePG7QrLNyho0WdK1V429a/QTcbxw
-kAg7vHDvnboeBMbwLWUu+V1bMkSkXHIhHFoERtNhDLuEXDlwXW/d7xcL09FI4JVw
-ivpdC96SvOTXfJ0kiKO1vTwS4XnAvm9Xt50ZbWFgYbNEkMUWk+RsLqrhOcwR9D27
-8vXUmEvswiYy/SkQTPBfga3O+qaUOmKsIOss6uiGrNqqYAhIs/qvhsE2Wo62mdXJ
-e/+iJN0f9XOCZOcLxO8kiVfAazsDwNrykqwZH5+PDVRwprzJTsoyUA6ntsk8ffl5
-RDjNj0dlakfwyYr6iywbu+BUb74ZsG8YODK7FfvQzIJyd0QcR9c=
-=d+Q9
------END PGP SIGNATURE-----
-
---Sig_/Aanyz/d7FPDr+yADOKDullE--
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
