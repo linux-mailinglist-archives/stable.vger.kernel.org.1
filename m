@@ -2,212 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A78C6F54C1
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 11:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B4226F563A
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 12:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjECJay (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 05:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34340 "EHLO
+        id S229949AbjECKbk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 06:31:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbjECJat (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 05:30:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CC84EFB;
-        Wed,  3 May 2023 02:30:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S230053AbjECKbf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 06:31:35 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF934EC9;
+        Wed,  3 May 2023 03:31:30 -0700 (PDT)
+Received: from zn.tnic (p5de8e8ea.dip0.t-ipconnect.de [93.232.232.234])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07FE962B75;
-        Wed,  3 May 2023 09:30:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D33C433D2;
-        Wed,  3 May 2023 09:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683106246;
-        bh=gGlUpHIhJGh9gBg/lYXbNehoVbt1r5kEXMe3VAmjdnQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=d/YeBXvaazy7XiR7bMbrx+lUDnEhTqyYrJrr/XY+xguamYC96sgR/uOIlFkJs9d0l
-         RSg5Gqv1u9gngVzJuY+5WSwRUNWKiXPT4HPks9jH1MRMpuV5K8OQJI8oC+oUZY8Vg0
-         mIZbdkr4Q01ydbhy3nspagH56q6e13tVGnSPdd8+rPSrICzxmlIO/OiBjYpbA+jNHz
-         +xXqXXQtE6m5nBs3AU2pgDd4y3og4KBgTU2m0413rbcjN8mYKuw2PoOZGlsXWgpZIH
-         y6wvuzAbiRdQmtza/SXabBfipiLtQdsM8DxAPItYzBuuuHb/Y7c4A22/MNIp4Wk+KB
-         P9NPln4vnE8kg==
-Message-ID: <81124fee-1fce-97a5-07f8-833250674b64@kernel.org>
-Date:   Wed, 3 May 2023 12:30:40 +0300
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3CF251EC0691;
+        Wed,  3 May 2023 12:31:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1683109889;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Y99VkdVeSo9ELb0eveqnrxLTnOl5aHHav/scgPvIOtM=;
+        b=ouXeturJBz5ifBkVBBhldgieqd8FYUQCI77ZvbbfE9SLgn89VNIIgLYv0fO/Yk86K3AgNy
+        Pxq6jm6FAYD5LkAXSgiatQwdsjHQtG5vWjtHqTSXYwVT3EsaesKguGSma2544s5DCf0Ch9
+        3rjcgLcDMCJ4RjZtdRS316g+z8+zLh0=
+Date:   Wed, 3 May 2023 12:31:28 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>,
+        Borislav Petkov <bp@suse.de>, stable <stable@vger.kernel.org>,
+        almaz.alexandrovich@paragon-software.com, clm@fb.com,
+        djwong@kernel.org, dsterba@suse.com, hch@infradead.org,
+        josef@toxicpanda.com, linux-btrfs@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+        ntfs3@lists.linux.dev, syzkaller-bugs@googlegroups.com,
+        willy@infradead.org
+Subject: Re: [syzbot] [xfs?] BUG: unable to handle kernel paging request in
+ clear_user_rep_good
+Message-ID: <20230503103128.GAZFI4AEyPcP4bCemf@fat_crate.local>
+References: <000000000000de34bd05f3c6fe19@google.com>
+ <0000000000001ec6ce05fa9a4bf7@google.com>
+ <CAHk-=whWUZyiFvHpkC35DXo713GKFjqCWwY1uCs3tbMJ6QXeWg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 2/2] usb: dwc3: gadget: Improve dwc3_gadget_suspend()
- and dwc3_gadget_resume()
-Content-Language: en-US
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "r-gunasekaran@ti.com" <r-gunasekaran@ti.com>,
-        "srk@ti.com" <srk@ti.com>,
-        "wcheng@codeaurora.org" <wcheng@codeaurora.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230502162133.148821-1-rogerq@kernel.org>
- <20230502162133.148821-3-rogerq@kernel.org>
- <20230502211835.qj3vbe2cu44t3oqv@synopsys.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20230502211835.qj3vbe2cu44t3oqv@synopsys.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whWUZyiFvHpkC35DXo713GKFjqCWwY1uCs3tbMJ6QXeWg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, May 01, 2023 at 11:49:55AM -0700, Linus Torvalds wrote:
+> The bug goes back to commit 0db7058e8e23 ("x86/clear_user: Make it
+> faster") from about a year ago, which made it into v6.1.
 
+Gah, sorry about that. :-\
 
-On 03/05/2023 00:18, Thinh Nguyen wrote:
-> On Tue, May 02, 2023, Roger Quadros wrote:
->> Prevent -ETIMEDOUT error on .suspend().
->> e.g. If gadget driver is loaded and we are connected to a USB host,
->> all transfers must be stopped before stopping the controller else
->> we will not get a clean stop i.e. dwc3_gadget_run_stop() will take
->> several seconds to complete and will return -ETIMEDOUT.
->>
->> Handle error cases properly in dwc3_gadget_suspend().
->> Simplify dwc3_gadget_resume() by using the introduced helper function.
->>
->> Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> ---
->>  drivers/usb/dwc3/gadget.c | 66 +++++++++++++++++++--------------------
->>  1 file changed, 33 insertions(+), 33 deletions(-)
->>
->> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
->> index b5170374cd18..869f1695565d 100644
->> --- a/drivers/usb/dwc3/gadget.c
->> +++ b/drivers/usb/dwc3/gadget.c
->> @@ -2699,6 +2699,21 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
->>  	return ret;
->>  }
->>  
->> +static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
->> +{
->> +	/*
->> +	 * In the Synopsys DWC_usb31 1.90a programming guide section
->> +	 * 4.1.9, it specifies that for a reconnect after a
->> +	 * device-initiated disconnect requires a core soft reset
->> +	 * (DCTL.CSftRst) before enabling the run/stop bit.
->> +	 */
->> +	dwc3_core_soft_reset(dwc);
->> +
->> +	dwc3_event_buffers_setup(dwc);
->> +	__dwc3_gadget_start(dwc);
->> +	return dwc3_gadget_run_stop(dwc, true);
->> +}
->> +
->>  static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
->>  {
->>  	struct dwc3		*dwc = gadget_to_dwc(g);
->> @@ -2737,21 +2752,10 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
->>  
->>  	synchronize_irq(dwc->irq_gadget);
->>  
->> -	if (!is_on) {
->> +	if (!is_on)
->>  		ret = dwc3_gadget_soft_disconnect(dwc);
->> -	} else {
->> -		/*
->> -		 * In the Synopsys DWC_usb31 1.90a programming guide section
->> -		 * 4.1.9, it specifies that for a reconnect after a
->> -		 * device-initiated disconnect requires a core soft reset
->> -		 * (DCTL.CSftRst) before enabling the run/stop bit.
->> -		 */
->> -		dwc3_core_soft_reset(dwc);
->> -
->> -		dwc3_event_buffers_setup(dwc);
->> -		__dwc3_gadget_start(dwc);
->> -		ret = dwc3_gadget_run_stop(dwc, true);
->> -	}
->> +	else
->> +		ret = dwc3_gadget_soft_connect(dwc);
->>  
->>  	pm_runtime_put(dwc->dev);
->>  
->> @@ -4655,42 +4659,38 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
->>  int dwc3_gadget_suspend(struct dwc3 *dwc)
->>  {
->>  	unsigned long flags;
->> +	int ret;
->>  
->>  	if (!dwc->gadget_driver || !dwc->softconnect)
->>  		return 0;
->>  
->> -	dwc3_gadget_run_stop(dwc, false);
->> +	ret = dwc3_gadget_soft_disconnect(dwc);
->> +	if (ret)
->> +		goto err;
->>  
->>  	spin_lock_irqsave(&dwc->lock, flags);
->>  	dwc3_disconnect_gadget(dwc);
->> -	__dwc3_gadget_stop(dwc);
->>  	spin_unlock_irqrestore(&dwc->lock, flags);
->>  
->>  	return 0;
->> +
->> +err:
-
-As we don't pick the first patch, we will need to check for dwc->softconnect
-here.
-
-I'll send a follow up patch.
-
->> +	/*
->> +	 * Attempt to reset the controller's state. Likely no
->> +	 * communication can be established until the host
->> +	 * performs a port reset.
->> +	 */
->> +	dwc3_gadget_soft_connect(dwc);
->> +
->> +	return ret;
->>  }
->>  
->>  int dwc3_gadget_resume(struct dwc3 *dwc)
->>  {
->> -	int			ret;
->> -
->>  	if (!dwc->gadget_driver || !dwc->softconnect)
->>  		return 0;
->>  
->> -	ret = __dwc3_gadget_start(dwc);
->> -	if (ret < 0)
->> -		goto err0;
->> -
->> -	ret = dwc3_gadget_run_stop(dwc, true);
->> -	if (ret < 0)
->> -		goto err1;
->> -
->> -	return 0;
->> -
->> -err1:
->> -	__dwc3_gadget_stop(dwc);
->> -
->> -err0:
->> -	return ret;
->> +	return dwc3_gadget_soft_connect(dwc);
->>  }
->>  
->>  void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
->> -- 
->> 2.34.1
->>
+> It only affects old hardware that doesn't have the ERMS capability
+> flag, which *probably* means that it's mostly only triggerable in
+> virtualization (since pretty much any CPU from the last decade has
+> ERMS, afaik).
 > 
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> Borislav - opinions? This needs fixing for v6.1..v6.3, and the options are:
 > 
-> Thanks,
-> Thinh
+>  (1) just fix up the exception entry. I think this is literally this
+> one-liner, but somebody should double-check me. I did *not* actually
+> test this:
+> 
+>     --- a/arch/x86/lib/clear_page_64.S
+>     +++ b/arch/x86/lib/clear_page_64.S
+>     @@ -142,8 +142,8 @@ SYM_FUNC_START(clear_user_rep_good)
+>             and $7, %edx
+>             jz .Lrep_good_exit
+> 
+>     -.Lrep_good_bytes:
+>             mov %edx, %ecx
+>     +.Lrep_good_bytes:
+>             rep stosb
+> 
+>      .Lrep_good_exit:
+> 
+>    because the only use of '.Lrep_good_bytes' is that exception table entry.
+> 
+>  (2) backport just that one commit for clear_user
+> 
+>      In this case we should probably do commit e046fe5a36a9 ("x86: set
+> FSRS automatically on AMD CPUs that have FSRM") too, since that commit
+> changes the decision to use 'rep stosb' to check FSRS.
+> 
+>  (3) backport the entire series of commits:
+> 
+>         git log --oneline v6.3..034ff37d3407
+> 
+> Or we could even revert that commit 0db7058e8e23, but it seems silly
+> to revert when we have so many ways to fix it, including a one-line
+> code movement.
+> 
+> Borislav / stable people? Opinions?
 
-cheers,
--roger
+So right now I feel like (3) would be the right thing to do. Because
+then stable and upstream will be on the same "level" wrt user-accessing
+primitives. And it's not like your series depend on anything from
+mainline (that I know of) so backporting them should be relatively easy.
+
+But (1) is definitely a lot easier for stable people modulo the fact
+that it won't be an upstream commit but a special stable-only fix.
+
+So yeah, in that order.
+
+I guess I'd let stable people decide here what they wanna do.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
