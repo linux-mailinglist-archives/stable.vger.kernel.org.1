@@ -2,178 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F7BE6F5D10
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 19:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7B66F600C
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 22:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbjECReX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 13:34:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        id S229506AbjECU1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 16:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjECReW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 13:34:22 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8995AC;
-        Wed,  3 May 2023 10:34:20 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2a8dd1489b0so54372701fa.3;
-        Wed, 03 May 2023 10:34:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683135259; x=1685727259;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XqIFFECjD8VbhTkVXBRW7iw73ClVU9Rx1DVSjMQg4AI=;
-        b=bkI/H/0RlNbJpxMKaE08VNPaEMX7VGjhwLUeyFtckK/cp88nmGMTBJKDedNpmrkny0
-         PrY0Nk2uy406S0HQ4FV9zlP0FC/MoJV33b5FInYHwRD/qPY3imf19obSMfi6kmIpzcvU
-         S+rrro7FK8NvGuk8U4e9x0uiyeOTWlFwdAhk98+j5fPl7H8Mjpr/gKdEJpWPtip5rQqL
-         nXqxfZO8+iJ9gf0wR2cbnqjvTMhoJ6Yh+4jqJQ7hojgAC4uLhEIu6G5qJh1TqFaviwi/
-         HdS8sMeifnzXvqzHSLlHNRScTL6BTp2z4q0WH1+T1WmsG0tKRjGkMZ/yKJ5JrvPEsnVJ
-         fMPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683135259; x=1685727259;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XqIFFECjD8VbhTkVXBRW7iw73ClVU9Rx1DVSjMQg4AI=;
-        b=kMx/ja9NOpUnhfC1TqJs5T6dUx30jxn/Rx769nCjgC6mE4zWFsDZSaHhO5JDH1B0Br
-         B1P8WCMzXWPRWzfLFBTWlojuVdmFHLsBLgCtRcJAAVWaRX6+8/qvfOAHcnLxXrB1Th9w
-         wk6PuX6XY3MAOFyHeukOoSucHEFINYC/wSUthqtriX0YrmY9PJuN7VLMp3Ws3HSXXH0f
-         2Aut4D0NkpDGhGtMNgTpsrhrx2ykY7yRqoc0HYQft4kVcFwan2Lq8oSymBk2D8NiySON
-         fqNJTO69ClzToFNsGWWa7t9J5ShZrsPSJx1/FQ06ndYgVmc2VROEChHXIMNWcillrV3k
-         +14A==
-X-Gm-Message-State: AC+VfDzSvx4b7jsF1E/EKuNIENOO8vpZ94RK5hH5ULCisdyv3kFOlcJO
-        Fdy98ypxKPPbMTadttkW/CcjnruklpKYfO4TgUI=
-X-Google-Smtp-Source: ACHHUZ7FMfCySIhXZgy4cLrSjQETM2G2bNB+KW2RTdqpfocu+dBYWUTW54izs9Nm00SLN+1A6WDs+d51UH1TPlrg9GI=
-X-Received: by 2002:a2e:94ca:0:b0:2a8:e670:c3cc with SMTP id
- r10-20020a2e94ca000000b002a8e670c3ccmr228651ljh.16.1683135258825; Wed, 03 May
- 2023 10:34:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230424124852.12625-1-johan+linaro@kernel.org>
- <20230424124852.12625-2-johan+linaro@kernel.org> <CABBYNZLBQjWVb=z8mffi4RmeKS-+RDLV+XF8bR2MiJ-ZOaFVHA@mail.gmail.com>
- <ZFIHj9OAJkRvSscs@hovoldconsulting.com>
-In-Reply-To: <ZFIHj9OAJkRvSscs@hovoldconsulting.com>
-From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date:   Wed, 3 May 2023 10:34:06 -0700
-Message-ID: <CABBYNZJ23E50J2gfi5NgHj_bXMuVTHk29s+BH-zMhhWmRsd0Pg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] Bluetooth: fix debugfs registration
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229522AbjECU1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 16:27:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A48E0;
+        Wed,  3 May 2023 13:27:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 537B562FA3;
+        Wed,  3 May 2023 20:27:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9872AC433D2;
+        Wed,  3 May 2023 20:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1683145663;
+        bh=ikHfYgwvwtS5A3DdcNFKhNwsgU1MufILjjxDE1n9Lo0=;
+        h=Date:To:From:Subject:From;
+        b=YNUQhSpz4Rz1ANMFbf2B8kq7g8xZsDSZq1AnN6lknBQxjmrcXEwtabk6wAdACRjrW
+         VV/ADU5G/EL5ojQ8RV/xB6TKy//SdSLmNnIi52H+1mYThoOK1mJ2SgDsyzHNokV5kl
+         Jq1fgHPnHaTa3jp8zpFOZ1Ux2qHTD/kZtWywlQZI=
+Date:   Wed, 03 May 2023 13:27:42 -0700
+To:     mm-commits@vger.kernel.org, vitaly.wool@konsulko.com,
+        stable@vger.kernel.org, sjenning@redhat.com, ngupta@vflare.org,
+        minchan@kernel.org, hannes@cmpxchg.org, ddstreet@ieee.org,
+        cerasuolodomenico@gmail.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-zswap-writeback-race-condition.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230503202743.9872AC433D2@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Johan,
 
-On Wed, May 3, 2023 at 12:04=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> On Tue, May 02, 2023 at 04:37:51PM -0700, Luiz Augusto von Dentz wrote:
-> > Hi Johan,
-> >
-> > On Mon, Apr 24, 2023 at 5:50=E2=80=AFAM Johan Hovold <johan+linaro@kern=
-el.org> wrote:
-> > >
-> > > Since commit ec6cef9cd98d ("Bluetooth: Fix SMP channel registration f=
-or
-> > > unconfigured controllers") the debugfs interface for unconfigured
-> > > controllers will be created when the controller is configured.
-> > >
-> > > There is however currently nothing preventing a controller from being
-> > > configured multiple time (e.g. setting the device address using btmgm=
-t)
-> > > which results in failed attempts to register the already registered
-> > > debugfs entries:
-> > >
-> > >         debugfs: File 'features' in directory 'hci0' already present!
-> > >         debugfs: File 'manufacturer' in directory 'hci0' already pres=
-ent!
-> > >         debugfs: File 'hci_version' in directory 'hci0' already prese=
-nt!
-> > >         ...
-> > >         debugfs: File 'quirk_simultaneous_discovery' in directory 'hc=
-i0' already present!
-> > >
-> > > Add a controller flag to avoid trying to register the debugfs interfa=
-ce
-> > > more than once.
-> > >
-> > > Fixes: ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for unc=
-onfigured controllers")
-> > > Cc: stable@vger.kernel.org      # 4.0
-> > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > > ---
->
-> > > diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> > > index 632be1267288..a8785126df75 100644
-> > > --- a/net/bluetooth/hci_sync.c
-> > > +++ b/net/bluetooth/hci_sync.c
-> > > @@ -4501,6 +4501,9 @@ static int hci_init_sync(struct hci_dev *hdev)
-> > >             !hci_dev_test_flag(hdev, HCI_CONFIG))
-> > >                 return 0;
-> > >
-> > > +       if (hci_dev_test_and_set_flag(hdev, HCI_DEBUGFS_CREATED))
-> > > +               return 0;
-> >
-> > Can't we just use HCI_SETUP like we do with in create_basic:
-> >
-> >     if (hci_dev_test_flag(hdev, HCI_SETUP))
-> >         hci_debugfs_create_basic(hdev);
-> >
-> > Actually we might as well move these checks directly inside the
-> > hci_debugfs function to make sure these only take effect during the
-> > setup/first init.
->
-> The problem is that commit ec6cef9cd98d ("Bluetooth: Fix SMP channel
-> registration for unconfigured controllers") started deferring creation
-> of most parts of the debugfs interface until the controller is
-> configured (e.g. as some information is not available until then).
->
-> Moving everything back to setup-time would effectively revert that.
+The patch titled
+     Subject: mm: fix zswap writeback race condition
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-zswap-writeback-race-condition.patch
 
-Not moving back but just doing something like:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-zswap-writeback-race-condition.patch
 
-diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
-index ec0df2f9188e..a6e94c29fc5a 100644
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -310,6 +310,9 @@ DEFINE_INFO_ATTRIBUTE(firmware_info, fw_info);
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
- void hci_debugfs_create_common(struct hci_dev *hdev)
- {
-+       if (!hci_dev_test_flag(hdev, HCI_SETUP))
-+               return;
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Subject: mm: fix zswap writeback race condition
+Date: Wed, 3 May 2023 17:12:00 +0200
+
+The zswap writeback mechanism can cause a race condition resulting in
+memory corruption, where a swapped out page gets swapped in with data that
+was written to a different page.
+
+The race unfolds like this:
+1. a page with data A and swap offset X is stored in zswap
+2. page A is removed off the LRU by zpool driver for writeback in
+   zswap-shrink work, data for A is mapped by zpool driver
+3. user space program faults and invalidates page entry A, offset X is
+   considered free
+4. kswapd stores page B at offset X in zswap (zswap could also be
+   full, if so, page B would then be IOed to X, then skip step 5.)
+5. entry A is replaced by B in tree->rbroot, this doesn't affect the
+   local reference held by zswap-shrink work
+6. zswap-shrink work writes back A at X, and frees zswap entry A
+7. swapin of slot X brings A in memory instead of B
+
+The fix:
+Once the swap page cache has been allocated (case ZSWAP_SWAPCACHE_NEW),
+zswap-shrink work just checks that the local zswap_entry reference is
+still the same as the one in the tree.  If it's not the same it means that
+it's either been invalidated or replaced, in both cases the writeback is
+aborted because the local entry contains stale data.
+
+Reproducer:
+I originally found this by running `stress` overnight to validate my work
+on the zswap writeback mechanism, it manifested after hours on my test
+machine.  The key to make it happen is having zswap writebacks, so
+whatever setup pumps /sys/kernel/debug/zswap/written_back_pages should do
+the trick.
+
+In order to reproduce this faster on a vm, I setup a system with ~100M of
+available memory and a 500M swap file, then running `stress --vm 1
+--vm-bytes 300000000 --vm-stride 4000` makes it happen in matter of tens
+of minutes.  One can speed things up even more by swinging
+/sys/module/zswap/parameters/max_pool_percent up and down between, say, 20
+and 1; this makes it reproduce in tens of seconds.  It's crucial to set
+`--vm-stride` to something other than 4096 otherwise `stress` won't
+realize that memory has been corrupted because all pages would have the
+same data.
+
+Link: https://lkml.kernel.org/r/20230503151200.19707-1-cerasuolodomenico@gmail.com
+Signed-off-by: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Dan Streetman <ddstreet@ieee.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Nitin Gupta <ngupta@vflare.org>
+Cc: Seth Jennings <sjenning@redhat.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zswap.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+--- a/mm/zswap.c~mm-fix-zswap-writeback-race-condition
++++ a/mm/zswap.c
+@@ -1020,6 +1020,22 @@ static int zswap_writeback_entry(struct
+ 		goto fail;
+ 
+ 	case ZSWAP_SWAPCACHE_NEW: /* page is locked */
++		/*
++		 * Having a local reference to the zswap entry doesn't exclude
++		 * swapping from invalidating and recycling the swap slot. Once
++		 * the swapcache is secured against concurrent swapping to and
++		 * from the slot, recheck that the entry is still current before
++		 * writing.
++		 */
++		spin_lock(&tree->lock);
++		if (zswap_rb_search(&tree->rbroot, entry->offset) != entry) {
++			spin_unlock(&tree->lock);
++			delete_from_swap_cache(page_folio(page));
++			ret = -ENOMEM;
++			goto fail;
++		}
++		spin_unlock(&tree->lock);
 +
-        debugfs_create_file("features", 0444, hdev->debugfs, hdev,
-                            &features_fops);
-        debugfs_create_u16("manufacturer", 0444, hdev->debugfs,
+ 		/* decompress */
+ 		acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
+ 		dlen = PAGE_SIZE;
+_
 
-> Perhaps the interface can be changed in some way so that everything is
-> again registered at setup-time (e.g. with placeholder values instead of
-> conditionally created attributes), but that would at least not be
-> something that we could backport.
->
-> > >         hci_debugfs_create_common(hdev);
-> > >
-> > >         if (lmp_bredr_capable(hdev))
->
-> Johan
+Patches currently in -mm which might be from cerasuolodomenico@gmail.com are
 
+mm-fix-zswap-writeback-race-condition.patch
 
-
---=20
-Luiz Augusto von Dentz
