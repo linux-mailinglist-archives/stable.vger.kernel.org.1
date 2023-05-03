@@ -2,154 +2,222 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 544B56F4E06
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 02:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 953B76F4E18
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 02:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229830AbjECAND (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 20:13:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44540 "EHLO
+        id S229479AbjECARG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 20:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbjECANC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 20:13:02 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0222D4E
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 17:13:00 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-b9da6374fa2so5574653276.0
-        for <stable@vger.kernel.org>; Tue, 02 May 2023 17:13:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683072779; x=1685664779;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mszgk8kcqy9NacUC4irOM12AZRObXiNESQ4V20e6ClI=;
-        b=qkgJTaRvQKsXbiUwxdR3cT+heU6eWtN2ZDfoZliUoVM3UUesOjfboFzSIbw96Vvx2w
-         MxIkoM1/YWtStBrFDCUhLYNrimJUQjgXNyu8++TCdUp5zbSvGP7ir48Fa6G5YkEcnHG8
-         76j9FSe0Aed0Qj+mmm03ukANqEXDzhNh0pemxCieZSLeU5vL+MRRmn8mxVYiHkxNGxTK
-         naQD23AexjHkDnbBPT9szvXCrdZyM3Quk8A0Yw+V2NFhQr9FzqkGuAwu1Az48PGG9aGE
-         dfLWBQvEw8ifReBVNDhaxCg7amUoPQeGnUfZ02ghdhQ9zXmlfO3WtouD1+l+UZ21+rNx
-         iuyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683072779; x=1685664779;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mszgk8kcqy9NacUC4irOM12AZRObXiNESQ4V20e6ClI=;
-        b=Jr5beVNs733lOu0M1SkpeDol7JGzFSOLQZG+xMYxrj3Nr3hWDBVNhdUH02rQrRwgL1
-         qw3Sh6KfQ1w4O9pV7MV6DEb5h2WXlWqYvs0Q3Ur1wkbYESm0yo4UN9BkUsw/NPftjuvf
-         v509b5IadL7L6O1t/fCBUzHBZtUnLa1O7wxgRJeSaoe48j2YiaReFQmCUc22/0uyYEwd
-         vJYlOReYoY0VtTvsC5piNZwDEhy4pwdE1G4jw55zRFlcG7t04EP9qipRteMocUzasKpj
-         /2NgLczGCGeEEuKO5fYr9P+KQLY7k+TrB9P25jcSHKDvgETS/x9uHqcooIlroUoJg2WF
-         nvTQ==
-X-Gm-Message-State: AC+VfDykhUgzra8TvzPvhk7Rl070ynzwhMaJ8Qxb38lc8FfWxrTPltAM
-        OGhWfExw9pNgBkGDv9rjQKx/Aw==
-X-Google-Smtp-Source: ACHHUZ6+77di1oBaEHkzxiJH5sZPfohzbAFdZ/RMHcUZtaO3531dWEiuxivGrRiaQP+a6IrJMVm3jg==
-X-Received: by 2002:a25:760a:0:b0:b9d:8a4e:e79f with SMTP id r10-20020a25760a000000b00b9d8a4ee79fmr15053557ybc.40.1683072779462;
-        Tue, 02 May 2023 17:12:59 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id c82-20020a251c55000000b00b9a7f23c2b8sm2658208ybc.24.2023.05.02.17.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 May 2023 17:12:58 -0700 (PDT)
-Date:   Tue, 2 May 2023 20:12:56 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
- condition between FLAG and CNTR reads
-Message-ID: <ZFGnCJipt1Dwlxvo@fedora>
-References: <20230411155220.9754-1-william.gray@linaro.org>
- <20230411155220.9754-5-william.gray@linaro.org>
- <ZD1MZO3KpRmuzy42@fedora>
- <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4aIilrXIIJYE6/fg"
-Content-Disposition: inline
-In-Reply-To: <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        with ESMTP id S229452AbjECARF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 20:17:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 402AF10F3;
+        Tue,  2 May 2023 17:17:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C3D13629B5;
+        Wed,  3 May 2023 00:17:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E440C433D2;
+        Wed,  3 May 2023 00:17:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1683073023;
+        bh=RfDOeDsGFxYxjiI7IRZxMRztQTdLLKz16tE3Qr+W10o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=joMY8SoBtviFKYc9T4BL7h9AzWrC2UiPDu8r2wsPdWyqqzTTVfZrY5nfc+zRo2hqn
+         6NqHgct6TndejGQZSl/CNOIl/5sPO0x1WQZdJngT3clqeKTNykXNYn9XT7on62xTFR
+         arj7qo96aSk8w2r5Tu9JEAVoPR+uXxUwaE9bHzrU=
+Date:   Tue, 2 May 2023 17:17:01 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Baokun Li <libaokun1@huawei.com>
+Cc:     <linux-fsdevel@vger.kernel.org>, <viro@zeniv.linux.org.uk>,
+        <brauner@kernel.org>, <jack@suse.cz>, <tj@kernel.org>,
+        <dennis@kernel.org>, <adilger.kernel@dilger.ca>,
+        <linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
+        <yangerkun@huawei.com>, <houtao1@huawei.com>,
+        <stable@vger.kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2] writeback, cgroup: fix null-ptr-deref write in
+ bdi_split_work_to_wbs
+Message-Id: <20230502171701.58465d422e94cf038178dc51@linux-foundation.org>
+In-Reply-To: <20230410130826.1492525-1-libaokun1@huawei.com>
+References: <20230410130826.1492525-1-libaokun1@huawei.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, 10 Apr 2023 21:08:26 +0800 Baokun Li <libaokun1@huawei.com> wrote:
 
---4aIilrXIIJYE6/fg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> KASAN report null-ptr-deref:
+> ==================================================================
+> BUG: KASAN: null-ptr-deref in bdi_split_work_to_wbs+0x5c5/0x7b0
+> Write of size 8 at addr 0000000000000000 by task sync/943
+> CPU: 5 PID: 943 Comm: sync Tainted: 6.3.0-rc5-next-20230406-dirty #461
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x7f/0xc0
+>  print_report+0x2ba/0x340
+>  kasan_report+0xc4/0x120
+>  kasan_check_range+0x1b7/0x2e0
+>  __kasan_check_write+0x24/0x40
+>  bdi_split_work_to_wbs+0x5c5/0x7b0
+>  sync_inodes_sb+0x195/0x630
+>  sync_inodes_one_sb+0x3a/0x50
+>  iterate_supers+0x106/0x1b0
+>  ksys_sync+0x98/0x160
+> [...]
+> ==================================================================
+> 
+> The race that causes the above issue is as follows:
+> 
+>            cpu1                     cpu2
+> -------------------------|-------------------------
+> inode_switch_wbs
+>  INIT_WORK(&isw->work, inode_switch_wbs_work_fn)
+>  queue_rcu_work(isw_wq, &isw->work)
+>  // queue_work async
+>   inode_switch_wbs_work_fn
+>    wb_put_many(old_wb, nr_switched)
+>     percpu_ref_put_many
+>      ref->data->release(ref)
+>      cgwb_release
+>       queue_work(cgwb_release_wq, &wb->release_work)
+>       // queue_work async
+>        &wb->release_work
+>        cgwb_release_workfn
+>                             ksys_sync
+>                              iterate_supers
+>                               sync_inodes_one_sb
+>                                sync_inodes_sb
+>                                 bdi_split_work_to_wbs
+>                                  kmalloc(sizeof(*work), GFP_ATOMIC)
+>                                  // alloc memory failed
+>         percpu_ref_exit
+>          ref->data = NULL
+>          kfree(data)
+>                                  wb_get(wb)
+>                                   percpu_ref_get(&wb->refcnt)
+>                                    percpu_ref_get_many(ref, 1)
+>                                     atomic_long_add(nr, &ref->data->count)
+>                                      atomic64_add(i, v)
+>                                      // trigger null-ptr-deref
+> 
+> bdi_split_work_to_wbs() traverses &bdi->wb_list to split work into all wbs.
+> If the allocation of new work fails, the on-stack fallback will be used and
+> the reference count of the current wb is increased afterwards. If cgroup
+> writeback membership switches occur before getting the reference count and
+> the current wb is released as old_wd, then calling wb_get() or wb_put()
+> will trigger the null pointer dereference above.
+> 
+> This issue was introduced in v4.3-rc7 (see fix tag1). Both sync_inodes_sb()
+> and __writeback_inodes_sb_nr() calls to bdi_split_work_to_wbs() can trigger
+> this issue. For scenarios called via sync_inodes_sb(), originally commit
+> 7fc5854f8c6e ("writeback: synchronize sync(2) against cgroup writeback
+> membership switches") reduced the possibility of the issue by adding
+> wb_switch_rwsem, but in v5.14-rc1 (see fix tag2) removed the
+> "inode_io_list_del_locked(inode, old_wb)" from inode_switch_wbs_work_fn()
+> so that wb->state contains WB_has_dirty_io, thus old_wb is not skipped
+> when traversing wbs in bdi_split_work_to_wbs(), and the issue becomes
+> easily reproducible again.
+> 
+> To solve this problem, percpu_ref_exit() is called under RCU protection
+> to avoid race between cgwb_release_workfn() and bdi_split_work_to_wbs().
+> Moreover, replace wb_get() with wb_tryget() in bdi_split_work_to_wbs(),
+> and skip the current wb if wb_tryget() fails because the wb has already
+> been shutdown.
+> 
+> Fixes: b817525a4a80 ("writeback: bdi_writeback iteration must not skip dying ones")
+> Fixes: f3b6a6df38aa ("writeback, cgroup: keep list of inodes attached to bdi_writeback")
 
-On Tue, May 02, 2023 at 10:19:07AM +0200, Pavel Machek wrote:
-> Hi!
->=20
-> > On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
-> > > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
-> > >=20
-> > > The Counter (CNTR) register is 24 bits wide, but we can have an
-> > > effective 25-bit count value by setting bit 24 to the XOR of the Borr=
-ow
-> > > flag and Carry flag. The flags can be read from the FLAG register, bu=
-t a
-> > > race condition exists: the Borrow flag and Carry flag are instantaneo=
-us
-> > > and could change by the time the count value is read from the CNTR
-> > > register.
->=20
-> > > Since the race condition could result in an incorrect 25-bit count
-> > > value, remove support for 25-bit count values from this driver.
->=20
-> I believe usual solution is to read the carry, read the counter, and
-> read the carry again. If old_carry =3D new_carry, we are pretty sure we
-> did not hit the race, and can use 25 bit value.
->=20
-> Best regards,
-> 									Pavel
-> --=20
-> People of Russia, stop Putin before his war on Ukraine escalates.
+Cc Roman for this second commit.
 
-That solution might work if the counter only increases, but if the
-counter is straddling the zero threshold then the Carry bit will toggle
-as the count overflows, underflows, and overflows again. For example:
+> Cc: stable@vger.kernel.org
 
-    * START
-        * Carry=3D0,Count=3DMAX
-    * > Counting up...
-        * Carry=3D1,Count=3D0
-    * DRIVER READS Carry=3D1
-    * > Counting down...
-        * Carry=3D1,Count=3DMAX
-    * > Counting up...
-        * Carry=3D0,Count=3D0
-    * > Counting up...
-        * Carry=3D0,Count=3D42
-    * DRIVER READS Count=3D42
-    * > Counting down...
-        * Carry=3D1,Count=3DMAX
-    * DRIVER READS Carry=3D1
-        * old_carry =3D new_carry
-    * FINAL COUNT: Carry=3D1,Count=3D42
-        * This was never a state the counter actually reported
+Having two Fixes: is awkward.  These serve as a guide to tell -stable
+maintainers which kernels need the fix.  Can we be more precise?
 
-Ultimately, the issue is that we have no way to get both Carry and Count
-atomically from the device. As long as there's a race condition there,
-we can't prevent possibly misinterpreting the Carry and Count values, so
-we unfortunately cannot ensure that our 25-bit Count value is an actual
-state the counter reported.
+> --- a/fs/fs-writeback.c
+> +++ b/fs/fs-writeback.c
+> @@ -978,6 +978,16 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
+>  			continue;
+>  		}
+>  
+> +		/*
+> +		 * If wb_tryget fails, the wb has been shutdown, skip it.
+> +		 *
+> +		 * Pin @wb so that it stays on @bdi->wb_list.  This allows
+> +		 * continuing iteration from @wb after dropping and
+> +		 * regrabbing rcu read lock.
+> +		 */
+> +		if (!wb_tryget(wb))
+> +			continue;
+> +
+>  		/* alloc failed, execute synchronously using on-stack fallback */
+>  		work = &fallback_work;
+>  		*work = *base_work;
+> @@ -986,13 +996,6 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
+>  		work->done = &fallback_work_done;
+>  
+>  		wb_queue_work(wb, work);
+> -
+> -		/*
+> -		 * Pin @wb so that it stays on @bdi->wb_list.  This allows
+> -		 * continuing iteration from @wb after dropping and
+> -		 * regrabbing rcu read lock.
+> -		 */
+> -		wb_get(wb);
+>  		last_wb = wb;
+>  
+>  		rcu_read_unlock();
+> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+> index ad011308cebe..43b48750b491 100644
+> --- a/mm/backing-dev.c
+> +++ b/mm/backing-dev.c
+> @@ -507,6 +507,15 @@ static LIST_HEAD(offline_cgwbs);
+>  static void cleanup_offline_cgwbs_workfn(struct work_struct *work);
+>  static DECLARE_WORK(cleanup_offline_cgwbs_work, cleanup_offline_cgwbs_workfn);
+>  
+> +static void cgwb_free_rcu(struct rcu_head *rcu_head)
+> +{
+> +	struct bdi_writeback *wb = container_of(rcu_head,
+> +			struct bdi_writeback, rcu);
 
-William Breathitt Gray
+nit:
 
---4aIilrXIIJYE6/fg
-Content-Type: application/pgp-signature; name="signature.asc"
+	struct bdi_writeback *wb;
 
------BEGIN PGP SIGNATURE-----
+	wb = container_of(rcu_head, struct bdi_writeback, rcu);
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZFGnCAAKCRC1SFbKvhIj
-KwBgAQDGGMzTRsI9z7a069Eb50Vdm0UUKd5QReSBVCHZCJ0l3gEAq4lqY0R935IJ
-rMzdfqgEfGs/j+7TB1AMIqXxcWcLQgA=
-=m5Zn
------END PGP SIGNATURE-----
+looks nicer, no?
 
---4aIilrXIIJYE6/fg--
+> +	percpu_ref_exit(&wb->refcnt);
+> +	kfree(wb);
+> +}
+> +
+>  static void cgwb_release_workfn(struct work_struct *work)
+>  {
+>  	struct bdi_writeback *wb = container_of(work, struct bdi_writeback,
+> @@ -529,11 +538,10 @@ static void cgwb_release_workfn(struct work_struct *work)
+>  	list_del(&wb->offline_node);
+>  	spin_unlock_irq(&cgwb_lock);
+>  
+> -	percpu_ref_exit(&wb->refcnt);
+>  	wb_exit(wb);
+>  	bdi_put(bdi);
+>  	WARN_ON_ONCE(!list_empty(&wb->b_attached));
+> -	kfree_rcu(wb, rcu);
+> +	call_rcu(&wb->rcu, cgwb_free_rcu);
+>  }
+>  
+>  static void cgwb_release(struct percpu_ref *refcnt)
+
