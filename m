@@ -2,49 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 906866F56C1
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 13:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 831FB6F56ED
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 13:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbjECLBV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 07:01:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59592 "EHLO
+        id S230100AbjECLHK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 07:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbjECLBU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 07:01:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7DF59F2;
-        Wed,  3 May 2023 04:00:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE948621B6;
-        Wed,  3 May 2023 11:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC01C433D2;
-        Wed,  3 May 2023 11:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683111654;
-        bh=aVQhtxN0NqJG5qAwFQGM7qQW6a+VAP6JwXVNlk6TTI4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Pew2rThKTE2IVaEDpnKSwdq2+hrdTIOJoGtZu56OmT77m7fLKOssjQ+M9ZANRvl+F
-         Y2QyZ23JuiorwffwwZAkfU7XiQ4CCt5svNwaOyod14xrccDZR1nnXdAGLMbzW+thWs
-         OyCUMrDZPyC4rm48OZ1/+5iFTQKb4Dh3AR4EuvyRavi//egHyZ2V28Z4xkcKwTCP6F
-         gkh5AyYIRKOULoFyaTfy9AnkdU1VfvqMcGCYo0YzHmOcn6HpCUhtI6ddFK77rPUG21
-         A9Ax+uOwoyRdbO74GV3qqg04G0skrXu4aXYWpfzAZDp+Va76gC5OSDuvfkT1GfdfUc
-         OnSXeRmTt9ZQQ==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     Thinh.Nguyen@synopsys.com
-Cc:     gregkh@linuxfoundation.org, r-gunasekaran@ti.com, srk@ti.com,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Roger Quadros <rogerq@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v3] usb: dwc3: gadget: Improve dwc3_gadget_suspend() and dwc3_gadget_resume()
-Date:   Wed,  3 May 2023 14:00:48 +0300
-Message-Id: <20230503110048.30617-1-rogerq@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229821AbjECLHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 07:07:09 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2153349CC
+        for <stable@vger.kernel.org>; Wed,  3 May 2023 04:07:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683112028; x=1714648028;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=isSEaTcczQehorA2XyFTb7Qg8MalrslW5ar7lNBTlZw=;
+  b=ktNfqAdZnZHrYLTAtxO1sP7jPLrk63jW8C8+lBOKHisXXVZ1K3ruyZWt
+   +juNiY5GMKeWA9Wh5Bsv9ysSpi2u4MjKvkenWdURC0+7SdSRevKmm9/NI
+   yTNtFqLystIHxGIViqzZvMB97VUh40otN83h/qQLU+rPCF/7KTMsAkOWg
+   6ZL7Tr7K5RlqLgqreFEV6z09V8v0Eo35Y4PfDLnoQDWxaHKpAQDzF4SJw
+   B2YOHghTcHHb7QP3rXrMj/A6f7x2lOUV37TW2AYcx+wlIoHVJORHt2lqq
+   wEf1cCBFMoAD/rpIvqJZ5WKW+On8CjJjzi+1lk/UB07vnx0G35LJ4faKC
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="411780904"
+X-IronPort-AV: E=Sophos;i="5.99,247,1677571200"; 
+   d="scan'208";a="411780904"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2023 04:07:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="699326439"
+X-IronPort-AV: E=Sophos;i="5.99,247,1677571200"; 
+   d="scan'208";a="699326439"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.70])
+  by fmsmga007.fm.intel.com with SMTP; 03 May 2023 04:07:04 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 03 May 2023 14:07:04 +0300
+Date:   Wed, 3 May 2023 14:07:04 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Cc:     dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        stable@vger.kernel.org,
+        Vinod Govindapillai <vinod.govindapillai@intel.com>
+Subject: Re: [PATCH 02/11] drm/i915/mst: Remove broken MST DSC support
+Message-ID: <ZFJAWCGuWcLDQOfS@intel.com>
+References: <20230502143906.2401-1-ville.syrjala@linux.intel.com>
+ <20230502143906.2401-3-ville.syrjala@linux.intel.com>
+ <ZFIPCm+k9TCyfMfS@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <ZFIPCm+k9TCyfMfS@intel.com>
+X-Patchwork-Hint: comment
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,147 +66,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Prevent -ETIMEDOUT error on .suspend().
-e.g. If gadget driver is loaded and we are connected to a USB host,
-all transfers must be stopped before stopping the controller else
-we will not get a clean stop i.e. dwc3_gadget_run_stop() will take
-several seconds to complete and will return -ETIMEDOUT.
+On Wed, May 03, 2023 at 10:36:42AM +0300, Lisovskiy, Stanislav wrote:
+> On Tue, May 02, 2023 at 05:38:57PM +0300, Ville Syrjala wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > The MST DSC code has a myriad of issues:
+> > - Platform checks are wrong (MST+DSC is TGL+ only IIRC)
+> > - Return values of .mode_valid_ctx() are wrong
+> > - .mode_valid_ctx() assumes bigjoiner might be used, but ther rest
+> >   of the code doesn't agree
+> > - compressed bpp calculations don't make sense
+> > - FEC handling needs to consider the entire link as opposed to just
+> >   the single stream. Currently FEC would only get enabled if the
+> >   first enabled stream is compressed. Also I'm not seeing anything
+> >   that would account for the FEC overhead in any bandwidth calculations
+> > - PPS SDP is only handled for the first stream via the dig_port
+> >   hooks, other streams will not be transmittitng any PPS SDPs
+> > - PPS SDP readout is missing (also missing for SST!)
+> > - VDSC readout is missing (also missing for SST!)
+> > 
+> > The FEC issues is really the big one since we have no way currently
+> > to apply such link wide configuration constraints. Changing that is
+> > going to require a much bigger rework of the higher level modeset
+> > .compute_config() logic. We will also need such a rework to properly
+> > distribute the available bandwidth across all the streams on the
+> > same link (which is a must to eg. enable deep color).
+> 
+> Also all the things you mentioned are subject for discussion, for example
+> I see that FEC overhead is actually accounted for bpp calculation for instance.
 
-Handle error cases properly in dwc3_gadget_suspend().
-Simplify dwc3_gadget_resume() by using the introduced helper function.
+AFAICS FEC is only accounted for in the data M/N calculations,
+assuming that particular stream happened to be compressed. I'm
+not sure if that actually matters since at least the link M/N
+are not even used by the MST sink. I suppose the data M/N might
+still be used for something though. For any uncompressed stream
+on the same link the data M/N values will be calculated
+incorrectly without FEC.
 
-Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-Cc: stable@vger.kernel.org
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
----
+And as mentioned, the FEC bandwidth overhead doesn't seem to
+be accounted anywhere so no guarantee that we won't try to
+oversubcribe the link.
 
-Changelog:
+And FEC will only be enabled if the first stream to be enabled
+is compressed, otherwise we will enable the link without FEC
+and still try to cram other compressed streams through it
+(albeit without the PPS SDP so who knows what will happen)
+and that is illegal.
 
-v3:
-- dropped patch 1. Now no longer check for softconnect during .suspend
-- in suspend error path check for softconnect and enable softconnect accordingly
-- added Acked-by tag by Thinh Nguyen
+> We usually improve things by gradually fixing, because if we act same way towards
+> all wrong code in the driver, we could end up removing the whole i915.
 
-v2:
-- rebase on greg/usb-next
-- split into 2 patches. Add Fixes tag and cc stable.
-- do not check for !softconnect in error condition in dwc3_gadget_suspend()
+We ususally don't merge code that has this many obvious and/or
+fundemental issues.
 
- drivers/usb/dwc3/gadget.c | 67 ++++++++++++++++++++-------------------
- 1 file changed, 34 insertions(+), 33 deletions(-)
+Now, most of the issues I listed above are probably fixable
+in a way that could be backported to stable kernels, but
+unfortunately the FEC issue is not one of those. That one
+will likely need massive amounts of work all over the driver
+modeset code, making a backport impossible.
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index c0ca4d12f95d..2996bcb4d53d 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2699,6 +2699,21 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 	return ret;
- }
- 
-+static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
-+{
-+	/*
-+	 * In the Synopsys DWC_usb31 1.90a programming guide section
-+	 * 4.1.9, it specifies that for a reconnect after a
-+	 * device-initiated disconnect requires a core soft reset
-+	 * (DCTL.CSftRst) before enabling the run/stop bit.
-+	 */
-+	dwc3_core_soft_reset(dwc);
-+
-+	dwc3_event_buffers_setup(dwc);
-+	__dwc3_gadget_start(dwc);
-+	return dwc3_gadget_run_stop(dwc, true);
-+}
-+
- static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- {
- 	struct dwc3		*dwc = gadget_to_dwc(g);
-@@ -2737,21 +2752,10 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
- 
- 	synchronize_irq(dwc->irq_gadget);
- 
--	if (!is_on) {
-+	if (!is_on)
- 		ret = dwc3_gadget_soft_disconnect(dwc);
--	} else {
--		/*
--		 * In the Synopsys DWC_usb31 1.90a programming guide section
--		 * 4.1.9, it specifies that for a reconnect after a
--		 * device-initiated disconnect requires a core soft reset
--		 * (DCTL.CSftRst) before enabling the run/stop bit.
--		 */
--		dwc3_core_soft_reset(dwc);
--
--		dwc3_event_buffers_setup(dwc);
--		__dwc3_gadget_start(dwc);
--		ret = dwc3_gadget_run_stop(dwc, true);
--	}
-+	else
-+		ret = dwc3_gadget_soft_connect(dwc);
- 
- 	pm_runtime_put(dwc->dev);
- 
-@@ -4655,42 +4659,39 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
- int dwc3_gadget_suspend(struct dwc3 *dwc)
- {
- 	unsigned long flags;
-+	int ret;
- 
- 	if (!dwc->gadget_driver)
- 		return 0;
- 
--	dwc3_gadget_run_stop(dwc, false);
-+	ret = dwc3_gadget_soft_disconnect(dwc);
-+	if (ret)
-+		goto err;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_disconnect_gadget(dwc);
--	__dwc3_gadget_stop(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
-+
-+err:
-+	/*
-+	 * Attempt to reset the controller's state. Likely no
-+	 * communication can be established until the host
-+	 * performs a port reset.
-+	 */
-+	if (dwc->softconnect)
-+		dwc3_gadget_soft_connect(dwc);
-+
-+	return ret;
- }
- 
- int dwc3_gadget_resume(struct dwc3 *dwc)
- {
--	int			ret;
--
- 	if (!dwc->gadget_driver || !dwc->softconnect)
- 		return 0;
- 
--	ret = __dwc3_gadget_start(dwc);
--	if (ret < 0)
--		goto err0;
--
--	ret = dwc3_gadget_run_stop(dwc, true);
--	if (ret < 0)
--		goto err1;
--
--	return 0;
--
--err1:
--	__dwc3_gadget_stop(dwc);
--
--err0:
--	return ret;
-+	return dwc3_gadget_soft_connect(dwc);
- }
- 
- void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+> So from my side I would nack it, at least until you have a code which handles
+> all of this better - I have no doubt you probably have some ideas in your mind, so lets be constructive at least and propose something better first.
+> This code doesn't cause any regressions, but still provides "some" support to DP MST DSC to say the least and even if that would be removed, if some of those users 
+> refer to me, I would probably then just point to this mail discussion everytime.
+
+It seems very likely that it will cause regressions at some point,
+it just needs a specific multi-display MST setup. The resulting
+problems will be very confusing to debug since the order in which
+you enable/disable the outputs will have an impact on what actually
+goes wrong on account of the FEC and PPS SDP issues. The longer
+we wait disabling this the harder it will be to deal with those
+regressions since we the probably can't revert anymore (a straight
+revert was already not possible) but also can't fix it in a way
+that can be backported (due to the FEC issues in particular).
+
 -- 
-2.34.1
-
+Ville Syrjälä
+Intel
