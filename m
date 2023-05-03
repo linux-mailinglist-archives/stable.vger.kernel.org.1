@@ -2,222 +2,195 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 953B76F4E18
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 02:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 205AE6F4E1F
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 02:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjECARG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 20:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45630 "EHLO
+        id S229497AbjECAXz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 20:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjECARF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 20:17:05 -0400
+        with ESMTP id S229464AbjECAXy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 20:23:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 402AF10F3;
-        Tue,  2 May 2023 17:17:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08BC010E3;
+        Tue,  2 May 2023 17:23:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3D13629B5;
-        Wed,  3 May 2023 00:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E440C433D2;
-        Wed,  3 May 2023 00:17:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EDAC629E0;
+        Wed,  3 May 2023 00:23:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BA6C433EF;
+        Wed,  3 May 2023 00:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1683073023;
-        bh=RfDOeDsGFxYxjiI7IRZxMRztQTdLLKz16tE3Qr+W10o=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=joMY8SoBtviFKYc9T4BL7h9AzWrC2UiPDu8r2wsPdWyqqzTTVfZrY5nfc+zRo2hqn
-         6NqHgct6TndejGQZSl/CNOIl/5sPO0x1WQZdJngT3clqeKTNykXNYn9XT7on62xTFR
-         arj7qo96aSk8w2r5Tu9JEAVoPR+uXxUwaE9bHzrU=
-Date:   Tue, 2 May 2023 17:17:01 -0700
+        s=korg; t=1683073432;
+        bh=hNW9p0VlLc169RuRUBiK0GrRtGmrL6ICK8jpPEUnWzw=;
+        h=Date:To:From:Subject:From;
+        b=MIG2Mp7+r6JlJG2JrIHjYGbwIZcHYt2l7i4Wr8uzR3LnSVoPZDs1nCU/JZUEssZ2U
+         38U3xffvpSrGj468CYWMTt5Uf1HtUx924uD5ellg3VdzCI/vpfOueQlqgRGT2rNJ0B
+         nuzSuuBTl7DzNQl2fuENIvw12ZBehjjf011BVZiE=
+Date:   Tue, 02 May 2023 17:23:51 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        ryabinin.a.a@gmail.com, glider@google.com, elver@google.com,
+        dvyukov@google.com, andreyknvl@google.com, mark.rutland@arm.com,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Baokun Li <libaokun1@huawei.com>
-Cc:     <linux-fsdevel@vger.kernel.org>, <viro@zeniv.linux.org.uk>,
-        <brauner@kernel.org>, <jack@suse.cz>, <tj@kernel.org>,
-        <dennis@kernel.org>, <adilger.kernel@dilger.ca>,
-        <linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
-        <yangerkun@huawei.com>, <houtao1@huawei.com>,
-        <stable@vger.kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH v2] writeback, cgroup: fix null-ptr-deref write in
- bdi_split_work_to_wbs
-Message-Id: <20230502171701.58465d422e94cf038178dc51@linux-foundation.org>
-In-Reply-To: <20230410130826.1492525-1-libaokun1@huawei.com>
-References: <20230410130826.1492525-1-libaokun1@huawei.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: [merged mm-hotfixes-stable] kasan-hw_tags-avoid-invalid-virt_to_page.patch removed from -mm tree
+Message-Id: <20230503002351.F1BA6C433EF@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 10 Apr 2023 21:08:26 +0800 Baokun Li <libaokun1@huawei.com> wrote:
 
-> KASAN report null-ptr-deref:
-> ==================================================================
-> BUG: KASAN: null-ptr-deref in bdi_split_work_to_wbs+0x5c5/0x7b0
-> Write of size 8 at addr 0000000000000000 by task sync/943
-> CPU: 5 PID: 943 Comm: sync Tainted: 6.3.0-rc5-next-20230406-dirty #461
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x7f/0xc0
->  print_report+0x2ba/0x340
->  kasan_report+0xc4/0x120
->  kasan_check_range+0x1b7/0x2e0
->  __kasan_check_write+0x24/0x40
->  bdi_split_work_to_wbs+0x5c5/0x7b0
->  sync_inodes_sb+0x195/0x630
->  sync_inodes_one_sb+0x3a/0x50
->  iterate_supers+0x106/0x1b0
->  ksys_sync+0x98/0x160
-> [...]
-> ==================================================================
-> 
-> The race that causes the above issue is as follows:
-> 
->            cpu1                     cpu2
-> -------------------------|-------------------------
-> inode_switch_wbs
->  INIT_WORK(&isw->work, inode_switch_wbs_work_fn)
->  queue_rcu_work(isw_wq, &isw->work)
->  // queue_work async
->   inode_switch_wbs_work_fn
->    wb_put_many(old_wb, nr_switched)
->     percpu_ref_put_many
->      ref->data->release(ref)
->      cgwb_release
->       queue_work(cgwb_release_wq, &wb->release_work)
->       // queue_work async
->        &wb->release_work
->        cgwb_release_workfn
->                             ksys_sync
->                              iterate_supers
->                               sync_inodes_one_sb
->                                sync_inodes_sb
->                                 bdi_split_work_to_wbs
->                                  kmalloc(sizeof(*work), GFP_ATOMIC)
->                                  // alloc memory failed
->         percpu_ref_exit
->          ref->data = NULL
->          kfree(data)
->                                  wb_get(wb)
->                                   percpu_ref_get(&wb->refcnt)
->                                    percpu_ref_get_many(ref, 1)
->                                     atomic_long_add(nr, &ref->data->count)
->                                      atomic64_add(i, v)
->                                      // trigger null-ptr-deref
-> 
-> bdi_split_work_to_wbs() traverses &bdi->wb_list to split work into all wbs.
-> If the allocation of new work fails, the on-stack fallback will be used and
-> the reference count of the current wb is increased afterwards. If cgroup
-> writeback membership switches occur before getting the reference count and
-> the current wb is released as old_wd, then calling wb_get() or wb_put()
-> will trigger the null pointer dereference above.
-> 
-> This issue was introduced in v4.3-rc7 (see fix tag1). Both sync_inodes_sb()
-> and __writeback_inodes_sb_nr() calls to bdi_split_work_to_wbs() can trigger
-> this issue. For scenarios called via sync_inodes_sb(), originally commit
-> 7fc5854f8c6e ("writeback: synchronize sync(2) against cgroup writeback
-> membership switches") reduced the possibility of the issue by adding
-> wb_switch_rwsem, but in v5.14-rc1 (see fix tag2) removed the
-> "inode_io_list_del_locked(inode, old_wb)" from inode_switch_wbs_work_fn()
-> so that wb->state contains WB_has_dirty_io, thus old_wb is not skipped
-> when traversing wbs in bdi_split_work_to_wbs(), and the issue becomes
-> easily reproducible again.
-> 
-> To solve this problem, percpu_ref_exit() is called under RCU protection
-> to avoid race between cgwb_release_workfn() and bdi_split_work_to_wbs().
-> Moreover, replace wb_get() with wb_tryget() in bdi_split_work_to_wbs(),
-> and skip the current wb if wb_tryget() fails because the wb has already
-> been shutdown.
-> 
-> Fixes: b817525a4a80 ("writeback: bdi_writeback iteration must not skip dying ones")
-> Fixes: f3b6a6df38aa ("writeback, cgroup: keep list of inodes attached to bdi_writeback")
+The quilt patch titled
+     Subject: kasan: hw_tags: avoid invalid virt_to_page()
+has been removed from the -mm tree.  Its filename was
+     kasan-hw_tags-avoid-invalid-virt_to_page.patch
 
-Cc Roman for this second commit.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> Cc: stable@vger.kernel.org
+------------------------------------------------------
+From: Mark Rutland <mark.rutland@arm.com>
+Subject: kasan: hw_tags: avoid invalid virt_to_page()
+Date: Tue, 18 Apr 2023 17:42:12 +0100
 
-Having two Fixes: is awkward.  These serve as a guide to tell -stable
-maintainers which kernels need the fix.  Can we be more precise?
+When booting with 'kasan.vmalloc=off', a kernel configured with support
+for KASAN_HW_TAGS will explode at boot time due to bogus use of
+virt_to_page() on a vmalloc adddress.  With CONFIG_DEBUG_VIRTUAL selected
+this will be reported explicitly, and with or without CONFIG_DEBUG_VIRTUAL
+the kernel will dereference a bogus address:
 
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -978,6 +978,16 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
->  			continue;
->  		}
->  
-> +		/*
-> +		 * If wb_tryget fails, the wb has been shutdown, skip it.
-> +		 *
-> +		 * Pin @wb so that it stays on @bdi->wb_list.  This allows
-> +		 * continuing iteration from @wb after dropping and
-> +		 * regrabbing rcu read lock.
-> +		 */
-> +		if (!wb_tryget(wb))
-> +			continue;
-> +
->  		/* alloc failed, execute synchronously using on-stack fallback */
->  		work = &fallback_work;
->  		*work = *base_work;
-> @@ -986,13 +996,6 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
->  		work->done = &fallback_work_done;
->  
->  		wb_queue_work(wb, work);
-> -
-> -		/*
-> -		 * Pin @wb so that it stays on @bdi->wb_list.  This allows
-> -		 * continuing iteration from @wb after dropping and
-> -		 * regrabbing rcu read lock.
-> -		 */
-> -		wb_get(wb);
->  		last_wb = wb;
->  
->  		rcu_read_unlock();
-> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-> index ad011308cebe..43b48750b491 100644
-> --- a/mm/backing-dev.c
-> +++ b/mm/backing-dev.c
-> @@ -507,6 +507,15 @@ static LIST_HEAD(offline_cgwbs);
->  static void cleanup_offline_cgwbs_workfn(struct work_struct *work);
->  static DECLARE_WORK(cleanup_offline_cgwbs_work, cleanup_offline_cgwbs_workfn);
->  
-> +static void cgwb_free_rcu(struct rcu_head *rcu_head)
-> +{
-> +	struct bdi_writeback *wb = container_of(rcu_head,
-> +			struct bdi_writeback, rcu);
+| ------------[ cut here ]------------
+| virt_to_phys used for non-linear address: (____ptrval____) (0xffff800008000000)
+| WARNING: CPU: 0 PID: 0 at arch/arm64/mm/physaddr.c:15 __virt_to_phys+0x78/0x80
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0-rc3-00073-g83865133300d-dirty #4
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __virt_to_phys+0x78/0x80
+| lr : __virt_to_phys+0x78/0x80
+| sp : ffffcd076afd3c80
+| x29: ffffcd076afd3c80 x28: 0068000000000f07 x27: ffff800008000000
+| x26: fffffbfff0000000 x25: fffffbffff000000 x24: ff00000000000000
+| x23: ffffcd076ad3c000 x22: fffffc0000000000 x21: ffff800008000000
+| x20: ffff800008004000 x19: ffff800008000000 x18: ffff800008004000
+| x17: 666678302820295f x16: ffffffffffffffff x15: 0000000000000004
+| x14: ffffcd076b009e88 x13: 0000000000000fff x12: 0000000000000003
+| x11: 00000000ffffefff x10: c0000000ffffefff x9 : 0000000000000000
+| x8 : 0000000000000000 x7 : 205d303030303030 x6 : 302e30202020205b
+| x5 : ffffcd076b41d63f x4 : ffffcd076afd3827 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : ffffcd076afd3a30 x0 : 000000000000004f
+| Call trace:
+|  __virt_to_phys+0x78/0x80
+|  __kasan_unpoison_vmalloc+0xd4/0x478
+|  __vmalloc_node_range+0x77c/0x7b8
+|  __vmalloc_node+0x54/0x64
+|  init_IRQ+0x94/0xc8
+|  start_kernel+0x194/0x420
+|  __primary_switched+0xbc/0xc4
+| ---[ end trace 0000000000000000 ]---
+| Unable to handle kernel paging request at virtual address 03fffacbe27b8000
+| Mem abort info:
+|   ESR = 0x0000000096000004
+|   EC = 0x25: DABT (current EL), IL = 32 bits
+|   SET = 0, FnV = 0
+|   EA = 0, S1PTW = 0
+|   FSC = 0x04: level 0 translation fault
+| Data abort info:
+|   ISV = 0, ISS = 0x00000004
+|   CM = 0, WnR = 0
+| swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000041bc5000
+| [03fffacbe27b8000] pgd=0000000000000000, p4d=0000000000000000
+| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.3.0-rc3-00073-g83865133300d-dirty #4
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __kasan_unpoison_vmalloc+0xe4/0x478
+| lr : __kasan_unpoison_vmalloc+0xd4/0x478
+| sp : ffffcd076afd3ca0
+| x29: ffffcd076afd3ca0 x28: 0068000000000f07 x27: ffff800008000000
+| x26: 0000000000000000 x25: 03fffacbe27b8000 x24: ff00000000000000
+| x23: ffffcd076ad3c000 x22: fffffc0000000000 x21: ffff800008000000
+| x20: ffff800008004000 x19: ffff800008000000 x18: ffff800008004000
+| x17: 666678302820295f x16: ffffffffffffffff x15: 0000000000000004
+| x14: ffffcd076b009e88 x13: 0000000000000fff x12: 0000000000000001
+| x11: 0000800008000000 x10: ffff800008000000 x9 : ffffb2f8dee00000
+| x8 : 000ffffb2f8dee00 x7 : 205d303030303030 x6 : 302e30202020205b
+| x5 : ffffcd076b41d63f x4 : ffffcd076afd3827 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : ffffcd076afd3a30 x0 : ffffb2f8dee00000
+| Call trace:
+|  __kasan_unpoison_vmalloc+0xe4/0x478
+|  __vmalloc_node_range+0x77c/0x7b8
+|  __vmalloc_node+0x54/0x64
+|  init_IRQ+0x94/0xc8
+|  start_kernel+0x194/0x420
+|  __primary_switched+0xbc/0xc4
+| Code: d34cfc08 aa1f03fa 8b081b39 d503201f (f9400328)
+| ---[ end trace 0000000000000000 ]---
+| Kernel panic - not syncing: Attempted to kill the idle task!
 
-nit:
+This is because init_vmalloc_pages() erroneously calls virt_to_page() on
+a vmalloc address, while virt_to_page() is only valid for addresses in
+the linear/direct map. Since init_vmalloc_pages() expects virtual
+addresses in the vmalloc range, it must use vmalloc_to_page() rather
+than virt_to_page().
 
-	struct bdi_writeback *wb;
+We call init_vmalloc_pages() from __kasan_unpoison_vmalloc(), where we
+check !is_vmalloc_or_module_addr(), suggesting that we might encounter a
+non-vmalloc address. Luckily, this never happens. By design, we only
+call __kasan_unpoison_vmalloc() on pointers in the vmalloc area, and I
+have verified that we don't violate that expectation. Given that,
+is_vmalloc_or_module_addr() must always be true for any legitimate
+argument to __kasan_unpoison_vmalloc().
 
-	wb = container_of(rcu_head, struct bdi_writeback, rcu);
+Correct init_vmalloc_pages() to use vmalloc_to_page(), and remove the
+redundant and misleading use of is_vmalloc_or_module_addr() in
+__kasan_unpoison_vmalloc().
 
-looks nicer, no?
+Link: https://lkml.kernel.org/r/20230418164212.1775741-1-mark.rutland@arm.com
+Fixes: 6c2f761dad7851d8 ("kasan: fix zeroing vmalloc memory with HW_TAGS")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-> +	percpu_ref_exit(&wb->refcnt);
-> +	kfree(wb);
-> +}
-> +
->  static void cgwb_release_workfn(struct work_struct *work)
->  {
->  	struct bdi_writeback *wb = container_of(work, struct bdi_writeback,
-> @@ -529,11 +538,10 @@ static void cgwb_release_workfn(struct work_struct *work)
->  	list_del(&wb->offline_node);
->  	spin_unlock_irq(&cgwb_lock);
->  
-> -	percpu_ref_exit(&wb->refcnt);
->  	wb_exit(wb);
->  	bdi_put(bdi);
->  	WARN_ON_ONCE(!list_empty(&wb->b_attached));
-> -	kfree_rcu(wb, rcu);
-> +	call_rcu(&wb->rcu, cgwb_free_rcu);
->  }
->  
->  static void cgwb_release(struct percpu_ref *refcnt)
+ mm/kasan/hw_tags.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/mm/kasan/hw_tags.c~kasan-hw_tags-avoid-invalid-virt_to_page
++++ a/mm/kasan/hw_tags.c
+@@ -285,7 +285,7 @@ static void init_vmalloc_pages(const voi
+ 	const void *addr;
+ 
+ 	for (addr = start; addr < start + size; addr += PAGE_SIZE) {
+-		struct page *page = virt_to_page(addr);
++		struct page *page = vmalloc_to_page(addr);
+ 
+ 		clear_highpage_kasan_tagged(page);
+ 	}
+@@ -297,7 +297,7 @@ void *__kasan_unpoison_vmalloc(const voi
+ 	u8 tag;
+ 	unsigned long redzone_start, redzone_size;
+ 
+-	if (!kasan_vmalloc_enabled() || !is_vmalloc_or_module_addr(start)) {
++	if (!kasan_vmalloc_enabled()) {
+ 		if (flags & KASAN_VMALLOC_INIT)
+ 			init_vmalloc_pages(start, size);
+ 		return (void *)start;
+_
+
+Patches currently in -mm which might be from mark.rutland@arm.com are
+
 
