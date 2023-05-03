@@ -2,62 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAAC6F5232
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 09:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3B46F525E
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 09:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbjECHts (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 03:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49798 "EHLO
+        id S229572AbjECHyc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 03:54:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjECHtr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 03:49:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87DA61981
-        for <stable@vger.kernel.org>; Wed,  3 May 2023 00:49:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683100140;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=i8GuagGh12Y8dqwOG9xS20hgt65TOsDgcxOw1iS+qhg=;
-        b=U4+ToPNyc5tscVvSoEe9+X4D4jKRvAOVeRveu9YlZ4EztqNtn1N5tz/1eBWRRs1ouBr7LX
-        iziO3Amf3uD+wo3lWBebYT+mqb6ENR08zVQDEiwBxSaJx+BSlEP/L9bvZjp1TVlCa8pOS0
-        aOabBe4KIa4fQTlIgrnoqUnEMM8u64Y=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-LuyNTls9MoCeXrTSKvIZ5A-1; Wed, 03 May 2023 03:48:57 -0400
-X-MC-Unique: LuyNTls9MoCeXrTSKvIZ5A-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3f250e9e090so15169445e9.0
-        for <stable@vger.kernel.org>; Wed, 03 May 2023 00:48:57 -0700 (PDT)
+        with ESMTP id S229538AbjECHyb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 03:54:31 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842161BEB
+        for <stable@vger.kernel.org>; Wed,  3 May 2023 00:54:29 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2ac733b813fso4535051fa.1
+        for <stable@vger.kernel.org>; Wed, 03 May 2023 00:54:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683100468; x=1685692468;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oef1NEFZBqv6KKJ251Ddqr/RYRBA1SecAlHl2Q1DCvA=;
+        b=WZVCUfMrZIzBUbPYblCJvqCYjcW59tDNpcsDASp70Es+Y6GTjOnjYGkXbRyVSS0vqT
+         NBw4Hy7ZIq9ogBC7EC8UiHYH+gJrgxMmYjxi2I1xtKYFmKZntujbmQAhY5BFkX1xGkbM
+         QeM+IMiUeuUSNw+lignOwdmOp8R+h5aMufPWb/1CK3W8ketFyYsAMZJcHcmzJ4QVHnBX
+         DNjtSgVRwYc1DwtwNkOwWQ8pnCKvfn6CvfVAxHOpyyNpzq24HdrOyaRuQebrhtHTa1/0
+         mOiFnXNuCnGPuVMGclx/z21ArDcMfo/I39zFufDDFSn09NEU94UFGWb1ZhaT0jvAHn48
+         7GGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683100136; x=1685692136;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i8GuagGh12Y8dqwOG9xS20hgt65TOsDgcxOw1iS+qhg=;
-        b=KfSjodx8w3M2THK7p0trTGMTd7aQmw9avdhl/kOKkUwuIF+4wZkCtw81SdYY7WRVZ5
-         zXslzuiyiUP5C56yGWsRJN+mEq37QYpKj5EIc7sCxmxD92oKNEOaJw6rMhsY/LTFsVhq
-         U8NQoCarhWPBjVbfEsm+7B8cVkA4gUG2orUrSWsvQp1Qr66zE+mWvTIS81EhEzbcdLiA
-         quiCr7g6+6cuj4lRDcVeBJp489JfDPeB7fz323A0g2Y7ERoE3uyFfVcRBkjYnQBx6jfD
-         uHGN04Yx17/8P5lw/q/1FgDGhOZW5MuOKixPPvsCB65qdzUPOekiS4J+g/GlI+/No6Ay
-         csmQ==
-X-Gm-Message-State: AC+VfDxlQ/dz4rkpqWw6xucffciDEUXv+Hs+gFvD0QV2bdfZvbE0VVS7
-        UJgKO/NqhXbBhcLiSG749G/IvqkYk0SAMOonrkBPAxQb6KmEvULHXsMxGepAt3/WGV+svYm+KOx
-        YcyzaPcMJTzUyTT6+
-X-Received: by 2002:adf:e647:0:b0:306:3153:d2fe with SMTP id b7-20020adfe647000000b003063153d2femr4822119wrn.27.1683100136084;
-        Wed, 03 May 2023 00:48:56 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5eW0PIBX8uPAgG/Q8Ux09ES8w2XRlQ17kdIQmtm473aruCX7JTiFMviLSM1O6xcF9inhGdBg==
-X-Received: by 2002:adf:e647:0:b0:306:3153:d2fe with SMTP id b7-20020adfe647000000b003063153d2femr4822101wrn.27.1683100135671;
-        Wed, 03 May 2023 00:48:55 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id k1-20020a7bc301000000b003eddc6aa5fasm1011062wmj.39.2023.05.03.00.48.55
+        d=1e100.net; s=20221208; t=1683100468; x=1685692468;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oef1NEFZBqv6KKJ251Ddqr/RYRBA1SecAlHl2Q1DCvA=;
+        b=gJnEGgunUEEhN+z8+a8cdULw4lsYVhISuPXWyJKhmf6JJmVdJshcBeksnJ6uUNgcQe
+         98e32hbrNuy8GF4jJhCO+mL/AfJ10qTCw/KZxjj/3sWcv92HZlwkQF0nmV0LueKKeGkI
+         wUeokt2h3oWr7gqHcgcn964ZgTKpencWKg3yPz/40YBaB211KwazJ3XYMg5PuPQZXdqI
+         aSnewAjQHN20ShYmmGyi52+AEzVF2IuTH+NseWePQZGEqS7Dztn+1p1WqG+YeB0FSfri
+         t1lBY5OJ6DoKXlKB3mQczdkNkbQa+I2YYAkoUTRBhmrmM6lgHU0VPuTgIhgDTVUBBcsq
+         4VsQ==
+X-Gm-Message-State: AC+VfDxOJs7u+g+Lo+aHZ4rYr/z3Y0rF0ppdqKEZEt3VGwQEQzEcCdOx
+        /Nj6aCCvCj+m+5rbdxo6agU=
+X-Google-Smtp-Source: ACHHUZ7fsyMRPzAAum5pRi45D4UciusBo61yxF3+WMfJZFonwiCZLUlcxIw1dQZmikhfzaq6hDSRpg==
+X-Received: by 2002:a2e:9d42:0:b0:2ab:4bb3:e32c with SMTP id y2-20020a2e9d42000000b002ab4bb3e32cmr3975104ljj.31.1683100467290;
+        Wed, 03 May 2023 00:54:27 -0700 (PDT)
+Received: from eldfell ([194.136.85.206])
+        by smtp.gmail.com with ESMTPSA id s19-20020a2e2c13000000b002a7a03e1c67sm5859042ljs.13.2023.05.03.00.54.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 00:48:55 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Zack Rusin <zackr@vmware.com>, "daniel@ffwll.ch" <daniel@ffwll.ch>
-Cc:     Maaz Mombasawala <mombasawalam@vmware.com>,
+        Wed, 03 May 2023 00:54:26 -0700 (PDT)
+Date:   Wed, 3 May 2023 10:54:15 +0300
+From:   Pekka Paalanen <ppaalanen@gmail.com>
+To:     Zack Rusin <zackr@vmware.com>
+Cc:     "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "javierm@redhat.com" <javierm@redhat.com>,
+        Maaz Mombasawala <mombasawalam@vmware.com>,
         "airlied@redhat.com" <airlied@redhat.com>,
         "airlied@linux.ie" <airlied@linux.ie>,
         "tzimmermann@suse.de" <tzimmermann@suse.de>,
@@ -70,27 +65,27 @@ Cc:     Maaz Mombasawala <mombasawalam@vmware.com>,
         "spice-devel@lists.freedesktop.org" 
         <spice-devel@lists.freedesktop.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "ppaalanen@gmail.com" <ppaalanen@gmail.com>,
         "virtualization@lists.linux-foundation.org" 
         <virtualization@lists.linux-foundation.org>,
         Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>,
-        Jonas =?utf-8?Q?=C3=85dahl?= <jadahl@gmail.com>
+        Jonas =?UTF-8?B?w4VkYWhs?= <jadahl@gmail.com>,
+        Simon Ser <contact@emersion.fr>
 Subject: Re: [PATCH v2 1/8] drm: Disable the cursor plane on atomic contexts
  with virtualized drivers
+Message-ID: <20230503105415.62aa7a8d@eldfell>
 In-Reply-To: <0dd2fa763aa0e659c8cbae94f283d8101450082a.camel@vmware.com>
 References: <20220712033246.1148476-1-zack@kde.org>
- <20220712033246.1148476-2-zack@kde.org>
- <YvPfedG/uLQNFG7e@phenom.ffwll.local>
- <87lei7xemy.fsf@minerva.mail-host-address-is-not-set>
- <0dd2fa763aa0e659c8cbae94f283d8101450082a.camel@vmware.com>
-Date:   Wed, 03 May 2023 09:48:54 +0200
-Message-ID: <87y1m5x3bt.fsf@minerva.mail-host-address-is-not-set>
+        <20220712033246.1148476-2-zack@kde.org>
+        <YvPfedG/uLQNFG7e@phenom.ffwll.local>
+        <87lei7xemy.fsf@minerva.mail-host-address-is-not-set>
+        <0dd2fa763aa0e659c8cbae94f283d8101450082a.camel@vmware.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+Content-Type: multipart/signed; boundary="Sig_/M5oFo8/u3GbVxhsNiA4gva7";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -98,90 +93,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Zack Rusin <zackr@vmware.com> writes:
+--Sig_/M5oFo8/u3GbVxhsNiA4gva7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 3 May 2023 03:35:29 +0000
+Zack Rusin <zackr@vmware.com> wrote:
 
 > On Tue, 2023-05-02 at 11:32 +0200, Javier Martinez Canillas wrote:
->> !! External Email
->>=20
->> Daniel Vetter <daniel@ffwll.ch> writes:
->>=20
->> > On Mon, Jul 11, 2022 at 11:32:39PM -0400, Zack Rusin wrote:
->> > > From: Zack Rusin <zackr@vmware.com>
->> > >=20
->> > > Cursor planes on virtualized drivers have special meaning and require
->> > > that the clients handle them in specific ways, e.g. the cursor plane
->> > > should react to the mouse movement the way a mouse cursor would be
->> > > expected to and the client is required to set hotspot properties on =
-it
->> > > in order for the mouse events to be routed correctly.
->> > >=20
->> > > This breaks the contract as specified by the "universal planes". Fix=
+> > !! External Email
+> >=20
+> > Daniel Vetter <daniel@ffwll.ch> writes:
+> >  =20
+> > > On Mon, Jul 11, 2022 at 11:32:39PM -0400, Zack Rusin wrote: =20
+> > > > From: Zack Rusin <zackr@vmware.com>
+> > > >=20
+> > > > Cursor planes on virtualized drivers have special meaning and requi=
+re
+> > > > that the clients handle them in specific ways, e.g. the cursor plane
+> > > > should react to the mouse movement the way a mouse cursor would be
+> > > > expected to and the client is required to set hotspot properties on=
  it
->> > > by disabling the cursor planes on virtualized drivers while adding
->> > > a foundation on top of which it's possible to special case mouse cur=
-sor
->> > > planes for clients that want it.
->> > >=20
->> > > Disabling the cursor planes makes some kms compositors which were br=
-oken,
->> > > e.g. Weston, fallback to software cursor which works fine or at least
->> > > better than currently while having no effect on others, e.g. gnome-s=
-hell
->> > > or kwin, which put virtualized drivers on a deny-list when running in
->> > > atomic context to make them fallback to legacy kms and avoid this is=
-sue.
->> > >=20
->> > > Signed-off-by: Zack Rusin <zackr@vmware.com>
->> > > Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal plan=
-e list
->> > > (v2)")
->>=20
->> [...]
->>=20
->> > > diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
->> > > index f6159acb8856..c4cd7fc350d9 100644
->> > > --- a/include/drm/drm_drv.h
->> > > +++ b/include/drm/drm_drv.h
->> > > @@ -94,6 +94,16 @@ enum drm_driver_feature {
->> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * synchronization of command submissi=
-on.
->> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
->> > > =C2=A0=C2=A0=C2=A0=C2=A0 DRIVER_SYNCOBJ_TIMELINE=C2=A0=C2=A0=C2=A0=
+> > > > in order for the mouse events to be routed correctly.
+> > > >=20
+> > > > This breaks the contract as specified by the "universal planes". Fi=
+x it
+> > > > by disabling the cursor planes on virtualized drivers while adding
+> > > > a foundation on top of which it's possible to special case mouse cu=
+rsor
+> > > > planes for clients that want it.
+> > > >=20
+> > > > Disabling the cursor planes makes some kms compositors which were b=
+roken,
+> > > > e.g. Weston, fallback to software cursor which works fine or at lea=
+st
+> > > > better than currently while having no effect on others, e.g. gnome-=
+shell
+> > > > or kwin, which put virtualized drivers on a deny-list when running =
+in
+> > > > atomic context to make them fallback to legacy kms and avoid this i=
+ssue.
+> > > >=20
+> > > > Signed-off-by: Zack Rusin <zackr@vmware.com>
+> > > > Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal pla=
+ne list
+> > > > (v2)") =20
+> >=20
+> > [...]
+> >  =20
+> > > > diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
+> > > > index f6159acb8856..c4cd7fc350d9 100644
+> > > > --- a/include/drm/drm_drv.h
+> > > > +++ b/include/drm/drm_drv.h
+> > > > @@ -94,6 +94,16 @@ enum drm_driver_feature {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * synchronization of command submiss=
+ion.
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 DRIVER_SYNCOBJ_TIMELINE=C2=A0=C2=A0=C2=A0=
 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D BIT(6),
->> > > +=C2=A0=C2=A0=C2=A0 /**
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * @DRIVER_VIRTUAL:
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 *
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * Driver is running on top of virtual hard=
-ware. The most significant
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * implication of this is a requirement of =
-special handling of the
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * cursor plane (e.g. cursor plane has to a=
-ctually track the mouse
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * cursor and the clients are required to s=
-et hotspot in order for
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 * the cursor planes to work correctly).
->> > > +=C2=A0=C2=A0=C2=A0=C2=A0 */
->> > > +=C2=A0=C2=A0=C2=A0 DRIVER_VIRTUAL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+> > > > +=C2=A0=C2=A0=C2=A0 /**
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 * @DRIVER_VIRTUAL:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 *
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 * Driver is running on top of virtual har=
+dware. The most significant
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 * implication of this is a requirement of=
+ special handling of the
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 * cursor plane (e.g. cursor plane has to =
+actually track the mouse
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 * cursor and the clients are required to =
+set hotspot in order for
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 * the cursor planes to work correctly).
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > +=C2=A0=C2=A0=C2=A0 DRIVER_VIRTUAL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
 =A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D B=
-IT(7),
->> >=20
->> > I think the naming here is unfortunate, because people will vonder why
->> > e.g. vkms doesn't set this, and then add it, and confuse stuff complet=
-ely.
->> >=20
->> > Also it feels a bit wrong to put this onto the driver, when really it'=
-s a
->> > cursor flag. I guess you can make it some kind of flag in the drm_plane
->> > structure, or a new plane type, but putting it there instead of into t=
-he
->> > "random pile of midlayer-mistake driver flags" would be a lot better.
->> >=20
->> > Otherwise I think the series looks roughly how I'd expect it to look.
->> > -Daniel
->> >=20
->>=20
->> AFAICT this is the only remaining thing to be addressed for this series ?
->
+IT(7), =20
+> > >=20
+> > > I think the naming here is unfortunate, because people will vonder why
+> > > e.g. vkms doesn't set this, and then add it, and confuse stuff comple=
+tely.
+> > >=20
+> > > Also it feels a bit wrong to put this onto the driver, when really it=
+'s a
+> > > cursor flag. I guess you can make it some kind of flag in the drm_pla=
+ne
+> > > structure, or a new plane type, but putting it there instead of into =
+the
+> > > "random pile of midlayer-mistake driver flags" would be a lot better.
+> > >=20
+> > > Otherwise I think the series looks roughly how I'd expect it to look.
+> > > -Daniel
+> > >  =20
+> >=20
+> > AFAICT this is the only remaining thing to be addressed for this series=
+ ? =20
+>=20
 > No, there was more. tbh I haven't had the time to think about whether the=
  above
 > makes sense to me, e.g. I'm not sure if having virtualized drivers expose=
@@ -198,12 +203,72 @@ glier with
 ld be
 > cleaner in the kernel but they all require significant changes to userspa=
 ce, that go
-> way beyond "attach hotspot info to this plane". I'd like to avoid approac=
-hes that
+> way beyond "attach hotspot info to this plane".
+
+> I'd like to avoid approaches that
 > mean running with atomic kms requires completely separate paths for virtu=
 alized
 > drivers because no one will ever support and maintain it.
->
+
+Hi Zack,
+
+you'd like to avoid that, but fundamentally that really is what has to
+happen in userspace for *nested* KMS drivers (VKMS is a virtual driver
+but not part of the interest group here) to reach optimality.
+
+It really is a different path. I see no way around that. But if you
+accept that fact, then you could possibly gain a lot more benefits by
+asking userspace to handle nested KMS drivers differently. What those
+benefits are exactly I'm not sure, but I have a feeling there should be
+some, where the knowledge of running on a nested KMS driver allows for
+better decisions that are not possible if the nested KMS driver just
+pretends to be like any other KMS hardware driver.
+
+You can get up to some level of interoperability by pretending to be
+just like any other KMS driver, but if you want to optimize things, I
+feel that's a whole different story. It's a trade-off.
+
+I think frame timing is one thing. A nested KMS driver increases
+the depth of the "swapchain" between the guest KMS app and the actual
+hardware. This is unexpected if userspace does not know it is running
+on a nested KMS driver.
+
+The existing KMS uAPI, both legacy and atomic, have been written for
+classic hardware. One fundamental result of that is the page flip
+completion event, it signals two things simultaneously: the new
+framebuffer is in use, and a new flip can be programmed.
+On a nested driver, these two are not the same thing: the nested driver
+can take another flip before the new framebuffer is actually being used
+in the host. More importantly, the nested driver can take a new flip
+before the old replaced framebuffer has actually been retired.
+
+(The above can tie into the question of making the KMS swapchain deeper
+in general, also for classic scanout design, in connection to
+present-not-before-timestamp queueing at KMS level.)
+
+However, as long as these two are the same event, it can decimate the
+framerate on a nested driver, because userspace is not prepared for a
+swapchain depth of greater than one. Or, the nested KMS driver gives up
+on zero-copy. Or, you need a fragile timing arrangement that
+essentially needs to be hand-configured in at least one display system,
+guest or host.
+
+Somewhat related, there is also the matter of KMS drivers (hardware,
+nested, and virtual) that do not lock their page flip events to a
+hardware scanout cycle (because there is none) but "complete" any flip
+immediately. That too requires explicit handling in userspace, because
+you simply do not have a scanout cycle to lock on to.
+
+We already have an example where userspace is explicitly helping
+"unusual" KMS drivers: FB_DAMAGE_CLIPS. While educating userspace does
+take considerable effort, I'd like to believe it is doable, and it is
+also necessary for optimality. Excellent KMS documentation is key,
+naturally.
+
+Of course, it is up to you and other people to decide to want to do the
+work or not. I just feel you could potentially gain a lot if you decide
+to take on that fight.
+
 > It's not a trivial thing because it's fundamentally hard to untangle the =
 fact the
 > virtualized drivers have been advertising universal plane support without=
@@ -211,15 +276,13 @@ fact the
 > supporting universal planes. Especially because most new userspace in gen=
 eral checks
 > for "universal planes" to expose atomic kms paths.
->
 
-After some discussion on the #dri-devel, your approach makes sense and the
-only contention point is the name of the driver feature flag name. The one
-you are using (DRIVER_VIRTUAL) seems to be too broad and generic (the fact
-that vkms won't set and is a virtual driver as well, is a good example).
+That's not just userspace, it's built into the kernel UAPI design that
+you cannot have atomic without universal planes.
 
-Maybe something like DRIVER_CURSOR_HOTSPOT or DRIVER_CURSOR_COMMANDEERING
-would be more accurate and self explanatory ?
+
+Thanks,
+pq
 
 > The other thing blocking this series was the testing of all the edge case=
 s, I think
@@ -228,21 +291,16 @@ upport for
 > this and wayland without support for this in at the same time in differen=
 t consoles
 > and see what happens). I never had the time to do that either.
->
-
-I understand that every new feature needs tests but I fail to see why
-the bar is higher for this feature than others? I would prefer if this
-series are not blocked due some potential issues on hypothetical corner
-cases that might not happen in practice. Or do people really run two or
-more compositors on different console and switch between them ?
-
->> Zack, are you planning to re-spin a v3 of this patch-set? Asking because
->> we want to take virtio-gpu out of the atomic KMS deny list in mutter, but
->> first need this to land.
->>=20
->> If you think that won't be able to do it in the short term, Bilal (Cc'ed)
->> or me would be glad to help with that.
->
+>=20
+> > Zack, are you planning to re-spin a v3 of this patch-set? Asking because
+> > we want to take virtio-gpu out of the atomic KMS deny list in mutter, b=
+ut
+> > first need this to land.
+> >=20
+> > If you think that won't be able to do it in the short term, Bilal (Cc'e=
+d)
+> > or me would be glad to help with that. =20
+>=20
 > This has been on my todo for a while I just never had the time to go thro=
 ugh all the
 > remaining issues. Fundamentally it's not so much a technical issue anymor=
@@ -252,15 +310,30 @@ f a pretty
 > bad situation. In general it's hard to paint a bikeshed if all you have i=
 s a million
 > shades of gray ;)
->
+>=20
+> z
+>=20
 
-Agreed. And I believe that other than the driver cap name, everyone agrees
-with the color of your bikeshed :)
 
---=20
-Best regards,
+--Sig_/M5oFo8/u3GbVxhsNiA4gva7
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmRSEycACgkQI1/ltBGq
+qqfLUw/+KaAQ6lmTQ71T/aYabS+7S2iGhAxA3z81G9QthNLS56DAdKpLdtgqxmS6
+YyUMuPOIHqoPifBWsv8sh5ZEx6BMwScwixrfChSe9vq8DliHT4Q2EH2PURwcxChx
+HHb63HdUrqoL/mwKqgejbFV3zwS8inOwtLe2jH1k34CMGqfaFSA/JMKrXZeWwHHQ
+r9DAR9dWGgpiPGIaU8cKkQvl8lk737ES8gfQLbAboNqRHh/2jk+pSco6UKHtWFnu
+dL+eokXd72Ve/Iz0Mx3GTjPDFAdh1q/NW3OLJ/4a2cw1EYFvnZ+rs/sBtiYtNXBd
+KVhgio3vWvRnmBTclJMbJgp6rpe7niCkEJDOugU7zGZVPTs30xui5UUQaD72WG2/
+nMoloO90Omsw7Ih0SKoRblWxyHSrH42PFw5pEZtN6hhS9dDmbim2j2R5tTipH6we
+aczytg6BwCNSM6+iS3l/R3gwddd5AIIt+IkXpqSbMqENXNvKCzbX384677dIK3bn
+2c5gi7UyMKx0ZgLobQTIUaWlIR5q8V0ZZFUy1M+Z/wzzdtauBST0gGDIFz+1IVp+
+CPpCVj4TEi5UTtwBr3EM58a7d/v83TQmuo7HGaa/S+w7RIh3ZSLWJMcOlrPbii6q
+URC75o58Msowo8y0pIEsRUNjVQ7kLgRnYs/NI/yUR3i+/7Zq0XQ=
+=Xl7M
+-----END PGP SIGNATURE-----
+
+--Sig_/M5oFo8/u3GbVxhsNiA4gva7--
