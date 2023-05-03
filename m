@@ -2,155 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B0A6F5C1E
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 18:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163A66F5CC5
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 19:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbjECQfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 12:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59190 "EHLO
+        id S229498AbjECRLf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 13:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbjECQfo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 12:35:44 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789163ABC;
-        Wed,  3 May 2023 09:35:43 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1aaea3909d1so41701155ad.2;
-        Wed, 03 May 2023 09:35:43 -0700 (PDT)
+        with ESMTP id S229805AbjECRLP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 13:11:15 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ABDB7D9F
+        for <stable@vger.kernel.org>; Wed,  3 May 2023 10:10:48 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-63b5c4c76aaso3938371b3a.2
+        for <stable@vger.kernel.org>; Wed, 03 May 2023 10:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683131743; x=1685723743;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FphQhP/ndgfx40/adXwhnzLVwSTKceCysdZmKATytIQ=;
-        b=ZlDO7Ma6lmFGQEdnNmDPoGFZakr9vc1qNDciVPQFuKnHgp5r5GUeOr0ID4Qho6fwzT
-         1TpntnObhKrJud2u6IKwqQCMw1dBjO8hkX/DzVI4c5vHeacjABFBJmLQvkPFE9MTRf8n
-         dsXc6ZlhNmBpQQ71sQE4nbekL05WB53OGhb9yLbyRd39iPyEVPqWhCCsjwLmouphFsnA
-         1qqadDhki+L3BTecEA8/awCPLQWuHXnL9q7MwXpd1TQr0zTeJ5RCTGk9umJKmDdIY93u
-         ybpsWK9TgoP34EgWVRLB7/wbRRt1KtjZKANw1PdG8WfFWkpBcAU/w79O1+bZtgy28Sm2
-         njxg==
+        d=gmail.com; s=20221208; t=1683133846; x=1685725846;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lFb3HVbAEiN+niK4olIrnviY/M5SvpH6wmRmxbtAKpA=;
+        b=p8+XTLUjsVuI4Lj0PneY4tAW8TByIVGvJjAa67AxqvYINkmWpnAFQhP3xgTVOKTvFb
+         rVVssVjY2xcSSp9zZcCiWtViO183EOIgB9+4cpTHOXwAj18Zgkcc6WGzCd4BIZVJyx0E
+         icKIUU0RHHt5YLKsoDMbBTNWOrtYEM4+4BiFHagG74ygxlZ2SJoi0gnE4+hwmHVlSGbO
+         LTR9GdKX10VPAJxiRNeCrD9OtXRlHH6tbaZPrcmJnRnOPufbxIOWsHZMf/VJ3W8OP+9J
+         ie7aZeSXuuPKZKXWr2ZjdWga9LtMFGPCoieTgpH7JIReMjHGjKqQqoDLlZrUL6xsCPmQ
+         LlvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683131743; x=1685723743;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FphQhP/ndgfx40/adXwhnzLVwSTKceCysdZmKATytIQ=;
-        b=kXAoWSPs+mxhHOh0X+bYNPIryVyJxwoVOS/gD29xBg6kfQg+XvCaBnbf1SC1robDb1
-         Lzd0IdV8vQ7NGud8g5kiLsecxiF21NleWtmjBC+7V3o88QOojEA8d3Zqd3/82tBSly7V
-         9eN+jOcSO44vgUIHaY6SyjFK6Jx8K7SPCSYrpe1NlVujNV4T0jBd1uF4XzeMknXzAJxv
-         QdCVpLV6Vd0RgqSpvC/NPskr55okLu1FyOm++/kVHXkhqBX3MwJuuecZ/9FUTEJn2F/p
-         6EYhv41oAfsJlYJr1LmfuckNyCsyxWpLEPc9GzLFMnLvsrDeiFOcspJM7gDQbff9p2B4
-         YioQ==
-X-Gm-Message-State: AC+VfDx2qSRvPsgE+4OTQYlKAzCfHnv0RRD0Xd4xSrk1iQjwb6Mg9cPB
-        v7MqCLhC3euWjAgrCRsoP6AtyYGFzJHyPyaJBNk=
-X-Google-Smtp-Source: ACHHUZ6fidjCAUuXXlk3n8d7vuvS/g0YighVJB/wsK4FHb/HfmpJYCIJFUu1FBI9ujJb2V4uTFMy8Q==
-X-Received: by 2002:a17:902:ea03:b0:19f:2dff:2199 with SMTP id s3-20020a170902ea0300b0019f2dff2199mr647532plg.68.1683131742629;
-        Wed, 03 May 2023 09:35:42 -0700 (PDT)
-Received: from MSI-FindNS.localdomain ([95.174.71.27])
-        by smtp.gmail.com with ESMTPSA id n4-20020a170902d2c400b001a5260a6e6csm8111509plc.206.2023.05.03.09.35.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 09:35:42 -0700 (PDT)
-From:   Yue Zhao <findns94@gmail.com>
-To:     stable@vger.kernel.org
-Cc:     linux-ext4@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        tytso@mit.edu, adilger.kernel@dilger.ca, jack@suse.cz,
-        yi.zhang@huawei.com, tangyeechou@gmail.com,
-        Yue Zhao <findns94@gmail.com>
-Subject: [PATCH 1/1][For stable 5.4] mm: migrate: buffer_migrate_page_norefs() fallback migrate not uptodate pages
-Date:   Thu,  4 May 2023 00:34:26 +0800
-Message-Id: <20230503163426.5538-2-findns94@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230503163426.5538-1-findns94@gmail.com>
-References: <20230503163426.5538-1-findns94@gmail.com>
-X-Spam-Status: No, score=2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+        d=1e100.net; s=20221208; t=1683133846; x=1685725846;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lFb3HVbAEiN+niK4olIrnviY/M5SvpH6wmRmxbtAKpA=;
+        b=Ov5DCiSWU9PgTTKvtpaTY6cRwo2yFzJ+PzKDOoByzt1qRbSeLZ50Jg4yRjVd4T7cGj
+         Zlb2GsSDsWkXgBZ9Lw9EH4qS0nZuDrS1eBMgRQANIedJhXujKGypevAoo3U0IbSh1lPs
+         KyA0sic7j+lNaLkB1nTUGuDPLyFlG8gksj4Qs3vNnvvjSBV2aQhmmWxHC5tJb2/JgKtg
+         2MF6tBWChRbop4HutAI04Q6T+3Kqyc89dUieefpwxc1GyY4MtyskrVYWD/TdotjwiIdc
+         fTSfAJvjuUtFohIVogBd5ARWWpsnCF6goeZZWdIX9aCM6o8TjUwtFKP0S8xNaPrLJdNz
+         bkpA==
+X-Gm-Message-State: AC+VfDy1/stnVzN4s/sVOYUfMPiQh3rXr30dKMo7oFT2j6pggVgeIdDf
+        5eWPYegmcKkbKplDnnCpfs8Jrnyn9HMiOrZ3KKc=
+X-Google-Smtp-Source: ACHHUZ6nrmqmCeMLN4BcMH86lWker9DeUFtge/dYag8rqWTc8bqC0ujEsCExrFCUcUSUQgu9OKJ1khK7m2vrxGw8Kjg=
+X-Received: by 2002:a05:6a00:1797:b0:63b:6b43:78c with SMTP id
+ s23-20020a056a00179700b0063b6b43078cmr31698095pfg.29.1683133846623; Wed, 03
+ May 2023 10:10:46 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220909185557.21255-1-risbhat@amazon.com>
+In-Reply-To: <20220909185557.21255-1-risbhat@amazon.com>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Wed, 3 May 2023 10:10:35 -0700
+Message-ID: <CAJq+SaDpASRc43MiX0=N0VUh4HMWrbqtUvcR14JdFGPMmqZ4dg@mail.gmail.com>
+Subject: Re: [PATCH 0/9] KVM backports to 5.10
+To:     Rishabh Bhatnagar <risbhat@amazon.com>
+Cc:     stable@vger.kernel.org, gregkh@linuxfoundation.org,
+        surajjs@amazon.com, mbacco@amazon.com, bp@alien8.de,
+        mingo@redhat.com, tglx@linutronix.de, pbonzini@redhat.com,
+        seanjc@google.com, vkuznets@redhat.com, wanpengli@tencent.com,
+        jmattson@google.com, joro@8bytes.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Recently we notice that ext4 filesystem occasionally fail to read
-metadata from disk and report error message, but the disk and block
-layer looks fine. After analyse, we lockon commit 88dbcbb3a484
-("blkdev: avoid migration stalls for blkdev pages"). It provide a
-migration method for the bdev, we could move page that has buffers
-without extra users now, but it will lock the buffers on the page, which
-breaks a lot of current filesystem's fragile metadata read operations,
-like ll_rw_block() for common usage and ext4_read_bh_lock() for ext4,
-these helpers just trylock the buffer and skip submit IO if it lock
-failed, many callers just wait_on_buffer() and conclude IO error if the
-buffer is not uptodate after buffer unlocked.
+> This patch series backports a few VM preemption_status, steal_time and
+> PV TLB flushing fixes to 5.10 stable kernel.
+>
+> Most of the changes backport cleanly except i had to work around a few
+> becauseof missing support/APIs in 5.10 kernel. I have captured those in
+> the changelog as well in the individual patches.
+>
+> Changelog
+> - Use mark_page_dirty_in_slot api without kvm argument (KVM: x86: Fix
+>   recording of guest steal time / preempted status)
+> - Avoid checking for xen_msr and SEV-ES conditions (KVM: x86:
+>   do not set st->preempted when going back to user space)
+> - Use VCPU_STAT macro to expose preemption_reported and
+>   preemption_other fields (KVM: x86: do not report a vCPU as preempted
+>   outside instruction boundaries)
+>
+> David Woodhouse (2):
+>   KVM: x86: Fix recording of guest steal time / preempted status
+>   KVM: Fix steal time asm constraints
+>
+> Lai Jiangshan (1):
+>   KVM: x86: Ensure PV TLB flush tracepoint reflects KVM behavior
+>
+> Paolo Bonzini (5):
+>   KVM: x86: do not set st->preempted when going back to user space
+>   KVM: x86: do not report a vCPU as preempted outside instruction
+>     boundaries
+>   KVM: x86: revalidate steal time cache if MSR value changes
+>   KVM: x86: do not report preemption if the steal time cache is stale
+>   KVM: x86: move guest_pv_has out of user_access section
+>
+> Sean Christopherson (1):
+>   KVM: x86: Remove obsolete disabling of page faults in
+>     kvm_arch_vcpu_put()
 
-This issue could be easily reproduced by add some delay just after
-buffer_migrate_lock_buffers() in __buffer_migrate_page() and do
-fsstress on ext4 filesystem.
+ Thanks Rishabh for the back-ports.
 
-  EXT4-fs error (device pmem1): __ext4_find_entry:1658: inode #73193:
-  comm fsstress: reading directory lblock 0
-  EXT4-fs error (device pmem1): __ext4_find_entry:1658: inode #75334:
-  comm fsstress: reading directory lblock 0
+ Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-Something like ll_rw_block() should be used carefully and seems could
-only be safely used for the readahead case. So the best way is to fix
-the read operations in filesystem in the long run, but now let us avoid
-this issue first. This patch avoid this issue by fallback to migrate
-pages that are not uptodate like fallback_migrate_page(), those pages
-that has buffers may probably do read operation soon.
+Thanks.
 
-Fixes: 88dbcbb3a484 ("blkdev: avoid migration stalls for blkdev pages")
-
-Signed-off-by: Yue Zhao <findns94@gmail.com>
----
- mm/migrate.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 034b0662fd3b..1e908e997147 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -751,6 +751,39 @@ static int __buffer_migrate_page(struct address_space *mapping,
- 		return -EAGAIN;
- 
- 	head = page_buffers(page);
-+
-+	/*
-+	 * If the mapped buffers on the page are not uptodate and has refcount,
-+	 * some others may propably try to lock the buffer and submit read IO
-+	 * through ll_rw_block(), but it will not submit IO once it failed to
-+	 * lock the buffer, so try to fallback to migrate_page() to prevent
-+	 * false positive EIO.
-+	 */
-+	if (check_refs) {
-+		bool uptodate = true;
-+		bool invalidate = false;
-+
-+		bh = head;
-+		do {
-+			if (buffer_mapped(bh) && !buffer_uptodate(bh)) {
-+				uptodate = false;
-+				if (atomic_read(&bh->b_count)) {
-+					invalidate = true;
-+					break;
-+				}
-+			}
-+			bh = bh->b_this_page;
-+		} while (bh != head);
-+
-+		if (!uptodate) {
-+			if (invalidate)
-+				invalidate_bh_lrus();
-+			if (try_to_release_page(page, GFP_KERNEL))
-+				return migrate_page(mapping, newpage, page, mode);
-+			return -EAGAIN;
-+		}
-+	}
-+
- 	if (!buffer_migrate_lock_buffers(head, mode))
- 		return -EAGAIN;
- 
--- 
-2.17.1
-
+>
+>  arch/x86/include/asm/kvm_host.h |   5 +-
+>  arch/x86/kvm/svm/svm.c          |   2 +
+>  arch/x86/kvm/vmx/vmx.c          |   1 +
+>  arch/x86/kvm/x86.c              | 164 ++++++++++++++++++++++----------
+>  4 files changed, 122 insertions(+), 50 deletions(-)
+>
+> --
+> 2.37.1
+>
