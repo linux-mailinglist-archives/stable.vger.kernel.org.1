@@ -2,144 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 357AE6F4EE2
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 04:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A896F4F26
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 05:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjECCeJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 2 May 2023 22:34:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
+        id S229609AbjECDa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 2 May 2023 23:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229689AbjECCd7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 22:33:59 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57413AB1
-        for <stable@vger.kernel.org>; Tue,  2 May 2023 19:33:54 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-51bb4164162so3865328a12.2
-        for <stable@vger.kernel.org>; Tue, 02 May 2023 19:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683081234; x=1685673234;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kO+DuhhQhtfwQumbn93KBsOv9eGyW13juEx1DZY9eo8=;
-        b=a6o+B30XzCwYla9TMl4aF7xYlJdinfkn5QrcDKbO/kRfUcLzUZgqHEQ+SObPwAqORx
-         Eq0Ju3xXQQtN6rhLYdUjENVIBwLODb7QZ4B2DYBV4KkNhtZrKrYQHHBo46qCpA/ph6tR
-         dM+6//+jahItnFuFomapyiOWGgu7NRob3RIbp7gJb+7WiLfXrwapkNVMdNNsf5bvtTkP
-         qz6c2BQFSt9KbIA2TiRsq334NOijed/UPAu3Tb8uIjBy1mbHeT8DzxOJGUNIOwS5a2Ay
-         wjRyRJQX4JODOBelKXynhlvUnRTHrKP84hPfpqhCiFMA034s5onAWxpkt+jN46W5kfx+
-         4lyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683081234; x=1685673234;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kO+DuhhQhtfwQumbn93KBsOv9eGyW13juEx1DZY9eo8=;
-        b=DySUTWN5gtTqR0z6aHp801Wtr5qaFBNmznMlobBV6Gv5UVeynsMbpIzOAfJBnXsUoo
-         S9pBkepXSC3mQTovUvAtvB11pOumcLWaAGKS7aFpycBDQeVe6fGNaSsjP+FDv+O1haGH
-         8aG7M0xnQigEaTx70NwiDNnrQOdTud/cUq3QrMn1BDZQsGKczsnRGIDwoGc/NoXe6bLI
-         YnJUHDom7iIfdxB/pUFfg23fmQJWx5CSHhhQkdSCo+iWFJz3UQDtlPS510n/aX4bXMoi
-         EgJ3TFNb0nKUMz7ba7tLC+FyWfamYiOylcyaidnDJckdtADcEucNqviLCgcbOVZQ7Hou
-         gVjw==
-X-Gm-Message-State: AC+VfDwqXMj92meR6LDyvVuMT97hMN9h6kUVcmBEXcfPoOCxU8bbb9v/
-        zPv+IsmTR4Sz7MhMzst+EXX5mT+vNf4=
-X-Google-Smtp-Source: ACHHUZ4YCoa72gMmDmchh9220KUKUvHBCc2tTAY0DqvL93rzNHxqR+eE11WtIZ9yIssZEKWdWdXzJbCgKziS
-X-Received: from jstultz-noogler2.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:600])
- (user=jstultz job=sendgmr) by 2002:a63:28c6:0:b0:52c:4227:aa60 with SMTP id
- bs189-20020a6328c6000000b0052c4227aa60mr138888pgb.7.1683081233936; Tue, 02
- May 2023 19:33:53 -0700 (PDT)
-Date:   Wed,  3 May 2023 02:33:51 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
-Message-ID: <20230503023351.2832796-1-jstultz@google.com>
-Subject: [PATCH v3] locking/rwsem: Add __always_inline annotation to
- __down_read_common() and inlined callers
-From:   John Stultz <jstultz@google.com>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     John Stultz <jstultz@google.com>, Minchan Kim <minchan@kernel.org>,
-        Tim Murray <timmurray@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>,
-        Boqun Feng <boqun.feng@gmail.com>, kernel-team@android.com,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229586AbjECDaZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 2 May 2023 23:30:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBBC30FD;
+        Tue,  2 May 2023 20:30:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 604CC622DA;
+        Wed,  3 May 2023 03:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B3392C433EF;
+        Wed,  3 May 2023 03:30:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683084619;
+        bh=WLePMFTzjehr9UevzId0j2OA0wYMyFASCHTHGYPPt2w=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=M32UpwLrF0haRxJJu4+N6DyK2waPH0u80DX/t6PsuBzKMfQdHl5U1+guDJAaWr+pJ
+         P40yjI8fyWwShSe28I1r5pqFwtVnSk14s722dNoho9UE/iKltSn8ytt89ZTFO79OZZ
+         HQtcjEOzDtBVaZxnXiPlEp7MtOHtQIlTUWBwNAnf3YyyEWnP8PYYU/Qjb6xiGtzxJm
+         k0yYwbacdxQwvUuXfYD4ZqRKqOOk2LCTWpy1kT1QDB/hVCngOQ1XSx9HKFhscVbjWI
+         MaWoFnDUAETaE3yfec2NR2xAGfqFqze1Eher+sSLPDwORJJjvg/IFwOjm0GFMb8mkU
+         XjGC+rEVRZ6BA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8E1BEC3959E;
+        Wed,  3 May 2023 03:30:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [net v2] net: ethernet: mtk_eth_soc: drop generic vlan rx offload,
+ only use DSA untagging
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168308461957.6433.6971778251909204791.git-patchwork-notify@kernel.org>
+Date:   Wed, 03 May 2023 03:30:19 +0000
+References: <20230426172153.8352-1-linux@fw-web.de>
+In-Reply-To: <20230426172153.8352-1-linux@fw-web.de>
+To:     Frank Wunderlich <linux@fw-web.de>
+Cc:     linux-mediatek@lists.infradead.org, nbd@nbd.name, john@phrozen.org,
+        sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
+        lorenzo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, linux@armlinux.org.uk,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+        frank-w@public-files.de, arinc.unal@arinc9.com
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Apparently despite it being marked inline, the compiler
-may not inline __down_read_common() which makes it difficult
-to identify the cause of lock contention, as the blocked
-function in traceevents will always be listed as
-__down_read_common().
+Hello:
 
-So this patch adds __always_inline annotation to the common
-function (as well as the inlined helper callers) to force it to
-be inlined so the blocking function will be listed (via Wchan)
-in traceevents.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Tim Murray <timmurray@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: kernel-team@android.com
-Cc: stable@vger.kernel.org
-Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
-Reviewed-by: Waiman Long <longman@redhat.com>
-Reported-by: Tim Murray <timmurray@google.com>
-Signed-off-by: John Stultz <jstultz@google.com>
----
-v2: Reworked to use __always_inline instead of __sched as
-    suggested by Waiman Long
+On Wed, 26 Apr 2023 19:21:53 +0200 you wrote:
+> From: Felix Fietkau <nbd@nbd.name>
+> 
+> Through testing I found out that hardware vlan rx offload support seems to
+> have some hardware issues. At least when using multiple MACs and when
+> receiving tagged packets on the secondary MAC, the hardware can sometimes
+> start to emit wrong tags on the first MAC as well.
+> 
+> [...]
 
-v3: Add __always_inline annotations to currently inlined users
-    of __down_read_common() to avoid the compiler later doing the
-    same thing there. (Suggested by Peter).
----
- kernel/locking/rwsem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Here is the summary with links:
+  - [net,v2] net: ethernet: mtk_eth_soc: drop generic vlan rx offload, only use DSA untagging
+    https://git.kernel.org/netdev/net/c/c6d96df9fa2c
 
-diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
-index acb5a50309a1..9eabd585ce7a 100644
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1240,7 +1240,7 @@ static struct rw_semaphore *rwsem_downgrade_wake(struct rw_semaphore *sem)
- /*
-  * lock for reading
-  */
--static inline int __down_read_common(struct rw_semaphore *sem, int state)
-+static __always_inline int __down_read_common(struct rw_semaphore *sem, int state)
- {
- 	int ret = 0;
- 	long count;
-@@ -1258,17 +1258,17 @@ static inline int __down_read_common(struct rw_semaphore *sem, int state)
- 	return ret;
- }
- 
--static inline void __down_read(struct rw_semaphore *sem)
-+static __always_inline void __down_read(struct rw_semaphore *sem)
- {
- 	__down_read_common(sem, TASK_UNINTERRUPTIBLE);
- }
- 
--static inline int __down_read_interruptible(struct rw_semaphore *sem)
-+static __always_inline int __down_read_interruptible(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_INTERRUPTIBLE);
- }
- 
--static inline int __down_read_killable(struct rw_semaphore *sem)
-+static __always_inline int __down_read_killable(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_KILLABLE);
- }
+You are awesome, thank you!
 -- 
-2.40.1.495.gc816e09b53d-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
