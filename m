@@ -2,144 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 831FB6F56ED
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 13:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52B446F5751
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 13:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbjECLHK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 07:07:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36468 "EHLO
+        id S229541AbjECLnj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 07:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjECLHJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 07:07:09 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2153349CC
-        for <stable@vger.kernel.org>; Wed,  3 May 2023 04:07:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683112028; x=1714648028;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=isSEaTcczQehorA2XyFTb7Qg8MalrslW5ar7lNBTlZw=;
-  b=ktNfqAdZnZHrYLTAtxO1sP7jPLrk63jW8C8+lBOKHisXXVZ1K3ruyZWt
-   +juNiY5GMKeWA9Wh5Bsv9ysSpi2u4MjKvkenWdURC0+7SdSRevKmm9/NI
-   yTNtFqLystIHxGIViqzZvMB97VUh40otN83h/qQLU+rPCF/7KTMsAkOWg
-   6ZL7Tr7K5RlqLgqreFEV6z09V8v0Eo35Y4PfDLnoQDWxaHKpAQDzF4SJw
-   B2YOHghTcHHb7QP3rXrMj/A6f7x2lOUV37TW2AYcx+wlIoHVJORHt2lqq
-   wEf1cCBFMoAD/rpIvqJZ5WKW+On8CjJjzi+1lk/UB07vnx0G35LJ4faKC
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="411780904"
-X-IronPort-AV: E=Sophos;i="5.99,247,1677571200"; 
-   d="scan'208";a="411780904"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2023 04:07:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="699326439"
-X-IronPort-AV: E=Sophos;i="5.99,247,1677571200"; 
-   d="scan'208";a="699326439"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.70])
-  by fmsmga007.fm.intel.com with SMTP; 03 May 2023 04:07:04 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Wed, 03 May 2023 14:07:04 +0300
-Date:   Wed, 3 May 2023 14:07:04 +0300
-From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To:     "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Cc:     dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        stable@vger.kernel.org,
-        Vinod Govindapillai <vinod.govindapillai@intel.com>
-Subject: Re: [PATCH 02/11] drm/i915/mst: Remove broken MST DSC support
-Message-ID: <ZFJAWCGuWcLDQOfS@intel.com>
-References: <20230502143906.2401-1-ville.syrjala@linux.intel.com>
- <20230502143906.2401-3-ville.syrjala@linux.intel.com>
- <ZFIPCm+k9TCyfMfS@intel.com>
+        with ESMTP id S229524AbjECLni (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 07:43:38 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C01F4C2E
+        for <stable@vger.kernel.org>; Wed,  3 May 2023 04:43:37 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-24ded4b33d7so2783341a91.3
+        for <stable@vger.kernel.org>; Wed, 03 May 2023 04:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683114217; x=1685706217;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+HNHYwnLEvnLgSMzznBh/gGVID9t8HFwI7dBcOQwExQ=;
+        b=sDSScT6xoOiuGFA1vKQAJNZ3Vg5KXR4VmZXAPlNeCFnve1cfQez2Sy/EBDANaR2nb/
+         q5kkrN2FYKhqcF7c9Ap9uUk26iNXcyklXHrhAtDl9FyUFYN9Ovqrzf53NjCIC7326Zpo
+         2spsVnm7bDZG3ZIYEduH+hfA+Qfr7xduo9kv5mUVt6AdiFPKwlhFQyswX0uAYU7h2cms
+         naW+wknvqoQpXcpfMqIaOgNGZesX0KtMHXepnR9nJDsIwatIrURpXIagr1hlNy+U/Ifz
+         33sh5dFYiLVEjuwXwsLjQha2ZjHfncIa9jmmeSx4VsTot872nONAA4+2sAEvKbcHt3u4
+         EUoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683114217; x=1685706217;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HNHYwnLEvnLgSMzznBh/gGVID9t8HFwI7dBcOQwExQ=;
+        b=ihh5z7UZEZVM3tONBCLjmFVQj4SGDCTJqVNHI0N2lMabGpg+7xLPerMxPAJT0gpmqF
+         1dZfUW+yI47m2ZWqobyGMhT8QImcqJeC6UtLjHEkSLBx6DkDdNYK4pNj82WDbT3Q25aV
+         3QoHWD1eefzHYifYWN9MmkhxxWCFhczEcOQl3xWSgseFBLNCjShdFUA4DOMhMlEpMlcH
+         FvN+YK8Axj5lBfUS/CMs0jNLP2juMIGCExFYkjCAus/c1dXsoe53av3LzAhyUowMLYvk
+         qZqlMDGrQR6hNHsbvAC+rOZpxO1elydjOKxijxSGRLgM17WBPljV/kU+geE44zjuQb32
+         9M1A==
+X-Gm-Message-State: AC+VfDzjyH+iZAYpkhv1/ciFovzeBAJyfhM9WzGQsyS8x6ZXQCA2a8Eo
+        ZNXtOmF6yoU6cAuzzIiz6RWcEXzzd3xDrA4XHtE=
+X-Google-Smtp-Source: ACHHUZ6T3IZJp121LnEP07Qf2P+XrR6iLfCGsiKAZq+dwNe7xAjkEa/5s/ka2qETEIL0wguEjr4sGCkclv+rWig4AVA=
+X-Received: by 2002:a17:90a:4b05:b0:249:7224:41cb with SMTP id
+ g5-20020a17090a4b0500b00249722441cbmr21065272pjh.31.1683114216706; Wed, 03
+ May 2023 04:43:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZFIPCm+k9TCyfMfS@intel.com>
-X-Patchwork-Hint: comment
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a06:3802:b0:5cf:e14b:9e46 with HTTP; Wed, 3 May 2023
+ 04:43:36 -0700 (PDT)
+Reply-To: wormer.amos@aol.com
+From:   Wormer Amos <www.nadieng.com@gmail.com>
+Date:   Wed, 3 May 2023 12:43:36 +0100
+Message-ID: <CAOWrxt_2Lv06xdi0FhPuaT77ZjNCXif8dz7Sf08v0uCJocT=nQ@mail.gmail.com>
+Subject: Partnership
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 03, 2023 at 10:36:42AM +0300, Lisovskiy, Stanislav wrote:
-> On Tue, May 02, 2023 at 05:38:57PM +0300, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > The MST DSC code has a myriad of issues:
-> > - Platform checks are wrong (MST+DSC is TGL+ only IIRC)
-> > - Return values of .mode_valid_ctx() are wrong
-> > - .mode_valid_ctx() assumes bigjoiner might be used, but ther rest
-> >   of the code doesn't agree
-> > - compressed bpp calculations don't make sense
-> > - FEC handling needs to consider the entire link as opposed to just
-> >   the single stream. Currently FEC would only get enabled if the
-> >   first enabled stream is compressed. Also I'm not seeing anything
-> >   that would account for the FEC overhead in any bandwidth calculations
-> > - PPS SDP is only handled for the first stream via the dig_port
-> >   hooks, other streams will not be transmittitng any PPS SDPs
-> > - PPS SDP readout is missing (also missing for SST!)
-> > - VDSC readout is missing (also missing for SST!)
-> > 
-> > The FEC issues is really the big one since we have no way currently
-> > to apply such link wide configuration constraints. Changing that is
-> > going to require a much bigger rework of the higher level modeset
-> > .compute_config() logic. We will also need such a rework to properly
-> > distribute the available bandwidth across all the streams on the
-> > same link (which is a must to eg. enable deep color).
-> 
-> Also all the things you mentioned are subject for discussion, for example
-> I see that FEC overhead is actually accounted for bpp calculation for instance.
+Greeting. please i want to know if you're ready for business investment
+project in
+your country because i
+need a serious partnership with good background, kindly reply
+me to discuss details immediately. i will appreciate you to contact me
+on this email below.
 
-AFAICS FEC is only accounted for in the data M/N calculations,
-assuming that particular stream happened to be compressed. I'm
-not sure if that actually matters since at least the link M/N
-are not even used by the MST sink. I suppose the data M/N might
-still be used for something though. For any uncompressed stream
-on the same link the data M/N values will be calculated
-incorrectly without FEC.
+Thanks and awaiting for your quick response,
 
-And as mentioned, the FEC bandwidth overhead doesn't seem to
-be accounted anywhere so no guarantee that we won't try to
-oversubcribe the link.
-
-And FEC will only be enabled if the first stream to be enabled
-is compressed, otherwise we will enable the link without FEC
-and still try to cram other compressed streams through it
-(albeit without the PPS SDP so who knows what will happen)
-and that is illegal.
-
-> We usually improve things by gradually fixing, because if we act same way towards
-> all wrong code in the driver, we could end up removing the whole i915.
-
-We ususally don't merge code that has this many obvious and/or
-fundemental issues.
-
-Now, most of the issues I listed above are probably fixable
-in a way that could be backported to stable kernels, but
-unfortunately the FEC issue is not one of those. That one
-will likely need massive amounts of work all over the driver
-modeset code, making a backport impossible.
-
-> So from my side I would nack it, at least until you have a code which handles
-> all of this better - I have no doubt you probably have some ideas in your mind, so lets be constructive at least and propose something better first.
-> This code doesn't cause any regressions, but still provides "some" support to DP MST DSC to say the least and even if that would be removed, if some of those users 
-> refer to me, I would probably then just point to this mail discussion everytime.
-
-It seems very likely that it will cause regressions at some point,
-it just needs a specific multi-display MST setup. The resulting
-problems will be very confusing to debug since the order in which
-you enable/disable the outputs will have an impact on what actually
-goes wrong on account of the FEC and PPS SDP issues. The longer
-we wait disabling this the harder it will be to deal with those
-regressions since we the probably can't revert anymore (a straight
-revert was already not possible) but also can't fix it in a way
-that can be backported (due to the FEC issues in particular).
-
--- 
-Ville Syrjälä
-Intel
+Amos!
