@@ -2,125 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E5446F4F76
-	for <lists+stable@lfdr.de>; Wed,  3 May 2023 06:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 178D46F508F
+	for <lists+stable@lfdr.de>; Wed,  3 May 2023 09:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbjECEbW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 3 May 2023 00:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44322 "EHLO
+        id S229580AbjECHEp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 3 May 2023 03:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjECEbU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 00:31:20 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49386B5;
-        Tue,  2 May 2023 21:31:17 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-63b67a26069so5273137b3a.0;
-        Tue, 02 May 2023 21:31:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683088276; x=1685680276;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j36FxbwcTfFp+Gw+OcG7+yTUIaRmnbVgGu4hODtTOa0=;
-        b=citAXFKdtFhDlYnMr+GPqWXwjQYIvHLtz/niHkqQih/1UNzeLl3TEUTEeb+3Z21JXJ
-         WP0PogRcYNrjxnnih1jSjvxB4iRIrPEv4IV5vmDfIa7cvtGzed2C2bNeFrGR/N/lLmmx
-         CndsSzUQd8zF6VqgbCnal2ZGPgIa4wjfHC8uCssmN+6As/oZ1InjHs6GiZ4b2vnSWqqE
-         Cn4RSAXzV+1yVvnc1ljIrnfow/J3GuthUY0JN59EfER1TNmyJDIjByOYy2dhdLAujOOd
-         UDGMSbS792NCH53/sf23pAg6Ifkh9bnmFdtNR20TrEvH6In0WHiZ30tnAWu7XfZD0tfd
-         +Hqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683088277; x=1685680277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j36FxbwcTfFp+Gw+OcG7+yTUIaRmnbVgGu4hODtTOa0=;
-        b=F7APy0VdTF/BnhZ1TWZR1Fziwfsj9o0QM1J/VSc3bTJ+n52rWBtx7/JW5VvEHwDHhd
-         OJ83Dv7vM7TBWBO9r46VCxPvUZB36zG/m7gjeg99Ga/DAhvckEjlZBToIROOQa9cBzFx
-         0Gx0hFaIXfSV0go7wKvCsnpbiAvLaC2kGvXJI9x+jSqPTfudeWxEIePDuL6YWL+Nw57n
-         uvE2WkdvJrhOJ0GYk4D6t3rYQmRTZYJnp6A+fELF9NVfl3CAtvSHCxZ7YC13NYGQ0jT1
-         3NSJfyzYnn8m1tc93Gg0FS/aQU/9xIe3t5r5gKA9O3Vf1GKgyJuSetoR1AAEW1w9nVyW
-         c8wg==
-X-Gm-Message-State: AC+VfDzhDQZQ6eE+hrRBqKqI8CNgxJ1dPWuP2OJwZNYjNniRV1TZ68JF
-        GREQbsxjpCbxekGfX8ZCw1j2vBZMg3I=
-X-Google-Smtp-Source: ACHHUZ7fgYIek3AW/jmP9fqZIwYfJQKDV4HBGtHSbzm88HjynunVyvK7sLCzkGyJubW9ytiB59fATw==
-X-Received: by 2002:a05:6a00:a26:b0:641:3c61:db27 with SMTP id p38-20020a056a000a2600b006413c61db27mr21516460pfh.13.1683088276567;
-        Tue, 02 May 2023 21:31:16 -0700 (PDT)
-Received: from debian.me (subs32-116-206-28-39.three.co.id. [116.206.28.39])
-        by smtp.gmail.com with ESMTPSA id n7-20020a056a00212700b0063b6fb4522esm22460215pfj.20.2023.05.02.21.31.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 May 2023 21:31:16 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 61B83106248; Wed,  3 May 2023 11:31:13 +0700 (WIB)
-Date:   Wed, 3 May 2023 11:31:13 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Acid Bong <acidbong@tilde.cafe>, regressions@lists.linux.dev
-Cc:     stable@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Message-ID: <ZFHjkb75lgzKRhRr@debian.me>
-References: <CRVU11I7JJWF.367PSO4YAQQEI@bong>
- <5f445dab-a152-bcaa-4462-1665998c3e2e@gmail.com>
- <ZE+1pKbfy1l/tTo6@debian.me>
- <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
+        with ESMTP id S229491AbjECHEp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 3 May 2023 03:04:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA64E269D;
+        Wed,  3 May 2023 00:04:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63A8160AF8;
+        Wed,  3 May 2023 07:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA42C433EF;
+        Wed,  3 May 2023 07:04:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683097482;
+        bh=M0BKie22cDJLEmh+DW1hFkVbxx3BKs6v3GQgOxwOC1I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=akIxmMM83ZB7scSmRZabtnBDF9G9XAKAY+Apri/LWfcfuxEo7vOzWAjEdK6J49uqy
+         4NQpck+EzQRCVS5oBNJzbFCUkmOGhaLuR+3JxZHzabUu5RPbIMMA4Jk9ar+O2SlULV
+         Yy3nelM0+CZr4sAlUkbo0ugEc1qdsKMWvQGrkIgpojwEIRxsZqt8QGvw6GoDixE/fP
+         Kd0G8XunzTC47/LiWrcWmcP3eUiM8jqK5/wfo/0s+ASN//phlEGvWQHWuF7AHnadyL
+         26PupfT3VPijmSYy65DCZNMDvsi8rPSj5+lOc3MqhI8I8Y+TEmHHGlSBflyv6Z9czG
+         EhywdUTYAeYhA==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1pu6Xf-0007Og-E0; Wed, 03 May 2023 09:04:47 +0200
+Date:   Wed, 3 May 2023 09:04:47 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] Bluetooth: fix debugfs registration
+Message-ID: <ZFIHj9OAJkRvSscs@hovoldconsulting.com>
+References: <20230424124852.12625-1-johan+linaro@kernel.org>
+ <20230424124852.12625-2-johan+linaro@kernel.org>
+ <CABBYNZLBQjWVb=z8mffi4RmeKS-+RDLV+XF8bR2MiJ-ZOaFVHA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qzZ1tcaqoAMep0dQ"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABBYNZLBQjWVb=z8mffi4RmeKS-+RDLV+XF8bR2MiJ-ZOaFVHA@mail.gmail.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, May 02, 2023 at 04:37:51PM -0700, Luiz Augusto von Dentz wrote:
+> Hi Johan,
+> 
+> On Mon, Apr 24, 2023 at 5:50 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+> >
+> > Since commit ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for
+> > unconfigured controllers") the debugfs interface for unconfigured
+> > controllers will be created when the controller is configured.
+> >
+> > There is however currently nothing preventing a controller from being
+> > configured multiple time (e.g. setting the device address using btmgmt)
+> > which results in failed attempts to register the already registered
+> > debugfs entries:
+> >
+> >         debugfs: File 'features' in directory 'hci0' already present!
+> >         debugfs: File 'manufacturer' in directory 'hci0' already present!
+> >         debugfs: File 'hci_version' in directory 'hci0' already present!
+> >         ...
+> >         debugfs: File 'quirk_simultaneous_discovery' in directory 'hci0' already present!
+> >
+> > Add a controller flag to avoid trying to register the debugfs interface
+> > more than once.
+> >
+> > Fixes: ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for unconfigured controllers")
+> > Cc: stable@vger.kernel.org      # 4.0
+> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> > ---
 
---qzZ1tcaqoAMep0dQ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+> > index 632be1267288..a8785126df75 100644
+> > --- a/net/bluetooth/hci_sync.c
+> > +++ b/net/bluetooth/hci_sync.c
+> > @@ -4501,6 +4501,9 @@ static int hci_init_sync(struct hci_dev *hdev)
+> >             !hci_dev_test_flag(hdev, HCI_CONFIG))
+> >                 return 0;
+> >
+> > +       if (hci_dev_test_and_set_flag(hdev, HCI_DEBUGFS_CREATED))
+> > +               return 0;
+> 
+> Can't we just use HCI_SETUP like we do with in create_basic:
+> 
+>     if (hci_dev_test_flag(hdev, HCI_SETUP))
+>         hci_debugfs_create_basic(hdev);
+> 
+> Actually we might as well move these checks directly inside the
+> hci_debugfs function to make sure these only take effect during the
+> setup/first init.
 
-On Tue, May 02, 2023 at 12:02:26AM +0300, Acid Bong wrote:
-> Hi there, and thank you for the reminder.
->=20
-> Bisecting, unfortunately, takes a long time: I'm only trying out the 7th
-> commit, 15e7433e1dc2 (previous 6 marked as bad). The bug, as noted in
-> the head, doesn't have any (strict) patterns and takes randomly long
-> times: some kernels hung on the next day after compilation, one took 5
-> days. I'm not excluding a possibility that I might've got the versions
-> wrong and the bug occured on the update from 6.1-pf1 to 6.1-pf2 (6.1 and
-> 6.1.3; could be unrelated, but I saw a bunch of commits related to i915
-> and Skylake).
+The problem is that commit ec6cef9cd98d ("Bluetooth: Fix SMP channel
+registration for unconfigured controllers") started deferring creation
+of most parts of the debugfs interface until the controller is
+configured (e.g. as some information is not available until then).
 
-OK, try keep updating on bisection process.
+Moving everything back to setup-time would effectively revert that.
 
-> What exactly do you mean by "swapping the hardware"? I'm already sure
-> it's not related to my storage, because a month ago I replaced my faulty
-> HDD with an SSD, but the bug still remained. Unfortunately, I don't have
-> spare PCs or resources to purchase new hardware.
+Perhaps the interface can be changed in some way so that everything is
+again registered at setup-time (e.g. with placeholder values instead of
+conditionally created attributes), but that would at least not be
+something that we could backport.
 
-In case of laptops, I mean buying out new laptop (maybe with similar
-hardware specs as your current one) and try reproducing the regression
-there.
+> >         hci_debugfs_create_common(hdev);
+> >
+> >         if (lmp_bredr_capable(hdev))
 
-Thanks.
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---qzZ1tcaqoAMep0dQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZFHjkAAKCRD2uYlJVVFO
-o0hGAP0bEioOcTuwLyb+gkUo3DPx3R9ztyRQPLu3u8KxtSe9LQEAoy7Rm/yGzwrQ
-uibC0VjplPdI/WpcMp7epkioqm6SnQY=
-=Tnp8
------END PGP SIGNATURE-----
-
---qzZ1tcaqoAMep0dQ--
+Johan
