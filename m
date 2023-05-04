@@ -2,113 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CBD6F687A
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 11:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 918C26F688D
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 11:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjEDJl0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 05:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
+        id S230322AbjEDJpX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 05:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbjEDJl0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 05:41:26 -0400
-Received: from out28-65.mail.aliyun.com (out28-65.mail.aliyun.com [115.124.28.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B13846BF;
-        Thu,  4 May 2023 02:41:23 -0700 (PDT)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.04631398|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.181023-0.00372716-0.81525;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047213;MF=wangyugui@e16-tech.com;NM=1;PH=DS;RN=5;RT=5;SR=0;TI=SMTPD_---.SXnHuql_1683193277;
-Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.SXnHuql_1683193277)
-          by smtp.aliyun-inc.com;
-          Thu, 04 May 2023 17:41:18 +0800
-Date:   Thu, 04 May 2023 17:41:20 +0800
-From:   Wang Yugui <wangyugui@e16-tech.com>
-To:     fdmanana@kernel.org
-Subject: Re: [PATCH] btrfs: fix backref walking not returning all inode refs
-Cc:     linux-btrfs@vger.kernel.org, git@vladimir.panteleev.md,
-        Filipe Manana <fdmanana@suse.com>, stable@vger.kernel.org
-In-Reply-To: <77994dd9ede2084d45dd0a36938c67de70d8e859.1683123587.git.fdmanana@suse.com>
-References: <77994dd9ede2084d45dd0a36938c67de70d8e859.1683123587.git.fdmanana@suse.com>
-Message-Id: <20230504174118.4D5F.409509F4@e16-tech.com>
+        with ESMTP id S229972AbjEDJpW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 05:45:22 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1975B46B0
+        for <stable@vger.kernel.org>; Thu,  4 May 2023 02:45:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683193522; x=1714729522;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xXxKdtNC5aGnqQZK70eazDiZwZew3BpBgKA0azwk6Ig=;
+  b=fXKThyVzgs1agv123vNGJ5hw1cJ0s+8iUTf2tyCAPbZxlOeGX2sME+hP
+   kC/R729sSC8akX36PfcpqsWubNj6HKC7Q4oUqH2H6bCG9EILsfR3aWTt2
+   y8GBYIEWabRSe1IUI+DmaF+WgrvMccr6KDyYdyeIkiEMHDyEx9YOpammS
+   R5RYxgMZlDYKUfe/SnwtoPFJZAIdqex6q36bE3u0oYgyS5hh1CUy7Vo14
+   ryo6cD7tXWv28qt2OnMh+TM7axOvUYjopzOnkOHyUs2Py+1nJOUdiFbnU
+   RDGfL40BfL2eWtBIXJfIVC2z1Mr5bUPAzc9pICclFIGJ0X0J/D+Adzqrf
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10699"; a="348929914"
+X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
+   d="scan'208";a="348929914"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 02:45:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10699"; a="841074862"
+X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
+   d="scan'208";a="841074862"
+Received: from dmitriyp-mobl.ger.corp.intel.com (HELO intel.com) ([10.249.37.93])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 02:45:18 -0700
+Date:   Thu, 4 May 2023 11:45:15 +0200
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc:     Andi Shyti <andi.shyti@linux.intel.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        stable@vger.kernel.org,
+        Maciej Patelczyk <maciej.patelczyk@intel.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Matthew Auld <matthew.auld@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Chris Wilson <chris.p.wilson@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>
+Subject: Re: [Intel-gfx] [PATCH v5 5/5] drm/i915/gt: Make sure that errors
+ are propagated through request chains
+Message-ID: <ZFN+q9xEyuRFrJp4@ashyti-mobl2.lan>
+References: <20230412113308.812468-1-andi.shyti@linux.intel.com>
+ <20230412113308.812468-6-andi.shyti@linux.intel.com>
+ <ca796c78-67cf-c803-b3bc-7d6eaa542b32@linux.intel.com>
+ <5b7f82db-b9dd-e9c9-496c-72995469d699@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Becky! ver. 2.81.04 [en]
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b7f82db-b9dd-e9c9-496c-72995469d699@linux.intel.com>
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hi Tvrtko,
 
-> From: Filipe Manana <fdmanana@suse.com>
-> 
-> When using the logical to ino ioctl v2, if the flag to ignore offsets of
-> file extent items (BTRFS_LOGICAL_INO_ARGS_IGNORE_OFFSET) is given, the
-> backref walking code ends up not returning references for all file offsets
-> of an inode that point to the given logical bytenr. This happens since
-> kernel 6.2, commit 6ce6ba534418 ("btrfs: use a single argument for extent
-> offset in backref walking functions"), as it mistakenly skipped the search
-> for file extent items in a leaf that point to the target extent if that
-> flag is given. Instead it should only skip the filtering done by
-> check_extent_in_eb() - that is, it should not avoid the calls to that
-> function.
-> 
-> So fix this by always calling check_extent_in_eb() and have this function
-> do the filtering only if an extent offset is given and the flag to ignore
-> offsets is not set.
-> Fixes: 6ce6ba534418 ("btrfs: use a single argument for extent offset in backref walking functions")
-> Reported-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-> Link: https://lore.kernel.org/linux-btrfs/CAHhfkvwo=nmzrJSqZ2qMfF-rZB-ab6ahHnCD_sq9h4o8v+M7QQ@mail.gmail.com/
-> Tested-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-> CC: stable@vger.kernel.org # 6.2+
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
+> Another option - maybe - is this related to revert of fence error
+> propagation? If it is and having that would avoid the need for this invasive
+> fix, maybe we unrevert 3761baae908a7b5012be08d70fa553cc2eb82305 with edits
+> to limit to special contexts? If doable..
 
-fstests(btrfs/299) will fail with this patch.
+I think that is not enough as we want to get anyway to the last
+request and fence submitted. Right?
 
-Best Regards
-Wang Yugui (wangyugui@e16-tech.com)
-2023/05/04
+I guess this commit should be reverted anyway.
 
-> ---
->  fs/btrfs/backref.c | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
-> index e54f0884802a..8e61be3fe9a8 100644
-> --- a/fs/btrfs/backref.c
-> +++ b/fs/btrfs/backref.c
-> @@ -45,7 +45,9 @@ static int check_extent_in_eb(struct btrfs_backref_walk_ctx *ctx,
->  	int root_count;
->  	bool cached;
->  
-> -	if (!btrfs_file_extent_compression(eb, fi) &&
-> +	if (!ctx->ignore_extent_item_pos &&
-> +	    ctx->extent_item_pos > 0 &&
-> +	    !btrfs_file_extent_compression(eb, fi) &&
->  	    !btrfs_file_extent_encryption(eb, fi) &&
->  	    !btrfs_file_extent_other_encoding(eb, fi)) {
->  		u64 data_offset;
-> @@ -552,13 +554,10 @@ static int add_all_parents(struct btrfs_backref_walk_ctx *ctx,
->  				count++;
->  			else
->  				goto next;
-> -			if (!ctx->ignore_extent_item_pos) {
-> -				ret = check_extent_in_eb(ctx, &key, eb, fi, &eie);
-> -				if (ret == BTRFS_ITERATE_EXTENT_INODES_STOP ||
-> -				    ret < 0)
-> -					break;
-> -			}
-> -			if (ret > 0)
-> +			ret = check_extent_in_eb(ctx, &key, eb, fi, &eie);
-> +			if (ret == BTRFS_ITERATE_EXTENT_INODES_STOP || ret < 0)
-> +				break;
-> +			else if (ret > 0)
->  				goto next;
->  			ret = ulist_add_merge_ptr(parents, eb->start,
->  						  eie, (void **)&old, GFP_NOFS);
-> -- 
-> 2.35.1
-
-
+Andi
