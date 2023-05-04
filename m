@@ -2,154 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A6046F676C
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 10:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E746F67F0
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 11:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230059AbjEDI3k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 04:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38922 "EHLO
+        id S229548AbjEDJHD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 05:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230033AbjEDI3T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 04:29:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A7DA59CA;
-        Thu,  4 May 2023 01:26:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB2B06323A;
-        Thu,  4 May 2023 08:26:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F311DC433EF;
-        Thu,  4 May 2023 08:26:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683188787;
-        bh=rcaycbeN8aPOjP9E5Mbp7ZhlZYzPrs40+UjyKL7xQXQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OcsYHAUx9pW2KkBahMehpenMUQCkGke3bY/1G5R6e89EXzRf8GkLlvzyNcqCTTkAQ
-         41Ze/gCJZoVWE8oDBLRwjiQ8VFbs2Y5gQo5dA1OUaqaSdtUJ3B6Hy6UAK8UZmLya19
-         cVsVC3prmiOyuWEftJhEqUmDesq2duZEdGygqhb1sishq7x3SPOXRdyxWIMljHHKKA
-         25IWhSiM+JbBQRCb7s8CDumiPuvPgnMKCgPjkn1tR4eoGIFbyw/URvm/zD/l3iNjiA
-         0hxqjeiV+1n01JsC/cYOdPkcUjbpcCtOTSssMILIKXQQ/Ar02d9eEzUgAVszYp3L+Y
-         gYvJwkRVUxUPg==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1puUIM-0005Nf-5x; Thu, 04 May 2023 10:26:34 +0200
-Date:   Thu, 4 May 2023 10:26:34 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] Bluetooth: fix debugfs registration
-Message-ID: <ZFNsOm7GvSkBi4Tc@hovoldconsulting.com>
-References: <20230424124852.12625-1-johan+linaro@kernel.org>
- <20230424124852.12625-2-johan+linaro@kernel.org>
- <CABBYNZLBQjWVb=z8mffi4RmeKS-+RDLV+XF8bR2MiJ-ZOaFVHA@mail.gmail.com>
- <ZFIHj9OAJkRvSscs@hovoldconsulting.com>
- <CABBYNZJ23E50J2gfi5NgHj_bXMuVTHk29s+BH-zMhhWmRsd0Pg@mail.gmail.com>
+        with ESMTP id S229878AbjEDJHC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 05:07:02 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92D88F
+        for <stable@vger.kernel.org>; Thu,  4 May 2023 02:06:56 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1puUvP-0004Ux-C3; Thu, 04 May 2023 11:06:55 +0200
+Message-ID: <585b00d1-5ad7-ecff-e905-71e370613dfb@leemhuis.info>
+Date:   Thu, 4 May 2023 11:06:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: stable-rc/linux-4.14.y bisection: baseline.login on
+ meson8b-odroidc1
+Content-Language: en-US, de-DE
+To:     =?UTF-8?Q?Ricardo_Ca=c3=b1uelo?= <ricardo.canuelo@collabora.com>,
+        stable@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <1fcff522-337a-c334-42a7-bc9b4f0daec4@collabora.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+In-Reply-To: <1fcff522-337a-c334-42a7-bc9b4f0daec4@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABBYNZJ23E50J2gfi5NgHj_bXMuVTHk29s+BH-zMhhWmRsd0Pg@mail.gmail.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1683191216;0d71ce43;
+X-HE-SMSGID: 1puUvP-0004Ux-C3
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 03, 2023 at 10:34:06AM -0700, Luiz Augusto von Dentz wrote:
-> Hi Johan,
-> 
-> On Wed, May 3, 2023 at 12:04 AM Johan Hovold <johan@kernel.org> wrote:
-> >
-> > On Tue, May 02, 2023 at 04:37:51PM -0700, Luiz Augusto von Dentz wrote:
-> > > Hi Johan,
-> > >
-> > > On Mon, Apr 24, 2023 at 5:50 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-> > > >
-> > > > Since commit ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for
-> > > > unconfigured controllers") the debugfs interface for unconfigured
-> > > > controllers will be created when the controller is configured.
-> > > >
-> > > > There is however currently nothing preventing a controller from being
-> > > > configured multiple time (e.g. setting the device address using btmgmt)
-> > > > which results in failed attempts to register the already registered
-> > > > debugfs entries:
-> > > >
-> > > >         debugfs: File 'features' in directory 'hci0' already present!
-> > > >         debugfs: File 'manufacturer' in directory 'hci0' already present!
-> > > >         debugfs: File 'hci_version' in directory 'hci0' already present!
-> > > >         ...
-> > > >         debugfs: File 'quirk_simultaneous_discovery' in directory 'hci0' already present!
-> > > >
-> > > > Add a controller flag to avoid trying to register the debugfs interface
-> > > > more than once.
-> > > >
-> > > > Fixes: ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for unconfigured controllers")
-> > > > Cc: stable@vger.kernel.org      # 4.0
-> > > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > > > ---
-> >
-> > > > diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> > > > index 632be1267288..a8785126df75 100644
-> > > > --- a/net/bluetooth/hci_sync.c
-> > > > +++ b/net/bluetooth/hci_sync.c
-> > > > @@ -4501,6 +4501,9 @@ static int hci_init_sync(struct hci_dev *hdev)
-> > > >             !hci_dev_test_flag(hdev, HCI_CONFIG))
-> > > >                 return 0;
-> > > >
-> > > > +       if (hci_dev_test_and_set_flag(hdev, HCI_DEBUGFS_CREATED))
-> > > > +               return 0;
-> > >
-> > > Can't we just use HCI_SETUP like we do with in create_basic:
-> > >
-> > >     if (hci_dev_test_flag(hdev, HCI_SETUP))
-> > >         hci_debugfs_create_basic(hdev);
-> > >
-> > > Actually we might as well move these checks directly inside the
-> > > hci_debugfs function to make sure these only take effect during the
-> > > setup/first init.
-> >
-> > The problem is that commit ec6cef9cd98d ("Bluetooth: Fix SMP channel
-> > registration for unconfigured controllers") started deferring creation
-> > of most parts of the debugfs interface until the controller is
-> > configured (e.g. as some information is not available until then).
-> >
-> > Moving everything back to setup-time would effectively revert that.
-> 
-> Not moving back but just doing something like:
-> 
-> diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
-> index ec0df2f9188e..a6e94c29fc5a 100644
-> --- a/net/bluetooth/hci_debugfs.c
-> +++ b/net/bluetooth/hci_debugfs.c
-> @@ -310,6 +310,9 @@ DEFINE_INFO_ATTRIBUTE(firmware_info, fw_info);
-> 
->  void hci_debugfs_create_common(struct hci_dev *hdev)
->  {
-> +       if (!hci_dev_test_flag(hdev, HCI_SETUP))
-> +               return;
-> +
->         debugfs_create_file("features", 0444, hdev->debugfs, hdev,
->                             &features_fops);
->         debugfs_create_u16("manufacturer", 0444, hdev->debugfs,
-> 
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-What I tried to explain above is that doing this would always create
-the attributes as setup-time rather than at config-time, which
-effectively reverts commit ec6cef9cd98d ("Bluetooth: Fix SMP channel
-registration for unconfigured controllers"). And doing so looks like it
-would amount to a regression.
+On 10.04.23 08:06, Ricardo Cañuelo wrote:
+> Culprit:
+> https://lore.kernel.org/r/20211227180026.4068352-2-martin.blumenstingl@googlemail.com
+> 
+> On lun 27-12-2021 19:00:24, Martin Blumenstingl wrote:
+>> The dt-bindings for the UART controller only allow the following values
+>> for Meson6 SoCs:
+>> - "amlogic,meson6-uart", "amlogic,meson-ao-uart"
+>> - "amlogic,meson6-uart"
+>>
+>> Use the correct fallback compatible string "amlogic,meson-ao-uart" for
+>> AO UART. Drop the "amlogic,meson-uart" compatible string from the EE
+>> domain UART controllers.
+> 
+> KernelCI detected that this patch introduced a regression in
+> stable-rc/linux-4.14.y (4.14.267) on a meson8b-odroidc1.
+> After this patch was applied the tests running on this platform don't
+> show any serial output.
+> 
+> This doesn't happen in other stable branches nor in mainline, but 4.14
+> hasn't still reached EOL and it'd be good to find a fix.
+> 
+> Here's the bisection report:
+> https://groups.io/g/kernelci-results/message/40147
+> 
+> KernelCI info:
+> https://linux.kernelci.org/test/case/id/64234f7761021a30b262f776/
+> 
+> Test log:
+> https://storage.kernelci.org/stable-rc/linux-4.14.y/v4.14.311-43-g88e481d604e9/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-meson8b-odroidc1.html
 
-Johan
+Lo! From the earlier discussion[1] it seems the mainline developers of
+the patch-set don't care (which is fine). And the stable team always has
+a lot of work at hand, which might explain why they haven't looked into
+this. Hence let me try to fill this gap a little here by asking:
+
+Have you tried if reverting the change on top of the latest 4.14.y
+kernel works and looks safe (e.g. doesn't cause a regression on its own)?
+
+I also briefly looked into "git log v4.14..v4.19 --
+arch/arm/boot/dts/meson.dtsi" and noticed commit 291f45dd6da ("ARM: dts:
+meson: fixing USB support on Meson6, Meson8 and Meson8b") [v4.15-rc1]
+that mentions a fix for the Odroid-C1+ board -- which afaics wasn't
+backported to 4.14.y. Is that maybe why this happens on 4.14.y and not
+on 4.19.y? Note though: It's just a wild guess from the peanut gallery,
+as this is not my area of expertise!
+
+Ciao, Thorsten
+
+[1]
+https://lore.kernel.org/lkml/20230405132900.ci35xji3xbb3igar@rcn-XPS-13-9305/
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot poke
