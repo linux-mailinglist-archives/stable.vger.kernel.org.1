@@ -2,93 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0511A6F7667
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 22:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 534D26F7703
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 22:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232844AbjEDUG4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 16:06:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33950 "EHLO
+        id S231804AbjEDUbV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 4 May 2023 16:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233121AbjEDUFz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 16:05:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495FD1155C;
-        Thu,  4 May 2023 12:53:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B72F63871;
-        Thu,  4 May 2023 19:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383AEC433A0;
-        Thu,  4 May 2023 19:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683229959;
-        bh=XK2jckxn7goA5rrfx5GMbq6wI1FUq3RW3PpLAeR04DA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LDGE1sC4rWpfdPJvVOI4EpKmIwomgFzSkl4wdtx0/u21zB9sztv566dtV8TK208qL
-         5Q6lqNcH2+sWBHWk4wI3YB+wEr9RLl7PjngYtr5GIDyITrTySfKM3+7f5Ujz93R9LI
-         MarZTfEzbqHgPRPTxJG95lgGg+AkZJx/ZL9VKDqlOEp0bWkBXgPXtzTROPtS04hAhT
-         qEZ3vrUHDtUnkZ5jCIeg+jbzeD8APO5SAIBqMs5Xnh7dst9LwdMg+ki1nKYGqC406D
-         VoYlh/eAL0Crtno+Se2A4KnZi4W/qw1sywN8Fgk8/FdKvXLxnMIlayyCSJYuc+YZAj
-         6XSF7gPG6hcDw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Min Li <lm0963hack@gmail.com>,
-        syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>, marcel@holtmann.org,
-        johan.hedberg@gmail.com, luiz.dentz@gmail.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 13/13] Bluetooth: L2CAP: fix "bad unlock balance" in l2cap_disconnect_rsp
-Date:   Thu,  4 May 2023 15:52:05 -0400
-Message-Id: <20230504195207.3809116-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230504195207.3809116-1-sashal@kernel.org>
-References: <20230504195207.3809116-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231948AbjEDUbF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 16:31:05 -0400
+Received: from mail.cbkipa.net (gw.cbidc.co.kr [1.246.220.36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D44118DCB
+        for <stable@vger.kernel.org>; Thu,  4 May 2023 13:19:50 -0700 (PDT)
+Received: by mail.cbkipa.net (Postfix, from userid 500)
+        id 52540A0876; Fri,  5 May 2023 05:19:40 +0900 (KST)
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: ****
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_REPLYTO,FROM_MISSP_REPLYTO,NIXSPAM_IXHASH,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+Received: from [100.82.61.228] (unknown [117.98.10.28])
+        by mail.cbkipa.net (Postfix) with ESMTPA id 2C653A07D2;
+        Fri,  5 May 2023 05:19:29 +0900 (KST)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?b?QVRFTkNJw5NO?=
+To:     Recipients <education@mail.cbkipa.net>
+From:   Sistemas administrador <education@mail.cbkipa.net>
+Date:   Fri, 05 May 2023 01:38:52 +0530
+Reply-To: sistemassadmins@mail2engineer.com
+Message-Id: <20230504201940.52540A0876@mail.cbkipa.net>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min Li <lm0963hack@gmail.com>
+ATENCIÓN;
 
-[ Upstream commit 25e97f7b1866e6b8503be349eeea44bb52d661ce ]
+Su buzón ha superado el límite de almacenamiento, que es de 5 GB definidos por el administrador, quien actualmente está ejecutando en 10.9GB, no puede ser capaz de enviar o recibir correo nuevo hasta que vuelva a validar su buzón de correo electrónico. Para revalidar su buzón de correo, envíe la siguiente información a continuación:
 
-conn->chan_lock isn't acquired before l2cap_get_chan_by_scid,
-if l2cap_get_chan_by_scid returns NULL, then 'bad unlock balance'
-is triggered.
+nombre:
+Nombre de usuario:
+contraseña:
+Confirmar contraseña:
+E-mail:
+teléfono:
 
-Reported-by: syzbot+9519d6b5b79cf7787cf3@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000894f5f05f95e9f4d@google.com/
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/bluetooth/l2cap_core.c | 1 -
- 1 file changed, 1 deletion(-)
+Si usted no puede revalidar su buzón, el buzón se deshabilitará!
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 6f47cb69775d6..b0bb4cf52a7ee 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4392,7 +4392,6 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
- 
- 	chan = l2cap_get_chan_by_scid(conn, scid);
- 	if (!chan) {
--		mutex_unlock(&conn->chan_lock);
- 		return 0;
- 	}
- 
--- 
-2.39.2
+Disculpa las molestias.
+Código de verificación:AR.Correo.000.ES:@WEBMAIL.ADMIN.ES.
+Correo Soporte Técnico © 2023
 
+¡gracias
+Sistemas administrador
