@@ -2,66 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E1E36F6C3E
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 14:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DAE76F6CE3
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 15:25:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbjEDMrc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 08:47:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
+        id S229925AbjEDNZt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 09:25:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbjEDMra (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 08:47:30 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 830216199;
-        Thu,  4 May 2023 05:47:29 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 24B1B339F7;
-        Thu,  4 May 2023 12:47:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1683204448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=5RWZgmt65EvQQ9SnvxJXgBr4Yy3/jR76QNwBEGJZwDM=;
-        b=kRUcMKEXro/cccjoSgpHrEEjNjHz8q1ZEi3o+wZIX9Ykn2cMpJSJZnujublo1oUmUPV0z9
-        aGEGqjOh8xMtZAB5YXqXofkyYA5IKse3B2mYN5jp8A5Flpks7g9+626ReBwvU6ipq9u3eZ
-        lfzARG1YjyyT5+KVaUgW0GACkTz8Cbs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1683204448;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=5RWZgmt65EvQQ9SnvxJXgBr4Yy3/jR76QNwBEGJZwDM=;
-        b=24tjr1tLmNI6AJ/t+pT6rcKRMUJvQmv/hHf5uwOypjJN2vOMMMubrinasqqw2Dhyu4CcKp
-        qZsecBYAhhfpRrAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1695E133F7;
-        Thu,  4 May 2023 12:47:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 9nN3BWCpU2QySAAAMHmgww
-        (envelope-from <jack@suse.cz>); Thu, 04 May 2023 12:47:28 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 9816BA0722; Thu,  4 May 2023 14:47:27 +0200 (CEST)
-From:   Jan Kara <jack@suse.cz>
-To:     Ted Tso <tytso@mit.edu>
-Cc:     <linux-ext4@vger.kernel.org>, Jan Kara <jack@suse.cz>,
-        syzbot+6898da502aef574c5f8a@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Subject: [PATCH] ext4: Avoid deadlock in fs reclaim with page writeback
-Date:   Thu,  4 May 2023 14:47:23 +0200
-Message-Id: <20230504124723.20205-1-jack@suse.cz>
-X-Mailer: git-send-email 2.35.3
+        with ESMTP id S229606AbjEDNZs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 09:25:48 -0400
+Received: from www484.your-server.de (www484.your-server.de [78.47.237.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4E0CF;
+        Thu,  4 May 2023 06:25:46 -0700 (PDT)
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www484.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1puYxp-0002qp-4j; Thu, 04 May 2023 15:25:41 +0200
+Received: from [2003:ca:6730:e8f8:81f6:311d:d80b:43c1]
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1puYxo-000E7H-UN; Thu, 04 May 2023 15:25:40 +0200
+Message-ID: <69e232c0-56ff-268c-43c4-ff40f5b00568@gateware.de>
+Date:   Thu, 4 May 2023 15:25:40 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7473; i=jack@suse.cz; h=from:subject; bh=Os/asTFcpmq1tr508GZtivKMorYYfPZdbHuB8lq/Ox8=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBkU6lVsi0+zH/v0QWLR3pbyC+GgbR1VepaeXDMof+2 DlWWhGCJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZFOpVQAKCRCcnaoHP2RA2XQiB/ sETcoR3PYc4YL0uWvHGmepf9e53Ua8abHHWWfb7KG+96K2rFX1RGwMpvN1LOi9et35i+AjtJG82OmT JPmNQe4ndPXxRz1c/hmF3kT4wznwUEl7oCXrWGC2sOfYLKORhkgjz9wxsXqZ6P2OmrjpJf+k/O6YNf kra/JlPpf0qZkGLEtm710sriMgQus+6lRINSt66AVOEgMQO9g+o1ig8adafiMp22g4La7aF/rjkKUO fy+wDaEG4g4XKTHYRjVE7Yy9Yuf1RTReuflvronFRsRbscTfX4wD80kKLCzjkTsVg/uAZ2CdRw4Bof I7qXZDtuAq47MXu1UvMRqlV4Mb4KJn
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+To:     Petr Mladek <pmladek@suse.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Felipe Balbi <balbi@ti.com>, stable@vger.kernel.org
+References: <2023042625-rendition-distort-fe06@gregkh>
+ <20230427115120.241954-1-k.graefe@gateware.de>
+ <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
+ <ZFEAq7r-awo0OYzp@alley>
+Content-Language: en-US
+From:   =?UTF-8?Q?Konrad_Gr=c3=a4fe?= <k.graefe@gateware.de>
+In-Reply-To: <ZFEAq7r-awo0OYzp@alley>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------0rBkBiV7ZMJJRdrXNy5M0vcT"
+X-Authenticated-Sender: k.graefe@gateware.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26896/Thu May  4 09:24:50 2023)
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,224 +62,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Ext4 has a filesystem wide lock protecting ext4_writepages() calls to
-avoid races with switching of journalled data flag or inode format. This
-lock can however cause a deadlock like:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------0rBkBiV7ZMJJRdrXNy5M0vcT
+Content-Type: multipart/mixed; boundary="------------QcARM0qlBrvLPKSgK8cV8oH0";
+ protected-headers="v1"
+From: =?UTF-8?Q?Konrad_Gr=c3=a4fe?= <k.graefe@gateware.de>
+To: Petr Mladek <pmladek@suse.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Andrzej Pietrasiewicz <andrzej.p@collabora.com>, Felipe Balbi
+ <balbi@ti.com>, stable@vger.kernel.org
+Message-ID: <69e232c0-56ff-268c-43c4-ff40f5b00568@gateware.de>
+Subject: Re: [PATCH v3 1/2] vsprintf: Add %p[mM]U for uppercase MAC address
+References: <2023042625-rendition-distort-fe06@gregkh>
+ <20230427115120.241954-1-k.graefe@gateware.de>
+ <c075b668-8194-6aea-484c-0223f164cb4d@rasmusvillemoes.dk>
+ <ZFEAq7r-awo0OYzp@alley>
+In-Reply-To: <ZFEAq7r-awo0OYzp@alley>
 
-CPU0                            CPU1
+--------------QcARM0qlBrvLPKSgK8cV8oH0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-ext4_writepages()
-  percpu_down_read(sbi->s_writepages_rwsem);
-                                ext4_change_inode_journal_flag()
-                                  percpu_down_write(sbi->s_writepages_rwsem);
-                                    - blocks, all readers block from now on
-  ext4_do_writepages()
-    ext4_init_io_end()
-      kmem_cache_zalloc(io_end_cachep, GFP_KERNEL)
-        fs_reclaim frees dentry...
-          dentry_unlink_inode()
-            iput() - last ref =>
-              iput_final() - inode dirty =>
-                write_inode_now()...
-                  ext4_writepages() tries to acquire sbi->s_writepages_rwsem
-                    and blocks forever
+T24gMDIuMDUuMjMgMTQ6MjMsIFBldHIgTWxhZGVrIHdyb3RlOg0KPiBPbiBGcmkgMjAyMy0w
+NC0yOCAwODo1Njo1OSwgUmFzbXVzIFZpbGxlbW9lcyB3cm90ZToNCj4+IE9uIDI3LzA0LzIw
+MjMgMTMuNTEsIEtvbnJhZCBHcsOkZmUgd3JvdGU6DQo+Pj4gVGhlIENEQy1FQ00gc3BlY2lm
+aWNhdGlvbiByZXF1aXJlcyBhbiBVU0IgZ2FkZ2V0IHRvIHNlbmQgdGhlIGhvc3QgTUFDDQo+
+Pj4gYWRkcmVzcyBhcyB1cHBlcmNhc2UgaGV4IHN0cmluZy4gVGhpcyBjaGFuZ2UgYWRkcyB0
+aGUgYXBwcm9wcmlhdGUNCj4+PiBtb2RpZmllci4NCj4+DQo+PiBUaGlua2luZyBtb3JlIGFi
+b3V0IGl0LCBJJ20gbm90IHN1cmUgdGhpcyBpcyBhcHByb3ByaWF0ZSwgbm90IGZvciBhDQo+
+PiBzaW5nbGUgdXNlciBsaWtlIHRoaXMuIHZzcHJpbnRmKCkgc2hvdWxkIG5vdCBhbmQgY2Fu
+bm90IHNhdGlzZnkgYWxsDQo+PiBwb3NzaWJsZSBzdHJpbmcgZm9ybWF0dGluZyByZXF1aXJl
+bWVudHMgZm9yIHRoZSB3aG9sZSBrZXJuZWwuIFRoZSAlcFgNCj4+IGV4dGVuc2lvbnMgYXJl
+IGNvbnZlbmllbnQgZm9yIHVzZSB3aXRoIHByaW50aygpIGFuZCBmcmllbmRzIHdoZXJlIG9u
+ZQ0KPj4gbmVlZHMgd2hhdCBpbiBvdGhlciBsYW5ndWFnZXMgd291bGQgYmUgInN0cmluZyBp
+bnRlcnBvbGF0aW9uIiAoYmVjYXVzZQ0KPj4gdGhlbiB0aGUgY2FsbGVyIGRvZXNuJ3QgbmVl
+ZCB0byBkZWFsIHdpdGggdGVtcG9yYXJ5IHN0YWNrIGJ1ZmZlcnMgYW5kDQo+PiBwYXNzIHRo
+ZW0gYXMgJXMgYXJndW1lbnRzKSwgYnV0IGZvciBzaW5nbGUgaXRlbXMgbGlrZSB0aGlzLCBz
+bnByaW50ZigpDQo+PiBpcyBub3QgbmVjZXNzYXJpbHkgdGhlIHJpZ2h0IHRvb2wgZm9yIHRo
+ZSBqb2IuDQo+Pg0KPj4gSW4gdGhpcyBjYXNlLCB0aGUgY2FsbGVyIGNhbiBqdXN0IGFzIHdl
+bGwgY2FsbCBzdHJpbmdfdXBwZXIoKSBvbiB0aGUNCj4+IHJlc3VsdA0KPiANCj4gSSB0ZW5k
+IHRvIGFncmVlIHdpdGggUmFzbXVzLiBzdHJpbmdfdXBwZXIoKSBpcyBhIHN1cGVyLWVhc3kg
+c29sdXRpb24uDQo+IE9uZSB1c2VyIGRvZXMgbm90IGxvb2sgd29ydGggYWRkaW5nIGFsbCB0
+aGUgY2h1cm4gaW50byB2c3ByaW50ZigpLg0KPiANCj4gQmVzdCBSZWdhcmRzLA0KPiBQZXRy
+DQoNCkkgZG8gYWdyZWUgYXMgd2VsbC4gVGhhdCB3b3VsZCBiYXNpY2FsbHkgYmUgdjEgWzFd
+IHdpdGhvdXQgdGhlIA0KaGFuZC1jcmFmdGVkIHN0cmluZ191cHBlcigpLiAoSSBkaWRuJ3Qg
+a25vdyB0aGUgZnVuY3Rpb24uKQ0KDQpSZWdhcmRzLA0KS29ucmFkDQoNClsxXTogDQpodHRw
+czovL2xvcmUua2VybmVsLm9yZy9saW51eC11c2IvOTRhZmQ2ZTAtNzMwMC1lOGY0LWQ1MmUt
+YzIxYWNlYzA0ZjViQGdhdGV3YXJlLmRlLw0K
 
-Make sure we cannot recurse into filesystem reclaim from writeback code
-to avoid the deadlock.
+--------------QcARM0qlBrvLPKSgK8cV8oH0--
 
-Reported-by: syzbot+6898da502aef574c5f8a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000004c66b405fa108e27@google.com
-Fixes: c8585c6fcaf2 ("ext4: fix races between changing inode journal mode and ext4_writepages")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/ext4/ext4.h    | 24 ++++++++++++++++++++++++
- fs/ext4/inode.c   | 18 ++++++++++--------
- fs/ext4/migrate.c | 11 ++++++-----
- 3 files changed, 40 insertions(+), 13 deletions(-)
+--------------0rBkBiV7ZMJJRdrXNy5M0vcT
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 18cb2680dc39..92df861227dd 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1684,6 +1684,30 @@ static inline struct ext4_inode_info *EXT4_I(struct inode *inode)
- 	return container_of(inode, struct ext4_inode_info, vfs_inode);
- }
- 
-+static inline int ext4_writepages_down_read(struct super_block *sb)
-+{
-+	percpu_down_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+	return memalloc_nofs_save();
-+}
-+
-+static inline void ext4_writepages_up_read(struct super_block *sb, int ctx)
-+{
-+	memalloc_nofs_restore(ctx);
-+	percpu_up_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+}
-+
-+static inline int ext4_writepages_down_write(struct super_block *sb)
-+{
-+	percpu_down_write(&EXT4_SB(sb)->s_writepages_rwsem);
-+	return memalloc_nofs_save();
-+}
-+
-+static inline void ext4_writepages_up_write(struct super_block *sb, int ctx)
-+{
-+	memalloc_nofs_restore(ctx);
-+	percpu_up_write(&EXT4_SB(sb)->s_writepages_rwsem);
-+}
-+
- static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
- {
- 	return ino == EXT4_ROOT_INO ||
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index ffbbd9626bd8..b6dc795b61ad 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -2783,11 +2783,12 @@ static int ext4_writepages(struct address_space *mapping,
- 		.can_map = 1,
- 	};
- 	int ret;
-+	int alloc_ctx;
- 
- 	if (unlikely(ext4_forced_shutdown(EXT4_SB(sb))))
- 		return -EIO;
- 
--	percpu_down_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_read(sb);
- 	ret = ext4_do_writepages(&mpd);
- 	/*
- 	 * For data=journal writeback we could have come across pages marked
-@@ -2796,7 +2797,7 @@ static int ext4_writepages(struct address_space *mapping,
- 	 */
- 	if (!ret && mpd.journalled_more_data)
- 		ret = ext4_do_writepages(&mpd);
--	percpu_up_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+	ext4_writepages_up_read(sb, alloc_ctx);
- 
- 	return ret;
- }
-@@ -2824,17 +2825,18 @@ static int ext4_dax_writepages(struct address_space *mapping,
- 	long nr_to_write = wbc->nr_to_write;
- 	struct inode *inode = mapping->host;
- 	struct ext4_sb_info *sbi = EXT4_SB(mapping->host->i_sb);
-+	int alloc_ctx;
- 
- 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb))))
- 		return -EIO;
- 
--	percpu_down_read(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_read(inode->i_sb);
- 	trace_ext4_writepages(inode, wbc);
- 
- 	ret = dax_writeback_mapping_range(mapping, sbi->s_daxdev, wbc);
- 	trace_ext4_writepages_result(inode, wbc, ret,
- 				     nr_to_write - wbc->nr_to_write);
--	percpu_up_read(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_read(inode->i_sb, alloc_ctx);
- 	return ret;
- }
- 
-@@ -5925,7 +5927,7 @@ int ext4_change_inode_journal_flag(struct inode *inode, int val)
- 	journal_t *journal;
- 	handle_t *handle;
- 	int err;
--	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
-+	int alloc_ctx;
- 
- 	/*
- 	 * We have to be very careful here: changing a data block's
-@@ -5963,7 +5965,7 @@ int ext4_change_inode_journal_flag(struct inode *inode, int val)
- 		}
- 	}
- 
--	percpu_down_write(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_write(inode->i_sb);
- 	jbd2_journal_lock_updates(journal);
- 
- 	/*
-@@ -5980,7 +5982,7 @@ int ext4_change_inode_journal_flag(struct inode *inode, int val)
- 		err = jbd2_journal_flush(journal, 0);
- 		if (err < 0) {
- 			jbd2_journal_unlock_updates(journal);
--			percpu_up_write(&sbi->s_writepages_rwsem);
-+			ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 			return err;
- 		}
- 		ext4_clear_inode_flag(inode, EXT4_INODE_JOURNAL_DATA);
-@@ -5988,7 +5990,7 @@ int ext4_change_inode_journal_flag(struct inode *inode, int val)
- 	ext4_set_aops(inode);
- 
- 	jbd2_journal_unlock_updates(journal);
--	percpu_up_write(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 
- 	if (val)
- 		filemap_invalidate_unlock(inode->i_mapping);
-diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
-index a19a9661646e..d98ac2af8199 100644
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -408,7 +408,6 @@ static int free_ext_block(handle_t *handle, struct inode *inode)
- 
- int ext4_ext_migrate(struct inode *inode)
- {
--	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	handle_t *handle;
- 	int retval = 0, i;
- 	__le32 *i_data;
-@@ -418,6 +417,7 @@ int ext4_ext_migrate(struct inode *inode)
- 	unsigned long max_entries;
- 	__u32 goal, tmp_csum_seed;
- 	uid_t owner[2];
-+	int alloc_ctx;
- 
- 	/*
- 	 * If the filesystem does not support extents, or the inode
-@@ -434,7 +434,7 @@ int ext4_ext_migrate(struct inode *inode)
- 		 */
- 		return retval;
- 
--	percpu_down_write(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_write(inode->i_sb);
- 
- 	/*
- 	 * Worst case we can touch the allocation bitmaps and a block
-@@ -586,7 +586,7 @@ int ext4_ext_migrate(struct inode *inode)
- 	unlock_new_inode(tmp_inode);
- 	iput(tmp_inode);
- out_unlock:
--	percpu_up_write(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return retval;
- }
- 
-@@ -605,6 +605,7 @@ int ext4_ind_migrate(struct inode *inode)
- 	ext4_fsblk_t			blk;
- 	handle_t			*handle;
- 	int				ret, ret2 = 0;
-+	int				alloc_ctx;
- 
- 	if (!ext4_has_feature_extents(inode->i_sb) ||
- 	    (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
-@@ -621,7 +622,7 @@ int ext4_ind_migrate(struct inode *inode)
- 	if (test_opt(inode->i_sb, DELALLOC))
- 		ext4_alloc_da_blocks(inode);
- 
--	percpu_down_write(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_write(inode->i_sb);
- 
- 	handle = ext4_journal_start(inode, EXT4_HT_MIGRATE, 1);
- 	if (IS_ERR(handle)) {
-@@ -665,6 +666,6 @@ int ext4_ind_migrate(struct inode *inode)
- 	ext4_journal_stop(handle);
- 	up_write(&EXT4_I(inode)->i_data_sem);
- out_unlock:
--	percpu_up_write(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return ret;
- }
--- 
-2.35.3
+-----BEGIN PGP SIGNATURE-----
 
+wsF5BAABCAAjFiEEUA99m0xJ9cFn0k9bgJOZiyvdweQFAmRTslQFAwAAAAAACgkQgJOZiyvdweT9
+zxAAoD8iG56zIdUyKV97cMYu+mfgxAg5tg7HVcw6oiHUy03pf0eR56WOEbTKzO18J9p1EPnefLU/
+FJ7gOlbz2aFUV5gGMN0tPj2CrgH17a6UFd3qalMmL9Q8rtL3rh4/Lg7KVlDnB9sWGXH+h5ZpEHe/
+2XPD2qL3aQMWSZxv5bms28X/OlJnxV6fR9hKUQ4mJd52zHzS5dlYWtM8Z8V29P0JiQIB4f0z81Sv
+WrVCKR3sIIDkVL+GVTMwhlKcNV194/FNDUYLEox8zgqQDBlM39UafL5aMKea/RiPIPUn+Xbbj6Ro
+bgqmS9WGYKKp9h6568L1pmwtuSDuZobFv0EeM1rahxwXX6/SIcI4Uf9OwwGwJmmJOFmCm/xg02u7
+4houue1QIpLaPs9YOzG8fJkA3jogKUevqa/fHyvZ6sUw546M/vhSki1Jtf6ICSd6TmvgD7BZNqMz
+ZXgBDeQkYmHZtJbLQLpG0Hp4Qw9yl+vnHfDw+KY8FDCAd6aSNP9kk5lJsCHaN+rnEOcET+SryNu1
+PD72QfWaNICK5PDVecurAHNHAETqu2/7btXAFXvPqq00zY0tSIcCDaJEacil+PQprTfc8JdVXkoA
+XjizXpRU9iAJo3RJ6Kcv/8vakChjf7saMzmwQ9Z1boSH1nd71INxa9kc4VQqu19S4hXNP7Pvud0f
+gXk=
+=u/N7
+-----END PGP SIGNATURE-----
+
+--------------0rBkBiV7ZMJJRdrXNy5M0vcT--
