@@ -2,128 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B1C6F77F8
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 23:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0FF6F77EB
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 23:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbjEDVW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 17:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55136 "EHLO
+        id S229825AbjEDVSB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 17:18:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjEDVW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 17:22:57 -0400
+        with ESMTP id S229812AbjEDVSA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 17:18:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0A113C3A;
-        Thu,  4 May 2023 14:22:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507CA1386B;
+        Thu,  4 May 2023 14:17:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE2D26378D;
-        Thu,  4 May 2023 19:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA52C433D2;
-        Thu,  4 May 2023 19:47:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D4CE63850;
+        Thu,  4 May 2023 19:52:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C731C4339C;
+        Thu,  4 May 2023 19:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683229681;
-        bh=RsNOV0EPmfZckX+21rdsSrb+cHo2tv2tYFdzs7k/Z+4=;
+        s=k20201202; t=1683229944;
+        bh=EDJ8xgwfZmJvZP/oI0VldhPcP6EQrhu6jfQi+R/yZhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AUFDeCF/mNtrJ77EY403tBjx6JITkVH9ZyoGp/KwBHBdNs9Nk8XR56z6H2nknCPzV
-         ZglSpyrzzI3jzMhiDrwEzZyhLYKIcVFgY7EPsjjuT2vV+si73n2fm1aBkmeOnkvYkk
-         5lutBZ3LZYxuc6D6QO4NTR+wteZA6++62ikjpHDI8ntVws7cW3uWS/5wSnK/t2b1wq
-         x2hnm5mGOhel+QVnwJ+k87g7HqyEBM5vL9DwSz1xWBZk34J0580GyKH2SQx534Pxg0
-         wTQc24swg1+udZktE0nZfQqV5EN72OCU42pqqx+vQyV6gvLR8AXvweQY0o+04tpjiP
-         Zy6GsFYQxoXeQ==
+        b=W8AARW1ycx1Gg/7v949706hN4B4J9LusE1nUtPP/txW/NjOIl50H8ztC8r+zFMNoa
+         CBpHL8Ox4Ws+IkgvtXD1hWKijzZl3E7sljMbF9QmnJDjZ+PIprrtQqMBNfdD5bshPL
+         VbIE1DDiXDmvGp/vXf0Xd8u5mdTtxrTopgMSpv1uVA9znOcjLAUrMX2U+FbiWgEtQK
+         79r3apbSq4xBgEAcSNXhgvoIvwk3dPCMj6Ue6a7mDb0OnMOawhKsssINTcjdz0aOV4
+         05Rl5tiHUFiJJQgi1yiQ9H0vADZ25QoH4oYC8E+1nMqVht87zeS0Bf4UvqyR48vEwT
+         m+dTefCzQuYmA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, gregory.greenman@intel.com,
-        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, benjamin.berg@intel.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 36/49] wifi: iwlwifi: dvm: Fix memcpy: detected field-spanning write backtrace
-Date:   Thu,  4 May 2023 15:46:13 -0400
-Message-Id: <20230504194626.3807438-36-sashal@kernel.org>
+Cc:     Nick Child <nnac123@linux.ibm.com>,
+        Piotr Raczynski <piotr.raczynski@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
+        edumazet@google.com, pabeni@redhat.com, kuniyu@amazon.com,
+        liuhangbin@gmail.com, jiri@resnulli.us, andy.ren@getcruise.com,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 05/13] net: Catch invalid index in XPS mapping
+Date:   Thu,  4 May 2023 15:51:57 -0400
+Message-Id: <20230504195207.3809116-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230504194626.3807438-1-sashal@kernel.org>
-References: <20230504194626.3807438-1-sashal@kernel.org>
+In-Reply-To: <20230504195207.3809116-1-sashal@kernel.org>
+References: <20230504195207.3809116-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-[ Upstream commit ef16799640865f937719f0771c93be5dca18adc6 ]
+[ Upstream commit 5dd0dfd55baec0742ba8f5625a0dd064aca7db16 ]
 
-A received TKIP key may be up to 32 bytes because it may contain
-MIC rx/tx keys too. These are not used by iwl and copying these
-over overflows the iwl_keyinfo.key field.
+When setting the XPS value of a TX queue, warn the user once if the
+index of the queue is greater than the number of allocated TX queues.
 
-Add a check to not copy more data to iwl_keyinfo.key then will fit.
+Previously, this scenario went uncaught. In the best case, it resulted
+in unnecessary allocations. In the worst case, it resulted in
+out-of-bounds memory references through calls to `netdev_get_tx_queue(
+dev, index)`. Therefore, it is important to inform the user but not
+worth returning an error and risk downing the netdevice.
 
-This fixes backtraces like this one:
-
- memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
- WARNING: CPU: 1 PID: 946 at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 iwlagn_send_sta_key+0x375/0x390 [iwldvm]
- <snip>
- Hardware name: Dell Inc. Latitude E6430/0H3MT5, BIOS A21 05/08/2017
- RIP: 0010:iwlagn_send_sta_key+0x375/0x390 [iwldvm]
- <snip>
- Call Trace:
-  <TASK>
-  iwl_set_dynamic_key+0x1f0/0x220 [iwldvm]
-  iwlagn_mac_set_key+0x1e4/0x280 [iwldvm]
-  drv_set_key+0xa4/0x1b0 [mac80211]
-  ieee80211_key_enable_hw_accel+0xa8/0x2d0 [mac80211]
-  ieee80211_key_replace+0x22d/0x8e0 [mac80211]
- <snip>
-
-Link: https://www.alionet.org/index.php?topic=1469.0
-Link: https://lore.kernel.org/linux-wireless/20230218191056.never.374-kees@kernel.org/
-Link: https://lore.kernel.org/linux-wireless/68760035-7f75-1b23-e355-bfb758a87d83@redhat.com/
-Cc: Kees Cook <keescook@chromium.org>
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Piotr Raczynski <piotr.raczynski@intel.com>
+Link: https://lore.kernel.org/r/20230321150725.127229-1-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-index cef43cf80620a..8b01ab986cb13 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-@@ -1081,6 +1081,7 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
- {
- 	__le16 key_flags;
- 	struct iwl_addsta_cmd sta_cmd;
-+	size_t to_copy;
- 	int i;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 86f762a1cf7ac..a4d68da682322 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -2165,6 +2165,8 @@ int netif_set_xps_queue(struct net_device *dev, const struct cpumask *mask,
+ 	struct xps_map *map, *new_map;
+ 	bool active = false;
  
- 	spin_lock_bh(&priv->sta_lock);
-@@ -1100,7 +1101,9 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
- 		sta_cmd.key.tkip_rx_tsc_byte2 = tkip_iv32;
- 		for (i = 0; i < 5; i++)
- 			sta_cmd.key.tkip_rx_ttak[i] = cpu_to_le16(tkip_p1k[i]);
--		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
-+		/* keyconf may contain MIC rx/tx keys which iwl does not use */
-+		to_copy = min_t(size_t, sizeof(sta_cmd.key.key), keyconf->keylen);
-+		memcpy(sta_cmd.key.key, keyconf->key, to_copy);
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		key_flags |= STA_KEY_FLG_KEY_SIZE_MSK;
++	WARN_ON_ONCE(index >= dev->num_tx_queues);
++
+ 	if (dev->num_tc) {
+ 		num_tc = dev->num_tc;
+ 		tc = netdev_txq_to_tc(dev, index);
 -- 
 2.39.2
 
