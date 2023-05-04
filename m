@@ -2,255 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F7E6F6AF1
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 14:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2A26F6AF9
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 14:15:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbjEDMNd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 08:13:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46446 "EHLO
+        id S230361AbjEDMPf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 08:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjEDMNc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 08:13:32 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C94D85FCE
-        for <stable@vger.kernel.org>; Thu,  4 May 2023 05:13:30 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f00c33c3d6so481323e87.2
-        for <stable@vger.kernel.org>; Thu, 04 May 2023 05:13:30 -0700 (PDT)
+        with ESMTP id S230225AbjEDMPe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 08:15:34 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B155FF2
+        for <stable@vger.kernel.org>; Thu,  4 May 2023 05:15:32 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2a8baeac4d1so4944451fa.1
+        for <stable@vger.kernel.org>; Thu, 04 May 2023 05:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683202409; x=1685794409;
-        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rONT3tFH/eFNZH2oh2aVBKYil27pOoA6/Qc3qIsA0lA=;
-        b=rPOIikho86ZIxawEoaZ304oSvks4toshCJUasJw6Ri5CHb5S2JtDG5a6qRKp3F4p/z
-         CE9gbhBCydPWesWyfD97Y5eTIcpilOoBwh7Pm8w0NU1Z2+LWTPjyiiSPFq3wYa9K0Aw8
-         avchptBU7t05ORpy7SXwbQrjaBkp2sVhENGDGhRZinwJW4mW1+a7d/m4REUpzar26V+M
-         sd8IKI1o2dpvP8WfPFAvQ+miNeMnQ0fgJUmHik7WDM0brydl/3WQGvuAf+/joRYa5ohA
-         WVAJvK/cIV6Hfp4DwWb2ewvXwiA74EXqR7tUT0qIOHnIWr+F402/KUG050XTwMRi7xs8
-         BOlw==
+        d=linaro.org; s=google; t=1683202531; x=1685794531;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rbxMsDcOZE4VwLeDeJW+M4J9LqpR7B1fpo6aQT2cmic=;
+        b=jspw81xKm59iS7w4VcNG5gI0Yyetq4FlOofbCDrKq8odSqkWHtkr1ah4cZ9B/b52i4
+         Nk222L3v/Lod/7QzBTv8JnbCx8Rv2LXDGCNBn5yWpcYY4NgABqDeytbuUf3XrAETw7b0
+         ig8Izq89jnuQaFl5kV3ViYpmVoJRBSVvMjSkHw6q1WqHhXWQSN/fsC/vGfNKgdWL/wMz
+         F1AvzPSjhznyrMMQqLIQBrrm+DcjMTK5WRDejAYhRsVBgcf+9UWjuljHQJYO/puKwIw9
+         gx+P7aSNv1VpObac/ubGChQcgdtuSELzm3ptyo1YDiaC6CoIbn7kB6/xev3GmpvxhQMN
+         JBcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683202409; x=1685794409;
-        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rONT3tFH/eFNZH2oh2aVBKYil27pOoA6/Qc3qIsA0lA=;
-        b=JGO1X9PQvhvPgolYGbjzpAk+lcqgamDMiclBYCZCW9mTXKwGzUoqDThLuKhzThEQGR
-         t++lTNkMT4tr2lwDEpD+W19ja5FXFcYjGiDuc+DzLiX7dljKlQOH7SWNUkWmaOcieLCQ
-         m/ai3am2kkkZdQWEqbYPmmYKfuJKCEPIxEqT/yXFFSnWi8vb2yfKdeD9tC5g9tmXsJTA
-         aUWKuSWHsYpyJQTheIeE2+yuei7CnZZxxCzEFd3KXo4sc0600+zelPBlqEPzKIVc0EBO
-         /g/aG2tznT1OOadEe3DEWmAjWfQT+lqdinRg6rEnuL3C0GJEVmuGS5X2PrBZf3jj5Ff+
-         cW4w==
-X-Gm-Message-State: AC+VfDz4ja6mjbJINppdAehRpIV3xuqy4TLF/By9j825LMuaJe7sxRW6
-        PWWnnAlmMZAbQdnqwFrpJGQ=
-X-Google-Smtp-Source: ACHHUZ7/WOGg5I8ZUqVgovT46A2LLUMNbm2eeVCGuYX5cN3iAkZqXbPbHOpIpwTKrpEvWEtnGQtwCw==
-X-Received: by 2002:ac2:5551:0:b0:4d1:3d1d:4914 with SMTP id l17-20020ac25551000000b004d13d1d4914mr2192756lfk.33.1683202408760;
-        Thu, 04 May 2023 05:13:28 -0700 (PDT)
-Received: from eldfell ([194.136.85.206])
-        by smtp.gmail.com with ESMTPSA id n21-20020a195515000000b004f002961a96sm4449180lfe.230.2023.05.04.05.13.28
+        d=1e100.net; s=20221208; t=1683202531; x=1685794531;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rbxMsDcOZE4VwLeDeJW+M4J9LqpR7B1fpo6aQT2cmic=;
+        b=W845TIOGDEbdLxPEfBj85GhBk5yKu6U+kkRRz+BV63mDpjYKU5iCdJO7g6QK7ypsL8
+         cgDjxxK0TXo5izNjqJaT+GswVW1h5itkwP8c1djPQA+LrdOmu6QEb0g+piJ/igVawz+y
+         SDtCRumCSreis3Ryy2+s4Ua68mI+hd6m1RcwzYbUOf9ga3H7gArK4PDaE7iBid1I6enn
+         OvdK0mpDno/T0TZRdkQlo14AOPizP0bCV+WH0iQXI1bsnpPna2HPTzFsV5Tc6o/nRo+8
+         OuxHlTORMQmj7sLFh8+/frXvUWQPLZepwLPPHbjoDrR27/K4fmOJWEzQOXgBjUQarkJr
+         kmPQ==
+X-Gm-Message-State: AC+VfDynPnx+EgCYH50mApXpsHRe8zInq/gL86J+TYoJVryfkj1JFoBJ
+        rtVyBB1OM/IBtFD3J8gZeR4EkA==
+X-Google-Smtp-Source: ACHHUZ5yPI9iw9bNdmmjFwVoHRv6zajiSyc1ZjGqq5RJjyAHKX2ZJJJakrpg85W4Y3QW4VSEKw24eg==
+X-Received: by 2002:a2e:93c3:0:b0:29c:783d:9241 with SMTP id p3-20020a2e93c3000000b0029c783d9241mr844169ljh.23.1683202530822;
+        Thu, 04 May 2023 05:15:30 -0700 (PDT)
+Received: from ta1.c.googlers.com.com (61.215.228.35.bc.googleusercontent.com. [35.228.215.61])
+        by smtp.gmail.com with ESMTPSA id v3-20020a2e9f43000000b002a8d01905f7sm1861755ljk.101.2023.05.04.05.15.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 May 2023 05:13:28 -0700 (PDT)
-Date:   Thu, 4 May 2023 15:13:24 +0300
-From:   Pekka Paalanen <ppaalanen@gmail.com>
-To:     Jonas =?UTF-8?B?w4VkYWhs?= <jadahl@gmail.com>
-Cc:     Zack Rusin <zackr@vmware.com>, "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "javierm@redhat.com" <javierm@redhat.com>,
-        "airlied@redhat.com" <airlied@redhat.com>,
-        "belmouss@redhat.com" <belmouss@redhat.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        Martin Krastev <krastevm@vmware.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "gurchetansingh@chromium.org" <gurchetansingh@chromium.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "spice-devel@lists.freedesktop.org" 
-        <spice-devel@lists.freedesktop.org>,
-        "kraxel@redhat.com" <kraxel@redhat.com>,
-        Maaz Mombasawala <mombasawalam@vmware.com>,
-        Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>,
-        "airlied@linux.ie" <airlied@linux.ie>
-Subject: Re: [PATCH v2 1/8] drm: Disable the cursor plane on atomic contexts
- with virtualized drivers
-Message-ID: <20230504151324.2fafcc1c@eldfell>
-In-Reply-To: <ZFOWmhZGEmaksTAo@gmail.com>
-References: <20220712033246.1148476-1-zack@kde.org>
-        <20220712033246.1148476-2-zack@kde.org>
-        <YvPfedG/uLQNFG7e@phenom.ffwll.local>
-        <87lei7xemy.fsf@minerva.mail-host-address-is-not-set>
-        <0dd2fa763aa0e659c8cbae94f283d8101450082a.camel@vmware.com>
-        <87y1m5x3bt.fsf@minerva.mail-host-address-is-not-set>
-        <17cc969e9f13fab112827e154495eca28c4bd2b6.camel@vmware.com>
-        <20230504133904.4ad3011c@eldfell>
-        <ZFOWmhZGEmaksTAo@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
+        Thu, 04 May 2023 05:15:30 -0700 (PDT)
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+To:     tytso@mit.edu, jack@suze.cz
+Cc:     adilger.kernel@dilger.ca, cmm@us.ibm.com,
+        aneesh.kumar@linux.vnet.ibm.com, mathur@us.ibm.com,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        joneslee@google.com, Tudor Ambarus <tudor.ambarus@linaro.org>,
+        syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+Subject: [PATCH] ext4: Avoid a potential slab-out-of-bounds in ext4_group_desc_csum
+Date:   Thu,  4 May 2023 12:15:25 +0000
+Message-ID: <20230504121525.3275886-1-tudor.ambarus@linaro.org>
+X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/IKCuGqSZcOwId12tUtxDYzp";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---Sig_/IKCuGqSZcOwId12tUtxDYzp
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+When modifying the block device while it is mounted by the filesystem,
+syzbot reported the following:
 
-On Thu, 4 May 2023 13:27:22 +0200
-Jonas =C3=85dahl <jadahl@gmail.com> wrote:
+BUG: KASAN: slab-out-of-bounds in crc16+0x206/0x280 lib/crc16.c:58
+Read of size 1 at addr ffff888075f5c0a8 by task syz-executor.2/15586
 
-> On Thu, May 04, 2023 at 01:39:04PM +0300, Pekka Paalanen wrote:
-> > On Thu, 4 May 2023 01:50:25 +0000
-> > Zack Rusin <zackr@vmware.com> wrote:
-> >  =20
-> > > On Wed, 2023-05-03 at 09:48 +0200, Javier Martinez Canillas wrote: =20
-> > > > Zack Rusin <zackr@vmware.com> writes:
-> > > >    =20
-> > > > > On Tue, 2023-05-02 at 11:32 +0200, Javier Martinez Canillas wrote=
-:   =20
-> >  =20
-> > > > > > AFAICT this is the only remaining thing to be addressed for thi=
-s series ?   =20
-> > > > >=20
-> > > > > No, there was more. tbh I haven't had the time to think about whe=
-ther the above
-> > > > > makes sense to me, e.g. I'm not sure if having virtualized driver=
-s expose
-> > > > > "support
-> > > > > universal planes" and adding another plane which is not universal=
- (the only
-> > > > > "universal" plane on them being the default one) makes more sense=
- than a flag
-> > > > > that
-> > > > > says "this driver requires a cursor in the cursor plane". There's=
- certainly a
-> > > > > huge
-> > > > > difference in how userspace would be required to handle it and it=
-'s way uglier
-> > > > > with
-> > > > > two different cursor planes. i.e. there's a lot of ways in which =
-this could be
-> > > > > cleaner in the kernel but they all require significant changes to=
- userspace,
-> > > > > that go
-> > > > > way beyond "attach hotspot info to this plane". I'd like to avoid=
- approaches
-> > > > > that
-> > > > > mean running with atomic kms requires completely separate paths f=
-or virtualized
-> > > > > drivers because no one will ever support and maintain it.
-> > > > >=20
-> > > > > It's not a trivial thing because it's fundamentally hard to untan=
-gle the fact
-> > > > > the
-> > > > > virtualized drivers have been advertising universal plane support=
- without ever
-> > > > > supporting universal planes. Especially because most new userspac=
-e in general
-> > > > > checks
-> > > > > for "universal planes" to expose atomic kms paths.
-> > > > >    =20
-> > > >=20
-> > > > After some discussion on the #dri-devel, your approach makes sense =
-and the
-> > > > only contention point is the name of the driver feature flag name. =
-The one
-> > > > you are using (DRIVER_VIRTUAL) seems to be too broad and generic (t=
-he fact
-> > > > that vkms won't set and is a virtual driver as well, is a good exam=
-ple).
-> > > >=20
-> > > > Maybe something like DRIVER_CURSOR_HOTSPOT or DRIVER_CURSOR_COMMAND=
-EERING
-> > > > would be more accurate and self explanatory ?   =20
-> > >=20
-> > > Sure, or even more verbose DRIVER_NEEDS_CURSOR_PLANE_HOTSPOT, but it =
-sounds like
-> > > Pekka doesn't agree with this approach. As I mentioned in my response=
- to him, I'd be
-> > > happy with any approach that gets paravirtualized drivers working wit=
-h atomic kms,
-> > > but atm I don't have enough time to be creating a new kernel subsyste=
-m or a new set
-> > > of uapi's for paravirtualized drivers and then porting mutter/kwin to=
- those. =20
-> >=20
-> > It seems I have not been clear enough, apologies. Once more, in short:
-> >=20
-> > Zack, I'm worried about this statement from you (copied from above):
-> >  =20
-> > > > > I'd like to avoid approaches that mean running with atomic kms
-> > > > > requires completely separate paths for virtualized drivers
-> > > > > because no one will ever support and maintain it. =20
-> >=20
-> > It feels like you are intentionally limiting your own design options
-> > for the fear of "no one will ever support it". I'm worried that over
-> > the coming years, that will lead to a hard to use, hard to maintain
-> > patchwork of vague or undocumented or just too many little UAPI details.
-> >=20
-> > Please, don't limit your designs. There are good reasons why nested KMS
-> > drivers behave fundamentally differently to most KMS hardware drivers.
-> > Userspace that does not or cannot take that into account is unavoidably
-> > crippled. =20
->=20
-> From a compositor side, there is a valid reason to minimize the uAPI
-> difference between "nested virtual machine" code paths and "running on
-> actual hardware" code paths, which is to let virtual machines with a
-> viewer connected to KMS act as a testing environment, rather than a
-> production environment. Running a production environment in a virtual
-> machine doesn't really need to use KMS at all.
->=20
-> When using virtual machines for testing, I want to minimize the amount
-> of differentation between running on hardware and running in the VM
-> because otherwise the parts that are tested are not the same.
->=20
-> I realize that hotpspots and the cursor moving viewer side contradicts
-> that to some degree, but still, from a graphical testing witha VM point
-> of view, one has to compromise, as testing isn't just for the KMS layer,
-> but for the DE and distribution as a whole.
+CPU: 1 PID: 15586 Comm: syz-executor.2 Not tainted 6.2.0-rc5-syzkaller-00205-gc96618275234 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
+ print_address_description+0x74/0x340 mm/kasan/report.c:306
+ print_report+0x107/0x1f0 mm/kasan/report.c:417
+ kasan_report+0xcd/0x100 mm/kasan/report.c:517
+ crc16+0x206/0x280 lib/crc16.c:58
+ ext4_group_desc_csum+0x81b/0xb20 fs/ext4/super.c:3187
+ ext4_group_desc_csum_set+0x195/0x230 fs/ext4/super.c:3210
+ ext4_mb_clear_bb fs/ext4/mballoc.c:6027 [inline]
+ ext4_free_blocks+0x191a/0x2810 fs/ext4/mballoc.c:6173
+ ext4_remove_blocks fs/ext4/extents.c:2527 [inline]
+ ext4_ext_rm_leaf fs/ext4/extents.c:2710 [inline]
+ ext4_ext_remove_space+0x24ef/0x46a0 fs/ext4/extents.c:2958
+ ext4_ext_truncate+0x177/0x220 fs/ext4/extents.c:4416
+ ext4_truncate+0xa6a/0xea0 fs/ext4/inode.c:4342
+ ext4_setattr+0x10c8/0x1930 fs/ext4/inode.c:5622
+ notify_change+0xe50/0x1100 fs/attr.c:482
+ do_truncate+0x200/0x2f0 fs/open.c:65
+ handle_truncate fs/namei.c:3216 [inline]
+ do_open fs/namei.c:3561 [inline]
+ path_openat+0x272b/0x2dd0 fs/namei.c:3714
+ do_filp_open+0x264/0x4f0 fs/namei.c:3741
+ do_sys_openat2+0x124/0x4e0 fs/open.c:1310
+ do_sys_open fs/open.c:1326 [inline]
+ __do_sys_creat fs/open.c:1402 [inline]
+ __se_sys_creat fs/open.c:1396 [inline]
+ __x64_sys_creat+0x11f/0x160 fs/open.c:1396
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f72f8a8c0c9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f72f97e3168 EFLAGS: 00000246 ORIG_RAX: 0000000000000055
+RAX: ffffffffffffffda RBX: 00007f72f8bac050 RCX: 00007f72f8a8c0c9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000280
+RBP: 00007f72f8ae7ae9 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffd165348bf R14: 00007f72f97e3300 R15: 0000000000022000
 
-Right, I'm looking at this from the production use only point of view,
-and not as any kind of testing environment, not for compositor KMS
-driving bits at least. Using a virtualized driver for KMS testing seems
-so very... manual to me, and like you said, it's not representative of
-"real" behaviour.
+Replace
+	le16_to_cpu(sbi->s_es->s_desc_size)
+with
+	sbi->s_desc_size
 
-As for the best choice for production use, KMS in guest OS is
-attractive because it offers zero-copy direct scanout to the host
-hardware, with the right stack. OTOH, I think RDP has extensions that
-could enable that too, and if the end point is not host hardware
-display then KMS use in guest is not the best idea indeed.
+It reduces ext4's compiled text size, and makes the code more efficient
+(we remove an extra indirect reference and a potential byte
+swap on big endian systems), and there is no downside. It also avoids the
+potential KASAN / syzkaller failure, as a bonus.
 
-I don't recall any mention of actual use cases here recently. I agree
-the intended use makes a huge difference. Testing KMS userspace and
-production use are almost the opposite goals for virtualized drivers.
+Reported-by: syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=b85721b38583ecc6b5e72ff524c67302abbc30f3
+Link: https://lore.kernel.org/all/000000000000ece18705f3b20934@google.com/
+Fixes: 717d50e4971b ("Ext4: Uninitialized Block Groups")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+---
+ fs/ext4/super.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index d39f386e9baf..e3d0d3c04785 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3238,11 +3238,9 @@ static __le16 ext4_group_desc_csum(struct super_block *sb, __u32 block_group,
+ 	crc = crc16(crc, (__u8 *)gdp, offset);
+ 	offset += sizeof(gdp->bg_checksum); /* skip checksum */
+ 	/* for checksum of struct ext4_group_desc do the rest...*/
+-	if (ext4_has_feature_64bit(sb) &&
+-	    offset < le16_to_cpu(sbi->s_es->s_desc_size))
++	if (ext4_has_feature_64bit(sb) && offset < sbi->s_desc_size)
+ 		crc = crc16(crc, (__u8 *)gdp + offset,
+-			    le16_to_cpu(sbi->s_es->s_desc_size) -
+-				offset);
++			    sbi->s_desc_size - offset);
+ 
+ out:
+ 	return cpu_to_le16(crc);
+-- 
+2.40.1.495.gc816e09b53d-goog
 
-Thanks,
-pq
-
---Sig_/IKCuGqSZcOwId12tUtxDYzp
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmRToWQACgkQI1/ltBGq
-qqcviQ//bDaw9E+3b/rzgqYhc8F6x1lxSQ0lsDeL8hzpjsbL3Xc+psxCNSbEM2sp
-vUz6a7a89QJHTnEUCrIcZ/8f+M7bo8EpFtUpzwnLIIuCxXdOBrtRGRTfl+JxfRpG
-QNnj039GdfXNuFYJqHA1+n6bdgNbElBoRccg/kNmOAtMg/yBMJ4abqlvafAveCsy
-FbjH4+LGUC2Ltw/hcQMv5SeLJRcgmq2O/vyBqEzMDUAW8PsPNwgzxROuZn1Nyi6S
-NpZKBLcd2ah3PKR9OdAXoA3Cw5oOierxUCKMChNEWJ7muW8pHYWbynMpr6PmXn+G
-0+K4d8BkTRbNvTxDVvrtPOwUSaFY7WgdSUhyZkuBa0EV7UH0WLoEDOwytaqVcgm5
-IJnNo89U1UVtKzmI9S8Co8ryqzf9VAmNMDwXFNqgHR5Cuu7hWsXMhXeXLvCVIEVz
-PBALUMyST6Cyc66rxCh5U5KS/GYlm8u0eqwkU6aOfLsRdJSl6l8xvtjzqSurH8WB
-ykpn4p2n7MFKQ5CmJ0QFqajztDMdDwX3TVlj7w/KZoXMVWseeYMp/rl70HnHQ/E2
-c/qNF2wbV+/hxoUv0fEcVmmfus7UK16eUEXaRN/IN8aM5gJ5PoeMejQjwrUDyNr7
-XhOaXoEau//q4C2eztPLYCGugdZrhiz7vgiCEtr5/IXumCGlTmg=
-=rbqo
------END PGP SIGNATURE-----
-
---Sig_/IKCuGqSZcOwId12tUtxDYzp--
