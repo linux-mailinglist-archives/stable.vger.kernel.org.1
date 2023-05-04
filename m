@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9B66F63CE
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 06:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01DD16F63D2
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 06:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbjEDEDj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 00:03:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59814 "EHLO
+        id S229622AbjEDEDl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 00:03:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjEDEDi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 00:03:38 -0400
+        with ESMTP id S229472AbjEDEDj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 00:03:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D0F19B3;
-        Wed,  3 May 2023 21:03:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204B519B7;
+        Wed,  3 May 2023 21:03:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68FEA6316A;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A83106316B;
         Thu,  4 May 2023 04:03:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1ECC4339B;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57A2C433D2;
         Thu,  4 May 2023 04:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683173015;
-        bh=qXDuxQYZvqfrT22PqduCTlKO2Ix9HYdK/B5FDP1BLrs=;
+        s=k20201202; t=1683173016;
+        bh=Ml+Y04NT3Vn7m5v/vV1NblJ3kOliBeEFp8GFypj1UtY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YP3uSrzIBXYdO/jSqOjcRVrFM69Rs9x3MvCklVhSpUEuCUt62aM9JsTXknDg31Cct
-         57AoKFhWozUg7WysnWiXZKSv6UCwEDaNCThmGpaLiEJw6AM7DXyZg9Fkdz9y0LEOIa
-         wfIyPcB4WI5AJ9iCayhwpUGU6m8yyCn3VLSp7mQ56gIn/65qy2p88SsQkNsjqBZeL+
-         O2NqVVubrx/dp9/ezSClOV/EBP3rpjuTCkF8UFW6BvGmEm8zZC7A7WfnV1vrj6srJy
-         5d6L2PwcjnR+VzkgMGXee57tHQ9zaOYD9zKtQ8KrXDGwM0Aan3cxyLivFlkOBq0fWP
-         tlCyd8x1kBcNg==
+        b=aW4nYJrdfK5qzwg2OdwoOQUAoGsc2cTBO0K5513EyXwp5gE82wNfK3xSbvtLljA5/
+         OVWsmnCqAWE8xh/1TGGTBShwG3wWx1DqsevEoVKnXnlzhG+XoHDCF5Vac0j68NfUpk
+         k8cWyF3DmKMHFbwr4ehH8KtpRH0guLHTmw5mBC4HqGz218GCyr8XDlkFhBn1RzG21n
+         rAd/ECg+3qjZ3nH38G4JwNFPAtPB+E6t/3DVo7xRAM+F4iwWyx5STojC9db37xW+jo
+         8kQ5gnMxZqHKu5PDqKvYx/VgRL0rmoRHctDzBBI1LGRP5Re5VYdev7GJ0NupkOZMyf
+         /SHH5V110nX3w==
 From:   Eric Biggers <ebiggers@kernel.org>
 To:     stable@vger.kernel.org
-Cc:     linux-block@vger.kernel.org, Nathan Huckleberry <nhuck@google.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 1/3] blk-mq: release crypto keyslot before reporting I/O complete
-Date:   Wed,  3 May 2023 21:03:27 -0700
-Message-Id: <20230504040329.106127-2-ebiggers@kernel.org>
+Cc:     linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 2/3] blk-crypto: make blk_crypto_evict_key() return void
+Date:   Wed,  3 May 2023 21:03:28 -0700
+Message-Id: <20230504040329.106127-3-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230504040329.106127-1-ebiggers@kernel.org>
 References: <20230504040329.106127-1-ebiggers@kernel.org>
@@ -55,191 +55,133 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-commit 9cd1e566676bbcb8a126acd921e4e194e6339603 upstream.
+commit 70493a63ba04f754f7a7dd53a4fcc82700181490 upstream.
 
-Once all I/O using a blk_crypto_key has completed, filesystems can call
-blk_crypto_evict_key().  However, the block layer currently doesn't call
-blk_crypto_put_keyslot() until the request is being freed, which happens
-after upper layers have been told (via bio_endio()) the I/O has
-completed.  This causes a race condition where blk_crypto_evict_key()
-can see 'slot_refs != 0' without there being an actual bug.
+blk_crypto_evict_key() is only called in contexts such as inode eviction
+where failure is not an option.  So there is nothing the caller can do
+with errors except log them.  (dm-table.c does "use" the error code, but
+only to pass on to upper layers, so it doesn't really count.)
 
-This makes __blk_crypto_evict_key() hit the
-'WARN_ON_ONCE(atomic_read(&slot->slot_refs) != 0)' and return without
-doing anything, eventually causing a use-after-free in
-blk_crypto_reprogram_all_keys().  (This is a very rare bug and has only
-been seen when per-file keys are being used with fscrypt.)
+Just make blk_crypto_evict_key() return void and log errors itself.
 
-There are two options to fix this: either release the keyslot before
-bio_endio() is called on the request's last bio, or make
-__blk_crypto_evict_key() ignore slot_refs.  Let's go with the first
-solution, since it preserves the ability to report bugs (via
-WARN_ON_ONCE) where a key is evicted while still in-use.
-
-Fixes: a892c8d52c02 ("block: Inline encryption support for blk-mq")
 Cc: stable@vger.kernel.org
-Reviewed-by: Nathan Huckleberry <nhuck@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- block/blk-core.c            |  7 +++++++
- block/blk-crypto-internal.h | 25 +++++++++++++++++++++----
- block/blk-crypto.c          | 24 ++++++++++++------------
- block/blk-merge.c           |  2 ++
- block/blk-mq.c              |  2 +-
- 5 files changed, 43 insertions(+), 17 deletions(-)
+ block/blk-crypto.c         | 22 ++++++++++------------
+ drivers/md/dm-table.c      | 19 +++++--------------
+ include/linux/blk-crypto.h |  4 ++--
+ 3 files changed, 17 insertions(+), 28 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index ed6271dcc1b16..0c4a4e42ad870 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1421,6 +1421,13 @@ bool blk_update_request(struct request *req, blk_status_t error,
- 		req->q->integrity.profile->complete_fn(req, nr_bytes);
- #endif
- 
-+	/*
-+	 * Upper layers may call blk_crypto_evict_key() anytime after the last
-+	 * bio_endio().  Therefore, the keyslot must be released before that.
-+	 */
-+	if (blk_crypto_rq_has_keyslot(req) && nr_bytes >= blk_rq_bytes(req))
-+		__blk_crypto_rq_put_keyslot(req);
-+
- 	if (unlikely(error && !blk_rq_is_passthrough(req) &&
- 		     !(req->rq_flags & RQF_QUIET)))
- 		print_req_error(req, error, __func__);
-diff --git a/block/blk-crypto-internal.h b/block/blk-crypto-internal.h
-index 0d36aae538d7b..8e08345576203 100644
---- a/block/blk-crypto-internal.h
-+++ b/block/blk-crypto-internal.h
-@@ -60,6 +60,11 @@ static inline bool blk_crypto_rq_is_encrypted(struct request *rq)
- 	return rq->crypt_ctx;
- }
- 
-+static inline bool blk_crypto_rq_has_keyslot(struct request *rq)
-+{
-+	return rq->crypt_keyslot;
-+}
-+
- #else /* CONFIG_BLK_INLINE_ENCRYPTION */
- 
- static inline bool bio_crypt_rq_ctx_compatible(struct request *rq,
-@@ -93,6 +98,11 @@ static inline bool blk_crypto_rq_is_encrypted(struct request *rq)
- 	return false;
- }
- 
-+static inline bool blk_crypto_rq_has_keyslot(struct request *rq)
-+{
-+	return false;
-+}
-+
- #endif /* CONFIG_BLK_INLINE_ENCRYPTION */
- 
- void __bio_crypt_advance(struct bio *bio, unsigned int bytes);
-@@ -127,14 +137,21 @@ static inline bool blk_crypto_bio_prep(struct bio **bio_ptr)
- 	return true;
- }
- 
--blk_status_t __blk_crypto_init_request(struct request *rq);
--static inline blk_status_t blk_crypto_init_request(struct request *rq)
-+blk_status_t __blk_crypto_rq_get_keyslot(struct request *rq);
-+static inline blk_status_t blk_crypto_rq_get_keyslot(struct request *rq)
- {
- 	if (blk_crypto_rq_is_encrypted(rq))
--		return __blk_crypto_init_request(rq);
-+		return __blk_crypto_rq_get_keyslot(rq);
- 	return BLK_STS_OK;
- }
- 
-+void __blk_crypto_rq_put_keyslot(struct request *rq);
-+static inline void blk_crypto_rq_put_keyslot(struct request *rq)
-+{
-+	if (blk_crypto_rq_has_keyslot(rq))
-+		__blk_crypto_rq_put_keyslot(rq);
-+}
-+
- void __blk_crypto_free_request(struct request *rq);
- static inline void blk_crypto_free_request(struct request *rq)
- {
-@@ -173,7 +190,7 @@ static inline blk_status_t blk_crypto_insert_cloned_request(struct request *rq)
- {
- 
- 	if (blk_crypto_rq_is_encrypted(rq))
--		return blk_crypto_init_request(rq);
-+		return blk_crypto_rq_get_keyslot(rq);
- 	return BLK_STS_OK;
- }
- 
 diff --git a/block/blk-crypto.c b/block/blk-crypto.c
-index 103c2e2d50d67..183d7439cf416 100644
+index 183d7439cf416..686c657f91917 100644
 --- a/block/blk-crypto.c
 +++ b/block/blk-crypto.c
-@@ -216,26 +216,26 @@ static bool bio_crypt_check_alignment(struct bio *bio)
- 	return true;
- }
+@@ -13,6 +13,7 @@
+ #include <linux/blkdev.h>
+ #include <linux/keyslot-manager.h>
+ #include <linux/module.h>
++#include <linux/ratelimit.h>
+ #include <linux/slab.h>
  
--blk_status_t __blk_crypto_init_request(struct request *rq)
-+blk_status_t __blk_crypto_rq_get_keyslot(struct request *rq)
- {
- 	return blk_ksm_get_slot_for_key(rq->q->ksm, rq->crypt_ctx->bc_key,
- 					&rq->crypt_keyslot);
- }
- 
--/**
-- * __blk_crypto_free_request - Uninitialize the crypto fields of a request.
+ #include "blk-crypto-internal.h"
+@@ -393,20 +394,17 @@ int blk_crypto_start_using_key(const struct blk_crypto_key *key,
+  * Upper layers (filesystems) must call this function to ensure that a key is
+  * evicted from any hardware that it might have been programmed into.  The key
+  * must not be in use by any in-flight IO when this function is called.
 - *
-- * @rq: The request whose crypto fields to uninitialize.
-- *
-- * Completely uninitializes the crypto fields of a request. If a keyslot has
-- * been programmed into some inline encryption hardware, that keyslot is
-- * released. The rq->crypt_ctx is also freed.
-- */
--void __blk_crypto_free_request(struct request *rq)
-+void __blk_crypto_rq_put_keyslot(struct request *rq)
+- * Return: 0 on success or if key is not present in the q's ksm, -err on error.
+  */
+-int blk_crypto_evict_key(struct request_queue *q,
+-			 const struct blk_crypto_key *key)
++void blk_crypto_evict_key(struct request_queue *q,
++			  const struct blk_crypto_key *key)
  {
- 	blk_ksm_put_slot(rq->crypt_keyslot);
-+	rq->crypt_keyslot = NULL;
-+}
-+
-+void __blk_crypto_free_request(struct request *rq)
-+{
-+	/* The keyslot, if one was needed, should have been released earlier. */
-+	if (WARN_ON_ONCE(rq->crypt_keyslot))
-+		__blk_crypto_rq_put_keyslot(rq);
-+
- 	mempool_free(rq->crypt_ctx, bio_crypt_ctx_pool);
--	blk_crypto_rq_set_defaults(rq);
-+	rq->crypt_ctx = NULL;
+-	if (blk_ksm_crypto_cfg_supported(q->ksm, &key->crypto_cfg))
+-		return blk_ksm_evict_key(q->ksm, key);
++	int err;
+ 
+-	/*
+-	 * If the request queue's associated inline encryption hardware didn't
+-	 * have support for the key, then the key might have been programmed
+-	 * into the fallback keyslot manager, so try to evict from there.
+-	 */
+-	return blk_crypto_fallback_evict_key(key);
++	if (blk_ksm_crypto_cfg_supported(q->ksm, &key->crypto_cfg))
++		err = blk_ksm_evict_key(q->ksm, key);
++	else
++		err = blk_crypto_fallback_evict_key(key);
++	if (err)
++		pr_warn_ratelimited("error %d evicting key\n", err);
+ }
+ EXPORT_SYMBOL_GPL(blk_crypto_evict_key);
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index 2111daaacabaf..46ec4590f62f6 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -1191,21 +1191,12 @@ struct dm_keyslot_manager {
+ 	struct mapped_device *md;
+ };
+ 
+-struct dm_keyslot_evict_args {
+-	const struct blk_crypto_key *key;
+-	int err;
+-};
+-
+ static int dm_keyslot_evict_callback(struct dm_target *ti, struct dm_dev *dev,
+ 				     sector_t start, sector_t len, void *data)
+ {
+-	struct dm_keyslot_evict_args *args = data;
+-	int err;
++	const struct blk_crypto_key *key = data;
+ 
+-	err = blk_crypto_evict_key(bdev_get_queue(dev->bdev), args->key);
+-	if (!args->err)
+-		args->err = err;
+-	/* Always try to evict the key from all devices. */
++	blk_crypto_evict_key(bdev_get_queue(dev->bdev), key);
+ 	return 0;
  }
  
- /**
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index d1435b6572977..1affc5fd35f0c 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -818,6 +818,8 @@ static struct request *attempt_merge(struct request_queue *q,
- 	if (!blk_discard_mergable(req))
- 		elv_merge_requests(q, req, next);
+@@ -1220,7 +1211,6 @@ static int dm_keyslot_evict(struct blk_keyslot_manager *ksm,
+ 						       struct dm_keyslot_manager,
+ 						       ksm);
+ 	struct mapped_device *md = dksm->md;
+-	struct dm_keyslot_evict_args args = { key };
+ 	struct dm_table *t;
+ 	int srcu_idx;
+ 	int i;
+@@ -1233,10 +1223,11 @@ static int dm_keyslot_evict(struct blk_keyslot_manager *ksm,
+ 		ti = dm_table_get_target(t, i);
+ 		if (!ti->type->iterate_devices)
+ 			continue;
+-		ti->type->iterate_devices(ti, dm_keyslot_evict_callback, &args);
++		ti->type->iterate_devices(ti, dm_keyslot_evict_callback,
++					  (void *)key);
+ 	}
+ 	dm_put_live_table(md, srcu_idx);
+-	return args.err;
++	return 0;
+ }
  
-+	blk_crypto_rq_put_keyslot(next);
-+
- 	/*
- 	 * 'next' is going away, so update stats accordingly
- 	 */
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 01e281801453d..bbbbcd2c19418 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2228,7 +2228,7 @@ blk_qc_t blk_mq_submit_bio(struct bio *bio)
+ static const struct blk_ksm_ll_ops dm_ksm_ll_ops = {
+diff --git a/include/linux/blk-crypto.h b/include/linux/blk-crypto.h
+index 69b24fe92cbf1..5e96bad548047 100644
+--- a/include/linux/blk-crypto.h
++++ b/include/linux/blk-crypto.h
+@@ -97,8 +97,8 @@ int blk_crypto_init_key(struct blk_crypto_key *blk_key, const u8 *raw_key,
+ int blk_crypto_start_using_key(const struct blk_crypto_key *key,
+ 			       struct request_queue *q);
  
- 	blk_mq_bio_to_request(rq, bio, nr_segs);
+-int blk_crypto_evict_key(struct request_queue *q,
+-			 const struct blk_crypto_key *key);
++void blk_crypto_evict_key(struct request_queue *q,
++			  const struct blk_crypto_key *key);
  
--	ret = blk_crypto_init_request(rq);
-+	ret = blk_crypto_rq_get_keyslot(rq);
- 	if (ret != BLK_STS_OK) {
- 		bio->bi_status = ret;
- 		bio_endio(bio);
+ bool blk_crypto_config_supported(struct request_queue *q,
+ 				 const struct blk_crypto_config *cfg);
 -- 
 2.40.1
 
