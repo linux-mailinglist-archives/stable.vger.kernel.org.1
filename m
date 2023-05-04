@@ -2,60 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 415586F68EC
-	for <lists+stable@lfdr.de>; Thu,  4 May 2023 12:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E003C6F6905
+	for <lists+stable@lfdr.de>; Thu,  4 May 2023 12:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229829AbjEDKOY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 06:14:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
+        id S229927AbjEDKWb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 4 May 2023 06:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjEDKOX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 06:14:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3360C2128;
-        Thu,  4 May 2023 03:14:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229559AbjEDKWa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 4 May 2023 06:22:30 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050A64C1B
+        for <stable@vger.kernel.org>; Thu,  4 May 2023 03:22:25 -0700 (PDT)
+Received: from [IPV6:2a0c:5a83:9100:1200:e870:56ba:3086:b9b4] (unknown [IPv6:2a0c:5a83:9100:1200:e870:56ba:3086:b9b4])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74EE661724;
-        Thu,  4 May 2023 10:14:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF169C433EF;
-        Thu,  4 May 2023 10:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683195258;
-        bh=CyFrcoXV1ArJAmol5dgwUGVF/D8IaZ8XeL06Rqjlqhs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=lnm8ITFfnVKUa25+2bNNRWx1SSIrGJBHGo3bw+z+tbQ0w11mgyjxer0+Ds5Fj4xmo
-         V73m9HMeVkf3KyLLwDuIdVvkxWaDlmKi/JTz4svTQG/m5A0W7jbFqGD0M2cxanqp6Z
-         E+/RvokZEDP+fuqaJWG3luLmVD1HDpfND7cZ30XopJDkhxt0WmFbOXul9LOqzLKW18
-         uQyo2FHMPoHhM6pbaYsK7JgHhRD5vRf7mwbB/Xx6IWjg77fHMrqYtlFA9o0Eqm8GQu
-         iCVFJAxDhqRA/fNM+nmtQA9pDotZNbiWwPpFc6QWqoBiQHsHLCC9p1ZqaBq9HlV943
-         g+FXVGiWqpUOg==
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6a5f6349ec3so68439a34.0;
-        Thu, 04 May 2023 03:14:18 -0700 (PDT)
-X-Gm-Message-State: AC+VfDyTNukw/bUlRSvhVa5tHLuVXWcjzMqBp/sjvDAPZPu37APwIalS
-        nLUYGAJR/T40WRE70Q6qN8foYibN36bOCjiQNpM=
-X-Google-Smtp-Source: ACHHUZ4WN8+8AQ5toPzUi6g99K87lNKXo2jfEnD4NOhv0/IfX5bGVqKPEj7uoqr8t9IZ2EHajYQUheD9mLULDcgWtZw=
-X-Received: by 2002:a05:6808:1247:b0:38b:efe8:dfa8 with SMTP id
- o7-20020a056808124700b0038befe8dfa8mr1476886oiv.51.1683195257897; Thu, 04 May
- 2023 03:14:17 -0700 (PDT)
+        (Authenticated sender: rcn)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 44E3066031D7;
+        Thu,  4 May 2023 11:22:24 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1683195744;
+        bh=YaP7WMy/OdBgoenIX1sFJldEXAzsy+QaHcRHObSl+B8=;
+        h=Date:Subject:To:References:From:In-Reply-To:From;
+        b=LeAUKz1BfYsSxGqWyK3Z6oaUf9xWna5UZ/1aW2RcbHKi6V/qnCJ5tgww4PtA4QDxF
+         dW96AF5yXIA71WreKIN91A5TIkje63CL2ghEqlxKc41JlCsQHbbVm4CWlhwcceRgKr
+         jQRSVo35nZZEOZDTglgsJrIAtX9iG6eXfA2C76YFssaMuJLDf69eNj7RD6OG/mYQz+
+         AAfLMOc7ty0pnd2inIF26EzDOJmyMGCdAWfjja6ghi0ODSvzwuJu38scCmVNZpNO5J
+         ybemUj1NAiQNoj3R6S4RnpcceOPlJW0mtB76xbqbDPmC5IEVVxqyhIvhCVyGuL54dN
+         xHIKoym6h/R/w==
+Message-ID: <4f77c914-562c-42ef-dfd0-43239398815d@collabora.com>
+Date:   Thu, 4 May 2023 12:22:21 +0200
 MIME-Version: 1.0
-References: <77994dd9ede2084d45dd0a36938c67de70d8e859.1683123587.git.fdmanana@suse.com>
- <20230504174118.4D5F.409509F4@e16-tech.com>
-In-Reply-To: <20230504174118.4D5F.409509F4@e16-tech.com>
-From:   Filipe Manana <fdmanana@kernel.org>
-Date:   Thu, 4 May 2023 11:13:41 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H4UtPrtu4mjyF5Q1LtfGUYULZfGH4EwjXm9wdmFix_b4Q@mail.gmail.com>
-Message-ID: <CAL3q7H4UtPrtu4mjyF5Q1LtfGUYULZfGH4EwjXm9wdmFix_b4Q@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix backref walking not returning all inode refs
-To:     Wang Yugui <wangyugui@e16-tech.com>
-Cc:     linux-btrfs@vger.kernel.org, git@vladimir.panteleev.md,
-        Filipe Manana <fdmanana@suse.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: stable-rc/linux-4.14.y bisection: baseline.login on
+ meson8b-odroidc1
+Content-Language: en-US
+To:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org
+References: <1fcff522-337a-c334-42a7-bc9b4f0daec4@collabora.com>
+ <585b00d1-5ad7-ecff-e905-71e370613dfb@leemhuis.info>
+From:   =?UTF-8?Q?Ricardo_Ca=c3=b1uelo?= <ricardo.canuelo@collabora.com>
+In-Reply-To: <585b00d1-5ad7-ecff-e905-71e370613dfb@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,97 +57,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 4, 2023 at 10:41=E2=80=AFAM Wang Yugui <wangyugui@e16-tech.com>=
- wrote:
->
-> Hi,
->
-> > From: Filipe Manana <fdmanana@suse.com>
-> >
-> > When using the logical to ino ioctl v2, if the flag to ignore offsets o=
-f
-> > file extent items (BTRFS_LOGICAL_INO_ARGS_IGNORE_OFFSET) is given, the
-> > backref walking code ends up not returning references for all file offs=
-ets
-> > of an inode that point to the given logical bytenr. This happens since
-> > kernel 6.2, commit 6ce6ba534418 ("btrfs: use a single argument for exte=
-nt
-> > offset in backref walking functions"), as it mistakenly skipped the sea=
-rch
-> > for file extent items in a leaf that point to the target extent if that
-> > flag is given. Instead it should only skip the filtering done by
-> > check_extent_in_eb() - that is, it should not avoid the calls to that
-> > function.
-> >
-> > So fix this by always calling check_extent_in_eb() and have this functi=
-on
-> > do the filtering only if an extent offset is given and the flag to igno=
-re
-> > offsets is not set.
-> > Fixes: 6ce6ba534418 ("btrfs: use a single argument for extent offset in=
- backref walking functions")
-> > Reported-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-> > Link: https://lore.kernel.org/linux-btrfs/CAHhfkvwo=3DnmzrJSqZ2qMfF-rZB=
--ab6ahHnCD_sq9h4o8v+M7QQ@mail.gmail.com/
-> > Tested-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-> > CC: stable@vger.kernel.org # 6.2+
-> > Signed-off-by: Filipe Manana <fdmanana@suse.com>
->
-> fstests(btrfs/299) will fail with this patch.
+Hey Thorsten,
 
-Yes, I noticed it later, and it is fixed in v2.
-Thanks.
+Thanks for bringing this up, I think what you mentioned is
+interesting in a more general way, so let me use this email to
+share my impressions about the approach to reporting regressions
+and the role of the reporter.
 
->
-> Best Regards
-> Wang Yugui (wangyugui@e16-tech.com)
-> 2023/05/04
->
-> > ---
-> >  fs/btrfs/backref.c | 15 +++++++--------
-> >  1 file changed, 7 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
-> > index e54f0884802a..8e61be3fe9a8 100644
-> > --- a/fs/btrfs/backref.c
-> > +++ b/fs/btrfs/backref.c
-> > @@ -45,7 +45,9 @@ static int check_extent_in_eb(struct btrfs_backref_wa=
-lk_ctx *ctx,
-> >       int root_count;
-> >       bool cached;
-> >
-> > -     if (!btrfs_file_extent_compression(eb, fi) &&
-> > +     if (!ctx->ignore_extent_item_pos &&
-> > +         ctx->extent_item_pos > 0 &&
-> > +         !btrfs_file_extent_compression(eb, fi) &&
-> >           !btrfs_file_extent_encryption(eb, fi) &&
-> >           !btrfs_file_extent_other_encoding(eb, fi)) {
-> >               u64 data_offset;
-> > @@ -552,13 +554,10 @@ static int add_all_parents(struct btrfs_backref_w=
-alk_ctx *ctx,
-> >                               count++;
-> >                       else
-> >                               goto next;
-> > -                     if (!ctx->ignore_extent_item_pos) {
-> > -                             ret =3D check_extent_in_eb(ctx, &key, eb,=
- fi, &eie);
-> > -                             if (ret =3D=3D BTRFS_ITERATE_EXTENT_INODE=
-S_STOP ||
-> > -                                 ret < 0)
-> > -                                     break;
-> > -                     }
-> > -                     if (ret > 0)
-> > +                     ret =3D check_extent_in_eb(ctx, &key, eb, fi, &ei=
-e);
-> > +                     if (ret =3D=3D BTRFS_ITERATE_EXTENT_INODES_STOP |=
-| ret < 0)
-> > +                             break;
-> > +                     else if (ret > 0)
-> >                               goto next;
-> >                       ret =3D ulist_add_merge_ptr(parents, eb->start,
-> >                                                 eie, (void **)&old, GFP=
-_NOFS);
-> > --
-> > 2.35.1
->
->
+On 4/5/23 11:06, Linux regression tracking (Thorsten Leemhuis) wrote:
+> Have you tried if reverting the change on top of the latest 4.14.y
+> kernel works and looks safe (e.g. doesn't cause a regression on its own)?
+
+No, I haven't. To be honest, my current approach when I'm
+reporting regressions is to act merely as a reporter, making sure
+the regression summaries reach the right people and providing as
+much info as possible with the data we gather from the test runs
+in KernelCI.
+
+Sometimes I stop for some more time in a particular regression
+and I test it / investigate it more thoroughly to find the exact
+root cause and try to fix it, but I consider that to be beyond
+the role of a reporter. At that point I'm basically trying to
+find a fix, and that's much more time consuming.
+
+> I also briefly looked into "git log v4.14..v4.19 --
+> arch/arm/boot/dts/meson.dtsi" and noticed commit 291f45dd6da ("ARM: dts:
+> meson: fixing USB support on Meson6, Meson8 and Meson8b") [v4.15-rc1]
+> that mentions a fix for the Odroid-C1+ board -- which afaics wasn't
+> backported to 4.14.y. Is that maybe why this happens on 4.14.y and not
+> on 4.19.y? Note though: It's just a wild guess from the peanut gallery,
+> as this is not my area of expertise!
+
+Maybe, that's the kind of thing that someone who's familiar with
+the code (author / maintainers) can quickly evaluate. What you
+said about that not being your area of expertise is key, IMO. I
+don't think it's reasonable to expect a single person to
+investigate every possible type of regression. Investigating a
+bug could take me 5 minutes if it's something trivial or a few
+days if it's not and I'm not familiar with it, while the patch
+author/s could probably have it assessed and fixed in
+minutes. That's why I think that providing the regression info to
+the right people is a better use of the reporter's time.
+
+There are many of us now in the community that are working
+towards building a common effort for regression reporting, so
+maybe we should take some time to define the roles involved and
+gather ideas about how to approach certain types of problems.
+
+Thanks,
+Ricardo
