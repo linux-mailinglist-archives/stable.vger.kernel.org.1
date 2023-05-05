@@ -2,160 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5D626F88D3
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 20:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56FAA6F88F2
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 20:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233142AbjEESqN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 14:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52958 "EHLO
+        id S232168AbjEESs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 14:48:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232844AbjEESqN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 14:46:13 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D122959D4
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 11:46:06 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-3ef59098519so9694071cf.1
-        for <stable@vger.kernel.org>; Fri, 05 May 2023 11:46:06 -0700 (PDT)
+        with ESMTP id S232997AbjEESs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 14:48:58 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD3018FD3
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 11:48:55 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ac75500798so24734301fa.0
+        for <stable@vger.kernel.org>; Fri, 05 May 2023 11:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=poorly.run; s=google; t=1683312366; x=1685904366;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EhmbhDCRzak/t11wXpwMu2NOC9pgAHH93PKpbCf1qtA=;
-        b=G4QDfdGTzO4rSstvF9JULH2agg39wZYGm0nZVPkuB63FSC18U3tIHgh/MgE122WMBH
-         p/twjplPNfl+1E0E9Z1UrteFrIythH94J7d/AWSuxJLPTHdli5pkwaMD/wXE7UdE+Q1Q
-         FyT1xfPSDRgD7KkOR2w802JXOiQ5nSwAJiRS45fHgz+GyOap8dVYLryiN2EE+zTNsRIR
-         CIrD9UQljXXNAqfHwziSmDhh7++2JjQzEsexVdaeS9WoZhSCE+HfHEaANeIIKYv75fFz
-         jfHGxvzY3fnhKhdycwH/5pNZHbyPZkutgwzSDevR80rIETpfhoeIdtjwzgD9sagW7LSp
-         s9tw==
+        d=linaro.org; s=google; t=1683312534; x=1685904534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Crh9fzWfq0MD2HA/mWuy3AwSn4MclmdJjDjdEYt9apw=;
+        b=A3BA8gulgqhSMKGoMnA/WTu7e+p1LZh7rNN2V7J17ajT8yI4vic/7rfTY7kHU5eFBe
+         TDtDz1GwFXdZ3Yi+jQhQ0aF7GBzhnj7OthbB058Zc0v9fTU9UlP/QRBvE7HO1cLJLXBE
+         GOZ1D19yuRtlmxowcHUdD8Q9n+mmX8l/28UoM6F4AV3DhCCMWoMeUAScn9GlsQV5K9d8
+         /YnF13t958XSrfgzxJ2OgJBN/FmIM2TiOFYjyezG19sR1Q8XcAoXE9zx/NtMBkaWcB13
+         H0/MF7TbtrZSBjobqxoh9xGdZ/xGI/uMtuavMD6ccjIXQv8gkiZAS6Td3oFjtmhVm192
+         LCYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683312366; x=1685904366;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EhmbhDCRzak/t11wXpwMu2NOC9pgAHH93PKpbCf1qtA=;
-        b=IlfONz6EhshYQtk04WA8TAu0GH+pE9UZSwSpN4bhSkvN/bXIrdOnZCoPYoEn477e4y
-         eqabvImTQOlhw6idMz14Lax+QroUkPTahX0rgxGSsD3iPP9TsaEOllhw0triqQbbqmCw
-         zpJZ/p7qgeNlwKB9k7GDxjYNpYLqOnnpUr+Pl2SKNdStveebmzftkJ6/pB8YQPRezpBr
-         RcQLBvKT3BFhRjbaaJYwwKg3FZYWvu8UA5l9m4uc6QiN3Oq0kwvwibNqkI3+S6nPH5vd
-         SdPSZRjMcsYvvUK44b/Pbsf6nwK0Dc0qnftYRIjM9N7RfGhw+n5D2dyDk/3AJn6nalEf
-         y8fw==
-X-Gm-Message-State: AC+VfDxs+oLVJXltqemJ7chStyHfA//qdjF7VOJWbyNnERSfQXF4FJqs
-        gKStIdmpPJjhx9Cu8pcAuQ0Rhg==
-X-Google-Smtp-Source: ACHHUZ6vlZe98aEMf6s3/JGq7Iyk2iDwsx/lw9OyEks9Uh1D/pOw8Gb/P9wzyi0pSNjwmIgQGhKOKg==
-X-Received: by 2002:a05:622a:1999:b0:3e6:4fab:478e with SMTP id u25-20020a05622a199900b003e64fab478emr4806484qtc.33.1683312365928;
-        Fri, 05 May 2023 11:46:05 -0700 (PDT)
-Received: from localhost (164.146.150.34.bc.googleusercontent.com. [34.150.146.164])
-        by smtp.gmail.com with ESMTPSA id i2-20020ac80042000000b003ef28a76a11sm59598qtg.68.2023.05.05.11.46.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 11:46:04 -0700 (PDT)
-Date:   Fri, 5 May 2023 18:46:04 +0000
-From:   Sean Paul <sean@poorly.run>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sean Paul <seanpaul@chromium.org>,
-        Michel =?iso-8859-1?Q?D=E4nzer?= <michel.daenzer@mailbox.org>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sandy Huang <hjc@rock-chips.com>,
-        linux-rockchip@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] drm/atomic: Allow vblank-enabled + self-refresh
- "disable"
-Message-ID: <ZFVO7LAroGNZuCxu@art_vandelay>
-References: <20230109171809.v3.1.I3904f697863649eb1be540ecca147a66e42bfad7@changeid>
+        d=1e100.net; s=20221208; t=1683312534; x=1685904534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Crh9fzWfq0MD2HA/mWuy3AwSn4MclmdJjDjdEYt9apw=;
+        b=kaUD6L1/rwrS4KVyO1KUjSDkb07C9E+SwiWwkiZ4qxHziRWVlI5SGlKHRpSORx8dWt
+         wv425AsNnkkUsNHkfSjuoghomxfdMlZlwEDU/smAaURBbZvVMAllAQ/kiU2idM14vMen
+         UXtdgI/ivyuWTy/RLcTX+0LIAB7PYlB5b46chQ/s7fiXpC7jxX0ZpB3jgCfrVPv6YBF1
+         Xd5eV+kpooXbq6ygqwKE5KMs61qofJdYXIctZuLl2rpBC0FtNNH1dBXZqLqjrA9wIJEO
+         4ogWTcrbJbYRBkbN1ZqoE0yf06OfBriFTut+OUjwCtvSNLhCks8ncdlBR8040JCAEW74
+         CbyQ==
+X-Gm-Message-State: AC+VfDwM+1A876zp+OHUu7CtJmz4egYVyU/yk2nURmjPLwbF+DwIlH0c
+        y04oGBw0XCqvqRtuafdqJan4ow==
+X-Google-Smtp-Source: ACHHUZ6MB/ZRbiqb+rRR2yJknH8iVNHvoAF46WGJlP3+1O3Eo9MBQbKqyXrbrAEzStwB9WURN0hvvg==
+X-Received: by 2002:a19:f702:0:b0:4f0:c18:5114 with SMTP id z2-20020a19f702000000b004f00c185114mr883037lfe.26.1683312534123;
+        Fri, 05 May 2023 11:48:54 -0700 (PDT)
+Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
+        by smtp.gmail.com with ESMTPSA id i12-20020ac25d2c000000b004e887fd71acsm376929lfb.236.2023.05.05.11.48.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 May 2023 11:48:53 -0700 (PDT)
+Message-ID: <e5f7420c-2e09-8a29-0958-da0a74fc98b4@linaro.org>
+Date:   Fri, 5 May 2023 20:48:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230109171809.v3.1.I3904f697863649eb1be540ecca147a66e42bfad7@changeid>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v2 02/18] media: venus: hfi_venus: Write to VIDC_CTRL_INIT
+ after unmasking interrupts
+Content-Language: en-US
+To:     Vikash Garodia <quic_vgarodia@quicinc.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Dikshita Agarwal <dikshita@qti.qualcomm.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Mansur Alisha Shaik <mansur@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Dikshita Agarwal <quic_dikshita@quicinc.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        stable@vger.kernel.org
+References: <20230228-topic-venus-v2-0-d95d14949c79@linaro.org>
+ <20230228-topic-venus-v2-2-d95d14949c79@linaro.org>
+ <bfda6e09-2674-8ef1-11b2-83f631329c51@quicinc.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <bfda6e09-2674-8ef1-11b2-83f631329c51@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jan 09, 2023 at 05:18:16PM -0800, Brian Norris wrote:
-> The self-refresh helper framework overloads "disable" to sometimes mean
-> "go into self-refresh mode," and this mode activates automatically
-> (e.g., after some period of unchanging display output). In such cases,
-> the display pipe is still considered "on", and user-space is not aware
-> that we went into self-refresh mode. Thus, users may expect that
-> vblank-related features (such as DRM_IOCTL_WAIT_VBLANK) still work
-> properly.
-> 
-> However, we trigger the WARN_ONCE() here if a CRTC driver tries to leave
-> vblank enabled.
-> 
-> Add a different expectation: that CRTCs *should* leave vblank enabled
-> when going into self-refresh.
-> 
-> This patch is preparation for another patch -- "drm/rockchip: vop: Leave
-> vblank enabled in self-refresh" -- which resolves conflicts between the
-> above self-refresh behavior and the API tests in IGT's kms_vblank test
-> module.
-> 
-> == Some alternatives discussed: ==
-> 
-> It's likely that on many display controllers, vblank interrupts will
-> turn off when the CRTC is disabled, and so in some cases, self-refresh
-> may not support vblank. To support such cases, we might consider
-> additions to the generic helpers such that we fire vblank events based
-> on a timer.
-> 
-> However, there is currently only one driver using the common
-> self-refresh helpers (i.e., rockchip), and at least as of commit
-> bed030a49f3e ("drm/rockchip: Don't fully disable vop on self refresh"),
-> the CRTC hardware is powered enough to continue to generate vblank
-> interrupts.
-> 
-> So we chose the simpler option of leaving vblank interrupts enabled. We
-> can reevaluate this decision and perhaps augment the helpers if/when we
-> gain a second driver that has different requirements.
-> 
-> v3:
->  * include discussion summary
-> 
-> v2:
->  * add 'ret != 0' warning case for self-refresh
->  * describe failing test case and relation to drm/rockchip patch better
-> 
-> Cc: <stable@vger.kernel.org> # dependency for "drm/rockchip: vop: Leave
->                              # vblank enabled in self-refresh"
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
 
-Pushed both patches to drm-misc-next, thanks Brian
 
-> ---
->  drivers/gpu/drm/drm_atomic_helper.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+On 5.05.2023 14:33, Vikash Garodia wrote:
 > 
-> diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-> index d579fd8f7cb8..a22485e3e924 100644
-> --- a/drivers/gpu/drm/drm_atomic_helper.c
-> +++ b/drivers/gpu/drm/drm_atomic_helper.c
-> @@ -1209,7 +1209,16 @@ disable_outputs(struct drm_device *dev, struct drm_atomic_state *old_state)
->  			continue;
->  
->  		ret = drm_crtc_vblank_get(crtc);
-> -		WARN_ONCE(ret != -EINVAL, "driver forgot to call drm_crtc_vblank_off()\n");
-> +		/*
-> +		 * Self-refresh is not a true "disable"; ensure vblank remains
-> +		 * enabled.
-> +		 */
-> +		if (new_crtc_state->self_refresh_active)
-> +			WARN_ONCE(ret != 0,
-> +				  "driver disabled vblank in self-refresh\n");
-> +		else
-> +			WARN_ONCE(ret != -EINVAL,
-> +				  "driver forgot to call drm_crtc_vblank_off()\n");
->  		if (ret == 0)
->  			drm_crtc_vblank_put(crtc);
->  	}
-> -- 
-> 2.39.0.314.g84b9a713c41-goog
+> On 5/4/2023 1:30 PM, Konrad Dybcio wrote:
+>> The downstream driver signals the hardware to be enabled only after the
+>> interrupts are unmasked, which... makes sense. Follow suit.
 > 
+> Rephrase the commit text,
+> 
+> 1. No need to mention downstream driver, if something is buggy, fix it.
+Generally I'd agree, however in this specific case the downstream
+driver is the only available source of knowledge about what the correct
+(or at least working) initialization sequence of this hw block is.
 
--- 
-Sean Paul, Software Engineer, Google / Chromium OS
+> 
+> 2. Avoid "..." and lets make it more formal.
+Ack
+
+Konrad
+> 
+>> Cc: stable@vger.kernel.org # v4.12+
+>> Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>> ---
+>>   drivers/media/platform/qcom/venus/hfi_venus.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+>> index bff435abd59b..8fc8f46dc390 100644
+>> --- a/drivers/media/platform/qcom/venus/hfi_venus.c
+>> +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+>> @@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+>>       void __iomem *wrapper_base = hdev->core->wrapper_base;
+>>       int ret = 0;
+>>   -    writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+>>       if (IS_V6(hdev->core)) {
+>>           mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
+>>           mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
+>> @@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+>>       writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+>>       writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
+>>   +    writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+>>       while (!ctrl_status && count < max_tries) {
+>>           ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
+>>           if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
+> 
+> Above code looks good.
+> 
+> -Vikash
+> 
