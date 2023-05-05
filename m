@@ -2,128 +2,230 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 581166F89F8
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 22:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3AEF6F8A2A
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 22:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbjEEUFm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 16:05:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46926 "EHLO
+        id S232326AbjEEUa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 16:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230344AbjEEUFl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 16:05:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D97F1BE4;
-        Fri,  5 May 2023 13:05:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 872E76406D;
-        Fri,  5 May 2023 20:05:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9120C433D2;
-        Fri,  5 May 2023 20:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1683317136;
-        bh=TL9yHmjw458DbDGdwIebwFwl9m1AzNPbuJGudKkLUlI=;
-        h=Date:To:From:Subject:From;
-        b=C5mRN2eOCya+JRR9GcUN4cdWpJsEm6rwqY+UKRBJyWbg8dQTRk0pSgVj4r5f0RNax
-         H8xPoIo5Xig9dyX4xMQbL+2IGaRR3pKtYbiUMR2kZtB0kujx+h5XlAa8Yy9XhzeRxj
-         GuWfWpITMhRVzqWDJYNwP4THxNMNCIcaZo45AwKY=
-Date:   Fri, 05 May 2023 13:05:36 -0700
-To:     mm-commits@vger.kernel.org, support@spotco.us,
-        stable@vger.kernel.org, rick.p.edgecombe@intel.com,
-        mgkeyes@vigovproductions.net, Liam.Howlett@oracle.com,
-        zhangpeng.00@bytedance.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + maple_tree-make-maple-state-reusable-after-mas_empty_area.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230505200536.D9120C433D2@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230329AbjEEUa1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 16:30:27 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30257421D
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 13:30:26 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-559d35837bbso39262757b3.3
+        for <stable@vger.kernel.org>; Fri, 05 May 2023 13:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683318625; x=1685910625;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u49N1WE91RjKtWnFkziisD2DY9qwqmVaBlv12v/gn1Y=;
+        b=vNatYaiiBa4/4TgvUJ3HRW53R8r3fJLH9ryq5X57wj0DbPIIqjbv2guK4YJ+49Vkqi
+         mpw6pwMLloURoTHu3mkHdGe/DAwatmm9usqI6A0+VsqhUX9Xv+59JuuXlAgFan5YacXW
+         1cJq/tj1bbnNm4T4Lh4oz47szSKsu+qowlj6PyZSJD/CvOJVjbjFoJ13eqcZRVrpsCaC
+         Oc6Jqh2qSSl4FTRAY0BaXtMMSiU0OC2S2U/GSSptWXI2fMrOfOkDZy881QkKNzvkf/Qr
+         d80J7VuVNvamLt8npkFcjJYB2xA5WcyiPsgMmVexNuBPTvYd1FmQs9TaKuwW9EXEIsbA
+         UWQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683318625; x=1685910625;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u49N1WE91RjKtWnFkziisD2DY9qwqmVaBlv12v/gn1Y=;
+        b=cvLvxpjCkd+Qc7PqyQOyMKL+mr/u+1tLsZvaUNZ5cdRuLDGKG5odyn6EFFKuhIgDHR
+         KOa4f7hQo5XgTCbn/Cvr/sPF7GAb3evCnRfSUkO946Z5PCiIpp8QO2fVPCrBSuqdDlO7
+         +4LtcWNGFtGLaAT3VvyOxzF5BPPnKsN/cGIQyo6HNfiab3a7fQOg+Rmhm/xQjA3jsq7L
+         Xcv3oR/l+awNTZS7SoulcbGip+hCwECICc/8UJhhKDalwLGI1Utk1BnxsrxL2pIThs47
+         rV7MVoVBDagB6w/5Tx+tvYg4GR8qSpyVfKrEd68zL8It9qRQqZi2fPrCehm7mZ4Q7VCW
+         jAaQ==
+X-Gm-Message-State: AC+VfDzRnUsobawlPf7P8L8o5e+2QGfA7Lbpca69YKrslb+RaimHhwhC
+        xowkrg9qY5s/MsBN3N27k2twlYHYNf9nWA==
+X-Google-Smtp-Source: ACHHUZ57Nsy18pbRkdwZx/cFlryyGclk2YcU7DfFS7Ie73RMKLvApAmGlNXKOblNv3SvqIjkHxWzF7V/yK+TsQ==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a81:af54:0:b0:555:c893:cc9d with SMTP id
+ x20-20020a81af54000000b00555c893cc9dmr1643508ywj.4.1683318625434; Fri, 05 May
+ 2023 13:30:25 -0700 (PDT)
+Date:   Fri,  5 May 2023 20:30:20 +0000
+In-Reply-To: <20230505064811.2982849-1-cmllamas@google.com>
+Mime-Version: 1.0
+References: <20230505064811.2982849-1-cmllamas@google.com>
+X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
+Message-ID: <20230505203020.4101154-1-cmllamas@google.com>
+Subject: [PATCH v2] binder: fix UAF caused by faulty buffer cleanup
+From:   Carlos Llamas <cmllamas@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Suren Baghdasaryan <surenb@google.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Zi Fan Tan <zifantan@google.com>, stable@vger.kernel.org,
+        Todd Kjos <tkjos@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+In binder_transaction_buffer_release() the 'failed_at' offset indicates
+the number of objects to clean up. However, this function was changed by
+commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
+to release all the objects in the buffer when 'failed_at' is zero.
 
-The patch titled
-     Subject: maple_tree: make maple state reusable after mas_empty_area()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     maple_tree-make-maple-state-reusable-after-mas_empty_area.patch
+This introduced an issue when a transaction buffer is released without
+any objects having been processed so far. In this case, 'failed_at' is
+indeed zero yet it is misinterpreted as releasing the entire buffer.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-make-maple-state-reusable-after-mas_empty_area.patch
+This leads to use-after-free errors where nodes are incorrectly freed
+and subsequently accessed. Such is the case in the following KASAN
+report:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
+  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x94/0xec
+   show_stack+0x18/0x24
+   dump_stack_lvl+0x48/0x60
+   print_report+0xf8/0x5b8
+   kasan_report+0xb8/0xfc
+   __asan_load8+0x9c/0xb8
+   binder_thread_read+0xc40/0x1f30
+   binder_ioctl+0xd9c/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+  Allocated by task 474:
+   kasan_save_stack+0x3c/0x64
+   kasan_set_track+0x2c/0x40
+   kasan_save_alloc_info+0x24/0x34
+   __kasan_kmalloc+0xb8/0xbc
+   kmalloc_trace+0x48/0x5c
+   binder_new_node+0x3c/0x3a4
+   binder_transaction+0x2b58/0x36f0
+   binder_thread_write+0x8e0/0x1b78
+   binder_ioctl+0x14a0/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+  Freed by task 475:
+   kasan_save_stack+0x3c/0x64
+   kasan_set_track+0x2c/0x40
+   kasan_save_free_info+0x38/0x5c
+   __kasan_slab_free+0xe8/0x154
+   __kmem_cache_free+0x128/0x2bc
+   kfree+0x58/0x70
+   binder_dec_node_tmpref+0x178/0x1fc
+   binder_transaction_buffer_release+0x430/0x628
+   binder_transaction+0x1954/0x36f0
+   binder_thread_write+0x8e0/0x1b78
+   binder_ioctl+0x14a0/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+  ==================================================================
 
-------------------------------------------------------
-From: Peng Zhang <zhangpeng.00@bytedance.com>
-Subject: maple_tree: make maple state reusable after mas_empty_area()
-Date: Fri, 5 May 2023 22:58:29 +0800
+In order to avoid these issues, let's always calculate the intended
+'failed_at' offset beforehand. This is renamed and wrapped in a helper
+function to make it clear and convenient.
 
-Make mas->min and mas->max point to a node range instead of a leaf entry
-range.  This allows mas to still be usable after mas_empty_area() returns.
-Users would get unexpected results from other operations on the maple
-state after calling the affected function.
-
-For example, x86 MAP_32BIT mmap() acts as if there is no suitable gap when
-there should be one.
-
-Link: https://lkml.kernel.org/r/20230505145829.74574-1-zhangpeng.00@bytedance.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reported-by: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Reported-by: Tad <support@spotco.us>
-Reported-by: Michael Keyes <mgkeyes@vigovproductions.net>
-  Link: https://lore.kernel.org/linux-mm/32f156ba80010fd97dbaf0a0cdfc84366608624d.camel@intel.com/
-  Link: https://lore.kernel.org/linux-mm/e6108286ac025c268964a7ead3aab9899f9bc6e9.camel@spotco.us/
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
+Reported-by: Zi Fan Tan <zifantan@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
+v2: rename 'failed_at' to 'off_end_offsets' and drop the now unecessary
+    comments after the rename per Todd's feedback.
 
- lib/maple_tree.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/android/binder.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/lib/maple_tree.c~maple_tree-make-maple-state-reusable-after-mas_empty_area
-+++ a/lib/maple_tree.c
-@@ -5317,15 +5317,9 @@ int mas_empty_area(struct ma_state *mas,
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index fb56bfc45096..8fb7672021ee 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -1934,24 +1934,23 @@ static void binder_deferred_fd_close(int fd)
+ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 					      struct binder_thread *thread,
+ 					      struct binder_buffer *buffer,
+-					      binder_size_t failed_at,
++					      binder_size_t off_end_offset,
+ 					      bool is_failure)
+ {
+ 	int debug_id = buffer->debug_id;
+-	binder_size_t off_start_offset, buffer_offset, off_end_offset;
++	binder_size_t off_start_offset, buffer_offset;
  
- 	mt = mte_node_type(mas->node);
- 	pivots = ma_pivots(mas_mn(mas), mt);
--	if (offset)
--		mas->min = pivots[offset - 1] + 1;
--
--	if (offset < mt_pivots[mt])
--		mas->max = pivots[offset];
--
--	if (mas->index < mas->min)
--		mas->index = mas->min;
--
-+	min = mas_safe_min(mas, pivots, offset);
-+	if (mas->index < min)
-+		mas->index = min;
- 	mas->last = mas->index + size - 1;
- 	return 0;
+ 	binder_debug(BINDER_DEBUG_TRANSACTION,
+ 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
+ 		     proc->pid, buffer->debug_id,
+ 		     buffer->data_size, buffer->offsets_size,
+-		     (unsigned long long)failed_at);
++		     (unsigned long long)off_end_offset);
+ 
+ 	if (buffer->target_node)
+ 		binder_dec_node(buffer->target_node, 1, 0);
+ 
+ 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
+-	off_end_offset = is_failure && failed_at ? failed_at :
+-				off_start_offset + buffer->offsets_size;
++
+ 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
+ 	     buffer_offset += sizeof(binder_size_t)) {
+ 		struct binder_object_header *hdr;
+@@ -2111,6 +2110,21 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 	}
  }
-_
-
-Patches currently in -mm which might be from zhangpeng.00@bytedance.com are
-
-maple_tree-make-maple-state-reusable-after-mas_empty_area.patch
+ 
++/* Clean up all the objects in the buffer */
++static inline void binder_release_entire_buffer(struct binder_proc *proc,
++						struct binder_thread *thread,
++						struct binder_buffer *buffer,
++						bool is_failure)
++{
++	binder_size_t off_end_offset;
++
++	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
++	off_end_offset += buffer->offsets_size;
++
++	binder_transaction_buffer_release(proc, thread, buffer,
++					  off_end_offset, is_failure);
++}
++
+ static int binder_translate_binder(struct flat_binder_object *fp,
+ 				   struct binder_transaction *t,
+ 				   struct binder_thread *thread)
+@@ -2806,7 +2820,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
+ 		t_outdated->buffer = NULL;
+ 		buffer->transaction = NULL;
+ 		trace_binder_transaction_update_buffer_release(buffer);
+-		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);
++		binder_release_entire_buffer(proc, NULL, buffer, false);
+ 		binder_alloc_free_buf(&proc->alloc, buffer);
+ 		kfree(t_outdated);
+ 		binder_stats_deleted(BINDER_STAT_TRANSACTION);
+@@ -3775,7 +3789,7 @@ binder_free_buf(struct binder_proc *proc,
+ 		binder_node_inner_unlock(buf_node);
+ 	}
+ 	trace_binder_transaction_buffer_release(buffer);
+-	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
++	binder_release_entire_buffer(proc, thread, buffer, is_failure);
+ 	binder_alloc_free_buf(&proc->alloc, buffer);
+ }
+ 
+-- 
+2.40.1.521.gf1e218fcd8-goog
 
