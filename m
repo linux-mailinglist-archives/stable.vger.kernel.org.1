@@ -2,154 +2,191 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F51C6F859E
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 17:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF3206F861C
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 17:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232726AbjEEPZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 11:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55264 "EHLO
+        id S232997AbjEEPqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 11:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232709AbjEEPZH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 11:25:07 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C901A62D
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 08:23:24 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-50bd2d7ba74so28105235a12.1
-        for <stable@vger.kernel.org>; Fri, 05 May 2023 08:23:24 -0700 (PDT)
+        with ESMTP id S232060AbjEEPqG (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Fri, 5 May 2023 11:46:06 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51F4816097;
+        Fri,  5 May 2023 08:46:05 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id d2e1a72fcca58-64115e652eeso20656998b3a.0;
+        Fri, 05 May 2023 08:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683300186; x=1685892186;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PJ0MjyN2tPXJnBiN7+wdwcYqZoiGnIUzbIIwgINFMQk=;
-        b=t9cPpIqjIu7IP/FdOUGPJXKMeX+ktMi3VAhNdww6MEKLAn96lOAvAwzMNvfTc9Jjga
-         WnoJJ131iQm+jk9XN/xGVpPUI64t7dQi0B4H96pUjMS2LeGH0cQSJsGjVBL33BBlXiqM
-         mn41G/W98ig6WwbwBP4ik9n1E0dScC9iDZTbx+UPNxbO0MrjMACBQUIOxjRtsPxDP52v
-         NYCuj+zDxmf79qI+sY4hweoZ3QB8TlacHWry4QETuSMhODClU/hDrmLsx38jxYNCgc+K
-         NEvScEv3zGQ3SXf+QfEANMhP9xpl7hUoAP686nFlLu59btn+5YLdemzDKtqsvKgl4bOf
-         t+Tg==
+        d=gmail.com; s=20221208; t=1683301565; x=1685893565;
+        h=content-transfer-encoding:in-reply-to:cc:from:references:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=14XV5Ll65TOApPPeoQLTwgb99K7woaMphSjWr5nwqL0=;
+        b=dEFGTEXubye+Kebcakt9ySML0/ViMX0kAK0i0JB8BNXCG68HT7MXaKjwIwrcfpiREY
+         ekKSopDtQHkkjVLiHgNbP0Ivn5Gv7Q++qsYz8+szcxNYA1Ckc9f8/pJWSiylf4ksdfbV
+         lvHvt+x2BSq+/arN9f5IV/5sVHpK6nGvVGD9sG/Zw8KqZmlz/Rg89nj9wl/rBCIuU9Qo
+         palpZYvYcUlJRVQa2M4J4OxqHbWyk51bzOP5sLyJO7dfHQqAisZ9rKKPZUFIzBrFIMsW
+         KUFXVdiuouh3stEV4r3N7ipwjDIAprdo2w4Wx4n9t0Q/jrMraN/yLu7FYe/uxoXA5wZA
+         hdmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683300186; x=1685892186;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PJ0MjyN2tPXJnBiN7+wdwcYqZoiGnIUzbIIwgINFMQk=;
-        b=h1Wyvgr81XekAvNl3lTiZ59izcefHZh/mmffx6UClQ5+zJzTIMoW7qRZTFx0J5aWSC
-         rkBxx8Z7H+vE31urOi8ut2baeve5jaN2lC43caEA/exv0MQ7hp+NrcLgBNiXZq83ab45
-         0SsJMPWhV0hOz2WtaaGmsWxuVaNFW1P5uIyMKY192c/8cTCmXduSUFCijpAXz0FKfTd0
-         087kdXPGB0eL7bk4dq79BGDUxWQFkWfMpCs4vCzURlRz6SKUI6bw98sd20ew0gp46P6n
-         iVV2mWSw5PYJ2xC8Oalz1BxDjgLz3Y5Jrkg45HeMvfp65Lulv5RCsv7YfkzDmAANne0f
-         vP5A==
-X-Gm-Message-State: AC+VfDxXHiBNMToYAXodMz4xxMKxl6Kd0wnfWgV73i3qdKBDQreKL8UC
-        mwNOofheKTUt/QdSC5Q5zs2iTQ==
-X-Google-Smtp-Source: ACHHUZ5N5HWekvFr0K66lggYS0aqJcCoHia21AcHCedlBnfdA7aLDt9GxSSzEBIoWYEuVNio2WSufQ==
-X-Received: by 2002:a17:907:7f02:b0:958:46aa:7f99 with SMTP id qf2-20020a1709077f0200b0095846aa7f99mr2781417ejc.7.1683300186053;
-        Fri, 05 May 2023 08:23:06 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:52e:24ce:bbc1:127d])
-        by smtp.gmail.com with ESMTPSA id hy19-20020a1709068a7300b00961277a426dsm1053667ejc.205.2023.05.05.08.23.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 08:23:05 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Akash Asthana <akashast@codeaurora.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] serial: qcom-geni: fix enabling deactivated interrupt
-Date:   Fri,  5 May 2023 17:23:01 +0200
-Message-Id: <20230505152301.2181270-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20221208; t=1683301565; x=1685893565;
+        h=content-transfer-encoding:in-reply-to:cc:from:references:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=14XV5Ll65TOApPPeoQLTwgb99K7woaMphSjWr5nwqL0=;
+        b=ZHoAtJWkXParsJIpEI0BFb/FP05NhdAn97xnVfHFBLjtC9yz85X0RA+kWrzEW1VkEp
+         V9FSIF0uz8SCBPK7otWFwHA6rBuxkZBVlLcZCOeg2tKpsC9mEQ3lzvxVtDRG2c0bYY0e
+         EdljISNjqzIECQ7SNosLx8jF6n/uDr9BCS8Bbr0MAMQEweeuYGnukhEmTxzvUI4wFLVL
+         DqJL5NRxwjvdIOPPBI7bVAemERB4gfusZYJ6HtDBYEOq6PThKwzcf/EKRnu1AuipTVtl
+         jRoj+PC94hjZ7udplaFzyIW2HRdnU5eFXKMg+1zZC5lU+43XqjNLPr7utTiP3uUx5zCA
+         XgPA==
+X-Gm-Message-State: AC+VfDyNyeER+h7Q2vypYkEVAqFr6NX6W9dmJF2SuOlqXlQISTLmbmg/
+        IY2KWHnfwZowg8umZ9tdA4o=
+X-Google-Smtp-Source: ACHHUZ60IvK6iB/d/fxfnRozqHgaFRsFR1B6l4caTbh7weLnGyVxRIX7cJR6k4/JBKNJNIEXid/j/g==
+X-Received: by 2002:a05:6a20:258e:b0:f0:3fc4:744f with SMTP id k14-20020a056a20258e00b000f03fc4744fmr2720340pzd.8.1683301564611;
+        Fri, 05 May 2023 08:46:04 -0700 (PDT)
+Received: from [10.200.10.82] ([139.177.225.232])
+        by smtp.gmail.com with ESMTPSA id m6-20020aa79006000000b00640e12b6464sm1837486pfo.178.2023.05.05.08.46.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 May 2023 08:46:04 -0700 (PDT)
+Message-ID: <dbba1dda-4117-909e-4fb5-c6a6bc4fdb4e@gmail.com>
+Date:   Fri, 5 May 2023 23:45:58 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.1
+Subject: Re: [PATCH] maple_tree: Make maple state reusable after
+ mas_empty_area()
+To:     "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+References: <20230504175509.2195838-1-Liam.Howlett@oracle.com>
+ <4912002a-4fa8-c1c0-a8c4-690b6dd76449@gmail.com>
+ <20230505131620.2o2cv5bj6jxwlztz@revolver>
+From:   Peng Zhang <perlyzhang@gmail.com>
+Cc:     Michael Keyes <mgkeyes@vigovproductions.net>,
+        Stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        maple-tree@lists.infradead.org,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        Tad <support@spotco.us>
+In-Reply-To: <20230505131620.2o2cv5bj6jxwlztz@revolver>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The driver have a race, experienced only with PREEMPT_RT patchset:
 
-CPU0                         | CPU1
-==================================================================
-qcom_geni_serial_probe       |
-  uart_add_one_port          |
-                             | serdev_drv_probe
-                             |   qca_serdev_probe
-                             |     serdev_device_open
-                             |       uart_open
-                             |         uart_startup
-                             |           qcom_geni_serial_startup
-                             |             enable_irq
-                             |               __irq_startup
-                             |                 WARN_ON()
-                             |                 IRQ not activated
-  request_threaded_irq       |
-    irq_domain_activate_irq  |
 
-The warning:
+在 2023/5/5 21:16, Liam R. Howlett 写道:
+> * Peng Zhang <perlyzhang@gmail.com> [230504 23:23]:
+>>
+>>
+>> 在 2023/5/5 01:55, Liam R. Howlett 写道:
+>>> Do not update the min and max of the maple state to the slot of the leaf
+>>> node.  Leaving the min and max to the node entry allows for the maple
+>>> state to be used in other operations.
+>>>
+>>> Users would get unexpected results from other operations on the maple
+>>> state after calling the affected function.
+>>>
+>>> Reported-by: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+>>> Reported-by: Tad <support@spotco.us>
+>>> Reported-by: Michael Keyes <mgkeyes@vigovproductions.net>
+>>> Link: https://lore.kernel.org/linux-mm/32f156ba80010fd97dbaf0a0cdfc84366608624d.camel@intel.com/
+>>> Link: https://lore.kernel.org/linux-mm/e6108286ac025c268964a7ead3aab9899f9bc6e9.camel@spotco.us/
+>>> Fixes: Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+>>> Cc: <Stable@vger.kernel.org>
+>>> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+>>> ---
+>>>    lib/maple_tree.c | 15 +--------------
+>>>    1 file changed, 1 insertion(+), 14 deletions(-)
+>>>
+>>> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+>>> index 110a36479dced..1c4bc7a988ed3 100644
+>>> --- a/lib/maple_tree.c
+>>> +++ b/lib/maple_tree.c
+>>> @@ -5285,10 +5285,6 @@ static inline int mas_sparse_area(struct ma_state *mas, unsigned long min,
+>>>    int mas_empty_area(struct ma_state *mas, unsigned long min,
+>>>    		unsigned long max, unsigned long size)
+>>>    {
+>>> -	unsigned char offset;
+>>> -	unsigned long *pivots;
+>>> -	enum maple_type mt;
+>>> -
+>>>    	if (min >= max)
+>>>    		return -EINVAL;
+>>> @@ -5311,18 +5307,9 @@ int mas_empty_area(struct ma_state *mas, unsigned long min,
+>>>    	if (unlikely(mas_is_err(mas)))
+>>>    		return xa_err(mas->node);
+>>> -	offset = mas->offset;
+>>> -	if (unlikely(offset == MAPLE_NODE_SLOTS))
+>>> +	if (unlikely(mas->offset == MAPLE_NODE_SLOTS))
+>>>    		return -EBUSY;
+>>> -	mt = mte_node_type(mas->node);
+>>> -	pivots = ma_pivots(mas_mn(mas), mt);
+>>> -	if (offset)
+>>> -		mas->min = pivots[offset - 1] + 1;
+>>> -
+>>> -	if (offset < mt_pivots[mt])
+>>> -		mas->max = pivots[offset];
+>>> -
+>>>    	if (mas->index < mas->min)
+>>>    		mas->index = mas->min;
+>> This will bring new bugs, mas->index should take the maximum
+>> value with mas->index and mas_safe_min(mas, pivots, offset),
+>> otherwise there will be overwriting allocation.
+> 
+> Yes, you are right.  Both mas->index and mas->last should be set when
+> the gap is found, but we aren't currently doing this.
+> 
+>>
+>> Maybe you have forgotten, I have posted a patch[1] with the same
+>> function last week. I didn't know of a place where mas was used
+>> after mas_empty_area() before. That patch does not introduce new
+>> bugs, but the code style has not been updated yet. If using this
+>> patch will bring more conflicts with my patch set, so what should
+>> I do? 😁
+>>
+>> [1] https://lore.kernel.org/lkml/20230425110511.11680-3-zhangpeng.00@bytedance.com/
+> 
+> I did forget about that, my apologies.  I really wish I had remembered
+> instead of tracking down the same bug.
+> 
+> This has become an issue because the maple state is reused for the stack
+> guard checks.
+> 
+> We should use your patch as you sent it first and both need revisions.
+> We need this soon and it will need to be backported.
+> 
+> Can you please take it out of your series and make the necessary
+> adjustments and send v2?  It seems isolated enough that it won't be
+> difficult.  Be sure to Cc everyone I have on my patch and include the
+> fixes tag so it can be backported as necessary.
+> 
+> In the future, I'd like mas->index/mas->last to point to the gap located
+> to better align with mas_*_range() interface that will soon be added.
+> It makes more sense to record the entire gap found when returning from
+> the search.  I think this entire area needs modernisation/attention and
+> optimisation, but for now, we should fix the bug.
+Yes, alignment can be done in mas_*_range() interface. When you
+post the code, I can review it. I am very interested in various
+data structures especially maple tree and have read most of maple
+tree code and verify its correctness. If there is work around
+maple tree in the future, I can help a little. I have some small
+maple tree optimization ideas, but I need some time to verify that
+it works. Also, I found that many codes written in maple tree are
+very complicated, and it will be difficult to maintain, so I will
+make some simplifications appropriately.
 
-  894000.serial: ttyHS1 at MMIO 0x894000 (irq = 144, base_baud = 0) is a MSM
-  serial serial0: tty port ttyHS1 registered
-  WARNING: CPU: 7 PID: 107 at kernel/irq/chip.c:241 __irq_startup+0x78/0xd8
-  ...
-  qcom_geni_serial 894000.serial: serial engine reports 0 RX bytes in!
-
-Adding UART port triggers probe of child serial devices - serdev and
-eventually Qualcomm Bluetooth hci_qca driver.  This opens UART port
-which enables the interrupt before it got activated in
-request_threaded_irq().  The issue originates in commit f3974413cf02
-("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup") and discussion on
-mailing list [1].  However the above commit does not explain why the
-uart_add_one_port() is moved above requesting interrupt.
-
-[1] https://lore.kernel.org/all/5d9f3dfa.1c69fb81.84c4b.30bf@mx.google.com/
-
-Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
-Cc: <stable@vger.kernel.org>
-Cc: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/tty/serial/qcom_geni_serial.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index 08dc3e2a729c..8582479f0211 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1664,19 +1664,18 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
- 	uport->private_data = &port->private_data;
- 	platform_set_drvdata(pdev, port);
- 
--	ret = uart_add_one_port(drv, uport);
--	if (ret)
--		return ret;
--
- 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
- 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
- 			IRQF_TRIGGER_HIGH, port->name, uport);
- 	if (ret) {
- 		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
--		uart_remove_one_port(drv, uport);
- 		return ret;
- 	}
- 
-+	ret = uart_add_one_port(drv, uport);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
- 	 * enabled/disabled from dev_pm_arm_wake_irq during system
--- 
-2.34.1
-
+Thanks,
+Peng
+> 
+> Thanks,
+> Liam
+> 
+> 
