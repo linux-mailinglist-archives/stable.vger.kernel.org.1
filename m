@@ -2,116 +2,254 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDEDA6F8C7D
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 00:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ED366F8CC0
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 01:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbjEEWnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 18:43:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50812 "EHLO
+        id S232130AbjEEXUj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 19:20:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232707AbjEEWnG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 18:43:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9AA5BAD;
-        Fri,  5 May 2023 15:43:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FED0635C7;
-        Fri,  5 May 2023 22:43:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E42C433D2;
-        Fri,  5 May 2023 22:43:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1683326584;
-        bh=M4euruy4ur1kXxvTiSP/CuokWN4UetjFTSdToOcwFYM=;
-        h=Date:To:From:Subject:From;
-        b=ZZnnFqKtkxrEd8PXYoDAA+NKjqVAqUbYrkwE36n9mO6SqyOGtq9jxOfCD8diFVwmt
-         VuIanQXF5F81SHfljT/wAIQVo6+t61XBoQbnA1D6m8qCTAuLW0xX5OS4XTB5qjtoAn
-         QnnpzeWeS2BEnz848OcJXGhoOxhL61kNyHH2+3zQ=
-Date:   Fri, 05 May 2023 15:43:04 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-do-not-write-dirty-data-after-degenerating-to-read-only.patch removed from -mm tree
-Message-Id: <20230505224304.B1E42C433D2@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232017AbjEEXUh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 19:20:37 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF586A7F
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 16:20:33 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f1217f16e9so20918e87.0
+        for <stable@vger.kernel.org>; Fri, 05 May 2023 16:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683328831; x=1685920831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ner33wytaL924J/VZH8Oe/UDFZDEXhP0N8Fc46FnO1w=;
+        b=q1yXk0sofT7Yy7hK8klAd1WMPn4xVVVyoHnXrzaRbuWiDl++uEScqiDioXKtDBySo2
+         mRbUUWDeNEUlb8exXuHQp/4ue7gH5kDa8F4X1F42FyA2uDCZE0DXNZHHuxdpl0tvD7kt
+         pjl9sIAAJhX+25HpyNpmw0/xD89CzvCBEQ4asLSfdU+/vxa6v3L/WLDZnBUqOAA7oz6n
+         P+NoK9Fp8ihTjq0vLRQWlA29XnXquPROeX9V2HkDBtvV0HJFLAHw/L+mnFXjjtki7rRB
+         GaTAPAZWhvF73AfuI8SPPC7h+rMAsgO3DwPBvWUV3HREeoyoE0XTJ8UEMVgX7SpYwTYL
+         ly8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683328831; x=1685920831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ner33wytaL924J/VZH8Oe/UDFZDEXhP0N8Fc46FnO1w=;
+        b=O4yOKJlnkVVjcDuC1H6/gHA1cqvadsCuy3oZIj46T9bQNlQNYmHzoJo3Vuj6k4dIFV
+         0DlifNCzXfC34Jg0CNbT8MHG/xfdGuUVaLCRJabH3/JehJh/4iSZ3Oi4rF7kWI2Ekt3a
+         G+vreQhG1ATtbNuSkdeZ5vdZ13DHP8312rY8l2jIIE8EK2Fs4FZVX0ha90YJ3AEOdt9B
+         UkNTafcaIuTMZP2JdmtWHtQBrWOBM7hVE7Eca+zOMdurlLBq17EmA0Ue/LJzmS5m9VlW
+         MicS1Vc8SPuu0W+9KnUF/z+j1qxvnLy4z15GVPJgP7gwldFEv2dUWAE8PAk+aqzYlWl5
+         fKVA==
+X-Gm-Message-State: AC+VfDxgKwY2QipkC3NC1jO/9PGTJOcNHsaowo4sFSbKFCQCs7CDdaAO
+        hSFAI/tOeW8T47tu0BI/3SVE2ct2AemWnjNA53iRMg==
+X-Google-Smtp-Source: ACHHUZ6LM3worRhHcXnGFdzEtUxhiUXJYRZlJMZaC+j7T/2ptoRuXp1VsGyuwKVMt0gPVSuVDHWUyDA/CLCSSXLa8kc=
+X-Received: by 2002:a05:6512:3598:b0:4f1:4726:7574 with SMTP id
+ m24-20020a056512359800b004f147267574mr31235lfr.5.1683328831204; Fri, 05 May
+ 2023 16:20:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230505064811.2982849-1-cmllamas@google.com> <20230505203020.4101154-1-cmllamas@google.com>
+In-Reply-To: <20230505203020.4101154-1-cmllamas@google.com>
+From:   Todd Kjos <tkjos@google.com>
+Date:   Fri, 5 May 2023 16:20:18 -0700
+Message-ID: <CAHRSSEx61=PVXRG90zVsV4W6KNNqmu_nr1TE5X+Gm7dFtuHXsw@mail.gmail.com>
+Subject: Re: [PATCH v2] binder: fix UAF caused by faulty buffer cleanup
+To:     Carlos Llamas <cmllamas@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Zi Fan Tan <zifantan@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, May 5, 2023 at 1:30=E2=80=AFPM Carlos Llamas <cmllamas@google.com> =
+wrote:
+>
+> In binder_transaction_buffer_release() the 'failed_at' offset indicates
+> the number of objects to clean up. However, this function was changed by
+> commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
+> to release all the objects in the buffer when 'failed_at' is zero.
+>
+> This introduced an issue when a transaction buffer is released without
+> any objects having been processed so far. In this case, 'failed_at' is
+> indeed zero yet it is misinterpreted as releasing the entire buffer.
+>
+> This leads to use-after-free errors where nodes are incorrectly freed
+> and subsequently accessed. Such is the case in the following KASAN
+> report:
+>
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
+>   Read of size 8 at addr ffff4faf037cfc58 by task poc/474
+>
+>   CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
+>   Hardware name: linux,dummy-virt (DT)
+>   Call trace:
+>    dump_backtrace+0x94/0xec
+>    show_stack+0x18/0x24
+>    dump_stack_lvl+0x48/0x60
+>    print_report+0xf8/0x5b8
+>    kasan_report+0xb8/0xfc
+>    __asan_load8+0x9c/0xb8
+>    binder_thread_read+0xc40/0x1f30
+>    binder_ioctl+0xd9c/0x1768
+>    __arm64_sys_ioctl+0xd4/0x118
+>    invoke_syscall+0x60/0x188
+>   [...]
+>
+>   Allocated by task 474:
+>    kasan_save_stack+0x3c/0x64
+>    kasan_set_track+0x2c/0x40
+>    kasan_save_alloc_info+0x24/0x34
+>    __kasan_kmalloc+0xb8/0xbc
+>    kmalloc_trace+0x48/0x5c
+>    binder_new_node+0x3c/0x3a4
+>    binder_transaction+0x2b58/0x36f0
+>    binder_thread_write+0x8e0/0x1b78
+>    binder_ioctl+0x14a0/0x1768
+>    __arm64_sys_ioctl+0xd4/0x118
+>    invoke_syscall+0x60/0x188
+>   [...]
+>
+>   Freed by task 475:
+>    kasan_save_stack+0x3c/0x64
+>    kasan_set_track+0x2c/0x40
+>    kasan_save_free_info+0x38/0x5c
+>    __kasan_slab_free+0xe8/0x154
+>    __kmem_cache_free+0x128/0x2bc
+>    kfree+0x58/0x70
+>    binder_dec_node_tmpref+0x178/0x1fc
+>    binder_transaction_buffer_release+0x430/0x628
+>    binder_transaction+0x1954/0x36f0
+>    binder_thread_write+0x8e0/0x1b78
+>    binder_ioctl+0x14a0/0x1768
+>    __arm64_sys_ioctl+0xd4/0x118
+>    invoke_syscall+0x60/0x188
+>   [...]
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> In order to avoid these issues, let's always calculate the intended
+> 'failed_at' offset beforehand. This is renamed and wrapped in a helper
+> function to make it clear and convenient.
+>
+> Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cl=
+eanup")
+> Reported-by: Zi Fan Tan <zifantan@google.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-The quilt patch titled
-     Subject: nilfs2: do not write dirty data after degenerating to read-only
-has been removed from the -mm tree.  Its filename was
-     nilfs2-do-not-write-dirty-data-after-degenerating-to-read-only.patch
+Acked-by: Todd Kjos <tkjos@google.com>
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: do not write dirty data after degenerating to read-only
-Date: Thu, 27 Apr 2023 10:15:26 +0900
-
-According to syzbot's report, mark_buffer_dirty() called from
-nilfs_segctor_do_construct() outputs a warning with some patterns after
-nilfs2 detects metadata corruption and degrades to read-only mode.
-
-After such read-only degeneration, page cache data may be cleared through
-nilfs_clear_dirty_page() which may also clear the uptodate flag for their
-buffer heads.  However, even after the degeneration, log writes are still
-performed by unmount processing etc., which causes mark_buffer_dirty() to
-be called for buffer heads without the "uptodate" flag and causes the
-warning.
-
-Since any writes should not be done to a read-only file system in the
-first place, this fixes the warning in mark_buffer_dirty() by letting
-nilfs_segctor_do_construct() abort early if in read-only mode.
-
-This also changes the retry check of nilfs_segctor_write_out() to avoid
-unnecessary log write retries if it detects -EROFS that
-nilfs_segctor_do_construct() returned.
-
-Link: https://lkml.kernel.org/r/20230427011526.13457-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com
-  Link: https://syzkaller.appspot.com/bug?extid=2af3bc9585be7f23f290
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/segment.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
---- a/fs/nilfs2/segment.c~nilfs2-do-not-write-dirty-data-after-degenerating-to-read-only
-+++ a/fs/nilfs2/segment.c
-@@ -2041,6 +2041,9 @@ static int nilfs_segctor_do_construct(st
- 	struct the_nilfs *nilfs = sci->sc_super->s_fs_info;
- 	int err;
- 
-+	if (sb_rdonly(sci->sc_super))
-+		return -EROFS;
-+
- 	nilfs_sc_cstage_set(sci, NILFS_ST_INIT);
- 	sci->sc_cno = nilfs->ns_cno;
- 
-@@ -2724,7 +2727,7 @@ static void nilfs_segctor_write_out(stru
- 
- 		flush_work(&sci->sc_iput_work);
- 
--	} while (ret && retrycount-- > 0);
-+	} while (ret && ret != -EROFS && retrycount-- > 0);
- }
- 
- /**
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-
+> ---
+> v2: rename 'failed_at' to 'off_end_offsets' and drop the now unecessary
+>     comments after the rename per Todd's feedback.
+>
+>  drivers/android/binder.c | 28 +++++++++++++++++++++-------
+>  1 file changed, 21 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> index fb56bfc45096..8fb7672021ee 100644
+> --- a/drivers/android/binder.c
+> +++ b/drivers/android/binder.c
+> @@ -1934,24 +1934,23 @@ static void binder_deferred_fd_close(int fd)
+>  static void binder_transaction_buffer_release(struct binder_proc *proc,
+>                                               struct binder_thread *threa=
+d,
+>                                               struct binder_buffer *buffe=
+r,
+> -                                             binder_size_t failed_at,
+> +                                             binder_size_t off_end_offse=
+t,
+>                                               bool is_failure)
+>  {
+>         int debug_id =3D buffer->debug_id;
+> -       binder_size_t off_start_offset, buffer_offset, off_end_offset;
+> +       binder_size_t off_start_offset, buffer_offset;
+>
+>         binder_debug(BINDER_DEBUG_TRANSACTION,
+>                      "%d buffer release %d, size %zd-%zd, failed at %llx\=
+n",
+>                      proc->pid, buffer->debug_id,
+>                      buffer->data_size, buffer->offsets_size,
+> -                    (unsigned long long)failed_at);
+> +                    (unsigned long long)off_end_offset);
+>
+>         if (buffer->target_node)
+>                 binder_dec_node(buffer->target_node, 1, 0);
+>
+>         off_start_offset =3D ALIGN(buffer->data_size, sizeof(void *));
+> -       off_end_offset =3D is_failure && failed_at ? failed_at :
+> -                               off_start_offset + buffer->offsets_size;
+> +
+>         for (buffer_offset =3D off_start_offset; buffer_offset < off_end_=
+offset;
+>              buffer_offset +=3D sizeof(binder_size_t)) {
+>                 struct binder_object_header *hdr;
+> @@ -2111,6 +2110,21 @@ static void binder_transaction_buffer_release(stru=
+ct binder_proc *proc,
+>         }
+>  }
+>
+> +/* Clean up all the objects in the buffer */
+> +static inline void binder_release_entire_buffer(struct binder_proc *proc=
+,
+> +                                               struct binder_thread *thr=
+ead,
+> +                                               struct binder_buffer *buf=
+fer,
+> +                                               bool is_failure)
+> +{
+> +       binder_size_t off_end_offset;
+> +
+> +       off_end_offset =3D ALIGN(buffer->data_size, sizeof(void *));
+> +       off_end_offset +=3D buffer->offsets_size;
+> +
+> +       binder_transaction_buffer_release(proc, thread, buffer,
+> +                                         off_end_offset, is_failure);
+> +}
+> +
+>  static int binder_translate_binder(struct flat_binder_object *fp,
+>                                    struct binder_transaction *t,
+>                                    struct binder_thread *thread)
+> @@ -2806,7 +2820,7 @@ static int binder_proc_transaction(struct binder_tr=
+ansaction *t,
+>                 t_outdated->buffer =3D NULL;
+>                 buffer->transaction =3D NULL;
+>                 trace_binder_transaction_update_buffer_release(buffer);
+> -               binder_transaction_buffer_release(proc, NULL, buffer, 0, =
+0);
+> +               binder_release_entire_buffer(proc, NULL, buffer, false);
+>                 binder_alloc_free_buf(&proc->alloc, buffer);
+>                 kfree(t_outdated);
+>                 binder_stats_deleted(BINDER_STAT_TRANSACTION);
+> @@ -3775,7 +3789,7 @@ binder_free_buf(struct binder_proc *proc,
+>                 binder_node_inner_unlock(buf_node);
+>         }
+>         trace_binder_transaction_buffer_release(buffer);
+> -       binder_transaction_buffer_release(proc, thread, buffer, 0, is_fai=
+lure);
+> +       binder_release_entire_buffer(proc, thread, buffer, is_failure);
+>         binder_alloc_free_buf(&proc->alloc, buffer);
+>  }
+>
+> --
+> 2.40.1.521.gf1e218fcd8-goog
+>
