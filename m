@@ -2,191 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9746F82F5
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 14:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E4F46F8309
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 14:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231616AbjEEMav (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 08:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44570 "EHLO
+        id S232184AbjEEMe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 08:34:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231995AbjEEMau (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 08:30:50 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749E61A614;
-        Fri,  5 May 2023 05:30:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1683289849; x=1714825849;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XweA9V5HDK7utS7/TPunyp7LYfGFUrdjDqzcDo9MXNU=;
-  b=fXMERubuWER2rQhyEN+ty1aACtUoyeBzVq0Ef/t0H5DvnZk5x3iUyJFO
-   8ADq6bSnfRpkgW1WllwEcLDVH9C4fgSkGjAHPlz3NyU91ffI1UWCa6Vai
-   e14QzOH+ABE9yH75Pek9WCqlpDeh4obimsfhCxGAjVn52EQWdzCgH23yu
-   Fc+928q+t7zeKh6v/E9qGg9b3VSXJ8jNomj4Rziy6nEG1oIpabipIk3dt
-   kio0iVMTRFilLG1tT7Ao+jvsy9a/J6dymu3IQYLSExNs3+P9RAPjbm0a3
-   N52/FOl8HP+ua6WlqP0EH93dsToENd6fAvyOIRR3MVZVkayDF/gMdlDbt
-   g==;
-X-IronPort-AV: E=Sophos;i="5.99,252,1677567600"; 
-   d="asc'?scan'208";a="150539472"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 05 May 2023 05:30:47 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Fri, 5 May 2023 05:30:38 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Fri, 5 May 2023 05:30:34 -0700
-Date:   Fri, 5 May 2023 13:30:15 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Ricardo Ribalda <ribalda@chromium.org>
-CC:     Conor Dooley <conor@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Philipp Rudo <prudo@linux.vnet.ibm.com>,
-        Dave Young <dyoung@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Tom Rix <trix@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        Philipp Rudo <prudo@redhat.com>, <kexec@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Ross Zwisler <zwisler@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Simon Horman <horms@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        <llvm@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-riscv@lists.infradead.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v6 4/4] risc/purgatory: Add linker script
-Message-ID: <20230505-subsidy-shininess-46a8be31b267@wendy>
-References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
- <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
- <20230501-cottage-overjoyed-1aeb9d72d309@spud>
- <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
+        with ESMTP id S231256AbjEEMe6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 08:34:58 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064BC11617;
+        Fri,  5 May 2023 05:34:56 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 345A4oOE005613;
+        Fri, 5 May 2023 12:34:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=X8NZfGhkVFzqWy48BbSWeT6UMskFhaL7zr2tKXSo8GU=;
+ b=D7z4WyAGZMuUyfqPnN0hxAajbpxKyw9KWC1aJef3jBBVGo4yihongx2XP1k/uKFjVNBB
+ SCRacamlI5wmSOkePMfC534LBz8AbTfFA11txQIgYfYEHRbsguraLlsB/sNRHmzMr+yz
+ e4pzixRt7ZEdXURTf2+Nd/Kkbgm/DdFEac8UgWBXNtyMoEuQ2/bHmdHhUJDDLwi4julD
+ /IHMsFiUVojYkMy9ZhF8Mdq4glnnobfzCreE8b9iZ+89kTJgC3kWKdC53i82pne38KSw
+ Iur96gCeSNsX0Ap57F+c6afmBvCcPJk009KcjGt/Vcpga6EXgsa2enrxTTbvRKUnju2j Jw== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qckf71k32-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 May 2023 12:34:23 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 345CY1sb024830
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 5 May 2023 12:34:01 GMT
+Received: from [10.216.37.178] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Fri, 5 May 2023
+ 05:33:56 -0700
+Message-ID: <bfda6e09-2674-8ef1-11b2-83f631329c51@quicinc.com>
+Date:   Fri, 5 May 2023 18:03:53 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HCjo7mmLcFsfwCMI"
-Content-Disposition: inline
-In-Reply-To: <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 02/18] media: venus: hfi_venus: Write to VIDC_CTRL_INIT
+ after unmasking interrupts
+Content-Language: en-US
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Dikshita Agarwal <dikshita@qti.qualcomm.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Mansur Alisha Shaik <mansur@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Dikshita Agarwal <quic_dikshita@quicinc.com>
+CC:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Marijn Suijten" <marijn.suijten@somainline.org>,
+        <stable@vger.kernel.org>
+References: <20230228-topic-venus-v2-0-d95d14949c79@linaro.org>
+ <20230228-topic-venus-v2-2-d95d14949c79@linaro.org>
+From:   Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <20230228-topic-venus-v2-2-d95d14949c79@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Si63i5Km24FYJ4uw_es7YWiiE2dW9e3l
+X-Proofpoint-ORIG-GUID: Si63i5Km24FYJ4uw_es7YWiiE2dW9e3l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-05_20,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ bulkscore=0 phishscore=0 adultscore=0 malwarescore=0 mlxlogscore=999
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2305050104
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---HCjo7mmLcFsfwCMI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 01, 2023 at 09:54:43PM +0200, Ricardo Ribalda wrote:
-> On Mon, 1 May 2023 at 19:41, Conor Dooley <conor@kernel.org> wrote:
-> > On Mon, May 01, 2023 at 02:38:22PM +0200, Ricardo Ribalda wrote:
-> > > If PGO is enabled, the purgatory ends up with multiple .text sections.
-> > > This is not supported by kexec and crashes the system.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_pura=
-gory")
-> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > ---
-> > >  arch/riscv/purgatory/Makefile | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > >
-> > > diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Mak=
-efile
-> > > index 5730797a6b40..cf3a44121a90 100644
-> > > --- a/arch/riscv/purgatory/Makefile
-> > > +++ b/arch/riscv/purgatory/Makefile
-> > > @@ -35,6 +35,11 @@ CFLAGS_sha256.o :=3D -D__DISABLE_EXPORTS
-> > >  CFLAGS_string.o :=3D -D__DISABLE_EXPORTS
-> > >  CFLAGS_ctype.o :=3D -D__DISABLE_EXPORTS
-> > >
-> > > +# When profile optimization is enabled, llvm emits two different ove=
-rlapping
-> > > +# text sections, which is not supported by kexec. Remove profile opt=
-imization
-> > > +# flags.
-> > > +KBUILD_CFLAGS :=3D $(filter-out -fprofile-sample-use=3D% -fprofile-u=
-se=3D%,$(KBUILD_CFLAGS))
-> >
-> > With the caveat of not being au fait with the workings of either PGO or
-> > of purgatory, how come you modify KBUILD_CFLAGS here rather than the
-> > purgatory specific PURGATORY_CFLAGS that are used later in the file?
->=20
-> Definitely, not a Makefile expert here, but when I tried this:
->=20
-> @@ -35,6 +40,7 @@ PURGATORY_CFLAGS_REMOVE :=3D -mcmodel=3Dkernel
->  PURGATORY_CFLAGS :=3D -mcmodel=3Dlarge -ffreestanding
-> -fno-zero-initialized-in-bss -g0
->  PURGATORY_CFLAGS +=3D $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFI=
-LING
->  PURGATORY_CFLAGS +=3D -fno-stack-protector
-> +PURGATORY_CFLAGS :=3D $(filter-out -fprofile-sample-use=3D%
-> -fprofile-use=3D%,$(KBUILD_CFLAGS))
->=20
-> It did not work.
+On 5/4/2023 1:30 PM, Konrad Dybcio wrote:
+> The downstream driver signals the hardware to be enabled only after the
+> interrupts are unmasked, which... makes sense. Follow suit.
 
-Unfortunately I am oh-so-far from an expert on this kind of thing, but I
-had thought that PURGATORY_CFLAGS_REMOVE was intended for this sort of
-purpose.
+Rephrase the commit text,
 
-> Fixes: bde971a83bbf ("KVM: arm64: nvhe: Fix build with profile optimizati=
-on")
->=20
-> does this approach, so this is what I tried and worked.
+1. No need to mention downstream driver, if something is buggy, fix it.
 
-That doesn't have a specific CFLAGS though afaict.
-Perhaps Nick etc have a more informed opinion here than I do, sorry.
+2. Avoid "..." and lets make it more formal.
 
-Thanks,
-Conor.
+> Cc: stable@vger.kernel.org # v4.12+
+> Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> ---
+>   drivers/media/platform/qcom/venus/hfi_venus.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+> index bff435abd59b..8fc8f46dc390 100644
+> --- a/drivers/media/platform/qcom/venus/hfi_venus.c
+> +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+> @@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+>   	void __iomem *wrapper_base = hdev->core->wrapper_base;
+>   	int ret = 0;
+>   
+> -	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+>   	if (IS_V6(hdev->core)) {
+>   		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
+>   		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
+> @@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+>   	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+>   	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
+>   
+> +	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+>   	while (!ctrl_status && count < max_tries) {
+>   		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
+>   		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
 
-> > > +
-> > >  # When linking purgatory.ro with -r unresolved symbols are not check=
-ed,
-> > >  # also link a purgatory.chk binary without -r to check for unresolve=
-d symbols.
-> > >  PURGATORY_LDFLAGS :=3D -e purgatory_start -z nodefaultlib
-> > >
-> > > --
-> > > 2.40.1.495.gc816e09b53d-goog
-> > >
-> > >
-> > > _______________________________________________
-> > > linux-riscv mailing list
-> > > linux-riscv@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/linux-riscv
->=20
->=20
->=20
-> --=20
-> Ricardo Ribalda
+Above code looks good.
 
---HCjo7mmLcFsfwCMI
-Content-Type: application/pgp-signature; name="signature.asc"
+-Vikash
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFT21wAKCRB4tDGHoIJi
-0vY1AP9RxvKzAScY63Nnz9Vp/3U8917fwYnV71pbtJgtzZt3WAEA8S2SNODAX7Qy
-Vn7vxaBudJDiNoZ4dz80u4gzoYd3SwE=
-=X4se
------END PGP SIGNATURE-----
-
---HCjo7mmLcFsfwCMI--
