@@ -2,459 +2,224 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 188136F8630
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 17:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CB526F8652
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 18:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232726AbjEEPvp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 11:51:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
+        id S232761AbjEEQBc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 12:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232761AbjEEPvo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 11:51:44 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B9FAD39;
-        Fri,  5 May 2023 08:51:30 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 345BFgLW023788;
-        Fri, 5 May 2023 15:51:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=905he+T+o11HD48FvD5xWF2jUyiE6o5zP89q5jztLFQ=;
- b=EiXnRLEdT//s6jt0Zj7FsQvjy4NgJg8mtfoYmLlJFf+cnqGhToorUd84oUnQ5Q/M9eXt
- dwq1++12Mo49eIqoX9pt491mCmGaaasklqOB9ueoYDumOkGJ0lZjMp3K/fj9WAIHi3R0
- 0pIErqL1P1ENFR5fj+3Brrtj2YyXohS9VsFRTM7fuKg29p5t5N+X12QWLFVCR/08HW2M
- FE3WZofBK9FgBRGdZ6AdFifISd6QR6QDVYrNwXwku5A/ZrmbcvptgRG5Xun5Zs9XV74g
- nN8HNysMP/zBL+IEWmhrmH8ayDuQ5Q6dGxjtpXKkdCEY79s9uEPQ6XSPr8fEoKudP/qu QQ== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qctfu9cuc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 May 2023 15:51:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 345FpGVN010644
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 5 May 2023 15:51:16 GMT
-Received: from hu-ugoswami-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Fri, 5 May 2023 08:51:13 -0700
-From:   Udipto Goswami <quic_ugoswami@quicinc.com>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Pratham Pratap <quic_ppratap@quicinc.com>,
-        Jack Pham <quic_jackp@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        "Oliver Neukum" <oneukum@suse.com>, <linux-usb@vger.kernel.org>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v9] usb: dwc3: debugfs: Prevent any register access when devices is runtime suspended
-Date:   Fri, 5 May 2023 21:21:03 +0530
-Message-ID: <20230505155103.30098-1-quic_ugoswami@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S232154AbjEEQBb (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Fri, 5 May 2023 12:01:31 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F3B160B8;
+        Fri,  5 May 2023 09:01:30 -0700 (PDT)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 345EY3bT013324;
+        Fri, 5 May 2023 16:00:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2023-03-30;
+ bh=8xwruN0+315OngySGcvhUL/NMMzDCnzsnG0Rh0AYNzY=;
+ b=l6lIFjkEL5X8JT8Llm0lqb2mGcTngNvQEd73noYqbwZ83/KbNlM02v7R6fwjDfLWQCJP
+ hKu2hzOi9jN6Rqz89LtQtjJVnmu1OUczmY79lu+5UAMhv1l16b0+CiYaP6IhBNNW9jci
+ mIIw2H2zowE7HTTlJLQQ/SRN3oSr6XIVbyfMhwGlDg12stncK/C9ewCbxlTmO6gn7UCA
+ NtjGumhxRZU8z5TWAjv7Wk/y4jkFcsJ3iPhHZubb6C7ShuviRekckUBECOFYHivwQyZt
+ FFzLFyxy6RISaLHCfRxXUxKYm7K9IWELbGPCi93BYcaNDq8HLBzTRK3cQ1Jo/sgGebgy Vw== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3q8sned6xa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 May 2023 16:00:54 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 345Fe9lc009943;
+        Fri, 5 May 2023 16:00:53 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3q8spaj3gp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 May 2023 16:00:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KBFMLlfPE33m2QEeCletugwO4ydmJAZ5scSBew5etFZqGUARbN+U/GGkOgJMSNgm6PPweb2xEdgfTyV/9brIw+j5Khmnt5MYJ1+pWnRjv6YV7cDuXwGQyc/pkp8+jfBHAzcd93I7nuzYhzUqPDin0BAeNB8E2ccyjH6b9VfOsvfVm1f9R9nrtnpdIqX7tiqpz4r42w3Ym07GssNnhUwMoJAir3a9PRP5D3GdUIoxBVIf69kCC6g2iViP/f1ySwHjzAESAUffJ1fa7HTGxz7sQkIT47aPFawVRlQkV1pAptF4f5dzKhDMhbfMwEUxafaw/mnhqpknIRZ0z+FNUXesIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8xwruN0+315OngySGcvhUL/NMMzDCnzsnG0Rh0AYNzY=;
+ b=I/bhT6YA8+5jCOCNGtiMVkiamqQLN/wwbRreEdgyeC6oooHqg5/6SdHVRNsplXIxU0Zdb05wScgvKChuhA2AfhMgxf60bfAOVQGyhPiLw50A6nsrEF7Tu+wW7sA0QvVcgOT93UmjV43PW8wVlFisQEfnm1GLnH074AdEUO093Iv3vAQx0znJ7nbdFJSQu1y6DARUHMGP5vaFxfqznXgDaaWOx3/KSRzKm43KU1vQmaUHYjzAKAVq4/wEMhN/oGYSQ0JT83z6HHZaYb1xm+VyDw50MgM5yQROd873SKT3Q6Zic2SWAeVx0YCQfcC64Cxt3ar2yKXUwijQjzZMGqoUOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8xwruN0+315OngySGcvhUL/NMMzDCnzsnG0Rh0AYNzY=;
+ b=QtEyV43FIddRNlnuvWmTwUCaH4iCx859ifi5wFzrX9NQPteBU0kJwUMGVVkK+VSPjEeMW8nIoSrObjD+BhCfITDdvCJeMd3YSCykrbEAi2HwdVTYDl0bMJAONH7eb4hnk/rufWMI20MUEGfzJltq2ICUWCIIGhHS3RyErogwn5c=
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
+ by MW5PR10MB5665.namprd10.prod.outlook.com (2603:10b6:303:19a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.26; Fri, 5 May
+ 2023 16:00:50 +0000
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8bb9:2bb7:3930:b5da]) by SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8bb9:2bb7:3930:b5da%7]) with mapi id 15.20.6363.022; Fri, 5 May 2023
+ 16:00:50 +0000
+Date:   Fri, 5 May 2023 12:00:47 -0400
+From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+To:     Peng Zhang <zhangpeng.00@bytedance.com>
+Cc:     akpm@linux-foundation.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        Tad <support@spotco.us>,
+        Michael Keyes <mgkeyes@vigovproductions.net>,
+        Stable@vger.kernel.org
+Subject: Re: [PATCH v2] maple_tree: Make maple state reusable after
+ mas_empty_area()
+Message-ID: <20230505160047.zn7l4dvvihv2qc2e@revolver>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+        Peng Zhang <zhangpeng.00@bytedance.com>, akpm@linux-foundation.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        maple-tree@lists.infradead.org,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        Tad <support@spotco.us>,
+        Michael Keyes <mgkeyes@vigovproductions.net>,
+        Stable@vger.kernel.org
+References: <20230505145829.74574-1-zhangpeng.00@bytedance.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230505145829.74574-1-zhangpeng.00@bytedance.com>
+User-Agent: NeoMutt/20220429
+X-ClientProxiedBy: YT1PR01CA0119.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2c::28) To SN6PR10MB3022.namprd10.prod.outlook.com
+ (2603:10b6:805:d8::25)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 7035nuOTBZKzINkTfo_DnKd0O-AIyUjf
-X-Proofpoint-ORIG-GUID: 7035nuOTBZKzINkTfo_DnKd0O-AIyUjf
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|MW5PR10MB5665:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9da3467b-9ebf-40e4-202d-08db4d81e5d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hp9369wuKtE3z4Xe19Wi6xtsjzKPmtHeYVndNEpy751coQFVqIc+SM40O8THb386hC7d9lCC0I8I+hFbddn5pHTFDuYDbXVIcUfb73oO+Z3NMa/zMEKht6hYwjSf7jNgDVrOOAuL7ZUuTktsa2rF3EyCCyRTDkU0zc6kibjfapl1MKcCAcSsb9hwqOsylJFzVgoKYgAZlnKDXPy3SpICxVdefEG6w6lr/eQ4mj5zKrrfqb+Xu1q+GG+vx4DuXpg7Sv9JsDGQJAdqkYohr2K005KXzEWphU2DY1UmZw7PoLILJGDbjuhwHiVgLnhNu5+ip2OTdyDFvY8AHc2ImZjVAGI4h0erXjdjZZA4dnmoW3ooI1+ZDEC2eXotWfs5a88ocPGt4FAtzehTcj1JaWbPcozwl7IXsIajGMN3tnsmuHOx/hfAZRlk/AuMosPH3jS5ChEwi4R+EkW/CZtwC4LB38EGGcRoxRkRcvCNNm0NR32F5PbM0VzASihR5BOrwnWULEUvXHQ2S/+nba5hB1R/VIjPcekHzrZjQLSODEXfRbQUR+r0FAb5TMymi+W8XpTwbSEnxEsY3VhVE+/pI+Fj4w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(346002)(136003)(396003)(366004)(376002)(39860400002)(451199021)(5660300002)(8936002)(8676002)(966005)(6916009)(6666004)(6486002)(316002)(86362001)(33716001)(41300700001)(4326008)(66476007)(66556008)(66946007)(478600001)(38100700002)(2906002)(54906003)(6512007)(1076003)(26005)(9686003)(6506007)(83380400001)(186003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TY+1Wuw4kyCCdN4xeH3Wpj/tqbNNu0TrYofa0UHsn+V/v1hAuLgziH5D4Vm+?=
+ =?us-ascii?Q?eoxL0DDseLTP7yrIjnjFBJgJ34R4RWUtMYEqdgttOwE2vop3MSYxHDMIw5gv?=
+ =?us-ascii?Q?XtRYtDo3Lm1PLGNMcuWyQF6ogBB9eI9LTAnl961xj3MMT/IN/WnPl9brgafq?=
+ =?us-ascii?Q?6tP+3LFZiRkDCJQzD1+A6Qhqck48CON6K4LgkwejiRuT7I8oK63CSniaWmil?=
+ =?us-ascii?Q?Hijvq6zASZQGzsCL1UrIk6SknXv34dWJ/K8dymZUKzk/eY6B/QavZvsHkTvE?=
+ =?us-ascii?Q?iCDXkvgCADNUwaWiExER/fn1pC82bo1OpypA8rTG+h+++5YDpgETEZMwOVua?=
+ =?us-ascii?Q?mhK2+y029YcBFRHo7MKmonORUu/DxclnKo234gb9t5eOv6xQPjO/0HVERXqZ?=
+ =?us-ascii?Q?S8KdGnyXBh+laGPjpZOvHd56vLarni/8A9S13fqLqUm2RUssl+beaMibjFk2?=
+ =?us-ascii?Q?s4UXK9uv8kcIFVCmxSt/IVQf109FDLMLyAyjPoaoBXDH2pvSZRQnuqt+Pm35?=
+ =?us-ascii?Q?0B8brusU+zCcPlv8awbgQmInBRnvZdE6GCU4Izfpr5ELo83RlF3IiyoCW7L5?=
+ =?us-ascii?Q?nSonE8cPzzHsEqyL4sCaRXqcctJF/KiMk1/100YlpdTRzQ/pCMDNxs5rFtU9?=
+ =?us-ascii?Q?/PbnH0WkuImOFqwXDfhmQMJaw0bA6YkTv4K9hUEdAcIrIAE+5NwGQEyfW+kk?=
+ =?us-ascii?Q?IUChYsnDXHHl1cmGgenrRKG2Da2VOLdbu5QpmXizLSXcbbr84Bq6r6RfOKOk?=
+ =?us-ascii?Q?IXJ0gL3boQV/Fkho4/FoHiczvPLKgbBjIA40PpxzIIWTvXJuTczhAP4RpkQ1?=
+ =?us-ascii?Q?C1zv+6qKzgMIjwcVqk8EgLN0iPI+iphL739Ae4zEX4MCynyE4OTtD45FSQq1?=
+ =?us-ascii?Q?2lonedhaRepVbxJTXPIxqHUn5urruPlvujFJu0SZXgRykOCtlZzuelNNHcqO?=
+ =?us-ascii?Q?ie5JUiHjWR2ec0/nBXDiNmhqQUCTWxzIX2OzBJUyVNV5hPz3TLWF8Iuxp6Bo?=
+ =?us-ascii?Q?8+ukkvljoU3U8qfOdkZd0JX6XymG7dxM+bveuwb9VZmgISiBaWixuIb4fBCO?=
+ =?us-ascii?Q?d+NMV5NzXyMcfzK5/IwN/8QeA0aq3yYsM89qnWP5VAamTnOw/hGe3JcbexPU?=
+ =?us-ascii?Q?GSw4WcydbZlcNvBVbW/fmnriE5RGWRClWavKvoOxCYk37FdiPJ+kp0d/E3Yl?=
+ =?us-ascii?Q?X3nw2rciLRZP3UYyG9YXrs+Z62Jra8PqB4b4k30kS1Xj/k54f0F1B3RAGZ/w?=
+ =?us-ascii?Q?0xmgq5Pye8GhkcMy9LcaH8qomnBUTygMq3rsTMYoEI53I9GRRVxzBA25E/Y3?=
+ =?us-ascii?Q?5X1YGxe1LBFxP+5PiUOR9r53lesxQJGbUw494pRLtQ7MTFlqjaGitWVal+0h?=
+ =?us-ascii?Q?loja6SVd+VpvEkL8uIuCSt6+AZgri06WZb6mrz8W9uDASQK26byJ8zAALCS7?=
+ =?us-ascii?Q?iDB35cOepD9snea+e1cBfdi4EC89chtj4a+Wu2VDuVLwWnCVFVcSWrr3BQLv?=
+ =?us-ascii?Q?clF/McEY0TiMBPLy0kCbReuLWuqH1/JuraTTzWrrndGbWLzlhOeehDn8ecIQ?=
+ =?us-ascii?Q?stx/VP/pu7Ih0t6hAp2x3od8TbZo9IgeDpDPM2omVWVMqq2nY/PaVBYpOYCl?=
+ =?us-ascii?Q?Rg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?HyM3/VTBv0tD/ZfhlJw2suY6wV3/H9EoPjWZsEkB7NWGeNP3HHDcTAUCkYuS?=
+ =?us-ascii?Q?2M3KnR4N5zkJDrai6scb+ezuqTGYGHFal11qb5FahfNWIhS8xru6bUIel43v?=
+ =?us-ascii?Q?a291UwsTglFT0zY7WwXQWBMEEtZTQxzByFqtHGhKJA7gejt9XVu3MqULXptb?=
+ =?us-ascii?Q?QSMKncW1esNgOvo1JiAa4cM50IHYFjIVr4R8y5wOr1VDDjr197r9q9QUX1Ph?=
+ =?us-ascii?Q?Hm1CxjU3bUTBemBvspPvA+QLyI9Q2BOvu64Vuf3myaC2cWo9Ml/pZFm0qbwO?=
+ =?us-ascii?Q?GE+/mF8YxRPRD4moyM5PiqFlxZeOA3zCLuoFqFPnOA5Mr2Sn+bEEHOekmGus?=
+ =?us-ascii?Q?17JdWsuwQQ/EQPM3PbfM4lTKK1EzYzTgG/byzu+Xjpbju/lmwM8dkw/aeZV0?=
+ =?us-ascii?Q?oERSAbYcwps8+gyaE5tRQHDJB4YI1OmX0M+8BJmbuLfWlNcHvnsRIyacAGlY?=
+ =?us-ascii?Q?jrCklDMKa0zpb6Ui+FhV7NiScQ3I3pVN5Y+uAY8BQu6NIuP9Y5t4quWt/nTD?=
+ =?us-ascii?Q?Y8PNSABemeOq1rXyVr2eZOmqiFQ2PtaOHN0RTE3UwHEQzbVWgxHUKADlKlC2?=
+ =?us-ascii?Q?IN809k5jFun/1aJg/8r08OJRn7yTmbjYAU9NCbqJb7fk0mCB95ZvDbVnDR8S?=
+ =?us-ascii?Q?NxlYKKaqJWBrJYM7wVoXrTRG4YURpiRf9y6Oc2IiJmYJ2zbFUv/DlWjd4e1+?=
+ =?us-ascii?Q?UIqiGh+hjB0kQTQEn5xE8WoRzUfxc2UvxbKrYmAoJ/PWj6pjVfKwIGJLRTYI?=
+ =?us-ascii?Q?K+YqdFhpN6czzIZUE79RDGzrcON/fvm/51lgDpZA262zRnf7IH+ODX2TRi26?=
+ =?us-ascii?Q?x5G26lJFM1oK3eess2EqqpXJ6OJnfwnb6O3fveZOv4qqMEXO4sOTZJPbJGHH?=
+ =?us-ascii?Q?njqbjJjq4kNPNoMXHoBhee2xEatEqfB1tqKB79ZtNwT7UbALAzDHACiYu7LI?=
+ =?us-ascii?Q?98FnU3W2JTAxpNhhq76y71gHWMCZrOeDFfdr/Xl69CHS9HNetYRE48JIROco?=
+ =?us-ascii?Q?1wyoGFtqIfTqWNtIM7Re6a7/INJICxd/aw8Tx9fwZPQ+YNU=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9da3467b-9ebf-40e4-202d-08db4d81e5d3
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2023 16:00:50.7079
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7d69716NCNHy5y5ImoiNBFYNT4wbDG5UK8ndOo+WvZzm0TuQ4xLt7FfubzoOeRhRMq+rGuc+FjhM9G2L0kB5oQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5665
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-05_22,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=765 lowpriorityscore=0 malwarescore=0 suspectscore=0
- spamscore=0 mlxscore=0 phishscore=0 adultscore=0 priorityscore=1501
- bulkscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305050131
+ definitions=2023-05-05_23,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2305050133
+X-Proofpoint-GUID: fkHTub6URS0wf5zRvXwx04OGQSONJeyh
+X-Proofpoint-ORIG-GUID: fkHTub6URS0wf5zRvXwx04OGQSONJeyh
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When the dwc3 device is runtime suspended, various required clocks would
-get disabled and it is not guaranteed that access to any registers would
-work. Depending on the SoC glue, a register read could be as benign as
-returning 0 or be fatal enough to hang the system.
+* Peng Zhang <zhangpeng.00@bytedance.com> [230505 10:59]:
+> Make mas->min and mas->max point to a node range instead of a leaf entry
+> range. This allows mas to still be usable after mas_empty_area() returns.
+> Users would get unexpected results from other operations on the maple
+> state after calling the affected function.
+> 
+> Reported-by: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+> Reported-by: Tad <support@spotco.us>
+> Reported-by: Michael Keyes <mgkeyes@vigovproductions.net>
+> Link: https://lore.kernel.org/linux-mm/32f156ba80010fd97dbaf0a0cdfc84366608624d.camel@intel.com/
+> Link: https://lore.kernel.org/linux-mm/e6108286ac025c268964a7ead3aab9899f9bc6e9.camel@spotco.us/
+> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> Cc: <Stable@vger.kernel.org>
+> Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
 
-In order to prevent such scenarios of fatal errors, make sure to resume
-dwc3 then allow the function to proceed.
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-Fixes: 62ba09d6bb63 ("usb: dwc3: debugfs: Dump internal LSP and ep registers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
----
-v9: Fixed function dwc3_rx_fifo_size_show & return values in function
-	dwc3_link_state_write along with minor changes for code symmetry.
-v8: Replace pm_runtime_get_sync with pm_runtime_resume_and get.
-v7: Replaced pm_runtime_put with pm_runtime_put_sync & returned proper values.
-v6: Added changes to handle get_dync failure appropriately.
-v5: Reworked the patch to resume dwc3 while accessing the registers.
-v4: Introduced pm_runtime_get_if_in_use in order to make sure dwc3 isn't
-	suspended while accessing the registers.
-v3: Replace pr_err to dev_err. 
-v2: Replaced return 0 with -EINVAL & seq_puts with pr_err.
-
- drivers/usb/dwc3/debugfs.c | 109 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 109 insertions(+)
-
-diff --git a/drivers/usb/dwc3/debugfs.c b/drivers/usb/dwc3/debugfs.c
-index e4a2560b9dc0..ebf03468fac4 100644
---- a/drivers/usb/dwc3/debugfs.c
-+++ b/drivers/usb/dwc3/debugfs.c
-@@ -332,6 +332,11 @@ static int dwc3_lsp_show(struct seq_file *s, void *unused)
- 	unsigned int		current_mode;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
-@@ -350,6 +355,8 @@ static int dwc3_lsp_show(struct seq_file *s, void *unused)
- 	}
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -395,6 +402,11 @@ static int dwc3_mode_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = s->private;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
-@@ -414,6 +426,8 @@ static int dwc3_mode_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "UNKNOWN %08x\n", DWC3_GCTL_PRTCAP(reg));
- 	}
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -463,6 +477,11 @@ static int dwc3_testmode_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = s->private;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
-@@ -493,6 +512,8 @@ static int dwc3_testmode_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "UNKNOWN %d\n", reg);
- 	}
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -509,6 +530,7 @@ static ssize_t dwc3_testmode_write(struct file *file,
- 	unsigned long		flags;
- 	u32			testmode = 0;
- 	char			buf[32];
-+	int			ret;
- 
- 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
- 		return -EFAULT;
-@@ -526,10 +548,16 @@ static ssize_t dwc3_testmode_write(struct file *file,
- 	else
- 		testmode = 0;
- 
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_gadget_set_test_mode(dwc, testmode);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return count;
- }
- 
-@@ -548,12 +576,18 @@ static int dwc3_link_state_show(struct seq_file *s, void *unused)
- 	enum dwc3_link_state	state;
- 	u32			reg;
- 	u8			speed;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
- 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
- 		seq_puts(s, "Not available\n");
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return 0;
- 	}
- 
-@@ -566,6 +600,8 @@ static int dwc3_link_state_show(struct seq_file *s, void *unused)
- 		   dwc3_gadget_hs_link_string(state));
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -584,6 +620,7 @@ static ssize_t dwc3_link_state_write(struct file *file,
- 	char			buf[32];
- 	u32			reg;
- 	u8			speed;
-+	int			ret;
- 
- 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
- 		return -EFAULT;
-@@ -603,10 +640,15 @@ static ssize_t dwc3_link_state_write(struct file *file,
- 	else
- 		return -EINVAL;
- 
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
- 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return -EINVAL;
- 	}
- 
-@@ -616,12 +658,15 @@ static ssize_t dwc3_link_state_write(struct file *file,
- 	if (speed < DWC3_DSTS_SUPERSPEED &&
- 	    state != DWC3_LINK_STATE_RECOV) {
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return -EINVAL;
- 	}
- 
- 	dwc3_gadget_set_link_state(dwc, state);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return count;
- }
- 
-@@ -645,6 +690,11 @@ static int dwc3_tx_fifo_size_show(struct seq_file *s, void *unused)
- 	unsigned long		flags;
- 	u32			mdwidth;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_TXFIFO);
-@@ -657,6 +707,8 @@ static int dwc3_tx_fifo_size_show(struct seq_file *s, void *unused)
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -667,6 +719,11 @@ static int dwc3_rx_fifo_size_show(struct seq_file *s, void *unused)
- 	unsigned long		flags;
- 	u32			mdwidth;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXFIFO);
-@@ -679,6 +736,8 @@ static int dwc3_rx_fifo_size_show(struct seq_file *s, void *unused)
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -688,12 +747,19 @@ static int dwc3_tx_request_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_TXREQQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -703,12 +769,19 @@ static int dwc3_rx_request_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXREQQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -718,12 +791,19 @@ static int dwc3_rx_info_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXINFOQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -733,12 +813,19 @@ static int dwc3_descriptor_fetch_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_DESCFETCHQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -748,12 +835,19 @@ static int dwc3_event_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_EVENTQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -798,6 +892,11 @@ static int dwc3_trb_ring_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	int			i;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	if (dep->number <= 1) {
-@@ -827,6 +926,8 @@ static int dwc3_trb_ring_show(struct seq_file *s, void *unused)
- out:
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -839,6 +940,11 @@ static int dwc3_ep_info_register_show(struct seq_file *s, void *unused)
- 	u32			lower_32_bits;
- 	u32			upper_32_bits;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = DWC3_GDBGLSPMUX_EPSELECT(dep->number);
-@@ -851,6 +957,8 @@ static int dwc3_ep_info_register_show(struct seq_file *s, void *unused)
- 	seq_printf(s, "0x%016llx\n", ep_info);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -910,6 +1018,7 @@ void dwc3_debugfs_init(struct dwc3 *dwc)
- 	dwc->regset->regs = dwc3_regs;
- 	dwc->regset->nregs = ARRAY_SIZE(dwc3_regs);
- 	dwc->regset->base = dwc->regs - DWC3_GLOBALS_REGS_START;
-+	dwc->regset->dev = dwc->dev;
- 
- 	root = debugfs_create_dir(dev_name(dwc->dev), usb_debug_root);
- 	dwc->debug_root = root;
--- 
-2.17.1
-
+> ---
+>  lib/maple_tree.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
+> 
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index 110a36479dced..8ebc43d4cc8c5 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -5317,15 +5317,9 @@ int mas_empty_area(struct ma_state *mas, unsigned long min,
+>  
+>  	mt = mte_node_type(mas->node);
+>  	pivots = ma_pivots(mas_mn(mas), mt);
+> -	if (offset)
+> -		mas->min = pivots[offset - 1] + 1;
+> -
+> -	if (offset < mt_pivots[mt])
+> -		mas->max = pivots[offset];
+> -
+> -	if (mas->index < mas->min)
+> -		mas->index = mas->min;
+> -
+> +	min = mas_safe_min(mas, pivots, offset);
+> +	if (mas->index < min)
+> +		mas->index = min;
+>  	mas->last = mas->index + size - 1;
+>  	return 0;
+>  }
+> -- 
+> 2.20.1
+> 
