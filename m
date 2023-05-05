@@ -2,133 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 504676F80F9
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 12:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602EF6F814D
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 13:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231610AbjEEKmy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 06:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46054 "EHLO
+        id S231650AbjEELN7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 07:13:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230387AbjEEKmx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 06:42:53 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F4D12087;
-        Fri,  5 May 2023 03:42:52 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 6CB9D5C030C;
-        Fri,  5 May 2023 06:42:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 05 May 2023 06:42:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1683283371; x=1683369771; bh=RC
-        TWVk0KOAVQ/MkChme+8/6o8h9CkRTO4hkaOFGb8H8=; b=Bz7cz1oUuN9Ila0jCg
-        gsP4cAo3R88v0BuIlQw1Iuc/Jj6Cj7ZXE9Fshdcm/j3oLmC4sr5jhqeNzc9p244X
-        W0eLkFo/G1Z/ZC1YyMBGKM2xwor/lJ6H8k9vcz6KMSOTVXZLOjR00Wknyf7QcCl4
-        t5gzw0uAid9TThPkEfNxHiS7M76D6UYONrLWramwxBm68cGMXuUfPCtxj4lFJo0t
-        KbQ0QmzgnPxYW8n/mHyNyGdoCl/aruEtt4cKDmlmmmHtaJ1cjCqlraTijs710Tqr
-        Sgje05/RuvhRmmMjF4kqoX5QtwiucfxcpnBsylSWqUQ0CQtGD11Pp9I/aNTFn8sM
-        l4EA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1683283371; x=1683369771; bh=RCTWVk0KOAVQ/
-        MkChme+8/6o8h9CkRTO4hkaOFGb8H8=; b=RqXJnCqZQliMjqwLuDeWV6/a8f/8w
-        Ex08I0VVzwluGBAFMlMOsi04uS+XzUJB8SVqq4e1sNrsKX7sDjPKNHn2EQG1Eq9w
-        Es9fyZgT+upuxBCRw/feo+jcDAgeeSEZGJik2zalGiOKJTG2OIvVedodQl0F2hyX
-        yMGoHCwfnfFK3d6G5FZRWMTCD8PKSjz4vN69ycV6YrkDkEmiAIPJXsIlVIZZ78t/
-        D2nIYuUANhFurxcvLdV3MMts9Jz3LDeaIXkg2oLIFObfoPY2IjlU0m74402AUcPR
-        Fz2LeYE8LsBr6BJeQyAQP+H6H15fWfe/AVu0IM2T7gpL5nxc44wmnX7Gg==
-X-ME-Sender: <xms:q91UZEtqwzQfHlBVK8mMUtYYGXFHothsncvoO6cgnAUdoole3iQJTA>
-    <xme:q91UZBfAzVecWUB6Rspa9NELo2WaOtSeOhB5qNbzwcivY0AUXwfBfwWrtPrVtAoeg
-    Zbm_5Oe4BxegA>
-X-ME-Received: <xmr:q91UZPzLwzvzEplPrtZlnBrpRDOJLLVFBJQ7pMqO9iSW1VMWy76AOfOKqHpS>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefvddgfeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:q91UZHOu1TTFc2_K8TvRiOMUtur5kvxN65ASjKvMFVXWiKq57x26Nw>
-    <xmx:q91UZE9d_kEYgYuEIa7CD_-TKyzu6wMDuBp6W-Nl0sczL7KMf1edgw>
-    <xmx:q91UZPVQ3ai0cckISVAcXEuDgeCcTwI4Hqo5bsVXEkqSVA_ETw6-fA>
-    <xmx:q91UZAuGKvyPNXUwWWOc0qPH82LmGpPhyNoID6R9ibALztDQ9XNsVQ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 May 2023 06:42:49 -0400 (EDT)
-Date:   Fri, 5 May 2023 19:42:44 +0900
-From:   Greg KH <greg@kroah.com>
-To:     yixuanjiang <yixuanjiang@google.com>
-Cc:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        Takashi Iwai <tiwai@suse.de>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        with ESMTP id S229553AbjEELN6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 07:13:58 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9042F1A106
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 04:13:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683285237; x=1714821237;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MQk53vK2noTp4D/t0s3QwPzuNDs9va10+uSyM8ZRwmc=;
+  b=MQzGfzf1EC9WE/f7gsTn1hqOeZ5mQocGyYtkx0pkSEDh/WyrQLDjDNIf
+   qsBFfsjLpKOhMSB2EhCdmLYihiy17f/bj5VCBMicZcRbmA/tzFMTkEdSs
+   6V+mlrOg/1kdR0ltHUDuvLbSiA5PB3UgKmrGOHlC2lhovqDvQC/cr+wUd
+   vn76HokW+mftY34214e1rvRQgjOaIc4LaIVFumD2hZap3zPezXtBViS7q
+   sRAgRmXqjcjs7SSxEkzZfAnPqbQxr5+5pbol1FEepSYYFAlji0gbIXrbf
+   sNTyCMh5kiBXHN6z+8Li0C6FfE1C86v4sUZ9iSWrJCTdDpIcxHIlk0N+w
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="338372607"
+X-IronPort-AV: E=Sophos;i="5.99,251,1677571200"; 
+   d="scan'208";a="338372607"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 04:13:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="647807632"
+X-IronPort-AV: E=Sophos;i="5.99,251,1677571200"; 
+   d="scan'208";a="647807632"
+Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 04:13:55 -0700
+From:   Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     imre.deak@intel.com, lucas.demarchi@intel.com,
         stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: soc-pcm: Fix and cleanup DPCM locking
-Message-ID: <2023050534-errant-crusher-0379@gregkh>
-References: <20230504092142.4190069-1-yixuanjiang@google.com>
+Subject: [PATCH] drm/i915/display: Update the DDI_BUF_CTL active timeout for ADL-P
+Date:   Fri,  5 May 2023 16:39:17 +0530
+Message-Id: <20230505110917.1918957-1-ankit.k.nautiyal@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230504092142.4190069-1-yixuanjiang@google.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 04, 2023 at 05:21:42PM +0800, yixuanjiang wrote:
-> From: Takashi Iwai <tiwai@suse.de>
-> 
-> The existing locking for DPCM has several issues
-> a) a confusing mix of card->mutex and card->pcm_mutex.
-> b) a dpcm_lock spinlock added inconsistently and on paths that could
-> be recursively taken. The use of irqsave/irqrestore was also overkill.
-> 
-> The suggested model is:
-> 
-> 1) The pcm_mutex is the top-most protection of BE links in the FE. The
-> pcm_mutex is applied always on either the top PCM callbacks or the
-> external call from DAPM, not taken in the internal functions.
-> 
-> 2) the FE stream lock is taken in higher levels before invoking
-> dpcm_be_dai_trigger()
-> 
-> 3) when adding and deleting a BE, both the pcm_mutex and FE stream
-> lock are taken.
-> 
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> [clarification of commit message by plbossart]
-> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> Link: https://lore.kernel.org/r/20211207173745.15850-4-pierre-louis.bossart@linux.intel.com
-> Cc: stable@vger.kernel.org # 5.15.x
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  include/sound/soc.h  |   2 -
->  sound/soc/soc-core.c |   1 -
->  sound/soc/soc-pcm.c  | 229 ++++++++++++++++++++++++++++---------------
->  3 files changed, 152 insertions(+), 80 deletions(-)
+For ADL-P the timeout for DDI_BUF_CTL active is 500usec.
+Update the same as per Bspec:55424.
 
-<formletter>
+Fixes: 5add4575c298 ("drm/i915/ddi: Align timeout for DDI_BUF_CTL active with Bspec")
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: <stable@vger.kernel.org> # v6.3+
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_ddi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-</formletter>
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index 55f36d9d509c..6d8e4d7a784e 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -216,8 +216,11 @@ static void intel_wait_ddi_buf_active(struct drm_i915_private *dev_priv,
+ 	} else if (DISPLAY_VER(dev_priv) >= 12) {
+ 		if (intel_phy_is_tc(dev_priv, phy))
+ 			timeout_us = 3000;
++		else if (IS_ALDERLAKE_P(dev_priv))
++			timeout_us = 500;
+ 		else
+ 			timeout_us = 1000;
++
+ 	} else {
+ 		timeout_us = 500;
+ 	}
+-- 
+2.25.1
+
