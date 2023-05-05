@@ -2,197 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 518E16F7DE2
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 09:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2396F8091
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 12:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjEEHau (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 03:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56050 "EHLO
+        id S231256AbjEEKJB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 06:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231313AbjEEHaq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 03:30:46 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9A617DCC
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 00:30:41 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f178da219bso14273005e9.1
-        for <stable@vger.kernel.org>; Fri, 05 May 2023 00:30:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683271840; x=1685863840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ttzbup9NrLAqf5VRgfV11m9AJvPpzl1o7U2c5sJYuUM=;
-        b=obeURiwMzSfEfMcqsk2U3BoIAd+lNjwPW8Su0WTwXWe8V59YyZqnIWIfMHOUG77AmL
-         nyBDb2L+p9ClnnOb6EBDPTbw12kOz2jMMat1pY8CJulTi8AMMHyxE9sdzVBsffoUieBV
-         tWHuee/+wGYjWpWyctPFEaygGPihCAQfRqtMAgAN3blqVc17Otz085aX9ALTNOHL74Uo
-         x5KVfJbWcxXCG88HQWYPIE94MUtXrfOueoMWvdTSiJfF8BUuFSXgvjTLbKZAQaI6f5Y8
-         iaGS/5aJeLNW310zDorBxXed6vaivqpYqDd5mY6nD2s7RuC1ef7kwsMKHXrHSc2Edmoy
-         Tuqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683271840; x=1685863840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ttzbup9NrLAqf5VRgfV11m9AJvPpzl1o7U2c5sJYuUM=;
-        b=aqfEAteWAIq69f+0nBjF9m/k2LU3iQxxDk42hMIahCtHIN4p3vmp8Mj042cRgNJkBm
-         WCxFTCG3U5MAhDdNNz3vRBdPx40xq9hG8R6JL9bkFmqWi3aiOeeto5UB4rMA5gSEX7Xt
-         IW4zLoaQ/SwnBV/ZqB3+UrNRNzVey5sqybC3IlBVuNjwvU8g/ktAPRPgCtcq6YgMSUl1
-         lyUHKvXWecj99GmQb86i6KP2h2C4aJ3oYV3wZt9h90Y9mFs/h0xq4lmG9jJEr2tCaQFu
-         jIDRKirTo54uOkutno5yfkDgxl+XEKOHz/ZzpMFnLlTFXZOf4brGwD/RkLJGsl8f5fGR
-         cVlw==
-X-Gm-Message-State: AC+VfDxENujze/pA3CoLIcAnMmE6MuCBnS13nA9C5spuVUx4F+XwF+ql
-        kISsow/jU4pPaRNMjvFqYUwWE+bC5PK4RM5bgZi6sw==
-X-Google-Smtp-Source: ACHHUZ7wi3ql6LFKIE0hgLVVZnNoOzdJu+oPbNztv1KpNhL6c4/ThMshNMXbsHJ1+Q/ujEUtGcc0jHd5l7GwIubpXbM=
-X-Received: by 2002:a5d:42c9:0:b0:306:2d45:a8e0 with SMTP id
- t9-20020a5d42c9000000b003062d45a8e0mr722047wrr.15.1683271839652; Fri, 05 May
- 2023 00:30:39 -0700 (PDT)
+        with ESMTP id S229441AbjEEKJA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 06:09:00 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5B014E72;
+        Fri,  5 May 2023 03:08:59 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 8F6352230D;
+        Fri,  5 May 2023 10:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1683281338;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=PbaIlZvU9o7/fv9VcxV35lya7cUgUdtTUBf9Eafk3ck=;
+        b=bWWcjGB+weuiBocT1YlhXLOiHgfJpHZJFjbDK6FYCFwbfuS97n8ZnQyuvvXHnmn8U7MCT0
+        tKF5K+cZBDiZ0BN+vFkVC2M5iYloNaANfHLI0SnqGha7rYgr5PQzBpP3YvhbP2kyvL3yLg
+        Tw2EDMUY82tQI4rMrMG6MFp5RD+RDyI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1683281338;
+        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+         cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=PbaIlZvU9o7/fv9VcxV35lya7cUgUdtTUBf9Eafk3ck=;
+        b=0pG7NVErDPUD45yLW6bSCXUCmfsKFrvZWTGpk591hJQsLk8Iek47FnUKpkysh7UNGwBeMm
+        +yJQtRQ7Sml1ePCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6273813513;
+        Fri,  5 May 2023 10:08:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id e51JF7rVVGSjbwAAMHmgww
+        (envelope-from <dsterba@suse.cz>); Fri, 05 May 2023 10:08:58 +0000
+Date:   Fri, 5 May 2023 12:03:01 +0200
+From:   David Sterba <dsterba@suse.cz>
+To:     fdmanana@kernel.org
+Cc:     linux-btrfs@vger.kernel.org, git@vladimir.panteleev.md,
+        Filipe Manana <fdmanana@suse.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] btrfs: fix backref walking not returning all inode
+ refs
+Message-ID: <20230505100301.GJ6373@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <77994dd9ede2084d45dd0a36938c67de70d8e859.1683123587.git.fdmanana@suse.com>
+ <b04cbeb31e221edea8afa75679e4a55633748af7.1683194376.git.fdmanana@suse.com>
 MIME-Version: 1.0
-References: <6a25613e87158947b4d102be4859f406edcb3f0b.1683008188.git.Rijo-john.Thomas@amd.com>
-In-Reply-To: <6a25613e87158947b4d102be4859f406edcb3f0b.1683008188.git.Rijo-john.Thomas@amd.com>
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-Date:   Fri, 5 May 2023 09:30:28 +0200
-Message-ID: <CAHUa44Gm5jmm=mEfowcmabaoWFFbCLiDd5NdPSArCPHsjcpOBw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] tee: amdtee: Add return_origin to 'struct tee_cmd_load_ta'
-To:     Rijo Thomas <Rijo-john.Thomas@amd.com>
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Jan Dabros <jsd@semihalf.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org,
-        Mythri PK <Mythri.Pandeshwarakrishna@amd.com>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        stable@vger.kernel.org, Sourabh Das <sourabh.das@amd.com>,
-        Nimesh Easow <nimesh.easow@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b04cbeb31e221edea8afa75679e4a55633748af7.1683194376.git.fdmanana@suse.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-
-On Tue, May 2, 2023 at 8:25=E2=80=AFAM Rijo Thomas <Rijo-john.Thomas@amd.co=
-m> wrote:
->
-> After TEE has completed processing of TEE_CMD_ID_LOAD_TA, set proper
-> value in 'return_origin' argument passed by open_session() call. To do
-> so, add 'return_origin' field to the structure tee_cmd_load_ta. The
-> Trusted OS shall update return_origin as part of TEE processing.
->
-> This change to 'struct tee_cmd_load_ta' interface requires a similar upda=
-te
-> in AMD-TEE Trusted OS's TEE_CMD_ID_LOAD_TA interface.
-
-This is an ABI change, but it's not clear if it's an incompatible ABI
-change or not. What happens if the AMD-TEE Trusted OS isn't updated?
-
->
-> This patch has been verified on Phoenix Birman setup. On older APUs,
-> return_origin value will be 0.
-
-Why, because MD-TEE Trusted OS will not be updated on the older APUs?
-
->
-> Cc: stable@vger.kernel.org
-
-Which stable kernels are you targeting? A Fixes tag might answer that.
-
-Thanks,
-Jens
-
-> Tested-by: Sourabh Das <sourabh.das@amd.com>
-> Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
+On Thu, May 04, 2023 at 11:12:03AM +0100, fdmanana@kernel.org wrote:
+> From: Filipe Manana <fdmanana@suse.com>
+> 
+> When using the logical to ino ioctl v2, if the flag to ignore offsets of
+> file extent items (BTRFS_LOGICAL_INO_ARGS_IGNORE_OFFSET) is given, the
+> backref walking code ends up not returning references for all file offsets
+> of an inode that point to the given logical bytenr. This happens since
+> kernel 6.2, commit 6ce6ba534418 ("btrfs: use a single argument for extent
+> offset in backref walking functions"), as it mistakenly skipped the search
+> for file extent items in a leaf that point to the target extent if that
+> flag is given. Instead it should only skip the filtering done by
+> check_extent_in_eb() - that is, it should not avoid the calls to that
+> function (or find_extent_in_eb(), which uses it).
+> 
+> So fix this by always calling check_extent_in_eb() and find_extent_in_eb()
+> and have check_extent_in_eb() do the filtering only if the flag to ignore
+> offsets is set.
+> 
+> Fixes: 6ce6ba534418 ("btrfs: use a single argument for extent offset in backref walking functions")
+> Reported-by: Vladimir Panteleev <git@vladimir.panteleev.md>
+> Link: https://lore.kernel.org/linux-btrfs/CAHhfkvwo=nmzrJSqZ2qMfF-rZB-ab6ahHnCD_sq9h4o8v+M7QQ@mail.gmail.com/
+> Tested-by: Vladimir Panteleev <git@vladimir.panteleev.md>
+> CC: stable@vger.kernel.org # 6.2+
+> Signed-off-by: Filipe Manana <fdmanana@suse.com>
 > ---
->  drivers/tee/amdtee/amdtee_if.h | 10 ++++++----
->  drivers/tee/amdtee/call.c      | 30 +++++++++++++++++-------------
->  2 files changed, 23 insertions(+), 17 deletions(-)
->
-> diff --git a/drivers/tee/amdtee/amdtee_if.h b/drivers/tee/amdtee/amdtee_i=
-f.h
-> index ff48c3e47375..e2014e21530a 100644
-> --- a/drivers/tee/amdtee/amdtee_if.h
-> +++ b/drivers/tee/amdtee/amdtee_if.h
-> @@ -118,16 +118,18 @@ struct tee_cmd_unmap_shared_mem {
->
->  /**
->   * struct tee_cmd_load_ta - load Trusted Application (TA) binary into TE=
-E
-> - * @low_addr:    [in] bits [31:0] of the physical address of the TA bina=
-ry
-> - * @hi_addr:     [in] bits [63:32] of the physical address of the TA bin=
-ary
-> - * @size:        [in] size of TA binary in bytes
-> - * @ta_handle:   [out] return handle of the loaded TA
-> + * @low_addr:       [in] bits [31:0] of the physical address of the TA b=
-inary
-> + * @hi_addr:        [in] bits [63:32] of the physical address of the TA =
-binary
-> + * @size:           [in] size of TA binary in bytes
-> + * @ta_handle:      [out] return handle of the loaded TA
-> + * @return_origin:  [out] origin of return code after TEE processing
->   */
->  struct tee_cmd_load_ta {
->         u32 low_addr;
->         u32 hi_addr;
->         u32 size;
->         u32 ta_handle;
-> +       u32 return_origin;
->  };
->
->  /**
-> diff --git a/drivers/tee/amdtee/call.c b/drivers/tee/amdtee/call.c
-> index e8cd9aaa3467..e9b63dcb3194 100644
-> --- a/drivers/tee/amdtee/call.c
-> +++ b/drivers/tee/amdtee/call.c
-> @@ -423,19 +423,23 @@ int handle_load_ta(void *data, u32 size, struct tee=
-_ioctl_open_session_arg *arg)
->         if (ret) {
->                 arg->ret_origin =3D TEEC_ORIGIN_COMMS;
->                 arg->ret =3D TEEC_ERROR_COMMUNICATION;
-> -       } else if (arg->ret =3D=3D TEEC_SUCCESS) {
-> -               ret =3D get_ta_refcount(load_cmd.ta_handle);
-> -               if (!ret) {
-> -                       arg->ret_origin =3D TEEC_ORIGIN_COMMS;
-> -                       arg->ret =3D TEEC_ERROR_OUT_OF_MEMORY;
-> -
-> -                       /* Unload the TA on error */
-> -                       unload_cmd.ta_handle =3D load_cmd.ta_handle;
-> -                       psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
-> -                                           (void *)&unload_cmd,
-> -                                           sizeof(unload_cmd), &ret);
-> -               } else {
-> -                       set_session_id(load_cmd.ta_handle, 0, &arg->sessi=
-on);
-> +       } else {
-> +               arg->ret_origin =3D load_cmd.return_origin;
-> +
-> +               if (arg->ret =3D=3D TEEC_SUCCESS) {
-> +                       ret =3D get_ta_refcount(load_cmd.ta_handle);
-> +                       if (!ret) {
-> +                               arg->ret_origin =3D TEEC_ORIGIN_COMMS;
-> +                               arg->ret =3D TEEC_ERROR_OUT_OF_MEMORY;
-> +
-> +                               /* Unload the TA on error */
-> +                               unload_cmd.ta_handle =3D load_cmd.ta_hand=
-le;
-> +                               psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
-> +                                                   (void *)&unload_cmd,
-> +                                                   sizeof(unload_cmd), &=
-ret);
-> +                       } else {
-> +                               set_session_id(load_cmd.ta_handle, 0, &ar=
-g->session);
-> +                       }
->                 }
->         }
->         mutex_unlock(&ta_refcount_mutex);
-> --
-> 2.25.1
->
+> 
+> V2: Remove wrong check for a non-zero extent item offset.
+>     Apply the same logic at find_parent_nodes(), that is, search for file
+>     extent items on a leaf if the ignore flag is given - the filtering
+>     will be done later at check_extent_in_eb(). Spotted by Vladimir Panteleev
+>     in the thread mentioned above.
+
+Replaced in misc-next, thanks for the quick fix.
