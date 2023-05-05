@@ -2,107 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2396F8091
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 12:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 504676F80F9
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 12:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231256AbjEEKJB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 06:09:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
+        id S231610AbjEEKmy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 06:42:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjEEKJA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 06:09:00 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5B014E72;
-        Fri,  5 May 2023 03:08:59 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 8F6352230D;
-        Fri,  5 May 2023 10:08:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1683281338;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=PbaIlZvU9o7/fv9VcxV35lya7cUgUdtTUBf9Eafk3ck=;
-        b=bWWcjGB+weuiBocT1YlhXLOiHgfJpHZJFjbDK6FYCFwbfuS97n8ZnQyuvvXHnmn8U7MCT0
-        tKF5K+cZBDiZ0BN+vFkVC2M5iYloNaANfHLI0SnqGha7rYgr5PQzBpP3YvhbP2kyvL3yLg
-        Tw2EDMUY82tQI4rMrMG6MFp5RD+RDyI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1683281338;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=PbaIlZvU9o7/fv9VcxV35lya7cUgUdtTUBf9Eafk3ck=;
-        b=0pG7NVErDPUD45yLW6bSCXUCmfsKFrvZWTGpk591hJQsLk8Iek47FnUKpkysh7UNGwBeMm
-        +yJQtRQ7Sml1ePCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6273813513;
-        Fri,  5 May 2023 10:08:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id e51JF7rVVGSjbwAAMHmgww
-        (envelope-from <dsterba@suse.cz>); Fri, 05 May 2023 10:08:58 +0000
-Date:   Fri, 5 May 2023 12:03:01 +0200
-From:   David Sterba <dsterba@suse.cz>
-To:     fdmanana@kernel.org
-Cc:     linux-btrfs@vger.kernel.org, git@vladimir.panteleev.md,
-        Filipe Manana <fdmanana@suse.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] btrfs: fix backref walking not returning all inode
- refs
-Message-ID: <20230505100301.GJ6373@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <77994dd9ede2084d45dd0a36938c67de70d8e859.1683123587.git.fdmanana@suse.com>
- <b04cbeb31e221edea8afa75679e4a55633748af7.1683194376.git.fdmanana@suse.com>
+        with ESMTP id S230387AbjEEKmx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 06:42:53 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F4D12087;
+        Fri,  5 May 2023 03:42:52 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 6CB9D5C030C;
+        Fri,  5 May 2023 06:42:51 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 05 May 2023 06:42:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1683283371; x=1683369771; bh=RC
+        TWVk0KOAVQ/MkChme+8/6o8h9CkRTO4hkaOFGb8H8=; b=Bz7cz1oUuN9Ila0jCg
+        gsP4cAo3R88v0BuIlQw1Iuc/Jj6Cj7ZXE9Fshdcm/j3oLmC4sr5jhqeNzc9p244X
+        W0eLkFo/G1Z/ZC1YyMBGKM2xwor/lJ6H8k9vcz6KMSOTVXZLOjR00Wknyf7QcCl4
+        t5gzw0uAid9TThPkEfNxHiS7M76D6UYONrLWramwxBm68cGMXuUfPCtxj4lFJo0t
+        KbQ0QmzgnPxYW8n/mHyNyGdoCl/aruEtt4cKDmlmmmHtaJ1cjCqlraTijs710Tqr
+        Sgje05/RuvhRmmMjF4kqoX5QtwiucfxcpnBsylSWqUQ0CQtGD11Pp9I/aNTFn8sM
+        l4EA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1683283371; x=1683369771; bh=RCTWVk0KOAVQ/
+        MkChme+8/6o8h9CkRTO4hkaOFGb8H8=; b=RqXJnCqZQliMjqwLuDeWV6/a8f/8w
+        Ex08I0VVzwluGBAFMlMOsi04uS+XzUJB8SVqq4e1sNrsKX7sDjPKNHn2EQG1Eq9w
+        Es9fyZgT+upuxBCRw/feo+jcDAgeeSEZGJik2zalGiOKJTG2OIvVedodQl0F2hyX
+        yMGoHCwfnfFK3d6G5FZRWMTCD8PKSjz4vN69ycV6YrkDkEmiAIPJXsIlVIZZ78t/
+        D2nIYuUANhFurxcvLdV3MMts9Jz3LDeaIXkg2oLIFObfoPY2IjlU0m74402AUcPR
+        Fz2LeYE8LsBr6BJeQyAQP+H6H15fWfe/AVu0IM2T7gpL5nxc44wmnX7Gg==
+X-ME-Sender: <xms:q91UZEtqwzQfHlBVK8mMUtYYGXFHothsncvoO6cgnAUdoole3iQJTA>
+    <xme:q91UZBfAzVecWUB6Rspa9NELo2WaOtSeOhB5qNbzwcivY0AUXwfBfwWrtPrVtAoeg
+    Zbm_5Oe4BxegA>
+X-ME-Received: <xmr:q91UZPzLwzvzEplPrtZlnBrpRDOJLLVFBJQ7pMqO9iSW1VMWy76AOfOKqHpS>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefvddgfeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:q91UZHOu1TTFc2_K8TvRiOMUtur5kvxN65ASjKvMFVXWiKq57x26Nw>
+    <xmx:q91UZE9d_kEYgYuEIa7CD_-TKyzu6wMDuBp6W-Nl0sczL7KMf1edgw>
+    <xmx:q91UZPVQ3ai0cckISVAcXEuDgeCcTwI4Hqo5bsVXEkqSVA_ETw6-fA>
+    <xmx:q91UZAuGKvyPNXUwWWOc0qPH82LmGpPhyNoID6R9ibALztDQ9XNsVQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 May 2023 06:42:49 -0400 (EDT)
+Date:   Fri, 5 May 2023 19:42:44 +0900
+From:   Greg KH <greg@kroah.com>
+To:     yixuanjiang <yixuanjiang@google.com>
+Cc:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.de>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: soc-pcm: Fix and cleanup DPCM locking
+Message-ID: <2023050534-errant-crusher-0379@gregkh>
+References: <20230504092142.4190069-1-yixuanjiang@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b04cbeb31e221edea8afa75679e4a55633748af7.1683194376.git.fdmanana@suse.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230504092142.4190069-1-yixuanjiang@google.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 04, 2023 at 11:12:03AM +0100, fdmanana@kernel.org wrote:
-> From: Filipe Manana <fdmanana@suse.com>
+On Thu, May 04, 2023 at 05:21:42PM +0800, yixuanjiang wrote:
+> From: Takashi Iwai <tiwai@suse.de>
 > 
-> When using the logical to ino ioctl v2, if the flag to ignore offsets of
-> file extent items (BTRFS_LOGICAL_INO_ARGS_IGNORE_OFFSET) is given, the
-> backref walking code ends up not returning references for all file offsets
-> of an inode that point to the given logical bytenr. This happens since
-> kernel 6.2, commit 6ce6ba534418 ("btrfs: use a single argument for extent
-> offset in backref walking functions"), as it mistakenly skipped the search
-> for file extent items in a leaf that point to the target extent if that
-> flag is given. Instead it should only skip the filtering done by
-> check_extent_in_eb() - that is, it should not avoid the calls to that
-> function (or find_extent_in_eb(), which uses it).
+> The existing locking for DPCM has several issues
+> a) a confusing mix of card->mutex and card->pcm_mutex.
+> b) a dpcm_lock spinlock added inconsistently and on paths that could
+> be recursively taken. The use of irqsave/irqrestore was also overkill.
 > 
-> So fix this by always calling check_extent_in_eb() and find_extent_in_eb()
-> and have check_extent_in_eb() do the filtering only if the flag to ignore
-> offsets is set.
+> The suggested model is:
 > 
-> Fixes: 6ce6ba534418 ("btrfs: use a single argument for extent offset in backref walking functions")
-> Reported-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-> Link: https://lore.kernel.org/linux-btrfs/CAHhfkvwo=nmzrJSqZ2qMfF-rZB-ab6ahHnCD_sq9h4o8v+M7QQ@mail.gmail.com/
-> Tested-by: Vladimir Panteleev <git@vladimir.panteleev.md>
-> CC: stable@vger.kernel.org # 6.2+
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
+> 1) The pcm_mutex is the top-most protection of BE links in the FE. The
+> pcm_mutex is applied always on either the top PCM callbacks or the
+> external call from DAPM, not taken in the internal functions.
+> 
+> 2) the FE stream lock is taken in higher levels before invoking
+> dpcm_be_dai_trigger()
+> 
+> 3) when adding and deleting a BE, both the pcm_mutex and FE stream
+> lock are taken.
+> 
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> [clarification of commit message by plbossart]
+> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+> Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+> Link: https://lore.kernel.org/r/20211207173745.15850-4-pierre-louis.bossart@linux.intel.com
+> Cc: stable@vger.kernel.org # 5.15.x
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 > ---
-> 
-> V2: Remove wrong check for a non-zero extent item offset.
->     Apply the same logic at find_parent_nodes(), that is, search for file
->     extent items on a leaf if the ignore flag is given - the filtering
->     will be done later at check_extent_in_eb(). Spotted by Vladimir Panteleev
->     in the thread mentioned above.
+>  include/sound/soc.h  |   2 -
+>  sound/soc/soc-core.c |   1 -
+>  sound/soc/soc-pcm.c  | 229 ++++++++++++++++++++++++++++---------------
+>  3 files changed, 152 insertions(+), 80 deletions(-)
 
-Replaced in misc-next, thanks for the quick fix.
+<formletter>
+
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
