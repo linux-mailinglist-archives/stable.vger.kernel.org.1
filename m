@@ -2,126 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D90936F83EA
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 15:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07D9E6F84E8
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 16:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232516AbjEENZi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 09:25:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
+        id S232487AbjEEOhL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 10:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232065AbjEENZh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 09:25:37 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAAA1F4B9;
-        Fri,  5 May 2023 06:25:36 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id CD56E5C0314;
-        Fri,  5 May 2023 09:25:35 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Fri, 05 May 2023 09:25:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm1; t=1683293135; x=
-        1683379535; bh=7t+/lIxhqlgnlEBYwfT2xXhyCdqZvuaeWIN7vpHYLAI=; b=k
-        oAn0tSE2cwE/I/11d2hDIDF/GVjIvJOP1byJzpKIad9fJSaTOcuSEYY9MO299OYn
-        /WkYaLXUt9uH9viJXopHdVupX59beGHD+RNMrtjFo+HIMq5D9EtssPim8CGh+gp7
-        8ACTf9KpAgSNNTqiqoQnXkXEgfpVvZY2MzDMuIE68AdaCQgt8WfRDvBxYOEe2QKK
-        F9XBLpt3BYXoEkSXEUXi6brJozAL5XNm/iJ3TyXCuQko2iRAy9ivx5s4za83Ij1A
-        725wTxeUOkdWBRjhtd+CPkn06uvDrbmHozeKmf4v6MNIiWRRfwK6jfEsVZomMMs0
-        vWZdeNXA5XCK4r2l2qgyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1683293135; x=
-        1683379535; bh=7t+/lIxhqlgnlEBYwfT2xXhyCdqZvuaeWIN7vpHYLAI=; b=J
-        1RgSkhR5Vd4V3MJiHcGT3pIsADbScMo7opwlybEp1qzKeaJ/ufEKT+kwGW7hR9wp
-        ywk8QbvzwbJ2gdg0WrqSCXzcZW9MH5WvXAWkV0a/3kraHL2AgQmnYvKjvtg2Q4Zw
-        /1oYhMZZ2RNglx+s/81I0kFb/G4e7Cj4cinKlzXWGmD5d1qZjOmwEO6SOYOrgX0A
-        jWbfNIXbb7kl6ujUqH1YACBPi64YHFPC2ZiQiTtqDJ9BTiL8doHF51rWbIxm45dk
-        bvTLKgk1B0qTQ4Qnc/RBAeLErCxZJMOwTY181B3v9xaDWQBwiYrQ5ISOIwoaS7Xz
-        uhfdXBqfJmtPkLfzDEOMQ==
-X-ME-Sender: <xms:zwNVZHdSHWmPdCrwOS8DI_aTUWBIHsOZqJGIL4iml7u-oCSU01D5nw>
-    <xme:zwNVZNMiPZmtOY5y0Gs_61ATCKe-n4oWTlRkAKc_mg_Q0NsxTQGrpJlbmcq2oj-2k
-    GK-CvaoR6dmQNk2wlI>
-X-ME-Received: <xmr:zwNVZAi-NTia1oeHsjNmfnQpQOUqvCPimSzbg2YXRGfMEFr24VU5oGNqPd3ltWgkh9ld4T1rFzLgr4Xvkh_UibpVv-ckGxfZ0AKwoBt26eU_54V-Uk-vKQF5tXK_S3_o_ntROWujlA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefvddgieehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgoteeftdduqddtudculdduhedmnecujfgurhephf
-    fvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrrhhkucfrvggrrhhs
-    ohhnuceomhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrgeqnecuggftrf
-    grthhtvghrnhepvedvtdejlefgvdeffeefgfefieduvdejledtgfeludffleeivedugeei
-    jedtuedtnecuffhomhgrihhnpehrvgguhhgrthdrtghomhenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdqlhgvnhhovhho
-    sehsqhhuvggssgdrtggr
-X-ME-Proxy: <xmx:zwNVZI-F4JssSio2WVl6DQWmyKY46WDw9Tazlolh1tJvpHD91bBnXA>
-    <xmx:zwNVZDscr3Q-myETuESxwWQ9ukQemVtEZj9WBV3LFtUt5BTBxm7OcA>
-    <xmx:zwNVZHGjNrNeAjcg-81WX3EqlJbMupVjL71Mh_64IllY4sQVM2spuA>
-    <xmx:zwNVZNJOcpZHl2w3R9yTY3_wOxIJ4aXI05vxPC_URi88P2K-Iwr0bA>
-Feedback-ID: ibe194615:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 May 2023 09:25:35 -0400 (EDT)
-From:   Mark Pearson <mpearson-lenovo@squebb.ca>
-To:     mpearson-lenovo@squebb.ca
-Cc:     hdegoede@redhat.com, markgross@kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S231764AbjEEOhK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 10:37:10 -0400
+Received: from www484.your-server.de (www484.your-server.de [78.47.237.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81261991;
+        Fri,  5 May 2023 07:37:08 -0700 (PDT)
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www484.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1puwYR-000CNI-NQ; Fri, 05 May 2023 16:37:04 +0200
+Received: from [2003:ca:6730:e8f8:6bd1:e37b:34b5:f0b4] (helo=tethys.labor)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <k.graefe@gateware.de>)
+        id 1puwYR-0004JI-H3; Fri, 05 May 2023 16:37:03 +0200
+From:   =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>
+To:     Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Cc:     =?UTF-8?q?Konrad=20Gr=C3=A4fe?= <k.graefe@gateware.de>,
         stable@vger.kernel.org
-Subject: [PATCH 1/2] platform/x86: thinkpad_acpi: Fix platform profiles on T490
-Date:   Fri,  5 May 2023 09:25:22 -0400
-Message-Id: <20230505132523.214338-1-mpearson-lenovo@squebb.ca>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <mpearson-lenovo@squebb.ca>
-References: <mpearson-lenovo@squebb.ca>
+Subject: [PATCH v5] usb: gadget: u_ether: Fix host MAC address case
+Date:   Fri,  5 May 2023 16:36:40 +0200
+Message-Id: <20230505143640.443014-1-k.graefe@gateware.de>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230427115120.241954-2-k.graefe@gateware.de>
+References: <20230427115120.241954-2-k.graefe@gateware.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Authenticated-Sender: k.graefe@gateware.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26897/Fri May  5 09:23:19 2023)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I had incorrectly thought that PSC profiles were not usable on Intel
-platforms so had blocked them in the driver initialistion. This broke
-platform profiles on the T490.
+The CDC-ECM specification [1] requires to send the host MAC address as
+an uppercase hexadecimal string in chapter "5.4 Ethernet Networking
+Functional Descriptor":
+    The Unicode character is chosen from the set of values 30h through
+    39h and 41h through 46h (0-9 and A-F).
 
-After discussion with the FW team PSC does work on Intel platforms and
-should be allowed.
+However, snprintf(.., "%pm", ..) generates a lowercase MAC address
+string. While most host drivers are tolerant to this, UsbNcm.sys on
+Windows 10 is not. Instead it uses a different MAC address with all
+bytes set to zero including and after the first byte containing a
+lowercase letter. On Windows 11 Microsoft fixed it, but apparently they
+did not backport the fix.
 
-Note - it's possible this may impact other platforms where it is advertised
-but special driver support that only Windows has is needed. But if it does
-then they will need fixing via quirks. Please report any issues to me so I
-can get them addressed - but I haven't found any problems in testing...yet
+This change fixes the issue by upper-casing the MAC to comply with the
+specification.
 
-Fixes: bce6243f767f ("platform/x86: thinkpad_acpi: do not use PSC mode on Intel platforms")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2177962
+[1]: https://www.usb.org/document-library/class-definitions-communication-devices-12, file ECM120.pdf
+
+Fixes: bcd4a1c40bee ("usb: gadget: u_ether: construct with default values and add setters/getters")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Konrad Gräfe <k.graefe@gateware.de>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 5 -----
- 1 file changed, 5 deletions(-)
+Changes since v4:
+* Use string_upper() instead of a special format string
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 826c522ed1c0..d84a4c7e3c35 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10585,11 +10585,6 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
- 				dytc_mmc_get_available = true;
- 		}
- 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
--		/* Support for this only works on AMD platforms */
--		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
--			dbg_printk(TPACPI_DBG_INIT, "PSC not support on Intel platforms\n");
--			return -ENODEV;
--		}
- 		pr_debug("PSC is supported\n");
- 	} else {
- 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
+Changes since v3: None
+
+Changes since v2:
+* Add uppercase MAC address format string and use that instead of
+  manually uppercasing the resulting MAC address string.
+
+Changes since v1:
+* Fixed checkpatch.pl warnings
+
+ drivers/usb/gadget/function/u_ether.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index 6956ad8ba8dd..a366abb45623 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -17,6 +17,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
+ #include <linux/if_vlan.h>
++#include <linux/string_helpers.h>
+ #include <linux/usb/composite.h>
+ 
+ #include "u_ether.h"
+@@ -965,6 +966,8 @@ int gether_get_host_addr_cdc(struct net_device *net, char *host_addr, int len)
+ 	dev = netdev_priv(net);
+ 	snprintf(host_addr, len, "%pm", dev->host_mac);
+ 
++	string_upper(host_addr, host_addr);
++
+ 	return strlen(host_addr);
+ }
+ EXPORT_SYMBOL_GPL(gether_get_host_addr_cdc);
 -- 
-2.40.0
+2.34.1
 
