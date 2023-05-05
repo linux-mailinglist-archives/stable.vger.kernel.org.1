@@ -2,221 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D43CA6F7D3B
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 08:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 518E16F7DE2
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 09:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbjEEGsW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 02:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34474 "EHLO
+        id S231310AbjEEHau (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 03:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230297AbjEEGsW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 02:48:22 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6D6FF
-        for <stable@vger.kernel.org>; Thu,  4 May 2023 23:48:21 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-b9a6eeea78cso16260422276.0
-        for <stable@vger.kernel.org>; Thu, 04 May 2023 23:48:21 -0700 (PDT)
+        with ESMTP id S231313AbjEEHaq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 03:30:46 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9A617DCC
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 00:30:41 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f178da219bso14273005e9.1
+        for <stable@vger.kernel.org>; Fri, 05 May 2023 00:30:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683269300; x=1685861300;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AYep1Ny0kQwWKACNqYvjEM8O17wY9ZF5ldxrC8z/e80=;
-        b=5CVSJW65GZH+DA1CPql2ETYPAj170/fFgh/93JRG3f41dd2GhplzDeY/18lRRODlaA
-         wiRfzAqpCeYftVLgW2O5jnTBO0tfZI5AOBIlX8n62F2O5pMqd00kOmhfKG2IE/mS2Fgx
-         2ydbVjcj2bY+XfwUgwm4/n1izggbZ3neGQjWZWmArchNJ1+aFyRZ4PrJna2/SK+g2hH9
-         Lq1nffobQOR6jZ5ksTlmoXE+/uGbnXZiSK0M7O6nMJCMK1K5CJlGXPG6x2EugIZEZgGm
-         C8dIZer63iXSsyDyliZtcG/9acZht+q7gerrKmnOx1SY36EwusQcItXFw6suHvuu2+Pr
-         WCMQ==
+        d=linaro.org; s=google; t=1683271840; x=1685863840;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ttzbup9NrLAqf5VRgfV11m9AJvPpzl1o7U2c5sJYuUM=;
+        b=obeURiwMzSfEfMcqsk2U3BoIAd+lNjwPW8Su0WTwXWe8V59YyZqnIWIfMHOUG77AmL
+         nyBDb2L+p9ClnnOb6EBDPTbw12kOz2jMMat1pY8CJulTi8AMMHyxE9sdzVBsffoUieBV
+         tWHuee/+wGYjWpWyctPFEaygGPihCAQfRqtMAgAN3blqVc17Otz085aX9ALTNOHL74Uo
+         x5KVfJbWcxXCG88HQWYPIE94MUtXrfOueoMWvdTSiJfF8BUuFSXgvjTLbKZAQaI6f5Y8
+         iaGS/5aJeLNW310zDorBxXed6vaivqpYqDd5mY6nD2s7RuC1ef7kwsMKHXrHSc2Edmoy
+         Tuqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683269300; x=1685861300;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AYep1Ny0kQwWKACNqYvjEM8O17wY9ZF5ldxrC8z/e80=;
-        b=WQmuRErxF3h6nw/iRV/9zRE6LS5jkqs8qcr71zgFJMRjSicfdO7jyr4JM8rol5nhUR
-         BvUHKbKhdfg2OXAYlEYZjTzseFEv7BfHGphg1S6hiPNVQSMiDHzdfO4AG/sik5tNPkWV
-         /3Vo3ydHwPxPwAWNrj1VY5PWgkcmWZ+4v2ajTRDZQb7EZzMaee79nDlpVUzrwL2qMPE2
-         FOFq8VrMVyAlfZvVAra0Q1XCXphl04M2hteCy/d8w3bruFAE7Aq76mvNmN+fLzUqSdwa
-         zM59RDWNM3kZP4bjlmnfrRQ4DmHSe6jnzpsDhMP+RwSwyQ+26kskCJWY2tKjBH1pYYzN
-         ERMg==
-X-Gm-Message-State: AC+VfDz2elEc6uYB6kxecEtffOj4XSzxP+vObD/XeBycq9RZ/gGN4lOd
-        zPv1qpua/6NAIU0C+HUsrOyxOwdc4GafeA==
-X-Google-Smtp-Source: ACHHUZ7l61qDV2B6jFlru5dKX380CQIBKUnZbFrfS/02oUgqBmWi7AhTxsdFrijzinhJv7L/5fbTBA5BePNpMw==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a05:690c:10c:b0:55c:a5db:869 with SMTP id
- bd12-20020a05690c010c00b0055ca5db0869mr3497779ywb.4.1683269300306; Thu, 04
- May 2023 23:48:20 -0700 (PDT)
-Date:   Fri,  5 May 2023 06:48:10 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
-Message-ID: <20230505064811.2982849-1-cmllamas@google.com>
-Subject: [PATCH] binder: fix UAF caused by faulty buffer cleanup
-From:   Carlos Llamas <cmllamas@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Carlos Llamas <cmllamas@google.com>,
-        Suren Baghdasaryan <surenb@google.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        Zi Fan Tan <zifantan@google.com>, stable@vger.kernel.org,
-        Todd Kjos <tkjos@google.com>
+        d=1e100.net; s=20221208; t=1683271840; x=1685863840;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ttzbup9NrLAqf5VRgfV11m9AJvPpzl1o7U2c5sJYuUM=;
+        b=aqfEAteWAIq69f+0nBjF9m/k2LU3iQxxDk42hMIahCtHIN4p3vmp8Mj042cRgNJkBm
+         WCxFTCG3U5MAhDdNNz3vRBdPx40xq9hG8R6JL9bkFmqWi3aiOeeto5UB4rMA5gSEX7Xt
+         IW4zLoaQ/SwnBV/ZqB3+UrNRNzVey5sqybC3IlBVuNjwvU8g/ktAPRPgCtcq6YgMSUl1
+         lyUHKvXWecj99GmQb86i6KP2h2C4aJ3oYV3wZt9h90Y9mFs/h0xq4lmG9jJEr2tCaQFu
+         jIDRKirTo54uOkutno5yfkDgxl+XEKOHz/ZzpMFnLlTFXZOf4brGwD/RkLJGsl8f5fGR
+         cVlw==
+X-Gm-Message-State: AC+VfDxENujze/pA3CoLIcAnMmE6MuCBnS13nA9C5spuVUx4F+XwF+ql
+        kISsow/jU4pPaRNMjvFqYUwWE+bC5PK4RM5bgZi6sw==
+X-Google-Smtp-Source: ACHHUZ7wi3ql6LFKIE0hgLVVZnNoOzdJu+oPbNztv1KpNhL6c4/ThMshNMXbsHJ1+Q/ujEUtGcc0jHd5l7GwIubpXbM=
+X-Received: by 2002:a5d:42c9:0:b0:306:2d45:a8e0 with SMTP id
+ t9-20020a5d42c9000000b003062d45a8e0mr722047wrr.15.1683271839652; Fri, 05 May
+ 2023 00:30:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <6a25613e87158947b4d102be4859f406edcb3f0b.1683008188.git.Rijo-john.Thomas@amd.com>
+In-Reply-To: <6a25613e87158947b4d102be4859f406edcb3f0b.1683008188.git.Rijo-john.Thomas@amd.com>
+From:   Jens Wiklander <jens.wiklander@linaro.org>
+Date:   Fri, 5 May 2023 09:30:28 +0200
+Message-ID: <CAHUa44Gm5jmm=mEfowcmabaoWFFbCLiDd5NdPSArCPHsjcpOBw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] tee: amdtee: Add return_origin to 'struct tee_cmd_load_ta'
+To:     Rijo Thomas <Rijo-john.Thomas@amd.com>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jan Dabros <jsd@semihalf.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org,
+        Mythri PK <Mythri.Pandeshwarakrishna@amd.com>,
+        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
+        stable@vger.kernel.org, Sourabh Das <sourabh.das@amd.com>,
+        Nimesh Easow <nimesh.easow@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In binder_transaction_buffer_release() the 'failed_at' offset indicates
-the number of objects to clean up. However, this function was changed by
-commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
-to release all the objects in the buffer when 'failed_at' is zero.
+Hi,
 
-This introduced an issue when a transaction buffer is released without
-any objects having been processed so far. In this case, 'failed_at' is
-indeed zero yet it is misinterpreted as releasing the entire buffer.
+On Tue, May 2, 2023 at 8:25=E2=80=AFAM Rijo Thomas <Rijo-john.Thomas@amd.co=
+m> wrote:
+>
+> After TEE has completed processing of TEE_CMD_ID_LOAD_TA, set proper
+> value in 'return_origin' argument passed by open_session() call. To do
+> so, add 'return_origin' field to the structure tee_cmd_load_ta. The
+> Trusted OS shall update return_origin as part of TEE processing.
+>
+> This change to 'struct tee_cmd_load_ta' interface requires a similar upda=
+te
+> in AMD-TEE Trusted OS's TEE_CMD_ID_LOAD_TA interface.
 
-This leads to use-after-free errors where nodes are incorrectly freed
-and subsequently accessed. Such is the case in the following KASAN
-report:
+This is an ABI change, but it's not clear if it's an incompatible ABI
+change or not. What happens if the AMD-TEE Trusted OS isn't updated?
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
-  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
+>
+> This patch has been verified on Phoenix Birman setup. On older APUs,
+> return_origin value will be 0.
 
-  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   dump_backtrace+0x94/0xec
-   show_stack+0x18/0x24
-   dump_stack_lvl+0x48/0x60
-   print_report+0xf8/0x5b8
-   kasan_report+0xb8/0xfc
-   __asan_load8+0x9c/0xb8
-   binder_thread_read+0xc40/0x1f30
-   binder_ioctl+0xd9c/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
+Why, because MD-TEE Trusted OS will not be updated on the older APUs?
 
-  Allocated by task 474:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_alloc_info+0x24/0x34
-   __kasan_kmalloc+0xb8/0xbc
-   kmalloc_trace+0x48/0x5c
-   binder_new_node+0x3c/0x3a4
-   binder_transaction+0x2b58/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
+>
+> Cc: stable@vger.kernel.org
 
-  Freed by task 475:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_free_info+0x38/0x5c
-   __kasan_slab_free+0xe8/0x154
-   __kmem_cache_free+0x128/0x2bc
-   kfree+0x58/0x70
-   binder_dec_node_tmpref+0x178/0x1fc
-   binder_transaction_buffer_release+0x430/0x628
-   binder_transaction+0x1954/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-  ==================================================================
+Which stable kernels are you targeting? A Fixes tag might answer that.
 
-In order to avoid these issues, let's always calculate the intended
-'failed_at' offset beforehand. This is wrapped in a helper function to
-make it clear and convenient.
+Thanks,
+Jens
 
-Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
-Reported-by: Zi Fan Tan <zifantan@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/binder.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index fb56bfc45096..6678a862ea84 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -1938,7 +1938,7 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
- 					      bool is_failure)
- {
- 	int debug_id = buffer->debug_id;
--	binder_size_t off_start_offset, buffer_offset, off_end_offset;
-+	binder_size_t off_start_offset, buffer_offset;
- 
- 	binder_debug(BINDER_DEBUG_TRANSACTION,
- 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
-@@ -1950,9 +1950,8 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
- 		binder_dec_node(buffer->target_node, 1, 0);
- 
- 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
--	off_end_offset = is_failure && failed_at ? failed_at :
--				off_start_offset + buffer->offsets_size;
--	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
-+
-+	for (buffer_offset = off_start_offset; buffer_offset < failed_at;
- 	     buffer_offset += sizeof(binder_size_t)) {
- 		struct binder_object_header *hdr;
- 		size_t object_size = 0;
-@@ -2111,6 +2110,25 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
- 	}
- }
- 
-+/* Clean up all the objects in the buffer */
-+static inline void binder_release_entire_buffer(struct binder_proc *proc,
-+						struct binder_thread *thread,
-+						struct binder_buffer *buffer,
-+						bool is_failure)
-+{
-+	binder_size_t off_end_offset;
-+
-+	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
-+	off_end_offset += buffer->offsets_size;
-+
-+	/* We always pass the end of the buffer here to make sure that
-+	 * binder_transaction_buffer_release() loops through all the
-+	 * objects in the buffer.
-+	 */
-+	binder_transaction_buffer_release(proc, thread, buffer,
-+					  off_end_offset, is_failure);
-+}
-+
- static int binder_translate_binder(struct flat_binder_object *fp,
- 				   struct binder_transaction *t,
- 				   struct binder_thread *thread)
-@@ -2806,7 +2824,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
- 		t_outdated->buffer = NULL;
- 		buffer->transaction = NULL;
- 		trace_binder_transaction_update_buffer_release(buffer);
--		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);
-+		binder_release_entire_buffer(proc, NULL, buffer, false);
- 		binder_alloc_free_buf(&proc->alloc, buffer);
- 		kfree(t_outdated);
- 		binder_stats_deleted(BINDER_STAT_TRANSACTION);
-@@ -3775,7 +3793,7 @@ binder_free_buf(struct binder_proc *proc,
- 		binder_node_inner_unlock(buf_node);
- 	}
- 	trace_binder_transaction_buffer_release(buffer);
--	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
-+	binder_release_entire_buffer(proc, thread, buffer, is_failure);
- 	binder_alloc_free_buf(&proc->alloc, buffer);
- }
- 
--- 
-2.40.1.521.gf1e218fcd8-goog
-
+> Tested-by: Sourabh Das <sourabh.das@amd.com>
+> Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
+> ---
+>  drivers/tee/amdtee/amdtee_if.h | 10 ++++++----
+>  drivers/tee/amdtee/call.c      | 30 +++++++++++++++++-------------
+>  2 files changed, 23 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/tee/amdtee/amdtee_if.h b/drivers/tee/amdtee/amdtee_i=
+f.h
+> index ff48c3e47375..e2014e21530a 100644
+> --- a/drivers/tee/amdtee/amdtee_if.h
+> +++ b/drivers/tee/amdtee/amdtee_if.h
+> @@ -118,16 +118,18 @@ struct tee_cmd_unmap_shared_mem {
+>
+>  /**
+>   * struct tee_cmd_load_ta - load Trusted Application (TA) binary into TE=
+E
+> - * @low_addr:    [in] bits [31:0] of the physical address of the TA bina=
+ry
+> - * @hi_addr:     [in] bits [63:32] of the physical address of the TA bin=
+ary
+> - * @size:        [in] size of TA binary in bytes
+> - * @ta_handle:   [out] return handle of the loaded TA
+> + * @low_addr:       [in] bits [31:0] of the physical address of the TA b=
+inary
+> + * @hi_addr:        [in] bits [63:32] of the physical address of the TA =
+binary
+> + * @size:           [in] size of TA binary in bytes
+> + * @ta_handle:      [out] return handle of the loaded TA
+> + * @return_origin:  [out] origin of return code after TEE processing
+>   */
+>  struct tee_cmd_load_ta {
+>         u32 low_addr;
+>         u32 hi_addr;
+>         u32 size;
+>         u32 ta_handle;
+> +       u32 return_origin;
+>  };
+>
+>  /**
+> diff --git a/drivers/tee/amdtee/call.c b/drivers/tee/amdtee/call.c
+> index e8cd9aaa3467..e9b63dcb3194 100644
+> --- a/drivers/tee/amdtee/call.c
+> +++ b/drivers/tee/amdtee/call.c
+> @@ -423,19 +423,23 @@ int handle_load_ta(void *data, u32 size, struct tee=
+_ioctl_open_session_arg *arg)
+>         if (ret) {
+>                 arg->ret_origin =3D TEEC_ORIGIN_COMMS;
+>                 arg->ret =3D TEEC_ERROR_COMMUNICATION;
+> -       } else if (arg->ret =3D=3D TEEC_SUCCESS) {
+> -               ret =3D get_ta_refcount(load_cmd.ta_handle);
+> -               if (!ret) {
+> -                       arg->ret_origin =3D TEEC_ORIGIN_COMMS;
+> -                       arg->ret =3D TEEC_ERROR_OUT_OF_MEMORY;
+> -
+> -                       /* Unload the TA on error */
+> -                       unload_cmd.ta_handle =3D load_cmd.ta_handle;
+> -                       psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
+> -                                           (void *)&unload_cmd,
+> -                                           sizeof(unload_cmd), &ret);
+> -               } else {
+> -                       set_session_id(load_cmd.ta_handle, 0, &arg->sessi=
+on);
+> +       } else {
+> +               arg->ret_origin =3D load_cmd.return_origin;
+> +
+> +               if (arg->ret =3D=3D TEEC_SUCCESS) {
+> +                       ret =3D get_ta_refcount(load_cmd.ta_handle);
+> +                       if (!ret) {
+> +                               arg->ret_origin =3D TEEC_ORIGIN_COMMS;
+> +                               arg->ret =3D TEEC_ERROR_OUT_OF_MEMORY;
+> +
+> +                               /* Unload the TA on error */
+> +                               unload_cmd.ta_handle =3D load_cmd.ta_hand=
+le;
+> +                               psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
+> +                                                   (void *)&unload_cmd,
+> +                                                   sizeof(unload_cmd), &=
+ret);
+> +                       } else {
+> +                               set_session_id(load_cmd.ta_handle, 0, &ar=
+g->session);
+> +                       }
+>                 }
+>         }
+>         mutex_unlock(&ta_refcount_mutex);
+> --
+> 2.25.1
+>
