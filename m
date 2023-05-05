@@ -2,75 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82EA96F7B73
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 05:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D43CA6F7D3B
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 08:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229941AbjEEDXc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 4 May 2023 23:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51284 "EHLO
+        id S230377AbjEEGsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 02:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbjEEDXa (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Thu, 4 May 2023 23:23:30 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F6512E;
-        Thu,  4 May 2023 20:23:29 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id d9443c01a7336-1ab032d9266so11718555ad.0;
-        Thu, 04 May 2023 20:23:28 -0700 (PDT)
+        with ESMTP id S230297AbjEEGsW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 02:48:22 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6D6FF
+        for <stable@vger.kernel.org>; Thu,  4 May 2023 23:48:21 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-b9a6eeea78cso16260422276.0
+        for <stable@vger.kernel.org>; Thu, 04 May 2023 23:48:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683257008; x=1685849008;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W1zI59DMPwElv3Pt8qHQPRARoujuK3z77nNH9VJstI0=;
-        b=LxJaI/l/33pp4EkU9RxPz2ysCK1qnDvZNqromExIbQhMCW7q5QPFVbGJHK7EvtwL+d
-         in0Ouxaz7FU2OYdhziplIhyDlEooIMyZNTZ/wTu5QY6jMorvjjaG5thYUF+f924YkrLn
-         flWnUpAPnXNK6NLvvjS8hEPTmJGPAZyqNr8I+kwIZ50r6vp84vj1R5C1HSMRkU1sRDga
-         jw9W8/t0Bg9PVIXSh8uXXW7m4c1eQKRr7DpqabLCmetYZK0ugJvUzDHQb0ganz10kiP0
-         FXA3nxsnCfK02TaTwpG4KoiEEbEq0PvjP68PN/RLEggMJO/7nYhjWmZBYNUnMsr+xuGw
-         /okA==
+        d=google.com; s=20221208; t=1683269300; x=1685861300;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AYep1Ny0kQwWKACNqYvjEM8O17wY9ZF5ldxrC8z/e80=;
+        b=5CVSJW65GZH+DA1CPql2ETYPAj170/fFgh/93JRG3f41dd2GhplzDeY/18lRRODlaA
+         wiRfzAqpCeYftVLgW2O5jnTBO0tfZI5AOBIlX8n62F2O5pMqd00kOmhfKG2IE/mS2Fgx
+         2ydbVjcj2bY+XfwUgwm4/n1izggbZ3neGQjWZWmArchNJ1+aFyRZ4PrJna2/SK+g2hH9
+         Lq1nffobQOR6jZ5ksTlmoXE+/uGbnXZiSK0M7O6nMJCMK1K5CJlGXPG6x2EugIZEZgGm
+         C8dIZer63iXSsyDyliZtcG/9acZht+q7gerrKmnOx1SY36EwusQcItXFw6suHvuu2+Pr
+         WCMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683257008; x=1685849008;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=W1zI59DMPwElv3Pt8qHQPRARoujuK3z77nNH9VJstI0=;
-        b=MQ4v6A9iCNlE9YUrkTNw1oWwRPDagn3TqcF0AX17L1Kp/neuceo129r3n9XqndaFvq
-         uyRpj5Qsim8w98Z0C+bdASGTbuaXhai31yxIjL1yrJrUIlz/ZykloJf6UU0383M0PkhN
-         a77jL8iKvRiFWOf1HnbC7QV+0qaqR4jjwLOj9YCBGSOIswvbHh7R4EOF00HJ9ItYcMd3
-         hEVxL0Qv6O27yNXMELMIbVZNLGPIzPohMnCBaEh85dGjEGM9by1zZWKFxStNdM7qMaZj
-         vzfdOfVZxfV873g/dA4Je5xjbJILBfC2zdAvnIqVXn6SWTxdtFvwfHLzxvGZpYM+dfgv
-         y2mQ==
-X-Gm-Message-State: AC+VfDzYxqQsPFmuKCkpBug+2YK9rWARiRvgpAs7XUvRk+VrIWBxKEtw
-        AFMxR3Y5cS7gKUIxm2BX7BM=
-X-Google-Smtp-Source: ACHHUZ41IHoFMBo8xGwEV1vJVt/NKc6moH+fmC+BXkE7LhEz9gspAnlvYpkF61Ci8jJQHgE2VxWjPA==
-X-Received: by 2002:a17:902:778a:b0:1aa:f612:cdf with SMTP id o10-20020a170902778a00b001aaf6120cdfmr5350391pll.37.1683257008322;
-        Thu, 04 May 2023 20:23:28 -0700 (PDT)
-Received: from [10.200.10.82] ([139.177.225.232])
-        by smtp.gmail.com with ESMTPSA id jh2-20020a170903328200b001ac38343438sm396075plb.176.2023.05.04.20.23.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 May 2023 20:23:27 -0700 (PDT)
-Message-ID: <4912002a-4fa8-c1c0-a8c4-690b6dd76449@gmail.com>
-Date:   Fri, 5 May 2023 11:23:20 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.1
-Subject: Re: [PATCH] maple_tree: Make maple state reusable after
- mas_empty_area()
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        maple-tree@lists.infradead.org,
-        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        Tad <support@spotco.us>,
-        Michael Keyes <mgkeyes@vigovproductions.net>,
-        Stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-References: <20230504175509.2195838-1-Liam.Howlett@oracle.com>
-From:   Peng Zhang <perlyzhang@gmail.com>
-In-Reply-To: <20230504175509.2195838-1-Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        d=1e100.net; s=20221208; t=1683269300; x=1685861300;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AYep1Ny0kQwWKACNqYvjEM8O17wY9ZF5ldxrC8z/e80=;
+        b=WQmuRErxF3h6nw/iRV/9zRE6LS5jkqs8qcr71zgFJMRjSicfdO7jyr4JM8rol5nhUR
+         BvUHKbKhdfg2OXAYlEYZjTzseFEv7BfHGphg1S6hiPNVQSMiDHzdfO4AG/sik5tNPkWV
+         /3Vo3ydHwPxPwAWNrj1VY5PWgkcmWZ+4v2ajTRDZQb7EZzMaee79nDlpVUzrwL2qMPE2
+         FOFq8VrMVyAlfZvVAra0Q1XCXphl04M2hteCy/d8w3bruFAE7Aq76mvNmN+fLzUqSdwa
+         zM59RDWNM3kZP4bjlmnfrRQ4DmHSe6jnzpsDhMP+RwSwyQ+26kskCJWY2tKjBH1pYYzN
+         ERMg==
+X-Gm-Message-State: AC+VfDz2elEc6uYB6kxecEtffOj4XSzxP+vObD/XeBycq9RZ/gGN4lOd
+        zPv1qpua/6NAIU0C+HUsrOyxOwdc4GafeA==
+X-Google-Smtp-Source: ACHHUZ7l61qDV2B6jFlru5dKX380CQIBKUnZbFrfS/02oUgqBmWi7AhTxsdFrijzinhJv7L/5fbTBA5BePNpMw==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a05:690c:10c:b0:55c:a5db:869 with SMTP id
+ bd12-20020a05690c010c00b0055ca5db0869mr3497779ywb.4.1683269300306; Thu, 04
+ May 2023 23:48:20 -0700 (PDT)
+Date:   Fri,  5 May 2023 06:48:10 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
+Message-ID: <20230505064811.2982849-1-cmllamas@google.com>
+Subject: [PATCH] binder: fix UAF caused by faulty buffer cleanup
+From:   Carlos Llamas <cmllamas@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Suren Baghdasaryan <surenb@google.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Zi Fan Tan <zifantan@google.com>, stable@vger.kernel.org,
+        Todd Kjos <tkjos@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,73 +73,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+In binder_transaction_buffer_release() the 'failed_at' offset indicates
+the number of objects to clean up. However, this function was changed by
+commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
+to release all the objects in the buffer when 'failed_at' is zero.
 
+This introduced an issue when a transaction buffer is released without
+any objects having been processed so far. In this case, 'failed_at' is
+indeed zero yet it is misinterpreted as releasing the entire buffer.
 
-在 2023/5/5 01:55, Liam R. Howlett 写道:
-> Do not update the min and max of the maple state to the slot of the leaf
-> node.  Leaving the min and max to the node entry allows for the maple
-> state to be used in other operations.
-> 
-> Users would get unexpected results from other operations on the maple
-> state after calling the affected function.
-> 
-> Reported-by: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-> Reported-by: Tad <support@spotco.us>
-> Reported-by: Michael Keyes <mgkeyes@vigovproductions.net>
-> Link: https://lore.kernel.org/linux-mm/32f156ba80010fd97dbaf0a0cdfc84366608624d.camel@intel.com/
-> Link: https://lore.kernel.org/linux-mm/e6108286ac025c268964a7ead3aab9899f9bc6e9.camel@spotco.us/
-> Fixes: Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-> Cc: <Stable@vger.kernel.org>
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->   lib/maple_tree.c | 15 +--------------
->   1 file changed, 1 insertion(+), 14 deletions(-)
-> 
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index 110a36479dced..1c4bc7a988ed3 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -5285,10 +5285,6 @@ static inline int mas_sparse_area(struct ma_state *mas, unsigned long min,
->   int mas_empty_area(struct ma_state *mas, unsigned long min,
->   		unsigned long max, unsigned long size)
->   {
-> -	unsigned char offset;
-> -	unsigned long *pivots;
-> -	enum maple_type mt;
-> -
->   	if (min >= max)
->   		return -EINVAL;
->   
-> @@ -5311,18 +5307,9 @@ int mas_empty_area(struct ma_state *mas, unsigned long min,
->   	if (unlikely(mas_is_err(mas)))
->   		return xa_err(mas->node);
->   
-> -	offset = mas->offset;
-> -	if (unlikely(offset == MAPLE_NODE_SLOTS))
-> +	if (unlikely(mas->offset == MAPLE_NODE_SLOTS))
->   		return -EBUSY;
->   
-> -	mt = mte_node_type(mas->node);
-> -	pivots = ma_pivots(mas_mn(mas), mt);
-> -	if (offset)
-> -		mas->min = pivots[offset - 1] + 1;
-> -
-> -	if (offset < mt_pivots[mt])
-> -		mas->max = pivots[offset];
-> -
->   	if (mas->index < mas->min)
->   		mas->index = mas->min;
-This will bring new bugs, mas->index should take the maximum
-value with mas->index and mas_safe_min(mas, pivots, offset),
-otherwise there will be overwriting allocation.
+This leads to use-after-free errors where nodes are incorrectly freed
+and subsequently accessed. Such is the case in the following KASAN
+report:
 
-Maybe you have forgotten, I have posted a patch[1] with the same
-function last week. I didn't know of a place where mas was used
-after mas_empty_area() before. That patch does not introduce new
-bugs, but the code style has not been updated yet. If using this
-patch will bring more conflicts with my patch set, so what should
-I do? 😁
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
+  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
 
-[1] 
-https://lore.kernel.org/lkml/20230425110511.11680-3-zhangpeng.00@bytedance.com/
->   
+  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x94/0xec
+   show_stack+0x18/0x24
+   dump_stack_lvl+0x48/0x60
+   print_report+0xf8/0x5b8
+   kasan_report+0xb8/0xfc
+   __asan_load8+0x9c/0xb8
+   binder_thread_read+0xc40/0x1f30
+   binder_ioctl+0xd9c/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+
+  Allocated by task 474:
+   kasan_save_stack+0x3c/0x64
+   kasan_set_track+0x2c/0x40
+   kasan_save_alloc_info+0x24/0x34
+   __kasan_kmalloc+0xb8/0xbc
+   kmalloc_trace+0x48/0x5c
+   binder_new_node+0x3c/0x3a4
+   binder_transaction+0x2b58/0x36f0
+   binder_thread_write+0x8e0/0x1b78
+   binder_ioctl+0x14a0/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+
+  Freed by task 475:
+   kasan_save_stack+0x3c/0x64
+   kasan_set_track+0x2c/0x40
+   kasan_save_free_info+0x38/0x5c
+   __kasan_slab_free+0xe8/0x154
+   __kmem_cache_free+0x128/0x2bc
+   kfree+0x58/0x70
+   binder_dec_node_tmpref+0x178/0x1fc
+   binder_transaction_buffer_release+0x430/0x628
+   binder_transaction+0x1954/0x36f0
+   binder_thread_write+0x8e0/0x1b78
+   binder_ioctl+0x14a0/0x1768
+   __arm64_sys_ioctl+0xd4/0x118
+   invoke_syscall+0x60/0x188
+  [...]
+  ==================================================================
+
+In order to avoid these issues, let's always calculate the intended
+'failed_at' offset beforehand. This is wrapped in a helper function to
+make it clear and convenient.
+
+Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
+Reported-by: Zi Fan Tan <zifantan@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index fb56bfc45096..6678a862ea84 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -1938,7 +1938,7 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 					      bool is_failure)
+ {
+ 	int debug_id = buffer->debug_id;
+-	binder_size_t off_start_offset, buffer_offset, off_end_offset;
++	binder_size_t off_start_offset, buffer_offset;
+ 
+ 	binder_debug(BINDER_DEBUG_TRANSACTION,
+ 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
+@@ -1950,9 +1950,8 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 		binder_dec_node(buffer->target_node, 1, 0);
+ 
+ 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
+-	off_end_offset = is_failure && failed_at ? failed_at :
+-				off_start_offset + buffer->offsets_size;
+-	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
++
++	for (buffer_offset = off_start_offset; buffer_offset < failed_at;
+ 	     buffer_offset += sizeof(binder_size_t)) {
+ 		struct binder_object_header *hdr;
+ 		size_t object_size = 0;
+@@ -2111,6 +2110,25 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ 	}
+ }
+ 
++/* Clean up all the objects in the buffer */
++static inline void binder_release_entire_buffer(struct binder_proc *proc,
++						struct binder_thread *thread,
++						struct binder_buffer *buffer,
++						bool is_failure)
++{
++	binder_size_t off_end_offset;
++
++	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
++	off_end_offset += buffer->offsets_size;
++
++	/* We always pass the end of the buffer here to make sure that
++	 * binder_transaction_buffer_release() loops through all the
++	 * objects in the buffer.
++	 */
++	binder_transaction_buffer_release(proc, thread, buffer,
++					  off_end_offset, is_failure);
++}
++
+ static int binder_translate_binder(struct flat_binder_object *fp,
+ 				   struct binder_transaction *t,
+ 				   struct binder_thread *thread)
+@@ -2806,7 +2824,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
+ 		t_outdated->buffer = NULL;
+ 		buffer->transaction = NULL;
+ 		trace_binder_transaction_update_buffer_release(buffer);
+-		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);
++		binder_release_entire_buffer(proc, NULL, buffer, false);
+ 		binder_alloc_free_buf(&proc->alloc, buffer);
+ 		kfree(t_outdated);
+ 		binder_stats_deleted(BINDER_STAT_TRANSACTION);
+@@ -3775,7 +3793,7 @@ binder_free_buf(struct binder_proc *proc,
+ 		binder_node_inner_unlock(buf_node);
+ 	}
+ 	trace_binder_transaction_buffer_release(buffer);
+-	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
++	binder_release_entire_buffer(proc, thread, buffer, is_failure);
+ 	binder_alloc_free_buf(&proc->alloc, buffer);
+ }
+ 
+-- 
+2.40.1.521.gf1e218fcd8-goog
+
