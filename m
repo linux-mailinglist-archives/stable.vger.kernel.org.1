@@ -2,55 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 602EF6F814D
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 13:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC95F6F8286
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 14:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231650AbjEELN7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 07:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56388 "EHLO
+        id S232081AbjEEMEj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 08:04:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbjEELN6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 07:13:58 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9042F1A106
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 04:13:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683285237; x=1714821237;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=MQk53vK2noTp4D/t0s3QwPzuNDs9va10+uSyM8ZRwmc=;
-  b=MQzGfzf1EC9WE/f7gsTn1hqOeZ5mQocGyYtkx0pkSEDh/WyrQLDjDNIf
-   qsBFfsjLpKOhMSB2EhCdmLYihiy17f/bj5VCBMicZcRbmA/tzFMTkEdSs
-   6V+mlrOg/1kdR0ltHUDuvLbSiA5PB3UgKmrGOHlC2lhovqDvQC/cr+wUd
-   vn76HokW+mftY34214e1rvRQgjOaIc4LaIVFumD2hZap3zPezXtBViS7q
-   sRAgRmXqjcjs7SSxEkzZfAnPqbQxr5+5pbol1FEepSYYFAlji0gbIXrbf
-   sNTyCMh5kiBXHN6z+8Li0C6FfE1C86v4sUZ9iSWrJCTdDpIcxHIlk0N+w
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="338372607"
-X-IronPort-AV: E=Sophos;i="5.99,251,1677571200"; 
-   d="scan'208";a="338372607"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 04:13:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="647807632"
-X-IronPort-AV: E=Sophos;i="5.99,251,1677571200"; 
-   d="scan'208";a="647807632"
-Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 04:13:55 -0700
-From:   Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     imre.deak@intel.com, lucas.demarchi@intel.com,
-        stable@vger.kernel.org
-Subject: [PATCH] drm/i915/display: Update the DDI_BUF_CTL active timeout for ADL-P
-Date:   Fri,  5 May 2023 16:39:17 +0530
-Message-Id: <20230505110917.1918957-1-ankit.k.nautiyal@intel.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        with ESMTP id S232069AbjEEMEh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 08:04:37 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0C39EDF;
+        Fri,  5 May 2023 05:04:32 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id E468D5C02C1;
+        Fri,  5 May 2023 08:04:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 05 May 2023 08:04:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+        1683288268; x=1683374668; bh=LAgUMsID5w2avzf9PFHv2O+viyYgaFw1o+N
+        MLyWqG60=; b=H/bh1YSV4eq+4ZpRFAv55gNbJuhPtakE72182LsFotC8j2DgTIu
+        oXRjQ3r1ylDPH9UnBsOZZUYBJmGYmQXCLMb6viGJomasYQWeHOwZ7dDuiEThl3F4
+        CyrqrwejtER3OgqzazlYNnLJhDNIoHOb6Mfqd7GOpfW9CUMA/t43ruOSI/KrvBse
+        pb800EY/VOQmwZufAWJ/nOZoIJtk1yB1d32srLnvHxD+Tu4pp7JYVsL1sMwg9VHl
+        jgmplK0vxqzEjENNnL3IGOgAT4r0JewN+T+3OMNhOPq+Z+TiD9QkcQ2Wws/0LxwM
+        fSi/CQ8wBV7wpYIKsNQsKVmOEn6gs86yfnQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1683288268; x=1683374668; bh=LAgUMsID5w2avzf9PFHv2O+viyYgaFw1o+N
+        MLyWqG60=; b=XylrgE/FzpOkXP/38f7IkiLZCII9CBUuA/C0RjqY0nZtqr0hqGf
+        Er7A6zovX6ZSrGHXF06ocW3kOCRuzgOv/xGTpJulhNQTKVfxt29zjaa/G5iJ0lqt
+        KjSvcMrONnO05OBuI0KS1as3b1P1THDQtH+bFBQ1TSitaRCdy1iLQZuoZ6uZcCsU
+        3fs1C2g2OqupuruP9j2k+QzxXlssNm28Wvpje/URAZ16jYRL1vR/naHswlqJhY+r
+        /hSL662sDvMg09gEMJKGchvUNrJO9Iba3QU4HIxjJK13TJGD+HT2B1hke8LID+l2
+        Qy3IG/BJhm0l+wH8ALOK1YVSFRQvxAiaVBA==
+X-ME-Sender: <xms:zPBUZCenFASlTO_pgLzfRhj3VVhq5d0yCoMby11dH9buDUo_3bu2Nw>
+    <xme:zPBUZMNR4nxREst3JYpTtvPollr2prRiNpAkDIFvIyjALP4EVamT9MY--NhAiiTxY
+    71yZ2NNPKQ4VngPUNI>
+X-ME-Received: <xmr:zPBUZDha9vKFH-z6S4gVhLTI6TvDejELWo4Qgy4zw5DxGonu_EQgHF0zJ_poyXZRFZVX>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefvddggeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurheptggguffhjgffvefgkfhfvffosehtqhhmtdhhtdejnecuhfhrohhmpeflihgr
+    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+    cuggftrfgrthhtvghrnhepkeevieelveeiueekveejgeekfffhffekkeeikeejffdvkedt
+    geevfeejuefggeegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhg
+    sehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:zPBUZP8ldsgMnfy2UvAp7WN6LsBGx5BMLD1pUlozbj2itgMI3nc2uQ>
+    <xmx:zPBUZOsLyeVqlHCu9HoNlDHUwGFWdpRRYEoe3WzyZN4aXOf85u9fdg>
+    <xmx:zPBUZGHR2b64arDeGudEgVNbPolyQvcVusVBFG8xKk7SMuVY2Kvxcg>
+    <xmx:zPBUZPluBgGBZ9t0c67HhrGKaSt-vb7M6DnNQK__cSvc9MmKcGMvCg>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 May 2023 08:04:26 -0400 (EDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.500.231\))
+Subject: Re: [PATCH AUTOSEL 6.3 08/59] bpf, mips: Implement DADDI workarounds
+ for JIT
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+In-Reply-To: <20230504194142.3805425-8-sashal@kernel.org>
+Date:   Fri, 5 May 2023 13:04:14 +0100
+Cc:     linux-kernel@vger.kernel.org,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "paulburton@kernel.org" <paulburton@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        bpf@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <50FCC591-D86A-46A3-AF4A-DD68D2FACC78@flygoat.com>
+References: <20230504194142.3805425-1-sashal@kernel.org>
+ <20230504194142.3805425-8-sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+X-Mailer: Apple Mail (2.3731.500.231)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,36 +98,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-For ADL-P the timeout for DDI_BUF_CTL active is 500usec.
-Update the same as per Bspec:55424.
 
-Fixes: 5add4575c298 ("drm/i915/ddi: Align timeout for DDI_BUF_CTL active with Bspec")
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.3+
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- drivers/gpu/drm/i915/display/intel_ddi.c | 3 +++
- 1 file changed, 3 insertions(+)
+> 2023=E5=B9=B45=E6=9C=884=E6=97=A5 20:40=EF=BC=8CSasha Levin =
+<sashal@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>=20
+> [ Upstream commit bbefef2f07080cd502a93cb1c529e1c8a6c4ac8e ]
+>=20
+> For DADDI errata we just workaround by disable immediate operation
+> for BPF_ADD / BPF_SUB to avoid generation of DADDIU.
+>=20
+> All other use cases in JIT won't cause overflow thus they are all =
+safe.
+>=20
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Acked-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+> Link: =
+https://lore.kernel.org/bpf/20230228113305.83751-2-jiaxun.yang@flygoat.com=
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 55f36d9d509c..6d8e4d7a784e 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -216,8 +216,11 @@ static void intel_wait_ddi_buf_active(struct drm_i915_private *dev_priv,
- 	} else if (DISPLAY_VER(dev_priv) >= 12) {
- 		if (intel_phy_is_tc(dev_priv, phy))
- 			timeout_us = 3000;
-+		else if (IS_ALDERLAKE_P(dev_priv))
-+			timeout_us = 500;
- 		else
- 			timeout_us = 1000;
-+
- 	} else {
- 		timeout_us = 500;
- 	}
--- 
-2.25.1
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+Hi Sasha,
+
+I think this patch should count as a functional improvement instead of =
+regression fix.
+
+Please drop it from stable queue.
+
+Thanks
+Jiaxun
+
+> ---
+> arch/mips/Kconfig            | 1 -
+> arch/mips/net/bpf_jit_comp.c | 4 ++++
+> 2 files changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index e2f3ca73f40d6..edc7d8790f1e8 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -64,7 +64,6 @@ config MIPS
+> select HAVE_DMA_CONTIGUOUS
+> select HAVE_DYNAMIC_FTRACE
+> select HAVE_EBPF_JIT if !CPU_MICROMIPS && \
+> - !CPU_DADDI_WORKAROUNDS && \
+> !CPU_R4000_WORKAROUNDS && \
+> !CPU_R4400_WORKAROUNDS
+> select HAVE_EXIT_THREAD
+> diff --git a/arch/mips/net/bpf_jit_comp.c =
+b/arch/mips/net/bpf_jit_comp.c
+> index b17130d510d49..a40d926b65139 100644
+> --- a/arch/mips/net/bpf_jit_comp.c
+> +++ b/arch/mips/net/bpf_jit_comp.c
+> @@ -218,9 +218,13 @@ bool valid_alu_i(u8 op, s32 imm)
+> /* All legal eBPF values are valid */
+> return true;
+> case BPF_ADD:
+> + if (IS_ENABLED(CONFIG_CPU_DADDI_WORKAROUNDS))
+> + return false;
+> /* imm must be 16 bits */
+> return imm >=3D -0x8000 && imm <=3D 0x7fff;
+> case BPF_SUB:
+> + if (IS_ENABLED(CONFIG_CPU_DADDI_WORKAROUNDS))
+> + return false;
+> /* -imm must be 16 bits */
+> return imm >=3D -0x7fff && imm <=3D 0x8000;
+> case BPF_AND:
+> --=20
+> 2.39.2
+>=20
 
