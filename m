@@ -2,254 +2,358 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ED366F8CC0
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 01:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C44EA6F8CDB
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 01:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232130AbjEEXUj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 19:20:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
+        id S231633AbjEEXm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 19:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232017AbjEEXUh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 19:20:37 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF586A7F
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 16:20:33 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f1217f16e9so20918e87.0
-        for <stable@vger.kernel.org>; Fri, 05 May 2023 16:20:33 -0700 (PDT)
+        with ESMTP id S229831AbjEEXm5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 19:42:57 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E0E5FE0;
+        Fri,  5 May 2023 16:42:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1683330175; x=1714866175;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=ss4zvdQxHWzO0aLDppOAeoomW17Lkg1cC5xQl/hehCQ=;
+  b=A8yg9v1T8FFTTNX9Bl75JYD+hYVh/SnjyimqACxpOJBtqEpD7h8Viqdi
+   3e9Ke8u58Z5VGHQyRerX3c7tKbeoLEWKkm7O7yZ6PadfKLHPo1BaLiam4
+   Yek8vJLpo5tSOqA8zlvh95vCjCFPgnDklOrR5z7kUa7maaJpcnL1Mv0ez
+   DIeSd8re3shJ/CGsMp6Fkika2IMOLwRDQ6MAg5twePGGGmN1XLoywUYDu
+   8gCY4w5SSLJPvdyNyZOMOtnkiMnTMbb5khG8dsUkRjvHCKTOwHdAjZodd
+   wJOV8E3C53SZtS401BW7pzrXsz2VUDOePzh9DszkLMRO9E1SqWUW1mAu7
+   A==;
+X-IronPort-AV: E=Sophos;i="5.99,253,1677567600"; 
+   d="scan'208";a="213973018"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 05 May 2023 16:42:54 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 5 May 2023 16:42:54 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Fri, 5 May 2023 16:42:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hoQZLejViTDf1EQcp7JbJmlL7+Po/Hkil9ZmmfteYX4ocbmOa5eSQQJNsSgzM2+GNh4DU2LRXwF1XGvWumkZBxzfFElpfmk4QJPPEl/gWhsH68QAJhr4SFKemYdq3epaLNzZixjjklU5cYG5Cn2hVAdy3FuDaLC30qU4IMv//Xwx0IGwuh+0nRWlNJu4SaHfyQlUz+5znEBiBAW3fTg1IF7cLldvGUezifUJmrGoc75ru/ZO+Crh6Jebs6tGS0o91MvEpWsxHqOCs0HoL1RwR2/T1vvLfkaHGHQp5d0x7MU6vDA5BzE/apAX/OPm/clhkd2X8px8FUj3qiqrVGbLYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YC0NyFRLU7UR6goB9o91e+L5/smFer1jRy2a+IDeHUk=;
+ b=ZRrUU/IsoZwmGO80kqminsLdNx/uIfbUFEQvjZC+zYySFW6Vr9hUVULO7D3ohqNdrbwM4ruhEjbAZhTuUtJYoerQTrE5L0GJBlw+u3H068RubhgtlrHqyd7dXRiynSCr0du87nfSMdGukfeRQ8rUiHjlEFQxwcaijEErS21szc/TwLdjDuIMJiucMOdc+0JvcNIMHq23JeQvTWw/pwwRcP79HGd7yvZ5m2JEsHbKRdD5lVnP1bHubytlbpCu8Sd/QhOs/20Iy3ywldqnWzjD+49lQGTv/waI16Qs3CCI30FsulQ3xeDSeB1/n7rgJ05o1+oJZFR8bnTkyoCbOQt7Cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683328831; x=1685920831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ner33wytaL924J/VZH8Oe/UDFZDEXhP0N8Fc46FnO1w=;
-        b=q1yXk0sofT7Yy7hK8klAd1WMPn4xVVVyoHnXrzaRbuWiDl++uEScqiDioXKtDBySo2
-         mRbUUWDeNEUlb8exXuHQp/4ue7gH5kDa8F4X1F42FyA2uDCZE0DXNZHHuxdpl0tvD7kt
-         pjl9sIAAJhX+25HpyNpmw0/xD89CzvCBEQ4asLSfdU+/vxa6v3L/WLDZnBUqOAA7oz6n
-         P+NoK9Fp8ihTjq0vLRQWlA29XnXquPROeX9V2HkDBtvV0HJFLAHw/L+mnFXjjtki7rRB
-         GaTAPAZWhvF73AfuI8SPPC7h+rMAsgO3DwPBvWUV3HREeoyoE0XTJ8UEMVgX7SpYwTYL
-         ly8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683328831; x=1685920831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ner33wytaL924J/VZH8Oe/UDFZDEXhP0N8Fc46FnO1w=;
-        b=O4yOKJlnkVVjcDuC1H6/gHA1cqvadsCuy3oZIj46T9bQNlQNYmHzoJo3Vuj6k4dIFV
-         0DlifNCzXfC34Jg0CNbT8MHG/xfdGuUVaLCRJabH3/JehJh/4iSZ3Oi4rF7kWI2Ekt3a
-         G+vreQhG1ATtbNuSkdeZ5vdZ13DHP8312rY8l2jIIE8EK2Fs4FZVX0ha90YJ3AEOdt9B
-         UkNTafcaIuTMZP2JdmtWHtQBrWOBM7hVE7Eca+zOMdurlLBq17EmA0Ue/LJzmS5m9VlW
-         MicS1Vc8SPuu0W+9KnUF/z+j1qxvnLy4z15GVPJgP7gwldFEv2dUWAE8PAk+aqzYlWl5
-         fKVA==
-X-Gm-Message-State: AC+VfDxgKwY2QipkC3NC1jO/9PGTJOcNHsaowo4sFSbKFCQCs7CDdaAO
-        hSFAI/tOeW8T47tu0BI/3SVE2ct2AemWnjNA53iRMg==
-X-Google-Smtp-Source: ACHHUZ6LM3worRhHcXnGFdzEtUxhiUXJYRZlJMZaC+j7T/2ptoRuXp1VsGyuwKVMt0gPVSuVDHWUyDA/CLCSSXLa8kc=
-X-Received: by 2002:a05:6512:3598:b0:4f1:4726:7574 with SMTP id
- m24-20020a056512359800b004f147267574mr31235lfr.5.1683328831204; Fri, 05 May
- 2023 16:20:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230505064811.2982849-1-cmllamas@google.com> <20230505203020.4101154-1-cmllamas@google.com>
-In-Reply-To: <20230505203020.4101154-1-cmllamas@google.com>
-From:   Todd Kjos <tkjos@google.com>
-Date:   Fri, 5 May 2023 16:20:18 -0700
-Message-ID: <CAHRSSEx61=PVXRG90zVsV4W6KNNqmu_nr1TE5X+Gm7dFtuHXsw@mail.gmail.com>
-Subject: Re: [PATCH v2] binder: fix UAF caused by faulty buffer cleanup
-To:     Carlos Llamas <cmllamas@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        linux-kernel@vger.kernel.org, kernel-team@android.com,
-        Zi Fan Tan <zifantan@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YC0NyFRLU7UR6goB9o91e+L5/smFer1jRy2a+IDeHUk=;
+ b=T8Nx1jW21k5d4KdhffIIuti+4qx+3P+xyj8mIITiwHEe+9GPSr1xs+nC/3dbIMCJ5nQveIpy4D2gTUDctPx5eCFQ/m8X7DSqs6dClDnWBKahmn6c2TYSmHbJeTkEErGMGhU7ndinbWpP0e0wxDIRYVET7wS6pgOZQH/QqLIUip0=
+Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
+ by SJ0PR11MB6671.namprd11.prod.outlook.com (2603:10b6:a03:44b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.22; Fri, 5 May
+ 2023 23:42:51 +0000
+Received: from PH0PR11MB5176.namprd11.prod.outlook.com
+ ([fe80::30d9:173b:e580:28c6]) by PH0PR11MB5176.namprd11.prod.outlook.com
+ ([fe80::30d9:173b:e580:28c6%5]) with mapi id 15.20.6363.027; Fri, 5 May 2023
+ 23:42:51 +0000
+From:   <Ajay.Kathat@microchip.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
+        <Ajay.Kathat@microchip.com>, <stable@vger.kernel.org>,
+        <mwalle@kernel.org>
+Subject: [PATCH v2] wifi: wilc1000: fix kernel oops during interface down
+ during background scan
+Thread-Topic: [PATCH v2] wifi: wilc1000: fix kernel oops during interface down
+ during background scan
+Thread-Index: AQHZf6tOCZz1EGCoL0mIVwhtQSxjPw==
+Date:   Fri, 5 May 2023 23:42:51 +0000
+Message-ID: <20230505232902.22651-1-ajay.kathat@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.34.1
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB5176:EE_|SJ0PR11MB6671:EE_
+x-ms-office365-filtering-correlation-id: 8895f3cc-41e1-45a8-2eb0-08db4dc270a9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gTScYcSB4d7wB9QU9zNXyMZO7dZnva19w6SjhiZXsvEBnFRiTOJ88aodn3TQVVTmRAgwTyzMLaHsWUEDyET25M1K3BUBZzrXzdKO3jy3CyFdExNbznyWTIcrCjutvuXlbFf+w8uhrkKYxSJGlQLiObyFzRtS8r8j+Yli6IBcL2rHS3FbvDMAVECG/LMgTMoGN2kdzT6Pb90vodMCZc5NEArltjZnr87fWt5w6hTPcdlLDx/F7tQRSCrtkfjoigMd1NPuCFPiQ9wKbWoYYtYSSbBK7fovEWKcEwPtK9AdsZfj84dHbPfrt3ife8dMreJonEN2l5MLhfl+1Di24mJTzIyyvY/Udrb9zfYrQx7ouZ4xWZUmCRjuBk4teMMg9ZGJZlJOyeKaW9kw5BYmo96JJ3eU6xwWNHIIq8qRfRTHD54jxaJu94qyC6gZoymVF5baJ853g2SlEHpTaXossRyH5i5r8dR9Y5uCzzfn+ohkB3yhXx769dxkkh+JChevCFOfEibvhpuygbauiKE0R1ZAF03DZTrttFzdv3nSTDqY2WrYIVaQI8fa576BAGoRVUeSzs81P3PP4Z4hMEfHH8EbTnjTT6OW8OzvVmrwWk1qeII=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(376002)(346002)(396003)(136003)(366004)(451199021)(41300700001)(83380400001)(316002)(8936002)(8676002)(5660300002)(2616005)(76116006)(4326008)(66946007)(6916009)(66446008)(66556008)(66476007)(64756008)(38100700002)(2906002)(186003)(54906003)(122000001)(6512007)(6506007)(1076003)(26005)(6486002)(38070700005)(36756003)(966005)(86362001)(478600001)(71200400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?+BCOxsamt6dtTE/Fpodem6nceoEtx8Vdwu4WT5jlm8FaMD9xGdJojcKUTs?=
+ =?iso-8859-1?Q?WuvaJN15Q6f2NQebRZDTbfSK1guoX6Tz/tdYFODD/8vKceiAaS5KGWHexk?=
+ =?iso-8859-1?Q?DtBKo3YjUIXbgfz9jnaPwTdc6keAigGIg0UbOTQPC5Y0ZqCOr/zO0KXfmj?=
+ =?iso-8859-1?Q?jE/AkIzPPS3xaq9q+gJo/L84u5b//1a6g1IhgluLPKNlLnDjOY5C0Jbtub?=
+ =?iso-8859-1?Q?Jt2+Z1836QPZllvK151kKYtm6DdDc5M4Pk0NMYrMCsKu98HuD0xJfUFCCL?=
+ =?iso-8859-1?Q?4Y4eWzFG6E32GbvcrJoQbC4b26NSabBLFro05YpFwFYi419YZrtOxIjZcb?=
+ =?iso-8859-1?Q?NHXJJJ8+/IH3D4Z0myOSBc0dc6BB/d4GtD9Qbs9rBYaG7G9cydEwN7dVlR?=
+ =?iso-8859-1?Q?JFAEndxFgwNi1XAgcxkY+k0xfMUcBM7akyTk/uOZIcCcDQUmigGqa3eznc?=
+ =?iso-8859-1?Q?ZQxiBGschD00uSADgzkWXdjGMeKhT+8qtGXf2lDAF8f0vbo9luF2x9XfeO?=
+ =?iso-8859-1?Q?Bqvn7YsuGxIwhim5CYNnBJVekURbuMJuaNZAEkVbbP3QUIuOp03fxa39pK?=
+ =?iso-8859-1?Q?WLnFnCl4eCUZhuLT/nKss3eD8lmpYt765im1vO/bKc9vCQfN04PEmOIQkc?=
+ =?iso-8859-1?Q?B/Jefn1Rz0sckCRgGhElvJCIdS4SHwoKMtwqUQOYZhKNAInSqHIcRdrhPe?=
+ =?iso-8859-1?Q?xgzlyWez0MbQocBYgBH2vO0fb1g/1SKg/UVHxPZMavDB+3RV7aCtorq17w?=
+ =?iso-8859-1?Q?ni03oG94BLkhtQGKHVd+GDXDWGoyoukirgV3VLRlVZPfZfGxk6zcH4j0Zf?=
+ =?iso-8859-1?Q?l3HCsnTqB3f1UW2mrpkHzM3FzANkOZxwAdZcA3m3IvG/MaaOpo2VxDZb0+?=
+ =?iso-8859-1?Q?F5nCsGnivmzHZEE+U0NNklu97GS4TMDf+lVuFeI9Ucxj87YOCbiQUg+qQS?=
+ =?iso-8859-1?Q?LF7aqPvLunJupOS6cvZB5gBwtZlcBCZlLrtEWSJNYGsHtcGoZ79AFSI6H+?=
+ =?iso-8859-1?Q?X2sxqpeMVbERuVGStkr7UCQ0nHOx/0tCmHUvUuYXz9M6JXdSOcMmoEBQsb?=
+ =?iso-8859-1?Q?H6K8wCvTa5HldlIHpliuc2EuLMu2M6IRjXupmyJQkfkyauiVTbcubPX4G1?=
+ =?iso-8859-1?Q?zFtJhemZTCDMhN/8zPZWEqY9Xo5vPFmgR0aYf1dwqJpitnhtsqRcAOugT6?=
+ =?iso-8859-1?Q?EilIr+ojx3rM2JviAMBXWEgT/yRdVIzgsYLBn7PHut8MiSNccCTJUy10FU?=
+ =?iso-8859-1?Q?OcrDtZVlAS47sCqUh5wrtTG6GAi0dl6TSUIU291vKt5hXGOUBEp9q871zM?=
+ =?iso-8859-1?Q?Y7zKWCOaK+iw87UO1NkGTHZJc+0HuElwBVDaFcNDlBg6Yyiws3hqc5nQPJ?=
+ =?iso-8859-1?Q?tKt26VUMnIS02FiX1hfVcM09OVkVdUH/cNTjX7ESFTIW58N75xcO/kaD6O?=
+ =?iso-8859-1?Q?vt31AcOXIIms93IhYeFHJVtDvz6RNI/mTBPTocJR2Qsm4BRhUX6BEBaqcE?=
+ =?iso-8859-1?Q?GutIe4+SEtFvx5BBOAjgHDNo8LU4jOoSCLlaDTE1SLkoW/g8KlOt6UHySJ?=
+ =?iso-8859-1?Q?nKPDT27oBb7v/KqJoUBLZlppQn8ugyfzZVkBmflPhYIKOVDmVHAf3p7w/e?=
+ =?iso-8859-1?Q?yr+3cHBLLpM8EHBrO83Rvsyh6jAikG/NQO58NERVc+NfZzvKKBJLu2uQ?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8895f3cc-41e1-45a8-2eb0-08db4dc270a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 May 2023 23:42:51.1574
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KN4MrBSaHwHuCrw6iNeKSI9cECkFFubHH5w4v22qOBmSM/mvqx2Kio/nLCiWqxPAgCcochK7MjD/qhWr9VaSgrBv4r4w3vUOtY/czQOd580=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6671
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 5, 2023 at 1:30=E2=80=AFPM Carlos Llamas <cmllamas@google.com> =
-wrote:
->
-> In binder_transaction_buffer_release() the 'failed_at' offset indicates
-> the number of objects to clean up. However, this function was changed by
-> commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
-> to release all the objects in the buffer when 'failed_at' is zero.
->
-> This introduced an issue when a transaction buffer is released without
-> any objects having been processed so far. In this case, 'failed_at' is
-> indeed zero yet it is misinterpreted as releasing the entire buffer.
->
-> This leads to use-after-free errors where nodes are incorrectly freed
-> and subsequently accessed. Such is the case in the following KASAN
-> report:
->
->   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->   BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
->   Read of size 8 at addr ffff4faf037cfc58 by task poc/474
->
->   CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
->   Hardware name: linux,dummy-virt (DT)
->   Call trace:
->    dump_backtrace+0x94/0xec
->    show_stack+0x18/0x24
->    dump_stack_lvl+0x48/0x60
->    print_report+0xf8/0x5b8
->    kasan_report+0xb8/0xfc
->    __asan_load8+0x9c/0xb8
->    binder_thread_read+0xc40/0x1f30
->    binder_ioctl+0xd9c/0x1768
->    __arm64_sys_ioctl+0xd4/0x118
->    invoke_syscall+0x60/0x188
->   [...]
->
->   Allocated by task 474:
->    kasan_save_stack+0x3c/0x64
->    kasan_set_track+0x2c/0x40
->    kasan_save_alloc_info+0x24/0x34
->    __kasan_kmalloc+0xb8/0xbc
->    kmalloc_trace+0x48/0x5c
->    binder_new_node+0x3c/0x3a4
->    binder_transaction+0x2b58/0x36f0
->    binder_thread_write+0x8e0/0x1b78
->    binder_ioctl+0x14a0/0x1768
->    __arm64_sys_ioctl+0xd4/0x118
->    invoke_syscall+0x60/0x188
->   [...]
->
->   Freed by task 475:
->    kasan_save_stack+0x3c/0x64
->    kasan_set_track+0x2c/0x40
->    kasan_save_free_info+0x38/0x5c
->    __kasan_slab_free+0xe8/0x154
->    __kmem_cache_free+0x128/0x2bc
->    kfree+0x58/0x70
->    binder_dec_node_tmpref+0x178/0x1fc
->    binder_transaction_buffer_release+0x430/0x628
->    binder_transaction+0x1954/0x36f0
->    binder_thread_write+0x8e0/0x1b78
->    binder_ioctl+0x14a0/0x1768
->    __arm64_sys_ioctl+0xd4/0x118
->    invoke_syscall+0x60/0x188
->   [...]
->   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> In order to avoid these issues, let's always calculate the intended
-> 'failed_at' offset beforehand. This is renamed and wrapped in a helper
-> function to make it clear and convenient.
->
-> Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cl=
-eanup")
-> Reported-by: Zi Fan Tan <zifantan@google.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Fix for kernel crash observed with following test procedure:
+  while true;
+    do ifconfig wlan0 up;
+    iw dev wlan0 scan &
+    ifconfig wlan0 down;
+  done
 
-Acked-by: Todd Kjos <tkjos@google.com>
+During the above test procedure, the scan results are received from firmwar=
+e
+for 'iw scan' command gets queued even when the interface is going down. It
+was causing the kernel oops when dereferencing the freed pointers.
 
-> ---
-> v2: rename 'failed_at' to 'off_end_offsets' and drop the now unecessary
->     comments after the rename per Todd's feedback.
->
->  drivers/android/binder.c | 28 +++++++++++++++++++++-------
->  1 file changed, 21 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-> index fb56bfc45096..8fb7672021ee 100644
-> --- a/drivers/android/binder.c
-> +++ b/drivers/android/binder.c
-> @@ -1934,24 +1934,23 @@ static void binder_deferred_fd_close(int fd)
->  static void binder_transaction_buffer_release(struct binder_proc *proc,
->                                               struct binder_thread *threa=
-d,
->                                               struct binder_buffer *buffe=
-r,
-> -                                             binder_size_t failed_at,
-> +                                             binder_size_t off_end_offse=
-t,
->                                               bool is_failure)
->  {
->         int debug_id =3D buffer->debug_id;
-> -       binder_size_t off_start_offset, buffer_offset, off_end_offset;
-> +       binder_size_t off_start_offset, buffer_offset;
->
->         binder_debug(BINDER_DEBUG_TRANSACTION,
->                      "%d buffer release %d, size %zd-%zd, failed at %llx\=
-n",
->                      proc->pid, buffer->debug_id,
->                      buffer->data_size, buffer->offsets_size,
-> -                    (unsigned long long)failed_at);
-> +                    (unsigned long long)off_end_offset);
->
->         if (buffer->target_node)
->                 binder_dec_node(buffer->target_node, 1, 0);
->
->         off_start_offset =3D ALIGN(buffer->data_size, sizeof(void *));
-> -       off_end_offset =3D is_failure && failed_at ? failed_at :
-> -                               off_start_offset + buffer->offsets_size;
-> +
->         for (buffer_offset =3D off_start_offset; buffer_offset < off_end_=
-offset;
->              buffer_offset +=3D sizeof(binder_size_t)) {
->                 struct binder_object_header *hdr;
-> @@ -2111,6 +2110,21 @@ static void binder_transaction_buffer_release(stru=
-ct binder_proc *proc,
->         }
->  }
->
-> +/* Clean up all the objects in the buffer */
-> +static inline void binder_release_entire_buffer(struct binder_proc *proc=
-,
-> +                                               struct binder_thread *thr=
-ead,
-> +                                               struct binder_buffer *buf=
-fer,
-> +                                               bool is_failure)
-> +{
-> +       binder_size_t off_end_offset;
-> +
-> +       off_end_offset =3D ALIGN(buffer->data_size, sizeof(void *));
-> +       off_end_offset +=3D buffer->offsets_size;
-> +
-> +       binder_transaction_buffer_release(proc, thread, buffer,
-> +                                         off_end_offset, is_failure);
-> +}
-> +
->  static int binder_translate_binder(struct flat_binder_object *fp,
->                                    struct binder_transaction *t,
->                                    struct binder_thread *thread)
-> @@ -2806,7 +2820,7 @@ static int binder_proc_transaction(struct binder_tr=
-ansaction *t,
->                 t_outdated->buffer =3D NULL;
->                 buffer->transaction =3D NULL;
->                 trace_binder_transaction_update_buffer_release(buffer);
-> -               binder_transaction_buffer_release(proc, NULL, buffer, 0, =
-0);
-> +               binder_release_entire_buffer(proc, NULL, buffer, false);
->                 binder_alloc_free_buf(&proc->alloc, buffer);
->                 kfree(t_outdated);
->                 binder_stats_deleted(BINDER_STAT_TRANSACTION);
-> @@ -3775,7 +3789,7 @@ binder_free_buf(struct binder_proc *proc,
->                 binder_node_inner_unlock(buf_node);
->         }
->         trace_binder_transaction_buffer_release(buffer);
-> -       binder_transaction_buffer_release(proc, thread, buffer, 0, is_fai=
-lure);
-> +       binder_release_entire_buffer(proc, thread, buffer, is_failure);
->         binder_alloc_free_buf(&proc->alloc, buffer);
->  }
->
-> --
-> 2.40.1.521.gf1e218fcd8-goog
->
+For synchronization, 'mac_close()' calls flush_workqueue() to block its
+execution till all pending work is completed. Afterwards 'wilc->close' flag
+which is set before the flush_workqueue() should avoid adding new work.
+Added 'wilc->close' check in wilc_handle_isr() which is common for
+SPI/SDIO bus to ignore the interrupts from firmware that inturns adds the
+work since the interface is getting closed.
+
+Also, removed isr_uh_routine() as it's not necessary after 'wl->close' chec=
+k
+is added in wilc_handle_isr(). So now the default primary handler would be
+used for threaded IRQ.
+
+Cc: stable@vger.kernel.org
+Reported-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/linux-wireless/20221024135407.7udo3dwl3mqyv2y=
+j@0002.3ffe.de/
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+---
+ changes since v1:
+  - updated commit description and included 'Link:' tag
+  - use atomic_t type for 'close' variable
+  - set close state after clearing ongoing scan operation
+  - make use of default primary handler for threaded_irq
+  - avoid false failure debug message during mac_close
+
+ .../wireless/microchip/wilc1000/cfg80211.c    |  2 +-
+ drivers/net/wireless/microchip/wilc1000/hif.c |  2 +-
+ .../net/wireless/microchip/wilc1000/netdev.c  | 33 ++++++-------------
+ .../net/wireless/microchip/wilc1000/netdev.h  |  2 +-
+ .../net/wireless/microchip/wilc1000/wlan.c    |  3 ++
+ 5 files changed, 16 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/n=
+et/wireless/microchip/wilc1000/cfg80211.c
+index b545d93c6e37..a90a75094486 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -461,7 +461,7 @@ static int disconnect(struct wiphy *wiphy, struct net_d=
+evice *dev,
+ 	if (!wilc)
+ 		return -EIO;
+
+-	if (wilc->close) {
++	if (atomic_read(&wilc->close)) {
+ 		/* already disconnected done */
+ 		cfg80211_disconnected(dev, 0, NULL, 0, true, GFP_KERNEL);
+ 		return 0;
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wi=
+reless/microchip/wilc1000/hif.c
+index 5adc69d5bcae..6cac92ba0075 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -983,7 +983,7 @@ static void handle_set_mcast_filter(struct work_struct =
+*work)
+ 		memcpy(cur_byte, set_mc->mc_list, set_mc->cnt * ETH_ALEN);
+
+ 	result =3D wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
+-	if (result)
++	if (result && !atomic_read(&vif->wilc->close))
+ 		netdev_err(vif->ndev, "Failed to send setup multicast\n");
+
+ error:
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net=
+/wireless/microchip/wilc1000/netdev.c
+index e9f59de31b0b..c8f3b15f029b 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -23,26 +23,10 @@
+ #define __WILC1000_FW(api)		WILC1000_FW_PREFIX #api ".bin"
+ #define WILC1000_FW(api)		__WILC1000_FW(api)
+
+-static irqreturn_t isr_uh_routine(int irq, void *user_data)
+-{
+-	struct wilc *wilc =3D user_data;
+-
+-	if (wilc->close) {
+-		pr_err("Can't handle UH interrupt\n");
+-		return IRQ_HANDLED;
+-	}
+-	return IRQ_WAKE_THREAD;
+-}
+-
+ static irqreturn_t isr_bh_routine(int irq, void *userdata)
+ {
+ 	struct wilc *wilc =3D userdata;
+
+-	if (wilc->close) {
+-		pr_err("Can't handle BH interrupt\n");
+-		return IRQ_HANDLED;
+-	}
+-
+ 	wilc_handle_isr(wilc);
+
+ 	return IRQ_HANDLED;
+@@ -54,7 +38,7 @@ static int init_irq(struct net_device *dev)
+ 	struct wilc *wl =3D vif->wilc;
+ 	int ret;
+
+-	ret =3D request_threaded_irq(wl->dev_irq_num, isr_uh_routine,
++	ret =3D request_threaded_irq(wl->dev_irq_num, NULL,
+ 				   isr_bh_routine,
+ 				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+ 				   dev->name, wl);
+@@ -150,7 +134,7 @@ static int wilc_txq_task(void *vp)
+ 	while (1) {
+ 		wait_for_completion(&wl->txq_event);
+
+-		if (wl->close) {
++		if (atomic_read(&wl->close)) {
+ 			complete(&wl->txq_thread_started);
+
+ 			while (!kthread_should_stop())
+@@ -171,7 +155,7 @@ static int wilc_txq_task(void *vp)
+ 				}
+ 				srcu_read_unlock(&wl->srcu, srcu_idx);
+ 			}
+-		} while (ret =3D=3D WILC_VMM_ENTRY_FULL_RETRY && !wl->close);
++		} while (ret =3D=3D WILC_VMM_ENTRY_FULL_RETRY && !atomic_read(&wl->close=
+));
+ 	}
+ 	return 0;
+ }
+@@ -418,7 +402,7 @@ static void wlan_deinitialize_threads(struct net_device=
+ *dev)
+ 	struct wilc_vif *vif =3D netdev_priv(dev);
+ 	struct wilc *wl =3D vif->wilc;
+
+-	wl->close =3D 1;
++	atomic_set(&wl->close, 1);
+
+ 	complete(&wl->txq_event);
+
+@@ -472,7 +456,7 @@ static int wlan_initialize_threads(struct net_device *d=
+ev)
+ 				       "%s-tx", dev->name);
+ 	if (IS_ERR(wilc->txq_thread)) {
+ 		netdev_err(dev, "couldn't create TXQ thread\n");
+-		wilc->close =3D 1;
++		atomic_set(&wilc->close, 1);
+ 		return PTR_ERR(wilc->txq_thread);
+ 	}
+ 	wait_for_completion(&wilc->txq_thread_started);
+@@ -487,7 +471,7 @@ static int wilc_wlan_initialize(struct net_device *dev,=
+ struct wilc_vif *vif)
+
+ 	if (!wl->initialized) {
+ 		wl->mac_status =3D WILC_MAC_STATUS_INIT;
+-		wl->close =3D 0;
++		atomic_set(&wl->close, 0);
+
+ 		ret =3D wilc_wlan_init(dev);
+ 		if (ret)
+@@ -782,12 +766,15 @@ static int wilc_mac_close(struct net_device *ndev)
+ 		netif_stop_queue(vif->ndev);
+
+ 		wilc_handle_disconnect(vif);
++
++		if (wl->open_ifcs =3D=3D 0)
++			atomic_set(&wl->close, 1);
++
+ 		wilc_deinit_host_int(vif->ndev);
+ 	}
+
+ 	if (wl->open_ifcs =3D=3D 0) {
+ 		netdev_dbg(ndev, "Deinitializing wilc1000\n");
+-		wl->close =3D 1;
+ 		wilc_wlan_deinitialize(ndev);
+ 	}
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net=
+/wireless/microchip/wilc1000/netdev.h
+index bb1a315a7b7e..44f7e479604e 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -206,7 +206,7 @@ struct wilc {
+ 	u32 chipid;
+ 	bool power_save_mode;
+ 	int dev_irq_num;
+-	int close;
++	atomic_t close;
+ 	u8 vif_num;
+ 	struct list_head vif_list;
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/w=
+ireless/microchip/wilc1000/wlan.c
+index 58bbf50081e4..3eec2acd2f2f 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1066,6 +1066,9 @@ void wilc_handle_isr(struct wilc *wilc)
+ {
+ 	u32 int_status;
+
++	if (atomic_read(&wilc->close))
++		return;
++
+ 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 	wilc->hif_func->hif_read_int(wilc, &int_status);
+
+--
+2.34.1
