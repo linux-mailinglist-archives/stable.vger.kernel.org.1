@@ -2,173 +2,191 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC95F6F8286
-	for <lists+stable@lfdr.de>; Fri,  5 May 2023 14:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9746F82F5
+	for <lists+stable@lfdr.de>; Fri,  5 May 2023 14:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjEEMEj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 5 May 2023 08:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57744 "EHLO
+        id S231616AbjEEMav (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 5 May 2023 08:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232069AbjEEMEh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 08:04:37 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0C39EDF;
-        Fri,  5 May 2023 05:04:32 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id E468D5C02C1;
-        Fri,  5 May 2023 08:04:28 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 05 May 2023 08:04:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-        cc:cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1683288268; x=1683374668; bh=LAgUMsID5w2avzf9PFHv2O+viyYgaFw1o+N
-        MLyWqG60=; b=H/bh1YSV4eq+4ZpRFAv55gNbJuhPtakE72182LsFotC8j2DgTIu
-        oXRjQ3r1ylDPH9UnBsOZZUYBJmGYmQXCLMb6viGJomasYQWeHOwZ7dDuiEThl3F4
-        CyrqrwejtER3OgqzazlYNnLJhDNIoHOb6Mfqd7GOpfW9CUMA/t43ruOSI/KrvBse
-        pb800EY/VOQmwZufAWJ/nOZoIJtk1yB1d32srLnvHxD+Tu4pp7JYVsL1sMwg9VHl
-        jgmplK0vxqzEjENNnL3IGOgAT4r0JewN+T+3OMNhOPq+Z+TiD9QkcQ2Wws/0LxwM
-        fSi/CQ8wBV7wpYIKsNQsKVmOEn6gs86yfnQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1683288268; x=1683374668; bh=LAgUMsID5w2avzf9PFHv2O+viyYgaFw1o+N
-        MLyWqG60=; b=XylrgE/FzpOkXP/38f7IkiLZCII9CBUuA/C0RjqY0nZtqr0hqGf
-        Er7A6zovX6ZSrGHXF06ocW3kOCRuzgOv/xGTpJulhNQTKVfxt29zjaa/G5iJ0lqt
-        KjSvcMrONnO05OBuI0KS1as3b1P1THDQtH+bFBQ1TSitaRCdy1iLQZuoZ6uZcCsU
-        3fs1C2g2OqupuruP9j2k+QzxXlssNm28Wvpje/URAZ16jYRL1vR/naHswlqJhY+r
-        /hSL662sDvMg09gEMJKGchvUNrJO9Iba3QU4HIxjJK13TJGD+HT2B1hke8LID+l2
-        Qy3IG/BJhm0l+wH8ALOK1YVSFRQvxAiaVBA==
-X-ME-Sender: <xms:zPBUZCenFASlTO_pgLzfRhj3VVhq5d0yCoMby11dH9buDUo_3bu2Nw>
-    <xme:zPBUZMNR4nxREst3JYpTtvPollr2prRiNpAkDIFvIyjALP4EVamT9MY--NhAiiTxY
-    71yZ2NNPKQ4VngPUNI>
-X-ME-Received: <xmr:zPBUZDha9vKFH-z6S4gVhLTI6TvDejELWo4Qgy4zw5DxGonu_EQgHF0zJ_poyXZRFZVX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefvddggeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurheptggguffhjgffvefgkfhfvffosehtqhhmtdhhtdejnecuhfhrohhmpeflihgr
-    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhepkeevieelveeiueekveejgeekfffhffekkeeikeejffdvkedt
-    geevfeejuefggeegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhg
-    sehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:zPBUZP8ldsgMnfy2UvAp7WN6LsBGx5BMLD1pUlozbj2itgMI3nc2uQ>
-    <xmx:zPBUZOsLyeVqlHCu9HoNlDHUwGFWdpRRYEoe3WzyZN4aXOf85u9fdg>
-    <xmx:zPBUZGHR2b64arDeGudEgVNbPolyQvcVusVBFG8xKk7SMuVY2Kvxcg>
-    <xmx:zPBUZPluBgGBZ9t0c67HhrGKaSt-vb7M6DnNQK__cSvc9MmKcGMvCg>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 May 2023 08:04:26 -0400 (EDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.500.231\))
-Subject: Re: [PATCH AUTOSEL 6.3 08/59] bpf, mips: Implement DADDI workarounds
- for JIT
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-In-Reply-To: <20230504194142.3805425-8-sashal@kernel.org>
-Date:   Fri, 5 May 2023 13:04:14 +0100
-Cc:     linux-kernel@vger.kernel.org,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        Johan Almbladh <johan.almbladh@anyfinetworks.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "paulburton@kernel.org" <paulburton@kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        bpf@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <50FCC591-D86A-46A3-AF4A-DD68D2FACC78@flygoat.com>
-References: <20230504194142.3805425-1-sashal@kernel.org>
- <20230504194142.3805425-8-sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-X-Mailer: Apple Mail (2.3731.500.231)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231995AbjEEMau (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 5 May 2023 08:30:50 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749E61A614;
+        Fri,  5 May 2023 05:30:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1683289849; x=1714825849;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XweA9V5HDK7utS7/TPunyp7LYfGFUrdjDqzcDo9MXNU=;
+  b=fXMERubuWER2rQhyEN+ty1aACtUoyeBzVq0Ef/t0H5DvnZk5x3iUyJFO
+   8ADq6bSnfRpkgW1WllwEcLDVH9C4fgSkGjAHPlz3NyU91ffI1UWCa6Vai
+   e14QzOH+ABE9yH75Pek9WCqlpDeh4obimsfhCxGAjVn52EQWdzCgH23yu
+   Fc+928q+t7zeKh6v/E9qGg9b3VSXJ8jNomj4Rziy6nEG1oIpabipIk3dt
+   kio0iVMTRFilLG1tT7Ao+jvsy9a/J6dymu3IQYLSExNs3+P9RAPjbm0a3
+   N52/FOl8HP+ua6WlqP0EH93dsToENd6fAvyOIRR3MVZVkayDF/gMdlDbt
+   g==;
+X-IronPort-AV: E=Sophos;i="5.99,252,1677567600"; 
+   d="asc'?scan'208";a="150539472"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 05 May 2023 05:30:47 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 5 May 2023 05:30:38 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Fri, 5 May 2023 05:30:34 -0700
+Date:   Fri, 5 May 2023 13:30:15 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Ricardo Ribalda <ribalda@chromium.org>
+CC:     Conor Dooley <conor@kernel.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Philipp Rudo <prudo@linux.vnet.ibm.com>,
+        Dave Young <dyoung@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        Philipp Rudo <prudo@redhat.com>, <kexec@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Ross Zwisler <zwisler@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Simon Horman <horms@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        <llvm@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-riscv@lists.infradead.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v6 4/4] risc/purgatory: Add linker script
+Message-ID: <20230505-subsidy-shininess-46a8be31b267@wendy>
+References: <20230321-kexec_clang16-v6-0-a2255e81ab45@chromium.org>
+ <20230321-kexec_clang16-v6-4-a2255e81ab45@chromium.org>
+ <20230501-cottage-overjoyed-1aeb9d72d309@spud>
+ <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HCjo7mmLcFsfwCMI"
+Content-Disposition: inline
+In-Reply-To: <CANiDSCufbm80g4AqukpiuER17OXhD-yRNmTZRz7s_x-Xi9BDCw@mail.gmail.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+--HCjo7mmLcFsfwCMI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-
-> 2023=E5=B9=B45=E6=9C=884=E6=97=A5 20:40=EF=BC=8CSasha Levin =
-<sashal@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+On Mon, May 01, 2023 at 09:54:43PM +0200, Ricardo Ribalda wrote:
+> On Mon, 1 May 2023 at 19:41, Conor Dooley <conor@kernel.org> wrote:
+> > On Mon, May 01, 2023 at 02:38:22PM +0200, Ricardo Ribalda wrote:
+> > > If PGO is enabled, the purgatory ends up with multiple .text sections.
+> > > This is not supported by kexec and crashes the system.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_pura=
+gory")
+> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > ---
+> > >  arch/riscv/purgatory/Makefile | 5 +++++
+> > >  1 file changed, 5 insertions(+)
+> > >
+> > > diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Mak=
+efile
+> > > index 5730797a6b40..cf3a44121a90 100644
+> > > --- a/arch/riscv/purgatory/Makefile
+> > > +++ b/arch/riscv/purgatory/Makefile
+> > > @@ -35,6 +35,11 @@ CFLAGS_sha256.o :=3D -D__DISABLE_EXPORTS
+> > >  CFLAGS_string.o :=3D -D__DISABLE_EXPORTS
+> > >  CFLAGS_ctype.o :=3D -D__DISABLE_EXPORTS
+> > >
+> > > +# When profile optimization is enabled, llvm emits two different ove=
+rlapping
+> > > +# text sections, which is not supported by kexec. Remove profile opt=
+imization
+> > > +# flags.
+> > > +KBUILD_CFLAGS :=3D $(filter-out -fprofile-sample-use=3D% -fprofile-u=
+se=3D%,$(KBUILD_CFLAGS))
+> >
+> > With the caveat of not being au fait with the workings of either PGO or
+> > of purgatory, how come you modify KBUILD_CFLAGS here rather than the
+> > purgatory specific PURGATORY_CFLAGS that are used later in the file?
 >=20
-> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> Definitely, not a Makefile expert here, but when I tried this:
 >=20
-> [ Upstream commit bbefef2f07080cd502a93cb1c529e1c8a6c4ac8e ]
+> @@ -35,6 +40,7 @@ PURGATORY_CFLAGS_REMOVE :=3D -mcmodel=3Dkernel
+>  PURGATORY_CFLAGS :=3D -mcmodel=3Dlarge -ffreestanding
+> -fno-zero-initialized-in-bss -g0
+>  PURGATORY_CFLAGS +=3D $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFI=
+LING
+>  PURGATORY_CFLAGS +=3D -fno-stack-protector
+> +PURGATORY_CFLAGS :=3D $(filter-out -fprofile-sample-use=3D%
+> -fprofile-use=3D%,$(KBUILD_CFLAGS))
 >=20
-> For DADDI errata we just workaround by disable immediate operation
-> for BPF_ADD / BPF_SUB to avoid generation of DADDIU.
+> It did not work.
+
+Unfortunately I am oh-so-far from an expert on this kind of thing, but I
+had thought that PURGATORY_CFLAGS_REMOVE was intended for this sort of
+purpose.
+
+> Fixes: bde971a83bbf ("KVM: arm64: nvhe: Fix build with profile optimizati=
+on")
 >=20
-> All other use cases in JIT won't cause overflow thus they are all =
-safe.
+> does this approach, so this is what I tried and worked.
+
+That doesn't have a specific CFLAGS though afaict.
+Perhaps Nick etc have a more informed opinion here than I do, sorry.
+
+Thanks,
+Conor.
+
+> > > +
+> > >  # When linking purgatory.ro with -r unresolved symbols are not check=
+ed,
+> > >  # also link a purgatory.chk binary without -r to check for unresolve=
+d symbols.
+> > >  PURGATORY_LDFLAGS :=3D -e purgatory_start -z nodefaultlib
+> > >
+> > > --
+> > > 2.40.1.495.gc816e09b53d-goog
+> > >
+> > >
+> > > _______________________________________________
+> > > linux-riscv mailing list
+> > > linux-riscv@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/linux-riscv
 >=20
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Acked-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
-> Link: =
-https://lore.kernel.org/bpf/20230228113305.83751-2-jiaxun.yang@flygoat.com=
-
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-
-Hi Sasha,
-
-I think this patch should count as a functional improvement instead of =
-regression fix.
-
-Please drop it from stable queue.
-
-Thanks
-Jiaxun
-
-> ---
-> arch/mips/Kconfig            | 1 -
-> arch/mips/net/bpf_jit_comp.c | 4 ++++
-> 2 files changed, 4 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index e2f3ca73f40d6..edc7d8790f1e8 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -64,7 +64,6 @@ config MIPS
-> select HAVE_DMA_CONTIGUOUS
-> select HAVE_DYNAMIC_FTRACE
-> select HAVE_EBPF_JIT if !CPU_MICROMIPS && \
-> - !CPU_DADDI_WORKAROUNDS && \
-> !CPU_R4000_WORKAROUNDS && \
-> !CPU_R4400_WORKAROUNDS
-> select HAVE_EXIT_THREAD
-> diff --git a/arch/mips/net/bpf_jit_comp.c =
-b/arch/mips/net/bpf_jit_comp.c
-> index b17130d510d49..a40d926b65139 100644
-> --- a/arch/mips/net/bpf_jit_comp.c
-> +++ b/arch/mips/net/bpf_jit_comp.c
-> @@ -218,9 +218,13 @@ bool valid_alu_i(u8 op, s32 imm)
-> /* All legal eBPF values are valid */
-> return true;
-> case BPF_ADD:
-> + if (IS_ENABLED(CONFIG_CPU_DADDI_WORKAROUNDS))
-> + return false;
-> /* imm must be 16 bits */
-> return imm >=3D -0x8000 && imm <=3D 0x7fff;
-> case BPF_SUB:
-> + if (IS_ENABLED(CONFIG_CPU_DADDI_WORKAROUNDS))
-> + return false;
-> /* -imm must be 16 bits */
-> return imm >=3D -0x7fff && imm <=3D 0x8000;
-> case BPF_AND:
+>=20
 > --=20
-> 2.39.2
->=20
+> Ricardo Ribalda
 
+--HCjo7mmLcFsfwCMI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFT21wAKCRB4tDGHoIJi
+0vY1AP9RxvKzAScY63Nnz9Vp/3U8917fwYnV71pbtJgtzZt3WAEA8S2SNODAX7Qy
+Vn7vxaBudJDiNoZ4dz80u4gzoYd3SwE=
+=X4se
+-----END PGP SIGNATURE-----
+
+--HCjo7mmLcFsfwCMI--
