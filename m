@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BAA6F8F97
+	by mail.lfdr.de (Postfix) with ESMTP id AD8736F8F98
 	for <lists+stable@lfdr.de>; Sat,  6 May 2023 09:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjEFHAw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 03:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55086 "EHLO
+        id S229602AbjEFHAx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 03:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjEFHAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:00:20 -0400
+        with ESMTP id S230136AbjEFHAa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:00:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273662727
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:00:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3651AD19
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:00:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B84A6611D1
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:00:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE1DC433D2;
-        Sat,  6 May 2023 07:00:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4153B60D41
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:00:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFEDC433D2;
+        Sat,  6 May 2023 07:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683356418;
-        bh=YIOdzjc4CuI0NqoNM4h/+uS0EV86IqfKu3aJ8cQ0+BQ=;
+        s=korg; t=1683356427;
+        bh=Egbs49K8+Yu9nxJXO4zxR4vs/e/vEE5KZt42iNmrxSI=;
         h=Subject:To:Cc:From:Date:From;
-        b=FvQP6S2owS/bKUZxehzOd/lQdV1bi4NxSA3v27OxAg3CtRfWIjW6ya+6PTzfufaAN
-         H08kWDQrD3R4FqDzfc0FzcY46Jrvmrhzn62aSxAztzlKldt3ZebXouESIfHBZ2Ud33
-         TC/3OXM/wFUSYL//oTZ6hJPdtDj6ocnYmlQFYk9U=
-Subject: FAILED: patch "[PATCH] RISC-V: Align SBI probe implementation with spec" failed to apply to 5.15-stable tree
+        b=nLgvLez78qdWjkq/wjfuf2NzCrufRS5RL0eLkUbt0dlKLacW87Kdko3AXGlgZKtWy
+         msqVxmjbWwLlciYsgnmZN5WT39rNWHCnVXa/vsrI04nLJ8/1NGa1GHnLmmd+ictJT6
+         ES8kZGONN7i0CawXrvhu4/+z6Vyd0YKoDx3QQ+CE=
+Subject: FAILED: patch "[PATCH] RISC-V: Align SBI probe implementation with spec" failed to apply to 5.10-stable tree
 To:     ajones@ventanamicro.com, conor.dooley@microchip.com,
         palmer@rivosinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 15:40:16 +0900
-Message-ID: <2023050616-unhelpful-gyration-9898@gregkh>
+Date:   Sat, 06 May 2023 15:40:20 +0900
+Message-ID: <2023050620-mosaic-abstain-7b11@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 41cad8284d5e6bf1d49d3c10a6b52ee1ae866a20
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050616-unhelpful-gyration-9898@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050620-mosaic-abstain-7b11@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
