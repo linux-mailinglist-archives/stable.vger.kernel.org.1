@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 442636F8F58
+	by mail.lfdr.de (Postfix) with ESMTP id 905EA6F8F59
 	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbjEFGla (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:41:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
+        id S230210AbjEFGlc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 02:41:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230330AbjEFGlU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:41:20 -0400
+        with ESMTP id S230359AbjEFGl2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:41:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F1E900B
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:41:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDB56900B
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:41:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B49E061779
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:41:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133E8C433D2;
-        Sat,  6 May 2023 06:41:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6391B61771
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:41:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFBFC433EF;
+        Sat,  6 May 2023 06:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683355278;
-        bh=c344TkFOAWoswMF7LizLxnzaY2NoMOSbLUdIgsZvYeU=;
+        s=korg; t=1683355286;
+        bh=Ky1bLr21oyXVPEEkLeqZag4/vK+whXZ0EemVc1IojVU=;
         h=Subject:To:Cc:From:Date:From;
-        b=DDjmRtrZra/qgwBH9iJwo53URDELpa8y2Ox4m67V0H9fA5jR6OqSOb4lHNS61Yin5
-         5kQl+omcTDFFdyuohMFsGsAc/6lBpBa0T5dklEOTt6D2ZD3Nv1jIj2twlSl/FgoMJn
-         oZmOy23c0FAbXByJr++nHUnqB0UCXE8nYGFG57hs=
-Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are" failed to apply to 6.1-stable tree
+        b=LaoovA8NFR064c7f6nwv2/aWYbZNmGy/AeCZQaZKZxP6tdJPqckSmLG4dKPBpTBCh
+         oj7mO5CqxopWZGIaqZYtLZuzpet4FHKZXIB4nJqRRCQyOdXWNJEyXjir0aYZ0M04dt
+         6rPLnCQIKvNApLGZ0PnYBoZ8df6oEBzdfpobzzTg=
+Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are" failed to apply to 5.15-stable tree
 To:     seanjc@google.com, like.xu.linux@gmail.com, likexu@tencent.com,
         pbonzini@redhat.com, weijiang.yang@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:30:48 +0900
-Message-ID: <2023050648-citable-spill-5eac@gregkh>
+Date:   Sat, 06 May 2023 11:30:49 +0900
+Message-ID: <2023050648-unboxed-monorail-1a65@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 098f4c061ea10b777033b71c10bd9fd706820ee9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050648-citable-spill-5eac@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050648-unboxed-monorail-1a65@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
