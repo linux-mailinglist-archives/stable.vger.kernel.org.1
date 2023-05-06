@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 469DB6F8EF7
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3966F8EFA
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230461AbjEFF6S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33752 "EHLO
+        id S231135AbjEFF6q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230517AbjEFF6S (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sat, 6 May 2023 01:58:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1767EF9
-        for <Stable@vger.kernel.org>; Fri,  5 May 2023 22:58:17 -0700 (PDT)
+        with ESMTP id S230517AbjEFF6o (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sat, 6 May 2023 01:58:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250E259F1
+        for <Stable@vger.kernel.org>; Fri,  5 May 2023 22:58:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DB6F61278
-        for <Stable@vger.kernel.org>; Sat,  6 May 2023 05:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB581C4339B;
-        Sat,  6 May 2023 05:58:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADC49616BD
+        for <Stable@vger.kernel.org>; Sat,  6 May 2023 05:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2279CC433D2;
+        Sat,  6 May 2023 05:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352696;
-        bh=OXe+1cIA1rIVKizwwEcOfi4d9qY6ufMMzApxNSi88OY=;
+        s=korg; t=1683352723;
+        bh=yCHyv1arZA3Tl0zeY6d/mj+xvwa8uj1ryJ5ofdTg8rY=;
         h=Subject:To:Cc:From:Date:From;
-        b=yqzwf2S0ZEB2f+W+kTUjr1ZgjLO6uHJYZLyM5XYuItAIgRTLaWsciVbv7Bdw6TPoA
-         G9Pj2im6w9KDuzb62BJdQYUTEWfWNW4i6KuP2pV1qG7oVJLGnKYNUDVUp9PeiNDZhA
-         uf8oWfOgSXMuDxBwRP/I42bfu3rWcvtuuIYGyA6U=
-Subject: FAILED: patch "[PATCH] iio: addac: stx104: Fix race condition when converting" failed to apply to 5.4-stable tree
+        b=Stck6BbuTDEZrcT7JgvvGTBVeSCSlKiLiZB94Irk8dvFiRSo5Xsjue3zjiuZXobWn
+         TbrGzZMm2rUTtjewEdT+4f1mJrsVfUljX+vJnVDPhCQC7TeeoGD2teR6YSWQ5Zx/bl
+         IF85Fr+23nGrHWX3NijjaN+1Sh/mPs4s7YUkJLsE=
+Subject: FAILED: patch "[PATCH] iio: addac: stx104: Fix race condition when converting" failed to apply to 4.19-stable tree
 To:     william.gray@linaro.org, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:14:48 +0900
-Message-ID: <2023050648-equation-lens-ec03@gregkh>
+Date:   Sat, 06 May 2023 11:14:49 +0900
+Message-ID: <2023050649-shrivel-rotting-7bf6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4f9b80aefb9e2f542a49d9ec087cf5919730e1dd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050648-equation-lens-ec03@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050649-shrivel-rotting-7bf6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
