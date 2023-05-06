@@ -2,143 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F116F8F11
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03256F8F92
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 09:00:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjEFG3Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:29:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40414 "EHLO
+        id S229472AbjEFHAP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 03:00:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbjEFG3X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:29:23 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D92D8A7D
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:29:22 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-51452556acdso1657920a12.2
-        for <stable@vger.kernel.org>; Fri, 05 May 2023 23:29:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1683354562; x=1685946562;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/WfFr/Ybkjxxlz0qBx9KvOEXPiQmOGJ7KxenW4nxces=;
-        b=mJupPz2tREQg3C+oWOIO/cyA+UB+QKYHbfZMxmj+IvofFe8Naoe0Y0D2XyVzoD76Rk
-         /sKYPW0WK5m1g+WZoUMgDy8WhIHQh3LUkvRmIFr1SMupXKf+dC7s2hMwy4JE/UHsSGbU
-         h1nW3O3Rcvb5h+gAmVfJMWnZQkNuv5GtZx6sg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683354562; x=1685946562;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/WfFr/Ybkjxxlz0qBx9KvOEXPiQmOGJ7KxenW4nxces=;
-        b=FanSpqBvnfAtBn89uv1KawYE8EUr3AYrZZ5c7KsuLRn2HJW5R2eHncUuuF0paCH4wW
-         pzHTs2KMmuWd1vBXx+Ai7E4EgyQZKgKfwqqDLbv4I69jKnAhRMfnVxbSCJGmPy6jbWOA
-         PEdSgmT6cv2omlNXXo0Y4lkXzBYm26P/Ah0QLi1UNqSFnWCsR0L61izKLcFtJGgclweO
-         kwThhRDXdE14erxy2DUoDamKvqhNkLu0nFTa6O10v1cs8twnslm2COZmR5bUFFgFRwd3
-         D1h0N1VLaUG3+OvgmL4fFnT2s9HD8ns2MDBSDrSCvHCz2ShocYq9oRZI2Lqcqtsl4rNz
-         VmBw==
-X-Gm-Message-State: AC+VfDxFIIdR0JN0U5AUclkRUntf48FBX3oaA7saq6tDn5DU+g+z41gU
-        PrCp78ttMzB5VO3M7AsrowJmvw==
-X-Google-Smtp-Source: ACHHUZ7OAUraDBnWZXSPqOYiIq8qtM/wfnvjpq6zwOo0KtFQaZ+pcntbtfauYsJHK69Wtp4Otp15eA==
-X-Received: by 2002:a17:903:120d:b0:1a5:2993:8aa6 with SMTP id l13-20020a170903120d00b001a529938aa6mr4399812plh.63.1683354561829;
-        Fri, 05 May 2023 23:29:21 -0700 (PDT)
-Received: from sarthakkukreti-glaptop.hsd1.ca.comcast.net ([2601:647:4200:b5b0:f19c:a713:5517:ed4])
-        by smtp.gmail.com with ESMTPSA id q16-20020a170902dad000b001ac381f1ce9sm2793598plx.185.2023.05.05.23.29.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 23:29:21 -0700 (PDT)
-From:   Sarthak Kukreti <sarthakkukreti@chromium.org>
-To:     dm-devel@redhat.com, linux-block@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Brian Foster <bfoster@redhat.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Bart Van Assche <bvanassche@google.com>,
-        "Darrick J. Wong" <djwong@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v6 1/5] block: Don't invalidate pagecache for invalid falloc modes
-Date:   Fri,  5 May 2023 23:29:05 -0700
-Message-ID: <20230506062909.74601-2-sarthakkukreti@chromium.org>
-X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
-In-Reply-To: <20230506062909.74601-1-sarthakkukreti@chromium.org>
-References: <20230420004850.297045-1-sarthakkukreti@chromium.org>
- <20230506062909.74601-1-sarthakkukreti@chromium.org>
+        with ESMTP id S229900AbjEFHAL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:00:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A29C42727
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:00:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EEDD60E55
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:00:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1765C433EF;
+        Sat,  6 May 2023 07:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683356409;
+        bh=e2CGOc4sJ82kj3BX3TC75L5w3SAlTbiwFSZgnXIP5oU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Q5HzGoFPPZlzhiE7OzbY5rx/h6iUS37n26nWP8ub386N9zp/ibLcaj4ZMvpUocx9y
+         Yqp3NVqxf6J+1v1Blw8lb4LLoT6YZKrNiNFkNxgZlfE8/uWKYG1W6vhQdHT4cno2bE
+         6VHtZWL5Ex0e8qo0vsOWBoEdXOvFqtoJYniyZgHs=
+Date:   Sat, 6 May 2023 15:38:45 +0900
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "Gong, Richard" <Richard.Gong@amd.com>
+Subject: Re: S3 support on some GFX11 products
+Message-ID: <2023050638-evaporate-limeade-7bcf@gregkh>
+References: <MN0PR12MB610106E9988CC7FF8F0A95C5E2729@MN0PR12MB6101.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN0PR12MB610106E9988CC7FF8F0A95C5E2729@MN0PR12MB6101.namprd12.prod.outlook.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Only call truncate_bdev_range() if the fallocate mode is
-supported. This fixes a bug where data in the pagecache
-could be invalidated if the fallocate() was called on the
-block device with an invalid mode.
+On Fri, May 05, 2023 at 10:17:06PM +0000, Limonciello, Mario wrote:
+> [AMD Official Use Only - General]
+> 
+> Hi,
+> 
+> Some GFX11 based products will have S3 support as an option, but to support this some of the suspend flow had to be adjusted in kernel 6.4 for it to work properly.
+> 
+> For 6.2.y/6.3.y the following commit is needed:
+> f7f28f268b86 ("drm/amd/pm: re-enable the gfx imu when smu resume")
+> 
+> For 6.1.y the following two commits are needed:
+> 484d7dcc709d ("swsmu/amdgpu_smu: Fix the wrong if-condition")
+> f7f28f268b86 ("drm/amd/pm: re-enable the gfx imu when smu resume")
+> 
+> Can you please backport them?
 
-Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
-Cc: stable@vger.kernel.org
-Reported-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
----
- block/fops.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+Now queued up, thanks!
 
-diff --git a/block/fops.c b/block/fops.c
-index d2e6be4e3d1c..4c70fdc546e7 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -648,24 +648,35 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
- 
- 	filemap_invalidate_lock(inode->i_mapping);
- 
--	/* Invalidate the page cache, including dirty pages. */
--	error = truncate_bdev_range(bdev, file->f_mode, start, end);
--	if (error)
--		goto fail;
--
-+	/*
-+	 * Invalidate the page cache, including dirty pages, for valid
-+	 * de-allocate mode calls to fallocate().
-+	 */
- 	switch (mode) {
- 	case FALLOC_FL_ZERO_RANGE:
- 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL,
- 					     BLKDEV_ZERO_NOUNMAP);
- 		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL,
- 					     BLKDEV_ZERO_NOFALLBACK);
- 		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL);
- 		break;
--- 
-2.40.1.521.gf1e218fcd8-goog
-
+greg k-h
