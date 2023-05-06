@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA556F8ED7
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 109B16F8ED8
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230196AbjEFFyd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:54:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59640 "EHLO
+        id S230213AbjEFFyn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbjEFFyd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:54:33 -0400
+        with ESMTP id S230135AbjEFFym (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:54:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CB849EC
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:54:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4388849EC
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:54:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DCC8615FE
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:54:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF12C433D2;
-        Sat,  6 May 2023 05:54:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D21F26150F
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2965C433D2;
+        Sat,  6 May 2023 05:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352471;
-        bh=HyKDhA8vOXc84AFx1WFcdKXWZmqQwcwSQcc7OPOBw/0=;
+        s=korg; t=1683352480;
+        bh=CXmU834MRU2uJzK2qxQWrsbu+xIEkoeTlRs4lFkZPsc=;
         h=Subject:To:Cc:From:Date:From;
-        b=lIqyuUrFOoHehEqHqPYeQCmnFpe0yshLRRpIkHbjG7tEx6eDmexAS0ToqrK9S1dku
-         Qzi33j5g8UxK7Xqu/Ev+C9MGdlTshGc5Q1toj3gt59GQI4wWwJIROFoCvaimeVRFNp
-         DZ6yRmWKFqFX4dgePKbj4jycVoALnqgMyKASp9j4=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Execute gadget stop after halting the" failed to apply to 6.1-stable tree
-To:     quic_wcheng@quicinc.com, Thinh.Nguyen@synopsys.com,
-        gregkh@linuxfoundation.org
+        b=dPYKSZWXW0VGOnre1OcVMl4OyUxRVxoRZQk9pcjf4GQalFeSQyt8IUJa0MrajKHkh
+         zd2qTUG/4OV+5n5BDe3uBQ4Qdtd7fa0NWQGuIZt7fTnbiHKi4G+9o7Chm5XuMn+Dl1
+         PEVN+90uAKarIWkS8snq0ia1B3RJUOlK+89Iwz2w=
+Subject: FAILED: patch "[PATCH] hwmon: (k10temp) Check range scale when CUR_TEMP register is" failed to apply to 5.4-stable tree
+To:     Babu.Moger@amd.com, babu.moger@amd.com, linux@roeck-us.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 10:59:36 +0900
-Message-ID: <2023050635-groove-collage-f6db@gregkh>
+Date:   Sat, 06 May 2023 11:00:06 +0900
+Message-ID: <2023050606-coil-speech-7d6d@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -49,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 39674be56fba1cd3a03bf4617f523a35f85fd2c1
+git cherry-pick -x 0c072385348e3ac5229145644055d3e2afb5b3db
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050635-groove-collage-f6db@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050606-coil-speech-7d6d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,55 +72,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 39674be56fba1cd3a03bf4617f523a35f85fd2c1 Mon Sep 17 00:00:00 2001
-From: Wesley Cheng <quic_wcheng@quicinc.com>
-Date: Thu, 20 Apr 2023 14:27:58 -0700
-Subject: [PATCH] usb: dwc3: gadget: Execute gadget stop after halting the
- controller
+From 0c072385348e3ac5229145644055d3e2afb5b3db Mon Sep 17 00:00:00 2001
+From: Babu Moger <Babu.Moger@amd.com>
+Date: Thu, 13 Apr 2023 16:39:58 -0500
+Subject: [PATCH] hwmon: (k10temp) Check range scale when CUR_TEMP register is
+ read-write
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Do not call gadget stop until the poll for controller halt is
-completed.  DEVTEN is cleared as part of gadget stop, so the intention to
-allow ep0 events to continue while waiting for controller halt is not
-happening.
+Spec says, when CUR_TEMP_TJ_SEL == 3 and CUR_TEMP_RANGE_SEL == 0,
+it should use RangeUnadjusted is 0, which is (CurTmp*0.125 -49) C. The
+CUR_TEMP register is read-write when CUR_TEMP_TJ_SEL == 3 (bit 17-16).
 
-Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Add the check to detect it.
+
+Sensors command's output before the patch.
+$sensors
+ k10temp-pci-00c3
+ Adapter: PCI adapter
+ Tctl:         +76.6°C <- Wrong value
+ Tccd1:        +26.5°C
+ Tccd2:        +27.5°C
+ Tccd3:        +27.2°C
+ Tccd4:        +27.5°C
+ Tccd5:        +26.0°C
+ Tccd6:        +26.2°C
+ Tccd7:        +25.0°C
+ Tccd8:        +26.5°C
+
+Sensors command's output after the patch.
+$sensors
+ k10temp-pci-00c3
+ Adapter: PCI adapter
+ Tctl:         +28.8°C <- corrected value
+ Tccd1:        +27.5°C
+ Tccd2:        +28.5°C
+ Tccd3:        +28.5°C
+ Tccd4:        +28.5°C
+ Tccd5:        +27.0°C
+ Tccd6:        +27.5°C
+ Tccd7:        +27.0°C
+ Tccd8:        +27.5°C
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Fixes: 1b59788979ac ("hwmon: (k10temp) Add temperature offset for Ryzen 2700X")
+Link: https://lore.kernel.org/r/20230413213958.847634-1-babu.moger@amd.com
 Cc: stable@vger.kernel.org
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20230420212759.29429-2-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 9f492c8a7d0b..dd6057bad37e 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2637,7 +2637,6 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 	 * bit.
- 	 */
- 	dwc3_stop_active_transfers(dwc);
--	__dwc3_gadget_stop(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index 5a9d47a229e4..be8bbb1c3a02 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -75,6 +75,7 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
  
- 	/*
-@@ -2674,7 +2673,19 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 	 * remaining event generated by the controller while polling for
- 	 * DSTS.DEVCTLHLT.
- 	 */
--	return dwc3_gadget_run_stop(dwc, false);
-+	ret = dwc3_gadget_run_stop(dwc, false);
-+
-+	/*
-+	 * Stop the gadget after controller is halted, so that if needed, the
-+	 * events to update EP0 state can still occur while the run/stop
-+	 * routine polls for the halted state.  DEVTEN is cleared as part of
-+	 * gadget stop.
-+	 */
-+	spin_lock_irqsave(&dwc->lock, flags);
-+	__dwc3_gadget_stop(dwc);
-+	spin_unlock_irqrestore(&dwc->lock, flags);
-+
-+	return ret;
+ #define ZEN_CUR_TEMP_SHIFT			21
+ #define ZEN_CUR_TEMP_RANGE_SEL_MASK		BIT(19)
++#define ZEN_CUR_TEMP_TJ_SEL_MASK		GENMASK(17, 16)
+ 
+ struct k10temp_data {
+ 	struct pci_dev *pdev;
+@@ -155,7 +156,8 @@ static long get_raw_temp(struct k10temp_data *data)
+ 
+ 	data->read_tempreg(data->pdev, &regval);
+ 	temp = (regval >> ZEN_CUR_TEMP_SHIFT) * 125;
+-	if (regval & data->temp_adjust_mask)
++	if ((regval & data->temp_adjust_mask) ||
++	    (regval & ZEN_CUR_TEMP_TJ_SEL_MASK) == ZEN_CUR_TEMP_TJ_SEL_MASK)
+ 		temp -= 49000;
+ 	return temp;
  }
- 
- static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 
