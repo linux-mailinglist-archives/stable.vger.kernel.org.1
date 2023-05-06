@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 798876F8F4F
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0FB6F8F50
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjEFGk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
+        id S229530AbjEFGk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 02:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjEFGkN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:40:13 -0400
+        with ESMTP id S230127AbjEFGkX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:40:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D47B93F8
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:40:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71118900B
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:40:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 330B861768
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899F1C433D2;
-        Sat,  6 May 2023 06:40:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 05D1C6176E
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEB9C433EF;
+        Sat,  6 May 2023 06:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683355211;
-        bh=nh7zBgUBFixX1lkbkBiFEYtPk3r4MXsS5VkHxsqaOPM=;
+        s=korg; t=1683355221;
+        bh=fpT/q/v/0PHGKNkYQP/4Ip23d8WSuCnFv8fvppTnqOI=;
         h=Subject:To:Cc:From:Date:From;
-        b=MUoNAZi3NShR+YPnuZhkTfiT5rwGCqTC2+ycknIO4kVg59fhyWR5QrmXo12IireOy
-         jl8zgd8HigVAm8GffUO1mPJoV5FF6gthgXwX3se9wzxmmVhRv79jH7n2mi1/lX/w6E
-         Yh3k1yciAipYAjBfOqcYGJKpKp+QDvKbCtn/ALLk=
-Subject: FAILED: patch "[PATCH] crypto: ccp - Clear PSP interrupt status register before" failed to apply to 6.3-stable tree
+        b=NgT3E+S9njmJtZQa+7aejV68iwFuhdBS18vQkVbPVQdjNlm5XSkbbTR6/WNvnM6vr
+         OyBD7FIYM9Q8LspPiqRQn8lP1eHMkMyiqXabpYL8VcbTBYe8Rxm4VZss5C/8an7LxC
+         hLVWt4J3mrOTmysxwNbWUTJ8OFU/kJixNmB03vEo=
+Subject: FAILED: patch "[PATCH] crypto: ccp - Clear PSP interrupt status register before" failed to apply to 6.2-stable tree
 To:     jpiotrowski@linux.microsoft.com, herbert@gondor.apana.org.au,
         thomas.lendacky@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:28:34 +0900
-Message-ID: <2023050634-comply-subject-e772@gregkh>
+Date:   Sat, 06 May 2023 11:28:35 +0900
+Message-ID: <2023050635-iodize-stubborn-98c3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
 git cherry-pick -x 45121ad4a1750ca47ce3f32bd434bdb0cdbf0043
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050634-comply-subject-e772@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050635-iodize-stubborn-98c3@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
