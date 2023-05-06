@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ACB96F8EDA
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E666F8EDB
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjEFFzB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:55:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59790 "EHLO
+        id S230135AbjEFFzL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbjEFFzA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:55:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D9D49EC
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:54:58 -0700 (PDT)
+        with ESMTP id S230221AbjEFFzJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:55:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B46449EC
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:55:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8028C61602
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:54:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361B7C433D2;
-        Sat,  6 May 2023 05:54:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D217D6150F
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C37C433EF;
+        Sat,  6 May 2023 05:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352497;
-        bh=8MbB4VpdfXdOFUfnObRYetGe4edrUCD0nIpsnWeiKaI=;
+        s=korg; t=1683352507;
+        bh=HHeU2C7NrTfLip5ROrz6+I710bvsRr6jnOZlTnSvT4Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=D9NOGkRkXR/OyF30U3j23lK/DGI6HZGknr0JofCEcuO/HtkWcLcHUuB5dO4rDZ7g5
-         akRcwNncqevrwQyP9Z7wcFDtCrIdvEOsEZ6aBAHhFqEJLkuCTM3fzA58gDCx1iHWPH
-         gnAQyFZajyJOLvQ5jmGB7kchS0gvmMfw+bE9Xomw=
-Subject: FAILED: patch "[PATCH] posix-cpu-timers: Implement the missing timer_wait_running" failed to apply to 5.4-stable tree
-To:     tglx@linutronix.de, bigeasy@linutronix.de, elver@google.com,
-        frederic@kernel.org
+        b=TQiZBiY+Mwhvfvqxw+YJKS3c6ltOeXPyJQGtrye83eLcQAbqRRB+XZZUfnrgls08t
+         DnXlU6z7RnN7UNRzhIvpM3eBkxDJORVERPzVtGqmvfuPeS/2or4yGjArHFr8eypBXp
+         zdBVePxrZN+klLIv/Vik0Nl5JgTI/DDW/tuW4qC4=
+Subject: FAILED: patch "[PATCH] drm/vmwgfx: Fix Legacy Display Unit atomic drm support" failed to apply to 6.1-stable tree
+To:     krastevm@vmware.com, mombasawalam@vmware.com,
+        stable@vger.kernel.org, zackr@vmware.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:01:11 +0900
-Message-ID: <2023050611-hesitancy-badge-8f0d@gregkh>
+Date:   Sat, 06 May 2023 11:02:19 +0900
+Message-ID: <2023050619-thee-happening-ee1e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f7abf14f0001a5a47539d9f60bbdca649e43536b
+git cherry-pick -x a37a512db3fa1b65fe9087003e5b2072cefb3667
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050611-hesitancy-badge-8f0d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050619-thee-happening-ee1e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,269 +73,208 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f7abf14f0001a5a47539d9f60bbdca649e43536b Mon Sep 17 00:00:00 2001
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Mon, 17 Apr 2023 15:37:55 +0200
-Subject: [PATCH] posix-cpu-timers: Implement the missing timer_wait_running
- callback
+From a37a512db3fa1b65fe9087003e5b2072cefb3667 Mon Sep 17 00:00:00 2001
+From: Martin Krastev <krastevm@vmware.com>
+Date: Mon, 20 Mar 2023 22:09:49 -0400
+Subject: [PATCH] drm/vmwgfx: Fix Legacy Display Unit atomic drm support
 
-For some unknown reason the introduction of the timer_wait_running callback
-missed to fixup posix CPU timers, which went unnoticed for almost four years.
-Marco reported recently that the WARN_ON() in timer_wait_running()
-triggers with a posix CPU timer test case.
+Legacy Display Unit (LDU) fb dirty support used a custom fb dirty callback. Latter
+handled only the DIRTYFB IOCTL presentation path but not the ADDFB2/PAGE_FLIP/RMFB
+IOCTL path, common for Wayland compositors.
 
-Posix CPU timers have two execution models for expiring timers depending on
-CONFIG_POSIX_CPU_TIMERS_TASK_WORK:
+Get rid of the custom callback in favor of drm_atomic_helper_dirtyfb and unify the
+handling of the presentation paths inside of vmw_ldu_primary_plane_atomic_update.
+This also homogenizes the fb dirty callbacks across all DUs: LDU, SOU and STDU.
 
-1) If not enabled, the expiry happens in hard interrupt context so
-   spin waiting on the remote CPU is reasonably time bound.
+Signed-off-by: Martin Krastev <krastevm@vmware.com>
+Reviewed-by: Maaz Mombasawala <mombasawalam@vmware.com>
+Fixes: 2f5544ff0300 ("drm/vmwgfx: Use atomic helper function for dirty fb IOCTL")
+Cc: <stable@vger.kernel.org> # v5.0+
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230321020949.335012-3-zack@kde.org
 
-   Implement an empty stub function for that case.
-
-2) If enabled, the expiry happens in task work before returning to user
-   space or guest mode. The expired timers are marked as firing and moved
-   from the timer queue to a local list head with sighand lock held. Once
-   the timers are moved, sighand lock is dropped and the expiry happens in
-   fully preemptible context. That means the expiring task can be scheduled
-   out, migrated, interrupted etc. So spin waiting on it is more than
-   suboptimal.
-
-   The timer wheel has a timer_wait_running() mechanism for RT, which uses
-   a per CPU timer-base expiry lock which is held by the expiry code and the
-   task waiting for the timer function to complete blocks on that lock.
-
-   This does not work in the same way for posix CPU timers as there is no
-   timer base and expiry for process wide timers can run on any task
-   belonging to that process, but the concept of waiting on an expiry lock
-   can be used too in a slightly different way:
-
-    - Add a mutex to struct posix_cputimers_work. This struct is per task
-      and used to schedule the expiry task work from the timer interrupt.
-
-    - Add a task_struct pointer to struct cpu_timer which is used to store
-      a the task which runs the expiry. That's filled in when the task
-      moves the expired timers to the local expiry list. That's not
-      affecting the size of the k_itimer union as there are bigger union
-      members already
-
-    - Let the task take the expiry mutex around the expiry function
-
-    - Let the waiter acquire a task reference with rcu_read_lock() held and
-      block on the expiry mutex
-
-   This avoids spin-waiting on a task which might not even be on a CPU and
-   works nicely for RT too.
-
-Fixes: ec8f954a40da ("posix-timers: Use a callback for cancel synchronization on PREEMPT_RT")
-Reported-by: Marco Elver <elver@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Marco Elver <elver@google.com>
-Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87zg764ojw.ffs@tglx
-
-diff --git a/include/linux/posix-timers.h b/include/linux/posix-timers.h
-index 2c6e99ca48af..d607f51404fc 100644
---- a/include/linux/posix-timers.h
-+++ b/include/linux/posix-timers.h
-@@ -4,6 +4,7 @@
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 5162a7a12792..b62207be3363 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1396,70 +1396,10 @@ static void vmw_framebuffer_bo_destroy(struct drm_framebuffer *framebuffer)
+ 	kfree(vfbd);
+ }
  
- #include <linux/spinlock.h>
- #include <linux/list.h>
-+#include <linux/mutex.h>
- #include <linux/alarmtimer.h>
- #include <linux/timerqueue.h>
- 
-@@ -62,16 +63,18 @@ static inline int clockid_to_fd(const clockid_t clk)
-  * cpu_timer - Posix CPU timer representation for k_itimer
-  * @node:	timerqueue node to queue in the task/sig
-  * @head:	timerqueue head on which this timer is queued
-- * @task:	Pointer to target task
-+ * @pid:	Pointer to target task PID
-  * @elist:	List head for the expiry list
-  * @firing:	Timer is currently firing
-+ * @handling:	Pointer to the task which handles expiry
-  */
- struct cpu_timer {
--	struct timerqueue_node	node;
--	struct timerqueue_head	*head;
--	struct pid		*pid;
--	struct list_head	elist;
--	int			firing;
-+	struct timerqueue_node		node;
-+	struct timerqueue_head		*head;
-+	struct pid			*pid;
-+	struct list_head		elist;
-+	int				firing;
-+	struct task_struct __rcu	*handling;
+-static int vmw_framebuffer_bo_dirty(struct drm_framebuffer *framebuffer,
+-				    struct drm_file *file_priv,
+-				    unsigned int flags, unsigned int color,
+-				    struct drm_clip_rect *clips,
+-				    unsigned int num_clips)
+-{
+-	struct vmw_private *dev_priv = vmw_priv(framebuffer->dev);
+-	struct vmw_framebuffer_bo *vfbd =
+-		vmw_framebuffer_to_vfbd(framebuffer);
+-	struct drm_clip_rect norect;
+-	int ret, increment = 1;
+-
+-	drm_modeset_lock_all(&dev_priv->drm);
+-
+-	if (!num_clips) {
+-		num_clips = 1;
+-		clips = &norect;
+-		norect.x1 = norect.y1 = 0;
+-		norect.x2 = framebuffer->width;
+-		norect.y2 = framebuffer->height;
+-	} else if (flags & DRM_MODE_FB_DIRTY_ANNOTATE_COPY) {
+-		num_clips /= 2;
+-		increment = 2;
+-	}
+-
+-	switch (dev_priv->active_display_unit) {
+-	case vmw_du_legacy:
+-		ret = vmw_kms_ldu_do_bo_dirty(dev_priv, &vfbd->base, 0, 0,
+-					      clips, num_clips, increment);
+-		break;
+-	default:
+-		ret = -EINVAL;
+-		WARN_ONCE(true, "Dirty called with invalid display system.\n");
+-		break;
+-	}
+-
+-	vmw_cmd_flush(dev_priv, false);
+-
+-	drm_modeset_unlock_all(&dev_priv->drm);
+-
+-	return ret;
+-}
+-
+-static int vmw_framebuffer_bo_dirty_ext(struct drm_framebuffer *framebuffer,
+-					struct drm_file *file_priv,
+-					unsigned int flags, unsigned int color,
+-					struct drm_clip_rect *clips,
+-					unsigned int num_clips)
+-{
+-	struct vmw_private *dev_priv = vmw_priv(framebuffer->dev);
+-
+-	if (dev_priv->active_display_unit == vmw_du_legacy &&
+-	    vmw_cmd_supported(dev_priv))
+-		return vmw_framebuffer_bo_dirty(framebuffer, file_priv, flags,
+-						color, clips, num_clips);
+-
+-	return drm_atomic_helper_dirtyfb(framebuffer, file_priv, flags, color,
+-					 clips, num_clips);
+-}
+-
+ static const struct drm_framebuffer_funcs vmw_framebuffer_bo_funcs = {
+ 	.create_handle = vmw_framebuffer_bo_create_handle,
+ 	.destroy = vmw_framebuffer_bo_destroy,
+-	.dirty = vmw_framebuffer_bo_dirty_ext,
++	.dirty = drm_atomic_helper_dirtyfb,
  };
  
- static inline bool cpu_timer_enqueue(struct timerqueue_head *head,
-@@ -135,10 +138,12 @@ struct posix_cputimers {
  /**
-  * posix_cputimers_work - Container for task work based posix CPU timer expiry
-  * @work:	The task work to be scheduled
-+ * @mutex:	Mutex held around expiry in context of this task work
-  * @scheduled:  @work has been scheduled already, no further processing
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+index 3de7b4b6a230..db81e635dc06 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -507,11 +507,6 @@ void vmw_du_connector_destroy_state(struct drm_connector *connector,
   */
- struct posix_cputimers_work {
- 	struct callback_head	work;
-+	struct mutex		mutex;
- 	unsigned int		scheduled;
+ int vmw_kms_ldu_init_display(struct vmw_private *dev_priv);
+ int vmw_kms_ldu_close_display(struct vmw_private *dev_priv);
+-int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
+-			    struct vmw_framebuffer *framebuffer,
+-			    unsigned int flags, unsigned int color,
+-			    struct drm_clip_rect *clips,
+-			    unsigned int num_clips, int increment);
+ int vmw_kms_update_proxy(struct vmw_resource *res,
+ 			 const struct drm_clip_rect *clips,
+ 			 unsigned num_clips,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
+index c0e42f2ed144..a82fa9700370 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
+@@ -275,6 +275,7 @@ static const struct drm_crtc_funcs vmw_legacy_crtc_funcs = {
+ 	.atomic_duplicate_state = vmw_du_crtc_duplicate_state,
+ 	.atomic_destroy_state = vmw_du_crtc_destroy_state,
+ 	.set_config = drm_atomic_helper_set_config,
++	.page_flip = drm_atomic_helper_page_flip,
  };
  
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index 2f5e9b34022c..e9c6f9d0e42c 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -846,6 +846,8 @@ static u64 collect_timerqueue(struct timerqueue_head *head,
- 			return expires;
  
- 		ctmr->firing = 1;
-+		/* See posix_cpu_timer_wait_running() */
-+		rcu_assign_pointer(ctmr->handling, current);
- 		cpu_timer_dequeue(ctmr);
- 		list_add_tail(&ctmr->elist, firing);
- 	}
-@@ -1161,7 +1163,49 @@ static void handle_posix_cpu_timers(struct task_struct *tsk);
- #ifdef CONFIG_POSIX_CPU_TIMERS_TASK_WORK
- static void posix_cpu_timers_work(struct callback_head *work)
- {
-+	struct posix_cputimers_work *cw = container_of(work, typeof(*cw), work);
-+
-+	mutex_lock(&cw->mutex);
- 	handle_posix_cpu_timers(current);
-+	mutex_unlock(&cw->mutex);
-+}
-+
-+/*
-+ * Invoked from the posix-timer core when a cancel operation failed because
-+ * the timer is marked firing. The caller holds rcu_read_lock(), which
-+ * protects the timer and the task which is expiring it from being freed.
-+ */
-+static void posix_cpu_timer_wait_running(struct k_itimer *timr)
-+{
-+	struct task_struct *tsk = rcu_dereference(timr->it.cpu.handling);
-+
-+	/* Has the handling task completed expiry already? */
-+	if (!tsk)
-+		return;
-+
-+	/* Ensure that the task cannot go away */
-+	get_task_struct(tsk);
-+	/* Now drop the RCU protection so the mutex can be locked */
-+	rcu_read_unlock();
-+	/* Wait on the expiry mutex */
-+	mutex_lock(&tsk->posix_cputimers_work.mutex);
-+	/* Release it immediately again. */
-+	mutex_unlock(&tsk->posix_cputimers_work.mutex);
-+	/* Drop the task reference. */
-+	put_task_struct(tsk);
-+	/* Relock RCU so the callsite is balanced */
-+	rcu_read_lock();
-+}
-+
-+static void posix_cpu_timer_wait_running_nsleep(struct k_itimer *timr)
-+{
-+	/* Ensure that timr->it.cpu.handling task cannot go away */
-+	rcu_read_lock();
-+	spin_unlock_irq(&timr->it_lock);
-+	posix_cpu_timer_wait_running(timr);
-+	rcu_read_unlock();
-+	/* @timr is on stack and is valid */
-+	spin_lock_irq(&timr->it_lock);
- }
+@@ -314,6 +315,12 @@ static const struct
+ drm_connector_helper_funcs vmw_ldu_connector_helper_funcs = {
+ };
  
++static int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
++				   struct vmw_framebuffer *framebuffer,
++				   unsigned int flags, unsigned int color,
++				   struct drm_mode_rect *clips,
++				   unsigned int num_clips);
++
  /*
-@@ -1177,6 +1221,7 @@ void clear_posix_cputimers_work(struct task_struct *p)
- 	       sizeof(p->posix_cputimers_work.work));
- 	init_task_work(&p->posix_cputimers_work.work,
- 		       posix_cpu_timers_work);
-+	mutex_init(&p->posix_cputimers_work.mutex);
- 	p->posix_cputimers_work.scheduled = false;
+  * Legacy Display Plane Functions
+  */
+@@ -332,7 +339,6 @@ vmw_ldu_primary_plane_atomic_update(struct drm_plane *plane,
+ 	struct drm_framebuffer *fb;
+ 	struct drm_crtc *crtc = new_state->crtc ?: old_state->crtc;
+ 
+-
+ 	ldu = vmw_crtc_to_ldu(crtc);
+ 	dev_priv = vmw_priv(plane->dev);
+ 	fb       = new_state->fb;
+@@ -345,8 +351,31 @@ vmw_ldu_primary_plane_atomic_update(struct drm_plane *plane,
+ 		vmw_ldu_del_active(dev_priv, ldu);
+ 
+ 	vmw_ldu_commit_list(dev_priv);
+-}
+ 
++	if (vfb && vmw_cmd_supported(dev_priv)) {
++		struct drm_mode_rect fb_rect = {
++			.x1 = 0,
++			.y1 = 0,
++			.x2 = vfb->base.width,
++			.y2 = vfb->base.height
++		};
++		struct drm_mode_rect *damage_rects = drm_plane_get_damage_clips(new_state);
++		u32 rect_count = drm_plane_get_damage_clips_count(new_state);
++		int ret;
++
++		if (!damage_rects) {
++			damage_rects = &fb_rect;
++			rect_count = 1;
++		}
++
++		ret = vmw_kms_ldu_do_bo_dirty(dev_priv, vfb, 0, 0, damage_rects, rect_count);
++
++		drm_WARN_ONCE(plane->dev, ret,
++			"vmw_kms_ldu_do_bo_dirty failed with: ret=%d\n", ret);
++
++		vmw_cmd_flush(dev_priv, false);
++	}
++}
+ 
+ static const struct drm_plane_funcs vmw_ldu_plane_funcs = {
+ 	.update_plane = drm_atomic_helper_update_plane,
+@@ -577,11 +606,11 @@ int vmw_kms_ldu_close_display(struct vmw_private *dev_priv)
  }
  
-@@ -1255,6 +1300,18 @@ static inline void __run_posix_cpu_timers(struct task_struct *tsk)
- 	lockdep_posixtimer_exit();
- }
  
-+static void posix_cpu_timer_wait_running(struct k_itimer *timr)
-+{
-+	cpu_relax();
-+}
-+
-+static void posix_cpu_timer_wait_running_nsleep(struct k_itimer *timr)
-+{
-+	spin_unlock_irq(&timr->it_lock);
-+	cpu_relax();
-+	spin_lock_irq(&timr->it_lock);
-+}
-+
- static inline bool posix_cpu_timers_work_scheduled(struct task_struct *tsk)
+-int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
+-			    struct vmw_framebuffer *framebuffer,
+-			    unsigned int flags, unsigned int color,
+-			    struct drm_clip_rect *clips,
+-			    unsigned int num_clips, int increment)
++static int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
++				   struct vmw_framebuffer *framebuffer,
++				   unsigned int flags, unsigned int color,
++				   struct drm_mode_rect *clips,
++				   unsigned int num_clips)
  {
- 	return false;
-@@ -1363,6 +1420,8 @@ static void handle_posix_cpu_timers(struct task_struct *tsk)
- 		 */
- 		if (likely(cpu_firing >= 0))
- 			cpu_timer_fire(timer);
-+		/* See posix_cpu_timer_wait_running() */
-+		rcu_assign_pointer(timer->it.cpu.handling, NULL);
- 		spin_unlock(&timer->it_lock);
- 	}
- }
-@@ -1497,23 +1556,16 @@ static int do_cpu_nanosleep(const clockid_t which_clock, int flags,
- 		expires = cpu_timer_getexpires(&timer.it.cpu);
- 		error = posix_cpu_timer_set(&timer, 0, &zero_it, &it);
- 		if (!error) {
--			/*
--			 * Timer is now unarmed, deletion can not fail.
--			 */
-+			/* Timer is now unarmed, deletion can not fail. */
- 			posix_cpu_timer_del(&timer);
-+		} else {
-+			while (error == TIMER_RETRY) {
-+				posix_cpu_timer_wait_running_nsleep(&timer);
-+				error = posix_cpu_timer_del(&timer);
-+			}
- 		}
--		spin_unlock_irq(&timer.it_lock);
+ 	size_t fifo_size;
+ 	int i;
+@@ -597,7 +626,7 @@ int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
+ 		return -ENOMEM;
  
--		while (error == TIMER_RETRY) {
--			/*
--			 * We need to handle case when timer was or is in the
--			 * middle of firing. In other cases we already freed
--			 * resources.
--			 */
--			spin_lock_irq(&timer.it_lock);
--			error = posix_cpu_timer_del(&timer);
--			spin_unlock_irq(&timer.it_lock);
--		}
-+		spin_unlock_irq(&timer.it_lock);
- 
- 		if ((it.it_value.tv_sec | it.it_value.tv_nsec) == 0) {
- 			/*
-@@ -1623,6 +1675,7 @@ const struct k_clock clock_posix_cpu = {
- 	.timer_del		= posix_cpu_timer_del,
- 	.timer_get		= posix_cpu_timer_get,
- 	.timer_rearm		= posix_cpu_timer_rearm,
-+	.timer_wait_running	= posix_cpu_timer_wait_running,
- };
- 
- const struct k_clock clock_process = {
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 0c8a87a11b39..808a247205a9 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -846,6 +846,10 @@ static struct k_itimer *timer_wait_running(struct k_itimer *timer,
- 	rcu_read_lock();
- 	unlock_timer(timer, *flags);
- 
-+	/*
-+	 * kc->timer_wait_running() might drop RCU lock. So @timer
-+	 * cannot be touched anymore after the function returns!
-+	 */
- 	if (!WARN_ON_ONCE(!kc->timer_wait_running))
- 		kc->timer_wait_running(timer);
- 
+ 	memset(cmd, 0, fifo_size);
+-	for (i = 0; i < num_clips; i++, clips += increment) {
++	for (i = 0; i < num_clips; i++, clips++) {
+ 		cmd[i].header = SVGA_CMD_UPDATE;
+ 		cmd[i].body.x = clips->x1;
+ 		cmd[i].body.y = clips->y1;
 
