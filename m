@@ -2,137 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA376F8EFF
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F2B6F8EB5
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231162AbjEFF7W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:59:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34142 "EHLO
+        id S229530AbjEFFkX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230383AbjEFF7U (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sat, 6 May 2023 01:59:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4107EE1
-        for <Stable@vger.kernel.org>; Fri,  5 May 2023 22:59:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B7DD616BD
-        for <Stable@vger.kernel.org>; Sat,  6 May 2023 05:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8BCC433D2;
-        Sat,  6 May 2023 05:59:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352758;
-        bh=rewC9jOa6m4mPmQWRv1mdq2pffB+YlOK+a117YXBUnU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=LqqrGDvkjVnSSq7hWAOUKrY4pZ65fTYoxDYFKVkG3E97X1QK2QAyRWdk29LhWoGgd
-         EcNjNAA948ylwTIyv0BKiVYR73fyz2pPgrCV7H/vM+soa9dAO7M74CraqoST+InH38
-         Xa9POidgUZN7l3VnA7IwpMPQL8HVVSrMd562a63I=
-Subject: FAILED: patch "[PATCH] iio: addac: stx104: Fix race condition for stx104_write_raw()" failed to apply to 4.14-stable tree
-To:     william.gray@linaro.org, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:15:19 +0900
-Message-ID: <2023050619-revolt-matted-623b@gregkh>
+        with ESMTP id S229460AbjEFFkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:40:22 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29B4A7D9E
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:40:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:Subject:From:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=dFEzHDIu+qBSXPc+L1/bWITnShE9xROgVs7GLl3cwXg=; b=YsrPgbIv0vhEzPJpUgMbE8rLHn
+        zof3DFrUiQ8t+yBWtUo1RrJFFsA7HPTmkMO40nAh0WTvt1AM/QhD1+l60qNDsi/ilppjntazIhG64
+        XwVvQjzVeRBVcW9g7eoV4fl0agOEcrIiMpMu+GFNt0f6NcnS6b3DoBczqe2PBR+BoPyqlKVEsHqex
+        tjtZpbpSMDFxzOjldcmzMdRHF5+FlERSgFJTE4iykR5fu2B7OumKVzbz52WWwi6WrR7S7tR/t3mYx
+        OIwnEKuxfdE6mKpcr+ddNIhrSkoYTMamaBN3Q18NdSoSnNP7Rbr61+MxY5AJZLj4wP2C+17QXDM47
+        O9q+hSXw==;
+Received: from [2601:1c2:980:9ec0::2764]
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1pvAeU-00CbC9-26;
+        Sat, 06 May 2023 05:40:14 +0000
+Message-ID: <36efe6f3-009c-e849-f9d7-6a643edad8e0@infradead.org>
+Date:   Fri, 5 May 2023 22:40:13 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>
+Cc:     Michal Marek <michal.lkml@markovi.net>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Takashi Iwai <tiwai@suse.com>,
+        kernel test robot <lkp@intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Subject: patch for 5.10.stable (sound/oss/dmasound)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Please apply
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+commit 9dd7c46346ca
+Author: Randy Dunlap <rdunlap@infradead.org>
+Date:   Tue Apr 5 16:41:18 2022 -0700
 
-To reproduce the conflict and resubmit, you may use the following commands:
+    sound/oss/dmasound: fix build when drivers are mixed =y/=m
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9740827468cea80c42db29e7171a50e99acf7328
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050619-revolt-matted-623b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+to the 5.10 stable tree. The kernel test robot <lkp@intel.com> reported a build
+error on 5.10.y and this patch fixes the build error.
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9740827468cea80c42db29e7171a50e99acf7328 Mon Sep 17 00:00:00 2001
-From: William Breathitt Gray <william.gray@linaro.org>
-Date: Thu, 6 Apr 2023 10:40:10 -0400
-Subject: [PATCH] iio: addac: stx104: Fix race condition for stx104_write_raw()
-
-The priv->chan_out_states array and actual DAC value can become
-mismatched if stx104_write_raw() is called concurrently. Prevent such a
-race condition by utilizing a mutex.
-
-Fixes: 97a445dad37a ("iio: Add IIO support for the DAC on the Apex Embedded Systems STX104")
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Link: https://lore.kernel.org/r/c95c9a77fcef36b2a052282146950f23bbc1ebdc.1680790580.git.william.gray@linaro.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
-index e45b70aa5bb7..4239aafe42fc 100644
---- a/drivers/iio/addac/stx104.c
-+++ b/drivers/iio/addac/stx104.c
-@@ -15,6 +15,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
-+#include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
- 
-@@ -69,10 +70,12 @@ struct stx104_reg {
- 
- /**
-  * struct stx104_iio - IIO device private data structure
-+ * @lock: synchronization lock to prevent I/O race conditions
-  * @chan_out_states:	channels' output states
-  * @reg:		I/O address offset for the device registers
-  */
- struct stx104_iio {
-+	struct mutex lock;
- 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
- 	struct stx104_reg __iomem *reg;
- };
-@@ -178,9 +181,12 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 			if ((unsigned int)val > 65535)
- 				return -EINVAL;
- 
-+			mutex_lock(&priv->lock);
-+
- 			priv->chan_out_states[chan->channel] = val;
- 			iowrite16(val, &priv->reg->dac[chan->channel]);
- 
-+			mutex_unlock(&priv->lock);
- 			return 0;
- 		}
- 		return -EINVAL;
-@@ -351,6 +357,8 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 
- 	indio_dev->name = dev_name(dev);
- 
-+	mutex_init(&priv->lock);
-+
- 	/* configure device for software trigger operation */
- 	iowrite8(0, &priv->reg->acr);
- 
-
+-- 
+~Randy
