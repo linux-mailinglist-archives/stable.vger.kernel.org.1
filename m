@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A5C6F8EED
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5BE6F8EEE
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:57:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjEFF50 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:57:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32984 "EHLO
+        id S230378AbjEFF5e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:57:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbjEFF5Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:57:25 -0400
+        with ESMTP id S230356AbjEFF5e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:57:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B23C559F1
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:57:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACA759F1
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:57:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4676D61647
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE5DC433D2;
-        Sat,  6 May 2023 05:57:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9232361650
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:57:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF84FC433EF;
+        Sat,  6 May 2023 05:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352643;
-        bh=nJRt/tBDRBh2gf/U2morkFcIUEaqONCmFuLelL65OnQ=;
+        s=korg; t=1683352652;
+        bh=jWaISMeBTTr77X3x0Hgbr2MIixr96wM10behASs+1ng=;
         h=Subject:To:Cc:From:Date:From;
-        b=q/z2c+C30jvOGup0DPlSTO09V6KzNCvWF15olHI8ZrNLBTJXgy5boq6kzBx7X6sgL
-         lk07Sq5ZZWtdUj+70m7G0Kgt1tr33eYgN0yRLx4Lx9pVLoEwYR5ztd/3IINXXJaL5O
-         S4wutOrvzkJsYQLQ2LlfKL9Z5d6l6ISY6v5r26+E=
-Subject: FAILED: patch "[PATCH] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx" failed to apply to 4.19-stable tree
+        b=gUPYB6v1lIc7za2uVtX0WdcqmuRnVI7Mz2gUsECO94Ey5D7D9j9fMCd8R1QdkJQu7
+         slj6hxQ3lS5cPNewAvCK3WLuNZU0Rf45F+Ox+6QBqoRDVs8aNe8DCSmCTlTD7JRPZB
+         RCYk56bZfKXGlzzWyr0E73OVPpw5+V1pPsLAcv9k=
+Subject: FAILED: patch "[PATCH] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx" failed to apply to 4.14-stable tree
 To:     ilpo.jarvinen@linux.intel.com, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:12:29 +0900
-Message-ID: <2023050629-nastily-commodity-a7ad@gregkh>
+Date:   Sat, 06 May 2023 11:12:30 +0900
+Message-ID: <2023050630-epilogue-durably-bd7f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 146a37e05d620cef4ad430e5d1c9c077fe6fa76f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050629-nastily-commodity-a7ad@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050630-epilogue-durably-bd7f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
