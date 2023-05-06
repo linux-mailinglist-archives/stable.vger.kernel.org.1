@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE806F8F8A
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59DDE6F8F8F
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjEFG5l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54170 "EHLO
+        id S229460AbjEFG6k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 02:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjEFG5k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:57:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA4F52727;
-        Fri,  5 May 2023 23:57:38 -0700 (PDT)
+        with ESMTP id S229787AbjEFG6j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:58:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE97CAD13
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:58:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F04B60E9D;
-        Sat,  6 May 2023 06:57:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08A3C433D2;
-        Sat,  6 May 2023 06:57:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B7CA60B85
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:58:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EA2C433EF;
+        Sat,  6 May 2023 06:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683356257;
-        bh=SKrqn2Kf7IyTjWUu3zTHQ7N8L6W4rk8BWQ+SFkk8n6A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ADHvX3JmL0/4Z3Mml7MQfpkM8jJn8SBHsMF7qDZ2i96Z+u1zFFLapvNtXDAzqOmVT
-         olavraTQxrjMbgFyLogJWNpThKd8EsMKWQoeqiEjHDnVCbUW3516FRDH6K9rj2dKng
-         ekHIPhrSxqrjXY7EEaFN6AN3OXd/OgX81DBtbNgQ=
-Date:   Sat, 6 May 2023 14:52:25 +0900
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Ajay.Kathat@microchip.com
-Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
-        Sripad.Balwadgi@microchip.com, stable@vger.kernel.org,
-        mwalle@kernel.org
-Subject: Re: [PATCH v2] wifi: wilc1000: fix kernel oops during interface down
- during background scan
-Message-ID: <2023050645-vaguely-unruffled-fd81@gregkh>
-References: <20230505232902.22651-1-ajay.kathat@microchip.com>
+        s=korg; t=1683356317;
+        bh=OWPrHorOAyZouX7IMzuKrgEF5vsFX+IiCqjwGB9pvv4=;
+        h=Subject:To:Cc:From:Date:From;
+        b=PJ3Yf0kL8Sh5Px9ZMogHSNCe4Ul8KXdDdabWrvlj5lZJxeqycv3ZIWGPJGMRMjl7W
+         BDPhxgp+tLXVWCRuF0zM4YkWhfMr3LgodPYKNqZyEwrhoig78pDqhy0CyqL92f8SUz
+         zBWl51opp+RTiiavmKzjZkzo3sULkpLwpH+kcUTY=
+Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are" failed to apply to 6.1-stable tree
+To:     seanjc@google.com, like.xu.linux@gmail.com, likexu@tencent.com,
+        pbonzini@redhat.com, weijiang.yang@intel.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 06 May 2023 15:19:09 +0900
+Message-ID: <2023050609-dust-unequal-f736@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230505232902.22651-1-ajay.kathat@microchip.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,63 +48,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 05, 2023 at 11:42:51PM +0000, Ajay.Kathat@microchip.com wrote:
-> Fix for kernel crash observed with following test procedure:
->   while true;
->     do ifconfig wlan0 up;
->     iw dev wlan0 scan &
->     ifconfig wlan0 down;
->   done
-> 
-> During the above test procedure, the scan results are received from firmware
-> for 'iw scan' command gets queued even when the interface is going down. It
-> was causing the kernel oops when dereferencing the freed pointers.
-> 
-> For synchronization, 'mac_close()' calls flush_workqueue() to block its
-> execution till all pending work is completed. Afterwards 'wilc->close' flag
-> which is set before the flush_workqueue() should avoid adding new work.
-> Added 'wilc->close' check in wilc_handle_isr() which is common for
-> SPI/SDIO bus to ignore the interrupts from firmware that inturns adds the
-> work since the interface is getting closed.
-> 
-> Also, removed isr_uh_routine() as it's not necessary after 'wl->close' check
-> is added in wilc_handle_isr(). So now the default primary handler would be
-> used for threaded IRQ.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Michael Walle <mwalle@kernel.org>
-> Link: https://lore.kernel.org/linux-wireless/20221024135407.7udo3dwl3mqyv2yj@0002.3ffe.de/
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-> ---
->  changes since v1:
->   - updated commit description and included 'Link:' tag
->   - use atomic_t type for 'close' variable
->   - set close state after clearing ongoing scan operation
->   - make use of default primary handler for threaded_irq
->   - avoid false failure debug message during mac_close
-> 
->  .../wireless/microchip/wilc1000/cfg80211.c    |  2 +-
->  drivers/net/wireless/microchip/wilc1000/hif.c |  2 +-
->  .../net/wireless/microchip/wilc1000/netdev.c  | 33 ++++++-------------
->  .../net/wireless/microchip/wilc1000/netdev.h  |  2 +-
->  .../net/wireless/microchip/wilc1000/wlan.c    |  3 ++
->  5 files changed, 16 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> index b545d93c6e37..a90a75094486 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> @@ -461,7 +461,7 @@ static int disconnect(struct wiphy *wiphy, struct net_device *dev,
->  	if (!wilc)
->  		return -EIO;
-> 
-> -	if (wilc->close) {
-> +	if (atomic_read(&wilc->close)) {
 
-What happens if this changes right after you read from this?
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Don't reimplement locks on your own, use a real one please.
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 098f4c061ea10b777033b71c10bd9fd706820ee9
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050609-dust-unequal-f736@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+098f4c061ea1 ("KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are available")
+bec46859fb9d ("KVM: x86: Track supported PERF_CAPABILITIES in kvm_caps")
+0b9ca98b7229 ("perf/x86/core: Zero @lbr instead of returning -1 in x86_perf_get_lbr() stub")
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 098f4c061ea10b777033b71c10bd9fd706820ee9 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Sat, 28 Jan 2023 00:14:27 +0000
+Subject: [PATCH] KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are
+ available
+
+Disallow enabling LBR support if the CPU supports architectural LBRs.
+Traditional LBR support is absent on CPU models that have architectural
+LBRs, and KVM doesn't yet support arch LBRs, i.e. KVM will pass through
+non-existent MSRs if userspace enables LBRs for the guest.
+
+Cc: stable@vger.kernel.org
+Cc: Yang Weijiang <weijiang.yang@intel.com>
+Cc: Like Xu <like.xu.linux@gmail.com>
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: be635e34c284 ("KVM: vmx/pmu: Expose LBR_FMT in the MSR_IA32_PERF_CAPABILITIES")
+Tested-by: Like Xu <likexu@tencent.com>
+Link: https://lore.kernel.org/r/20230128001427.2548858-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index d7bf14abdba1..c18f74899f01 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7793,9 +7793,11 @@ static u64 vmx_get_perf_capabilities(void)
+ 	if (boot_cpu_has(X86_FEATURE_PDCM))
+ 		rdmsrl(MSR_IA32_PERF_CAPABILITIES, host_perf_cap);
+ 
+-	x86_perf_get_lbr(&lbr);
+-	if (lbr.nr)
+-		perf_cap |= host_perf_cap & PMU_CAP_LBR_FMT;
++	if (!cpu_feature_enabled(X86_FEATURE_ARCH_LBR)) {
++		x86_perf_get_lbr(&lbr);
++		if (lbr.nr)
++			perf_cap |= host_perf_cap & PMU_CAP_LBR_FMT;
++	}
+ 
+ 	if (vmx_pebs_supported()) {
+ 		perf_cap |= host_perf_cap & PERF_CAP_PEBS_MASK;
+
