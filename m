@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8736F8F98
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 09:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DE6F6F8FA4
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 09:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjEFHAx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 03:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55166 "EHLO
+        id S230056AbjEFHK2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 03:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbjEFHAa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:00:30 -0400
+        with ESMTP id S229460AbjEFHK1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:10:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3651AD19
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:00:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38E92D53
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:10:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4153B60D41
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:00:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFEDC433D2;
-        Sat,  6 May 2023 07:00:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D52760B3B
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDA5C4339B;
+        Sat,  6 May 2023 07:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683356427;
-        bh=Egbs49K8+Yu9nxJXO4zxR4vs/e/vEE5KZt42iNmrxSI=;
+        s=korg; t=1683357024;
+        bh=qsx2d/j/ieJWhBJTPJ1FxngursWSBUr5ALMuyWAUAtc=;
         h=Subject:To:Cc:From:Date:From;
-        b=nLgvLez78qdWjkq/wjfuf2NzCrufRS5RL0eLkUbt0dlKLacW87Kdko3AXGlgZKtWy
-         msqVxmjbWwLlciYsgnmZN5WT39rNWHCnVXa/vsrI04nLJ8/1NGa1GHnLmmd+ictJT6
-         ES8kZGONN7i0CawXrvhu4/+z6Vyd0YKoDx3QQ+CE=
-Subject: FAILED: patch "[PATCH] RISC-V: Align SBI probe implementation with spec" failed to apply to 5.10-stable tree
-To:     ajones@ventanamicro.com, conor.dooley@microchip.com,
-        palmer@rivosinc.com
+        b=lp+UPvfrxfKGgBqZZFLVCWZzDxcfp7rdrk+VKOYwS0KLAuyaBEEhPMNYo090oerT7
+         VSbrQTinMzH+JpYUcWRqbKVOwt+tJWceB6P2qGYQ3G5ZatJU5uBTRevh/OI6AW6JDu
+         95VntB8ToKU30mLhs9xw+BqsNYHb4v/eMWsSrKi4=
+Subject: FAILED: patch "[PATCH] ubifs: Fix memleak when insert_old_idx() failed" failed to apply to 4.14-stable tree
+To:     chengzhihao1@huawei.com, richard@nod.at
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 15:40:20 +0900
-Message-ID: <2023050620-mosaic-abstain-7b11@gregkh>
+Date:   Sat, 06 May 2023 15:54:10 +0900
+Message-ID: <2023050610-devourer-bobble-44fa@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,24 +48,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 41cad8284d5e6bf1d49d3c10a6b52ee1ae866a20
+git cherry-pick -x b5fda08ef213352ac2df7447611eb4d383cce929
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050620-mosaic-abstain-7b11@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050610-devourer-bobble-44fa@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
-41cad8284d5e ("RISC-V: Align SBI probe implementation with spec")
-bee7fbc38579 ("RISC-V CPU Idle Support")
+b5fda08ef213 ("ubifs: Fix memleak when insert_old_idx() failed")
+7d01cb27f6ae ("Revert "ubifs: dirty_cow_znode: Fix memleak in error handling path"")
+122deabfe142 ("ubifs: dirty_cow_znode: Fix memleak in error handling path")
+6eb61d587f45 ("ubifs: Pass struct ubifs_info to ubifs_assert()")
+0c1ad5242d4f ("ubifs: switch to fscrypt_prepare_rename()")
 
 thanks,
 
@@ -74,147 +76,220 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41cad8284d5e6bf1d49d3c10a6b52ee1ae866a20 Mon Sep 17 00:00:00 2001
-From: Andrew Jones <ajones@ventanamicro.com>
-Date: Thu, 27 Apr 2023 18:36:26 +0200
-Subject: [PATCH] RISC-V: Align SBI probe implementation with spec
+From b5fda08ef213352ac2df7447611eb4d383cce929 Mon Sep 17 00:00:00 2001
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Date: Wed, 1 Mar 2023 20:29:19 +0800
+Subject: [PATCH] ubifs: Fix memleak when insert_old_idx() failed
 
-sbi_probe_extension() is specified with "Returns 0 if the given SBI
-extension ID (EID) is not available, or 1 if it is available unless
-defined as any other non-zero value by the implementation."
-Additionally, sbiret.value is a long. Fix the implementation to
-ensure any nonzero long value is considered a success, rather
-than only positive int values.
+Following process will cause a memleak for copied up znode:
 
-Fixes: b9dcd9e41587 ("RISC-V: Add basic support for SBI v0.2")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+dirty_cow_znode
+  zn = copy_znode(c, znode);
+  err = insert_old_idx(c, zbr->lnum, zbr->offs);
+  if (unlikely(err))
+     return ERR_PTR(err);   // No one refers to zn.
+
+Fetch a reproducer in [Link].
+
+Function copy_znode() is split into 2 parts: resource allocation
+and znode replacement, insert_old_idx() is split in similar way,
+so resource cleanup could be done in error handling path without
+corrupting metadata(mem & disk).
+It's okay that old index inserting is put behind of add_idx_dirt(),
+old index is used in layout_leb_in_gaps(), so the two processes do
+not depend on each other.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216705
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230427163626.101042-1-ajones@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 
-diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-index acab4410ef2a..5b4a1bf5f439 100644
---- a/arch/riscv/include/asm/sbi.h
-+++ b/arch/riscv/include/asm/sbi.h
-@@ -295,7 +295,7 @@ int sbi_remote_hfence_vvma_asid(const struct cpumask *cpu_mask,
- 				unsigned long start,
- 				unsigned long size,
- 				unsigned long asid);
--int sbi_probe_extension(int ext);
-+long sbi_probe_extension(int ext);
+diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
+index 2df56bbc6865..6b7d95b65f4b 100644
+--- a/fs/ubifs/tnc.c
++++ b/fs/ubifs/tnc.c
+@@ -44,6 +44,33 @@ enum {
+ 	NOT_ON_MEDIA = 3,
+ };
  
- /* Check if current SBI specification version is 0.1 or not */
- static inline int sbi_spec_is_0_1(void)
-diff --git a/arch/riscv/kernel/cpu_ops.c b/arch/riscv/kernel/cpu_ops.c
-index 8275f237a59d..eb479a88a954 100644
---- a/arch/riscv/kernel/cpu_ops.c
-+++ b/arch/riscv/kernel/cpu_ops.c
-@@ -27,7 +27,7 @@ const struct cpu_operations cpu_ops_spinwait = {
- void __init cpu_set_ops(int cpuid)
- {
- #if IS_ENABLED(CONFIG_RISCV_SBI)
--	if (sbi_probe_extension(SBI_EXT_HSM) > 0) {
-+	if (sbi_probe_extension(SBI_EXT_HSM)) {
- 		if (!cpuid)
- 			pr_info("SBI HSM extension detected\n");
- 		cpu_ops[cpuid] = &cpu_ops_sbi;
-diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
-index 92b9b759ab3d..c672c8ba9a2a 100644
---- a/arch/riscv/kernel/sbi.c
-+++ b/arch/riscv/kernel/sbi.c
-@@ -524,19 +524,18 @@ static void sbi_srst_power_off(void)
-  * sbi_probe_extension() - Check if an SBI extension ID is supported or not.
-  * @extid: The extension ID to be probed.
-  *
-- * Return: Extension specific nonzero value f yes, -ENOTSUPP otherwise.
-+ * Return: 1 or an extension specific nonzero value if yes, 0 otherwise.
++static void do_insert_old_idx(struct ubifs_info *c,
++			      struct ubifs_old_idx *old_idx)
++{
++	struct ubifs_old_idx *o;
++	struct rb_node **p, *parent = NULL;
++
++	p = &c->old_idx.rb_node;
++	while (*p) {
++		parent = *p;
++		o = rb_entry(parent, struct ubifs_old_idx, rb);
++		if (old_idx->lnum < o->lnum)
++			p = &(*p)->rb_left;
++		else if (old_idx->lnum > o->lnum)
++			p = &(*p)->rb_right;
++		else if (old_idx->offs < o->offs)
++			p = &(*p)->rb_left;
++		else if (old_idx->offs > o->offs)
++			p = &(*p)->rb_right;
++		else {
++			ubifs_err(c, "old idx added twice!");
++			kfree(old_idx);
++		}
++	}
++	rb_link_node(&old_idx->rb, parent, p);
++	rb_insert_color(&old_idx->rb, &c->old_idx);
++}
++
+ /**
+  * insert_old_idx - record an index node obsoleted since the last commit start.
+  * @c: UBIFS file-system description object
+@@ -69,35 +96,15 @@ enum {
   */
--int sbi_probe_extension(int extid)
-+long sbi_probe_extension(int extid)
+ static int insert_old_idx(struct ubifs_info *c, int lnum, int offs)
  {
- 	struct sbiret ret;
+-	struct ubifs_old_idx *old_idx, *o;
+-	struct rb_node **p, *parent = NULL;
++	struct ubifs_old_idx *old_idx;
  
- 	ret = sbi_ecall(SBI_EXT_BASE, SBI_EXT_BASE_PROBE_EXT, extid,
- 			0, 0, 0, 0, 0);
- 	if (!ret.error)
--		if (ret.value)
--			return ret.value;
-+		return ret.value;
+ 	old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
+ 	if (unlikely(!old_idx))
+ 		return -ENOMEM;
+ 	old_idx->lnum = lnum;
+ 	old_idx->offs = offs;
++	do_insert_old_idx(c, old_idx);
  
--	return -ENOTSUPP;
-+	return 0;
+-	p = &c->old_idx.rb_node;
+-	while (*p) {
+-		parent = *p;
+-		o = rb_entry(parent, struct ubifs_old_idx, rb);
+-		if (lnum < o->lnum)
+-			p = &(*p)->rb_left;
+-		else if (lnum > o->lnum)
+-			p = &(*p)->rb_right;
+-		else if (offs < o->offs)
+-			p = &(*p)->rb_left;
+-		else if (offs > o->offs)
+-			p = &(*p)->rb_right;
+-		else {
+-			ubifs_err(c, "old idx added twice!");
+-			kfree(old_idx);
+-			return 0;
+-		}
+-	}
+-	rb_link_node(&old_idx->rb, parent, p);
+-	rb_insert_color(&old_idx->rb, &c->old_idx);
+ 	return 0;
  }
- EXPORT_SYMBOL(sbi_probe_extension);
  
-@@ -599,26 +598,26 @@ void __init sbi_init(void)
- 	if (!sbi_spec_is_0_1()) {
- 		pr_info("SBI implementation ID=0x%lx Version=0x%lx\n",
- 			sbi_get_firmware_id(), sbi_get_firmware_version());
--		if (sbi_probe_extension(SBI_EXT_TIME) > 0) {
-+		if (sbi_probe_extension(SBI_EXT_TIME)) {
- 			__sbi_set_timer = __sbi_set_timer_v02;
- 			pr_info("SBI TIME extension detected\n");
- 		} else {
- 			__sbi_set_timer = __sbi_set_timer_v01;
- 		}
--		if (sbi_probe_extension(SBI_EXT_IPI) > 0) {
-+		if (sbi_probe_extension(SBI_EXT_IPI)) {
- 			__sbi_send_ipi	= __sbi_send_ipi_v02;
- 			pr_info("SBI IPI extension detected\n");
- 		} else {
- 			__sbi_send_ipi	= __sbi_send_ipi_v01;
- 		}
--		if (sbi_probe_extension(SBI_EXT_RFENCE) > 0) {
-+		if (sbi_probe_extension(SBI_EXT_RFENCE)) {
- 			__sbi_rfence	= __sbi_rfence_v02;
- 			pr_info("SBI RFENCE extension detected\n");
- 		} else {
- 			__sbi_rfence	= __sbi_rfence_v01;
- 		}
- 		if ((sbi_spec_version >= sbi_mk_version(0, 3)) &&
--		    (sbi_probe_extension(SBI_EXT_SRST) > 0)) {
-+		    sbi_probe_extension(SBI_EXT_SRST)) {
- 			pr_info("SBI SRST extension detected\n");
- 			pm_power_off = sbi_srst_power_off;
- 			sbi_srst_reboot_nb.notifier_call = sbi_srst_reboot;
-diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index 41ad7639a17b..c923c113a129 100644
---- a/arch/riscv/kvm/main.c
-+++ b/arch/riscv/kvm/main.c
-@@ -75,7 +75,7 @@ static int __init riscv_kvm_init(void)
- 		return -ENODEV;
- 	}
+@@ -199,23 +206,6 @@ static struct ubifs_znode *copy_znode(struct ubifs_info *c,
+ 	__set_bit(DIRTY_ZNODE, &zn->flags);
+ 	__clear_bit(COW_ZNODE, &zn->flags);
  
--	if (sbi_probe_extension(SBI_EXT_RFENCE) <= 0) {
-+	if (!sbi_probe_extension(SBI_EXT_RFENCE)) {
- 		kvm_info("require SBI RFENCE extension\n");
- 		return -ENODEV;
- 	}
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index f2ccda2c3871..e8094fc92491 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -613,7 +613,7 @@ static int __init sbi_cpuidle_init(void)
- 	 * 2) SBI HSM extension is available
- 	 */
- 	if ((sbi_spec_version < sbi_mk_version(0, 3)) ||
--	    sbi_probe_extension(SBI_EXT_HSM) <= 0) {
-+	    !sbi_probe_extension(SBI_EXT_HSM)) {
- 		pr_info("HSM suspend not available\n");
- 		return 0;
- 	}
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index 70cb50fd41c2..4f3ac296b3e2 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -924,7 +924,7 @@ static int __init pmu_sbi_devinit(void)
- 	struct platform_device *pdev;
+-	ubifs_assert(c, !ubifs_zn_obsolete(znode));
+-	__set_bit(OBSOLETE_ZNODE, &znode->flags);
+-
+-	if (znode->level != 0) {
+-		int i;
+-		const int n = zn->child_cnt;
+-
+-		/* The children now have new parent */
+-		for (i = 0; i < n; i++) {
+-			struct ubifs_zbranch *zbr = &zn->zbranch[i];
+-
+-			if (zbr->znode)
+-				zbr->znode->parent = zn;
+-		}
+-	}
+-
+-	atomic_long_inc(&c->dirty_zn_cnt);
+ 	return zn;
+ }
  
- 	if (sbi_spec_version < sbi_mk_version(0, 3) ||
--	    sbi_probe_extension(SBI_EXT_PMU) <= 0) {
-+	    !sbi_probe_extension(SBI_EXT_PMU)) {
- 		return 0;
- 	}
+@@ -233,6 +223,42 @@ static int add_idx_dirt(struct ubifs_info *c, int lnum, int dirt)
+ 	return ubifs_add_dirt(c, lnum, dirt);
+ }
  
++/**
++ * replace_znode - replace old znode with new znode.
++ * @c: UBIFS file-system description object
++ * @new_zn: new znode
++ * @old_zn: old znode
++ * @zbr: the branch of parent znode
++ *
++ * Replace old znode with new znode in TNC.
++ */
++static void replace_znode(struct ubifs_info *c, struct ubifs_znode *new_zn,
++			  struct ubifs_znode *old_zn, struct ubifs_zbranch *zbr)
++{
++	ubifs_assert(c, !ubifs_zn_obsolete(old_zn));
++	__set_bit(OBSOLETE_ZNODE, &old_zn->flags);
++
++	if (old_zn->level != 0) {
++		int i;
++		const int n = new_zn->child_cnt;
++
++		/* The children now have new parent */
++		for (i = 0; i < n; i++) {
++			struct ubifs_zbranch *child = &new_zn->zbranch[i];
++
++			if (child->znode)
++				child->znode->parent = new_zn;
++		}
++	}
++
++	zbr->znode = new_zn;
++	zbr->lnum = 0;
++	zbr->offs = 0;
++	zbr->len = 0;
++
++	atomic_long_inc(&c->dirty_zn_cnt);
++}
++
+ /**
+  * dirty_cow_znode - ensure a znode is not being committed.
+  * @c: UBIFS file-system description object
+@@ -265,21 +291,32 @@ static struct ubifs_znode *dirty_cow_znode(struct ubifs_info *c,
+ 		return zn;
+ 
+ 	if (zbr->len) {
+-		err = insert_old_idx(c, zbr->lnum, zbr->offs);
+-		if (unlikely(err))
+-			return ERR_PTR(err);
++		struct ubifs_old_idx *old_idx;
++
++		old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
++		if (unlikely(!old_idx)) {
++			err = -ENOMEM;
++			goto out;
++		}
++		old_idx->lnum = zbr->lnum;
++		old_idx->offs = zbr->offs;
++
+ 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
+-	} else
+-		err = 0;
++		if (err) {
++			kfree(old_idx);
++			goto out;
++		}
+ 
+-	zbr->znode = zn;
+-	zbr->lnum = 0;
+-	zbr->offs = 0;
+-	zbr->len = 0;
++		do_insert_old_idx(c, old_idx);
++	}
++
++	replace_znode(c, zn, znode, zbr);
+ 
+-	if (unlikely(err))
+-		return ERR_PTR(err);
+ 	return zn;
++
++out:
++	kfree(zn);
++	return ERR_PTR(err);
+ }
+ 
+ /**
 
