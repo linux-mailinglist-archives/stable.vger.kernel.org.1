@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4C836F8FA5
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 09:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D556F8FA6
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 09:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229942AbjEFHKf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 03:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58750 "EHLO
+        id S229655AbjEFHKo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 03:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjEFHKf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:10:35 -0400
+        with ESMTP id S229460AbjEFHKn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 03:10:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EECE11567
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:10:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D8D2D53
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 00:10:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFDAF612AC
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:10:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF72C4339B;
-        Sat,  6 May 2023 07:10:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11624612A1
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 07:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65990C433EF;
+        Sat,  6 May 2023 07:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683357033;
-        bh=uO9lGNXHhh35p5iXip/jGEj4AqPyamvSXPBYcBfQBX4=;
+        s=korg; t=1683357041;
+        bh=yVaicoRhd+sOLQyemHWgV/sdusYVDeFR6qpdrf6MhBI=;
         h=Subject:To:Cc:From:Date:From;
-        b=a5B0+VyCUeG02Ex2ZIcsNvgKiC8jKMIMCee2MRMpzIqT+OxrnTgLQq/X6LIWxM9/D
-         1cbups2/Y89KXaYTgQf4lDhRv/dC/F/zsp9Sj5iaDQUDaINST0mJ1q7sENi5vWm2xY
-         aWUdufTP396G/tghGnlJI/1x990iAkY7H8pGYzhA=
-Subject: FAILED: patch "[PATCH] ubifs: Fix memory leak in do_rename" failed to apply to 5.15-stable tree
-To:     marten.lindahl@axis.com, chengzhihao1@huawei.com, richard@nod.at
+        b=j3sAcz+ao1LqFF3P0DVYhHKtLNHq6GSqfU+VWyHKQcXUNUgOHgOJOqNhTVAvDexKi
+         UeQh43ZAEs1RX7fe1hvCYwY4B4rsnG9QbtJEzJV3xXgTQrVq/TR5fkehFQ6DeYzs6c
+         z5pWX74ht3WpwOf9eURzyEhKSFRLmlmtK0QPolvg=
+Subject: FAILED: patch "[PATCH] cxl/hdm: Use 4-byte reads to retrieve HDM decoder base+limit" failed to apply to 6.2-stable tree
+To:     dan.j.williams@intel.com, alison.schofield@intel.com,
+        dave.jiang@intel.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 15:55:07 +0900
-Message-ID: <2023050607-arena-skimmer-cb9c@gregkh>
+Date:   Sat, 06 May 2023 15:56:47 +0900
+Message-ID: <2023050647-january-crucial-16ff@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -48,27 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3a36d20e012903f45714df2731261fdefac900cb
+git cherry-pick -x 1423885c84a5b3a53b79bcf241b18124d0d7cba6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050607-arena-skimmer-cb9c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050647-january-crucial-16ff@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
-3a36d20e0129 ("ubifs: Fix memory leak in do_rename")
-a0c515657307 ("ubifs: Fix AA deadlock when setting xattr for encrypted file")
-278d9a243635 ("ubifs: Rename whiteout atomically")
-afd427048047 ("ubifs: Fix deadlock in concurrent rename whiteout and inode writeback")
-40a8f0d5e7b3 ("ubifs: rename_whiteout: Fix double free for whiteout_ui->data")
+1423885c84a5 ("cxl/hdm: Use 4-byte reads to retrieve HDM decoder base+limit")
+b70c2cf95ee1 ("cxl/hdm: Skip emulation when driver manages mem_enable")
+a5fcd228ca1d ("Merge branch 'for-6.3/cxl-rr-emu' into cxl/next")
 
 thanks,
 
@@ -76,73 +75,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3a36d20e012903f45714df2731261fdefac900cb Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
-Date: Thu, 30 Mar 2023 16:40:59 +0200
-Subject: [PATCH] ubifs: Fix memory leak in do_rename
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 1423885c84a5b3a53b79bcf241b18124d0d7cba6 Mon Sep 17 00:00:00 2001
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 14 Apr 2023 11:54:00 -0700
+Subject: [PATCH] cxl/hdm: Use 4-byte reads to retrieve HDM decoder base+limit
 
-If renaming a file in an encrypted directory, function
-fscrypt_setup_filename allocates memory for a file name. This name is
-never used, and before returning to the caller the memory for it is not
-freed.
+The CXL specification mandates that 4-byte registers must be accessed
+with 4-byte access cycles. CXL 3.0 8.2.3 "Component Register Layout and
+Definition" states that the behavior is undefined if (2) 32-bit
+registers are accessed as an 8-byte quantity. It turns out that at least
+one hardware implementation is sensitive to this in practice. The @size
+variable results in zero with:
 
-When running kmemleak on it we see that it is registered as a leak. The
-report below is triggered by a simple program 'rename' that renames a
-file in an encrypted directory:
+    size = readq(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
 
-  unreferenced object 0xffff888101502840 (size 32):
-    comm "rename", pid 9404, jiffies 4302582475 (age 435.735s)
-    backtrace:
-      __kmem_cache_alloc_node
-      __kmalloc
-      fscrypt_setup_filename
-      do_rename
-      ubifs_rename
-      vfs_rename
-      do_renameat2
+...and the correct size with:
 
-To fix this we can remove the call to fscrypt_setup_filename as it's not
-needed.
+    lo = readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
+    hi = readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(which));
+    size = (hi << 32) + lo;
 
-Fixes: 278d9a243635f26 ("ubifs: Rename whiteout atomically")
-Reported-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: d17d0540a0db ("cxl/core/hdm: Add CXL standard decoder enumeration to the core")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://lore.kernel.org/r/168149844056.792294.8224490474529733736.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
-index 5f33dbad27f6..ef0499edc248 100644
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -358,7 +358,6 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
- 	umode_t mode = S_IFCHR | WHITEOUT_MODE;
- 	struct inode *inode;
- 	struct ubifs_info *c = dir->i_sb->s_fs_info;
--	struct fscrypt_name nm;
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index 35b338b716fe..6fdf7981ddc7 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /* Copyright(c) 2022 Intel Corporation. All rights reserved. */
+-#include <linux/io-64-nonatomic-hi-lo.h>
+ #include <linux/seq_file.h>
+ #include <linux/device.h>
+ #include <linux/delay.h>
+@@ -785,8 +784,8 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
+ 			    int *target_map, void __iomem *hdm, int which,
+ 			    u64 *dpa_base, struct cxl_endpoint_dvsec_info *info)
+ {
++	u64 size, base, skip, dpa_size, lo, hi;
+ 	struct cxl_endpoint_decoder *cxled;
+-	u64 size, base, skip, dpa_size;
+ 	bool committed;
+ 	u32 remainder;
+ 	int i, rc;
+@@ -801,8 +800,12 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
+ 							which, info);
  
- 	/*
- 	 * Create an inode('nlink = 1') for whiteout without updating journal,
-@@ -369,10 +368,6 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
- 	dbg_gen("dent '%pd', mode %#hx in dir ino %lu",
- 		dentry, mode, dir->i_ino);
+ 	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(which));
+-	base = ioread64_hi_lo(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(which));
+-	size = ioread64_hi_lo(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
++	lo = readl(hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(which));
++	hi = readl(hdm + CXL_HDM_DECODER0_BASE_HIGH_OFFSET(which));
++	base = (hi << 32) + lo;
++	lo = readl(hdm + CXL_HDM_DECODER0_SIZE_LOW_OFFSET(which));
++	hi = readl(hdm + CXL_HDM_DECODER0_SIZE_HIGH_OFFSET(which));
++	size = (hi << 32) + lo;
+ 	committed = !!(ctrl & CXL_HDM_DECODER0_CTRL_COMMITTED);
+ 	cxld->commit = cxl_decoder_commit;
+ 	cxld->reset = cxl_decoder_reset;
+@@ -865,8 +868,9 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
+ 		return rc;
  
--	err = fscrypt_setup_filename(dir, &dentry->d_name, 0, &nm);
--	if (err)
--		return ERR_PTR(err);
--
- 	inode = ubifs_new_inode(c, dir, mode, false);
- 	if (IS_ERR(inode)) {
- 		err = PTR_ERR(inode);
-@@ -395,7 +390,6 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
- 	make_bad_inode(inode);
- 	iput(inode);
- out_free:
--	fscrypt_free_filename(&nm);
- 	ubifs_err(c, "cannot create whiteout file, error %d", err);
- 	return ERR_PTR(err);
- }
+ 	if (!info) {
+-		target_list.value =
+-			ioread64_hi_lo(hdm + CXL_HDM_DECODER0_TL_LOW(which));
++		lo = readl(hdm + CXL_HDM_DECODER0_TL_LOW(which));
++		hi = readl(hdm + CXL_HDM_DECODER0_TL_HIGH(which));
++		target_list.value = (hi << 32) + lo;
+ 		for (i = 0; i < cxld->interleave_ways; i++)
+ 			target_map[i] = target_list.target_id[i];
+ 
+@@ -883,7 +887,9 @@ static int init_hdm_decoder(struct cxl_port *port, struct cxl_decoder *cxld,
+ 			port->id, cxld->id, size, cxld->interleave_ways);
+ 		return -ENXIO;
+ 	}
+-	skip = ioread64_hi_lo(hdm + CXL_HDM_DECODER0_SKIP_LOW(which));
++	lo = readl(hdm + CXL_HDM_DECODER0_SKIP_LOW(which));
++	hi = readl(hdm + CXL_HDM_DECODER0_SKIP_HIGH(which));
++	skip = (hi << 32) + lo;
+ 	cxled = to_cxl_endpoint_decoder(&cxld->dev);
+ 	rc = devm_cxl_dpa_reserve(cxled, *dpa_base + skip, dpa_size, skip);
+ 	if (rc) {
 
