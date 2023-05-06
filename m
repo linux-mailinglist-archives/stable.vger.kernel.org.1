@@ -2,147 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A808F6F8F63
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE806F8F8A
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbjEFGmH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48444 "EHLO
+        id S229527AbjEFG5l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 02:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbjEFGmG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:42:06 -0400
+        with ESMTP id S229460AbjEFG5k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:57:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BFB5AD
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:42:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA4F52727;
+        Fri,  5 May 2023 23:57:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 20FBD6177C
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:42:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13469C433A4;
-        Sat,  6 May 2023 06:42:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F04B60E9D;
+        Sat,  6 May 2023 06:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08A3C433D2;
+        Sat,  6 May 2023 06:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683355324;
-        bh=e11xzjM59w77bZOXh6JTR9MVCrJ1c2hNpBcarg/ilLM=;
-        h=Subject:To:Cc:From:Date:From;
-        b=aoVTPGZ5etMNJmRG/x7yBQT7aukVyTsQZJk2sDWk+E4zaVWaizTJQOxRo7+3XNNzs
-         bNDlRSEh6nTpg8yJsKoWcOcQ6yI3C8V6PF/0npLEa+yI2SJmHFzRjGRxriTJXadWjA
-         KGkFcAhySEanxTB6LGLA5LAE0p8QKjL3/4opyqk8=
-Subject: FAILED: patch "[PATCH] relayfs: fix out-of-bounds access in relay_file_read" failed to apply to 4.14-stable tree
-To:     zhang.zhengming@h3c.com, akpm@linux-foundation.org,
-        axboe@kernel.dk, stable@vger.kernel.org, yangpc@wangsu.com,
-        zhao_lei1@hoperun.com, zhou.kete@h3c.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:33:30 +0900
-Message-ID: <2023050630-proofread-eleven-cbec@gregkh>
+        s=korg; t=1683356257;
+        bh=SKrqn2Kf7IyTjWUu3zTHQ7N8L6W4rk8BWQ+SFkk8n6A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ADHvX3JmL0/4Z3Mml7MQfpkM8jJn8SBHsMF7qDZ2i96Z+u1zFFLapvNtXDAzqOmVT
+         olavraTQxrjMbgFyLogJWNpThKd8EsMKWQoeqiEjHDnVCbUW3516FRDH6K9rj2dKng
+         ekHIPhrSxqrjXY7EEaFN6AN3OXd/OgX81DBtbNgQ=
+Date:   Sat, 6 May 2023 14:52:25 +0900
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
+        Sripad.Balwadgi@microchip.com, stable@vger.kernel.org,
+        mwalle@kernel.org
+Subject: Re: [PATCH v2] wifi: wilc1000: fix kernel oops during interface down
+ during background scan
+Message-ID: <2023050645-vaguely-unruffled-fd81@gregkh>
+References: <20230505232902.22651-1-ajay.kathat@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230505232902.22651-1-ajay.kathat@microchip.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, May 05, 2023 at 11:42:51PM +0000, Ajay.Kathat@microchip.com wrote:
+> Fix for kernel crash observed with following test procedure:
+>   while true;
+>     do ifconfig wlan0 up;
+>     iw dev wlan0 scan &
+>     ifconfig wlan0 down;
+>   done
+> 
+> During the above test procedure, the scan results are received from firmware
+> for 'iw scan' command gets queued even when the interface is going down. It
+> was causing the kernel oops when dereferencing the freed pointers.
+> 
+> For synchronization, 'mac_close()' calls flush_workqueue() to block its
+> execution till all pending work is completed. Afterwards 'wilc->close' flag
+> which is set before the flush_workqueue() should avoid adding new work.
+> Added 'wilc->close' check in wilc_handle_isr() which is common for
+> SPI/SDIO bus to ignore the interrupts from firmware that inturns adds the
+> work since the interface is getting closed.
+> 
+> Also, removed isr_uh_routine() as it's not necessary after 'wl->close' check
+> is added in wilc_handle_isr(). So now the default primary handler would be
+> used for threaded IRQ.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Michael Walle <mwalle@kernel.org>
+> Link: https://lore.kernel.org/linux-wireless/20221024135407.7udo3dwl3mqyv2yj@0002.3ffe.de/
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> ---
+>  changes since v1:
+>   - updated commit description and included 'Link:' tag
+>   - use atomic_t type for 'close' variable
+>   - set close state after clearing ongoing scan operation
+>   - make use of default primary handler for threaded_irq
+>   - avoid false failure debug message during mac_close
+> 
+>  .../wireless/microchip/wilc1000/cfg80211.c    |  2 +-
+>  drivers/net/wireless/microchip/wilc1000/hif.c |  2 +-
+>  .../net/wireless/microchip/wilc1000/netdev.c  | 33 ++++++-------------
+>  .../net/wireless/microchip/wilc1000/netdev.h  |  2 +-
+>  .../net/wireless/microchip/wilc1000/wlan.c    |  3 ++
+>  5 files changed, 16 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> index b545d93c6e37..a90a75094486 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> @@ -461,7 +461,7 @@ static int disconnect(struct wiphy *wiphy, struct net_device *dev,
+>  	if (!wilc)
+>  		return -EIO;
+> 
+> -	if (wilc->close) {
+> +	if (atomic_read(&wilc->close)) {
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+What happens if this changes right after you read from this?
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 43ec16f1450f4936025a9bdf1a273affdb9732c1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050630-proofread-eleven-cbec@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-
+Don't reimplement locks on your own, use a real one please.
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 43ec16f1450f4936025a9bdf1a273affdb9732c1 Mon Sep 17 00:00:00 2001
-From: Zhang Zhengming <zhang.zhengming@h3c.com>
-Date: Wed, 19 Apr 2023 12:02:03 +0800
-Subject: [PATCH] relayfs: fix out-of-bounds access in relay_file_read
-
-There is a crash in relay_file_read, as the var from
-point to the end of last subbuf.
-
-The oops looks something like:
-pc : __arch_copy_to_user+0x180/0x310
-lr : relay_file_read+0x20c/0x2c8
-Call trace:
- __arch_copy_to_user+0x180/0x310
- full_proxy_read+0x68/0x98
- vfs_read+0xb0/0x1d0
- ksys_read+0x6c/0xf0
- __arm64_sys_read+0x20/0x28
- el0_svc_common.constprop.3+0x84/0x108
- do_el0_svc+0x74/0x90
- el0_svc+0x1c/0x28
- el0_sync_handler+0x88/0xb0
- el0_sync+0x148/0x180
-
-We get the condition by analyzing the vmcore:
-
-1). The last produced byte and last consumed byte
-    both at the end of the last subbuf
-
-2). A softirq calls function(e.g __blk_add_trace)
-    to write relay buffer occurs when an program is calling
-    relay_file_read_avail().
-
-        relay_file_read
-                relay_file_read_avail
-                        relay_file_read_consume(buf, 0, 0);
-                        //interrupted by softirq who will write subbuf
-                        ....
-                        return 1;
-                //read_start point to the end of the last subbuf
-                read_start = relay_file_read_start_pos
-                //avail is equal to subsize
-                avail = relay_file_read_subbuf_avail
-                //from  points to an invalid memory address
-                from = buf->start + read_start
-                //system is crashed
-                copy_to_user(buffer, from, avail)
-
-Link: https://lkml.kernel.org/r/20230419040203.37676-1-zhang.zhengming@h3c.com
-Fixes: 8d62fdebdaf9 ("relay file read: start-pos fix")
-Signed-off-by: Zhang Zhengming <zhang.zhengming@h3c.com>
-Reviewed-by: Zhao Lei <zhao_lei1@hoperun.com>
-Reviewed-by: Zhou Kete <zhou.kete@h3c.com>
-Reviewed-by: Pengcheng Yang <yangpc@wangsu.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/kernel/relay.c b/kernel/relay.c
-index 9aa70ae53d24..a80fa01042e9 100644
---- a/kernel/relay.c
-+++ b/kernel/relay.c
-@@ -989,7 +989,8 @@ static size_t relay_file_read_start_pos(struct rchan_buf *buf)
- 	size_t subbuf_size = buf->chan->subbuf_size;
- 	size_t n_subbufs = buf->chan->n_subbufs;
- 	size_t consumed = buf->subbufs_consumed % n_subbufs;
--	size_t read_pos = consumed * subbuf_size + buf->bytes_consumed;
-+	size_t read_pos = (consumed * subbuf_size + buf->bytes_consumed)
-+			% (n_subbufs * subbuf_size);
- 
- 	read_subbuf = read_pos / subbuf_size;
- 	padding = buf->padding[read_subbuf];
-
