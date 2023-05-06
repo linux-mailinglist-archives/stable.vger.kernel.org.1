@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F9916F8ED2
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6BD6F8ED4
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbjEFFxu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:53:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59338 "EHLO
+        id S230210AbjEFFyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbjEFFxu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:53:50 -0400
+        with ESMTP id S230203AbjEFFyH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:54:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0851B4C00
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:53:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878994C1A
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:54:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99E53615E3
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:53:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E5DC433EF;
-        Sat,  6 May 2023 05:53:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A081615FC
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:54:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657C8C433D2;
+        Sat,  6 May 2023 05:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352428;
-        bh=igwW9JfH9LX1CwYwso/jS7Ub16SMELsXZ1qxw8g15PA=;
+        s=korg; t=1683352445;
+        bh=VIuuIT4Y4FWdKzeZ5EEV4/Piz7KOWFidAYddl7h+aQo=;
         h=Subject:To:Cc:From:Date:From;
-        b=k3XIxIkREhsFuPVeHfIG4GdtDAe7lcnqaKm5vAlu2nCKpkLN8N1lYNuSwjB/kPc+o
-         fXi6+nrpRn4SmJIv63bbvqB4URujEDE2011J2jt/loQxuDVoWy+ffG8SuCV51jEhGj
-         pCFLVFcGWhj66I64eVcathujLn8u+u8mXS2JTK5E=
-Subject: FAILED: patch "[PATCH] usb: gadget: udc: core: Prevent redundant calls to pullup" failed to apply to 5.10-stable tree
-To:     badhri@google.com, gregkh@linuxfoundation.org
+        b=yoMff6AkIlu9ZIPufg88OEvboxCodcleFBC6x4iNWyp//sEdMQo7u2U0NvztvpUYT
+         vpyguaaPMbyWH05dKSzhYhanQl10ASJz1zYCVcr4qWGSwJjWMUYZSKqOv3DhZD68Id
+         F2GBp1wtLRZ/ECvLfhuU9zDm4EQ1scCUAbeFJp8I=
+Subject: FAILED: patch "[PATCH] USB: dwc3: fix runtime pm imbalance on probe errors" failed to apply to 4.19-stable tree
+To:     johan+linaro@kernel.org, Thinh.Nguyen@synopsys.com,
+        gregkh@linuxfoundation.org, rogerq@ti.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 10:48:28 +0900
-Message-ID: <2023050628-subject-limeade-3860@gregkh>
+Date:   Sat, 06 May 2023 10:59:01 +0900
+Message-ID: <2023050601-manhole-creamlike-94e6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x a3afbf5cc887fc3401f012fe629810998ed61859
+git cherry-pick -x 9a8ad10c9f2e0925ff26308ec6756b93fc2f4977
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050628-subject-limeade-3860@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050601-manhole-creamlike-94e6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,34 +73,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a3afbf5cc887fc3401f012fe629810998ed61859 Mon Sep 17 00:00:00 2001
-From: Badhri Jagan Sridharan <badhri@google.com>
-Date: Fri, 7 Apr 2023 03:07:41 +0000
-Subject: [PATCH] usb: gadget: udc: core: Prevent redundant calls to pullup
+From 9a8ad10c9f2e0925ff26308ec6756b93fc2f4977 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Tue, 4 Apr 2023 09:25:14 +0200
+Subject: [PATCH] USB: dwc3: fix runtime pm imbalance on probe errors
 
-usb_gadget_connect calls gadget->ops->pullup without checking whether
-gadget->connected was previously set. Make this symmetric to
-usb_gadget_disconnect by returning early if gadget->connected is
-already set.
+Make sure not to suspend the device when probe fails to avoid disabling
+clocks and phys multiple times.
 
-Fixes: 5a1da544e572 ("usb: gadget: core: do not try to disconnect gadget if it is not connected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20230407030741.3163220-2-badhri@google.com
+Fixes: 328082376aea ("usb: dwc3: fix runtime PM in error path")
+Cc: stable@vger.kernel.org      # 4.8
+Cc: Roger Quadros <rogerq@ti.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230404072524.19014-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index af92c2e8e10c..1c5403ce9e7c 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -703,6 +703,9 @@ static int usb_gadget_connect_locked(struct usb_gadget *gadget)
- 		goto out;
- 	}
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index ed0ab90d3fac..d2350a87450e 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1895,13 +1895,11 @@ static int dwc3_probe(struct platform_device *pdev)
+ 	spin_lock_init(&dwc->lock);
+ 	mutex_init(&dwc->mutex);
  
-+	if (gadget->connected)
-+		goto out;
-+
- 	if (gadget->deactivated || !gadget->udc->started) {
- 		/*
- 		 * If gadget is deactivated we only save new state.
++	pm_runtime_get_noresume(dev);
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_set_autosuspend_delay(dev, DWC3_DEFAULT_AUTOSUSPEND_DELAY);
+ 	pm_runtime_enable(dev);
+-	ret = pm_runtime_get_sync(dev);
+-	if (ret < 0)
+-		goto err1;
+ 
+ 	pm_runtime_forbid(dev);
+ 
+@@ -1966,12 +1964,10 @@ err3:
+ 	dwc3_free_event_buffers(dwc);
+ 
+ err2:
+-	pm_runtime_allow(&pdev->dev);
+-
+-err1:
+-	pm_runtime_put_sync(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+-
++	pm_runtime_allow(dev);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
++	pm_runtime_put_noidle(dev);
+ disable_clks:
+ 	dwc3_clk_disable(dwc);
+ assert_reset:
 
