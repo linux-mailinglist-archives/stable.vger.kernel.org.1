@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29EA16F8EEA
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3212E6F8EEB
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 07:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230308AbjEFF47 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 01:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
+        id S230339AbjEFF5J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 01:57:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbjEFF46 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:56:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 597B7E1
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:56:57 -0700 (PDT)
+        with ESMTP id S230356AbjEFF5I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 01:57:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D750CE1
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 22:57:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C299761640
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:56:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE496C433EF;
-        Sat,  6 May 2023 05:56:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7365A6163F
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 05:57:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147D9C433D2;
+        Sat,  6 May 2023 05:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683352616;
-        bh=Uss1BWkC4fm4BZnwRrewtztD7g2LB+4n2wQpz+03bv8=;
+        s=korg; t=1683352625;
+        bh=YcToC8oK8aMOE7+vJ3mCPjwINWlPW6gY8VYU7qC568U=;
         h=Subject:To:Cc:From:Date:From;
-        b=ABnWyd6bmkvHPqGc8hBhIPECU86rzDPsdT18htk7a1F8b91HkvlD3LDgqc/aavKYg
-         LwY3RpjNZzGtMHXTs8ulJc2q6YXglYLWf376Ovfzn3FUldQq5vBqVejvp7XOFnhdD6
-         /t/I5Vr7DOZqGXo+YfAYX7yF0ZLpS6ICq1wHDoPE=
-Subject: FAILED: patch "[PATCH] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx" failed to apply to 5.15-stable tree
+        b=GjPDRE9Jq2r7NkFs5tALmFH6tj9WIV7W2g08j9TY3iTTFe+/mxwyZhqNcVJokPD+6
+         5+HR4HpOWh4+MeqKFI/jUxuCaj31Olvr+Phv/vPesv/0oq432EGEfq3tFrjnOpDo6a
+         S/LG3uL61c/5OZKQ7GUZbi8iDSokUjC6Jh97CSK4=
+Subject: FAILED: patch "[PATCH] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx" failed to apply to 5.4-stable tree
 To:     ilpo.jarvinen@linux.intel.com, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:12:27 +0900
-Message-ID: <2023050627-kept-container-b02a@gregkh>
+Date:   Sat, 06 May 2023 11:12:28 +0900
+Message-ID: <2023050628-gonad-hatchback-b646@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 146a37e05d620cef4ad430e5d1c9c077fe6fa76f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050627-kept-container-b02a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050628-gonad-hatchback-b646@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
