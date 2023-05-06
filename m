@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCF196F8F57
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 442636F8F58
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjEFGlL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47692 "EHLO
+        id S230127AbjEFGla (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 02:41:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230210AbjEFGlK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:41:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509419ECC
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:41:09 -0700 (PDT)
+        with ESMTP id S230330AbjEFGlU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:41:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F1E900B
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:41:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2EBD61771
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1BBC433EF;
-        Sat,  6 May 2023 06:41:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B49E061779
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133E8C433D2;
+        Sat,  6 May 2023 06:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683355268;
-        bh=anipDI/J1FOGlY8lECzWkTAZ/LZsqiJ4uL2DMkhAgms=;
+        s=korg; t=1683355278;
+        bh=c344TkFOAWoswMF7LizLxnzaY2NoMOSbLUdIgsZvYeU=;
         h=Subject:To:Cc:From:Date:From;
-        b=Xaa8BVlFoYXFFvnUKupGaGR3G8Xor0jn8HXeYUueyyg5rk0EBZm0w8XqeA7P8bDFx
-         giH5Lwt0xWivlH4iWQJPv3tpVB7L3aPiPn5cRGJcmkUbr6hFUqP+XPD6I51JZx/S1B
-         UdkYOOYiGWnNZH/zUzXeGYJl1eHjUGwej9d+8mc8=
-Subject: FAILED: patch "[PATCH] crypto: ccp - Clear PSP interrupt status register before" failed to apply to 4.19-stable tree
-To:     jpiotrowski@linux.microsoft.com, herbert@gondor.apana.org.au,
-        thomas.lendacky@amd.com
+        b=DDjmRtrZra/qgwBH9iJwo53URDELpa8y2Ox4m67V0H9fA5jR6OqSOb4lHNS61Yin5
+         5kQl+omcTDFFdyuohMFsGsAc/6lBpBa0T5dklEOTt6D2ZD3Nv1jIj2twlSl/FgoMJn
+         oZmOy23c0FAbXByJr++nHUnqB0UCXE8nYGFG57hs=
+Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are" failed to apply to 6.1-stable tree
+To:     seanjc@google.com, like.xu.linux@gmail.com, likexu@tencent.com,
+        pbonzini@redhat.com, weijiang.yang@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 11:28:41 +0900
-Message-ID: <2023050640-rehab-aptly-3160@gregkh>
+Date:   Sat, 06 May 2023 11:30:48 +0900
+Message-ID: <2023050648-citable-spill-5eac@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 45121ad4a1750ca47ce3f32bd434bdb0cdbf0043
+git cherry-pick -x 098f4c061ea10b777033b71c10bd9fd706820ee9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050640-rehab-aptly-3160@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050648-citable-spill-5eac@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,66 +73,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 45121ad4a1750ca47ce3f32bd434bdb0cdbf0043 Mon Sep 17 00:00:00 2001
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Date: Tue, 28 Mar 2023 15:16:36 +0000
-Subject: [PATCH] crypto: ccp - Clear PSP interrupt status register before
- calling handler
+From 098f4c061ea10b777033b71c10bd9fd706820ee9 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Sat, 28 Jan 2023 00:14:27 +0000
+Subject: [PATCH] KVM: x86/pmu: Disallow legacy LBRs if architectural LBRs are
+ available
 
-The PSP IRQ is edge-triggered (MSI or MSI-X) in all cases supported by
-the psp module so clear the interrupt status register early in the
-handler to prevent missed interrupts. sev_irq_handler() calls wake_up()
-on a wait queue, which can result in a new command being submitted from
-a different CPU. This then races with the clearing of isr and can result
-in missed interrupts. A missed interrupt results in a command waiting
-until it times out, which results in the psp being declared dead.
+Disallow enabling LBR support if the CPU supports architectural LBRs.
+Traditional LBR support is absent on CPU models that have architectural
+LBRs, and KVM doesn't yet support arch LBRs, i.e. KVM will pass through
+non-existent MSRs if userspace enables LBRs for the guest.
 
-This is unlikely on bare metal, but has been observed when running
-virtualized. In the cases where this is observed, sev->cmdresp_reg has
-PSP_CMDRESP_RESP set which indicates that the command was processed
-correctly but no interrupt was asserted.
-
-The full sequence of events looks like this:
-
-CPU 1: submits SEV cmd #1
-CPU 1: calls wait_event_timeout()
-CPU 0: enters psp_irq_handler()
-CPU 0: calls sev_handler()->wake_up()
-CPU 1: wakes up; finishes processing cmd #1
-CPU 1: submits SEV cmd #2
-CPU 1: calls wait_event_timeout()
-PSP:   finishes processing cmd #2; interrupt status is still set; no interrupt
-CPU 0: clears intsts
-CPU 0: exits psp_irq_handler()
-CPU 1: wait_event_timeout() times out; psp_dead=true
-
-Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Yang Weijiang <weijiang.yang@intel.com>
+Cc: Like Xu <like.xu.linux@gmail.com>
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: be635e34c284 ("KVM: vmx/pmu: Expose LBR_FMT in the MSR_IA32_PERF_CAPABILITIES")
+Tested-by: Like Xu <likexu@tencent.com>
+Link: https://lore.kernel.org/r/20230128001427.2548858-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/drivers/crypto/ccp/psp-dev.c b/drivers/crypto/ccp/psp-dev.c
-index ec98f19800de..e3d6955d3265 100644
---- a/drivers/crypto/ccp/psp-dev.c
-+++ b/drivers/crypto/ccp/psp-dev.c
-@@ -43,15 +43,15 @@ static irqreturn_t psp_irq_handler(int irq, void *data)
- 	/* Read the interrupt status: */
- 	status = ioread32(psp->io_regs + psp->vdata->intsts_reg);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index d7bf14abdba1..c18f74899f01 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7793,9 +7793,11 @@ static u64 vmx_get_perf_capabilities(void)
+ 	if (boot_cpu_has(X86_FEATURE_PDCM))
+ 		rdmsrl(MSR_IA32_PERF_CAPABILITIES, host_perf_cap);
  
-+	/* Clear the interrupt status by writing the same value we read. */
-+	iowrite32(status, psp->io_regs + psp->vdata->intsts_reg);
-+
- 	/* invoke subdevice interrupt handlers */
- 	if (status) {
- 		if (psp->sev_irq_handler)
- 			psp->sev_irq_handler(irq, psp->sev_irq_data, status);
- 	}
+-	x86_perf_get_lbr(&lbr);
+-	if (lbr.nr)
+-		perf_cap |= host_perf_cap & PMU_CAP_LBR_FMT;
++	if (!cpu_feature_enabled(X86_FEATURE_ARCH_LBR)) {
++		x86_perf_get_lbr(&lbr);
++		if (lbr.nr)
++			perf_cap |= host_perf_cap & PMU_CAP_LBR_FMT;
++	}
  
--	/* Clear the interrupt status by writing the same value we read. */
--	iowrite32(status, psp->io_regs + psp->vdata->intsts_reg);
--
- 	return IRQ_HANDLED;
- }
- 
+ 	if (vmx_pebs_supported()) {
+ 		perf_cap |= host_perf_cap & PERF_CAP_PEBS_MASK;
 
