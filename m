@@ -2,141 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08C6B6F8F91
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F116F8F11
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 08:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjEFG7q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 02:59:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54912 "EHLO
+        id S229712AbjEFG3Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 02:29:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEFG7p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:59:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 207622727
-        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:59:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B193D60D41
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 06:59:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD41C433EF;
-        Sat,  6 May 2023 06:59:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683356383;
-        bh=+XwlJE7dboVvQ6F+OzL1zCV3YsQpiTArZ48xXn/axGs=;
-        h=Subject:To:Cc:From:Date:From;
-        b=KYxmm1gs3v4FBkjyaK5c1AEGm87NfelU7EI5gqMF9YApfL9ysnGvP2EnNpZdirtOe
-         qAmVgmdoGXxs0SvE/yLzyIMc2sEu5CnxybRB3LVT+ogvywfgwrQCJu6+DOgDD6mKQ8
-         c5jd1x0aPvdlCVsZyAOJZzvM0cpqNaKqhTbvuYL8=
-Subject: FAILED: patch "[PATCH] ipmi: fix SSIF not responding under certain cond." failed to apply to 4.19-stable tree
-To:     zhangyuchen.lcr@bytedance.com, minyard@acm.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 06 May 2023 15:26:37 +0900
-Message-ID: <2023050637-exposure-stoke-eef2@gregkh>
+        with ESMTP id S229751AbjEFG3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 02:29:23 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D92D8A7D
+        for <stable@vger.kernel.org>; Fri,  5 May 2023 23:29:22 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-51452556acdso1657920a12.2
+        for <stable@vger.kernel.org>; Fri, 05 May 2023 23:29:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1683354562; x=1685946562;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/WfFr/Ybkjxxlz0qBx9KvOEXPiQmOGJ7KxenW4nxces=;
+        b=mJupPz2tREQg3C+oWOIO/cyA+UB+QKYHbfZMxmj+IvofFe8Naoe0Y0D2XyVzoD76Rk
+         /sKYPW0WK5m1g+WZoUMgDy8WhIHQh3LUkvRmIFr1SMupXKf+dC7s2hMwy4JE/UHsSGbU
+         h1nW3O3Rcvb5h+gAmVfJMWnZQkNuv5GtZx6sg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683354562; x=1685946562;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/WfFr/Ybkjxxlz0qBx9KvOEXPiQmOGJ7KxenW4nxces=;
+        b=FanSpqBvnfAtBn89uv1KawYE8EUr3AYrZZ5c7KsuLRn2HJW5R2eHncUuuF0paCH4wW
+         pzHTs2KMmuWd1vBXx+Ai7E4EgyQZKgKfwqqDLbv4I69jKnAhRMfnVxbSCJGmPy6jbWOA
+         PEdSgmT6cv2omlNXXo0Y4lkXzBYm26P/Ah0QLi1UNqSFnWCsR0L61izKLcFtJGgclweO
+         kwThhRDXdE14erxy2DUoDamKvqhNkLu0nFTa6O10v1cs8twnslm2COZmR5bUFFgFRwd3
+         D1h0N1VLaUG3+OvgmL4fFnT2s9HD8ns2MDBSDrSCvHCz2ShocYq9oRZI2Lqcqtsl4rNz
+         VmBw==
+X-Gm-Message-State: AC+VfDxFIIdR0JN0U5AUclkRUntf48FBX3oaA7saq6tDn5DU+g+z41gU
+        PrCp78ttMzB5VO3M7AsrowJmvw==
+X-Google-Smtp-Source: ACHHUZ7OAUraDBnWZXSPqOYiIq8qtM/wfnvjpq6zwOo0KtFQaZ+pcntbtfauYsJHK69Wtp4Otp15eA==
+X-Received: by 2002:a17:903:120d:b0:1a5:2993:8aa6 with SMTP id l13-20020a170903120d00b001a529938aa6mr4399812plh.63.1683354561829;
+        Fri, 05 May 2023 23:29:21 -0700 (PDT)
+Received: from sarthakkukreti-glaptop.hsd1.ca.comcast.net ([2601:647:4200:b5b0:f19c:a713:5517:ed4])
+        by smtp.gmail.com with ESMTPSA id q16-20020a170902dad000b001ac381f1ce9sm2793598plx.185.2023.05.05.23.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 May 2023 23:29:21 -0700 (PDT)
+From:   Sarthak Kukreti <sarthakkukreti@chromium.org>
+To:     dm-devel@redhat.com, linux-block@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Brian Foster <bfoster@redhat.com>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Bart Van Assche <bvanassche@google.com>,
+        "Darrick J. Wong" <djwong@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH v6 1/5] block: Don't invalidate pagecache for invalid falloc modes
+Date:   Fri,  5 May 2023 23:29:05 -0700
+Message-ID: <20230506062909.74601-2-sarthakkukreti@chromium.org>
+X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
+In-Reply-To: <20230506062909.74601-1-sarthakkukreti@chromium.org>
+References: <20230420004850.297045-1-sarthakkukreti@chromium.org>
+ <20230506062909.74601-1-sarthakkukreti@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Only call truncate_bdev_range() if the fallocate mode is
+supported. This fixes a bug where data in the pagecache
+could be invalidated if the fallocate() was called on the
+block device with an invalid mode.
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6d2555cde2918409b0331560e66f84a0ad4849c6
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050637-exposure-stoke-eef2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-6d2555cde291 ("ipmi: fix SSIF not responding under certain cond.")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6d2555cde2918409b0331560e66f84a0ad4849c6 Mon Sep 17 00:00:00 2001
-From: Zhang Yuchen <zhangyuchen.lcr@bytedance.com>
-Date: Wed, 12 Apr 2023 15:49:07 +0800
-Subject: [PATCH] ipmi: fix SSIF not responding under certain cond.
-
-The ipmi communication is not restored after a specific version of BMC is
-upgraded on our server.
-The ipmi driver does not respond after printing the following log:
-
-    ipmi_ssif: Invalid response getting flags: 1c 1
-
-I found that after entering this branch, ssif_info->ssif_state always
-holds SSIF_GETTING_FLAGS and never return to IDLE.
-
-As a result, the driver cannot be loaded, because the driver status is
-checked during the unload process and must be IDLE in shutdown_ssif():
-
-        while (ssif_info->ssif_state != SSIF_IDLE)
-                schedule_timeout(1);
-
-The process trigger this problem is:
-
-1. One msg timeout and next msg start send, and call
-ssif_set_need_watch().
-
-2. ssif_set_need_watch()->watch_timeout()->start_flag_fetch() change
-ssif_state to SSIF_GETTING_FLAGS.
-
-3. In msg_done_handler() ssif_state == SSIF_GETTING_FLAGS, if an error
-message is received, the second branch does not modify the ssif_state.
-
-4. All retry action need IS_SSIF_IDLE() == True. Include retry action in
-watch_timeout(), msg_done_handler(). Sending msg does not work either.
-SSIF_IDLE is also checked in start_next_msg().
-
-5. The only thing that can be triggered in the SSIF driver is
-watch_timeout(), after destory_user(), this timer will stop too.
-
-So, if enter this branch, the ssif_state will remain SSIF_GETTING_FLAGS
-and can't send msg, no timer started, can't unload.
-
-We did a comparative test before and after adding this patch, and the
-result is effective.
-
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-
+Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yuchen <zhangyuchen.lcr@bytedance.com>
-Message-Id: <20230412074907.80046-1-zhangyuchen.lcr@bytedance.com>
-Signed-off-by: Corey Minyard <minyard@acm.org>
+Reported-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
+---
+ block/fops.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index e4f6ecc12ed7..0eca46eea35c 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -786,9 +786,9 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
- 		} else if (data[0] != (IPMI_NETFN_APP_REQUEST | 1) << 2
- 			   || data[1] != IPMI_GET_MSG_FLAGS_CMD) {
- 			/*
--			 * Don't abort here, maybe it was a queued
--			 * response to a previous command.
-+			 * Recv error response, give up.
- 			 */
-+			ssif_info->ssif_state = SSIF_IDLE;
- 			ipmi_ssif_unlock_cond(ssif_info, flags);
- 			dev_warn(&ssif_info->client->dev,
- 				 "Invalid response getting flags: %x %x\n",
+diff --git a/block/fops.c b/block/fops.c
+index d2e6be4e3d1c..4c70fdc546e7 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -648,24 +648,35 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+-	/* Invalidate the page cache, including dirty pages. */
+-	error = truncate_bdev_range(bdev, file->f_mode, start, end);
+-	if (error)
+-		goto fail;
+-
++	/*
++	 * Invalidate the page cache, including dirty pages, for valid
++	 * de-allocate mode calls to fallocate().
++	 */
+ 	switch (mode) {
+ 	case FALLOC_FL_ZERO_RANGE:
+ 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
++		error = truncate_bdev_range(bdev, file->f_mode, start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL,
+ 					     BLKDEV_ZERO_NOUNMAP);
+ 		break;
+ 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
++		error = truncate_bdev_range(bdev, file->f_mode, start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL,
+ 					     BLKDEV_ZERO_NOFALLBACK);
+ 		break;
+ 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
++		error = truncate_bdev_range(bdev, file->f_mode, start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL);
+ 		break;
+-- 
+2.40.1.521.gf1e218fcd8-goog
 
