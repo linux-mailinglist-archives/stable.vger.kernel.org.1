@@ -2,46 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0D996F9346
-	for <lists+stable@lfdr.de>; Sat,  6 May 2023 19:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602C76F934B
+	for <lists+stable@lfdr.de>; Sat,  6 May 2023 19:18:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjEFRQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 13:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
+        id S229655AbjEFRSY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 13:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjEFRQ0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 13:16:26 -0400
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 49A89191C0
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 10:16:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=XDbPr
-        foM+vd09SU0nLd9OpVWaVSYKPv82lGdDyy/2QU=; b=Fks/akAA1RFcj6Cav+w9B
-        aD1FFWv2XtV6mwY7eHa4AklfcWIh1C8p+eMax+1GWRN/WqgWCgEcymKAVtPtSaUZ
-        Ns72pw8ZiQZVsios5P/T1Ea0qdUa8BhU3pLzghZlGMIbrxvfsyqnluooirsVel+6
-        AspOFQnyU6/+OAkTtNvyuY=
-Received: from localhost.localdomain (unknown [111.43.134.127])
-        by zwqz-smtp-mta-g2-2 (Coremail) with SMTP id _____wAH_qFKi1ZkAC2QBA--.41346S2;
-        Sun, 07 May 2023 01:15:54 +0800 (CST)
-From:   frshuov@163.com
-To:     alsa-devel@alsa-project.org
-Cc:     tiwai@suse.de, stable@vger.kernel.org, Larry Chi <frshuov@163.com>
-Subject: [PATCH] ALSA: hda/realtek: Add quirk for ASUS GU603ZM
-Date:   Sun,  7 May 2023 01:15:46 +0800
-Message-Id: <20230506171546.50815-1-frshuov@163.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S229441AbjEFRSX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 13:18:23 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53CE15687
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 10:18:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683393502; x=1714929502;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=HnVE3xiw/NBQ6aMBPon8O7ZNvHJfXRrRdt75Fc09ZfI=;
+  b=feCTdmaVdkGmnlf+5AubUw/Edq5GtIyt148MCLefEMFXfn4YKNPiPT9g
+   1n9j9qnwEl+yWkC/0DGHS7eQZYwlVwz+NOCCQEAWoOXZ3Ept6gcJDj70o
+   /HWjA3lotgSLzt3cwLhgzXsM3pb4Kc5WSh6m4NUAhXO7q7iv0It2j/8/H
+   DVMRv9QShZH6B3F/YfBtc6e0k3DWHds4WSl8X60Seh+0U+VJk32Wrxp2N
+   HH835y7ggOv3HeWh1NTLHhxLrxzvmow9Y3UWn4TxpGWOLAJPqUcdKBGZK
+   et3tGdHWKgynZOzVQIlClmug3hPQOqhTFAGfTqneihGWsqJLjwEDvmd++
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10702"; a="349434269"
+X-IronPort-AV: E=Sophos;i="5.99,255,1677571200"; 
+   d="scan'208";a="349434269"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2023 10:18:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10702"; a="762867875"
+X-IronPort-AV: E=Sophos;i="5.99,255,1677571200"; 
+   d="scan'208";a="762867875"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 06 May 2023 10:18:21 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pvLY4-0000Pu-39;
+        Sat, 06 May 2023 17:18:20 +0000
+Date:   Sun, 7 May 2023 01:17:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     frshuov@163.com
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for ASUS GU603ZM
+Message-ID: <ZFaLuB2ztV6EJ1I8@e0f96cf4e6cd>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wAH_qFKi1ZkAC2QBA--.41346S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtr1fZr18AF4fXFW5WFWDtwb_yoWkuFb_Ar
-        W3GFW5GF4UZwnrGFn3Grn5Ar4Iyrn8urZrXFyftFs8Jw4fKa109FnYkrnIkF1xXrW8ur15
-        G3yYyrWrtry5KjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRCyxi3UUUUU==
-X-Originating-IP: [111.43.134.127]
-X-CM-SenderInfo: xiuvx3lry6il2tof0z/1tbisQtnCWMr+EtimQAAsU
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230506171546.50815-1-frshuov@163.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,28 +62,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Larry Chi <frshuov@163.com>
+Hi,
 
-ASUS ROG Zephyrus M16 2022 GU603ZM (1043:1c62)
-added SND_PCI_QUIRK for speaker and headset-mic working properly
+Thanks for your patch.
 
-Signed-off-by: Larry Chi <frshuov@163.com>
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 172ffc2c332b..374a9755d19a 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9522,6 +9522,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1b13, "Asus U41SV", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x1bbd, "ASUS Z550MA", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+    SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603ZM", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for ASUS GU603ZM
+Link: https://lore.kernel.org/stable/20230506171546.50815-1-frshuov%40163.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.40.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
+
+
 
