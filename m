@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2506F978A
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 10:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8515E6F978B
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 10:17:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbjEGIRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 04:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54878 "EHLO
+        id S231222AbjEGIRt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 04:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbjEGIRp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 04:17:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF88100D9
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 01:17:41 -0700 (PDT)
+        with ESMTP id S229683AbjEGIRs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 04:17:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB405100EE
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 01:17:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA5A16199C
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 08:17:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995A6C433EF;
-        Sun,  7 May 2023 08:17:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E09CC60A24
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 08:17:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9766BC433EF;
+        Sun,  7 May 2023 08:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683447460;
-        bh=ACQZ+B1YPfU3Sr6iIXkT39zh/8xW0w3GCgZDmp0fOXk=;
+        s=korg; t=1683447463;
+        bh=eoYPZuyxIamnkYo4oiqKDIHhjGWyCFDlGIsLDsw3OqU=;
         h=Subject:To:Cc:From:Date:From;
-        b=2gRoO8xZlZWlZt4JpnWCBQW7tOW7YnVZTmIVwxRna9mMo+q7TCw7/QdetVxJlF4Zx
-         EOkW8uoGyiz98L/AM1+/8xeO+UnrppTcSd9RGLxrb6hOi6eyCwUc1aOsTMqRsTG8qE
-         PGAvRueX6er2mLAlLI2N7tR774xeK3AIZDVgb16g=
-Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix accessing regmap on unattached" failed to apply to 5.15-stable tree
+        b=pM/Meefzg19nFOVkb9X5mWS8FrZknq8T8KHbuhHRUBfU4yhsDtH/KqcVJhXg13SPw
+         4+Uctkv7b8wz/Tix5eqNeBQMl81mCuZV7wkjgx93CIfIb2AFq1mzqE00qDvFTt9/hj
+         +3H+iITn4H30NrWnYHa1GKWaJRv07DuypSB984Pk=
+Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix accessing regmap on unattached" failed to apply to 5.10-stable tree
 To:     krzysztof.kozlowski@linaro.org, broonie@kernel.org,
         pierre-louis.bossart@linux.intel.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 10:17:33 +0200
-Message-ID: <2023050733--8236@gregkh>
+Date:   Sun, 07 May 2023 10:17:34 +0200
+Message-ID: <2023050734--4bd0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 84822215acd15bd86a7759a835271e63bba83a7b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050733--8236@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050734--4bd0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,21 @@ Possible dependencies:
 6ad73a2b42ea ("ASoC: rt1318: Add RT1318 SDCA vendor-specific driver")
 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
 ea157c2ba821 ("ASoC: codecs: wcd938x: fix volatile register range")
+7228d83531fc ("ASoC: rt9120: Add rt9210 audio amplifier support")
+bcee7ed09b8e ("ASoC: codecs: wcd938x: add Multi Button Headset Control support")
+81d3d3d0bf09 ("ASoC: codecs: add SoundWire mockup device support")
+83bd5c53ebf6 ("ASoC: codecs: wcd938x: fix boolreturn.cocci warning")
+b90d9398d6ff ("ASoC: codecs: wcd938x: remove incorrect module interdependency")
+045442228868 ("ASoC: codecs: wcd938x: add audio routing and Kconfig")
+d5add08fcbce ("ASoC: codecs: wcd938x: add capture dapm widgets")
+8da9db0cd669 ("ASoC: codecs: wcd938x: add playback dapm widgets")
+e8ba1e05bdc0 ("ASoC: codecs: wcd938x: add basic controls")
+16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
+8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
+7ad4d237e7c4 ("ASoC: rt711-sdca: Add RT711 SDCA vendor-specific driver")
+20d17057f0a8 ("ASoC: rt715-sdca: Add RT715 sdca vendor-specific driver")
+2b719fd20f32 ("ASoC: rt1316: Add RT1316 SDCA vendor-specific driver")
+af3d54b99764 ("ASoC: codecs: lpass-rx-macro: add support for lpass rx macro")
 
 thanks,
 
