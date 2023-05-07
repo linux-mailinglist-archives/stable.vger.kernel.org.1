@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2A836F968A
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 04:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 260696F9690
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 04:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231178AbjEGCFI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 6 May 2023 22:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
+        id S229872AbjEGCT2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 6 May 2023 22:19:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231290AbjEGCFH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 22:05:07 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B631A127
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 19:05:02 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-64115e652eeso27663051b3a.0
-        for <stable@vger.kernel.org>; Sat, 06 May 2023 19:05:02 -0700 (PDT)
+        with ESMTP id S229460AbjEGCT1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 6 May 2023 22:19:27 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24BF11DBB
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 19:19:22 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2502346bea0so1635265a91.2
+        for <stable@vger.kernel.org>; Sat, 06 May 2023 19:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1683425101; x=1686017101;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1683425962; x=1686017962;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/slzjYxjrYUXP4L2+JOXIqQ2Yhymz32xrVrg+aLkVns=;
-        b=fhH1/XxQT3JnLUi9Ljkbdm08+nf3ynXF3wdig188hYAa/wRNrQnpAgMzZVuAGzAIX/
-         WaKQBnjssfJ8WYguOTajwfYNrUTacCp9DxNajYt8gKjolbCtFFD/sT+5nriv3JkAF2aE
-         6udCXlB+BEcRGDIMD+YwiMoZuJEUN4baBg19kJ3V0VxmHDHqKxeRsOdxZNxrnC+FaKJR
-         wNp9JTbE2oevXIU0fDNVnYPTFtNuzmtIXvaG+YpObynVcjV6nbsujRunms4dRdqVn+2c
-         4YzPrLqRmBIoftv/JQa+vAZaR+hTAII9U7173tYJS9Pi8khEDobTVxxnb9QxTWtX7z3V
-         g5JQ==
+        bh=MHYIq4DOmzy4L7fwP7hu4Gy9kRziWgcO385E5BleB0c=;
+        b=borxy+URq4Tm7isfx3EZ/bpbEP4Fh+Wp+Nuc1t+6fDlnv37W2+QTcBZnEvv+d23pQd
+         iJGQEpZScTaMl2ez09hgDgbS4Ja4cAYT3w8TtcbSZ4KlpO0JZ6hoEkn5L+oWSvVpNSYH
+         vVLSjk/dD3cAVae26FtM22l8pHGNZ+6Yb3Rd2cBJIfFFguvliA5Wag45T6mlfdCe6+Yr
+         k0dN/zXaimYqrAlW0KC5+sCX4DYe8wKhMlm38fFO/xj7FlF5zIfCfGn3CZoRYfAAziSr
+         VKPJ8gI1tMrArfSzya/YZs21eiUtBCAYZcXDxjzdwdKdtiwdO1O0nobridcv9bCw4ZDr
+         QDLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683425101; x=1686017101;
+        d=1e100.net; s=20221208; t=1683425962; x=1686017962;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/slzjYxjrYUXP4L2+JOXIqQ2Yhymz32xrVrg+aLkVns=;
-        b=MSRkAA2XiHQOgKYT2Y5cAUCKBAVHntD50szCwCSOumZiBmldi0iKuVv2uwW7iAU9NC
-         q1sN0fT7cGOLq1RGz/oqqfCGEs+eAq4Tv3InMVeCLLM78qkorDrC5UhGH/Yg/BzZy6TI
-         bcsSV9pQwacqHdLmPWp7FsS9HHKfX8nfIBqJrheYzI1cOVZ6okV1CB/Owi7N6Gtg53yD
-         UF6u4zDsoZF87J7XZrgxrsfCWHzYcWeqgF5PsrLQGF2dtTFPuNxWDI+PeqCoXMv87M6Q
-         +50UTxsKQRQuRNd3d+A+F89qt13u3Mq2R0iX0PVnw50T/ZPlN9c5R+kve/f3edijlDRr
-         zgNA==
-X-Gm-Message-State: AC+VfDyN2VNjuOK/JCzGsSUKUBpdJY0QtPyuvyR+py6wKzY7xaP+Kmdo
-        klCLOsrka0ciSU7tAfwjfAppcN216DZ6GLKm9dlAKQ==
-X-Google-Smtp-Source: ACHHUZ4ruQBFPXeMwD0Qw4pV3dBGEzkLOxldcH3u+CxY+ow/rEIreEJBxXf5SAItstRvfxGJL94KfQ==
-X-Received: by 2002:a05:6a21:788f:b0:f5:55a3:67d3 with SMTP id bf15-20020a056a21788f00b000f555a367d3mr8139387pzc.13.1683425100273;
-        Sat, 06 May 2023 19:05:00 -0700 (PDT)
+        bh=MHYIq4DOmzy4L7fwP7hu4Gy9kRziWgcO385E5BleB0c=;
+        b=LSCF5AwrvYDvJ8LnzzoccJ9mhqBLOsINh/cVLETeeFsKs4c6/I7cVSeW4AacSTKjjI
+         8t2Rs0NCGMQqrb7Ig5iZzNAu3Ww3jwxQfaGeLs7rH0gGB7mAmCNkmg/BAwifpIMOZDmR
+         FNDLvqcPYov+CQO+FmQvPEDNUa5mMmQUe/Svz12BfFfmZ5eqLoNlccBvnJ87h7Lh8jHN
+         u9YMs0kx5wrBiZZExnv642F1t1yzoySGxneSDmFweukMCFKYZVmTwjhQfO/QIXI6wxZg
+         tanLgOuLFjefxWZ9SQmObA8TANG9KBasBRjXjxfl0AavLSsIWnJ7HSf8chbC1GIcTz47
+         AYYw==
+X-Gm-Message-State: AC+VfDxC6VyRrgQKxNSrLzjvz8suJ62yiKKU0kZRZ4ADu53aEA1IVcOD
+        C2Hoog0Tm736WFeh6zpNZtjMgj1bSe//HrO/ASPomg==
+X-Google-Smtp-Source: ACHHUZ7b+nVT8ApjcaI1K1lletwqD+KoMxVXumSKvOI3L/sD0FsZ0JkPNTgMgHR0MWfm/dLAkaixog==
+X-Received: by 2002:a17:90a:6b4e:b0:24e:4dad:d8ab with SMTP id x14-20020a17090a6b4e00b0024e4dadd8abmr6409161pjl.0.1683425960598;
+        Sat, 06 May 2023 19:19:20 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id j33-20020a635521000000b00512fbdd8c47sm3754810pgb.45.2023.05.06.19.04.59
+        by smtp.gmail.com with ESMTPSA id bp12-20020a17090b0c0c00b0024dfcaed451sm7253280pjb.52.2023.05.06.19.19.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 May 2023 19:04:59 -0700 (PDT)
-Message-ID: <6457074b.630a0220.c7bbc.72cf@mx.google.com>
-Date:   Sat, 06 May 2023 19:04:59 -0700 (PDT)
+        Sat, 06 May 2023 19:19:19 -0700 (PDT)
+Message-ID: <64570aa7.170a0220.3452.e564@mx.google.com>
+Date:   Sat, 06 May 2023 19:19:19 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/4.19
+X-Kernelci-Branch: queue/5.4
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.19.279-299-g9412ee320dd8
+X-Kernelci-Kernel: v5.4.238-435-ge9d72453026a
 X-Kernelci-Report-Type: build
-Subject: stable-rc/queue/4.19 build: 200 builds: 187 failed, 13 passed,
- 183 errors, 191 warnings (v4.19.279-299-g9412ee320dd8)
+Subject: stable-rc/queue/5.4 build: 191 builds: 150 failed, 41 passed,
+ 148 errors, 175 warnings (v5.4.238-435-ge9d72453026a)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -72,16 +72,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/4.19 build: 200 builds: 187 failed, 13 passed, 183 errors, =
-191 warnings (v4.19.279-299-g9412ee320dd8)
+stable-rc/queue/5.4 build: 191 builds: 150 failed, 41 passed, 148 errors, 1=
+75 warnings (v5.4.238-435-ge9d72453026a)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-9/kernel/v4.19.279-299-g9412ee320dd8/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.238-435-ge9d72453026a/
 
 Tree: stable-rc
-Branch: queue/4.19
-Git Describe: v4.19.279-299-g9412ee320dd8
-Git Commit: 9412ee320dd8d6da389d177db7a71bda189d13a3
+Branch: queue/5.4
+Git Describe: v5.4.238-435-ge9d72453026a
+Git Commit: e9d72453026a23e97b2f7e81dbb81d2f68b1fc97
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -106,70 +106,47 @@ arm64:
     defconfig+arm64-chromebook: (gcc-10) FAIL
 
 arm:
-    acs5k_defconfig: (gcc-10) FAIL
-    acs5k_tiny_defconfig: (gcc-10) FAIL
     am200epdkit_defconfig: (gcc-10) FAIL
     aspeed_g4_defconfig: (gcc-10) FAIL
     aspeed_g5_defconfig: (gcc-10) FAIL
-    assabet_defconfig: (gcc-10) FAIL
     at91_dt_defconfig: (gcc-10) FAIL
     axm55xx_defconfig: (gcc-10) FAIL
     badge4_defconfig: (gcc-10) FAIL
     bcm2835_defconfig: (gcc-10) FAIL
     cerfcube_defconfig: (gcc-10) FAIL
-    clps711x_defconfig: (gcc-10) FAIL
     cm_x2xx_defconfig: (gcc-10) FAIL
     cm_x300_defconfig: (gcc-10) FAIL
     colibri_pxa270_defconfig: (gcc-10) FAIL
     colibri_pxa300_defconfig: (gcc-10) FAIL
-    collie_defconfig: (gcc-10) FAIL
     corgi_defconfig: (gcc-10) FAIL
     davinci_all_defconfig: (gcc-10) FAIL
     dove_defconfig: (gcc-10) FAIL
-    ebsa110_defconfig: (gcc-10) FAIL
-    efm32_defconfig: (gcc-10) FAIL
     em_x270_defconfig: (gcc-10) FAIL
     ep93xx_defconfig: (gcc-10) FAIL
     eseries_pxa_defconfig: (gcc-10) FAIL
     exynos_defconfig: (gcc-10) FAIL
     ezx_defconfig: (gcc-10) FAIL
-    footbridge_defconfig: (gcc-10) FAIL
-    gemini_defconfig: (gcc-10) FAIL
-    h3600_defconfig: (gcc-10) FAIL
     h5000_defconfig: (gcc-10) FAIL
-    hackkit_defconfig: (gcc-10) FAIL
     hisi_defconfig: (gcc-10) FAIL
     imote2_defconfig: (gcc-10) FAIL
     imx_v4_v5_defconfig: (gcc-10) FAIL
     imx_v6_v7_defconfig: (gcc-10) FAIL
-    integrator_defconfig: (gcc-10) FAIL
-    iop13xx_defconfig: (gcc-10) FAIL
     iop32x_defconfig: (gcc-10) FAIL
-    iop33x_defconfig: (gcc-10) FAIL
     ixp4xx_defconfig: (gcc-10) FAIL
-    jornada720_defconfig: (gcc-10) FAIL
     keystone_defconfig: (gcc-10) FAIL
-    ks8695_defconfig: (gcc-10) FAIL
     lart_defconfig: (gcc-10) FAIL
-    lpc18xx_defconfig: (gcc-10) FAIL
     lpc32xx_defconfig: (gcc-10) FAIL
-    lpd270_defconfig: (gcc-10) FAIL
-    lubbock_defconfig: (gcc-10) FAIL
     magician_defconfig: (gcc-10) FAIL
-    mainstone_defconfig: (gcc-10) FAIL
+    milbeaut_m10v_defconfig: (gcc-10) FAIL
     mini2440_defconfig: (gcc-10) FAIL
     mmp2_defconfig: (gcc-10) FAIL
     moxart_defconfig: (gcc-10) FAIL
-    mps2_defconfig: (gcc-10) FAIL
     multi_v5_defconfig: (gcc-10) FAIL
     multi_v7_defconfig: (gcc-10) FAIL
     mv78xx0_defconfig: (gcc-10) FAIL
     mvebu_v5_defconfig: (gcc-10) FAIL
     mvebu_v7_defconfig: (gcc-10) FAIL
     mxs_defconfig: (gcc-10) FAIL
-    neponset_defconfig: (gcc-10) FAIL
-    netwinder_defconfig: (gcc-10) FAIL
-    netx_defconfig: (gcc-10) FAIL
     nhk8815_defconfig: (gcc-10) FAIL
     omap1_defconfig: (gcc-10) FAIL
     omap2plus_defconfig: (gcc-10) FAIL
@@ -178,20 +155,12 @@ arm:
     palmz72_defconfig: (gcc-10) FAIL
     pcm027_defconfig: (gcc-10) FAIL
     pleb_defconfig: (gcc-10) FAIL
-    pxa168_defconfig: (gcc-10) FAIL
-    pxa255-idp_defconfig: (gcc-10) FAIL
-    pxa3xx_defconfig: (gcc-10) FAIL
-    pxa910_defconfig: (gcc-10) FAIL
     pxa_defconfig: (gcc-10) FAIL
     qcom_defconfig: (gcc-10) FAIL
-    raumfeld_defconfig: (gcc-10) FAIL
-    realview_defconfig: (gcc-10) FAIL
     s3c2410_defconfig: (gcc-10) FAIL
     s3c6400_defconfig: (gcc-10) FAIL
     s5pv210_defconfig: (gcc-10) FAIL
     sama5_defconfig: (gcc-10) FAIL
-    shannon_defconfig: (gcc-10) FAIL
-    shmobile_defconfig: (gcc-10) FAIL
     simpad_defconfig: (gcc-10) FAIL
     socfpga_defconfig: (gcc-10) FAIL
     spear13xx_defconfig: (gcc-10) FAIL
@@ -204,7 +173,6 @@ arm:
     tegra_defconfig: (gcc-10) FAIL
     trizeps4_defconfig: (gcc-10) FAIL
     u8500_defconfig: (gcc-10) FAIL
-    versatile_defconfig: (gcc-10) FAIL
     vexpress_defconfig: (gcc-10) FAIL
     vf610m4_defconfig: (gcc-10) FAIL
     viper_defconfig: (gcc-10) FAIL
@@ -231,17 +199,17 @@ mips:
     ci20_defconfig: (gcc-10) FAIL
     cobalt_defconfig: (gcc-10) FAIL
     db1xxx_defconfig: (gcc-10) FAIL
+    decstation_64_defconfig: (gcc-10) FAIL
     decstation_defconfig: (gcc-10) FAIL
+    decstation_r4k_defconfig: (gcc-10) FAIL
     e55_defconfig: (gcc-10) FAIL
     fuloong2e_defconfig: (gcc-10) FAIL
-    gcw0_defconfig: (gcc-10) FAIL
     gpr_defconfig: (gcc-10) FAIL
     ip22_defconfig: (gcc-10) FAIL
     ip27_defconfig: (gcc-10) FAIL
     ip28_defconfig: (gcc-10) FAIL
     ip32_defconfig: (gcc-10) FAIL
     jazz_defconfig: (gcc-10) FAIL
-    jmr3927_defconfig: (gcc-10) FAIL
     lasat_defconfig: (gcc-10) FAIL
     lemote2f_defconfig: (gcc-10) FAIL
     loongson1b_defconfig: (gcc-10) FAIL
@@ -263,27 +231,22 @@ mips:
     mtx1_defconfig: (gcc-10) FAIL
     nlm_xlp_defconfig: (gcc-10) FAIL
     nlm_xlr_defconfig: (gcc-10) FAIL
-    omega2p_defconfig: (gcc-10) FAIL
     pic32mzda_defconfig: (gcc-10) FAIL
     pistachio_defconfig: (gcc-10) FAIL
     pnx8335_stb225_defconfig: (gcc-10) FAIL
     qi_lb60_defconfig: (gcc-10) FAIL
     rb532_defconfig: (gcc-10) FAIL
-    rbtx49xx_defconfig: (gcc-10) FAIL
     rm200_defconfig: (gcc-10) FAIL
     rt305x_defconfig: (gcc-10) FAIL
     sb1250_swarm_defconfig: (gcc-10) FAIL
     tb0219_defconfig: (gcc-10) FAIL
-    tb0226_defconfig: (gcc-10) FAIL
     tb0287_defconfig: (gcc-10) FAIL
-    vocore2_defconfig: (gcc-10) FAIL
     workpad_defconfig: (gcc-10) FAIL
     xway_defconfig: (gcc-10) FAIL
 
 riscv:
-    allnoconfig: (gcc-10) FAIL
     defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+    rv32_defconfig: (gcc-10) FAIL
 
 x86_64:
     x86_64_defconfig: (gcc-10) FAIL
@@ -305,74 +268,55 @@ arc:
     vdk_hs38_smp_defconfig (gcc-10): 1 error, 1 warning
 
 arm64:
-    defconfig (gcc-10): 1 error, 1 warning
-    defconfig+arm64-chromebook (gcc-10): 1 error, 1 warning
+    defconfig (gcc-10): 1 error, 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 1 error, 3 warnings
 
 arm:
-    acs5k_defconfig (gcc-10): 1 error, 1 warning
-    acs5k_tiny_defconfig (gcc-10): 1 error, 1 warning
     am200epdkit_defconfig (gcc-10): 1 error, 1 warning
     aspeed_g4_defconfig (gcc-10): 1 error, 1 warning
     aspeed_g5_defconfig (gcc-10): 1 error, 1 warning
-    assabet_defconfig (gcc-10): 1 error, 1 warning
+    assabet_defconfig (gcc-10): 1 warning
     at91_dt_defconfig (gcc-10): 1 error, 1 warning
     axm55xx_defconfig (gcc-10): 1 error, 1 warning
     badge4_defconfig (gcc-10): 1 error, 1 warning
     bcm2835_defconfig (gcc-10): 1 error, 1 warning
     cerfcube_defconfig (gcc-10): 1 error, 1 warning
-    clps711x_defconfig (gcc-10): 1 error, 1 warning
     cm_x2xx_defconfig (gcc-10): 1 error, 1 warning
     cm_x300_defconfig (gcc-10): 1 error, 1 warning
     colibri_pxa270_defconfig (gcc-10): 1 error, 1 warning
     colibri_pxa300_defconfig (gcc-10): 1 error, 1 warning
-    collie_defconfig (gcc-10): 1 error, 1 warning
+    collie_defconfig (gcc-10): 1 warning
     corgi_defconfig (gcc-10): 1 error, 1 warning
     davinci_all_defconfig (gcc-10): 1 error, 1 warning
     dove_defconfig (gcc-10): 1 error, 1 warning
-    ebsa110_defconfig (gcc-10): 1 error, 1 warning
-    efm32_defconfig (gcc-10): 1 error, 1 warning
     em_x270_defconfig (gcc-10): 1 error, 1 warning
     ep93xx_defconfig (gcc-10): 1 error, 1 warning
     eseries_pxa_defconfig (gcc-10): 1 error, 1 warning
     exynos_defconfig (gcc-10): 1 error, 1 warning
     ezx_defconfig (gcc-10): 1 error, 1 warning
-    footbridge_defconfig (gcc-10): 1 error, 1 warning
-    gemini_defconfig (gcc-10): 1 error, 1 warning
-    h3600_defconfig (gcc-10): 1 error, 1 warning
+    h3600_defconfig (gcc-10): 1 warning
     h5000_defconfig (gcc-10): 1 error, 1 warning
-    hackkit_defconfig (gcc-10): 1 error, 1 warning
     hisi_defconfig (gcc-10): 1 error, 1 warning
     imote2_defconfig (gcc-10): 1 error, 1 warning
     imx_v4_v5_defconfig (gcc-10): 1 error, 1 warning
     imx_v6_v7_defconfig (gcc-10): 1 error, 1 warning
-    integrator_defconfig (gcc-10): 1 error, 1 warning
-    iop13xx_defconfig (gcc-10): 1 error, 1 warning
     iop32x_defconfig (gcc-10): 1 error, 1 warning
-    iop33x_defconfig (gcc-10): 1 error, 1 warning
     ixp4xx_defconfig (gcc-10): 1 error, 1 warning
-    jornada720_defconfig (gcc-10): 1 error, 1 warning
     keystone_defconfig (gcc-10): 1 error, 1 warning
-    ks8695_defconfig (gcc-10): 1 error, 1 warning
     lart_defconfig (gcc-10): 1 error, 1 warning
-    lpc18xx_defconfig (gcc-10): 1 error, 1 warning
     lpc32xx_defconfig (gcc-10): 1 error, 1 warning
-    lpd270_defconfig (gcc-10): 1 error, 1 warning
-    lubbock_defconfig (gcc-10): 1 error, 1 warning
     magician_defconfig (gcc-10): 1 error, 1 warning
-    mainstone_defconfig (gcc-10): 1 error, 1 warning
+    milbeaut_m10v_defconfig (gcc-10): 1 error, 1 warning
     mini2440_defconfig (gcc-10): 1 error, 1 warning
     mmp2_defconfig (gcc-10): 1 error, 1 warning
     moxart_defconfig (gcc-10): 1 error, 1 warning
-    mps2_defconfig (gcc-10): 1 error, 1 warning
     multi_v5_defconfig (gcc-10): 1 error, 1 warning
     multi_v7_defconfig (gcc-10): 1 error, 1 warning
     mv78xx0_defconfig (gcc-10): 1 error, 1 warning
     mvebu_v5_defconfig (gcc-10): 1 error, 1 warning
     mvebu_v7_defconfig (gcc-10): 1 error, 1 warning
     mxs_defconfig (gcc-10): 1 error, 1 warning
-    neponset_defconfig (gcc-10): 1 error, 1 warning
-    netwinder_defconfig (gcc-10): 1 error, 1 warning
-    netx_defconfig (gcc-10): 1 error, 1 warning
+    neponset_defconfig (gcc-10): 1 warning
     nhk8815_defconfig (gcc-10): 1 error, 1 warning
     omap1_defconfig (gcc-10): 1 error, 1 warning
     omap2plus_defconfig (gcc-10): 1 error, 1 warning
@@ -381,20 +325,13 @@ arm:
     palmz72_defconfig (gcc-10): 1 error, 1 warning
     pcm027_defconfig (gcc-10): 1 error, 1 warning
     pleb_defconfig (gcc-10): 1 error, 1 warning
-    pxa168_defconfig (gcc-10): 1 error, 1 warning
-    pxa255-idp_defconfig (gcc-10): 1 error, 1 warning
-    pxa3xx_defconfig (gcc-10): 1 error, 1 warning
-    pxa910_defconfig (gcc-10): 1 error, 1 warning
     pxa_defconfig (gcc-10): 1 error, 1 warning
     qcom_defconfig (gcc-10): 1 error, 1 warning
-    raumfeld_defconfig (gcc-10): 1 error, 1 warning
-    realview_defconfig (gcc-10): 1 error, 1 warning
     s3c2410_defconfig (gcc-10): 1 error, 1 warning
     s3c6400_defconfig (gcc-10): 1 error, 1 warning
     s5pv210_defconfig (gcc-10): 1 error, 1 warning
     sama5_defconfig (gcc-10): 1 error, 1 warning
-    shannon_defconfig (gcc-10): 1 error, 1 warning
-    shmobile_defconfig (gcc-10): 1 error, 1 warning
+    shannon_defconfig (gcc-10): 1 warning
     simpad_defconfig (gcc-10): 1 error, 1 warning
     socfpga_defconfig (gcc-10): 1 error, 1 warning
     spear13xx_defconfig (gcc-10): 1 error, 1 warning
@@ -407,7 +344,6 @@ arm:
     tegra_defconfig (gcc-10): 1 error, 1 warning
     trizeps4_defconfig (gcc-10): 1 error, 1 warning
     u8500_defconfig (gcc-10): 1 error, 1 warning
-    versatile_defconfig (gcc-10): 1 error, 1 warning
     vexpress_defconfig (gcc-10): 1 error, 1 warning
     vf610m4_defconfig (gcc-10): 1 error, 1 warning
     viper_defconfig (gcc-10): 1 error, 1 warning
@@ -436,15 +372,15 @@ mips:
     ci20_defconfig (gcc-10): 1 error, 1 warning
     cobalt_defconfig (gcc-10): 1 error, 1 warning
     db1xxx_defconfig (gcc-10): 1 error, 1 warning
+    decstation_64_defconfig (gcc-10): 1 error, 1 warning
     decstation_defconfig (gcc-10): 1 error, 1 warning
+    decstation_r4k_defconfig (gcc-10): 1 error, 1 warning
     e55_defconfig (gcc-10): 1 error, 1 warning
     fuloong2e_defconfig (gcc-10): 1 error, 1 warning
-    gcw0_defconfig (gcc-10): 1 error, 1 warning
     gpr_defconfig (gcc-10): 1 error, 1 warning
     ip22_defconfig (gcc-10): 1 error, 1 warning
     ip32_defconfig (gcc-10): 1 error, 1 warning
     jazz_defconfig (gcc-10): 1 error, 1 warning
-    jmr3927_defconfig (gcc-10): 1 error, 1 warning
     lasat_defconfig (gcc-10): 1 error, 1 warning
     lemote2f_defconfig (gcc-10): 1 error, 1 warning
     loongson1b_defconfig (gcc-10): 1 error, 1 warning
@@ -466,51 +402,67 @@ mips:
     mtx1_defconfig (gcc-10): 1 error, 1 warning
     nlm_xlp_defconfig (gcc-10): 1 error, 1 warning
     nlm_xlr_defconfig (gcc-10): 1 error, 1 warning
-    omega2p_defconfig (gcc-10): 1 error, 1 warning
     pic32mzda_defconfig (gcc-10): 1 error, 1 warning
     pistachio_defconfig (gcc-10): 1 error, 1 warning
     pnx8335_stb225_defconfig (gcc-10): 1 error, 1 warning
     qi_lb60_defconfig (gcc-10): 1 error, 1 warning
     rb532_defconfig (gcc-10): 1 error, 1 warning
-    rbtx49xx_defconfig (gcc-10): 1 error, 1 warning
     rm200_defconfig (gcc-10): 1 error, 1 warning
     rt305x_defconfig (gcc-10): 1 error, 1 warning
     sb1250_swarm_defconfig (gcc-10): 1 error, 1 warning
     tb0219_defconfig (gcc-10): 1 error, 1 warning
-    tb0226_defconfig (gcc-10): 1 error, 1 warning
     tb0287_defconfig (gcc-10): 1 error, 1 warning
-    vocore2_defconfig (gcc-10): 1 error, 1 warning
     workpad_defconfig (gcc-10): 1 error, 1 warning
     xway_defconfig (gcc-10): 1 error, 1 warning
 
 riscv:
     defconfig (gcc-10): 1 error, 1 warning
+    rv32_defconfig (gcc-10): 1 error, 3 warnings
 
 x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 1 error, 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 error, 1 warning
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 1 error, 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 error, 3 warnings
 
 Errors summary:
 
-    172  crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no val=
+    138  crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no val=
 ue, in function returning non-void [-Werror=3Dreturn-type]
-    11   crypto/algapi.c:423:3: error: 'return' with no value, in function =
+    11   crypto/algapi.c:431:3: error: 'return' with no value, in function =
 returning non-void [-Werror=3Dreturn-type]
 
 Warnings summary:
 
-    183  cc1: some warnings being treated as errors
+    149  cc1: some warnings being treated as errors
+    5    drivers/video/fbdev/sa1100fb.c:975:21: warning: =E2=80=98sa1100fb_=
+min_dma_period=E2=80=99 defined but not used [-Wunused-function]
     4    ld: warning: creating DT_TEXTREL in a PIE
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
     2    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
 d-only section `.head.text'
     2    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
 d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+    1    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    1    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
 
 Section mismatches summary:
 
-    1    WARNING: modpost: Found 1 section mismatch(es).
+    3    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -525,50 +477,11 @@ Detailed per-defconfig build reports:
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
     cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-acs5k_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
- mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-acs5k_tiny_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
-ction mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -587,11 +500,25 @@ ismatches
 
 ---------------------------------------------------------------------------=
 -----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
 am200epdkit_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -603,7 +530,7 @@ ar7_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -615,7 +542,7 @@ aspeed_g4_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -627,7 +554,7 @@ aspeed_g5_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -635,15 +562,12 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-assabet_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
+assabet_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
 Warnings:
-    cc1: some warnings being treated as errors
+    drivers/video/fbdev/sa1100fb.c:975:21: warning: =E2=80=98sa1100fb_min_d=
+ma_period=E2=80=99 defined but not used [-Wunused-function]
 
 ---------------------------------------------------------------------------=
 -----
@@ -651,7 +575,7 @@ at91_dt_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -663,7 +587,7 @@ ath25_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -675,7 +599,7 @@ ath79_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -687,7 +611,7 @@ axm55xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -699,7 +623,7 @@ axs103_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -711,7 +635,7 @@ axs103_smp_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -723,7 +647,7 @@ badge4_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -735,7 +659,7 @@ bcm2835_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -747,7 +671,7 @@ bcm47xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -759,7 +683,7 @@ bcm63xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -771,7 +695,7 @@ bigsur_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -783,7 +707,7 @@ bmips_be_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -795,7 +719,7 @@ bmips_stb_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -807,7 +731,7 @@ capcella_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -819,7 +743,7 @@ cavium_octeon_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -831,7 +755,7 @@ cerfcube_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -843,19 +767,7 @@ ci20_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-clps711x_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -867,7 +779,7 @@ cm_x2xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -879,7 +791,7 @@ cm_x300_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -891,7 +803,7 @@ cobalt_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -903,7 +815,7 @@ colibri_pxa270_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -915,7 +827,7 @@ colibri_pxa300_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -923,15 +835,12 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-collie_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
+collie_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
 
 Warnings:
-    cc1: some warnings being treated as errors
+    drivers/video/fbdev/sa1100fb.c:975:21: warning: =E2=80=98sa1100fb_min_d=
+ma_period=E2=80=99 defined but not used [-Wunused-function]
 
 ---------------------------------------------------------------------------=
 -----
@@ -939,7 +848,7 @@ corgi_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -951,7 +860,7 @@ davinci_all_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -963,7 +872,19 @@ db1xxx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
+n function returning non-void [-Werror=3Dreturn-type]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+decstation_64_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
+0 section mismatches
+
+Errors:
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -975,7 +896,19 @@ decstation_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
+n function returning non-void [-Werror=3Dreturn-type]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+decstation_r4k_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning,=
+ 0 section mismatches
+
+Errors:
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -987,7 +920,7 @@ defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mis=
 matches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -995,26 +928,34 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mis=
-matches
+defconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 3 warnings, 0 section mi=
+smatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
     cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warni=
-ng, 0 section mismatches
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 3 warni=
+ngs, 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
     cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
@@ -1023,7 +964,7 @@ dove_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1035,7 +976,7 @@ e55_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1043,27 +984,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-ebsa110_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
+ebsa110_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+efm32_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
 on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-efm32_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
- mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
@@ -1071,7 +998,7 @@ em_x270_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1083,7 +1010,7 @@ ep93xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1095,7 +1022,7 @@ eseries_pxa_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1107,7 +1034,7 @@ exynos_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1119,7 +1046,7 @@ ezx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
 ismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1127,15 +1054,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-footbridge_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
-ction mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+footbridge_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1143,7 +1063,7 @@ fuloong2e_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1151,27 +1071,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-gcw0_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
- mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+gcw0_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
 
 ---------------------------------------------------------------------------=
 -----
-gemini_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+gemini_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1179,7 +1085,7 @@ gpr_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1187,15 +1093,12 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-h3600_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
- mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
+h3600_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
 
 Warnings:
-    cc1: some warnings being treated as errors
+    drivers/video/fbdev/sa1100fb.c:975:21: warning: =E2=80=98sa1100fb_min_d=
+ma_period=E2=80=99 defined but not used [-Wunused-function]
 
 ---------------------------------------------------------------------------=
 -----
@@ -1203,7 +1106,7 @@ h5000_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1211,15 +1114,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-hackkit_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+hackkit_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1227,7 +1123,7 @@ haps_hs_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1239,7 +1135,7 @@ haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1251,7 +1147,7 @@ hisi_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1263,7 +1159,7 @@ hsdk_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1275,7 +1171,7 @@ i386_defconfig (i386, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1287,7 +1183,7 @@ imote2_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1299,7 +1195,7 @@ imx_v4_v5_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1311,7 +1207,7 @@ imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1319,27 +1215,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-integrator_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
-ction mismatches
+integrator_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
 
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-iop13xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
 
 ---------------------------------------------------------------------------=
 -----
@@ -1347,19 +1229,7 @@ iop32x_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-iop33x_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1371,7 +1241,7 @@ ip22_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1393,7 +1263,7 @@ ip32_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1405,7 +1275,7 @@ ixp4xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1417,7 +1287,7 @@ jazz_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1425,27 +1295,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-jmr3927_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-jornada720_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
+jmr3927_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+---------------------------------------------------------------------------=
+-----
+jornada720_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1453,19 +1309,7 @@ keystone_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-ks8695_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1477,7 +1321,7 @@ lart_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1489,7 +1333,7 @@ lasat_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1501,7 +1345,7 @@ lemote2f_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1513,7 +1357,7 @@ loongson1b_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1525,7 +1369,7 @@ loongson1c_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1537,7 +1381,7 @@ loongson3_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1545,15 +1389,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-lpc18xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+lpc18xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1561,7 +1398,7 @@ lpc32xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1569,27 +1406,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-lpd270_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+lpd270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-lubbock_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+lubbock_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1597,7 +1420,7 @@ magician_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1605,15 +1428,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-mainstone_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
-tion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+mainstone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1621,7 +1437,7 @@ malta_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1633,7 +1449,7 @@ malta_kvm_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1645,7 +1461,7 @@ malta_kvm_guest_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning=
 , 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1657,7 +1473,7 @@ malta_qemu_32r6_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning=
 , 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1669,7 +1485,7 @@ maltaaprp_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1681,7 +1497,7 @@ maltasmvp_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1693,7 +1509,7 @@ maltasmvp_eva_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1705,7 +1521,7 @@ maltaup_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1717,7 +1533,7 @@ maltaup_xpa_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1729,7 +1545,19 @@ markeins_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
+n function returning non-void [-Werror=3Dreturn-type]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+milbeaut_m10v_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0=
+ section mismatches
+
+Errors:
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1741,7 +1569,7 @@ mini2440_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1753,7 +1581,7 @@ mips_paravirt_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1765,7 +1593,7 @@ mmp2_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1777,7 +1605,7 @@ moxart_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1789,7 +1617,7 @@ mpc30x_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1797,15 +1625,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-mps2_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
-mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+mps2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1813,7 +1634,7 @@ msp71xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1825,7 +1646,7 @@ mtx1_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1842,7 +1663,7 @@ multi_v5_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1854,7 +1675,7 @@ multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1866,7 +1687,7 @@ mv78xx0_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1878,7 +1699,7 @@ mvebu_v5_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1890,7 +1711,7 @@ mvebu_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1902,7 +1723,7 @@ mxs_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
 ismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1910,39 +1731,17 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-neponset_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-netwinder_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
+neponset_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
 tion mismatches
 
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
 Warnings:
-    cc1: some warnings being treated as errors
+    drivers/video/fbdev/sa1100fb.c:975:21: warning: =E2=80=98sa1100fb_min_d=
+ma_period=E2=80=99 defined but not used [-Wunused-function]
 
 ---------------------------------------------------------------------------=
 -----
-netx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
-mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+netwinder_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1950,7 +1749,7 @@ nhk8815_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1962,7 +1761,7 @@ nlm_xlp_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1974,7 +1773,7 @@ nlm_xlr_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1986,7 +1785,7 @@ nsim_hs_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -1998,7 +1797,7 @@ nsim_hs_smp_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2010,7 +1809,7 @@ nsimosci_hs_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 s=
 ection mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2022,7 +1821,7 @@ nsimosci_hs_smp_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning,=
  0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2030,26 +1829,11 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-nuc910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-nuc950_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-nuc960_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
 omap1_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2061,7 +1845,7 @@ omap2plus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2069,15 +1853,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-omega2p_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+omega2p_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2085,7 +1862,7 @@ orion5x_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2097,7 +1874,7 @@ oxnas_v6_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2109,7 +1886,7 @@ palmz72_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2121,7 +1898,7 @@ pcm027_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2133,7 +1910,7 @@ pic32mzda_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2145,7 +1922,7 @@ pistachio_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
 ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2157,7 +1934,7 @@ pleb_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2169,7 +1946,7 @@ pnx8335_stb225_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning,=
  0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2182,51 +1959,23 @@ ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-pxa168_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+pxa168_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-pxa255-idp_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 se=
-ction mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+pxa255-idp_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
 
 ---------------------------------------------------------------------------=
 -----
-pxa3xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+pxa3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-pxa910_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
-n mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+pxa910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2234,7 +1983,7 @@ pxa_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
 ismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2246,7 +1995,7 @@ qcom_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2258,19 +2007,7 @@ qi_lb60_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-raumfeld_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2282,7 +2019,7 @@ rb532_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2290,27 +2027,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-rbtx49xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
-tion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+rbtx49xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-realview_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+realview_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2318,7 +2041,7 @@ rm200_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2330,10 +2053,25 @@ rt305x_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 3 warnings, 0 secti=
+on mismatches
+
+Errors:
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
+n function returning non-void [-Werror=3Dreturn-type]
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
     cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
@@ -2342,7 +2080,7 @@ s3c2410_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2354,7 +2092,7 @@ s3c6400_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2366,7 +2104,7 @@ s5pv210_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2378,7 +2116,7 @@ sama5_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2390,7 +2128,7 @@ sb1250_swarm_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0=
  section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2398,27 +2136,17 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-shannon_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-shmobile_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
+shannon_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
 ion mismatches
 
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
 Warnings:
-    cc1: some warnings being treated as errors
+    drivers/video/fbdev/sa1100fb.c:975:21: warning: =E2=80=98sa1100fb_min_d=
+ma_period=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+shmobile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2426,7 +2154,7 @@ simpad_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2438,7 +2166,7 @@ socfpga_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2450,7 +2178,7 @@ spear13xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
 tion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2462,7 +2190,7 @@ spear3xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2474,7 +2202,7 @@ spear6xx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2486,7 +2214,7 @@ spitz_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2498,7 +2226,7 @@ stm32_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2510,7 +2238,7 @@ sunxi_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2522,7 +2250,7 @@ tango4_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sectio=
 n mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2534,7 +2262,7 @@ tb0219_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2542,15 +2270,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-tb0226_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
-on mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+tb0226_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2558,7 +2279,7 @@ tb0287_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2575,7 +2296,7 @@ tegra_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2583,13 +2304,17 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
 
----------------------------------------------------------------------------=
------
-tinyconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section mi=
-smatches
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
 ---------------------------------------------------------------------------=
 -----
@@ -2603,13 +2328,8 @@ y section `.head.text'
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+tinyconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section mi=
+smatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2617,7 +2337,7 @@ trizeps4_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2629,7 +2349,9 @@ u300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
 
 Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
 
 ---------------------------------------------------------------------------=
 -----
@@ -2637,7 +2359,7 @@ u8500_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2649,7 +2371,7 @@ vdk_hs38_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2661,7 +2383,7 @@ vdk_hs38_smp_defconfig (arc, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: 'return' with no value, in function retur=
+    crypto/algapi.c:431:3: error: 'return' with no value, in function retur=
 ning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2669,15 +2391,13 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-versatile_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
-tion mismatches
+versatile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
 
 ---------------------------------------------------------------------------=
 -----
@@ -2685,7 +2405,7 @@ vexpress_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2697,7 +2417,7 @@ vf610m4_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 secti=
 on mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2709,7 +2429,7 @@ viper_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2717,15 +2437,8 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-vocore2_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
-n function returning non-void [-Werror=3Dreturn-type]
-
-Warnings:
-    cc1: some warnings being treated as errors
+vocore2_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -2733,7 +2446,7 @@ vt8500_v6_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2745,7 +2458,7 @@ workpad_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
 ion mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2753,26 +2466,36 @@ Warnings:
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
-tion mismatches
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 3 warnings, 0 se=
+ction mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
     cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 1=
- warning, 0 section mismatches
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 3=
+ warnings, 0 section mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
     cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
@@ -2781,7 +2504,7 @@ xcep_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2793,7 +2516,7 @@ xway_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
  mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2805,7 +2528,7 @@ zeus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section =
 mismatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
@@ -2817,7 +2540,7 @@ zx_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mi=
 smatches
 
 Errors:
-    crypto/algapi.c:423:3: error: =E2=80=98return=E2=80=99 with no value, i=
+    crypto/algapi.c:431:3: error: =E2=80=98return=E2=80=99 with no value, i=
 n function returning non-void [-Werror=3Dreturn-type]
 
 Warnings:
