@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 725036F9857
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 12:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13FD86F9858
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 12:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjEGK4S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 06:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36258 "EHLO
+        id S230523AbjEGK41 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 06:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230489AbjEGK4R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 06:56:17 -0400
+        with ESMTP id S230489AbjEGK40 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 06:56:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E035B8F
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 03:56:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518FB59EE
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 03:56:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F1AF60B34
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 10:56:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356B5C433EF;
-        Sun,  7 May 2023 10:56:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D31DF61B51
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 10:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5555C433EF;
+        Sun,  7 May 2023 10:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683456975;
-        bh=XIrvqB0C0BqBnmv+TBUsk2hTp4lK1Kw0GrOfKTFNEkQ=;
+        s=korg; t=1683456984;
+        bh=+XUtfj4gYnfxNEuqR0bHmHMhuA66vLYAKaUvjNccu1U=;
         h=Subject:To:Cc:From:Date:From;
-        b=FhwZBk4F3VM9QN9s1cvYwhx6tVuW4mEewLma8zUefOvGlOpYOw2wDuGt5mdq/5Fnb
-         HeKWYYyA91iKNrlf5XU3nWuucRcDceAvefAB/ysnS0KLue4+1LWeOu2c+fO1kEkVnz
-         edqwvXbaxuIW5qfDz3d0/t18dsls0/fNTQopT9Tk=
-Subject: FAILED: patch "[PATCH] wifi: ath9k: Don't mark channelmap stack variable read-only" failed to apply to 6.3-stable tree
+        b=LkPb8ifLzFftAqJg0h1W18F5bHJSZzdR5kamq1QpnmYnx6uXC0rAOwMAiDV2P8fKH
+         aA8J3xgnsj31yGkB9vm1dnV5qFR2UqCgC2Dq6XPaIWzT3EAi+/N0j7xdgK4q5PY66Z
+         g46Ca2GOkajDhCF0a2uQ6I5s7PD3yOZ0AuDsx6q4=
+Subject: FAILED: patch "[PATCH] wifi: ath9k: Don't mark channelmap stack variable read-only" failed to apply to 6.2-stable tree
 To:     toke@toke.dk, quic_kvalo@quicinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 12:56:12 +0200
-Message-ID: <2023050712-jailhouse-glazing-2d6c@gregkh>
+Date:   Sun, 07 May 2023 12:56:13 +0200
+Message-ID: <2023050713-pension-another-34bb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
 git cherry-pick -x b956e3110a797a3663f91f9b8935b667cc23fe72
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050712-jailhouse-glazing-2d6c@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050713-pension-another-34bb@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
