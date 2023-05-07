@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB9D6F97A5
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 10:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6BEF6F97A9
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 10:23:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjEGIWv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 04:22:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57246 "EHLO
+        id S230383AbjEGIXs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 04:23:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjEGIWt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 04:22:49 -0400
+        with ESMTP id S229628AbjEGIXr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 04:23:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F02211607
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 01:22:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B151B13C3E
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 01:23:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D5F7619E8
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 08:22:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B88C433D2;
-        Sun,  7 May 2023 08:22:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1227E60C08
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 08:23:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0785C433EF;
+        Sun,  7 May 2023 08:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683447765;
-        bh=T4dFmOF4JAt95WT59XaTek8mgG3TeUj+Vfspg3viMIM=;
+        s=korg; t=1683447821;
+        bh=LxZpIe5S9WfeulNemYmuc8x1ow6e6aUsrYV8xiUjMXk=;
         h=Subject:To:Cc:From:Date:From;
-        b=rITJhjPZ7+MC9c27ArzRIVoLcoOla/iF3XHg/U+VOUxx8XVdrGL/bLwiQH9qBPC4d
-         vUxZ6KQdGHEHjRHyr9/b+sHoL7SB5tf9QU6d6HM4Oxch3AlH6MhZAy+2l/GFVmZZsd
-         86Wo32KXXbE0srEMgb1gdjKHBKPHOF2CeTU4H0uk=
+        b=xxhYfldI+vk2V5H98H0AP3lZ9/wZdGoHsfswqygyjaoSueCTbyj/3D3kW1QsrLh9i
+         CeNjE/YrCxBuMuXx40JNEnQlEyn6XyF96QMqIGoLnPi0Q24j2LlFoeOFe3f9ukWerd
+         xIX3/TKTCyLpGOrVpWDpw5VJQy/jwmt5VQ+GMrcI=
 Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix accessing regmap on unattached" failed to apply to 4.14-stable tree
 To:     krzysztof.kozlowski@linaro.org, broonie@kernel.org,
         pierre-louis.bossart@linux.intel.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 10:22:41 +0200
-Message-ID: <2023050741--1136@gregkh>
+Date:   Sun, 07 May 2023 10:23:38 +0200
+Message-ID: <2023050738-riches-luckiness-5237@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -61,7 +61,7 @@ git checkout FETCH_HEAD
 git cherry-pick -x 84822215acd15bd86a7759a835271e63bba83a7b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050741--1136@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050738-riches-luckiness-5237@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
