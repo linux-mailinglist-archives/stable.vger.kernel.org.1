@@ -2,451 +2,1222 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3DCC6F9ADD
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 20:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63DE06F9ADE
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 20:25:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230348AbjEGSWE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 14:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41756 "EHLO
+        id S229877AbjEGSZk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 14:25:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230187AbjEGSWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 14:22:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1442D65
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 11:22:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCD8561B7D
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 18:22:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D63C433D2;
-        Sun,  7 May 2023 18:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683483720;
-        bh=a6qXS37VJnXluBTADT7ZksWl4i2v0wEwIdoOO/svZl0=;
-        h=Subject:To:Cc:From:Date:From;
-        b=0tcaHXFuM01jZs9xWts+gTPTRDPcO5rcKU1vnACM+kFxShzZWmSbluN1lLy/6/htM
-         +M9gwdiUPN0XOxwIwpJ9O1Q7P6t/dNBc9Wdrb6X4NFtL1Gv5LW8BuvNZYR8o+d/iDo
-         o89nIpo6f2Hvunix5jFjciMpv4EF4ykSpdbh/qcc=
-Subject: FAILED: patch "[PATCH] cifs: avoid potential races when handling multiple dfs tcons" failed to apply to 6.2-stable tree
-To:     pc@manguebit.com, stfrench@microsoft.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 20:21:57 +0200
-Message-ID: <2023050757-banked-expulsion-d269@gregkh>
+        with ESMTP id S229619AbjEGSZi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 14:25:38 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2498C83DE
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 11:25:35 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6435bbedb4fso4103682b3a.3
+        for <stable@vger.kernel.org>; Sun, 07 May 2023 11:25:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1683483934; x=1686075934;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=DtFbJj6o+GyZmlagNdgqe8fkVwT7cO5toTNNOAsf+iQ=;
+        b=eO3E6ZBtY7Xd97Kcb1M/ioIq1pDupmWWM5q6npfSIL5//8GosUilRGczO5ZBpYMKDH
+         S67Nw0G4ogzyITqaBeJwgP9FZ35xc6UFEO4vYK0wJWICWVkgFsPWB7CzryAZv9nL4Ovi
+         63d5oV/LNPkkSvfaa6BIzcDXwrEMk1WwBDXH6uUWkiyCQpPmJ9dyGhCCBi7H5gBdRPzU
+         dC+8FCnDpOQCwQzzmOJsdysaij2Ac5RSwHbMpj48/DGmfv4lD8AWDHY6G7Ma0XHE4ynw
+         lhQIc8mAhjuACUyFf0kLzNwiv74loC8/M1BL4qgH78JmsZQanT/xXzmVmamk37GaYfBd
+         lUKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683483934; x=1686075934;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DtFbJj6o+GyZmlagNdgqe8fkVwT7cO5toTNNOAsf+iQ=;
+        b=Ya3FjgSAIi3bqrxg1fce4pDWUjYmrXARTQWrCMQ/WGMII1W+MZIDKW7o07GQSMeF5w
+         3sUYNi7Y9UrcK70c1NCecQ4C8zBo3t0PxR8d8dje2goulYDL8VlUAOfD7R7eQpbUNDVr
+         ffKGOQIpYVtyD6XsBeYcS+REAEVFr1M7nPWPKxoV+haXech+iQc6wAGljhJGESCsKmpr
+         ZkZLFSCUDEZrpCUt0Px1xTSQhqEC21DX+GyYSjZ5XsbXkZ4r8QmK+VQ55aqmMQzWOaBp
+         skzhjsV6XGk1XKP7teP3+w9oQGxoP3RrUkW852EUaXweoSUqFUBMRX/cJpzWQMPVeGap
+         CuXg==
+X-Gm-Message-State: AC+VfDx43Q7msoxWiHwVU5zx+Oc3Frfvvodm5t+KnsGp8Jp4AMLkDtMk
+        bOVJSsza/+Sls25GJQ29vLOGkq2esMw9rndAdI6sDw==
+X-Google-Smtp-Source: ACHHUZ7OITrX62Y+IUKsEp1d7vGXm3A20vGlRpjklkszkMWqM9zD6xtfFKjdD+KWQrKVoTUxKg1Z/w==
+X-Received: by 2002:a05:6a00:a96:b0:640:dbe5:e2ee with SMTP id b22-20020a056a000a9600b00640dbe5e2eemr11202856pfl.10.1683483933646;
+        Sun, 07 May 2023 11:25:33 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id 22-20020aa79216000000b006328ee1e56csm4671053pfo.2.2023.05.07.11.25.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 11:25:33 -0700 (PDT)
+Message-ID: <6457ed1d.a70a0220.5b99f.88e5@mx.google.com>
+Date:   Sun, 07 May 2023 11:25:33 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.14.311-217-ga00bdd4e18600
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-4.14.y build: 194 builds: 2 failed, 192 passed,
+ 28 warnings (v4.14.311-217-ga00bdd4e18600)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-4.14.y build: 194 builds: 2 failed, 192 passed, 28 warnings=
+ (v4.14.311-217-ga00bdd4e18600)
 
-The patch below does not apply to the 6.2-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.311-217-ga00bdd4e18600/
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.311-217-ga00bdd4e18600
+Git Commit: a00bdd4e186000885200001cb5e6602193c17b45
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6be2ea33a4093402252724a00c4af8033725184c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050757-banked-expulsion-d269@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+Build Failures Detected:
 
-Possible dependencies:
+mips:
+    ip27_defconfig: (gcc-10) FAIL
+    ip28_defconfig: (gcc-10) FAIL
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+    mini2440_defconfig (gcc-10): 1 warning
+    omap1_defconfig (gcc-10): 1 warning
+    s3c2410_defconfig (gcc-10): 1 warning
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+    malta_qemu_32r6_defconfig (gcc-10): 1 warning
+    mtx1_defconfig (gcc-10): 3 warnings
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
 
 
+Warnings summary:
 
-thanks,
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+    2    sound/pci/echoaudio/echoaudio_dsp.c:647:9: warning: iteration 1073=
+741824 invokes undefined behavior [-Waggressive-loop-optimizations]
+    2    drivers/tty/serial/samsung.c:1790:34: warning: array =E2=80=98s3c2=
+4xx_uart_dt_match=E2=80=99 assumed to have one element
+    1    {standard input}:30: Warning: macro instruction expanded into mult=
+iple instructions
+    1    sound/pci/echoaudio/echoaudio_dsp.c:658:9: warning: iteration 1073=
+741824 invokes undefined behavior [-Waggressive-loop-optimizations]
+    1    drivers/gpio/gpio-omap.c:1152:34: warning: array =E2=80=98omap_gpi=
+o_match=E2=80=99 assumed to have one element
 
-greg k-h
+Section mismatches summary:
 
------------------- original commit in Linus's tree ------------------
+    13   WARNING: modpost: Found 1 section mismatch(es).
 
-From 6be2ea33a4093402252724a00c4af8033725184c Mon Sep 17 00:00:00 2001
-From: Paulo Alcantara <pc@manguebit.com>
-Date: Thu, 27 Apr 2023 04:40:08 -0300
-Subject: [PATCH] cifs: avoid potential races when handling multiple dfs tcons
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-Now that a DFS tcon manages its own list of DFS referrals and
-sessions, there is no point in having a single worker to refresh
-referrals of all DFS tcons.  Make it faster and less prone to race
-conditions when having several mounts by queueing a worker per DFS
-tcon that will take care of refreshing only the DFS referrals related
-to it.
+Detailed per-defconfig build reports:
 
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
-diff --git a/fs/cifs/cifsglob.h b/fs/cifs/cifsglob.h
-index a62447404851..9c5cd332ce14 100644
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -1238,8 +1238,8 @@ struct cifs_tcon {
- 	struct cached_fids *cfids;
- 	/* BB add field for back pointer to sb struct(s)? */
- #ifdef CONFIG_CIFS_DFS_UPCALL
--	struct list_head ulist; /* cache update list */
- 	struct list_head dfs_ses_list;
-+	struct delayed_work dfs_cache_work;
- #endif
- 	struct delayed_work	query_interfaces; /* query interfaces workqueue job */
- };
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 9451b1023af8..9a730efbce32 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -2340,6 +2340,9 @@ cifs_put_tcon(struct cifs_tcon *tcon)
- 
- 	/* cancel polling of interfaces */
- 	cancel_delayed_work_sync(&tcon->query_interfaces);
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	cancel_delayed_work_sync(&tcon->dfs_cache_work);
-+#endif
- 
- 	if (tcon->use_witness) {
- 		int rc;
-@@ -2587,7 +2590,9 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
- 	}
--
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
-+#endif
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_add(&tcon->tcon_list, &ses->tcon_list);
- 	spin_unlock(&cifs_tcp_ses_lock);
-diff --git a/fs/cifs/dfs.c b/fs/cifs/dfs.c
-index c4ec5c67087b..da4e083b1ab4 100644
---- a/fs/cifs/dfs.c
-+++ b/fs/cifs/dfs.c
-@@ -157,6 +157,8 @@ static int get_dfs_conn(struct cifs_mount_ctx *mnt_ctx, const char *ref_path, co
- 		rc = cifs_is_path_remote(mnt_ctx);
- 	}
- 
-+	dfs_cache_noreq_update_tgthint(ref_path + 1, tit);
-+
- 	if (rc == -EREMOTE && is_refsrv) {
- 		rc2 = get_root_smb_session(mnt_ctx);
- 		if (rc2)
-@@ -259,6 +261,8 @@ static int __dfs_mount_share(struct cifs_mount_ctx *mnt_ctx)
- 		if (list_empty(&tcon->dfs_ses_list)) {
- 			list_replace_init(&mnt_ctx->dfs_ses_list,
- 					  &tcon->dfs_ses_list);
-+			queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
-+					   dfs_cache_get_ttl() * HZ);
- 		} else {
- 			dfs_put_root_smb_sessions(&mnt_ctx->dfs_ses_list);
- 		}
-diff --git a/fs/cifs/dfs_cache.c b/fs/cifs/dfs_cache.c
-index 6557d7b2798a..1513b2709889 100644
---- a/fs/cifs/dfs_cache.c
-+++ b/fs/cifs/dfs_cache.c
-@@ -20,12 +20,14 @@
- #include "cifs_unicode.h"
- #include "smb2glob.h"
- #include "dns_resolve.h"
-+#include "dfs.h"
- 
- #include "dfs_cache.h"
- 
--#define CACHE_HTABLE_SIZE 32
--#define CACHE_MAX_ENTRIES 64
--#define CACHE_MIN_TTL 120 /* 2 minutes */
-+#define CACHE_HTABLE_SIZE	32
-+#define CACHE_MAX_ENTRIES	64
-+#define CACHE_MIN_TTL		120 /* 2 minutes */
-+#define CACHE_DEFAULT_TTL	300 /* 5 minutes */
- 
- #define IS_DFS_INTERLINK(v) (((v) & DFSREF_REFERRAL_SERVER) && !((v) & DFSREF_STORAGE_SERVER))
- 
-@@ -50,10 +52,9 @@ struct cache_entry {
- };
- 
- static struct kmem_cache *cache_slab __read_mostly;
--static struct workqueue_struct *dfscache_wq __read_mostly;
-+struct workqueue_struct *dfscache_wq;
- 
--static int cache_ttl;
--static DEFINE_SPINLOCK(cache_ttl_lock);
-+atomic_t dfs_cache_ttl;
- 
- static struct nls_table *cache_cp;
- 
-@@ -65,10 +66,6 @@ static atomic_t cache_count;
- static struct hlist_head cache_htable[CACHE_HTABLE_SIZE];
- static DECLARE_RWSEM(htable_rw_lock);
- 
--static void refresh_cache_worker(struct work_struct *work);
--
--static DECLARE_DELAYED_WORK(refresh_task, refresh_cache_worker);
--
- /**
-  * dfs_cache_canonical_path - get a canonical DFS path
-  *
-@@ -290,7 +287,9 @@ int dfs_cache_init(void)
- 	int rc;
- 	int i;
- 
--	dfscache_wq = alloc_workqueue("cifs-dfscache", WQ_FREEZABLE | WQ_UNBOUND, 1);
-+	dfscache_wq = alloc_workqueue("cifs-dfscache",
-+				      WQ_UNBOUND|WQ_FREEZABLE|WQ_MEM_RECLAIM,
-+				      0);
- 	if (!dfscache_wq)
- 		return -ENOMEM;
- 
-@@ -306,6 +305,7 @@ int dfs_cache_init(void)
- 		INIT_HLIST_HEAD(&cache_htable[i]);
- 
- 	atomic_set(&cache_count, 0);
-+	atomic_set(&dfs_cache_ttl, CACHE_DEFAULT_TTL);
- 	cache_cp = load_nls("utf8");
- 	if (!cache_cp)
- 		cache_cp = load_nls_default();
-@@ -480,6 +480,7 @@ static struct cache_entry *add_cache_entry_locked(struct dfs_info3_param *refs,
- 	int rc;
- 	struct cache_entry *ce;
- 	unsigned int hash;
-+	int ttl;
- 
- 	WARN_ON(!rwsem_is_locked(&htable_rw_lock));
- 
-@@ -496,15 +497,8 @@ static struct cache_entry *add_cache_entry_locked(struct dfs_info3_param *refs,
- 	if (IS_ERR(ce))
- 		return ce;
- 
--	spin_lock(&cache_ttl_lock);
--	if (!cache_ttl) {
--		cache_ttl = ce->ttl;
--		queue_delayed_work(dfscache_wq, &refresh_task, cache_ttl * HZ);
--	} else {
--		cache_ttl = min_t(int, cache_ttl, ce->ttl);
--		mod_delayed_work(dfscache_wq, &refresh_task, cache_ttl * HZ);
--	}
--	spin_unlock(&cache_ttl_lock);
-+	ttl = min_t(int, atomic_read(&dfs_cache_ttl), ce->ttl);
-+	atomic_set(&dfs_cache_ttl, ttl);
- 
- 	hlist_add_head(&ce->hlist, &cache_htable[hash]);
- 	dump_ce(ce);
-@@ -616,7 +610,6 @@ static struct cache_entry *lookup_cache_entry(const char *path)
-  */
- void dfs_cache_destroy(void)
- {
--	cancel_delayed_work_sync(&refresh_task);
- 	unload_nls(cache_cp);
- 	flush_cache_ents();
- 	kmem_cache_destroy(cache_slab);
-@@ -1142,6 +1135,7 @@ static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, c
-  * target shares in @refs.
-  */
- static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
-+					 const char *path,
- 					 struct dfs_cache_tgt_list *old_tl,
- 					 struct dfs_cache_tgt_list *new_tl)
- {
-@@ -1153,8 +1147,10 @@ static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
- 		     nit = dfs_cache_get_next_tgt(new_tl, nit)) {
- 			if (target_share_equal(server,
- 					       dfs_cache_get_tgt_name(oit),
--					       dfs_cache_get_tgt_name(nit)))
-+					       dfs_cache_get_tgt_name(nit))) {
-+				dfs_cache_noreq_update_tgthint(path, nit);
- 				return;
-+			}
- 		}
- 	}
- 
-@@ -1162,13 +1158,28 @@ static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
- 	cifs_signal_cifsd_for_reconnect(server, true);
- }
- 
-+static bool is_ses_good(struct cifs_ses *ses)
-+{
-+	struct TCP_Server_Info *server = ses->server;
-+	struct cifs_tcon *tcon = ses->tcon_ipc;
-+	bool ret;
-+
-+	spin_lock(&ses->ses_lock);
-+	spin_lock(&ses->chan_lock);
-+	ret = !cifs_chan_needs_reconnect(ses, server) &&
-+		ses->ses_status == SES_GOOD &&
-+		!tcon->need_reconnect;
-+	spin_unlock(&ses->chan_lock);
-+	spin_unlock(&ses->ses_lock);
-+	return ret;
-+}
-+
- /* Refresh dfs referral of tcon and mark it for reconnect if needed */
--static int __refresh_tcon(const char *path, struct cifs_tcon *tcon, bool force_refresh)
-+static int __refresh_tcon(const char *path, struct cifs_ses *ses, bool force_refresh)
- {
- 	struct dfs_cache_tgt_list old_tl = DFS_CACHE_TGT_LIST_INIT(old_tl);
- 	struct dfs_cache_tgt_list new_tl = DFS_CACHE_TGT_LIST_INIT(new_tl);
--	struct cifs_ses *ses = CIFS_DFS_ROOT_SES(tcon->ses);
--	struct cifs_tcon *ipc = ses->tcon_ipc;
-+	struct TCP_Server_Info *server = ses->server;
- 	bool needs_refresh = false;
- 	struct cache_entry *ce;
- 	unsigned int xid;
-@@ -1190,20 +1201,19 @@ static int __refresh_tcon(const char *path, struct cifs_tcon *tcon, bool force_r
- 		goto out;
- 	}
- 
--	spin_lock(&ipc->tc_lock);
--	if (ipc->status != TID_GOOD) {
--		spin_unlock(&ipc->tc_lock);
--		cifs_dbg(FYI, "%s: skip cache refresh due to disconnected ipc\n", __func__);
-+	ses = CIFS_DFS_ROOT_SES(ses);
-+	if (!is_ses_good(ses)) {
-+		cifs_dbg(FYI, "%s: skip cache refresh due to disconnected ipc\n",
-+			 __func__);
- 		goto out;
- 	}
--	spin_unlock(&ipc->tc_lock);
- 
- 	ce = cache_refresh_path(xid, ses, path, true);
- 	if (!IS_ERR(ce)) {
- 		rc = get_targets(ce, &new_tl);
- 		up_read(&htable_rw_lock);
- 		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
--		mark_for_reconnect_if_needed(tcon->ses->server, &old_tl, &new_tl);
-+		mark_for_reconnect_if_needed(server, path, &old_tl, &new_tl);
- 	}
- 
- out:
-@@ -1216,10 +1226,11 @@ out:
- static int refresh_tcon(struct cifs_tcon *tcon, bool force_refresh)
- {
- 	struct TCP_Server_Info *server = tcon->ses->server;
-+	struct cifs_ses *ses = tcon->ses;
- 
- 	mutex_lock(&server->refpath_lock);
- 	if (server->leaf_fullpath)
--		__refresh_tcon(server->leaf_fullpath + 1, tcon, force_refresh);
-+		__refresh_tcon(server->leaf_fullpath + 1, ses, force_refresh);
- 	mutex_unlock(&server->refpath_lock);
- 	return 0;
- }
-@@ -1263,60 +1274,32 @@ int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb)
- 	return refresh_tcon(tcon, true);
- }
- 
--/*
-- * Worker that will refresh DFS cache from all active mounts based on lowest TTL value
-- * from a DFS referral.
-- */
--static void refresh_cache_worker(struct work_struct *work)
-+/* Refresh all DFS referrals related to DFS tcon */
-+void dfs_cache_refresh(struct work_struct *work)
- {
- 	struct TCP_Server_Info *server;
--	struct cifs_tcon *tcon, *ntcon;
--	struct list_head tcons;
-+	struct dfs_root_ses *rses;
-+	struct cifs_tcon *tcon;
- 	struct cifs_ses *ses;
- 
--	INIT_LIST_HEAD(&tcons);
-+	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
-+	ses = tcon->ses;
-+	server = ses->server;
- 
--	spin_lock(&cifs_tcp_ses_lock);
--	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
--		spin_lock(&server->srv_lock);
--		if (!server->leaf_fullpath) {
--			spin_unlock(&server->srv_lock);
--			continue;
--		}
--		spin_unlock(&server->srv_lock);
--
--		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
--			if (ses->tcon_ipc) {
--				ses->ses_count++;
--				list_add_tail(&ses->tcon_ipc->ulist, &tcons);
--			}
--			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
--				if (!tcon->ipc) {
--					tcon->tc_count++;
--					list_add_tail(&tcon->ulist, &tcons);
--				}
--			}
--		}
--	}
--	spin_unlock(&cifs_tcp_ses_lock);
--
--	list_for_each_entry_safe(tcon, ntcon, &tcons, ulist) {
--		struct TCP_Server_Info *server = tcon->ses->server;
--
--		list_del_init(&tcon->ulist);
-+	mutex_lock(&server->refpath_lock);
-+	if (server->leaf_fullpath)
-+		__refresh_tcon(server->leaf_fullpath + 1, ses, false);
-+	mutex_unlock(&server->refpath_lock);
- 
-+	list_for_each_entry(rses, &tcon->dfs_ses_list, list) {
-+		ses = rses->ses;
-+		server = ses->server;
- 		mutex_lock(&server->refpath_lock);
- 		if (server->leaf_fullpath)
--			__refresh_tcon(server->leaf_fullpath + 1, tcon, false);
-+			__refresh_tcon(server->leaf_fullpath + 1, ses, false);
- 		mutex_unlock(&server->refpath_lock);
--
--		if (tcon->ipc)
--			cifs_put_smb_ses(tcon->ses);
--		else
--			cifs_put_tcon(tcon);
- 	}
- 
--	spin_lock(&cache_ttl_lock);
--	queue_delayed_work(dfscache_wq, &refresh_task, cache_ttl * HZ);
--	spin_unlock(&cache_ttl_lock);
-+	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
-+			   atomic_read(&dfs_cache_ttl) * HZ);
- }
-diff --git a/fs/cifs/dfs_cache.h b/fs/cifs/dfs_cache.h
-index e0d39393035a..c6d89cd6d4fd 100644
---- a/fs/cifs/dfs_cache.h
-+++ b/fs/cifs/dfs_cache.h
-@@ -13,6 +13,9 @@
- #include <linux/uuid.h>
- #include "cifsglob.h"
- 
-+extern struct workqueue_struct *dfscache_wq;
-+extern atomic_t dfs_cache_ttl;
-+
- #define DFS_CACHE_TGT_LIST_INIT(var) { .tl_numtgts = 0, .tl_list = LIST_HEAD_INIT((var).tl_list), }
- 
- struct dfs_cache_tgt_list {
-@@ -42,6 +45,7 @@ int dfs_cache_get_tgt_share(char *path, const struct dfs_cache_tgt_iterator *it,
- 			    char **prefix);
- char *dfs_cache_canonical_path(const char *path, const struct nls_table *cp, int remap);
- int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb);
-+void dfs_cache_refresh(struct work_struct *work);
- 
- static inline struct dfs_cache_tgt_iterator *
- dfs_cache_get_next_tgt(struct dfs_cache_tgt_list *tl,
-@@ -89,4 +93,9 @@ dfs_cache_get_nr_tgts(const struct dfs_cache_tgt_list *tl)
- 	return tl ? tl->tl_numtgts : 0;
- }
- 
-+static inline int dfs_cache_get_ttl(void)
-+{
-+	return atomic_read(&dfs_cache_ttl);
-+}
-+
- #endif /* _CIFS_DFS_CACHE_H */
+---------------------------------------------------------------------------=
+-----
+acs5k_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
 
+---------------------------------------------------------------------------=
+-----
+acs5k_tiny_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+am200epdkit_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+ar7_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+aspeed_g4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+aspeed_g5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+assabet_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+at91_dt_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ath25_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ath79_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+axm55xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+axs103_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+axs103_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+badge4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+bcm2835_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+bcm47xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+bcm63xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+bigsur_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+bmips_be_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+bmips_stb_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+capcella_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+cavium_octeon_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+cerfcube_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+ci20_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+cm_x2xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+cm_x300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+cobalt_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+colibri_pxa270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+colibri_pxa300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+collie_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+corgi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+davinci_all_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+db1xxx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+decstation_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+dove_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+e55_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+ebsa110_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+efm32_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+em_x270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ep93xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+eseries_pxa_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+exynos_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ezx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+footbridge_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+fuloong2e_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+gemini_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+gpr_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+h3600_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+h5000_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+hisi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+hsdk_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imote2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v4_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+integrator_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+iop13xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+iop32x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+iop33x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip22_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip27_defconfig (mips, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip28_defconfig (mips, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip32_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ixp4xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+jazz_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+jmr3927_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+jornada720_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+keystone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+ks8695_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+lasat_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lemote2f_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+loongson1b_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+loongson1c_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+loongson3_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+lpc18xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lpc32xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lpd270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lubbock_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+magician_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mainstone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_kvm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_kvm_guest_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnin=
+gs, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_qemu_32r6_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warnin=
+g, 0 section mismatches
+
+Warnings:
+    {standard input}:30: Warning: macro instruction expanded into multiple =
+instructions
+
+---------------------------------------------------------------------------=
+-----
+maltaaprp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltasmvp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltasmvp_eva_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltaup_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltaup_xpa_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+markeins_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+mini2440_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    drivers/tty/serial/samsung.c:1790:34: warning: array =E2=80=98s3c24xx_u=
+art_dt_match=E2=80=99 assumed to have one element
+
+---------------------------------------------------------------------------=
+-----
+mips_paravirt_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+mmp2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+moxart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+mpc30x_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+mps2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+msp71xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mtx1_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    sound/pci/echoaudio/echoaudio_dsp.c:647:9: warning: iteration 107374182=
+4 invokes undefined behavior [-Waggressive-loop-optimizations]
+    sound/pci/echoaudio/echoaudio_dsp.c:658:9: warning: iteration 107374182=
+4 invokes undefined behavior [-Waggressive-loop-optimizations]
+    sound/pci/echoaudio/echoaudio_dsp.c:647:9: warning: iteration 107374182=
+4 invokes undefined behavior [-Waggressive-loop-optimizations]
+
+---------------------------------------------------------------------------=
+-----
+multi_v4t_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mvebu_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mvebu_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mxs_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+neponset_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+netwinder_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+netx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+nhk8815_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+nlm_xlp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nlm_xlr_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsim_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsimosci_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsimosci_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warning=
+s, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nuc910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+nuc950_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+nuc960_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap1_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    drivers/gpio/gpio-omap.c:1152:34: warning: array =E2=80=98omap_gpio_mat=
+ch=E2=80=99 assumed to have one element
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+omega2p_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+orion5x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+palmz72_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pcm027_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pic32mzda_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+pistachio_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+pleb_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+pnx8335_stb225_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warning=
+s, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+prima2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa255-idp_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+qcom_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+qi_lb60_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+raumfeld_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+rb532_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+rbtx49xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+realview_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+rm200_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+rt305x_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+s3c2410_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    drivers/tty/serial/samsung.c:1790:34: warning: array =E2=80=98s3c24xx_u=
+art_dt_match=E2=80=99 assumed to have one element
+
+---------------------------------------------------------------------------=
+-----
+s3c6400_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+s5pv210_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+sama5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+sb1250_swarm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings,=
+ 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+shannon_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+shmobile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+simpad_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+socfpga_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+spear13xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+spear3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+spear6xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+spitz_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+stm32_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+sunxi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+tango4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tb0219_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tb0226_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tb0287_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tct_hammer_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+tegra_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section mi=
+smatches
+
+---------------------------------------------------------------------------=
+-----
+trizeps4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+u300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+u8500_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+vdk_hs38_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+vdk_hs38_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+versatile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+viper_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+vocore2_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+vt8500_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+workpad_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+xcep_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+xilfpga_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+zeus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+zx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---
+For more info write to <info@kernelci.org>
