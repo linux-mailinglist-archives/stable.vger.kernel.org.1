@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7FA86F9AD7
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 20:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E715D6F9AD8
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 20:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbjEGSVC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 14:21:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41314 "EHLO
+        id S229781AbjEGSVI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 14:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjEGSVC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 14:21:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401476E82
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 11:21:00 -0700 (PDT)
+        with ESMTP id S229460AbjEGSVH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 14:21:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E958A6198
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 11:21:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDE2660FFD
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 18:20:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBA8C4339E;
-        Sun,  7 May 2023 18:20:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E5AC60EA8
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 18:21:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9076DC433D2;
+        Sun,  7 May 2023 18:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683483659;
-        bh=UzjDQioIeofUYIlMo0TTDOX8Oau6VXBs1Z2RSpxrGWc=;
+        s=korg; t=1683483665;
+        bh=9nqyIQiN8620yBC94kf7A0AvLdBlFKtT24bM8J2gztA=;
         h=Subject:To:Cc:From:Date:From;
-        b=ywOzixNoa9YJx2PhvMNxD8ps79qABRLiF2ol3aAxgiYw/N0fGMM86DNufZ/SRmF76
-         dxyTNVu4FplZoO2Xffv3qxC+QP2ZZnOvLI6A+jDmio4rPYo+vSH8H0nTlW1SG9G4jc
-         YeckzkYsVKT327Mi24WUCsK4tIrok6Qbrp2ne6TU=
-Subject: FAILED: patch "[PATCH] cifs: fix potential use-after-free bugs in" failed to apply to 4.14-stable tree
+        b=B3xan4YAaTKSsDNHHDqiiKKi59dez8egbomex/aKJcQ/TAQ6xLyFQRY8XfAXS7ATh
+         56BEeFZ4pM9S4+RdfcT3yRXupktsZPGMM4rsBf9dlGhhJFUzqbIkm6Vt+tlRl28Sji
+         qHaBULYpvw+g4R6dWDtNiyFXo2tLsQtD435zDEjc=
+Subject: FAILED: patch "[PATCH] cifs: protect session status check in smb2_reconnect()" failed to apply to 5.10-stable tree
 To:     pc@manguebit.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 20:20:42 +0200
-Message-ID: <2023050742-splashy-favoring-4b3d@gregkh>
+Date:   Sun, 07 May 2023 20:20:55 +0200
+Message-ID: <2023050755-manicotti-acting-0e64@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 90c49fce1c43e1cc152695e20363ff5087897c09
+git cherry-pick -x 5bff9f741af60b143a5ae73417a8ec47fd5ff2f4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050742-splashy-favoring-4b3d@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050755-manicotti-acting-0e64@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,155 +72,48 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 90c49fce1c43e1cc152695e20363ff5087897c09 Mon Sep 17 00:00:00 2001
+From 5bff9f741af60b143a5ae73417a8ec47fd5ff2f4 Mon Sep 17 00:00:00 2001
 From: Paulo Alcantara <pc@manguebit.com>
-Date: Fri, 21 Apr 2023 15:52:32 -0300
-Subject: [PATCH] cifs: fix potential use-after-free bugs in
- TCP_Server_Info::hostname
+Date: Thu, 27 Apr 2023 16:07:38 -0300
+Subject: [PATCH] cifs: protect session status check in smb2_reconnect()
 
-TCP_Server_Info::hostname may be updated once or many times during
-reconnect, so protect its access outside reconnect path as well and
-then prevent any potential use-after-free bugs.
+Use @ses->ses_lock to protect access of @ses->ses_status.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/cifs/cifs_debug.c b/fs/cifs/cifs_debug.c
-index e9c8c088d948..d4ed200a9471 100644
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -280,8 +280,10 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
- 		seq_printf(m, "\n%d) ConnectionId: 0x%llx ",
- 			c, server->conn_id);
- 
-+		spin_lock(&server->srv_lock);
- 		if (server->hostname)
- 			seq_printf(m, "Hostname: %s ", server->hostname);
-+		spin_unlock(&server->srv_lock);
- #ifdef CONFIG_CIFS_SMB_DIRECT
- 		if (!server->rdma)
- 			goto skip_rdma;
-@@ -623,10 +625,13 @@ static int cifs_stats_proc_show(struct seq_file *m, void *v)
- 				server->fastest_cmd[j],
- 				server->slowest_cmd[j]);
- 		for (j = 0; j < NUMBER_OF_SMB2_COMMANDS; j++)
--			if (atomic_read(&server->smb2slowcmd[j]))
-+			if (atomic_read(&server->smb2slowcmd[j])) {
-+				spin_lock(&server->srv_lock);
- 				seq_printf(m, "  %d slow responses from %s for command %d\n",
- 					atomic_read(&server->smb2slowcmd[j]),
- 					server->hostname, j);
-+				spin_unlock(&server->srv_lock);
-+			}
- #endif /* STATS2 */
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
- 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
-diff --git a/fs/cifs/cifs_debug.h b/fs/cifs/cifs_debug.h
-index d44808263cfb..ce5cfd236fdb 100644
---- a/fs/cifs/cifs_debug.h
-+++ b/fs/cifs/cifs_debug.h
-@@ -81,19 +81,19 @@ do {									\
- 
- #define cifs_server_dbg_func(ratefunc, type, fmt, ...)			\
- do {									\
--	const char *sn = "";						\
--	if (server && server->hostname)					\
--		sn = server->hostname;					\
-+	spin_lock(&server->srv_lock);					\
- 	if ((type) & FYI && cifsFYI & CIFS_INFO) {			\
- 		pr_debug_ ## ratefunc("%s: \\\\%s " fmt,		\
--				      __FILE__, sn, ##__VA_ARGS__);	\
-+				      __FILE__, server->hostname,	\
-+				      ##__VA_ARGS__);			\
- 	} else if ((type) & VFS) {					\
- 		pr_err_ ## ratefunc("VFS: \\\\%s " fmt,			\
--				    sn, ##__VA_ARGS__);			\
-+				    server->hostname, ##__VA_ARGS__);	\
- 	} else if ((type) & NOISY && (NOISY != 0)) {			\
- 		pr_debug_ ## ratefunc("\\\\%s " fmt,			\
--				      sn, ##__VA_ARGS__);		\
-+				      server->hostname, ##__VA_ARGS__);	\
- 	}								\
-+	spin_unlock(&server->srv_lock);					\
- } while (0)
- 
- #define cifs_server_dbg(type, fmt, ...)					\
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 7bfef741f758..c71505a29482 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -403,8 +403,10 @@ static int __reconnect_target_unlocked(struct TCP_Server_Info *server, const cha
- 		if (server->hostname != target) {
- 			hostname = extract_hostname(target);
- 			if (!IS_ERR(hostname)) {
-+				spin_lock(&server->srv_lock);
- 				kfree(server->hostname);
- 				server->hostname = hostname;
-+				spin_unlock(&server->srv_lock);
- 			} else {
- 				cifs_dbg(FYI, "%s: couldn't extract hostname or address from dfs target: %ld\n",
- 					 __func__, PTR_ERR(hostname));
-@@ -561,9 +563,7 @@ cifs_echo_request(struct work_struct *work)
- 		goto requeue_echo;
- 
- 	rc = server->ops->echo ? server->ops->echo(server) : -ENOSYS;
--	if (rc)
--		cifs_dbg(FYI, "Unable to send echo request to server: %s\n",
--			 server->hostname);
-+	cifs_server_dbg(FYI, "send echo request: rc = %d\n", rc);
- 
- 	/* Check witness registrations */
- 	cifs_swn_check();
-@@ -1404,6 +1404,8 @@ static int match_server(struct TCP_Server_Info *server, struct smb3_fs_context *
- {
- 	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
- 
-+	lockdep_assert_held(&server->srv_lock);
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index 0521aa1da644..3ce63f0cd9f5 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -175,8 +175,17 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 		}
+ 	}
+ 	spin_unlock(&tcon->tc_lock);
+-	if ((!tcon->ses) || (tcon->ses->ses_status == SES_EXITING) ||
+-	    (!tcon->ses->server) || !server)
 +
- 	if (ctx->nosharesock)
- 		return 0;
++	ses = tcon->ses;
++	if (!ses)
++		return -EIO;
++	spin_lock(&ses->ses_lock);
++	if (ses->ses_status == SES_EXITING) {
++		spin_unlock(&ses->ses_lock);
++		return -EIO;
++	}
++	spin_unlock(&ses->ses_lock);
++	if (!ses->server || !server)
+ 		return -EIO;
  
-@@ -1810,7 +1812,9 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 	if (tcon == NULL)
- 		return -ENOMEM;
+ 	spin_lock(&server->srv_lock);
+@@ -204,8 +213,6 @@ again:
+ 	if (rc)
+ 		return rc;
  
-+	spin_lock(&server->srv_lock);
- 	scnprintf(unc, sizeof(unc), "\\\\%s\\IPC$", server->hostname);
-+	spin_unlock(&server->srv_lock);
- 
- 	xid = get_xid();
- 	tcon->ses = ses;
-diff --git a/fs/cifs/sess.c b/fs/cifs/sess.c
-index d2cbae4b5d21..335c078c42fb 100644
---- a/fs/cifs/sess.c
-+++ b/fs/cifs/sess.c
-@@ -159,6 +159,7 @@ cifs_chan_is_iface_active(struct cifs_ses *ses,
- /* returns number of channels added */
- int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- {
-+	struct TCP_Server_Info *server = ses->server;
- 	int old_chan_count, new_chan_count;
- 	int left;
- 	int rc = 0;
-@@ -178,16 +179,16 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 		return 0;
- 	}
- 
--	if (ses->server->dialect < SMB30_PROT_ID) {
-+	if (server->dialect < SMB30_PROT_ID) {
+-	ses = tcon->ses;
+-
+ 	spin_lock(&ses->chan_lock);
+ 	if (!cifs_chan_needs_reconnect(ses, server) && !tcon->need_reconnect) {
  		spin_unlock(&ses->chan_lock);
- 		cifs_dbg(VFS, "multichannel is not supported on this protocol version, use 3.0 or above\n");
- 		return 0;
- 	}
- 
--	if (!(ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+	if (!(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
- 		ses->chan_max = 1;
- 		spin_unlock(&ses->chan_lock);
--		cifs_dbg(VFS, "server %s does not support multichannel\n", ses->server->hostname);
-+		cifs_server_dbg(VFS, "no multichannel support\n");
- 		return 0;
- 	}
- 	spin_unlock(&ses->chan_lock);
 
