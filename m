@@ -2,2250 +2,1261 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6BEF6F97A9
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 10:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D3DF6F97B1
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 10:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230383AbjEGIXs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 04:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57650 "EHLO
+        id S229986AbjEGI2c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 04:28:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjEGIXr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 04:23:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B151B13C3E
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 01:23:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1227E60C08
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 08:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0785C433EF;
-        Sun,  7 May 2023 08:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683447821;
-        bh=LxZpIe5S9WfeulNemYmuc8x1ow6e6aUsrYV8xiUjMXk=;
-        h=Subject:To:Cc:From:Date:From;
-        b=xxhYfldI+vk2V5H98H0AP3lZ9/wZdGoHsfswqygyjaoSueCTbyj/3D3kW1QsrLh9i
-         CeNjE/YrCxBuMuXx40JNEnQlEyn6XyF96QMqIGoLnPi0Q24j2LlFoeOFe3f9ukWerd
-         xIX3/TKTCyLpGOrVpWDpw5VJQy/jwmt5VQ+GMrcI=
-Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix accessing regmap on unattached" failed to apply to 4.14-stable tree
-To:     krzysztof.kozlowski@linaro.org, broonie@kernel.org,
-        pierre-louis.bossart@linux.intel.com, stable@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 10:23:38 +0200
-Message-ID: <2023050738-riches-luckiness-5237@gregkh>
+        with ESMTP id S229628AbjEGI2b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 04:28:31 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2E511D9A
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 01:28:28 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1ab267e3528so23736635ad.0
+        for <stable@vger.kernel.org>; Sun, 07 May 2023 01:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1683448107; x=1686040107;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fY8MZKslZjG7nfmC1sKwRgPGEZAuRCYB0R4CQwPjgNA=;
+        b=SyqLE8eZ+K4VyCei9i7fYm6Q2P3r/crMmhgGOULjEYVZ9ZxBhjYoMMDiLRN26SZUdq
+         0sUd9ZFkCui5HUgj5GD3G8UbiNx6NUHFLkT27bbsWHohG0+Z7lIaP0SdiMwhyPifmiau
+         L9yp7vk+W+U+YCHpd77xye8IH86sprEAxKK2jErm/zYc+wlYLD6/PPBpJDPD8cbFJrwH
+         0mLn3DoYE0kZmDZFb8oQDh+DZv/euwZtP/7T/zFZFaEiLQ8eWFjdcTAVatx7iItezfB1
+         ZNhXqeza4yZr7FczprrsYkbYWgnQ58qCX9ywUuYAycV5OAJ3+lTDkx5S4J/aPgcOg5T1
+         Ujsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683448107; x=1686040107;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fY8MZKslZjG7nfmC1sKwRgPGEZAuRCYB0R4CQwPjgNA=;
+        b=DsJerbKhJs3BUcXn4xKnEY+L7n4gYOA2HCEQJrzqT9MfTSDzjMMrtN+IJOfFe8AfoQ
+         fwtAwoU9Ng54es/Pu2e5IGXdPaLDQ8eJoXKkNQXZs381PbNsWwRrTcGfIKxl5usjmGnx
+         0xVRXoVMQTo6bVYNVuhrBoKur1uLjw+XakIoRbsIgqaYemtcJzsN2KOBMWlhEGnSm9yd
+         NHwFoXEsEymLq56HgH8/MwhhqhfmLmqxsvsHZnzbDDgHWaUTOpcSIFxGQcwMeHX3xW/c
+         mTv7zHD1pCVrAmbwL8aADzDpWGTw4vtowZgJkgEg9XejeDR6JJ6pNIk1uJNJ3b/V2g6O
+         xWKQ==
+X-Gm-Message-State: AC+VfDzqyxTuaDNBWUM6q7Id+P1MDJg/cUoy2spN8G6z02taIDM/5tvx
+        rSnfbv4BW6WlB860+BsG71dB3o4gL1HLjM5LZXxzOw==
+X-Google-Smtp-Source: ACHHUZ6q1AdIr6qzxElzfHLybUDo/NAbHrM0hnUnKcCFuMDodmNv6VN+Q/P607C4iYGaZrtLVJPr+w==
+X-Received: by 2002:a17:902:ec83:b0:1ac:5ded:97cf with SMTP id x3-20020a170902ec8300b001ac5ded97cfmr3628694plg.11.1683448106228;
+        Sun, 07 May 2023 01:28:26 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id k12-20020a170902c40c00b001a9b29b6759sm4798428plk.183.2023.05.07.01.28.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 01:28:25 -0700 (PDT)
+Message-ID: <64576129.170a0220.14e96.87f9@mx.google.com>
+Date:   Sun, 07 May 2023 01:28:25 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.19
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.19.279-298-g9bb4f2841d9c
+X-Kernelci-Report-Type: build
+Subject: stable-rc/queue/4.19 build: 197 builds: 5 failed, 192 passed,
+ 28 warnings (v4.19.279-298-g9bb4f2841d9c)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/queue/4.19 build: 197 builds: 5 failed, 192 passed, 28 warnings (=
+v4.19.279-298-g9bb4f2841d9c)
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+9/kernel/v4.19.279-298-g9bb4f2841d9c/
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tree: stable-rc
+Branch: queue/4.19
+Git Describe: v4.19.279-298-g9bb4f2841d9c
+Git Commit: 9bb4f2841d9c767b21f3aea0e1bf25ce92cde636
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 84822215acd15bd86a7759a835271e63bba83a7b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050738-riches-luckiness-5237@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Build Failures Detected:
 
-Possible dependencies:
+mips:
+    ip27_defconfig: (gcc-10) FAIL
+    ip28_defconfig: (gcc-10) FAIL
 
-84822215acd1 ("ASoC: codecs: wcd938x: fix accessing regmap on unattached devices")
-65b7b869da9b ("ASoC: codecs: constify static sdw_slave_ops struct")
-6ad73a2b42ea ("ASoC: rt1318: Add RT1318 SDCA vendor-specific driver")
-43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
-ea157c2ba821 ("ASoC: codecs: wcd938x: fix volatile register range")
-7228d83531fc ("ASoC: rt9120: Add rt9210 audio amplifier support")
-bcee7ed09b8e ("ASoC: codecs: wcd938x: add Multi Button Headset Control support")
-81d3d3d0bf09 ("ASoC: codecs: add SoundWire mockup device support")
-83bd5c53ebf6 ("ASoC: codecs: wcd938x: fix boolreturn.cocci warning")
-b90d9398d6ff ("ASoC: codecs: wcd938x: remove incorrect module interdependency")
-045442228868 ("ASoC: codecs: wcd938x: add audio routing and Kconfig")
-d5add08fcbce ("ASoC: codecs: wcd938x: add capture dapm widgets")
-8da9db0cd669 ("ASoC: codecs: wcd938x: add playback dapm widgets")
-e8ba1e05bdc0 ("ASoC: codecs: wcd938x: add basic controls")
-16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
-8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
-7ad4d237e7c4 ("ASoC: rt711-sdca: Add RT711 SDCA vendor-specific driver")
-20d17057f0a8 ("ASoC: rt715-sdca: Add RT715 sdca vendor-specific driver")
-2b719fd20f32 ("ASoC: rt1316: Add RT1316 SDCA vendor-specific driver")
-af3d54b99764 ("ASoC: codecs: lpass-rx-macro: add support for lpass rx macro")
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
-thanks,
+Warnings Detected:
 
-greg k-h
+arc:
 
------------------- original commit in Linus's tree ------------------
+arm64:
+    defconfig (gcc-10): 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
-From 84822215acd15bd86a7759a835271e63bba83a7b Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 3 May 2023 16:41:02 +0200
-Subject: [PATCH] ASoC: codecs: wcd938x: fix accessing regmap on unattached
- devices
+arm:
+    omap1_defconfig (gcc-10): 1 warning
 
-The WCD938x comes with three devices on two Linux drivers:
-1. RX Soundwire device (wcd938x-sdw.c driver),
-2. TX Soundwire device, which is used to access devices via regmap (also
-   wcd938x-sdw.c driver),
-3. platform device (wcd938x.c driver) - glue and component master,
-   actually having most of the code using TX Soundwire device regmap.
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-When RX and TX Soundwire devices probe, the component master (platform
-device) bind tries to write micbias configuration via TX Soundwire
-regmap.  This might happen before TX Soundwire enumerates, so the regmap
-access fails.  On Qualcomm SM8550 board with WCD9385:
+mips:
+    lemote2f_defconfig (gcc-10): 1 warning
+    loongson3_defconfig (gcc-10): 1 warning
+    malta_qemu_32r6_defconfig (gcc-10): 1 warning
+    mtx1_defconfig (gcc-10): 3 warnings
+    nlm_xlp_defconfig (gcc-10): 1 warning
 
-  qcom-soundwire 6d30000.soundwire-controller: Qualcomm Soundwire controller v2.0.0 Registered
-  wcd938x_codec audio-codec: bound sdw:0:0217:010d:00:4 (ops wcd938x_sdw_component_ops)
-  wcd938x_codec audio-codec: bound sdw:0:0217:010d:00:3 (ops wcd938x_sdw_component_ops)
-  qcom-soundwire 6ad0000.soundwire-controller: swrm_wait_for_wr_fifo_avail err write overflow
+riscv:
 
-Fix the issue by:
-1. Moving the regmap creation from platform device to TX Soundwire
-   device.  The regmap settings are moved as-is with one difference:
-   making the wcd938x_regmap_config const.
-2. Using regmap in cache only mode till the actual TX Soundwire device
-   enumerates and then sync the regmap cache.
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
 
-Cc: <stable@vger.kernel.org> # v3.14+
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-Id: <20230503144102.242240-1-krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/sound/soc/codecs/wcd938x-sdw.c b/sound/soc/codecs/wcd938x-sdw.c
-index 33d1b5ffeaeb..402286dfaea4 100644
---- a/sound/soc/codecs/wcd938x-sdw.c
-+++ b/sound/soc/codecs/wcd938x-sdw.c
-@@ -161,6 +161,14 @@ EXPORT_SYMBOL_GPL(wcd938x_sdw_set_sdw_stream);
- static int wcd9380_update_status(struct sdw_slave *slave,
- 				 enum sdw_slave_status status)
- {
-+	struct wcd938x_sdw_priv *wcd = dev_get_drvdata(&slave->dev);
-+
-+	if (wcd->regmap && (status == SDW_SLAVE_ATTACHED)) {
-+		/* Write out any cached changes that happened between probe and attach */
-+		regcache_cache_only(wcd->regmap, false);
-+		return regcache_sync(wcd->regmap);
-+	}
-+
- 	return 0;
- }
- 
-@@ -177,20 +185,1014 @@ static int wcd9380_interrupt_callback(struct sdw_slave *slave,
- {
- 	struct wcd938x_sdw_priv *wcd = dev_get_drvdata(&slave->dev);
- 	struct irq_domain *slave_irq = wcd->slave_irq;
--	struct regmap *regmap = dev_get_regmap(&slave->dev, NULL);
- 	u32 sts1, sts2, sts3;
- 
- 	do {
- 		handle_nested_irq(irq_find_mapping(slave_irq, 0));
--		regmap_read(regmap, WCD938X_DIGITAL_INTR_STATUS_0, &sts1);
--		regmap_read(regmap, WCD938X_DIGITAL_INTR_STATUS_1, &sts2);
--		regmap_read(regmap, WCD938X_DIGITAL_INTR_STATUS_2, &sts3);
-+		regmap_read(wcd->regmap, WCD938X_DIGITAL_INTR_STATUS_0, &sts1);
-+		regmap_read(wcd->regmap, WCD938X_DIGITAL_INTR_STATUS_1, &sts2);
-+		regmap_read(wcd->regmap, WCD938X_DIGITAL_INTR_STATUS_2, &sts3);
- 
- 	} while (sts1 || sts2 || sts3);
- 
- 	return IRQ_HANDLED;
- }
- 
-+static const struct reg_default wcd938x_defaults[] = {
-+	{WCD938X_ANA_PAGE_REGISTER,                            0x00},
-+	{WCD938X_ANA_BIAS,                                     0x00},
-+	{WCD938X_ANA_RX_SUPPLIES,                              0x00},
-+	{WCD938X_ANA_HPH,                                      0x0C},
-+	{WCD938X_ANA_EAR,                                      0x00},
-+	{WCD938X_ANA_EAR_COMPANDER_CTL,                        0x02},
-+	{WCD938X_ANA_TX_CH1,                                   0x20},
-+	{WCD938X_ANA_TX_CH2,                                   0x00},
-+	{WCD938X_ANA_TX_CH3,                                   0x20},
-+	{WCD938X_ANA_TX_CH4,                                   0x00},
-+	{WCD938X_ANA_MICB1_MICB2_DSP_EN_LOGIC,                 0x00},
-+	{WCD938X_ANA_MICB3_DSP_EN_LOGIC,                       0x00},
-+	{WCD938X_ANA_MBHC_MECH,                                0x39},
-+	{WCD938X_ANA_MBHC_ELECT,                               0x08},
-+	{WCD938X_ANA_MBHC_ZDET,                                0x00},
-+	{WCD938X_ANA_MBHC_RESULT_1,                            0x00},
-+	{WCD938X_ANA_MBHC_RESULT_2,                            0x00},
-+	{WCD938X_ANA_MBHC_RESULT_3,                            0x00},
-+	{WCD938X_ANA_MBHC_BTN0,                                0x00},
-+	{WCD938X_ANA_MBHC_BTN1,                                0x10},
-+	{WCD938X_ANA_MBHC_BTN2,                                0x20},
-+	{WCD938X_ANA_MBHC_BTN3,                                0x30},
-+	{WCD938X_ANA_MBHC_BTN4,                                0x40},
-+	{WCD938X_ANA_MBHC_BTN5,                                0x50},
-+	{WCD938X_ANA_MBHC_BTN6,                                0x60},
-+	{WCD938X_ANA_MBHC_BTN7,                                0x70},
-+	{WCD938X_ANA_MICB1,                                    0x10},
-+	{WCD938X_ANA_MICB2,                                    0x10},
-+	{WCD938X_ANA_MICB2_RAMP,                               0x00},
-+	{WCD938X_ANA_MICB3,                                    0x10},
-+	{WCD938X_ANA_MICB4,                                    0x10},
-+	{WCD938X_BIAS_CTL,                                     0x2A},
-+	{WCD938X_BIAS_VBG_FINE_ADJ,                            0x55},
-+	{WCD938X_LDOL_VDDCX_ADJUST,                            0x01},
-+	{WCD938X_LDOL_DISABLE_LDOL,                            0x00},
-+	{WCD938X_MBHC_CTL_CLK,                                 0x00},
-+	{WCD938X_MBHC_CTL_ANA,                                 0x00},
-+	{WCD938X_MBHC_CTL_SPARE_1,                             0x00},
-+	{WCD938X_MBHC_CTL_SPARE_2,                             0x00},
-+	{WCD938X_MBHC_CTL_BCS,                                 0x00},
-+	{WCD938X_MBHC_MOISTURE_DET_FSM_STATUS,                 0x00},
-+	{WCD938X_MBHC_TEST_CTL,                                0x00},
-+	{WCD938X_LDOH_MODE,                                    0x2B},
-+	{WCD938X_LDOH_BIAS,                                    0x68},
-+	{WCD938X_LDOH_STB_LOADS,                               0x00},
-+	{WCD938X_LDOH_SLOWRAMP,                                0x50},
-+	{WCD938X_MICB1_TEST_CTL_1,                             0x1A},
-+	{WCD938X_MICB1_TEST_CTL_2,                             0x00},
-+	{WCD938X_MICB1_TEST_CTL_3,                             0xA4},
-+	{WCD938X_MICB2_TEST_CTL_1,                             0x1A},
-+	{WCD938X_MICB2_TEST_CTL_2,                             0x00},
-+	{WCD938X_MICB2_TEST_CTL_3,                             0x24},
-+	{WCD938X_MICB3_TEST_CTL_1,                             0x1A},
-+	{WCD938X_MICB3_TEST_CTL_2,                             0x00},
-+	{WCD938X_MICB3_TEST_CTL_3,                             0xA4},
-+	{WCD938X_MICB4_TEST_CTL_1,                             0x1A},
-+	{WCD938X_MICB4_TEST_CTL_2,                             0x00},
-+	{WCD938X_MICB4_TEST_CTL_3,                             0xA4},
-+	{WCD938X_TX_COM_ADC_VCM,                               0x39},
-+	{WCD938X_TX_COM_BIAS_ATEST,                            0xE0},
-+	{WCD938X_TX_COM_SPARE1,                                0x00},
-+	{WCD938X_TX_COM_SPARE2,                                0x00},
-+	{WCD938X_TX_COM_TXFE_DIV_CTL,                          0x22},
-+	{WCD938X_TX_COM_TXFE_DIV_START,                        0x00},
-+	{WCD938X_TX_COM_SPARE3,                                0x00},
-+	{WCD938X_TX_COM_SPARE4,                                0x00},
-+	{WCD938X_TX_1_2_TEST_EN,                               0xCC},
-+	{WCD938X_TX_1_2_ADC_IB,                                0xE9},
-+	{WCD938X_TX_1_2_ATEST_REFCTL,                          0x0A},
-+	{WCD938X_TX_1_2_TEST_CTL,                              0x38},
-+	{WCD938X_TX_1_2_TEST_BLK_EN1,                          0xFF},
-+	{WCD938X_TX_1_2_TXFE1_CLKDIV,                          0x00},
-+	{WCD938X_TX_1_2_SAR2_ERR,                              0x00},
-+	{WCD938X_TX_1_2_SAR1_ERR,                              0x00},
-+	{WCD938X_TX_3_4_TEST_EN,                               0xCC},
-+	{WCD938X_TX_3_4_ADC_IB,                                0xE9},
-+	{WCD938X_TX_3_4_ATEST_REFCTL,                          0x0A},
-+	{WCD938X_TX_3_4_TEST_CTL,                              0x38},
-+	{WCD938X_TX_3_4_TEST_BLK_EN3,                          0xFF},
-+	{WCD938X_TX_3_4_TXFE3_CLKDIV,                          0x00},
-+	{WCD938X_TX_3_4_SAR4_ERR,                              0x00},
-+	{WCD938X_TX_3_4_SAR3_ERR,                              0x00},
-+	{WCD938X_TX_3_4_TEST_BLK_EN2,                          0xFB},
-+	{WCD938X_TX_3_4_TXFE2_CLKDIV,                          0x00},
-+	{WCD938X_TX_3_4_SPARE1,                                0x00},
-+	{WCD938X_TX_3_4_TEST_BLK_EN4,                          0xFB},
-+	{WCD938X_TX_3_4_TXFE4_CLKDIV,                          0x00},
-+	{WCD938X_TX_3_4_SPARE2,                                0x00},
-+	{WCD938X_CLASSH_MODE_1,                                0x40},
-+	{WCD938X_CLASSH_MODE_2,                                0x3A},
-+	{WCD938X_CLASSH_MODE_3,                                0x00},
-+	{WCD938X_CLASSH_CTRL_VCL_1,                            0x70},
-+	{WCD938X_CLASSH_CTRL_VCL_2,                            0x82},
-+	{WCD938X_CLASSH_CTRL_CCL_1,                            0x31},
-+	{WCD938X_CLASSH_CTRL_CCL_2,                            0x80},
-+	{WCD938X_CLASSH_CTRL_CCL_3,                            0x80},
-+	{WCD938X_CLASSH_CTRL_CCL_4,                            0x51},
-+	{WCD938X_CLASSH_CTRL_CCL_5,                            0x00},
-+	{WCD938X_CLASSH_BUCK_TMUX_A_D,                         0x00},
-+	{WCD938X_CLASSH_BUCK_SW_DRV_CNTL,                      0x77},
-+	{WCD938X_CLASSH_SPARE,                                 0x00},
-+	{WCD938X_FLYBACK_EN,                                   0x4E},
-+	{WCD938X_FLYBACK_VNEG_CTRL_1,                          0x0B},
-+	{WCD938X_FLYBACK_VNEG_CTRL_2,                          0x45},
-+	{WCD938X_FLYBACK_VNEG_CTRL_3,                          0x74},
-+	{WCD938X_FLYBACK_VNEG_CTRL_4,                          0x7F},
-+	{WCD938X_FLYBACK_VNEG_CTRL_5,                          0x83},
-+	{WCD938X_FLYBACK_VNEG_CTRL_6,                          0x98},
-+	{WCD938X_FLYBACK_VNEG_CTRL_7,                          0xA9},
-+	{WCD938X_FLYBACK_VNEG_CTRL_8,                          0x68},
-+	{WCD938X_FLYBACK_VNEG_CTRL_9,                          0x64},
-+	{WCD938X_FLYBACK_VNEGDAC_CTRL_1,                       0xED},
-+	{WCD938X_FLYBACK_VNEGDAC_CTRL_2,                       0xF0},
-+	{WCD938X_FLYBACK_VNEGDAC_CTRL_3,                       0xA6},
-+	{WCD938X_FLYBACK_CTRL_1,                               0x65},
-+	{WCD938X_FLYBACK_TEST_CTL,                             0x00},
-+	{WCD938X_RX_AUX_SW_CTL,                                0x00},
-+	{WCD938X_RX_PA_AUX_IN_CONN,                            0x01},
-+	{WCD938X_RX_TIMER_DIV,                                 0x32},
-+	{WCD938X_RX_OCP_CTL,                                   0x1F},
-+	{WCD938X_RX_OCP_COUNT,                                 0x77},
-+	{WCD938X_RX_BIAS_EAR_DAC,                              0xA0},
-+	{WCD938X_RX_BIAS_EAR_AMP,                              0xAA},
-+	{WCD938X_RX_BIAS_HPH_LDO,                              0xA9},
-+	{WCD938X_RX_BIAS_HPH_PA,                               0xAA},
-+	{WCD938X_RX_BIAS_HPH_RDACBUFF_CNP2,                    0x8A},
-+	{WCD938X_RX_BIAS_HPH_RDAC_LDO,                         0x88},
-+	{WCD938X_RX_BIAS_HPH_CNP1,                             0x82},
-+	{WCD938X_RX_BIAS_HPH_LOWPOWER,                         0x82},
-+	{WCD938X_RX_BIAS_AUX_DAC,                              0xA0},
-+	{WCD938X_RX_BIAS_AUX_AMP,                              0xAA},
-+	{WCD938X_RX_BIAS_VNEGDAC_BLEEDER,                      0x50},
-+	{WCD938X_RX_BIAS_MISC,                                 0x00},
-+	{WCD938X_RX_BIAS_BUCK_RST,                             0x08},
-+	{WCD938X_RX_BIAS_BUCK_VREF_ERRAMP,                     0x44},
-+	{WCD938X_RX_BIAS_FLYB_ERRAMP,                          0x40},
-+	{WCD938X_RX_BIAS_FLYB_BUFF,                            0xAA},
-+	{WCD938X_RX_BIAS_FLYB_MID_RST,                         0x14},
-+	{WCD938X_HPH_L_STATUS,                                 0x04},
-+	{WCD938X_HPH_R_STATUS,                                 0x04},
-+	{WCD938X_HPH_CNP_EN,                                   0x80},
-+	{WCD938X_HPH_CNP_WG_CTL,                               0x9A},
-+	{WCD938X_HPH_CNP_WG_TIME,                              0x14},
-+	{WCD938X_HPH_OCP_CTL,                                  0x28},
-+	{WCD938X_HPH_AUTO_CHOP,                                0x16},
-+	{WCD938X_HPH_CHOP_CTL,                                 0x83},
-+	{WCD938X_HPH_PA_CTL1,                                  0x46},
-+	{WCD938X_HPH_PA_CTL2,                                  0x50},
-+	{WCD938X_HPH_L_EN,                                     0x80},
-+	{WCD938X_HPH_L_TEST,                                   0xE0},
-+	{WCD938X_HPH_L_ATEST,                                  0x50},
-+	{WCD938X_HPH_R_EN,                                     0x80},
-+	{WCD938X_HPH_R_TEST,                                   0xE0},
-+	{WCD938X_HPH_R_ATEST,                                  0x54},
-+	{WCD938X_HPH_RDAC_CLK_CTL1,                            0x99},
-+	{WCD938X_HPH_RDAC_CLK_CTL2,                            0x9B},
-+	{WCD938X_HPH_RDAC_LDO_CTL,                             0x33},
-+	{WCD938X_HPH_RDAC_CHOP_CLK_LP_CTL,                     0x00},
-+	{WCD938X_HPH_REFBUFF_UHQA_CTL,                         0x68},
-+	{WCD938X_HPH_REFBUFF_LP_CTL,                           0x0E},
-+	{WCD938X_HPH_L_DAC_CTL,                                0x20},
-+	{WCD938X_HPH_R_DAC_CTL,                                0x20},
-+	{WCD938X_HPH_SURGE_HPHLR_SURGE_COMP_SEL,               0x55},
-+	{WCD938X_HPH_SURGE_HPHLR_SURGE_EN,                     0x19},
-+	{WCD938X_HPH_SURGE_HPHLR_SURGE_MISC1,                  0xA0},
-+	{WCD938X_HPH_SURGE_HPHLR_SURGE_STATUS,                 0x00},
-+	{WCD938X_EAR_EAR_EN_REG,                               0x22},
-+	{WCD938X_EAR_EAR_PA_CON,                               0x44},
-+	{WCD938X_EAR_EAR_SP_CON,                               0xDB},
-+	{WCD938X_EAR_EAR_DAC_CON,                              0x80},
-+	{WCD938X_EAR_EAR_CNP_FSM_CON,                          0xB2},
-+	{WCD938X_EAR_TEST_CTL,                                 0x00},
-+	{WCD938X_EAR_STATUS_REG_1,                             0x00},
-+	{WCD938X_EAR_STATUS_REG_2,                             0x08},
-+	{WCD938X_ANA_NEW_PAGE_REGISTER,                        0x00},
-+	{WCD938X_HPH_NEW_ANA_HPH2,                             0x00},
-+	{WCD938X_HPH_NEW_ANA_HPH3,                             0x00},
-+	{WCD938X_SLEEP_CTL,                                    0x16},
-+	{WCD938X_SLEEP_WATCHDOG_CTL,                           0x00},
-+	{WCD938X_MBHC_NEW_ELECT_REM_CLAMP_CTL,                 0x00},
-+	{WCD938X_MBHC_NEW_CTL_1,                               0x02},
-+	{WCD938X_MBHC_NEW_CTL_2,                               0x05},
-+	{WCD938X_MBHC_NEW_PLUG_DETECT_CTL,                     0xE9},
-+	{WCD938X_MBHC_NEW_ZDET_ANA_CTL,                        0x0F},
-+	{WCD938X_MBHC_NEW_ZDET_RAMP_CTL,                       0x00},
-+	{WCD938X_MBHC_NEW_FSM_STATUS,                          0x00},
-+	{WCD938X_MBHC_NEW_ADC_RESULT,                          0x00},
-+	{WCD938X_TX_NEW_AMIC_MUX_CFG,                          0x00},
-+	{WCD938X_AUX_AUXPA,                                    0x00},
-+	{WCD938X_LDORXTX_MODE,                                 0x0C},
-+	{WCD938X_LDORXTX_CONFIG,                               0x10},
-+	{WCD938X_DIE_CRACK_DIE_CRK_DET_EN,                     0x00},
-+	{WCD938X_DIE_CRACK_DIE_CRK_DET_OUT,                    0x00},
-+	{WCD938X_HPH_NEW_INT_RDAC_GAIN_CTL,                    0x40},
-+	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L,                   0x81},
-+	{WCD938X_HPH_NEW_INT_RDAC_VREF_CTL,                    0x10},
-+	{WCD938X_HPH_NEW_INT_RDAC_OVERRIDE_CTL,                0x00},
-+	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R,                   0x81},
-+	{WCD938X_HPH_NEW_INT_PA_MISC1,                         0x22},
-+	{WCD938X_HPH_NEW_INT_PA_MISC2,                         0x00},
-+	{WCD938X_HPH_NEW_INT_PA_RDAC_MISC,                     0x00},
-+	{WCD938X_HPH_NEW_INT_HPH_TIMER1,                       0xFE},
-+	{WCD938X_HPH_NEW_INT_HPH_TIMER2,                       0x02},
-+	{WCD938X_HPH_NEW_INT_HPH_TIMER3,                       0x4E},
-+	{WCD938X_HPH_NEW_INT_HPH_TIMER4,                       0x54},
-+	{WCD938X_HPH_NEW_INT_PA_RDAC_MISC2,                    0x00},
-+	{WCD938X_HPH_NEW_INT_PA_RDAC_MISC3,                    0x00},
-+	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L_NEW,               0x90},
-+	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R_NEW,               0x90},
-+	{WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_LOHIFI,              0x62},
-+	{WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_ULP,                 0x01},
-+	{WCD938X_RX_NEW_INT_HPH_RDAC_LDO_LP,                   0x11},
-+	{WCD938X_MBHC_NEW_INT_MOISTURE_DET_DC_CTRL,            0x57},
-+	{WCD938X_MBHC_NEW_INT_MOISTURE_DET_POLLING_CTRL,       0x01},
-+	{WCD938X_MBHC_NEW_INT_MECH_DET_CURRENT,                0x00},
-+	{WCD938X_MBHC_NEW_INT_SPARE_2,                         0x00},
-+	{WCD938X_EAR_INT_NEW_EAR_CHOPPER_CON,                  0xA8},
-+	{WCD938X_EAR_INT_NEW_CNP_VCM_CON1,                     0x42},
-+	{WCD938X_EAR_INT_NEW_CNP_VCM_CON2,                     0x22},
-+	{WCD938X_EAR_INT_NEW_EAR_DYNAMIC_BIAS,                 0x00},
-+	{WCD938X_AUX_INT_EN_REG,                               0x00},
-+	{WCD938X_AUX_INT_PA_CTRL,                              0x06},
-+	{WCD938X_AUX_INT_SP_CTRL,                              0xD2},
-+	{WCD938X_AUX_INT_DAC_CTRL,                             0x80},
-+	{WCD938X_AUX_INT_CLK_CTRL,                             0x50},
-+	{WCD938X_AUX_INT_TEST_CTRL,                            0x00},
-+	{WCD938X_AUX_INT_STATUS_REG,                           0x00},
-+	{WCD938X_AUX_INT_MISC,                                 0x00},
-+	{WCD938X_LDORXTX_INT_BIAS,                             0x6E},
-+	{WCD938X_LDORXTX_INT_STB_LOADS_DTEST,                  0x50},
-+	{WCD938X_LDORXTX_INT_TEST0,                            0x1C},
-+	{WCD938X_LDORXTX_INT_STARTUP_TIMER,                    0xFF},
-+	{WCD938X_LDORXTX_INT_TEST1,                            0x1F},
-+	{WCD938X_LDORXTX_INT_STATUS,                           0x00},
-+	{WCD938X_SLEEP_INT_WATCHDOG_CTL_1,                     0x0A},
-+	{WCD938X_SLEEP_INT_WATCHDOG_CTL_2,                     0x0A},
-+	{WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT1,               0x02},
-+	{WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT2,               0x60},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L2,               0xFF},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L1,               0x7F},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L0,               0x3F},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP1P2M,          0x1F},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP0P6M,          0x0F},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L2L1,          0xD7},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L0,            0xC8},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_ULP,           0xC6},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L2L1,      0xD5},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L0,        0xCA},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_ULP,       0x05},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_L2L1L0,    0xA5},
-+	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_ULP,       0x13},
-+	{WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L2L1,             0x88},
-+	{WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L0ULP,            0x42},
-+	{WCD938X_TX_COM_NEW_INT_TXADC_INT_L2,                  0xFF},
-+	{WCD938X_TX_COM_NEW_INT_TXADC_INT_L1,                  0x64},
-+	{WCD938X_TX_COM_NEW_INT_TXADC_INT_L0,                  0x64},
-+	{WCD938X_TX_COM_NEW_INT_TXADC_INT_ULP,                 0x77},
-+	{WCD938X_DIGITAL_PAGE_REGISTER,                        0x00},
-+	{WCD938X_DIGITAL_CHIP_ID0,                             0x00},
-+	{WCD938X_DIGITAL_CHIP_ID1,                             0x00},
-+	{WCD938X_DIGITAL_CHIP_ID2,                             0x0D},
-+	{WCD938X_DIGITAL_CHIP_ID3,                             0x01},
-+	{WCD938X_DIGITAL_SWR_TX_CLK_RATE,                      0x00},
-+	{WCD938X_DIGITAL_CDC_RST_CTL,                          0x03},
-+	{WCD938X_DIGITAL_TOP_CLK_CFG,                          0x00},
-+	{WCD938X_DIGITAL_CDC_ANA_CLK_CTL,                      0x00},
-+	{WCD938X_DIGITAL_CDC_DIG_CLK_CTL,                      0xF0},
-+	{WCD938X_DIGITAL_SWR_RST_EN,                           0x00},
-+	{WCD938X_DIGITAL_CDC_PATH_MODE,                        0x55},
-+	{WCD938X_DIGITAL_CDC_RX_RST,                           0x00},
-+	{WCD938X_DIGITAL_CDC_RX0_CTL,                          0xFC},
-+	{WCD938X_DIGITAL_CDC_RX1_CTL,                          0xFC},
-+	{WCD938X_DIGITAL_CDC_RX2_CTL,                          0xFC},
-+	{WCD938X_DIGITAL_CDC_TX_ANA_MODE_0_1,                  0x00},
-+	{WCD938X_DIGITAL_CDC_TX_ANA_MODE_2_3,                  0x00},
-+	{WCD938X_DIGITAL_CDC_COMP_CTL_0,                       0x00},
-+	{WCD938X_DIGITAL_CDC_ANA_TX_CLK_CTL,                   0x1E},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A1_0,                     0x00},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A1_1,                     0x01},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A2_0,                     0x63},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A2_1,                     0x04},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A3_0,                     0xAC},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A3_1,                     0x04},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A4_0,                     0x1A},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A4_1,                     0x03},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A5_0,                     0xBC},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A5_1,                     0x02},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A6_0,                     0xC7},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_A7_0,                     0xF8},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_C_0,                      0x47},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_C_1,                      0x43},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_C_2,                      0xB1},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_C_3,                      0x17},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R1,                       0x4D},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R2,                       0x29},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R3,                       0x34},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R4,                       0x59},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R5,                       0x66},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R6,                       0x87},
-+	{WCD938X_DIGITAL_CDC_HPH_DSM_R7,                       0x64},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A1_0,                     0x00},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A1_1,                     0x01},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A2_0,                     0x96},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A2_1,                     0x09},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A3_0,                     0xAB},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A3_1,                     0x05},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A4_0,                     0x1C},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A4_1,                     0x02},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A5_0,                     0x17},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A5_1,                     0x02},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A6_0,                     0xAA},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_A7_0,                     0xE3},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_C_0,                      0x69},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_C_1,                      0x54},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_C_2,                      0x02},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_C_3,                      0x15},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R1,                       0xA4},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R2,                       0xB5},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R3,                       0x86},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R4,                       0x85},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R5,                       0xAA},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R6,                       0xE2},
-+	{WCD938X_DIGITAL_CDC_AUX_DSM_R7,                       0x62},
-+	{WCD938X_DIGITAL_CDC_HPH_GAIN_RX_0,                    0x55},
-+	{WCD938X_DIGITAL_CDC_HPH_GAIN_RX_1,                    0xA9},
-+	{WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_0,                   0x3D},
-+	{WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_1,                   0x2E},
-+	{WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_2,                   0x01},
-+	{WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_0,                   0x00},
-+	{WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_1,                   0xFC},
-+	{WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_2,                   0x01},
-+	{WCD938X_DIGITAL_CDC_HPH_GAIN_CTL,                     0x00},
-+	{WCD938X_DIGITAL_CDC_AUX_GAIN_CTL,                     0x00},
-+	{WCD938X_DIGITAL_CDC_EAR_PATH_CTL,                     0x00},
-+	{WCD938X_DIGITAL_CDC_SWR_CLH,                          0x00},
-+	{WCD938X_DIGITAL_SWR_CLH_BYP,                          0x00},
-+	{WCD938X_DIGITAL_CDC_TX0_CTL,                          0x68},
-+	{WCD938X_DIGITAL_CDC_TX1_CTL,                          0x68},
-+	{WCD938X_DIGITAL_CDC_TX2_CTL,                          0x68},
-+	{WCD938X_DIGITAL_CDC_TX_RST,                           0x00},
-+	{WCD938X_DIGITAL_CDC_REQ_CTL,                          0x01},
-+	{WCD938X_DIGITAL_CDC_RST,                              0x00},
-+	{WCD938X_DIGITAL_CDC_AMIC_CTL,                         0x0F},
-+	{WCD938X_DIGITAL_CDC_DMIC_CTL,                         0x04},
-+	{WCD938X_DIGITAL_CDC_DMIC1_CTL,                        0x01},
-+	{WCD938X_DIGITAL_CDC_DMIC2_CTL,                        0x01},
-+	{WCD938X_DIGITAL_CDC_DMIC3_CTL,                        0x01},
-+	{WCD938X_DIGITAL_CDC_DMIC4_CTL,                        0x01},
-+	{WCD938X_DIGITAL_EFUSE_PRG_CTL,                        0x00},
-+	{WCD938X_DIGITAL_EFUSE_CTL,                            0x2B},
-+	{WCD938X_DIGITAL_CDC_DMIC_RATE_1_2,                    0x11},
-+	{WCD938X_DIGITAL_CDC_DMIC_RATE_3_4,                    0x11},
-+	{WCD938X_DIGITAL_PDM_WD_CTL0,                          0x00},
-+	{WCD938X_DIGITAL_PDM_WD_CTL1,                          0x00},
-+	{WCD938X_DIGITAL_PDM_WD_CTL2,                          0x00},
-+	{WCD938X_DIGITAL_INTR_MODE,                            0x00},
-+	{WCD938X_DIGITAL_INTR_MASK_0,                          0xFF},
-+	{WCD938X_DIGITAL_INTR_MASK_1,                          0xFF},
-+	{WCD938X_DIGITAL_INTR_MASK_2,                          0x3F},
-+	{WCD938X_DIGITAL_INTR_STATUS_0,                        0x00},
-+	{WCD938X_DIGITAL_INTR_STATUS_1,                        0x00},
-+	{WCD938X_DIGITAL_INTR_STATUS_2,                        0x00},
-+	{WCD938X_DIGITAL_INTR_CLEAR_0,                         0x00},
-+	{WCD938X_DIGITAL_INTR_CLEAR_1,                         0x00},
-+	{WCD938X_DIGITAL_INTR_CLEAR_2,                         0x00},
-+	{WCD938X_DIGITAL_INTR_LEVEL_0,                         0x00},
-+	{WCD938X_DIGITAL_INTR_LEVEL_1,                         0x00},
-+	{WCD938X_DIGITAL_INTR_LEVEL_2,                         0x00},
-+	{WCD938X_DIGITAL_INTR_SET_0,                           0x00},
-+	{WCD938X_DIGITAL_INTR_SET_1,                           0x00},
-+	{WCD938X_DIGITAL_INTR_SET_2,                           0x00},
-+	{WCD938X_DIGITAL_INTR_TEST_0,                          0x00},
-+	{WCD938X_DIGITAL_INTR_TEST_1,                          0x00},
-+	{WCD938X_DIGITAL_INTR_TEST_2,                          0x00},
-+	{WCD938X_DIGITAL_TX_MODE_DBG_EN,                       0x00},
-+	{WCD938X_DIGITAL_TX_MODE_DBG_0_1,                      0x00},
-+	{WCD938X_DIGITAL_TX_MODE_DBG_2_3,                      0x00},
-+	{WCD938X_DIGITAL_LB_IN_SEL_CTL,                        0x00},
-+	{WCD938X_DIGITAL_LOOP_BACK_MODE,                       0x00},
-+	{WCD938X_DIGITAL_SWR_DAC_TEST,                         0x00},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_RX_0,                     0x40},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_TX_0,                     0x40},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_RX_1,                     0x00},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_TX_1,                     0x00},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_TX_2,                     0x00},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_0,                        0x00},
-+	{WCD938X_DIGITAL_SWR_HM_TEST_1,                        0x00},
-+	{WCD938X_DIGITAL_PAD_CTL_SWR_0,                        0x8F},
-+	{WCD938X_DIGITAL_PAD_CTL_SWR_1,                        0x06},
-+	{WCD938X_DIGITAL_I2C_CTL,                              0x00},
-+	{WCD938X_DIGITAL_CDC_TX_TANGGU_SW_MODE,                0x00},
-+	{WCD938X_DIGITAL_EFUSE_TEST_CTL_0,                     0x00},
-+	{WCD938X_DIGITAL_EFUSE_TEST_CTL_1,                     0x00},
-+	{WCD938X_DIGITAL_EFUSE_T_DATA_0,                       0x00},
-+	{WCD938X_DIGITAL_EFUSE_T_DATA_1,                       0x00},
-+	{WCD938X_DIGITAL_PAD_CTL_PDM_RX0,                      0xF1},
-+	{WCD938X_DIGITAL_PAD_CTL_PDM_RX1,                      0xF1},
-+	{WCD938X_DIGITAL_PAD_CTL_PDM_TX0,                      0xF1},
-+	{WCD938X_DIGITAL_PAD_CTL_PDM_TX1,                      0xF1},
-+	{WCD938X_DIGITAL_PAD_CTL_PDM_TX2,                      0xF1},
-+	{WCD938X_DIGITAL_PAD_INP_DIS_0,                        0x00},
-+	{WCD938X_DIGITAL_PAD_INP_DIS_1,                        0x00},
-+	{WCD938X_DIGITAL_DRIVE_STRENGTH_0,                     0x00},
-+	{WCD938X_DIGITAL_DRIVE_STRENGTH_1,                     0x00},
-+	{WCD938X_DIGITAL_DRIVE_STRENGTH_2,                     0x00},
-+	{WCD938X_DIGITAL_RX_DATA_EDGE_CTL,                     0x1F},
-+	{WCD938X_DIGITAL_TX_DATA_EDGE_CTL,                     0x80},
-+	{WCD938X_DIGITAL_GPIO_MODE,                            0x00},
-+	{WCD938X_DIGITAL_PIN_CTL_OE,                           0x00},
-+	{WCD938X_DIGITAL_PIN_CTL_DATA_0,                       0x00},
-+	{WCD938X_DIGITAL_PIN_CTL_DATA_1,                       0x00},
-+	{WCD938X_DIGITAL_PIN_STATUS_0,                         0x00},
-+	{WCD938X_DIGITAL_PIN_STATUS_1,                         0x00},
-+	{WCD938X_DIGITAL_DIG_DEBUG_CTL,                        0x00},
-+	{WCD938X_DIGITAL_DIG_DEBUG_EN,                         0x00},
-+	{WCD938X_DIGITAL_ANA_CSR_DBG_ADD,                      0x00},
-+	{WCD938X_DIGITAL_ANA_CSR_DBG_CTL,                      0x48},
-+	{WCD938X_DIGITAL_SSP_DBG,                              0x00},
-+	{WCD938X_DIGITAL_MODE_STATUS_0,                        0x00},
-+	{WCD938X_DIGITAL_MODE_STATUS_1,                        0x00},
-+	{WCD938X_DIGITAL_SPARE_0,                              0x00},
-+	{WCD938X_DIGITAL_SPARE_1,                              0x00},
-+	{WCD938X_DIGITAL_SPARE_2,                              0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_0,                          0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_1,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_2,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_3,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_4,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_5,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_6,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_7,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_8,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_9,                          0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_10,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_11,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_12,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_13,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_14,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_15,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_16,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_17,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_18,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_19,                         0xFF},
-+	{WCD938X_DIGITAL_EFUSE_REG_20,                         0x0E},
-+	{WCD938X_DIGITAL_EFUSE_REG_21,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_22,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_23,                         0xF8},
-+	{WCD938X_DIGITAL_EFUSE_REG_24,                         0x16},
-+	{WCD938X_DIGITAL_EFUSE_REG_25,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_26,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_27,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_28,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_29,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_30,                         0x00},
-+	{WCD938X_DIGITAL_EFUSE_REG_31,                         0x00},
-+	{WCD938X_DIGITAL_TX_REQ_FB_CTL_0,                      0x88},
-+	{WCD938X_DIGITAL_TX_REQ_FB_CTL_1,                      0x88},
-+	{WCD938X_DIGITAL_TX_REQ_FB_CTL_2,                      0x88},
-+	{WCD938X_DIGITAL_TX_REQ_FB_CTL_3,                      0x88},
-+	{WCD938X_DIGITAL_TX_REQ_FB_CTL_4,                      0x88},
-+	{WCD938X_DIGITAL_DEM_BYPASS_DATA0,                     0x55},
-+	{WCD938X_DIGITAL_DEM_BYPASS_DATA1,                     0x55},
-+	{WCD938X_DIGITAL_DEM_BYPASS_DATA2,                     0x55},
-+	{WCD938X_DIGITAL_DEM_BYPASS_DATA3,                     0x01},
-+};
-+
-+static bool wcd938x_rdwr_register(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case WCD938X_ANA_PAGE_REGISTER:
-+	case WCD938X_ANA_BIAS:
-+	case WCD938X_ANA_RX_SUPPLIES:
-+	case WCD938X_ANA_HPH:
-+	case WCD938X_ANA_EAR:
-+	case WCD938X_ANA_EAR_COMPANDER_CTL:
-+	case WCD938X_ANA_TX_CH1:
-+	case WCD938X_ANA_TX_CH2:
-+	case WCD938X_ANA_TX_CH3:
-+	case WCD938X_ANA_TX_CH4:
-+	case WCD938X_ANA_MICB1_MICB2_DSP_EN_LOGIC:
-+	case WCD938X_ANA_MICB3_DSP_EN_LOGIC:
-+	case WCD938X_ANA_MBHC_MECH:
-+	case WCD938X_ANA_MBHC_ELECT:
-+	case WCD938X_ANA_MBHC_ZDET:
-+	case WCD938X_ANA_MBHC_BTN0:
-+	case WCD938X_ANA_MBHC_BTN1:
-+	case WCD938X_ANA_MBHC_BTN2:
-+	case WCD938X_ANA_MBHC_BTN3:
-+	case WCD938X_ANA_MBHC_BTN4:
-+	case WCD938X_ANA_MBHC_BTN5:
-+	case WCD938X_ANA_MBHC_BTN6:
-+	case WCD938X_ANA_MBHC_BTN7:
-+	case WCD938X_ANA_MICB1:
-+	case WCD938X_ANA_MICB2:
-+	case WCD938X_ANA_MICB2_RAMP:
-+	case WCD938X_ANA_MICB3:
-+	case WCD938X_ANA_MICB4:
-+	case WCD938X_BIAS_CTL:
-+	case WCD938X_BIAS_VBG_FINE_ADJ:
-+	case WCD938X_LDOL_VDDCX_ADJUST:
-+	case WCD938X_LDOL_DISABLE_LDOL:
-+	case WCD938X_MBHC_CTL_CLK:
-+	case WCD938X_MBHC_CTL_ANA:
-+	case WCD938X_MBHC_CTL_SPARE_1:
-+	case WCD938X_MBHC_CTL_SPARE_2:
-+	case WCD938X_MBHC_CTL_BCS:
-+	case WCD938X_MBHC_TEST_CTL:
-+	case WCD938X_LDOH_MODE:
-+	case WCD938X_LDOH_BIAS:
-+	case WCD938X_LDOH_STB_LOADS:
-+	case WCD938X_LDOH_SLOWRAMP:
-+	case WCD938X_MICB1_TEST_CTL_1:
-+	case WCD938X_MICB1_TEST_CTL_2:
-+	case WCD938X_MICB1_TEST_CTL_3:
-+	case WCD938X_MICB2_TEST_CTL_1:
-+	case WCD938X_MICB2_TEST_CTL_2:
-+	case WCD938X_MICB2_TEST_CTL_3:
-+	case WCD938X_MICB3_TEST_CTL_1:
-+	case WCD938X_MICB3_TEST_CTL_2:
-+	case WCD938X_MICB3_TEST_CTL_3:
-+	case WCD938X_MICB4_TEST_CTL_1:
-+	case WCD938X_MICB4_TEST_CTL_2:
-+	case WCD938X_MICB4_TEST_CTL_3:
-+	case WCD938X_TX_COM_ADC_VCM:
-+	case WCD938X_TX_COM_BIAS_ATEST:
-+	case WCD938X_TX_COM_SPARE1:
-+	case WCD938X_TX_COM_SPARE2:
-+	case WCD938X_TX_COM_TXFE_DIV_CTL:
-+	case WCD938X_TX_COM_TXFE_DIV_START:
-+	case WCD938X_TX_COM_SPARE3:
-+	case WCD938X_TX_COM_SPARE4:
-+	case WCD938X_TX_1_2_TEST_EN:
-+	case WCD938X_TX_1_2_ADC_IB:
-+	case WCD938X_TX_1_2_ATEST_REFCTL:
-+	case WCD938X_TX_1_2_TEST_CTL:
-+	case WCD938X_TX_1_2_TEST_BLK_EN1:
-+	case WCD938X_TX_1_2_TXFE1_CLKDIV:
-+	case WCD938X_TX_3_4_TEST_EN:
-+	case WCD938X_TX_3_4_ADC_IB:
-+	case WCD938X_TX_3_4_ATEST_REFCTL:
-+	case WCD938X_TX_3_4_TEST_CTL:
-+	case WCD938X_TX_3_4_TEST_BLK_EN3:
-+	case WCD938X_TX_3_4_TXFE3_CLKDIV:
-+	case WCD938X_TX_3_4_TEST_BLK_EN2:
-+	case WCD938X_TX_3_4_TXFE2_CLKDIV:
-+	case WCD938X_TX_3_4_SPARE1:
-+	case WCD938X_TX_3_4_TEST_BLK_EN4:
-+	case WCD938X_TX_3_4_TXFE4_CLKDIV:
-+	case WCD938X_TX_3_4_SPARE2:
-+	case WCD938X_CLASSH_MODE_1:
-+	case WCD938X_CLASSH_MODE_2:
-+	case WCD938X_CLASSH_MODE_3:
-+	case WCD938X_CLASSH_CTRL_VCL_1:
-+	case WCD938X_CLASSH_CTRL_VCL_2:
-+	case WCD938X_CLASSH_CTRL_CCL_1:
-+	case WCD938X_CLASSH_CTRL_CCL_2:
-+	case WCD938X_CLASSH_CTRL_CCL_3:
-+	case WCD938X_CLASSH_CTRL_CCL_4:
-+	case WCD938X_CLASSH_CTRL_CCL_5:
-+	case WCD938X_CLASSH_BUCK_TMUX_A_D:
-+	case WCD938X_CLASSH_BUCK_SW_DRV_CNTL:
-+	case WCD938X_CLASSH_SPARE:
-+	case WCD938X_FLYBACK_EN:
-+	case WCD938X_FLYBACK_VNEG_CTRL_1:
-+	case WCD938X_FLYBACK_VNEG_CTRL_2:
-+	case WCD938X_FLYBACK_VNEG_CTRL_3:
-+	case WCD938X_FLYBACK_VNEG_CTRL_4:
-+	case WCD938X_FLYBACK_VNEG_CTRL_5:
-+	case WCD938X_FLYBACK_VNEG_CTRL_6:
-+	case WCD938X_FLYBACK_VNEG_CTRL_7:
-+	case WCD938X_FLYBACK_VNEG_CTRL_8:
-+	case WCD938X_FLYBACK_VNEG_CTRL_9:
-+	case WCD938X_FLYBACK_VNEGDAC_CTRL_1:
-+	case WCD938X_FLYBACK_VNEGDAC_CTRL_2:
-+	case WCD938X_FLYBACK_VNEGDAC_CTRL_3:
-+	case WCD938X_FLYBACK_CTRL_1:
-+	case WCD938X_FLYBACK_TEST_CTL:
-+	case WCD938X_RX_AUX_SW_CTL:
-+	case WCD938X_RX_PA_AUX_IN_CONN:
-+	case WCD938X_RX_TIMER_DIV:
-+	case WCD938X_RX_OCP_CTL:
-+	case WCD938X_RX_OCP_COUNT:
-+	case WCD938X_RX_BIAS_EAR_DAC:
-+	case WCD938X_RX_BIAS_EAR_AMP:
-+	case WCD938X_RX_BIAS_HPH_LDO:
-+	case WCD938X_RX_BIAS_HPH_PA:
-+	case WCD938X_RX_BIAS_HPH_RDACBUFF_CNP2:
-+	case WCD938X_RX_BIAS_HPH_RDAC_LDO:
-+	case WCD938X_RX_BIAS_HPH_CNP1:
-+	case WCD938X_RX_BIAS_HPH_LOWPOWER:
-+	case WCD938X_RX_BIAS_AUX_DAC:
-+	case WCD938X_RX_BIAS_AUX_AMP:
-+	case WCD938X_RX_BIAS_VNEGDAC_BLEEDER:
-+	case WCD938X_RX_BIAS_MISC:
-+	case WCD938X_RX_BIAS_BUCK_RST:
-+	case WCD938X_RX_BIAS_BUCK_VREF_ERRAMP:
-+	case WCD938X_RX_BIAS_FLYB_ERRAMP:
-+	case WCD938X_RX_BIAS_FLYB_BUFF:
-+	case WCD938X_RX_BIAS_FLYB_MID_RST:
-+	case WCD938X_HPH_CNP_EN:
-+	case WCD938X_HPH_CNP_WG_CTL:
-+	case WCD938X_HPH_CNP_WG_TIME:
-+	case WCD938X_HPH_OCP_CTL:
-+	case WCD938X_HPH_AUTO_CHOP:
-+	case WCD938X_HPH_CHOP_CTL:
-+	case WCD938X_HPH_PA_CTL1:
-+	case WCD938X_HPH_PA_CTL2:
-+	case WCD938X_HPH_L_EN:
-+	case WCD938X_HPH_L_TEST:
-+	case WCD938X_HPH_L_ATEST:
-+	case WCD938X_HPH_R_EN:
-+	case WCD938X_HPH_R_TEST:
-+	case WCD938X_HPH_R_ATEST:
-+	case WCD938X_HPH_RDAC_CLK_CTL1:
-+	case WCD938X_HPH_RDAC_CLK_CTL2:
-+	case WCD938X_HPH_RDAC_LDO_CTL:
-+	case WCD938X_HPH_RDAC_CHOP_CLK_LP_CTL:
-+	case WCD938X_HPH_REFBUFF_UHQA_CTL:
-+	case WCD938X_HPH_REFBUFF_LP_CTL:
-+	case WCD938X_HPH_L_DAC_CTL:
-+	case WCD938X_HPH_R_DAC_CTL:
-+	case WCD938X_HPH_SURGE_HPHLR_SURGE_COMP_SEL:
-+	case WCD938X_HPH_SURGE_HPHLR_SURGE_EN:
-+	case WCD938X_HPH_SURGE_HPHLR_SURGE_MISC1:
-+	case WCD938X_EAR_EAR_EN_REG:
-+	case WCD938X_EAR_EAR_PA_CON:
-+	case WCD938X_EAR_EAR_SP_CON:
-+	case WCD938X_EAR_EAR_DAC_CON:
-+	case WCD938X_EAR_EAR_CNP_FSM_CON:
-+	case WCD938X_EAR_TEST_CTL:
-+	case WCD938X_ANA_NEW_PAGE_REGISTER:
-+	case WCD938X_HPH_NEW_ANA_HPH2:
-+	case WCD938X_HPH_NEW_ANA_HPH3:
-+	case WCD938X_SLEEP_CTL:
-+	case WCD938X_SLEEP_WATCHDOG_CTL:
-+	case WCD938X_MBHC_NEW_ELECT_REM_CLAMP_CTL:
-+	case WCD938X_MBHC_NEW_CTL_1:
-+	case WCD938X_MBHC_NEW_CTL_2:
-+	case WCD938X_MBHC_NEW_PLUG_DETECT_CTL:
-+	case WCD938X_MBHC_NEW_ZDET_ANA_CTL:
-+	case WCD938X_MBHC_NEW_ZDET_RAMP_CTL:
-+	case WCD938X_TX_NEW_AMIC_MUX_CFG:
-+	case WCD938X_AUX_AUXPA:
-+	case WCD938X_LDORXTX_MODE:
-+	case WCD938X_LDORXTX_CONFIG:
-+	case WCD938X_DIE_CRACK_DIE_CRK_DET_EN:
-+	case WCD938X_HPH_NEW_INT_RDAC_GAIN_CTL:
-+	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L:
-+	case WCD938X_HPH_NEW_INT_RDAC_VREF_CTL:
-+	case WCD938X_HPH_NEW_INT_RDAC_OVERRIDE_CTL:
-+	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R:
-+	case WCD938X_HPH_NEW_INT_PA_MISC1:
-+	case WCD938X_HPH_NEW_INT_PA_MISC2:
-+	case WCD938X_HPH_NEW_INT_PA_RDAC_MISC:
-+	case WCD938X_HPH_NEW_INT_HPH_TIMER1:
-+	case WCD938X_HPH_NEW_INT_HPH_TIMER2:
-+	case WCD938X_HPH_NEW_INT_HPH_TIMER3:
-+	case WCD938X_HPH_NEW_INT_HPH_TIMER4:
-+	case WCD938X_HPH_NEW_INT_PA_RDAC_MISC2:
-+	case WCD938X_HPH_NEW_INT_PA_RDAC_MISC3:
-+	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L_NEW:
-+	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R_NEW:
-+	case WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_LOHIFI:
-+	case WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_ULP:
-+	case WCD938X_RX_NEW_INT_HPH_RDAC_LDO_LP:
-+	case WCD938X_MBHC_NEW_INT_MOISTURE_DET_DC_CTRL:
-+	case WCD938X_MBHC_NEW_INT_MOISTURE_DET_POLLING_CTRL:
-+	case WCD938X_MBHC_NEW_INT_MECH_DET_CURRENT:
-+	case WCD938X_MBHC_NEW_INT_SPARE_2:
-+	case WCD938X_EAR_INT_NEW_EAR_CHOPPER_CON:
-+	case WCD938X_EAR_INT_NEW_CNP_VCM_CON1:
-+	case WCD938X_EAR_INT_NEW_CNP_VCM_CON2:
-+	case WCD938X_EAR_INT_NEW_EAR_DYNAMIC_BIAS:
-+	case WCD938X_AUX_INT_EN_REG:
-+	case WCD938X_AUX_INT_PA_CTRL:
-+	case WCD938X_AUX_INT_SP_CTRL:
-+	case WCD938X_AUX_INT_DAC_CTRL:
-+	case WCD938X_AUX_INT_CLK_CTRL:
-+	case WCD938X_AUX_INT_TEST_CTRL:
-+	case WCD938X_AUX_INT_MISC:
-+	case WCD938X_LDORXTX_INT_BIAS:
-+	case WCD938X_LDORXTX_INT_STB_LOADS_DTEST:
-+	case WCD938X_LDORXTX_INT_TEST0:
-+	case WCD938X_LDORXTX_INT_STARTUP_TIMER:
-+	case WCD938X_LDORXTX_INT_TEST1:
-+	case WCD938X_SLEEP_INT_WATCHDOG_CTL_1:
-+	case WCD938X_SLEEP_INT_WATCHDOG_CTL_2:
-+	case WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT1:
-+	case WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT2:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L2:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L1:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L0:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP1P2M:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP0P6M:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L2L1:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L0:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_ULP:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L2L1:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L0:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_ULP:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_L2L1L0:
-+	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_ULP:
-+	case WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L2L1:
-+	case WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L0ULP:
-+	case WCD938X_TX_COM_NEW_INT_TXADC_INT_L2:
-+	case WCD938X_TX_COM_NEW_INT_TXADC_INT_L1:
-+	case WCD938X_TX_COM_NEW_INT_TXADC_INT_L0:
-+	case WCD938X_TX_COM_NEW_INT_TXADC_INT_ULP:
-+	case WCD938X_DIGITAL_PAGE_REGISTER:
-+	case WCD938X_DIGITAL_SWR_TX_CLK_RATE:
-+	case WCD938X_DIGITAL_CDC_RST_CTL:
-+	case WCD938X_DIGITAL_TOP_CLK_CFG:
-+	case WCD938X_DIGITAL_CDC_ANA_CLK_CTL:
-+	case WCD938X_DIGITAL_CDC_DIG_CLK_CTL:
-+	case WCD938X_DIGITAL_SWR_RST_EN:
-+	case WCD938X_DIGITAL_CDC_PATH_MODE:
-+	case WCD938X_DIGITAL_CDC_RX_RST:
-+	case WCD938X_DIGITAL_CDC_RX0_CTL:
-+	case WCD938X_DIGITAL_CDC_RX1_CTL:
-+	case WCD938X_DIGITAL_CDC_RX2_CTL:
-+	case WCD938X_DIGITAL_CDC_TX_ANA_MODE_0_1:
-+	case WCD938X_DIGITAL_CDC_TX_ANA_MODE_2_3:
-+	case WCD938X_DIGITAL_CDC_COMP_CTL_0:
-+	case WCD938X_DIGITAL_CDC_ANA_TX_CLK_CTL:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A1_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A1_1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A2_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A2_1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A3_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A3_1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A4_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A4_1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A5_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A5_1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A6_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_A7_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_C_0:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_C_1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_C_2:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_C_3:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R1:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R2:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R3:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R4:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R5:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R6:
-+	case WCD938X_DIGITAL_CDC_HPH_DSM_R7:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A1_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A1_1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A2_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A2_1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A3_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A3_1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A4_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A4_1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A5_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A5_1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A6_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_A7_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_C_0:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_C_1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_C_2:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_C_3:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R1:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R2:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R3:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R4:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R5:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R6:
-+	case WCD938X_DIGITAL_CDC_AUX_DSM_R7:
-+	case WCD938X_DIGITAL_CDC_HPH_GAIN_RX_0:
-+	case WCD938X_DIGITAL_CDC_HPH_GAIN_RX_1:
-+	case WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_0:
-+	case WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_1:
-+	case WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_2:
-+	case WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_0:
-+	case WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_1:
-+	case WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_2:
-+	case WCD938X_DIGITAL_CDC_HPH_GAIN_CTL:
-+	case WCD938X_DIGITAL_CDC_AUX_GAIN_CTL:
-+	case WCD938X_DIGITAL_CDC_EAR_PATH_CTL:
-+	case WCD938X_DIGITAL_CDC_SWR_CLH:
-+	case WCD938X_DIGITAL_SWR_CLH_BYP:
-+	case WCD938X_DIGITAL_CDC_TX0_CTL:
-+	case WCD938X_DIGITAL_CDC_TX1_CTL:
-+	case WCD938X_DIGITAL_CDC_TX2_CTL:
-+	case WCD938X_DIGITAL_CDC_TX_RST:
-+	case WCD938X_DIGITAL_CDC_REQ_CTL:
-+	case WCD938X_DIGITAL_CDC_RST:
-+	case WCD938X_DIGITAL_CDC_AMIC_CTL:
-+	case WCD938X_DIGITAL_CDC_DMIC_CTL:
-+	case WCD938X_DIGITAL_CDC_DMIC1_CTL:
-+	case WCD938X_DIGITAL_CDC_DMIC2_CTL:
-+	case WCD938X_DIGITAL_CDC_DMIC3_CTL:
-+	case WCD938X_DIGITAL_CDC_DMIC4_CTL:
-+	case WCD938X_DIGITAL_EFUSE_PRG_CTL:
-+	case WCD938X_DIGITAL_EFUSE_CTL:
-+	case WCD938X_DIGITAL_CDC_DMIC_RATE_1_2:
-+	case WCD938X_DIGITAL_CDC_DMIC_RATE_3_4:
-+	case WCD938X_DIGITAL_PDM_WD_CTL0:
-+	case WCD938X_DIGITAL_PDM_WD_CTL1:
-+	case WCD938X_DIGITAL_PDM_WD_CTL2:
-+	case WCD938X_DIGITAL_INTR_MODE:
-+	case WCD938X_DIGITAL_INTR_MASK_0:
-+	case WCD938X_DIGITAL_INTR_MASK_1:
-+	case WCD938X_DIGITAL_INTR_MASK_2:
-+	case WCD938X_DIGITAL_INTR_CLEAR_0:
-+	case WCD938X_DIGITAL_INTR_CLEAR_1:
-+	case WCD938X_DIGITAL_INTR_CLEAR_2:
-+	case WCD938X_DIGITAL_INTR_LEVEL_0:
-+	case WCD938X_DIGITAL_INTR_LEVEL_1:
-+	case WCD938X_DIGITAL_INTR_LEVEL_2:
-+	case WCD938X_DIGITAL_INTR_SET_0:
-+	case WCD938X_DIGITAL_INTR_SET_1:
-+	case WCD938X_DIGITAL_INTR_SET_2:
-+	case WCD938X_DIGITAL_INTR_TEST_0:
-+	case WCD938X_DIGITAL_INTR_TEST_1:
-+	case WCD938X_DIGITAL_INTR_TEST_2:
-+	case WCD938X_DIGITAL_TX_MODE_DBG_EN:
-+	case WCD938X_DIGITAL_TX_MODE_DBG_0_1:
-+	case WCD938X_DIGITAL_TX_MODE_DBG_2_3:
-+	case WCD938X_DIGITAL_LB_IN_SEL_CTL:
-+	case WCD938X_DIGITAL_LOOP_BACK_MODE:
-+	case WCD938X_DIGITAL_SWR_DAC_TEST:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_RX_0:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_TX_0:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_RX_1:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_TX_1:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_TX_2:
-+	case WCD938X_DIGITAL_PAD_CTL_SWR_0:
-+	case WCD938X_DIGITAL_PAD_CTL_SWR_1:
-+	case WCD938X_DIGITAL_I2C_CTL:
-+	case WCD938X_DIGITAL_CDC_TX_TANGGU_SW_MODE:
-+	case WCD938X_DIGITAL_EFUSE_TEST_CTL_0:
-+	case WCD938X_DIGITAL_EFUSE_TEST_CTL_1:
-+	case WCD938X_DIGITAL_PAD_CTL_PDM_RX0:
-+	case WCD938X_DIGITAL_PAD_CTL_PDM_RX1:
-+	case WCD938X_DIGITAL_PAD_CTL_PDM_TX0:
-+	case WCD938X_DIGITAL_PAD_CTL_PDM_TX1:
-+	case WCD938X_DIGITAL_PAD_CTL_PDM_TX2:
-+	case WCD938X_DIGITAL_PAD_INP_DIS_0:
-+	case WCD938X_DIGITAL_PAD_INP_DIS_1:
-+	case WCD938X_DIGITAL_DRIVE_STRENGTH_0:
-+	case WCD938X_DIGITAL_DRIVE_STRENGTH_1:
-+	case WCD938X_DIGITAL_DRIVE_STRENGTH_2:
-+	case WCD938X_DIGITAL_RX_DATA_EDGE_CTL:
-+	case WCD938X_DIGITAL_TX_DATA_EDGE_CTL:
-+	case WCD938X_DIGITAL_GPIO_MODE:
-+	case WCD938X_DIGITAL_PIN_CTL_OE:
-+	case WCD938X_DIGITAL_PIN_CTL_DATA_0:
-+	case WCD938X_DIGITAL_PIN_CTL_DATA_1:
-+	case WCD938X_DIGITAL_DIG_DEBUG_CTL:
-+	case WCD938X_DIGITAL_DIG_DEBUG_EN:
-+	case WCD938X_DIGITAL_ANA_CSR_DBG_ADD:
-+	case WCD938X_DIGITAL_ANA_CSR_DBG_CTL:
-+	case WCD938X_DIGITAL_SSP_DBG:
-+	case WCD938X_DIGITAL_SPARE_0:
-+	case WCD938X_DIGITAL_SPARE_1:
-+	case WCD938X_DIGITAL_SPARE_2:
-+	case WCD938X_DIGITAL_TX_REQ_FB_CTL_0:
-+	case WCD938X_DIGITAL_TX_REQ_FB_CTL_1:
-+	case WCD938X_DIGITAL_TX_REQ_FB_CTL_2:
-+	case WCD938X_DIGITAL_TX_REQ_FB_CTL_3:
-+	case WCD938X_DIGITAL_TX_REQ_FB_CTL_4:
-+	case WCD938X_DIGITAL_DEM_BYPASS_DATA0:
-+	case WCD938X_DIGITAL_DEM_BYPASS_DATA1:
-+	case WCD938X_DIGITAL_DEM_BYPASS_DATA2:
-+	case WCD938X_DIGITAL_DEM_BYPASS_DATA3:
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+static bool wcd938x_readonly_register(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case WCD938X_ANA_MBHC_RESULT_1:
-+	case WCD938X_ANA_MBHC_RESULT_2:
-+	case WCD938X_ANA_MBHC_RESULT_3:
-+	case WCD938X_MBHC_MOISTURE_DET_FSM_STATUS:
-+	case WCD938X_TX_1_2_SAR2_ERR:
-+	case WCD938X_TX_1_2_SAR1_ERR:
-+	case WCD938X_TX_3_4_SAR4_ERR:
-+	case WCD938X_TX_3_4_SAR3_ERR:
-+	case WCD938X_HPH_L_STATUS:
-+	case WCD938X_HPH_R_STATUS:
-+	case WCD938X_HPH_SURGE_HPHLR_SURGE_STATUS:
-+	case WCD938X_EAR_STATUS_REG_1:
-+	case WCD938X_EAR_STATUS_REG_2:
-+	case WCD938X_MBHC_NEW_FSM_STATUS:
-+	case WCD938X_MBHC_NEW_ADC_RESULT:
-+	case WCD938X_DIE_CRACK_DIE_CRK_DET_OUT:
-+	case WCD938X_AUX_INT_STATUS_REG:
-+	case WCD938X_LDORXTX_INT_STATUS:
-+	case WCD938X_DIGITAL_CHIP_ID0:
-+	case WCD938X_DIGITAL_CHIP_ID1:
-+	case WCD938X_DIGITAL_CHIP_ID2:
-+	case WCD938X_DIGITAL_CHIP_ID3:
-+	case WCD938X_DIGITAL_INTR_STATUS_0:
-+	case WCD938X_DIGITAL_INTR_STATUS_1:
-+	case WCD938X_DIGITAL_INTR_STATUS_2:
-+	case WCD938X_DIGITAL_INTR_CLEAR_0:
-+	case WCD938X_DIGITAL_INTR_CLEAR_1:
-+	case WCD938X_DIGITAL_INTR_CLEAR_2:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_0:
-+	case WCD938X_DIGITAL_SWR_HM_TEST_1:
-+	case WCD938X_DIGITAL_EFUSE_T_DATA_0:
-+	case WCD938X_DIGITAL_EFUSE_T_DATA_1:
-+	case WCD938X_DIGITAL_PIN_STATUS_0:
-+	case WCD938X_DIGITAL_PIN_STATUS_1:
-+	case WCD938X_DIGITAL_MODE_STATUS_0:
-+	case WCD938X_DIGITAL_MODE_STATUS_1:
-+	case WCD938X_DIGITAL_EFUSE_REG_0:
-+	case WCD938X_DIGITAL_EFUSE_REG_1:
-+	case WCD938X_DIGITAL_EFUSE_REG_2:
-+	case WCD938X_DIGITAL_EFUSE_REG_3:
-+	case WCD938X_DIGITAL_EFUSE_REG_4:
-+	case WCD938X_DIGITAL_EFUSE_REG_5:
-+	case WCD938X_DIGITAL_EFUSE_REG_6:
-+	case WCD938X_DIGITAL_EFUSE_REG_7:
-+	case WCD938X_DIGITAL_EFUSE_REG_8:
-+	case WCD938X_DIGITAL_EFUSE_REG_9:
-+	case WCD938X_DIGITAL_EFUSE_REG_10:
-+	case WCD938X_DIGITAL_EFUSE_REG_11:
-+	case WCD938X_DIGITAL_EFUSE_REG_12:
-+	case WCD938X_DIGITAL_EFUSE_REG_13:
-+	case WCD938X_DIGITAL_EFUSE_REG_14:
-+	case WCD938X_DIGITAL_EFUSE_REG_15:
-+	case WCD938X_DIGITAL_EFUSE_REG_16:
-+	case WCD938X_DIGITAL_EFUSE_REG_17:
-+	case WCD938X_DIGITAL_EFUSE_REG_18:
-+	case WCD938X_DIGITAL_EFUSE_REG_19:
-+	case WCD938X_DIGITAL_EFUSE_REG_20:
-+	case WCD938X_DIGITAL_EFUSE_REG_21:
-+	case WCD938X_DIGITAL_EFUSE_REG_22:
-+	case WCD938X_DIGITAL_EFUSE_REG_23:
-+	case WCD938X_DIGITAL_EFUSE_REG_24:
-+	case WCD938X_DIGITAL_EFUSE_REG_25:
-+	case WCD938X_DIGITAL_EFUSE_REG_26:
-+	case WCD938X_DIGITAL_EFUSE_REG_27:
-+	case WCD938X_DIGITAL_EFUSE_REG_28:
-+	case WCD938X_DIGITAL_EFUSE_REG_29:
-+	case WCD938X_DIGITAL_EFUSE_REG_30:
-+	case WCD938X_DIGITAL_EFUSE_REG_31:
-+		return true;
-+	}
-+	return false;
-+}
-+
-+static bool wcd938x_readable_register(struct device *dev, unsigned int reg)
-+{
-+	bool ret;
-+
-+	ret = wcd938x_readonly_register(dev, reg);
-+	if (!ret)
-+		return wcd938x_rdwr_register(dev, reg);
-+
-+	return ret;
-+}
-+
-+static bool wcd938x_writeable_register(struct device *dev, unsigned int reg)
-+{
-+	return wcd938x_rdwr_register(dev, reg);
-+}
-+
-+static bool wcd938x_volatile_register(struct device *dev, unsigned int reg)
-+{
-+	if (reg <= WCD938X_BASE_ADDRESS)
-+		return false;
-+
-+	if (reg == WCD938X_DIGITAL_SWR_TX_CLK_RATE)
-+		return true;
-+
-+	if (wcd938x_readonly_register(dev, reg))
-+		return true;
-+
-+	return false;
-+}
-+
-+static const struct regmap_config wcd938x_regmap_config = {
-+	.name = "wcd938x_csr",
-+	.reg_bits = 32,
-+	.val_bits = 8,
-+	.cache_type = REGCACHE_RBTREE,
-+	.reg_defaults = wcd938x_defaults,
-+	.num_reg_defaults = ARRAY_SIZE(wcd938x_defaults),
-+	.max_register = WCD938X_MAX_REGISTER,
-+	.readable_reg = wcd938x_readable_register,
-+	.writeable_reg = wcd938x_writeable_register,
-+	.volatile_reg = wcd938x_volatile_register,
-+	.can_multi_write = true,
-+};
-+
- static const struct sdw_slave_ops wcd9380_slave_ops = {
- 	.update_status = wcd9380_update_status,
- 	.interrupt_callback = wcd9380_interrupt_callback,
-@@ -261,6 +1263,16 @@ static int wcd9380_probe(struct sdw_slave *pdev,
- 		wcd->ch_info = &wcd938x_sdw_rx_ch_info[0];
- 	}
- 
-+	if (wcd->is_tx) {
-+		wcd->regmap = devm_regmap_init_sdw(pdev, &wcd938x_regmap_config);
-+		if (IS_ERR(wcd->regmap))
-+			return dev_err_probe(dev, PTR_ERR(wcd->regmap),
-+					     "Regmap init failed\n");
-+
-+		/* Start in cache-only until device is enumerated */
-+		regcache_cache_only(wcd->regmap, true);
-+	};
-+
- 	pm_runtime_set_autosuspend_delay(dev, 3000);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_mark_last_busy(dev);
-@@ -278,22 +1290,23 @@ MODULE_DEVICE_TABLE(sdw, wcd9380_slave_id);
- 
- static int __maybe_unused wcd938x_sdw_runtime_suspend(struct device *dev)
- {
--	struct regmap *regmap = dev_get_regmap(dev, NULL);
-+	struct wcd938x_sdw_priv *wcd = dev_get_drvdata(dev);
- 
--	if (regmap) {
--		regcache_cache_only(regmap, true);
--		regcache_mark_dirty(regmap);
-+	if (wcd->regmap) {
-+		regcache_cache_only(wcd->regmap, true);
-+		regcache_mark_dirty(wcd->regmap);
- 	}
-+
- 	return 0;
- }
- 
- static int __maybe_unused wcd938x_sdw_runtime_resume(struct device *dev)
- {
--	struct regmap *regmap = dev_get_regmap(dev, NULL);
-+	struct wcd938x_sdw_priv *wcd = dev_get_drvdata(dev);
- 
--	if (regmap) {
--		regcache_cache_only(regmap, false);
--		regcache_sync(regmap);
-+	if (wcd->regmap) {
-+		regcache_cache_only(wcd->regmap, false);
-+		regcache_sync(wcd->regmap);
- 	}
- 
- 	pm_runtime_mark_last_busy(dev);
-diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
-index 11b264a63b04..e7d6a02cdec0 100644
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -273,1001 +273,6 @@ static struct wcd_mbhc_field wcd_mbhc_fields[WCD_MBHC_REG_FUNC_MAX] = {
- 	WCD_MBHC_FIELD(WCD_MBHC_ELECT_ISRC_EN, WCD938X_ANA_MBHC_ZDET, 0x02),
- };
- 
--static const struct reg_default wcd938x_defaults[] = {
--	{WCD938X_ANA_PAGE_REGISTER,                            0x00},
--	{WCD938X_ANA_BIAS,                                     0x00},
--	{WCD938X_ANA_RX_SUPPLIES,                              0x00},
--	{WCD938X_ANA_HPH,                                      0x0C},
--	{WCD938X_ANA_EAR,                                      0x00},
--	{WCD938X_ANA_EAR_COMPANDER_CTL,                        0x02},
--	{WCD938X_ANA_TX_CH1,                                   0x20},
--	{WCD938X_ANA_TX_CH2,                                   0x00},
--	{WCD938X_ANA_TX_CH3,                                   0x20},
--	{WCD938X_ANA_TX_CH4,                                   0x00},
--	{WCD938X_ANA_MICB1_MICB2_DSP_EN_LOGIC,                 0x00},
--	{WCD938X_ANA_MICB3_DSP_EN_LOGIC,                       0x00},
--	{WCD938X_ANA_MBHC_MECH,                                0x39},
--	{WCD938X_ANA_MBHC_ELECT,                               0x08},
--	{WCD938X_ANA_MBHC_ZDET,                                0x00},
--	{WCD938X_ANA_MBHC_RESULT_1,                            0x00},
--	{WCD938X_ANA_MBHC_RESULT_2,                            0x00},
--	{WCD938X_ANA_MBHC_RESULT_3,                            0x00},
--	{WCD938X_ANA_MBHC_BTN0,                                0x00},
--	{WCD938X_ANA_MBHC_BTN1,                                0x10},
--	{WCD938X_ANA_MBHC_BTN2,                                0x20},
--	{WCD938X_ANA_MBHC_BTN3,                                0x30},
--	{WCD938X_ANA_MBHC_BTN4,                                0x40},
--	{WCD938X_ANA_MBHC_BTN5,                                0x50},
--	{WCD938X_ANA_MBHC_BTN6,                                0x60},
--	{WCD938X_ANA_MBHC_BTN7,                                0x70},
--	{WCD938X_ANA_MICB1,                                    0x10},
--	{WCD938X_ANA_MICB2,                                    0x10},
--	{WCD938X_ANA_MICB2_RAMP,                               0x00},
--	{WCD938X_ANA_MICB3,                                    0x10},
--	{WCD938X_ANA_MICB4,                                    0x10},
--	{WCD938X_BIAS_CTL,                                     0x2A},
--	{WCD938X_BIAS_VBG_FINE_ADJ,                            0x55},
--	{WCD938X_LDOL_VDDCX_ADJUST,                            0x01},
--	{WCD938X_LDOL_DISABLE_LDOL,                            0x00},
--	{WCD938X_MBHC_CTL_CLK,                                 0x00},
--	{WCD938X_MBHC_CTL_ANA,                                 0x00},
--	{WCD938X_MBHC_CTL_SPARE_1,                             0x00},
--	{WCD938X_MBHC_CTL_SPARE_2,                             0x00},
--	{WCD938X_MBHC_CTL_BCS,                                 0x00},
--	{WCD938X_MBHC_MOISTURE_DET_FSM_STATUS,                 0x00},
--	{WCD938X_MBHC_TEST_CTL,                                0x00},
--	{WCD938X_LDOH_MODE,                                    0x2B},
--	{WCD938X_LDOH_BIAS,                                    0x68},
--	{WCD938X_LDOH_STB_LOADS,                               0x00},
--	{WCD938X_LDOH_SLOWRAMP,                                0x50},
--	{WCD938X_MICB1_TEST_CTL_1,                             0x1A},
--	{WCD938X_MICB1_TEST_CTL_2,                             0x00},
--	{WCD938X_MICB1_TEST_CTL_3,                             0xA4},
--	{WCD938X_MICB2_TEST_CTL_1,                             0x1A},
--	{WCD938X_MICB2_TEST_CTL_2,                             0x00},
--	{WCD938X_MICB2_TEST_CTL_3,                             0x24},
--	{WCD938X_MICB3_TEST_CTL_1,                             0x1A},
--	{WCD938X_MICB3_TEST_CTL_2,                             0x00},
--	{WCD938X_MICB3_TEST_CTL_3,                             0xA4},
--	{WCD938X_MICB4_TEST_CTL_1,                             0x1A},
--	{WCD938X_MICB4_TEST_CTL_2,                             0x00},
--	{WCD938X_MICB4_TEST_CTL_3,                             0xA4},
--	{WCD938X_TX_COM_ADC_VCM,                               0x39},
--	{WCD938X_TX_COM_BIAS_ATEST,                            0xE0},
--	{WCD938X_TX_COM_SPARE1,                                0x00},
--	{WCD938X_TX_COM_SPARE2,                                0x00},
--	{WCD938X_TX_COM_TXFE_DIV_CTL,                          0x22},
--	{WCD938X_TX_COM_TXFE_DIV_START,                        0x00},
--	{WCD938X_TX_COM_SPARE3,                                0x00},
--	{WCD938X_TX_COM_SPARE4,                                0x00},
--	{WCD938X_TX_1_2_TEST_EN,                               0xCC},
--	{WCD938X_TX_1_2_ADC_IB,                                0xE9},
--	{WCD938X_TX_1_2_ATEST_REFCTL,                          0x0A},
--	{WCD938X_TX_1_2_TEST_CTL,                              0x38},
--	{WCD938X_TX_1_2_TEST_BLK_EN1,                          0xFF},
--	{WCD938X_TX_1_2_TXFE1_CLKDIV,                          0x00},
--	{WCD938X_TX_1_2_SAR2_ERR,                              0x00},
--	{WCD938X_TX_1_2_SAR1_ERR,                              0x00},
--	{WCD938X_TX_3_4_TEST_EN,                               0xCC},
--	{WCD938X_TX_3_4_ADC_IB,                                0xE9},
--	{WCD938X_TX_3_4_ATEST_REFCTL,                          0x0A},
--	{WCD938X_TX_3_4_TEST_CTL,                              0x38},
--	{WCD938X_TX_3_4_TEST_BLK_EN3,                          0xFF},
--	{WCD938X_TX_3_4_TXFE3_CLKDIV,                          0x00},
--	{WCD938X_TX_3_4_SAR4_ERR,                              0x00},
--	{WCD938X_TX_3_4_SAR3_ERR,                              0x00},
--	{WCD938X_TX_3_4_TEST_BLK_EN2,                          0xFB},
--	{WCD938X_TX_3_4_TXFE2_CLKDIV,                          0x00},
--	{WCD938X_TX_3_4_SPARE1,                                0x00},
--	{WCD938X_TX_3_4_TEST_BLK_EN4,                          0xFB},
--	{WCD938X_TX_3_4_TXFE4_CLKDIV,                          0x00},
--	{WCD938X_TX_3_4_SPARE2,                                0x00},
--	{WCD938X_CLASSH_MODE_1,                                0x40},
--	{WCD938X_CLASSH_MODE_2,                                0x3A},
--	{WCD938X_CLASSH_MODE_3,                                0x00},
--	{WCD938X_CLASSH_CTRL_VCL_1,                            0x70},
--	{WCD938X_CLASSH_CTRL_VCL_2,                            0x82},
--	{WCD938X_CLASSH_CTRL_CCL_1,                            0x31},
--	{WCD938X_CLASSH_CTRL_CCL_2,                            0x80},
--	{WCD938X_CLASSH_CTRL_CCL_3,                            0x80},
--	{WCD938X_CLASSH_CTRL_CCL_4,                            0x51},
--	{WCD938X_CLASSH_CTRL_CCL_5,                            0x00},
--	{WCD938X_CLASSH_BUCK_TMUX_A_D,                         0x00},
--	{WCD938X_CLASSH_BUCK_SW_DRV_CNTL,                      0x77},
--	{WCD938X_CLASSH_SPARE,                                 0x00},
--	{WCD938X_FLYBACK_EN,                                   0x4E},
--	{WCD938X_FLYBACK_VNEG_CTRL_1,                          0x0B},
--	{WCD938X_FLYBACK_VNEG_CTRL_2,                          0x45},
--	{WCD938X_FLYBACK_VNEG_CTRL_3,                          0x74},
--	{WCD938X_FLYBACK_VNEG_CTRL_4,                          0x7F},
--	{WCD938X_FLYBACK_VNEG_CTRL_5,                          0x83},
--	{WCD938X_FLYBACK_VNEG_CTRL_6,                          0x98},
--	{WCD938X_FLYBACK_VNEG_CTRL_7,                          0xA9},
--	{WCD938X_FLYBACK_VNEG_CTRL_8,                          0x68},
--	{WCD938X_FLYBACK_VNEG_CTRL_9,                          0x64},
--	{WCD938X_FLYBACK_VNEGDAC_CTRL_1,                       0xED},
--	{WCD938X_FLYBACK_VNEGDAC_CTRL_2,                       0xF0},
--	{WCD938X_FLYBACK_VNEGDAC_CTRL_3,                       0xA6},
--	{WCD938X_FLYBACK_CTRL_1,                               0x65},
--	{WCD938X_FLYBACK_TEST_CTL,                             0x00},
--	{WCD938X_RX_AUX_SW_CTL,                                0x00},
--	{WCD938X_RX_PA_AUX_IN_CONN,                            0x01},
--	{WCD938X_RX_TIMER_DIV,                                 0x32},
--	{WCD938X_RX_OCP_CTL,                                   0x1F},
--	{WCD938X_RX_OCP_COUNT,                                 0x77},
--	{WCD938X_RX_BIAS_EAR_DAC,                              0xA0},
--	{WCD938X_RX_BIAS_EAR_AMP,                              0xAA},
--	{WCD938X_RX_BIAS_HPH_LDO,                              0xA9},
--	{WCD938X_RX_BIAS_HPH_PA,                               0xAA},
--	{WCD938X_RX_BIAS_HPH_RDACBUFF_CNP2,                    0x8A},
--	{WCD938X_RX_BIAS_HPH_RDAC_LDO,                         0x88},
--	{WCD938X_RX_BIAS_HPH_CNP1,                             0x82},
--	{WCD938X_RX_BIAS_HPH_LOWPOWER,                         0x82},
--	{WCD938X_RX_BIAS_AUX_DAC,                              0xA0},
--	{WCD938X_RX_BIAS_AUX_AMP,                              0xAA},
--	{WCD938X_RX_BIAS_VNEGDAC_BLEEDER,                      0x50},
--	{WCD938X_RX_BIAS_MISC,                                 0x00},
--	{WCD938X_RX_BIAS_BUCK_RST,                             0x08},
--	{WCD938X_RX_BIAS_BUCK_VREF_ERRAMP,                     0x44},
--	{WCD938X_RX_BIAS_FLYB_ERRAMP,                          0x40},
--	{WCD938X_RX_BIAS_FLYB_BUFF,                            0xAA},
--	{WCD938X_RX_BIAS_FLYB_MID_RST,                         0x14},
--	{WCD938X_HPH_L_STATUS,                                 0x04},
--	{WCD938X_HPH_R_STATUS,                                 0x04},
--	{WCD938X_HPH_CNP_EN,                                   0x80},
--	{WCD938X_HPH_CNP_WG_CTL,                               0x9A},
--	{WCD938X_HPH_CNP_WG_TIME,                              0x14},
--	{WCD938X_HPH_OCP_CTL,                                  0x28},
--	{WCD938X_HPH_AUTO_CHOP,                                0x16},
--	{WCD938X_HPH_CHOP_CTL,                                 0x83},
--	{WCD938X_HPH_PA_CTL1,                                  0x46},
--	{WCD938X_HPH_PA_CTL2,                                  0x50},
--	{WCD938X_HPH_L_EN,                                     0x80},
--	{WCD938X_HPH_L_TEST,                                   0xE0},
--	{WCD938X_HPH_L_ATEST,                                  0x50},
--	{WCD938X_HPH_R_EN,                                     0x80},
--	{WCD938X_HPH_R_TEST,                                   0xE0},
--	{WCD938X_HPH_R_ATEST,                                  0x54},
--	{WCD938X_HPH_RDAC_CLK_CTL1,                            0x99},
--	{WCD938X_HPH_RDAC_CLK_CTL2,                            0x9B},
--	{WCD938X_HPH_RDAC_LDO_CTL,                             0x33},
--	{WCD938X_HPH_RDAC_CHOP_CLK_LP_CTL,                     0x00},
--	{WCD938X_HPH_REFBUFF_UHQA_CTL,                         0x68},
--	{WCD938X_HPH_REFBUFF_LP_CTL,                           0x0E},
--	{WCD938X_HPH_L_DAC_CTL,                                0x20},
--	{WCD938X_HPH_R_DAC_CTL,                                0x20},
--	{WCD938X_HPH_SURGE_HPHLR_SURGE_COMP_SEL,               0x55},
--	{WCD938X_HPH_SURGE_HPHLR_SURGE_EN,                     0x19},
--	{WCD938X_HPH_SURGE_HPHLR_SURGE_MISC1,                  0xA0},
--	{WCD938X_HPH_SURGE_HPHLR_SURGE_STATUS,                 0x00},
--	{WCD938X_EAR_EAR_EN_REG,                               0x22},
--	{WCD938X_EAR_EAR_PA_CON,                               0x44},
--	{WCD938X_EAR_EAR_SP_CON,                               0xDB},
--	{WCD938X_EAR_EAR_DAC_CON,                              0x80},
--	{WCD938X_EAR_EAR_CNP_FSM_CON,                          0xB2},
--	{WCD938X_EAR_TEST_CTL,                                 0x00},
--	{WCD938X_EAR_STATUS_REG_1,                             0x00},
--	{WCD938X_EAR_STATUS_REG_2,                             0x08},
--	{WCD938X_ANA_NEW_PAGE_REGISTER,                        0x00},
--	{WCD938X_HPH_NEW_ANA_HPH2,                             0x00},
--	{WCD938X_HPH_NEW_ANA_HPH3,                             0x00},
--	{WCD938X_SLEEP_CTL,                                    0x16},
--	{WCD938X_SLEEP_WATCHDOG_CTL,                           0x00},
--	{WCD938X_MBHC_NEW_ELECT_REM_CLAMP_CTL,                 0x00},
--	{WCD938X_MBHC_NEW_CTL_1,                               0x02},
--	{WCD938X_MBHC_NEW_CTL_2,                               0x05},
--	{WCD938X_MBHC_NEW_PLUG_DETECT_CTL,                     0xE9},
--	{WCD938X_MBHC_NEW_ZDET_ANA_CTL,                        0x0F},
--	{WCD938X_MBHC_NEW_ZDET_RAMP_CTL,                       0x00},
--	{WCD938X_MBHC_NEW_FSM_STATUS,                          0x00},
--	{WCD938X_MBHC_NEW_ADC_RESULT,                          0x00},
--	{WCD938X_TX_NEW_AMIC_MUX_CFG,                          0x00},
--	{WCD938X_AUX_AUXPA,                                    0x00},
--	{WCD938X_LDORXTX_MODE,                                 0x0C},
--	{WCD938X_LDORXTX_CONFIG,                               0x10},
--	{WCD938X_DIE_CRACK_DIE_CRK_DET_EN,                     0x00},
--	{WCD938X_DIE_CRACK_DIE_CRK_DET_OUT,                    0x00},
--	{WCD938X_HPH_NEW_INT_RDAC_GAIN_CTL,                    0x40},
--	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L,                   0x81},
--	{WCD938X_HPH_NEW_INT_RDAC_VREF_CTL,                    0x10},
--	{WCD938X_HPH_NEW_INT_RDAC_OVERRIDE_CTL,                0x00},
--	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R,                   0x81},
--	{WCD938X_HPH_NEW_INT_PA_MISC1,                         0x22},
--	{WCD938X_HPH_NEW_INT_PA_MISC2,                         0x00},
--	{WCD938X_HPH_NEW_INT_PA_RDAC_MISC,                     0x00},
--	{WCD938X_HPH_NEW_INT_HPH_TIMER1,                       0xFE},
--	{WCD938X_HPH_NEW_INT_HPH_TIMER2,                       0x02},
--	{WCD938X_HPH_NEW_INT_HPH_TIMER3,                       0x4E},
--	{WCD938X_HPH_NEW_INT_HPH_TIMER4,                       0x54},
--	{WCD938X_HPH_NEW_INT_PA_RDAC_MISC2,                    0x00},
--	{WCD938X_HPH_NEW_INT_PA_RDAC_MISC3,                    0x00},
--	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L_NEW,               0x90},
--	{WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R_NEW,               0x90},
--	{WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_LOHIFI,              0x62},
--	{WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_ULP,                 0x01},
--	{WCD938X_RX_NEW_INT_HPH_RDAC_LDO_LP,                   0x11},
--	{WCD938X_MBHC_NEW_INT_MOISTURE_DET_DC_CTRL,            0x57},
--	{WCD938X_MBHC_NEW_INT_MOISTURE_DET_POLLING_CTRL,       0x01},
--	{WCD938X_MBHC_NEW_INT_MECH_DET_CURRENT,                0x00},
--	{WCD938X_MBHC_NEW_INT_SPARE_2,                         0x00},
--	{WCD938X_EAR_INT_NEW_EAR_CHOPPER_CON,                  0xA8},
--	{WCD938X_EAR_INT_NEW_CNP_VCM_CON1,                     0x42},
--	{WCD938X_EAR_INT_NEW_CNP_VCM_CON2,                     0x22},
--	{WCD938X_EAR_INT_NEW_EAR_DYNAMIC_BIAS,                 0x00},
--	{WCD938X_AUX_INT_EN_REG,                               0x00},
--	{WCD938X_AUX_INT_PA_CTRL,                              0x06},
--	{WCD938X_AUX_INT_SP_CTRL,                              0xD2},
--	{WCD938X_AUX_INT_DAC_CTRL,                             0x80},
--	{WCD938X_AUX_INT_CLK_CTRL,                             0x50},
--	{WCD938X_AUX_INT_TEST_CTRL,                            0x00},
--	{WCD938X_AUX_INT_STATUS_REG,                           0x00},
--	{WCD938X_AUX_INT_MISC,                                 0x00},
--	{WCD938X_LDORXTX_INT_BIAS,                             0x6E},
--	{WCD938X_LDORXTX_INT_STB_LOADS_DTEST,                  0x50},
--	{WCD938X_LDORXTX_INT_TEST0,                            0x1C},
--	{WCD938X_LDORXTX_INT_STARTUP_TIMER,                    0xFF},
--	{WCD938X_LDORXTX_INT_TEST1,                            0x1F},
--	{WCD938X_LDORXTX_INT_STATUS,                           0x00},
--	{WCD938X_SLEEP_INT_WATCHDOG_CTL_1,                     0x0A},
--	{WCD938X_SLEEP_INT_WATCHDOG_CTL_2,                     0x0A},
--	{WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT1,               0x02},
--	{WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT2,               0x60},
--	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L2,               0xFF},
--	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L1,               0x7F},
--	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L0,               0x3F},
--	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP1P2M,          0x1F},
--	{WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP0P6M,          0x0F},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L2L1,          0xD7},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L0,            0xC8},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_ULP,           0xC6},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L2L1,      0xD5},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L0,        0xCA},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_ULP,       0x05},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_L2L1L0,    0xA5},
--	{WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_ULP,       0x13},
--	{WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L2L1,             0x88},
--	{WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L0ULP,            0x42},
--	{WCD938X_TX_COM_NEW_INT_TXADC_INT_L2,                  0xFF},
--	{WCD938X_TX_COM_NEW_INT_TXADC_INT_L1,                  0x64},
--	{WCD938X_TX_COM_NEW_INT_TXADC_INT_L0,                  0x64},
--	{WCD938X_TX_COM_NEW_INT_TXADC_INT_ULP,                 0x77},
--	{WCD938X_DIGITAL_PAGE_REGISTER,                        0x00},
--	{WCD938X_DIGITAL_CHIP_ID0,                             0x00},
--	{WCD938X_DIGITAL_CHIP_ID1,                             0x00},
--	{WCD938X_DIGITAL_CHIP_ID2,                             0x0D},
--	{WCD938X_DIGITAL_CHIP_ID3,                             0x01},
--	{WCD938X_DIGITAL_SWR_TX_CLK_RATE,                      0x00},
--	{WCD938X_DIGITAL_CDC_RST_CTL,                          0x03},
--	{WCD938X_DIGITAL_TOP_CLK_CFG,                          0x00},
--	{WCD938X_DIGITAL_CDC_ANA_CLK_CTL,                      0x00},
--	{WCD938X_DIGITAL_CDC_DIG_CLK_CTL,                      0xF0},
--	{WCD938X_DIGITAL_SWR_RST_EN,                           0x00},
--	{WCD938X_DIGITAL_CDC_PATH_MODE,                        0x55},
--	{WCD938X_DIGITAL_CDC_RX_RST,                           0x00},
--	{WCD938X_DIGITAL_CDC_RX0_CTL,                          0xFC},
--	{WCD938X_DIGITAL_CDC_RX1_CTL,                          0xFC},
--	{WCD938X_DIGITAL_CDC_RX2_CTL,                          0xFC},
--	{WCD938X_DIGITAL_CDC_TX_ANA_MODE_0_1,                  0x00},
--	{WCD938X_DIGITAL_CDC_TX_ANA_MODE_2_3,                  0x00},
--	{WCD938X_DIGITAL_CDC_COMP_CTL_0,                       0x00},
--	{WCD938X_DIGITAL_CDC_ANA_TX_CLK_CTL,                   0x1E},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A1_0,                     0x00},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A1_1,                     0x01},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A2_0,                     0x63},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A2_1,                     0x04},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A3_0,                     0xAC},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A3_1,                     0x04},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A4_0,                     0x1A},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A4_1,                     0x03},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A5_0,                     0xBC},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A5_1,                     0x02},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A6_0,                     0xC7},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_A7_0,                     0xF8},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_C_0,                      0x47},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_C_1,                      0x43},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_C_2,                      0xB1},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_C_3,                      0x17},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R1,                       0x4D},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R2,                       0x29},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R3,                       0x34},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R4,                       0x59},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R5,                       0x66},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R6,                       0x87},
--	{WCD938X_DIGITAL_CDC_HPH_DSM_R7,                       0x64},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A1_0,                     0x00},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A1_1,                     0x01},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A2_0,                     0x96},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A2_1,                     0x09},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A3_0,                     0xAB},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A3_1,                     0x05},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A4_0,                     0x1C},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A4_1,                     0x02},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A5_0,                     0x17},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A5_1,                     0x02},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A6_0,                     0xAA},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_A7_0,                     0xE3},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_C_0,                      0x69},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_C_1,                      0x54},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_C_2,                      0x02},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_C_3,                      0x15},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R1,                       0xA4},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R2,                       0xB5},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R3,                       0x86},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R4,                       0x85},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R5,                       0xAA},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R6,                       0xE2},
--	{WCD938X_DIGITAL_CDC_AUX_DSM_R7,                       0x62},
--	{WCD938X_DIGITAL_CDC_HPH_GAIN_RX_0,                    0x55},
--	{WCD938X_DIGITAL_CDC_HPH_GAIN_RX_1,                    0xA9},
--	{WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_0,                   0x3D},
--	{WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_1,                   0x2E},
--	{WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_2,                   0x01},
--	{WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_0,                   0x00},
--	{WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_1,                   0xFC},
--	{WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_2,                   0x01},
--	{WCD938X_DIGITAL_CDC_HPH_GAIN_CTL,                     0x00},
--	{WCD938X_DIGITAL_CDC_AUX_GAIN_CTL,                     0x00},
--	{WCD938X_DIGITAL_CDC_EAR_PATH_CTL,                     0x00},
--	{WCD938X_DIGITAL_CDC_SWR_CLH,                          0x00},
--	{WCD938X_DIGITAL_SWR_CLH_BYP,                          0x00},
--	{WCD938X_DIGITAL_CDC_TX0_CTL,                          0x68},
--	{WCD938X_DIGITAL_CDC_TX1_CTL,                          0x68},
--	{WCD938X_DIGITAL_CDC_TX2_CTL,                          0x68},
--	{WCD938X_DIGITAL_CDC_TX_RST,                           0x00},
--	{WCD938X_DIGITAL_CDC_REQ_CTL,                          0x01},
--	{WCD938X_DIGITAL_CDC_RST,                              0x00},
--	{WCD938X_DIGITAL_CDC_AMIC_CTL,                         0x0F},
--	{WCD938X_DIGITAL_CDC_DMIC_CTL,                         0x04},
--	{WCD938X_DIGITAL_CDC_DMIC1_CTL,                        0x01},
--	{WCD938X_DIGITAL_CDC_DMIC2_CTL,                        0x01},
--	{WCD938X_DIGITAL_CDC_DMIC3_CTL,                        0x01},
--	{WCD938X_DIGITAL_CDC_DMIC4_CTL,                        0x01},
--	{WCD938X_DIGITAL_EFUSE_PRG_CTL,                        0x00},
--	{WCD938X_DIGITAL_EFUSE_CTL,                            0x2B},
--	{WCD938X_DIGITAL_CDC_DMIC_RATE_1_2,                    0x11},
--	{WCD938X_DIGITAL_CDC_DMIC_RATE_3_4,                    0x11},
--	{WCD938X_DIGITAL_PDM_WD_CTL0,                          0x00},
--	{WCD938X_DIGITAL_PDM_WD_CTL1,                          0x00},
--	{WCD938X_DIGITAL_PDM_WD_CTL2,                          0x00},
--	{WCD938X_DIGITAL_INTR_MODE,                            0x00},
--	{WCD938X_DIGITAL_INTR_MASK_0,                          0xFF},
--	{WCD938X_DIGITAL_INTR_MASK_1,                          0xFF},
--	{WCD938X_DIGITAL_INTR_MASK_2,                          0x3F},
--	{WCD938X_DIGITAL_INTR_STATUS_0,                        0x00},
--	{WCD938X_DIGITAL_INTR_STATUS_1,                        0x00},
--	{WCD938X_DIGITAL_INTR_STATUS_2,                        0x00},
--	{WCD938X_DIGITAL_INTR_CLEAR_0,                         0x00},
--	{WCD938X_DIGITAL_INTR_CLEAR_1,                         0x00},
--	{WCD938X_DIGITAL_INTR_CLEAR_2,                         0x00},
--	{WCD938X_DIGITAL_INTR_LEVEL_0,                         0x00},
--	{WCD938X_DIGITAL_INTR_LEVEL_1,                         0x00},
--	{WCD938X_DIGITAL_INTR_LEVEL_2,                         0x00},
--	{WCD938X_DIGITAL_INTR_SET_0,                           0x00},
--	{WCD938X_DIGITAL_INTR_SET_1,                           0x00},
--	{WCD938X_DIGITAL_INTR_SET_2,                           0x00},
--	{WCD938X_DIGITAL_INTR_TEST_0,                          0x00},
--	{WCD938X_DIGITAL_INTR_TEST_1,                          0x00},
--	{WCD938X_DIGITAL_INTR_TEST_2,                          0x00},
--	{WCD938X_DIGITAL_TX_MODE_DBG_EN,                       0x00},
--	{WCD938X_DIGITAL_TX_MODE_DBG_0_1,                      0x00},
--	{WCD938X_DIGITAL_TX_MODE_DBG_2_3,                      0x00},
--	{WCD938X_DIGITAL_LB_IN_SEL_CTL,                        0x00},
--	{WCD938X_DIGITAL_LOOP_BACK_MODE,                       0x00},
--	{WCD938X_DIGITAL_SWR_DAC_TEST,                         0x00},
--	{WCD938X_DIGITAL_SWR_HM_TEST_RX_0,                     0x40},
--	{WCD938X_DIGITAL_SWR_HM_TEST_TX_0,                     0x40},
--	{WCD938X_DIGITAL_SWR_HM_TEST_RX_1,                     0x00},
--	{WCD938X_DIGITAL_SWR_HM_TEST_TX_1,                     0x00},
--	{WCD938X_DIGITAL_SWR_HM_TEST_TX_2,                     0x00},
--	{WCD938X_DIGITAL_SWR_HM_TEST_0,                        0x00},
--	{WCD938X_DIGITAL_SWR_HM_TEST_1,                        0x00},
--	{WCD938X_DIGITAL_PAD_CTL_SWR_0,                        0x8F},
--	{WCD938X_DIGITAL_PAD_CTL_SWR_1,                        0x06},
--	{WCD938X_DIGITAL_I2C_CTL,                              0x00},
--	{WCD938X_DIGITAL_CDC_TX_TANGGU_SW_MODE,                0x00},
--	{WCD938X_DIGITAL_EFUSE_TEST_CTL_0,                     0x00},
--	{WCD938X_DIGITAL_EFUSE_TEST_CTL_1,                     0x00},
--	{WCD938X_DIGITAL_EFUSE_T_DATA_0,                       0x00},
--	{WCD938X_DIGITAL_EFUSE_T_DATA_1,                       0x00},
--	{WCD938X_DIGITAL_PAD_CTL_PDM_RX0,                      0xF1},
--	{WCD938X_DIGITAL_PAD_CTL_PDM_RX1,                      0xF1},
--	{WCD938X_DIGITAL_PAD_CTL_PDM_TX0,                      0xF1},
--	{WCD938X_DIGITAL_PAD_CTL_PDM_TX1,                      0xF1},
--	{WCD938X_DIGITAL_PAD_CTL_PDM_TX2,                      0xF1},
--	{WCD938X_DIGITAL_PAD_INP_DIS_0,                        0x00},
--	{WCD938X_DIGITAL_PAD_INP_DIS_1,                        0x00},
--	{WCD938X_DIGITAL_DRIVE_STRENGTH_0,                     0x00},
--	{WCD938X_DIGITAL_DRIVE_STRENGTH_1,                     0x00},
--	{WCD938X_DIGITAL_DRIVE_STRENGTH_2,                     0x00},
--	{WCD938X_DIGITAL_RX_DATA_EDGE_CTL,                     0x1F},
--	{WCD938X_DIGITAL_TX_DATA_EDGE_CTL,                     0x80},
--	{WCD938X_DIGITAL_GPIO_MODE,                            0x00},
--	{WCD938X_DIGITAL_PIN_CTL_OE,                           0x00},
--	{WCD938X_DIGITAL_PIN_CTL_DATA_0,                       0x00},
--	{WCD938X_DIGITAL_PIN_CTL_DATA_1,                       0x00},
--	{WCD938X_DIGITAL_PIN_STATUS_0,                         0x00},
--	{WCD938X_DIGITAL_PIN_STATUS_1,                         0x00},
--	{WCD938X_DIGITAL_DIG_DEBUG_CTL,                        0x00},
--	{WCD938X_DIGITAL_DIG_DEBUG_EN,                         0x00},
--	{WCD938X_DIGITAL_ANA_CSR_DBG_ADD,                      0x00},
--	{WCD938X_DIGITAL_ANA_CSR_DBG_CTL,                      0x48},
--	{WCD938X_DIGITAL_SSP_DBG,                              0x00},
--	{WCD938X_DIGITAL_MODE_STATUS_0,                        0x00},
--	{WCD938X_DIGITAL_MODE_STATUS_1,                        0x00},
--	{WCD938X_DIGITAL_SPARE_0,                              0x00},
--	{WCD938X_DIGITAL_SPARE_1,                              0x00},
--	{WCD938X_DIGITAL_SPARE_2,                              0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_0,                          0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_1,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_2,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_3,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_4,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_5,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_6,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_7,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_8,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_9,                          0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_10,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_11,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_12,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_13,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_14,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_15,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_16,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_17,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_18,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_19,                         0xFF},
--	{WCD938X_DIGITAL_EFUSE_REG_20,                         0x0E},
--	{WCD938X_DIGITAL_EFUSE_REG_21,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_22,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_23,                         0xF8},
--	{WCD938X_DIGITAL_EFUSE_REG_24,                         0x16},
--	{WCD938X_DIGITAL_EFUSE_REG_25,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_26,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_27,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_28,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_29,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_30,                         0x00},
--	{WCD938X_DIGITAL_EFUSE_REG_31,                         0x00},
--	{WCD938X_DIGITAL_TX_REQ_FB_CTL_0,                      0x88},
--	{WCD938X_DIGITAL_TX_REQ_FB_CTL_1,                      0x88},
--	{WCD938X_DIGITAL_TX_REQ_FB_CTL_2,                      0x88},
--	{WCD938X_DIGITAL_TX_REQ_FB_CTL_3,                      0x88},
--	{WCD938X_DIGITAL_TX_REQ_FB_CTL_4,                      0x88},
--	{WCD938X_DIGITAL_DEM_BYPASS_DATA0,                     0x55},
--	{WCD938X_DIGITAL_DEM_BYPASS_DATA1,                     0x55},
--	{WCD938X_DIGITAL_DEM_BYPASS_DATA2,                     0x55},
--	{WCD938X_DIGITAL_DEM_BYPASS_DATA3,                     0x01},
--};
--
--static bool wcd938x_rdwr_register(struct device *dev, unsigned int reg)
--{
--	switch (reg) {
--	case WCD938X_ANA_PAGE_REGISTER:
--	case WCD938X_ANA_BIAS:
--	case WCD938X_ANA_RX_SUPPLIES:
--	case WCD938X_ANA_HPH:
--	case WCD938X_ANA_EAR:
--	case WCD938X_ANA_EAR_COMPANDER_CTL:
--	case WCD938X_ANA_TX_CH1:
--	case WCD938X_ANA_TX_CH2:
--	case WCD938X_ANA_TX_CH3:
--	case WCD938X_ANA_TX_CH4:
--	case WCD938X_ANA_MICB1_MICB2_DSP_EN_LOGIC:
--	case WCD938X_ANA_MICB3_DSP_EN_LOGIC:
--	case WCD938X_ANA_MBHC_MECH:
--	case WCD938X_ANA_MBHC_ELECT:
--	case WCD938X_ANA_MBHC_ZDET:
--	case WCD938X_ANA_MBHC_BTN0:
--	case WCD938X_ANA_MBHC_BTN1:
--	case WCD938X_ANA_MBHC_BTN2:
--	case WCD938X_ANA_MBHC_BTN3:
--	case WCD938X_ANA_MBHC_BTN4:
--	case WCD938X_ANA_MBHC_BTN5:
--	case WCD938X_ANA_MBHC_BTN6:
--	case WCD938X_ANA_MBHC_BTN7:
--	case WCD938X_ANA_MICB1:
--	case WCD938X_ANA_MICB2:
--	case WCD938X_ANA_MICB2_RAMP:
--	case WCD938X_ANA_MICB3:
--	case WCD938X_ANA_MICB4:
--	case WCD938X_BIAS_CTL:
--	case WCD938X_BIAS_VBG_FINE_ADJ:
--	case WCD938X_LDOL_VDDCX_ADJUST:
--	case WCD938X_LDOL_DISABLE_LDOL:
--	case WCD938X_MBHC_CTL_CLK:
--	case WCD938X_MBHC_CTL_ANA:
--	case WCD938X_MBHC_CTL_SPARE_1:
--	case WCD938X_MBHC_CTL_SPARE_2:
--	case WCD938X_MBHC_CTL_BCS:
--	case WCD938X_MBHC_TEST_CTL:
--	case WCD938X_LDOH_MODE:
--	case WCD938X_LDOH_BIAS:
--	case WCD938X_LDOH_STB_LOADS:
--	case WCD938X_LDOH_SLOWRAMP:
--	case WCD938X_MICB1_TEST_CTL_1:
--	case WCD938X_MICB1_TEST_CTL_2:
--	case WCD938X_MICB1_TEST_CTL_3:
--	case WCD938X_MICB2_TEST_CTL_1:
--	case WCD938X_MICB2_TEST_CTL_2:
--	case WCD938X_MICB2_TEST_CTL_3:
--	case WCD938X_MICB3_TEST_CTL_1:
--	case WCD938X_MICB3_TEST_CTL_2:
--	case WCD938X_MICB3_TEST_CTL_3:
--	case WCD938X_MICB4_TEST_CTL_1:
--	case WCD938X_MICB4_TEST_CTL_2:
--	case WCD938X_MICB4_TEST_CTL_3:
--	case WCD938X_TX_COM_ADC_VCM:
--	case WCD938X_TX_COM_BIAS_ATEST:
--	case WCD938X_TX_COM_SPARE1:
--	case WCD938X_TX_COM_SPARE2:
--	case WCD938X_TX_COM_TXFE_DIV_CTL:
--	case WCD938X_TX_COM_TXFE_DIV_START:
--	case WCD938X_TX_COM_SPARE3:
--	case WCD938X_TX_COM_SPARE4:
--	case WCD938X_TX_1_2_TEST_EN:
--	case WCD938X_TX_1_2_ADC_IB:
--	case WCD938X_TX_1_2_ATEST_REFCTL:
--	case WCD938X_TX_1_2_TEST_CTL:
--	case WCD938X_TX_1_2_TEST_BLK_EN1:
--	case WCD938X_TX_1_2_TXFE1_CLKDIV:
--	case WCD938X_TX_3_4_TEST_EN:
--	case WCD938X_TX_3_4_ADC_IB:
--	case WCD938X_TX_3_4_ATEST_REFCTL:
--	case WCD938X_TX_3_4_TEST_CTL:
--	case WCD938X_TX_3_4_TEST_BLK_EN3:
--	case WCD938X_TX_3_4_TXFE3_CLKDIV:
--	case WCD938X_TX_3_4_TEST_BLK_EN2:
--	case WCD938X_TX_3_4_TXFE2_CLKDIV:
--	case WCD938X_TX_3_4_SPARE1:
--	case WCD938X_TX_3_4_TEST_BLK_EN4:
--	case WCD938X_TX_3_4_TXFE4_CLKDIV:
--	case WCD938X_TX_3_4_SPARE2:
--	case WCD938X_CLASSH_MODE_1:
--	case WCD938X_CLASSH_MODE_2:
--	case WCD938X_CLASSH_MODE_3:
--	case WCD938X_CLASSH_CTRL_VCL_1:
--	case WCD938X_CLASSH_CTRL_VCL_2:
--	case WCD938X_CLASSH_CTRL_CCL_1:
--	case WCD938X_CLASSH_CTRL_CCL_2:
--	case WCD938X_CLASSH_CTRL_CCL_3:
--	case WCD938X_CLASSH_CTRL_CCL_4:
--	case WCD938X_CLASSH_CTRL_CCL_5:
--	case WCD938X_CLASSH_BUCK_TMUX_A_D:
--	case WCD938X_CLASSH_BUCK_SW_DRV_CNTL:
--	case WCD938X_CLASSH_SPARE:
--	case WCD938X_FLYBACK_EN:
--	case WCD938X_FLYBACK_VNEG_CTRL_1:
--	case WCD938X_FLYBACK_VNEG_CTRL_2:
--	case WCD938X_FLYBACK_VNEG_CTRL_3:
--	case WCD938X_FLYBACK_VNEG_CTRL_4:
--	case WCD938X_FLYBACK_VNEG_CTRL_5:
--	case WCD938X_FLYBACK_VNEG_CTRL_6:
--	case WCD938X_FLYBACK_VNEG_CTRL_7:
--	case WCD938X_FLYBACK_VNEG_CTRL_8:
--	case WCD938X_FLYBACK_VNEG_CTRL_9:
--	case WCD938X_FLYBACK_VNEGDAC_CTRL_1:
--	case WCD938X_FLYBACK_VNEGDAC_CTRL_2:
--	case WCD938X_FLYBACK_VNEGDAC_CTRL_3:
--	case WCD938X_FLYBACK_CTRL_1:
--	case WCD938X_FLYBACK_TEST_CTL:
--	case WCD938X_RX_AUX_SW_CTL:
--	case WCD938X_RX_PA_AUX_IN_CONN:
--	case WCD938X_RX_TIMER_DIV:
--	case WCD938X_RX_OCP_CTL:
--	case WCD938X_RX_OCP_COUNT:
--	case WCD938X_RX_BIAS_EAR_DAC:
--	case WCD938X_RX_BIAS_EAR_AMP:
--	case WCD938X_RX_BIAS_HPH_LDO:
--	case WCD938X_RX_BIAS_HPH_PA:
--	case WCD938X_RX_BIAS_HPH_RDACBUFF_CNP2:
--	case WCD938X_RX_BIAS_HPH_RDAC_LDO:
--	case WCD938X_RX_BIAS_HPH_CNP1:
--	case WCD938X_RX_BIAS_HPH_LOWPOWER:
--	case WCD938X_RX_BIAS_AUX_DAC:
--	case WCD938X_RX_BIAS_AUX_AMP:
--	case WCD938X_RX_BIAS_VNEGDAC_BLEEDER:
--	case WCD938X_RX_BIAS_MISC:
--	case WCD938X_RX_BIAS_BUCK_RST:
--	case WCD938X_RX_BIAS_BUCK_VREF_ERRAMP:
--	case WCD938X_RX_BIAS_FLYB_ERRAMP:
--	case WCD938X_RX_BIAS_FLYB_BUFF:
--	case WCD938X_RX_BIAS_FLYB_MID_RST:
--	case WCD938X_HPH_CNP_EN:
--	case WCD938X_HPH_CNP_WG_CTL:
--	case WCD938X_HPH_CNP_WG_TIME:
--	case WCD938X_HPH_OCP_CTL:
--	case WCD938X_HPH_AUTO_CHOP:
--	case WCD938X_HPH_CHOP_CTL:
--	case WCD938X_HPH_PA_CTL1:
--	case WCD938X_HPH_PA_CTL2:
--	case WCD938X_HPH_L_EN:
--	case WCD938X_HPH_L_TEST:
--	case WCD938X_HPH_L_ATEST:
--	case WCD938X_HPH_R_EN:
--	case WCD938X_HPH_R_TEST:
--	case WCD938X_HPH_R_ATEST:
--	case WCD938X_HPH_RDAC_CLK_CTL1:
--	case WCD938X_HPH_RDAC_CLK_CTL2:
--	case WCD938X_HPH_RDAC_LDO_CTL:
--	case WCD938X_HPH_RDAC_CHOP_CLK_LP_CTL:
--	case WCD938X_HPH_REFBUFF_UHQA_CTL:
--	case WCD938X_HPH_REFBUFF_LP_CTL:
--	case WCD938X_HPH_L_DAC_CTL:
--	case WCD938X_HPH_R_DAC_CTL:
--	case WCD938X_HPH_SURGE_HPHLR_SURGE_COMP_SEL:
--	case WCD938X_HPH_SURGE_HPHLR_SURGE_EN:
--	case WCD938X_HPH_SURGE_HPHLR_SURGE_MISC1:
--	case WCD938X_EAR_EAR_EN_REG:
--	case WCD938X_EAR_EAR_PA_CON:
--	case WCD938X_EAR_EAR_SP_CON:
--	case WCD938X_EAR_EAR_DAC_CON:
--	case WCD938X_EAR_EAR_CNP_FSM_CON:
--	case WCD938X_EAR_TEST_CTL:
--	case WCD938X_ANA_NEW_PAGE_REGISTER:
--	case WCD938X_HPH_NEW_ANA_HPH2:
--	case WCD938X_HPH_NEW_ANA_HPH3:
--	case WCD938X_SLEEP_CTL:
--	case WCD938X_SLEEP_WATCHDOG_CTL:
--	case WCD938X_MBHC_NEW_ELECT_REM_CLAMP_CTL:
--	case WCD938X_MBHC_NEW_CTL_1:
--	case WCD938X_MBHC_NEW_CTL_2:
--	case WCD938X_MBHC_NEW_PLUG_DETECT_CTL:
--	case WCD938X_MBHC_NEW_ZDET_ANA_CTL:
--	case WCD938X_MBHC_NEW_ZDET_RAMP_CTL:
--	case WCD938X_TX_NEW_AMIC_MUX_CFG:
--	case WCD938X_AUX_AUXPA:
--	case WCD938X_LDORXTX_MODE:
--	case WCD938X_LDORXTX_CONFIG:
--	case WCD938X_DIE_CRACK_DIE_CRK_DET_EN:
--	case WCD938X_HPH_NEW_INT_RDAC_GAIN_CTL:
--	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L:
--	case WCD938X_HPH_NEW_INT_RDAC_VREF_CTL:
--	case WCD938X_HPH_NEW_INT_RDAC_OVERRIDE_CTL:
--	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R:
--	case WCD938X_HPH_NEW_INT_PA_MISC1:
--	case WCD938X_HPH_NEW_INT_PA_MISC2:
--	case WCD938X_HPH_NEW_INT_PA_RDAC_MISC:
--	case WCD938X_HPH_NEW_INT_HPH_TIMER1:
--	case WCD938X_HPH_NEW_INT_HPH_TIMER2:
--	case WCD938X_HPH_NEW_INT_HPH_TIMER3:
--	case WCD938X_HPH_NEW_INT_HPH_TIMER4:
--	case WCD938X_HPH_NEW_INT_PA_RDAC_MISC2:
--	case WCD938X_HPH_NEW_INT_PA_RDAC_MISC3:
--	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_L_NEW:
--	case WCD938X_HPH_NEW_INT_RDAC_HD2_CTL_R_NEW:
--	case WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_LOHIFI:
--	case WCD938X_RX_NEW_INT_HPH_RDAC_BIAS_ULP:
--	case WCD938X_RX_NEW_INT_HPH_RDAC_LDO_LP:
--	case WCD938X_MBHC_NEW_INT_MOISTURE_DET_DC_CTRL:
--	case WCD938X_MBHC_NEW_INT_MOISTURE_DET_POLLING_CTRL:
--	case WCD938X_MBHC_NEW_INT_MECH_DET_CURRENT:
--	case WCD938X_MBHC_NEW_INT_SPARE_2:
--	case WCD938X_EAR_INT_NEW_EAR_CHOPPER_CON:
--	case WCD938X_EAR_INT_NEW_CNP_VCM_CON1:
--	case WCD938X_EAR_INT_NEW_CNP_VCM_CON2:
--	case WCD938X_EAR_INT_NEW_EAR_DYNAMIC_BIAS:
--	case WCD938X_AUX_INT_EN_REG:
--	case WCD938X_AUX_INT_PA_CTRL:
--	case WCD938X_AUX_INT_SP_CTRL:
--	case WCD938X_AUX_INT_DAC_CTRL:
--	case WCD938X_AUX_INT_CLK_CTRL:
--	case WCD938X_AUX_INT_TEST_CTRL:
--	case WCD938X_AUX_INT_MISC:
--	case WCD938X_LDORXTX_INT_BIAS:
--	case WCD938X_LDORXTX_INT_STB_LOADS_DTEST:
--	case WCD938X_LDORXTX_INT_TEST0:
--	case WCD938X_LDORXTX_INT_STARTUP_TIMER:
--	case WCD938X_LDORXTX_INT_TEST1:
--	case WCD938X_SLEEP_INT_WATCHDOG_CTL_1:
--	case WCD938X_SLEEP_INT_WATCHDOG_CTL_2:
--	case WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT1:
--	case WCD938X_DIE_CRACK_INT_DIE_CRK_DET_INT2:
--	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L2:
--	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L1:
--	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_L0:
--	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP1P2M:
--	case WCD938X_TX_COM_NEW_INT_TXFE_DIVSTOP_ULP0P6M:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L2L1:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_L0:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG1_ULP:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L2L1:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_L0:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2MAIN_ULP:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_L2L1L0:
--	case WCD938X_TX_COM_NEW_INT_TXFE_ICTRL_STG2CASC_ULP:
--	case WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L2L1:
--	case WCD938X_TX_COM_NEW_INT_TXADC_SCBIAS_L0ULP:
--	case WCD938X_TX_COM_NEW_INT_TXADC_INT_L2:
--	case WCD938X_TX_COM_NEW_INT_TXADC_INT_L1:
--	case WCD938X_TX_COM_NEW_INT_TXADC_INT_L0:
--	case WCD938X_TX_COM_NEW_INT_TXADC_INT_ULP:
--	case WCD938X_DIGITAL_PAGE_REGISTER:
--	case WCD938X_DIGITAL_SWR_TX_CLK_RATE:
--	case WCD938X_DIGITAL_CDC_RST_CTL:
--	case WCD938X_DIGITAL_TOP_CLK_CFG:
--	case WCD938X_DIGITAL_CDC_ANA_CLK_CTL:
--	case WCD938X_DIGITAL_CDC_DIG_CLK_CTL:
--	case WCD938X_DIGITAL_SWR_RST_EN:
--	case WCD938X_DIGITAL_CDC_PATH_MODE:
--	case WCD938X_DIGITAL_CDC_RX_RST:
--	case WCD938X_DIGITAL_CDC_RX0_CTL:
--	case WCD938X_DIGITAL_CDC_RX1_CTL:
--	case WCD938X_DIGITAL_CDC_RX2_CTL:
--	case WCD938X_DIGITAL_CDC_TX_ANA_MODE_0_1:
--	case WCD938X_DIGITAL_CDC_TX_ANA_MODE_2_3:
--	case WCD938X_DIGITAL_CDC_COMP_CTL_0:
--	case WCD938X_DIGITAL_CDC_ANA_TX_CLK_CTL:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A1_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A1_1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A2_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A2_1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A3_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A3_1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A4_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A4_1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A5_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A5_1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A6_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_A7_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_C_0:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_C_1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_C_2:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_C_3:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R1:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R2:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R3:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R4:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R5:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R6:
--	case WCD938X_DIGITAL_CDC_HPH_DSM_R7:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A1_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A1_1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A2_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A2_1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A3_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A3_1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A4_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A4_1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A5_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A5_1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A6_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_A7_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_C_0:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_C_1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_C_2:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_C_3:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R1:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R2:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R3:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R4:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R5:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R6:
--	case WCD938X_DIGITAL_CDC_AUX_DSM_R7:
--	case WCD938X_DIGITAL_CDC_HPH_GAIN_RX_0:
--	case WCD938X_DIGITAL_CDC_HPH_GAIN_RX_1:
--	case WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_0:
--	case WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_1:
--	case WCD938X_DIGITAL_CDC_HPH_GAIN_DSD_2:
--	case WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_0:
--	case WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_1:
--	case WCD938X_DIGITAL_CDC_AUX_GAIN_DSD_2:
--	case WCD938X_DIGITAL_CDC_HPH_GAIN_CTL:
--	case WCD938X_DIGITAL_CDC_AUX_GAIN_CTL:
--	case WCD938X_DIGITAL_CDC_EAR_PATH_CTL:
--	case WCD938X_DIGITAL_CDC_SWR_CLH:
--	case WCD938X_DIGITAL_SWR_CLH_BYP:
--	case WCD938X_DIGITAL_CDC_TX0_CTL:
--	case WCD938X_DIGITAL_CDC_TX1_CTL:
--	case WCD938X_DIGITAL_CDC_TX2_CTL:
--	case WCD938X_DIGITAL_CDC_TX_RST:
--	case WCD938X_DIGITAL_CDC_REQ_CTL:
--	case WCD938X_DIGITAL_CDC_RST:
--	case WCD938X_DIGITAL_CDC_AMIC_CTL:
--	case WCD938X_DIGITAL_CDC_DMIC_CTL:
--	case WCD938X_DIGITAL_CDC_DMIC1_CTL:
--	case WCD938X_DIGITAL_CDC_DMIC2_CTL:
--	case WCD938X_DIGITAL_CDC_DMIC3_CTL:
--	case WCD938X_DIGITAL_CDC_DMIC4_CTL:
--	case WCD938X_DIGITAL_EFUSE_PRG_CTL:
--	case WCD938X_DIGITAL_EFUSE_CTL:
--	case WCD938X_DIGITAL_CDC_DMIC_RATE_1_2:
--	case WCD938X_DIGITAL_CDC_DMIC_RATE_3_4:
--	case WCD938X_DIGITAL_PDM_WD_CTL0:
--	case WCD938X_DIGITAL_PDM_WD_CTL1:
--	case WCD938X_DIGITAL_PDM_WD_CTL2:
--	case WCD938X_DIGITAL_INTR_MODE:
--	case WCD938X_DIGITAL_INTR_MASK_0:
--	case WCD938X_DIGITAL_INTR_MASK_1:
--	case WCD938X_DIGITAL_INTR_MASK_2:
--	case WCD938X_DIGITAL_INTR_CLEAR_0:
--	case WCD938X_DIGITAL_INTR_CLEAR_1:
--	case WCD938X_DIGITAL_INTR_CLEAR_2:
--	case WCD938X_DIGITAL_INTR_LEVEL_0:
--	case WCD938X_DIGITAL_INTR_LEVEL_1:
--	case WCD938X_DIGITAL_INTR_LEVEL_2:
--	case WCD938X_DIGITAL_INTR_SET_0:
--	case WCD938X_DIGITAL_INTR_SET_1:
--	case WCD938X_DIGITAL_INTR_SET_2:
--	case WCD938X_DIGITAL_INTR_TEST_0:
--	case WCD938X_DIGITAL_INTR_TEST_1:
--	case WCD938X_DIGITAL_INTR_TEST_2:
--	case WCD938X_DIGITAL_TX_MODE_DBG_EN:
--	case WCD938X_DIGITAL_TX_MODE_DBG_0_1:
--	case WCD938X_DIGITAL_TX_MODE_DBG_2_3:
--	case WCD938X_DIGITAL_LB_IN_SEL_CTL:
--	case WCD938X_DIGITAL_LOOP_BACK_MODE:
--	case WCD938X_DIGITAL_SWR_DAC_TEST:
--	case WCD938X_DIGITAL_SWR_HM_TEST_RX_0:
--	case WCD938X_DIGITAL_SWR_HM_TEST_TX_0:
--	case WCD938X_DIGITAL_SWR_HM_TEST_RX_1:
--	case WCD938X_DIGITAL_SWR_HM_TEST_TX_1:
--	case WCD938X_DIGITAL_SWR_HM_TEST_TX_2:
--	case WCD938X_DIGITAL_PAD_CTL_SWR_0:
--	case WCD938X_DIGITAL_PAD_CTL_SWR_1:
--	case WCD938X_DIGITAL_I2C_CTL:
--	case WCD938X_DIGITAL_CDC_TX_TANGGU_SW_MODE:
--	case WCD938X_DIGITAL_EFUSE_TEST_CTL_0:
--	case WCD938X_DIGITAL_EFUSE_TEST_CTL_1:
--	case WCD938X_DIGITAL_PAD_CTL_PDM_RX0:
--	case WCD938X_DIGITAL_PAD_CTL_PDM_RX1:
--	case WCD938X_DIGITAL_PAD_CTL_PDM_TX0:
--	case WCD938X_DIGITAL_PAD_CTL_PDM_TX1:
--	case WCD938X_DIGITAL_PAD_CTL_PDM_TX2:
--	case WCD938X_DIGITAL_PAD_INP_DIS_0:
--	case WCD938X_DIGITAL_PAD_INP_DIS_1:
--	case WCD938X_DIGITAL_DRIVE_STRENGTH_0:
--	case WCD938X_DIGITAL_DRIVE_STRENGTH_1:
--	case WCD938X_DIGITAL_DRIVE_STRENGTH_2:
--	case WCD938X_DIGITAL_RX_DATA_EDGE_CTL:
--	case WCD938X_DIGITAL_TX_DATA_EDGE_CTL:
--	case WCD938X_DIGITAL_GPIO_MODE:
--	case WCD938X_DIGITAL_PIN_CTL_OE:
--	case WCD938X_DIGITAL_PIN_CTL_DATA_0:
--	case WCD938X_DIGITAL_PIN_CTL_DATA_1:
--	case WCD938X_DIGITAL_DIG_DEBUG_CTL:
--	case WCD938X_DIGITAL_DIG_DEBUG_EN:
--	case WCD938X_DIGITAL_ANA_CSR_DBG_ADD:
--	case WCD938X_DIGITAL_ANA_CSR_DBG_CTL:
--	case WCD938X_DIGITAL_SSP_DBG:
--	case WCD938X_DIGITAL_SPARE_0:
--	case WCD938X_DIGITAL_SPARE_1:
--	case WCD938X_DIGITAL_SPARE_2:
--	case WCD938X_DIGITAL_TX_REQ_FB_CTL_0:
--	case WCD938X_DIGITAL_TX_REQ_FB_CTL_1:
--	case WCD938X_DIGITAL_TX_REQ_FB_CTL_2:
--	case WCD938X_DIGITAL_TX_REQ_FB_CTL_3:
--	case WCD938X_DIGITAL_TX_REQ_FB_CTL_4:
--	case WCD938X_DIGITAL_DEM_BYPASS_DATA0:
--	case WCD938X_DIGITAL_DEM_BYPASS_DATA1:
--	case WCD938X_DIGITAL_DEM_BYPASS_DATA2:
--	case WCD938X_DIGITAL_DEM_BYPASS_DATA3:
--		return true;
--	}
--
--	return false;
--}
--
--static bool wcd938x_readonly_register(struct device *dev, unsigned int reg)
--{
--	switch (reg) {
--	case WCD938X_ANA_MBHC_RESULT_1:
--	case WCD938X_ANA_MBHC_RESULT_2:
--	case WCD938X_ANA_MBHC_RESULT_3:
--	case WCD938X_MBHC_MOISTURE_DET_FSM_STATUS:
--	case WCD938X_TX_1_2_SAR2_ERR:
--	case WCD938X_TX_1_2_SAR1_ERR:
--	case WCD938X_TX_3_4_SAR4_ERR:
--	case WCD938X_TX_3_4_SAR3_ERR:
--	case WCD938X_HPH_L_STATUS:
--	case WCD938X_HPH_R_STATUS:
--	case WCD938X_HPH_SURGE_HPHLR_SURGE_STATUS:
--	case WCD938X_EAR_STATUS_REG_1:
--	case WCD938X_EAR_STATUS_REG_2:
--	case WCD938X_MBHC_NEW_FSM_STATUS:
--	case WCD938X_MBHC_NEW_ADC_RESULT:
--	case WCD938X_DIE_CRACK_DIE_CRK_DET_OUT:
--	case WCD938X_AUX_INT_STATUS_REG:
--	case WCD938X_LDORXTX_INT_STATUS:
--	case WCD938X_DIGITAL_CHIP_ID0:
--	case WCD938X_DIGITAL_CHIP_ID1:
--	case WCD938X_DIGITAL_CHIP_ID2:
--	case WCD938X_DIGITAL_CHIP_ID3:
--	case WCD938X_DIGITAL_INTR_STATUS_0:
--	case WCD938X_DIGITAL_INTR_STATUS_1:
--	case WCD938X_DIGITAL_INTR_STATUS_2:
--	case WCD938X_DIGITAL_INTR_CLEAR_0:
--	case WCD938X_DIGITAL_INTR_CLEAR_1:
--	case WCD938X_DIGITAL_INTR_CLEAR_2:
--	case WCD938X_DIGITAL_SWR_HM_TEST_0:
--	case WCD938X_DIGITAL_SWR_HM_TEST_1:
--	case WCD938X_DIGITAL_EFUSE_T_DATA_0:
--	case WCD938X_DIGITAL_EFUSE_T_DATA_1:
--	case WCD938X_DIGITAL_PIN_STATUS_0:
--	case WCD938X_DIGITAL_PIN_STATUS_1:
--	case WCD938X_DIGITAL_MODE_STATUS_0:
--	case WCD938X_DIGITAL_MODE_STATUS_1:
--	case WCD938X_DIGITAL_EFUSE_REG_0:
--	case WCD938X_DIGITAL_EFUSE_REG_1:
--	case WCD938X_DIGITAL_EFUSE_REG_2:
--	case WCD938X_DIGITAL_EFUSE_REG_3:
--	case WCD938X_DIGITAL_EFUSE_REG_4:
--	case WCD938X_DIGITAL_EFUSE_REG_5:
--	case WCD938X_DIGITAL_EFUSE_REG_6:
--	case WCD938X_DIGITAL_EFUSE_REG_7:
--	case WCD938X_DIGITAL_EFUSE_REG_8:
--	case WCD938X_DIGITAL_EFUSE_REG_9:
--	case WCD938X_DIGITAL_EFUSE_REG_10:
--	case WCD938X_DIGITAL_EFUSE_REG_11:
--	case WCD938X_DIGITAL_EFUSE_REG_12:
--	case WCD938X_DIGITAL_EFUSE_REG_13:
--	case WCD938X_DIGITAL_EFUSE_REG_14:
--	case WCD938X_DIGITAL_EFUSE_REG_15:
--	case WCD938X_DIGITAL_EFUSE_REG_16:
--	case WCD938X_DIGITAL_EFUSE_REG_17:
--	case WCD938X_DIGITAL_EFUSE_REG_18:
--	case WCD938X_DIGITAL_EFUSE_REG_19:
--	case WCD938X_DIGITAL_EFUSE_REG_20:
--	case WCD938X_DIGITAL_EFUSE_REG_21:
--	case WCD938X_DIGITAL_EFUSE_REG_22:
--	case WCD938X_DIGITAL_EFUSE_REG_23:
--	case WCD938X_DIGITAL_EFUSE_REG_24:
--	case WCD938X_DIGITAL_EFUSE_REG_25:
--	case WCD938X_DIGITAL_EFUSE_REG_26:
--	case WCD938X_DIGITAL_EFUSE_REG_27:
--	case WCD938X_DIGITAL_EFUSE_REG_28:
--	case WCD938X_DIGITAL_EFUSE_REG_29:
--	case WCD938X_DIGITAL_EFUSE_REG_30:
--	case WCD938X_DIGITAL_EFUSE_REG_31:
--		return true;
--	}
--	return false;
--}
--
--static bool wcd938x_readable_register(struct device *dev, unsigned int reg)
--{
--	bool ret;
--
--	ret = wcd938x_readonly_register(dev, reg);
--	if (!ret)
--		return wcd938x_rdwr_register(dev, reg);
--
--	return ret;
--}
--
--static bool wcd938x_writeable_register(struct device *dev, unsigned int reg)
--{
--	return wcd938x_rdwr_register(dev, reg);
--}
--
--static bool wcd938x_volatile_register(struct device *dev, unsigned int reg)
--{
--	if (reg <= WCD938X_BASE_ADDRESS)
--		return false;
--
--	if (reg == WCD938X_DIGITAL_SWR_TX_CLK_RATE)
--		return true;
--
--	if (wcd938x_readonly_register(dev, reg))
--		return true;
--
--	return false;
--}
--
--static struct regmap_config wcd938x_regmap_config = {
--	.name = "wcd938x_csr",
--	.reg_bits = 32,
--	.val_bits = 8,
--	.cache_type = REGCACHE_RBTREE,
--	.reg_defaults = wcd938x_defaults,
--	.num_reg_defaults = ARRAY_SIZE(wcd938x_defaults),
--	.max_register = WCD938X_MAX_REGISTER,
--	.readable_reg = wcd938x_readable_register,
--	.writeable_reg = wcd938x_writeable_register,
--	.volatile_reg = wcd938x_volatile_register,
--	.can_multi_write = true,
--};
--
- static const struct regmap_irq wcd938x_irqs[WCD938X_NUM_IRQS] = {
- 	REGMAP_IRQ_REG(WCD938X_IRQ_MBHC_BUTTON_PRESS_DET, 0, 0x01),
- 	REGMAP_IRQ_REG(WCD938X_IRQ_MBHC_BUTTON_RELEASE_DET, 0, 0x02),
-@@ -4405,10 +3410,10 @@ static int wcd938x_bind(struct device *dev)
- 		return -EINVAL;
- 	}
- 
--	wcd938x->regmap = devm_regmap_init_sdw(wcd938x->tx_sdw_dev, &wcd938x_regmap_config);
--	if (IS_ERR(wcd938x->regmap)) {
--		dev_err(dev, "%s: tx csr regmap not found\n", __func__);
--		return PTR_ERR(wcd938x->regmap);
-+	wcd938x->regmap = dev_get_regmap(&wcd938x->tx_sdw_dev->dev, NULL);
-+	if (!wcd938x->regmap) {
-+		dev_err(dev, "could not get TX device regmap\n");
-+		return -EINVAL;
- 	}
- 
- 	ret = wcd938x_irq_init(wcd938x, dev);
-diff --git a/sound/soc/codecs/wcd938x.h b/sound/soc/codecs/wcd938x.h
-index ea82039e7843..74b1498fec38 100644
---- a/sound/soc/codecs/wcd938x.h
-+++ b/sound/soc/codecs/wcd938x.h
-@@ -663,6 +663,7 @@ struct wcd938x_sdw_priv {
- 	bool is_tx;
- 	struct wcd938x_priv *wcd938x;
- 	struct irq_domain *slave_irq;
-+	struct regmap *regmap;
- };
- 
- #if IS_ENABLED(CONFIG_SND_SOC_WCD938X_SDW)
+Warnings summary:
 
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    sound/pci/echoaudio/echoaudio_dsp.c:647:9: warning: iteration 1073=
+741824 invokes undefined behavior [-Waggressive-loop-optimizations]
+    2    net/core/rtnetlink.c:3199:1: warning: the frame size of 1328 bytes=
+ is larger than 1024 bytes [-Wframe-larger-than=3D]
+    1    {standard input}:132: Warning: macro instruction expanded into mul=
+tiple instructions
+    1    sound/pci/echoaudio/echoaudio_dsp.c:658:9: warning: iteration 1073=
+741824 invokes undefined behavior [-Waggressive-loop-optimizations]
+    1    net/core/rtnetlink.c:3199:1: warning: the frame size of 1344 bytes=
+ is larger than 1024 bytes [-Wframe-larger-than=3D]
+    1    drivers/gpio/gpio-omap.c:1233:34: warning: array =E2=80=98omap_gpi=
+o_match=E2=80=99 assumed to have one element
+
+Section mismatches summary:
+
+    13   WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+acs5k_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+acs5k_tiny_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+am200epdkit_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+ar7_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+aspeed_g4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+aspeed_g5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+assabet_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+at91_dt_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ath25_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ath79_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+axm55xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+axs103_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+axs103_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+badge4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+bcm2835_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+bcm47xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+bcm63xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+bigsur_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+bmips_be_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+bmips_stb_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+capcella_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+cavium_octeon_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+cerfcube_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+ci20_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+cm_x2xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+cm_x300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+cobalt_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+colibri_pxa270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+colibri_pxa300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+collie_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+corgi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+davinci_all_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+db1xxx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+decstation_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+ings, 0 section mismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+dove_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+e55_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+ebsa110_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+efm32_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+em_x270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ep93xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+eseries_pxa_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+exynos_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ezx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+footbridge_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+fuloong2e_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+gcw0_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+gemini_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+gpr_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+h3600_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+h5000_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+hackkit_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+hisi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+hsdk_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imote2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v4_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+integrator_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+iop13xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+iop32x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+iop33x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip22_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip27_defconfig (mips, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip28_defconfig (mips, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ip32_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+ixp4xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+jazz_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+jmr3927_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+jornada720_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+keystone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+ks8695_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+lasat_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lemote2f_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    net/core/rtnetlink.c:3199:1: warning: the frame size of 1328 bytes is l=
+arger than 1024 bytes [-Wframe-larger-than=3D]
+
+---------------------------------------------------------------------------=
+-----
+loongson1b_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+loongson1c_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+loongson3_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    net/core/rtnetlink.c:3199:1: warning: the frame size of 1328 bytes is l=
+arger than 1024 bytes [-Wframe-larger-than=3D]
+
+---------------------------------------------------------------------------=
+-----
+lpc18xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lpc32xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lpd270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lubbock_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+magician_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mainstone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_kvm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_kvm_guest_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnin=
+gs, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+malta_qemu_32r6_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warnin=
+g, 0 section mismatches
+
+Warnings:
+    {standard input}:132: Warning: macro instruction expanded into multiple=
+ instructions
+
+---------------------------------------------------------------------------=
+-----
+maltaaprp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltasmvp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltasmvp_eva_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltaup_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+maltaup_xpa_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+markeins_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+mini2440_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mips_paravirt_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+mmp2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+moxart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+mpc30x_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+mps2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+msp71xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mtx1_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    sound/pci/echoaudio/echoaudio_dsp.c:647:9: warning: iteration 107374182=
+4 invokes undefined behavior [-Waggressive-loop-optimizations]
+    sound/pci/echoaudio/echoaudio_dsp.c:658:9: warning: iteration 107374182=
+4 invokes undefined behavior [-Waggressive-loop-optimizations]
+    sound/pci/echoaudio/echoaudio_dsp.c:647:9: warning: iteration 107374182=
+4 invokes undefined behavior [-Waggressive-loop-optimizations]
+
+---------------------------------------------------------------------------=
+-----
+multi_v4t_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mvebu_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mvebu_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mxs_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+neponset_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+netwinder_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+netx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+nhk8815_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+nlm_xlp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    net/core/rtnetlink.c:3199:1: warning: the frame size of 1344 bytes is l=
+arger than 1024 bytes [-Wframe-larger-than=3D]
+
+---------------------------------------------------------------------------=
+-----
+nlm_xlr_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsim_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsim_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsimosci_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nsimosci_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warning=
+s, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nuc910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+nuc950_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+nuc960_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap1_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    drivers/gpio/gpio-omap.c:1233:34: warning: array =E2=80=98omap_gpio_mat=
+ch=E2=80=99 assumed to have one element
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+omega2p_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+orion5x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+oxnas_v6_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+palmz72_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pcm027_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pic32mzda_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+pistachio_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+pleb_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+pnx8335_stb225_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warning=
+s, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+prima2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa168_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa255-idp_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+qcom_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+qi_lb60_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+raumfeld_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+rb532_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+rbtx49xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+realview_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+rm200_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+rt305x_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+s3c2410_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+s3c6400_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+s5pv210_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+sama5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+sb1250_swarm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings,=
+ 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+shannon_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+shmobile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+simpad_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+socfpga_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+spear13xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+spear3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+spear6xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+spitz_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+stm32_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+sunxi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+tango4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tb0219_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tb0226_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tb0287_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tct_hammer_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+tegra_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section mi=
+smatches
+
+---------------------------------------------------------------------------=
+-----
+trizeps4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+u300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+u8500_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+vdk_hs38_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+vdk_hs38_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+versatile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+vf610m4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+viper_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+vocore2_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+vt8500_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+workpad_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+2 warnings, 0 section mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+xcep_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+zeus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+zx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---
+For more info write to <info@kernelci.org>
