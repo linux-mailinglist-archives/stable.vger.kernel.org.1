@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31FE06F96C7
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 06:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AFE6F96CD
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 06:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229454AbjEGEHP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 00:07:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43976 "EHLO
+        id S230039AbjEGEJL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 00:09:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjEGEHO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 00:07:14 -0400
+        with ESMTP id S230265AbjEGEJH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 00:09:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554026E8F
-        for <stable@vger.kernel.org>; Sat,  6 May 2023 21:07:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5F0372BA
+        for <stable@vger.kernel.org>; Sat,  6 May 2023 21:09:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4960617DA
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 04:07:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37E5C433EF;
-        Sun,  7 May 2023 04:07:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77966617DA
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 04:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C87C433EF;
+        Sun,  7 May 2023 04:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683432432;
-        bh=EqLnBB+RbWd3lI1NcwNqcqunqnQ7yvTZhGSRCJ7uKOo=;
+        s=korg; t=1683432545;
+        bh=x67cAvSCcH0HEy2IYm3cCHQnPKHQq1kAOz5nSFBuXI8=;
         h=Subject:To:Cc:From:Date:From;
-        b=iSuk0S1nHdx8i4OXpuXAwVhL4hYcRUaTX31tvOY1YpLhB9Z1Mugbj/aD2rQjrXs3+
-         d/7F3sfn4fdek8IMhHAhLLSUYSL7Bd2gnbRVLYfjccFxxlYOyHT9NjCxnTiKApedAX
-         mTt/2LzSJtPA5YmY8zG4dCEx6xZ8YfI2eyVDQXig=
-Subject: FAILED: patch "[PATCH] crypto: safexcel - Cleanup ring IRQ workqueues on load" failed to apply to 5.4-stable tree
-To:     noodles@earth.li, herbert@gondor.apana.org.au
+        b=2vyAJY7LTic3J1s6njIR1fH5fMhzUPBR/qcIEVCdgY+bF6PIdywXKKtuQ8O4bvtR8
+         47/ulyjoqKYJQ/YbRtm374D54YTSvjO/XnRbgB7sykZsUMK94YZasp7qden02xdXek
+         zlYrwo8jGvLoqx1pzBcRf8Ioa9qg8veKGMRgXvmg=
+Subject: FAILED: patch "[PATCH] crypto: api - Demote BUG_ON() in crypto_unregister_alg() to a" failed to apply to 4.19-stable tree
+To:     toke@redhat.com, herbert@gondor.apana.org.au
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 06:07:08 +0200
-Message-ID: <2023050708-happening-striving-9fe2@gregkh>
+Date:   Sun, 07 May 2023 06:09:02 +0200
+Message-ID: <2023050702-hasty-matted-a47d@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -48,23 +48,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x ca25c00ccbc5f942c63897ed23584cfc66e8ec81
+git cherry-pick -x a543ada7db729514ddd3ba4efa45f4c7b802ad85
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050708-happening-striving-9fe2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050702-hasty-matted-a47d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-ca25c00ccbc5 ("crypto: safexcel - Cleanup ring IRQ workqueues on load failure")
+a543ada7db72 ("crypto: api - Demote BUG_ON() in crypto_unregister_alg() to a WARN_ON()")
 
 thanks,
 
@@ -72,153 +72,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ca25c00ccbc5f942c63897ed23584cfc66e8ec81 Mon Sep 17 00:00:00 2001
-From: Jonathan McDowell <noodles@earth.li>
-Date: Tue, 28 Feb 2023 18:28:58 +0000
-Subject: [PATCH] crypto: safexcel - Cleanup ring IRQ workqueues on load
- failure
+From a543ada7db729514ddd3ba4efa45f4c7b802ad85 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Date: Mon, 13 Mar 2023 10:17:24 +0100
+Subject: [PATCH] crypto: api - Demote BUG_ON() in crypto_unregister_alg() to a
+ WARN_ON()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-A failure loading the safexcel driver results in the following warning
-on boot, because the IRQ affinity has not been correctly cleaned up.
-Ensure we clean up the affinity and workqueues on a failure to load the
-driver.
+The crypto_unregister_alg() function expects callers to ensure that any
+algorithm that is unregistered has a refcnt of exactly 1, and issues a
+BUG_ON() if this is not the case. However, there are in fact drivers that
+will call crypto_unregister_alg() without ensuring that the refcnt has been
+lowered first, most notably on system shutdown. This causes the BUG_ON() to
+trigger, which prevents a clean shutdown and hangs the system.
 
-crypto-safexcel: probe of f2800000.crypto failed with error -2
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 232 at kernel/irq/manage.c:1913 free_irq+0x300/0x340
-Modules linked in: hwmon mdio_i2c crypto_safexcel(+) md5 sha256_generic libsha256 authenc libdes omap_rng rng_core nft_masq nft_nat nft_chain_nat nf_nat nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables libcrc32c nfnetlink fuse autofs4
-CPU: 1 PID: 232 Comm: systemd-udevd Tainted: G        W          6.1.6-00002-g9d4898824677 #3
-Hardware name: MikroTik RB5009 (DT)
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : free_irq+0x300/0x340
-lr : free_irq+0x2e0/0x340
-sp : ffff800008fa3890
-x29: ffff800008fa3890 x28: 0000000000000000 x27: 0000000000000000
-x26: ffff8000008e6dc0 x25: ffff000009034cac x24: ffff000009034d50
-x23: 0000000000000000 x22: 000000000000004a x21: ffff0000093e0d80
-x20: ffff000009034c00 x19: ffff00000615fc00 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 000075f5c1584c5e
-x14: 0000000000000017 x13: 0000000000000000 x12: 0000000000000040
-x11: ffff000000579b60 x10: ffff000000579b62 x9 : ffff800008bbe370
-x8 : ffff000000579dd0 x7 : 0000000000000000 x6 : ffff000000579e18
-x5 : ffff000000579da8 x4 : ffff800008ca0000 x3 : ffff800008ca0188
-x2 : 0000000013033204 x1 : ffff000009034c00 x0 : ffff8000087eadf0
-Call trace:
- free_irq+0x300/0x340
- devm_irq_release+0x14/0x20
- devres_release_all+0xa0/0x100
- device_unbind_cleanup+0x14/0x60
- really_probe+0x198/0x2d4
- __driver_probe_device+0x74/0xdc
- driver_probe_device+0x3c/0x110
- __driver_attach+0x8c/0x190
- bus_for_each_dev+0x6c/0xc0
- driver_attach+0x20/0x30
- bus_add_driver+0x148/0x1fc
- driver_register+0x74/0x120
- __platform_driver_register+0x24/0x30
- safexcel_init+0x48/0x1000 [crypto_safexcel]
- do_one_initcall+0x4c/0x1b0
- do_init_module+0x44/0x1cc
- load_module+0x1724/0x1be4
- __do_sys_finit_module+0xbc/0x110
- __arm64_sys_finit_module+0x1c/0x24
- invoke_syscall+0x44/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x20/0x80
- el0_svc+0x14/0x4c
- el0t_64_sync_handler+0xb0/0xb4
- el0t_64_sync+0x148/0x14c
----[ end trace 0000000000000000 ]---
+To avoid such hangs on shutdown, demote the BUG_ON() in
+crypto_unregister_alg() to a WARN_ON() with early return. Cc stable because
+this problem was observed on a 6.2 kernel, cf the link below.
 
-Fixes: 1b44c5a60c13 ("inside-secure - add SafeXcel EIP197 crypto engine driver")
-Signed-off-by: Jonathan McDowell <noodles@earth.li>
+Link: https://lore.kernel.org/r/87r0tyq8ph.fsf@toke.dk
 Cc: stable@vger.kernel.org
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-diff --git a/drivers/crypto/inside-secure/safexcel.c b/drivers/crypto/inside-secure/safexcel.c
-index 5e10ab24be3b..9ff02b5abc4a 100644
---- a/drivers/crypto/inside-secure/safexcel.c
-+++ b/drivers/crypto/inside-secure/safexcel.c
-@@ -1628,19 +1628,23 @@ static int safexcel_probe_generic(void *pdev,
- 						     &priv->ring[i].rdr);
- 		if (ret) {
- 			dev_err(dev, "Failed to initialize rings\n");
--			return ret;
-+			goto err_cleanup_rings;
- 		}
+diff --git a/crypto/algapi.c b/crypto/algapi.c
+index 9b7e263ed469..d7eb8f9e9883 100644
+--- a/crypto/algapi.c
++++ b/crypto/algapi.c
+@@ -491,7 +491,9 @@ void crypto_unregister_alg(struct crypto_alg *alg)
+ 	if (WARN(ret, "Algorithm %s is not registered", alg->cra_driver_name))
+ 		return;
  
- 		priv->ring[i].rdr_req = devm_kcalloc(dev,
- 			EIP197_DEFAULT_RING_SIZE,
- 			sizeof(*priv->ring[i].rdr_req),
- 			GFP_KERNEL);
--		if (!priv->ring[i].rdr_req)
--			return -ENOMEM;
-+		if (!priv->ring[i].rdr_req) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
- 
- 		ring_irq = devm_kzalloc(dev, sizeof(*ring_irq), GFP_KERNEL);
--		if (!ring_irq)
--			return -ENOMEM;
-+		if (!ring_irq) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
- 
- 		ring_irq->priv = priv;
- 		ring_irq->ring = i;
-@@ -1654,7 +1658,8 @@ static int safexcel_probe_generic(void *pdev,
- 						ring_irq);
- 		if (irq < 0) {
- 			dev_err(dev, "Failed to get IRQ ID for ring %d\n", i);
--			return irq;
-+			ret = irq;
-+			goto err_cleanup_rings;
- 		}
- 
- 		priv->ring[i].irq = irq;
-@@ -1666,8 +1671,10 @@ static int safexcel_probe_generic(void *pdev,
- 		snprintf(wq_name, 9, "wq_ring%d", i);
- 		priv->ring[i].workqueue =
- 			create_singlethread_workqueue(wq_name);
--		if (!priv->ring[i].workqueue)
--			return -ENOMEM;
-+		if (!priv->ring[i].workqueue) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
- 
- 		priv->ring[i].requests = 0;
- 		priv->ring[i].busy = false;
-@@ -1684,16 +1691,26 @@ static int safexcel_probe_generic(void *pdev,
- 	ret = safexcel_hw_init(priv);
- 	if (ret) {
- 		dev_err(dev, "HW init failed (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
- 
- 	ret = safexcel_register_algorithms(priv);
- 	if (ret) {
- 		dev_err(dev, "Failed to register algorithms (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
- 
- 	return 0;
+-	BUG_ON(refcount_read(&alg->cra_refcnt) != 1);
++	if (WARN_ON(refcount_read(&alg->cra_refcnt) != 1))
++		return;
 +
-+err_cleanup_rings:
-+	for (i = 0; i < priv->config.rings; i++) {
-+		if (priv->ring[i].irq)
-+			irq_set_affinity_hint(priv->ring[i].irq, NULL);
-+		if (priv->ring[i].workqueue)
-+			destroy_workqueue(priv->ring[i].workqueue);
-+	}
-+
-+	return ret;
- }
+ 	if (alg->cra_destroy)
+ 		alg->cra_destroy(alg);
  
- static void safexcel_hw_reset_rings(struct safexcel_crypto_priv *priv)
 
