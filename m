@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 139EC6F9846
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 12:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A4BB6F9845
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 12:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231516AbjEGKxp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 06:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35052 "EHLO
+        id S231491AbjEGKxm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 06:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjEGKxp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 06:53:45 -0400
+        with ESMTP id S229628AbjEGKxk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 06:53:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D2E59EE
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 03:53:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2BD59EE
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 03:53:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FE3B60C80
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 10:53:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA690C433D2;
-        Sun,  7 May 2023 10:53:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5B0F60C80
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 10:53:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D12C433EF;
+        Sun,  7 May 2023 10:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683456821;
-        bh=Rfptr7goQ0THuR5nz5IwEme1KdeaB/83Z9QtVae5ykU=;
+        s=korg; t=1683456818;
+        bh=np3ggDU2WJcyKM/T1vOj51j+VrA9Bdmv4U1KFl4pZIg=;
         h=Subject:To:Cc:From:Date:From;
-        b=wtn0sDdezcbEry5Jrfj0Qtmx7wSoe3pkTZbA+V1z+r8rv21E0T6znmhRC8ouNXusJ
-         g0N9b593dozMA30Ne1ksozpPZX0KPEgajnSLeJ00OfrFc04pOhSjJljpeJd1kkx2jF
-         SoAv29xySNp4S1Ffq1d/baRoDbc61udcE9SiNTnE=
-Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: Enable JFFS2 write buffer for" failed to apply to 6.1-stable tree
+        b=zbzXzbFroIOuR9r0ZAYOopszQKFP5Ux/9vAl08IOgbjW8FV2YxUy2rf8/roQhHaO9
+         HZK8yQnOLdNccTF3+y53jzWSEbw/7OOA2vZNzlGuDfQWJbZNGV/8SUsuMUGuwuvIp7
+         +3iku+Ks7fD8MDk3LvfAWnKTZNHaEQzcdbaRT7GE=
+Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: Enable JFFS2 write buffer for" failed to apply to 5.15-stable tree
 To:     Takahiro.Kuwano@infineon.com, tudor.ambarus@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sun, 07 May 2023 12:53:26 +0200
-Message-ID: <2023050725-zoom-professor-9c7b@gregkh>
+Message-ID: <2023050726-rotunda-lego-f33a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9fd0945fe6fadfb6b54a9cd73be101c02b3e8134
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050725-zoom-professor-9c7b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050726-rotunda-lego-f33a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,22 @@ Possible dependencies:
 4eddee70140b ("mtd: spi-nor: Add a RWW flag")
 1799cd8540b6 ("mtd: spi-nor: add SFDP fixups for Quad Page Program")
 db391efe765c ("mtd: spi-nor: spansion: Remove NO_SFDP_FLAGS from s28hs512t info")
+b6b23833fc42 ("mtd: spi-nor: spansion: Add s25hl-t/s25hs-t IDs and fixups")
+a6b50aa12796 ("mtd: spi-nor: spansion: Add local function to discover page size")
+0257be79fc4a ("mtd: spi-nor: expose internal parameters via debugfs")
+c0abb861c5d0 ("mtd: spi-nor: Introduce templates for SPI NOR operations")
+27ff0d34fb7e ("mtd: spi-nor: spansion: Rework spi_nor_cypress_octal_dtr_enable()")
+4629adaff7bc ("mtd: spi-nor: micron-st: Rework spi_nor_micron_octal_dtr_enable()")
+a007d81aa525 ("mtd: spi-nor: manufacturers: Use spi_nor_read_id() core method")
+86b6b55ffbbc ("mtd: spi-nor: core: Introduce method for RDID op")
+bffabd1c727d ("mtd: spi-nor: core: Use auto-detection only once")
+3c552889e431 ("mtd: spi-nor: renumber flags")
+51c55506a7b1 ("mtd: spi-nor: spansion: convert USE_CLSR to a manufacturer flag")
+837d5181beef ("mtd: spi-nor: move all spansion specifics into spansion.c")
+6235ff040c13 ("mtd: spi-nor: spansion: slightly rework control flow in late_init()")
+8f938262a6f3 ("mtd: spi-nor: micron-st: convert USE_FSR to a manufacturer flag")
+c770abe52d81 ("mtd: spi-nor: move all micron-st specifics into micron-st.c")
+8b7a2e00d117 ("mtd: spi-nor: xilinx: rename vendor specific functions and defines")
 
 thanks,
 
