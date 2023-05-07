@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F346F9842
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 12:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70AFB6F9843
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 12:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231437AbjEGKvL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 06:51:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34680 "EHLO
+        id S231451AbjEGKxa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 06:53:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjEGKvK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 06:51:10 -0400
+        with ESMTP id S229628AbjEGKx3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 06:53:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A9030C6
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 03:51:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53C859EE
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 03:53:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DC7060C2D
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 10:51:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39481C433EF;
-        Sun,  7 May 2023 10:51:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7979360C86
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 10:53:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890DFC433EF;
+        Sun,  7 May 2023 10:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683456666;
-        bh=GZhg4CCeOg3LD67Jq4PQcxXLLqDgnkLoydcranUuBxc=;
+        s=korg; t=1683456806;
+        bh=TBPOsqdZ7E8Zjro3vn6eXNlQskmbCxoDD0OkQ4QRe9g=;
         h=Subject:To:Cc:From:Date:From;
-        b=JAiB2f8BL3t34aQo7gqNt+98OFwiQgChp8kusvKpYrFjHAaNYklzgE6cKi7ySQKgo
-         /dkUOlKh+xMRp/QVLPjRTB3OQca1izz0OTJWylXpV+wui/Qtk1LgHtQG8MoMA0d1gO
-         iy9mXv7ogAHGkg9JcGTBAmE+s8uwQVT5nWNPp/gE=
-Subject: FAILED: patch "[PATCH] md/raid10: fix null-ptr-deref in raid10_sync_request" failed to apply to 4.14-stable tree
-To:     linan122@huawei.com, song@kernel.org
+        b=v7tYsq3eDg6DBwVjtexorTHKy5PkNJxRzBTnmfyQhfCaLtezD5vxkr9hWBcvgk/5R
+         d8bLEBjR0muOK0ESJmuW4g72TX8TzMAGj1YPIn7On+9DGbN4Sr5S9IlZwJuBFmG1CH
+         Ypo4qG3oI54M29D3Ynnx/tKS6DODUnBiRCzSRcAg=
+Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: Enable JFFS2 write buffer for" failed to apply to 6.3-stable tree
+To:     Takahiro.Kuwano@infineon.com, tudor.ambarus@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 12:51:03 +0200
-Message-ID: <2023050703-eldercare-flattery-36cb@gregkh>
+Date:   Sun, 07 May 2023 12:53:24 +0200
+Message-ID: <2023050724-lapped-bunkbed-43a4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,32 +48,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x a405c6f0229526160aa3f177f65e20c86fce84c5
+git cherry-pick -x 9fd0945fe6fadfb6b54a9cd73be101c02b3e8134
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050703-eldercare-flattery-36cb@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050724-lapped-bunkbed-43a4@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-a405c6f02295 ("md/raid10: fix null-ptr-deref in raid10_sync_request")
-afeee514ce7f ("md: convert to bioset_init()/mempool_init()")
-b126194cbb79 ("MD: Free bioset when md_run fails")
-1532d9e87e8b ("raid5-ppl: PPL support for disks with write-back cache enabled")
-0202ce8a90ef ("md: release allocated bitset sync_set")
-b03e0ccb5ab9 ("md: remove special meaning of ->quiesce(.., 2)")
-9e1cc0a54556 ("md: use mddev_suspend/resume instead of ->quiesce()")
-b3143b9a38d5 ("md: move suspend_hi/lo handling into core md code")
-52a0d49de3d5 ("md: don't call bitmap_create() while array is quiesced.")
-385f4d7f946b ("md-cluster: fix wrong condition check in raid1_write_request")
+9fd0945fe6fa ("mtd: spi-nor: spansion: Enable JFFS2 write buffer for Infineon s28hx SEMPER flash")
+4eddee70140b ("mtd: spi-nor: Add a RWW flag")
 
 thanks,
 
@@ -81,62 +73,98 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a405c6f0229526160aa3f177f65e20c86fce84c5 Mon Sep 17 00:00:00 2001
-From: Li Nan <linan122@huawei.com>
-Date: Wed, 22 Feb 2023 12:10:00 +0800
-Subject: [PATCH] md/raid10: fix null-ptr-deref in raid10_sync_request
+From 9fd0945fe6fadfb6b54a9cd73be101c02b3e8134 Mon Sep 17 00:00:00 2001
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Date: Thu, 6 Apr 2023 15:17:44 +0900
+Subject: [PATCH] mtd: spi-nor: spansion: Enable JFFS2 write buffer for
+ Infineon s28hx SEMPER flash
 
-init_resync() inits mempool and sets conf->have_replacemnt at the beginning
-of sync, close_sync() frees the mempool when sync is completed.
+Infineon(Cypress) SEMPER NOR flash family has on-die ECC and its program
+granularity is 16-byte ECC data unit size. JFFS2 supports write buffer
+mode for ECC'd NOR flash. Provide a way to clear the MTD_BIT_WRITEABLE
+flag in order to enable JFFS2 write buffer mode support.
 
-After [1] recovery might be skipped and init_resync() is called but
-close_sync() is not. null-ptr-deref occurs with r10bio->dev[i].repl_bio.
+A new SNOR_F_ECC flag is introduced to determine if the part has on-die
+ECC and if it has, MTD_BIT_WRITEABLE is unset.
 
-The following is one way to reproduce the issue.
+In vendor specific driver, a common cypress_nor_ecc_init() helper is
+added. This helper takes care for ECC related initialization for SEMPER
+flash family by setting up params->writesize and SNOR_F_ECC.
 
-  1) create a array, wait for resync to complete, mddev->recovery_cp is set
-     to MaxSector.
-  2) recovery is woken and it is skipped. conf->have_replacement is set to
-     0 in init_resync(). close_sync() not called.
-  3) some io errors and rdev A is set to WantReplacement.
-  4) a new device is added and set to A's replacement.
-  5) recovery is woken, A have replacement, but conf->have_replacemnt is
-     0. r10bio->dev[i].repl_bio will not be alloced and null-ptr-deref
-     occurs.
-
-Fix it by not calling init_resync() if recovery skipped.
-
-[1] commit 7e83ccbecd60 ("md/raid10: Allow skipping recovery when clean arrays are assembled")
-Fixes: 7e83ccbecd60 ("md/raid10: Allow skipping recovery when clean arrays are assembled")
+Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
+Suggested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230222041000.3341651-3-linan666@huaweicloud.com
+Link: https://lore.kernel.org/r/d586723f6f12aaff44fbcd7b51e674b47ed554ed.1680760742.git.Takahiro.Kuwano@infineon.com
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index db9ee3b637d6..9e0e7bf524aa 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3297,10 +3297,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
- 	sector_t chunk_mask = conf->geo.chunk_mask;
- 	int page_idx = 0;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 1e30737b607b..143ca3c9b477 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -3407,6 +3407,9 @@ static void spi_nor_set_mtd_info(struct spi_nor *nor)
+ 		mtd->name = dev_name(dev);
+ 	mtd->type = MTD_NORFLASH;
+ 	mtd->flags = MTD_CAP_NORFLASH;
++	/* Unset BIT_WRITEABLE to enable JFFS2 write buffer for ECC'd NOR */
++	if (nor->flags & SNOR_F_ECC)
++		mtd->flags &= ~MTD_BIT_WRITEABLE;
+ 	if (nor->info->flags & SPI_NOR_NO_ERASE)
+ 		mtd->flags |= MTD_NO_ERASE;
+ 	else
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index ea9033cb0a01..8cfa82ed06c7 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -131,6 +131,7 @@ enum spi_nor_option_flags {
+ 	SNOR_F_SOFT_RESET	= BIT(12),
+ 	SNOR_F_SWP_IS_VOLATILE	= BIT(13),
+ 	SNOR_F_RWW		= BIT(14),
++	SNOR_F_ECC		= BIT(15),
+ };
  
--	if (!mempool_initialized(&conf->r10buf_pool))
--		if (init_resync(conf))
--			return 0;
--
- 	/*
- 	 * Allow skipping a full rebuild for incremental assembly
- 	 * of a clean array, like RAID1 does.
-@@ -3316,6 +3312,10 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
- 		return mddev->dev_sectors - sector_nr;
- 	}
+ struct spi_nor_read_command {
+diff --git a/drivers/mtd/spi-nor/debugfs.c b/drivers/mtd/spi-nor/debugfs.c
+index e200f5b9234c..082c0c5a8626 100644
+--- a/drivers/mtd/spi-nor/debugfs.c
++++ b/drivers/mtd/spi-nor/debugfs.c
+@@ -26,6 +26,7 @@ static const char *const snor_f_names[] = {
+ 	SNOR_F_NAME(SOFT_RESET),
+ 	SNOR_F_NAME(SWP_IS_VOLATILE),
+ 	SNOR_F_NAME(RWW),
++	SNOR_F_NAME(ECC),
+ };
+ #undef SNOR_F_NAME
  
-+	if (!mempool_initialized(&conf->r10buf_pool))
-+		if (init_resync(conf))
-+			return 0;
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 352c40dd3864..19b1436f36ea 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -332,6 +332,17 @@ static int cypress_nor_set_page_size(struct spi_nor *nor)
+ 	return 0;
+ }
+ 
++static void cypress_nor_ecc_init(struct spi_nor *nor)
++{
++	/*
++	 * Programming is supported only in 16-byte ECC data unit granularity.
++	 * Byte-programming, bit-walking, or multiple program operations to the
++	 * same ECC data unit without an erase are not allowed.
++	 */
++	nor->params->writesize = 16;
++	nor->flags |= SNOR_F_ECC;
++}
 +
-  skipped:
- 	max_sector = mddev->dev_sectors;
- 	if (test_bit(MD_RECOVERY_SYNC, &mddev->recovery) ||
+ static int
+ s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
+ 			  const struct sfdp_parameter_header *bfpt_header,
+@@ -506,7 +517,7 @@ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ static void s28hx_t_late_init(struct spi_nor *nor)
+ {
+ 	nor->params->octal_dtr_enable = cypress_nor_octal_dtr_enable;
+-	nor->params->writesize = 16;
++	cypress_nor_ecc_init(nor);
+ }
+ 
+ static const struct spi_nor_fixups s28hx_t_fixups = {
 
