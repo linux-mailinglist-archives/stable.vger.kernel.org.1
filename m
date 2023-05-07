@@ -2,135 +2,271 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 957486F98FB
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 16:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0046F9911
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 16:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231612AbjEGOrD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 10:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45272 "EHLO
+        id S230133AbjEGO5D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 10:57:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231442AbjEGOrC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 10:47:02 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B84911DB7
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 07:47:01 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-94a342f7c4cso638092366b.0
-        for <stable@vger.kernel.org>; Sun, 07 May 2023 07:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683470819; x=1686062819;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Axa9RQ68hsv/IILOP7fge12GPPTaIZB7pViml3ZGK3o=;
-        b=ZC5rF4Ww89xsCnZB/W2qSgvkRurCeynQHDEJfJW6nuYDODQpHQrra4uAfylCuJyNCf
-         ofm0Z+scRP7HdD0yp1ZAGstWkbZLk7sBzo/vHoOHcwA1ISu4QD5NOQvC9093Fer/MAiJ
-         eQuG5uNWVqwQeC/jlEIj42fpC1cKCtcZhKeX+W1FJsZp6RhHqSALH2LOoEc3dGsYkB+F
-         q05aOknNjx1hAjS/pVzAbhmFarm/BhNCY6++DxWEJg5vUje0alJSYDjQw0XVf0vpqi2T
-         cSeVz8nkSeg39nYMWr0O4RYzSimgecqjAPa9akDajGNbCSx93fdRS6NK7zgSAQqRHFnr
-         O82A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683470819; x=1686062819;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Axa9RQ68hsv/IILOP7fge12GPPTaIZB7pViml3ZGK3o=;
-        b=DNqQlE7YKXWCB3fNcdAPciibNiDZWf1F+c9VqJM4Z9LPPs3qnE45aC/E+zLi9qxmQY
-         e0JMjuV/LNPhYnEDZjRmOaFr8GrLf6tepzLq0MBlwKjU3gJ4dEwz9CgX0sUxPgqDki0/
-         HqX5CPXJBaG1wABjT5nuwN9BdW5STLh3jsod8UCpyzST/ryG24Tjw6BlDatlBxABadsH
-         4ybGEqFu7mNHyvDcfx7jBxPA7HLadUgrSgGPpDK1wyBknQW/4MXtIS5MvNYxIoGyH76x
-         ooPbpK5s8FYsGCKhQX2sbxdZ70vR8YppHfDW9Mp6OhFG427dUhpyDgh0cXkh6QYkijEY
-         YY6A==
-X-Gm-Message-State: AC+VfDzmWNeIOsqZsu80NusqV0DwpKi9KW/zpfPfGIbGhKUmBe1Z6IMO
-        8wncKcbyY9ezewFyf52jvjx34A==
-X-Google-Smtp-Source: ACHHUZ4z/mAGPq4xa//YhoiP75fH1bROCSH4dqKSxMFZxPU8cd7U9ak7duojvAubTAsoKbvfMk1jSw==
-X-Received: by 2002:a17:907:1687:b0:94e:1764:b0b5 with SMTP id hc7-20020a170907168700b0094e1764b0b5mr7742438ejc.69.1683470819525;
-        Sun, 07 May 2023 07:46:59 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:1757:b51a:9965:e81])
-        by smtp.gmail.com with ESMTPSA id mm6-20020a170906cc4600b00958079b676asm3706913ejb.122.2023.05.07.07.46.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 May 2023 07:46:59 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jerome Neanne <jneanne@baylibre.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org, khilman@baylibre.com, msp@baylibre.com,
-        j-keerthy@ti.com
-Subject: [RESEND PATCH] regulator: tps65219: Fix matching interrupts for their regulators
-Date:   Sun,  7 May 2023 16:46:56 +0200
-Message-Id: <20230507144656.192800-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229577AbjEGO5D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 10:57:03 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F791991
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 07:56:59 -0700 (PDT)
+Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 347EuvpC046848;
+        Sun, 7 May 2023 23:56:57 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
+ Sun, 07 May 2023 23:56:57 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
+Received: from localhost.localdomain (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 347Euq9e046840
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Sun, 7 May 2023 23:56:56 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+To:     stable@vger.kernel.org
+Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@suse.com>,
+        Patrick Daly <quic_pdaly@quicinc.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 4.14.y] mm/page_alloc: fix potential deadlock on zonelist_update_seq seqlock
+Date:   Sun,  7 May 2023 23:56:29 +0900
+Message-Id: <20230507145629.4250-1-penguin-kernel@I-love.SAKURA.ne.jp>
+X-Mailer: git-send-email 2.18.4
+In-Reply-To: <2023042455-skinless-muzzle-1c50@gregkh>
+References: <2023042455-skinless-muzzle-1c50@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The driver's probe() first registers regulators in a loop and then in a
-second loop passes them as irq data to the interrupt handlers.  However
-the function to get the regulator for given name
-tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
-not pointer, thus the second loop assigned always same value - from
-previous loop.  The interrupts, when fired, where executed with wrong
-data.  Compiler also noticed it:
+commit 1007843a91909a4995ee78a538f62d8665705b66 upstream.
 
-  drivers/regulator/tps65219-regulator.c: In function ‘tps65219_get_rdev_by_name’:
-  drivers/regulator/tps65219-regulator.c:292:60: error: parameter ‘dev’ set but not used [-Werror=unused-but-set-parameter]
+syzbot is reporting circular locking dependency which involves
+zonelist_update_seq seqlock [1], for this lock is checked by memory
+allocation requests which do not need to be retried.
 
-Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+One deadlock scenario is kmalloc(GFP_ATOMIC) from an interrupt handler.
+
+  CPU0
+  ----
+  __build_all_zonelists() {
+    write_seqlock(&zonelist_update_seq); // makes zonelist_update_seq.seqcount odd
+    // e.g. timer interrupt handler runs at this moment
+      some_timer_func() {
+        kmalloc(GFP_ATOMIC) {
+          __alloc_pages_slowpath() {
+            read_seqbegin(&zonelist_update_seq) {
+              // spins forever because zonelist_update_seq.seqcount is odd
+            }
+          }
+        }
+      }
+    // e.g. timer interrupt handler finishes
+    write_sequnlock(&zonelist_update_seq); // makes zonelist_update_seq.seqcount even
+  }
+
+This deadlock scenario can be easily eliminated by not calling
+read_seqbegin(&zonelist_update_seq) from !__GFP_DIRECT_RECLAIM allocation
+requests, for retry is applicable to only __GFP_DIRECT_RECLAIM allocation
+requests.  But Michal Hocko does not know whether we should go with this
+approach.
+
+Another deadlock scenario which syzbot is reporting is a race between
+kmalloc(GFP_ATOMIC) from tty_insert_flip_string_and_push_buffer() with
+port->lock held and printk() from __build_all_zonelists() with
+zonelist_update_seq held.
+
+  CPU0                                   CPU1
+  ----                                   ----
+  pty_write() {
+    tty_insert_flip_string_and_push_buffer() {
+                                         __build_all_zonelists() {
+                                           write_seqlock(&zonelist_update_seq);
+                                           build_zonelists() {
+                                             printk() {
+                                               vprintk() {
+                                                 vprintk_default() {
+                                                   vprintk_emit() {
+                                                     console_unlock() {
+                                                       console_flush_all() {
+                                                         console_emit_next_record() {
+                                                           con->write() = serial8250_console_write() {
+      spin_lock_irqsave(&port->lock, flags);
+      tty_insert_flip_string() {
+        tty_insert_flip_string_fixed_flag() {
+          __tty_buffer_request_room() {
+            tty_buffer_alloc() {
+              kmalloc(GFP_ATOMIC | __GFP_NOWARN) {
+                __alloc_pages_slowpath() {
+                  zonelist_iter_begin() {
+                    read_seqbegin(&zonelist_update_seq); // spins forever because zonelist_update_seq.seqcount is odd
+                                                             spin_lock_irqsave(&port->lock, flags); // spins forever because port->lock is held
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      spin_unlock_irqrestore(&port->lock, flags);
+                                                             // message is printed to console
+                                                             spin_unlock_irqrestore(&port->lock, flags);
+                                                           }
+                                                         }
+                                                       }
+                                                     }
+                                                   }
+                                                 }
+                                               }
+                                             }
+                                           }
+                                           write_sequnlock(&zonelist_update_seq);
+                                         }
+    }
+  }
+
+This deadlock scenario can be eliminated by
+
+  preventing interrupt context from calling kmalloc(GFP_ATOMIC)
+
+and
+
+  preventing printk() from calling console_flush_all()
+
+while zonelist_update_seq.seqcount is odd.
+
+Since Petr Mladek thinks that __build_all_zonelists() can become a
+candidate for deferring printk() [2], let's address this problem by
+
+  disabling local interrupts in order to avoid kmalloc(GFP_ATOMIC)
+
+and
+
+  disabling synchronous printk() in order to avoid console_flush_all()
+
+.
+
+As a side effect of minimizing duration of zonelist_update_seq.seqcount
+being odd by disabling synchronous printk(), latency at
+read_seqbegin(&zonelist_update_seq) for both !__GFP_DIRECT_RECLAIM and
+__GFP_DIRECT_RECLAIM allocation requests will be reduced.  Although, from
+lockdep perspective, not calling read_seqbegin(&zonelist_update_seq) (i.e.
+do not record unnecessary locking dependency) from interrupt context is
+still preferable, even if we don't allow calling kmalloc(GFP_ATOMIC)
+inside
+write_seqlock(&zonelist_update_seq)/write_sequnlock(&zonelist_update_seq)
+section...
+
+Link: https://lkml.kernel.org/r/8796b95c-3da3-5885-fddd-6ef55f30e4d3@I-love.SAKURA.ne.jp
+Fixes: 3d36424b3b58 ("mm/page_alloc: fix race condition between build_all_zonelists and page allocation")
+Link: https://lkml.kernel.org/r/ZCrs+1cDqPWTDFNM@alley [2]
+Reported-by: syzbot <syzbot+223c7461c58c58a4cb10@syzkaller.appspotmail.com>
+  Link: https://syzkaller.appspot.com/bug?extid=223c7461c58c58a4cb10 [1]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: Patrick Daly <quic_pdaly@quicinc.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Copied printk_deferred_{enter,safe}() definition from
+  commit 85e3e7fbbb72 ("printk: remove NMI tracking"). -- penguin-kernel ]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 ---
+ include/linux/printk.h | 20 ++++++++++++++++++++
+ mm/page_alloc.c        | 16 ++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-Not tested.
-Sent two months ago and no comments, so resending.
-
-Cc: Jerome Neanne <jneanne@baylibre.com>
-Cc: khilman@baylibre.com
-Cc: msp@baylibre.com
-Cc: j-keerthy@ti.com
----
- drivers/regulator/tps65219-regulator.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index b1719ee990ab..8971b507a79a 100644
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_irq_handler(int irq, void *data)
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 6106befed756..3441f181faa3 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -528,4 +528,24 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
+ }
+ #endif
  
- static int tps65219_get_rdev_by_name(const char *regulator_name,
- 				     struct regulator_dev *rdevtbl[7],
--				     struct regulator_dev *dev)
-+				     struct regulator_dev **dev)
- {
- 	int i;
++/* Partial backport of commit 85e3e7fbbb72 ("printk: remove NMI tracking") */
++#ifdef CONFIG_PRINTK
++extern void __printk_safe_enter(void);
++extern void __printk_safe_exit(void);
++/*
++ * The printk_deferred_enter/exit macros are available only as a hack for
++ * some code paths that need to defer all printk console printing. Interrupts
++ * must be disabled for the deferred duration.
++ */
++#define printk_deferred_enter __printk_safe_enter
++#define printk_deferred_exit __printk_safe_exit
++#else
++static inline void printk_deferred_enter(void)
++{
++}
++static inline void printk_deferred_exit(void)
++{
++}
++#endif
++
+ #endif
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f88307fee38d..7163cf682582 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5213,7 +5213,21 @@ static void __build_all_zonelists(void *data)
+ 	int nid;
+ 	int __maybe_unused cpu;
+ 	pg_data_t *self = data;
++	unsigned long flags;
  
- 	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
- 		if (strcmp(regulator_name, regulators[i].name) == 0) {
--			dev = rdevtbl[i];
-+			*dev = rdevtbl[i];
- 			return 0;
- 		}
++	/*
++	 * Explicitly disable this CPU's interrupts before taking seqlock
++	 * to prevent any IRQ handler from calling into the page allocator
++	 * (e.g. GFP_ATOMIC) that could hit zonelist_iter_begin and livelock.
++	 */
++	local_irq_save(flags);
++	/*
++	 * Explicitly disable this CPU's synchronous printk() before taking
++	 * seqlock to prevent any printk() from trying to hold port->lock, for
++	 * tty_insert_flip_string_and_push_buffer() on other CPU might be
++	 * calling kmalloc(GFP_ATOMIC | __GFP_NOWARN) with port->lock held.
++	 */
++	printk_deferred_enter();
+ 	write_seqlock(&zonelist_update_seq);
+ 
+ #ifdef CONFIG_NUMA
+@@ -5248,6 +5262,8 @@ static void __build_all_zonelists(void *data)
  	}
-@@ -348,7 +348,7 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
- 		irq_data[i].dev = tps->dev;
- 		irq_data[i].type = irq_type;
  
--		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
-+		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
- 		if (IS_ERR(rdev)) {
- 			dev_err(tps->dev, "Failed to get rdev for %s\n",
- 				irq_type->regulator_name);
+ 	write_sequnlock(&zonelist_update_seq);
++	printk_deferred_exit();
++	local_irq_restore(flags);
+ }
+ 
+ static noinline void __init
 -- 
-2.34.1
+2.18.4
 
