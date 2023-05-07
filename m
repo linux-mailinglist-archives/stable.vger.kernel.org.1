@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB1DA6F9865
-	for <lists+stable@lfdr.de>; Sun,  7 May 2023 13:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE2A6F9866
+	for <lists+stable@lfdr.de>; Sun,  7 May 2023 13:24:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230381AbjEGLYL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 7 May 2023 07:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
+        id S230387AbjEGLYN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 7 May 2023 07:24:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEGLYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 07:24:10 -0400
+        with ESMTP id S229472AbjEGLYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 7 May 2023 07:24:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CEB612EAC
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 04:24:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB1C012EAC
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 04:24:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5FC3611EA
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 11:24:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98B1C433D2;
-        Sun,  7 May 2023 11:24:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F454611EA
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 11:24:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72505C433D2;
+        Sun,  7 May 2023 11:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683458648;
-        bh=cpyh/1t6Sc54oJSObkdneMorRo5W46XYsJH0+gUUm3s=;
+        s=korg; t=1683458650;
+        bh=rpUrLyZ16ANNb8gipWvZU0MkM6+eWOkrWZzZTqqyDz4=;
         h=Subject:To:Cc:From:Date:From;
-        b=qUilIhQLvzeRMB/E+8NDeujSIf13eQqgZwJ8bfRieC++q6o9eGy4C6tUnwJbeB3Ue
-         sldLpMZfSp1NpQGpD5revprGE3o7d8WXqi5+nKyPotAorcEMy8q3XyHVxS9jK3yXwZ
-         NFtd++IAMoa4ZOCLz38xRF1w6zbDuKuhoDn9pGTA=
-Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: Enable JFFS2 write buffer for" failed to apply to 6.2-stable tree
+        b=CocIiiB/6OlvzFd5lSclmz4fLB0t6xnEXKC6My3ExqhmVfOtdPkks0jTHbTLMP4Zv
+         VQOV787Eh2FTNQmtEHSePlYZ3ZS0y08hk7fTevJcGk3mwA712Ukr9GXVH96BMPrFwQ
+         xEnF+YMB1isZ5F51PT8FCQQRpG6IeCEm74L1CvRk=
+Subject: FAILED: patch "[PATCH] mtd: spi-nor: spansion: Enable JFFS2 write buffer for" failed to apply to 6.1-stable tree
 To:     Takahiro.Kuwano@infineon.com, tudor.ambarus@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 07 May 2023 13:23:57 +0200
-Message-ID: <2023050757-reactor-skipping-b9ed@gregkh>
+Date:   Sun, 07 May 2023 13:23:58 +0200
+Message-ID: <2023050758-unsaved-dedicator-4bdd@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4199c1719e24e73be0acc8b0146fc31ad8af9771
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050757-reactor-skipping-b9ed@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050758-unsaved-dedicator-4bdd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
