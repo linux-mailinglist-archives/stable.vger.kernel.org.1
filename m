@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 172696FAAF0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BDD26FA4C9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233756AbjEHLIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
+        id S233963AbjEHKDN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:03:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233764AbjEHLHt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:49 -0400
+        with ESMTP id S233959AbjEHKDK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0351930E42
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E2B18916
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CFF262AD3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D80C433EF;
-        Mon,  8 May 2023 11:07:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6483D61E63
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:03:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E89C433EF;
+        Mon,  8 May 2023 10:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544024;
-        bh=sfmBdob86OOT7D8yZ6MQW+q1TSZdbATFPgSpbVp8eUk=;
+        s=korg; t=1683540186;
+        bh=rKxa6za2E3Ax6EuEdZlSGaFfMGzEoKJwAYaUArXmzAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lkVdHEwGhZJ+IC96LHfIGvuKDY3wP2HLDV409rFTeAfxNkvwnVASbcsNsCJU617f4
-         dvsUhK1OAMpLGTPsd/5F3UcDy4mdL/HXsqI+omy1YizoyV9E+MQn0MdUrL/+HF9fIN
-         3WNnW+SRf5lu+VytPSQa3omUGuSLOJjuUt6ytEMg=
+        b=2ZroncoU3nPj5ngcMXYxL1Z4NIiOxWof44kye/NLt1/B1hzhzW3Un2m4X15g3fdqe
+         56fKue0GSFI7IXOcnYMJMEsGhFmSxFjA3lwICsDbtV4PLA32uLRZW+eEItcg+q83Jg
+         SEcBmuiDlQYmcbVCa1SsFJrHvef8gxJgdciHzpVA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        "Nicolas F. R. A. Prado" <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 276/694] media: mediatek: vcodec: Make MM21 the default capture format
+Subject: [PATCH 6.1 269/611] wifi: ath5k: Use platform_get_irq() to get the interrupt
 Date:   Mon,  8 May 2023 11:41:51 +0200
-Message-Id: <20230508094441.215472535@linuxfoundation.org>
+Message-Id: <20230508094431.132593091@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,60 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 6d020d81b91af80a977061e82de25cafa4456af5 ]
+[ Upstream commit 95c95251d0547b46d6571e4fbd51b42865c15a4a ]
 
-Given that only the MM21 capture format is supported by userspace tools
-(like gstreamer and libyuv), make it the default capture format.
+As of commit a1a2b7125e10 ("of/platform: Drop static setup of IRQ
+resource from DT core"), we need to use platform_get_irq() instead of
+platform_get_resource() to get our IRQs because
+platform_get_resource() simply won't get them anymore.
 
-This allows us to force the MM21 format even when a MM21 and MT21C capable
-firmware is available (which is needed while dynamic format switching isn't
-implemented in the driver), without causing the following regressions on
-v4l2-compliance:
+This was already fixed in several other Atheros WiFi drivers,
+apparently in response to Zeal Robot reports. An example of another
+fix is commit 9503a1fc123d ("ath9k: Use platform_get_irq() to get the
+interrupt"). ath5k seems to have been missed in this effort, though.
 
-        fail: v4l2-test-formats.cpp(478): pixelformat 3132544d (MT21) for buftype 9 not reported by ENUM_FMT
-    test VIDIOC_G_FMT: FAIL
-        fail: v4l2-test-formats.cpp(478): pixelformat 3132544d (MT21) for buftype 9 not reported by ENUM_FMT
-    test VIDIOC_TRY_FMT: FAIL
-        fail: v4l2-test-formats.cpp(478): pixelformat 3132544d (MT21) for buftype 9 not reported by ENUM_FMT
-    test VIDIOC_S_FMT: FAIL
-
-Fixes: 7501edef6b1f ("media: mediatek: vcodec: Different codec using different capture format")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: Nicolas F. R. A. Prado <nfraprado@collabora.com>
-Tested-by: Nicolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: a1a2b7125e10 ("of/platform: Drop static setup of IRQ resource from DT core")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230201084131.v2.2.Ic4f8542b0588d7eb4bc6e322d4af3d2064e84ff0@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath5k/ahb.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c
-index ffbcee04dc26f..ab8f642d1e5b0 100644
---- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c
-+++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c
-@@ -390,14 +390,14 @@ static void mtk_vcodec_get_supported_formats(struct mtk_vcodec_ctx *ctx)
- 	if (num_formats)
- 		return;
- 
--	if (ctx->dev->dec_capability & MTK_VDEC_FORMAT_MM21) {
--		mtk_vcodec_add_formats(V4L2_PIX_FMT_MM21, ctx);
--		cap_format_count++;
--	}
- 	if (ctx->dev->dec_capability & MTK_VDEC_FORMAT_MT21C) {
- 		mtk_vcodec_add_formats(V4L2_PIX_FMT_MT21C, ctx);
- 		cap_format_count++;
+diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
+index 2c9cec8b53d9e..28a1e5eff204e 100644
+--- a/drivers/net/wireless/ath/ath5k/ahb.c
++++ b/drivers/net/wireless/ath/ath5k/ahb.c
+@@ -113,15 +113,13 @@ static int ath_ahb_probe(struct platform_device *pdev)
+ 		goto err_out;
  	}
-+	if (ctx->dev->dec_capability & MTK_VDEC_FORMAT_MM21) {
-+		mtk_vcodec_add_formats(V4L2_PIX_FMT_MM21, ctx);
-+		cap_format_count++;
-+	}
- 	if (ctx->dev->dec_capability & MTK_VDEC_FORMAT_H264_SLICE) {
- 		mtk_vcodec_add_formats(V4L2_PIX_FMT_H264_SLICE, ctx);
- 		out_format_count++;
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (res == NULL) {
+-		dev_err(&pdev->dev, "no IRQ resource found\n");
+-		ret = -ENXIO;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(&pdev->dev, "no IRQ resource found: %d\n", irq);
++		ret = irq;
+ 		goto err_iounmap;
+ 	}
+ 
+-	irq = res->start;
+-
+ 	hw = ieee80211_alloc_hw(sizeof(struct ath5k_hw), &ath5k_hw_ops);
+ 	if (hw == NULL) {
+ 		dev_err(&pdev->dev, "no memory for ieee80211_hw\n");
 -- 
 2.39.2
 
