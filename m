@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 375AD6FA7F4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7C16FA50F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:05:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234767AbjEHKg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
+        id S234025AbjEHKFa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234776AbjEHKgF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:05 -0400
+        with ESMTP id S234021AbjEHKF2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:05:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9067124AAC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CAD73014C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A6862789
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222C9C433EF;
-        Mon,  8 May 2023 10:35:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1402462310
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2711BC433EF;
+        Mon,  8 May 2023 10:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542138;
-        bh=R/r9/N5dpoICBosk+yL44h4j/of3ULEGpIQVyYNnpsg=;
+        s=korg; t=1683540326;
+        bh=Lggr/t7ke9u9AteQJAQC2WQ/5x1aen1Cv8WNrLjkff8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vdPNvh0kHcKYxg+LEX+yopCE/g2DvSFDn+0RvKXdwuJv7GLRB0Wmu9wOGXCcNDKwU
-         kUQjuwwaAVgaA3BdHTGPpvXiZRAPkRWgVVlDLskYIjWk7VbL5CCk6PcjMAAv5UWv7n
-         QBuIBxa7XnHgWl32W1FPNJyecCCgzseTdT90yX64=
+        b=HlkMtc+UTGJ98PI/WKUXDLBTEWLFjykVtsYAyWwlrQMZWpykNLYilwfe40plt8D2h
+         W7qLetrJ7bwp7eEBMYsYVI/QzQXOzdQiGW4/giSetp7XpiZ7nMN0tMJUuYy/O+6Qf4
+         0NL3NswqiG0dIH+2yPYQXnIZL7ZrfL+XbayiFsK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qilin Tan <qilin.tan@mediatek.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Kal Conley <kal.conley@dectris.com>,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 338/663] f2fs: fix iostat lock protection
-Date:   Mon,  8 May 2023 11:42:44 +0200
-Message-Id: <20230508094439.129581643@linuxfoundation.org>
+Subject: [PATCH 6.1 323/611] xsk: Fix unaligned descriptor validation
+Date:   Mon,  8 May 2023 11:42:45 +0200
+Message-Id: <20230508094432.935536121@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,50 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qilin Tan <qilin.tan@mediatek.com>
+From: Kal Conley <kal.conley@dectris.com>
 
-[ Upstream commit 144f1cd40bf91fb3ac1d41806470756ce774f389 ]
+[ Upstream commit d769ccaf957fe7391f357c0a923de71f594b8a2b ]
 
-Made iostat lock irq safe to avoid potentinal deadlock.
+Make sure unaligned descriptors that straddle the end of the UMEM are
+considered invalid. Currently, descriptor validation is broken for
+zero-copy mode which only checks descriptors at page granularity.
+For example, descriptors in zero-copy mode that overrun the end of the
+UMEM but not a page boundary are (incorrectly) considered valid. The
+UMEM boundary check needs to happen before the page boundary and
+contiguity checks in xp_desc_crosses_non_contig_pg(). Do this check in
+xp_unaligned_validate_desc() instead like xp_check_unaligned() already
+does.
 
-Deadlock scenario:
-f2fs_attr_store
-  -> f2fs_sbi_store
-  -> _sbi_store
-  -> spin_lock(sbi->iostat_lock)
-    <interrupt request>
-    -> scsi_end_request
-    -> bio_endio
-    -> f2fs_dio_read_end_io
-    -> f2fs_update_iostat
-    -> spin_lock_irqsave(sbi->iostat_lock)  ===> Dead lock here
-
-Fixes: 61803e984307 ("f2fs: fix iostat related lock protection")
-Fixes: a1e09b03e6f5 ("f2fs: use iomap for direct I/O")
-Signed-off-by: Qilin Tan <qilin.tan@mediatek.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 2b43470add8c ("xsk: Introduce AF_XDP buffer allocation API")
+Signed-off-by: Kal Conley <kal.conley@dectris.com>
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://lore.kernel.org/r/20230405235920.7305-2-kal.conley@dectris.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/xsk_buff_pool.h | 9 ++-------
+ net/xdp/xsk_queue.h         | 1 +
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 088b816127ecb..2884efe5269ed 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -564,9 +564,9 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 	if (!strcmp(a->attr.name, "iostat_period_ms")) {
- 		if (t < MIN_IOSTAT_PERIOD_MS || t > MAX_IOSTAT_PERIOD_MS)
- 			return -EINVAL;
--		spin_lock(&sbi->iostat_lock);
-+		spin_lock_irq(&sbi->iostat_lock);
- 		sbi->iostat_period_ms = (unsigned int)t;
--		spin_unlock(&sbi->iostat_lock);
-+		spin_unlock_irq(&sbi->iostat_lock);
- 		return count;
- 	}
- #endif
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index f787c3f524b03..996eaf1ef1a1d 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -175,13 +175,8 @@ static inline bool xp_desc_crosses_non_contig_pg(struct xsk_buff_pool *pool,
+ 	if (likely(!cross_pg))
+ 		return false;
+ 
+-	if (pool->dma_pages_cnt) {
+-		return !(pool->dma_pages[addr >> PAGE_SHIFT] &
+-			 XSK_NEXT_PG_CONTIG_MASK);
+-	}
+-
+-	/* skb path */
+-	return addr + len > pool->addrs_cnt;
++	return pool->dma_pages_cnt &&
++	       !(pool->dma_pages[addr >> PAGE_SHIFT] & XSK_NEXT_PG_CONTIG_MASK);
+ }
+ 
+ static inline u64 xp_aligned_extract_addr(struct xsk_buff_pool *pool, u64 addr)
+diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
+index c6fb6b7636582..bdeba20aaf8ff 100644
+--- a/net/xdp/xsk_queue.h
++++ b/net/xdp/xsk_queue.h
+@@ -161,6 +161,7 @@ static inline bool xp_unaligned_validate_desc(struct xsk_buff_pool *pool,
+ 		return false;
+ 
+ 	if (base_addr >= pool->addrs_cnt || addr >= pool->addrs_cnt ||
++	    addr + desc->len > pool->addrs_cnt ||
+ 	    xp_desc_crosses_non_contig_pg(pool, addr, desc->len))
+ 		return false;
+ 
 -- 
 2.39.2
 
