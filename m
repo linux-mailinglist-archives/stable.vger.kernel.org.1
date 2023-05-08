@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 684026FAA5F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 634A36FA74D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235458AbjEHLCh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38438 "EHLO
+        id S234604AbjEHK3N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:29:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235442AbjEHLBz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:01:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF1B2E83F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:00:52 -0700 (PDT)
+        with ESMTP id S234441AbjEHK3A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A66410D7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDD2262A18
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:00:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40E5C433EF;
-        Mon,  8 May 2023 11:00:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11BD56266D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DB3C433EF;
+        Mon,  8 May 2023 10:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543651;
-        bh=8RvZ6CD/urFKyt593xqQj3UCzzjSscO1V/dj00aDjqU=;
+        s=korg; t=1683541738;
+        bh=bWG60vcmr5IYQG7Ez/8WmtR1Wg8VcUmec2xnkiqGSeg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rZsOltj171vfCZIqcnK9/2NEiXZzZKtjH0CoHpZRHT345Thr7HtKzxhyJ7PDj8AtY
-         AqwTEq9SNwHPnGk9Uyle9PoVb+KSAd66a6ns2qvXCO7+i1jU+Ba1k83I4kcTyrEG+a
-         9irZSJL/E5xR9rrDRg6a4abtx1PD8Xb0/sm7D6Y8=
+        b=X/i7f4JJ2unkbsCVti2+7CkJYrk5n+EsRj8FtUa6QsPhDdrwD7MbBkFcvQtSdMWV3
+         wJs05TuXtU4vZd1az3KFutGQ8j6nSZlmJ/jdAVb40TnpxcUdGynNZCQaP7mJ4azyOM
+         +q9JNWYbXfyjdVAqrRzdf+xZOSWrI0FSt1zZvNZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicolas Frayer <nfrayer@baylibre.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 158/694] soc: ti: k3-ringacc: Add try_module_get() to k3_dmaring_request_dual_ring()
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 167/663] arm64: dts: qcom: sm8250: Fix the PCI I/O port range
 Date:   Mon,  8 May 2023 11:39:53 +0200
-Message-Id: <20230508094437.548405453@linuxfoundation.org>
+Message-Id: <20230508094433.902451305@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolas Frayer <nfrayer@baylibre.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 5f1732a8683c1da8faaa90d6ffc3bd6d33013a58 ]
+[ Upstream commit e115a4495db687898b8d91d4f16c2cf55bbf167c ]
 
-When the k3 ring accelerator driver has been modified to add module build
-support, try_module_get() and module_put() have been added to update the
-module refcnt. One code path has not been updated and it has introduced
-an issue where the refcnt is decremented by module_put() in
-k3_ringacc_ring_free() without being incremented previously.
-Adding try_module_get() to k3_dmaring_request_dual_ring() ensures the
-refcnt is kept up to date.
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
+(0x60200000, 0x40200000, 0x64200000) specified in the ranges property for
+I/O region.
 
-Fixes: c07f216a8b72 ("soc: ti: k3-ringacc: Allow the driver to be built as module")
-Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20221230001404.10902-1-nfrayer@baylibre.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+While at it, let's use the missing 0x prefix for the addresses.
+
+Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-9-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/k3-ringacc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/ti/k3-ringacc.c b/drivers/soc/ti/k3-ringacc.c
-index e01e4d815230a..8f131368a7586 100644
---- a/drivers/soc/ti/k3-ringacc.c
-+++ b/drivers/soc/ti/k3-ringacc.c
-@@ -406,6 +406,11 @@ static int k3_dmaring_request_dual_ring(struct k3_ringacc *ringacc, int fwd_id,
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 927032863e2f1..d3f2f617047f1 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -1807,8 +1807,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	mutex_lock(&ringacc->req_lock);
+-			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
+-				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
++				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
  
-+	if (!try_module_get(ringacc->dev->driver->owner)) {
-+		ret = -EINVAL;
-+		goto err_module_get;
-+	}
-+
- 	if (test_bit(fwd_id, ringacc->rings_inuse)) {
- 		ret = -EBUSY;
- 		goto error;
-@@ -421,6 +426,8 @@ static int k3_dmaring_request_dual_ring(struct k3_ringacc *ringacc, int fwd_id,
- 	return 0;
+ 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
+@@ -1916,7 +1916,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- error:
-+	module_put(ringacc->dev->driver->owner);
-+err_module_get:
- 	mutex_unlock(&ringacc->req_lock);
- 	return ret;
- }
+-			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
+ 
+ 			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2024,7 +2024,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+-			ranges = <0x01000000 0x0 0x64200000 0x0 0x64200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x64200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x64300000 0x0 0x64300000 0x0 0x3d00000>;
+ 
+ 			interrupts = <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.39.2
 
