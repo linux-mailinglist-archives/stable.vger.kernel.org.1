@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F22C6FAD58
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 255E26FABD0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236003AbjEHLdy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:33:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51258 "EHLO
+        id S235480AbjEHLRo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235960AbjEHLdb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D804A40217
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:32:57 -0700 (PDT)
+        with ESMTP id S235491AbjEHLRn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD32B37622
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABE4261CBD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7DEC433A0;
-        Mon,  8 May 2023 11:32:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6539262C07
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBFFC433D2;
+        Mon,  8 May 2023 11:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545577;
-        bh=PO3wiQLwLVL5/69ZC2m09vFVE+ssNnVPxS9uUWamV2g=;
+        s=korg; t=1683544657;
+        bh=Q1E2/2VQovVltMEOu43cAYLNQ9T/TLXeZWQogOPKK+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PZjJcG4eO2skC22n/9DtMgtUfoTeLRszzgErPebETwhU5iWfU0BF0/VZAh4LyPAAB
-         UK6il8YQT534RtZCzAI54+fKqA4RmNWMNnFxdfGJRe9mwAsMlqF38K0suq7IuaEzSp
-         pVozLXyHEdwU5Snd/dZC/nUcZ5UT9yMjjPgRe/io=
+        b=I1J6F5CeoEsRHS1+xMSMqkbp1NnnW5u0/dcOdRrJ9jSFQhRBgBUL6lPBjt//9bDdF
+         cRJpCPgweaO+Tg6CQsxK7109J9LrQKVTo8bhsaVylpE/WPvNGRUVR4F8EAv3ovkFVy
+         FQ2TbN0kAaomVeSXud5as5O9+hBc/lt4ms67mNQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bhavya Kapoor <b-kapoor@ti.com>,
-        Nishanth Menon <nm@ti.com>, Diwakar Dhyani <d-dhyani@ti.com>,
-        Nitin Yadav <n-yadav@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/371] arm64: dts: ti: k3-j721e-main: Remove ti,strobe-sel property
-Date:   Mon,  8 May 2023 11:44:46 +0200
-Message-Id: <20230508094815.467196610@linuxfoundation.org>
+        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 452/694] wifi: mt76: mt7996: fill txd by host driver
+Date:   Mon,  8 May 2023 11:44:47 +0200
+Message-Id: <20230508094448.248255717@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +53,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bhavya Kapoor <b-kapoor@ti.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 4f4b30a777d3e61603119297965343a37be36435 ]
+[ Upstream commit 3b522cadedfe6e9e0e8193d7d4ab5aa8d0c73209 ]
 
-According to latest errata of J721e [1], (i2024) 'MMCSD: Peripherals
-Do Not Support HS400' which applies to MMCSD0 subsystem. Speed modes
-supported has been already updated but missed dropping 'ti,strobe-sel'
-property which is only required by HS400 speed mode.
+The hardware SDO has issue to fill txd for the moment, so fallback to
+driver filling method.
 
-Thus, drop 'ti,strobe-sel' property from kernel dtsi for J721e SoC.
-
-[1] https://www.ti.com/lit/er/sprz455/sprz455.pdf
-
-Fixes: eb8f6194e807 ("arm64: dts: ti: k3-j721e-main: Update the speed modes supported and their itap delay values for MMCSD subsystems")
-Signed-off-by: Bhavya Kapoor <b-kapoor@ti.com>
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Diwakar Dhyani <d-dhyani@ti.com>
-Reviewed-by: Nitin Yadav <n-yadav@ti.com>
-Link: https://lore.kernel.org/r/20230203073724.29529-1-b-kapoor@ti.com
+Fixes: 98686cd21624 (wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices)
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-main.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-index ad21bb1417aa6..d662eeb7d80a7 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-@@ -1051,7 +1051,6 @@
- 		ti,itap-del-sel-mmc-hs = <0xa>;
- 		ti,itap-del-sel-ddr52 = <0x3>;
- 		ti,trm-icp = <0x8>;
--		ti,strobe-sel = <0x77>;
- 		dma-coherent;
- 	};
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 6a635b03a602b..1a715d01b0a3b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1120,11 +1120,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 		return id;
  
+ 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
+-	memset(txwi_ptr, 0, MT_TXD_SIZE);
+-	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
+-	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+-		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
+-				      pid, qid, 0);
++	mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
++			      pid, qid, 0);
+ 
+ 	txp = (struct mt76_connac_txp_common *)(txwi + MT_TXD_SIZE);
+ 	for (i = 0; i < nbuf; i++) {
+@@ -1133,10 +1130,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	}
+ 	txp->fw.nbuf = nbuf;
+ 
+-	txp->fw.flags = cpu_to_le16(MT_CT_INFO_FROM_HOST);
+-
+-	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+-		txp->fw.flags |= cpu_to_le16(MT_CT_INFO_APPLY_TXD);
++	txp->fw.flags =
++		cpu_to_le16(MT_CT_INFO_FROM_HOST | MT_CT_INFO_APPLY_TXD);
+ 
+ 	if (!key)
+ 		txp->fw.flags |= cpu_to_le16(MT_CT_INFO_NONE_CIPHER_FRAME);
 -- 
 2.39.2
 
