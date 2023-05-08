@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE136FAC90
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 973456FA99F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235734AbjEHLZ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
+        id S235155AbjEHKxk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235740AbjEHLZn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:43 -0400
+        with ESMTP id S235184AbjEHKxV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 362DE3A5EE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9794690
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6B5F62D47
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38B7C433D2;
-        Mon,  8 May 2023 11:25:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D33A6296B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD1BC4339B;
+        Mon,  8 May 2023 10:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545104;
-        bh=0a2OcY16Yr4iHnMrwNH7mBBoi3oO3rSZ9r49t36Dt2Q=;
+        s=korg; t=1683543159;
+        bh=8zr1kOPTgKzYczvIe0anltLdNVwdCDHYFNsZaTgHBiQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T4E3EM5p0tyUl/xZWlBQHk0t12YPXjtrPTqTf6u9qb/rXJkDTQeeouM+h73XFGcow
-         xfaD72LzAnPYanOzm2+K5g8iZuc0+6W2uCyisHWYXK4VeQn6/830y8kVcdeLIT94r2
-         FpSx4QXPw4NcYQTx0iEUqjLeoirQPWqymV4P2JYU=
+        b=OfcVpRoUkXy5tBogJwUpAwYQuvUNyxFuDFhZaODwxfkfm07jzGZrTBNLUzh1jv1iw
+         wUwA8yuqnSmLAmPXZ8xLvR1gwAqjv2eGOV9hH78D/6B/qvEnatPPulSID3sr29xTA/
+         CasCSy5c5pwwPaf5mjo0oyg6OY8X94km6s7KljaY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 626/694] RDMA/mlx5: Use correct device num_ports when modify DC
+        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
+        Alexandru gagniuc <mr.nuke.me@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        ValdikSS <iam@valdikss.org.ru>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.2 635/663] wifi: rtw88: rtw8821c: Fix rfe_option field width
 Date:   Mon,  8 May 2023 11:47:41 +0200
-Message-Id: <20230508094455.899829066@linuxfoundation.org>
+Message-Id: <20230508094450.519656447@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +57,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 746aa3c8cb1a650ff2583497ac646e505831b9b9 ]
+commit 14705f969d98187a1cc2682e0c9bd2e230b8098f upstream.
 
-Just like other QP types, when modify DC, the port_num should be compared
-with dev->num_ports, instead of HCA_CAP.num_ports.  Otherwise Multi-port
-vHCA on DC may not work.
+On my RTW8821CU chipset rfe_option reads as 0x22. Looking at the
+vendor driver suggests that the field width of rfe_option is 5 bit,
+so rfe_option should be masked with 0x1f.
 
-Fixes: 776a3906b692 ("IB/mlx5: Add support for DC target QP")
-Link: https://lore.kernel.org/r/20230420013906.1244185-1-markzhang@nvidia.com
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this the rfe_option comparisons with 2 further down the
+driver evaluate as false when they should really evaluate as true.
+The effect is that 2G channels do not work.
+
+rfe_option is also used as an array index into rtw8821c_rfe_defs[].
+rtw8821c_rfe_defs[34] (0x22) was added as part of adding USB support,
+likely because rfe_option reads as 0x22. As this now becomes 0x2,
+rtw8821c_rfe_defs[34] is no longer used and can be removed.
+
+Note that this might not be the whole truth. In the vendor driver
+there are indeed places where the unmasked rfe_option value is used.
+However, the driver has several places where rfe_option is tested
+with the pattern if (rfe_option == 2 || rfe_option == 0x22) or
+if (rfe_option == 4 || rfe_option == 0x24), so that rfe_option BIT(5)
+has no influence on the code path taken. We therefore mask BIT(5)
+out from rfe_option entirely until this assumption is proved wrong
+by some chip variant we do not know yet.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Tested-by: ValdikSS <iam@valdikss.org.ru>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230417140358.2240429-3-s.hauer@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 7cc3b973dec7b..86284aba3470d 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -4485,7 +4485,7 @@ static int mlx5_ib_modify_dct(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 			return -EINVAL;
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -47,7 +47,7 @@ static int rtw8821c_read_efuse(struct rt
  
- 		if (attr->port_num == 0 ||
--		    attr->port_num > MLX5_CAP_GEN(dev->mdev, num_ports)) {
-+		    attr->port_num > dev->num_ports) {
- 			mlx5_ib_dbg(dev, "invalid port number %d. number of ports is %d\n",
- 				    attr->port_num, dev->num_ports);
- 			return -EINVAL;
--- 
-2.39.2
-
+ 	map = (struct rtw8821c_efuse *)log_map;
+ 
+-	efuse->rfe_option = map->rfe_option;
++	efuse->rfe_option = map->rfe_option & 0x1f;
+ 	efuse->rf_board_option = map->rf_board_option;
+ 	efuse->crystal_cap = map->xtal_k;
+ 	efuse->pa_type_2g = map->pa_type;
+@@ -1537,7 +1537,6 @@ static const struct rtw_rfe_def rtw8821c
+ 	[2] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
+ 	[4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
+ 	[6] = RTW_DEF_RFE(8821c, 0, 0),
+-	[34] = RTW_DEF_RFE(8821c, 0, 0),
+ };
+ 
+ static struct rtw_hw_reg rtw8821c_dig[] = {
 
 
