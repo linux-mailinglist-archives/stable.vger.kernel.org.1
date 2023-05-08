@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 404726FAC9C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 857D36FAE3A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235705AbjEHL01 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43058 "EHLO
+        id S236136AbjEHLmk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:42:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235645AbjEHL0Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:24 -0400
+        with ESMTP id S236211AbjEHLmZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:42:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC5813D55C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DACD3F2D6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9D1362D9A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4C5C433EF;
-        Mon,  8 May 2023 11:25:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83FE163572
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A4BC433EF;
+        Mon,  8 May 2023 11:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545158;
-        bh=OMi3JKjiYgIZcB8ovFT55piey/WFeBmlM3Zl5+fTHCc=;
+        s=korg; t=1683546072;
+        bh=4+PdAkDNb9ZuvqNYOcDimtnmfupXSOCmrOz/nsms80Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FPhL3hM9td6MWLutO5ktFocNI2IxKhjf06XHe03/ldBgljZDdBwWQDyf6k490m9OO
-         zj+McqIPgimkRVRvfisUjm93pE3n1iP+EQ9XR22iPmPrjut9qS04ML8miCUIi7/SFR
-         DgDVL0qgmpifrnTc6ptn3P3swMUbvTsJ5RshTcmI=
+        b=J0FUEGIr/87q+at2GcqbZoWD+v9O7kJ8eEnfMe1l3yuvnJxMMcAC5z9EbFR1Nuxsb
+         weXy+CzfN4wGnHIC0X5kLAYZ/kVB5tmsy+B4j1RnnzNhqFhjb2wAtfN/lc24MfA94o
+         1mhrnbJfi4qqLy4AkpvW0LaiPsAiC0zVREICuDTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
-        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Zeal Robot <zealci@zte.com.cn>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 613/694] clk: qcom: lpasscc-sc7280: Skip qdsp6ss clock registration
+Subject: [PATCH 5.15 247/371] spi: spi-imx: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
 Date:   Mon,  8 May 2023 11:47:28 +0200
-Message-Id: <20230508094455.319043103@linuxfoundation.org>
+Message-Id: <20230508094821.866100995@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,56 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-[ Upstream commit 4fc1c2d9a2b7a394f3b873aae5e03bffd8b5cd31 ]
+[ Upstream commit 7d34ff58f35c82207698f43af79817a05e1342e5 ]
 
-The qdsp6ss memory region is being shared by ADSP remoteproc device and
-lpasscc clock device, hence causing memory conflict.
-To avoid this, when qdsp6ss clocks are being enabled in remoteproc driver,
-skip qdsp6ss clock registration if "qcom,adsp-pil-mode" is enabled and
-also assign max_register value.
+Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
+pm_runtime_put_noidle. This change is just to simplify the code, no
+actual functional changes.
 
-Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
-Signed-off-by: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
-Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230407092255.119690-3-quic_mohs@quicinc.com
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Link: https://lore.kernel.org/r/20220414085343.2541608-1-chi.minghao@zte.com.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 11951c9e3f36 ("spi: imx: Don't skip cleanup in remove's error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/lpasscc-sc7280.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/spi/spi-imx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/lpasscc-sc7280.c b/drivers/clk/qcom/lpasscc-sc7280.c
-index 48432010ce247..0df2b29e95e31 100644
---- a/drivers/clk/qcom/lpasscc-sc7280.c
-+++ b/drivers/clk/qcom/lpasscc-sc7280.c
-@@ -121,14 +121,18 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
- 		goto destroy_pm_clk;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 890b2cf02149c..980cd168fe4c8 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1552,9 +1552,8 @@ spi_imx_prepare_message(struct spi_master *master, struct spi_message *msg)
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 	int ret;
+ 
+-	ret = pm_runtime_get_sync(spi_imx->dev);
++	ret = pm_runtime_resume_and_get(spi_imx->dev);
+ 	if (ret < 0) {
+-		pm_runtime_put_noidle(spi_imx->dev);
+ 		dev_err(spi_imx->dev, "failed to enable clock\n");
+ 		return ret;
  	}
+@@ -1770,9 +1769,8 @@ static int spi_imx_remove(struct platform_device *pdev)
  
--	lpass_regmap_config.name = "qdsp6ss";
--	desc = &lpass_qdsp6ss_sc7280_desc;
--
--	ret = qcom_cc_probe_by_index(pdev, 0, desc);
--	if (ret)
--		goto destroy_pm_clk;
-+	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
-+		lpass_regmap_config.name = "qdsp6ss";
-+		lpass_regmap_config.max_register = 0x3f;
-+		desc = &lpass_qdsp6ss_sc7280_desc;
-+
-+		ret = qcom_cc_probe_by_index(pdev, 0, desc);
-+		if (ret)
-+			goto destroy_pm_clk;
-+	}
+ 	spi_bitbang_stop(&spi_imx->bitbang);
  
- 	lpass_regmap_config.name = "top_cc";
-+	lpass_regmap_config.max_register = 0x4;
- 	desc = &lpass_cc_top_sc7280_desc;
- 
- 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+-	ret = pm_runtime_get_sync(spi_imx->dev);
++	ret = pm_runtime_resume_and_get(spi_imx->dev);
+ 	if (ret < 0) {
+-		pm_runtime_put_noidle(spi_imx->dev);
+ 		dev_err(spi_imx->dev, "failed to enable clock\n");
+ 		return ret;
+ 	}
 -- 
 2.39.2
 
