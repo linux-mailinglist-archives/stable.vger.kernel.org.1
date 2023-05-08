@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E6E6FA652
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B9F66FAC5C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234353AbjEHKSc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48152 "EHLO
+        id S235612AbjEHLXh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234406AbjEHKSO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8585D040
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:12 -0700 (PDT)
+        with ESMTP id S235631AbjEHLXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E6439B9B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6664A61031
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE11C433EF;
-        Mon,  8 May 2023 10:18:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5A0C62CCA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780C6C433EF;
+        Mon,  8 May 2023 11:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541091;
-        bh=lGR6HAMTqbcAsG99GjOZGFXlX6sQYubRIqziW6Cw2p4=;
+        s=korg; t=1683545011;
+        bh=qhJnOiH9ivS867K9D5SpaU/jJxBK52Uiu3onzlfgRI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v1WBPpGLuBGBHKpSfbzrCRH/kNlx5e0qMLqdv+eAcRheqs2RSytC52Lff0yI8HYY8
-         2wnuAzDvwkkZ3durOP/bfAM+Via+yLAKSHc+ZzqG7KSg3oswnWLNC8TkLRfRqEDiX3
-         nfJB71pbCJXl9TNk9uuqdeyPFAEZvY4NovcVC3is=
+        b=gf7w3RZWDAoYq1P8pl11zmEmgfHrdKfImvDaX+9fFywCvSRQAEJhYO4tfOCSvOFUG
+         GAlQQrAqrerMSXorqEPJfr4yZWLr9QcM82SG4rhXSMi95QazoiDT14/0vn6G8TINpq
+         OJWUqWkp0jBFr3q5qWFqPnHDiVv38upT6qB4K6Kw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lorenzo Stoakes <lstoakes@gmail.com>,
-        kernel test robot <oliver.sang@intel.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 588/611] mm/mempolicy: correctly update prev when policy is equal on mbind
+        patches@lists.linux.dev,
+        syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com,
+        Zeng Heng <zengheng4@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 595/694] fs/ntfs3: Fix slab-out-of-bounds read in hdr_delete_de()
 Date:   Mon,  8 May 2023 11:47:10 +0200
-Message-Id: <20230508094441.024445739@linuxfoundation.org>
+Message-Id: <20230508094454.446203366@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,71 +56,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-commit 00ca0f2e86bf40b016a646e6323a8941a09cf106 upstream.
+[ Upstream commit ab84eee4c7ab929996602eda7832854c35a6dda2 ]
 
-The refactoring in commit f4e9e0e69468 ("mm/mempolicy: fix use-after-free
-of VMA iterator") introduces a subtle bug which arises when attempting to
-apply a new NUMA policy across a range of VMAs in mbind_range().
+Here is a BUG report from syzbot:
 
-The refactoring passes a **prev pointer to keep track of the previous VMA
-in order to reduce duplication, and in all but one case it keeps this
-correctly updated.
+BUG: KASAN: slab-out-of-bounds in hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
+Read of size 16842960 at addr ffff888079cc0600 by task syz-executor934/3631
 
-The bug arises when a VMA within the specified range has an equivalent
-policy as determined by mpol_equal() - which unlike other cases, does not
-update prev.
+Call Trace:
+ memmove+0x25/0x60 mm/kasan/shadow.c:54
+ hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
+ indx_delete_entry+0x74f/0x3670 fs/ntfs3/index.c:2193
+ ni_remove_name+0x27a/0x980 fs/ntfs3/frecord.c:2910
+ ntfs_unlink_inode+0x3d4/0x720 fs/ntfs3/inode.c:1712
+ ntfs_rename+0x41a/0xcb0 fs/ntfs3/namei.c:276
 
-This can result in a situation where, later in the iteration, a VMA is
-found whose policy does need to change.  At this point, vma_merge() is
-invoked with prev pointing to a VMA which is before the previous VMA.
+Before using the meta-data in struct INDEX_HDR, we need to
+check index header valid or not. Otherwise, the corruptedi
+(or malicious) fs image can cause out-of-bounds access which
+could make kernel panic.
 
-Since vma_merge() discovers the curr VMA by looking for the one
-immediately after prev, it will now be in a situation where this VMA is
-incorrect and the merge will not proceed correctly.
-
-This is checked in the VM_WARN_ON() invariant case with end >
-curr->vm_end, which, if a merge is possible, results in a warning (if
-CONFIG_DEBUG_VM is specified).
-
-I note that vma_merge() performs these invariant checks only after
-merge_prev/merge_next are checked, which is debatable as it hides this
-issue if no merge is possible even though a buggy situation has arisen.
-
-The solution is simply to update the prev pointer even when policies are
-equal.
-
-This caused a bug to arise in the 6.2.y stable tree, and this patch
-resolves this bug.
-
-Link: https://lkml.kernel.org/r/83f1d612acb519d777bebf7f3359317c4e7f4265.1682866629.git.lstoakes@gmail.com
-Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-  Link: https://lore.kernel.org/oe-lkp/202304292203.44ddeff6-oliver.sang@intel.com
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Reported-by: syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mempolicy.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ntfs3/fslog.c   | 2 +-
+ fs/ntfs3/index.c   | 4 ++++
+ fs/ntfs3/ntfs_fs.h | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -802,8 +802,10 @@ static int mbind_range(struct vma_iterat
- 		vmstart = vma->vm_start;
- 	}
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index dc723f03d6bb2..bf73964472845 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2575,7 +2575,7 @@ static int read_next_log_rec(struct ntfs_log *log, struct lcb *lcb, u64 *lsn)
+ 	return find_log_rec(log, *lsn, lcb);
+ }
  
--	if (mpol_equal(vma_policy(vma), new_pol))
-+	if (mpol_equal(vma_policy(vma), new_pol)) {
-+		*prev = vma;
- 		return 0;
-+	}
+-static inline bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
++bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
+ {
+ 	__le16 mask;
+ 	u32 min_de, de_off, used, total;
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index ae9616becec15..7a1e01a2ed9ae 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -848,6 +848,10 @@ static inline struct NTFS_DE *hdr_delete_de(struct INDEX_HDR *hdr,
+ 	u32 off = PtrOffset(hdr, re);
+ 	int bytes = used - (off + esize);
  
- 	pgoff = vma->vm_pgoff + ((vmstart - vma->vm_start) >> PAGE_SHIFT);
- 	merged = vma_merge(vma->vm_mm, *prev, vmstart, vmend, vma->vm_flags,
++	/* check INDEX_HDR valid before using INDEX_HDR */
++	if (!check_index_header(hdr, le32_to_cpu(hdr->total)))
++		return NULL;
++
+ 	if (off >= used || esize < sizeof(struct NTFS_DE) ||
+ 	    bytes < sizeof(struct NTFS_DE))
+ 		return NULL;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 80072e5f96f70..15296f5690b5a 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -581,6 +581,7 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
+ bool ni_is_dirty(struct inode *inode);
+ 
+ /* Globals from fslog.c */
++bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
+ int log_replay(struct ntfs_inode *ni, bool *initialized);
+ 
+ /* Globals from fsntfs.c */
+-- 
+2.39.2
+
 
 
