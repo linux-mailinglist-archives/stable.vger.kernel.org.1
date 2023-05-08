@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 079EA6FA850
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B4CE6FAB79
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234869AbjEHKj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41960 "EHLO
+        id S233917AbjEHLNm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:13:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234749AbjEHKjZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:25 -0400
+        with ESMTP id S232941AbjEHLNi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A652729472
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8342235B3E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D65F6281D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511ECC433EF;
-        Mon,  8 May 2023 10:39:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15E6C62BB5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AE8C433EF;
+        Mon,  8 May 2023 11:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542363;
-        bh=HYG0zAPTt7XmBrbwIywNUL5DsNgcETV14du3TNuch+w=;
+        s=korg; t=1683544415;
+        bh=xE4/oRYpbwAn/LZJYp3jbPGMA1md4L+74SheDqoDdtM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jHhNdfWu5pWv4Vt5p09TB1xju7ujWmXoxQMR8BlhUPm+WXclkL4+ZPRzOaqeVxTnn
-         xs+JPMycrWhcu3vv2MSWwh5C1qojJV86KDn31yEaaRrnm5UGcJgYneH6OX042QK2lh
-         Z+MlvYK/VRWhkgST93lw1Vyys6/hMaNBHH9EQ3hg=
+        b=2QhmlGJuG8aUyTk/dnQVlcD4VBr9affO5R0MtGy7f8P8UgHGPHtbhv4mbCbRRVwwp
+         COihx4F1bRmq37iIKCfrVnGTID+vcLvwbGxEw3ailNhYOHpYE53Cn5WbcHATm/M8Ek
+         tAbKoU+cGm1resCmlCL84/mm6wjAeq5Gwx0olWxY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 410/663] wifi: iwlwifi: fw: fix memory leak in debugfs
-Date:   Mon,  8 May 2023 11:43:56 +0200
-Message-Id: <20230508094441.378353718@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 402/694] nvmet: fix Identify Namespace handling
+Date:   Mon,  8 May 2023 11:43:57 +0200
+Message-Id: <20230508094446.214022984@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[ Upstream commit 3d90d2f4a018fe8cfd65068bc6350b6222be4852 ]
+[ Upstream commit 8c098aa00118c35108f0c19bd3cdc45e11574948 ]
 
-Fix a memory leak that occurs when reading the fw_info
-file all the way, since we return NULL indicating no
-more data, but don't free the status tracking object.
+The identify command with cns set to NVME_ID_CNS_NS does not directly
+depend on the command set. The NVMe specifications is rather confusing
+here as it appears that this command only applies to the NVM command
+set. However, footnote 8 of Figure 273 in the NVMe 2.0 base
+specifications clearly state that this command applies to NVM command
+sets that support logical blocks, that is, NVM and ZNS. Both the NVM and
+ZNS command set specifications also list this identify as mandatory.
 
-Fixes: 36dfe9ac6e8b ("iwlwifi: dump api version in yaml format")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230418122405.239e501b3b8d.I4268f87809ef91209cbcd748eee0863195e70fa2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The command handling should thus not look at the csi field since it is
+defined as unused for this command. Given that we do not support the
+KV command set, simply remove the csi switch-case for that command
+handling and call directly nvmet_execute_identify_ns() in
+nvmet_execute_identify().
+
+Fixes: ab5d0b38c047 ("nvmet: add Command Set Identifier support")
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/target/admin-cmd.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 43e997283db0f..607e07ed2477c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -317,8 +317,10 @@ static void *iwl_dbgfs_fw_info_seq_next(struct seq_file *seq,
- 	const struct iwl_fw *fw = priv->fwrt->fw;
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index 80099df37314a..a982f925dfcef 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -692,13 +692,8 @@ static void nvmet_execute_identify(struct nvmet_req *req)
  
- 	*pos = ++state->pos;
--	if (*pos >= fw->ucode_capa.n_cmd_versions)
-+	if (*pos >= fw->ucode_capa.n_cmd_versions) {
-+		kfree(state);
- 		return NULL;
-+	}
- 
- 	return state;
- }
+ 	switch (req->cmd->identify.cns) {
+ 	case NVME_ID_CNS_NS:
+-		switch (req->cmd->identify.csi) {
+-		case NVME_CSI_NVM:
+-			return nvmet_execute_identify_ns(req);
+-		default:
+-			break;
+-		}
+-		break;
++		nvmet_execute_identify_ns(req);
++		return;
+ 	case NVME_ID_CNS_CS_NS:
+ 		if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
+ 			switch (req->cmd->identify.csi) {
 -- 
 2.39.2
 
