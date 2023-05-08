@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F09C46FA841
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95D756FA540
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234884AbjEHKjB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
+        id S234084AbjEHKH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234858AbjEHKir (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:47 -0400
+        with ESMTP id S234081AbjEHKHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF2722F75
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 353411989
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86EE3627FD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C313C433D2;
-        Mon,  8 May 2023 10:38:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD86B6235F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F95C433EF;
+        Mon,  8 May 2023 10:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542325;
-        bh=515YoEgZZ/ABmXF/5cW49bGIDlpvMojKx5q1APCPmy8=;
+        s=korg; t=1683540443;
+        bh=w5C8CBf8JYLki40zmMz8vriq2OtJZT9NS7ySBj04M6Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qtr2vbxBb5l5b+M6OQbpY+3c3dDtlNcGIPpRfogUtdhTnfkg9DEzzBpQPkZ8FnhHR
-         jYlR9Xnjv9fRM4QicNkt/mX2E+IqhiPaL+Rt32kq/3ggSMsXg5GasV9QvajfpN9f7i
-         04xX+loUnekL1Z0r2vxprxy6Izn8+jVr1cMqVLnU=
+        b=vnf5UeNNKGuZnRax0tB+cgali+/qlPfY9u2AJXapBzBfyuH1vF6/Og3QePVYSMWve
+         ouU1+7h5i0EY4dKreragqKejou/e9J3BtWJg/xPP9A+9DfaC/Y14whmhiLASkX8us1
+         U5LyJ3Vfd6TiQUrwUdoHZ3vrURqNufQw34IGku/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 382/663] jdb2: Dont refuse invalidation of already invalidated buffers
+        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 366/611] mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
 Date:   Mon,  8 May 2023 11:43:28 +0200
-Message-Id: <20230508094440.504340021@linuxfoundation.org>
+Message-Id: <20230508094434.273148792@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,42 +53,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Sean Wang <sean.wang@mediatek.com>
 
-[ Upstream commit bd159398a2d2234de07d310132865706964aaaa7 ]
+[ Upstream commit 12db28c3ef31f719bd18fa186a40bb152e6a527c ]
 
-When invalidating buffers under the partial tail page,
-jbd2_journal_invalidate_folio() returns -EBUSY if the buffer is part of
-the committing transaction as we cannot safely modify buffer state.
-However if the buffer is already invalidated (due to previous
-invalidation attempts from ext4_wait_for_tail_page_commit()), there's
-nothing to do and there's no point in returning -EBUSY. This fixes
-occasional warnings from ext4_journalled_invalidate_folio() triggered by
-generic/051 fstest when blocksize < pagesize.
+The MT7921 driver no longer uses eeprom.data, but the relevant code has not
+been removed completely since
+commit 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability").
+This could result in potential invalid memory access.
 
-Fixes: 53e872681fed ("ext4: fix deadlock in journal_unmap_buffer()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230329154950.19720-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+To fix the kernel panic issue in mt7921, it is necessary to avoid accessing
+unallocated eeprom.data which can lead to invalid memory access.
+
+Furthermore, it is possible to entirely eliminate the
+mt7921_mcu_parse_eeprom function and solely depend on
+mt7921_mcu_parse_response to divide the RxD header.
+
+[2.702735] BUG: kernel NULL pointer dereference, address: 0000000000000550
+[2.702740] #PF: supervisor write access in kernel mode
+[2.702741] #PF: error_code(0x0002) - not-present page
+[2.702743] PGD 0 P4D 0
+[2.702747] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[2.702755] RIP: 0010:mt7921_mcu_parse_response+0x147/0x170 [mt7921_common]
+[2.702758] RSP: 0018:ffffae7c00fef828 EFLAGS: 00010286
+[2.702760] RAX: ffffa367f57be024 RBX: ffffa367cc7bf500 RCX: 0000000000000000
+[2.702762] RDX: 0000000000000550 RSI: 0000000000000000 RDI: ffffa367cc7bf500
+[2.702763] RBP: ffffae7c00fef840 R08: ffffa367cb167000 R09: 0000000000000005
+[2.702764] R10: 0000000000000000 R11: ffffffffc04702e4 R12: ffffa367e8329f40
+[2.702766] R13: 0000000000000000 R14: 0000000000000001 R15: ffffa367e8329f40
+[2.702768] FS:  000079ee6cf20c40(0000) GS:ffffa36b2f940000(0000) knlGS:0000000000000000
+[2.702769] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[2.702775] CR2: 0000000000000550 CR3: 00000001233c6004 CR4: 0000000000770ee0
+[2.702776] PKRU: 55555554
+[2.702777] Call Trace:
+[2.702782]  mt76_mcu_skb_send_and_get_msg+0xc3/0x11e [mt76 <HASH:1bc4 5>]
+[2.702785]  mt7921_run_firmware+0x241/0x853 [mt7921_common <HASH:6a2f 6>]
+[2.702789]  mt7921e_mcu_init+0x2b/0x56 [mt7921e <HASH:d290 7>]
+[2.702792]  mt7921_register_device+0x2eb/0x5a5 [mt7921_common <HASH:6a2f 6>]
+[2.702795]  ? mt7921_irq_tasklet+0x1d4/0x1d4 [mt7921e <HASH:d290 7>]
+[2.702797]  mt7921_pci_probe+0x2d6/0x319 [mt7921e <HASH:d290 7>]
+[2.702799]  pci_device_probe+0x9f/0x12a
+
+Fixes: 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/transaction.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 20 -------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index 15de1385012eb..18611241f4513 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -2387,6 +2387,9 @@ static int journal_unmap_buffer(journal_t *journal, struct buffer_head *bh,
- 			spin_unlock(&jh->b_state_lock);
- 			write_unlock(&journal->j_state_lock);
- 			jbd2_journal_put_journal_head(jh);
-+			/* Already zapped buffer? Nothing to do... */
-+			if (!bh->b_bdev)
-+				return 0;
- 			return -EBUSY;
- 		}
- 		/*
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 67bf92969a7b7..d3507e86e9cf5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -16,24 +16,6 @@ static bool mt7921_disable_clc;
+ module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
+ MODULE_PARM_DESC(disable_clc, "disable CLC support");
+ 
+-static int
+-mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
+-{
+-	struct mt7921_mcu_eeprom_info *res;
+-	u8 *buf;
+-
+-	if (!skb)
+-		return -EINVAL;
+-
+-	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
+-
+-	res = (struct mt7921_mcu_eeprom_info *)skb->data;
+-	buf = dev->eeprom.data + le32_to_cpu(res->addr);
+-	memcpy(buf, res->data, 16);
+-
+-	return 0;
+-}
+-
+ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 			      struct sk_buff *skb, int seq)
+ {
+@@ -60,8 +42,6 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 	} else if (cmd == MCU_EXT_CMD(THERMAL_CTRL)) {
+ 		skb_pull(skb, sizeof(*rxd) + 4);
+ 		ret = le32_to_cpu(*(__le32 *)skb->data);
+-	} else if (cmd == MCU_EXT_CMD(EFUSE_ACCESS)) {
+-		ret = mt7921_mcu_parse_eeprom(mdev, skb);
+ 	} else if (cmd == MCU_UNI_CMD(DEV_INFO_UPDATE) ||
+ 		   cmd == MCU_UNI_CMD(BSS_INFO_UPDATE) ||
+ 		   cmd == MCU_UNI_CMD(STA_REC_UPDATE) ||
 -- 
 2.39.2
 
