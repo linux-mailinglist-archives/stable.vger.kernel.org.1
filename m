@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6356FAAC9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F6E46FA792
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229986AbjEHLGj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
+        id S234744AbjEHKc3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:32:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233876AbjEHLGS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E248133D74
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:17 -0700 (PDT)
+        with ESMTP id S234747AbjEHKb6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A7026744
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9645362A83
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD253C4339C;
-        Mon,  8 May 2023 11:04:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C91B7626F1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD42C433EF;
+        Mon,  8 May 2023 10:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543891;
-        bh=MkBSir096ixF+SGKwT4r3tz493K1/jDeIupkG2T4ODk=;
+        s=korg; t=1683541892;
+        bh=3GjaSjRQxYdGyrHhFCH6DoDx3IN1bcdGWGu3+TTMJv4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1j3rPKmBm1uHgEmto6o02dEyITuH2/4J6NyafQ4ijL64XUq58ZyOQtu0ZFuVkEnM2
-         xph1gkrf7ZaMU9xXVSyHkXQ7KncXzKujpCBxgWkpA7VrI7eGzvwVG/NPp/eR2rdHX4
-         vzDX+e+KPw32qeCCy48ZOq/4EbKA5Jiw9Ud4J3oY=
+        b=g2PdI9tpqqnP2qQIhZmiXKFXej0GDrCa2N2fzhPRBXYDKbyguFU0KflE5IQDvsst1
+         Ax+xfQ3VFuVObnp5jp8N8EK4K5VIRv3zBIG3LulAWJwtjFuckJEejc4odnjnQb08Cj
+         4Vucaao98PAA4IurZ2HXI4kDX9dyVzlpuoToahLc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 234/694] cpufreq: mediatek: fix KP caused by handler usage after regulator_put/clk_put
+Subject: [PATCH 6.2 243/663] media: mediatek: vcodec: change lat thread decode error condition
 Date:   Mon,  8 May 2023 11:41:09 +0200
-Message-Id: <20230508094439.948201657@linuxfoundation.org>
+Message-Id: <20230508094436.163331581@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,156 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit d51e106240bc755cbe59634b70d567c192b045b2 ]
+[ Upstream commit 960badda95f10fb0c60f6f64978b19eafa9507a7 ]
 
-Any kind of failure in mtk_cpu_dvfs_info_init() will lead to calling
-regulator_put() or clk_put() and the KP will occur since the regulator/clk
-handlers are used after released in mtk_cpu_dvfs_info_release().
+If lat thread can't get lat buffer, it should be that current instance
+don't be schedulded, the driver can't free the src buffer directly.
 
-To prevent the usage after regulator_put()/clk_put(), the regulator/clk
-handlers are addressed in a way of "Free the Last Thing Style".
-
-Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
-Fixes: 4b9ceb757bbb ("cpufreq: mediatek: Enable clocks and regulators")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 7b182b8d9c85 ("media: mediatek: vcodec: Refactor get and put capture buffer flow")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/mediatek-cpufreq.c | 62 +++++++++++++++---------------
- 1 file changed, 30 insertions(+), 32 deletions(-)
+ .../platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c     | 6 ++++--
+ .../platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c  | 2 +-
+ .../platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c     | 2 +-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index 01d949707c373..6dc225546a8d6 100644
---- a/drivers/cpufreq/mediatek-cpufreq.c
-+++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -420,7 +420,7 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 		ret = PTR_ERR(info->inter_clk);
- 		dev_err_probe(cpu_dev, ret,
- 			      "cpu%d: failed to get intermediate clk\n", cpu);
--		goto out_free_resources;
-+		goto out_free_mux_clock;
- 	}
- 
- 	info->proc_reg = regulator_get_optional(cpu_dev, "proc");
-@@ -428,13 +428,13 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 		ret = PTR_ERR(info->proc_reg);
- 		dev_err_probe(cpu_dev, ret,
- 			      "cpu%d: failed to get proc regulator\n", cpu);
--		goto out_free_resources;
-+		goto out_free_inter_clock;
- 	}
- 
- 	ret = regulator_enable(info->proc_reg);
- 	if (ret) {
- 		dev_warn(cpu_dev, "cpu%d: failed to enable vproc\n", cpu);
--		goto out_free_resources;
-+		goto out_free_proc_reg;
- 	}
- 
- 	/* Both presence and absence of sram regulator are valid cases. */
-@@ -442,14 +442,14 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 	if (IS_ERR(info->sram_reg)) {
- 		ret = PTR_ERR(info->sram_reg);
- 		if (ret == -EPROBE_DEFER)
--			goto out_free_resources;
-+			goto out_disable_proc_reg;
- 
- 		info->sram_reg = NULL;
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c
+index ab8f642d1e5b0..3000db975e5f5 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateless.c
+@@ -258,8 +258,10 @@ static void mtk_vdec_worker(struct work_struct *work)
+ 		if (src_buf_req)
+ 			v4l2_ctrl_request_complete(src_buf_req, &ctx->ctrl_hdl);
  	} else {
- 		ret = regulator_enable(info->sram_reg);
- 		if (ret) {
- 			dev_warn(cpu_dev, "cpu%d: failed to enable vsram\n", cpu);
--			goto out_free_resources;
-+			goto out_free_sram_reg;
- 		}
+-		v4l2_m2m_src_buf_remove(ctx->m2m_ctx);
+-		v4l2_m2m_buf_done(vb2_v4l2_src, state);
++		if (ret != -EAGAIN) {
++			v4l2_m2m_src_buf_remove(ctx->m2m_ctx);
++			v4l2_m2m_buf_done(vb2_v4l2_src, state);
++		}
+ 		v4l2_m2m_job_finish(dev->m2m_dev_dec, ctx->m2m_ctx);
  	}
- 
-@@ -458,13 +458,13 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 	if (ret) {
- 		dev_err(cpu_dev,
- 			"cpu%d: failed to get OPP-sharing information\n", cpu);
--		goto out_free_resources;
-+		goto out_disable_sram_reg;
- 	}
- 
- 	ret = dev_pm_opp_of_cpumask_add_table(&info->cpus);
- 	if (ret) {
- 		dev_warn(cpu_dev, "cpu%d: no OPP table\n", cpu);
--		goto out_free_resources;
-+		goto out_disable_sram_reg;
- 	}
- 
- 	ret = clk_prepare_enable(info->cpu_clk);
-@@ -533,43 +533,41 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- out_free_opp_table:
- 	dev_pm_opp_of_cpumask_remove_table(&info->cpus);
- 
--out_free_resources:
--	if (regulator_is_enabled(info->proc_reg))
--		regulator_disable(info->proc_reg);
--	if (info->sram_reg && regulator_is_enabled(info->sram_reg))
-+out_disable_sram_reg:
-+	if (info->sram_reg)
- 		regulator_disable(info->sram_reg);
- 
--	if (!IS_ERR(info->proc_reg))
--		regulator_put(info->proc_reg);
--	if (!IS_ERR(info->sram_reg))
-+out_free_sram_reg:
-+	if (info->sram_reg)
- 		regulator_put(info->sram_reg);
--	if (!IS_ERR(info->cpu_clk))
--		clk_put(info->cpu_clk);
--	if (!IS_ERR(info->inter_clk))
--		clk_put(info->inter_clk);
-+
-+out_disable_proc_reg:
-+	regulator_disable(info->proc_reg);
-+
-+out_free_proc_reg:
-+	regulator_put(info->proc_reg);
-+
-+out_free_inter_clock:
-+	clk_put(info->inter_clk);
-+
-+out_free_mux_clock:
-+	clk_put(info->cpu_clk);
- 
- 	return ret;
  }
- 
- static void mtk_cpu_dvfs_info_release(struct mtk_cpu_dvfs_info *info)
- {
--	if (!IS_ERR(info->proc_reg)) {
--		regulator_disable(info->proc_reg);
--		regulator_put(info->proc_reg);
--	}
--	if (!IS_ERR(info->sram_reg)) {
-+	regulator_disable(info->proc_reg);
-+	regulator_put(info->proc_reg);
-+	if (info->sram_reg) {
- 		regulator_disable(info->sram_reg);
- 		regulator_put(info->sram_reg);
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c b/drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
+index 955b2d0c8f53f..999ce7ee5fdc2 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
+@@ -597,7 +597,7 @@ static int vdec_h264_slice_lat_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
+ 	lat_buf = vdec_msg_queue_dqbuf(&inst->ctx->msg_queue.lat_ctx);
+ 	if (!lat_buf) {
+ 		mtk_vcodec_err(inst, "failed to get lat buffer");
+-		return -EINVAL;
++		return -EAGAIN;
  	}
--	if (!IS_ERR(info->cpu_clk)) {
--		clk_disable_unprepare(info->cpu_clk);
--		clk_put(info->cpu_clk);
--	}
--	if (!IS_ERR(info->inter_clk)) {
--		clk_disable_unprepare(info->inter_clk);
--		clk_put(info->inter_clk);
--	}
--
-+	clk_disable_unprepare(info->cpu_clk);
-+	clk_put(info->cpu_clk);
-+	clk_disable_unprepare(info->inter_clk);
-+	clk_put(info->inter_clk);
- 	dev_pm_opp_of_cpumask_remove_table(&info->cpus);
- 	dev_pm_opp_unregister_notifier(info->cpu_dev, &info->opp_nb);
- }
+ 	share_info = lat_buf->private_data;
+ 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c b/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c
+index cbb6728b8a40b..cf16cf2807f07 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c
+@@ -2070,7 +2070,7 @@ static int vdec_vp9_slice_lat_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
+ 	lat_buf = vdec_msg_queue_dqbuf(&instance->ctx->msg_queue.lat_ctx);
+ 	if (!lat_buf) {
+ 		mtk_vcodec_err(instance, "Failed to get VP9 lat buf\n");
+-		return -EBUSY;
++		return -EAGAIN;
+ 	}
+ 	pfc = (struct vdec_vp9_slice_pfc *)lat_buf->private_data;
+ 	if (!pfc) {
 -- 
 2.39.2
 
