@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC72B6FA644
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6329C6FAC89
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234362AbjEHKSD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46998 "EHLO
+        id S235757AbjEHLZw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:25:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234373AbjEHKRx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 516DED2F9;
-        Mon,  8 May 2023 03:17:47 -0700 (PDT)
+        with ESMTP id S235758AbjEHLZi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D333A5E0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31A7C624A0;
-        Mon,  8 May 2023 10:17:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB9FC433EF;
-        Mon,  8 May 2023 10:17:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4E7E62D7B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B07C433D2;
+        Mon,  8 May 2023 11:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541066;
-        bh=3g1ezkSeNovKyNA/mYRnkKvsFp4NaVHgDIm4yL0ohA8=;
+        s=korg; t=1683545113;
+        bh=RJcsUH7EJfCiCDFYFLKZheoO2dnPBrhukHJwEr72oQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nH9cQ5102anxDuDoNNzcs1IoG+7edNzXyKetIcXZkn58VZhjC/8vBZH0pOD1NjCzI
-         EzuTJ1KRo2se7XX1NFRJ5Hqts8Sd6fLlaoHh7sjJUFMGENeNinmHMwcOBtHViTWcog
-         C+zC2COBbnyMkrdFrKGo5uwnNiQEa7XCrx2YjSDc=
+        b=DaZLsGDHZkBSkKiCYca8TBdDYrN/wjJ1T5P0DmoiS6bWdWKaQKbVWyDgJRwAJOou2
+         nDhBTJeV4TnG8V00/a+giESESVc20L3yqkWPt5JBEDt8QgQ4avF0FQgw7/YoURQe0j
+         fBkJp/LGsdk4Uig63RTFmh8oK24IMsemz/+KxInU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
-        Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
-        Jens Axboe <axboe@kernel.dk>, cgroups@vger.kernel.org,
-        linux-block@vger.kernel.org,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Subject: [PATCH 6.1 604/611] block/blk-iocost (gcc13): keep large values in a new enum
+        patches@lists.linux.dev, Vasant Hegde <vasant.hegde@amd.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 611/694] iommu/amd: Set page size bitmap during V2 domain allocation
 Date:   Mon,  8 May 2023 11:47:26 +0200
-Message-Id: <20230508094441.528448895@linuxfoundation.org>
+Message-Id: <20230508094455.224338799@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,55 +57,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-commit ff1cc97b1f4c10db224f276d9615b22835b8c424 upstream.
+[ Upstream commit 8f880d19e6ad645a4b8066d5ff091c980b3231e7 ]
 
-Since gcc13, each member of an enum has the same type as the enum [1]. And
-that is inherited from its members. Provided:
-  VTIME_PER_SEC_SHIFT     = 37,
-  VTIME_PER_SEC           = 1LLU << VTIME_PER_SEC_SHIFT,
-  ...
-  AUTOP_CYCLE_NSEC        = 10LLU * NSEC_PER_SEC,
-the named type is unsigned long.
+With the addition of the V2 page table support, the domain page size
+bitmap needs to be set prior to iommu core setting up direct mappings
+for reserved regions. When reserved regions are mapped, if this is not
+done, it will be looking at the V1 page size bitmap when determining
+the page size to use in iommu_pgsize(). When it gets into the actual
+amd mapping code, a check of see if the page size is supported can
+fail, because at that point it is checking it against the V2 page size
+bitmap which only supports 4K, 2M, and 1G.
 
-This generates warnings with gcc-13:
-  block/blk-iocost.c: In function 'ioc_weight_prfill':
-  block/blk-iocost.c:3037:37: error: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int'
+Add a check to __iommu_domain_alloc() to not override the
+bitmap if it was already set by the iommu ops domain_alloc() code path.
 
-  block/blk-iocost.c: In function 'ioc_weight_show':
-  block/blk-iocost.c:3047:34: error: format '%u' expects argument of type 'unsigned int', but argument 3 has type 'long unsigned int'
-
-So split the anonymous enum with large values to a separate enum, so
-that they don't affect other members.
-
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=36113
-
-Cc: Martin Liska <mliska@suse.cz>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: cgroups@vger.kernel.org
-Cc: linux-block@vger.kernel.org
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20221213120826.17446-1-jirislaby@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Fixes: 4db6c41f0946 ("iommu/amd: Add support for using AMD IOMMU v2 page table for DMA-API")
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20230404072742.1895252-1-jsnitsel@redhat.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/amd/iommu.c | 6 ++----
+ drivers/iommu/iommu.c     | 9 +++++++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -232,7 +232,9 @@ enum {
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 5a505ba5467e1..167da5b1a5e31 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1666,10 +1666,6 @@ static void do_attach(struct iommu_dev_data *dev_data,
+ 	domain->dev_iommu[iommu->index] += 1;
+ 	domain->dev_cnt                 += 1;
  
- 	/* 1/64k is granular enough and can easily be handled w/ u32 */
- 	WEIGHT_ONE		= 1 << 16,
-+};
+-	/* Override supported page sizes */
+-	if (domain->flags & PD_GIOV_MASK)
+-		domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
+-
+ 	/* Update device table */
+ 	set_dte_entry(iommu, dev_data->devid, domain,
+ 		      ats, dev_data->iommu_v2);
+@@ -2048,6 +2044,8 @@ static int protection_domain_init_v2(struct protection_domain *domain)
  
-+enum {
- 	/*
- 	 * As vtime is used to calculate the cost of each IO, it needs to
- 	 * be fairly high precision.  For example, it should be able to
+ 	domain->flags |= PD_GIOV_MASK;
+ 
++	domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
++
+ 	if (domain_enable_v2(domain, 1)) {
+ 		domain_id_free(domain->id);
+ 		return -ENOMEM;
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 10db680acaed5..256a38371120e 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -1964,8 +1964,13 @@ static struct iommu_domain *__iommu_domain_alloc(struct bus_type *bus,
+ 		return NULL;
+ 
+ 	domain->type = type;
+-	/* Assume all sizes by default; the driver may override this later */
+-	domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
++	/*
++	 * If not already set, assume all sizes by default; the driver
++	 * may override this later
++	 */
++	if (!domain->pgsize_bitmap)
++		domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
++
+ 	if (!domain->ops)
+ 		domain->ops = bus->iommu_ops->default_domain_ops;
+ 
+-- 
+2.39.2
+
 
 
