@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A406FA615
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC5A6FAC42
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234311AbjEHKQE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
+        id S235619AbjEHLWk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234310AbjEHKQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:03 -0400
+        with ESMTP id S235606AbjEHLWi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E433ACD3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E450637610
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF08462472
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D3FC4339B;
-        Mon,  8 May 2023 10:16:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0937D62CBA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F98C433D2;
+        Mon,  8 May 2023 11:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540961;
-        bh=/CirPnlQip9K72+yzl27FDVqJP27yaQTcovgu1nBL04=;
+        s=korg; t=1683544943;
+        bh=OJiXpfaE/bCVzy/stUX5mJG47hKMj0wAjSzLVzXwqvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CKu7a26Z5vcmOOSJLm4GvoGC3cvMcFlXjhi6b7WBhKEWmPCOXsrEGbJDdj/wdHdOy
-         2GFvCvGGCsaNuiO083UstTzgw7oWE6azojyVot9ACqw3KcgEP6fxg5Kk23WMM3fUF5
-         CB6Hu/koPNZtehp2jNvC1QCdoLMTbS/ti43Ta1Kk=
+        b=k0xbYvuF18gp0ZfmfNE75ldY9U2y/XEU3l4wIMqeDMSmBYAdytlOgAbdcpVVV8ITo
+         coPBwyJPl5sBbDwMZVvOfLUiMtQFZ9dOA//HgolbFD1FWDRuWYRUr49d4bb88dwB+/
+         8tK6NgnKahm7IGFdKQDi6HHBFH30BqNFTAEDTGlk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Caleb Harper <calebharp2005@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 564/611] ALSA: hda/realtek: support HP Pavilion Aero 13-be0xxx Mute LED
-Date:   Mon,  8 May 2023 11:46:46 +0200
-Message-Id: <20230508094440.298862621@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 572/694] rtla/timerlat: Fix "Previous IRQ" auto analysis line
+Date:   Mon,  8 May 2023 11:46:47 +0200
+Message-Id: <20230508094453.423906128@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,38 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Caleb Harper <calebharp2005@gmail.com>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit e7477cb97607b373d175a759c8c0270a640ab3f2 upstream.
+[ Upstream commit 82253a271aae9271fcf0aaa5e0ecc6dd38fb872b ]
 
-This patch adds support for the mute LED on the HP Pavilion Aero Laptop
-13-be0xxx. The current behavior is that the LED does not turn on at any
-time and does not indicate to the user whether the sound is muted.
+The "Previous IRQ interference" line is misaligned and without
+a \n, breaking the tool's output:
 
-The solution is to add a PCI quirk to properly recognize and support the
-LED on this device.
+ ## CPU 12 hit stop tracing, analyzing it ##
+  Previous IRQ interference:			up to      2.22 us  IRQ handler delay:		                	    18.06 us (0.00 %)
+  IRQ latency:						    18.52 us
+  Timerlat IRQ duration:				     4.41 us (0.00 %)
+  Blocking thread:					   216.93 us (0.03 %)
 
-This change has been tested on the device in question using modified
-versions of kernels 6.0.7-6.2.12 on Arch Linux.
+Fix the output:
 
-Signed-off-by: Caleb Harper <calebharp2005@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230503175026.6796-1-calebharp2005@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ ## CPU 7 hit stop tracing, analyzing it ##
+  Previous IRQ interference:			 up to       8.93 us
+  IRQ handler delay:		                	     0.98 us (0.00 %)
+  IRQ latency:						     2.95 us
+  Timerlat IRQ duration:				    11.26 us (0.03 %)
+
+Link: https://lore.kernel.org/linux-trace-devel/8b5819077f15ccf24745c9bf3205451e16ee32d9.1679685525.git.bristot@kernel.org
+
+Fixes: 27e348b221f6 ("rtla/timerlat: Add auto-analysis core")
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/tracing/rtla/src/timerlat_aa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9428,6 +9428,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x896d, "HP ZBook Firefly 16 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x896e, "HP EliteBook x360 830 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8971, "HP EliteBook 830 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+diff --git a/tools/tracing/rtla/src/timerlat_aa.c b/tools/tracing/rtla/src/timerlat_aa.c
+index ec4e0f4b0e6cd..1843fff66da5b 100644
+--- a/tools/tracing/rtla/src/timerlat_aa.c
++++ b/tools/tracing/rtla/src/timerlat_aa.c
+@@ -548,7 +548,7 @@ static void timerlat_thread_analysis(struct timerlat_aa_data *taa_data, int cpu,
+ 	exp_irq_ts = taa_data->timer_irq_start_time - taa_data->timer_irq_start_delay;
+ 
+ 	if (exp_irq_ts < taa_data->prev_irq_timstamp + taa_data->prev_irq_duration)
+-		printf("  Previous IRQ interference:	\t	up to %9.2f us",
++		printf("  Previous IRQ interference:	\t\t up to  %9.2f us\n",
+ 			ns_to_usf(taa_data->prev_irq_duration));
+ 
+ 	/*
+-- 
+2.39.2
+
 
 
