@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F69C6FAC82
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 906FF6FA994
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235764AbjEHLZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40126 "EHLO
+        id S235194AbjEHKxW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235680AbjEHLZU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:20 -0400
+        with ESMTP id S235197AbjEHKws (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747E83B78F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6552FCD0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B57C62D6A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C23C433EF;
-        Mon,  8 May 2023 11:24:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86A9662949
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989ABC433D2;
+        Mon,  8 May 2023 10:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545088;
-        bh=gfDGFjV+QykAu/JAuYchGotcnq6yqjwTBcPEGgoNltU=;
+        s=korg; t=1683543135;
+        bh=vRjU1lKAmaumq8aeGycusT7BuNArQ2TUuSNHNRF4xvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XDeYqUd1sS6m9YCLk23sWkGlOvUw9PdI37QffzxjGz2NfV4TxXDh4jIpgVWmZ3SJS
-         bQFRFHXmdgPwHSOh8vXCNsTdmdCZoxpfji59oHZEe/Hi7D7ioGcsn7UEBEpPfWG77l
-         Iy3xac07YxuAswF2ci6o7MpMBc1OYamHH5HB+OxQ=
+        b=wyjKXZ081bqhRwzdzm8OCiwysXQFAwooLFvW9wlp3uYXgRKLZJn9WI9I3UtWmlrFG
+         LTi9Vx6Bop24i/b9TjM/zZe2L0G4Z6k8QWEbjzr+49wHLd4Tb5GmGYGafAGXnSS3zp
+         Yzn3t889qPdtAZjLnAOCzmtSYCn5PU+/gjaLH0mg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Ziemba <ian.ziemba@hpe.com>,
-        Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 621/694] RDMA/rxe: Remove __rxe_do_task()
-Date:   Mon,  8 May 2023 11:47:36 +0200
-Message-Id: <20230508094455.707010673@linuxfoundation.org>
+        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.2 631/663] kcsan: Avoid READ_ONCE() in read_instrumented_memory()
+Date:   Mon,  8 May 2023 11:47:37 +0200
+Message-Id: <20230508094450.360884104@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,192 +54,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 960ebe97e5238565d15063c8f4d1b2108efe2e65 ]
+commit 8dec88070d964bfeb4198f34cb5956d89dd1f557 upstream.
 
-The subroutine __rxe_do_task is not thread safe and it has no way to
-guarantee that the tasks, which are designed with the assumption that they
-are non-reentrant, are not reentered. All of its uses are non-performance
-critical.
+Haibo Li reported:
 
-This patch replaces calls to __rxe_do_task with calls to
-rxe_sched_task. It also removes irrelevant or unneeded if tests.
+ | Unable to handle kernel paging request at virtual address
+ |   ffffff802a0d8d7171
+ | Mem abort info:o:
+ |   ESR = 0x9600002121
+ |   EC = 0x25: DABT (current EL), IL = 32 bitsts
+ |   SET = 0, FnV = 0 0
+ |   EA = 0, S1PTW = 0 0
+ |   FSC = 0x21: alignment fault
+ | Data abort info:o:
+ |   ISV = 0, ISS = 0x0000002121
+ |   CM = 0, WnR = 0 0
+ | swapper pgtable: 4k pages, 39-bit VAs, pgdp=000000002835200000
+ | [ffffff802a0d8d71] pgd=180000005fbf9003, p4d=180000005fbf9003,
+ | pud=180000005fbf9003, pmd=180000005fbe8003, pte=006800002a0d8707
+ | Internal error: Oops: 96000021 [#1] PREEMPT SMP
+ | Modules linked in:
+ | CPU: 2 PID: 45 Comm: kworker/u8:2 Not tainted
+ |   5.15.78-android13-8-g63561175bbda-dirty #1
+ | ...
+ | pc : kcsan_setup_watchpoint+0x26c/0x6bc
+ | lr : kcsan_setup_watchpoint+0x88/0x6bc
+ | sp : ffffffc00ab4b7f0
+ | x29: ffffffc00ab4b800 x28: ffffff80294fe588 x27: 0000000000000001
+ | x26: 0000000000000019 x25: 0000000000000001 x24: ffffff80294fdb80
+ | x23: 0000000000000000 x22: ffffffc00a70fb68 x21: ffffff802a0d8d71
+ | x20: 0000000000000002 x19: 0000000000000000 x18: ffffffc00a9bd060
+ | x17: 0000000000000001 x16: 0000000000000000 x15: ffffffc00a59f000
+ | x14: 0000000000000001 x13: 0000000000000000 x12: ffffffc00a70faa0
+ | x11: 00000000aaaaaaab x10: 0000000000000054 x9 : ffffffc00839adf8
+ | x8 : ffffffc009b4cf00 x7 : 0000000000000000 x6 : 0000000000000007
+ | x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffffffc00a70fb70
+ | x2 : 0005ff802a0d8d71 x1 : 0000000000000000 x0 : 0000000000000000
+ | Call trace:
+ |  kcsan_setup_watchpoint+0x26c/0x6bc
+ |  __tsan_read2+0x1f0/0x234
+ |  inflate_fast+0x498/0x750
+ |  zlib_inflate+0x1304/0x2384
+ |  __gunzip+0x3a0/0x45c
+ |  gunzip+0x20/0x30
+ |  unpack_to_rootfs+0x2a8/0x3fc
+ |  do_populate_rootfs+0xe8/0x11c
+ |  async_run_entry_fn+0x58/0x1bc
+ |  process_one_work+0x3ec/0x738
+ |  worker_thread+0x4c4/0x838
+ |  kthread+0x20c/0x258
+ |  ret_from_fork+0x10/0x20
+ | Code: b8bfc2a8 2a0803f7 14000007 d503249f (78bfc2a8) )
+ | ---[ end trace 613a943cb0a572b6 ]-----
 
-Instead of calling the task machinery a single call to the tasklet
-function (rxe_requester, etc.) is sufficient to draing the queues if task
-execution has been disabled or stopped.
+The reason for this is that on certain arm64 configuration since
+e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when
+CONFIG_LTO=y"), READ_ONCE() may be promoted to a full atomic acquire
+instruction which cannot be used on unaligned addresses.
 
-Together these changes allow the removal of __rxe_do_task.
+Fix it by avoiding READ_ONCE() in read_instrumented_memory(), and simply
+forcing the compiler to do the required access by casting to the
+appropriate volatile type. In terms of generated code this currently
+only affects architectures that do not use the default READ_ONCE()
+implementation.
 
-Link: https://lore.kernel.org/r/20230304174533.11296-7-rpearsonhpe@gmail.com
-Signed-off-by: Ian Ziemba <ian.ziemba@hpe.com>
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: b2b1ddc45745 ("RDMA/rxe: Fix the error "trying to register non-static key in rxe_cleanup_task"")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The only downside is that we are not guaranteed atomicity of the access
+itself, although on most architectures a plain load up to machine word
+size should still be atomic (a fact the default READ_ONCE() still relies
+on itself).
+
+Reported-by: Haibo Li <haibo.li@mediatek.com>
+Tested-by: Haibo Li <haibo.li@mediatek.com>
+Cc: <stable@vger.kernel.org> # 5.17+
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c   | 56 +++++++++-------------------
- drivers/infiniband/sw/rxe/rxe_task.c | 13 -------
- drivers/infiniband/sw/rxe/rxe_task.h |  6 ---
- 3 files changed, 17 insertions(+), 58 deletions(-)
+ kernel/kcsan/core.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index c954dd9394baf..49891f8ed4e61 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -473,29 +473,23 @@ static void rxe_qp_reset(struct rxe_qp *qp)
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -337,11 +337,20 @@ static void delay_access(int type)
+  */
+ static __always_inline u64 read_instrumented_memory(const volatile void *ptr, size_t size)
  {
- 	/* stop tasks from running */
- 	rxe_disable_task(&qp->resp.task);
--
--	/* stop request/comp */
--	if (qp->sq.queue) {
--		if (qp_type(qp) == IB_QPT_RC)
--			rxe_disable_task(&qp->comp.task);
--		rxe_disable_task(&qp->req.task);
--	}
-+	rxe_disable_task(&qp->comp.task);
-+	rxe_disable_task(&qp->req.task);
- 
- 	/* move qp to the reset state */
- 	qp->req.state = QP_STATE_RESET;
- 	qp->comp.state = QP_STATE_RESET;
- 	qp->resp.state = QP_STATE_RESET;
- 
--	/* let state machines reset themselves drain work and packet queues
--	 * etc.
--	 */
--	__rxe_do_task(&qp->resp.task);
-+	/* drain work and packet queuesc */
-+	rxe_requester(qp);
-+	rxe_completer(qp);
-+	rxe_responder(qp);
- 
--	if (qp->sq.queue) {
--		__rxe_do_task(&qp->comp.task);
--		__rxe_do_task(&qp->req.task);
-+	if (qp->rq.queue)
-+		rxe_queue_reset(qp->rq.queue);
-+	if (qp->sq.queue)
- 		rxe_queue_reset(qp->sq.queue);
--	}
- 
- 	/* cleanup attributes */
- 	atomic_set(&qp->ssn, 0);
-@@ -518,13 +512,8 @@ static void rxe_qp_reset(struct rxe_qp *qp)
- 
- 	/* reenable tasks */
- 	rxe_enable_task(&qp->resp.task);
--
--	if (qp->sq.queue) {
--		if (qp_type(qp) == IB_QPT_RC)
--			rxe_enable_task(&qp->comp.task);
--
--		rxe_enable_task(&qp->req.task);
--	}
-+	rxe_enable_task(&qp->comp.task);
-+	rxe_enable_task(&qp->req.task);
- }
- 
- /* drain the send queue */
-@@ -533,10 +522,7 @@ static void rxe_qp_drain(struct rxe_qp *qp)
- 	if (qp->sq.queue) {
- 		if (qp->req.state != QP_STATE_DRAINED) {
- 			qp->req.state = QP_STATE_DRAIN;
--			if (qp_type(qp) == IB_QPT_RC)
--				rxe_sched_task(&qp->comp.task);
--			else
--				__rxe_do_task(&qp->comp.task);
-+			rxe_sched_task(&qp->comp.task);
- 			rxe_sched_task(&qp->req.task);
- 		}
++	/*
++	 * In the below we don't necessarily need the read of the location to
++	 * be atomic, and we don't use READ_ONCE(), since all we need for race
++	 * detection is to observe 2 different values.
++	 *
++	 * Furthermore, on certain architectures (such as arm64), READ_ONCE()
++	 * may turn into more complex instructions than a plain load that cannot
++	 * do unaligned accesses.
++	 */
+ 	switch (size) {
+-	case 1:  return READ_ONCE(*(const u8 *)ptr);
+-	case 2:  return READ_ONCE(*(const u16 *)ptr);
+-	case 4:  return READ_ONCE(*(const u32 *)ptr);
+-	case 8:  return READ_ONCE(*(const u64 *)ptr);
++	case 1:  return *(const volatile u8 *)ptr;
++	case 2:  return *(const volatile u16 *)ptr;
++	case 4:  return *(const volatile u32 *)ptr;
++	case 8:  return *(const volatile u64 *)ptr;
+ 	default: return 0; /* Ignore; we do not diff the values. */
  	}
-@@ -552,11 +538,7 @@ void rxe_qp_error(struct rxe_qp *qp)
- 
- 	/* drain work and packet queues */
- 	rxe_sched_task(&qp->resp.task);
--
--	if (qp_type(qp) == IB_QPT_RC)
--		rxe_sched_task(&qp->comp.task);
--	else
--		__rxe_do_task(&qp->comp.task);
-+	rxe_sched_task(&qp->comp.task);
- 	rxe_sched_task(&qp->req.task);
  }
- 
-@@ -773,24 +755,20 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
- 
- 	qp->valid = 0;
- 	qp->qp_timeout_jiffies = 0;
--	rxe_cleanup_task(&qp->resp.task);
- 
- 	if (qp_type(qp) == IB_QPT_RC) {
- 		del_timer_sync(&qp->retrans_timer);
- 		del_timer_sync(&qp->rnr_nak_timer);
- 	}
- 
-+	rxe_cleanup_task(&qp->resp.task);
- 	rxe_cleanup_task(&qp->req.task);
- 	rxe_cleanup_task(&qp->comp.task);
- 
- 	/* flush out any receive wr's or pending requests */
--	if (qp->req.task.func)
--		__rxe_do_task(&qp->req.task);
--
--	if (qp->sq.queue) {
--		__rxe_do_task(&qp->comp.task);
--		__rxe_do_task(&qp->req.task);
--	}
-+	rxe_requester(qp);
-+	rxe_completer(qp);
-+	rxe_responder(qp);
- 
- 	if (qp->sq.queue)
- 		rxe_queue_cleanup(qp->sq.queue);
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-index 959cc6229a34e..a67f485454436 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.c
-+++ b/drivers/infiniband/sw/rxe/rxe_task.c
-@@ -6,19 +6,6 @@
- 
- #include "rxe.h"
- 
--int __rxe_do_task(struct rxe_task *task)
--
--{
--	int ret;
--
--	while ((ret = task->func(task->qp)) == 0)
--		;
--
--	task->ret = ret;
--
--	return ret;
--}
--
- /*
-  * this locking is due to a potential race where
-  * a second caller finds the task already running
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
-index 41efd5fd49b03..99585e40cef92 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.h
-+++ b/drivers/infiniband/sw/rxe/rxe_task.h
-@@ -39,12 +39,6 @@ int rxe_init_task(struct rxe_task *task, struct rxe_qp *qp,
- /* cleanup task */
- void rxe_cleanup_task(struct rxe_task *task);
- 
--/*
-- * raw call to func in loop without any checking
-- * can call when tasklets are disabled
-- */
--int __rxe_do_task(struct rxe_task *task);
--
- void rxe_run_task(struct rxe_task *task);
- 
- void rxe_sched_task(struct rxe_task *task);
--- 
-2.39.2
-
 
 
