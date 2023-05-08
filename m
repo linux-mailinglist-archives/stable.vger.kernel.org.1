@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4106FA92C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E526FA634
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235011AbjEHKtJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:49:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48156 "EHLO
+        id S234354AbjEHKR1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:17:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235165AbjEHKsr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:47 -0400
+        with ESMTP id S234382AbjEHKRQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159D129469
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4634BBEA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0354D628DE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E90C433EF;
-        Mon,  8 May 2023 10:47:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85B8E624A0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EBC433D2;
+        Mon,  8 May 2023 10:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542864;
-        bh=aiT/1/I0dWK5SUBMQewo+ZK2ooa7XQGqTvjSek7ZkI8=;
+        s=korg; t=1683541029;
+        bh=V9Dg1V9fmqWra7qEzHk6hJ52XF4WNtwERcF7mEgEELc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tcb3PodxpvggJBgR6CGbolWgBZM99T3HpM15tCbiVJu5+prUUzjMu8xNlE/XMFarc
-         0OXnumh/WckzEvc+E8lLnBR4KdyUgWUy6EMbLda486UBGrUwdGJf5zV73lflVMo+Vo
-         v9EqrQS/kt3ZEjD2JLweUMM/sDufBQE2buAbn+w4=
+        b=hRTEcXQWPBAxNH2MgTHqsFLVJ/nt0aarXq+O8yU/I53eOXfRGhZjjD5bMoK6303pq
+         lfZDcv0IskMIIPsQsXMAa+9YJT6/JaEQMk/+A/TWBZCGgcLDBAvh5XFZMBQeTo3MOg
+         FRqWNeSwHX0JkmhoJ6jTuWiGqxzK9cL2KtCVfghQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Ronnie Sahlberg <lsahlber@redhat.com>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Paulo Alcantara <pc@manguebit.com>
-Subject: [PATCH 6.2 574/663] SMB3: Add missing locks to protect deferred close file list
+        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
+        David Howells <dhowells@redhat.com>,
+        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 558/611] afs: Avoid endless loop if file is larger than expected
 Date:   Mon,  8 May 2023 11:46:40 +0200
-Message-Id: <20230508094447.889343785@linuxfoundation.org>
+Message-Id: <20230508094440.120434882@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,58 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit ab9ddc87a9055c4bebd6524d5d761d605d52e557 ]
+[ Upstream commit 9ea4eff4b6f4f36546d537a74da44fd3f30903ab ]
 
-cifs_del_deferred_close function has a critical section which modifies
-the deferred close file list. We must acquire deferred_lock before
-calling cifs_del_deferred_close function.
+afs_read_dir fetches an amount of data that's based on what the inode
+size is thought to be.  If the file on the server is larger than what
+was fetched, the code rechecks i_size and retries.  If the local i_size
+was not properly updated, this can lead to an endless loop of fetching
+i_size from the server and noticing each time that the size is larger on
+the server.
 
-Fixes: ca08d0eac020 ("cifs: Fix memory leak on the deferred close")
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Acked-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Acked-by: Ronnie Sahlberg <lsahlber@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+If it is known that the remote size is larger than i_size, bump up the
+fetch size to that size.
+
+Fixes: f3ddee8dc4e2 ("afs: Fix directory handling")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/misc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/afs/dir.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index 2fae6b08314d9..dc97013469748 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -749,7 +749,9 @@ cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode)
- 	list_for_each_entry(cfile, &cifs_inode->openFileList, flist) {
- 		if (delayed_work_pending(&cfile->deferred)) {
- 			if (cancel_delayed_work(&cfile->deferred)) {
-+				spin_lock(&cifs_inode->deferred_lock);
- 				cifs_del_deferred_close(cfile);
-+				spin_unlock(&cifs_inode->deferred_lock);
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 104df2964225c..f73b2f62afaae 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -274,6 +274,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
+ 	loff_t i_size;
+ 	int nr_pages, i;
+ 	int ret;
++	loff_t remote_size = 0;
  
- 				tmp_list = kmalloc(sizeof(struct file_list), GFP_ATOMIC);
- 				if (tmp_list == NULL)
-@@ -780,7 +782,9 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
- 	list_for_each_entry(cfile, &tcon->openFileList, tlist) {
- 		if (delayed_work_pending(&cfile->deferred)) {
- 			if (cancel_delayed_work(&cfile->deferred)) {
-+				spin_lock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
- 				cifs_del_deferred_close(cfile);
-+				spin_unlock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
+ 	_enter("");
  
- 				tmp_list = kmalloc(sizeof(struct file_list), GFP_ATOMIC);
- 				if (tmp_list == NULL)
-@@ -815,7 +819,9 @@ cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon, const char *path)
- 		if (strstr(full_path, path)) {
- 			if (delayed_work_pending(&cfile->deferred)) {
- 				if (cancel_delayed_work(&cfile->deferred)) {
-+					spin_lock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
- 					cifs_del_deferred_close(cfile);
-+					spin_unlock(&CIFS_I(d_inode(cfile->dentry))->deferred_lock);
+@@ -288,6 +289,8 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
  
- 					tmp_list = kmalloc(sizeof(struct file_list), GFP_ATOMIC);
- 					if (tmp_list == NULL)
+ expand:
+ 	i_size = i_size_read(&dvnode->netfs.inode);
++	if (i_size < remote_size)
++	    i_size = remote_size;
+ 	if (i_size < 2048) {
+ 		ret = afs_bad(dvnode, afs_file_error_dir_small);
+ 		goto error;
+@@ -363,6 +366,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
+ 			 * buffer.
+ 			 */
+ 			up_write(&dvnode->validate_lock);
++			remote_size = req->file_size;
+ 			goto expand;
+ 		}
+ 
 -- 
 2.39.2
 
