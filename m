@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 681686FAC45
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA20E6FADDA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235598AbjEHLWw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:22:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38414 "EHLO
+        id S235958AbjEHLjI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235612AbjEHLWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:51 -0400
+        with ESMTP id S236121AbjEHLiw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19BF39490
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8153F578
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F317562CBF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BCFC4339B;
-        Mon,  8 May 2023 11:22:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E06663393
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00535C433D2;
+        Mon,  8 May 2023 11:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544953;
-        bh=HuVk1l2B0m+JV5hjaJfPHQDnHZ4YtvJoU0wfVCYbGLw=;
+        s=korg; t=1683545869;
+        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GsoizRUmaOd8rE2TzLTZx0VdGzEzOIBdnHFjszejVftUpMrOkYxAGSGNArl5mO/me
-         mqVwJWDAtxznpoesoAaJ0lodhwkMQFdrTz/HuRZWemaaIRVyT5A2YX89HLFfQTJu6H
-         PWOoLNv+sLsRITkXz6ES0RuHQp7oL5cB2hL6bf3w=
+        b=Jo9JCTLm/3IoouK0+NQhLrGU+EhNatxKb1hMN8UaNIfJ+yCSB96wYb43O0iLym6qh
+         PYa/392yveRHGKUW+FDMS79HYqGKGLi5Mat1c8l8G0KsBiw3uSMc8StjUFTUFvDo8L
+         KQJ/UT/JlWesoUv7DK6chkSefVCqY5uC4HUpv9X4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 546/694] usb: mtu3: fix kernel panic at qmu transfer done irq handler
+Subject: [PATCH 5.15 180/371] net: qrtr: correct types of trace event parameters
 Date:   Mon,  8 May 2023 11:46:21 +0200
-Message-Id: <20230508094452.225779801@linuxfoundation.org>
+Message-Id: <20230508094819.286195587@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,71 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chunfeng Yun <chunfeng.yun@mediatek.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit d28f4091ea7ec3510fd6a3c6d433234e7a2bef14 ]
+[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
 
-When handle qmu transfer irq, it will unlock @mtu->lock before give back
-request, if another thread handle disconnect event at the same time, and
-try to disable ep, it may lock @mtu->lock and free qmu ring, then qmu
-irq hanlder may get a NULL gpd, avoid the KE by checking gpd's value before
-handling it.
+The arguments passed to the trace events are of type unsigned int,
+however the signature of the events used __le32 parameters.
 
-e.g.
-qmu done irq on cpu0                 thread running on cpu1
+I may be missing the point here, but sparse flagged this and it
+does seem incorrect to me.
 
-qmu_done_tx()
-  handle gpd [0]
-    mtu3_requ_complete()        mtu3_gadget_ep_disable()
-      unlock @mtu->lock
-        give back request         lock @mtu->lock
-                                    mtu3_ep_disable()
-                                      mtu3_gpd_ring_free()
-                                   unlock @mtu->lock
-      lock @mtu->lock
-    get next gpd [1]
+  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
+  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
+  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
+  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
+  ... (a lot more similar warnings)
+  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
+  net/qrtr/ns.c:115:47:    got unsigned int service
+  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
+  ... (a lot more similar warnings)
 
-[1]: goto [0] to handle next gpd, and next gpd may be NULL.
-
-Fixes: 48e0d3735aa5 ("usb: mtu3: supports new QMU format")
-Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
-Link: https://lore.kernel.org/r/20230417025203.18097-3-chunfeng.yun@mediatek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/mtu3/mtu3_qmu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/usb/mtu3/mtu3_qmu.c b/drivers/usb/mtu3/mtu3_qmu.c
-index a2fdab8b63b28..3b68a0a19cc76 100644
---- a/drivers/usb/mtu3/mtu3_qmu.c
-+++ b/drivers/usb/mtu3/mtu3_qmu.c
-@@ -210,6 +210,7 @@ static struct qmu_gpd *advance_enq_gpd(struct mtu3_gpd_ring *ring)
- 	return ring->enqueue;
- }
+diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
+index b1de14c3bb934..441132c67133f 100644
+--- a/include/trace/events/qrtr.h
++++ b/include/trace/events/qrtr.h
+@@ -10,15 +10,16 @@
  
-+/* @dequeue may be NULL if ring is unallocated or freed */
- static struct qmu_gpd *advance_deq_gpd(struct mtu3_gpd_ring *ring)
- {
- 	if (ring->dequeue < ring->end)
-@@ -491,7 +492,7 @@ static void qmu_done_tx(struct mtu3 *mtu, u8 epnum)
- 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
- 		__func__, epnum, gpd, gpd_current, ring->enqueue);
+ TRACE_EVENT(qrtr_ns_service_announce_new,
  
--	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
-+	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
  
- 		mreq = next_request(mep);
+ 	TP_ARGS(service, instance, node, port),
  
-@@ -530,7 +531,7 @@ static void qmu_done_rx(struct mtu3 *mtu, u8 epnum)
- 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
- 		__func__, epnum, gpd, gpd_current, ring->enqueue);
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
  
--	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
-+	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
+ 	TP_fast_assign(
+@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
  
- 		mreq = next_request(mep);
+ TRACE_EVENT(qrtr_ns_service_announce_del,
  
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
+ 
+ 	TP_ARGS(service, instance, node, port),
+ 
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
+ 
+ TRACE_EVENT(qrtr_ns_server_add,
+ 
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
+ 
+ 	TP_ARGS(service, instance, node, port),
+ 
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
+ 
+ 	TP_fast_assign(
 -- 
 2.39.2
 
