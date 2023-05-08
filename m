@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6FF06FAC70
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8FF6FAE01
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235660AbjEHLYf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39754 "EHLO
+        id S236092AbjEHLkN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235659AbjEHLYX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C518039B98
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:21 -0700 (PDT)
+        with ESMTP id S236031AbjEHLjn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01673FCC8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CF0A62D37
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F6CC4339B;
-        Mon,  8 May 2023 11:24:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85F1B6341A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85753C433EF;
+        Mon,  8 May 2023 11:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545060;
-        bh=662a+hvJE//CO7HoujKSuJ39qhzOwLPrsJ2lgpb74q8=;
+        s=korg; t=1683545974;
+        bh=blUy9C1Tt+dysK/2ZSW197bQ/v2Ol0kLFgl9O0itrHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m2QatsxoatEz5HCZeNzLadlEG6fq0y5WmClydb4McOB5L+MKFmE8ThxiQeZ3eHRRW
-         55f3pduQqUuT9KKA2CY1818JpLyo0rKluRotTfnP1HAIuIJ7xQYmI+CcvX7OW6ueWt
-         vWRaRCi4wHoGL2sVtaEv5NxGSseIfDKQI2/Dhq+4=
+        b=BGlTPXMW//M4lMsPkQJnG6c7KtFXSDo3I3IAUY02MX+EKKu17VrUXrzEeM+NOTLto
+         soIpOYQy1/GYsCGeHjJii6EEaftIgCtL1LgrhA8X5LE6VwhNk7Al6mZDb0TlvoM+l8
+         NdCdoI4lWf8+v91C5QnnlYZQu+4DXFTTJOGgH57U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 580/694] clk: mediatek: mt8135: Properly use CLK_IS_CRITICAL flag
-Date:   Mon,  8 May 2023 11:46:55 +0200
-Message-Id: <20230508094453.767067396@linuxfoundation.org>
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 215/371] jdb2: Dont refuse invalidation of already invalidated buffers
+Date:   Mon,  8 May 2023 11:46:56 +0200
+Message-Id: <20230508094820.600063375@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,83 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit f4f9a9c003b52ea3cffda186753bfb3e37b970f8 ]
+[ Upstream commit bd159398a2d2234de07d310132865706964aaaa7 ]
 
-Instead of calling clk_prepare_enable() for clocks that shall stay
-enabled, use the CLK_IS_CRITICAL flag, which purpose is exactly that.
+When invalidating buffers under the partial tail page,
+jbd2_journal_invalidate_folio() returns -EBUSY if the buffer is part of
+the committing transaction as we cannot safely modify buffer state.
+However if the buffer is already invalidated (due to previous
+invalidation attempts from ext4_wait_for_tail_page_commit()), there's
+nothing to do and there's no point in returning -EBUSY. This fixes
+occasional warnings from ext4_journalled_invalidate_folio() triggered by
+generic/051 fstest when blocksize < pagesize.
 
-Fixes: a8aede794843 ("clk: mediatek: Add basic clocks for Mediatek MT8135.")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20230306140543.1813621-52-angelogioacchino.delregno@collabora.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 53e872681fed ("ext4: fix deadlock in journal_unmap_buffer()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230329154950.19720-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8135.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/jbd2/transaction.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt8135.c b/drivers/clk/mediatek/clk-mt8135.c
-index 97a115d2c3daa..a39ad58e27418 100644
---- a/drivers/clk/mediatek/clk-mt8135.c
-+++ b/drivers/clk/mediatek/clk-mt8135.c
-@@ -2,6 +2,8 @@
- /*
-  * Copyright (c) 2014 MediaTek Inc.
-  * Author: James Liao <jamesjj.liao@mediatek.com>
-+ * Copyright (c) 2023 Collabora, Ltd.
-+ *               AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-  */
- 
- #include <linux/clk.h>
-@@ -390,7 +392,7 @@ static const struct mtk_composite top_muxes[] __initconst = {
- 	MUX_GATE(CLK_TOP_GCPU_SEL, "gcpu_sel", gcpu_parents, 0x0164, 24, 3, 31),
- 	/* CLK_CFG_9 */
- 	MUX_GATE(CLK_TOP_DPI1_SEL, "dpi1_sel", dpi1_parents, 0x0168, 0, 2, 7),
--	MUX_GATE(CLK_TOP_CCI_SEL, "cci_sel", cci_parents, 0x0168, 8, 3, 15),
-+	MUX_GATE_FLAGS(CLK_TOP_CCI_SEL, "cci_sel", cci_parents, 0x0168, 8, 3, 15, CLK_IS_CRITICAL),
- 	MUX_GATE(CLK_TOP_APLL_SEL, "apll_sel", apll_parents, 0x0168, 16, 3, 23),
- 	MUX_GATE(CLK_TOP_HDMIPLL_SEL, "hdmipll_sel", hdmipll_parents, 0x0168, 24, 2, 31),
- };
-@@ -404,6 +406,10 @@ static const struct mtk_gate_regs infra_cg_regs = {
- #define GATE_ICG(_id, _name, _parent, _shift)	\
- 	GATE_MTK(_id, _name, _parent, &infra_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
- 
-+#define GATE_ICG_AO(_id, _name, _parent, _shift)	\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &infra_cg_regs, _shift,	\
-+		       &mtk_clk_gate_ops_setclr, CLK_IS_CRITICAL)
-+
- static const struct mtk_gate infra_clks[] __initconst = {
- 	GATE_ICG(CLK_INFRA_PMIC_WRAP, "pmic_wrap_ck", "axi_sel", 23),
- 	GATE_ICG(CLK_INFRA_PMICSPI, "pmicspi_ck", "pmicspi_sel", 22),
-@@ -411,7 +417,7 @@ static const struct mtk_gate infra_clks[] __initconst = {
- 	GATE_ICG(CLK_INFRA_CCIF0_AP_CTRL, "ccif0_ap_ctrl", "axi_sel", 20),
- 	GATE_ICG(CLK_INFRA_KP, "kp_ck", "axi_sel", 16),
- 	GATE_ICG(CLK_INFRA_CPUM, "cpum_ck", "cpum_tck_in", 15),
--	GATE_ICG(CLK_INFRA_M4U, "m4u_ck", "mem_sel", 8),
-+	GATE_ICG_AO(CLK_INFRA_M4U, "m4u_ck", "mem_sel", 8),
- 	GATE_ICG(CLK_INFRA_MFGAXI, "mfgaxi_ck", "axi_sel", 7),
- 	GATE_ICG(CLK_INFRA_DEVAPC, "devapc_ck", "axi_sel", 6),
- 	GATE_ICG(CLK_INFRA_AUDIO, "audio_ck", "aud_intbus_sel", 5),
-@@ -534,8 +540,6 @@ static void __init mtk_topckgen_init(struct device_node *node)
- 				    ARRAY_SIZE(top_muxes), base,
- 				    &mt8135_clk_lock, clk_data);
- 
--	clk_prepare_enable(clk_data->hws[CLK_TOP_CCI_SEL]->clk);
--
- 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
- 	if (r)
- 		pr_err("%s(): could not register clock provider: %d\n",
-@@ -553,8 +557,6 @@ static void __init mtk_infrasys_init(struct device_node *node)
- 	mtk_clk_register_gates(NULL, node, infra_clks,
- 			       ARRAY_SIZE(infra_clks), clk_data);
- 
--	clk_prepare_enable(clk_data->hws[CLK_INFRA_M4U]->clk);
--
- 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
- 	if (r)
- 		pr_err("%s(): could not register clock provider: %d\n",
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 55232064cab21..ce4a5ccadeff4 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -2378,6 +2378,9 @@ static int journal_unmap_buffer(journal_t *journal, struct buffer_head *bh,
+ 			spin_unlock(&jh->b_state_lock);
+ 			write_unlock(&journal->j_state_lock);
+ 			jbd2_journal_put_journal_head(jh);
++			/* Already zapped buffer? Nothing to do... */
++			if (!bh->b_bdev)
++				return 0;
+ 			return -EBUSY;
+ 		}
+ 		/*
 -- 
 2.39.2
 
