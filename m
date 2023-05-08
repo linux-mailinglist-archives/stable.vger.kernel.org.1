@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 417546FA87F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2365C6FAD43
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234936AbjEHKls (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:41:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42428 "EHLO
+        id S235976AbjEHLdB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234946AbjEHKlQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:16 -0400
+        with ESMTP id S235925AbjEHLcl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:32:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99D227F12
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654C91FC1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:31:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D37962834
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CFDC433D2;
-        Mon,  8 May 2023 10:40:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FFD363063
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:31:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED9EC433D2;
+        Mon,  8 May 2023 11:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542436;
-        bh=1h26vtrqqvt1mMc7lYTDMTUtoxN7XkOe1MxYzEbqMa0=;
+        s=korg; t=1683545507;
+        bh=K5PWkHY0gX4P9gjFHbQxHQakx/+1u916dwODHrMuJLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JHuARMyZ8ey2NJwkwn0o0On7imM8ABTq6tOeZ+LkXiRme6xAHhD1AaMKYG/cFbPlf
-         27iFHMhseYkjFFSbeZq8Kn+iDY2nVe8Rl6fUOsKg/TnZquylUzke5uiKy1OFrQrVJt
-         Jxy4BSZHkeubGHFxWPjnyMNZaqKqKOBJ7wYqWZrM=
+        b=wYJWy67+Dk5hmBSJUdLVg8V0iaplB8Jq1NpM5vRiKUbVgzVj4/KxLkOFtgZRmRBpH
+         ccIMbeDBp3JmVduMy68PSrK1QFd6xM5DOnA1M5ffwu8Zu9/8RLV2yrA8So4QbcOMpI
+         4M3Vx+5Cs80EJrLyzZoTr8a0IEYt75WUnrMKRJxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Corey Minyard <minyard@acm.org>,
-        openipmi-developer@lists.sourceforge.net,
-        Arnd Bergmann <arnd@arndb.de>,
-        Corey Minyard <cminyard@mvista.com>,
+        patches@lists.linux.dev,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 435/663] ipmi: ASPEED_BT_IPMI_BMC: select REGMAP_MMIO instead of depending on it
-Date:   Mon,  8 May 2023 11:44:21 +0200
-Message-Id: <20230508094442.180185406@linuxfoundation.org>
+Subject: [PATCH 5.15 061/371] selftests/resctrl: Extend CPU vendor detection
+Date:   Mon,  8 May 2023 11:44:22 +0200
+Message-Id: <20230508094814.505424505@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,48 +56,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 
-[ Upstream commit 2a587b9ad052e7e92e508aea90c1e2ae433c1908 ]
+[ Upstream commit 6220f69e72a534838cffd84dce6afd777777be03 ]
 
-REGMAP is a hidden (not user visible) symbol. Users cannot set it
-directly thru "make *config", so drivers should select it instead of
-depending on it if they need it.
+Currently, the resctrl_tests only has a function to detect AMD vendor.
+Since when the Intel Sub-NUMA Clustering feature is enabled,
+Intel CMT and MBM counters may not be accurate,
+the resctrl_tests also need a function to detect Intel vendor.
+And in the future, resctrl_tests will need a function to detect different
+vendors, such as Arm.
 
-Consistently using "select" or "depends on" can also help reduce
-Kconfig circular dependency issues.
+Extend the function to detect Intel vendor as well. Also,
+this function can be easily extended to detect other vendors.
 
-Therefore, change the use of "depends on REGMAP_MMIO" to
-"select REGMAP_MMIO", which will also set REGMAP.
-
-Fixes: eb994594bc22 ("ipmi: bt-bmc: Use a regmap for register access")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrew Jeffery <andrew@aj.id.au>
-Cc: Corey Minyard <minyard@acm.org>
-Cc: openipmi-developer@lists.sourceforge.net
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Message-Id: <20230226053953.4681-2-rdunlap@infradead.org>
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Signed-off-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: fa10366cc6f4 ("selftests/resctrl: Allow ->setup() to return errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/cat_test.c    |  2 +-
+ tools/testing/selftests/resctrl/resctrl.h     |  5 ++-
+ .../testing/selftests/resctrl/resctrl_tests.c | 41 ++++++++++++-------
+ tools/testing/selftests/resctrl/resctrlfs.c   |  2 +-
+ 4 files changed, 33 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/char/ipmi/Kconfig b/drivers/char/ipmi/Kconfig
-index b6c0d35fc1a5f..f4adc6feb3b22 100644
---- a/drivers/char/ipmi/Kconfig
-+++ b/drivers/char/ipmi/Kconfig
-@@ -162,7 +162,8 @@ config IPMI_KCS_BMC_SERIO
+diff --git a/tools/testing/selftests/resctrl/cat_test.c b/tools/testing/selftests/resctrl/cat_test.c
+index cd4f68388e0f6..1c5e90c632548 100644
+--- a/tools/testing/selftests/resctrl/cat_test.c
++++ b/tools/testing/selftests/resctrl/cat_test.c
+@@ -89,7 +89,7 @@ static int check_results(struct resctrl_val_param *param)
  
- config ASPEED_BT_IPMI_BMC
- 	depends on ARCH_ASPEED || COMPILE_TEST
--	depends on REGMAP && REGMAP_MMIO && MFD_SYSCON
-+	depends on MFD_SYSCON
-+	select REGMAP_MMIO
- 	tristate "BT IPMI bmc driver"
- 	help
- 	  Provides a driver for the BT (Block Transfer) IPMI interface
+ 	return show_cache_info(sum_llc_perf_miss, no_of_bits, param->span / 64,
+ 			       MAX_DIFF, MAX_DIFF_PERCENT, NUM_OF_RUNS,
+-			       !is_amd, false);
++			       get_vendor() == ARCH_INTEL, false);
+ }
+ 
+ void cat_test_cleanup(void)
+diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
+index 1ad10c47e31d1..f0ded31fb3c7c 100644
+--- a/tools/testing/selftests/resctrl/resctrl.h
++++ b/tools/testing/selftests/resctrl/resctrl.h
+@@ -34,6 +34,9 @@
+ #define L3_MON_PATH		"/sys/fs/resctrl/info/L3_MON"
+ #define L3_MON_FEATURES_PATH	"/sys/fs/resctrl/info/L3_MON/mon_features"
+ 
++#define ARCH_INTEL     1
++#define ARCH_AMD       2
++
+ #define PARENT_EXIT(err_msg)			\
+ 	do {					\
+ 		perror(err_msg);		\
+@@ -75,8 +78,8 @@ struct resctrl_val_param {
+ extern pid_t bm_pid, ppid;
+ 
+ extern char llc_occup_path[1024];
+-extern bool is_amd;
+ 
++int get_vendor(void);
+ bool check_resctrlfs_support(void);
+ int filter_dmesg(void);
+ int remount_resctrlfs(bool mum_resctrlfs);
+diff --git a/tools/testing/selftests/resctrl/resctrl_tests.c b/tools/testing/selftests/resctrl/resctrl_tests.c
+index 973f09a66e1ee..3e7cdf1125df4 100644
+--- a/tools/testing/selftests/resctrl/resctrl_tests.c
++++ b/tools/testing/selftests/resctrl/resctrl_tests.c
+@@ -13,25 +13,41 @@
+ #define BENCHMARK_ARGS		64
+ #define BENCHMARK_ARG_SIZE	64
+ 
+-bool is_amd;
+-
+-void detect_amd(void)
++static int detect_vendor(void)
+ {
+ 	FILE *inf = fopen("/proc/cpuinfo", "r");
++	int vendor_id = 0;
++	char *s = NULL;
+ 	char *res;
+ 
+ 	if (!inf)
+-		return;
++		return vendor_id;
+ 
+ 	res = fgrep(inf, "vendor_id");
+ 
+-	if (res) {
+-		char *s = strchr(res, ':');
++	if (res)
++		s = strchr(res, ':');
++
++	if (s && !strcmp(s, ": GenuineIntel\n"))
++		vendor_id = ARCH_INTEL;
++	else if (s && !strcmp(s, ": AuthenticAMD\n"))
++		vendor_id = ARCH_AMD;
+ 
+-		is_amd = s && !strcmp(s, ": AuthenticAMD\n");
+-		free(res);
+-	}
+ 	fclose(inf);
++	free(res);
++	return vendor_id;
++}
++
++int get_vendor(void)
++{
++	static int vendor = -1;
++
++	if (vendor == -1)
++		vendor = detect_vendor();
++	if (vendor == 0)
++		ksft_print_msg("Can not get vendor info...\n");
++
++	return vendor;
+ }
+ 
+ static void cmd_help(void)
+@@ -207,9 +223,6 @@ int main(int argc, char **argv)
+ 	if (geteuid() != 0)
+ 		return ksft_exit_fail_msg("Not running as root, abort testing.\n");
+ 
+-	/* Detect AMD vendor */
+-	detect_amd();
+-
+ 	if (has_ben) {
+ 		/* Extract benchmark command from command line. */
+ 		for (i = ben_ind; i < argc; i++) {
+@@ -241,10 +254,10 @@ int main(int argc, char **argv)
+ 
+ 	ksft_set_plan(tests ? : 4);
+ 
+-	if (!is_amd && mbm_test)
++	if ((get_vendor() == ARCH_INTEL) && mbm_test)
+ 		run_mbm_test(has_ben, benchmark_cmd, span, cpu_no, bw_report);
+ 
+-	if (!is_amd && mba_test)
++	if ((get_vendor() == ARCH_INTEL) && mba_test)
+ 		run_mba_test(has_ben, benchmark_cmd, span, cpu_no, bw_report);
+ 
+ 	if (cmt_test)
+diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
+index 5f5a166ade60a..6f543e470ad4a 100644
+--- a/tools/testing/selftests/resctrl/resctrlfs.c
++++ b/tools/testing/selftests/resctrl/resctrlfs.c
+@@ -106,7 +106,7 @@ int get_resource_id(int cpu_no, int *resource_id)
+ 	char phys_pkg_path[1024];
+ 	FILE *fp;
+ 
+-	if (is_amd)
++	if (get_vendor() == ARCH_AMD)
+ 		sprintf(phys_pkg_path, "%s%d/cache/index3/id",
+ 			PHYS_ID_PATH, cpu_no);
+ 	else
 -- 
 2.39.2
 
