@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7236D6FAAC2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B55B36FA7AE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233690AbjEHLGX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S234711AbjEHKdm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:33:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233682AbjEHLGF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:05 -0400
+        with ESMTP id S234770AbjEHKdR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8092FA11
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3261F2787F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC19962A6A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:05:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DE1C433D2;
-        Mon,  8 May 2023 11:04:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A145B62709
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2057C433EF;
+        Mon,  8 May 2023 10:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543900;
-        bh=TU/YsTim8XUVqbcnXlabFsdQxxX0qY1dNTttIGBX8g4=;
+        s=korg; t=1683541947;
+        bh=NN+y6O8IajfjOcSalIZBOb2or+PXqa+pqr8O28XTn+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gvYsXyIjx3MGv6eohbJCUXCE/dbLuxBs6p10KwFbblBQSocRsuvzBfBK7Rh9FAJPh
-         I2kqs30AtHkewiZnnPm7w9RSqWv+wjZUAYAS99dVjtN3LHbeAxAs+VgAS+AsMdsknP
-         SRExHjJYQYsNGcMDvFnfMIzj/gEJQe4IBxmsT8m4=
+        b=dv898TEwoBU6iW1bJ/UST7vdfqEFKua/rNNpJC1OHWfI2Ugo+vvaBDfwE3ZzROROF
+         /z+9ZF8bs3SeighiI96V4J+ng/jTuCpTORd2Q2354H1jOxX/5FxXzyAa9S4IivPtNN
+         7Vhd2crAQ+up7ncUAuESxhl0AhChmd19sopv+O88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 237/694] cpufreq: qcom-cpufreq-hw: Revert adding cpufreq qos
+Subject: [PATCH 6.2 246/663] platform/x86/amd/pmf: Move out of BIOS SMN pair for driver probe
 Date:   Mon,  8 May 2023 11:41:12 +0200
-Message-Id: <20230508094440.036161241@linuxfoundation.org>
+Message-Id: <20230508094436.251316074@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,102 +55,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit e2b47e585931a988c856fd4ba31e1296f749aee3 ]
+[ Upstream commit aec8298c093f052fc8a86f9411b69b23953b0edb ]
 
-The OSM/EPSS hardware controls the frequency of each CPU cluster based
-on requests from the OS and various throttling events in the system.
-While throttling is in effect the related dcvs interrupt will be kept
-high. The purpose of the code handling this interrupt is to
-continuously report the thermal pressure based on the throttled
-frequency.
+The current SMN index used for the driver probe seems to be meant
+for the BIOS pair and there are potential concurrency problems that can
+occur with an inopportune SMI.
 
-The reasoning for adding QoS control to this mechanism is not entirely
-clear, but the introduction of commit 'c4c0efb06f17 ("cpufreq:
-qcom-cpufreq-hw: Add cpufreq qos for LMh")' causes the
-scaling_max_frequncy to be set to the throttled frequency. On the next
-iteration of polling, the throttled frequency is above or equal to the
-newly requested frequency, so the polling is stopped.
+It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
+what amd_nb.c provides and this function has protections to ensure that
+only one caller can use it at a time.
 
-With cpufreq limiting the max frequency, the hardware no longer report a
-throttling state and no further updates to thermal pressure or qos
-state are made.
-
-The result of this is that scaling_max_frequency can only go down, and
-the system becomes slower and slower every time a thermal throttling
-event is reported by the hardware.
-
-Even if the logic could be improved, there is no reason for software to
-limit the max freqency in response to the hardware limiting the max
-frequency. At best software will follow the reported hardware state, but
-typically it will cause slower backoff of the throttling.
-
-This reverts commit c4c0efb06f17fa4a37ad99e7752b18a5405c76dc.
-
-Fixes: c4c0efb06f17 ("cpufreq: qcom-cpufreq-hw: Add cpufreq qos for LMh")
-Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: da5ce22df5fe ("platform/x86/amd/pmf: Add support for PMF core layer")
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20230406164807.50969-4-Shyam-sundar.S-k@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/qcom-cpufreq-hw.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/platform/x86/amd/pmf/Kconfig |  1 +
+ drivers/platform/x86/amd/pmf/core.c  | 22 +++++-----------------
+ 2 files changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
-index b2d2907200a9a..9e78640096383 100644
---- a/drivers/cpufreq/qcom-cpufreq-hw.c
-+++ b/drivers/cpufreq/qcom-cpufreq-hw.c
-@@ -14,7 +14,6 @@
- #include <linux/of_address.h>
- #include <linux/of_platform.h>
- #include <linux/pm_opp.h>
--#include <linux/pm_qos.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/units.h>
-@@ -57,8 +56,6 @@ struct qcom_cpufreq_data {
- 	struct clk_hw cpu_clk;
+diff --git a/drivers/platform/x86/amd/pmf/Kconfig b/drivers/platform/x86/amd/pmf/Kconfig
+index 6d89528c31779..d87986adf91e1 100644
+--- a/drivers/platform/x86/amd/pmf/Kconfig
++++ b/drivers/platform/x86/amd/pmf/Kconfig
+@@ -7,6 +7,7 @@ config AMD_PMF
+ 	tristate "AMD Platform Management Framework"
+ 	depends on ACPI && PCI
+ 	depends on POWER_SUPPLY
++	depends on AMD_NB
+ 	select ACPI_PLATFORM_PROFILE
+ 	help
+ 	  This driver provides support for the AMD Platform Management Framework.
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index da23639071d79..0acc0b6221290 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -8,6 +8,7 @@
+  * Author: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+  */
  
- 	bool per_core_dcvs;
--
--	struct freq_qos_request throttle_freq_req;
- };
++#include <asm/amd_nb.h>
+ #include <linux/debugfs.h>
+ #include <linux/iopoll.h>
+ #include <linux/module.h>
+@@ -22,8 +23,6 @@
+ #define AMD_PMF_REGISTER_ARGUMENT	0xA58
  
- static struct {
-@@ -348,8 +345,6 @@ static void qcom_lmh_dcvs_notify(struct qcom_cpufreq_data *data)
+ /* Base address of SMU for mapping physical address to virtual address */
+-#define AMD_PMF_SMU_INDEX_ADDRESS	0xB8
+-#define AMD_PMF_SMU_INDEX_DATA		0xBC
+ #define AMD_PMF_MAPPING_SIZE		0x01000
+ #define AMD_PMF_BASE_ADDR_OFFSET	0x10000
+ #define AMD_PMF_BASE_ADDR_LO		0x13B102E8
+@@ -348,30 +347,19 @@ static int amd_pmf_probe(struct platform_device *pdev)
+ 	}
  
- 	throttled_freq = freq_hz / HZ_PER_KHZ;
+ 	dev->cpu_id = rdev->device;
+-	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_LO);
+-	if (err) {
+-		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
+-		pci_dev_put(rdev);
+-		return pcibios_err_to_errno(err);
+-	}
  
--	freq_qos_update_request(&data->throttle_freq_req, throttled_freq);
--
- 	/* Update thermal pressure (the boost frequencies are accepted) */
- 	arch_update_thermal_pressure(policy->related_cpus, throttled_freq);
+-	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
++	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_LO, &val);
+ 	if (err) {
++		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_LO);
+ 		pci_dev_put(rdev);
+ 		return pcibios_err_to_errno(err);
+ 	}
  
-@@ -442,14 +437,6 @@ static int qcom_cpufreq_hw_lmh_init(struct cpufreq_policy *policy, int index)
- 	if (data->throttle_irq < 0)
- 		return data->throttle_irq;
+ 	base_addr_lo = val & AMD_PMF_BASE_ADDR_HI_MASK;
  
--	ret = freq_qos_add_request(&policy->constraints,
--				   &data->throttle_freq_req, FREQ_QOS_MAX,
--				   FREQ_QOS_MAX_DEFAULT_VALUE);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "Failed to add freq constraint (%d)\n", ret);
--		return ret;
+-	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_HI);
+-	if (err) {
+-		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
+-		pci_dev_put(rdev);
+-		return pcibios_err_to_errno(err);
 -	}
 -
- 	data->cancel_throttle = false;
- 	data->policy = policy;
- 
-@@ -516,7 +503,6 @@ static void qcom_cpufreq_hw_lmh_exit(struct qcom_cpufreq_data *data)
- 	if (data->throttle_irq <= 0)
- 		return;
- 
--	freq_qos_remove_request(&data->throttle_freq_req);
- 	free_irq(data->throttle_irq, data);
- }
- 
+-	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
++	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_HI, &val);
+ 	if (err) {
++		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_HI);
+ 		pci_dev_put(rdev);
+ 		return pcibios_err_to_errno(err);
+ 	}
 -- 
 2.39.2
 
