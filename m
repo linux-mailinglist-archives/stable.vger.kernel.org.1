@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0D7D6FAB6C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2816FA577
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233852AbjEHLNQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:13:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
+        id S234144AbjEHKJv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233868AbjEHLNL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:11 -0400
+        with ESMTP id S234148AbjEHKJn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED1C35B00
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65D537E41
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA5E862B89
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C134BC433D2;
-        Mon,  8 May 2023 11:13:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35E356239E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43407C433A0;
+        Mon,  8 May 2023 10:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544384;
-        bh=FVABn5f25HUJh9U67nAaOefoQMgYz+isnmo0axEU4eQ=;
+        s=korg; t=1683540581;
+        bh=foXy5VGW92yo4gSP5Ak6N83/ZX6bRDnwDmqSNEUl60Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tNDJCK5wrRd/IEdNgLI72+95fhYVj4DCzF0r31ZVWe8jXtC81BkiZd7tHuSTf6aa8
-         00Fgt5eWidxf7RNTVSTGg7fLbwu1hqj9c84pA6MZDmH7szrZ1lS0j5mcbBo+2kMxo9
-         Y0nex/B9smNYPz5QRBTq5yXPIlnwJaCgWpele1xQ=
+        b=NsX62gmoXgd3ddvNP+qnSMbpmObNptTWi+egxasIFlcdkstj15vA5jG6ufv+ya6sG
+         E4pltrs4m8wOB+6OGGGgQNcaPgG2H2+71rPrCrFwggZVmS9rjLfqkEkTkwoH3yy8zH
+         5t27JW4cuQO9qWZoup3aQi6kufrQhMgdYiGArReE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Yan Wang <rk.code@outlook.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 393/694] f2fs: fix to avoid use-after-free for cached IPU bio
+Subject: [PATCH 6.1 386/611] net: stmmac:fix system hang when setting up tag_8021q VLAN for DSA ports
 Date:   Mon,  8 May 2023 11:43:48 +0200
-Message-Id: <20230508094445.813626926@linuxfoundation.org>
+Message-Id: <20230508094434.852487854@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,74 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Yan Wang <rk.code@outlook.com>
 
-[ Upstream commit 5cdb422c839134273866208dad5360835ddb9794 ]
+[ Upstream commit 35226750f7ab9d49140d95bc7d38a2a9b0f4fdfc ]
 
-xfstest generic/019 reports a bug:
+The system hang because of dsa_tag_8021q_port_setup()->
+				stmmac_vlan_rx_add_vid().
 
-kernel BUG at mm/filemap.c:1619!
-RIP: 0010:folio_end_writeback+0x8a/0x90
-Call Trace:
- end_page_writeback+0x1c/0x60
- f2fs_write_end_io+0x199/0x420
- bio_endio+0x104/0x180
- submit_bio_noacct+0xa5/0x510
- submit_bio+0x48/0x80
- f2fs_submit_write_bio+0x35/0x300
- f2fs_submit_merged_ipu_write+0x2a0/0x2b0
- f2fs_write_single_data_page+0x838/0x8b0
- f2fs_write_cache_pages+0x379/0xa30
- f2fs_write_data_pages+0x30c/0x340
- do_writepages+0xd8/0x1b0
- __writeback_single_inode+0x44/0x370
- writeback_sb_inodes+0x233/0x4d0
- __writeback_inodes_wb+0x56/0xf0
- wb_writeback+0x1dd/0x2d0
- wb_workfn+0x367/0x4a0
- process_one_work+0x21d/0x430
- worker_thread+0x4e/0x3c0
- kthread+0x103/0x130
- ret_from_fork+0x2c/0x50
+I found in stmmac_drv_probe() that cailing pm_runtime_put()
+disabled the clock.
 
-The root cause is: after cp_error is set, f2fs_submit_merged_ipu_write()
-in f2fs_write_single_data_page() tries to flush IPU bio in cache, however
-f2fs_submit_merged_ipu_write() missed to check validity of @bio parameter,
-result in submitting random cached bio which belong to other IO context,
-then it will cause use-after-free issue, fix it by adding additional
-validity check.
+First, when the kernel is compiled with CONFIG_PM=y,The stmmac's
+resume/suspend is active.
 
-Fixes: 0b20fcec8651 ("f2fs: cache global IPU bio")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Secondly,stmmac as DSA master,the dsa_tag_8021q_port_setup() function
+will callback stmmac_vlan_rx_add_vid when DSA dirver starts. However,
+The system is hanged for the stmmac_vlan_rx_add_vid() accesses its
+registers after stmmac's clock is closed.
+
+I would suggest adding the pm_runtime_resume_and_get() to the
+stmmac_vlan_rx_add_vid().This guarantees that resuming clock output
+while in use.
+
+Fixes: b3dcb3127786 ("net: stmmac: correct clocks enabled in stmmac_vlan_rx_kill_vid()")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Yan Wang <rk.code@outlook.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 06b552a0aba23..1034912a61b30 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -874,6 +874,8 @@ void f2fs_submit_merged_ipu_write(struct f2fs_sb_info *sbi,
- 	bool found = false;
- 	struct bio *target = bio ? *bio : NULL;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index fa3ce3b0d9a56..4903157230621 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6346,6 +6346,10 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	bool is_double = false;
+ 	int ret;
  
-+	f2fs_bug_on(sbi, !target && !page);
++	ret = pm_runtime_resume_and_get(priv->device);
++	if (ret < 0)
++		return ret;
 +
- 	for (temp = HOT; temp < NR_TEMP_TYPE && !found; temp++) {
- 		struct f2fs_bio_info *io = sbi->write_io[DATA] + temp;
- 		struct list_head *head = &io->bio_list;
-@@ -2898,7 +2900,8 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+ 	if (be16_to_cpu(proto) == ETH_P_8021AD)
+ 		is_double = true;
  
- 	if (unlikely(f2fs_cp_error(sbi))) {
- 		f2fs_submit_merged_write(sbi, DATA);
--		f2fs_submit_merged_ipu_write(sbi, bio, NULL);
-+		if (bio && *bio)
-+			f2fs_submit_merged_ipu_write(sbi, bio, NULL);
- 		submitted = NULL;
+@@ -6353,16 +6357,18 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	ret = stmmac_vlan_update(priv, is_double);
+ 	if (ret) {
+ 		clear_bit(vid, priv->active_vlans);
+-		return ret;
++		goto err_pm_put;
  	}
  
+ 	if (priv->hw->num_vlan) {
+ 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+ 		if (ret)
+-			return ret;
++			goto err_pm_put;
+ 	}
++err_pm_put:
++	pm_runtime_put(priv->device);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
 -- 
 2.39.2
 
