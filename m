@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65C076FA80B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EA716FAB63
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234684AbjEHKhM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:37:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39368 "EHLO
+        id S233882AbjEHLMn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbjEHKgv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B19D361BC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:49 -0700 (PDT)
+        with ESMTP id S233868AbjEHLMj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC7135552
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B001627D0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBBAC433D2;
-        Mon,  8 May 2023 10:36:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62B6C62B99
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B6BC4339B;
+        Mon,  8 May 2023 11:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542208;
-        bh=F42VOh0pPsWZSTxYFPg3fFq3aJIJJamfN2E8oGYMwZs=;
+        s=korg; t=1683544356;
+        bh=0bs6IWQFhVJl9iW2Me3MZ7RXq8j2blXnYOQzkfSq9Ug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KhGLTItMDyARX50vIe3gl4pYAE/PmbSHDr8k3LBM8s1zPKuNgcuv7Ry6nhdlAPD2I
-         2GQ6jHa+BsaL3WV0ld7Gj6tsVIEb3uiqX+z5Tprc0MXpKqUIOx6JByuo20yusJg3Cn
-         hm/6aPKwhZqBqjdvLVkrEqi/Lcf0TvIXtDVUnUMI=
+        b=cxGxP9hXX+hZi2ouLKJBT884Og3qiDg3BPE+sCkXVLrV/ukEgmi+E+b2PNP78z0zf
+         s2tS5N1LFSz0RVXFAVWiptOqB98QamYosQoJKAT1o0I8Ir1WV/r4Shu9EPZ0M0xCO4
+         DmCKyltXKpNTUSIgU5TvU2tRYcnqIALt0JaXPtX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 362/663] selftests/bpf: Use read_perf_max_sample_freq() in perf_event_stackmap
+Subject: [PATCH 6.3 353/694] net/packet: annotate accesses to po->xmit
 Date:   Mon,  8 May 2023 11:43:08 +0200
-Message-Id: <20230508094439.899868883@linuxfoundation.org>
+Message-Id: <20230508094444.061593960@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,107 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Liu <song@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit de6d014a09bf12a9a8959d60c0a1d4a41d394a89 ]
+[ Upstream commit b9d83ab8a708f23a4001d60e9d8d0b3be3d9f607 ]
 
-Currently, perf_event sample period in perf_event_stackmap is set too low
-that the test fails randomly. Fix this by using the max sample frequency,
-from read_perf_max_sample_freq().
+po->xmit can be set from setsockopt(PACKET_QDISC_BYPASS),
+while read locklessly.
 
-Move read_perf_max_sample_freq() to testing_helpers.c. Replace the CHECK()
-with if-printf, as CHECK is not available in testing_helpers.c.
+Use READ_ONCE()/WRITE_ONCE() to avoid potential load/store
+tearing issues.
 
-Fixes: 1da4864c2b20 ("selftests/bpf: Add callchain_stackid")
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230412210423.900851-2-song@kernel.org
+Fixes: d346a3fae3ff ("packet: introduce PACKET_QDISC_BYPASS socket option")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bpf/prog_tests/perf_event_stackmap.c      |  3 ++-
- .../bpf/prog_tests/stacktrace_build_id_nmi.c  | 15 --------------
- tools/testing/selftests/bpf/testing_helpers.c | 20 +++++++++++++++++++
- tools/testing/selftests/bpf/testing_helpers.h |  2 ++
- 4 files changed, 24 insertions(+), 16 deletions(-)
+ net/packet/af_packet.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_event_stackmap.c b/tools/testing/selftests/bpf/prog_tests/perf_event_stackmap.c
-index 33144c9432aeb..f4aad35afae16 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_event_stackmap.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_event_stackmap.c
-@@ -63,7 +63,8 @@ void test_perf_event_stackmap(void)
- 			PERF_SAMPLE_BRANCH_NO_FLAGS |
- 			PERF_SAMPLE_BRANCH_NO_CYCLES |
- 			PERF_SAMPLE_BRANCH_CALL_STACK,
--		.sample_period = 5000,
-+		.freq = 1,
-+		.sample_freq = read_perf_max_sample_freq(),
- 		.size = sizeof(struct perf_event_attr),
- 	};
- 	struct perf_event_stackmap *skel;
-diff --git a/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c b/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
-index f4ea1a215ce4d..704f7f6c3704a 100644
---- a/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
-+++ b/tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
-@@ -2,21 +2,6 @@
- #include <test_progs.h>
- #include "test_stacktrace_build_id.skel.h"
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index d4e76e2ae153e..d25dd9f63cc4f 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -307,7 +307,8 @@ static void packet_cached_dev_reset(struct packet_sock *po)
  
--static __u64 read_perf_max_sample_freq(void)
--{
--	__u64 sample_freq = 5000; /* fallback to 5000 on error */
--	FILE *f;
--	__u32 duration = 0;
--
--	f = fopen("/proc/sys/kernel/perf_event_max_sample_rate", "r");
--	if (f == NULL)
--		return sample_freq;
--	CHECK(fscanf(f, "%llu", &sample_freq) != 1, "Get max sample rate",
--		  "return default value: 5000,err %d\n", -errno);
--	fclose(f);
--	return sample_freq;
--}
--
- void test_stacktrace_build_id_nmi(void)
+ static bool packet_use_direct_xmit(const struct packet_sock *po)
  {
- 	int control_map_fd, stackid_hmap_fd, stackmap_fd;
-diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
-index 9695318e8132d..9c3de39023f60 100644
---- a/tools/testing/selftests/bpf/testing_helpers.c
-+++ b/tools/testing/selftests/bpf/testing_helpers.c
-@@ -229,3 +229,23 @@ int bpf_test_load_program(enum bpf_prog_type type, const struct bpf_insn *insns,
- 
- 	return bpf_prog_load(type, NULL, license, insns, insns_cnt, &opts);
+-	return po->xmit == packet_direct_xmit;
++	/* Paired with WRITE_ONCE() in packet_setsockopt() */
++	return READ_ONCE(po->xmit) == packet_direct_xmit;
  }
-+
-+__u64 read_perf_max_sample_freq(void)
-+{
-+	__u64 sample_freq = 5000; /* fallback to 5000 on error */
-+	FILE *f;
-+
-+	f = fopen("/proc/sys/kernel/perf_event_max_sample_rate", "r");
-+	if (f == NULL) {
-+		printf("Failed to open /proc/sys/kernel/perf_event_max_sample_rate: err %d\n"
-+		       "return default value: 5000\n", -errno);
-+		return sample_freq;
-+	}
-+	if (fscanf(f, "%llu", &sample_freq) != 1) {
-+		printf("Failed to parse /proc/sys/kernel/perf_event_max_sample_rate: err %d\n"
-+		       "return default value: 5000\n", -errno);
-+	}
-+
-+	fclose(f);
-+	return sample_freq;
-+}
-diff --git a/tools/testing/selftests/bpf/testing_helpers.h b/tools/testing/selftests/bpf/testing_helpers.h
-index 6ec00bf79cb55..eb8790f928e4c 100644
---- a/tools/testing/selftests/bpf/testing_helpers.h
-+++ b/tools/testing/selftests/bpf/testing_helpers.h
-@@ -20,3 +20,5 @@ struct test_filter_set;
- int parse_test_list(const char *s,
- 		    struct test_filter_set *test_set,
- 		    bool is_glob_pattern);
-+
-+__u64 read_perf_max_sample_freq(void);
+ 
+ static u16 packet_pick_tx_queue(struct sk_buff *skb)
+@@ -2867,7 +2868,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 		packet_inc_pending(&po->tx_ring);
+ 
+ 		status = TP_STATUS_SEND_REQUEST;
+-		err = po->xmit(skb);
++		/* Paired with WRITE_ONCE() in packet_setsockopt() */
++		err = READ_ONCE(po->xmit)(skb);
+ 		if (unlikely(err != 0)) {
+ 			if (err > 0)
+ 				err = net_xmit_errno(err);
+@@ -3070,7 +3072,8 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 		virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 	}
+ 
+-	err = po->xmit(skb);
++	/* Paired with WRITE_ONCE() in packet_setsockopt() */
++	err = READ_ONCE(po->xmit)(skb);
+ 	if (unlikely(err != 0)) {
+ 		if (err > 0)
+ 			err = net_xmit_errno(err);
+@@ -4007,7 +4010,8 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
+ 		if (copy_from_sockptr(&val, optval, sizeof(val)))
+ 			return -EFAULT;
+ 
+-		po->xmit = val ? packet_direct_xmit : dev_queue_xmit;
++		/* Paired with all lockless reads of po->xmit */
++		WRITE_ONCE(po->xmit, val ? packet_direct_xmit : dev_queue_xmit);
+ 		return 0;
+ 	}
+ 	default:
 -- 
 2.39.2
 
