@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA446FA7D9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE326FAAEB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234829AbjEHKfU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33680 "EHLO
+        id S233821AbjEHLH5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234738AbjEHKev (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:51 -0400
+        with ESMTP id S229969AbjEHLHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329F83AA6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADEF1FC8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EC1D6273F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2C1C433EF;
-        Mon,  8 May 2023 10:34:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5472762AD1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E74C433EF;
+        Mon,  8 May 2023 11:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542061;
-        bh=RTRnU4UMupNEc1dlEDn+cU8wfJuHpYTRTC1O1DwNU6U=;
+        s=korg; t=1683544008;
+        bh=ahUa1UfK+wXJpZr4jJUxGrRTFiAjG029VB0ciGgt0mA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IrEuh1TbP6S3fqtapgyY1POVDYddMO59q5/0uR43qS8GaEjkjwx34qTx82w36vTfu
-         3lId1e8ycmrFNRNkEhpayS1KhMd4cbko5KkChEZ0eu+acDD2eE4Kn6/n/VGoeDv8aC
-         FuLG1GOaV89hj9Ni92zVtNPYRGIFo6ZAl73yxC3A=
+        b=G/JIT4s//xVhWAoN7wbGeGQw+hi7ZLQWBhR5gG/p9nhUs/THz2jal1t/9ueKqMTm0
+         U4nF5kzExLkN+3vOqy8vO6QVI0+1roXG9LGLZNRFbzL+mmTUc1vRtpJwlBNcGyjguO
+         1Vi5umjmOnxz1dvqsN36KMBvPsHVbg1vkR7OKv7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 281/663] wifi: ath9k: hif_usb: fix memory leak of remain_skbs
+Subject: [PATCH 6.3 272/694] arm64: dts: sdm845: Rename qspi data12 as data23
 Date:   Mon,  8 May 2023 11:41:47 +0200
-Message-Id: <20230508094437.345509134@linuxfoundation.org>
+Message-Id: <20230508094441.080022080@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,82 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 7654cc03eb699297130b693ec34e25f77b17c947 ]
+[ Upstream commit 37f7349b56decc91c66f8039712e63740b1f25f9 ]
 
-hif_dev->remain_skb is allocated and used exclusively in
-ath9k_hif_usb_rx_stream(). It is implied that an allocated remain_skb is
-processed and subsequently freed (in error paths) only during the next
-call of ath9k_hif_usb_rx_stream().
+There are 4 qspi data pins: data0, data1, data2, and data3. Currently
+we have a shared pin state for data0 and data1 (2 lane config) and a
+pin state for data2 and data3 (you'd enable both this and the 2 lane
+state for 4 lanes). The second state is obviously misnamed. Fix it.
 
-So, if the urbs are deallocated between those two calls due to the device
-deinitialization or suspend, it is possible that ath9k_hif_usb_rx_stream()
-is not called next time and the allocated remain_skb is leaked. Our local
-Syzkaller instance was able to trigger that.
-
-remain_skb makes sense when receiving two consecutive urbs which are
-logically linked together, i.e. a specific data field from the first skb
-indicates a cached skb to be allocated, memcpy'd with some data and
-subsequently processed in the next call to ath9k_hif_usb_rx_stream(). Urbs
-deallocation supposedly makes that link irrelevant so we need to free the
-cached skb in those cases.
-
-Fix the leak by introducing a function to explicitly free remain_skb (if
-it is not NULL) when the rx urbs have been deallocated. remain_skb is NULL
-when it has not been allocated at all (hif_dev struct is kzalloced) or
-when it has been processed in next call to ath9k_hif_usb_rx_stream().
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230216192301.171225-1-pchelkin@ispras.ru
+Fixes: e1ce853932b7 ("arm64: dts: qcom: sdm845: Add qspi (quad SPI) node")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230323102605.3.I88528d037b7fda4e53a40f661be5ac61628691cd@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hif_usb.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index f521dfa2f1945..e0130beb304df 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -534,6 +534,24 @@ static struct ath9k_htc_hif hif_usb = {
- 	.send = hif_usb_send,
- };
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 5e640e01e8518..c5e92851a4f08 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -2763,7 +2763,7 @@
+ 				function = "qspi_data";
+ 			};
  
-+/* Need to free remain_skb allocated in ath9k_hif_usb_rx_stream
-+ * in case ath9k_hif_usb_rx_stream wasn't called next time to
-+ * process the buffer and subsequently free it.
-+ */
-+static void ath9k_hif_usb_free_rx_remain_skb(struct hif_device_usb *hif_dev)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hif_dev->rx_lock, flags);
-+	if (hif_dev->remain_skb) {
-+		dev_kfree_skb_any(hif_dev->remain_skb);
-+		hif_dev->remain_skb = NULL;
-+		hif_dev->rx_remain_len = 0;
-+		RX_STAT_INC(hif_dev, skb_dropped);
-+	}
-+	spin_unlock_irqrestore(&hif_dev->rx_lock, flags);
-+}
-+
- static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 				    struct sk_buff *skb)
- {
-@@ -868,6 +886,7 @@ static int ath9k_hif_usb_alloc_tx_urbs(struct hif_device_usb *hif_dev)
- static void ath9k_hif_usb_dealloc_rx_urbs(struct hif_device_usb *hif_dev)
- {
- 	usb_kill_anchored_urbs(&hif_dev->rx_submitted);
-+	ath9k_hif_usb_free_rx_remain_skb(hif_dev);
- }
- 
- static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
+-			qspi_data12: qspi-data12-state {
++			qspi_data23: qspi-data23-state {
+ 				pins = "gpio93", "gpio94";
+ 				function = "qspi_data";
+ 			};
 -- 
 2.39.2
 
