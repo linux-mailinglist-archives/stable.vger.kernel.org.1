@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27B46FAD4B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC12A6FABA3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235905AbjEHLdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
+        id S234861AbjEHLPr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:15:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236008AbjEHLdM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:12 -0400
+        with ESMTP id S234630AbjEHLPq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32B4C3D206
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:32:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED62936CEF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1196863041
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDECEC433EF;
-        Mon,  8 May 2023 11:32:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E2B562BDE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D37C433D2;
+        Mon,  8 May 2023 11:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545543;
-        bh=8nh+o8XEC23BIwYSBOdipw0t9rt6xUGitr+RfO5HDzY=;
+        s=korg; t=1683544538;
+        bh=Pcm9NjD0tWqqHwFUtCDpqhZXaCNABcDIt2eScz57qdU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zc2E1AVjfbytZm2eOzDzLk7ssM1ygYa2juJbXy/jeKwSqqiQacWmh9HNSlm8O5Hew
-         NKPN7YcYETfpqvfEf7gVsqb7vYJHRI80hAqLZDM65UxbSljGmxH+m0k3MtvhPRuAYn
-         clr7F1HDYlCCpplKJj6qQe18fxNautvSpK9shDTo=
+        b=nccIhlKZ277e2XeLqSmaIast8hQctprYPvOFEVpe6CgkqnwLKVok6ciKyOMilKgAw
+         yPN4DJ7kzDocHTXJge219MAf9cDXW+xm80I7bnIYgZzoXmiW/89JnLd9El6lVJfGf9
+         VtFsX4777KYYMTD+tg2UfhNy7pbOaZud76nYOvmo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/371] drm/rockchip: Drop unbalanced obj unref
+        patches@lists.linux.dev,
+        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 441/694] wifi: mt76: mt7996: fix eeprom tx path bitfields
 Date:   Mon,  8 May 2023 11:44:36 +0200
-Message-Id: <20230508094815.099970154@linuxfoundation.org>
+Message-Id: <20230508094447.778164261@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,36 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit 8ee3b0e85f6ccd9e6c527bc50eaba774c3bb18d0 ]
+[ Upstream commit 72fc0df3006ce5c109f9c68f0724e44c47b4ec7b ]
 
-In the error path, rockchip_drm_gem_object_mmap() is dropping an obj
-reference that it doesn't own.
+Swap the tx path bitfields of band1 and band2 to read correct setting.
 
-Fixes: 41315b793e13 ("drm/rockchip: use drm_gem_mmap helpers")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230119231734.2884543-1-robdclark@gmail.com
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_gem.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-index 7971f57436dd7..3b18b6a7acd3e 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-@@ -251,9 +251,6 @@ static int rockchip_drm_gem_object_mmap(struct drm_gem_object *obj,
- 	else
- 		ret = rockchip_drm_gem_object_mmap_dma(obj, vma);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
+index 8da599e0abeac..cfc48698539b3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
+@@ -31,11 +31,11 @@ enum mt7996_eeprom_field {
+ #define MT_EE_WIFI_CONF2_BAND_SEL		GENMASK(2, 0)
  
--	if (ret)
--		drm_gem_vm_close(vma);
--
- 	return ret;
- }
+ #define MT_EE_WIFI_CONF1_TX_PATH_BAND0		GENMASK(5, 3)
+-#define MT_EE_WIFI_CONF2_TX_PATH_BAND1		GENMASK(5, 3)
+-#define MT_EE_WIFI_CONF2_TX_PATH_BAND2		GENMASK(2, 0)
++#define MT_EE_WIFI_CONF2_TX_PATH_BAND1		GENMASK(2, 0)
++#define MT_EE_WIFI_CONF2_TX_PATH_BAND2		GENMASK(5, 3)
+ #define MT_EE_WIFI_CONF4_STREAM_NUM_BAND0	GENMASK(5, 3)
+-#define MT_EE_WIFI_CONF5_STREAM_NUM_BAND1	GENMASK(5, 3)
+-#define MT_EE_WIFI_CONF5_STREAM_NUM_BAND2	GENMASK(2, 0)
++#define MT_EE_WIFI_CONF5_STREAM_NUM_BAND1	GENMASK(2, 0)
++#define MT_EE_WIFI_CONF5_STREAM_NUM_BAND2	GENMASK(5, 3)
  
+ #define MT_EE_RATE_DELTA_MASK			GENMASK(5, 0)
+ #define MT_EE_RATE_DELTA_SIGN			BIT(6)
 -- 
 2.39.2
 
