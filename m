@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 780FC6FACFC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75F8E6FAB83
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235751AbjEHLaD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
+        id S233916AbjEHLOM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235749AbjEHL3t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:49 -0400
+        with ESMTP id S233938AbjEHLOI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27743C4A7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A0D36106
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8EF862EC9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D39C433D2;
-        Mon,  8 May 2023 11:29:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 01E6B62BC4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5832C433EF;
+        Mon,  8 May 2023 11:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545367;
-        bh=6u7z7++E3rY4e2o+BpF7XOUAv1l9UHcaY1aFlyQqANE=;
+        s=korg; t=1683544446;
+        bh=B+2fWWRfzEoFhTWOo/H8qb1sQiMNHL0cVJGHSM4C7To=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bHjbDoBwy3ZB00oc1MMloGL8NbVc3dzf2QGpkTUpkuaDgMrWkHcDVVn496UYMJT6k
-         72IZQs9W+dPENFK2FBDPIUyozvCSNewrGI8AzjdvdCMedqOyYXF0s7zrXFbKBHUAuQ
-         kfmoIzkZd7LrZF5VvKms7JRftjmyKtTS4uwYiL8U=
+        b=BQB2LzcjJIPEpeysowua4iBAEdT+OPUOQ6U/iBHL57dNHG5VAjFFeWChHzLtwvRBR
+         T2hsS0LDBbB/DwDZ2qVmHvyh4nL8GsptkWGacqKYp4NRqclMyNIH1A+JvMKu9HGH/8
+         Y9IHgfwCuAt4y83izzs5sUtgoq5N+MSwxhN28LX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 5.15 017/371] USB: dwc3: fix runtime pm imbalance on unbind
+        patches@lists.linux.dev,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Dave Marchevsky <davemarchevsky@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 383/694] bpf: Fix struct_meta lookup for bpf_obj_free_fields kfunc call
 Date:   Mon,  8 May 2023 11:43:38 +0200
-Message-Id: <20230508094812.776128258@linuxfoundation.org>
+Message-Id: <20230508094445.382172897@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Dave Marchevsky <davemarchevsky@fb.com>
 
-commit 44d257e9012ee8040e41d224d0e5bfb5ef5427ea upstream.
+[ Upstream commit f6a6a5a976288e4d0d94eb1c6c9e983e8e5cdb31 ]
 
-Make sure to balance the runtime PM usage count on driver unbind by
-adding back the pm_runtime_allow() call that had been erroneously
-removed.
+bpf_obj_drop_impl has a void return type. In check_kfunc_call, the "else
+if" which sets insn_aux->kptr_struct_meta for bpf_obj_drop_impl is
+surrounded by a larger if statement which checks btf_type_is_ptr. As a
+result:
 
-Fixes: 266d0493900a ("usb: dwc3: core: don't trigger runtime pm when remove driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Li Jun <jun.li@nxp.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-3-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  * The bpf_obj_drop_impl-specific code will never execute
+  * The btf_struct_meta input to bpf_obj_drop is always NULL
+  * __bpf_obj_drop_impl will always see a NULL btf_record when called
+    from BPF program, and won't call bpf_obj_free_fields
+  * program-allocated kptrs which have fields that should be cleaned up
+    by bpf_obj_free_fields may instead leak resources
+
+This patch adds a btf_type_is_void branch to the larger if and moves
+special handling for bpf_obj_drop_impl there, fixing the issue.
+
+Fixes: ac9f06050a35 ("bpf: Introduce bpf_obj_drop")
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Signed-off-by: Dave Marchevsky <davemarchevsky@fb.com>
+Link: https://lore.kernel.org/r/20230403200027.2271029-1-davemarchevsky@fb.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/verifier.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1732,6 +1732,7 @@ static int dwc3_remove(struct platform_d
- 	dwc3_core_exit(dwc);
- 	dwc3_ulpi_exit(dwc);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 559c9137f834d..64600acbb4e76 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10002,10 +10002,6 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+ 				insn_aux->obj_new_size = ret_t->size;
+ 				insn_aux->kptr_struct_meta =
+ 					btf_find_struct_meta(ret_btf, ret_btf_id);
+-			} else if (meta.func_id == special_kfunc_list[KF_bpf_obj_drop_impl]) {
+-				insn_aux->kptr_struct_meta =
+-					btf_find_struct_meta(meta.arg_obj_drop.btf,
+-							     meta.arg_obj_drop.btf_id);
+ 			} else if (meta.func_id == special_kfunc_list[KF_bpf_list_pop_front] ||
+ 				   meta.func_id == special_kfunc_list[KF_bpf_list_pop_back]) {
+ 				struct btf_field *field = meta.arg_list_head.field;
+@@ -10090,7 +10086,15 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
  
-+	pm_runtime_allow(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+ 		if (reg_may_point_to_spin_lock(&regs[BPF_REG_0]) && !regs[BPF_REG_0].id)
+ 			regs[BPF_REG_0].id = ++env->id_gen;
+-	} /* else { add_kfunc_call() ensures it is btf_type_is_void(t) } */
++	} else if (btf_type_is_void(t)) {
++		if (meta.btf == btf_vmlinux && btf_id_set_contains(&special_kfunc_set, meta.func_id)) {
++			if (meta.func_id == special_kfunc_list[KF_bpf_obj_drop_impl]) {
++				insn_aux->kptr_struct_meta =
++					btf_find_struct_meta(meta.arg_obj_drop.btf,
++							     meta.arg_obj_drop.btf_id);
++			}
++		}
++	}
+ 
+ 	nargs = btf_type_vlen(meta.func_proto);
+ 	args = (const struct btf_param *)(meta.func_proto + 1);
+-- 
+2.39.2
+
 
 
