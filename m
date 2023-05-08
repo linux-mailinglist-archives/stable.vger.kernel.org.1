@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D6C06FA547
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1A816FA871
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234090AbjEHKHp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36130 "EHLO
+        id S234962AbjEHKka (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234087AbjEHKHo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1383046B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:42 -0700 (PDT)
+        with ESMTP id S234904AbjEHKkF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90FB32922
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19FF362379
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D170C433EF;
-        Mon,  8 May 2023 10:07:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DA0861D57
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD0EC433D2;
+        Mon,  8 May 2023 10:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540461;
-        bh=dP45R4CZV3DPKlDDdDnH2kNxm0zUoQ0wH1+hA9ul/Ns=;
+        s=korg; t=1683542401;
+        bh=45BlrRSG2Q3CRRVrb+ejVd6v8zZOzOg6742hIPrUdHU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yQkDEZWr0iUPWuQgs7LBh5qCdNFV2YOxm9dlV/tFE2ZdLFka6xdE0R5rpmxqzZEQJ
-         Y6doCt2bobbul7oSAPlOlSZt3WgkyZIBYb1ENzOzAaoe3+8wAVSR5p2Mti3lnv9D/a
-         CjPxLi3csLIYsbsxfDKBMnpZiPSEzSc/+xG+43Eg=
+        b=SSvwo4d/KSW0GWmeYhhezuhnUkdgKtL0fFtnQyBOmtvMWfx2l994x8vYX0dYDVuci
+         r5cFWUrEfSvhETjEiFU0dbE+uSmho1VN68ZCkEO7XcIuTFPZGJNcW9dpwTfOEQcdVl
+         BwUfXIXX4u/xrqIrnbheVdKfTpHbBcsN/gtv564g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 373/611] netfilter: conntrack: fix wrong ct->timeout value
+        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 389/663] wifi: mt76: mt7996: fix radiotap bitfield
 Date:   Mon,  8 May 2023 11:43:35 +0200
-Message-Id: <20230508094434.479732834@linuxfoundation.org>
+Message-Id: <20230508094440.726775806@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,114 +53,211 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 73db1b8f2bb6725b7391e85aab41fdf592b3c0c1 ]
+[ Upstream commit 63a3724632464559d1e98d90d2c63d43ec6ef6f5 ]
 
-(struct nf_conn)->timeout is an interval before the conntrack
-confirmed.  After confirmed, it becomes a timestamp.
+The 11be generation's radiotap bitfields were wrongly copy-and-pasted
+from 11ax driver, so fix them accordingly.
 
-It is observed that timeout of an unconfirmed conntrack:
-- Set by calling ctnetlink_change_timeout(). As a result,
-  `nfct_time_stamp` was wrongly added to `ct->timeout` twice.
-- Get by calling ctnetlink_dump_timeout(). As a result,
-  `nfct_time_stamp` was wrongly subtracted.
-
-Call Trace:
- <TASK>
- dump_stack_lvl
- ctnetlink_dump_timeout
- __ctnetlink_glue_build
- ctnetlink_glue_build
- __nfqnl_enqueue_packet
- nf_queue
- nf_hook_slow
- ip_mc_output
- ? __pfx_ip_finish_output
- ip_send_skb
- ? __pfx_dst_output
- udp_send_skb
- udp_sendmsg
- ? __pfx_ip_generic_getfrag
- sock_sendmsg
-
-Separate the 2 cases in:
-- Setting `ct->timeout` in __nf_ct_set_timeout().
-- Getting `ct->timeout` in ctnetlink_dump_timeout().
-
-Pablo appends:
-
-Update ctnetlink to set up the timeout _after_ the IPS_CONFIRMED flag is
-set on, otherwise conntrack creation via ctnetlink breaks.
-
-Note that the problem described in this patch occurs since the
-introduction of the nfnetlink_queue conntrack support, select a
-sufficiently old Fixes: tag for -stable kernel to pick up this fix.
-
-Fixes: a4b4766c3ceb ("netfilter: nfnetlink_queue: rename related to nfqueue attaching conntrack info")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_core.h |  6 +++++-
- net/netfilter/nf_conntrack_netlink.c      | 13 +++++++++----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 54 ++++++++++---------
+ .../net/wireless/mediatek/mt76/mt7996/mac.h   | 41 +++++++-------
+ 2 files changed, 47 insertions(+), 48 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
-index b2b9de70d9f4d..a36f87af415c2 100644
---- a/include/net/netfilter/nf_conntrack_core.h
-+++ b/include/net/netfilter/nf_conntrack_core.h
-@@ -90,7 +90,11 @@ static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 0eb9e4d73f2c1..c4567641210b1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -253,12 +253,9 @@ mt7996_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
+ 				 struct ieee80211_radiotap_he *he,
+ 				 __le32 *rxv)
  {
- 	if (timeout > INT_MAX)
- 		timeout = INT_MAX;
--	WRITE_ONCE(ct->timeout, nfct_time_stamp + (u32)timeout);
+-	u32 ru_h, ru_l;
+-	u8 ru, offs = 0;
++	u32 ru, offs = 0;
+ 
+-	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
+-	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
+-	ru = (u8)(ru_l | ru_h << 4);
++	ru = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC);
+ 
+ 	status->bw = RATE_INFO_BW_HE_RU;
+ 
+@@ -323,18 +320,23 @@ mt7996_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
+ 
+ 	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
+ 			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
+-				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
++				 le32_get_bits(rxv[4], MT_CRXV_HE_NUM_USER));
+ 
+-	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
++	he_mu->ru_ch1[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU0) & 0xff;
+ 
+ 	if (status->bw >= RATE_INFO_BW_40) {
+ 		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
+-		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
++		he_mu->ru_ch2[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU1) & 0xff;
+ 	}
+ 
+ 	if (status->bw >= RATE_INFO_BW_80) {
+-		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
+-		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
++		u32 ru_h, ru_l;
 +
-+	if (nf_ct_is_confirmed(ct))
-+		WRITE_ONCE(ct->timeout, nfct_time_stamp + (u32)timeout);
-+	else
-+		ct->timeout = (u32)timeout;
++		he_mu->ru_ch1[1] = le32_get_bits(rxv[16], MT_CRXV_HE_RU2) & 0xff;
++
++		ru_l = le32_get_bits(rxv[16], MT_CRXV_HE_RU3_L);
++		ru_h = le32_get_bits(rxv[17], MT_CRXV_HE_RU3_H) & 0x7;
++		he_mu->ru_ch2[1] = (u8)(ru_l | ru_h << 4);
+ 	}
  }
  
- int __nf_ct_change_timeout(struct nf_conn *ct, u64 cta_timeout);
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index a68391e228f0e..cb4325b8ebb11 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -176,7 +176,12 @@ static int ctnetlink_dump_status(struct sk_buff *skb, const struct nf_conn *ct)
- static int ctnetlink_dump_timeout(struct sk_buff *skb, const struct nf_conn *ct,
- 				  bool skip_zero)
- {
--	long timeout = nf_ct_expires(ct) / HZ;
-+	long timeout;
-+
-+	if (nf_ct_is_confirmed(ct))
-+		timeout = nf_ct_expires(ct) / HZ;
-+	else
-+		timeout = ct->timeout / HZ;
+@@ -357,23 +359,23 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
+ 			 HE_BITS(DATA2_TXOP_KNOWN),
+ 	};
+ 	struct ieee80211_radiotap_he *he = NULL;
+-	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
++	u32 ltf_size = le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
  
- 	if (skip_zero && timeout == 0)
- 		return 0;
-@@ -2253,9 +2258,6 @@ ctnetlink_create_conntrack(struct net *net,
- 	if (!cda[CTA_TIMEOUT])
- 		goto err1;
+ 	status->flag |= RX_FLAG_RADIOTAP_HE;
  
--	timeout = (u64)ntohl(nla_get_be32(cda[CTA_TIMEOUT])) * HZ;
--	__nf_ct_set_timeout(ct, timeout);
+ 	he = skb_push(skb, sizeof(known));
+ 	memcpy(he, &known, sizeof(known));
+ 
+-	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
+-		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
+-	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
+-	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
++	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[9]) |
++		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[4]);
++	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[13]);
++	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[5]) |
+ 		    le16_encode_bits(ltf_size,
+ 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
+ 	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
+ 		he->data5 |= HE_BITS(DATA5_TXBF);
+-	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
+-		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
++	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[9]) |
++		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[9]);
+ 
+ 	switch (mode) {
+ 	case MT_PHY_TYPE_HE_SU:
+@@ -382,22 +384,22 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
+ 			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
+ 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
+ 
+-		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
+-			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
++		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[8]) |
++			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
+ 		break;
+ 	case MT_PHY_TYPE_HE_EXT_SU:
+ 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
+ 			     HE_BITS(DATA1_UL_DL_KNOWN) |
+ 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
+ 
+-		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
++		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
+ 		break;
+ 	case MT_PHY_TYPE_HE_MU:
+ 		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
+ 			     HE_BITS(DATA1_UL_DL_KNOWN);
+ 
+-		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+-		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
++		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
++		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[8]);
+ 
+ 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
+ 		mt7996_mac_decode_he_mu_radiotap(skb, rxv);
+@@ -408,10 +410,10 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
+ 			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
+ 			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
+ 
+-		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
+-			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
+-			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
+-			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
++		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[13]) |
++			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[13]) |
++			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[13]) |
++			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[13]);
+ 
+ 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+index 9f68852012b9e..ed79388e59713 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+@@ -102,8 +102,7 @@ enum rx_pkt_type {
+ #define MT_PRXV_NSTS			GENMASK(10, 7)
+ #define MT_PRXV_TXBF			BIT(11)
+ #define MT_PRXV_HT_AD_CODE		BIT(12)
+-#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
+-#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
++#define MT_PRXV_HE_RU_ALLOC		GENMASK(30, 22)
+ #define MT_PRXV_RCPI3			GENMASK(31, 24)
+ #define MT_PRXV_RCPI2			GENMASK(23, 16)
+ #define MT_PRXV_RCPI1			GENMASK(15, 8)
+@@ -113,34 +112,32 @@ enum rx_pkt_type {
+ #define MT_PRXV_TX_MODE			GENMASK(14, 11)
+ #define MT_PRXV_FRAME_MODE		GENMASK(2, 0)
+ #define MT_PRXV_DCM			BIT(5)
+-#define MT_PRXV_NUM_RX			BIT(8, 6)
+ 
+ /* C-RXV */
+-#define MT_CRXV_HT_STBC			GENMASK(1, 0)
+-#define MT_CRXV_TX_MODE			GENMASK(7, 4)
+-#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
+-#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
+-#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
+-#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
+-#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
+-#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
+-#define MT_CRXV_HE_UPLINK		BIT(31)
+-#define MT_CRXV_HE_RU0			GENMASK(7, 0)
+-#define MT_CRXV_HE_RU1			GENMASK(15, 8)
+-#define MT_CRXV_HE_RU2			GENMASK(23, 16)
+-#define MT_CRXV_HE_RU3			GENMASK(31, 24)
 -
- 	rcu_read_lock();
-  	if (cda[CTA_HELP]) {
- 		char *helpname = NULL;
-@@ -2319,6 +2321,9 @@ ctnetlink_create_conntrack(struct net *net,
- 	/* we must add conntrack extensions before confirmation. */
- 	ct->status |= IPS_CONFIRMED;
- 
-+	timeout = (u64)ntohl(nla_get_be32(cda[CTA_TIMEOUT])) * HZ;
-+	__nf_ct_set_timeout(ct, timeout);
+-#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
++#define MT_CRXV_HE_NUM_USER		GENMASK(26, 20)
++#define MT_CRXV_HE_LTF_SIZE		GENMASK(28, 27)
++#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(30)
 +
- 	if (cda[CTA_STATUS]) {
- 		err = ctnetlink_change_status(ct, cda);
- 		if (err < 0)
++#define MT_CRXV_HE_PE_DISAMBIG		BIT(1)
++#define MT_CRXV_HE_UPLINK		BIT(2)
++
++#define MT_CRXV_HE_MU_AID		GENMASK(27, 17)
++#define MT_CRXV_HE_BEAM_CHNG		BIT(29)
++
++#define MT_CRXV_HE_DOPPLER		BIT(0)
++#define MT_CRXV_HE_BSS_COLOR		GENMASK(15, 10)
++#define MT_CRXV_HE_TXOP_DUR		GENMASK(19, 17)
+ 
+ #define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
+ #define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
+ #define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
+ #define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
+ 
+-#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
+-#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
+-#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
+-#define MT_CRXV_HE_DOPPLER		BIT(16)
++#define MT_CRXV_HE_RU0			GENMASK(8, 0)
++#define MT_CRXV_HE_RU1			GENMASK(17, 9)
++#define MT_CRXV_HE_RU2			GENMASK(26, 18)
++#define MT_CRXV_HE_RU3_L		GENMASK(31, 27)
++#define MT_CRXV_HE_RU3_H		GENMASK(3, 0)
+ 
+ enum tx_header_format {
+ 	MT_HDR_FORMAT_802_3,
 -- 
 2.39.2
 
