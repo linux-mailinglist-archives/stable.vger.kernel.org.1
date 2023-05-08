@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48FDF6FA5FB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFCCB6FAC31
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234267AbjEHKO4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43686 "EHLO
+        id S235602AbjEHLVy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234272AbjEHKOy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:54 -0400
+        with ESMTP id S235600AbjEHLVv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248763ACC1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF74B2109
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B151F6245B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E49DC433D2;
-        Mon,  8 May 2023 10:14:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCFF262CA1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB622C433EF;
+        Mon,  8 May 2023 11:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540892;
-        bh=f3Wai3kgqqtJzKxq//J/JlKC931zdywQI0nmmGWD1Cc=;
+        s=korg; t=1683544905;
+        bh=fquWWUTh7y+Gdg76M90XUq7d3ZEihN4eT4T7TfhaCoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bvf2Fz8lMSohHI28Y3QJszY8hw7vpK/NBz3dJawHFeX2KjLzbwkeD4PD1bu7Mwo0q
-         i0LE1iIEehsy7b/S1XG7IWuzaWz3MXxlHD/u3xKvFkxeibp7TfJMXRKdTcCXyHiCki
-         hYpj1jxp7shr4RZZPFjbINfGj2wQADQZW1X7qOpA=
+        b=jZX+1qkiyU0FFwpI0K80DVgk3tVfGD9ZVNm5jtCNQuevP/wQHyCAcMUEj1BM0GKK0
+         EH4Edl9xelo108SRLIV90GOrXDqvy1qxJhMLQCZFgkn0FezLiqMhYn4WE72VDLp051
+         9c43hMHXIzmK45CZwym/LpfKiRF+7rXfcsZIN/Vk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 537/611] soundwire: intel: dont save hw_params for use in prepare
+        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 544/694] usb: gadget: tegra-xudc: Fix crash in vbus_draw
 Date:   Mon,  8 May 2023 11:46:19 +0200
-Message-Id: <20230508094439.459029112@linuxfoundation.org>
+Message-Id: <20230508094452.137579119@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,123 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 0a0d1740bd8fd7dafb81fcb102fb5d0b83b1ce73 ]
+[ Upstream commit 5629d31955297ca47b9283c64fff70f2f34aa528 ]
 
-The existing code copies the hw_params pointer and reuses it later in
-.prepare, specifically to re-initialize the ALH DMA channel
-information that's lost in suspend-resume cycles.
+Commit ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+populated the vbus_draw callback for the Tegra XUDC driver. The function
+tegra_xudc_gadget_vbus_draw(), that was added by this commit, assumes
+that the pointer 'curr_usbphy' has been initialised, which is not always
+the case because this is only initialised when the USB role is updated.
+Fix this crash, by checking that the 'curr_usbphy' is valid before
+dereferencing.
 
-This is not needed, we can directly access the information from the
-substream/rtd - as done for the HDAudio DAIs in
-sound/soc/sof/intel/hda-dai.c
-
-In addition, using the saved pointer causes the suspend-resume test
-cases to fail on specific platforms, depending on which version of GCC
-is used. Péter Ujfalusi and I have spent long hours to root-cause this
-problem that was reported by the Intel CI first with 6.2-rc1 and again
-v6.3-rc1. In the latter case we were lucky that the problem was 100%
-reproducible on local test devices, and found out that adding a
-dev_dbg() or adding a call to usleep_range() just before accessing the
-saved pointer "fixed" the issue. With errors appearing just by
-changing the compiler version or minor changes in the code generated,
-clearly we have a memory management Heisenbug.
-
-The root-cause seems to be that the hw_params pointer is not
-persistent. The soc-pcm code allocates the hw_params structure on the
-stack, and passes it to the BE dailink hw_params and DAIs
-hw_params. Saving such a pointer and reusing it later during the
-.prepare stage cannot possibly work reliably, it's broken-by-design
-since v5.10. It's astonishing that the problem was not seen earlier.
-
-This simple fix will have to be back-ported to -stable, due to changes
-to avoid the use of the get/set_dmadata routines this patch will only
-apply on kernels older than v6.1.
-
-Fixes: a5a0239c27fe ("soundwire: intel: reinitialize IP+DSP in .prepare(), but only when resuming")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20230321022642.1426611-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230405181854.42355-1-jonathanh@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.h |  2 --
- drivers/soundwire/intel.c          | 11 +++++++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/cadence_master.h b/drivers/soundwire/cadence_master.h
-index 9b0113d48e419..fea3a90550d37 100644
---- a/drivers/soundwire/cadence_master.h
-+++ b/drivers/soundwire/cadence_master.h
-@@ -84,7 +84,6 @@ struct sdw_cdns_stream_config {
-  * @bus: Bus handle
-  * @stream_type: Stream type
-  * @link_id: Master link id
-- * @hw_params: hw_params to be applied in .prepare step
-  * @suspended: status set when suspended, to be used in .prepare
-  * @paused: status set in .trigger, to be used in suspend
-  */
-@@ -95,7 +94,6 @@ struct sdw_cdns_dai_runtime {
- 	struct sdw_bus *bus;
- 	enum sdw_stream_type stream_type;
- 	int link_id;
--	struct snd_pcm_hw_params *hw_params;
- 	bool suspended;
- 	bool paused;
- };
-diff --git a/drivers/soundwire/intel.c b/drivers/soundwire/intel.c
-index 52e5c54b4f36a..89f8cab3f5141 100644
---- a/drivers/soundwire/intel.c
-+++ b/drivers/soundwire/intel.c
-@@ -857,7 +857,6 @@ static int intel_hw_params(struct snd_pcm_substream *substream,
- 	dai_runtime->paused = false;
- 	dai_runtime->suspended = false;
- 	dai_runtime->pdi = pdi;
--	dai_runtime->hw_params = params;
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index 2b71b33725f17..5bccd64847ff7 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -2167,7 +2167,7 @@ static int tegra_xudc_gadget_vbus_draw(struct usb_gadget *gadget,
  
- 	/* Inform DSP about PDI stream number */
- 	ret = intel_params_stream(sdw, substream->stream, dai, params,
-@@ -910,6 +909,11 @@ static int intel_prepare(struct snd_pcm_substream *substream,
- 	}
+ 	dev_dbg(xudc->dev, "%s: %u mA\n", __func__, m_a);
  
- 	if (dai_runtime->suspended) {
-+		struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+		struct snd_pcm_hw_params *hw_params;
-+
-+		hw_params = &rtd->dpcm[substream->stream].hw_params;
-+
- 		dai_runtime->suspended = false;
+-	if (xudc->curr_usbphy->chg_type == SDP_TYPE)
++	if (xudc->curr_usbphy && xudc->curr_usbphy->chg_type == SDP_TYPE)
+ 		ret = usb_phy_set_power(xudc->curr_usbphy, m_a);
  
- 		/*
-@@ -921,7 +925,7 @@ static int intel_prepare(struct snd_pcm_substream *substream,
- 		 */
- 
- 		/* configure stream */
--		ch = params_channels(dai_runtime->hw_params);
-+		ch = params_channels(hw_params);
- 		if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
- 			dir = SDW_DATA_DIR_RX;
- 		else
-@@ -933,7 +937,7 @@ static int intel_prepare(struct snd_pcm_substream *substream,
- 
- 		/* Inform DSP about PDI stream number */
- 		ret = intel_params_stream(sdw, substream->stream, dai,
--					  dai_runtime->hw_params,
-+					  hw_params,
- 					  sdw->instance,
- 					  dai_runtime->pdi->intel_alh_id);
- 	}
-@@ -972,7 +976,6 @@ intel_hw_free(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
- 		return ret;
- 	}
- 
--	dai_runtime->hw_params = NULL;
- 	dai_runtime->pdi = NULL;
- 
- 	return 0;
+ 	return ret;
 -- 
 2.39.2
 
