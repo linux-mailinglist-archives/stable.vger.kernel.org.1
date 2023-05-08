@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762A46FAC43
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44FF16FA618
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235606AbjEHLWn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38198 "EHLO
+        id S234312AbjEHKQM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235618AbjEHLWk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29AA238F1E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:28 -0700 (PDT)
+        with ESMTP id S234313AbjEHKQL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B0093ACD3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D5062CAE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B23C433D2;
-        Mon,  8 May 2023 11:22:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC3B362490
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE508C433D2;
+        Mon,  8 May 2023 10:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544947;
-        bh=KAjYB6ti13f9wuDbnoHFG3N9xOQDs7WBjB0qrkRKfxw=;
+        s=korg; t=1683540969;
+        bh=/psOibmtnnkcz1+tirmhsBiDgkCvd5+0ZG4x9ICNoaM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pfanL3xPKRwMqpvt+Qh8x/J84YNfMZm788zZIY3YG9mApt7aAH/sLbGPdqxg4dri8
-         TNDhAhbC8Nps6QjlwTzvjzSOGaeYLkiJ5qkyGodsrYYmHVNWM1pFRSMyz3N37EdVli
-         ZwrFKwv9PijzfTjsw/eZEEnLwNzFo2v1/MUjh2PQ=
+        b=zcF5ePaOi2C3b//+++ZUEYCiMFr12JxOWepdyW88uQhuiU8k5Cfyo55ZmabPps+vp
+         Ybv8HhoGxAT4lF3zEXMTpKMVNhafPVpcfUDpXhTr22o7rTOzeNzSyu74IJI+qF4U61
+         Y4j4AHb5guZIw9FzkMCWXJdx7MMWz5IPtNM2+dHU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Doug Cook <dcook@linux.microsoft.com>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 573/694] tracing/user_events: Ensure write index cannot be negative
-Date:   Mon,  8 May 2023 11:46:48 +0200
-Message-Id: <20230508094453.464610229@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 567/611] nilfs2: fix infinite loop in nilfs_mdt_get_block()
+Date:   Mon,  8 May 2023 11:46:49 +0200
+Message-Id: <20230508094440.385423975@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,61 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Beau Belgrave <beaub@linux.microsoft.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit cd98c93286a30cc4588dfd02453bec63c2f4acf4 ]
+commit a6a491c048882e7e424d407d32cba0b52d9ef2bf upstream.
 
-The write index indicates which event the data is for and accesses a
-per-file array. The index is passed by user processes during write()
-calls as the first 4 bytes. Ensure that it cannot be negative by
-returning -EINVAL to prevent out of bounds accesses.
+If the disk image that nilfs2 mounts is corrupted and a virtual block
+address obtained by block lookup for a metadata file is invalid,
+nilfs_bmap_lookup_at_level() may return the same internal return code as
+-ENOENT, meaning the block does not exist in the metadata file.
 
-Update ftrace self-test to ensure this occurs properly.
+This duplication of return codes confuses nilfs_mdt_get_block(), causing
+it to read and create a metadata block indefinitely.
 
-Link: https://lkml.kernel.org/r/20230425225107.8525-2-beaub@linux.microsoft.com
+In particular, if this happens to the inode metadata file, ifile,
+semaphore i_rwsem can be left held, causing task hangs in lock_mount.
 
-Fixes: 7f5a08c79df3 ("user_events: Add minimal support for trace_event into ftrace")
-Reported-by: Doug Cook <dcook@linux.microsoft.com>
-Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by making nilfs_bmap_lookup_at_level() treat virtual block
+address translation failures with -ENOENT as metadata corruption instead
+of returning the error code.
+
+Link: https://lkml.kernel.org/r/20230430193046.6769-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com
+  Link: https://syzkaller.appspot.com/bug?extid=221d75710bde87fa0e97
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_user.c                  | 3 +++
- tools/testing/selftests/user_events/ftrace_test.c | 5 +++++
- 2 files changed, 8 insertions(+)
+ fs/nilfs2/bmap.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
-index 908e8a13c675b..625cab4b9d945 100644
---- a/kernel/trace/trace_events_user.c
-+++ b/kernel/trace/trace_events_user.c
-@@ -1398,6 +1398,9 @@ static ssize_t user_events_write_core(struct file *file, struct iov_iter *i)
- 	if (unlikely(copy_from_iter(&idx, sizeof(idx), i) != sizeof(idx)))
- 		return -EFAULT;
+--- a/fs/nilfs2/bmap.c
++++ b/fs/nilfs2/bmap.c
+@@ -67,20 +67,28 @@ int nilfs_bmap_lookup_at_level(struct ni
  
-+	if (idx < 0)
-+		return -EINVAL;
+ 	down_read(&bmap->b_sem);
+ 	ret = bmap->b_ops->bop_lookup(bmap, key, level, ptrp);
+-	if (ret < 0) {
+-		ret = nilfs_bmap_convert_error(bmap, __func__, ret);
++	if (ret < 0)
+ 		goto out;
+-	}
 +
- 	rcu_read_lock_sched();
+ 	if (NILFS_BMAP_USE_VBN(bmap)) {
+ 		ret = nilfs_dat_translate(nilfs_bmap_get_dat(bmap), *ptrp,
+ 					  &blocknr);
+ 		if (!ret)
+ 			*ptrp = blocknr;
++		else if (ret == -ENOENT) {
++			/*
++			 * If there was no valid entry in DAT for the block
++			 * address obtained by b_ops->bop_lookup, then pass
++			 * internal code -EINVAL to nilfs_bmap_convert_error
++			 * to treat it as metadata corruption.
++			 */
++			ret = -EINVAL;
++		}
+ 	}
  
- 	refs = rcu_dereference_sched(info->refs);
-diff --git a/tools/testing/selftests/user_events/ftrace_test.c b/tools/testing/selftests/user_events/ftrace_test.c
-index 404a2713dcae8..1bc26e6476fc3 100644
---- a/tools/testing/selftests/user_events/ftrace_test.c
-+++ b/tools/testing/selftests/user_events/ftrace_test.c
-@@ -294,6 +294,11 @@ TEST_F(user, write_events) {
- 	ASSERT_NE(-1, writev(self->data_fd, (const struct iovec *)io, 3));
- 	after = trace_bytes();
- 	ASSERT_GT(after, before);
-+
-+	/* Negative index should fail with EINVAL */
-+	reg.write_index = -1;
-+	ASSERT_EQ(-1, writev(self->data_fd, (const struct iovec *)io, 3));
-+	ASSERT_EQ(EINVAL, errno);
+  out:
+ 	up_read(&bmap->b_sem);
+-	return ret;
++	return nilfs_bmap_convert_error(bmap, __func__, ret);
  }
  
- TEST_F(user, write_fault) {
--- 
-2.39.2
-
+ int nilfs_bmap_lookup_contig(struct nilfs_bmap *bmap, __u64 key, __u64 *ptrp,
 
 
