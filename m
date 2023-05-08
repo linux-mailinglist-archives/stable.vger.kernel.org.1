@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 109416FA66B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9116FA9E2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234423AbjEHKT1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:19:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49218 "EHLO
+        id S235307AbjEHK4q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234435AbjEHKTR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B61CD845
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:12 -0700 (PDT)
+        with ESMTP id S235315AbjEHK4Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DD03156E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21D4A624B6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:19:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DB7C433EF;
-        Mon,  8 May 2023 10:19:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C47A361709
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F80C433D2;
+        Mon,  8 May 2023 10:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541151;
-        bh=1qk3aPiwEGTf7W20rOAtgeOTtR8fM1LKBzCMxX5k3xo=;
+        s=korg; t=1683543324;
+        bh=1UnlRJYpfmjQALU7UhLyLH1QxK1YpaGmC7X/FbUrPH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hApwvHgPjDQx73/kpjMP0H8qWg3BRHCep2h/D7oT9dENaGiJgmOBsZfXVk3sLeW+C
-         e66at3vcg5uh74DDwWq93gj482UaidV/DOHh/G5QGjDL/My8bwn5EUHn8kAuhlouQ7
-         eaxLH1BRGhaprCFkgauu7e+JfWeqf1wLM2IMULQQ=
+        b=Wi88kcRlAhMDzC3KlwUsI/icNCh11YjjY7sZ4de9Ruqi76z1phjgcLdkjpBLYLX3N
+         owqlnx+Dh+n6zW4KHhpJFAgJPgoYfP3e+w3hFroFmaR4UnTSQI91WU7KMjktPQNpv/
+         KdVc92K6/ANTe0Q6g1RE+iRgv8tDCWJSCOK6Sxi4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.2 022/663] arm64: Always load shadow stack pointer directly from the task struct
+        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>
+Subject: [PATCH 6.3 013/694] usb: dwc3: gadget: Stall and restart EP0 if host is unresponsive
 Date:   Mon,  8 May 2023 11:37:28 +0200
-Message-Id: <20230508094429.161291859@linuxfoundation.org>
+Message-Id: <20230508094433.060713312@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,82 +53,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 2198d07c509f1db4a1185d1f65aaada794c6ea59 upstream.
+commit 02435a739b81ae24aff5d6e930efef9458e2af3c upstream.
 
-All occurrences of the scs_load macro load the value of the shadow call
-stack pointer from the task which is current at that point. So instead
-of taking a task struct register argument in the scs_load macro to
-specify the task struct to load from, let's always reference the current
-task directly. This should make it much harder to exploit any
-instruction sequences reloading the shadow call stack pointer register
-from memory.
+It was observed that there are hosts that may complete pending SETUP
+transactions before the stop active transfers and controller halt occurs,
+leading to lingering endxfer commands on DEPs on subsequent pullup/gadget
+start iterations.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230109174800.3286265-2-ardb@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+  dwc3_gadget_ep_disable   name=ep8in flags=0x3009  direction=1
+  dwc3_gadget_ep_disable   name=ep4in flags=1  direction=1
+  dwc3_gadget_ep_disable   name=ep3out flags=1  direction=0
+  usb_gadget_disconnect   deactivated=0  connected=0  ret=0
+
+The sequence shows that the USB gadget disconnect (dwc3_gadget_pullup(0))
+routine completed successfully, allowing for the USB gadget to proceed with
+a USB gadget connect.  However, if this occurs the system runs into an
+issue where:
+
+  BUG: spinlock already unlocked on CPU
+  spin_bug+0x0
+  dwc3_remove_requests+0x278
+  dwc3_ep0_out_start+0xb0
+  __dwc3_gadget_start+0x25c
+
+This is due to the pending endxfers, leading to gadget start (w/o lock
+held) to execute the remove requests, which will unlock the dwc3
+spinlock as part of giveback.
+
+To mitigate this, resolve the pending endxfers on the pullup disable
+path by re-locating the SETUP phase check after stop active transfers, since
+that is where the DWC3_EP_DELAY_STOP is potentially set.  This also allows
+for handling of a host that may be unresponsive by using the completion
+timeout to trigger the stall and restart for EP0.
+
+Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230413195742.11821-2-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/scs.h |    7 ++++---
- arch/arm64/kernel/entry.S    |    4 ++--
- arch/arm64/kernel/head.S     |    2 +-
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/usb/dwc3/gadget.c |   49 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
---- a/arch/arm64/include/asm/scs.h
-+++ b/arch/arm64/include/asm/scs.h
-@@ -10,15 +10,16 @@
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	scs_sp	.req	x18
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2532,29 +2532,17 @@ static int __dwc3_gadget_start(struct dw
+ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ {
+ 	unsigned long flags;
++	int ret;
  
--	.macro scs_load tsk
--	ldr	scs_sp, [\tsk, #TSK_TI_SCS_SP]
-+	.macro scs_load_current
-+	get_current_task scs_sp
-+	ldr	scs_sp, [scs_sp, #TSK_TI_SCS_SP]
- 	.endm
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc->connected = false;
  
- 	.macro scs_save tsk
- 	str	scs_sp, [\tsk, #TSK_TI_SCS_SP]
- 	.endm
- #else
--	.macro scs_load tsk
-+	.macro scs_load_current
- 	.endm
+ 	/*
+-	 * Per databook, when we want to stop the gadget, if a control transfer
+-	 * is still in process, complete it and get the core into setup phase.
++	 * Attempt to end pending SETUP status phase, and not wait for the
++	 * function to do so.
+ 	 */
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
+-		int ret;
+-
+-		if (dwc->delayed_status)
+-			dwc3_ep0_send_delayed_status(dwc);
+-
+-		reinit_completion(&dwc->ep0_in_setup);
+-
+-		spin_unlock_irqrestore(&dwc->lock, flags);
+-		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
+-				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
+-		spin_lock_irqsave(&dwc->lock, flags);
+-		if (ret == 0)
+-			dev_warn(dwc->dev, "timed out waiting for SETUP phase\n");
+-	}
++	if (dwc->delayed_status)
++		dwc3_ep0_send_delayed_status(dwc);
  
- 	.macro scs_save tsk
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -275,7 +275,7 @@ alternative_if ARM64_HAS_ADDRESS_AUTH
- alternative_else_nop_endif
- 1:
+ 	/*
+ 	 * In the Synopsys DesignWare Cores USB3 Databook Rev. 3.30a
+@@ -2568,6 +2556,33 @@ static int dwc3_gadget_soft_disconnect(s
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
  
--	scs_load tsk
-+	scs_load_current
- 	.else
- 	add	x21, sp, #PT_REGS_SIZE
- 	get_current_task tsk
-@@ -848,7 +848,7 @@ SYM_FUNC_START(cpu_switch_to)
- 	msr	sp_el0, x1
- 	ptrauth_keys_install_kernel x1, x8, x9, x10
- 	scs_save x0
--	scs_load x1
-+	scs_load_current
- 	ret
- SYM_FUNC_END(cpu_switch_to)
- NOKPROBE(cpu_switch_to)
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -404,7 +404,7 @@ SYM_FUNC_END(create_kernel_mapping)
- 	stp	xzr, xzr, [sp, #S_STACKFRAME]
- 	add	x29, sp, #S_STACKFRAME
- 
--	scs_load \tsk
-+	scs_load_current
- 
- 	adr_l	\tmp1, __per_cpu_offset
- 	ldr	w\tmp2, [\tsk, #TSK_TI_CPU]
+ 	/*
++	 * Per databook, when we want to stop the gadget, if a control transfer
++	 * is still in process, complete it and get the core into setup phase.
++	 * In case the host is unresponsive to a SETUP transaction, forcefully
++	 * stall the transfer, and move back to the SETUP phase, so that any
++	 * pending endxfers can be executed.
++	 */
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
++		reinit_completion(&dwc->ep0_in_setup);
++
++		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
++				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
++		if (ret == 0) {
++			unsigned int    dir;
++
++			dev_warn(dwc->dev, "wait for SETUP phase timed out\n");
++			spin_lock_irqsave(&dwc->lock, flags);
++			dir = !!dwc->ep0_expect_in;
++			if (dwc->ep0state == EP0_DATA_PHASE)
++				dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
++			else
++				dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
++			dwc3_ep0_stall_and_restart(dwc);
++			spin_unlock_irqrestore(&dwc->lock, flags);
++		}
++	}
++
++	/*
+ 	 * Note: if the GEVNTCOUNT indicates events in the event buffer, the
+ 	 * driver needs to acknowledge them before the controller can halt.
+ 	 * Simply let the interrupt handler acknowledges and handle the
 
 
