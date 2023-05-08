@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3664B6FAC1C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF8A6FA5DC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235575AbjEHLU4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
+        id S234276AbjEHKNv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:13:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233960AbjEHLUz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 534F338473
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:54 -0700 (PDT)
+        with ESMTP id S234289AbjEHKNi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4A13AA12
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D957462C60
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08B0C433EF;
-        Mon,  8 May 2023 11:20:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF84762411
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A96C433EF;
+        Mon,  8 May 2023 10:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544853;
-        bh=j6p1I+y8zxIyywACXC7Z8VwwKvLZFLpXoiD9Al9hGKE=;
+        s=korg; t=1683540813;
+        bh=IZEgaRIaxIfcMamfLugvk7FgPFzcCz3PuZZj/kiup4Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=arI2B/R0GKfXW8Il4KnkG1iv2Fe1Rpl7KAAgFaiAmurhAvyU81h0lCHjhItXBjZnJ
-         YnelEHijnotsJBlxPUkcoY5SVUg8V9Jq6yX92oNZ5Yl3EKl4DjJcTLzMx5ZtOUZXUk
-         gsUyTfcipSI4VTPku8SPOt1EyuX0Iurm0EwkzfQ0=
+        b=xNykEqQGYV8HVA8xh9GkMrAfQoLg3w2tqvFmQKmt2Bd8i+qW3MdZtr0JtimBQ0VMv
+         /VNIih9r3lfKw95OV5Jby6LBCFBY72QWSheO5B66wZTnzae+a5oA2h52kN0gGKiWd1
+         +w7apG1i6bbhaVj6HUbrfW2e1QKe5gdZTi1w5gRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
+        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 514/694] spi: mchp-pci1xxxx: Fix improper implementation of disabling chip select lines
+Subject: [PATCH 6.1 507/611] clk: qcom: lpassaudiocc-sc7280: Add required gdsc power domain clks in lpass_cc_sc7280_desc
 Date:   Mon,  8 May 2023 11:45:49 +0200
-Message-Id: <20230508094450.863779538@linuxfoundation.org>
+Message-Id: <20230508094438.538184649@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,66 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>
+From: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
 
-[ Upstream commit 45d2af82e0e6f662d0d0db20993b35cb1d8da646 ]
+[ Upstream commit aad09fc7c4a522892eb64a79627b17a3869936cb ]
 
-Hardware does not have support to disable individual chip select lines.
-Disable all chip select lines by using SPI_FORCE_CE bit.
+Add GDSCs in lpass_cc_sc7280_desc struct.
+When qcom,adsp-pil-mode is enabled, GDSCs required to solve
+dependencies in lpass_audiocc probe().
 
-Fixes: 1cc0cbea7167 ("spi: microchip: pci1xxxx: Add driver for SPI controller of PCI1XXXX PCIe switch")
-Signed-off-by: Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>
-Link: https://lore.kernel.org/r/20230404171613.1336093-4-tharunkumar.pasumarthi@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0cbcfbe50cbf ("clk: qcom: lpass: Handle the regmap overlap of lpasscc and lpass_aon")
+Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230407092255.119690-4-quic_mohs@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-pci1xxxx.c |   17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/clk/qcom/lpassaudiocc-sc7280.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-pci1xxxx.c
-+++ b/drivers/spi/spi-pci1xxxx.c
-@@ -114,17 +114,14 @@ static void pci1xxxx_spi_set_cs(struct s
+diff --git a/drivers/clk/qcom/lpassaudiocc-sc7280.c b/drivers/clk/qcom/lpassaudiocc-sc7280.c
+index 1339f9211a149..134eb1529ede2 100644
+--- a/drivers/clk/qcom/lpassaudiocc-sc7280.c
++++ b/drivers/clk/qcom/lpassaudiocc-sc7280.c
+@@ -696,6 +696,8 @@ static const struct qcom_cc_desc lpass_cc_sc7280_desc = {
+ 	.config = &lpass_audio_cc_sc7280_regmap_config,
+ 	.clks = lpass_cc_sc7280_clocks,
+ 	.num_clks = ARRAY_SIZE(lpass_cc_sc7280_clocks),
++	.gdscs = lpass_aon_cc_sc7280_gdscs,
++	.num_gdscs = ARRAY_SIZE(lpass_aon_cc_sc7280_gdscs),
+ };
  
- 	/* Set the DEV_SEL bits of the SPI_MST_CTL_REG */
- 	regval = readl(par->reg_base + SPI_MST_CTL_REG_OFFSET(p->hw_inst));
--	if (enable) {
-+	if (!enable) {
-+		regval |= SPI_FORCE_CE;
- 		regval &= ~SPI_MST_CTL_DEVSEL_MASK;
- 		regval |= (spi->chip_select << 25);
--		writel(regval,
--		       par->reg_base + SPI_MST_CTL_REG_OFFSET(p->hw_inst));
- 	} else {
--		regval &= ~(spi->chip_select << 25);
--		writel(regval,
--		       par->reg_base + SPI_MST_CTL_REG_OFFSET(p->hw_inst));
--
-+		regval &= ~SPI_FORCE_CE;
- 	}
-+	writel(regval, par->reg_base + SPI_MST_CTL_REG_OFFSET(p->hw_inst));
- }
- 
- static u8 pci1xxxx_get_clock_div(u32 hz)
-@@ -199,7 +196,7 @@ static int pci1xxxx_spi_transfer_one(str
- 			else
- 				regval &= ~SPI_MST_CTL_MODE_SEL;
- 
--			regval |= ((clkdiv << 5) | SPI_FORCE_CE);
-+			regval |= (clkdiv << 5);
- 			regval &= ~SPI_MST_CTL_CMD_LEN_MASK;
- 			regval |= (len << 8);
- 			writel(regval, par->reg_base +
-@@ -223,10 +220,6 @@ static int pci1xxxx_spi_transfer_one(str
- 			}
- 		}
- 	}
--
--	regval = readl(par->reg_base + SPI_MST_CTL_REG_OFFSET(p->hw_inst));
--	regval &= ~SPI_FORCE_CE;
--	writel(regval, par->reg_base + SPI_MST_CTL_REG_OFFSET(p->hw_inst));
- 	p->spi_xfer_in_progress = false;
- 
- 	return 0;
+ static const struct qcom_cc_desc lpass_audio_cc_sc7280_desc = {
+-- 
+2.39.2
+
 
 
