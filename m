@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD85C6FA666
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE09E6FA9AB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234404AbjEHKS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48802 "EHLO
+        id S235215AbjEHKyU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234402AbjEHKS6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:58 -0400
+        with ESMTP id S235151AbjEHKxo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E865D2DA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34412B43C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B91E6624B6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BF4C433D2;
-        Mon,  8 May 2023 10:18:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D28361861
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325A1C433EF;
+        Mon,  8 May 2023 10:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541136;
-        bh=ZFRK8jiGYOCs5wAhqWnSdxJfdodA4PcK7ZFCYNL7ZZo=;
+        s=korg; t=1683543182;
+        bh=cw3OnQkRRzLSZofw1h00fHi3CqqZKFvyxjHDHAz3LDU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tZpvCZNKqvKdcTEWmCZXIbq4ugSZmlf16rQMEMmFmNHxqPpQ/MB/IWTn+rgIYLjRE
-         EUJkZMjvFpJWbhGNqme/urKhsWoeFNQ0iIp0SEpmKp/OV2w5YbfgrF/0il/ZEyiPSW
-         HAAGoWswiNvJdCk2oPT3ScFHh/8JY9Z1DFAGst1U=
+        b=TSw4WqHSxBrfLO37CdqXb1OGBcr/RrwWug8tMsjqowbysmhhv2imbzoFntXEopUct
+         4haDG+FfU/bUhCNAJGGIgfOP6/CqMC4srbn847Fe5orM1F4SKDFwPByiLqWk7jepyh
+         rjm7aRyjUZ5dGIyf8rv7MwssqaRioIZxK7ZgyVpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 018/663] asm-generic/io.h: suppress endianness warnings for relaxed accessors
-Date:   Mon,  8 May 2023 11:37:24 +0200
-Message-Id: <20230508094429.015767988@linuxfoundation.org>
+        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
+        ValdikSS <iam@valdikss.org.ru>,
+        Alexandru gagniuc <mr.nuke.me@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.3 010/694] wifi: rtw88: usb: fix priority queue to endpoint mapping
+Date:   Mon,  8 May 2023 11:37:25 +0200
+Message-Id: <20230508094432.969367923@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,81 +57,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 05d3855b4d21ef3c2df26be1cbba9d2c68915fcb ]
+commit a6f187f92bcc2b17821538b4a11d61764e68b091 upstream.
 
-Copy the forced type casts from the normal MMIO accessors to suppress
-the sparse warnings that point out __raw_readl() returns a native endian
-word (just like readl()).
+The RTW88 chipsets have four different priority queues in hardware. For
+the USB type chipsets the packets destined for a specific priority queue
+must be sent through the endpoint corresponding to the queue. This was
+not fully understood when porting from the RTW88 USB out of tree driver
+and thus violated.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch implements the qsel to endpoint mapping as in
+get_usb_bulkout_id_88xx() in the downstream driver.
+
+Without this the driver often issues "timed out to flush queue 3"
+warnings and often TX stalls completely.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: ValdikSS <iam@valdikss.org.ru>
+Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230417140358.2240429-2-s.hauer@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/io.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw88/usb.c |   70 ++++++++++++++++++++-----------
+ 1 file changed, 47 insertions(+), 23 deletions(-)
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index d78c3056c98f9..587e7e9b9a375 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -319,7 +319,7 @@ static inline u16 readw_relaxed(const volatile void __iomem *addr)
- 	u16 val;
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -118,6 +118,22 @@ static void rtw_usb_write32(struct rtw_d
+ 	rtw_usb_write(rtwdev, addr, val, 4);
+ }
  
- 	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
--	val = __le16_to_cpu(__raw_readw(addr));
-+	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
- 	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
-@@ -332,7 +332,7 @@ static inline u32 readl_relaxed(const volatile void __iomem *addr)
- 	u32 val;
++static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
++{
++	switch (dma_mapping) {
++	case RTW_DMA_MAPPING_HIGH:
++		return 0;
++	case RTW_DMA_MAPPING_NORMAL:
++		return 1;
++	case RTW_DMA_MAPPING_LOW:
++		return 2;
++	case RTW_DMA_MAPPING_EXTRA:
++		return 3;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int rtw_usb_parse(struct rtw_dev *rtwdev,
+ 			 struct usb_interface *interface)
+ {
+@@ -129,6 +145,8 @@ static int rtw_usb_parse(struct rtw_dev
+ 	int num_out_pipes = 0;
+ 	int i;
+ 	u8 num;
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	const struct rtw_rqpn *rqpn;
  
- 	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
--	val = __le32_to_cpu(__raw_readl(addr));
-+	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
- 	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
- 	return val;
- }
-@@ -345,7 +345,7 @@ static inline u64 readq_relaxed(const volatile void __iomem *addr)
- 	u64 val;
+ 	for (i = 0; i < interface_desc->bNumEndpoints; i++) {
+ 		endpoint = &host_interface->endpoint[i].desc;
+@@ -183,31 +201,34 @@ static int rtw_usb_parse(struct rtw_dev
  
- 	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
--	val = __le64_to_cpu(__raw_readq(addr));
-+	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
- 	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
- 	return val;
+ 	rtwdev->hci.bulkout_num = num_out_pipes;
+ 
+-	switch (num_out_pipes) {
+-	case 4:
+-	case 3:
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = 0;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = 0;
+-		break;
+-	case 2:
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 1;
+-		break;
+-	case 1:
+-		break;
+-	default:
+-		rtw_err(rtwdev, "failed to get out_pipes(%d)\n", num_out_pipes);
++	if (num_out_pipes < 1 || num_out_pipes > 4) {
++		rtw_err(rtwdev, "invalid number of endpoints %d\n", num_out_pipes);
+ 		return -EINVAL;
+ 	}
+ 
++	rqpn = &chip->rqpn_table[num_out_pipes];
++
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = dma_mapping_to_ep(rqpn->dma_map_be);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = dma_mapping_to_ep(rqpn->dma_map_bk);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = dma_mapping_to_ep(rqpn->dma_map_bk);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = dma_mapping_to_ep(rqpn->dma_map_be);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = dma_mapping_to_ep(rqpn->dma_map_vi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = dma_mapping_to_ep(rqpn->dma_map_vi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = dma_mapping_to_ep(rqpn->dma_map_vo);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = dma_mapping_to_ep(rqpn->dma_map_vo);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID8] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID9] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID10] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID11] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID12] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID13] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID14] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID15] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_BEACON] = dma_mapping_to_ep(rqpn->dma_map_hi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_HIGH] = dma_mapping_to_ep(rqpn->dma_map_hi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_MGMT] = dma_mapping_to_ep(rqpn->dma_map_mg);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_H2C] = dma_mapping_to_ep(rqpn->dma_map_hi);
++
+ 	return 0;
  }
-@@ -366,7 +366,7 @@ static inline void writeb_relaxed(u8 value, volatile void __iomem *addr)
- static inline void writew_relaxed(u16 value, volatile void __iomem *addr)
+ 
+@@ -250,7 +271,7 @@ static void rtw_usb_write_port_tx_comple
+ static int qsel_to_ep(struct rtw_usb *rtwusb, unsigned int qsel)
  {
- 	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
--	__raw_writew(cpu_to_le16(value), addr);
-+	__raw_writew((u16 __force)cpu_to_le16(value), addr);
- 	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
+ 	if (qsel >= ARRAY_SIZE(rtwusb->qsel_to_ep))
+-		return 0;
++		return -EINVAL;
+ 
+ 	return rtwusb->qsel_to_ep[qsel];
  }
- #endif
-@@ -376,7 +376,7 @@ static inline void writew_relaxed(u16 value, volatile void __iomem *addr)
- static inline void writel_relaxed(u32 value, volatile void __iomem *addr)
- {
- 	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
--	__raw_writel(__cpu_to_le32(value), addr);
-+	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
- 	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
-@@ -386,7 +386,7 @@ static inline void writel_relaxed(u32 value, volatile void __iomem *addr)
- static inline void writeq_relaxed(u64 value, volatile void __iomem *addr)
- {
- 	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
--	__raw_writeq(__cpu_to_le64(value), addr);
-+	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
- 	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- }
- #endif
--- 
-2.39.2
-
+@@ -265,6 +286,9 @@ static int rtw_usb_write_port(struct rtw
+ 	int ret;
+ 	int ep = qsel_to_ep(rtwusb, qsel);
+ 
++	if (ep < 0)
++		return ep;
++
+ 	pipe = usb_sndbulkpipe(usbd, rtwusb->out_ep[ep]);
+ 	urb = usb_alloc_urb(0, GFP_ATOMIC);
+ 	if (!urb)
 
 
