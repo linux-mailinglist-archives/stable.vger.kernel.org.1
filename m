@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B106FA783
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1DAE6FA786
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:31:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234699AbjEHKbP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60678 "EHLO
+        id S234764AbjEHKbj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234666AbjEHKbI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D7124AA1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:03 -0700 (PDT)
+        with ESMTP id S234670AbjEHKbQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2DE24AB6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3689626D5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C665AC433D2;
-        Mon,  8 May 2023 10:31:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A27DA626C5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9609DC433D2;
+        Mon,  8 May 2023 10:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541862;
-        bh=DIqXE/rduwq1UarrMQ1Jq/W/c0e/a1wL96CNqt6ytpg=;
+        s=korg; t=1683541865;
+        bh=QQaltyppbFcyatwd/zA0bi8NWu3UkPKo5Ecr4Q+46vU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mfpJ0NW+0O3cnQLCaUKZmh4hwhEuQzUQd0PoCrtF3LLEm9E6spd/kYUfgf7pQIdoi
-         T2RFcmc8Qk2oYPbE9vs1Esv/An1I6lAF5mm+3QIXb2K+A6AueMNxfxV3M1vkE/OVkq
-         U5rqokNpl5T0xt/XD3ID33pE2dyQFmto9Wm/lPT4=
+        b=d+DcYPJngnU/iuGNUKJ8MLVpxdAaP2tO1Qub2zC0RQPAXVvOuZNyKhZmY8sEIuspF
+         KEz7j+7HsO9dU36Zy95l2odpj3kZ/fRI++XtiilgtlnXPEDBye6C9Pc1TMOmXbc44y
+         zMoFlGlPJroMNVfKFgwiYPE+lkiF6c+wqiQHGmEQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,9 +35,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 251/663] platform/x86/amd: pmc: Utilize SMN index 0 for driver probe
-Date:   Mon,  8 May 2023 11:41:17 +0200
-Message-Id: <20230508094436.401479251@linuxfoundation.org>
+Subject: [PATCH 6.2 252/663] platform/x86/amd: pmc: Move out of BIOS SMN pair for STB init
+Date:   Mon,  8 May 2023 11:41:18 +0200
+Message-Id: <20230508094436.440013198@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,97 +57,81 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 310e782a99c7f16fb533a45d8f9c16defefa5aab ]
+[ Upstream commit 8d99129eef8f42377b41c1bacee9f8ce806e9f44 ]
 
 The current SMN index used for the driver probe seems to be meant
 for the BIOS pair and there are potential concurrency problems that can
 occur with an inopportune SMI.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
+It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_6, which is
 what amd_nb.c provides and this function has protections to ensure that
 only one caller can use it at a time.
 
-Fixes: 156ec4731cb2 ("platform/x86: amd-pmc: Add AMD platform support for S2Idle")
+Fixes: 426c0ff27b83 ("platform/x86: amd-pmc: Add support for AMD Smart Trace Buffer")
 Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
 Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
 Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230409185348.556161-6-Shyam-sundar.S-k@amd.com
+Link: https://lore.kernel.org/r/20230409185348.556161-7-Shyam-sundar.S-k@amd.com
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/Kconfig |  2 +-
- drivers/platform/x86/amd/pmc.c   | 23 +++++------------------
- 2 files changed, 6 insertions(+), 19 deletions(-)
+ drivers/platform/x86/amd/pmc.c | 26 ++++----------------------
+ 1 file changed, 4 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/Kconfig b/drivers/platform/x86/amd/Kconfig
-index 2ce8cb2170dfc..d9685aef0887d 100644
---- a/drivers/platform/x86/amd/Kconfig
-+++ b/drivers/platform/x86/amd/Kconfig
-@@ -7,7 +7,7 @@ source "drivers/platform/x86/amd/pmf/Kconfig"
- 
- config AMD_PMC
- 	tristate "AMD SoC PMC driver"
--	depends on ACPI && PCI && RTC_CLASS
-+	depends on ACPI && PCI && RTC_CLASS && AMD_NB
- 	select SERIO
- 	help
- 	  The driver provides support for AMD Power Management Controller
 diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index 52f5b54ba5d6f..f8ef1fa742718 100644
+index f8ef1fa742718..45b0050dfbf7b 100644
 --- a/drivers/platform/x86/amd/pmc.c
 +++ b/drivers/platform/x86/amd/pmc.c
-@@ -10,6 +10,7 @@
+@@ -38,8 +38,6 @@
+ #define AMD_PMC_SCRATCH_REG_YC		0xD14
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ /* STB Registers */
+-#define AMD_PMC_STB_INDEX_ADDRESS	0xF8
+-#define AMD_PMC_STB_INDEX_DATA		0xFC
+ #define AMD_PMC_STB_PMI_0		0x03E30600
+ #define AMD_PMC_STB_S2IDLE_PREPARE	0xC6000001
+ #define AMD_PMC_STB_S2IDLE_RESTORE	0xC6000002
+@@ -901,17 +899,9 @@ static int amd_pmc_write_stb(struct amd_pmc_dev *dev, u32 data)
+ {
+ 	int err;
  
-+#include <asm/amd_nb.h>
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-@@ -55,8 +56,6 @@
- #define S2D_TELEMETRY_DRAMBYTES_MAX	0x1000000
- 
- /* Base address of SMU for mapping physical address to virtual address */
--#define AMD_PMC_SMU_INDEX_ADDRESS	0xB8
--#define AMD_PMC_SMU_INDEX_DATA		0xBC
- #define AMD_PMC_MAPPING_SIZE		0x01000
- #define AMD_PMC_BASE_ADDR_OFFSET	0x10000
- #define AMD_PMC_BASE_ADDR_LO		0x13B102E8
-@@ -962,30 +961,18 @@ static int amd_pmc_probe(struct platform_device *pdev)
- 
- 	dev->cpu_id = rdev->device;
- 	dev->rdev = rdev;
--	err = pci_write_config_dword(rdev, AMD_PMC_SMU_INDEX_ADDRESS, AMD_PMC_BASE_ADDR_LO);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMC_SMU_INDEX_ADDRESS);
--		err = pcibios_err_to_errno(err);
--		goto err_pci_dev_put;
+-	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
++	err = amd_smn_write(0, AMD_PMC_STB_PMI_0, data);
+ 	if (err) {
+-		dev_err(dev->dev, "failed to write addr in stb: 0x%X\n",
+-			AMD_PMC_STB_INDEX_ADDRESS);
+-		return pcibios_err_to_errno(err);
 -	}
 -
--	err = pci_read_config_dword(rdev, AMD_PMC_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMC_BASE_ADDR_LO, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error reading 0x%x\n", AMD_PMC_BASE_ADDR_LO);
- 		err = pcibios_err_to_errno(err);
- 		goto err_pci_dev_put;
+-	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, data);
+-	if (err) {
+-		dev_err(dev->dev, "failed to write data in stb: 0x%X\n",
+-			AMD_PMC_STB_INDEX_DATA);
++		dev_err(dev->dev, "failed to write data in stb: 0x%X\n", AMD_PMC_STB_PMI_0);
+ 		return pcibios_err_to_errno(err);
  	}
  
- 	base_addr_lo = val & AMD_PMC_BASE_ADDR_HI_MASK;
+@@ -923,18 +913,10 @@ static int amd_pmc_read_stb(struct amd_pmc_dev *dev, u32 *buf)
+ {
+ 	int i, err;
  
--	err = pci_write_config_dword(rdev, AMD_PMC_SMU_INDEX_ADDRESS, AMD_PMC_BASE_ADDR_HI);
+-	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
 -	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMC_SMU_INDEX_ADDRESS);
--		err = pcibios_err_to_errno(err);
--		goto err_pci_dev_put;
+-		dev_err(dev->dev, "error writing addr to stb: 0x%X\n",
+-			AMD_PMC_STB_INDEX_ADDRESS);
+-		return pcibios_err_to_errno(err);
 -	}
 -
--	err = pci_read_config_dword(rdev, AMD_PMC_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMC_BASE_ADDR_HI, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error reading 0x%x\n", AMD_PMC_BASE_ADDR_HI);
- 		err = pcibios_err_to_errno(err);
- 		goto err_pci_dev_put;
+ 	for (i = 0; i < FIFO_SIZE; i++) {
+-		err = pci_read_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, buf++);
++		err = amd_smn_read(0, AMD_PMC_STB_PMI_0, buf++);
+ 		if (err) {
+-			dev_err(dev->dev, "error reading data from stb: 0x%X\n",
+-				AMD_PMC_STB_INDEX_DATA);
++			dev_err(dev->dev, "error reading data from stb: 0x%X\n", AMD_PMC_STB_PMI_0);
+ 			return pcibios_err_to_errno(err);
+ 		}
  	}
 -- 
 2.39.2
