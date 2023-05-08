@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3128C6FA635
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5326FA931
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234371AbjEHKRb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46970 "EHLO
+        id S235168AbjEHKtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234350AbjEHKRW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:22 -0400
+        with ESMTP id S235147AbjEHKs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B576D3513E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D792C3F0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BAF3624C2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAD8C433D2;
-        Mon,  8 May 2023 10:17:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F128628FD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A8DC433EF;
+        Mon,  8 May 2023 10:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541032;
-        bh=4ZDjMyZlTE9Oi+5UsaZHV9CcbRHm4y+tdZZZXlM/SyQ=;
+        s=korg; t=1683542870;
+        bh=N7LKGteunCULXdsapzmXF+r7V2rn0cyLKYEhbCrEXBo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sxyWhPUeudwhyRDy22wJKP5aSH6EqWp97PqCqxovIOKS0HbdfJWfaA3hRd3v5P4u4
-         uWkKF/mConSSpGdOFibIw+i3D7+Mgbd7LP6sCjwTfVXvtc/SXwKAzob1c46ljNA40m
-         s3lK3YAvsOQKg9ROuRizRuG+GdrNeRf82ysB38VM=
+        b=PQijG47ZqmnfoNOAssncCg01l58RtSxSlwXiJXE0mPnc3B4jyVb04Ntv100Y7wTFI
+         ZsahSmKcRmcdTpvx1ON9kpheonfXjpCH/pK6gC0I7qwLgKkiDv+FO6G78QXy0ar6Pb
+         byExsJlc2Vpk88orcY5L6IG2adlir+djaVSuXs64=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 559/611] parisc: Fix argument pointer in real64_call_asm()
+        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 575/663] SMB3: Close deferred file handles in case of handle lease break
 Date:   Mon,  8 May 2023 11:46:41 +0200
-Message-Id: <20230508094440.153885226@linuxfoundation.org>
+Message-Id: <20230508094447.935336967@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,48 +54,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Bharath SM <bharathsm@microsoft.com>
 
-commit 6e3220ba3323a2c24be834aebf5d6e9f89d0993f upstream.
+[ Upstream commit d906be3fa571f6fc9381911304a0eca99f1b6951 ]
 
-Fix the argument pointer (ap) to point to real-mode memory
-instead of virtual memory.
+We should not cache deferred file handles if we dont have
+handle lease on a file. And we should immediately close all
+deferred handles in case of handle lease break.
 
-It's interesting that this issue hasn't shown up earlier, as this could
-have happened with any 64-bit PDC ROM code.
-
-I just noticed it because I suddenly faced a HPMC while trying to execute
-the 64-bit STI ROM code of an Visualize-FXe graphics card for the STI
-text console.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e31678fb403 ("SMB3: fix lease break timeout when multiple deferred close handles for the same file.")
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/real2.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/cifs/file.c | 16 ++++++++++++++++
+ fs/cifs/misc.c |  2 +-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/real2.S
-+++ b/arch/parisc/kernel/real2.S
-@@ -248,9 +248,6 @@ ENTRY_CFI(real64_call_asm)
- 	/* save fn */
- 	copy	%arg2, %r31
+diff --git a/fs/cifs/file.c b/fs/cifs/file.c
+index a53ddc81b698c..bef7c335ccc6e 100644
+--- a/fs/cifs/file.c
++++ b/fs/cifs/file.c
+@@ -5096,6 +5096,8 @@ void cifs_oplock_break(struct work_struct *work)
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	int rc = 0;
+ 	bool purge_cache = false;
++	struct cifs_deferred_close *dclose;
++	bool is_deferred = false;
  
--	/* set up the new ap */
--	ldo	64(%arg1), %r29
--
- 	/* load up the arg registers from the saved arg area */
- 	/* 32-bit calling convention passes first 4 args in registers */
- 	ldd	0*REG_SZ(%arg1), %arg0		/* note overwriting arg0 */
-@@ -262,7 +259,9 @@ ENTRY_CFI(real64_call_asm)
- 	ldd	7*REG_SZ(%arg1), %r19
- 	ldd	1*REG_SZ(%arg1), %arg1		/* do this one last! */
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+@@ -5131,6 +5133,20 @@ void cifs_oplock_break(struct work_struct *work)
+ 		cifs_dbg(VFS, "Push locks rc = %d\n", rc);
  
-+	/* set up real-mode stack and real-mode ap */
- 	tophys_r1 %sp
-+	ldo	-16(%sp), %r29			/* Reference param save area */
+ oplock_break_ack:
++	/*
++	 * When oplock break is received and there are no active
++	 * file handles but cached, then schedule deferred close immediately.
++	 * So, new open will not use cached handle.
++	 */
++	spin_lock(&CIFS_I(inode)->deferred_lock);
++	is_deferred = cifs_is_deferred_close(cfile, &dclose);
++	spin_unlock(&CIFS_I(inode)->deferred_lock);
++
++	if (!CIFS_CACHE_HANDLE(cinode) && is_deferred &&
++			cfile->deferred_close_scheduled && delayed_work_pending(&cfile->deferred)) {
++		cifs_close_deferred_file(cinode);
++	}
++
+ 	/*
+ 	 * releasing stale oplock after recent reconnect of smb session using
+ 	 * a now incorrect file handle is not a data integrity issue but do
+diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
+index dc97013469748..ee0a3c3f6b1d6 100644
+--- a/fs/cifs/misc.c
++++ b/fs/cifs/misc.c
+@@ -764,7 +764,7 @@ cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode)
+ 	spin_unlock(&cifs_inode->open_file_lock);
  
- 	b,l	rfi_virt2real,%r2
- 	nop
+ 	list_for_each_entry_safe(tmp_list, tmp_next_list, &file_head, list) {
+-		_cifsFileInfo_put(tmp_list->cfile, true, false);
++		_cifsFileInfo_put(tmp_list->cfile, false, false);
+ 		list_del(&tmp_list->list);
+ 		kfree(tmp_list);
+ 	}
+-- 
+2.39.2
+
 
 
