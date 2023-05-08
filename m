@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E10FB6FA68E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 556516FA9CE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234394AbjEHKV3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:21:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50924 "EHLO
+        id S235195AbjEHK4U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:56:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234509AbjEHKU3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:20:29 -0400
+        with ESMTP id S235265AbjEHKzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:55:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D6732931
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A2C2DD50
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7012624EF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D38C433EF;
-        Mon,  8 May 2023 10:20:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30B5161709
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACC2C433EF;
+        Mon,  8 May 2023 10:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541221;
-        bh=D3GOjQKvS4ma1wVRj35uiG85TriTrBR8VC89pstoyks=;
+        s=korg; t=1683543269;
+        bh=9UhbornEzdGmAQLLQnvUSs3jbXyeEDsz2sC7XXYufg0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r/ZDFrTXC1nyBQ8HSpgs2+fcZ64d8e+ORqbvTQQrvEqFNXLHYn/NJTkQwyNgG+XvC
-         bGqZVHKg94Hk6EgAx8+sSh6RSDC29HFycAg3zS+IUhAxDXPVxk/fhJ4e1O9AvvG62A
-         Sx9R/VXipDWc4vsZs6oZmz7/+b7VOAHvsScHJlIE=
+        b=jOoM+k+xPSEobKB0sSSJ3NcKhWgf1QeHvNqPnudp5pXnL6Nmbj5ZMQzRAC6bbMbco
+         SRHKA7OKaXTlJ+elaV2jYOW4lSTm7HaBpz+y9wr4k8qYk0AS0Ecqu6gWwshI47wuVo
+         tlPOH16zdbtHDHDqxyeRTiZoJxVfl0aLEF+zSq38=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.2 045/663] blk-crypto: make blk_crypto_evict_key() return void
+        patches@lists.linux.dev,
+        Zhang Yuchen <zhangyuchen.lcr@bytedance.com>,
+        Corey Minyard <minyard@acm.org>
+Subject: [PATCH 6.3 036/694] ipmi: fix SSIF not responding under certain cond.
 Date:   Mon,  8 May 2023 11:37:51 +0200
-Message-Id: <20230508094429.934230249@linuxfoundation.org>
+Message-Id: <20230508094433.812905214@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,130 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Zhang Yuchen <zhangyuchen.lcr@bytedance.com>
 
-commit 70493a63ba04f754f7a7dd53a4fcc82700181490 upstream.
+commit 6d2555cde2918409b0331560e66f84a0ad4849c6 upstream.
 
-blk_crypto_evict_key() is only called in contexts such as inode eviction
-where failure is not an option.  So there is nothing the caller can do
-with errors except log them.  (dm-table.c does "use" the error code, but
-only to pass on to upper layers, so it doesn't really count.)
+The ipmi communication is not restored after a specific version of BMC is
+upgraded on our server.
+The ipmi driver does not respond after printing the following log:
 
-Just make blk_crypto_evict_key() return void and log errors itself.
+    ipmi_ssif: Invalid response getting flags: 1c 1
+
+I found that after entering this branch, ssif_info->ssif_state always
+holds SSIF_GETTING_FLAGS and never return to IDLE.
+
+As a result, the driver cannot be loaded, because the driver status is
+checked during the unload process and must be IDLE in shutdown_ssif():
+
+        while (ssif_info->ssif_state != SSIF_IDLE)
+                schedule_timeout(1);
+
+The process trigger this problem is:
+
+1. One msg timeout and next msg start send, and call
+ssif_set_need_watch().
+
+2. ssif_set_need_watch()->watch_timeout()->start_flag_fetch() change
+ssif_state to SSIF_GETTING_FLAGS.
+
+3. In msg_done_handler() ssif_state == SSIF_GETTING_FLAGS, if an error
+message is received, the second branch does not modify the ssif_state.
+
+4. All retry action need IS_SSIF_IDLE() == True. Include retry action in
+watch_timeout(), msg_done_handler(). Sending msg does not work either.
+SSIF_IDLE is also checked in start_next_msg().
+
+5. The only thing that can be triggered in the SSIF driver is
+watch_timeout(), after destory_user(), this timer will stop too.
+
+So, if enter this branch, the ssif_state will remain SSIF_GETTING_FLAGS
+and can't send msg, no timer started, can't unload.
+
+We did a comparative test before and after adding this patch, and the
+result is effective.
+
+Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Zhang Yuchen <zhangyuchen.lcr@bytedance.com>
+Message-Id: <20230412074907.80046-1-zhangyuchen.lcr@bytedance.com>
+Signed-off-by: Corey Minyard <minyard@acm.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-crypto.c         |   20 +++++++++-----------
- drivers/md/dm-table.c      |   19 +++++--------------
- include/linux/blk-crypto.h |    4 ++--
- 3 files changed, 16 insertions(+), 27 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/block/blk-crypto.c
-+++ b/block/blk-crypto.c
-@@ -13,6 +13,7 @@
- #include <linux/blkdev.h>
- #include <linux/blk-crypto-profile.h>
- #include <linux/module.h>
-+#include <linux/ratelimit.h>
- #include <linux/slab.h>
- 
- #include "blk-crypto-internal.h"
-@@ -408,21 +409,18 @@ int blk_crypto_start_using_key(struct bl
-  * Upper layers (filesystems) must call this function to ensure that a key is
-  * evicted from any hardware that it might have been programmed into.  The key
-  * must not be in use by any in-flight IO when this function is called.
-- *
-- * Return: 0 on success or if the key wasn't in any keyslot; -errno on error.
-  */
--int blk_crypto_evict_key(struct block_device *bdev,
--			 const struct blk_crypto_key *key)
-+void blk_crypto_evict_key(struct block_device *bdev,
-+			  const struct blk_crypto_key *key)
- {
- 	struct request_queue *q = bdev_get_queue(bdev);
-+	int err;
- 
- 	if (blk_crypto_config_supported_natively(bdev, &key->crypto_cfg))
--		return __blk_crypto_evict_key(q->crypto_profile, key);
--
--	/*
--	 * If the block_device didn't support the key, then blk-crypto-fallback
--	 * may have been used, so try to evict the key from blk-crypto-fallback.
--	 */
--	return blk_crypto_fallback_evict_key(key);
-+		err = __blk_crypto_evict_key(q->crypto_profile, key);
-+	else
-+		err = blk_crypto_fallback_evict_key(key);
-+	if (err)
-+		pr_warn_ratelimited("%pg: error %d evicting key\n", bdev, err);
- }
- EXPORT_SYMBOL_GPL(blk_crypto_evict_key);
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -1203,21 +1203,12 @@ struct dm_crypto_profile {
- 	struct mapped_device *md;
- };
- 
--struct dm_keyslot_evict_args {
--	const struct blk_crypto_key *key;
--	int err;
--};
--
- static int dm_keyslot_evict_callback(struct dm_target *ti, struct dm_dev *dev,
- 				     sector_t start, sector_t len, void *data)
- {
--	struct dm_keyslot_evict_args *args = data;
--	int err;
-+	const struct blk_crypto_key *key = data;
- 
--	err = blk_crypto_evict_key(dev->bdev, args->key);
--	if (!args->err)
--		args->err = err;
--	/* Always try to evict the key from all devices. */
-+	blk_crypto_evict_key(dev->bdev, key);
- 	return 0;
- }
- 
-@@ -1230,7 +1221,6 @@ static int dm_keyslot_evict(struct blk_c
- {
- 	struct mapped_device *md =
- 		container_of(profile, struct dm_crypto_profile, profile)->md;
--	struct dm_keyslot_evict_args args = { key };
- 	struct dm_table *t;
- 	int srcu_idx;
- 
-@@ -1243,11 +1233,12 @@ static int dm_keyslot_evict(struct blk_c
- 
- 		if (!ti->type->iterate_devices)
- 			continue;
--		ti->type->iterate_devices(ti, dm_keyslot_evict_callback, &args);
-+		ti->type->iterate_devices(ti, dm_keyslot_evict_callback,
-+					  (void *)key);
- 	}
- 
- 	dm_put_live_table(md, srcu_idx);
--	return args.err;
-+	return 0;
- }
- 
- static int
---- a/include/linux/blk-crypto.h
-+++ b/include/linux/blk-crypto.h
-@@ -95,8 +95,8 @@ int blk_crypto_init_key(struct blk_crypt
- int blk_crypto_start_using_key(struct block_device *bdev,
- 			       const struct blk_crypto_key *key);
- 
--int blk_crypto_evict_key(struct block_device *bdev,
--			 const struct blk_crypto_key *key);
-+void blk_crypto_evict_key(struct block_device *bdev,
-+			  const struct blk_crypto_key *key);
- 
- bool blk_crypto_config_supported_natively(struct block_device *bdev,
- 					  const struct blk_crypto_config *cfg);
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -786,9 +786,9 @@ static void msg_done_handler(struct ssif
+ 		} else if (data[0] != (IPMI_NETFN_APP_REQUEST | 1) << 2
+ 			   || data[1] != IPMI_GET_MSG_FLAGS_CMD) {
+ 			/*
+-			 * Don't abort here, maybe it was a queued
+-			 * response to a previous command.
++			 * Recv error response, give up.
+ 			 */
++			ssif_info->ssif_state = SSIF_IDLE;
+ 			ipmi_ssif_unlock_cond(ssif_info, flags);
+ 			dev_warn(&ssif_info->client->dev,
+ 				 "Invalid response getting flags: %x %x\n",
 
 
