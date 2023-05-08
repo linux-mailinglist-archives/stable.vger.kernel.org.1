@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4E6D6FA8D5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 003356FABE5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234965AbjEHKpm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48158 "EHLO
+        id S235494AbjEHLSh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:18:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234968AbjEHKpX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:23 -0400
+        with ESMTP id S233924AbjEHLSg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92EF52A878
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A3C37614
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 189386287C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C24C433D2;
-        Mon,  8 May 2023 10:44:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C018462AA1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B18C4339B;
+        Mon,  8 May 2023 11:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542668;
-        bh=OfAHVvZRjHRhTlgXG64DZfAb2A1fZbwyzZN1Eh5q2lQ=;
+        s=korg; t=1683544714;
+        bh=J96scCUgcFwW/WgU8ia+/0lU8QJhNiFPQo295skVAcc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aWScrp4KPhl6AwMOrgbBm3cEGkGSCGpgoA5PU5HngTG8rSzLsTgYo5VKWbwd+XWMF
-         RPF7PSXd9a1suDKLLXaQHgjEnWusNQZLU/L8zLzx7sZyVWucZabIiuOr/ZEoHKAwQ1
-         9vb0/Rf+N1bP0dpx0FAXNzo/Is89Sbsd8Hs+Z2DY=
+        b=JXwPzIwDZ2yvIBrd5JC+AhzKJk/4uGeqKtPkE4F2d/2cxqmeWjvR4vOehvEm8cEgR
+         QLvBnXEAjHTWUZKflMm7abCxlWszkeCwHcxdRPO3cGowcLgdIjBvTUxnDA1jC4vRKM
+         Dq5vJbuji4ez3BPqsXAO5r9uWdWzyCbhc9NLnudM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 509/663] powerpc/rtas: use memmove for potentially overlapping buffer copy
+Subject: [PATCH 6.3 500/694] interconnect: qcom: osm-l3: drop unuserd header inclusion
 Date:   Mon,  8 May 2023 11:45:35 +0200
-Message-Id: <20230508094445.194605846@linuxfoundation.org>
+Message-Id: <20230508094450.276075308@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 271208ee5e335cb1ad280d22784940daf7ddf820 ]
+[ Upstream commit f730038fe6a6de170268fd779b2c029aa70a928b ]
 
-Using memcpy() isn't safe when buf is identical to rtas_err_buf, which
-can happen during boot before slab is up. Full context which may not
-be obvious from the diff:
+The commit 4529992c9474 ("interconnect: qcom: osm-l3: Use
+platform-independent node ids") made osm-l3 driver use
+platform-independent IDs, removing the need to include platform headers.
 
-	if (altbuf) {
-		buf = altbuf;
-	} else {
-		buf = rtas_err_buf;
-		if (slab_is_available())
-			buf = kmalloc(RTAS_ERROR_LOG_MAX, GFP_ATOMIC);
-	}
-	if (buf)
-		memcpy(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
-
-This was found by inspection and I'm not aware of it causing problems
-in practice. It appears to have been introduced by commit
-033ef338b6e0 ("powerpc: Merge rtas.c into arch/powerpc/kernel"); the
-old ppc64 version of this code did not have this problem.
-
-Use memmove() instead.
-
-Fixes: 033ef338b6e0 ("powerpc: Merge rtas.c into arch/powerpc/kernel")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230220-rtas-queue-for-6-4-v1-2-010e4416f13f@linux.ibm.com
+Fixes: 4529992c9474 ("interconnect: qcom: osm-l3: Use platform-independent node ids")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230103031159.1060075-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/interconnect/qcom/osm-l3.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index deded51a79784..333a239a30d62 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -425,7 +425,7 @@ static char *__fetch_rtas_last_error(char *altbuf)
- 				buf = kmalloc(RTAS_ERROR_LOG_MAX, GFP_ATOMIC);
- 		}
- 		if (buf)
--			memcpy(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
-+			memmove(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
- 	}
+diff --git a/drivers/interconnect/qcom/osm-l3.c b/drivers/interconnect/qcom/osm-l3.c
+index 1bafb54f14329..a1f4f918b9116 100644
+--- a/drivers/interconnect/qcom/osm-l3.c
++++ b/drivers/interconnect/qcom/osm-l3.c
+@@ -14,13 +14,6 @@
  
- 	return buf;
+ #include <dt-bindings/interconnect/qcom,osm-l3.h>
+ 
+-#include "sc7180.h"
+-#include "sc7280.h"
+-#include "sc8180x.h"
+-#include "sdm845.h"
+-#include "sm8150.h"
+-#include "sm8250.h"
+-
+ #define LUT_MAX_ENTRIES			40U
+ #define LUT_SRC				GENMASK(31, 30)
+ #define LUT_L_VAL			GENMASK(7, 0)
 -- 
 2.39.2
 
