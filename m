@@ -2,55 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18F56FADDF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7312F6FAC07
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236062AbjEHLjP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:39:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56544 "EHLO
+        id S233963AbjEHLUE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:20:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236075AbjEHLi6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A1D3F2C3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:11 -0700 (PDT)
+        with ESMTP id S235624AbjEHLT7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB63387E7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CE8762CE3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:38:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180C8C433EF;
-        Mon,  8 May 2023 11:38:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41E8C62C51
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB04C433D2;
+        Mon,  8 May 2023 11:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545890;
-        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
+        s=korg; t=1683544794;
+        bh=RSjOxyB5EPvG1Rqoq05Wv2cmDWnbUTTmS3+tHQm/tIw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yv6gNBQcVc0vMZxD17I6vyKa/NoZN29drdJ2vWswdGb1r1LzrNxP96bCBoKtZuxcu
-         g0KEGd9hBUMMZfiRShUch2au507KKHyLRe0WoNGt/kU+OZ7Bf/mC25CtP9u22oPNOe
-         Z5JV41bx7ZGXCAfxPjojIaKZLIbUKBY8wTFLb/kM=
+        b=pUlSRI8PKjijZ1AWQD3uyaRKb5LX83wrcn/iT9nmIBZxMK2hgTtmB1mlFTjFncT18
+         ue9QXMSjbIKrs9vfqrHIKFSz3crQkUcauiYKLppJW+ilwag1d9U+XG32ZI+7Zh2g02
+         zAwjFHTeaQcKtK80t1poZ51CNpwY0f0EAj+NtAWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/371] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 526/694] HID: amd_sfh: Fix illuminance value
 Date:   Mon,  8 May 2023 11:46:01 +0200
-Message-Id: <20230508094818.448145336@linuxfoundation.org>
+Message-Id: <20230508094451.380591962@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,75 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
+[ Upstream commit a33e5e393171ae8384d3381db5cd159ba877cfcb ]
 
-Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
-wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
+Illuminance value is actually 32 bits, but is incorrectly trancated to
+16 bits. Hence convert to integer illuminace accordingly to reflect
+correct values.
 
-For some reason we have no corresponding check for SO_PASSSEC.
-
-In the recvmsg(2) doc we have:
-       MSG_CTRUNC
-              indicates that some control data was discarded due to lack
-              of space in the buffer for ancillary data.
-
-So, we need to set MSG_CTRUNC flag for all types of SCM.
-
-This change can break applications those don't check MSG_CTRUNC flag.
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-v2:
-- commit message was rewritten according to Eric's suggestion
-Acked-by: Paul Moore <paul@paul-moore.com>
-
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/scm.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c      | 2 +-
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index 1ce365f4c2560..585adc1346bd0 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
- 		}
- 	}
- }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return test_bit(SOCK_PASSSEC, &sock->flags);
-+}
- #else
- static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
- { }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SECURITY_NETWORK */
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
+index 0609fea581c96..6f0d332ccf51c 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
+@@ -218,7 +218,7 @@ static u8 get_input_rep(u8 current_index, int sensor_idx, int report_id,
+ 			     OFFSET_SENSOR_DATA_DEFAULT;
+ 		memcpy_fromio(&als_data, sensoraddr, sizeof(struct sfh_als_data));
+ 		get_common_inputs(&als_input.common_property, report_id);
+-		als_input.illuminance_value = als_data.lux;
++		als_input.illuminance_value = float_to_int(als_data.lux);
+ 		report_size = sizeof(als_input);
+ 		memcpy(input_report, &als_input, sizeof(als_input));
+ 		break;
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
+index a3e0ec289e3f9..9d31d5b510eb4 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
+@@ -133,7 +133,7 @@ struct sfh_mag_data {
  
- static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
- 				struct scm_cookie *scm, int flags)
- {
- 	if (!msg->msg_control) {
--		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
-+		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
-+		    scm_has_secdata(sock))
- 			msg->msg_flags |= MSG_CTRUNC;
- 		scm_destroy(scm);
- 		return;
+ struct sfh_als_data {
+ 	struct sfh_common_data commondata;
+-	u16 lux;
++	u32 lux;
+ };
+ 
+ struct hpd_status {
 -- 
 2.39.2
 
