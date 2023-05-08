@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4996FA5E4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B6196FADC2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234199AbjEHKON (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41858 "EHLO
+        id S236021AbjEHLiB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:38:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234303AbjEHKN6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:58 -0400
+        with ESMTP id S236019AbjEHLhr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50ED83AA22
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0342C3C3F8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3E056242D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C30C4339B;
-        Mon,  8 May 2023 10:13:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA41363327
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0805CC433D2;
+        Mon,  8 May 2023 11:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540834;
-        bh=Bf7dk3w3EQ067UlsrvGA07ZhfbijIzzZGVhYYSFFhQo=;
+        s=korg; t=1683545794;
+        bh=OnMBrPOhbqSEDZrnyCAbKG7AEJDlktUCMvf7n3EpDlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VPa+lK0mKrWF//7LXqXA4OY3uXZ5W65GnvljYurgmB1kF/QXvnJrzeyrG6M89WIh8
-         1X7PECbKuz4yuo6c/vywH0Died0+GyPyVGdGO1aRqbz7skQCn77bEUHJVyXUVUNib4
-         BFgEGqNiRmxNEzxl7NIeiMfC3nL9Ui3yPFbryzro=
+        b=eXji9pqk9x/yo/IMSwlur/dMZMI2dZDgsTmT/+c+BPPpvuiMxT+xVQcKwgjDiadiI
+         t/njv1akO2NRyg4QsDo3t6A46c5d57zA1jKh7215pVluKbi6Whd7XIwnh7+VfsuEqn
+         6LOojjAhotIqRhx9QmL993TNLc4eCgzFs3mZ8Bs4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avihai Horon <avihaih@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Luis Gerhorst <gerhorst@cs.fau.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Quentin Monnet <quentin@isovalent.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 514/611] RDMA/mlx5: Check pcie_relaxed_ordering_enabled() in UMR
+Subject: [PATCH 5.15 155/371] tools: bpftool: Remove invalid \ json escape
 Date:   Mon,  8 May 2023 11:45:56 +0200
-Message-Id: <20230508094438.751080544@linuxfoundation.org>
+Message-Id: <20230508094818.227026886@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,65 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: Luis Gerhorst <gerhorst@cs.fau.de>
 
-[ Upstream commit d43b020b0f82c088ef8ff3196ef00575a97d200e ]
+[ Upstream commit c679bbd611c08b0559ffae079330bc4e5574696a ]
 
-relaxed_ordering_read HCA capability is set if both the device supports
-relaxed ordering (RO) read and RO is set in PCI config space.
+RFC8259 ("The JavaScript Object Notation (JSON) Data Interchange
+Format") only specifies \", \\, \/, \b, \f, \n, \r, and \r as valid
+two-character escape sequences. This does not include \', which is not
+required in JSON because it exclusively uses double quotes as string
+separators.
 
-RO in PCI config space can change during runtime. This will change the
-value of relaxed_ordering_read HCA capability in FW, but the driver will
-not see it since it queries the capabilities only once.
+Solidus (/) may be escaped, but does not have to. Only reverse
+solidus (\), double quotes ("), and the control characters have to be
+escaped. Therefore, with this fix, bpftool correctly supports all valid
+two-character escape sequences (but still does not support characters
+that require multi-character escape sequences).
 
-This can lead to the following scenario:
-1. RO in PCI config space is enabled.
-2. User creates MKey without RO.
-3. RO in PCI config space is disabled.
-   As a result, relaxed_ordering_read HCA capability is turned off in FW
-   but remains on in driver copy of the capabilities.
-4. User requests to reconfig the MKey with RO via UMR.
-5. Driver will try to reconfig the MKey with RO read although it
-   shouldn't (as relaxed_ordering_read HCA capability is really off).
+Witout this fix, attempting to load a JSON file generated by bpftool
+using Python 3.10.6's default json.load() may fail with the error
+"Invalid \escape" if the file contains the invalid escaped single
+quote (\').
 
-To fix this, check pcie_relaxed_ordering_enabled() before setting RO
-read in UMR.
-
-Fixes: 896ec9735336 ("RDMA/mlx5: Set mkey relaxed ordering by UMR with ConnectX-7")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Link: https://lore.kernel.org/r/8d39eb8317e7bed1a354311a20ae707788fd94ed.1681131553.git.leon@kernel.org
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: b66e907cfee2 ("tools: bpftool: copy JSON writer from iproute2 repository")
+Signed-off-by: Luis Gerhorst <gerhorst@cs.fau.de>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20230227150853.16863-1-gerhorst@cs.fau.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/umr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/bpf/bpftool/json_writer.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
-index d5105b5c9979b..cb5cee3dee2b6 100644
---- a/drivers/infiniband/hw/mlx5/umr.c
-+++ b/drivers/infiniband/hw/mlx5/umr.c
-@@ -380,6 +380,9 @@ static void mlx5r_umr_set_access_flags(struct mlx5_ib_dev *dev,
- 				       struct mlx5_mkey_seg *seg,
- 				       unsigned int access_flags)
- {
-+	bool ro_read = (access_flags & IB_ACCESS_RELAXED_ORDERING) &&
-+		       pcie_relaxed_ordering_enabled(dev->mdev->pdev);
-+
- 	MLX5_SET(mkc, seg, a, !!(access_flags & IB_ACCESS_REMOTE_ATOMIC));
- 	MLX5_SET(mkc, seg, rw, !!(access_flags & IB_ACCESS_REMOTE_WRITE));
- 	MLX5_SET(mkc, seg, rr, !!(access_flags & IB_ACCESS_REMOTE_READ));
-@@ -387,8 +390,7 @@ static void mlx5r_umr_set_access_flags(struct mlx5_ib_dev *dev,
- 	MLX5_SET(mkc, seg, lr, 1);
- 	MLX5_SET(mkc, seg, relaxed_ordering_write,
- 		 !!(access_flags & IB_ACCESS_RELAXED_ORDERING));
--	MLX5_SET(mkc, seg, relaxed_ordering_read,
--		 !!(access_flags & IB_ACCESS_RELAXED_ORDERING));
-+	MLX5_SET(mkc, seg, relaxed_ordering_read, ro_read);
- }
- 
- int mlx5r_umr_rereg_pd_access(struct mlx5_ib_mr *mr, struct ib_pd *pd,
+diff --git a/tools/bpf/bpftool/json_writer.c b/tools/bpf/bpftool/json_writer.c
+index 7fea83bedf488..bca5dd0a59e34 100644
+--- a/tools/bpf/bpftool/json_writer.c
++++ b/tools/bpf/bpftool/json_writer.c
+@@ -80,9 +80,6 @@ static void jsonw_puts(json_writer_t *self, const char *str)
+ 		case '"':
+ 			fputs("\\\"", self->out);
+ 			break;
+-		case '\'':
+-			fputs("\\\'", self->out);
+-			break;
+ 		default:
+ 			putc(*str, self->out);
+ 		}
 -- 
 2.39.2
 
