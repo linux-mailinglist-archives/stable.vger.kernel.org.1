@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BA56FAB04
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6EB36FA4CE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233343AbjEHLIn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45850 "EHLO
+        id S233961AbjEHKDX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233827AbjEHLIM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:12 -0400
+        with ESMTP id S233962AbjEHKDW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFF42E80F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E540D2D42F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA0A362AF7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005EBC4339B;
-        Mon,  8 May 2023 11:08:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 794B3622D8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A36BC4339C;
+        Mon,  8 May 2023 10:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544086;
-        bh=H6nX+IPDCB1/Hki+p6yuKcuoLcDBnA+Ax7F9m++mm6M=;
+        s=korg; t=1683540199;
+        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x8TXBq9d4N6dZgq7ufeA/FYcSgwlXbPMps2TN9qtl2jIhevA5cSDIey/slyYraJxC
-         g4Z0AHVANaJfcNwYdmnkK+bRfFp97vBAouP4MeMrrBHvla+5RKZOeBuENyxQ+rzQOx
-         q7wO61j09BXYyuLSQhMeHzJIHnEsEp3UG2/XFZLo=
+        b=SaIkiZHkstYNIRZdpJYeYItjnEyMzB8yFPYPIkJqkvjT79baLzOKQwjiFeDYi+0SS
+         ewUYXhza2vdlUtYOVWKV98v2ceI7yHK7oXjg5Lx/CViSTdfHHk5lmprfoC2WPH53e3
+         fUrBB7fChM/i0Q1Tfvhm8OubcAHEY9lv7MH4C2O4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 280/694] media: mediatek: vcodec: move lat_buf to the top of core list
+        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 273/611] wifi: ath6kl: reduce WARN to dev_dbg() in callback
 Date:   Mon,  8 May 2023 11:41:55 +0200
-Message-Id: <20230508094441.359712285@linuxfoundation.org>
+Message-Id: <20230508094431.254714794@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,85 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 2cfca6c1bf8074175ea7a3b6b47f77ebdef8f701 ]
+[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
 
-Current instance will decode done when begin to wait lat buf full,
-move the lat_buf of current instance to the top of core list to make
-sure current instance's lat_buf will be used firstly.
+The warn is triggered on a known race condition, documented in the code above
+the test, that is correctly handled.  Using WARN() hinders automated testing.
+Reducing severity.
 
-Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
+Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/vdec_msg_queue.c | 21 ++++++++++++++++++-
- .../platform/mediatek/vcodec/vdec_msg_queue.h |  2 ++
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index ad5002ca953e0..0da6e3e2ef0b3 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -174,8 +174,26 @@ void vdec_msg_queue_update_ube_wptr(struct vdec_msg_queue *msg_queue, uint64_t u
- 
- bool vdec_msg_queue_wait_lat_buf_full(struct vdec_msg_queue *msg_queue)
- {
-+	struct vdec_lat_buf *buf, *tmp;
-+	struct list_head *list_core[3];
-+	struct vdec_msg_queue_ctx *core_ctx;
-+	int ret, i, in_core_count = 0;
- 	long timeout_jiff;
--	int ret;
-+
-+	core_ctx = &msg_queue->ctx->dev->msg_queue_core_ctx;
-+	spin_lock(&core_ctx->ready_lock);
-+	list_for_each_entry_safe(buf, tmp, &core_ctx->ready_queue, core_list) {
-+		if (buf && buf->ctx == msg_queue->ctx) {
-+			list_core[in_core_count++] = &buf->core_list;
-+			list_del(&buf->core_list);
-+		}
-+	}
-+
-+	for (i = 0; i < in_core_count; i++) {
-+		list_add(list_core[in_core_count - (1 + i)], &core_ctx->ready_queue);
-+		queue_work(msg_queue->ctx->dev->core_workqueue, &msg_queue->core_work);
-+	}
-+	spin_unlock(&core_ctx->ready_lock);
- 
- 	timeout_jiff = msecs_to_jiffies(1000 * (NUM_BUFFER_COUNT + 2));
- 	ret = wait_event_timeout(msg_queue->lat_ctx.ready_to_use,
-@@ -257,6 +275,7 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
- 	if (msg_queue->wdma_addr.size)
- 		return 0;
- 
-+	msg_queue->ctx = ctx;
- 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
- 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
- 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-index b1aa5572ba49f..56280d6682c5a 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-@@ -72,6 +72,7 @@ struct vdec_lat_buf {
-  * @wdma_wptr_addr: ube write point
-  * @core_work: core hardware work
-  * @lat_ctx: used to store lat buffer list
-+ * @ctx: point to mtk_vcodec_ctx
-  *
-  * @lat_list_cnt: used to record each instance lat list count
-  * @core_list_cnt: used to record each instance core list count
-@@ -85,6 +86,7 @@ struct vdec_msg_queue {
- 
- 	struct work_struct core_work;
- 	struct vdec_msg_queue_ctx lat_ctx;
-+	struct mtk_vcodec_ctx *ctx;
- 
- 	atomic_t lat_list_cnt;
- 	atomic_t core_list_cnt;
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index c68848819a52d..9b88d96bfe96c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
+ 	 */
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
+ 	}
 -- 
 2.39.2
 
