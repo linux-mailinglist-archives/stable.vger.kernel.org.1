@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C60D6FA791
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C09E6FAAF6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234766AbjEHKcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
+        id S232291AbjEHLIN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234725AbjEHKbv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:51 -0400
+        with ESMTP id S233808AbjEHLHy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEAA42787A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7450A34103
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBEFC626DD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7650CC43444;
-        Mon,  8 May 2023 10:31:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09AB862ADD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1291C433D2;
+        Mon,  8 May 2023 11:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541889;
-        bh=Zl3yB4I7jmLbr4Wjo08xzHw+k2BrZbWVxUBQSp+G6Ig=;
+        s=korg; t=1683544043;
+        bh=AgrqtO/xJrLcnNHEcQt7FP6+ZXM1I6xKHX0lnHmtzRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QiMaYOsaQtVkojJNalwuX2pOfepHBiOeoAWEtOrdCyq2yfxHtqBsUPJqgbu7GMryD
-         KwLfvmarPqdK0JMfag8bxTKKeciEsb7tsc+MEMlkIspyOePwoiRPY/QJHs032QVXrm
-         obuyR28lSrgGLiOzFoLg9mkgmfVVGgAkkD7pyoU0=
+        b=zRwGWGXMAXs1Xf9425yLv2sIVw1zejATgohaXbi8RTLqFbCiECX7RW6Pb77hKuWWG
+         lyR5+YaCqMdkdTc46pxQzGrirOQ1/nvFxjygEwI41eEUrTIuDHgiSzyULXDPEHOa24
+         VIm/GrixXtlqG/JVN5gLMMsr625KZ6cyoI/FkB9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 260/663] media: v4l: async: Return async sub-devices to subnotifier list
-Date:   Mon,  8 May 2023 11:41:26 +0200
-Message-Id: <20230508094436.683528558@linuxfoundation.org>
+Subject: [PATCH 6.3 252/694] arm64: dts: qcom: msm8994-kitakami: drop unit address from PMI8994 regulator
+Date:   Mon,  8 May 2023 11:41:27 +0200
+Message-Id: <20230508094440.473282539@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,78 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5276c9df9c2ab9a43b534bfb56bdb10899cd3a22 ]
+[ Upstream commit 3555dd528ba9c08d6ccd56239c695dbeac3b63e3 ]
 
-When an async notifier is unregistered, the async sub-devices in the
-notifier's done list will disappear with the notifier. However this is
-currently also done to the sub-notifiers that remain registered. Their
-sub-devices only need to be unbound while the async sub-devices themselves
-need to be returned to the sub-notifier's waiting list. Do this now.
+The PMIC regulators are not supposed to have unit addresses.
 
-Fixes: 2cab00bb076b ("media: v4l: async: Allow binding notifiers to sub-devices")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: e9783584c9b7 ("arm64: dts: qcom: msm8994-kitakami: Add VDD_GFX regulator")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230312183622.460488-6-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-async.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
-index 2f1b718a91893..008a2a3e312e0 100644
---- a/drivers/media/v4l2-core/v4l2-async.c
-+++ b/drivers/media/v4l2-core/v4l2-async.c
-@@ -414,7 +414,8 @@ static void v4l2_async_cleanup(struct v4l2_subdev *sd)
- 
- /* Unbind all sub-devices in the notifier tree. */
- static void
--v4l2_async_nf_unbind_all_subdevs(struct v4l2_async_notifier *notifier)
-+v4l2_async_nf_unbind_all_subdevs(struct v4l2_async_notifier *notifier,
-+				 bool readd)
- {
- 	struct v4l2_subdev *sd, *tmp;
- 
-@@ -423,9 +424,11 @@ v4l2_async_nf_unbind_all_subdevs(struct v4l2_async_notifier *notifier)
- 			v4l2_async_find_subdev_notifier(sd);
- 
- 		if (subdev_notifier)
--			v4l2_async_nf_unbind_all_subdevs(subdev_notifier);
-+			v4l2_async_nf_unbind_all_subdevs(subdev_notifier, true);
- 
- 		v4l2_async_nf_call_unbind(notifier, sd, sd->asd);
-+		if (readd)
-+			list_add_tail(&sd->asd->list, &notifier->waiting);
- 		v4l2_async_cleanup(sd);
- 
- 		list_move(&sd->async_list, &subdev_list);
-@@ -557,7 +560,7 @@ static int __v4l2_async_nf_register(struct v4l2_async_notifier *notifier)
- 	/*
- 	 * On failure, unbind all sub-devices registered through this notifier.
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
+index 3ceb86b06209a..26059f861250f 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
+@@ -173,8 +173,7 @@
+ 	 * power domain.. which still isn't enough and forces us to bind
+ 	 * OXILI_CX and OXILI_GX together!
  	 */
--	v4l2_async_nf_unbind_all_subdevs(notifier);
-+	v4l2_async_nf_unbind_all_subdevs(notifier, false);
- 
- err_unlock:
- 	mutex_unlock(&list_lock);
-@@ -607,7 +610,7 @@ __v4l2_async_nf_unregister(struct v4l2_async_notifier *notifier)
- 	if (!notifier || (!notifier->v4l2_dev && !notifier->sd))
- 		return;
- 
--	v4l2_async_nf_unbind_all_subdevs(notifier);
-+	v4l2_async_nf_unbind_all_subdevs(notifier, false);
- 
- 	notifier->sd = NULL;
- 	notifier->v4l2_dev = NULL;
-@@ -805,7 +808,7 @@ int v4l2_async_register_subdev(struct v4l2_subdev *sd)
- 	 */
- 	subdev_notifier = v4l2_async_find_subdev_notifier(sd);
- 	if (subdev_notifier)
--		v4l2_async_nf_unbind_all_subdevs(subdev_notifier);
-+		v4l2_async_nf_unbind_all_subdevs(subdev_notifier, false);
- 
- 	if (sd->asd)
- 		v4l2_async_nf_call_unbind(notifier, sd, sd->asd);
+-	vdd_gfx: s2@1700 {
+-		reg = <0x1700 0x100>;
++	vdd_gfx: s2 {
+ 		regulator-name = "VDD_GFX";
+ 		regulator-min-microvolt = <980000>;
+ 		regulator-max-microvolt = <980000>;
 -- 
 2.39.2
 
