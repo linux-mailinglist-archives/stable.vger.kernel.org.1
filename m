@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1BE06FA9B3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DEFF6FA661
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235202AbjEHKyt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54880 "EHLO
+        id S234358AbjEHKSy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:18:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235204AbjEHKyS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C960830E50
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:30 -0700 (PDT)
+        with ESMTP id S234352AbjEHKSx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B67D8D2DF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E04561821
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BBEC433EF;
-        Mon,  8 May 2023 10:53:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E8E162509
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EC5C4339C;
+        Mon,  8 May 2023 10:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543209;
-        bh=NN7bBK93HRhvkiI8sBU1h/1yIMisFqvlgSL/Q4yVGDw=;
+        s=korg; t=1683541130;
+        bh=FGAll/LomuNzjHZoRmGPenTV7BFTpGFr4ZGudxmlivI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xaIU/DQRaFa77hQpLYBDSNKdzphF5NWVoIrk7/diUZ2nUw07X16L1374WlVGWBCph
-         bsiLp3/uriO9ezO4a0TAzo5054Q9fXMkklPICpraXeZgYC65Br01dybIADFo6bfssa
-         vlqOY7zS4tE0s5IQzxzOG0nZf7BalVnRo50r7HdE=
+        b=dJPPgX4b75/xCIhm8q13uF35IOshFNPeax838QEZd8bgwYshiJ7wcdyHPIGhIdkwz
+         X6RxpZwuQ1MnVtO/Nvw2gzbEDV/RQrnJQYfpiQcjy4ZWHhKXJMWxcrLoaYA220/1IP
+         xfrGupchr5wvIGf4h+T32/BIRLgztpwg32f2gWuo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Slark Xiao <slark_xiao@163.com>,
-        Fabio Porcedda <fabio.porcedda@gmail.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.3 007/694] bus: mhi: host: pci_generic: Revert "Add a secondary AT port to Telit FN990"
+        patches@lists.linux.dev,
+        Douglas RAILLARD <douglas.raillard@arm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 016/663] tracing: Error if a trace event has an array for a __field()
 Date:   Mon,  8 May 2023 11:37:22 +0200
-Message-Id: <20230508094432.869079670@linuxfoundation.org>
+Message-Id: <20230508094428.953862813@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,47 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 14853a0676c126aad836eb249499552fa9d6e85a upstream.
+[ Upstream commit f82e7ca019dfad3b006fd3b772f7ac569672db55 ]
 
-This reverts commit 2d5253a096c6057bbf7caa5520856dcdf7eca8bb.
-There are 2 commits with commit message "Add a secondary AT port to Telit
-FN990":
+A __field() in the TRACE_EVENT() macro is used to set up the fields of the
+trace event data. It is for single storage units (word, char, int,
+pointer, etc) and not for complex structures or arrays. Unfortunately,
+there's nothing preventing the build from accepting:
 
-commit 2d5253a096c6 ("bus: mhi: host: pci_generic: Add a secondary AT port
-to Telit FN990")
-commit 479aa3b0ec2e ("bus: mhi: host: pci_generic: Add a secondary AT port
-to Telit FN990")
+    __field(int, arr[5]);
 
-This turned out to be due to the patch getting applied through different
-trees and git settled on a resolution while applying it second time. But
-the second AT port of Foxconn devices don't work in PCIe mode. So the
-second commit needs to be reverted.
+from building. It will turn into a array value. This use to work fine, as
+the offset and size use to be determined by the macro using the field name,
+but things have changed and the offset and size are now determined by the
+type. So the above would only be size 4, and the next field will be
+located 4 bytes from it (instead of 20).
 
-Cc: stable@vger.kernel.org # 6.2
-Fixes: 2d5253a096c6 ("bus: mhi: host: pci_generic: Add a secondary AT port to Telit FN990")
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Reviewed-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/20230310101715.69209-1-slark_xiao@163.com
-[mani: massaged the commit message a bit, added fixes tag and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The proper way to declare static arrays is to use the __array() macro.
+
+Instead of __field(int, arr[5]) it should be __array(int, arr, 5).
+
+Add some macro tricks to the building of a trace event from the
+TRACE_EVENT() macro such that __field(int, arr[5]) will fail to build. A
+comment by the failure will explain why the build failed.
+
+Link: https://lore.kernel.org/lkml/20230306122549.236561-1-douglas.raillard@arm.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20230309221302.642e82d9@gandalf.local.home
+
+Reported-by: Douglas RAILLARD <douglas.raillard@arm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    2 --
- 1 file changed, 2 deletions(-)
+ include/trace/stages/stage5_get_offsets.h | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -344,8 +344,6 @@ static const struct mhi_channel_config m
- 	MHI_CHANNEL_CONFIG_DL(13, "MBIM", 32, 0),
- 	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
- 	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
--	MHI_CHANNEL_CONFIG_UL(92, "DUN2", 32, 1),
--	MHI_CHANNEL_CONFIG_DL(93, "DUN2", 32, 1),
- 	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0_MBIM", 128, 2),
- 	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0_MBIM", 128, 3),
- };
+diff --git a/include/trace/stages/stage5_get_offsets.h b/include/trace/stages/stage5_get_offsets.h
+index ac5c24d3beeb2..e30a13be46ba5 100644
+--- a/include/trace/stages/stage5_get_offsets.h
++++ b/include/trace/stages/stage5_get_offsets.h
+@@ -9,17 +9,30 @@
+ #undef __entry
+ #define __entry entry
+ 
++/*
++ * Fields should never declare an array: i.e. __field(int, arr[5])
++ * If they do, it will cause issues in parsing and possibly corrupt the
++ * events. To prevent that from happening, test the sizeof() a fictitious
++ * type called "struct _test_no_array_##item" which will fail if "item"
++ * contains array elements (like "arr[5]").
++ *
++ * If you hit this, use __array(int, arr, 5) instead.
++ */
+ #undef __field
+-#define __field(type, item)
++#define __field(type, item)					\
++	{ (void)sizeof(struct _test_no_array_##item *); }
+ 
+ #undef __field_ext
+-#define __field_ext(type, item, filter_type)
++#define __field_ext(type, item, filter_type)			\
++	{ (void)sizeof(struct _test_no_array_##item *); }
+ 
+ #undef __field_struct
+-#define __field_struct(type, item)
++#define __field_struct(type, item)				\
++	{ (void)sizeof(struct _test_no_array_##item *); }
+ 
+ #undef __field_struct_ext
+-#define __field_struct_ext(type, item, filter_type)
++#define __field_struct_ext(type, item, filter_type)		\
++	{ (void)sizeof(struct _test_no_array_##item *); }
+ 
+ #undef __array
+ #define __array(type, item, len)
+-- 
+2.39.2
+
 
 
