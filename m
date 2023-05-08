@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B956FADD6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E25EF6FA915
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236103AbjEHLit (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56068 "EHLO
+        id S235077AbjEHKrg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236019AbjEHLiX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:23 -0400
+        with ESMTP id S235114AbjEHKq4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A9D328933
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00C349F2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE0EC6332A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F2C433EF;
-        Mon,  8 May 2023 11:37:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B3B628AB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538C0C433EF;
+        Mon,  8 May 2023 10:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545866;
-        bh=CrwTyz6k+h4Y781qNIx2kx3dZKhPbJQKPKzQNSIscTU=;
+        s=korg; t=1683542808;
+        bh=jRNIkVtKvGrZssZSHSeZNmvKqaR2UN3O51TcKqNOvSg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EXNzbnAdhV3tPdO3kjp3LWJGPKPM7/KlDLhZZuwxDYAC5WMyrXS1SB474uT0hfggt
-         skT/B0myqZU++SsjCyJwhiltToNo41W0Q7EVx2UU/dDRNZwPPI7YSel5q9CWlOAdud
-         eKxspVgUXqAhORGU282ncXyj64ulIj0x3l+2FVaM=
+        b=ALkI119/pGJ0sk0Jfo7RsM7kHfMnRBlabfQ9C6mxNvIVKmi7CdQvOBjcaUa7tov9s
+         gIiUeIeW5cfHt5jMNOOfTYtKKBvzg2t6+jD9g0npwWzoYf7/ljqYBDeffUBpkszMz5
+         bVZmODvTYGsyti6jzWUHpCknWT0Vp1mmoDIf/4JY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 179/371] wifi: rt2x00: Fix memory leak when handling surveys
+        patches@lists.linux.dev, Vasant Hegde <vasant.hegde@amd.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 554/663] iommu/amd: Set page size bitmap during V2 domain allocation
 Date:   Mon,  8 May 2023 11:46:20 +0200
-Message-Id: <20230508094819.237365205@linuxfoundation.org>
+Message-Id: <20230508094447.071168326@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +57,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-[ Upstream commit cbef9a83c51dfcb07f77cfa6ac26f53a1ea86f49 ]
+[ Upstream commit 8f880d19e6ad645a4b8066d5ff091c980b3231e7 ]
 
-When removing a rt2x00 device, its associated channel surveys
-are not freed, causing a memory leak observable with kmemleak:
+With the addition of the V2 page table support, the domain page size
+bitmap needs to be set prior to iommu core setting up direct mappings
+for reserved regions. When reserved regions are mapped, if this is not
+done, it will be looking at the V1 page size bitmap when determining
+the page size to use in iommu_pgsize(). When it gets into the actual
+amd mapping code, a check of see if the page size is supported can
+fail, because at that point it is checking it against the V2 page size
+bitmap which only supports 4K, 2M, and 1G.
 
-unreferenced object 0xffff9620f0881a00 (size 512):
-  comm "systemd-udevd", pid 2290, jiffies 4294906974 (age 33.768s)
-  hex dump (first 32 bytes):
-    70 44 12 00 00 00 00 00 92 8a 00 00 00 00 00 00  pD..............
-    00 00 00 00 00 00 00 00 ab 87 01 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffffb0ed858b>] __kmalloc+0x4b/0x130
-    [<ffffffffc1b0f29b>] rt2800_probe_hw+0xc2b/0x1380 [rt2800lib]
-    [<ffffffffc1a9496e>] rt2800usb_probe_hw+0xe/0x60 [rt2800usb]
-    [<ffffffffc1ae491a>] rt2x00lib_probe_dev+0x21a/0x7d0 [rt2x00lib]
-    [<ffffffffc1b3b83e>] rt2x00usb_probe+0x1be/0x980 [rt2x00usb]
-    [<ffffffffc05981e2>] usb_probe_interface+0xe2/0x310 [usbcore]
-    [<ffffffffb13be2d5>] really_probe+0x1a5/0x410
-    [<ffffffffb13be5c8>] __driver_probe_device+0x78/0x180
-    [<ffffffffb13be6fe>] driver_probe_device+0x1e/0x90
-    [<ffffffffb13be972>] __driver_attach+0xd2/0x1c0
-    [<ffffffffb13bbc57>] bus_for_each_dev+0x77/0xd0
-    [<ffffffffb13bd2a2>] bus_add_driver+0x112/0x210
-    [<ffffffffb13bfc6c>] driver_register+0x5c/0x120
-    [<ffffffffc0596ae8>] usb_register_driver+0x88/0x150 [usbcore]
-    [<ffffffffb0c011c4>] do_one_initcall+0x44/0x220
-    [<ffffffffb0d6134c>] do_init_module+0x4c/0x220
+Add a check to __iommu_domain_alloc() to not override the
+bitmap if it was already set by the iommu ops domain_alloc() code path.
 
-Fix this by freeing the channel surveys on device removal.
-
-Tested with a RT3070 based USB wireless adapter.
-
-Fixes: 5447626910f5 ("rt2x00: save survey for every channel visited")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230330215637.4332-1-W_Armin@gmx.de
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Fixes: 4db6c41f0946 ("iommu/amd: Add support for using AMD IOMMU v2 page table for DMA-API")
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20230404072742.1895252-1-jsnitsel@redhat.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/amd/iommu.c | 6 ++----
+ drivers/iommu/iommu.c     | 9 +++++++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index e95c101c27111..388675d073ce2 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -1091,6 +1091,7 @@ static void rt2x00lib_remove_hw(struct rt2x00_dev *rt2x00dev)
- 	}
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index ff4f3d4da3402..e108280fdaa0e 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1656,10 +1656,6 @@ static void do_attach(struct iommu_dev_data *dev_data,
+ 	domain->dev_iommu[iommu->index] += 1;
+ 	domain->dev_cnt                 += 1;
  
- 	kfree(rt2x00dev->spec.channels_info);
-+	kfree(rt2x00dev->chan_survey);
- }
+-	/* Override supported page sizes */
+-	if (domain->flags & PD_GIOV_MASK)
+-		domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
+-
+ 	/* Update device table */
+ 	set_dte_entry(iommu, dev_data->devid, domain,
+ 		      ats, dev_data->iommu_v2);
+@@ -2038,6 +2034,8 @@ static int protection_domain_init_v2(struct protection_domain *domain)
  
- static int rt2x00lib_probe_hw(struct rt2x00_dev *rt2x00dev)
+ 	domain->flags |= PD_GIOV_MASK;
+ 
++	domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
++
+ 	if (domain_enable_v2(domain, 1)) {
+ 		domain_id_free(domain->id);
+ 		return -ENOMEM;
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index f8100067502fb..e6f2a0bc9f0be 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -1940,8 +1940,13 @@ static struct iommu_domain *__iommu_domain_alloc(struct bus_type *bus,
+ 		return NULL;
+ 
+ 	domain->type = type;
+-	/* Assume all sizes by default; the driver may override this later */
+-	domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
++	/*
++	 * If not already set, assume all sizes by default; the driver
++	 * may override this later
++	 */
++	if (!domain->pgsize_bitmap)
++		domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
++
+ 	if (!domain->ops)
+ 		domain->ops = bus->iommu_ops->default_domain_ops;
+ 
 -- 
 2.39.2
 
