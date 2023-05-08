@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38E106FA848
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A8B56FAD0E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234838AbjEHKjK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
+        id S233997AbjEHLa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234886AbjEHKjC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:02 -0400
+        with ESMTP id S235777AbjEHLaK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E1A22F75
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0D7391A5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B04562801
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F4AC433EF;
-        Mon,  8 May 2023 10:38:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C22662F9D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8905FC433EF;
+        Mon,  8 May 2023 11:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542339;
-        bh=6wUdlpnIMKZU5hG6/kNkQTPUb8b+kgE0SJl8R2fc9M8=;
+        s=korg; t=1683545406;
+        bh=h/ZZrZjIbcp/u86Xg+7tLyYUAglheWMJobuIUAFJ/ow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kWtWhRN0RZcNw2PCGvi5RStEj7NVdUcJoZONTtvsS0TnhHuuKpIKSW2re6Z2KlTyi
-         9Damx17CLtdKaM9Ksq5pDU7TZxsV0fH3iUK1dR3vDrL7O7PFBQySkSh0nCo6YdGAqK
-         g8buNJfecsp8y4dpD5slp+hK5yn0cLKZIKhnmF9Q=
+        b=fNX0PiQ/k2Rz/fd5gBrzG2KCdHah6R+vfzhFkGSDo8baI3POmr5uUK4hckK3Ukp6W
+         Ljk5NiK+MdrJN9Jluc5AtNfYVm6MFbAqbbasEmjYH/2txAg2Q79rZIHpui4Jcf0id8
+         6o3bZ53srTqa2NHlkwrrOgT9pzodXDwbmJW0DNZ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 404/663] wifi: mt76: connac: fix txd multicast rate setting
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 029/371] MIPS: fw: Allow firmware to pass a empty env
 Date:   Mon,  8 May 2023 11:43:50 +0200
-Message-Id: <20230508094441.190316190@linuxfoundation.org>
+Message-Id: <20230508094813.276548738@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,37 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 3d2892e05086d09aecf14ea64b2debbf495e313c ]
+commit ee1809ed7bc456a72dc8410b475b73021a3a68d5 upstream.
 
-The vif->bss_conf.mcast_rate should be applied to multicast data frame
-only.
+fw_getenv will use env entry to determine style of env,
+however it is legal for firmware to just pass a empty list.
 
-Fixes: 182071cdd594 ("mt76: connac: move connac2_mac_write_txwi in mt76_connac module")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check if first entry exist before running strchr to avoid
+null pointer dereference.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/clbr/n64bootloader/issues/5
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/fw/lib/cmdline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index aed4ee95fb2ec..82aac0a04655f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -537,7 +537,8 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
- 		/* Fixed rata is available just for 802.11 txd */
- 		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
--		bool multicast = is_multicast_ether_addr(hdr->addr1);
-+		bool multicast = ieee80211_is_data(hdr->frame_control) &&
-+				 is_multicast_ether_addr(hdr->addr1);
- 		u16 rate = mt76_connac2_mac_tx_rate_val(mphy, vif, beacon,
- 							multicast);
- 		u32 val = MT_TXD6_FIXED_BW;
--- 
-2.39.2
-
+--- a/arch/mips/fw/lib/cmdline.c
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -53,7 +53,7 @@ char *fw_getenv(char *envname)
+ {
+ 	char *result = NULL;
+ 
+-	if (_fw_envp != NULL) {
++	if (_fw_envp != NULL && fw_envp(0) != NULL) {
+ 		/*
+ 		 * Return a pointer to the given environment variable.
+ 		 * YAMON uses "name", "value" pairs, while U-Boot uses
 
 
