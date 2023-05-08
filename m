@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 077036FA8D3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3626FA5EA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235078AbjEHKpk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48130 "EHLO
+        id S234289AbjEHKOZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234964AbjEHKpV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:21 -0400
+        with ESMTP id S234291AbjEHKOL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAFC626EB6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3B931FF1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E29261372
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F87C433D2;
-        Mon,  8 May 2023 10:44:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66BA262420
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EA9C433EF;
+        Mon,  8 May 2023 10:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542662;
-        bh=SxUftKJw/GKVYCHQuGZfbtFRx+0YwclD867MgIK+Cfs=;
+        s=korg; t=1683540849;
+        bh=Yq/DhyB4Ivf6RWSNZ39yB+IX3ht/Si5UenLvABEw0CU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N5OVgxViq+oEOjy9xbcqc44ZAIZUYSqyJhLXjsEPF2c7FerZ16I6FVw3KtGO2e18E
-         sAY/v/rKtWFU8PcGrrC66uAbVSSoOBHru8iiP3FWSD/txBkBVUprFcCfdG9cs6BVau
-         +F90err5EPhV2T9M+4gjrrgBckX7phcBiBlB8cmg=
+        b=qMhOqlqGpLKEQJjaY48Uf7Icb3boBe+Ku7r8rVnUZGrfen/hIK4FkRWFwcwHZc2Dx
+         vIqUQ/wR3YiGguI8RwKUUfUA8Zx5ZvKw1mha4GpPD1554dG2cnAwYMD2EiNXQXOrwN
+         R1JdrK4/rUGl9Vw0TYD1NGKlnpofzmgzJ/VMqBrY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 507/663] powerpc/sysdev/tsi108: fix resource printk format warnings
+        patches@lists.linux.dev, "Chengci.Xu" <chengci.xu@mediatek.com>,
+        Yong Wu <yong.wu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 491/611] iommu/mediatek: Set dma_mask for PGTABLE_PA_35_EN
 Date:   Mon,  8 May 2023 11:45:33 +0200
-Message-Id: <20230508094445.089137351@linuxfoundation.org>
+Message-Id: <20230508094438.022661768@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Yong Wu <yong.wu@mediatek.com>
 
-[ Upstream commit 55d8bd02cc1b9f1063993b5c42c9cabf4af67dea ]
+[ Upstream commit f045e9df6537175d02565f21616ac1a9dd59b61c ]
 
-Use "%pa" format specifier for resource_size_t to avoid a compiler
-printk format warning.
+When we enable PGTABLE_PA_35_EN, the PA for pgtable may be 35bits.
+Thus add dma_mask for it.
 
-  arch/powerpc/sysdev/tsi108_pci.c: In function 'tsi108_setup_pci':
-  include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t'
-
-Fixes: c4342ff92bed ("[POWERPC] Update mpc7448hpc2 board irq support using device tree")
-Fixes: 2b9d7467a6db ("[POWERPC] Add tsi108 pci and platform device data register function")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-[mpe: Use pr_info() and unsplit string]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-5-rdunlap@infradead.org
+Fixes: 301c3ca12576 ("iommu/mediatek: Allow page table PA up to 35bit")
+Signed-off-by: Chengci.Xu <chengci.xu@mediatek.com>
+Signed-off-by: Yong Wu <yong.wu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230316101445.12443-1-yong.wu@mediatek.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/tsi108_pci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iommu/mtk_iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/sysdev/tsi108_pci.c b/arch/powerpc/sysdev/tsi108_pci.c
-index 5af4c35ff5842..0e42f7bad7db1 100644
---- a/arch/powerpc/sysdev/tsi108_pci.c
-+++ b/arch/powerpc/sysdev/tsi108_pci.c
-@@ -217,9 +217,8 @@ int __init tsi108_setup_pci(struct device_node *dev, u32 cfg_phys, int primary)
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 56d007582b6fa..e93ca9dc37c8e 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1237,6 +1237,14 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 			return PTR_ERR(data->bclk);
+ 	}
  
- 	(hose)->ops = &tsi108_direct_pci_ops;
++	if (MTK_IOMMU_HAS_FLAG(data->plat_data, PGTABLE_PA_35_EN)) {
++		ret = dma_set_mask(dev, DMA_BIT_MASK(35));
++		if (ret) {
++			dev_err(dev, "Failed to set dma_mask 35.\n");
++			return ret;
++		}
++	}
++
+ 	pm_runtime_enable(dev);
  
--	printk(KERN_INFO "Found tsi108 PCI host bridge at 0x%08x. "
--	       "Firmware bus number: %d->%d\n",
--	       rsrc.start, hose->first_busno, hose->last_busno);
-+	pr_info("Found tsi108 PCI host bridge at 0x%pa. Firmware bus number: %d->%d\n",
-+		&rsrc.start, hose->first_busno, hose->last_busno);
- 
- 	/* Interpret the "ranges" property */
- 	/* This also maps the I/O region and sets isa_io/mem_base */
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
 -- 
 2.39.2
 
