@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF64D6FAC4B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF2D76FADD1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235634AbjEHLXF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38696 "EHLO
+        id S236148AbjEHLil (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:38:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235614AbjEHLXD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421AA37031
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:52 -0700 (PDT)
+        with ESMTP id S236139AbjEHLiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E94411AE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE79B62CCA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1BFC433EF;
-        Mon,  8 May 2023 11:22:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D55566329C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8ECFC433D2;
+        Mon,  8 May 2023 11:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544971;
-        bh=gbsgF0jUZQHzoprFJRgaCygFbigEFv3rZN2HwzN1HcM=;
+        s=korg; t=1683545854;
+        bh=phMYKKDD7fkJ/82gkeFWpH6i03l/fxNaYtTWU7IZSc0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jqQ/ui1/VSVET37jeWGTV7+CbtawXcM9N4dPI6fhrREQ/U5nRFk7Tx2m0WFuV9I3h
-         CyLNxY7DwLqbRYS52EhQG5Y6F/QrRSNsXdwtd/t/1rZhZvZZMi4e6PVH25mDsjU74v
-         QfGG7jLtkUf4FTYQW5IWPpNcvWc9N5VkXkZxx1NQ=
+        b=kxr1K4ZX3cpbXnUC4WXRhTJJuuY5c3/JbmV+P/Kpt2uOT0coZbeTGdApqcnf1fk4W
+         UN+Lq++S0GhoHar7xovAe3ZTi9HooTUgNl+RnOeFfEt/rKqJFe/acO1LG3r+WdK1be
+         FmOzNQBV+Re8CkYfFwSC2jClot+M3YyLwOwuLAZo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Brodsky <kevin.brodsky@arm.com>,
-        Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>,
-        Petr Vorel <pvorel@suse.cz>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Suman Anna <s-anna@ti.com>,
+        Jayesh Choudhary <j-choudhary@ti.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 542/694] uapi/linux/const.h: prefer ISO-friendly __typeof__
+Subject: [PATCH 5.15 176/371] crypto: sa2ul - Select CRYPTO_DES
 Date:   Mon,  8 May 2023 11:46:17 +0200
-Message-Id: <20230508094452.056177387@linuxfoundation.org>
+Message-Id: <20230508094819.125071903@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,63 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
+From: Suman Anna <s-anna@ti.com>
 
-[ Upstream commit 31088f6f7906253ef4577f6a9b84e2d42447dba0 ]
+[ Upstream commit 8832023efd20966e29944dac92118dfbf1fa1bc0 ]
 
-typeof is (still) a GNU extension, which means that it cannot be used when
-building ISO C (e.g.  -std=c99).  It should therefore be avoided in uapi
-headers in favour of the ISO-friendly __typeof__.
+The SA2UL Crypto driver provides support for couple of
+DES3 algos "cbc(des3_ede)" and "ecb(des3_ede)", and enabling
+the crypto selftest throws the following errors (as seen on
+K3 J721E SoCs):
+  saul-crypto 4e00000.crypto: Error allocating fallback algo cbc(des3_ede)
+  alg: skcipher: failed to allocate transform for cbc-des3-sa2ul: -2
+  saul-crypto 4e00000.crypto: Error allocating fallback algo ecb(des3_ede)
+  alg: skcipher: failed to allocate transform for ecb-des3-sa2ul: -2
 
-Unfortunately this issue could not be detected by
-CONFIG_UAPI_HEADER_TEST=y as the __ALIGN_KERNEL() macro is not expanded in
-any uapi header.
+Fix this by selecting CRYPTO_DES which was missed while
+adding base driver support.
 
-This matters from a userspace perspective, not a kernel one. uapi
-headers and their contents are expected to be usable in a variety of
-situations, and in particular when building ISO C applications (with
--std=c99 or similar).
-
-This particular problem can be reproduced by trying to use the
-__ALIGN_KERNEL macro directly in application code, say:
-
-#include <linux/const.h>
-
-int align(int x, int a)
-{
-	return __KERNEL_ALIGN(x, a);
-}
-
-and trying to build that with -std=c99.
-
-Link: https://lkml.kernel.org/r/20230411092747.3759032-1-kevin.brodsky@arm.com
-Fixes: a79ff731a1b2 ("netfilter: xtables: make XT_ALIGN() usable in exported headers by exporting __ALIGN_KERNEL()")
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Reported-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
-Tested-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 7694b6ca649f ("crypto: sa2ul - Add crypto driver")
+Signed-off-by: Suman Anna <s-anna@ti.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/const.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/uapi/linux/const.h b/include/uapi/linux/const.h
-index af2a44c08683d..a429381e7ca50 100644
---- a/include/uapi/linux/const.h
-+++ b/include/uapi/linux/const.h
-@@ -28,7 +28,7 @@
- #define _BITUL(x)	(_UL(1) << (x))
- #define _BITULL(x)	(_ULL(1) << (x))
- 
--#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-+#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
- #define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
- 
- #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
+diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+index b46343b5c26b4..a40883e118424 100644
+--- a/drivers/crypto/Kconfig
++++ b/drivers/crypto/Kconfig
+@@ -905,6 +905,7 @@ config CRYPTO_DEV_SA2UL
+ 	select CRYPTO_AES_ARM64
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_AUTHENC
++	select CRYPTO_DES
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_SHA256
+ 	select CRYPTO_SHA512
 -- 
 2.39.2
 
