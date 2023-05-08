@@ -2,126 +2,194 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B676FA93F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A6026FA61E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235214AbjEHKti (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47616 "EHLO
+        id S234315AbjEHKQ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235149AbjEHKtQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677191713
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:37 -0700 (PDT)
+        with ESMTP id S234322AbjEHKQ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC4083ACD3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83C0D616E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B476C433D2;
-        Mon,  8 May 2023 10:48:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56444624A0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF34C433D2;
+        Mon,  8 May 2023 10:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542915;
-        bh=4vR5/tlJdEYQUBQJYaJA1qYWOrxXxZyIjX1fCtvUiwg=;
+        s=korg; t=1683540984;
+        bh=zaHrjvIfajg1C9u6R+XnrJzvxK5n5Z84Q3fEvkz0N6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dddHR592ED4mRdPpWAnoJ4yVfoctv9tdowCMUkYPU5r3a0XjOX2cHewUhqSzR6ejl
-         e1+4oVR8U2v8RSdvJwAW1OTUwm8YTJTTEFmv5JTrOhxR9TJCnWc1Mre/GZOhAqAHKF
-         r4GaHpFMlFBqlaDAfyM/1TeCPSMhXPK7iAOMmJRY=
+        b=V4Q5QXPcVU9xRS8c2GqNGYj5iJZuxCq2L39KErrzHzr1TUIZE6/FuDxj02c5Pgi/P
+         hBIInWjIx1qZFsROA4671HoO/gh9DgPz0wPqSamPr4soJ5Xqsbyb4GJBtElpA/gdiD
+         Fp36en/mqzUKwZdrj/i/NiC5tKXhT0E3j6eJUv9g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 588/663] pwm: mtk-disp: Configure double buffering before reading in .get_state()
+        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Marco Elver <elver@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 572/611] kasan: hw_tags: avoid invalid virt_to_page()
 Date:   Mon,  8 May 2023 11:46:54 +0200
-Message-Id: <20230508094448.483335740@linuxfoundation.org>
+Message-Id: <20230508094440.532650053@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit b16c310115f2084b8826a35b77ef42bab6786d9f ]
+commit 29083fd84da576bfb3563d044f98d38e6b338f00 upstream.
 
-The DISP_PWM controller's default behavior is to always use register
-double buffering: all reads/writes are then performed on shadow
-registers instead of working registers and this becomes an issue
-in case our chosen configuration in Linux is different from the
-default (or from the one that was pre-applied by the bootloader).
+When booting with 'kasan.vmalloc=off', a kernel configured with support
+for KASAN_HW_TAGS will explode at boot time due to bogus use of
+virt_to_page() on a vmalloc adddress.  With CONFIG_DEBUG_VIRTUAL selected
+this will be reported explicitly, and with or without CONFIG_DEBUG_VIRTUAL
+the kernel will dereference a bogus address:
 
-An example of broken behavior is when the controller is configured
-to use shadow registers, but this driver wants to configure it
-otherwise: what happens is that the .get_state() callback is called
-right after registering the pwmchip and checks whether the PWM is
-enabled by reading the DISP_PWM_EN register;
-At this point, if shadow registers are enabled but their content
-was not committed before booting Linux, we are *not* reading the
-current PWM enablement status, leading to the kernel knowing that
-the hardware is actually enabled when, in reality, it's not.
+| ------------[ cut here ]------------
+| virt_to_phys used for non-linear address: (____ptrval____) (0xffff800008000000)
+| WARNING: CPU: 0 PID: 0 at arch/arm64/mm/physaddr.c:15 __virt_to_phys+0x78/0x80
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0-rc3-00073-g83865133300d-dirty #4
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __virt_to_phys+0x78/0x80
+| lr : __virt_to_phys+0x78/0x80
+| sp : ffffcd076afd3c80
+| x29: ffffcd076afd3c80 x28: 0068000000000f07 x27: ffff800008000000
+| x26: fffffbfff0000000 x25: fffffbffff000000 x24: ff00000000000000
+| x23: ffffcd076ad3c000 x22: fffffc0000000000 x21: ffff800008000000
+| x20: ffff800008004000 x19: ffff800008000000 x18: ffff800008004000
+| x17: 666678302820295f x16: ffffffffffffffff x15: 0000000000000004
+| x14: ffffcd076b009e88 x13: 0000000000000fff x12: 0000000000000003
+| x11: 00000000ffffefff x10: c0000000ffffefff x9 : 0000000000000000
+| x8 : 0000000000000000 x7 : 205d303030303030 x6 : 302e30202020205b
+| x5 : ffffcd076b41d63f x4 : ffffcd076afd3827 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : ffffcd076afd3a30 x0 : 000000000000004f
+| Call trace:
+|  __virt_to_phys+0x78/0x80
+|  __kasan_unpoison_vmalloc+0xd4/0x478
+|  __vmalloc_node_range+0x77c/0x7b8
+|  __vmalloc_node+0x54/0x64
+|  init_IRQ+0x94/0xc8
+|  start_kernel+0x194/0x420
+|  __primary_switched+0xbc/0xc4
+| ---[ end trace 0000000000000000 ]---
+| Unable to handle kernel paging request at virtual address 03fffacbe27b8000
+| Mem abort info:
+|   ESR = 0x0000000096000004
+|   EC = 0x25: DABT (current EL), IL = 32 bits
+|   SET = 0, FnV = 0
+|   EA = 0, S1PTW = 0
+|   FSC = 0x04: level 0 translation fault
+| Data abort info:
+|   ISV = 0, ISS = 0x00000004
+|   CM = 0, WnR = 0
+| swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000041bc5000
+| [03fffacbe27b8000] pgd=0000000000000000, p4d=0000000000000000
+| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.3.0-rc3-00073-g83865133300d-dirty #4
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __kasan_unpoison_vmalloc+0xe4/0x478
+| lr : __kasan_unpoison_vmalloc+0xd4/0x478
+| sp : ffffcd076afd3ca0
+| x29: ffffcd076afd3ca0 x28: 0068000000000f07 x27: ffff800008000000
+| x26: 0000000000000000 x25: 03fffacbe27b8000 x24: ff00000000000000
+| x23: ffffcd076ad3c000 x22: fffffc0000000000 x21: ffff800008000000
+| x20: ffff800008004000 x19: ffff800008000000 x18: ffff800008004000
+| x17: 666678302820295f x16: ffffffffffffffff x15: 0000000000000004
+| x14: ffffcd076b009e88 x13: 0000000000000fff x12: 0000000000000001
+| x11: 0000800008000000 x10: ffff800008000000 x9 : ffffb2f8dee00000
+| x8 : 000ffffb2f8dee00 x7 : 205d303030303030 x6 : 302e30202020205b
+| x5 : ffffcd076b41d63f x4 : ffffcd076afd3827 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : ffffcd076afd3a30 x0 : ffffb2f8dee00000
+| Call trace:
+|  __kasan_unpoison_vmalloc+0xe4/0x478
+|  __vmalloc_node_range+0x77c/0x7b8
+|  __vmalloc_node+0x54/0x64
+|  init_IRQ+0x94/0xc8
+|  start_kernel+0x194/0x420
+|  __primary_switched+0xbc/0xc4
+| Code: d34cfc08 aa1f03fa 8b081b39 d503201f (f9400328)
+| ---[ end trace 0000000000000000 ]---
+| Kernel panic - not syncing: Attempted to kill the idle task!
 
-The aforementioned issue emerged since this driver was fixed with
-commit 0b5ef3429d8f ("pwm: mtk-disp: Fix the parameters calculated
-by the enabled flag of disp_pwm") making it to read the enablement
-status from the right register.
+This is because init_vmalloc_pages() erroneously calls virt_to_page() on
+a vmalloc address, while virt_to_page() is only valid for addresses in
+the linear/direct map. Since init_vmalloc_pages() expects virtual
+addresses in the vmalloc range, it must use vmalloc_to_page() rather
+than virt_to_page().
 
-Configure the controller in the .get_state() callback to avoid
-this desync issue and get the backlight properly working again.
+We call init_vmalloc_pages() from __kasan_unpoison_vmalloc(), where we
+check !is_vmalloc_or_module_addr(), suggesting that we might encounter a
+non-vmalloc address. Luckily, this never happens. By design, we only
+call __kasan_unpoison_vmalloc() on pointers in the vmalloc area, and I
+have verified that we don't violate that expectation. Given that,
+is_vmalloc_or_module_addr() must always be true for any legitimate
+argument to __kasan_unpoison_vmalloc().
 
-Fixes: 3f2b16734914 ("pwm: mtk-disp: Implement atomic API .get_state()")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Tested-by: Alexandre Mergnat <amergnat@baylibre.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Correct init_vmalloc_pages() to use vmalloc_to_page(), and remove the
+redundant and misleading use of is_vmalloc_or_module_addr() in
+__kasan_unpoison_vmalloc().
+
+Link: https://lkml.kernel.org/r/20230418164212.1775741-1-mark.rutland@arm.com
+Fixes: 6c2f761dad7851d8 ("kasan: fix zeroing vmalloc memory with HW_TAGS")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mtk-disp.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ mm/kasan/hw_tags.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
-index 82b430d881a20..fe9593f968eeb 100644
---- a/drivers/pwm/pwm-mtk-disp.c
-+++ b/drivers/pwm/pwm-mtk-disp.c
-@@ -196,6 +196,16 @@ static int mtk_disp_pwm_get_state(struct pwm_chip *chip,
- 		return err;
- 	}
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -225,7 +225,7 @@ static void init_vmalloc_pages(const voi
+ 	const void *addr;
  
-+	/*
-+	 * Apply DISP_PWM_DEBUG settings to choose whether to enable or disable
-+	 * registers double buffer and manual commit to working register before
-+	 * performing any read/write operation
-+	 */
-+	if (mdp->data->bls_debug)
-+		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
-+					 mdp->data->bls_debug_mask,
-+					 mdp->data->bls_debug_mask);
-+
- 	rate = clk_get_rate(mdp->clk_main);
- 	con0 = readl(mdp->base + mdp->data->con0);
- 	con1 = readl(mdp->base + mdp->data->con1);
--- 
-2.39.2
-
+ 	for (addr = start; addr < start + size; addr += PAGE_SIZE) {
+-		struct page *page = virt_to_page(addr);
++		struct page *page = vmalloc_to_page(addr);
+ 
+ 		clear_highpage_kasan_tagged(page);
+ 	}
+@@ -237,7 +237,7 @@ void *__kasan_unpoison_vmalloc(const voi
+ 	u8 tag;
+ 	unsigned long redzone_start, redzone_size;
+ 
+-	if (!kasan_vmalloc_enabled() || !is_vmalloc_or_module_addr(start)) {
++	if (!kasan_vmalloc_enabled()) {
+ 		if (flags & KASAN_VMALLOC_INIT)
+ 			init_vmalloc_pages(start, size);
+ 		return (void *)start;
 
 
