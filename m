@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F12F6FABC5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A80CD6FA5A9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235417AbjEHLRQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:17:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58830 "EHLO
+        id S234204AbjEHKLu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233955AbjEHLRP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:15 -0400
+        with ESMTP id S234199AbjEHKLr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B252137622
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F073988D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4123B62C07
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F25C433EF;
-        Mon,  8 May 2023 11:17:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AB92623E2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB4FC433EF;
+        Mon,  8 May 2023 10:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544633;
-        bh=xwbGBvLJPyXufQ40mYAwJ0XBkgJxWhf8odoTsjBU/GE=;
+        s=korg; t=1683540702;
+        bh=PvaZ7+2ShJiQ46b6sWmLiBr49DaxkPQE4Y5D0nPmBN8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v56OpIqb1XQNXw3GFxOGyQsTaREmmJ32ZB9EgRDlWRlwlc3moA3+vs4Jqql0i9zw2
-         +ibjFoufb890a6GmnZvVXWE9yXJUL/kMD1W5fmOF2LfWqdp9ILNzSpmvqpogJ2palD
-         4zSbvfrq0SOacAXA+IKkxHSkGhMYDqUhPVtCFsHQ=
+        b=GGzgIKwkpbOFoDiiaVdgLfnu40qUxYIYhUsosLSCNGsKzIAtN+yD9c2YyQiLLxpii
+         22+r7XGHOisackRXRIUHs/+F00P3pXgfAX1g0BDuJSoujkZDS2cKi+y3lkGJgYBU7Q
+         k8z5TvHjUdWZTGjjMVb31ZMf13iu/9xGV1L60KyE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Yang Jihong <yangjihong1@huawei.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 473/694] netfilter: nf_tables: dont write table validation state without mutex
+Subject: [PATCH 6.1 466/611] perf/core: Fix hardlockup failure caused by perf throttle
 Date:   Mon,  8 May 2023 11:45:08 +0200
-Message-Id: <20230508094449.159107484@linuxfoundation.org>
+Message-Id: <20230508094437.277166946@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,84 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-[ Upstream commit 9a32e9850686599ed194ccdceb6cd3dd56b2d9b9 ]
+[ Upstream commit 15def34e2635ab7e0e96f1bc32e1b69609f14942 ]
 
-The ->cleanup callback needs to be removed, this doesn't work anymore as
-the transaction mutex is already released in the ->abort function.
+commit e050e3f0a71bf ("perf: Fix broken interrupt rate throttling")
+introduces a change in throttling threshold judgment. Before this,
+compare hwc->interrupts and max_samples_per_tick, then increase
+hwc->interrupts by 1, but this commit reverses order of these two
+behaviors, causing the semantics of max_samples_per_tick to change.
+In literal sense of "max_samples_per_tick", if hwc->interrupts ==
+max_samples_per_tick, it should not be throttled, therefore, the judgment
+condition should be changed to "hwc->interrupts > max_samples_per_tick".
 
-Just do it after a successful validation pass, this either happens
-from commit or abort phases where transaction mutex is held.
+In fact, this may cause the hardlockup to fail, The minimum value of
+max_samples_per_tick may be 1, in this case, the return value of
+__perf_event_account_interrupt function is 1.
+As a result, nmi_watchdog gets throttled, which would stop PMU (Use x86
+architecture as an example, see x86_pmu_handle_irq).
 
-Fixes: f102d66b335a ("netfilter: nf_tables: use dedicated mutex to guard transactions")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: e050e3f0a71b ("perf: Fix broken interrupt rate throttling")
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230227023508.102230-1-yangjihong1@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter/nfnetlink.h | 1 -
- net/netfilter/nf_tables_api.c       | 8 ++------
- net/netfilter/nfnetlink.c           | 2 --
- 3 files changed, 2 insertions(+), 9 deletions(-)
+ kernel/events/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/netfilter/nfnetlink.h b/include/linux/netfilter/nfnetlink.h
-index 241e005f290ad..e9a9ab34a7ccc 100644
---- a/include/linux/netfilter/nfnetlink.h
-+++ b/include/linux/netfilter/nfnetlink.h
-@@ -45,7 +45,6 @@ struct nfnetlink_subsystem {
- 	int (*commit)(struct net *net, struct sk_buff *skb);
- 	int (*abort)(struct net *net, struct sk_buff *skb,
- 		     enum nfnl_abort_action action);
--	void (*cleanup)(struct net *net);
- 	bool (*valid_genid)(struct net *net, u32 genid);
- };
- 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e48ab8dfb5410..d67ee2774b273 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8645,6 +8645,8 @@ static int nf_tables_validate(struct net *net)
- 			if (nft_table_validate(net, table) < 0)
- 				return -EAGAIN;
- 		}
-+
-+		nft_validate_state_update(net, NFT_VALIDATE_SKIP);
- 		break;
- 	}
- 
-@@ -9586,11 +9588,6 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 	return 0;
- }
- 
--static void nf_tables_cleanup(struct net *net)
--{
--	nft_validate_state_update(net, NFT_VALIDATE_SKIP);
--}
--
- static int nf_tables_abort(struct net *net, struct sk_buff *skb,
- 			   enum nfnl_abort_action action)
- {
-@@ -9624,7 +9621,6 @@ static const struct nfnetlink_subsystem nf_tables_subsys = {
- 	.cb		= nf_tables_cb,
- 	.commit		= nf_tables_commit,
- 	.abort		= nf_tables_abort,
--	.cleanup	= nf_tables_cleanup,
- 	.valid_genid	= nf_tables_valid_genid,
- 	.owner		= THIS_MODULE,
- };
-diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
-index 81c7737c803a6..ae7146475d17a 100644
---- a/net/netfilter/nfnetlink.c
-+++ b/net/netfilter/nfnetlink.c
-@@ -590,8 +590,6 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			goto replay_abort;
- 		}
- 	}
--	if (ss->cleanup)
--		ss->cleanup(net);
- 
- 	nfnl_err_deliver(&err_list, oskb);
- 	kfree_skb(skb);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 7699b99706ad4..934332b3eb541 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9254,8 +9254,8 @@ __perf_event_account_interrupt(struct perf_event *event, int throttle)
+ 		hwc->interrupts = 1;
+ 	} else {
+ 		hwc->interrupts++;
+-		if (unlikely(throttle
+-			     && hwc->interrupts >= max_samples_per_tick)) {
++		if (unlikely(throttle &&
++			     hwc->interrupts > max_samples_per_tick)) {
+ 			__this_cpu_inc(perf_throttled_count);
+ 			tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
+ 			hwc->interrupts = MAX_INTERRUPTS;
 -- 
 2.39.2
 
