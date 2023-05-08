@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B1516FA769
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC5A6FAAC1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234667AbjEHKaT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59770 "EHLO
+        id S229852AbjEHLGW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234672AbjEHKaJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:30:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE6A24A85
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:30:07 -0700 (PDT)
+        with ESMTP id S233703AbjEHLF6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:05:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6862FA12
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:04:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 366CD626B2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAD7C433D2;
-        Mon,  8 May 2023 10:30:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC65562A9C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2758C433D2;
+        Mon,  8 May 2023 11:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541806;
-        bh=gUzbTRmh/hdvIxFEop95lgP8rXOvYzPuzE2r3ceH+L0=;
+        s=korg; t=1683543853;
+        bh=x8PeYNY0rZ9ItwFo4OWQsWe2NVoiqx/uoWA+Kgrf+CM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j0j5f3oQJLLXD9AsmxzERhQ2rfAbUBUvaw9J+4xvlx6yeB0Vwg2xY1EVHthpL29cz
-         gMmXLKHbxwZ2/i052owajjHQ3lsFReU/cse0BWaxfyElT2+ZR5PWqzG0Jj9ZhwsLiR
-         6szRN0TRaMx0Zyrfzpvm+n4GjtgzCyznIBYsi7EQ=
+        b=cPJ2etBGFefrDiG2/HeraCJR2X+3nxFEgKfIDCJrq2Tfaz3BkZkd4aG8EU/J3yyVg
+         +OLiMkRt5IGp6tQCD1H//7/QarqNnsi0ZTb9hyrKyNVXjtfmjPbK8TMxwCmCiFyPy+
+         Rt8foCM4saeRVpM/QUu+fri41ei9/LJmK/siwvhI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kyrie wu <kyrie.wu@mediatek.com>,
-        irui wang <irui.wang@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 232/663] media: mtk-jpeg: Fixes jpeghw multi-core judgement
+Subject: [PATCH 6.3 223/694] ACPI: processor: Fix evaluating _PDC method when running as Xen dom0
 Date:   Mon,  8 May 2023 11:40:58 +0200
-Message-Id: <20230508094435.823323870@linuxfoundation.org>
+Message-Id: <20230508094439.597069968@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,82 +56,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: kyrie wu <kyrie.wu@mediatek.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 75c38caf66a10983acc5a59069bfc9492c43d682 ]
+[ Upstream commit 073828e954459b883f23e53999d31e4c55ab9654 ]
 
-some chips have multi-hw, but others have only one,
-modify the condition of multi-hw judgement
+In ACPI systems, the OS can direct power management, as opposed to the
+firmware.  This OS-directed Power Management is called OSPM.  Part of
+telling the firmware that the OS going to direct power management is
+making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
+methods must be evaluated for every processor object.  If these _PDC
+calls are not completed for every processor it can lead to
+inconsistency and later failures in things like the CPU frequency
+driver.
 
-Fixes: 934e8bccac95 ("mtk-jpegenc: support jpegenc multi-hardware")
-Signed-off-by: kyrie wu <kyrie.wu@mediatek.com>
-Signed-off-by: irui wang <irui.wang@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+In a Xen system, the dom0 kernel is responsible for system-wide power
+management.  The dom0 kernel is in charge of OSPM.  However, the
+number of CPUs available to dom0 can be different than the number of
+CPUs physically present on the system.
+
+This leads to a problem: the dom0 kernel needs to evaluate _PDC for
+all the processors, but it can't always see them.
+
+In dom0 kernels, ignore the existing ACPI method for determining if a
+processor is physically present because it might not be accurate.
+Instead, ask the hypervisor for this information.
+
+Fix this by introducing a custom function to use when running as Xen
+dom0 in order to check whether a processor object matches a CPU that's
+online.  Such checking is done using the existing information fetched
+by the Xen pCPU subsystem, extending it to also store the ACPI ID.
+
+This ensures that _PDC method gets evaluated for all physically online
+CPUs, regardless of the number of CPUs made available to dom0.
+
+Fixes: 5d554a7bb064 ("ACPI: processor: add internal processor_physically_present()")
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 5 ++++-
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h | 2 ++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/acpi/processor_pdc.c | 11 +++++++++++
+ drivers/xen/pcpu.c           | 20 ++++++++++++++++++++
+ include/xen/xen.h            | 11 +++++++++++
+ 3 files changed, 42 insertions(+)
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index 969516a940ba7..6d052747a15e8 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1692,7 +1692,7 @@ static int mtk_jpeg_probe(struct platform_device *pdev)
- 		return -EINVAL;
+diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+index 8c3f82c9fff35..18fb04523f93b 100644
+--- a/drivers/acpi/processor_pdc.c
++++ b/drivers/acpi/processor_pdc.c
+@@ -14,6 +14,8 @@
+ #include <linux/acpi.h>
+ #include <acpi/processor.h>
+ 
++#include <xen/xen.h>
++
+ #include "internal.h"
+ 
+ static bool __init processor_physically_present(acpi_handle handle)
+@@ -47,6 +49,15 @@ static bool __init processor_physically_present(acpi_handle handle)
+ 		return false;
  	}
  
--	if (list_empty(&pdev->dev.devres_head)) {
-+	if (!jpeg->variant->multi_core) {
- 		INIT_DELAYED_WORK(&jpeg->job_timeout_work,
- 				  mtk_jpeg_job_timeout_work);
++	if (xen_initial_domain())
++		/*
++		 * When running as a Xen dom0 the number of processors Linux
++		 * sees can be different from the real number of processors on
++		 * the system, and we still need to execute _PDC for all of
++		 * them.
++		 */
++		return xen_processor_present(acpi_id);
++
+ 	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
+ 	cpuid = acpi_get_cpuid(handle, type, acpi_id);
  
-@@ -1874,6 +1874,7 @@ static const struct mtk_jpeg_variant mtk_jpeg_drvdata = {
- 	.ioctl_ops = &mtk_jpeg_enc_ioctl_ops,
- 	.out_q_default_fourcc = V4L2_PIX_FMT_YUYV,
- 	.cap_q_default_fourcc = V4L2_PIX_FMT_JPEG,
-+	.multi_core = false,
+diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
+index fd3a644b08559..b3e3d1bb37f3e 100644
+--- a/drivers/xen/pcpu.c
++++ b/drivers/xen/pcpu.c
+@@ -58,6 +58,7 @@ struct pcpu {
+ 	struct list_head list;
+ 	struct device dev;
+ 	uint32_t cpu_id;
++	uint32_t acpi_id;
+ 	uint32_t flags;
  };
  
- static struct mtk_jpeg_variant mtk8195_jpegenc_drvdata = {
-@@ -1885,6 +1886,7 @@ static struct mtk_jpeg_variant mtk8195_jpegenc_drvdata = {
- 	.ioctl_ops = &mtk_jpeg_enc_ioctl_ops,
- 	.out_q_default_fourcc = V4L2_PIX_FMT_YUYV,
- 	.cap_q_default_fourcc = V4L2_PIX_FMT_JPEG,
-+	.multi_core = true,
- };
+@@ -249,6 +250,7 @@ static struct pcpu *create_and_register_pcpu(struct xenpf_pcpuinfo *info)
  
- static const struct mtk_jpeg_variant mtk8195_jpegdec_drvdata = {
-@@ -1896,6 +1898,7 @@ static const struct mtk_jpeg_variant mtk8195_jpegdec_drvdata = {
- 	.ioctl_ops = &mtk_jpeg_dec_ioctl_ops,
- 	.out_q_default_fourcc = V4L2_PIX_FMT_JPEG,
- 	.cap_q_default_fourcc = V4L2_PIX_FMT_YUV420M,
-+	.multi_core = true,
- };
+ 	INIT_LIST_HEAD(&pcpu->list);
+ 	pcpu->cpu_id = info->xen_cpuid;
++	pcpu->acpi_id = info->acpi_id;
+ 	pcpu->flags = info->flags;
  
- #if defined(CONFIG_OF)
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
-index b9126476be8fa..f87358cc9f47f 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
-@@ -60,6 +60,7 @@ enum mtk_jpeg_ctx_state {
-  * @ioctl_ops:			the callback of jpeg v4l2_ioctl_ops
-  * @out_q_default_fourcc:	output queue default fourcc
-  * @cap_q_default_fourcc:	capture queue default fourcc
-+ * @multi_core:		mark jpeg hw is multi_core or not
-  */
- struct mtk_jpeg_variant {
- 	struct clk_bulk_data *clks;
-@@ -74,6 +75,7 @@ struct mtk_jpeg_variant {
- 	const struct v4l2_ioctl_ops *ioctl_ops;
- 	u32 out_q_default_fourcc;
- 	u32 cap_q_default_fourcc;
-+	bool multi_core;
- };
+ 	/* Need hold on xen_pcpu_lock before pcpu list manipulations */
+@@ -381,3 +383,21 @@ static int __init xen_pcpu_init(void)
+ 	return ret;
+ }
+ arch_initcall(xen_pcpu_init);
++
++#ifdef CONFIG_ACPI
++bool __init xen_processor_present(uint32_t acpi_id)
++{
++	const struct pcpu *pcpu;
++	bool online = false;
++
++	mutex_lock(&xen_pcpu_lock);
++	list_for_each_entry(pcpu, &xen_pcpus, list)
++		if (pcpu->acpi_id == acpi_id) {
++			online = pcpu->flags & XEN_PCPU_FLAGS_ONLINE;
++			break;
++		}
++	mutex_unlock(&xen_pcpu_lock);
++
++	return online;
++}
++#endif
+diff --git a/include/xen/xen.h b/include/xen/xen.h
+index 7adf59837c258..0efeb652f9b8f 100644
+--- a/include/xen/xen.h
++++ b/include/xen/xen.h
+@@ -71,4 +71,15 @@ static inline void xen_free_unpopulated_pages(unsigned int nr_pages,
+ }
+ #endif
  
- struct mtk_jpeg_src_buf {
++#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI) && defined(CONFIG_X86)
++bool __init xen_processor_present(uint32_t acpi_id);
++#else
++#include <linux/bug.h>
++static inline bool xen_processor_present(uint32_t acpi_id)
++{
++	BUG();
++	return false;
++}
++#endif
++
+ #endif	/* _XEN_XEN_H */
 -- 
 2.39.2
 
