@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B1C6FA6FD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 129BF6FAA46
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234632AbjEHK0A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:26:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
+        id S235322AbjEHLBM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234569AbjEHKZe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:25:34 -0400
+        with ESMTP id S235443AbjEHLA4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F089525244
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:25:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AFF21721
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 846D0625D6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:25:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AD8C433EF;
-        Mon,  8 May 2023 10:25:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A330162A0D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7EFC4339B;
+        Mon,  8 May 2023 10:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541525;
-        bh=xRBZmjTtZATfJitir68U+VJ2net7eVXUVP+HHN8hZZA=;
+        s=korg; t=1683543576;
+        bh=baqG6dGB//IdB+Wpz3W7UFAndcKgfP+rfunxPbTdjks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lzLgWnOGlbNIapZ3Rur66orB3fnklojGeznM+Bi9qwTGorNEp27Wnd2qTVZn8yz22
-         sg8SLoSU6GK244yvpq6jbI9/KesbcRR7ycnVs7cog0PkTZv8iIPiL+enT7hCJKgruw
-         SYK1XD75lOkUIVZyjADFQWAYqIT8PQipwHvnILgo=
+        b=LEQ3sV1fPj0fg9ebgYv/ZaLdeLe3/JcGyQUeTxsBx0UwxKBTf+0ho0T1JcyeI9q9Z
+         m33QsJD5jjT9kzKzhWF1RsfMKin5hD1C151oPHJV1OE34lgGPaYq28QU7qlAHPo2CG
+         l562mcrcq2T/DdVQ6J8vz1YlRrt8H5zHtnQ/R66s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 143/663] arm64: dts: renesas: r9a07g044: Update IRQ numbers for SSI channels
+Subject: [PATCH 6.3 134/694] selftests/resctrl: Allow ->setup() to return errors
 Date:   Mon,  8 May 2023 11:39:29 +0200
-Message-Id: <20230508094433.154913749@linuxfoundation.org>
+Message-Id: <20230508094436.816281073@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,84 +56,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 5da750ddd96454757a3b467e968e3fb70bb12bc8 ]
+[ Upstream commit fa10366cc6f4cc862871f8938426d85c2481f084 ]
 
->From R01UH0914EJ0120 Rev.1.20 HW manual the interrupt numbers for SSI
-channels have been updated,
+resctrl_val() assumes ->setup() always returns either 0 to continue
+tests or < 0 in case of the normal termination of tests after x runs.
+The latter overlaps with normal error returns.
 
-SPI 329 - SSIF0 is now marked as reserved
-SPI 333 - SSIF1 is now marked as reserved
-SPI 335 - SSIF2 is now marked as reserved
-SPI 336 - SSIF2 is now marked as reserved
-SPI 341 - SSIF3 is now marked as reserved
+Define END_OF_TESTS (=1) to differentiate the normal termination of
+tests and return errors as negative values. Alter callers of ->setup()
+to handle errors properly.
 
-This patch drops the above IRQs from SoC DTSI.
-
-Fixes: 92a341315afc9 ("arm64: dts: renesas: r9a07g044: Add SSI support")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230217185225.43310-4-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 790bf585b0ee ("selftests/resctrl: Add Cache Allocation Technology (CAT) selftest")
+Fixes: ecdbb911f22d ("selftests/resctrl: Add MBM test")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a07g044.dtsi | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ tools/testing/selftests/resctrl/cache.c       | 4 +++-
+ tools/testing/selftests/resctrl/cat_test.c    | 2 +-
+ tools/testing/selftests/resctrl/cmt_test.c    | 2 +-
+ tools/testing/selftests/resctrl/mba_test.c    | 2 +-
+ tools/testing/selftests/resctrl/mbm_test.c    | 2 +-
+ tools/testing/selftests/resctrl/resctrl.h     | 2 ++
+ tools/testing/selftests/resctrl/resctrl_val.c | 4 +++-
+ 7 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
-index 487536696d900..6a42df15440cf 100644
---- a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
-@@ -175,9 +175,8 @@
- 			reg = <0 0x10049c00 0 0x400>;
- 			interrupts = <GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 327 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 328 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 329 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+				     <GIC_SPI 328 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "int_req", "dma_rx", "dma_tx";
- 			clocks = <&cpg CPG_MOD R9A07G044_SSI0_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G044_SSI0_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
-@@ -196,9 +195,8 @@
- 			reg = <0 0x1004a000 0 0x400>;
- 			interrupts = <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 331 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 332 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 333 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+				     <GIC_SPI 332 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "int_req", "dma_rx", "dma_tx";
- 			clocks = <&cpg CPG_MOD R9A07G044_SSI1_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G044_SSI1_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
-@@ -216,10 +214,8 @@
- 				     "renesas,rz-ssi";
- 			reg = <0 0x1004a400 0 0x400>;
- 			interrupts = <GIC_SPI 334 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 335 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 336 IRQ_TYPE_EDGE_RISING>,
- 				     <GIC_SPI 337 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+			interrupt-names = "int_req", "dma_rt";
- 			clocks = <&cpg CPG_MOD R9A07G044_SSI2_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G044_SSI2_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
-@@ -238,9 +234,8 @@
- 			reg = <0 0x1004a800 0 0x400>;
- 			interrupts = <GIC_SPI 338 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 339 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 340 IRQ_TYPE_EDGE_RISING>,
--				     <GIC_SPI 341 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+				     <GIC_SPI 340 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "int_req", "dma_rx", "dma_tx";
- 			clocks = <&cpg CPG_MOD R9A07G044_SSI3_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G044_SSI3_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
+diff --git a/tools/testing/selftests/resctrl/cache.c b/tools/testing/selftests/resctrl/cache.c
+index 68ff856d36f0b..0485863a169f2 100644
+--- a/tools/testing/selftests/resctrl/cache.c
++++ b/tools/testing/selftests/resctrl/cache.c
+@@ -244,10 +244,12 @@ int cat_val(struct resctrl_val_param *param)
+ 	while (1) {
+ 		if (!strncmp(resctrl_val, CAT_STR, sizeof(CAT_STR))) {
+ 			ret = param->setup(1, param);
+-			if (ret) {
++			if (ret == END_OF_TESTS) {
+ 				ret = 0;
+ 				break;
+ 			}
++			if (ret < 0)
++				break;
+ 			ret = reset_enable_llc_perf(bm_pid, param->cpu_no);
+ 			if (ret)
+ 				break;
+diff --git a/tools/testing/selftests/resctrl/cat_test.c b/tools/testing/selftests/resctrl/cat_test.c
+index 1c5e90c632548..2d3c7c77ab6cb 100644
+--- a/tools/testing/selftests/resctrl/cat_test.c
++++ b/tools/testing/selftests/resctrl/cat_test.c
+@@ -40,7 +40,7 @@ static int cat_setup(int num, ...)
+ 
+ 	/* Run NUM_OF_RUNS times */
+ 	if (p->num_of_runs >= NUM_OF_RUNS)
+-		return -1;
++		return END_OF_TESTS;
+ 
+ 	if (p->num_of_runs == 0) {
+ 		sprintf(schemata, "%lx", p->mask);
+diff --git a/tools/testing/selftests/resctrl/cmt_test.c b/tools/testing/selftests/resctrl/cmt_test.c
+index 8968e36db99d7..3b0454e7fc826 100644
+--- a/tools/testing/selftests/resctrl/cmt_test.c
++++ b/tools/testing/selftests/resctrl/cmt_test.c
+@@ -32,7 +32,7 @@ static int cmt_setup(int num, ...)
+ 
+ 	/* Run NUM_OF_RUNS times */
+ 	if (p->num_of_runs >= NUM_OF_RUNS)
+-		return -1;
++		return END_OF_TESTS;
+ 
+ 	p->num_of_runs++;
+ 
+diff --git a/tools/testing/selftests/resctrl/mba_test.c b/tools/testing/selftests/resctrl/mba_test.c
+index 1a1bdb6180cf2..f32289ae17aeb 100644
+--- a/tools/testing/selftests/resctrl/mba_test.c
++++ b/tools/testing/selftests/resctrl/mba_test.c
+@@ -41,7 +41,7 @@ static int mba_setup(int num, ...)
+ 		return 0;
+ 
+ 	if (allocation < ALLOCATION_MIN || allocation > ALLOCATION_MAX)
+-		return -1;
++		return END_OF_TESTS;
+ 
+ 	sprintf(allocation_str, "%d", allocation);
+ 
+diff --git a/tools/testing/selftests/resctrl/mbm_test.c b/tools/testing/selftests/resctrl/mbm_test.c
+index 8392e5c55ed02..280187628054d 100644
+--- a/tools/testing/selftests/resctrl/mbm_test.c
++++ b/tools/testing/selftests/resctrl/mbm_test.c
+@@ -95,7 +95,7 @@ static int mbm_setup(int num, ...)
+ 
+ 	/* Run NUM_OF_RUNS times */
+ 	if (num_of_runs++ >= NUM_OF_RUNS)
+-		return -1;
++		return END_OF_TESTS;
+ 
+ 	va_start(param, num);
+ 	p = va_arg(param, struct resctrl_val_param *);
+diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
+index f0ded31fb3c7c..f44fa2de4d986 100644
+--- a/tools/testing/selftests/resctrl/resctrl.h
++++ b/tools/testing/selftests/resctrl/resctrl.h
+@@ -37,6 +37,8 @@
+ #define ARCH_INTEL     1
+ #define ARCH_AMD       2
+ 
++#define END_OF_TESTS	1
++
+ #define PARENT_EXIT(err_msg)			\
+ 	do {					\
+ 		perror(err_msg);		\
+diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
+index 787546a528493..00864242d76c6 100644
+--- a/tools/testing/selftests/resctrl/resctrl_val.c
++++ b/tools/testing/selftests/resctrl/resctrl_val.c
+@@ -735,10 +735,12 @@ int resctrl_val(char **benchmark_cmd, struct resctrl_val_param *param)
+ 	/* Test runs until the callback setup() tells the test to stop. */
+ 	while (1) {
+ 		ret = param->setup(1, param);
+-		if (ret) {
++		if (ret == END_OF_TESTS) {
+ 			ret = 0;
+ 			break;
+ 		}
++		if (ret < 0)
++			break;
+ 
+ 		if (!strncmp(resctrl_val, MBM_STR, sizeof(MBM_STR)) ||
+ 		    !strncmp(resctrl_val, MBA_STR, sizeof(MBA_STR))) {
 -- 
 2.39.2
 
