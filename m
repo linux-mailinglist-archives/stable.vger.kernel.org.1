@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C50476FAC2E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49DAF6FA611
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235588AbjEHLVs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:21:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35750 "EHLO
+        id S234308AbjEHKPx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:15:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235593AbjEHLVq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:46 -0400
+        with ESMTP id S234306AbjEHKPw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48FF1391A6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DB83ACDB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D278062C9E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BC2C433D2;
-        Mon,  8 May 2023 11:21:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48F926248D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E559C433EF;
+        Mon,  8 May 2023 10:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544896;
-        bh=vNOmNtAn3cq21wXC0/F3vb0CHXvm+wABlSecA9RM07g=;
+        s=korg; t=1683540950;
+        bh=FC884IW4HmSfoKS5dBzpF8BXVzOw0LBrRmhS3DCvSEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nPbRwAYGOIdpTYm7t8UWpqs7HaX6NTDNjdx4p9ceRzmD+CwojPlG1itK/BfQUvjN/
-         xwXtgGJQ3V3anWmhXZlcNXE7pt/acy7+6ewqvH3O5IOOw1Py4Gea8fY+5iFAz8StV6
-         Rc44mMx5CXj+SjRRY0byrtGIOsjLblGTB7LmTEQQ=
+        b=Nn4t97FXVPB2uaSPKomveIpTuSLVcgUPAq/+VhiQXnQsUYV2BzwiLKluwFcbzIG74
+         90HzsS58nUILF3uOE62oIqD6wNhhzQVMp30FDDv4KP+tGSWPMgIjIwSSjXi54qFC9d
+         IvdVahJzYG3w+C6v2ngLXmXkW/PpHPIle0YFt1w8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Dipen Patel <dipenp@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 559/694] powerpc/perf: Properly detect mpc7450 family
+Subject: [PATCH 6.1 552/611] hte: tegra-194: Fix off by one in tegra_hte_map_to_line_id()
 Date:   Mon,  8 May 2023 11:46:34 +0200
-Message-Id: <20230508094452.795283577@linuxfoundation.org>
+Message-Id: <20230508094439.944090868@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e7299f961fe5e4496db0bfaa9e819f5e97f3846b ]
+[ Upstream commit e078180d66848a6a890daf0a3ce28dc43cc66790 ]
 
-Unlike PVR_POWER8, etc ...., PVR_7450 represents a full PVR
-value and not a family value.
+The "map_sz" is the number of elements in the "m" array so the >
+comparison needs to be changed to >= to prevent an out of bounds
+read.
 
-To avoid confusion, do like E500 family and define the relevant
-PVR_VER_xxxx values for the 7450 family:
-  0x8000 ==> 7450
-  0x8001 ==> 7455
-  0x8002 ==> 7447
-  0x8003 ==> 7447A
-  0x8004 ==> 7448
-
-And use them to detect 7450 family for perf events.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/202302260657.7dM9Uwev-lkp@intel.com/
-Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field to determine CPU version")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/99ca1da2e5a6cf82a8abf4bc034918e500e31781.1677513277.git.christophe.leroy@csgroup.eu
+Fixes: 09574cca6ad6 ("hte: Add Tegra194 HTE kernel provider")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Dipen Patel <dipenp@nvidia.com>
+Signed-off-by: Dipen Patel <dipenp@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/reg.h  | 5 +++++
- arch/powerpc/perf/mpc7450-pmu.c | 6 +++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/hte/hte-tegra194.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 1e8b2e04e626a..8fda87af2fa5e 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1310,6 +1310,11 @@
- #define PVR_VER_E500MC	0x8023
- #define PVR_VER_E5500	0x8024
- #define PVR_VER_E6500	0x8040
-+#define PVR_VER_7450	0x8000
-+#define PVR_VER_7455	0x8001
-+#define PVR_VER_7447	0x8002
-+#define PVR_VER_7447A	0x8003
-+#define PVR_VER_7448	0x8004
- 
- /*
-  * For the 8xx processors, all of them report the same PVR family for
-diff --git a/arch/powerpc/perf/mpc7450-pmu.c b/arch/powerpc/perf/mpc7450-pmu.c
-index 552d51a925d37..db451b9aac35e 100644
---- a/arch/powerpc/perf/mpc7450-pmu.c
-+++ b/arch/powerpc/perf/mpc7450-pmu.c
-@@ -417,9 +417,9 @@ struct power_pmu mpc7450_pmu = {
- 
- static int __init init_mpc7450_pmu(void)
+diff --git a/drivers/hte/hte-tegra194.c b/drivers/hte/hte-tegra194.c
+index 49a27af22742b..d1b579c822797 100644
+--- a/drivers/hte/hte-tegra194.c
++++ b/drivers/hte/hte-tegra194.c
+@@ -251,7 +251,7 @@ static int tegra_hte_map_to_line_id(u32 eid,
  {
--	unsigned int pvr = mfspr(SPRN_PVR);
--
--	if (PVR_VER(pvr) != PVR_7450)
-+	if (!pvr_version_is(PVR_VER_7450) && !pvr_version_is(PVR_VER_7455) &&
-+	    !pvr_version_is(PVR_VER_7447) && !pvr_version_is(PVR_VER_7447A) &&
-+	    !pvr_version_is(PVR_VER_7448))
- 		return -ENODEV;
  
- 	return register_power_pmu(&mpc7450_pmu);
+ 	if (m) {
+-		if (eid > map_sz)
++		if (eid >= map_sz)
+ 			return -EINVAL;
+ 		if (m[eid].slice == NV_AON_SLICE_INVALID)
+ 			return -EINVAL;
 -- 
 2.39.2
 
