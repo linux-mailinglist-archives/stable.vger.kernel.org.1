@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C57A26FAC7F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C5F6FAE67
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235642AbjEHLZP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39754 "EHLO
+        id S236302AbjEHLo2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235767AbjEHLYz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:55 -0400
+        with ESMTP id S236121AbjEHLoF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B233C1C9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4687A10A37
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F6AA62D47
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D289C433EF;
-        Mon,  8 May 2023 11:24:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04FFE63591
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F083EC433D2;
+        Mon,  8 May 2023 11:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545082;
-        bh=y+SBsBYbWdQbmIovtdhGuVOMSR5Ucew+NPotDjy7tB8=;
+        s=korg; t=1683546208;
+        bh=z8XfetHkFZzR3qr+OmK+bDbCz2burq1nYoHSYsrEfiw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JKBY/fL/HZoAtpfuvU8ctaPQPfX9lipnDyqIz5eDncYUwhw14HRsa4fnapSVNNPPB
-         YCSIFEe+vIgHcPjNhGnw0AMTJY/uWQvkxZoViSORClfkopNa6gN0kl/1z/wGURKL92
-         L42FTUkQBebYHULWuLHuIarkqe5+Gm9cu9nVKIF0=
+        b=v6YdnMyNPQ9DmCa6C7eyn7uU3zu4pneuG5YRpXKnln3U/Up9Dmvn6MQ5QO2x3YRY2
+         eZ5g66P/ymv97UurMA6j9X7qzpdTkiDHomgDJZSdjBHaAzA4fccQxVka2iKLXyiUOA
+         6ffiOAdWfP5Co3Xfsq+JzLrpWb7IRkWVrwv80nZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 619/694] swiotlb: fix debugfs reporting of reserved memory pools
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 253/371] spi: qup: Dont skip cleanup in removes error path
 Date:   Mon,  8 May 2023 11:47:34 +0200
-Message-Id: <20230508094455.610389803@linuxfoundation.org>
+Message-Id: <20230508094822.119958088@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 5499d01c029069044a3b3e50501c77b474c96178 ]
+[ Upstream commit 61f49171a43ab1f80c73c5c88c508770c461e0f2 ]
 
-For io_tlb_nslabs, the debugfs code reports the correct value for a
-specific reserved memory pool.  But for io_tlb_used, the value reported
-is always for the default pool, not the specific reserved pool. Fix this.
+Returning early in a platform driver's remove callback is wrong. In this
+case the dma resources are not released in the error path. this is never
+retried later and so this is a permanent leak. To fix this, only skip
+hardware disabling if waking the device fails.
 
-Fixes: 5c850d31880e ("swiotlb: fix passing local variable to debugfs_create_ulong()")
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 64ff247a978f ("spi: Add Qualcomm QUP SPI controller support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230330210341.2459548-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-qup.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 2bb9e3b023802..09d2f4877d0f4 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -930,7 +930,9 @@ EXPORT_SYMBOL_GPL(is_swiotlb_active);
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index f3877eeb3da65..8bf58510cca6d 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1276,18 +1276,22 @@ static int spi_qup_remove(struct platform_device *pdev)
+ 	struct spi_qup *controller = spi_master_get_devdata(master);
+ 	int ret;
  
- static int io_tlb_used_get(void *data, u64 *val)
- {
--	*val = mem_used(&io_tlb_default_mem);
-+	struct io_tlb_mem *mem = data;
-+
-+	*val = mem_used(mem);
- 	return 0;
- }
- DEFINE_DEBUGFS_ATTRIBUTE(fops_io_tlb_used, io_tlb_used_get, NULL, "%llu\n");
-@@ -943,7 +945,7 @@ static void swiotlb_create_debugfs_files(struct io_tlb_mem *mem,
- 		return;
+-	ret = pm_runtime_resume_and_get(&pdev->dev);
+-	if (ret < 0)
+-		return ret;
++	ret = pm_runtime_get_sync(&pdev->dev);
  
- 	debugfs_create_ulong("io_tlb_nslabs", 0400, mem->debugfs, &mem->nslabs);
--	debugfs_create_file("io_tlb_used", 0400, mem->debugfs, NULL,
-+	debugfs_create_file("io_tlb_used", 0400, mem->debugfs, mem,
- 			&fops_io_tlb_used);
- }
+-	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
+-	if (ret)
+-		return ret;
++	if (ret >= 0) {
++		ret = spi_qup_set_state(controller, QUP_STATE_RESET);
++		if (ret)
++			dev_warn(&pdev->dev, "failed to reset controller (%pe)\n",
++				 ERR_PTR(ret));
  
+-	spi_qup_release_dma(master);
++		clk_disable_unprepare(controller->cclk);
++		clk_disable_unprepare(controller->iclk);
++	} else {
++		dev_warn(&pdev->dev, "failed to resume, skip hw disable (%pe)\n",
++			 ERR_PTR(ret));
++	}
+ 
+-	clk_disable_unprepare(controller->cclk);
+-	clk_disable_unprepare(controller->iclk);
++	spi_qup_release_dma(master);
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
 -- 
 2.39.2
 
