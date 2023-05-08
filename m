@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B9E66FA912
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3602B6FAC24
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235110AbjEHKrb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:47:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
+        id S235585AbjEHLVR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235055AbjEHKqw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:52 -0400
+        with ESMTP id S235589AbjEHLVP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF6A826EA9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70DE538F31
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FDFA628D8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F77C4339B;
-        Mon,  8 May 2023 10:46:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D560862C91
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0638C433EF;
+        Mon,  8 May 2023 11:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542802;
-        bh=gHhybyGWdXjAoaaaC9QnQOCm2AnG71khjR+1WYesOtw=;
+        s=korg; t=1683544872;
+        bh=kbdtTrl2dZzxKYt90qoAzKB9EiZDNKcWO8SfWlaySfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pmpjZTCYbMiJQ2WHn6vu5V3s+T7Mt4Ml1Xx9Bmigcmcr4bNvbzJemg02TQMeYZMcK
-         NowPIzMABF99MjAHTC/8qQfzwSx/5nGvuEwQ4SrWJnM0V48rTT17oOp70qGTZXMidO
-         /4AsUybJ3Y27OLoqbEwABCJnMwO2mEBkrgoiXNz4=
+        b=aUTrqC+cBhOqP4/LyZHEO9q4HIz1TgkJ2z5aH+MhIUxGkpgGvRh7etfoI8iq6ZdQ/
+         kXeWJNjx5Iof8Y3qHhhqwbDFftrWYWW0HSVPqdQVP961CyL0/DySs+gVTsbMPWnuxD
+         8h094q/uZ3ZoqJJZkH2c9ERbOhnzWVqoR16P2S1A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacky Bai <ping.bai@nxp.com>,
-        Ye Li <ye.li@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 552/663] clk: imx: imx8ulp: Fix XBAR_DIVBUS and AD_SLOW clock parents
+Subject: [PATCH 6.3 543/694] sh: sq: Fix incorrect element size for allocating bitmap buffer
 Date:   Mon,  8 May 2023 11:46:18 +0200
-Message-Id: <20230508094446.993067150@linuxfoundation.org>
+Message-Id: <20230508094452.097443995@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Fan <peng.fan@nxp.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-[ Upstream commit d608c18018c897b88d66f1340fe274b7181817fa ]
+[ Upstream commit 80f746e2bd0e1da3fdb49a53570e54a1a225faac ]
 
-XBAR_DIVBUS and AD_SLOW should set parent to XBAR_AD_DIVPLAT and
-XBAR_DIVBUS respectively, not the NIC_AD. otherwise we will get
-wrong clock rate.
+The Store Queue code allocates a bitmap buffer with the size of
+multiple of sizeof(long) in sq_api_init(). While the buffer size
+is calculated correctly, the code uses the wrong element size to
+allocate the buffer which results in the allocated bitmap buffer
+being too small.
 
-Fixes: c43a801a5789 ("clk: imx: Add clock driver for imx8ulp")
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Ye Li <ye.li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230331063814.2462059-2-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fix this by allocating the buffer with kcalloc() with element size
+sizeof(long) instead of kzalloc() whose elements size defaults to
+sizeof(char).
+
+Fixes: d7c30c682a27 ("sh: Store Queue API rework.")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230419114854.528677-1-glaubitz@physik.fu-berlin.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8ulp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sh/kernel/cpu/sh4/sq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx8ulp.c b/drivers/clk/imx/clk-imx8ulp.c
-index 8eb1af2d64298..ca0e4a3aa454e 100644
---- a/drivers/clk/imx/clk-imx8ulp.c
-+++ b/drivers/clk/imx/clk-imx8ulp.c
-@@ -200,8 +200,8 @@ static int imx8ulp_clk_cgc1_init(struct platform_device *pdev)
- 	clks[IMX8ULP_CLK_NIC_AD_DIVPLAT] = imx_clk_hw_divider_flags("nic_ad_divplat", "nic_sel", base + 0x34, 21, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
- 	clks[IMX8ULP_CLK_NIC_PER_DIVPLAT] = imx_clk_hw_divider_flags("nic_per_divplat", "nic_ad_divplat", base + 0x34, 14, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
- 	clks[IMX8ULP_CLK_XBAR_AD_DIVPLAT] = imx_clk_hw_divider_flags("xbar_ad_divplat", "nic_ad_divplat", base + 0x38, 14, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
--	clks[IMX8ULP_CLK_XBAR_DIVBUS] = imx_clk_hw_divider_flags("xbar_divbus", "nic_ad_divplat", base + 0x38, 7, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
--	clks[IMX8ULP_CLK_XBAR_AD_SLOW] = imx_clk_hw_divider_flags("xbar_ad_slow", "nic_ad_divplat", base + 0x38, 0, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
-+	clks[IMX8ULP_CLK_XBAR_DIVBUS] = imx_clk_hw_divider_flags("xbar_divbus", "xbar_ad_divplat", base + 0x38, 7, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
-+	clks[IMX8ULP_CLK_XBAR_AD_SLOW] = imx_clk_hw_divider_flags("xbar_ad_slow", "xbar_divbus", base + 0x38, 0, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
+diff --git a/arch/sh/kernel/cpu/sh4/sq.c b/arch/sh/kernel/cpu/sh4/sq.c
+index 27f2e3da5aa22..6e0bb3f47fa5d 100644
+--- a/arch/sh/kernel/cpu/sh4/sq.c
++++ b/arch/sh/kernel/cpu/sh4/sq.c
+@@ -382,7 +382,7 @@ static int __init sq_api_init(void)
+ 	if (unlikely(!sq_cache))
+ 		return ret;
  
- 	clks[IMX8ULP_CLK_SOSC_DIV1_GATE] = imx_clk_hw_gate_dis("sosc_div1_gate", "sosc", base + 0x108, 7);
- 	clks[IMX8ULP_CLK_SOSC_DIV2_GATE] = imx_clk_hw_gate_dis("sosc_div2_gate", "sosc", base + 0x108, 15);
+-	sq_bitmap = kzalloc(size, GFP_KERNEL);
++	sq_bitmap = kcalloc(size, sizeof(long), GFP_KERNEL);
+ 	if (unlikely(!sq_bitmap))
+ 		goto out;
+ 
 -- 
 2.39.2
 
