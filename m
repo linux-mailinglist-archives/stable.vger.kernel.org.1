@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3A7A6FA5C7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B16CA6FAD7B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234201AbjEHKNA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41226 "EHLO
+        id S236063AbjEHLfL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234217AbjEHKMx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:53 -0400
+        with ESMTP id S233993AbjEHLe7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87CD63AA1A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 275113C1FC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16667623E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9E5C433EF;
-        Mon,  8 May 2023 10:12:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F449631F1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039E1C433EF;
+        Mon,  8 May 2023 11:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540771;
-        bh=X3h+Bk+jn9xhkPi3oGBK85gbJiOIra04LfReAyRbrgM=;
+        s=korg; t=1683545592;
+        bh=kJyaHs26vV7b10N/2jLFniZqgqmXHWG7MJkSTdHBs3Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MDFNLOPYYwoj+eyJ/KJ8excK17chjVNQUSzBxlYUi7ltoFgJdYUPh2iYRo0/XEdwB
-         aFOn1jIX2zaXGIc7awhksSyJaEQkt6lLktGqt0dXz796gR2xW7V+iO3EW9C8hPGUao
-         VpMMfQef64UruoSFkbIl6SNsZR4yc3zFR1dLh1QA=
+        b=Akb28onVxs4M8JcfBj4P5n+a+SQcE5MetA6Tj0Pv2WvUidipgzyzpv6g6ymIs/jKF
+         prbQ9TVPV90JR/1VEJQWC1G/+ydINcakwGolT4s3mBAs+hpNEDonFfuRhwMaSUFwqn
+         Imt7OlxmDw9tSlzsTtlzPqP/hreKTr6q2PFadeP4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 449/611] tty: serial: fsl_lpuart: adjust buffer length to the intended size
+Subject: [PATCH 5.15 090/371] arm64: dts: Add base DTS file for bcmbca device Asus GT-AX6000
 Date:   Mon,  8 May 2023 11:44:51 +0200
-Message-Id: <20230508094436.742642054@linuxfoundation.org>
+Message-Id: <20230508094815.648714839@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,37 +56,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit f73fd750552524b06b5d77ebfdd106ccc8fcac61 ]
+[ Upstream commit f3f575c4bef95384e68de552c7b29938fd0d9201 ]
 
-Based on the fls function definition provided below, we should not
-subtract 1 to obtain the correct buffer length:
+It's a home router with 1 GiB of RAM, 6 Ethernet ports, 2 USB ports.
 
-fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
-
-Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20230410195555.1003900-1-shenwei.wang@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Acked-by: William Zhang <william.zhang@broadcom.com>
+Link: https://lore.kernel.org/r/20220713200351.28526-2-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Stable-dep-of: 5cca02449490 ("arm64: dts: broadcom: bcmbca: bcm4908: fix NAND interrupt name")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/broadcom/bcmbca/Makefile  |  4 +++-
+ .../bcmbca/bcm4912-asus-gt-ax6000.dts         | 19 +++++++++++++++++++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 48eb5fea62fd0..81467e93c7d53 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1276,7 +1276,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 	 * 10ms at any baud rate.
- 	 */
- 	sport->rx_dma_rng_buf_len = (DMA_RX_TIMEOUT * baud /  bits / 1000) * 2;
--	sport->rx_dma_rng_buf_len = (1 << (fls(sport->rx_dma_rng_buf_len) - 1));
-+	sport->rx_dma_rng_buf_len = (1 << fls(sport->rx_dma_rng_buf_len));
- 	if (sport->rx_dma_rng_buf_len < 16)
- 		sport->rx_dma_rng_buf_len = 16;
- 
+diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
+index 4161d557b1329..fd60418478696 100644
+--- a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
++++ b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
+@@ -1,4 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+-dtb-$(CONFIG_ARCH_BCMBCA) += bcm94912.dtb \
++dtb-$(CONFIG_ARCH_BCMBCA) += \
++				bcm4912-asus-gt-ax6000.dtb \
++				bcm94912.dtb \
+ 				bcm963158.dtb \
+ 				bcm96858.dtb
+diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts
+new file mode 100644
+index 0000000000000..ed554666e95ea
+--- /dev/null
++++ b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++
++/dts-v1/;
++
++#include "bcm4912.dtsi"
++
++/ {
++	compatible = "asus,gt-ax6000", "brcm,bcm4912", "brcm,bcmbca";
++	model = "Asus GT-AX6000";
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x00 0x00 0x00 0x40000000>;
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
 -- 
 2.39.2
 
