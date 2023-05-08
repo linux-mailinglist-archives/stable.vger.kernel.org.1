@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E76B66FAB98
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9BD06FA57D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234400AbjEHLPN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:15:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S234150AbjEHKKB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234418AbjEHLPM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7913F36CCB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:11 -0700 (PDT)
+        with ESMTP id S234155AbjEHKJ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C9937E55
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ED1862BDF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38E5C433EF;
-        Mon,  8 May 2023 11:15:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AC6562392
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30531C433EF;
+        Mon,  8 May 2023 10:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544510;
-        bh=AezFzS6WqfQd7JL/0wiv/83Q8OlHz6O+F7MIEe5+RO0=;
+        s=korg; t=1683540597;
+        bh=WsR8fgP0yl+3Z6wf2pmqPsUwLcGJv9euAvjGdsRm/No=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EzFyOx89N7HDr0/brGrlRojPjCUrlq6Y58KVAlFr62MsBe84+i3PsNvNYcpO1k0lS
-         AQcnImePIyixaxeZ3gnMPjKT9ObqlvmjANvCbT8CEYNV9Cgql7kFQR5810BpZAMmvk
-         FOvqcp57PZU9yfwUYwhWp+SgXJVCfDsNV3uSRgFA=
+        b=0NqK1qLPS4nOKes90GMSRDQov7V4qed/aY7pmSORDXtLEG/Zzpi5SXRZmUX96/TFU
+         RSUeaxx37itwhjzoshwh14OFfqdkDhOEViJbeP11GnH/SLNE0H3viWqZOb16aNreAD
+         I4YqSqrz/4tBy/wy2gsAEATle7Y4VryLO5YeOgkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 433/694] wifi: mt76: mt7921: fix PCI DMA hang after reboot
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 426/611] HID: amd_sfh: Correct the structure fields
 Date:   Mon,  8 May 2023 11:44:28 +0200
-Message-Id: <20230508094447.431130001@linuxfoundation.org>
+Message-Id: <20230508094436.045534776@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,48 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 9270270d62191b7549296721e8d5f3dc0df01563 ]
+[ Upstream commit 7e7fdab79899f62de39c9280fb78f3d3b02ac207 ]
 
-mt7921 just stop some workers and clean up chip status before reboot.
-In stress test, there are working activities still running at the period
-of .shutdown callback and that would cause some hosts cannot recover
-DMA after reboot. To avoid the floating state in reboot, we use
-mt7921_pci_remove() to fully deinit all resources.
+Misinterpreted sfh_cmd_base structure member fields. Therefore, adjust
+the structure member fields accordingly to reflect functionality.
 
-Fixes: f23a0cea8bd6 ("wifi: mt76: mt7921e: add pci .shutdown() support")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 41be108e1d5a1..bda92d8359692 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -515,17 +515,7 @@ static int mt7921_pci_resume(struct device *device)
- 
- static void mt7921_pci_shutdown(struct pci_dev *pdev)
- {
--	struct mt76_dev *mdev = pci_get_drvdata(pdev);
--	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
--	struct mt76_connac_pm *pm = &dev->pm;
--
--	cancel_delayed_work_sync(&pm->ps_work);
--	cancel_work_sync(&pm->wake_work);
--
--	/* chip cleanup before reboot */
--	mt7921_mcu_drv_pmctrl(dev);
--	mt7921_dma_cleanup(dev);
--	mt7921_wfsys_reset(dev);
-+	mt7921_pci_remove(pdev);
- }
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(mt7921_pm_ops, mt7921_pci_suspend, mt7921_pci_resume);
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
+index ae47a369dc05a..a3e0ec289e3f9 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
+@@ -33,9 +33,9 @@ struct sfh_cmd_base {
+ 		struct {
+ 			u32 sensor_id		: 4;
+ 			u32 cmd_id		: 4;
+-			u32 sub_cmd_id		: 6;
+-			u32 length		: 12;
+-			u32 rsvd		: 5;
++			u32 sub_cmd_id		: 8;
++			u32 sub_cmd_value	: 12;
++			u32 rsvd		: 3;
+ 			u32 intr_disable	: 1;
+ 		} cmd;
+ 	};
 -- 
 2.39.2
 
