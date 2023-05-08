@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E4C6FAAB0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970F46FA76F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233894AbjEHLFj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:05:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39528 "EHLO
+        id S234620AbjEHKaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233370AbjEHLFX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:05:23 -0400
+        with ESMTP id S234674AbjEHKaV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:30:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5034131EDE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:04:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F989E72C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:30:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 201BC6260A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1501BC433EF;
-        Mon,  8 May 2023 11:04:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B05F4626A8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD61CC433EF;
+        Mon,  8 May 2023 10:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543859;
-        bh=mpTes964mqXXGyctO4vhDHifhhAQxSchPulv0ClTJys=;
+        s=korg; t=1683541816;
+        bh=w/t2A4zVFzPFuF4F1zTVMPbkwgl6BgQv6xF64kcS2w8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HHYsiqLX56AGeR0Jx4xnw1e/v02LMIMhw60aAaTXknUyHXfYO3ZbAS7JFLf4hQLJm
-         c2yu+pueFnbV9RsB12j0O1tmbq9AId8KHdXkvGeDIoQ+9M419E4+vna5p1jc2E6GFE
-         yeUDO2Ofo+YVR6ZpBN7s6mlzEkOwagYDMGlDk5iI=
+        b=fYaycLZwL3+8iDb3ijsWZwNpSPqSk7NsFuw5CKUyeaAYkmFtCFwZ59T0MTGOHOoTh
+         /t0vuoPxqPtTU9OF96lvsdPai1DgUEEEWGa6gW2N5Ahl+mNYU0PO+MYw3qeSV9FL7E
+         LRxL1PCagNxoGXf33u/qCT0uKb4ZrraAd1pTI1Ic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 225/694] arm64: dts: qcom: sm8450: fix pcie1 gpios properties name
+Subject: [PATCH 6.2 234/663] media: mediatek: vcodec: Use 4K frame size when supported by stateful decoder
 Date:   Mon,  8 May 2023 11:41:00 +0200
-Message-Id: <20230508094439.663374721@linuxfoundation.org>
+Message-Id: <20230508094435.881380194@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit e57430d2483506f046e39bf8c61159dde88aede2 ]
+[ Upstream commit e25528e1dbe52784ac250071653104a8adc848e2 ]
 
-Add the final "s" to the pgio properties and fix the invalid "enable"
-name to the correct "wake", checked against the HDK8450 schematics.
+After commit b018be06f3c7 ("media: mediatek: vcodec: Read max resolution
+from dec_capability"), the stateful video decoder driver never really
+sets its output frame size to 4K.
 
-Fixes: bc6588bc25fb ("arm64: dts: qcom: sm8450: add PCIe1 root device")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230323-topic-sm8450-upstream-dt-bindings-fixes-v2-4-0ca1bea1a843@linaro.org
+Parse the decoder capability reported by the firmware, and update the
+output frame size in mtk_init_vdec_params to enable 4K frame size when
+available.
+
+Fixes: b018be06f3c7 ("media: mediatek: vcodec: Read max resolution from dec_capability")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../mediatek/vcodec/mtk_vcodec_dec_stateful.c        | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index bcb0eac83ef01..243ef642fcef6 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -1917,8 +1917,8 @@
- 			phys = <&pcie1_lane>;
- 			phy-names = "pciephy";
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
+index 035c86e7809fd..29991551cf614 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
+@@ -11,7 +11,7 @@
+ #include "mtk_vcodec_dec_pm.h"
+ #include "vdec_drv_if.h"
  
--			perst-gpio = <&tlmm 97 GPIO_ACTIVE_LOW>;
--			enable-gpio = <&tlmm 99 GPIO_ACTIVE_HIGH>;
-+			perst-gpios = <&tlmm 97 GPIO_ACTIVE_LOW>;
-+			wake-gpios = <&tlmm 99 GPIO_ACTIVE_HIGH>;
+-static const struct mtk_video_fmt mtk_video_formats[] = {
++static struct mtk_video_fmt mtk_video_formats[] = {
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_H264,
+ 		.type = MTK_FMT_DEC,
+@@ -580,6 +580,16 @@ static int mtk_vcodec_dec_ctrls_setup(struct mtk_vcodec_ctx *ctx)
  
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&pcie1_default_state>;
+ static void mtk_init_vdec_params(struct mtk_vcodec_ctx *ctx)
+ {
++	unsigned int i;
++
++	if (!(ctx->dev->dec_capability & VCODEC_CAPABILITY_4K_DISABLED)) {
++		for (i = 0; i < num_supported_formats; i++) {
++			mtk_video_formats[i].frmsize.max_width =
++				VCODEC_DEC_4K_CODED_WIDTH;
++			mtk_video_formats[i].frmsize.max_height =
++				VCODEC_DEC_4K_CODED_HEIGHT;
++		}
++	}
+ }
+ 
+ static struct vb2_ops mtk_vdec_frame_vb2_ops = {
 -- 
 2.39.2
 
