@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 215716FAB40
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1E76FA7E8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233688AbjEHLLA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50722 "EHLO
+        id S234802AbjEHKf6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:35:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233459AbjEHLKx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:53 -0400
+        with ESMTP id S234840AbjEHKfd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:35:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E1E348A4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE32028A88
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B034362B57
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC44C433EF;
-        Mon,  8 May 2023 11:10:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 700DF62767
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B79C433D2;
+        Mon,  8 May 2023 10:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544252;
-        bh=C3TNWy7E2eTHc/6V+meOjr38etecp82m9YMJVtbCKiY=;
+        s=korg; t=1683542103;
+        bh=n+MyhvLQuaL6P+rcPk0Nqm7xeI6e3h1ejyiTDBOpUtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PLGrYOPnVf9OELrWaZIF8bUQaG8/3igvNxcfi9ZJNjab8O4t1GKCGad40X2pNAUIg
-         R3TEug0DOxxbmJigNFQYuvVqOE98caI1KwGFP+alPweWqmlUuBJgoEa8JlYny1GffH
-         7klxV6v3JyQmWEHgcxcux8wvdqMYhfv3Qc/VcIIs=
+        b=F9fL7d63vONb3Gvur+X06GfYoKLtvYQOYKopEiOcjiel+C217McbVc3jbEixn1Gfk
+         VEUUUwQYwumjf+vWkw8UXEvsZvoa8zTeQD0q8hzMwi2joZ/U526cO09SoPdRwhwb9l
+         GfLYLoJL0sdG79+uiwOwsb+dpYWUR10Ei8psYHtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-        =?UTF-8?q?Tom=C3=A1=C5=A1=20Pecka?= <tomas.pecka@cesnet.cz>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 319/694] hwmon: (pmbus/fsp-3y) Fix functionality bitmask in FSP-3Y YM-2151E
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        Simon Horman <simon.horman@corigine.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 328/663] wifi: rt2x00: Fix memory leak when handling surveys
 Date:   Mon,  8 May 2023 11:42:34 +0200
-Message-Id: <20230508094442.661805487@linuxfoundation.org>
+Message-Id: <20230508094438.830850369@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tomáš Pecka <tomas.pecka@cesnet.cz>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 93822f5161a2dc57a60b95b35b3cb8589f53413e ]
+[ Upstream commit cbef9a83c51dfcb07f77cfa6ac26f53a1ea86f49 ]
 
-The bit flags in pmbus_driver_info functionality for YM-2151E chip were
-joined with a comma operator instead of a bitwise OR. This means that
-the last constant PMBUS_HAVE_IIN was not OR-ed with the other
-PM_BUS_HAVE_* constants for this page but it initialized the next element
-of the func array (which was not accessed from anywhere because of the
-number of pages).
+When removing a rt2x00 device, its associated channel surveys
+are not freed, causing a memory leak observable with kmemleak:
 
-However, there is no need for setting PMBUS_HAVE_IIN in the 5Vsb page
-because this command does not seem to be paged. Obviously, the device
-only has one IIN sensor, so it doesn't make sense to query it again from
-the second page.
+unreferenced object 0xffff9620f0881a00 (size 512):
+  comm "systemd-udevd", pid 2290, jiffies 4294906974 (age 33.768s)
+  hex dump (first 32 bytes):
+    70 44 12 00 00 00 00 00 92 8a 00 00 00 00 00 00  pD..............
+    00 00 00 00 00 00 00 00 ab 87 01 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffffb0ed858b>] __kmalloc+0x4b/0x130
+    [<ffffffffc1b0f29b>] rt2800_probe_hw+0xc2b/0x1380 [rt2800lib]
+    [<ffffffffc1a9496e>] rt2800usb_probe_hw+0xe/0x60 [rt2800usb]
+    [<ffffffffc1ae491a>] rt2x00lib_probe_dev+0x21a/0x7d0 [rt2x00lib]
+    [<ffffffffc1b3b83e>] rt2x00usb_probe+0x1be/0x980 [rt2x00usb]
+    [<ffffffffc05981e2>] usb_probe_interface+0xe2/0x310 [usbcore]
+    [<ffffffffb13be2d5>] really_probe+0x1a5/0x410
+    [<ffffffffb13be5c8>] __driver_probe_device+0x78/0x180
+    [<ffffffffb13be6fe>] driver_probe_device+0x1e/0x90
+    [<ffffffffb13be972>] __driver_attach+0xd2/0x1c0
+    [<ffffffffb13bbc57>] bus_for_each_dev+0x77/0xd0
+    [<ffffffffb13bd2a2>] bus_add_driver+0x112/0x210
+    [<ffffffffb13bfc6c>] driver_register+0x5c/0x120
+    [<ffffffffc0596ae8>] usb_register_driver+0x88/0x150 [usbcore]
+    [<ffffffffb0c011c4>] do_one_initcall+0x44/0x220
+    [<ffffffffb0d6134c>] do_init_module+0x4c/0x220
 
-Fixes: 1734b4135a62 ("hwmon: Add driver for fsp-3y PSUs and PDUs")
-Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Signed-off-by: Tomáš Pecka <tomas.pecka@cesnet.cz>
-Link: https://lore.kernel.org/r/20230420171939.212040-1-tomas.pecka@cesnet.cz
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fix this by freeing the channel surveys on device removal.
+
+Tested with a RT3070 based USB wireless adapter.
+
+Fixes: 5447626910f5 ("rt2x00: save survey for every channel visited")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230330215637.4332-1-W_Armin@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/fsp-3y.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/pmbus/fsp-3y.c b/drivers/hwmon/pmbus/fsp-3y.c
-index aec294cc72d1f..c7469d2cdedcf 100644
---- a/drivers/hwmon/pmbus/fsp-3y.c
-+++ b/drivers/hwmon/pmbus/fsp-3y.c
-@@ -180,7 +180,6 @@ static struct pmbus_driver_info fsp3y_info[] = {
- 			PMBUS_HAVE_FAN12,
- 		.func[YM2151_PAGE_5VSB_LOG] =
- 			PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT,
--			PMBUS_HAVE_IIN,
- 		.read_word_data = fsp3y_read_word_data,
- 		.read_byte_data = fsp3y_read_byte_data,
- 	},
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index 3a035afcf7f99..9a9cfd0ce402d 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -1091,6 +1091,7 @@ static void rt2x00lib_remove_hw(struct rt2x00_dev *rt2x00dev)
+ 	}
+ 
+ 	kfree(rt2x00dev->spec.channels_info);
++	kfree(rt2x00dev->chan_survey);
+ }
+ 
+ static const struct ieee80211_tpt_blink rt2x00_tpt_blink[] = {
 -- 
 2.39.2
 
