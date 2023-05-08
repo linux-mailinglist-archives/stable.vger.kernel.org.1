@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 625686FA3DB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD456FA3DC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233726AbjEHJw0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49278 "EHLO
+        id S233496AbjEHJw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233496AbjEHJwZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:52:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBABC23A0B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:52:23 -0700 (PDT)
+        with ESMTP id S233321AbjEHJw1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:52:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963CD2383F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:52:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 81469621EC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:52:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C41C433EF;
-        Mon,  8 May 2023 09:52:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 273B4621EC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C804C433EF;
+        Mon,  8 May 2023 09:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539543;
-        bh=8ezcZl5m/cEkzzWdEWK78JGEzBcRyHLWDItMhISB3kQ=;
+        s=korg; t=1683539545;
+        bh=h/ZZrZjIbcp/u86Xg+7tLyYUAglheWMJobuIUAFJ/ow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zf3Tqt8yNjLWkjSeiOmxA5mE96DX1oEX7D62RuzL5mlV4e3NCWGrz/virD7lg5DMF
-         B8qPJ8E+dbXFAgyVRJzC5NL9HU5ABqX8pb8Y6LRgmQxgO+ebtqTG1kXD94HDULB7BD
-         2zomRULBTQ3BEGZ3SBZlXpFCRmmA6aVA69vRWxdo=
+        b=ORNckgUDzfurHUIOvSy1N6Ju6//5n9ezzeKa9oH7NEgVKzppH3QesJ/apszyI3gyc
+         95y/i+KWlkEi6A4y7TRI/ImzIekwcjpw/oeypKxjS8ePoy7MsQh82PAi2YimGyQcDa
+         O6mrHl7jTfGXtCRDLILH55tkAtAsmIw77emPnhZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.1 055/611] fs: fix sysctls.c built
-Date:   Mon,  8 May 2023 11:38:17 +0200
-Message-Id: <20230508094423.717770236@linuxfoundation.org>
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 056/611] MIPS: fw: Allow firmware to pass a empty env
+Date:   Mon,  8 May 2023 11:38:18 +0200
+Message-Id: <20230508094423.750650213@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -44,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,56 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit e3184de9d46c2eebdb776face2e2662c6733331d upstream.
+commit ee1809ed7bc456a72dc8410b475b73021a3a68d5 upstream.
 
-'obj-$(CONFIG_SYSCTL) += sysctls.o' must be moved after "obj-y :=",
-or it won't be built as it is overwrited.
+fw_getenv will use env entry to determine style of env,
+however it is legal for firmware to just pass a empty list.
 
-Note that there is nothing that is going to break by linking
-sysctl.o later, we were just being way to cautious and patches
-have been updated to reflect these considerations and sent for
-stable as well with the whole "base" stuff needing to be linked
-prior to child sysctl tables that use that directory. All of
-the kernel sysctl APIs always share the same directory, and races
-against using it should end up re-using the same single created
-directory.
+Check if first entry exist before running strchr to avoid
+null pointer dereference.
 
-And so something we can do eventually is do away with all the base stuff.
-For now it's fine, it's not creating an issue. It is just a bit pedantic
-and careful.
-
-Fixes: ab171b952c6e ("fs: move namespace sysctls and declare fs base directory")
-Cc: stable@vger.kernel.org # v5.17
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-[mcgrof: enhanced commit log for stable criteria and clarify base stuff ]
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/clbr/n64bootloader/issues/5
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/Makefile |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/mips/fw/lib/cmdline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -6,7 +6,6 @@
- # Rewritten to use lists instead of if-statements.
- # 
+--- a/arch/mips/fw/lib/cmdline.c
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -53,7 +53,7 @@ char *fw_getenv(char *envname)
+ {
+ 	char *result = NULL;
  
--obj-$(CONFIG_SYSCTL)		+= sysctls.o
- 
- obj-y :=	open.o read_write.o file_table.o super.o \
- 		char_dev.o stat.o exec.o pipe.o namei.o fcntl.o \
-@@ -49,7 +48,7 @@ obj-$(CONFIG_FS_MBCACHE)	+= mbcache.o
- obj-$(CONFIG_FS_POSIX_ACL)	+= posix_acl.o
- obj-$(CONFIG_NFS_COMMON)	+= nfs_common/
- obj-$(CONFIG_COREDUMP)		+= coredump.o
--obj-$(CONFIG_SYSCTL)		+= drop_caches.o
-+obj-$(CONFIG_SYSCTL)		+= drop_caches.o sysctls.o
- 
- obj-$(CONFIG_FHANDLE)		+= fhandle.o
- obj-y				+= iomap/
+-	if (_fw_envp != NULL) {
++	if (_fw_envp != NULL && fw_envp(0) != NULL) {
+ 		/*
+ 		 * Return a pointer to the given environment variable.
+ 		 * YAMON uses "name", "value" pairs, while U-Boot uses
 
 
