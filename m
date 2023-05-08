@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C96D6FADB7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5382C6FA5DB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233772AbjEHLh2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59688 "EHLO
+        id S234251AbjEHKNt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:13:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236116AbjEHLhN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:13 -0400
+        with ESMTP id S234265AbjEHKNh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730362527F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39AB22F58
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BB0763364
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CA7C433EF;
-        Mon,  8 May 2023 11:36:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A99D62428
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F507C433EF;
+        Mon,  8 May 2023 10:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545770;
-        bh=f8O+nUPFTjUY30SfcybyhLUk9Rj7yK7Kk5rWpe5jRJI=;
+        s=korg; t=1683540810;
+        bh=/lAsQmWa93y1/iPWwyBwlZ1Uz4b/QRa/wBsOKLMC9Ro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vh5adMx65ttTuWnwYuyJv9Ii9wU1k5LE8NkeHPLYNMY1bkk3Fyy66Fm32lUgMnK6x
-         G1zP4N5vQ4wtPJHpyAJ6l4aMb49jlTbM4Gbs+w4WFO3FSLwa2Z+PAjebjoUhiuHC4c
-         0fZU1zXuHx5Z2vmyxDnUAzZ1KmNyf9hwgFCTcpN8=
+        b=M6F1Aj8hdqAPLhmJAngPzMtmitZXkEmLiS3URgm3oUOlI7edwio3YFH8fe7SWuibr
+         ixipcEoMlYiPqUmtzx1Wvpt6bpiyFbWdSvDyelIgMNrT0stZMPHZGjSbFkoQ6EEOT1
+         uWX2RJ6cN6A2HeZ3nyR7fmAQUcA7Um9VXq921FsE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gusenleitner Klaus <gus@keba.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev,
+        Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
+        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/371] tick/common: Align tick period with the HZ tick.
+Subject: [PATCH 6.1 506/611] clk: qcom: lpasscc-sc7280: Skip qdsp6ss clock registration
 Date:   Mon,  8 May 2023 11:45:48 +0200
-Message-Id: <20230508094817.908999108@linuxfoundation.org>
+Message-Id: <20230508094438.509595629@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +57,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
 
-[ Upstream commit e9523a0d81899361214d118ad60ef76f0e92f71d ]
+[ Upstream commit 4fc1c2d9a2b7a394f3b873aae5e03bffd8b5cd31 ]
 
-With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
-expire the timer_list timers. This timer is programmed accurate in
-respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
-first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
-every 4 ms and so based on the current time the next tick can be
-computed.
+The qdsp6ss memory region is being shared by ADSP remoteproc device and
+lpasscc clock device, hence causing memory conflict.
+To avoid this, when qdsp6ss clocks are being enabled in remoteproc driver,
+skip qdsp6ss clock registration if "qcom,adsp-pil-mode" is enabled and
+also assign max_register value.
 
-This accuracy broke since the commit mentioned below because the jiffy
-based clocksource is initialized with higher accuracy in
-read_persistent_wall_and_boot_offset(). This higher accuracy is
-inherited during the setup in tick_setup_device(). The timer still fires
-every 4ms with HZ=250 but timer is no longer aligned with
-CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
-of the timestamp. The offset differs with every boot and makes it
-impossible for user land to align with the tick.
-
-Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
-multiple of 1000/CONFIG_HZ ms.
-
-Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
-Reported-by: Gusenleitner Klaus <gus@keba.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
-Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
+Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
+Signed-off-by: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
+Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230407092255.119690-3-quic_mohs@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-common.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/lpasscc-sc7280.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 46789356f856e..65b8658da829e 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -218,9 +218,19 @@ static void tick_setup_device(struct tick_device *td,
- 		 * this cpu:
- 		 */
- 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
-+			ktime_t next_p;
-+			u32 rem;
-+
- 			tick_do_timer_cpu = cpu;
+diff --git a/drivers/clk/qcom/lpasscc-sc7280.c b/drivers/clk/qcom/lpasscc-sc7280.c
+index 5c1e17bd0d763..8486d7135ab10 100644
+--- a/drivers/clk/qcom/lpasscc-sc7280.c
++++ b/drivers/clk/qcom/lpasscc-sc7280.c
+@@ -118,14 +118,18 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
+ 		goto destroy_pm_clk;
+ 	}
  
--			tick_next_period = ktime_get();
-+			next_p = ktime_get();
-+			div_u64_rem(next_p, TICK_NSEC, &rem);
-+			if (rem) {
-+				next_p -= rem;
-+				next_p += TICK_NSEC;
-+			}
+-	lpass_regmap_config.name = "qdsp6ss";
+-	desc = &lpass_qdsp6ss_sc7280_desc;
+-
+-	ret = qcom_cc_probe_by_index(pdev, 0, desc);
+-	if (ret)
+-		goto destroy_pm_clk;
++	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
++		lpass_regmap_config.name = "qdsp6ss";
++		lpass_regmap_config.max_register = 0x3f;
++		desc = &lpass_qdsp6ss_sc7280_desc;
 +
-+			tick_next_period = next_p;
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
++		ret = qcom_cc_probe_by_index(pdev, 0, desc);
++		if (ret)
++			goto destroy_pm_clk;
++	}
+ 
+ 	lpass_regmap_config.name = "top_cc";
++	lpass_regmap_config.max_register = 0x4;
+ 	desc = &lpass_cc_top_sc7280_desc;
+ 
+ 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
 -- 
 2.39.2
 
