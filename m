@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 737C46FABDA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E785D6FA8CD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235507AbjEHLSR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59882 "EHLO
+        id S235040AbjEHKpb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235526AbjEHLSK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0BE3763B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:08 -0700 (PDT)
+        with ESMTP id S234934AbjEHKpN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E560E26EA6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD5A66157F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D8EC433D2;
-        Mon,  8 May 2023 11:18:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75E3662870
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74219C433EF;
+        Mon,  8 May 2023 10:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544687;
-        bh=nDEMnWd+EuASQpGCscuzQoO4JYuhzm2i1ixt+YU41VU=;
+        s=korg; t=1683542643;
+        bh=pDdmsu5ZjSXezq895JcYOi7Dqz1tJtBcR0O+CujJIUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s5AAnhn+RcwQiHbClLKD/5pwOf761kWdW0Px7l+6McCrYbopESLpUCw4zBzLHznXj
-         ev5iXqt1pGo+SgyGND2Xcv3JnSeuy01mibb9HWXN8UhP4085W7Xzdmt1hvsqNsvm+p
-         MoipdeAglsTdAhAOoJlkAZ/T8eOWVtgouq9PMUrg=
+        b=WGpvaMTplXVuPl/yT8dHdNlcmRjQiN+k3Cch7XxMnfgx/+HF65uA4SNZdqL2rQxrv
+         QfOKdcm+bl65eHDiEesypjU6UKxmnKjdibAxTsGPwvlS6d9yVUC5jieaLnezJ9GRQ0
+         xMkpcWDGK9L2Qt/UuaZVuRMLlDYeJuPrfel8t9hs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
-        Pengfei Xu <pengfei.xu@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, David Binderman <dcb314@hotmail.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 492/694] iommufd/selftest: Catch overflow of uptr and length
-Date:   Mon,  8 May 2023 11:45:27 +0200
-Message-Id: <20230508094449.956379726@linuxfoundation.org>
+Subject: [PATCH 6.2 502/663] selftests/powerpc/pmu: Fix sample field check in the mmcra_thresh_marked_sample_test
+Date:   Mon,  8 May 2023 11:45:28 +0200
+Message-Id: <20230508094444.853759790@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,80 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit fd8c1a4aee973e87d890a5861e106625a33b2c4e ]
+[ Upstream commit 8a32341cf04ba05974931b4664683c2c9fb84e56 ]
 
-syzkaller hits a WARN_ON when trying to have a uptr close to UINTPTR_MAX:
+The testcase verifies the setting of different fields in Monitor Mode
+Control Register A (MMCRA). In the current code, EV_CODE_EXTRACT macro
+is used to extract the "sample" field, which then needs to be further
+processed to fetch rand_samp_elig and rand_samp_mode bits. But the
+current code is not passing valid sample field to EV_CODE_EXTRACT
+macro. Patch addresses this by fixing the input for EV_CODE_EXTRACT.
 
-  WARNING: CPU: 1 PID: 393 at drivers/iommu/iommufd/selftest.c:403 iommufd_test+0xb19/0x16f0
-  Modules linked in:
-  CPU: 1 PID: 393 Comm: repro Not tainted 6.2.0-c9c3395d5e3d #1
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-  RIP: 0010:iommufd_test+0xb19/0x16f0
-  Code: 94 c4 31 ff 44 89 e6 e8 a5 54 17 ff 45 84 e4 0f 85 bb 0b 00 00 41 be fb ff ff ff e8 31 53 17 ff e9 a0 f7 ff ff e8 27 53 17 ff <0f> 0b 41 be 8
-  RSP: 0018:ffffc90000eabdc0 EFLAGS: 00010246
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8214c487
-  RDX: 0000000000000000 RSI: ffff88800f5c8000 RDI: 0000000000000002
-  RBP: ffffc90000eabe48 R08: 0000000000000000 R09: 0000000000000001
-  R10: 0000000000000001 R11: 0000000000000000 R12: 00000000cd2b0000
-  R13: 00000000cd2af000 R14: 0000000000000000 R15: ffffc90000eabe68
-  FS:  00007f94d76d5740(0000) GS:ffff88807dd00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020000043 CR3: 0000000006880006 CR4: 0000000000770ee0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? write_comp_data+0x2f/0x90
-   iommufd_fops_ioctl+0x1ef/0x310
-   __x64_sys_ioctl+0x10e/0x160
-   ? __pfx_iommufd_fops_ioctl+0x10/0x10
-   do_syscall_64+0x3b/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Check that the user memory range doesn't overflow.
-
-Fixes: f4b20bb34c83 ("iommufd: Add kernel support for testing iommufd")
-Link: https://lore.kernel.org/r/0-v1-95390ed1df8d+8f-iommufd_mock_overflow_jgg@nvidia.com
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Link: https://lore.kernel.org/r/Y/hOiilV1wJvu/Hv@xpf.sh.intel.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 29cf373c5766 ("selftests/powerpc/pmu: Add interface test for mmcra register fields")
+Reported-by: David Binderman <dcb314@hotmail.com>
+Link: https://lore.kernel.org/r/DB6P189MB0568CF002762C6C43AF6DF169CA89@DB6P189MB0568.EURP189.PROD.OUTLOOK.COM
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230301170918.69176-1-kjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/selftest.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ .../pmu/sampling_tests/mmcra_thresh_marked_sample_test.c      | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
-index cfb5fe9a5e0ee..76c46847dc494 100644
---- a/drivers/iommu/iommufd/selftest.c
-+++ b/drivers/iommu/iommufd/selftest.c
-@@ -339,10 +339,12 @@ static int iommufd_test_md_check_pa(struct iommufd_ucmd *ucmd,
- {
- 	struct iommufd_hw_pagetable *hwpt;
- 	struct mock_iommu_domain *mock;
-+	uintptr_t end;
- 	int rc;
- 
- 	if (iova % MOCK_IO_PAGE_SIZE || length % MOCK_IO_PAGE_SIZE ||
--	    (uintptr_t)uptr % MOCK_IO_PAGE_SIZE)
-+	    (uintptr_t)uptr % MOCK_IO_PAGE_SIZE ||
-+	    check_add_overflow((uintptr_t)uptr, (uintptr_t)length, &end))
- 		return -EINVAL;
- 
- 	hwpt = get_md_pagetable(ucmd, mockpt_id, &mock);
-@@ -390,7 +392,10 @@ static int iommufd_test_md_check_refs(struct iommufd_ucmd *ucmd,
- 				      void __user *uptr, size_t length,
- 				      unsigned int refs)
- {
--	if (length % PAGE_SIZE || (uintptr_t)uptr % PAGE_SIZE)
-+	uintptr_t end;
-+
-+	if (length % PAGE_SIZE || (uintptr_t)uptr % PAGE_SIZE ||
-+	    check_add_overflow((uintptr_t)uptr, (uintptr_t)length, &end))
- 		return -EINVAL;
- 
- 	for (; length; length -= PAGE_SIZE) {
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c
+index 022cc1655eb52..75527876ad3c1 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_thresh_marked_sample_test.c
+@@ -63,9 +63,9 @@ static int mmcra_thresh_marked_sample(void)
+ 			get_mmcra_thd_stop(get_reg_value(intr_regs, "MMCRA"), 4));
+ 	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, marked) !=
+ 			get_mmcra_marked(get_reg_value(intr_regs, "MMCRA"), 4));
+-	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sample >> 2) !=
++	FAIL_IF((EV_CODE_EXTRACT(event.attr.config, sample) >> 2) !=
+ 			get_mmcra_rand_samp_elig(get_reg_value(intr_regs, "MMCRA"), 4));
+-	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sample & 0x3) !=
++	FAIL_IF((EV_CODE_EXTRACT(event.attr.config, sample) & 0x3) !=
+ 			get_mmcra_sample_mode(get_reg_value(intr_regs, "MMCRA"), 4));
+ 	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, sm) !=
+ 			get_mmcra_sm(get_reg_value(intr_regs, "MMCRA"), 4));
 -- 
 2.39.2
 
