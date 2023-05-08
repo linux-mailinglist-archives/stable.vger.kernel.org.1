@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABABB6FADF2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925ED6FA617
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236075AbjEHLjo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58748 "EHLO
+        id S234310AbjEHKQJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236073AbjEHLj3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:29 -0400
+        with ESMTP id S234312AbjEHKQI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1275B96
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E433ACDB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A25F563371
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD409C433EF;
-        Mon,  8 May 2023 11:39:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E3F362472
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4006CC433D2;
+        Mon,  8 May 2023 10:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545947;
-        bh=weTz1ND2/3hvmQ5T4x5HdoiULr0WHvuceGgqw5k4rbA=;
+        s=korg; t=1683540966;
+        bh=sF7/9hSzn6I7He+vP/un3tn6wM1DRU3TVYvJjKahI4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nrgmXm/BDmo5tRVhkQUw0RsSDTIWreJLPhP+NyI99H0ZPTr8X1OkVCq84gWH5tYpb
-         UMRD09gyyUNx9y/dgPj+UZ2Yxg5acEGpsMBr7Xk1TH6wDWuwFgxRccavDBlrg+H2RY
-         NZgPtY58Qf16kkKU5RC63h+262rGMkptEUHr3bWg=
+        b=P3XloNcHasLj8qVYye/r2tuZakGTJsbI7zuf2aK2V1X+w7wdy1pNBLt+wJI+1qIqe
+         VrCSJsmZ5cu1vlBLYLWz4PlLsiPG5LZB8dMUASdjsEIW2Nb1x0it96FuB8VsLFAmyQ
+         9KmDtVaQjkZxcfLp66jEH7XqTKyfwtv9IJxhTjdM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/371] md/raid10: fix leak of r10bio->remaining for recovery
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 566/611] nilfs2: do not write dirty data after degenerating to read-only
 Date:   Mon,  8 May 2023 11:46:48 +0200
-Message-Id: <20230508094820.295495885@linuxfoundation.org>
+Message-Id: <20230508094440.356747355@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,73 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
+commit 28a65b49eb53e172d23567005465019658bfdb4d upstream.
 
-raid10_sync_request() will add 'r10bio->remaining' for both rdev and
-replacement rdev. However, if the read io fails, recovery_request_write()
-returns without issuing the write io, in this case, end_sync_request()
-is only called once and 'remaining' is leaked, cause an io hang.
+According to syzbot's report, mark_buffer_dirty() called from
+nilfs_segctor_do_construct() outputs a warning with some patterns after
+nilfs2 detects metadata corruption and degrades to read-only mode.
 
-Fix the problem by decreasing 'remaining' according to if 'bio' and
-'repl_bio' is valid.
+After such read-only degeneration, page cache data may be cleared through
+nilfs_clear_dirty_page() which may also clear the uptodate flag for their
+buffer heads.  However, even after the degeneration, log writes are still
+performed by unmount processing etc., which causes mark_buffer_dirty() to
+be called for buffer heads without the "uptodate" flag and causes the
+warning.
 
-Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since any writes should not be done to a read-only file system in the
+first place, this fixes the warning in mark_buffer_dirty() by letting
+nilfs_segctor_do_construct() abort early if in read-only mode.
+
+This also changes the retry check of nilfs_segctor_write_out() to avoid
+unnecessary log write retries if it detects -EROFS that
+nilfs_segctor_do_construct() returned.
+
+Link: https://lkml.kernel.org/r/20230427011526.13457-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com
+  Link: https://syzkaller.appspot.com/bug?extid=2af3bc9585be7f23f290
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ fs/nilfs2/segment.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 4bf09ecedec14..2b4a4dc213d8c 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -2581,11 +2581,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
- {
- 	struct r10conf *conf = mddev->private;
- 	int d;
--	struct bio *wbio, *wbio2;
-+	struct bio *wbio = r10_bio->devs[1].bio;
-+	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2039,6 +2039,9 @@ static int nilfs_segctor_do_construct(st
+ 	struct the_nilfs *nilfs = sci->sc_super->s_fs_info;
+ 	int err;
+ 
++	if (sb_rdonly(sci->sc_super))
++		return -EROFS;
 +
-+	/* Need to test wbio2->bi_end_io before we call
-+	 * submit_bio_noacct as if the former is NULL,
-+	 * the latter is free to free wbio2.
-+	 */
-+	if (wbio2 && !wbio2->bi_end_io)
-+		wbio2 = NULL;
+ 	nilfs_sc_cstage_set(sci, NILFS_ST_INIT);
+ 	sci->sc_cno = nilfs->ns_cno;
  
- 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
- 		fix_recovery_read_error(r10_bio);
--		end_sync_request(r10_bio);
-+		if (wbio->bi_end_io)
-+			end_sync_request(r10_bio);
-+		if (wbio2)
-+			end_sync_request(r10_bio);
- 		return;
- 	}
+@@ -2722,7 +2725,7 @@ static void nilfs_segctor_write_out(stru
  
-@@ -2594,14 +2605,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
- 	 * and submit the write request
- 	 */
- 	d = r10_bio->devs[1].devnum;
--	wbio = r10_bio->devs[1].bio;
--	wbio2 = r10_bio->devs[1].repl_bio;
--	/* Need to test wbio2->bi_end_io before we call
--	 * submit_bio_noacct as if the former is NULL,
--	 * the latter is free to free wbio2.
--	 */
--	if (wbio2 && !wbio2->bi_end_io)
--		wbio2 = NULL;
- 	if (wbio->bi_end_io) {
- 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
- 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
--- 
-2.39.2
-
+ 		flush_work(&sci->sc_iput_work);
+ 
+-	} while (ret && retrycount-- > 0);
++	} while (ret && ret != -EROFS && retrycount-- > 0);
+ }
+ 
+ /**
 
 
