@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65A3B6FAD4E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E4D6FA881
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236023AbjEHLda (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51246 "EHLO
+        id S234969AbjEHKly (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235959AbjEHLdP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:15 -0400
+        with ESMTP id S234968AbjEHKl2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33073D223
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:32:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E6F29FE4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4D26630F4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B42C433D2;
-        Mon,  8 May 2023 11:32:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FC9262849
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BAEC433D2;
+        Mon,  8 May 2023 10:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545531;
-        bh=o/RsRvPsDCqKSPlyZcxcCkqOJneHDWqXUSXTgodD6qY=;
+        s=korg; t=1683542449;
+        bh=JHyBlDu5xq3xSrzJaYQ6lFBdF2CbXfRz3LoXwllnThU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nh1ztOjjzYPUkBr6wE7z8rpGCGTaPd7bdZlH2vVGtqSAzlcq6Wv5S6rkDOL8tZbvu
-         gW7OWWk7oYS0yW44OfAU09gLSuwrTF5Vys9D392O41MJdODaNs9kbUsIa3TsiZVEMY
-         srJ28zqvt9vvM7EYNcP/UlCju/hxokp3Ube5mvRE=
+        b=DLv+NtATjSJzNNUrPAv2hrHvIIdvf5zM/upMeIOBWO6BW4zWiSvU9+8Jy/2ApJNfX
+         EzXM89odtqUfdHKPv6Ge8/P4e0VmP21MJ75+h903KJ6UI7+3FOXkdghnuY//quppon
+         lzA28XCOv3sBRthUOcTyZaCdypWzgUUhUZkMMppQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/371] selftests/resctrl: Allow ->setup() to return errors
+Subject: [PATCH 6.2 438/663] drivers: staging: rtl8723bs: Fix locking in rtw_scan_timeout_handler()
 Date:   Mon,  8 May 2023 11:44:24 +0200
-Message-Id: <20230508094814.580506488@linuxfoundation.org>
+Message-Id: <20230508094442.286119718@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,135 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit fa10366cc6f4cc862871f8938426d85c2481f084 ]
+[ Upstream commit 3f467036093fedd7e231924327455fc609b5ef02 ]
 
-resctrl_val() assumes ->setup() always returns either 0 to continue
-tests or < 0 in case of the normal termination of tests after x runs.
-The latter overlaps with normal error returns.
+Commit cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in
+rtw_surveydone_event_callback()") besides fixing the deadlock also
+modified rtw_scan_timeout_handler() to use spin_[un]lock_irq()
+instead of spin_[un]lock_bh().
 
-Define END_OF_TESTS (=1) to differentiate the normal termination of
-tests and return errors as negative values. Alter callers of ->setup()
-to handle errors properly.
+Disabling the IRQs is not necessary since all code taking this lock
+runs from either user contexts or from softirqs
 
-Fixes: 790bf585b0ee ("selftests/resctrl: Add Cache Allocation Technology (CAT) selftest")
-Fixes: ecdbb911f22d ("selftests/resctrl: Add MBM test")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+rtw_scan_timeout_handler() is the only function taking pmlmepriv->lock
+which uses spin_[un]lock_irq() for this. Switch back to
+spin_[un]lock_bh() to make it consistent with the rest of the code.
+
+Fixes: cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in rtw_surveydone_event_callback()")
+Cc: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230221145326.7808-2-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/cache.c       | 4 +++-
- tools/testing/selftests/resctrl/cat_test.c    | 2 +-
- tools/testing/selftests/resctrl/cmt_test.c    | 2 +-
- tools/testing/selftests/resctrl/mba_test.c    | 2 +-
- tools/testing/selftests/resctrl/mbm_test.c    | 2 +-
- tools/testing/selftests/resctrl/resctrl.h     | 2 ++
- tools/testing/selftests/resctrl/resctrl_val.c | 4 +++-
- 7 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/cache.c b/tools/testing/selftests/resctrl/cache.c
-index 68ff856d36f0b..0485863a169f2 100644
---- a/tools/testing/selftests/resctrl/cache.c
-+++ b/tools/testing/selftests/resctrl/cache.c
-@@ -244,10 +244,12 @@ int cat_val(struct resctrl_val_param *param)
- 	while (1) {
- 		if (!strncmp(resctrl_val, CAT_STR, sizeof(CAT_STR))) {
- 			ret = param->setup(1, param);
--			if (ret) {
-+			if (ret == END_OF_TESTS) {
- 				ret = 0;
- 				break;
- 			}
-+			if (ret < 0)
-+				break;
- 			ret = reset_enable_llc_perf(bm_pid, param->cpu_no);
- 			if (ret)
- 				break;
-diff --git a/tools/testing/selftests/resctrl/cat_test.c b/tools/testing/selftests/resctrl/cat_test.c
-index 1c5e90c632548..2d3c7c77ab6cb 100644
---- a/tools/testing/selftests/resctrl/cat_test.c
-+++ b/tools/testing/selftests/resctrl/cat_test.c
-@@ -40,7 +40,7 @@ static int cat_setup(int num, ...)
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index ea2a6566e51bf..091842d70d486 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -1590,11 +1590,11 @@ void rtw_scan_timeout_handler(struct timer_list *t)
+ 						  mlmepriv.scan_to_timer);
+ 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
  
- 	/* Run NUM_OF_RUNS times */
- 	if (p->num_of_runs >= NUM_OF_RUNS)
--		return -1;
-+		return END_OF_TESTS;
+-	spin_lock_irq(&pmlmepriv->lock);
++	spin_lock_bh(&pmlmepriv->lock);
  
- 	if (p->num_of_runs == 0) {
- 		sprintf(schemata, "%lx", p->mask);
-diff --git a/tools/testing/selftests/resctrl/cmt_test.c b/tools/testing/selftests/resctrl/cmt_test.c
-index 8968e36db99d7..3b0454e7fc826 100644
---- a/tools/testing/selftests/resctrl/cmt_test.c
-+++ b/tools/testing/selftests/resctrl/cmt_test.c
-@@ -32,7 +32,7 @@ static int cmt_setup(int num, ...)
+ 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
  
- 	/* Run NUM_OF_RUNS times */
- 	if (p->num_of_runs >= NUM_OF_RUNS)
--		return -1;
-+		return END_OF_TESTS;
+-	spin_unlock_irq(&pmlmepriv->lock);
++	spin_unlock_bh(&pmlmepriv->lock);
  
- 	p->num_of_runs++;
- 
-diff --git a/tools/testing/selftests/resctrl/mba_test.c b/tools/testing/selftests/resctrl/mba_test.c
-index 1a1bdb6180cf2..f32289ae17aeb 100644
---- a/tools/testing/selftests/resctrl/mba_test.c
-+++ b/tools/testing/selftests/resctrl/mba_test.c
-@@ -41,7 +41,7 @@ static int mba_setup(int num, ...)
- 		return 0;
- 
- 	if (allocation < ALLOCATION_MIN || allocation > ALLOCATION_MAX)
--		return -1;
-+		return END_OF_TESTS;
- 
- 	sprintf(allocation_str, "%d", allocation);
- 
-diff --git a/tools/testing/selftests/resctrl/mbm_test.c b/tools/testing/selftests/resctrl/mbm_test.c
-index 8392e5c55ed02..280187628054d 100644
---- a/tools/testing/selftests/resctrl/mbm_test.c
-+++ b/tools/testing/selftests/resctrl/mbm_test.c
-@@ -95,7 +95,7 @@ static int mbm_setup(int num, ...)
- 
- 	/* Run NUM_OF_RUNS times */
- 	if (num_of_runs++ >= NUM_OF_RUNS)
--		return -1;
-+		return END_OF_TESTS;
- 
- 	va_start(param, num);
- 	p = va_arg(param, struct resctrl_val_param *);
-diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
-index f0ded31fb3c7c..f44fa2de4d986 100644
---- a/tools/testing/selftests/resctrl/resctrl.h
-+++ b/tools/testing/selftests/resctrl/resctrl.h
-@@ -37,6 +37,8 @@
- #define ARCH_INTEL     1
- #define ARCH_AMD       2
- 
-+#define END_OF_TESTS	1
-+
- #define PARENT_EXIT(err_msg)			\
- 	do {					\
- 		perror(err_msg);		\
-diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
-index dd907809d0b29..02110e7ee6361 100644
---- a/tools/testing/selftests/resctrl/resctrl_val.c
-+++ b/tools/testing/selftests/resctrl/resctrl_val.c
-@@ -734,10 +734,12 @@ int resctrl_val(char **benchmark_cmd, struct resctrl_val_param *param)
- 	/* Test runs until the callback setup() tells the test to stop. */
- 	while (1) {
- 		ret = param->setup(1, param);
--		if (ret) {
-+		if (ret == END_OF_TESTS) {
- 			ret = 0;
- 			break;
- 		}
-+		if (ret < 0)
-+			break;
- 
- 		if (!strncmp(resctrl_val, MBM_STR, sizeof(MBM_STR)) ||
- 		    !strncmp(resctrl_val, MBA_STR, sizeof(MBA_STR))) {
+ 	rtw_indicate_scan_done(adapter, true);
+ }
 -- 
 2.39.2
 
