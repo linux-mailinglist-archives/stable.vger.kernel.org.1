@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A262B6FACD4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D012F6FA997
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235744AbjEHL20 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45686 "EHLO
+        id S235281AbjEHKx2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235691AbjEHL2A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:28:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919233C48A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:47 -0700 (PDT)
+        with ESMTP id S235302AbjEHKw4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A312DD58
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7168E62E9E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638BAC43445;
-        Mon,  8 May 2023 11:27:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1FE962952
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A0FC433EF;
+        Mon,  8 May 2023 10:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545266;
-        bh=mVq8lib7lHcUdripA4slfZUmtLyDyfU1sOGZ+16/xKk=;
+        s=korg; t=1683543131;
+        bh=pGb6w6HtaXDEx24a+2DlEuJmROdO44tRP8LP0Vi4lNI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M+dnC6KlQNfHbPiUi89Wn4d9qFTk2xzlNa6Ux3BTgS0t1kS+1IP6WgsQj6OBlC1MT
-         2X/rc53YQv1xnkxu1ZGYBlPM0CHnwuFi2y5rNwWwOfXqra4lwzhZ7pxezkCQZ7vjy4
-         l8wASr0fF4ACczlJaISTk1xlvvXeb+MoL2dO9tiE=
+        b=k4OoGyXRhk8czcx1ts0ItT5Z6DA8HZlo1dpfS1KGJXT+pS0q7orjpIc3sN1a/nQPG
+         QFAXO61TEBJOdE6eBwvt63oRsjNAnzDoT3BoE94ZMuzZM9orkwHiskOWGduwlclbOY
+         kKLrJKLm91dSNHwKQCHxEoxflnF9DOBzmR5FnbUQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 648/694] phy: ti: j721e-wiz: Fix unreachable code in wiz_mode_select()
+        patches@lists.linux.dev,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.2 657/663] thunderbolt: Use correct type in tb_port_is_clx_enabled() prototype
 Date:   Mon,  8 May 2023 11:48:03 +0200
-Message-Id: <20230508094456.879504808@linuxfoundation.org>
+Message-Id: <20230508094451.484827035@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 57c0e1362fdd57d0cea7ab1e583b58abf4bd8c2d ]
+commit d31137619776f9c173a46a79bc7733a2b106061f upstream.
 
-In the wiz_mode_select() function, the configuration performed for
-PHY_TYPE_USXGMII is unreachable. Fix it.
+tb_port_is_clx_enabled() generates a valid warning with gcc-13:
+  drivers/thunderbolt/switch.c:1286:6: error: conflicting types for 'tb_port_is_clx_enabled' due to enum/integer mismatch; have 'bool(struct tb_port *, unsigned int)' ...
+  drivers/thunderbolt/tb.h:1050:6: note: previous declaration of 'tb_port_is_clx_enabled' with type 'bool(struct tb_port *, enum tb_clx)' ...
 
-Fixes: b64a85fb8f53 ("phy: ti: phy-j721e-wiz.c: Add usxgmii support in wiz driver")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20230403094552.929108-1-s-vadapalli@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I.e. the type of the 2nd parameter of tb_port_is_clx_enabled() in the
+declaration is unsigned int, while the definition spells enum tb_clx.
+Synchronize them to the former as the parameter is in fact a mask of the
+enum values.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-j721e-wiz.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/thunderbolt/tb.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
-index 1b83c98a78f0f..1b5f1a5e2b3ba 100644
---- a/drivers/phy/ti/phy-j721e-wiz.c
-+++ b/drivers/phy/ti/phy-j721e-wiz.c
-@@ -443,18 +443,17 @@ static int wiz_mode_select(struct wiz *wiz)
- 	int i;
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -1058,7 +1058,7 @@ void tb_port_lane_bonding_disable(struct
+ int tb_port_wait_for_link_width(struct tb_port *port, int width,
+ 				int timeout_msec);
+ int tb_port_update_credits(struct tb_port *port);
+-bool tb_port_is_clx_enabled(struct tb_port *port, enum tb_clx clx);
++bool tb_port_is_clx_enabled(struct tb_port *port, unsigned int clx);
  
- 	for (i = 0; i < num_lanes; i++) {
--		if (wiz->lane_phy_type[i] == PHY_TYPE_DP)
-+		if (wiz->lane_phy_type[i] == PHY_TYPE_DP) {
- 			mode = LANE_MODE_GEN1;
--		else if (wiz->lane_phy_type[i] == PHY_TYPE_QSGMII)
-+		} else if (wiz->lane_phy_type[i] == PHY_TYPE_QSGMII) {
- 			mode = LANE_MODE_GEN2;
--		else
--			continue;
--
--		if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
-+		} else if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
- 			ret = regmap_field_write(wiz->p0_mac_src_sel[i], 0x3);
- 			ret = regmap_field_write(wiz->p0_rxfclk_sel[i], 0x3);
- 			ret = regmap_field_write(wiz->p0_refclk_sel[i], 0x3);
- 			mode = LANE_MODE_GEN1;
-+		} else {
-+			continue;
- 		}
- 
- 		ret = regmap_field_write(wiz->p_standard_mode[i], mode);
--- 
-2.39.2
-
+ int tb_switch_find_vse_cap(struct tb_switch *sw, enum tb_switch_vse_cap vsec);
+ int tb_switch_find_cap(struct tb_switch *sw, enum tb_switch_cap cap);
 
 
