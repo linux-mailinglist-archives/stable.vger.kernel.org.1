@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5F06FA7CD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 117A26FAAFE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234759AbjEHKe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
+        id S233812AbjEHLIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234749AbjEHKe1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:27 -0400
+        with ESMTP id S232911AbjEHLH6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EFC627875
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C458B2FA07
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07F4262729
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063B1C433D2;
-        Mon,  8 May 2023 10:33:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F25662ADB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F10DC4339B;
+        Mon,  8 May 2023 11:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542023;
-        bh=/kwAQAMtwk3POvM2IsHxP41gDPgKzUnO3NKUcw+b2y8=;
+        s=korg; t=1683544067;
+        bh=9LWk6N3EAyvOfFnC2pphn2LjfN+9AGm/U9+pT9gj7kA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JQg8g5yq2cAbLK/lPQhfhk4f1vXebwKtTaGx6pNUf/q6V0e1sMbicfW6/hjyxD4P8
-         bQgeEhQvxKdrpFvGhR0K35Errw4VVO4TC1+M4nwU9xcJFlDeK6ncw/OnOaV6e+0vU+
-         BCoMSHfKS9LPMXMte9xDWTGoz8Jo/9a9VqUJi2uI=
+        b=sNjdAqThtSx1n1cUSN5nNOM6qHHrY3dl5E+q7Qq+EkqU8mBZbCHXbToFnf1h1rULU
+         vrZA4OMELi78gG5Izojhe0GKtGG33mg9UnrnSDl9g77MwJCPlHsHhZBov4AWr4p6A6
+         e+VcNv/9fQRM8z6QDTOrfHmWqp49x3UcjeheUWg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Sanket Goswami <Sanket.Goswami@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 301/663] net/packet: annotate accesses to po->xmit
+Subject: [PATCH 6.3 292/694] platform/x86/amd: pmc: Utilize SMN index 0 for driver probe
 Date:   Mon,  8 May 2023 11:42:07 +0200
-Message-Id: <20230508094437.959267673@linuxfoundation.org>
+Message-Id: <20230508094441.759032451@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +55,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit b9d83ab8a708f23a4001d60e9d8d0b3be3d9f607 ]
+[ Upstream commit 310e782a99c7f16fb533a45d8f9c16defefa5aab ]
 
-po->xmit can be set from setsockopt(PACKET_QDISC_BYPASS),
-while read locklessly.
+The current SMN index used for the driver probe seems to be meant
+for the BIOS pair and there are potential concurrency problems that can
+occur with an inopportune SMI.
 
-Use READ_ONCE()/WRITE_ONCE() to avoid potential load/store
-tearing issues.
+It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
+what amd_nb.c provides and this function has protections to ensure that
+only one caller can use it at a time.
 
-Fixes: d346a3fae3ff ("packet: introduce PACKET_QDISC_BYPASS socket option")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 156ec4731cb2 ("platform/x86: amd-pmc: Add AMD platform support for S2Idle")
+Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
+Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20230409185348.556161-6-Shyam-sundar.S-k@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/platform/x86/amd/Kconfig |  2 +-
+ drivers/platform/x86/amd/pmc.c   | 23 +++++------------------
+ 2 files changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index b5ab98ca2511b..bc034de000fc4 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -307,7 +307,8 @@ static void packet_cached_dev_reset(struct packet_sock *po)
+diff --git a/drivers/platform/x86/amd/Kconfig b/drivers/platform/x86/amd/Kconfig
+index 2ce8cb2170dfc..d9685aef0887d 100644
+--- a/drivers/platform/x86/amd/Kconfig
++++ b/drivers/platform/x86/amd/Kconfig
+@@ -7,7 +7,7 @@ source "drivers/platform/x86/amd/pmf/Kconfig"
  
- static bool packet_use_direct_xmit(const struct packet_sock *po)
- {
--	return po->xmit == packet_direct_xmit;
-+	/* Paired with WRITE_ONCE() in packet_setsockopt() */
-+	return READ_ONCE(po->xmit) == packet_direct_xmit;
- }
+ config AMD_PMC
+ 	tristate "AMD SoC PMC driver"
+-	depends on ACPI && PCI && RTC_CLASS
++	depends on ACPI && PCI && RTC_CLASS && AMD_NB
+ 	select SERIO
+ 	help
+ 	  The driver provides support for AMD Power Management Controller
+diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
+index f7acb66556987..71fb8266133d8 100644
+--- a/drivers/platform/x86/amd/pmc.c
++++ b/drivers/platform/x86/amd/pmc.c
+@@ -10,6 +10,7 @@
  
- static u16 packet_pick_tx_queue(struct sk_buff *skb)
-@@ -2867,7 +2868,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 		packet_inc_pending(&po->tx_ring);
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 		status = TP_STATUS_SEND_REQUEST;
--		err = po->xmit(skb);
-+		/* Paired with WRITE_ONCE() in packet_setsockopt() */
-+		err = READ_ONCE(po->xmit)(skb);
- 		if (unlikely(err != 0)) {
- 			if (err > 0)
- 				err = net_xmit_errno(err);
-@@ -3070,7 +3072,8 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		virtio_net_hdr_set_proto(skb, &vnet_hdr);
++#include <asm/amd_nb.h>
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
+@@ -56,8 +57,6 @@
+ #define S2D_TELEMETRY_DRAMBYTES_MAX	0x1000000
+ 
+ /* Base address of SMU for mapping physical address to virtual address */
+-#define AMD_PMC_SMU_INDEX_ADDRESS	0xB8
+-#define AMD_PMC_SMU_INDEX_DATA		0xBC
+ #define AMD_PMC_MAPPING_SIZE		0x01000
+ #define AMD_PMC_BASE_ADDR_OFFSET	0x10000
+ #define AMD_PMC_BASE_ADDR_LO		0x13B102E8
+@@ -983,30 +982,18 @@ static int amd_pmc_probe(struct platform_device *pdev)
+ 
+ 	dev->cpu_id = rdev->device;
+ 	dev->rdev = rdev;
+-	err = pci_write_config_dword(rdev, AMD_PMC_SMU_INDEX_ADDRESS, AMD_PMC_BASE_ADDR_LO);
+-	if (err) {
+-		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMC_SMU_INDEX_ADDRESS);
+-		err = pcibios_err_to_errno(err);
+-		goto err_pci_dev_put;
+-	}
+-
+-	err = pci_read_config_dword(rdev, AMD_PMC_SMU_INDEX_DATA, &val);
++	err = amd_smn_read(0, AMD_PMC_BASE_ADDR_LO, &val);
+ 	if (err) {
++		dev_err(dev->dev, "error reading 0x%x\n", AMD_PMC_BASE_ADDR_LO);
+ 		err = pcibios_err_to_errno(err);
+ 		goto err_pci_dev_put;
  	}
  
--	err = po->xmit(skb);
-+	/* Paired with WRITE_ONCE() in packet_setsockopt() */
-+	err = READ_ONCE(po->xmit)(skb);
- 	if (unlikely(err != 0)) {
- 		if (err > 0)
- 			err = net_xmit_errno(err);
-@@ -4007,7 +4010,8 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
- 		if (copy_from_sockptr(&val, optval, sizeof(val)))
- 			return -EFAULT;
+ 	base_addr_lo = val & AMD_PMC_BASE_ADDR_HI_MASK;
  
--		po->xmit = val ? packet_direct_xmit : dev_queue_xmit;
-+		/* Paired with all lockless reads of po->xmit */
-+		WRITE_ONCE(po->xmit, val ? packet_direct_xmit : dev_queue_xmit);
- 		return 0;
+-	err = pci_write_config_dword(rdev, AMD_PMC_SMU_INDEX_ADDRESS, AMD_PMC_BASE_ADDR_HI);
+-	if (err) {
+-		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMC_SMU_INDEX_ADDRESS);
+-		err = pcibios_err_to_errno(err);
+-		goto err_pci_dev_put;
+-	}
+-
+-	err = pci_read_config_dword(rdev, AMD_PMC_SMU_INDEX_DATA, &val);
++	err = amd_smn_read(0, AMD_PMC_BASE_ADDR_HI, &val);
+ 	if (err) {
++		dev_err(dev->dev, "error reading 0x%x\n", AMD_PMC_BASE_ADDR_HI);
+ 		err = pcibios_err_to_errno(err);
+ 		goto err_pci_dev_put;
  	}
- 	default:
 -- 
 2.39.2
 
