@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1DAE6FA786
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A796FAACF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234764AbjEHKbj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:31:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
+        id S233769AbjEHLGp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234670AbjEHKbQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:16 -0400
+        with ESMTP id S233914AbjEHLG0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2DE24AB6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84872C921
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A27DA626C5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9609DC433D2;
-        Mon,  8 May 2023 10:31:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C797F62A84
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:05:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F67C433EF;
+        Mon,  8 May 2023 11:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541865;
-        bh=QQaltyppbFcyatwd/zA0bi8NWu3UkPKo5Ecr4Q+46vU=;
+        s=korg; t=1683543922;
+        bh=R6qexKvTMJNCeTfeuuWfunLi4lUS6rKWFa1Taf6sDwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d+DcYPJngnU/iuGNUKJ8MLVpxdAaP2tO1Qub2zC0RQPAXVvOuZNyKhZmY8sEIuspF
-         KEz7j+7HsO9dU36Zy95l2odpj3kZ/fRI++XtiilgtlnXPEDBye6C9Pc1TMOmXbc44y
-         zMoFlGlPJroMNVfKFgwiYPE+lkiF6c+wqiQHGmEQ=
+        b=Wha7JLca14kTZSbAP3kpcis22PUsnsG5Ja1okPuJk05G5h835X8k9A2tAZ/099B+l
+         ff2Mk2VbIWR/wRhUlZVnJcgU5qDl5vJ7f1PGzjP5Zr6FK10x/TRwm1dpH7IorRfUAx
+         4QAMUTOvsSYaq/TswS/CU0eA9/D3p5cR2dKjN4Yg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sanket Goswami <Sanket.Goswami@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Jassi Brar <jaswinder.singh@linaro.org>,
+        Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 252/663] platform/x86/amd: pmc: Move out of BIOS SMN pair for STB init
+Subject: [PATCH 6.3 243/694] mailbox: mpfs: switch to txdone_poll
 Date:   Mon,  8 May 2023 11:41:18 +0200
-Message-Id: <20230508094436.440013198@linuxfoundation.org>
+Message-Id: <20230508094440.208724843@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,84 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 8d99129eef8f42377b41c1bacee9f8ce806e9f44 ]
+[ Upstream commit b5984a9844fc45cd301a28fb56f3de95f7e20f3c ]
 
-The current SMN index used for the driver probe seems to be meant
-for the BIOS pair and there are potential concurrency problems that can
-occur with an inopportune SMI.
+The system controller on PolarFire SoC has no interrupt to signify that
+the TX has been completed. The interrupt instead signals that a service
+requested by the mailbox client has succeeded. If a service fails, there
+will be no interrupt delivered.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_6, which is
-what amd_nb.c provides and this function has protections to ensure that
-only one caller can use it at a time.
+Switch to polling the busy register to determine whether transmission
+has completed.
 
-Fixes: 426c0ff27b83 ("platform/x86: amd-pmc: Add support for AMD Smart Trace Buffer")
-Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230409185348.556161-7-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 83d7b1560810 ("mbox: add polarfire soc system controller mailbox")
+Acked-by: Jassi Brar <jaswinder.singh@linaro.org>
+Tested-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc.c | 26 ++++----------------------
- 1 file changed, 4 insertions(+), 22 deletions(-)
+ drivers/mailbox/mailbox-mpfs.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index f8ef1fa742718..45b0050dfbf7b 100644
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -38,8 +38,6 @@
- #define AMD_PMC_SCRATCH_REG_YC		0xD14
+diff --git a/drivers/mailbox/mailbox-mpfs.c b/drivers/mailbox/mailbox-mpfs.c
+index 853901acaeec2..08aa840cccaca 100644
+--- a/drivers/mailbox/mailbox-mpfs.c
++++ b/drivers/mailbox/mailbox-mpfs.c
+@@ -79,6 +79,13 @@ static bool mpfs_mbox_busy(struct mpfs_mbox *mbox)
+ 	return status & SCB_STATUS_BUSY_MASK;
+ }
  
- /* STB Registers */
--#define AMD_PMC_STB_INDEX_ADDRESS	0xF8
--#define AMD_PMC_STB_INDEX_DATA		0xFC
- #define AMD_PMC_STB_PMI_0		0x03E30600
- #define AMD_PMC_STB_S2IDLE_PREPARE	0xC6000001
- #define AMD_PMC_STB_S2IDLE_RESTORE	0xC6000002
-@@ -901,17 +899,9 @@ static int amd_pmc_write_stb(struct amd_pmc_dev *dev, u32 data)
++static bool mpfs_mbox_last_tx_done(struct mbox_chan *chan)
++{
++	struct mpfs_mbox *mbox = (struct mpfs_mbox *)chan->con_priv;
++
++	return !mpfs_mbox_busy(mbox);
++}
++
+ static int mpfs_mbox_send_data(struct mbox_chan *chan, void *data)
  {
- 	int err;
+ 	struct mpfs_mbox *mbox = (struct mpfs_mbox *)chan->con_priv;
+@@ -182,7 +189,6 @@ static irqreturn_t mpfs_mbox_inbox_isr(int irq, void *data)
  
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
-+	err = amd_smn_write(0, AMD_PMC_STB_PMI_0, data);
- 	if (err) {
--		dev_err(dev->dev, "failed to write addr in stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_ADDRESS);
--		return pcibios_err_to_errno(err);
--	}
--
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, data);
--	if (err) {
--		dev_err(dev->dev, "failed to write data in stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_DATA);
-+		dev_err(dev->dev, "failed to write data in stb: 0x%X\n", AMD_PMC_STB_PMI_0);
- 		return pcibios_err_to_errno(err);
- 	}
+ 	mpfs_mbox_rx_data(chan);
  
-@@ -923,18 +913,10 @@ static int amd_pmc_read_stb(struct amd_pmc_dev *dev, u32 *buf)
- {
- 	int i, err;
+-	mbox_chan_txdone(chan, 0);
+ 	return IRQ_HANDLED;
+ }
  
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
--	if (err) {
--		dev_err(dev->dev, "error writing addr to stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_ADDRESS);
--		return pcibios_err_to_errno(err);
--	}
--
- 	for (i = 0; i < FIFO_SIZE; i++) {
--		err = pci_read_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, buf++);
-+		err = amd_smn_read(0, AMD_PMC_STB_PMI_0, buf++);
- 		if (err) {
--			dev_err(dev->dev, "error reading data from stb: 0x%X\n",
--				AMD_PMC_STB_INDEX_DATA);
-+			dev_err(dev->dev, "error reading data from stb: 0x%X\n", AMD_PMC_STB_PMI_0);
- 			return pcibios_err_to_errno(err);
- 		}
- 	}
+@@ -212,6 +218,7 @@ static const struct mbox_chan_ops mpfs_mbox_ops = {
+ 	.send_data = mpfs_mbox_send_data,
+ 	.startup = mpfs_mbox_startup,
+ 	.shutdown = mpfs_mbox_shutdown,
++	.last_tx_done = mpfs_mbox_last_tx_done,
+ };
+ 
+ static int mpfs_mbox_probe(struct platform_device *pdev)
+@@ -247,7 +254,8 @@ static int mpfs_mbox_probe(struct platform_device *pdev)
+ 	mbox->controller.num_chans = 1;
+ 	mbox->controller.chans = mbox->chans;
+ 	mbox->controller.ops = &mpfs_mbox_ops;
+-	mbox->controller.txdone_irq = true;
++	mbox->controller.txdone_poll = true;
++	mbox->controller.txpoll_period = 10u;
+ 
+ 	ret = devm_mbox_controller_register(&pdev->dev, &mbox->controller);
+ 	if (ret) {
 -- 
 2.39.2
 
