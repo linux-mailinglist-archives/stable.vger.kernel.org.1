@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23CEA6FA80E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 754056FA518
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234815AbjEHKhR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39040 "EHLO
+        id S234035AbjEHKFx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234823AbjEHKg7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037E222F6C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:59 -0700 (PDT)
+        with ESMTP id S234034AbjEHKFw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:05:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C632530451
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87DBD627D8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A71C433EF;
-        Mon,  8 May 2023 10:36:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CE7262341
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDDBC433EF;
+        Mon,  8 May 2023 10:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542218;
-        bh=UCdQTC4y7vje9xyrORiOEvvyE8ErL4L1xu5xmJqmcn0=;
+        s=korg; t=1683540350;
+        bh=A/UpFEPYNtp+YIDKx+tIV1W6vTnpKPjti+M6GBhGB0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fDikuTsHBZL/tta+Bz8RHx2wHopzsNBSi2bKCcHOSiNzqgcgzvtCFJZjWou/UcXt0
-         G1Pvwh+jNPN5nqgOT+BmtEdLIECACEVceFW/yvYItmq6Fk6/MkbjKEIgK2VRbpxVa8
-         zBoTgvnqGhTHD8KJG5Zljnx7uMYXmWIrzrvqRzxo=
+        b=hBfsPH0CSXRtqmxVKwWAzTMBdJZq2ueo+fakpzuZjqRVXpJgpBk420PumU+WE9GGq
+         6/a2sJqpInbNvmklqdBqPovQZ6PMhDe7tv70y6R2FAqfYwuj3PdThJklhn/KZ97xW5
+         XR5Qmb8XaVkyw7oX5kTEKDfM8zWJGE6ogqa86wPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
+        Xin Liu <liuxin350@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 347/663] f2fs: fix to avoid use-after-free for cached IPU bio
+Subject: [PATCH 6.1 331/611] bpf, sockmap: fix deadlocks in the sockhash and sockmap
 Date:   Mon,  8 May 2023 11:42:53 +0200
-Message-Id: <20230508094439.406516398@linuxfoundation.org>
+Message-Id: <20230508094433.182702005@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,73 +56,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Xin Liu <liuxin350@huawei.com>
 
-[ Upstream commit 5cdb422c839134273866208dad5360835ddb9794 ]
+[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
 
-xfstest generic/019 reports a bug:
+When huang uses sched_switch tracepoint, the tracepoint
+does only one thing in the mounted ebpf program, which
+deletes the fixed elements in sockhash ([0])
 
-kernel BUG at mm/filemap.c:1619!
-RIP: 0010:folio_end_writeback+0x8a/0x90
-Call Trace:
- end_page_writeback+0x1c/0x60
- f2fs_write_end_io+0x199/0x420
- bio_endio+0x104/0x180
- submit_bio_noacct+0xa5/0x510
- submit_bio+0x48/0x80
- f2fs_submit_write_bio+0x35/0x300
- f2fs_submit_merged_ipu_write+0x2a0/0x2b0
- f2fs_write_single_data_page+0x838/0x8b0
- f2fs_write_cache_pages+0x379/0xa30
- f2fs_write_data_pages+0x30c/0x340
- do_writepages+0xd8/0x1b0
- __writeback_single_inode+0x44/0x370
- writeback_sb_inodes+0x233/0x4d0
- __writeback_inodes_wb+0x56/0xf0
- wb_writeback+0x1dd/0x2d0
- wb_workfn+0x367/0x4a0
- process_one_work+0x21d/0x430
- worker_thread+0x4e/0x3c0
- kthread+0x103/0x130
- ret_from_fork+0x2c/0x50
+It seems that elements in sockhash are rarely actively
+deleted by users or ebpf program. Therefore, we do not
+pay much attention to their deletion. Compared with hash
+maps, sockhash only provides spin_lock_bh protection.
+This causes it to appear to have self-locking behavior
+in the interrupt context.
 
-The root cause is: after cp_error is set, f2fs_submit_merged_ipu_write()
-in f2fs_write_single_data_page() tries to flush IPU bio in cache, however
-f2fs_submit_merged_ipu_write() missed to check validity of @bio parameter,
-result in submitting random cached bio which belong to other IO context,
-then it will cause use-after-free issue, fix it by adding additional
-validity check.
+  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
 
-Fixes: 0b20fcec8651 ("f2fs: cache global IPU bio")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Xin Liu <liuxin350@huawei.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/sock_map.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index a28d05895f5c7..75e59e7016590 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -873,6 +873,8 @@ void f2fs_submit_merged_ipu_write(struct f2fs_sb_info *sbi,
- 	bool found = false;
- 	struct bio *target = bio ? *bio : NULL;
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index a68a7290a3b2b..2408965e5c7b6 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -414,8 +414,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ {
+ 	struct sock *sk;
+ 	int err = 0;
++	unsigned long flags;
  
-+	f2fs_bug_on(sbi, !target && !page);
-+
- 	for (temp = HOT; temp < NR_TEMP_TYPE && !found; temp++) {
- 		struct f2fs_bio_info *io = sbi->write_io[DATA] + temp;
- 		struct list_head *head = &io->bio_list;
-@@ -2899,7 +2901,8 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+-	raw_spin_lock_bh(&stab->lock);
++	raw_spin_lock_irqsave(&stab->lock, flags);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+ 		sk = xchg(psk, NULL);
+@@ -425,7 +426,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ 	else
+ 		err = -EINVAL;
  
- 	if (unlikely(f2fs_cp_error(sbi))) {
- 		f2fs_submit_merged_write(sbi, DATA);
--		f2fs_submit_merged_ipu_write(sbi, bio, NULL);
-+		if (bio && *bio)
-+			f2fs_submit_merged_ipu_write(sbi, bio, NULL);
- 		submitted = NULL;
+-	raw_spin_unlock_bh(&stab->lock);
++	raw_spin_unlock_irqrestore(&stab->lock, flags);
+ 	return err;
+ }
+ 
+@@ -923,11 +924,12 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 	struct bpf_shtab_bucket *bucket;
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
++	unsigned long flags;
+ 
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
+-	raw_spin_lock_bh(&bucket->lock);
++	raw_spin_lock_irqsave(&bucket->lock, flags);
+ 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
+ 	if (elem) {
+ 		hlist_del_rcu(&elem->node);
+@@ -935,7 +937,7 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 		sock_hash_free_elem(htab, elem);
+ 		ret = 0;
  	}
+-	raw_spin_unlock_bh(&bucket->lock);
++	raw_spin_unlock_irqrestore(&bucket->lock, flags);
+ 	return ret;
+ }
  
 -- 
 2.39.2
