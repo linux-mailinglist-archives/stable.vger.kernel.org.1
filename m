@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C2B66FA8DA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4293A6FABEB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235006AbjEHKpx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
+        id S233957AbjEHLSw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:18:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235086AbjEHKp1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:27 -0400
+        with ESMTP id S235509AbjEHLSv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C1926EB0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AEEF37856
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 115F462870
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07808C433EF;
-        Mon,  8 May 2023 10:44:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3DAB62C3B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65D9C433EF;
+        Mon,  8 May 2023 11:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542684;
-        bh=nd36LqgPgXbyzTWgYP9hgPLGp15vgwclQBLev1kFv8E=;
+        s=korg; t=1683544729;
+        bh=eKMaDKJ3qLYO7/IGZRGmIrcFA8WxyEx7wDOdy/wg8vU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EiSCqw8hIIRlbdP7z2yUMWXsAMnaPX52EWDpPBYA7DQML4/QkMDNgkyRbTw75XYap
-         iu1HtJioYAoK1sdS42rfM0hNWWdzJIpCPRTm+Y2/4oU+A+3mPW/HWR2HdeHLDPeHUu
-         G99a+NnSbu+D3E5U2Jpq2LwisoQxYJAoynYvH38U=
+        b=bqHMKzz9+id3CDfPni54v8Ll1HaPqG4z/NnzWkXLHake1autJ5CEOQnRs6CkTDWEy
+         PsNQFplM3T8kVn8e8MThZgGZtS8DRx14d8iXjWIGDDdx9F3NRvAi1Aoz+yd3zqQTHI
+         K2welC5YVSFio0Z69mfSyfA/0NfpJju2Tbm2OMv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Schspa Shi <schspa@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Dwaine Gonyier <dgonyier@redhat.com>,
+        patches@lists.linux.dev,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 514/663] sched/rt: Fix bad task migration for rt tasks
+Subject: [PATCH 6.3 505/694] PCI: imx6: Install the fault handler only on compatible match
 Date:   Mon,  8 May 2023 11:45:40 +0200
-Message-Id: <20230508094445.431689554@linuxfoundation.org>
+Message-Id: <20230508094450.502482454@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,83 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Schspa Shi <schspa@gmail.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit feffe5bb274dd3442080ef0e4053746091878799 ]
+[ Upstream commit 5f5ac460dfe7f4e11f99de9870f240e39189cf72 ]
 
-Commit 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
-allows find_lock_lowest_rq() to pick a task with migration disabled.
-The purpose of the commit is to push the current running task on the
-CPU that has the migrate_disable() task away.
+commit bb38919ec56e ("PCI: imx6: Add support for i.MX6 PCIe controller")
+added a fault hook to this driver in the probe function. So it was only
+installed if needed.
 
-However, there is a race which allows a migrate_disable() task to be
-migrated. Consider:
+commit bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
+moved it from probe to driver init which installs the hook unconditionally
+as soon as the driver is compiled into a kernel.
 
-  CPU0                                    CPU1
-  push_rt_task
-    check is_migration_disabled(next_task)
+When this driver is compiled as a module, the hook is not registered
+until after the driver has been matched with a .compatible and
+loaded.
 
-                                          task not running and
-                                          migration_disabled == 0
+commit 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
+extended the fault handling code.
 
-    find_lock_lowest_rq(next_task, rq);
-      _double_lock_balance(this_rq, busiest);
-        raw_spin_rq_unlock(this_rq);
-        double_rq_lock(this_rq, busiest);
-          <<wait for busiest rq>>
-                                              <wakeup>
-                                          task become running
-                                          migrate_disable();
-                                            <context out>
-    deactivate_task(rq, next_task, 0);
-    set_task_cpu(next_task, lowest_rq->cpu);
-      WARN_ON_ONCE(is_migration_disabled(p));
+commit 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+added some protection for non-ARM architectures, but this does not
+protect non-i.MX ARM architectures.
 
-Fixes: 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
-Signed-off-by: Schspa Shi <schspa@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Tested-by: Dwaine Gonyier <dgonyier@redhat.com>
+Since fault handlers can be triggered on any architecture for different
+reasons, there is no guarantee that they will be triggered only for the
+assumed situation, leading to improper error handling (i.MX6-specific
+imx6q_pcie_abort_handler) on foreign systems.
+
+I had seen strange L3 imprecise external abort messages several times on
+OMAP4 and OMAP5 devices and couldn't make sense of them until I realized
+they were related to this unused imx6q driver because I had
+CONFIG_PCI_IMX6=y.
+
+Note that CONFIG_PCI_IMX6=y is useful for kernel binaries that are designed
+to run on different ARM SoC and be differentiated only by device tree
+binaries. So turning off CONFIG_PCI_IMX6 is not a solution.
+
+Therefore we check the compatible in the init function before registering
+the fault handler.
+
+Link: https://lore.kernel.org/r/e1bcfc3078c82b53aa9b78077a89955abe4ea009.1678380991.git.hns@goldelico.com
+Fixes: bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
+Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 1 +
- kernel/sched/rt.c       | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/pci/controller/dwc/pci-imx6.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 0d97d54276cc8..238bdb36f8848 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2246,6 +2246,7 @@ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
- 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
- 				     task_on_cpu(rq, task) ||
- 				     !dl_task(task) ||
-+				     is_migration_disabled(task) ||
- 				     !task_on_rq_queued(task))) {
- 				double_unlock_balance(rq, later_rq);
- 				later_rq = NULL;
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 0a11f44adee57..4f5796dd26a56 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2000,11 +2000,15 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
- 			 * the mean time, task could have
- 			 * migrated already or had its affinity changed.
- 			 * Also make sure that it wasn't scheduled on its rq.
-+			 * It is possible the task was scheduled, set
-+			 * "migrate_disabled" and then got preempted, so we must
-+			 * check the task migration disable flag here too.
- 			 */
- 			if (unlikely(task_rq(task) != rq ||
- 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
- 				     task_on_cpu(rq, task) ||
- 				     !rt_task(task) ||
-+				     is_migration_disabled(task) ||
- 				     !task_on_rq_queued(task))) {
- 
- 				double_unlock_balance(rq, lowest_rq);
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 55a0405b921d6..52906f999f2bb 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1566,6 +1566,13 @@ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_SYNOPSYS, 0xabcd,
+ static int __init imx6_pcie_init(void)
+ {
+ #ifdef CONFIG_ARM
++	struct device_node *np;
++
++	np = of_find_matching_node(NULL, imx6_pcie_of_match);
++	if (!np)
++		return -ENODEV;
++	of_node_put(np);
++
+ 	/*
+ 	 * Since probe() can be deferred we need to make sure that
+ 	 * hook_fault_code is not called after __init memory is freed
 -- 
 2.39.2
 
