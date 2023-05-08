@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E51936FA880
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 756866FAB91
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234879AbjEHKlx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43294 "EHLO
+        id S233945AbjEHLOz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234966AbjEHKl2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:28 -0400
+        with ESMTP id S234022AbjEHLOu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4047529FDB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0BF736568
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 240AE6284C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD42C4339C;
-        Mon,  8 May 2023 10:40:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44FA762BAA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38813C433EF;
+        Mon,  8 May 2023 11:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542439;
-        bh=loH+/AUtxY79C8dF7YK+lZcECoMA7wcYEEBP69cCZCk=;
+        s=korg; t=1683544488;
+        bh=nLdePqh2bTqCnlpaPt1P2wcp/nv/2C4fsrBJyidy/Ms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ek49EY8Q6faSbY3ClsCZ0n2ztoKT0mI2nwHl6eQPUu4d1NroIn3Jq38a+TqflapY8
-         ILRDgi/Ig0G7NhcTIBEk7M3fxkgkfAwoikUo8b6qCQclZxck9RcSC/JQS1QPvx/2KD
-         j7ANnWK6CN+fcUyAccp0x3G2ozGjAP3tup+zUBHE=
+        b=Ig+stVdiiPx3Jh1RdxNiG3ZWDnVm7PwPaJRrTz34p7PiN50j2K5fxowoW7zgQvHi+
+         D3JdCeP5FJShcFH/AikREtaaoAGUL27XYUQ3+rc3kshbCPZnVglwJo1wZxKAPO2HbZ
+         dF6gb7KugRlt1TbUicIX2g83fUgEfyFvzGvMcEMU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lucas Tanure <lucas.tanure@collabora.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 436/663] ASoC: cs35l41: Only disable internal boost
+Subject: [PATCH 6.3 427/694] wifi: iwlwifi: fw: move memset before early return
 Date:   Mon,  8 May 2023 11:44:22 +0200
-Message-Id: <20230508094442.217492212@linuxfoundation.org>
+Message-Id: <20230508094447.202789839@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,109 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lucas Tanure <lucas.tanure@collabora.com>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit 4658de99d43cd740e019e7fd124b4128f8f4027f ]
+[ Upstream commit 8ce437dd5b2e4adef13aa4ecce07392f9966b1ab ]
 
-In error situations, only the internal boost case should be disabled and
-re-enabled.
-Also, for other boost cases re-enabling the boost to the default internal
-boost config is incorrect.
+Clang static analysis reports this representative issue
+dbg.c:1455:6: warning: Branch condition evaluates to
+a garbage value
+  if (!rxf_data.size)
+       ^~~~~~~~~~~~~~
 
-Fixes: 6450ef559056 ("ASoC: cs35l41: CS35L41 Boosted Smart Amplifier")
-Signed-off-by: Lucas Tanure <lucas.tanure@collabora.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: David Rhodes <david.rhodes@cirrus.com>
-Link: https://lore.kernel.org/r/20230223084324.9076-2-lucas.tanure@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This check depends on iwl_ini_get_rxf_data() to clear
+rxf_data but the function can return early without
+doing the clear.  So move the memset before the early
+return.
+
+Fixes: cc9b6012d34b ("iwlwifi: yoyo: use hweight_long instead of bit manipulating")
+Signed-off-by: Tom Rix <trix@redhat.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.872a7175f1ff.I33802a77a91998276992b088fbe25f61c87c33ac@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index c223d83e02cfb..f2b5032daa6ae 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -356,6 +356,19 @@ static const struct snd_kcontrol_new cs35l41_aud_controls[] = {
- 	WM_ADSP_FW_CONTROL("DSP1", 0),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index bde6f0764a538..027360e63b926 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1388,13 +1388,13 @@ static void iwl_ini_get_rxf_data(struct iwl_fw_runtime *fwrt,
+ 	if (!data)
+ 		return;
  
-+static void cs35l41_boost_enable(struct cs35l41_private *cs35l41, unsigned int enable)
-+{
-+	switch (cs35l41->hw_cfg.bst_type) {
-+	case CS35L41_INT_BOOST:
-+		enable = enable ? CS35L41_BST_EN_DEFAULT : CS35L41_BST_DIS_FET_OFF;
-+		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2, CS35L41_BST_EN_MASK,
-+				enable << CS35L41_BST_EN_SHIFT);
-+		break;
-+	default:
-+		break;
-+	}
-+}
++	memset(data, 0, sizeof(*data));
 +
- static irqreturn_t cs35l41_irq(int irq, void *data)
- {
- 	struct cs35l41_private *cs35l41 = data;
-@@ -431,8 +444,7 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
+ 	/* make sure only one bit is set in only one fid */
+ 	if (WARN_ONCE(hweight_long(fid1) + hweight_long(fid2) != 1,
+ 		      "fid1=%x, fid2=%x\n", fid1, fid2))
+ 		return;
  
- 	if (status[0] & CS35L41_BST_OVP_ERR) {
- 		dev_crit_ratelimited(cs35l41->dev, "VBST Over Voltage error\n");
--		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2,
--				   CS35L41_BST_EN_MASK, 0);
-+		cs35l41_boost_enable(cs35l41, 0);
- 		regmap_write(cs35l41->regmap, CS35L41_IRQ1_STATUS1,
- 			     CS35L41_BST_OVP_ERR);
- 		regmap_write(cs35l41->regmap, CS35L41_PROTECT_REL_ERR_IGN, 0);
-@@ -441,16 +453,13 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
- 				   CS35L41_BST_OVP_ERR_RLS);
- 		regmap_update_bits(cs35l41->regmap, CS35L41_PROTECT_REL_ERR_IGN,
- 				   CS35L41_BST_OVP_ERR_RLS, 0);
--		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2,
--				   CS35L41_BST_EN_MASK,
--				   CS35L41_BST_EN_DEFAULT << CS35L41_BST_EN_SHIFT);
-+		cs35l41_boost_enable(cs35l41, 1);
- 		ret = IRQ_HANDLED;
- 	}
- 
- 	if (status[0] & CS35L41_BST_DCM_UVP_ERR) {
- 		dev_crit_ratelimited(cs35l41->dev, "DCM VBST Under Voltage Error\n");
--		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2,
--				   CS35L41_BST_EN_MASK, 0);
-+		cs35l41_boost_enable(cs35l41, 0);
- 		regmap_write(cs35l41->regmap, CS35L41_IRQ1_STATUS1,
- 			     CS35L41_BST_DCM_UVP_ERR);
- 		regmap_write(cs35l41->regmap, CS35L41_PROTECT_REL_ERR_IGN, 0);
-@@ -459,16 +468,13 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
- 				   CS35L41_BST_UVP_ERR_RLS);
- 		regmap_update_bits(cs35l41->regmap, CS35L41_PROTECT_REL_ERR_IGN,
- 				   CS35L41_BST_UVP_ERR_RLS, 0);
--		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2,
--				   CS35L41_BST_EN_MASK,
--				   CS35L41_BST_EN_DEFAULT << CS35L41_BST_EN_SHIFT);
-+		cs35l41_boost_enable(cs35l41, 1);
- 		ret = IRQ_HANDLED;
- 	}
- 
- 	if (status[0] & CS35L41_BST_SHORT_ERR) {
- 		dev_crit_ratelimited(cs35l41->dev, "LBST error: powering off!\n");
--		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2,
--				   CS35L41_BST_EN_MASK, 0);
-+		cs35l41_boost_enable(cs35l41, 0);
- 		regmap_write(cs35l41->regmap, CS35L41_IRQ1_STATUS1,
- 			     CS35L41_BST_SHORT_ERR);
- 		regmap_write(cs35l41->regmap, CS35L41_PROTECT_REL_ERR_IGN, 0);
-@@ -477,9 +483,7 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
- 				   CS35L41_BST_SHORT_ERR_RLS);
- 		regmap_update_bits(cs35l41->regmap, CS35L41_PROTECT_REL_ERR_IGN,
- 				   CS35L41_BST_SHORT_ERR_RLS, 0);
--		regmap_update_bits(cs35l41->regmap, CS35L41_PWR_CTRL2,
--				   CS35L41_BST_EN_MASK,
--				   CS35L41_BST_EN_DEFAULT << CS35L41_BST_EN_SHIFT);
-+		cs35l41_boost_enable(cs35l41, 1);
- 		ret = IRQ_HANDLED;
- 	}
- 
+-	memset(data, 0, sizeof(*data));
+-
+ 	if (fid1) {
+ 		fifo_idx = ffs(fid1) - 1;
+ 		if (WARN_ONCE(fifo_idx >= MAX_NUM_LMAC, "fifo_idx=%d\n",
 -- 
 2.39.2
 
