@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68226FA7A0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22BC56FA4BB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234707AbjEHKdR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:33:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
+        id S233954AbjEHKC7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234763AbjEHKcl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:32:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8633026770
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:04 -0700 (PDT)
+        with ESMTP id S233944AbjEHKC5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0073B2EB1B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B641262704
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38E7C433EF;
-        Mon,  8 May 2023 10:32:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2292F622DF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35297C4339B;
+        Mon,  8 May 2023 10:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541923;
-        bh=0Z6DdtMkGxTiNOX7sZiAy6z98nFMchSsQYeqYLcH8TY=;
+        s=korg; t=1683540147;
+        bh=rGopVJF+qyYKCeISEGi6nsfVzBy87J8aQ8JNWamY3jA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T1eiTdOX8CrHBLLW9J1DqRAQDkPvkeB9Ii9sgEWiFo5zTXcX+ziGl4GGlOMV49c5a
-         Za43n+osRG7AuGrqdf2aqtvhnKXXd2r8qg71QXgJioooZm4E0MCEwHZ57LsoyBxIdk
-         NiMgwLQSnSSftL9AmlAPgjiDE2hxan3ZMX30PZMg=
+        b=HovcfOKPSH3bOYFnT2ckH0ux3HRyHrYQRLiG8RXC1Hic/uNK9PzPx87Xp8Cu8e/zU
+         NsFixUzvi7dG/i86iNA45sacMd0jl2mZNob1CFoRqEBQHBLyh8g0G4gBmsShB9oGov
+         VEYUY3erpjvxQYbluj4G8EMXiTOOWH2Ar8SF5VSU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 270/663] media: mediatek: vcodec: fix decoder disable pm crash
-Date:   Mon,  8 May 2023 11:41:36 +0200
-Message-Id: <20230508094437.009489883@linuxfoundation.org>
+        patches@lists.linux.dev, Jing Zhang <renyu.zj@linux.alibaba.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 255/611] perf/arm-cmn: Fix port detection for CMN-700
+Date:   Mon,  8 May 2023 11:41:37 +0200
+Message-Id: <20230508094430.717138275@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,63 +54,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 9d2f13fb47dcab6d094f34ecfd6a879a409722b3 ]
+[ Upstream commit 2ad91e44e6b0c7ef1ed151b3bb2242a2144e6085 ]
 
-Can't call pm_runtime_disable when the architecture support sub device for
-'dev->pm.dev' is NUll, or will get below crash log.
+When the "extra device ports" configuration was first added, the
+additional mxp_device_port_connect_info registers were added around the
+existing mxp_mesh_port_connect_info registers. What I missed about
+CMN-700 is that it shuffled them around to remove this discontinuity.
+As such, tweak the definitions and factor out a helper for reading these
+registers so we can deal with this discrepancy easily, which does at
+least allow nicely tidying up the callsites. With this we can then also
+do the nice thing and skip accesses completely rather than relying on
+RES0 behaviour where we know the extra registers aren't defined.
 
-[   10.771551] pc : _raw_spin_lock_irq+0x4c/0xa0
-[   10.771556] lr : __pm_runtime_disable+0x30/0x130
-[   10.771558] sp : ffffffc01e4cb800
-[   10.771559] x29: ffffffc01e4cb800 x28: ffffffdf082108a8
-[   10.771563] x27: ffffffc01e4cbd70 x26: ffffff8605df55f0
-[   10.771567] x25: 0000000000000002 x24: 0000000000000002
-[   10.771570] x23: ffffff85c0dc9c00 x22: 0000000000000001
-[   10.771573] x21: 0000000000000001 x20: 0000000000000000
-[   10.771577] x19: 00000000000000f4 x18: ffffffdf2e9fbe18
-[   10.771580] x17: 0000000000000000 x16: ffffffdf2df13c74
-[   10.771583] x15: 00000000000002ea x14: 0000000000000058
-[   10.771587] x13: ffffffdf2de1b62c x12: ffffffdf2e9e30e4
-[   10.771590] x11: 0000000000000000 x10: 0000000000000001
-[   10.771593] x9 : 0000000000000000 x8 : 00000000000000f4
-[   10.771596] x7 : 6bff6264632c6264 x6 : 0000000000008000
-[   10.771600] x5 : 0080000000000000 x4 : 0000000000000001
-[   10.771603] x3 : 0000000000000008 x2 : 0000000000000001
-[   10.771608] x1 : 0000000000000000 x0 : 00000000000000f4
-[   10.771613] Call trace:
-[   10.771617]  _raw_spin_lock_irq+0x4c/0xa0
-[   10.771620]  __pm_runtime_disable+0x30/0x130
-[   10.771657]  mtk_vcodec_probe+0x69c/0x728 [mtk_vcodec_dec 800cc929d6631f79f9b273254c8db94d0d3500dc]
-[   10.771662]  platform_drv_probe+0x9c/0xbc
-[   10.771665]  really_probe+0x13c/0x3a0
-[   10.771668]  driver_probe_device+0x84/0xc0
-[   10.771671]  device_driver_attach+0x54/0x78
-
-Fixes: ba31a5b39400 ("media: mtk-vcodec: Remove mtk_vcodec_release_dec_pm")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Reported-by: Jing Zhang <renyu.zj@linux.alibaba.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/71d129241d4d7923cde72a0e5b4c8d2f6084525f.1681295193.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/perf/arm-cmn.c | 57 ++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
-index 174a6eec2f549..42df901e8beb4 100644
---- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
-@@ -451,7 +451,8 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
- 	if (IS_VDEC_LAT_ARCH(dev->vdec_pdata->hw_arch))
- 		destroy_workqueue(dev->core_workqueue);
- err_res:
--	pm_runtime_disable(dev->pm.dev);
-+	if (!dev->vdec_pdata->is_subdev_supported)
-+		pm_runtime_disable(dev->pm.dev);
- err_dec_pm:
- 	mtk_vcodec_fw_release(dev->fw_handler);
- 	return ret;
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index bc4b1d1ba8fa2..ff86075edca48 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -57,14 +57,12 @@
+ #define CMN_INFO_REQ_VC_NUM		GENMASK_ULL(1, 0)
+ 
+ /* XPs also have some local topology info which has uses too */
+-#define CMN_MXP__CONNECT_INFO_P0	0x0008
+-#define CMN_MXP__CONNECT_INFO_P1	0x0010
+-#define CMN_MXP__CONNECT_INFO_P2	0x0028
+-#define CMN_MXP__CONNECT_INFO_P3	0x0030
+-#define CMN_MXP__CONNECT_INFO_P4	0x0038
+-#define CMN_MXP__CONNECT_INFO_P5	0x0040
++#define CMN_MXP__CONNECT_INFO(p)	(0x0008 + 8 * (p))
+ #define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(4, 0)
+ 
++#define CMN_MAX_PORTS			6
++#define CI700_CONNECT_INFO_P2_5_OFFSET	0x10
++
+ /* PMU registers occupy the 3rd 4KB page of each node's region */
+ #define CMN_PMU_OFFSET			0x2000
+ 
+@@ -396,6 +394,25 @@ static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
+ 	return NULL;
+ }
+ 
++static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
++				       const struct arm_cmn_node *xp, int port)
++{
++	int offset = CMN_MXP__CONNECT_INFO(port);
++
++	if (port >= 2) {
++		if (cmn->model & (CMN600 | CMN650))
++			return 0;
++		/*
++		 * CI-700 may have extra ports, but still has the
++		 * mesh_port_connect_info registers in the way.
++		 */
++		if (cmn->model == CI700)
++			offset += CI700_CONNECT_INFO_P2_5_OFFSET;
++	}
++
++	return readl_relaxed(xp->pmu_base - CMN_PMU_OFFSET + offset);
++}
++
+ static struct dentry *arm_cmn_debugfs;
+ 
+ #ifdef CONFIG_DEBUG_FS
+@@ -469,7 +486,7 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 	y = cmn->mesh_y;
+ 	while (y--) {
+ 		int xp_base = cmn->mesh_x * y;
+-		u8 port[6][CMN_MAX_DIMENSION];
++		u8 port[CMN_MAX_PORTS][CMN_MAX_DIMENSION];
+ 
+ 		for (x = 0; x < cmn->mesh_x; x++)
+ 			seq_puts(s, "--------+");
+@@ -477,14 +494,9 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 		seq_printf(s, "\n%d    |", y);
+ 		for (x = 0; x < cmn->mesh_x; x++) {
+ 			struct arm_cmn_node *xp = cmn->xps + xp_base + x;
+-			void __iomem *base = xp->pmu_base - CMN_PMU_OFFSET;
+-
+-			port[0][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P0);
+-			port[1][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P1);
+-			port[2][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P2);
+-			port[3][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P3);
+-			port[4][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P4);
+-			port[5][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P5);
++
++			for (p = 0; p < CMN_MAX_PORTS; p++)
++				port[p][x] = arm_cmn_device_connect_info(cmn, xp, p);
+ 			seq_printf(s, " XP #%-2d |", xp_base + x);
+ 		}
+ 
+@@ -2082,18 +2094,9 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		 * from this, since in that case we will see at least one XP
+ 		 * with port 2 connected, for the HN-D.
+ 		 */
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P0))
+-			xp_ports |= BIT(0);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P1))
+-			xp_ports |= BIT(1);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P2))
+-			xp_ports |= BIT(2);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P3))
+-			xp_ports |= BIT(3);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P4))
+-			xp_ports |= BIT(4);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P5))
+-			xp_ports |= BIT(5);
++		for (int p = 0; p < CMN_MAX_PORTS; p++)
++			if (arm_cmn_device_connect_info(cmn, xp, p))
++				xp_ports |= BIT(p);
+ 
+ 		if (cmn->multi_dtm && (xp_ports & 0xc))
+ 			arm_cmn_init_dtm(dtm++, xp, 1);
 -- 
 2.39.2
 
