@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A4326FA56D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3230B6FABA7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234131AbjEHKJV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
+        id S234630AbjEHLPy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:15:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234130AbjEHKJU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604893293C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:19 -0700 (PDT)
+        with ESMTP id S234789AbjEHLPw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F1636CFA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C00716238F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67C5C433D2;
-        Mon,  8 May 2023 10:09:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B0CAA62BF2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BF1C4339B;
+        Mon,  8 May 2023 11:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540558;
-        bh=OtCNLc/mngL2CXfMA9VKZ6YNErKcZjp7hBoFcXf+/mI=;
+        s=korg; t=1683544551;
+        bh=XYimaoFb/8Yn/HWuShv7fLZpcnAwmofCQoHNfTNrtq0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y3q/e4w7d0GMttXOzF2mb4O4oWmYtCmpDc3dAbVbGYpgC2eutbWRk5UGWbqbTsqkf
-         v9qdip0gabgzzoyrgsJ7whwiTMr2ImyNuQCud4a6x1h7I1oy+pSDTW6lYHk9gUg64K
-         3U5hiviC6HFKsEe6BN9VJe7Lgq7tTR2E0JKOULvM=
+        b=qgpC8esu8JTI6VoFzM2lXVMGKsOj/I7lv/SvM/PkuRZR7tFM6FnUZY33Hi8SE25b3
+         uD/j+qnJG1CBq44qS9vWtR5B0QeVaYfkG0MwfVZHErfufQ7l+UsiETAL9BDr+ZoUKj
+         BDlWZN1kbiGSoZ7ksKBmPuptiMySxk8e+vpe9p6w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Daeho Jeong <daehojeong@google.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 409/611] spi: atmel-quadspi: Free resources even if runtime resume failed in .remove()
+Subject: [PATCH 6.3 416/694] f2fs: fix to check return value of f2fs_do_truncate_blocks()
 Date:   Mon,  8 May 2023 11:44:11 +0200
-Message-Id: <20230508094435.544529929@linuxfoundation.org>
+Message-Id: <20230508094446.775733977@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,72 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 9448bc1dee65f86c0fe64d9dea8b410af0586886 ]
+[ Upstream commit b851ee6ba3cc212641e622ebcf92b950c7bafa07 ]
 
-An early error exit in atmel_qspi_remove() doesn't prevent the device
-unbind. So this results in an spi controller with an unbound parent
-and unmapped register space (because devm_ioremap_resource() is undone).
-So using the remaining spi controller probably results in an oops.
+Otherwise, if truncation on cow_inode failed, remained data may
+pollute current transaction of atomic write.
 
-Instead unregister the controller unconditionally and only skip hardware
-access and clk disable.
-
-Also add a warning about resume failing and return zero unconditionally.
-The latter has the only effect to suppress a less helpful error message by
-the spi core.
-
-Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20230317084232.142257-3-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Daeho Jeong <daehojeong@google.com>
+Fixes: a46bebd502fe ("f2fs: synchronize atomic write aborts")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ fs/f2fs/file.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index f480c7ae93fab..7e05b48dbd71c 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -672,18 +672,28 @@ static int atmel_qspi_remove(struct platform_device *pdev)
- 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
- 	int ret;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 4f684b99ba5a3..16e286cea6301 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2113,7 +2113,11 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
+ 		clear_inode_flag(fi->cow_inode, FI_INLINE_DATA);
+ 	} else {
+ 		/* Reuse the already created COW inode */
+-		f2fs_do_truncate_blocks(fi->cow_inode, 0, true);
++		ret = f2fs_do_truncate_blocks(fi->cow_inode, 0, true);
++		if (ret) {
++			f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
++			goto out;
++		}
+ 	}
  
--	ret = pm_runtime_resume_and_get(&pdev->dev);
--	if (ret < 0)
--		return ret;
--
- 	spi_unregister_controller(ctrl);
--	atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
-+
-+	ret = pm_runtime_get_sync(&pdev->dev);
-+	if (ret >= 0) {
-+		atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
-+		clk_disable(aq->qspick);
-+		clk_disable(aq->pclk);
-+	} else {
-+		/*
-+		 * atmel_qspi_runtime_{suspend,resume} just disable and enable
-+		 * the two clks respectively. So after resume failed these are
-+		 * off, and we skip hardware access and disabling these clks again.
-+		 */
-+		dev_warn(&pdev->dev, "Failed to resume device on remove\n");
-+	}
-+
-+	clk_unprepare(aq->qspick);
-+	clk_unprepare(aq->pclk);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- 
--	clk_disable_unprepare(aq->qspick);
--	clk_disable_unprepare(aq->pclk);
- 	return 0;
- }
- 
+ 	f2fs_write_inode(inode, NULL);
 -- 
 2.39.2
 
