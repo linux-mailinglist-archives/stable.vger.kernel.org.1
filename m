@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7986FA7D5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276E46FA4E2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234790AbjEHKfO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
+        id S233988AbjEHKEK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234696AbjEHKep (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:45 -0400
+        with ESMTP id S233985AbjEHKEJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9682D7D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57E32EB2E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D48D0614EA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AC2C433EF;
-        Mon,  8 May 2023 10:34:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3659061EF7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4850EC433EF;
+        Mon,  8 May 2023 10:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542048;
-        bh=WIFk0acwhcfY5KNp6RyknXLPpth6Z2AV3QO9+dW5P0A=;
+        s=korg; t=1683540245;
+        bh=YoVY1tZMegFFFnf0lVS57XTOL8GTnLz9g0yv7rFN2dg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=er/A8Cf8Agv0CcOToFIroQBwChS9kh7fNsq1CohAfVsptUK5tAWUZsZ1cgTOAvSVp
-         AW9+CyLhXjlFVOzJfH0SYgMd+tkh3WqjGcCNSmZQjextQEKgkmU2Ed4Zn1NI8kn0gl
-         XqCb8t8gJ6zny7DMJjpawdwuWsDDHV9E9vC4qS7k=
+        b=xtkcMJK81/JTlRqMiW6QWtfa+JJ/3x6iVIe4Tm9MSlH38nehmN3pdoXB5M1TPO4Kg
+         LYQiOuQR0IRhG12kT9pQ/G30QDAXI0ajYee+8xsTsjEuyaWpph7Cj3gGKHDOkW6qmx
+         hjUnXqnqZMMS/bIHl5rMQ/485K1EwTnVWynjb+H4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,19 +36,19 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrii Nakryiko <andrii@kernel.org>,
         John Fastabend <john.fastabend@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 308/663] bpf: Fix __reg_bound_offset 64->32 var_off subreg propagation
+Subject: [PATCH 6.1 292/611] bpf: Fix __reg_bound_offset 64->32 var_off subreg propagation
 Date:   Mon,  8 May 2023 11:42:14 +0200
-Message-Id: <20230508094438.187668334@linuxfoundation.org>
+Message-Id: <20230508094431.898575322@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -277,10 +277,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index bb8579a3bf310..0afafb539d783 100644
+index 32ea9aaa8b8db..8726161076134 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -1769,9 +1769,9 @@ static void __reg_bound_offset(struct bpf_reg_state *reg)
+@@ -1590,9 +1590,9 @@ static void __reg_bound_offset(struct bpf_reg_state *reg)
  	struct tnum var64_off = tnum_intersect(reg->var_off,
  					       tnum_range(reg->umin_value,
  							  reg->umax_value));
@@ -294,10 +294,10 @@ index bb8579a3bf310..0afafb539d783 100644
  	reg->var_off = tnum_or(tnum_clear_subreg(var64_off), var32_off);
  }
 diff --git a/tools/testing/selftests/bpf/prog_tests/align.c b/tools/testing/selftests/bpf/prog_tests/align.c
-index 4666f88f2bb4f..8baebb41541dc 100644
+index 970f09156eb46..de27a29af2703 100644
 --- a/tools/testing/selftests/bpf/prog_tests/align.c
 +++ b/tools/testing/selftests/bpf/prog_tests/align.c
-@@ -575,14 +575,14 @@ static struct bpf_align_test tests[] = {
+@@ -565,14 +565,14 @@ static struct bpf_align_test tests[] = {
  			/* New unknown value in R7 is (4n), >= 76 */
  			{14, "R7_w=scalar(umin=76,umax=1096,var_off=(0x0; 0x7fc))"},
  			/* Adding it to packet pointer gives nice bounds again */
