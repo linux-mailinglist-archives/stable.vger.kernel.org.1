@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4471C6FA908
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34FD26FADD7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235169AbjEHKrK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:47:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47680 "EHLO
+        id S236134AbjEHLiy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:38:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235058AbjEHKqj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA1429FD6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:25 -0700 (PDT)
+        with ESMTP id S235890AbjEHLij (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D621C30AF2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37C69628CF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C122C433EF;
-        Mon,  8 May 2023 10:46:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B276633FB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8997FC4339B;
+        Mon,  8 May 2023 11:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542784;
-        bh=AvlC6jby9WcWnwHi4pEkn4vCyN6TtCGY9T9q7n61Wvc=;
+        s=korg; t=1683545842;
+        bh=sk+DmaSwmVvuX/7iXBbB7WhmY1toirRi+JkpyjAoqHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aS1n9cMap0CGwfuntmnW5ors9OBiuZ1UlLdfPx5lcOTTOicRdZQlIYOIHQrAlosFS
-         REestwJArEvauQvXwsamsQWbRhmwRQoKl2Ps89UPxwn4ZRI3IO6x2HZ8fFdonv1GbH
-         IsrzSspclSyktJzk62yBi4E4YkufdAmS78Co+ynI=
+        b=YDy0LyGu6p9UzyO0IV2Y48FW28hlCzX8T5eLKJB+xX29BnhXeAIwiea85IWfP7LOU
+         N5mzDw2mipUb4ebgH1npTUTkttWfrggy2PDHwSxQjP5k72HEnOKXlouoao7sxRXUkp
+         IJUW3VpK5qgI1ut3spDT8/vn/ArPKnx3YJ6/N7qg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 547/663] RDMA/srpt: Add a check for valid mad_agent pointer
+Subject: [PATCH 5.15 172/371] f2fs: enforce single zone capacity
 Date:   Mon,  8 May 2023 11:46:13 +0200
-Message-Id: <20230508094446.790886976@linuxfoundation.org>
+Message-Id: <20230508094818.958837539@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,110 +54,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit eca5cd9474cd26d62f9756f536e2e656d3f62f3a ]
+[ Upstream commit b771aadc6e4c221a468fe4a2dfcfffec01a06722 ]
 
-When unregistering MAD agent, srpt module has a non-null check
-for 'mad_agent' pointer before invoking ib_unregister_mad_agent().
-This check can pass if 'mad_agent' variable holds an error value.
-The 'mad_agent' can have an error value for a short window when
-srpt_add_one() and srpt_remove_one() is executed simultaneously.
+In order to simplify the complicated per-zone capacity, let's support
+only one capacity for entire zoned device.
 
-In srpt module, added a valid pointer check for 'sport->mad_agent'
-before unregistering MAD agent.
-
-This issue can hit when RoCE driver unregisters ib_device
-
-Stack Trace:
-------------
-BUG: kernel NULL pointer dereference, address: 000000000000004d
-PGD 145003067 P4D 145003067 PUD 2324fe067 PMD 0
-Oops: 0002 [#1] PREEMPT SMP NOPTI
-CPU: 10 PID: 4459 Comm: kworker/u80:0 Kdump: loaded Tainted: P
-Hardware name: Dell Inc. PowerEdge R640/06NR82, BIOS 2.5.4 01/13/2020
-Workqueue: bnxt_re bnxt_re_task [bnxt_re]
-RIP: 0010:_raw_spin_lock_irqsave+0x19/0x40
-Call Trace:
-  ib_unregister_mad_agent+0x46/0x2f0 [ib_core]
-  IPv6: ADDRCONF(NETDEV_CHANGE): bond0: link becomes ready
-  ? __schedule+0x20b/0x560
-  srpt_unregister_mad_agent+0x93/0xd0 [ib_srpt]
-  srpt_remove_one+0x20/0x150 [ib_srpt]
-  remove_client_context+0x88/0xd0 [ib_core]
-  bond0: (slave p2p1): link status definitely up, 100000 Mbps full duplex
-  disable_device+0x8a/0x160 [ib_core]
-  bond0: active interface up!
-  ? kernfs_name_hash+0x12/0x80
- (NULL device *): Bonding Info Received: rdev: 000000006c0b8247
-  __ib_unregister_device+0x42/0xb0 [ib_core]
- (NULL device *):         Master: mode: 4 num_slaves:2
-  ib_unregister_device+0x22/0x30 [ib_core]
- (NULL device *):         Slave: id: 105069936 name:p2p1 link:0 state:0
-  bnxt_re_stopqps_and_ib_uninit+0x83/0x90 [bnxt_re]
-  bnxt_re_alloc_lag+0x12e/0x4e0 [bnxt_re]
-
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230406042549.507328-1-saravanan.vajravel@broadcom.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 0b37ed21e336 ("f2fs: apply zone capacity to all zone type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ fs/f2fs/f2fs.h    |  2 +-
+ fs/f2fs/segment.c | 19 ++++++-------------
+ fs/f2fs/segment.h |  3 +++
+ fs/f2fs/super.c   | 33 ++++++++++++---------------------
+ 4 files changed, 22 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 3c3fae738c3ed..25e799dba999e 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -549,6 +549,7 @@ static int srpt_format_guid(char *buf, unsigned int size, const __be64 *guid)
-  */
- static int srpt_refresh_port(struct srpt_port *sport)
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 80e4f9afe86f7..7424470c68cbe 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1211,7 +1211,6 @@ struct f2fs_dev_info {
+ #ifdef CONFIG_BLK_DEV_ZONED
+ 	unsigned int nr_blkz;		/* Total number of zones */
+ 	unsigned long *blkz_seq;	/* Bitmap indicating sequential zones */
+-	block_t *zone_capacity_blocks;  /* Array of zone capacity in blks */
+ #endif
+ };
+ 
+@@ -1632,6 +1631,7 @@ struct f2fs_sb_info {
+ 	unsigned int meta_ino_num;		/* meta inode number*/
+ 	unsigned int log_blocks_per_seg;	/* log2 blocks per segment */
+ 	unsigned int blocks_per_seg;		/* blocks per segment */
++	unsigned int unusable_blocks_per_sec;	/* unusable blocks per section */
+ 	unsigned int segs_per_sec;		/* segments per section */
+ 	unsigned int secs_per_zone;		/* sections per zone */
+ 	unsigned int total_sections;		/* total section count */
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 58dd4de41986e..880447750caf4 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -5078,7 +5078,7 @@ static unsigned int get_zone_idx(struct f2fs_sb_info *sbi, unsigned int secno,
+ static inline unsigned int f2fs_usable_zone_segs_in_sec(
+ 		struct f2fs_sb_info *sbi, unsigned int segno)
  {
-+	struct ib_mad_agent *mad_agent;
- 	struct ib_mad_reg_req reg_req;
- 	struct ib_port_modify port_modify;
- 	struct ib_port_attr port_attr;
-@@ -593,24 +594,26 @@ static int srpt_refresh_port(struct srpt_port *sport)
- 		set_bit(IB_MGMT_METHOD_GET, reg_req.method_mask);
- 		set_bit(IB_MGMT_METHOD_SET, reg_req.method_mask);
+-	unsigned int dev_idx, zone_idx, unusable_segs_in_sec;
++	unsigned int dev_idx, zone_idx;
  
--		sport->mad_agent = ib_register_mad_agent(sport->sdev->device,
--							 sport->port,
--							 IB_QPT_GSI,
--							 &reg_req, 0,
--							 srpt_mad_send_handler,
--							 srpt_mad_recv_handler,
--							 sport, 0);
--		if (IS_ERR(sport->mad_agent)) {
-+		mad_agent = ib_register_mad_agent(sport->sdev->device,
-+						  sport->port,
-+						  IB_QPT_GSI,
-+						  &reg_req, 0,
-+						  srpt_mad_send_handler,
-+						  srpt_mad_recv_handler,
-+						  sport, 0);
-+		if (IS_ERR(mad_agent)) {
- 			pr_err("%s-%d: MAD agent registration failed (%ld). Note: this is expected if SR-IOV is enabled.\n",
- 			       dev_name(&sport->sdev->device->dev), sport->port,
--			       PTR_ERR(sport->mad_agent));
-+			       PTR_ERR(mad_agent));
- 			sport->mad_agent = NULL;
- 			memset(&port_modify, 0, sizeof(port_modify));
- 			port_modify.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP;
- 			ib_modify_port(sport->sdev->device, sport->port, 0,
- 				       &port_modify);
--
-+			return 0;
- 		}
-+
-+		sport->mad_agent = mad_agent;
+ 	dev_idx = f2fs_target_device_index(sbi, START_BLOCK(sbi, segno));
+ 	zone_idx = get_zone_idx(sbi, GET_SEC_FROM_SEG(sbi, segno), dev_idx);
+@@ -5087,18 +5087,12 @@ static inline unsigned int f2fs_usable_zone_segs_in_sec(
+ 	if (is_conv_zone(sbi, zone_idx, dev_idx))
+ 		return sbi->segs_per_sec;
+ 
+-	/*
+-	 * If the zone_capacity_blocks array is NULL, then zone capacity
+-	 * is equal to the zone size for all zones
+-	 */
+-	if (!FDEV(dev_idx).zone_capacity_blocks)
++	if (!sbi->unusable_blocks_per_sec)
+ 		return sbi->segs_per_sec;
+ 
+ 	/* Get the segment count beyond zone capacity block */
+-	unusable_segs_in_sec = (sbi->blocks_per_blkz -
+-				FDEV(dev_idx).zone_capacity_blocks[zone_idx]) >>
+-				sbi->log_blocks_per_seg;
+-	return sbi->segs_per_sec - unusable_segs_in_sec;
++	return sbi->segs_per_sec - (sbi->unusable_blocks_per_sec >>
++						sbi->log_blocks_per_seg);
+ }
+ 
+ /*
+@@ -5127,12 +5121,11 @@ static inline unsigned int f2fs_usable_zone_blks_in_seg(
+ 	if (is_conv_zone(sbi, zone_idx, dev_idx))
+ 		return sbi->blocks_per_seg;
+ 
+-	if (!FDEV(dev_idx).zone_capacity_blocks)
++	if (!sbi->unusable_blocks_per_sec)
+ 		return sbi->blocks_per_seg;
+ 
+ 	sec_start_blkaddr = START_BLOCK(sbi, GET_SEG_FROM_SEC(sbi, secno));
+-	sec_cap_blkaddr = sec_start_blkaddr +
+-				FDEV(dev_idx).zone_capacity_blocks[zone_idx];
++	sec_cap_blkaddr = sec_start_blkaddr + CAP_BLKS_PER_SEC(sbi);
+ 
+ 	/*
+ 	 * If segment starts before zone capacity and spans beyond
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 957edb6d70d7b..9eb8364ac38c7 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -101,6 +101,9 @@ static inline void sanity_check_seg_type(struct f2fs_sb_info *sbi,
+ 		GET_SEGNO_FROM_SEG0(sbi, blk_addr)))
+ #define BLKS_PER_SEC(sbi)					\
+ 	((sbi)->segs_per_sec * (sbi)->blocks_per_seg)
++#define CAP_BLKS_PER_SEC(sbi)					\
++	((sbi)->segs_per_sec * (sbi)->blocks_per_seg -		\
++	 (sbi)->unusable_blocks_per_sec)
+ #define GET_SEC_FROM_SEG(sbi, segno)				\
+ 	(((segno) == -1) ? -1: (segno) / (sbi)->segs_per_sec)
+ #define GET_SEG_FROM_SEC(sbi, secno)				\
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index ae72211e422e7..4cc9b948139ad 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1515,7 +1515,6 @@ static void destroy_device_list(struct f2fs_sb_info *sbi)
+ 		blkdev_put(FDEV(i).bdev, FMODE_EXCL);
+ #ifdef CONFIG_BLK_DEV_ZONED
+ 		kvfree(FDEV(i).blkz_seq);
+-		kfree(FDEV(i).zone_capacity_blocks);
+ #endif
  	}
+ 	kvfree(sbi->devs);
+@@ -3631,24 +3630,29 @@ static int init_percpu_info(struct f2fs_sb_info *sbi)
+ #ifdef CONFIG_BLK_DEV_ZONED
  
+ struct f2fs_report_zones_args {
++	struct f2fs_sb_info *sbi;
+ 	struct f2fs_dev_info *dev;
+-	bool zone_cap_mismatch;
+ };
+ 
+ static int f2fs_report_zone_cb(struct blk_zone *zone, unsigned int idx,
+ 			      void *data)
+ {
+ 	struct f2fs_report_zones_args *rz_args = data;
++	block_t unusable_blocks = (zone->len - zone->capacity) >>
++					F2FS_LOG_SECTORS_PER_BLOCK;
+ 
+ 	if (zone->type == BLK_ZONE_TYPE_CONVENTIONAL)
+ 		return 0;
+ 
+ 	set_bit(idx, rz_args->dev->blkz_seq);
+-	rz_args->dev->zone_capacity_blocks[idx] = zone->capacity >>
+-						F2FS_LOG_SECTORS_PER_BLOCK;
+-	if (zone->len != zone->capacity && !rz_args->zone_cap_mismatch)
+-		rz_args->zone_cap_mismatch = true;
+-
++	if (!rz_args->sbi->unusable_blocks_per_sec) {
++		rz_args->sbi->unusable_blocks_per_sec = unusable_blocks;
++		return 0;
++	}
++	if (rz_args->sbi->unusable_blocks_per_sec != unusable_blocks) {
++		f2fs_err(rz_args->sbi, "F2FS supports single zone capacity\n");
++		return -EINVAL;
++	}
  	return 0;
+ }
+ 
+@@ -3682,26 +3686,13 @@ static int init_blkz_info(struct f2fs_sb_info *sbi, int devi)
+ 	if (!FDEV(devi).blkz_seq)
+ 		return -ENOMEM;
+ 
+-	/* Get block zones type and zone-capacity */
+-	FDEV(devi).zone_capacity_blocks = f2fs_kzalloc(sbi,
+-					FDEV(devi).nr_blkz * sizeof(block_t),
+-					GFP_KERNEL);
+-	if (!FDEV(devi).zone_capacity_blocks)
+-		return -ENOMEM;
+-
++	rep_zone_arg.sbi = sbi;
+ 	rep_zone_arg.dev = &FDEV(devi);
+-	rep_zone_arg.zone_cap_mismatch = false;
+ 
+ 	ret = blkdev_report_zones(bdev, 0, BLK_ALL_ZONES, f2fs_report_zone_cb,
+ 				  &rep_zone_arg);
+ 	if (ret < 0)
+ 		return ret;
+-
+-	if (!rep_zone_arg.zone_cap_mismatch) {
+-		kfree(FDEV(devi).zone_capacity_blocks);
+-		FDEV(devi).zone_capacity_blocks = NULL;
+-	}
+-
+ 	return 0;
+ }
+ #endif
 -- 
 2.39.2
 
