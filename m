@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4AE36FA9D6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F7A6FA66E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235308AbjEHK40 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
+        id S234411AbjEHKTf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235311AbjEHK4E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037862B405
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:53 -0700 (PDT)
+        with ESMTP id S234447AbjEHKTZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8946D860
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 853576297F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A22AC433D2;
-        Mon,  8 May 2023 10:54:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B7286251A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:19:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43237C433EF;
+        Mon,  8 May 2023 10:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543293;
-        bh=Z/VOo4C395BFOcK/X7kGuEpCBT6UF2P86VQTWrcHIbM=;
+        s=korg; t=1683541160;
+        bh=TP1zeGAjCvcaBJy6uJ8i0BW3NXHwa/T6C5q3+PAIKNw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBW+cLr3XjLig8DBZ94kIZqdLm4NApcrnrkp8XW0H51WQe4vWDqHUcI60U7yhUFym
-         mQnG0fMeqhmj7Pzn66GesoDrbkxkDtG/ViEEtu+CNru5Shl6s6wPBD3JaoevoAlAaB
-         bfIxiuDilwOIHZWTbBFpga1rUBtC5LzYrdDotR/M=
+        b=tesGCLijiqsnJ9YuF51bbyGEYW0ZMTsS3v0/kXSFTMarNVow5FtgnqD06zACKbqNj
+         BOKrKZ+W558pcaki5l3RplXMOv966YrU861NWtj6qXKvJALrH9wT2x6p+pU7+Ia0wo
+         BB8LxVgVOtYVlLdDcUwYa/fgw8ZeAiJzK+JAYRps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Babu Moger <babu.moger@amd.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.3 016/694] hwmon: (k10temp) Check range scale when CUR_TEMP register is read-write
+        patches@lists.linux.dev, Josh Triplett <josh@joshtriplett.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 6.2 025/663] PCI: kirin: Select REGMAP_MMIO
 Date:   Mon,  8 May 2023 11:37:31 +0200
-Message-Id: <20230508094433.157349602@linuxfoundation.org>
+Message-Id: <20230508094429.258647944@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,73 +53,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Babu Moger <Babu.Moger@amd.com>
+From: Josh Triplett <josh@joshtriplett.org>
 
-commit 0c072385348e3ac5229145644055d3e2afb5b3db upstream.
+commit 3a2776e8a0e156a61f5b59ae341d8fffc730b962 upstream.
 
-Spec says, when CUR_TEMP_TJ_SEL == 3 and CUR_TEMP_RANGE_SEL == 0,
-it should use RangeUnadjusted is 0, which is (CurTmp*0.125 -49) C. The
-CUR_TEMP register is read-write when CUR_TEMP_TJ_SEL == 3 (bit 17-16).
+pcie-kirin uses regmaps, and needs to pull them in; otherwise, with
+CONFIG_PCIE_KIRIN=y and without CONFIG_REGMAP_MMIO pcie-kirin produces
+a linker failure looking for __devm_regmap_init_mmio_clk().
 
-Add the check to detect it.
-
-Sensors command's output before the patch.
-$sensors
- k10temp-pci-00c3
- Adapter: PCI adapter
- Tctl:         +76.6°C <- Wrong value
- Tccd1:        +26.5°C
- Tccd2:        +27.5°C
- Tccd3:        +27.2°C
- Tccd4:        +27.5°C
- Tccd5:        +26.0°C
- Tccd6:        +26.2°C
- Tccd7:        +25.0°C
- Tccd8:        +26.5°C
-
-Sensors command's output after the patch.
-$sensors
- k10temp-pci-00c3
- Adapter: PCI adapter
- Tctl:         +28.8°C <- corrected value
- Tccd1:        +27.5°C
- Tccd2:        +28.5°C
- Tccd3:        +28.5°C
- Tccd4:        +28.5°C
- Tccd5:        +27.0°C
- Tccd6:        +27.5°C
- Tccd7:        +27.0°C
- Tccd8:        +27.5°C
-
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Fixes: 1b59788979ac ("hwmon: (k10temp) Add temperature offset for Ryzen 2700X")
-Link: https://lore.kernel.org/r/20230413213958.847634-1-babu.moger@amd.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: d19afe7be126 ("PCI: kirin: Use regmap for APB registers")
+Link: https://lore.kernel.org/r/04636141da1d6d592174eefb56760511468d035d.1668410580.git.josh@joshtriplett.org
+Signed-off-by: Josh Triplett <josh@joshtriplett.org>
+[lpieralisi@kernel.org: commit log and removed REGMAP select]
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org # 5.16+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/k10temp.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/hwmon/k10temp.c
-+++ b/drivers/hwmon/k10temp.c
-@@ -75,6 +75,7 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
- 
- #define ZEN_CUR_TEMP_SHIFT			21
- #define ZEN_CUR_TEMP_RANGE_SEL_MASK		BIT(19)
-+#define ZEN_CUR_TEMP_TJ_SEL_MASK		GENMASK(17, 16)
- 
- struct k10temp_data {
- 	struct pci_dev *pdev;
-@@ -155,7 +156,8 @@ static long get_raw_temp(struct k10temp_
- 
- 	data->read_tempreg(data->pdev, &regval);
- 	temp = (regval >> ZEN_CUR_TEMP_SHIFT) * 125;
--	if (regval & data->temp_adjust_mask)
-+	if ((regval & data->temp_adjust_mask) ||
-+	    (regval & ZEN_CUR_TEMP_TJ_SEL_MASK) == ZEN_CUR_TEMP_TJ_SEL_MASK)
- 		temp -= 49000;
- 	return temp;
- }
+--- a/drivers/pci/controller/dwc/Kconfig
++++ b/drivers/pci/controller/dwc/Kconfig
+@@ -286,6 +286,7 @@ config PCIE_KIRIN
+ 	tristate "HiSilicon Kirin series SoCs PCIe controllers"
+ 	depends on PCI_MSI
+ 	select PCIE_DW_HOST
++	select REGMAP_MMIO
+ 	help
+ 	  Say Y here if you want PCIe controller support
+ 	  on HiSilicon Kirin series SoCs.
 
 
