@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB92E6FA9D4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A196FA695
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:21:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235254AbjEHK4X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33312 "EHLO
+        id S234505AbjEHKV5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:21:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235074AbjEHK4C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:02 -0400
+        with ESMTP id S234384AbjEHKV3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:21:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D762D795
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AF95D85D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72F1262935
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870BCC433D2;
-        Mon,  8 May 2023 10:54:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A51D862537
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5D8C433D2;
+        Mon,  8 May 2023 10:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543286;
-        bh=icmRkMYTIlstnD7SbqUZ/G3o/EJJCt4XV6vmioMfYK8=;
+        s=korg; t=1683541243;
+        bh=THqKYMfcM+GzOxOsdQYfi9OYkNukoNDkFI2tOAkOM7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fP2ZLav29PoVMgc7PqB+YRWcTPvmv2Gmr3oWCaPCggRlcFDV9EsbqqqPhZIQP84PZ
-         EYC44/5/lb+kMv10P8+XXeY0StPR3cP7r++ZNetC0m4z2N7vlAXz4GBP1/l0hkQot8
-         foYkfcM+aAyZEG14kNLM1m9OVv4OSj0T3f/hfD8I=
+        b=TVxafhLU4tnjDCKccE3ZDcoEhddhyrPPz/FdSQARf7RuSdyX9cADwUDTs2IQc6t39
+         oxsbYCIWhGLdj1p60wcu8mQdsi4KcN1roCQSPcx+zy/4EmRf6a7hifaAsm1jnioMYU
+         dIp9J9cosVDoV3ydRpvvTZzlqWZMQany7PR9ooRo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Huang <echuang@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.3 041/694] wifi: rtw89: correct 5 MHz mask setting
-Date:   Mon,  8 May 2023 11:37:56 +0200
-Message-Id: <20230508094433.958502104@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.2 051/663] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
+Date:   Mon,  8 May 2023 11:37:57 +0200
+Message-Id: <20230508094430.139158072@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,80 +53,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Huang <echuang@realtek.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit d33fc8d0368c180fe2338bfae4f5367a66a719f4 upstream.
+commit 146a37e05d620cef4ad430e5d1c9c077fe6fa76f upstream.
 
-Use primary channel index to determine which 5 MHz mask should be enable.
-This mask is used to prevent noise from channel edge to effect CCA
-threshold in wide bandwidth (>= 40 MHZ).
+There's a potential race before THRE/TEMT deasserts when DMA Tx is
+starting up (or the next batch of continuous Tx is being submitted).
+This can lead to misdetecting Tx empty condition.
 
-Fixes: 1b00e9236a71 ("rtw89: 8852c: add set channel of BB part")
-Fixes: 6b0698984eb0 ("wifi: rtw89: 8852b: add chip_ops::set_channel")
+It is entirely normal for THRE/TEMT to be set for some time after the
+DMA Tx had been setup in serial8250_tx_dma(). As Tx side is definitely
+not empty at that point, it seems incorrect for serial8250_tx_empty()
+claim Tx is empty.
+
+Fix the race by also checking in serial8250_tx_empty() whether there's
+DMA Tx active.
+
+Note: This fix only addresses in-kernel race mainly to make using
+TCSADRAIN/FLUSH robust. Userspace can still cause other races but they
+seem userspace concurrency control problems.
+
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Huang <echuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230406072841.8308-1-pkshih@realtek.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230317113318.31327-3-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |    9 +++++----
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |    9 +++++----
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/tty/serial/8250/8250.h      |   12 ++++++++++++
+ drivers/tty/serial/8250/8250_port.c |    7 ++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -1284,7 +1284,7 @@ static void rtw8852b_ctrl_cck_en(struct
- static void rtw8852b_5m_mask(struct rtw89_dev *rtwdev, const struct rtw89_chan *chan,
- 			     enum rtw89_phy_idx phy_idx)
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -365,6 +365,13 @@ static inline void serial8250_do_prepare
+ 	if (dma->prepare_rx_dma)
+ 		dma->prepare_rx_dma(p);
+ }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	return dma && dma->tx_running;
++}
+ #else
+ static inline int serial8250_tx_dma(struct uart_8250_port *p)
  {
--	u8 pri_ch = chan->primary_channel;
-+	u8 pri_ch = chan->pri_ch_idx;
- 	bool mask_5m_low;
- 	bool mask_5m_en;
+@@ -380,6 +387,11 @@ static inline int serial8250_request_dma
+ 	return -1;
+ }
+ static inline void serial8250_release_dma(struct uart_8250_port *p) { }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	return false;
++}
+ #endif
  
-@@ -1292,12 +1292,13 @@ static void rtw8852b_5m_mask(struct rtw8
- 	case RTW89_CHANNEL_WIDTH_40:
- 		/* Prich=1: Mask 5M High, Prich=2: Mask 5M Low */
- 		mask_5m_en = true;
--		mask_5m_low = pri_ch == 2;
-+		mask_5m_low = pri_ch == RTW89_SC_20_LOWER;
- 		break;
- 	case RTW89_CHANNEL_WIDTH_80:
- 		/* Prich=3: Mask 5M High, Prich=4: Mask 5M Low, Else: Disable */
--		mask_5m_en = pri_ch == 3 || pri_ch == 4;
--		mask_5m_low = pri_ch == 4;
-+		mask_5m_en = pri_ch == RTW89_SC_20_UPMOST ||
-+			     pri_ch == RTW89_SC_20_LOWEST;
-+		mask_5m_low = pri_ch == RTW89_SC_20_LOWEST;
- 		break;
- 	default:
- 		mask_5m_en = false;
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -1445,18 +1445,19 @@ static void rtw8852c_5m_mask(struct rtw8
- 			     const struct rtw89_chan *chan,
- 			     enum rtw89_phy_idx phy_idx)
+ static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2009,18 +2009,19 @@ static int serial8250_tx_threshold_handl
+ static unsigned int serial8250_tx_empty(struct uart_port *port)
  {
--	u8 pri_ch = chan->primary_channel;
-+	u8 pri_ch = chan->pri_ch_idx;
- 	bool mask_5m_low;
- 	bool mask_5m_en;
+ 	struct uart_8250_port *up = up_to_u8250p(port);
++	unsigned int result = 0;
+ 	unsigned long flags;
+-	u16 lsr;
  
- 	switch (chan->band_width) {
- 	case RTW89_CHANNEL_WIDTH_40:
- 		mask_5m_en = true;
--		mask_5m_low = pri_ch == 2;
-+		mask_5m_low = pri_ch == RTW89_SC_20_LOWER;
- 		break;
- 	case RTW89_CHANNEL_WIDTH_80:
--		mask_5m_en = ((pri_ch == 3) || (pri_ch == 4));
--		mask_5m_low = pri_ch == 4;
-+		mask_5m_en = pri_ch == RTW89_SC_20_UPMOST ||
-+			     pri_ch == RTW89_SC_20_LOWEST;
-+		mask_5m_low = pri_ch == RTW89_SC_20_LOWEST;
- 		break;
- 	default:
- 		mask_5m_en = false;
+ 	serial8250_rpm_get(up);
+ 
+ 	spin_lock_irqsave(&port->lock, flags);
+-	lsr = serial_lsr_in(up);
++	if (!serial8250_tx_dma_running(up) && uart_lsr_tx_empty(serial_lsr_in(up)))
++		result = TIOCSER_TEMT;
+ 	spin_unlock_irqrestore(&port->lock, flags);
+ 
+ 	serial8250_rpm_put(up);
+ 
+-	return uart_lsr_tx_empty(lsr) ? TIOCSER_TEMT : 0;
++	return result;
+ }
+ 
+ unsigned int serial8250_do_get_mctrl(struct uart_port *port)
 
 
