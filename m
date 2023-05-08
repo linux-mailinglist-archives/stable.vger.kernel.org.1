@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106F86FA591
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B12026FA87E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234177AbjEHKK4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38822 "EHLO
+        id S234900AbjEHKlj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234174AbjEHKKx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E942EB3F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:51 -0700 (PDT)
+        with ESMTP id S234896AbjEHKlG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D438827F38
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EABF2623CC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3185C433D2;
-        Mon,  8 May 2023 10:10:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32A9162836
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A044C433D2;
+        Mon,  8 May 2023 10:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540650;
-        bh=zoGMQGMFbglB5lHLXBTmhwsFqMp41yfqN9xHd9r/pYE=;
+        s=korg; t=1683542433;
+        bh=zf3cZ49r1OLELF3qggNg9czsh2KOvRRKaL28RslsaUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UnGRoQcP0iagsdreCK4CbWGwPDqlVSUA/y0W6IF/q89XD45qOc5IJDxt4jBPpl4A/
-         2VX4FM/MTlvnpA9ZzF6A7zx0BttTaE/E05nG9wUM2Mp/rTFzZcF995hlmJsYZ55uzy
-         wrDOR18T4W8rxOpEXtJAFcW5V9qKfUBGQ5TDil/U=
+        b=1gXNojl2vJEBKkUzGkuEYgB5HKdEOkTWceNg1pK7ohHU1jTvJCMWe5XPBt8r6Be7B
+         qAZXtUod+CziKmyTkFxy9c/qX7EtcQvDvsgnwmmnZpAyeTCT1KA4rZUvok/kXfLpuw
+         JB/2fAw8zTF6ES4zi9WCdYBWsXs1+oDNFyQMtNvE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willem de Bruijn <willemb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 418/611] spi: fsl-spi: Fix CPM/QE mode Litte Endian
+Subject: [PATCH 6.2 434/663] tcp/udp: Fix memleaks of sk and zerocopy skbs with TX timestamp.
 Date:   Mon,  8 May 2023 11:44:20 +0200
-Message-Id: <20230508094435.804146081@linuxfoundation.org>
+Message-Id: <20230508094442.140658896@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,69 +56,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit c20c57d9868d7f9fd1b2904c7801b07e128f6322 ]
+[ Upstream commit 50749f2dd6854a41830996ad302aef2ffaf011d8 ]
 
-CPM has the same problem as QE so for CPM also use the fix added
-by commit 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian"):
+syzkaller reported [0] memory leaks of an UDP socket and ZEROCOPY
+skbs.  We can reproduce the problem with these sequences:
 
-  CPM mode uses Little Endian so words > 8 bits are byte swapped.
-  Workaround this by always enforcing wordsize 8 for 16 and 32 bits
-  words. Unfortunately this will not work for LSB transfers
-  where wordsize is > 8 bits so disable these for now.
+  sk = socket(AF_INET, SOCK_DGRAM, 0)
+  sk.setsockopt(SOL_SOCKET, SO_TIMESTAMPING, SOF_TIMESTAMPING_TX_SOFTWARE)
+  sk.setsockopt(SOL_SOCKET, SO_ZEROCOPY, 1)
+  sk.sendto(b'', MSG_ZEROCOPY, ('127.0.0.1', 53))
+  sk.close()
 
-Also limit the workaround to 16 and 32 bits words because it can
-only work for multiples of 8-bits.
+sendmsg() calls msg_zerocopy_alloc(), which allocates a skb, sets
+skb->cb->ubuf.refcnt to 1, and calls sock_hold().  Here, struct
+ubuf_info_msgzc indirectly holds a refcnt of the socket.  When the
+skb is sent, __skb_tstamp_tx() clones it and puts the clone into
+the socket's error queue with the TX timestamp.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Fixes: 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian")
-Link: https://lore.kernel.org/r/1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When the original skb is received locally, skb_copy_ubufs() calls
+skb_unclone(), and pskb_expand_head() increments skb->cb->ubuf.refcnt.
+This additional count is decremented while freeing the skb, but struct
+ubuf_info_msgzc still has a refcnt, so __msg_zerocopy_callback() is
+not called.
+
+The last refcnt is not released unless we retrieve the TX timestamped
+skb by recvmsg().  Since we clear the error queue in inet_sock_destruct()
+after the socket's refcnt reaches 0, there is a circular dependency.
+If we close() the socket holding such skbs, we never call sock_put()
+and leak the count, sk, and skb.
+
+TCP has the same problem, and commit e0c8bccd40fc ("net: stream:
+purge sk_error_queue in sk_stream_kill_queues()") tried to fix it
+by calling skb_queue_purge() during close().  However, there is a
+small chance that skb queued in a qdisc or device could be put
+into the error queue after the skb_queue_purge() call.
+
+In __skb_tstamp_tx(), the cloned skb should not have a reference
+to the ubuf to remove the circular dependency, but skb_clone() does
+not call skb_copy_ubufs() for zerocopy skb.  So, we need to call
+skb_orphan_frags_rx() for the cloned skb to call skb_copy_ubufs().
+
+[0]:
+BUG: memory leak
+unreferenced object 0xffff88800c6d2d00 (size 1152):
+  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 cd af e8 81 00 00 00 00  ................
+    02 00 07 40 00 00 00 00 00 00 00 00 00 00 00 00  ...@............
+  backtrace:
+    [<0000000055636812>] sk_prot_alloc+0x64/0x2a0 net/core/sock.c:2024
+    [<0000000054d77b7a>] sk_alloc+0x3b/0x800 net/core/sock.c:2083
+    [<0000000066f3c7e0>] inet_create net/ipv4/af_inet.c:319 [inline]
+    [<0000000066f3c7e0>] inet_create+0x31e/0xe40 net/ipv4/af_inet.c:245
+    [<000000009b83af97>] __sock_create+0x2ab/0x550 net/socket.c:1515
+    [<00000000b9b11231>] sock_create net/socket.c:1566 [inline]
+    [<00000000b9b11231>] __sys_socket_create net/socket.c:1603 [inline]
+    [<00000000b9b11231>] __sys_socket_create net/socket.c:1588 [inline]
+    [<00000000b9b11231>] __sys_socket+0x138/0x250 net/socket.c:1636
+    [<000000004fb45142>] __do_sys_socket net/socket.c:1649 [inline]
+    [<000000004fb45142>] __se_sys_socket net/socket.c:1647 [inline]
+    [<000000004fb45142>] __x64_sys_socket+0x73/0xb0 net/socket.c:1647
+    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
+    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+BUG: memory leak
+unreferenced object 0xffff888017633a00 (size 240):
+  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 2d 6d 0c 80 88 ff ff  .........-m.....
+  backtrace:
+    [<000000002b1c4368>] __alloc_skb+0x229/0x320 net/core/skbuff.c:497
+    [<00000000143579a6>] alloc_skb include/linux/skbuff.h:1265 [inline]
+    [<00000000143579a6>] sock_omalloc+0xaa/0x190 net/core/sock.c:2596
+    [<00000000be626478>] msg_zerocopy_alloc net/core/skbuff.c:1294 [inline]
+    [<00000000be626478>] msg_zerocopy_realloc+0x1ce/0x7f0 net/core/skbuff.c:1370
+    [<00000000cbfc9870>] __ip_append_data+0x2adf/0x3b30 net/ipv4/ip_output.c:1037
+    [<0000000089869146>] ip_make_skb+0x26c/0x2e0 net/ipv4/ip_output.c:1652
+    [<00000000098015c2>] udp_sendmsg+0x1bac/0x2390 net/ipv4/udp.c:1253
+    [<0000000045e0e95e>] inet_sendmsg+0x10a/0x150 net/ipv4/af_inet.c:819
+    [<000000008d31bfde>] sock_sendmsg_nosec net/socket.c:714 [inline]
+    [<000000008d31bfde>] sock_sendmsg+0x141/0x190 net/socket.c:734
+    [<0000000021e21aa4>] __sys_sendto+0x243/0x360 net/socket.c:2117
+    [<00000000ac0af00c>] __do_sys_sendto net/socket.c:2129 [inline]
+    [<00000000ac0af00c>] __se_sys_sendto net/socket.c:2125 [inline]
+    [<00000000ac0af00c>] __x64_sys_sendto+0xe1/0x1c0 net/socket.c:2125
+    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
+    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Fixes: f214f915e7db ("tcp: enable MSG_ZEROCOPY")
+Fixes: b5947e5d1e71 ("udp: msg_zerocopy")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/core/skbuff.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 93152144fd2ec..5602f052b2b50 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -181,8 +181,8 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 				struct spi_device *spi,
- 				int bits_per_word)
- {
--	/* QE uses Little Endian for words > 8
--	 * so transform all words > 8 into 8 bits
-+	/* CPM/QE uses Little Endian for words > 8
-+	 * so transform 16 and 32 bits words into 8 bits
- 	 * Unfortnatly that doesn't work for LSB so
- 	 * reject these for now */
- 	/* Note: 32 bits word, LSB works iff
-@@ -190,9 +190,11 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 	if (spi->mode & SPI_LSB_FIRST &&
- 	    bits_per_word > 8)
- 		return -EINVAL;
--	if (bits_per_word > 8)
-+	if (bits_per_word <= 8)
-+		return bits_per_word;
-+	if (bits_per_word == 16 || bits_per_word == 32)
- 		return 8; /* pretend its 8 bits */
--	return bits_per_word;
-+	return -EINVAL;
- }
- 
- static int fsl_spi_setup_transfer(struct spi_device *spi,
-@@ -222,7 +224,7 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else if (mpc8xxx_spi->flags & SPI_QE)
-+	else
- 		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
- 							  bits_per_word);
- 
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 43e1b89695c22..6f5ef18a8b772 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5038,6 +5038,9 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
+ 			skb = alloc_skb(0, GFP_ATOMIC);
+ 	} else {
+ 		skb = skb_clone(orig_skb, GFP_ATOMIC);
++
++		if (skb_orphan_frags_rx(skb, GFP_ATOMIC))
++			return;
+ 	}
+ 	if (!skb)
+ 		return;
 -- 
 2.39.2
 
