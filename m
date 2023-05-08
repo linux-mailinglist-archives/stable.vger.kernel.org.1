@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 507146FA660
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 274CB6FA9B2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234375AbjEHKSv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
+        id S235314AbjEHKyt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234358AbjEHKSu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:50 -0400
+        with ESMTP id S235328AbjEHKyR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4828CD062
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEA92FCE0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C59FC62500
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB696C433D2;
-        Mon,  8 May 2023 10:18:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EA7A61709
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29362C433EF;
+        Mon,  8 May 2023 10:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541128;
-        bh=jpupAkuoIR9JZhgmPqEtxcQHV2WSoE1rm0Idsw6o3cc=;
+        s=korg; t=1683543206;
+        bh=MEACxn/zpMzbhqq86dLq4wkHss4RrtzzpaTJ1PMD/NY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MX72uQ0fdpry29vkko0NrS4QRiA6vMI6eJoMXbdiE38kr88fLDpabkMqotoIZoJSy
-         5aMCdP8YtRdpH12AuKkNUUsLmA+NbXBgzVHTq25EwsJ2qHRpN0RqWRfLmoRyLuftTb
-         tH5LAr3yQsnuNhX8Y/NHKmgxYVMsj6Xa5Ht5FQcM=
+        b=WpmJPBix9mu7B8pG874t1hCxQcmuTSxI2zUhkahTa9QpRKUtkuoWuwdWP/8FA2lq6
+         O0V/t7wp7DuOgLBShozijaUL/LK/nt2N23+1OVmBfXnmwl5KnsFWy+3sP9TDqHNYiJ
+         wGmX+/8o59P6Vlmmo1synLUN2vHYgnC97kqn9wEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <quic_kvalo@quicinc.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 015/663] wifi: ath11k: reduce the MHI timeout to 20s
+        patches@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 6.3 006/694] PCI: qcom: Fix the incorrect register usage in v2.7.0 config
 Date:   Mon,  8 May 2023 11:37:21 +0200
-Message-Id: <20230508094428.923924854@linuxfoundation.org>
+Message-Id: <20230508094432.839047620@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,52 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit cf5fa3ca0552f1b7ba8490de40700bbfb6979b17 ]
+commit 2542e16c392508800f1d9037feee881a9c444951 upstream.
 
-Currently ath11k breaks after hibernation, the reason being that ath11k expects
-that the wireless device will have power during suspend and the firmware will
-continue running. But of course during hibernation the power from the device is
-cut off and firmware is not running when resuming, so ath11k will fail.
+Qcom PCIe IP version v2.7.0 and its derivatives don't contain the
+PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT register. Instead, they have the new
+PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2 register. So fix the incorrect
+register usage which is modifying a different register.
 
-(The reason why ath11k needs the firmware running is the interaction between
-mac80211 and MHI stack, it's a long story and more info in the bugzilla report.)
+Also in this IP version, this register change doesn't depend on MSI
+being enabled. So remove that check also.
 
-In SUSE kernels the watchdog timeout is reduced from the default 120 to 60 seconds:
-
-CONFIG_DPM_WATCHDOG_TIMEOUT=60
-
-But as the ath11k MHI timeout is 90 seconds the kernel will crash before will
-ath11k will recover in resume callback. To avoid the crash reduce the MHI
-timeout to just 20 seconds.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=214649
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230329162038.8637-1-kvalo@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230316081117.14288-2-manivannan.sadhasivam@linaro.org
+Fixes: ed8cc3b1fc84 ("PCI: qcom: Add support for SDM845 PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.6+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/mhi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index 86995e8dc9135..a62ee05c54097 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -16,7 +16,7 @@
- #include "pci.h"
- #include "pcic.h"
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1279,11 +1279,9 @@ static int qcom_pcie_init_2_7_0(struct q
+ 	val &= ~REQ_NOT_ENTR_L1;
+ 	writel(val, pcie->parf + PCIE20_PARF_PM_CTRL);
  
--#define MHI_TIMEOUT_DEFAULT_MS	90000
-+#define MHI_TIMEOUT_DEFAULT_MS	20000
- #define RDDM_DUMP_SIZE	0x420000
+-	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+-		val = readl(pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT);
+-		val |= BIT(31);
+-		writel(val, pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT);
+-	}
++	val = readl(pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2);
++	val |= BIT(31);
++	writel(val, pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2);
  
- static struct mhi_channel_config ath11k_mhi_channels_qca6390[] = {
--- 
-2.39.2
-
+ 	return 0;
+ err_disable_clocks:
 
 
