@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CA06FACA8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE066FAE71
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235712AbjEHL0u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
+        id S236202AbjEHLo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235720AbjEHL0m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92123C1D2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:23 -0700 (PDT)
+        with ESMTP id S236253AbjEHLof (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD5F429E3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5122062CB6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6608DC433D2;
-        Mon,  8 May 2023 11:26:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 120F96206E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F65C433A4;
+        Mon,  8 May 2023 11:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545182;
-        bh=rOH1ss8kEGYw0aRvGuspzfaz6QYauXSlvNI3STWi7A4=;
+        s=korg; t=1683546211;
+        bh=BF0II4A0ry5/qNylK3e3ADVEGuTPlHMXERqjd/pfHBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S0O1VwPU2GfqLpKcDPZMV4VaryubKye4Bv92WXgPh6twWnQjvGgbQRzh8H+XzZvxZ
-         KNEuV8LfoEBhsShcZpFNEvRYEDlq7UBEmjMDsgEL7wSMwlRgeQ1pQ7SJRX6IxnAHY5
-         Ak6t2oXU8DtOwdbgdMaZMu8KOQWumDSLQq22RoFk=
+        b=J9aiHZXNtjrI1GiMgQA+kg3ujQd0ZzLtUhRFXOWkTGx8gEI7Vy6XsS8kYn3nCeJX/
+         k8feGbdgCfoBzqMdOeeqFeQNjMXUPiceMuiIahBvvKuSXbo5tbCZi17e5rgtOgn7iG
+         TtkOm9VFlIs7/4vBZKUyT9vTMfH2HRYqtX829k6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 652/694] dmaengine: at_xdmac: disable/enable clock directly on suspend/resume
+        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mel Gorman <mgorman@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 286/371] sched/fair: Use __schedstat_set() in set_next_entity()
 Date:   Mon,  8 May 2023 11:48:07 +0200
-Message-Id: <20230508094457.061648530@linuxfoundation.org>
+Message-Id: <20230508094823.366478047@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,64 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit 2de5ddb5e68c94b781b3789bca1ce52000d7d0e0 ]
+[ Upstream commit a2dcb276ff9287fcea103ca1a2436383e8583751 ]
 
-Runtime PM APIs for at_xdmac just plays with clk_enable()/clk_disable()
-letting aside the clk_prepare()/clk_unprepare() that needs to be
-executed as the clock is also prepared on probe. Thus instead of using
-runtime PM force suspend/resume APIs use
-clk_disable_unprepare() + pm_runtime_put_noidle() on suspend and
-clk_prepare_enable() + pm_runtime_get_noresume() on resume. This
-approach as been chosen instead of using runtime PM force suspend/resume
-with clk_unprepare()/clk_prepare() as it looks simpler and the final
-code is better.
+schedstat_enabled() has been already checked, so we can use
+__schedstat_set() directly.
 
-While at it added the missing pm_runtime_mark_last_busy() on suspend before
-decrementing the reference counter.
-
-Fixes: 650b0e990cbd ("dmaengine: at_xdmac: add runtime pm support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-2-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lore.kernel.org/r/20210905143547.4668-2-laoar.shao@gmail.com
+Stable-dep-of: 39afe5d6fc59 ("sched/fair: Fix inaccurate tally of ttwu_move_affine")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index 1f0fab180f8f1..f654ecaafb906 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -2130,7 +2130,11 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
- 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 591fdc81378e0..70f7a3896a90c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4691,9 +4691,9 @@ set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 	 */
+ 	if (schedstat_enabled() &&
+ 	    rq_of(cfs_rq)->cfs.load.weight >= 2*se->load.weight) {
+-		schedstat_set(se->statistics.slice_max,
+-			max((u64)schedstat_val(se->statistics.slice_max),
+-			    se->sum_exec_runtime - se->prev_sum_exec_runtime));
++		__schedstat_set(se->statistics.slice_max,
++				max((u64)se->statistics.slice_max,
++				    se->sum_exec_runtime - se->prev_sum_exec_runtime));
+ 	}
  
- 	at_xdmac_off(atxdmac);
--	return pm_runtime_force_suspend(atxdmac->dev);
-+	pm_runtime_mark_last_busy(atxdmac->dev);
-+	pm_runtime_put_noidle(atxdmac->dev);
-+	clk_disable_unprepare(atxdmac->clk);
-+
-+	return 0;
- }
- 
- static int __maybe_unused atmel_xdmac_resume(struct device *dev)
-@@ -2142,10 +2146,12 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
- 	int			i;
- 	int ret;
- 
--	ret = pm_runtime_force_resume(atxdmac->dev);
--	if (ret < 0)
-+	ret = clk_prepare_enable(atxdmac->clk);
-+	if (ret)
- 		return ret;
- 
-+	pm_runtime_get_noresume(atxdmac->dev);
-+
- 	at_xdmac_axi_config(pdev);
- 
- 	/* Clear pending interrupts. */
+ 	se->prev_sum_exec_runtime = se->sum_exec_runtime;
 -- 
 2.39.2
 
