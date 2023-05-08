@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF9706FAD96
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C977A6FA8B0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236067AbjEHLfn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
+        id S235059AbjEHKoa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236066AbjEHLfW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E9A4020B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:35:08 -0700 (PDT)
+        with ESMTP id S234968AbjEHKns (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 209DC2A9C6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 725726329C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662D0C433EF;
-        Mon,  8 May 2023 11:35:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A18462864
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C69C4339B;
+        Mon,  8 May 2023 10:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545707;
-        bh=1GUh7JA02UfGFPxOVD67CTmYmLHOgoWfD1FSvVtpKhA=;
+        s=korg; t=1683542556;
+        bh=RSjOxyB5EPvG1Rqoq05Wv2cmDWnbUTTmS3+tHQm/tIw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YDniNVhNM4Eko/gOOHOuDALIlUkWhpx9QshdG+58ZGRX4RM7JBBcvQF5403kXLxjW
-         x46q4kS6hqZrIExpQ3e/RrVOa/xJkfkTDOx2o5a937LXM2psf9Rm8ZFpr51yDU03ll
-         ATvFEYlR76XhX28uVy2nyWtog6uJC58v/JkNJgEc=
+        b=AUeb7jIAZIoHhs40PC3WhR4FAQ+Z/Zh2G6+g9J4dmJPW7ZCrmr/xM/RHnGoBdWEGf
+         1QORnbYHCFUDqYXrrXJZTKoHFsYl9OqVmQmEaz9WNI9sCgNmQQ0yzxYLJjc0hVutxH
+         AkfAEXOovZ+e2GpwLHRPkqzvQaL+YYaN3++HvUQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/371] arm64: dts: qcom: ipq8074: Fix the PCI I/O port range
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 473/663] HID: amd_sfh: Fix illuminance value
 Date:   Mon,  8 May 2023 11:44:59 +0200
-Message-Id: <20230508094815.935782511@linuxfoundation.org>
+Message-Id: <20230508094443.598821501@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,59 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit e49eafefe5ab325e38dd074f2005076ffc271e54 ]
+[ Upstream commit a33e5e393171ae8384d3381db5cd159ba877cfcb ]
 
-For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI addresses
-(0x10200000, 0x20200000) specified in the ranges property for I/O region.
+Illuminance value is actually 32 bits, but is incorrectly trancated to
+16 bits. Hence convert to integer illuminace accordingly to reflect
+correct values.
 
-While at it, let's use the missing 0x prefix for the addresses and align
-them in a single line.
-
-Fixes: 33057e1672fe ("ARM: dts: ipq8074: Add pcie nodes")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-6-manivannan.sadhasivam@linaro.org
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq8074.dtsi | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c      | 2 +-
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-index 68e82c755986c..17eeff106bab7 100644
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -661,10 +661,8 @@
- 			phys = <&pcie_phy1>;
- 			phy-names = "pciephy";
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
+index 0609fea581c96..6f0d332ccf51c 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
+@@ -218,7 +218,7 @@ static u8 get_input_rep(u8 current_index, int sensor_idx, int report_id,
+ 			     OFFSET_SENSOR_DATA_DEFAULT;
+ 		memcpy_fromio(&als_data, sensoraddr, sizeof(struct sfh_als_data));
+ 		get_common_inputs(&als_input.common_property, report_id);
+-		als_input.illuminance_value = als_data.lux;
++		als_input.illuminance_value = float_to_int(als_data.lux);
+ 		report_size = sizeof(als_input);
+ 		memcpy(input_report, &als_input, sizeof(als_input));
+ 		break;
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
+index a3e0ec289e3f9..9d31d5b510eb4 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
+@@ -133,7 +133,7 @@ struct sfh_mag_data {
  
--			ranges = <0x81000000 0 0x10200000 0x10200000
--				  0 0x10000>,   /* downstream I/O */
--				 <0x82000000 0 0x10220000 0x10220000
--				  0 0xfde0000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x10200000 0x0 0x10000>,   /* I/O */
-+				 <0x82000000 0x0 0x10220000 0x10220000 0x0 0xfde0000>; /* MEM */
+ struct sfh_als_data {
+ 	struct sfh_common_data commondata;
+-	u16 lux;
++	u32 lux;
+ };
  
- 			interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -725,10 +723,8 @@
- 			phys = <&pcie_phy0>;
- 			phy-names = "pciephy";
- 
--			ranges = <0x81000000 0 0x20200000 0x20200000
--				  0 0x10000>, /* downstream I/O */
--				 <0x82000000 0 0x20220000 0x20220000
--				  0 0xfde0000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x20200000 0x0 0x10000>,   /* I/O */
-+				 <0x82000000 0x0 0x20220000 0x20220000 0x0 0xfde0000>; /* MEM */
- 
- 			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
+ struct hpd_status {
 -- 
 2.39.2
 
