@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E08C6FA620
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19FE16FAC77
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234337AbjEHKQk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
+        id S235668AbjEHLYh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234325AbjEHKQc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:32 -0400
+        with ESMTP id S235631AbjEHLYZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358854BBE0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB513A5C8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85A2D624A0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6D5C4339B;
-        Mon,  8 May 2023 10:16:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A573A62D37
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C14C433D2;
+        Mon,  8 May 2023 11:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540990;
-        bh=jLJWJ6CiPli8yR1KJrAeX6w4wsPfZ5bIIRaHKnyY5bA=;
+        s=korg; t=1683545064;
+        bh=1gHjVbiwzno4iGhhE6/DY9gqDFfRJvPcx5ZnRCQCNOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gkTPoh0Kozlg/+baDRck7OYR0J9rjm4OTYwg/cBJGV0FipGJQ1YgM+kqWnEL4mMYs
-         m2p/PCuALC9Ri9MQrTgAyF/jEQ4w7Lh1l6UnerKy0mEy2pSxy8/q+QGoiDOd8jaSV8
-         pT5OSiMk4u9VDuBYjCa0k8FvkSZx1HAKUranojJo=
+        b=pXUHSi+2tiP9g0OMsEGmmCIMXtT77dSD69I+f302ACwZ7CY8X/liHzT7APtQy2zcZ
+         QVNvZv0zoRJET3Qpw2fB1q3Xo/JUDpxH3KgXadVbdwq6ZMH49/Xw8ZIwy3EUPLWezp
+         Du8gP+6qIfWL03clww2dsuDBJ2SeLWoOhzjyP+WU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Walle <michael@walle.cc>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 574/611] mtd: core: fix nvmem error reporting
+        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 581/694] RDMA/rdmavt: Delete unnecessary NULL check
 Date:   Mon,  8 May 2023 11:46:56 +0200
-Message-Id: <20230508094440.590135161@linuxfoundation.org>
+Message-Id: <20230508094453.817353377@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,52 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Walle <michael@walle.cc>
+From: Natalia Petrova <n.petrova@fintech.ru>
 
-commit 8bd1d24e6ca3c599dd455b0e1b22f77bab8290eb upstream.
+[ Upstream commit b73a0b80c69de77d8d4942abb37066531c0169b2 ]
 
-The master MTD will only have an associated device if
-CONFIG_MTD_PARTITIONED_MASTER is set, thus we cannot use dev_err() on
-mtd->dev. Instead use the parent device which is the physical flash
-memory.
+There is no need to check 'rdi->qp_dev' for NULL. The field 'qp_dev'
+is created in rvt_register_device() which will fail if the 'qp_dev'
+allocation fails in rvt_driver_qp_init(). Overwise this pointer
+doesn't changed and passed to rvt_qp_exit() by the next step.
 
-Fixes: 4b361cfa8624 ("mtd: core: add OTP nvmem provider support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230308082021.870459-2-michael@walle.cc
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0acb0cc7ecc1 ("IB/rdmavt: Initialize and teardown of qpn table")
+Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
+Link: https://lore.kernel.org/r/20230303124408.16685-1-n.petrova@fintech.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdcore.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/rdmavt/qp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -935,6 +935,7 @@ static int mtd_nvmem_fact_otp_reg_read(v
+diff --git a/drivers/infiniband/sw/rdmavt/qp.c b/drivers/infiniband/sw/rdmavt/qp.c
+index 3acab569fbb94..2bdc4486c3daa 100644
+--- a/drivers/infiniband/sw/rdmavt/qp.c
++++ b/drivers/infiniband/sw/rdmavt/qp.c
+@@ -464,8 +464,6 @@ void rvt_qp_exit(struct rvt_dev_info *rdi)
+ 	if (qps_inuse)
+ 		rvt_pr_err(rdi, "QP memory leak! %u still in use\n",
+ 			   qps_inuse);
+-	if (!rdi->qp_dev)
+-		return;
  
- static int mtd_otp_nvmem_add(struct mtd_info *mtd)
- {
-+	struct device *dev = mtd->dev.parent;
- 	struct nvmem_device *nvmem;
- 	ssize_t size;
- 	int err;
-@@ -948,7 +949,7 @@ static int mtd_otp_nvmem_add(struct mtd_
- 			nvmem = mtd_otp_nvmem_register(mtd, "user-otp", size,
- 						       mtd_nvmem_user_otp_reg_read);
- 			if (IS_ERR(nvmem)) {
--				dev_err(&mtd->dev, "Failed to register OTP NVMEM device\n");
-+				dev_err(dev, "Failed to register OTP NVMEM device\n");
- 				return PTR_ERR(nvmem);
- 			}
- 			mtd->otp_user_nvmem = nvmem;
-@@ -966,7 +967,7 @@ static int mtd_otp_nvmem_add(struct mtd_
- 			nvmem = mtd_otp_nvmem_register(mtd, "factory-otp", size,
- 						       mtd_nvmem_fact_otp_reg_read);
- 			if (IS_ERR(nvmem)) {
--				dev_err(&mtd->dev, "Failed to register OTP NVMEM device\n");
-+				dev_err(dev, "Failed to register OTP NVMEM device\n");
- 				err = PTR_ERR(nvmem);
- 				goto err;
- 			}
+ 	kfree(rdi->qp_dev->qp_table);
+ 	free_qpn_table(&rdi->qp_dev->qpn_table);
+-- 
+2.39.2
+
 
 
