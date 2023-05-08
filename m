@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B016FA7DE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A81796FAAE6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234762AbjEHKf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33368 "EHLO
+        id S232288AbjEHLHu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234769AbjEHKfB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:35:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B9A26762
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:37 -0700 (PDT)
+        with ESMTP id S233812AbjEHLHH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3662E3E8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A35062734
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC4AC4339B;
-        Mon,  8 May 2023 10:34:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FC1562AAD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62865C433D2;
+        Mon,  8 May 2023 11:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542076;
-        bh=CQfW+nljOBd9Vz2opStQ5BkOROaXJGZOYtBCDhJ7duA=;
+        s=korg; t=1683543992;
+        bh=azGbbQEulxIH67EX9WHACidebc1MNeevVtf+OG9YJdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dTKoMyIpHkUJkRhNGJbYJ+xkatJmUzeEQ3iRqWgYr+XBMtfP11TPCI4aJUOjOuSYa
-         Q2H1Ylc8xgVpX5r18iMf/P+Og/Q9d/mU/hdIsqB6DuHW3AizJAx9ea6qnOQwicwCSr
-         Xy+hnOvTTROVR6Mp5czrTYmAaLiDog/UP6jjEMMQ=
+        b=CQaBljmTNnOc5LbIzVLZOVMuqVwTqFVcT1qevzRb8Pz8/4Vf1CgrB4ZrFUgJQEbi1
+         Oyy70YoSiGy2f872AYT3wsWXb0ROT7HTQ6Zdy28538cH+FmdkdCnhn0EJMEpx3WklG
+         Yj5DSrdp7HdIfvYTIR10EzZeN8+XocVeEAH8F5XQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sanjay Chandrashekara <sanjayc@nvidia.com>,
-        Sumit Gupta <sumitg@nvidia.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Tushar Nimkar <quic_tnimkar@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 276/663] cpufreq: use correct unit when verify cur freq
+Subject: [PATCH 6.3 267/694] soc: qcom: rpmh-rsc: Support RSC v3 minor versions
 Date:   Mon,  8 May 2023 11:41:42 +0200
-Message-Id: <20230508094437.202175477@linuxfoundation.org>
+Message-Id: <20230508094440.934689039@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,41 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sanjay Chandrashekara <sanjayc@nvidia.com>
+From: Tushar Nimkar <quic_tnimkar@quicinc.com>
 
-[ Upstream commit 44295af5019f1997d038ad2611086a2d1e2af167 ]
+[ Upstream commit 88704a0cd71909c3107561261412a5d5beb23358 ]
 
-cpufreq_verify_current_freq checks() if the frequency returned by
-the hardware has a slight delta with the valid frequency value
-last set and returns "policy->cur" if the delta is within "1 MHz".
-In the comparison, "policy->cur" is in "kHz" but it's compared
-against HZ_PER_MHZ. So, the comparison range becomes "1 GHz".
+RSC v3 register offsets are same for all minor versions of v3. Fix a
+minor version check to pick correct offsets for all v3 minor versions.
 
-Fix this by comparing against KHZ_PER_MHZ instead of HZ_PER_MHZ.
-
-Fixes: f55ae08c8987 ("cpufreq: Avoid unnecessary frequency updates due to mismatch")
-Signed-off-by: Sanjay Chandrashekara <sanjayc@nvidia.com>
-[ sumit gupta: Commit message update ]
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 40482e4f7364 ("soc: qcom: rpmh-rsc: Add support for RSC v3 register offsets")
+Signed-off-by: Tushar Nimkar <quic_tnimkar@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230406115732.9293-1-quic_tnimkar@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 2 +-
+ drivers/soc/qcom/rpmh-rsc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 7e56a42750ea5..285ba51b31f60 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1727,7 +1727,7 @@ static unsigned int cpufreq_verify_current_freq(struct cpufreq_policy *policy, b
- 		 * MHz. In such cases it is better to avoid getting into
- 		 * unnecessary frequency updates.
- 		 */
--		if (abs(policy->cur - new_freq) < HZ_PER_MHZ)
-+		if (abs(policy->cur - new_freq) < KHZ_PER_MHZ)
- 			return policy->cur;
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index 0f8b2249f8894..f93544f6d7961 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -1073,7 +1073,7 @@ static int rpmh_rsc_probe(struct platform_device *pdev)
+ 	drv->ver.minor = rsc_id & (MINOR_VER_MASK << MINOR_VER_SHIFT);
+ 	drv->ver.minor >>= MINOR_VER_SHIFT;
  
- 		cpufreq_out_of_sync(policy, new_freq);
+-	if (drv->ver.major == 3 && drv->ver.minor == 0)
++	if (drv->ver.major == 3 && drv->ver.minor >= 0)
+ 		drv->regs = rpmh_rsc_reg_offset_ver_3_0;
+ 	else
+ 		drv->regs = rpmh_rsc_reg_offset_ver_2_7;
 -- 
 2.39.2
 
