@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82EC6FAC15
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235046FA5F4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235565AbjEHLUi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:20:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34530 "EHLO
+        id S234288AbjEHKOm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235564AbjEHLUh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:37 -0400
+        with ESMTP id S234269AbjEHKOg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC18838F04
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76613A2A8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50FD562C7B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA7AC433EF;
-        Mon,  8 May 2023 11:20:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3065662447
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E29C433EF;
+        Mon,  8 May 2023 10:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544835;
-        bh=FmaZI6oxj+HAtRZUH/LG3Gigghas7VGMEt3YkJwI28U=;
+        s=korg; t=1683540873;
+        bh=UeXl1Vk2bKZnsjJPIvlDDqzSKUSh7JLVbWH4w93ejDE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dQxBhqDm84OY1QNAUGQYEA7fdxT5ayc1KTJbHkNdoN7hnPrs1Bd8f6WeGyWTdDM5n
-         BDsM3/1DRO2CWPowBB+RZrD/tIpd4XKoN/dxyzdizbQXrIGzn3RFrS3T9xJl2HqGLh
-         dK89mEkdiyX0d05GXUOcI/dWgFysyOLo4lyCwPvE=
+        b=sxdwoDwGSODhTyTepQdkr/VxkJ5PQUmgZ4ERlpZBRwy/t6WzC2C9zeaJKfiPsYSEu
+         NGxww+Tlgb8D4BBb1oGYNOlyjZXGvQwn0J3jgdyXvWJ0aCGETe3bK7gmnLnAd9CpE4
+         tUc7dwAb5YRT/eCF8AR5gsjPaPxmJ3PF4m50R2o4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 538/694] spi: cadence-quadspi: fix suspend-resume implementations
+Subject: [PATCH 6.1 531/611] pinctrl: ralink: reintroduce ralink,rt2880-pinmux compatible string
 Date:   Mon,  8 May 2023 11:46:13 +0200
-Message-Id: <20230508094451.890296526@linuxfoundation.org>
+Message-Id: <20230508094439.258599005@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +56,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 2087e85bb66ee3652dafe732bb9b9b896229eafc ]
+[ Upstream commit 7c19147d9cfc0f9328049d2e278279150d7de9ca ]
 
-The cadence QSPI driver misbehaves after performing a full system suspend
-resume:
-...
-spi-nor spi0.0: resume() failed
-...
-This results in a flash connected via OSPI interface after system suspend-
-resume to be unusable.
-fix these suspend and resume functions.
+There have been stable releases with the ralink,rt2880-pinmux compatible
+string included. Having it removed breaks the ABI. Reintroduce it.
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230417091027.966146-3-d-gole@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e5981cd46183 ("pinctrl: ralink: add new compatible strings for each pinctrl subdriver")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20230317213011.13656-2-arinc.unal@arinc9.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/pinctrl/ralink/pinctrl-mt7620.c | 1 +
+ drivers/pinctrl/ralink/pinctrl-mt7621.c | 1 +
+ drivers/pinctrl/ralink/pinctrl-rt2880.c | 1 +
+ drivers/pinctrl/ralink/pinctrl-rt305x.c | 1 +
+ drivers/pinctrl/ralink/pinctrl-rt3883.c | 1 +
+ 5 files changed, 5 insertions(+)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1806,17 +1806,30 @@ static int cqspi_remove(struct platform_
- static int cqspi_suspend(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	int ret;
+diff --git a/drivers/pinctrl/ralink/pinctrl-mt7620.c b/drivers/pinctrl/ralink/pinctrl-mt7620.c
+index 22ff16eff02ff..929a1ace56aeb 100644
+--- a/drivers/pinctrl/ralink/pinctrl-mt7620.c
++++ b/drivers/pinctrl/ralink/pinctrl-mt7620.c
+@@ -372,6 +372,7 @@ static int mt7620_pinctrl_probe(struct platform_device *pdev)
  
-+	ret = spi_master_suspend(master);
- 	cqspi_controller_enable(cqspi, 0);
--	return 0;
-+
-+	clk_disable_unprepare(cqspi->clk);
-+
-+	return ret;
- }
+ static const struct of_device_id mt7620_pinctrl_match[] = {
+ 	{ .compatible = "ralink,mt7620-pinctrl" },
++	{ .compatible = "ralink,rt2880-pinmux" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, mt7620_pinctrl_match);
+diff --git a/drivers/pinctrl/ralink/pinctrl-mt7621.c b/drivers/pinctrl/ralink/pinctrl-mt7621.c
+index b47968f40e0c2..0297cf455b3a0 100644
+--- a/drivers/pinctrl/ralink/pinctrl-mt7621.c
++++ b/drivers/pinctrl/ralink/pinctrl-mt7621.c
+@@ -97,6 +97,7 @@ static int mt7621_pinctrl_probe(struct platform_device *pdev)
  
- static int cqspi_resume(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
-+	struct spi_master *master = dev_get_drvdata(dev);
-+
-+	clk_prepare_enable(cqspi->clk);
-+	cqspi_wait_idle(cqspi);
-+	cqspi_controller_init(cqspi);
-+
-+	cqspi->current_cs = -1;
-+	cqspi->sclk = 0;
+ static const struct of_device_id mt7621_pinctrl_match[] = {
+ 	{ .compatible = "ralink,mt7621-pinctrl" },
++	{ .compatible = "ralink,rt2880-pinmux" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, mt7621_pinctrl_match);
+diff --git a/drivers/pinctrl/ralink/pinctrl-rt2880.c b/drivers/pinctrl/ralink/pinctrl-rt2880.c
+index 811e12df11331..fd9af7c2ffd0e 100644
+--- a/drivers/pinctrl/ralink/pinctrl-rt2880.c
++++ b/drivers/pinctrl/ralink/pinctrl-rt2880.c
+@@ -41,6 +41,7 @@ static int rt2880_pinctrl_probe(struct platform_device *pdev)
  
--	cqspi_controller_enable(cqspi, 1);
--	return 0;
-+	return spi_master_resume(master);
- }
+ static const struct of_device_id rt2880_pinctrl_match[] = {
+ 	{ .compatible = "ralink,rt2880-pinctrl" },
++	{ .compatible = "ralink,rt2880-pinmux" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, rt2880_pinctrl_match);
+diff --git a/drivers/pinctrl/ralink/pinctrl-rt305x.c b/drivers/pinctrl/ralink/pinctrl-rt305x.c
+index 5b204b7ca1f3c..13a012a65d1d8 100644
+--- a/drivers/pinctrl/ralink/pinctrl-rt305x.c
++++ b/drivers/pinctrl/ralink/pinctrl-rt305x.c
+@@ -118,6 +118,7 @@ static int rt305x_pinctrl_probe(struct platform_device *pdev)
  
- static const struct dev_pm_ops cqspi__dev_pm_ops = {
+ static const struct of_device_id rt305x_pinctrl_match[] = {
+ 	{ .compatible = "ralink,rt305x-pinctrl" },
++	{ .compatible = "ralink,rt2880-pinmux" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, rt305x_pinctrl_match);
+diff --git a/drivers/pinctrl/ralink/pinctrl-rt3883.c b/drivers/pinctrl/ralink/pinctrl-rt3883.c
+index 44a66c3d2d2a1..b263764011e76 100644
+--- a/drivers/pinctrl/ralink/pinctrl-rt3883.c
++++ b/drivers/pinctrl/ralink/pinctrl-rt3883.c
+@@ -88,6 +88,7 @@ static int rt3883_pinctrl_probe(struct platform_device *pdev)
+ 
+ static const struct of_device_id rt3883_pinctrl_match[] = {
+ 	{ .compatible = "ralink,rt3883-pinctrl" },
++	{ .compatible = "ralink,rt2880-pinmux" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, rt3883_pinctrl_match);
+-- 
+2.39.2
+
 
 
