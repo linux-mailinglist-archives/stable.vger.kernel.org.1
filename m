@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 073476FA7B8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F936FA7BA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234737AbjEHKeS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33646 "EHLO
+        id S234817AbjEHKeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234736AbjEHKdw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16D1242F7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:00 -0700 (PDT)
+        with ESMTP id S234756AbjEHKd7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680019EF8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1134626EB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5F5C433D2;
-        Mon,  8 May 2023 10:32:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9AF5615C0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0211C433EF;
+        Mon,  8 May 2023 10:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541980;
-        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
+        s=korg; t=1683541983;
+        bh=OnMBrPOhbqSEDZrnyCAbKG7AEJDlktUCMvf7n3EpDlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mXJFRZDVdoYrEkMksl8SXr3ALu5QNhOnK6PrK+KIGh3YVci1yKVhoYaP/3HoIRBvh
-         EJKWteaNaVNhHjETcqv4l2CqZSA5r7gK6TzCzp4GppgAkLCDSGDIVr6NprmXmgQVpD
-         YY3c8rInHaqteVkauN/iFEkGTJGOwKB+JjuICiok=
+        b=KqT7xuLyBPB90Ca4fnly8QNx6RpZR4qUSx43VjmpNWVvne0wvllTUEE98+YAclStw
+         +AIDW7o5ww/i7dtqz9Bt1FduPLnWEpynoxUxCjJO6P2k/XfPfMMA9hpJ9if3q37zcJ
+         oNYSk3FVHbvRBnWJDzhOoP8FTNoKlq5exNDJ/1ww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Subject: [PATCH 6.2 288/663] wifi: ath6kl: reduce WARN to dev_dbg() in callback
-Date:   Mon,  8 May 2023 11:41:54 +0200
-Message-Id: <20230508094437.555946167@linuxfoundation.org>
+        patches@lists.linux.dev, Luis Gerhorst <gerhorst@cs.fau.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Quentin Monnet <quentin@isovalent.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 289/663] tools: bpftool: Remove invalid \ json escape
+Date:   Mon,  8 May 2023 11:41:55 +0200
+Message-Id: <20230508094437.584628746@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -47,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,41 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Luis Gerhorst <gerhorst@cs.fau.de>
 
-[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
+[ Upstream commit c679bbd611c08b0559ffae079330bc4e5574696a ]
 
-The warn is triggered on a known race condition, documented in the code above
-the test, that is correctly handled.  Using WARN() hinders automated testing.
-Reducing severity.
+RFC8259 ("The JavaScript Object Notation (JSON) Data Interchange
+Format") only specifies \", \\, \/, \b, \f, \n, \r, and \r as valid
+two-character escape sequences. This does not include \', which is not
+required in JSON because it exclusively uses double quotes as string
+separators.
 
-Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
-Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
+Solidus (/) may be escaped, but does not have to. Only reverse
+solidus (\), double quotes ("), and the control characters have to be
+escaped. Therefore, with this fix, bpftool correctly supports all valid
+two-character escape sequences (but still does not support characters
+that require multi-character escape sequences).
+
+Witout this fix, attempting to load a JSON file generated by bpftool
+using Python 3.10.6's default json.load() may fail with the error
+"Invalid \escape" if the file contains the invalid escaped single
+quote (\').
+
+Fixes: b66e907cfee2 ("tools: bpftool: copy JSON writer from iproute2 repository")
+Signed-off-by: Luis Gerhorst <gerhorst@cs.fau.de>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20230227150853.16863-1-gerhorst@cs.fau.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/bpf/bpftool/json_writer.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-index c68848819a52d..9b88d96bfe96c 100644
---- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-+++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
- 	 * Thus the possibility of ar->htc_target being NULL
- 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
- 	 */
--	if (WARN_ON_ONCE(!target)) {
--		ath6kl_err("Target not yet initialized\n");
-+	if (!target) {
-+		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
- 		status = -EINVAL;
- 		goto free_skb;
- 	}
+diff --git a/tools/bpf/bpftool/json_writer.c b/tools/bpf/bpftool/json_writer.c
+index 7fea83bedf488..bca5dd0a59e34 100644
+--- a/tools/bpf/bpftool/json_writer.c
++++ b/tools/bpf/bpftool/json_writer.c
+@@ -80,9 +80,6 @@ static void jsonw_puts(json_writer_t *self, const char *str)
+ 		case '"':
+ 			fputs("\\\"", self->out);
+ 			break;
+-		case '\'':
+-			fputs("\\\'", self->out);
+-			break;
+ 		default:
+ 			putc(*str, self->out);
+ 		}
 -- 
 2.39.2
 
