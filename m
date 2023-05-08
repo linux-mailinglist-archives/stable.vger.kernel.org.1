@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8350E6FA9D2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB066FA691
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235273AbjEHK4V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55520 "EHLO
+        id S234448AbjEHKVn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:21:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235208AbjEHKz0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:55:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A95272D7A6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:41 -0700 (PDT)
+        with ESMTP id S234446AbjEHKUm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:20:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 207E524012
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B7E061709
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32297C433D2;
-        Mon,  8 May 2023 10:54:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A19FB624EF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B960C433D2;
+        Mon,  8 May 2023 10:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543280;
-        bh=ovHfEM0fyjLv6XsaWbJU/Bs5Arfg6u26HFvANVF/FWM=;
+        s=korg; t=1683541230;
+        bh=daIdrKQqQ6UpLDnURGdS4ROoJP1wrSTV9W5iuDShpk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j8NWW5IlHUxaFdSLz9Ja/YEe6+/pOq9GmDIWQnLsXi6BN+FMYOOVE75TOMUnjGmdX
-         8CjE35ivmjD02rBnp2UpJNzdsPwv2jDkAmmxiRmPS8S+B7Lc4kvcFkDvSwoDXJk3ne
-         00GNrBjvBQk4DlxqLLkss3vDLB1iu+mC+jCoog+M=
+        b=WzeunG+nlBSWiUS4TuwHXTmxs5LkkLTz7gK+GtT/JzlMueigtSr8R4IHA48lV3TAj
+         EJZChZZWjVLKV7JqpWhaZlOs58f7c9K9lBS7aUeYgSgjthXPQDNPba4aS1dKjft1yO
+         d+iVDQbzPpPXSVtG1MLH4OPxtIOXYwf1i869mz6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.3 039/694] kheaders: Use array declaration instead of char
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.2 048/663] tty: Prevent writing chars during tcsetattr TCSADRAIN/FLUSH
 Date:   Mon,  8 May 2023 11:37:54 +0200
-Message-Id: <20230508094433.899547777@linuxfoundation.org>
+Message-Id: <20230508094430.037851217@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,75 +53,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit b69edab47f1da8edd8e7bfdf8c70f51a2a5d89fb upstream.
+commit 094fb49a2d0d6827c86d2e0840873e6db0c491d2 upstream.
 
-Under CONFIG_FORTIFY_SOURCE, memcpy() will check the size of destination
-and source buffers. Defining kernel_headers_data as "char" would trip
-this check. Since these addresses are treated as byte arrays, define
-them as arrays (as done everywhere else).
+If userspace races tcsetattr() with a write, the drained condition
+might not be guaranteed by the kernel. There is a race window after
+checking Tx is empty before tty_set_termios() takes termios_rwsem for
+write. During that race window, more characters can be queued by a
+racing writer.
 
-This was seen with:
+Any ongoing transmission might produce garbage during HW's
+->set_termios() call. The intent of TCSADRAIN/FLUSH seems to be
+preventing such a character corruption. If those flags are set, take
+tty's write lock to stop any writer before performing the lower layer
+Tx empty check and wait for the pending characters to be sent (if any).
 
-  $ cat /sys/kernel/kheaders.tar.xz >> /dev/null
+The initial wait for all-writers-done must be placed outside of tty's
+write lock to avoid deadlock which makes it impossible to use
+tty_wait_until_sent(). The write lock is retried if a racing write is
+detected.
 
-  detected buffer overflow in memcpy
-  kernel BUG at lib/string_helpers.c:1027!
-  ...
-  RIP: 0010:fortify_panic+0xf/0x20
-  [...]
-  Call Trace:
-   <TASK>
-   ikheaders_read+0x45/0x50 [kheaders]
-   kernfs_fop_read_iter+0x1a4/0x2f0
-  ...
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/bpf/20230302112130.6e402a98@kernel.org/
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Jakub Kicinski <kuba@kernel.org>
-Fixes: 43d8ce9d65a5 ("Provide in-kernel headers to make extending kernel easier")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230302224946.never.243-kees@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230317113318.31327-2-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kheaders.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/tty/tty.h       |    2 ++
+ drivers/tty/tty_io.c    |    4 ++--
+ drivers/tty/tty_ioctl.c |   45 +++++++++++++++++++++++++++++++++------------
+ 3 files changed, 37 insertions(+), 14 deletions(-)
 
---- a/kernel/kheaders.c
-+++ b/kernel/kheaders.c
-@@ -26,15 +26,15 @@ asm (
- "	.popsection				\n"
- );
- 
--extern char kernel_headers_data;
--extern char kernel_headers_data_end;
-+extern char kernel_headers_data[];
-+extern char kernel_headers_data_end[];
- 
- static ssize_t
- ikheaders_read(struct file *file,  struct kobject *kobj,
- 	       struct bin_attribute *bin_attr,
- 	       char *buf, loff_t off, size_t len)
- {
--	memcpy(buf, &kernel_headers_data + off, len);
-+	memcpy(buf, &kernel_headers_data[off], len);
- 	return len;
+--- a/drivers/tty/tty.h
++++ b/drivers/tty/tty.h
+@@ -62,6 +62,8 @@ int __tty_check_change(struct tty_struct
+ int tty_check_change(struct tty_struct *tty);
+ void __stop_tty(struct tty_struct *tty);
+ void __start_tty(struct tty_struct *tty);
++void tty_write_unlock(struct tty_struct *tty);
++int tty_write_lock(struct tty_struct *tty, int ndelay);
+ void tty_vhangup_session(struct tty_struct *tty);
+ void tty_open_proc_set_tty(struct file *filp, struct tty_struct *tty);
+ int tty_signal_session_leader(struct tty_struct *tty, int exit_session);
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -933,13 +933,13 @@ static ssize_t tty_read(struct kiocb *io
+ 	return i;
  }
  
-@@ -48,8 +48,8 @@ static struct bin_attribute kheaders_att
- 
- static int __init ikheaders_init(void)
+-static void tty_write_unlock(struct tty_struct *tty)
++void tty_write_unlock(struct tty_struct *tty)
  {
--	kheaders_attr.size = (&kernel_headers_data_end -
--			      &kernel_headers_data);
-+	kheaders_attr.size = (kernel_headers_data_end -
-+			      kernel_headers_data);
- 	return sysfs_create_bin_file(kernel_kobj, &kheaders_attr);
+ 	mutex_unlock(&tty->atomic_write_lock);
+ 	wake_up_interruptible_poll(&tty->write_wait, EPOLLOUT);
  }
  
+-static int tty_write_lock(struct tty_struct *tty, int ndelay)
++int tty_write_lock(struct tty_struct *tty, int ndelay)
+ {
+ 	if (!mutex_trylock(&tty->atomic_write_lock)) {
+ 		if (ndelay)
+--- a/drivers/tty/tty_ioctl.c
++++ b/drivers/tty/tty_ioctl.c
+@@ -500,21 +500,42 @@ static int set_termios(struct tty_struct
+ 	tmp_termios.c_ispeed = tty_termios_input_baud_rate(&tmp_termios);
+ 	tmp_termios.c_ospeed = tty_termios_baud_rate(&tmp_termios);
+ 
+-	ld = tty_ldisc_ref(tty);
++	if (opt & (TERMIOS_FLUSH|TERMIOS_WAIT)) {
++retry_write_wait:
++		retval = wait_event_interruptible(tty->write_wait, !tty_chars_in_buffer(tty));
++		if (retval < 0)
++			return retval;
+ 
+-	if (ld != NULL) {
+-		if ((opt & TERMIOS_FLUSH) && ld->ops->flush_buffer)
+-			ld->ops->flush_buffer(tty);
+-		tty_ldisc_deref(ld);
+-	}
++		if (tty_write_lock(tty, 0) < 0)
++			goto retry_write_wait;
+ 
+-	if (opt & TERMIOS_WAIT) {
+-		tty_wait_until_sent(tty, 0);
+-		if (signal_pending(current))
+-			return -ERESTARTSYS;
+-	}
++		/* Racing writer? */
++		if (tty_chars_in_buffer(tty)) {
++			tty_write_unlock(tty);
++			goto retry_write_wait;
++		}
++
++		ld = tty_ldisc_ref(tty);
++		if (ld != NULL) {
++			if ((opt & TERMIOS_FLUSH) && ld->ops->flush_buffer)
++				ld->ops->flush_buffer(tty);
++			tty_ldisc_deref(ld);
++		}
+ 
+-	tty_set_termios(tty, &tmp_termios);
++		if ((opt & TERMIOS_WAIT) && tty->ops->wait_until_sent) {
++			tty->ops->wait_until_sent(tty, 0);
++			if (signal_pending(current)) {
++				tty_write_unlock(tty);
++				return -ERESTARTSYS;
++			}
++		}
++
++		tty_set_termios(tty, &tmp_termios);
++
++		tty_write_unlock(tty);
++	} else {
++		tty_set_termios(tty, &tmp_termios);
++	}
+ 
+ 	/* FIXME: Arguably if tmp_termios == tty->termios AND the
+ 	   actual requested termios was not tmp_termios then we may
 
 
