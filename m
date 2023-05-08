@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B426FACB8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190A86FAE77
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235792AbjEHL1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
+        id S236320AbjEHLpD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235805AbjEHL1N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:13 -0400
+        with ESMTP id S236279AbjEHLok (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA88D3A5EA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B62F10E46
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EAE862E16
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B3AC433D2;
-        Mon,  8 May 2023 11:27:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A8F563624
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6F2C433D2;
+        Mon,  8 May 2023 11:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545221;
-        bh=SYSH3aCgoCAv0uUDnMzc9nKHtw5VLDWrCEOQIbmsShw=;
+        s=korg; t=1683546226;
+        bh=mtk1jRQLs5sLc7mjQpW/vR5jAzlhjbDn5pGZ7T+l0dE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u3YjO9Uq9KbJcuShYwa2in7CPYCYqIiNt0RDYOKQI8B7KT513APlX+VS+Aktq7hZS
-         dnKCxxndO5UhqQ6D282CWqrJomAqvx4OMowR8svkMRhdgPft/78S3Irhy3WY7UtvqU
-         eExC4G7vAxb5PWYonXCb3RVxnIDWS+pxiUhGKT3Q=
+        b=x+CNfRoyxVj8e2eCwH0+pQ6GMjgrL1f+DecZXzRhbUvBEOJgf1c+l8ZGo/URuT2hz
+         o0x4P0T1W30TFKME2oriBgkttYoJInv1SJ908jpkEM83QdoWWK6oDyQlFNSa5u8sFN
+         72pcBl4gDV35bohmG5ZwxLvGJofAaLq53Jwvlqeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Dipen Patel <dipenp@nvidia.com>,
+        patches@lists.linux.dev,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 664/694] hte: tegra: fix struct of_device_id build error
-Date:   Mon,  8 May 2023 11:48:19 +0200
-Message-Id: <20230508094457.603334800@linuxfoundation.org>
+Subject: [PATCH 5.15 299/371] rtc: meson-vrtc: Use ktime_get_real_ts64() to get the current time
+Date:   Mon,  8 May 2023 11:48:20 +0200
+Message-Id: <20230508094823.916776692@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 6680c835ada1b34e882d0a32612f7294c62e27e0 ]
+[ Upstream commit 0e6255fa3f649170da6bd1a544680589cfae1131 ]
 
-Without the extra #include, this driver produces a build failure
-in some configurations.
+The VRTC alarm register can be programmed with an amount of seconds
+after which the SoC will be woken up by the VRTC timer again. We are
+already converting the alarm time from meson_vrtc_set_alarm() to
+"seconds since 1970". This means we also need to use "seconds since
+1970" for the current time.
 
-drivers/hte/hte-tegra194-test.c:96:34: error: array type has incomplete element type 'struct of_device_id'
-   96 | static const struct of_device_id tegra_hte_test_of_match[] = {
+This fixes a problem where setting the alarm to one minute in the future
+results in the firmware (which handles wakeup) to output (on the serial
+console) that the system will be woken up in billions of seconds.
+ktime_get_raw_ts64() returns the time since boot, not since 1970. Switch
+to ktime_get_real_ts64() to fix the calculation of the alarm time and to
+make the SoC wake up at the specified date/time. Also the firmware
+(which manages suspend) now prints either 59 or 60 seconds until wakeup
+(depending on how long it takes for the system to enter suspend).
 
-Fixes: 9a75a7cd03c9 ("hte: Add Tegra HTE test driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Dipen Patel <dipenp@nvidia.com>
-Signed-off-by: Dipen Patel <dipenp@nvidia.com>
+Fixes: 6ef35398e827 ("rtc: Add Amlogic Virtual Wake RTC")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20230320212142.2355062-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hte/hte-tegra194-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-meson-vrtc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hte/hte-tegra194-test.c b/drivers/hte/hte-tegra194-test.c
-index 5d776a185bd62..ce8c44e792213 100644
---- a/drivers/hte/hte-tegra194-test.c
-+++ b/drivers/hte/hte-tegra194-test.c
-@@ -6,6 +6,7 @@
-  */
+diff --git a/drivers/rtc/rtc-meson-vrtc.c b/drivers/rtc/rtc-meson-vrtc.c
+index 1463c86215615..648fa362ec447 100644
+--- a/drivers/rtc/rtc-meson-vrtc.c
++++ b/drivers/rtc/rtc-meson-vrtc.c
+@@ -23,7 +23,7 @@ static int meson_vrtc_read_time(struct device *dev, struct rtc_time *tm)
+ 	struct timespec64 time;
  
- #include <linux/err.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/interrupt.h>
+ 	dev_dbg(dev, "%s\n", __func__);
+-	ktime_get_raw_ts64(&time);
++	ktime_get_real_ts64(&time);
+ 	rtc_time64_to_tm(time.tv_sec, tm);
+ 
+ 	return 0;
+@@ -96,7 +96,7 @@ static int __maybe_unused meson_vrtc_suspend(struct device *dev)
+ 		long alarm_secs;
+ 		struct timespec64 time;
+ 
+-		ktime_get_raw_ts64(&time);
++		ktime_get_real_ts64(&time);
+ 		local_time = time.tv_sec;
+ 
+ 		dev_dbg(dev, "alarm_time = %lus, local_time=%lus\n",
 -- 
 2.39.2
 
