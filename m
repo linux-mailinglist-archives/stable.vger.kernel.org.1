@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 519846FA51E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD4D96FA82F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234041AbjEHKGK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:06:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34044 "EHLO
+        id S234878AbjEHKie (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbjEHKGI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:08 -0400
+        with ESMTP id S234840AbjEHKiK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4DB3017B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09F02944C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B27D62343
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404F2C433EF;
-        Mon,  8 May 2023 10:06:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C2C16120F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DA2C433EF;
+        Mon,  8 May 2023 10:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540366;
-        bh=SMytWO1wDOG2Cqs+GnUhSfWg9DaufGMagsoO4TON1Xk=;
+        s=korg; t=1683542285;
+        bh=YA8fMVyRQf4LDjVWfmZtuyBEellaq0Uw6trX5oHv7D8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OkfWUSP3/oOF8ULtDq59dOdcOzC0UAeh4LZ89FexYxEBF5kGnHJ7tq/N18Y5aDFX7
-         +lblfs9nDaBLhDKE/9tR7G21ZahPJGes+FZXmrg4E2PeEMfM4Ho9ZTFlBEZp0hRVG9
-         y3zsM4ZvJeVeNqTiO2K0RRQbID1Pqvg3usNg8mDA=
+        b=sPVhE7wqcZWoRyFVmYhW5F4jNAnRvqbedBEPNlM1UEkHrhY1NreSHY0CkYbOzq5uI
+         sFYMXAh45+CL9R0ol20RbwMcRdtS6wL306mBVm1lnMqjRmCNw0444YXIvDLdtGOMD3
+         mrN4g8klgdvhtjlhwzS/PuyraPJNj614XWnNvEgo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nate Thornton <nate.thornton@samsung.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Minwoo Im <minwoo.im@samsung.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 337/611] nvme: fix async event trace event
-Date:   Mon,  8 May 2023 11:42:59 +0200
-Message-Id: <20230508094433.375229190@linuxfoundation.org>
+        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
+        Xin Liu <liuxin350@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 354/663] bpf, sockmap: fix deadlocks in the sockhash and sockmap
+Date:   Mon,  8 May 2023 11:43:00 +0200
+Message-Id: <20230508094439.632331899@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,89 +56,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Keith Busch <kbusch@kernel.org>
+From: Xin Liu <liuxin350@huawei.com>
 
-[ Upstream commit 6622b76fe922b94189499a90ccdb714a4a8d0773 ]
+[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
 
-Mixing AER Event Type and Event Info has masking clashes. Just print the
-event type, but also include the event info of the AER result in the
-trace.
+When huang uses sched_switch tracepoint, the tracepoint
+does only one thing in the mounted ebpf program, which
+deletes the fixed elements in sockhash ([0])
 
-Fixes: 09bd1ff4b15143b ("nvme-core: add async event trace helper")
-Reported-by: Nate Thornton <nate.thornton@samsung.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+It seems that elements in sockhash are rarely actively
+deleted by users or ebpf program. Therefore, we do not
+pay much attention to their deletion. Compared with hash
+maps, sockhash only provides spin_lock_bh protection.
+This causes it to appear to have self-locking behavior
+in the interrupt context.
+
+  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
+
+Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Xin Liu <liuxin350@huawei.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c  |  5 +----
- drivers/nvme/host/trace.h | 15 ++++++---------
- 2 files changed, 7 insertions(+), 13 deletions(-)
+ net/core/sock_map.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index c54c6ffba0bcd..f502e032e7e46 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4769,8 +4769,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
- 	u32 aer_notice_type = nvme_aer_subtype(result);
- 	bool requeue = true;
- 
--	trace_nvme_async_event(ctrl, aer_notice_type);
--
- 	switch (aer_notice_type) {
- 	case NVME_AER_NOTICE_NS_CHANGED:
- 		set_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events);
-@@ -4806,7 +4804,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
- 
- static void nvme_handle_aer_persistent_error(struct nvme_ctrl *ctrl)
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index a055139f410e2..dd5d7b1fa3580 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -414,8 +414,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
  {
--	trace_nvme_async_event(ctrl, NVME_AER_ERROR);
- 	dev_warn(ctrl->device, "resetting controller due to AER\n");
- 	nvme_reset_ctrl(ctrl);
- }
-@@ -4822,6 +4819,7 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
- 	if (le16_to_cpu(status) >> 1 != NVME_SC_SUCCESS)
- 		return;
+ 	struct sock *sk;
+ 	int err = 0;
++	unsigned long flags;
  
-+	trace_nvme_async_event(ctrl, result);
- 	switch (aer_type) {
- 	case NVME_AER_NOTICE:
- 		requeue = nvme_handle_aen_notice(ctrl, result);
-@@ -4839,7 +4837,6 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
- 	case NVME_AER_SMART:
- 	case NVME_AER_CSS:
- 	case NVME_AER_VS:
--		trace_nvme_async_event(ctrl, aer_type);
- 		ctrl->aen_result = result;
- 		break;
- 	default:
-diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
-index 6f0eaf6a15282..4fb5922ffdac5 100644
---- a/drivers/nvme/host/trace.h
-+++ b/drivers/nvme/host/trace.h
-@@ -127,15 +127,12 @@ TRACE_EVENT(nvme_async_event,
- 	),
- 	TP_printk("nvme%d: NVME_AEN=%#08x [%s]",
- 		__entry->ctrl_id, __entry->result,
--		__print_symbolic(__entry->result,
--		aer_name(NVME_AER_NOTICE_NS_CHANGED),
--		aer_name(NVME_AER_NOTICE_ANA),
--		aer_name(NVME_AER_NOTICE_FW_ACT_STARTING),
--		aer_name(NVME_AER_NOTICE_DISC_CHANGED),
--		aer_name(NVME_AER_ERROR),
--		aer_name(NVME_AER_SMART),
--		aer_name(NVME_AER_CSS),
--		aer_name(NVME_AER_VS))
-+		__print_symbolic(__entry->result & 0x7,
-+			aer_name(NVME_AER_ERROR),
-+			aer_name(NVME_AER_SMART),
-+			aer_name(NVME_AER_NOTICE),
-+			aer_name(NVME_AER_CSS),
-+			aer_name(NVME_AER_VS))
- 	)
- );
+-	raw_spin_lock_bh(&stab->lock);
++	raw_spin_lock_irqsave(&stab->lock, flags);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+ 		sk = xchg(psk, NULL);
+@@ -425,7 +426,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ 	else
+ 		err = -EINVAL;
+ 
+-	raw_spin_unlock_bh(&stab->lock);
++	raw_spin_unlock_irqrestore(&stab->lock, flags);
+ 	return err;
+ }
+ 
+@@ -923,11 +924,12 @@ static long sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 	struct bpf_shtab_bucket *bucket;
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
++	unsigned long flags;
+ 
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
+-	raw_spin_lock_bh(&bucket->lock);
++	raw_spin_lock_irqsave(&bucket->lock, flags);
+ 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
+ 	if (elem) {
+ 		hlist_del_rcu(&elem->node);
+@@ -935,7 +937,7 @@ static long sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 		sock_hash_free_elem(htab, elem);
+ 		ret = 0;
+ 	}
+-	raw_spin_unlock_bh(&bucket->lock);
++	raw_spin_unlock_irqrestore(&bucket->lock, flags);
+ 	return ret;
+ }
  
 -- 
 2.39.2
