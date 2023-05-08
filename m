@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32886FA43A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A6DC6FA417
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233120AbjEHJ4w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
+        id S233820AbjEHJzK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233690AbjEHJ4u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:56:50 -0400
+        with ESMTP id S233637AbjEHJzJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:55:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E30D1199A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:56:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE143273B4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:55:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D8BC62258
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D222C433D2;
-        Mon,  8 May 2023 09:56:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5942162215
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C64AC4339B;
+        Mon,  8 May 2023 09:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539807;
-        bh=BeaBmBFLMhn6wR0QhlMdNixRueD2HU3RQaKSeAdF75M=;
+        s=korg; t=1683539706;
+        bh=iqzJxMCoDWFS2cMLhNtb4ZYORu0PCokX+vciUYk5c4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iEztkvYxEtUzLJU4WJC4JI/a2OjloEAe0IXjEbi/nBKLrCUF4leEhAjoZ2MFd+v/S
-         mC2LLu9sJbMjJxgD3b6rX8rNXK1QYcUaNJeaZeTPylHtVQAAGgTnc4egK1BV4TLQ+c
-         J0O7Pah8E8rX6fiPar9B3X8Jkojk0kHEHsg7rIS0=
+        b=h1zTw/o5/7cZNKh4CkY0saixkmOPZp7PDcInImlhRIUKJXt0GVm5MGlNY85ZkIWOT
+         fbxADcbP3qcJADg49Jbew+S2tCa2JVE1ZW93dTqS3TDB+4AIbpPB6JwYKkECdDA+Bp
+         hnmrPShvgR436HDQ4QTjE6Il/LXko5O+Q8yL0KKM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang YanQing <udknight@gmail.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
         Zhihao Cheng <chengzhihao1@huawei.com>,
         Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.1 103/611] ubi: Fix return value overwrite issue in try_write_vid_and_data()
-Date:   Mon,  8 May 2023 11:39:05 +0200
-Message-Id: <20230508094425.573721345@linuxfoundation.org>
+Subject: [PATCH 6.1 104/611] ubifs: Free memory for tmpfile name
+Date:   Mon,  8 May 2023 11:39:06 +0200
+Message-Id: <20230508094425.612602439@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -54,63 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang YanQing <udknight@gmail.com>
+From: Mårten Lindahl <marten.lindahl@axis.com>
 
-commit 31a149d5c13c4cbcf97de3435817263a2d8c9d6e upstream.
+commit 1fb815b38bb31d6af9bd0540b8652a0d6fe6cfd3 upstream.
 
-The commit 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
-adds helper function, try_write_vid_and_data(), to simplify the code, but this
-helper function has bug, it will return 0 (success) when ubi_io_write_vid_hdr()
-or the ubi_io_write_data() return error number (-EIO, etc), because the return
-value of ubi_wl_put_peb() will overwrite the original return value.
+When opening a ubifs tmpfile on an encrypted directory, function
+fscrypt_setup_filename allocates memory for the name that is to be
+stored in the directory entry, but after the name has been copied to the
+directory entry inode, the memory is not freed.
 
-This issue will cause unexpected data loss issue, because the caller of this
-function and UBIFS willn't know the data is lost.
+When running kmemleak on it we see that it is registered as a leak. The
+report below is triggered by a simple program 'tmpfile' just opening a
+tmpfile:
 
-Fixes: 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wang YanQing <udknight@gmail.com>
+  unreferenced object 0xffff88810178f380 (size 32):
+    comm "tmpfile", pid 509, jiffies 4294934744 (age 1524.742s)
+    backtrace:
+      __kmem_cache_alloc_node
+      __kmalloc
+      fscrypt_setup_filename
+      ubifs_tmpfile
+      vfs_tmpfile
+      path_openat
+
+Free this memory after it has been copied to the inode.
+
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
 Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/ubi/eba.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ fs/ubifs/dir.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -946,7 +946,7 @@ static int try_write_vid_and_data(struct
- 				  int offset, int len)
- {
- 	struct ubi_device *ubi = vol->ubi;
--	int pnum, opnum, err, vol_id = vol->vol_id;
-+	int pnum, opnum, err, err2, vol_id = vol->vol_id;
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -492,6 +492,7 @@ static int ubifs_tmpfile(struct user_nam
+ 	unlock_2_inodes(dir, inode);
  
- 	pnum = ubi_wl_get_peb(ubi);
- 	if (pnum < 0) {
-@@ -981,10 +981,19 @@ static int try_write_vid_and_data(struct
- out_put:
- 	up_read(&ubi->fm_eba_sem);
+ 	ubifs_release_budget(c, &req);
++	fscrypt_free_filename(&nm);
  
--	if (err && pnum >= 0)
--		err = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
--	else if (!err && opnum >= 0)
--		err = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
-+	if (err && pnum >= 0) {
-+		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
-+		if (err2) {
-+			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
-+				 pnum, err2);
-+		}
-+	} else if (!err && opnum >= 0) {
-+		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
-+		if (err2) {
-+			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
-+				 opnum, err2);
-+		}
-+	}
+ 	return finish_open_simple(file, 0);
  
- 	return err;
- }
 
 
