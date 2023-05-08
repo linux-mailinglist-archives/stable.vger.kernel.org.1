@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BACF6FA8C6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E74B6FABDE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234986AbjEHKpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42954 "EHLO
+        id S233913AbjEHLSV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234898AbjEHKo7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:59 -0400
+        with ESMTP id S235494AbjEHLSV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC0D29FF4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3E137844
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E43062872
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE4AC433EF;
-        Mon,  8 May 2023 10:43:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9735661D7C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F875C4339B;
+        Mon,  8 May 2023 11:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542621;
-        bh=hXxckBAJIecgGOPc95NahdX2/DBauq8LCEMKqoGO1Eg=;
+        s=korg; t=1683544699;
+        bh=9dP2pkoC/WQM0vP0ptL6LnIEekN5wSGvTMthfXdWkt4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AR9Xz8hn/deCRchU89ZG2xklwddZIpHTSHRW+xPA0fQ/EXalNknPi7FUsuNTa9pfe
-         xfCLaFjZ9DRGibBaIRRjhLRKQ2MjBrw9muIAsoElqkwBMOrylPU2+vwlXcJxtsSziL
-         cqJjceQzmLvWItXvRP0N3XNhJnM3VkUy95AeTA5A=
+        b=cYRSPJ2qxam7d6o9vNwz4ZNYAOyu/TNvt1doNc/bEsAUkYnyQBr5wMbwWXRkVg1n9
+         usay/6aroJZUPKQUjD9yQG7upmOt+kAZw92IyMTnSrkugjMl1yojIfhH64bejAMjRu
+         Xm83nd2PcN2xHVjo3ywQcMqiPhbETaT6v7DmkVfI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
-        Antonio Borneo <antonio.borneo@foss.st.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Kieran Bingham <kbingham@kernel.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 487/663] scripts/gdb: raise error with reduced debugging information
+        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
+        David Howells <dhowells@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
+        netdev@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 478/694] rxrpc: Fix error when reading rxrpc tokens
 Date:   Mon,  8 May 2023 11:45:13 +0200
-Message-Id: <20230508094444.193976828@linuxfoundation.org>
+Message-Id: <20230508094449.355890639@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,76 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit 8af055ae25bff48f57227f5e3d48a4306f3dd1c4 ]
+[ Upstream commit fadfc57cc8047080a123b16f288b7138524fb1e2 ]
 
-If CONFIG_DEBUG_INFO_REDUCED is enabled in the kernel configuration, we
-will typically not be able to load vmlinux-gdb.py and will fail with:
+When converting from ASSERTCMP to WARN_ON, the tested condition must
+be inverted, which was missed for this case.
 
-Traceback (most recent call last):
-  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/vmlinux-gdb.py", line 25, in <module>
-    import linux.utils
-  File "/home/fainelli/work/buildroot/output/arm64/build/linux-custom/scripts/gdb/linux/utils.py", line 131, in <module>
-    atomic_long_counter_offset = atomic_long_type.get_type()['counter'].bitpos
-KeyError: 'counter'
+This would cause an EIO error when trying to read an rxrpc token, for
+instance when trying to display tokens with AuriStor's "tokens" command.
 
-Rather be left wondering what is happening only to find out that reduced
-debug information is the cause, raise an eror.  This was not typically a
-problem until e3c8d33e0d62 ("scripts/gdb: fix 'lx-dmesg' on 32 bits arch")
-but it has since then.
-
-Link: https://lkml.kernel.org/r/20230406215252.1580538-1-f.fainelli@gmail.com
-Fixes: e3c8d33e0d62 ("scripts/gdb: fix 'lx-dmesg' on 32 bits arch")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Antonio Borneo <antonio.borneo@foss.st.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/constants.py.in | 2 ++
- scripts/gdb/vmlinux-gdb.py        | 5 ++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/rxrpc/key.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
-index 2efbec6b6b8db..08f0587d15ea1 100644
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -39,6 +39,8 @@
+diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+index 8d53aded09c42..33e8302a79e33 100644
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -680,7 +680,7 @@ static long rxrpc_read(const struct key *key,
+ 			return -ENOPKG;
+ 		}
  
- import gdb
- 
-+LX_CONFIG(CONFIG_DEBUG_INFO_REDUCED)
-+
- /* linux/clk-provider.h */
- if IS_BUILTIN(CONFIG_COMMON_CLK):
-     LX_GDBPARSED(CLK_GET_RATE_NOCACHE)
-diff --git a/scripts/gdb/vmlinux-gdb.py b/scripts/gdb/vmlinux-gdb.py
-index 3e8d3669f0ce0..5564ffe8ae327 100644
---- a/scripts/gdb/vmlinux-gdb.py
-+++ b/scripts/gdb/vmlinux-gdb.py
-@@ -22,6 +22,10 @@ except:
-     gdb.write("NOTE: gdb 7.2 or later required for Linux helper scripts to "
-               "work.\n")
- else:
-+    import linux.constants
-+    if linux.constants.LX_CONFIG_DEBUG_INFO_REDUCED:
-+        raise gdb.GdbError("Reduced debug information will prevent GDB "
-+                           "from having complete types.\n")
-     import linux.utils
-     import linux.symbols
-     import linux.modules
-@@ -32,7 +36,6 @@ else:
-     import linux.lists
-     import linux.rbtree
-     import linux.proc
--    import linux.constants
-     import linux.timerlist
-     import linux.clk
-     import linux.genpd
+-		if (WARN_ON((unsigned long)xdr - (unsigned long)oldxdr ==
++		if (WARN_ON((unsigned long)xdr - (unsigned long)oldxdr !=
+ 			    toksize))
+ 			return -EIO;
+ 	}
 -- 
 2.39.2
 
