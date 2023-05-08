@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 895506FAC44
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1096FAC7A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235597AbjEHLWr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:22:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37630 "EHLO
+        id S235706AbjEHLY7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:24:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233962AbjEHLWp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA9BF2B42E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:31 -0700 (PDT)
+        with ESMTP id S235720AbjEHLYl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F4663B799
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4A6062CA0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B749AC433D2;
-        Mon,  8 May 2023 11:22:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73C7C62D47
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66145C4339B;
+        Mon,  8 May 2023 11:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544950;
-        bh=9FIRfJMOI1BrYqC6fBYWT/X7QF+6WNfrvww/JtPUqLM=;
+        s=korg; t=1683545076;
+        bh=TqNMd/yfqXAPuDwKNDOC/T8ginQj1+uCuWTIMOtBa3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mElSDQlj2YseaS9oshWme2xmBYGhRiQSJ75FWjGJBFgpJvkz2tIjvZkCtK3gMWJQG
-         qJARD8bY4AaOZ7F5O07KQQKWyuFUnoq14jiifP2/1nDd3twSaaLtogi9VAJ8rgec+w
-         SN2Y/0ZG+M2y+2H3D/fYvfoddsQ/QwYdM5QyWpB0=
+        b=1LzSmE4mwR3oWlAmZOAQvXHZjYQNFmw8fftUq/rDxNUdBlfBYulUptvpvhmq0BJKC
+         dijBeKWfGgDKuriFtUKui91iXnK3RdkicQ9sidHb1YtOnfmuLaRIsqeRUa9CEkWosa
+         0Lds7KbuPym9tNHZQjUSrJlRxwDomhF/+3BHlVQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Kang Chen <void0red@gmail.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 574/694] clk: at91: clk-sam9x60-pll: fix return value check
-Date:   Mon,  8 May 2023 11:46:49 +0200
-Message-Id: <20230508094453.505167081@linuxfoundation.org>
+Subject: [PATCH 6.3 575/694] IB/hifi1: add a null check of kzalloc_node in hfi1_ipoib_txreq_init
+Date:   Mon,  8 May 2023 11:46:50 +0200
+Message-Id: <20230508094453.544862060@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,36 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Kang Chen <void0red@gmail.com>
 
-[ Upstream commit 1bd8e27fd0db0fe7f489213836dcbab92934f8fa ]
+[ Upstream commit c874ad879c2f29ebe040a34b974389875c0d81eb ]
 
-sam9x60_frac_pll_compute_mul_frac() can't return zero. Remove the check
-against zero to reflect this.
+kzalloc_node may fails, check it and do the cleanup.
 
-Fixes: 43b1bb4a9b3e ("clk: at91: clk-sam9x60-pll: re-factor to support plls with multiple outputs")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230227105931.2812412-1-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: b1151b74ff68 ("IB/hfi1: Fix alloc failure with larger txqueuelen")
+Signed-off-by: Kang Chen <void0red@gmail.com>
+Link: https://lore.kernel.org/r/20230227100212.910820-1-void0red@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-sam9x60-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hfi1/ipoib_tx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/clk-sam9x60-pll.c b/drivers/clk/at91/clk-sam9x60-pll.c
-index d757003004cbb..0882ed01d5c27 100644
---- a/drivers/clk/at91/clk-sam9x60-pll.c
-+++ b/drivers/clk/at91/clk-sam9x60-pll.c
-@@ -668,7 +668,7 @@ sam9x60_clk_register_frac_pll(struct regmap *regmap, spinlock_t *lock,
+diff --git a/drivers/infiniband/hw/hfi1/ipoib_tx.c b/drivers/infiniband/hw/hfi1/ipoib_tx.c
+index 5d9a7b09ca37e..349eb41391368 100644
+--- a/drivers/infiniband/hw/hfi1/ipoib_tx.c
++++ b/drivers/infiniband/hw/hfi1/ipoib_tx.c
+@@ -737,10 +737,13 @@ int hfi1_ipoib_txreq_init(struct hfi1_ipoib_dev_priv *priv)
+ 		txq->tx_ring.shift = ilog2(tx_item_size);
+ 		txq->tx_ring.avail = hfi1_ipoib_ring_hwat(txq);
+ 		tx_ring = &txq->tx_ring;
+-		for (j = 0; j < tx_ring_size; j++)
++		for (j = 0; j < tx_ring_size; j++) {
+ 			hfi1_txreq_from_idx(tx_ring, j)->sdma_hdr =
+ 				kzalloc_node(sizeof(*tx->sdma_hdr),
+ 					     GFP_KERNEL, priv->dd->node);
++			if (!hfi1_txreq_from_idx(tx_ring, j)->sdma_hdr)
++				goto free_txqs;
++		}
  
- 		ret = sam9x60_frac_pll_compute_mul_frac(&frac->core, FCORE_MIN,
- 							parent_rate, true);
--		if (ret <= 0) {
-+		if (ret < 0) {
- 			hw = ERR_PTR(ret);
- 			goto free;
- 		}
+ 		netif_napi_add_tx(dev, &txq->napi, hfi1_ipoib_poll_tx_ring);
+ 	}
 -- 
 2.39.2
 
