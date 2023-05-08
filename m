@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4059D6FABB2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 526F36FA8A6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235117AbjEHLQZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:16:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57012 "EHLO
+        id S235016AbjEHKn7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:43:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235347AbjEHLQY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:16:24 -0400
+        with ESMTP id S235014AbjEHKnY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22C1637021
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:16:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B414426EB4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B8AC62BF0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:16:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF0AC433A0;
-        Mon,  8 May 2023 11:16:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9416B62838
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A005FC433EF;
+        Mon,  8 May 2023 10:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544582;
-        bh=0EtESPJ9ns3FZ29SfoOrK+BwKaLqd1DG0mtlEAfj15s=;
+        s=korg; t=1683542532;
+        bh=gkfnnr1qoSbUOYReg2jWrFx1R+8WYHwcmUOKvnwDoOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EQ1NH1Ve1oLttepzVobtnx1mb+3Qzsa+Q3aeJsX6xugq75I+TzcvWyCQqwsCzSYwo
-         gaLzsmlhQztJ6O3Olcc6B63u+eJaEBU5mMsmtQij4sh7i6q/wzVGx1LqgANJMRdoUI
-         k68At3Uh3EGZnOi4RbU8qUe1Hqy1A9ro02QwffwY=
+        b=ahcv88A/+yZgmFEGUInIfMCHsoqlR6VtcvLUyaKnSATfS66QjYLGGJ27Z9KQpKXPM
+         kr8P6uGQX6F1eiXvX/iyZZEiEnMPn9N2anNd+smZJves15s5yRSG49AFQFYF+wFe6D
+         aLiFYINzU5YNqw8BjZa+hk5Y0K1Yfpxd34WQFsTI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Tsaur Erwin <erwin.tsaur@intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 457/694] net: libwx: fix memory leak in wx_setup_rx_resources
+Subject: [PATCH 6.2 466/663] PCI/EDR: Clear Device Status after EDR error recovery
 Date:   Mon,  8 May 2023 11:44:52 +0200
-Message-Id: <20230508094448.456184109@linuxfoundation.org>
+Message-Id: <20230508094443.314388512@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit e315e7b83a22043bffee450437d7089ef373cbf6 ]
+[ Upstream commit c441b1e03da6c680a3e12da59c554f454f2ccf5e ]
 
-When wx_alloc_page_pool() failed in wx_setup_rx_resources(), it doesn't
-release DMA buffer. Add dma_free_coherent() in the error path to release
-the DMA buffer.
+During EDR recovery, the OS must clear error status of the port that
+triggered DPC even if firmware retains control of DPC and AER (see the
+implementation note in the PCI Firmware spec r3.3, sec 4.6.12).
 
-Fixes: 850b971110b2 ("net: libwx: Allocate Rx and Tx resources")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230418065450.2268522-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Prior to 068c29a248b6 ("PCI/ERR: Clear PCIe Device Status errors only if
+OS owns AER"), the port Device Status was cleared in this path:
+
+  edr_handle_event
+    dpc_process_error(dev)                 # "dev" triggered DPC
+    pcie_do_recovery(dev, dpc_reset_link)
+      dpc_reset_link                       # exit DPC
+      pcie_clear_device_status(dev)        # clear Device Status
+
+After 068c29a248b6, pcie_do_recovery() no longer clears Device Status when
+firmware controls AER, so the error bit remains set even after recovery.
+
+Per the "Downstream Port Containment configuration control" bit in the
+returned _OSC Control Field (sec 4.5.1), the OS is allowed to clear error
+status until it evaluates _OST, so clear Device Status in
+edr_handle_event() if the error recovery was successful.
+
+[bhelgaas: commit log]
+Fixes: 068c29a248b6 ("PCI/ERR: Clear PCIe Device Status errors only if OS owns AER")
+Link: https://lore.kernel.org/r/20230315235449.1279209-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Reported-by: Tsaur Erwin <erwin.tsaur@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/edr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index eb89a274083e7..1e8d8b7b0c62e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1798,10 +1798,13 @@ static int wx_setup_rx_resources(struct wx_ring *rx_ring)
- 	ret = wx_alloc_page_pool(rx_ring);
- 	if (ret < 0) {
- 		dev_err(rx_ring->dev, "Page pool creation failed: %d\n", ret);
--		goto err;
-+		goto err_desc;
- 	}
- 
- 	return 0;
-+
-+err_desc:
-+	dma_free_coherent(dev, rx_ring->size, rx_ring->desc, rx_ring->dma);
- err:
- 	kvfree(rx_ring->rx_buffer_info);
- 	rx_ring->rx_buffer_info = NULL;
+diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
+index a6b9b479b97ad..87734e4c3c204 100644
+--- a/drivers/pci/pcie/edr.c
++++ b/drivers/pci/pcie/edr.c
+@@ -193,6 +193,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
+ 	 */
+ 	if (estate == PCI_ERS_RESULT_RECOVERED) {
+ 		pci_dbg(edev, "DPC port successfully recovered\n");
++		pcie_clear_device_status(edev);
+ 		acpi_send_edr_status(pdev, edev, EDR_OST_SUCCESS);
+ 	} else {
+ 		pci_dbg(edev, "DPC port recovery failed\n");
 -- 
 2.39.2
 
