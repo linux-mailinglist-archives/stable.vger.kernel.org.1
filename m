@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3845D6FA7C1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5D076FAB1D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234697AbjEHKeo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
+        id S233630AbjEHLKK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234696AbjEHKeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A175925276
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:20 -0700 (PDT)
+        with ESMTP id S233496AbjEHLJp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F888D86C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 529F062731
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9F3C4339E;
-        Mon,  8 May 2023 10:33:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15E6F62B16
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8ACC433D2;
+        Mon,  8 May 2023 11:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541995;
-        bh=1SaUinmbevq8WHwhAt7r30NTZ+doiEShobj44S3CUSk=;
+        s=korg; t=1683544148;
+        bh=zg/FSjekkU4algjXcqm//2iYeTCGAsgTynUgScWizjU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MyNS9x5MlCR6SvMa8IQZeKKG0dqdvHX1lruyAGKeOFYfyd5HkHiqRyz1PxXcSKmOY
-         xlrSlFBMLEJMzzMgOhKfj4GtWffNRnoZEBFTPIAqjBBl9DS4jm4kRIKbDx9g18Z5Q6
-         iZHlXs3xmc0dGziX4i2qVB0imWWdpmGRG4JirLBM=
+        b=moDjr3W2tSG1imxOlYzd4NPj6Wymefc3v94vZA8EYrNtNaxJWJ2zqQTkikev2b7ms
+         Y+zAVc4BSUZsTZZYVZlxKVW40uoov82YImrNkw0jdnzzDXtueffnZyF5k5tZ5ZxLMu
+         Bf+8g0cajupo/zFembpXfelqoenvaEegAHwPG1fQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 293/663] bpf: fix precision propagation verbose logging
-Date:   Mon,  8 May 2023 11:41:59 +0200
-Message-Id: <20230508094437.698422790@linuxfoundation.org>
+Subject: [PATCH 6.3 285/694] media: cedrus: fix use after free bug in cedrus_remove due to race condition
+Date:   Mon,  8 May 2023 11:42:00 +0200
+Message-Id: <20230508094441.539591894@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,44 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 34f0677e7afd3a292bc1aadda7ce8e35faedb204 ]
+[ Upstream commit 50d0a7aea4809cef87979d4669911276aa23b71f ]
 
-Fix wrong order of frame index vs register/slot index in precision
-propagation verbose (level 2) output. It's wrong and very confusing as is.
+In cedrus_probe, dev->watchdog_work is bound with cedrus_watchdog function.
+In cedrus_device_run, it will started by schedule_delayed_work. If there is
+an unfinished work in cedrus_remove, there may be a race condition and
+trigger UAF bug.
 
-Fixes: 529409ea92d5 ("bpf: propagate precision across all frames, not just the last one")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20230313184017.4083374-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+CPU0                  CPU1
+
+                    |cedrus_watchdog
+cedrus_remove       |
+  v4l2_m2m_release  |
+  kfree(m2m_dev)    |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev //use
+
+Fix it by canceling the worker in cedrus_remove.
+
+Fixes: 7c38a551bda1 ("media: cedrus: Add watchdog for job completion")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/media/sunxi/cedrus/cedrus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a53ba87a1cd2a..df353ba844f41 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13678,7 +13678,7 @@ static int propagate_precision(struct bpf_verifier_env *env,
- 			    !(state_reg->live & REG_LIVE_READ))
- 				continue;
- 			if (env->log.level & BPF_LOG_LEVEL2)
--				verbose(env, "frame %d: propagating r%d\n", i, fr);
-+				verbose(env, "frame %d: propagating r%d\n", fr, i);
- 			err = mark_chain_precision_frame(env, fr, i);
- 			if (err < 0)
- 				return err;
-@@ -13694,7 +13694,7 @@ static int propagate_precision(struct bpf_verifier_env *env,
- 				continue;
- 			if (env->log.level & BPF_LOG_LEVEL2)
- 				verbose(env, "frame %d: propagating fp%d\n",
--					(-i - 1) * BPF_REG_SIZE, fr);
-+					fr, (-i - 1) * BPF_REG_SIZE);
- 			err = mark_chain_precision_stack_frame(env, fr, i);
- 			if (err < 0)
- 				return err;
+diff --git a/drivers/staging/media/sunxi/cedrus/cedrus.c b/drivers/staging/media/sunxi/cedrus/cedrus.c
+index a43d5ff667163..a50a4d0a8f715 100644
+--- a/drivers/staging/media/sunxi/cedrus/cedrus.c
++++ b/drivers/staging/media/sunxi/cedrus/cedrus.c
+@@ -547,6 +547,7 @@ static int cedrus_remove(struct platform_device *pdev)
+ {
+ 	struct cedrus_dev *dev = platform_get_drvdata(pdev);
+ 
++	cancel_delayed_work_sync(&dev->watchdog_work);
+ 	if (media_devnode_is_registered(dev->mdev.devnode)) {
+ 		media_device_unregister(&dev->mdev);
+ 		v4l2_m2m_unregister_media_controller(dev->m2m_dev);
 -- 
 2.39.2
 
