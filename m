@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 251AD6FACAB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 672BD6FAE81
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235753AbjEHL0x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44136 "EHLO
+        id S236307AbjEHLpY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:45:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235730AbjEHL0o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE0E3C1E1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:29 -0700 (PDT)
+        with ESMTP id S236330AbjEHLpJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:45:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3C53F2DB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 322D262DAD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23043C433EF;
-        Mon,  8 May 2023 11:26:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C669635BC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3026AC433D2;
+        Mon,  8 May 2023 11:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545188;
-        bh=/fIBBkCxQO9gDnjSanJK/U8C448FJxwXfzh5/MCUSwo=;
+        s=korg; t=1683546278;
+        bh=hRkAaEkv3lVaggNkPQLPbjCh9tEkRbA16XgV7adRIR4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ffZKpz9jgcXmekadVTkjJ/GKSQuwPuUetPxh49umhlUlyDYHjfWttE7j6XPlx3BUI
-         Sm3bji24U4oR4su0qTY/6+/KI2BbGPvppGg12sC48CsU9aq/ngmDz7VeBzWaG5Rfnr
-         c3fWJ5D/u+MIh1R6jb/Pc7p0ViO8Rk9K/Nw8Jahg=
+        b=rBfB7sCcOL7kJkqmaocsGiNNmOQshfRKhYIpaaU2IPsB+8YRwobXPu/s240zlz/ZA
+         4Zx30QJr4PhhyTDJbQiyp33QtT060YLFQE89r29pI9vi6HuE//GcsoXiPYgG5wP6AD
+         P/aVJdCq5u+uhIkOiJf4QkiucrQIlW6sPnwSbq3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 654/694] dmaengine: at_xdmac: do not resume channels paused by consumers
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Libo Chen <libo.chen@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 288/371] sched/fair: Fix inaccurate tally of ttwu_move_affine
 Date:   Mon,  8 May 2023 11:48:09 +0200
-Message-Id: <20230508094457.159825688@linuxfoundation.org>
+Message-Id: <20230508094823.455039458@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,142 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Libo Chen <libo.chen@oracle.com>
 
-[ Upstream commit 44fe8440bda545b5d167329df88c47609a645168 ]
+[ Upstream commit 39afe5d6fc59237ff7738bf3ede5a8856822d59d ]
 
-In case there are DMA channels not paused by consumers in suspend
-process (valid on AT91 SoCs for serial driver when no_console_suspend) the
-driver pauses them (using at_xdmac_device_pause() which is also the same
-function called by dmaengine_pause()) and then in the resume process the
-driver resumes them calling at_xdmac_device_resume() which is the same
-function called by dmaengine_resume()). This is good for DMA channels
-not paused by consumers but for drivers that calls
-dmaengine_pause()/dmaegine_resume() on suspend/resume path this may lead to
-DMA channel being enabled before the IP is enabled. For IPs that needs
-strict ordering with regards to DMA channel enablement this will lead to
-wrong behavior. To fix this add a new set of functions
-at_xdmac_device_pause_internal()/at_xdmac_device_resume_internal() to be
-called only on suspend/resume.
+There are scenarios where non-affine wakeups are incorrectly counted as
+affine wakeups by schedstats.
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-4-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+When wake_affine_idle() returns prev_cpu which doesn't equal to
+nr_cpumask_bits, it will slip through the check: target == nr_cpumask_bits
+in wake_affine() and be counted as if target == this_cpu in schedstats.
+
+Replace target == nr_cpumask_bits with target != this_cpu to make sure
+affine wakeups are accurately tallied.
+
+Fixes: 806486c377e33 (sched/fair: Do not migrate if the prev_cpu is idle)
+Suggested-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Libo Chen <libo.chen@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://lore.kernel.org/r/20220810223313.386614-1-libo.chen@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 52 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 45 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index af3b494f9ba9b..fa1e2e0da02f5 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -187,6 +187,7 @@
- enum atc_status {
- 	AT_XDMAC_CHAN_IS_CYCLIC = 0,
- 	AT_XDMAC_CHAN_IS_PAUSED,
-+	AT_XDMAC_CHAN_IS_PAUSED_INTERNAL,
- };
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 2dd67e212f0ac..646a6ae4b2509 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6207,7 +6207,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
+ 		target = wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);
  
- struct at_xdmac_layout {
-@@ -347,6 +348,11 @@ static inline int at_xdmac_chan_is_paused(struct at_xdmac_chan *atchan)
- 	return test_bit(AT_XDMAC_CHAN_IS_PAUSED, &atchan->status);
- }
+ 	schedstat_inc(p->stats.nr_wakeups_affine_attempts);
+-	if (target == nr_cpumask_bits)
++	if (target != this_cpu)
+ 		return prev_cpu;
  
-+static inline int at_xdmac_chan_is_paused_internal(struct at_xdmac_chan *atchan)
-+{
-+	return test_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
-+}
-+
- static inline bool at_xdmac_chan_is_peripheral_xfer(u32 cfg)
- {
- 	return cfg & AT_XDMAC_CC_TYPE_PER_TRAN;
-@@ -1898,6 +1904,26 @@ static int at_xdmac_device_config(struct dma_chan *chan,
- 	return ret;
- }
- 
-+static void at_xdmac_device_pause_set(struct at_xdmac *atxdmac,
-+				      struct at_xdmac_chan *atchan)
-+{
-+	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
-+	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC) &
-+	       (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
-+		cpu_relax();
-+}
-+
-+static void at_xdmac_device_pause_internal(struct at_xdmac_chan *atchan)
-+{
-+	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
-+	unsigned long		flags;
-+
-+	spin_lock_irqsave(&atchan->lock, flags);
-+	set_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
-+	at_xdmac_device_pause_set(atxdmac, atchan);
-+	spin_unlock_irqrestore(&atchan->lock, flags);
-+}
-+
- static int at_xdmac_device_pause(struct dma_chan *chan)
- {
- 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
-@@ -1915,11 +1941,8 @@ static int at_xdmac_device_pause(struct dma_chan *chan)
- 		return ret;
- 
- 	spin_lock_irqsave(&atchan->lock, flags);
--	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
--	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC)
--	       & (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
--		cpu_relax();
- 
-+	at_xdmac_device_pause_set(atxdmac, atchan);
- 	/* Decrement runtime PM ref counter for each active descriptor. */
- 	at_xdmac_runtime_suspend_descriptors(atchan);
- 
-@@ -1931,6 +1954,17 @@ static int at_xdmac_device_pause(struct dma_chan *chan)
- 	return 0;
- }
- 
-+static void at_xdmac_device_resume_internal(struct at_xdmac_chan *atchan)
-+{
-+	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
-+	unsigned long		flags;
-+
-+	spin_lock_irqsave(&atchan->lock, flags);
-+	at_xdmac_write(atxdmac, atxdmac->layout->grwr, atchan->mask);
-+	clear_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
-+	spin_unlock_irqrestore(&atchan->lock, flags);
-+}
-+
- static int at_xdmac_device_resume(struct dma_chan *chan)
- {
- 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
-@@ -2119,7 +2153,7 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
- 		atchan->save_cc = at_xdmac_chan_read(atchan, AT_XDMAC_CC);
- 		if (at_xdmac_chan_is_cyclic(atchan)) {
- 			if (!at_xdmac_chan_is_paused(atchan)) {
--				at_xdmac_device_pause(chan);
-+				at_xdmac_device_pause_internal(atchan);
- 				at_xdmac_runtime_suspend_descriptors(atchan);
- 			}
- 			atchan->save_cim = at_xdmac_chan_read(atchan, AT_XDMAC_CIM);
-@@ -2167,11 +2201,15 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
- 
- 		at_xdmac_chan_write(atchan, AT_XDMAC_CC, atchan->save_cc);
- 		if (at_xdmac_chan_is_cyclic(atchan)) {
--			if (at_xdmac_chan_is_paused(atchan)) {
-+			/*
-+			 * Resume only channels not explicitly paused by
-+			 * consumers.
-+			 */
-+			if (at_xdmac_chan_is_paused_internal(atchan)) {
- 				ret = at_xdmac_runtime_resume_descriptors(atchan);
- 				if (ret < 0)
- 					return ret;
--				at_xdmac_device_resume(chan);
-+				at_xdmac_device_resume_internal(atchan);
- 			}
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDA, atchan->save_cnda);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
+ 	schedstat_inc(sd->ttwu_move_affine);
 -- 
 2.39.2
 
