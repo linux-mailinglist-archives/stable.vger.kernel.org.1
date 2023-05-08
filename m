@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B55B36FA7AE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463DD6FAAC4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234711AbjEHKdm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
+        id S234047AbjEHLG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjEHKdR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3261F2787F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:31 -0700 (PDT)
+        with ESMTP id S233811AbjEHLGH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B9835564
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A145B62709
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2057C433EF;
-        Mon,  8 May 2023 10:32:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D659362A80
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3816C433EF;
+        Mon,  8 May 2023 11:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541947;
-        bh=NN+y6O8IajfjOcSalIZBOb2or+PXqa+pqr8O28XTn+w=;
+        s=korg; t=1683543903;
+        bh=QpxXgoxUhGNqJI4pJBMb/MmRzccyTDm2Fe/vexsKBg8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dv898TEwoBU6iW1bJ/UST7vdfqEFKua/rNNpJC1OHWfI2Ugo+vvaBDfwE3ZzROROF
-         /z+9ZF8bs3SeighiI96V4J+ng/jTuCpTORd2Q2354H1jOxX/5FxXzyAa9S4IivPtNN
-         7Vhd2crAQ+up7ncUAuESxhl0AhChmd19sopv+O88=
+        b=fzVYysEx3gJejzCHjAnykeVADiNfbEViRWyOtUaxdztgQBP8aPYEzs7JqxjvG5pts
+         jGzsUY04x3pp/VI1U2XDxYodrLn5mZUQ43K7SV/ComPCuJowFBs3OISCgn/2K6Z2Rr
+         p8J7R15s8nrkfVfI3SFEl3Z27cHUBzw1F3xQNuKE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patil Rajesh Reddy <Patil.Reddy@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-yu Tsai <wenst@chromium.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 246/663] platform/x86/amd/pmf: Move out of BIOS SMN pair for driver probe
-Date:   Mon,  8 May 2023 11:41:12 +0200
-Message-Id: <20230508094436.251316074@linuxfoundation.org>
+Subject: [PATCH 6.3 238/694] arm64: dts: mediatek: mt8192-asurada: Fix voltage constraint for Vgpu
+Date:   Mon,  8 May 2023 11:41:13 +0200
+Message-Id: <20230508094440.064971989@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,99 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit aec8298c093f052fc8a86f9411b69b23953b0edb ]
+[ Upstream commit ff4c868ba8df9dcd144ab4943a50adca1cf33ba2 ]
 
-The current SMN index used for the driver probe seems to be meant
-for the BIOS pair and there are potential concurrency problems that can
-occur with an inopportune SMI.
+The MT8192 SoC specifies a maximum voltage for the GPU's digital supply
+of 0.88V and the GPU OPPs are declaring a maximum voltage of 0.80V.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
-what amd_nb.c provides and this function has protections to ensure that
-only one caller can use it at a time.
+In order to keep the GPU voltage in the safe range, change the maximum
+voltage for mt6315@7's vbuck1 to 0.80V as sending, for any mistake,
+1.193V would be catastrophic.
 
-Fixes: da5ce22df5fe ("platform/x86/amd/pmf: Add support for PMF core layer")
-Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230406164807.50969-4-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 3183cb62b033 ("arm64: dts: mediatek: asurada: Add SPMI regulators")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-yu Tsai <wenst@chromium.org>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230301095523.428461-12-angelogioacchino.delregno@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/Kconfig |  1 +
- drivers/platform/x86/amd/pmf/core.c  | 22 +++++-----------------
- 2 files changed, 6 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/Kconfig b/drivers/platform/x86/amd/pmf/Kconfig
-index 6d89528c31779..d87986adf91e1 100644
---- a/drivers/platform/x86/amd/pmf/Kconfig
-+++ b/drivers/platform/x86/amd/pmf/Kconfig
-@@ -7,6 +7,7 @@ config AMD_PMF
- 	tristate "AMD Platform Management Framework"
- 	depends on ACPI && PCI
- 	depends on POWER_SUPPLY
-+	depends on AMD_NB
- 	select ACPI_PLATFORM_PROFILE
- 	help
- 	  This driver provides support for the AMD Platform Management Framework.
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index da23639071d79..0acc0b6221290 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -8,6 +8,7 @@
-  * Author: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-  */
- 
-+#include <asm/amd_nb.h>
- #include <linux/debugfs.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
-@@ -22,8 +23,6 @@
- #define AMD_PMF_REGISTER_ARGUMENT	0xA58
- 
- /* Base address of SMU for mapping physical address to virtual address */
--#define AMD_PMF_SMU_INDEX_ADDRESS	0xB8
--#define AMD_PMF_SMU_INDEX_DATA		0xBC
- #define AMD_PMF_MAPPING_SIZE		0x01000
- #define AMD_PMF_BASE_ADDR_OFFSET	0x10000
- #define AMD_PMF_BASE_ADDR_LO		0x13B102E8
-@@ -348,30 +347,19 @@ static int amd_pmf_probe(struct platform_device *pdev)
- 	}
- 
- 	dev->cpu_id = rdev->device;
--	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_LO);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
--		pci_dev_put(rdev);
--		return pcibios_err_to_errno(err);
--	}
- 
--	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_LO, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_LO);
- 		pci_dev_put(rdev);
- 		return pcibios_err_to_errno(err);
- 	}
- 
- 	base_addr_lo = val & AMD_PMF_BASE_ADDR_HI_MASK;
- 
--	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_HI);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
--		pci_dev_put(rdev);
--		return pcibios_err_to_errno(err);
--	}
--
--	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_HI, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_HI);
- 		pci_dev_put(rdev);
- 		return pcibios_err_to_errno(err);
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+index 9f12257ab4e7a..41f9692cbcd47 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+@@ -1400,7 +1400,7 @@
+ 				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <606250>;
+-				regulator-max-microvolt = <1193750>;
++				regulator-max-microvolt = <800000>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
+ 			};
 -- 
 2.39.2
 
