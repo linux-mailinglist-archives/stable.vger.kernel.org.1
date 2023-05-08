@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7C3D6FA5C3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C13F6FAD93
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234245AbjEHKM6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:12:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41388 "EHLO
+        id S235997AbjEHLff (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234224AbjEHKMq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB15A3A2B6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:41 -0700 (PDT)
+        with ESMTP id S236083AbjEHLfP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9B03E307
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:35:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A008623F0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84F0C433D2;
-        Mon,  8 May 2023 10:12:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40541630EE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:34:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EE9C433EF;
+        Mon,  8 May 2023 11:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540761;
-        bh=IOZYk8KpdKtsbW9Br6tBpxV20ZwRAxeWYvI6+1F/B7M=;
+        s=korg; t=1683545698;
+        bh=QCWwQmbbbuPpVyBF5rGNNbyKOpXZR9yyE+6SDlr/gFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kA6+2ga1mPM3JmlJ6z67uK1UgCK9T0byvf+AkYuHg3PCVwzbL8dK406NulUt4dbdD
-         pF3eE1g1AINqEeOAt+RMiwB0NW0hSWPCbNZtRJHqMaf9h5c7hq4lSifjccPUXzNK+2
-         4HzA60ev27yeNnWxVPbCrP6VVA+AfL32FT2bsyiw=
+        b=cgetVEPDVQ8bMq2XPNNmmmHYIUWL1f0pRCY9If1ropii/ag4+f/Jm1ANXMfuELMBV
+         dT7vSiEMrc8pIKdbgEMMoqJN93QtMK/Z39ATcEoF+/l+aZXCEogym5iCEbHoSJVyD7
+         FT91ADqnca/FA710u8nRCJ8nkb7T7RmtBHwFUdtc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 455/611] spi: bcm63xx: remove PM_SLEEP based conditional compilation
-Date:   Mon,  8 May 2023 11:44:57 +0200
-Message-Id: <20230508094436.944529030@linuxfoundation.org>
+Subject: [PATCH 5.15 097/371] arm64: dts: qcom: msm8998: Fix the PCI I/O port range
+Date:   Mon,  8 May 2023 11:44:58 +0200
+Message-Id: <20230508094815.890829301@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,46 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
+[ Upstream commit c30a27dcfe4545edbda1578b3a63ed6147519cdd ]
 
-Get rid of conditional compilation based on CONFIG_PM_SLEEP because
-it may introduce build issues with certain configs where it maybe disabled
-This is because if above config is not enabled the suspend-resume
-functions are never part of the code but the bcm63xx_spi_pm_ops struct
-still inits them to non-existent suspend-resume functions.
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI address
+(0x1b200000) specified in the ranges property for I/O region.
 
-Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
-
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b84dfd175c09 ("arm64: dts: qcom: msm8998: Add PCIe PHY and RC nodes")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-3-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 80fa0ef8909ca..0324ab3ce1c84 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -630,7 +630,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 5ddf9fa904aba..b7d72b0d579e4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -951,7 +951,7 @@
+ 			phy-names = "pciephy";
+ 			status = "disabled";
  
--#ifdef CONFIG_PM_SLEEP
- static int bcm63xx_spi_suspend(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
-@@ -657,7 +656,6 @@ static int bcm63xx_spi_resume(struct device *dev)
+-			ranges = <0x01000000 0x0 0x1b200000 0x1b200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x1b200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x1b300000 0x1b300000 0x0 0xd00000>;
  
- 	return 0;
- }
--#endif
- 
- static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
+ 			#interrupt-cells = <1>;
 -- 
 2.39.2
 
