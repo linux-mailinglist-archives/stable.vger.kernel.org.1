@@ -2,136 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 319E06FB4E6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 18:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A4876FB599
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 19:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233863AbjEHQQh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 12:16:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51792 "EHLO
+        id S233594AbjEHRBN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 13:01:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233267AbjEHQQg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 12:16:36 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2DDF49EE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:16:33 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f2548256d0so295785e9.1
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 09:16:33 -0700 (PDT)
+        with ESMTP id S232753AbjEHRBM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 13:01:12 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9F95586
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:01:11 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-7576deacbd6so109796485a.3
+        for <stable@vger.kernel.org>; Mon, 08 May 2023 10:01:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683562592; x=1686154592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PPrcBb2Ah0kfOoaFszvDkHKeVnCaFX5eQKXoC29Tzm8=;
-        b=7a026Pqh7GkM9PJFh1N/RqFv9MCaJ76Vn0sLpxnUhuQXnFScIwh8xXjLjL3pRuOp31
-         QhIvYBUWT9TVEptFtFteta78AdLwfnBPjIONsiwAxHpT3nDpC9e4mhTIO/6+2aHT1Uh1
-         Lb7scZfXXpDjHch6ARYEdiqozKOtW4pl57z6hPjf63j5tPxUCYV7nkZ9pvCsj4kHRiey
-         K00Z+14yjuvVya5MXoDG8a0e27Khpy1PDe6/RGphW8b/JEZZB0JPj43bCmYE3zJ9VVR9
-         fwy4QJaMVuct1ztQv8THE59zXE5MMHSGYmvoZVe5C7mDcQPqiG6WXQUtRx1qttIBo1yr
-         avAg==
+        d=linuxfoundation.org; s=google; t=1683565270; x=1686157270;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pG46GvARjz+oazbsADG8J8cWnfJfmTt3sQRcfy1HKus=;
+        b=ATdol1HmSHQUazAN5bA6BnwEwp9y0FBHM9J14a0hj4vzEDKl6CixxjJfghNwHuYIN4
+         0pPfE3ZsdA7ITznvX1+Yd5GbSFoQHkQxR+x4muhWqfvVxGNdtz3tVAdPp49sJOsbQkcK
+         1sBrKGWqYzFR5r51mvpWkutvlR534wQVq/XR4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683562592; x=1686154592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PPrcBb2Ah0kfOoaFszvDkHKeVnCaFX5eQKXoC29Tzm8=;
-        b=CGWsPXkjDyczxDyKU/OE0gMCaPnWn7dkLMUadGv4wBVi52oIAqBMqhZELZaIEMxkhL
-         i58dr3PXLwTp6bn/hVrrLjLOuyFAjLXozGdrXrAKEELfi+FO3kXud4Hq+fV61ytm+RoR
-         zz4sUBQNPXYvMf6tLKklZjoUbaDstSthRkevPP3QxW/z9NZqfMVEpmH2gU/GAunuFCQH
-         O9wQ3Kc4ycXs8EbTCr8lHZ7+nuELTDftjahUrdku0tu8+XGEycJ2iS01jsk6AoXIuF3L
-         ZMVxqSzdGaRY3R3sVhb9gRaXzhcJvDkgoyReSDu9m2y6Mkd0u5NMzbzlf/XPwD9PSK9b
-         DEcw==
-X-Gm-Message-State: AC+VfDwy/vS5USH0Z7eaRWBUmYsakfD/JuQbTK1KFcAPfC8hiEZdA4lE
-        D4opQcVl9FeH3w0yuK8P8Z5yi4kmhzB3tM/hfQrOjg==
-X-Google-Smtp-Source: ACHHUZ5hFRkJ5iedrb7N0JePgc5+ke55o/q2Hh5UpZffH2mYawRXdkataqjtbiL0ZQIMWnAgWk+A0oe3hbHyu9q23Jk=
-X-Received: by 2002:a05:600c:1d02:b0:3f4:2594:118a with SMTP id
- l2-20020a05600c1d0200b003f42594118amr235605wms.2.1683562592077; Mon, 08 May
- 2023 09:16:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230508140206.283708-1-kan.liang@linux.intel.com>
-In-Reply-To: <20230508140206.283708-1-kan.liang@linux.intel.com>
-From:   Stephane Eranian <eranian@google.com>
-Date:   Mon, 8 May 2023 09:16:20 -0700
-Message-ID: <CABPqkBSczJqEbA8M0HCdeqjddgDqpxapJYVYNuAS+EifJ+v+Dg@mail.gmail.com>
-Subject: Re: [PATCH] perf/x86/uncore: Correct the number of CHAs on SPR
-To:     kan.liang@linux.intel.com
-Cc:     peterz@infradead.org, mingo@redhat.com,
-        linux-kernel@vger.kernel.org, ak@linux.intel.com,
+        d=1e100.net; s=20221208; t=1683565270; x=1686157270;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pG46GvARjz+oazbsADG8J8cWnfJfmTt3sQRcfy1HKus=;
+        b=f7/sXMIoHvobYnBklB+RVrqwee4wzt1PZ7uG7m/tWmrKGUXr5EU8f1yba4qD/rKTc2
+         xzjYNbbBX3+RDqp3UQ5YxmHRg4Cx2QrC7i/IIEn7P0MgaNMh12CTUslZqlnWoM5sw+Xh
+         ZLtGd8B2e4qHS/+/nTaPHzZCMI6I0wVg6IU+tAhHwdOsJNriqgaMV4N1MhColf9M628f
+         wHV/I6ZgiRIuGqI8FRSoFzO3dEzGv4/Rsvi+qjH6i/QTYJFZRVmeKDAt5rrjKDO9Gwti
+         2/gGmdHl75z8EpFwKzYHHA8JeDdwtwO+CrhMRWHLVjo04xj22CjRHZZkX4AdZ6F5cD76
+         t6ZA==
+X-Gm-Message-State: AC+VfDzw9mqHfyE05gt7J0lwXpA3rd09oiMcAii4eey0pt3QUN4ApBfw
+        VyoNc0q4po4KGQBFO8oMZhR4/g==
+X-Google-Smtp-Source: ACHHUZ6EviS0DiWUQqkPgKZaZTcNKQ6DELL/M2y3GvjJG/dI7iFQoV90KXUcrfI/Pe3f5cykAulygg==
+X-Received: by 2002:a05:6214:407:b0:5f1:5f73:aed8 with SMTP id z7-20020a056214040700b005f15f73aed8mr17720169qvx.20.1683565269653;
+        Mon, 08 May 2023 10:01:09 -0700 (PDT)
+Received: from meerkat.local (bras-base-mtrlpq5031w-grc-30-209-226-106-132.dsl.bell.ca. [209.226.106.132])
+        by smtp.gmail.com with ESMTPSA id ph14-20020a0562144a4e00b0061b5b8dbbbbsm115082qvb.57.2023.05.08.10.01.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 May 2023 10:01:09 -0700 (PDT)
+Date:   Mon, 8 May 2023 13:01:07 -0400
+From:   Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Ronald Warsow <rwarsow@gmx.de>, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: no sha256sum for 6.3.1 (was Re: Linux 6.3.1)
+Message-ID: <20230508-length-distress-784870@meerkat>
+References: <f0497747-2318-7355-6ea6-ff01f9eb97ef@gmx.de>
+ <2023050617-stardom-granola-32e3@gregkh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2023050617-stardom-granola-32e3@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 8, 2023 at 7:05=E2=80=AFAM <kan.liang@linux.intel.com> wrote:
->
-> From: Kan Liang <kan.liang@linux.intel.com>
->
-> The number of CHAs from the discovery table on some SPR variants is
-> incorrect, because of a firmware issue. An accurate number can be read
-> from the MSR UNC_CBO_CONFIG.
->
-> Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server C=
-HA support")
-> Reported-by: Stephane Eranian <eranian@google.com>
-> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+On Sat, May 06, 2023 at 09:38:35AM +0900, Greg KH wrote:
+> > fetching new kernels via script:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/mricon/korg-helpers.git/tree/get-verified-tarball
+> > 
+> > it seems
+> > https://cdn.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
+> > 
+> > doesn't contain a hash for 6.3.1
+> 
+> Yeah, that does look odd.
+> 
+> Konstantin, I think you said you updated some things on the servers
+> right after I did the 6.3.1 release, would this have caused the
+> signature to not be recorded in this file?
 
-Tested-by: Stephane Eranian <eranian@google.com>
+Sorry, this got fixed last week. I forgot to mount the key storage after the
+final reboot. It should be all good now.
 
->
-> Cc: stable@vger.kernel.org
-> ---
->  arch/x86/events/intel/uncore_snbep.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel=
-/uncore_snbep.c
-> index 7d1199554fe3..54abd93828bf 100644
-> --- a/arch/x86/events/intel/uncore_snbep.c
-> +++ b/arch/x86/events/intel/uncore_snbep.c
-> @@ -6138,6 +6138,7 @@ static struct intel_uncore_type spr_uncore_mdf =3D =
-{
->  };
->
->  #define UNCORE_SPR_NUM_UNCORE_TYPES            12
-> +#define UNCORE_SPR_CHA                         0
->  #define UNCORE_SPR_IIO                         1
->  #define UNCORE_SPR_IMC                         6
->  #define UNCORE_SPR_UPI                         8
-> @@ -6448,12 +6449,22 @@ static int uncore_type_max_boxes(struct intel_unc=
-ore_type **types,
->         return max + 1;
->  }
->
-> +#define SPR_MSR_UNC_CBO_CONFIG         0x2FFE
-> +
->  void spr_uncore_cpu_init(void)
->  {
-> +       struct intel_uncore_type *type;
-> +       u64 num_cbo;
-> +
->         uncore_msr_uncores =3D uncore_get_uncores(UNCORE_ACCESS_MSR,
->                                                 UNCORE_SPR_MSR_EXTRA_UNCO=
-RES,
->                                                 spr_msr_uncores);
->
-> +       type =3D uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CH=
-A);
-> +       if (type) {
-> +               rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
-> +               type->num_boxes =3D num_cbo;
-> +       }
->         spr_uncore_iio_free_running.num_boxes =3D uncore_type_max_boxes(u=
-ncore_msr_uncores, UNCORE_SPR_IIO);
->  }
->
-> --
-> 2.35.1
->
+-K
