@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A303D6FADA1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABB5B6FA8B3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234020AbjEHLga (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
+        id S234683AbjEHKom (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236039AbjEHLgE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:36:04 -0400
+        with ESMTP id S235032AbjEHKoA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E263F54E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:35:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415362A9DC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5848B632DE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A59EC4339B;
-        Mon,  8 May 2023 11:35:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 760BE62857
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA50C433D2;
+        Mon,  8 May 2023 10:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545716;
-        bh=o9jYW+j3DxMaQOSQTG5S8ILw6Ru1uIHKkL9QzBvnldY=;
+        s=korg; t=1683542565;
+        bh=StmVsysVd4p1rnWmO2N1aV30ZfZtt5Np3+56CZNJ9fE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g+nTiN5w0Dy4KvurpLCtDB1j6VKFJPYv0wXRUWrLRk/KqEjTKoVd8HfZa5UqTnAEQ
-         QnDOZhr25W97+n4J1/YPpyviLJHnThkWWk69pi3PZda54Vb6yHAj2rgNFgtQUxEww8
-         D8va61BsI9OXMLPuNplN3JmWAO5xiHhVRfyGiJ9E=
+        b=pAxJeIPlK+z7uUij5Ey+RE3rWUmj1Kziqm+tCrrqxVvqyUYz5mAVoJKtxZTwz27PM
+         owGu5E/V3IJebdB74YZH+7NSB08dq7s9Zat85yOxJeDx6yRR21woGW9YAPU49zdrrI
+         bERSop2mmrxdwm0ZOUWP9TRh1hcBI57QVdU66B4g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 101/371] arm64: dts: qcom: sm8250: Fix the PCI I/O port range
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 476/663] HID: amd_sfh: Increase sensor command timeout for SFH1.1
 Date:   Mon,  8 May 2023 11:45:02 +0200
-Message-Id: <20230508094816.042714243@linuxfoundation.org>
+Message-Id: <20230508094443.730044147@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit e115a4495db687898b8d91d4f16c2cf55bbf167c ]
+[ Upstream commit 571dc8f59dd477037bb5a029e8d1b5a4a4d9dd63 ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
-(0x60200000, 0x40200000, 0x64200000) specified in the ranges property for
-I/O region.
+The initialization of SFH1.1 sensors may take some time. Hence, increase
+sensor command timeouts in order to obtain status responses within a
+maximum timeout.
 
-While at it, let's use the missing 0x prefix for the addresses.
-
-Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-9-manivannan.sadhasivam@linaro.org
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 4e3b772a8bded..181e32b8a2728 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -1393,8 +1393,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
+index 6f6047f7f12e9..4f81ef2d4f56e 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
+@@ -16,11 +16,11 @@ static int amd_sfh_wait_response(struct amd_mp2_dev *mp2, u8 sid, u32 cmd_id)
+ {
+ 	struct sfh_cmd_response cmd_resp;
  
--			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
--				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
+-	/* Get response with status within a max of 1600 ms timeout */
++	/* Get response with status within a max of 10000 ms timeout */
+ 	if (!readl_poll_timeout(mp2->mmio + AMD_P2C_MSG(0), cmd_resp.resp,
+ 				(cmd_resp.response.response == 0 &&
+ 				cmd_resp.response.cmd_id == cmd_id && (sid == 0xff ||
+-				cmd_resp.response.sensor_id == sid)), 500, 1600000))
++				cmd_resp.response.sensor_id == sid)), 500, 10000000))
+ 		return cmd_resp.response.response;
  
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -1494,7 +1494,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
- 
- 			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
-@@ -1602,7 +1602,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x01000000 0x0 0x64200000 0x0 0x64200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x64200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x64300000 0x0 0x64300000 0x0 0x3d00000>;
- 
- 			interrupts = <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
+ 	return -1;
 -- 
 2.39.2
 
