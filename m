@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B0326FA605
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D7B86FAC09
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234282AbjEHKPW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44390 "EHLO
+        id S235555AbjEHLUH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234244AbjEHKPU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:20 -0400
+        with ESMTP id S235556AbjEHLUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7166B1FF1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E5037C79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F19636246C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162FAC433D2;
-        Mon,  8 May 2023 10:15:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B38EE62C66
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A805CC433EF;
+        Mon,  8 May 2023 11:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540918;
-        bh=R35TOCD5/AImE9JcPW5JHgmoxxXW/TS0osNgU9G0TiI=;
+        s=korg; t=1683544798;
+        bh=nwKkOU7fRPygFwl7dL6Q7xGSBIAmTYHM68+y6GOfCVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=woizfE9oOrxnrjmlZF07mt4saxx1hvzx3pYbmDV9L8AwcBw7RLOZEAHVh8UfKTw+o
-         jY4qyQJQ62NNm21W5YBrSZSuXXud8yL1gNee0hQWkfKV0zDym/SpWY0RjcJClJB2zT
-         3QXNGRqNFtx0jpQyYHsi5217qeauh9suQMwkWb/U=
+        b=VAVuvEVtLtJlBjy9V6Gut9MWFy/AVDKwZHlIs0+yR7a/TBY13dS/p/lIfWf+t/myG
+         AdnW91Ja3LbSKmPjW0+07jCOxPJVs0vn46x+QSfhnXFZAiT9xnNJAI+FutCgPOlbwF
+         ChdQwVRdzdPWm1Npvt6tCV9frtgNqh/turBd91u0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        John Stultz <jstultz@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 520/611] timekeeping: Fix references to nonexistent ktime_get_fast_ns()
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 527/694] HID: amd_sfh: Add support for shutdown operation
 Date:   Mon,  8 May 2023 11:46:02 +0200
-Message-Id: <20230508094438.928830919@linuxfoundation.org>
+Message-Id: <20230508094451.419077378@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 158009f1b4a33bc0f354b994eea361362bd83226 ]
+[ Upstream commit 1353ecaf1830d6d1b74f3225378a9498b4e14fdd ]
 
-There was never a function named ktime_get_fast_ns().
-Presumably these should refer to ktime_get_mono_fast_ns() instead.
+As soon as the system is booted after shutdown, the sensors may remain in
+a weird state and fail to initialize. Therefore, all sensors should be
+turned off during shutdown.
 
-Fixes: c1ce406e80fb15fa ("timekeeping: Fix up function documentation for the NMI safe accessors")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/r/06df7b3cbd94f016403bbf6cd2b38e4368e7468f.1682516546.git.geert+renesas@glider.be
+Fixes: 4f567b9f8141 ("SFH: PCIe driver to add support of AMD sensor fusion hub")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timekeeping.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/amd-sfh-hid/amd_sfh_pcie.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index f72b9f1de178e..221c8c404973a 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -526,7 +526,7 @@ EXPORT_SYMBOL_GPL(ktime_get_raw_fast_ns);
-  * partially updated.  Since the tk->offs_boot update is a rare event, this
-  * should be a rare occurrence which postprocessing should be able to handle.
-  *
-- * The caveats vs. timestamp ordering as documented for ktime_get_fast_ns()
-+ * The caveats vs. timestamp ordering as documented for ktime_get_mono_fast_ns()
-  * apply as well.
-  */
- u64 notrace ktime_get_boot_fast_ns(void)
-@@ -576,7 +576,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
- /**
-  * ktime_get_real_fast_ns: - NMI safe and fast access to clock realtime.
-  *
-- * See ktime_get_fast_ns() for documentation of the time stamp ordering.
-+ * See ktime_get_mono_fast_ns() for documentation of the time stamp ordering.
-  */
- u64 ktime_get_real_fast_ns(void)
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+index 47774b9ab3de0..c936d6a51c0cd 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
+@@ -367,6 +367,14 @@ static int amd_mp2_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
+ 	return devm_add_action_or_reset(&pdev->dev, privdata->mp2_ops->remove, privdata);
+ }
+ 
++static void amd_sfh_shutdown(struct pci_dev *pdev)
++{
++	struct amd_mp2_dev *mp2 = pci_get_drvdata(pdev);
++
++	if (mp2 && mp2->mp2_ops)
++		mp2->mp2_ops->stop_all(mp2);
++}
++
+ static int __maybe_unused amd_mp2_pci_resume(struct device *dev)
  {
+ 	struct amd_mp2_dev *mp2 = dev_get_drvdata(dev);
+@@ -401,6 +409,7 @@ static struct pci_driver amd_mp2_pci_driver = {
+ 	.id_table	= amd_mp2_pci_tbl,
+ 	.probe		= amd_mp2_pci_probe,
+ 	.driver.pm	= &amd_mp2_pm_ops,
++	.shutdown	= amd_sfh_shutdown,
+ };
+ module_pci_driver(amd_mp2_pci_driver);
+ 
 -- 
 2.39.2
 
