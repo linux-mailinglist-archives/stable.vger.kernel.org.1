@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5219A6FA5D0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2B66FA8DA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234212AbjEHKNS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41226 "EHLO
+        id S235006AbjEHKpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234215AbjEHKNN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1123ACD2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:08 -0700 (PDT)
+        with ESMTP id S235086AbjEHKp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C1926EB0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87E5B62409
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9874DC433D2;
-        Mon,  8 May 2023 10:13:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 115F462870
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07808C433EF;
+        Mon,  8 May 2023 10:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540786;
-        bh=AvlC6jby9WcWnwHi4pEkn4vCyN6TtCGY9T9q7n61Wvc=;
+        s=korg; t=1683542684;
+        bh=nd36LqgPgXbyzTWgYP9hgPLGp15vgwclQBLev1kFv8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o1uV8rgelDSjS8IzlXxJDGSCWvduW8qBiLYn3MF5wtK9xejyi1xHfKKpHl5NRNd7Y
-         ZS7peVpUhPR9tO6iicdQZBuB/Sr7uqhNiSDZ1e9ab9w/SPOnGmU7Nj1F2iQTPNxPWu
-         9yaMBuOY28oqXTz3ZnPw6b0+H/ksvVslrjzxUVdU=
+        b=EiSCqw8hIIRlbdP7z2yUMWXsAMnaPX52EWDpPBYA7DQML4/QkMDNgkyRbTw75XYap
+         iu1HtJioYAoK1sdS42rfM0hNWWdzJIpCPRTm+Y2/4oU+A+3mPW/HWR2HdeHLDPeHUu
+         G99a+NnSbu+D3E5U2Jpq2LwisoQxYJAoynYvH38U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Schspa Shi <schspa@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Dwaine Gonyier <dgonyier@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 498/611] RDMA/srpt: Add a check for valid mad_agent pointer
+Subject: [PATCH 6.2 514/663] sched/rt: Fix bad task migration for rt tasks
 Date:   Mon,  8 May 2023 11:45:40 +0200
-Message-Id: <20230508094438.236425197@linuxfoundation.org>
+Message-Id: <20230508094445.431689554@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,110 +58,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Schspa Shi <schspa@gmail.com>
 
-[ Upstream commit eca5cd9474cd26d62f9756f536e2e656d3f62f3a ]
+[ Upstream commit feffe5bb274dd3442080ef0e4053746091878799 ]
 
-When unregistering MAD agent, srpt module has a non-null check
-for 'mad_agent' pointer before invoking ib_unregister_mad_agent().
-This check can pass if 'mad_agent' variable holds an error value.
-The 'mad_agent' can have an error value for a short window when
-srpt_add_one() and srpt_remove_one() is executed simultaneously.
+Commit 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
+allows find_lock_lowest_rq() to pick a task with migration disabled.
+The purpose of the commit is to push the current running task on the
+CPU that has the migrate_disable() task away.
 
-In srpt module, added a valid pointer check for 'sport->mad_agent'
-before unregistering MAD agent.
+However, there is a race which allows a migrate_disable() task to be
+migrated. Consider:
 
-This issue can hit when RoCE driver unregisters ib_device
+  CPU0                                    CPU1
+  push_rt_task
+    check is_migration_disabled(next_task)
 
-Stack Trace:
-------------
-BUG: kernel NULL pointer dereference, address: 000000000000004d
-PGD 145003067 P4D 145003067 PUD 2324fe067 PMD 0
-Oops: 0002 [#1] PREEMPT SMP NOPTI
-CPU: 10 PID: 4459 Comm: kworker/u80:0 Kdump: loaded Tainted: P
-Hardware name: Dell Inc. PowerEdge R640/06NR82, BIOS 2.5.4 01/13/2020
-Workqueue: bnxt_re bnxt_re_task [bnxt_re]
-RIP: 0010:_raw_spin_lock_irqsave+0x19/0x40
-Call Trace:
-  ib_unregister_mad_agent+0x46/0x2f0 [ib_core]
-  IPv6: ADDRCONF(NETDEV_CHANGE): bond0: link becomes ready
-  ? __schedule+0x20b/0x560
-  srpt_unregister_mad_agent+0x93/0xd0 [ib_srpt]
-  srpt_remove_one+0x20/0x150 [ib_srpt]
-  remove_client_context+0x88/0xd0 [ib_core]
-  bond0: (slave p2p1): link status definitely up, 100000 Mbps full duplex
-  disable_device+0x8a/0x160 [ib_core]
-  bond0: active interface up!
-  ? kernfs_name_hash+0x12/0x80
- (NULL device *): Bonding Info Received: rdev: 000000006c0b8247
-  __ib_unregister_device+0x42/0xb0 [ib_core]
- (NULL device *):         Master: mode: 4 num_slaves:2
-  ib_unregister_device+0x22/0x30 [ib_core]
- (NULL device *):         Slave: id: 105069936 name:p2p1 link:0 state:0
-  bnxt_re_stopqps_and_ib_uninit+0x83/0x90 [bnxt_re]
-  bnxt_re_alloc_lag+0x12e/0x4e0 [bnxt_re]
+                                          task not running and
+                                          migration_disabled == 0
 
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230406042549.507328-1-saravanan.vajravel@broadcom.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+    find_lock_lowest_rq(next_task, rq);
+      _double_lock_balance(this_rq, busiest);
+        raw_spin_rq_unlock(this_rq);
+        double_rq_lock(this_rq, busiest);
+          <<wait for busiest rq>>
+                                              <wakeup>
+                                          task become running
+                                          migrate_disable();
+                                            <context out>
+    deactivate_task(rq, next_task, 0);
+    set_task_cpu(next_task, lowest_rq->cpu);
+      WARN_ON_ONCE(is_migration_disabled(p));
+
+Fixes: 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
+Signed-off-by: Schspa Shi <schspa@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Tested-by: Dwaine Gonyier <dgonyier@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ kernel/sched/deadline.c | 1 +
+ kernel/sched/rt.c       | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 3c3fae738c3ed..25e799dba999e 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -549,6 +549,7 @@ static int srpt_format_guid(char *buf, unsigned int size, const __be64 *guid)
-  */
- static int srpt_refresh_port(struct srpt_port *sport)
- {
-+	struct ib_mad_agent *mad_agent;
- 	struct ib_mad_reg_req reg_req;
- 	struct ib_port_modify port_modify;
- 	struct ib_port_attr port_attr;
-@@ -593,24 +594,26 @@ static int srpt_refresh_port(struct srpt_port *sport)
- 		set_bit(IB_MGMT_METHOD_GET, reg_req.method_mask);
- 		set_bit(IB_MGMT_METHOD_SET, reg_req.method_mask);
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 0d97d54276cc8..238bdb36f8848 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2246,6 +2246,7 @@ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
+ 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
+ 				     task_on_cpu(rq, task) ||
+ 				     !dl_task(task) ||
++				     is_migration_disabled(task) ||
+ 				     !task_on_rq_queued(task))) {
+ 				double_unlock_balance(rq, later_rq);
+ 				later_rq = NULL;
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 0a11f44adee57..4f5796dd26a56 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2000,11 +2000,15 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ 			 * the mean time, task could have
+ 			 * migrated already or had its affinity changed.
+ 			 * Also make sure that it wasn't scheduled on its rq.
++			 * It is possible the task was scheduled, set
++			 * "migrate_disabled" and then got preempted, so we must
++			 * check the task migration disable flag here too.
+ 			 */
+ 			if (unlikely(task_rq(task) != rq ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+ 				     task_on_cpu(rq, task) ||
+ 				     !rt_task(task) ||
++				     is_migration_disabled(task) ||
+ 				     !task_on_rq_queued(task))) {
  
--		sport->mad_agent = ib_register_mad_agent(sport->sdev->device,
--							 sport->port,
--							 IB_QPT_GSI,
--							 &reg_req, 0,
--							 srpt_mad_send_handler,
--							 srpt_mad_recv_handler,
--							 sport, 0);
--		if (IS_ERR(sport->mad_agent)) {
-+		mad_agent = ib_register_mad_agent(sport->sdev->device,
-+						  sport->port,
-+						  IB_QPT_GSI,
-+						  &reg_req, 0,
-+						  srpt_mad_send_handler,
-+						  srpt_mad_recv_handler,
-+						  sport, 0);
-+		if (IS_ERR(mad_agent)) {
- 			pr_err("%s-%d: MAD agent registration failed (%ld). Note: this is expected if SR-IOV is enabled.\n",
- 			       dev_name(&sport->sdev->device->dev), sport->port,
--			       PTR_ERR(sport->mad_agent));
-+			       PTR_ERR(mad_agent));
- 			sport->mad_agent = NULL;
- 			memset(&port_modify, 0, sizeof(port_modify));
- 			port_modify.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP;
- 			ib_modify_port(sport->sdev->device, sport->port, 0,
- 				       &port_modify);
--
-+			return 0;
- 		}
-+
-+		sport->mad_agent = mad_agent;
- 	}
- 
- 	return 0;
+ 				double_unlock_balance(rq, lowest_rq);
 -- 
 2.39.2
 
