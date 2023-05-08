@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A796FA4C2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B56BB6FAAE9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233944AbjEHKDE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59052 "EHLO
+        id S233519AbjEHLHx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233960AbjEHKDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 716462E6A2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:52 -0700 (PDT)
+        with ESMTP id S233537AbjEHLHj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9972C906
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB518622EB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD82EC433EF;
-        Mon,  8 May 2023 10:02:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0537E62AC8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C2DC433D2;
+        Mon,  8 May 2023 11:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540171;
-        bh=96dNKuJP4PiWompaW8BIUDBKHiI+2cxwQWqWEjNDkgs=;
+        s=korg; t=1683544002;
+        bh=JZhxGPy9vuPpv2nuO200kZU8uvZn5QP4bT+aCccuFnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EOeASqxobcPtWuCMOPz9hlRbqaMmFFXbKIMfwHPzkAJ6oBF5Rf3Av037QgWJDOE4a
-         64EY4tneQQ0YGX6dbwlTTH8W+hemKl38QAZFjSRFQNPXW6dz0CgE19VaRFPirVXWME
-         rcpggt8pOOzMyjUQ32IYb8rKHKiG2kvxgcTt8b28=
+        b=js4A07RKc6V5VKzBNCD7tUC9hQhNdzqZhAQ6WiZ79DVzb/gDeWICTzLg0r5dDzrad
+         PRZodEnMe9mkyz/esCvtxf1+uAUkmT0VksHXnXtgyM0H3n8AhAu3TQImiXJ8f4HdTG
+         gCEMnxRs/U+fjdGlsRm0RQHKBdMaHSvrnSUs4Z1g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Lew <quic_clew@quicinc.com>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/611] rpmsg: glink: Propagate TX failures in intentless mode as well
+Subject: [PATCH 6.3 270/694] arm64: dts: sc7180: Rename qspi data12 as data23
 Date:   Mon,  8 May 2023 11:41:45 +0200
-Message-Id: <20230508094430.951513192@linuxfoundation.org>
+Message-Id: <20230508094441.021809098@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,59 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 7a68f9fa97357a0f2073c9c31ed4101da4fce93e ]
+[ Upstream commit d84f8f2687bdc67f20262e822b206419bcfd0038 ]
 
-As support for splitting transmission over several messages using
-TX_DATA_CONT was introduced it does not immediately return the return
-value of qcom_glink_tx().
+There are 4 qspi data pins: data0, data1, data2, and data3. Currently
+we have a shared pin state for data0 and data1 (2 lane config) and a
+pin state for data2 and data3 (you'd enable both this and the 2 lane
+state for 4 lanes). The second state is obviously misnamed. Fix it.
 
-The result is that in the intentless case (i.e. intent == NULL), the
-code will continue to send all additional chunks. This is wasteful, and
-it's possible that the send operation could incorrectly indicate
-success, if the last chunk fits in the TX fifo.
-
-Fix the condition.
-
-Fixes: 8956927faed3 ("rpmsg: glink: Add TX_DATA_CONT command while sending")
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Fixes: ba3fc6496366 ("arm64: dts: sc7180: Add qupv3_0 and qupv3_1")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230418163018.785524-2-quic_bjorande@quicinc.com
+Link: https://lore.kernel.org/r/20230323102605.1.Ifc1b5be04653f4ab119698a5944bfecded2080d6@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index 35df1b0a515bf..67e7664efb0dc 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1348,8 +1348,9 @@ static int __qcom_glink_send(struct glink_channel *channel,
- 	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index ebfa21e9ed8a8..fe62ce516c4e4 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -1540,7 +1540,7 @@
+ 				function = "qspi_data";
+ 			};
  
- 	/* Mark intent available if we failed */
--	if (ret && intent) {
--		intent->in_use = false;
-+	if (ret) {
-+		if (intent)
-+			intent->in_use = false;
- 		return ret;
- 	}
- 
-@@ -1370,8 +1371,9 @@ static int __qcom_glink_send(struct glink_channel *channel,
- 				    chunk_size, wait);
- 
- 		/* Mark intent available if we failed */
--		if (ret && intent) {
--			intent->in_use = false;
-+		if (ret) {
-+			if (intent)
-+				intent->in_use = false;
- 			break;
- 		}
- 	}
+-			qspi_data12: qspi-data12-state {
++			qspi_data23: qspi-data23-state {
+ 				pins = "gpio66", "gpio67";
+ 				function = "qspi_data";
+ 			};
 -- 
 2.39.2
 
