@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535816FA8C1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D66276FAD7C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235056AbjEHKpS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47706 "EHLO
+        id S235882AbjEHLfM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235075AbjEHKox (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8908619D4B;
-        Mon,  8 May 2023 03:43:30 -0700 (PDT)
+        with ESMTP id S235908AbjEHLfA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF9AA3D213
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E31936287A;
-        Mon,  8 May 2023 10:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42F6C433EF;
-        Mon,  8 May 2023 10:43:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E40063069
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D2EC433EF;
+        Mon,  8 May 2023 11:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542609;
-        bh=GnuTKGySGlfr07daI7HAiFk0boCdBF/4zjHSMFSEV+4=;
+        s=korg; t=1683545570;
+        bh=I7TWc+zbSwUy1238BHBZPc4xTNJ7aBbXXL03QZk5LpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h3/LHtu1ozRR7W7tnEZitWUqWZpJf74bOPkgUT9iSPHOcDARrOV+E4yD6mcmsqVm0
-         /2aLkT8ip9mfyYUAodd1n2wEH5FB8ZfySCtT6pUuRKg3Bzo0R4HMxH0EZ5MIxMgmJP
-         iRIOthgNqzJqrkxnBDmXe+lM7UMVIMGaOe0NbxF4=
+        b=PX3RM9SvcCLBXuxxxxiZJVX9EJU1E3KBKxFxhD6RIYpDNhI8iXZp+347bAHIkOwas
+         NpiyqAQYrd1pgPibv9MHHNd0t/xm6e3EY705BCkuIJ/dhoe/OZYeS/o+Sm0RlnC2SX
+         VcPZbqAa25t3F94g7RwxwN/Z/TSUAOVCReQzmJas=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        patches@lists.linux.dev, Feng Xu <feng.f.xu@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 458/663] linux/vt_buffer.h: allow either builtin or modular for macros
+Subject: [PATCH 5.15 083/371] EDAC/skx: Fix overflows on the DRAM row address mapping arrays
 Date:   Mon,  8 May 2023 11:44:44 +0200
-Message-Id: <20230508094442.979541492@linuxfoundation.org>
+Message-Id: <20230508094815.391531422@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,56 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 2b76ffe81e32afd6d318dc4547e2ba8c46207b77 ]
+[ Upstream commit 71b1e3ba3fed5a34c5fac6d3a15c2634b04c1eb7 ]
 
-Fix build errors on ARCH=alpha when CONFIG_MDA_CONSOLE=m.
-This allows the ARCH macros to be the only ones defined.
+The current DRAM row address mapping arrays skx_{open,close}_row[]
+only support ranks with sizes up to 16G. Decoding a rank address
+to a DRAM row address for a 32G rank by using either one of the
+above arrays by the skx_edac driver, will result in an overflow on
+the array.
 
-In file included from ../drivers/video/console/mdacon.c:37:
-../arch/alpha/include/asm/vga.h:17:40: error: expected identifier or '(' before 'volatile'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                                        ^~~~~~~~
-../include/linux/vt_buffer.h:24:34: note: in definition of macro 'scr_writew'
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                  ^~~~
-../include/linux/vt_buffer.h:24:40: error: expected ')' before '=' token
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                        ^
-../arch/alpha/include/asm/vga.h:17:20: note: in expansion of macro 'scr_writew'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                    ^~~~~~~~~~
-../arch/alpha/include/asm/vga.h:25:29: error: expected identifier or '(' before 'volatile'
-   25 | static inline u16 scr_readw(volatile const u16 *addr)
-      |                             ^~~~~~~~
+For a 32G rank, the most significant DRAM row address bit (the
+bit17) is mapped from the bit34 of the rank address. Add this new
+mapping item to both arrays to fix the overflow issue.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Link: https://lore.kernel.org/r/20230329021529.16188-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ec656bdf43a ("EDAC, skx_edac: Add EDAC driver for Skylake")
+Reported-by: Feng Xu <feng.f.xu@intel.com>
+Tested-by: Feng Xu <feng.f.xu@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20230211011728.71764-1-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vt_buffer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/skx_base.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/vt_buffer.h b/include/linux/vt_buffer.h
-index 848db1b1569ff..919d999a8c1db 100644
---- a/include/linux/vt_buffer.h
-+++ b/include/linux/vt_buffer.h
-@@ -16,7 +16,7 @@
+diff --git a/drivers/edac/skx_base.c b/drivers/edac/skx_base.c
+index 1abc020d49ab6..984c93c8825f0 100644
+--- a/drivers/edac/skx_base.c
++++ b/drivers/edac/skx_base.c
+@@ -510,7 +510,7 @@ static bool skx_rir_decode(struct decoded_addr *res)
+ }
  
- #include <linux/string.h>
+ static u8 skx_close_row[] = {
+-	15, 16, 17, 18, 20, 21, 22, 28, 10, 11, 12, 13, 29, 30, 31, 32, 33
++	15, 16, 17, 18, 20, 21, 22, 28, 10, 11, 12, 13, 29, 30, 31, 32, 33, 34
+ };
  
--#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_MDA_CONSOLE)
-+#if IS_ENABLED(CONFIG_VGA_CONSOLE) || IS_ENABLED(CONFIG_MDA_CONSOLE)
- #include <asm/vga.h>
- #endif
+ static u8 skx_close_column[] = {
+@@ -518,7 +518,7 @@ static u8 skx_close_column[] = {
+ };
  
+ static u8 skx_open_row[] = {
+-	14, 15, 16, 20, 28, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33
++	14, 15, 16, 20, 28, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34
+ };
+ 
+ static u8 skx_open_column[] = {
 -- 
 2.39.2
 
