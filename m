@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A816FAA4F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 753C96FA6E3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235498AbjEHLBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:01:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33576 "EHLO
+        id S234519AbjEHKZU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:25:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235504AbjEHLBI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:01:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F0D92E811
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:00:04 -0700 (PDT)
+        with ESMTP id S234510AbjEHKY4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:24:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0582525F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:24:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C905F62A0C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:00:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D558FC433D2;
-        Mon,  8 May 2023 11:00:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3900625B4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:24:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A367AC433EF;
+        Mon,  8 May 2023 10:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543603;
-        bh=OHs6TpBgypNBA9W8AcNr7xMM8GZpMB6ixPocoqwR4Ho=;
+        s=korg; t=1683541462;
+        bh=j1HV1S8YJYVExwIh2QmUEhKOlaXk7iGP3obXbkb+I1A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mD2NhhKkjPOSxSsJkdqvgo4RWAduELD9C4aslmbRfqJiCUZRwSt6zqyBuYajjcdJT
-         iNcpmZvZKMIiwIWOGpc2FACkx32rll0Qcf4VHgLHf48UOLV9fE5bIFbd47+AEDVUdq
-         09punt3Kk0fW0hJbx4DxPkerKPatrV2FpFlmaXmA=
+        b=t/QXos9zIl1wJ0CW3TB9j5V7Q3BFZSIATxXJ7LSjHNNbKtxaiWqVWYGcSJOpxKFhG
+         ze6bKCRhoszHQRSt1uHXlVFbzEA5VhM7e3+GswGduLhgQuUcq2ZM4sMpNye2U8B8LH
+         vtQMew3VMuEZhwiSD8BbOU641z+q/4gZoIDYHb24=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Song Liu <song@kernel.org>
-Subject: [PATCH 6.3 113/694] md/raid5: Improve performance for sequential IO
+        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 122/663] selinux: fix Makefile dependencies of flask.h
 Date:   Mon,  8 May 2023 11:39:08 +0200
-Message-Id: <20230508094436.137020985@linuxfoundation.org>
+Message-Id: <20230508094432.480276448@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,119 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit fc05e06e6098ca2c28f7a10da0e00aeea20fa59e upstream.
+[ Upstream commit bcab1adeaad4b39a1e04cb98979a367d08253f03 ]
 
-Commit 7e55c60acfbb ("md/raid5: Pivot raid5_make_request()") changed the
-order in which requests for underlying disks are created. Since for
-large sequential IO adding of requests frequently races with md_raid5
-thread submitting bios to underlying disks, this results in a change in
-IO pattern because intermediate states of new order of request creation
-result in more smaller discontiguous requests. For RAID5 on top of three
-rotational disks our performance testing revealed this results in
-regression in write throughput:
+Make the flask.h target depend on the genheaders binary instead of
+classmap.h to ensure that it is rebuilt if any of the dependencies of
+genheaders are changed.
 
-iozone -a -s 131072000 -y 4 -q 8 -i 0 -i 1 -R
+Notably this fixes flask.h not being rebuilt when
+initial_sid_to_string.h is modified.
 
-before 7e55c60acfbb:
-              KB  reclen   write rewrite    read    reread
-       131072000       4  493670  525964   524575   513384
-       131072000       8  540467  532880   512028   513703
-
-after 7e55c60acfbb:
-              KB  reclen   write rewrite    read    reread
-       131072000       4  421785  456184   531278   509248
-       131072000       8  459283  456354   528449   543834
-
-To reduce the amount of discontiguous requests we can start generating
-requests with the stripe with the lowest chunk offset as that has the
-best chance of being adjacent to IO queued previously. This improves the
-performance to:
-              KB  reclen   write rewrite    read    reread
-       131072000       4  497682  506317   518043   514559
-       131072000       8  514048  501886   506453   504319
-
-restoring big part of the regression.
-
-Fixes: 7e55c60acfbb ("md/raid5: Pivot raid5_make_request()")
-Cc: stable@vger.kernel.org # v6.0+
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230417171537.17899-1-jack@suse.cz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8753f6bec352 ("selinux: generate flask headers during kernel build")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c |   45 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ security/selinux/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -6079,6 +6079,38 @@ out_release:
- 	return ret;
- }
+diff --git a/security/selinux/Makefile b/security/selinux/Makefile
+index 7761624448826..103c2776478a7 100644
+--- a/security/selinux/Makefile
++++ b/security/selinux/Makefile
+@@ -23,8 +23,8 @@ ccflags-y := -I$(srctree)/security/selinux -I$(srctree)/security/selinux/include
+ $(addprefix $(obj)/,$(selinux-y)): $(obj)/flask.h
  
-+/*
-+ * If the bio covers multiple data disks, find sector within the bio that has
-+ * the lowest chunk offset in the first chunk.
-+ */
-+static sector_t raid5_bio_lowest_chunk_sector(struct r5conf *conf,
-+					      struct bio *bi)
-+{
-+	int sectors_per_chunk = conf->chunk_sectors;
-+	int raid_disks = conf->raid_disks;
-+	int dd_idx;
-+	struct stripe_head sh;
-+	unsigned int chunk_offset;
-+	sector_t r_sector = bi->bi_iter.bi_sector & ~((sector_t)RAID5_STRIPE_SECTORS(conf)-1);
-+	sector_t sector;
-+
-+	/* We pass in fake stripe_head to get back parity disk numbers */
-+	sector = raid5_compute_sector(conf, r_sector, 0, &dd_idx, &sh);
-+	chunk_offset = sector_div(sector, sectors_per_chunk);
-+	if (sectors_per_chunk - chunk_offset >= bio_sectors(bi))
-+		return r_sector;
-+	/*
-+	 * Bio crosses to the next data disk. Check whether it's in the same
-+	 * chunk.
-+	 */
-+	dd_idx++;
-+	while (dd_idx == sh.pd_idx || dd_idx == sh.qd_idx)
-+		dd_idx++;
-+	if (dd_idx >= raid_disks)
-+		return r_sector;
-+	return r_sector + sectors_per_chunk - chunk_offset;
-+}
-+
- static bool raid5_make_request(struct mddev *mddev, struct bio * bi)
- {
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-@@ -6150,6 +6182,17 @@ static bool raid5_make_request(struct md
- 	}
- 	md_account_bio(mddev, &bi);
+ quiet_cmd_flask = GEN     $(obj)/flask.h $(obj)/av_permissions.h
+-      cmd_flask = scripts/selinux/genheaders/genheaders $(obj)/flask.h $(obj)/av_permissions.h
++      cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
  
-+	/*
-+	 * Lets start with the stripe with the lowest chunk offset in the first
-+	 * chunk. That has the best chances of creating IOs adjacent to
-+	 * previous IOs in case of sequential IO and thus creates the most
-+	 * sequential IO pattern. We don't bother with the optimization when
-+	 * reshaping as the performance benefit is not worth the complexity.
-+	 */
-+	if (likely(conf->reshape_progress == MaxSector))
-+		logical_sector = raid5_bio_lowest_chunk_sector(conf, bi);
-+	s = (logical_sector - ctx.first_sector) >> RAID5_STRIPE_SHIFT(conf);
-+
- 	add_wait_queue(&conf->wait_for_overlap, &wait);
- 	while (1) {
- 		res = make_stripe_request(mddev, conf, &ctx, logical_sector,
-@@ -6178,7 +6221,7 @@ static bool raid5_make_request(struct md
- 			continue;
- 		}
- 
--		s = find_first_bit(ctx.sectors_to_do, stripe_cnt);
-+		s = find_next_bit_wrap(ctx.sectors_to_do, stripe_cnt, s);
- 		if (s == stripe_cnt)
- 			break;
- 
+ targets += flask.h av_permissions.h
+-$(obj)/flask.h: $(src)/include/classmap.h FORCE
++$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
+ 	$(call if_changed,flask)
+-- 
+2.39.2
+
 
 
