@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 429CB6FA7FA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C346FA513
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234868AbjEHKgi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:36:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
+        id S234030AbjEHKFk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:05:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234808AbjEHKgO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:14 -0400
+        with ESMTP id S234027AbjEHKFj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:05:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E895D2891F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC56430178
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64FD662793
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFDDC433D2;
-        Mon,  8 May 2023 10:35:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B15362332
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF11C433EF;
+        Mon,  8 May 2023 10:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542156;
-        bh=xVWEwo7p5kVaKev6Tr3b2FO0fOqVI04SPm/moheSsMk=;
+        s=korg; t=1683540337;
+        bh=f1tNpB+XPbJ2xhRvptj6Ppk9KzS6k10H1EqMh583MVU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yY8Q5u7GynQbV4vH06BrNWSM7fU54KLfsZoBWeUqmxKMQ6pO73roHwIgcWZv8Ehll
-         /Q012aE1zQ5PFlV9nrk9W9AzmJNhos1crxnUV68rLVDDFZFfIL1nxCXOFzzGFRB4DD
-         qGfnpkhBiCbllky1dq/5FconPiKj7QoMWsorAv0Q=
+        b=YuVcmEy+0+DKeHvYrKo4x7QROnQ4qCVk/7XFLIpQg4GUR9pwlt2FjQI/mDNjHLA/n
+         JaEICoko7H40TvR2mozNLEzZEQAzXAv3N0+Ut8oKuy4JnHYcK+TZgbxilHhok716Xe
+         5FFCsZxCC5tKUjuqI5PiKVqcQiRqWyj5ZmY7zGms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@linux.dev>,
-        Stanislav Fomichev <sdf@google.com>,
-        YiFei Zhu <zhuyifei@google.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Shuchang Li <lishuchang@hust.edu.cn>,
+        Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 343/663] selftests/bpf: Wait for receive in cg_storage_multi test
+Subject: [PATCH 6.1 327/611] scsi: lpfc: Fix ioremap issues in lpfc_sli4_pci_mem_setup()
 Date:   Mon,  8 May 2023 11:42:49 +0200
-Message-Id: <20230508094439.278043922@linuxfoundation.org>
+Message-Id: <20230508094433.065933303@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Shuchang Li <lishuchang@hust.edu.cn>
 
-[ Upstream commit 5af607a861d43ffff830fc1890033e579ec44799 ]
+[ Upstream commit 91a0c0c1413239d0548b5aac4c82f38f6d53a91e ]
 
-In some cases the loopback latency might be large enough, causing
-the assertion on invocations to be run before ingress prog getting
-executed. The assertion would fail and the test would flake.
+When if_type equals zero and pci_resource_start(pdev, PCI_64BIT_BAR4)
+returns false, drbl_regs_memmap_p is not remapped. This passes a NULL
+pointer to iounmap(), which can trigger a WARN() on certain arches.
 
-This can be reliably reproduced by arbitrarily increasing the
-loopback latency (thanks to [1]):
-  tc qdisc add dev lo root handle 1: htb default 12
-  tc class add dev lo parent 1:1 classid 1:12 htb rate 20kbps ceil 20kbps
-  tc qdisc add dev lo parent 1:12 netem delay 100ms
+When if_type equals six and pci_resource_start(pdev, PCI_64BIT_BAR4)
+returns true, drbl_regs_memmap_p may has been remapped and
+ctrl_regs_memmap_p is not remapped. This is a resource leak and passes a
+NULL pointer to iounmap().
 
-Fix this by waiting on the receive end, instead of instantly
-returning to the assert. The call to read() will wait for the
-default SO_RCVTIMEO timeout of 3 seconds provided by
-start_server().
+To fix these issues, we need to add null checks before iounmap(), and
+change some goto labels.
 
-[1] https://gist.github.com/kstevens715/4598301
-
-Reported-by: Martin KaFai Lau <martin.lau@linux.dev>
-Link: https://lore.kernel.org/bpf/9c5c8b7e-1d89-a3af-5400-14fde81f4429@linux.dev/
-Fixes: 3573f384014f ("selftests/bpf: Test CGROUP_STORAGE behavior on shared egress + ingress")
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Link: https://lore.kernel.org/r/20230405193354.1956209-1-zhuyifei@google.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: 1351e69fc6db ("scsi: lpfc: Add push-to-adapter support to sli4")
+Signed-off-by: Shuchang Li <lishuchang@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230404072133.1022-1-lishuchang@hust.edu.cn
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_init.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c b/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-index 621c572221918..63ee892bc7573 100644
---- a/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-@@ -56,8 +56,9 @@ static bool assert_storage_noexist(struct bpf_map *map, const void *key)
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 2f38c8d5a48a9..d54fd153cb115 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -11971,7 +11971,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 				goto out_iounmap_all;
+ 		} else {
+ 			error = -ENOMEM;
+-			goto out_iounmap_all;
++			goto out_iounmap_ctrl;
+ 		}
+ 	}
  
- static bool connect_send(const char *cgroup_path)
- {
--	bool res = true;
- 	int server_fd = -1, client_fd = -1;
-+	char message[] = "message";
-+	bool res = true;
+@@ -11989,7 +11989,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 			dev_err(&pdev->dev,
+ 			   "ioremap failed for SLI4 HBA dpp registers.\n");
+ 			error = -ENOMEM;
+-			goto out_iounmap_ctrl;
++			goto out_iounmap_all;
+ 		}
+ 		phba->pci_bar4_memmap_p = phba->sli4_hba.dpp_regs_memmap_p;
+ 	}
+@@ -12014,9 +12014,11 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 	return 0;
  
- 	if (join_cgroup(cgroup_path))
- 		goto out_clean;
-@@ -70,7 +71,10 @@ static bool connect_send(const char *cgroup_path)
- 	if (client_fd < 0)
- 		goto out_clean;
+ out_iounmap_all:
+-	iounmap(phba->sli4_hba.drbl_regs_memmap_p);
++	if (phba->sli4_hba.drbl_regs_memmap_p)
++		iounmap(phba->sli4_hba.drbl_regs_memmap_p);
+ out_iounmap_ctrl:
+-	iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
++	if (phba->sli4_hba.ctrl_regs_memmap_p)
++		iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
+ out_iounmap_conf:
+ 	iounmap(phba->sli4_hba.conf_regs_memmap_p);
  
--	if (send(client_fd, "message", strlen("message"), 0) < 0)
-+	if (send(client_fd, &message, sizeof(message), 0) < 0)
-+		goto out_clean;
-+
-+	if (read(server_fd, &message, sizeof(message)) < 0)
- 		goto out_clean;
- 
- 	res = false;
 -- 
 2.39.2
 
