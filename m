@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 052006FA664
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6446FA9B5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234396AbjEHKS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48742 "EHLO
+        id S235406AbjEHKzH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:55:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234394AbjEHKSz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:55 -0400
+        with ESMTP id S235151AbjEHKyU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61513D04B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD36E1711
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBC6262505
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0583BC4339B;
-        Mon,  8 May 2023 10:18:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A41D60DE9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438CCC433D2;
+        Mon,  8 May 2023 10:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541133;
-        bh=Nhkt5pijSeEMJN2dJ99XtCmUeNJrKaNNXYb9he2rH3E=;
+        s=korg; t=1683543215;
+        bh=8r1z6+zlLX5kZZjRsnVMbks8vuLgQJO5hKGKMtuVvsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PHkyOoi54T2c75jiZABlRZgNZwioXmxEHhsAYEVJn2sXAtwGloUCK93ZYpcmArzo4
-         X3fIjnJ1rKh5etOp2xnlZ8ZOn6z9rNqt67w6yHojj8v8gIuJdiu7j+IZTZ3XT6R42c
-         IEsk0mHCXW7S2ujr+hJrABOTLxwRv2G/p/Q8P7P4=
+        b=uaOPmi/623/eoHEpeQLZczV+VcnpUi3jA+aGul7hdZgzFv2yVISwDGvGDHNTkqDAK
+         2c11/BhWOySkbTX5JViSuKia684PloOxhXB/J9Zr1ZbeS0gT4o+RWCh1ZNiUHIwhd7
+         DeBg//xcp3cXcMPzPcFJVn+GNoxcdAU+CxRngbTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 017/663] asm-generic/io.h: suppress endianness warnings for readq() and writeq()
-Date:   Mon,  8 May 2023 11:37:23 +0200
-Message-Id: <20230508094428.984590997@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.3 009/694] IMA: allow/fix UML builds
+Date:   Mon,  8 May 2023 11:37:24 +0200
+Message-Id: <20230508094432.937829595@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,50 +57,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit d564fa1ff19e893e2971d66e5c8f49dc1cdc8ffc ]
+commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
 
-Commit c1d55d50139b ("asm-generic/io.h: Fix sparse warnings on
-big-endian architectures") missed fixing the 64-bit accessors.
+UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
+NO_IOMEM).
 
-Arnd explains in the attached link why the casts are necessary, even if
-__raw_readq() and __raw_writeq() do not take endian-specific types.
+Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
 
-Link: https://lore.kernel.org/lkml/9105d6fc-880b-4734-857d-e3d30b87ccf6@app.fastmail.com/
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
+ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
+ld: security/integrity/ima/ima_init.o: in function `ima_init':
+ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
+ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
+ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
+ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
+
+Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
+is set, regardless of the UML Kconfig setting.
+This updates TCG_TPM from =m to =y and fixes the linker errors.
+
+Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
+Cc: Stable <stable@vger.kernel.org> # v5.14+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/io.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/integrity/ima/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index 4c44a29b5e8ef..d78c3056c98f9 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -236,7 +236,7 @@ static inline u64 readq(const volatile void __iomem *addr)
- 
- 	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
- 	__io_br();
--	val = __le64_to_cpu(__raw_readq(addr));
-+	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
- 	__io_ar(val);
- 	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
- 	return val;
-@@ -287,7 +287,7 @@ static inline void writeq(u64 value, volatile void __iomem *addr)
- {
- 	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- 	__io_bw();
--	__raw_writeq(__cpu_to_le64(value), addr);
-+	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
- 	__io_aw();
- 	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
- }
--- 
-2.39.2
-
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -8,7 +8,7 @@ config IMA
+ 	select CRYPTO_HMAC
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_HASH_INFO
+-	select TCG_TPM if HAS_IOMEM && !UML
++	select TCG_TPM if HAS_IOMEM
+ 	select TCG_TIS if TCG_TPM && X86
+ 	select TCG_CRB if TCG_TPM && ACPI
+ 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
 
 
