@@ -2,266 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B96B26FA999
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04CA06FACA8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235256AbjEHKxb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:53:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
+        id S235712AbjEHL0u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235259AbjEHKw7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:59 -0400
+        with ESMTP id S235720AbjEHL0m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B01FF29FC8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92123C1D2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E06862941
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A342C433EF;
-        Mon,  8 May 2023 10:52:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5122062CB6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6608DC433D2;
+        Mon,  8 May 2023 11:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543144;
-        bh=V3le+qVrWxpVBhfvah3fhqSvZ1G7EY9kYVojJjE3teE=;
+        s=korg; t=1683545182;
+        bh=rOH1ss8kEGYw0aRvGuspzfaz6QYauXSlvNI3STWi7A4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YJM65lOdqgdJvsH3kww+NRw+HDTsiuaSzX/BjdvQLTnmvMZwxLBUT8xcHLBYiML+C
-         WO+bgdkI3Nrwtq2hMla1D0teyE6OD393VI1Sm1ab1KfjTcH3HKIhm/Di1LhzMlGruB
-         mFFUP3v6g9Ir0XErhWUkuNB8s6IxqiRKUAVGsOsQ=
+        b=S0O1VwPU2GfqLpKcDPZMV4VaryubKye4Bv92WXgPh6twWnQjvGgbQRzh8H+XzZvxZ
+         KNEuV8LfoEBhsShcZpFNEvRYEDlq7UBEmjMDsgEL7wSMwlRgeQ1pQ7SJRX6IxnAHY5
+         Ak6t2oXU8DtOwdbgdMaZMu8KOQWumDSLQq22RoFk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Sokolowski <jan.sokolowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Gurucharan G <gurucharanx.g@intel.com>
-Subject: [PATCH 6.2 660/663] i40e: Remove unused i40e status codes
-Date:   Mon,  8 May 2023 11:48:06 +0200
-Message-Id: <20230508094451.613124793@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 652/694] dmaengine: at_xdmac: disable/enable clock directly on suspend/resume
+Date:   Mon,  8 May 2023 11:48:07 +0200
+Message-Id: <20230508094457.061648530@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Sokolowski <jan.sokolowski@intel.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-commit 9d135352bb5d885a7b21417103423301a40c1b8b upstream.
+[ Upstream commit 2de5ddb5e68c94b781b3789bca1ce52000d7d0e0 ]
 
-In an effort to remove i40e status codes and replace them
-with standard kernel errornums, unused values of i40e_status_code
-were removed.
+Runtime PM APIs for at_xdmac just plays with clk_enable()/clk_disable()
+letting aside the clk_prepare()/clk_unprepare() that needs to be
+executed as the clock is also prepared on probe. Thus instead of using
+runtime PM force suspend/resume APIs use
+clk_disable_unprepare() + pm_runtime_put_noidle() on suspend and
+clk_prepare_enable() + pm_runtime_get_noresume() on resume. This
+approach as been chosen instead of using runtime PM force suspend/resume
+with clk_unprepare()/clk_prepare() as it looks simpler and the final
+code is better.
 
-Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Tested-by: Gurucharan G <gurucharanx.g@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it added the missing pm_runtime_mark_last_busy() on suspend before
+decrementing the reference counter.
+
+Fixes: 650b0e990cbd ("dmaengine: at_xdmac: add runtime pm support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-2-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c |   70 --------------------------
- drivers/net/ethernet/intel/i40e/i40e_status.h |   35 -------------
- 2 files changed, 105 deletions(-)
+ drivers/dma/at_xdmac.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -138,106 +138,40 @@ const char *i40e_stat_str(struct i40e_hw
- 		return "I40E_ERR_NVM";
- 	case I40E_ERR_NVM_CHECKSUM:
- 		return "I40E_ERR_NVM_CHECKSUM";
--	case I40E_ERR_PHY:
--		return "I40E_ERR_PHY";
- 	case I40E_ERR_CONFIG:
- 		return "I40E_ERR_CONFIG";
- 	case I40E_ERR_PARAM:
- 		return "I40E_ERR_PARAM";
--	case I40E_ERR_MAC_TYPE:
--		return "I40E_ERR_MAC_TYPE";
- 	case I40E_ERR_UNKNOWN_PHY:
- 		return "I40E_ERR_UNKNOWN_PHY";
--	case I40E_ERR_LINK_SETUP:
--		return "I40E_ERR_LINK_SETUP";
--	case I40E_ERR_ADAPTER_STOPPED:
--		return "I40E_ERR_ADAPTER_STOPPED";
- 	case I40E_ERR_INVALID_MAC_ADDR:
- 		return "I40E_ERR_INVALID_MAC_ADDR";
- 	case I40E_ERR_DEVICE_NOT_SUPPORTED:
- 		return "I40E_ERR_DEVICE_NOT_SUPPORTED";
--	case I40E_ERR_PRIMARY_REQUESTS_PENDING:
--		return "I40E_ERR_PRIMARY_REQUESTS_PENDING";
--	case I40E_ERR_INVALID_LINK_SETTINGS:
--		return "I40E_ERR_INVALID_LINK_SETTINGS";
--	case I40E_ERR_AUTONEG_NOT_COMPLETE:
--		return "I40E_ERR_AUTONEG_NOT_COMPLETE";
- 	case I40E_ERR_RESET_FAILED:
- 		return "I40E_ERR_RESET_FAILED";
--	case I40E_ERR_SWFW_SYNC:
--		return "I40E_ERR_SWFW_SYNC";
- 	case I40E_ERR_NO_AVAILABLE_VSI:
- 		return "I40E_ERR_NO_AVAILABLE_VSI";
- 	case I40E_ERR_NO_MEMORY:
- 		return "I40E_ERR_NO_MEMORY";
- 	case I40E_ERR_BAD_PTR:
- 		return "I40E_ERR_BAD_PTR";
--	case I40E_ERR_RING_FULL:
--		return "I40E_ERR_RING_FULL";
--	case I40E_ERR_INVALID_PD_ID:
--		return "I40E_ERR_INVALID_PD_ID";
--	case I40E_ERR_INVALID_QP_ID:
--		return "I40E_ERR_INVALID_QP_ID";
--	case I40E_ERR_INVALID_CQ_ID:
--		return "I40E_ERR_INVALID_CQ_ID";
--	case I40E_ERR_INVALID_CEQ_ID:
--		return "I40E_ERR_INVALID_CEQ_ID";
--	case I40E_ERR_INVALID_AEQ_ID:
--		return "I40E_ERR_INVALID_AEQ_ID";
- 	case I40E_ERR_INVALID_SIZE:
- 		return "I40E_ERR_INVALID_SIZE";
--	case I40E_ERR_INVALID_ARP_INDEX:
--		return "I40E_ERR_INVALID_ARP_INDEX";
--	case I40E_ERR_INVALID_FPM_FUNC_ID:
--		return "I40E_ERR_INVALID_FPM_FUNC_ID";
--	case I40E_ERR_QP_INVALID_MSG_SIZE:
--		return "I40E_ERR_QP_INVALID_MSG_SIZE";
--	case I40E_ERR_QP_TOOMANY_WRS_POSTED:
--		return "I40E_ERR_QP_TOOMANY_WRS_POSTED";
--	case I40E_ERR_INVALID_FRAG_COUNT:
--		return "I40E_ERR_INVALID_FRAG_COUNT";
- 	case I40E_ERR_QUEUE_EMPTY:
- 		return "I40E_ERR_QUEUE_EMPTY";
--	case I40E_ERR_INVALID_ALIGNMENT:
--		return "I40E_ERR_INVALID_ALIGNMENT";
--	case I40E_ERR_FLUSHED_QUEUE:
--		return "I40E_ERR_FLUSHED_QUEUE";
--	case I40E_ERR_INVALID_PUSH_PAGE_INDEX:
--		return "I40E_ERR_INVALID_PUSH_PAGE_INDEX";
--	case I40E_ERR_INVALID_IMM_DATA_SIZE:
--		return "I40E_ERR_INVALID_IMM_DATA_SIZE";
- 	case I40E_ERR_TIMEOUT:
- 		return "I40E_ERR_TIMEOUT";
--	case I40E_ERR_OPCODE_MISMATCH:
--		return "I40E_ERR_OPCODE_MISMATCH";
--	case I40E_ERR_CQP_COMPL_ERROR:
--		return "I40E_ERR_CQP_COMPL_ERROR";
--	case I40E_ERR_INVALID_VF_ID:
--		return "I40E_ERR_INVALID_VF_ID";
--	case I40E_ERR_INVALID_HMCFN_ID:
--		return "I40E_ERR_INVALID_HMCFN_ID";
--	case I40E_ERR_BACKING_PAGE_ERROR:
--		return "I40E_ERR_BACKING_PAGE_ERROR";
--	case I40E_ERR_NO_PBLCHUNKS_AVAILABLE:
--		return "I40E_ERR_NO_PBLCHUNKS_AVAILABLE";
--	case I40E_ERR_INVALID_PBLE_INDEX:
--		return "I40E_ERR_INVALID_PBLE_INDEX";
- 	case I40E_ERR_INVALID_SD_INDEX:
- 		return "I40E_ERR_INVALID_SD_INDEX";
- 	case I40E_ERR_INVALID_PAGE_DESC_INDEX:
- 		return "I40E_ERR_INVALID_PAGE_DESC_INDEX";
- 	case I40E_ERR_INVALID_SD_TYPE:
- 		return "I40E_ERR_INVALID_SD_TYPE";
--	case I40E_ERR_MEMCPY_FAILED:
--		return "I40E_ERR_MEMCPY_FAILED";
- 	case I40E_ERR_INVALID_HMC_OBJ_INDEX:
- 		return "I40E_ERR_INVALID_HMC_OBJ_INDEX";
- 	case I40E_ERR_INVALID_HMC_OBJ_COUNT:
- 		return "I40E_ERR_INVALID_HMC_OBJ_COUNT";
--	case I40E_ERR_INVALID_SRQ_ARM_LIMIT:
--		return "I40E_ERR_INVALID_SRQ_ARM_LIMIT";
--	case I40E_ERR_SRQ_ENABLED:
--		return "I40E_ERR_SRQ_ENABLED";
- 	case I40E_ERR_ADMIN_QUEUE_ERROR:
- 		return "I40E_ERR_ADMIN_QUEUE_ERROR";
- 	case I40E_ERR_ADMIN_QUEUE_TIMEOUT:
-@@ -248,14 +182,10 @@ const char *i40e_stat_str(struct i40e_hw
- 		return "I40E_ERR_ADMIN_QUEUE_FULL";
- 	case I40E_ERR_ADMIN_QUEUE_NO_WORK:
- 		return "I40E_ERR_ADMIN_QUEUE_NO_WORK";
--	case I40E_ERR_BAD_IWARP_CQE:
--		return "I40E_ERR_BAD_IWARP_CQE";
- 	case I40E_ERR_NVM_BLANK_MODE:
- 		return "I40E_ERR_NVM_BLANK_MODE";
- 	case I40E_ERR_NOT_IMPLEMENTED:
- 		return "I40E_ERR_NOT_IMPLEMENTED";
--	case I40E_ERR_PE_DOORBELL_NOT_ENABLED:
--		return "I40E_ERR_PE_DOORBELL_NOT_ENABLED";
- 	case I40E_ERR_DIAG_TEST_FAILED:
- 		return "I40E_ERR_DIAG_TEST_FAILED";
- 	case I40E_ERR_NOT_READY:
---- a/drivers/net/ethernet/intel/i40e/i40e_status.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_status.h
-@@ -9,65 +9,30 @@ enum i40e_status_code {
- 	I40E_SUCCESS				= 0,
- 	I40E_ERR_NVM				= -1,
- 	I40E_ERR_NVM_CHECKSUM			= -2,
--	I40E_ERR_PHY				= -3,
- 	I40E_ERR_CONFIG				= -4,
- 	I40E_ERR_PARAM				= -5,
--	I40E_ERR_MAC_TYPE			= -6,
- 	I40E_ERR_UNKNOWN_PHY			= -7,
--	I40E_ERR_LINK_SETUP			= -8,
--	I40E_ERR_ADAPTER_STOPPED		= -9,
- 	I40E_ERR_INVALID_MAC_ADDR		= -10,
- 	I40E_ERR_DEVICE_NOT_SUPPORTED		= -11,
--	I40E_ERR_PRIMARY_REQUESTS_PENDING	= -12,
--	I40E_ERR_INVALID_LINK_SETTINGS		= -13,
--	I40E_ERR_AUTONEG_NOT_COMPLETE		= -14,
- 	I40E_ERR_RESET_FAILED			= -15,
--	I40E_ERR_SWFW_SYNC			= -16,
- 	I40E_ERR_NO_AVAILABLE_VSI		= -17,
- 	I40E_ERR_NO_MEMORY			= -18,
- 	I40E_ERR_BAD_PTR			= -19,
--	I40E_ERR_RING_FULL			= -20,
--	I40E_ERR_INVALID_PD_ID			= -21,
--	I40E_ERR_INVALID_QP_ID			= -22,
--	I40E_ERR_INVALID_CQ_ID			= -23,
--	I40E_ERR_INVALID_CEQ_ID			= -24,
--	I40E_ERR_INVALID_AEQ_ID			= -25,
- 	I40E_ERR_INVALID_SIZE			= -26,
--	I40E_ERR_INVALID_ARP_INDEX		= -27,
--	I40E_ERR_INVALID_FPM_FUNC_ID		= -28,
--	I40E_ERR_QP_INVALID_MSG_SIZE		= -29,
--	I40E_ERR_QP_TOOMANY_WRS_POSTED		= -30,
--	I40E_ERR_INVALID_FRAG_COUNT		= -31,
- 	I40E_ERR_QUEUE_EMPTY			= -32,
--	I40E_ERR_INVALID_ALIGNMENT		= -33,
--	I40E_ERR_FLUSHED_QUEUE			= -34,
--	I40E_ERR_INVALID_PUSH_PAGE_INDEX	= -35,
--	I40E_ERR_INVALID_IMM_DATA_SIZE		= -36,
- 	I40E_ERR_TIMEOUT			= -37,
--	I40E_ERR_OPCODE_MISMATCH		= -38,
--	I40E_ERR_CQP_COMPL_ERROR		= -39,
--	I40E_ERR_INVALID_VF_ID			= -40,
--	I40E_ERR_INVALID_HMCFN_ID		= -41,
--	I40E_ERR_BACKING_PAGE_ERROR		= -42,
--	I40E_ERR_NO_PBLCHUNKS_AVAILABLE		= -43,
--	I40E_ERR_INVALID_PBLE_INDEX		= -44,
- 	I40E_ERR_INVALID_SD_INDEX		= -45,
- 	I40E_ERR_INVALID_PAGE_DESC_INDEX	= -46,
- 	I40E_ERR_INVALID_SD_TYPE		= -47,
--	I40E_ERR_MEMCPY_FAILED			= -48,
- 	I40E_ERR_INVALID_HMC_OBJ_INDEX		= -49,
- 	I40E_ERR_INVALID_HMC_OBJ_COUNT		= -50,
--	I40E_ERR_INVALID_SRQ_ARM_LIMIT		= -51,
--	I40E_ERR_SRQ_ENABLED			= -52,
- 	I40E_ERR_ADMIN_QUEUE_ERROR		= -53,
- 	I40E_ERR_ADMIN_QUEUE_TIMEOUT		= -54,
- 	I40E_ERR_BUF_TOO_SHORT			= -55,
- 	I40E_ERR_ADMIN_QUEUE_FULL		= -56,
- 	I40E_ERR_ADMIN_QUEUE_NO_WORK		= -57,
--	I40E_ERR_BAD_IWARP_CQE			= -58,
- 	I40E_ERR_NVM_BLANK_MODE			= -59,
- 	I40E_ERR_NOT_IMPLEMENTED		= -60,
--	I40E_ERR_PE_DOORBELL_NOT_ENABLED	= -61,
- 	I40E_ERR_DIAG_TEST_FAILED		= -62,
- 	I40E_ERR_NOT_READY			= -63,
- 	I40E_NOT_SUPPORTED			= -64,
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index 1f0fab180f8f1..f654ecaafb906 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -2130,7 +2130,11 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
+ 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
+ 
+ 	at_xdmac_off(atxdmac);
+-	return pm_runtime_force_suspend(atxdmac->dev);
++	pm_runtime_mark_last_busy(atxdmac->dev);
++	pm_runtime_put_noidle(atxdmac->dev);
++	clk_disable_unprepare(atxdmac->clk);
++
++	return 0;
+ }
+ 
+ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
+@@ -2142,10 +2146,12 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
+ 	int			i;
+ 	int ret;
+ 
+-	ret = pm_runtime_force_resume(atxdmac->dev);
+-	if (ret < 0)
++	ret = clk_prepare_enable(atxdmac->clk);
++	if (ret)
+ 		return ret;
+ 
++	pm_runtime_get_noresume(atxdmac->dev);
++
+ 	at_xdmac_axi_config(pdev);
+ 
+ 	/* Clear pending interrupts. */
+-- 
+2.39.2
+
 
 
