@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED8C36FAAEA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 599676FA4C3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233143AbjEHLHz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45874 "EHLO
+        id S233913AbjEHKDF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:03:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjEHLHl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:41 -0400
+        with ESMTP id S233964AbjEHKDD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30DC940FD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8511725713
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BEF162AB4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31340C433D2;
-        Mon,  8 May 2023 11:06:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6307E622E4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD3AC433EF;
+        Mon,  8 May 2023 10:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544005;
-        bh=4yzpv1lESWxUI8QSCHjR9Ibt5YWLU0734K7jP7alsBA=;
+        s=korg; t=1683540173;
+        bh=C3TNWy7E2eTHc/6V+meOjr38etecp82m9YMJVtbCKiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fpt56W6pf0vmybhOojloM/fB4M3mBPbuPj3yO4u3weucuIk/C9gVFQg63QLEulZJp
-         cClfHcN7Uz4OS2DB2Y7xrvFAr5vkOAS6KZGHpp2+0LEIi/Z1qlXyd7tRSu4cxRgbOG
-         DIUwX81eARVeFW2h49TGkC+Xafx2c/D4yo3LltwU=
+        b=THvWW5BFKpNEmH/6XqtxQ87foScsCKwz1stctI88kBRV893rlsLdIsSYhydrREjZ2
+         x3j4tnnBDBLAsEr0+WS2D75Ea2FbozsUuiezcyn2IY9QfvMEJ88fRl6bbaRT3pyp7r
+         m35waENIDNPtD1SV4UmN46du6BMzDgM1sNhJGwPc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+        =?UTF-8?q?Tom=C3=A1=C5=A1=20Pecka?= <tomas.pecka@cesnet.cz>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 271/694] arm64: dts: sc7280: Rename qspi data12 as data23
+Subject: [PATCH 6.1 264/611] hwmon: (pmbus/fsp-3y) Fix functionality bitmask in FSP-3Y YM-2151E
 Date:   Mon,  8 May 2023 11:41:46 +0200
-Message-Id: <20230508094441.050850145@linuxfoundation.org>
+Message-Id: <20230508094430.980857636@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Tomáš Pecka <tomas.pecka@cesnet.cz>
 
-[ Upstream commit 14acf21c0d3f7b7298ffcd2e5b5db4a476ec6202 ]
+[ Upstream commit 93822f5161a2dc57a60b95b35b3cb8589f53413e ]
 
-There are 4 qspi data pins: data0, data1, data2, and data3. Currently
-we have a shared pin state for data0 and data1 (2 lane config) and a
-pin state for data2 and data3 (you'd enable both this and the 2 lane
-state for 4 lanes). The second state is obviously misnamed. Fix it.
+The bit flags in pmbus_driver_info functionality for YM-2151E chip were
+joined with a comma operator instead of a bitwise OR. This means that
+the last constant PMBUS_HAVE_IIN was not OR-ed with the other
+PM_BUS_HAVE_* constants for this page but it initialized the next element
+of the func array (which was not accessed from anywhere because of the
+number of pages).
 
-Fixes: 7720ea001b52 ("arm64: dts: qcom: sc7280: Add QSPI node")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230323102605.2.I4043491bb24b1e92267c5033d76cdb0fe60934da@changeid
+However, there is no need for setting PMBUS_HAVE_IIN in the 5Vsb page
+because this command does not seem to be paged. Obviously, the device
+only has one IIN sensor, so it doesn't make sense to query it again from
+the second page.
+
+Fixes: 1734b4135a62 ("hwmon: Add driver for fsp-3y PSUs and PDUs")
+Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Signed-off-by: Tomáš Pecka <tomas.pecka@cesnet.cz>
+Link: https://lore.kernel.org/r/20230420171939.212040-1-tomas.pecka@cesnet.cz
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/fsp-3y.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 98c7e534f1ab9..95b3819bf4c0e 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -4353,7 +4353,7 @@
- 				function = "qspi_data";
- 			};
- 
--			qspi_data12: qspi-data12-state {
-+			qspi_data23: qspi-data23-state {
- 				pins = "gpio16", "gpio17";
- 				function = "qspi_data";
- 			};
+diff --git a/drivers/hwmon/pmbus/fsp-3y.c b/drivers/hwmon/pmbus/fsp-3y.c
+index aec294cc72d1f..c7469d2cdedcf 100644
+--- a/drivers/hwmon/pmbus/fsp-3y.c
++++ b/drivers/hwmon/pmbus/fsp-3y.c
+@@ -180,7 +180,6 @@ static struct pmbus_driver_info fsp3y_info[] = {
+ 			PMBUS_HAVE_FAN12,
+ 		.func[YM2151_PAGE_5VSB_LOG] =
+ 			PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT,
+-			PMBUS_HAVE_IIN,
+ 		.read_word_data = fsp3y_read_word_data,
+ 		.read_byte_data = fsp3y_read_byte_data,
+ 	},
 -- 
 2.39.2
 
