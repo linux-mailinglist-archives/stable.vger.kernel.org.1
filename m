@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5635C6FA710
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A46C6FAA81
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234560AbjEHK0y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:26:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54652 "EHLO
+        id S233155AbjEHLDY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:03:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234605AbjEHK00 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:26:26 -0400
+        with ESMTP id S233810AbjEHLCs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35C23DC51
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:26:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DB22DD64
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4B79625ED
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B9EC433EF;
-        Mon,  8 May 2023 10:26:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F06BB62A4C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98FBC433EF;
+        Mon,  8 May 2023 11:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541576;
-        bh=j/mPZS7kgKYD73kBxo+nVDPwW33Kchb6D8uYqg3Y1iE=;
+        s=korg; t=1683543726;
+        bh=YBxukJGR+Z4MZDQL9OT/ARigY31GV56WL3MOaLKqHRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AFBkSK3O+P9paz8ykq79s4I3nAnz7FD4+pqYNkm+G+NVdO7SDOodkr5uVFGV7sq3m
-         w0BWXt6b1Ov0USpI/2gvYDfJ3rqzJsoyO6u6HlPKdn8ZgnHNbKhPw9wStBsFS7W3Mv
-         XdjJskrjGF0FEXJIOKZI8jY6xgMj5yN6TiqCd7PE=
+        b=b7hDEzFJsNrnE2kuzDd8tHtcs5OvOn5XKnTtZuFDkblHmMbkInX3AZJkgD8Yq6SOk
+         sx2kM+Pq+UYt+GdVtrJCwocoOSt/Nh/oBpVydayVOF1Lo40hJJAUifEzRlENlea8Ue
+         mowNfN94jK4Ope6Ufb5m2FCmpKuw62H9PamvEwpw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 159/663] arm64: dts: qcom: sdm845: correct dynamic power coefficients
+Subject: [PATCH 6.3 150/694] accel/ivpu: PM: remove broken ivpu_dbg() statements
 Date:   Mon,  8 May 2023 11:39:45 +0200
-Message-Id: <20230508094433.658633867@linuxfoundation.org>
+Message-Id: <20230508094437.307414643@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,89 +55,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 44750f153699b6e4f851a399287e5c8df208d696 ]
+[ Upstream commit 17ab1ea679be48d905559d968a7622f5f212de6e ]
 
-While stressing EAS on my dragonboard RB3, I have noticed that LITTLE cores
-where never selected as the most energy efficient CPU whatever the
-utilization level of waking task.
+When CONFIG_PM is disabled, the driver fails to build:
 
-energy model framework uses its cost field to estimate the energy with
-the formula:
+drivers/accel/ivpu/ivpu_pm.c: In function 'ivpu_rpm_get':
+drivers/accel/ivpu/ivpu_pm.c:240:84: error: 'struct dev_pm_info' has no member named 'usage_count'
+  240 |         ivpu_dbg(vdev, RPM, "rpm_get count %d\n", atomic_read(&vdev->drm.dev->power.usage_count));
+      |                                                                                    ^
+include/linux/dynamic_debug.h:223:29: note: in definition of macro '__dynamic_func_call_cls'
+  223 |                 func(&id, ##__VA_ARGS__);                       \
+      |                             ^~~~~~~~~~~
+include/linux/dynamic_debug.h:249:9: note: in expansion of macro '_dynamic_func_call_cls'
+  249 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+include/linux/dynamic_debug.h:272:9: note: in expansion of macro '_dynamic_func_call'
+  272 |         _dynamic_func_call(fmt, __dynamic_dev_dbg,              \
+      |         ^~~~~~~~~~~~~~~~~~
+include/linux/dev_printk.h:155:9: note: in expansion of macro 'dynamic_dev_dbg'
+  155 |         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+      |         ^~~~~~~~~~~~~~~
+drivers/accel/ivpu/ivpu_drv.h:65:17: note: in expansion of macro 'dev_dbg'
+   65 |                 dev_dbg((vdev)->drm.dev, "[%s] " fmt, #type, ##args);          \
+      |                 ^~~~~~~
+drivers/accel/ivpu/ivpu_pm.c:240:9: note: in expansion of macro 'ivpu_dbg'
+  240 |         ivpu_dbg(vdev, RPM, "rpm_get count %d\n", atomic_read(&vdev->drm.dev->power.usage_count));
+      |         ^~~~~~~~
 
-  nrg = cost of the selected OPP * utilization / CPU's max capacity
+It would be possible to rework these statements to only conditionally print
+the reference counter, or to make the driver depend on CONFIG_PM, but my
+impression is that these are not actually needed at all if the driver generally
+works, or they could be put back when required. Just remove all four of these
+to make the driver build in all configurations.
 
-which ends up selecting the CPU with lowest cost / max capacity ration
-as long as the utilization fits in the OPP's capacity.
-
-If we compare the cost of a little OPP with similar capacity of a big OPP
-like :
-       OPP(kHz)   OPP capacity    cost     max capacity   cost/max capacity
-LITTLE 1766400    407             351114   407            863
-big    1056000    408             520267   1024           508
-
-This can be interpreted as the LITTLE core consumes 70% more than big core
-for the same compute capacity.
-
-According to [1], LITTLE consumes 10% less than big core for Coremark
-benchmark at those OPPs. If we consider that everything else stays
-unchanged, the dynamic-power-coefficient of LITTLE core should be
-only 53% of the current value: 290 * 53% = 154
-
-Set the dynamic-power-coefficient of CPU0-3 to 154 to fix the energy model.
-
-[1] https://github.com/kdrag0n/freqbench/tree/master/results/sdm845/main
-
-Fixes: 0e0a8e35d725 ("arm64: dts: qcom: sdm845: correct dynamic power coefficients")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230106164618.1845281-1-vincent.guittot@linaro.org
+Fixes: 852be13f3bd3 ("accel/ivpu: Add PM support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230126163804.3648051-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/accel/ivpu/ivpu_pm.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index f36c23e7a2248..ed525397d2335 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -198,7 +198,7 @@
- 			reg = <0x0 0x0>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -222,7 +222,7 @@
- 			reg = <0x0 0x100>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -243,7 +243,7 @@
- 			reg = <0x0 0x200>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -264,7 +264,7 @@
- 			reg = <0x0 0x300>;
- 			enable-method = "psci";
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
+diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
+index bde42d6383da6..aa4d56dc52b39 100644
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -239,8 +239,6 @@ int ivpu_rpm_get(struct ivpu_device *vdev)
+ {
+ 	int ret;
+ 
+-	ivpu_dbg(vdev, RPM, "rpm_get count %d\n", atomic_read(&vdev->drm.dev->power.usage_count));
+-
+ 	ret = pm_runtime_resume_and_get(vdev->drm.dev);
+ 	if (!drm_WARN_ON(&vdev->drm, ret < 0))
+ 		vdev->pm->suspend_reschedule_counter = PM_RESCHEDULE_LIMIT;
+@@ -250,8 +248,6 @@ int ivpu_rpm_get(struct ivpu_device *vdev)
+ 
+ void ivpu_rpm_put(struct ivpu_device *vdev)
+ {
+-	ivpu_dbg(vdev, RPM, "rpm_put count %d\n", atomic_read(&vdev->drm.dev->power.usage_count));
+-
+ 	pm_runtime_mark_last_busy(vdev->drm.dev);
+ 	pm_runtime_put_autosuspend(vdev->drm.dev);
+ }
+@@ -321,16 +317,10 @@ void ivpu_pm_enable(struct ivpu_device *vdev)
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+-
+-	ivpu_dbg(vdev, RPM, "Enable RPM count %d\n", atomic_read(&dev->power.usage_count));
+ }
+ 
+ void ivpu_pm_disable(struct ivpu_device *vdev)
+ {
+-	struct device *dev = vdev->drm.dev;
+-
+-	ivpu_dbg(vdev, RPM, "Disable RPM count %d\n", atomic_read(&dev->power.usage_count));
+-
+ 	pm_runtime_get_noresume(vdev->drm.dev);
+ 	pm_runtime_forbid(vdev->drm.dev);
+ }
 -- 
 2.39.2
 
