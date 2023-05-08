@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 634EE6FADB4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447E16FABFD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236029AbjEHLhU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:37:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57424 "EHLO
+        id S233941AbjEHLTh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233993AbjEHLhD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E1A41541
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:37 -0700 (PDT)
+        with ESMTP id S235543AbjEHLTf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCE6387C3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3BD16335F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0489C433EF;
-        Mon,  8 May 2023 11:35:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C1F662C5B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D19C433D2;
+        Mon,  8 May 2023 11:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545754;
-        bh=EwORVAjdDPh5yovLm3/lrVKD8R/KJLEUV5xGVX7TB6U=;
+        s=korg; t=1683544768;
+        bh=UWzd+PXQ9vZVbZ35H8xPB+Bn2ZnPmIq5lDFlLZQZ1XM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2EfxAfWj82WV+9E2MrNoQ7LNqvoo0sK14KDBzksF5LNNVfhSWVIJWiALZGcQRP/kH
-         M1UIYLZCg3AzoNUsZkEgORjmUcE/BLTxM5jzUILBtKPKu7yMipO3xVpYh9X2oUM+TI
-         ACs0NNHyLAS/Tbr3uO87lJZkI2y2gC+ZLo39WLkQ=
+        b=hWnewiA/Kc4ggfGs6NTKh9Rlp5U4AbUAf9mdn5ldhPAmofi2t2EjMYw+Udp1utEov
+         +x5yJyzbTlBkQSbUkzyznewMWhU4rZo5d/i57HMc3U16fb6crBnViUAteuoVJ6gLTA
+         k8N6WuVHuaKfbTYQv+aljzTdRLnBYaprA3K/h8ak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Saurabh Sengar <ssengar@linux.microsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Yassine Oudjana <y.oudjana@protonmail.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/371] x86/ioapic: Dont return 0 from arch_dynirq_lower_bound()
-Date:   Mon,  8 May 2023 11:45:44 +0200
-Message-Id: <20230508094817.738904742@linuxfoundation.org>
+Subject: [PATCH 6.3 510/694] interconnect: qcom: rpm: drop bogus pm domain attach
+Date:   Mon,  8 May 2023 11:45:45 +0200
+Message-Id: <20230508094450.708412091@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,70 +57,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 5af507bef93c09a94fb8f058213b489178f4cbe5 ]
+[ Upstream commit 72b2720c18ecde92e6a36c4ac897dd5848e3f379 ]
 
-arch_dynirq_lower_bound() is invoked by the core interrupt code to
-retrieve the lowest possible Linux interrupt number for dynamically
-allocated interrupts like MSI.
+Any power domain would already have been attached by the platform bus
+code so drop the bogus power domain attach which always succeeds from
+probe.
 
-The x86 implementation uses this to exclude the IO/APIC GSI space.
-This works correctly as long as there is an IO/APIC registered, but
-returns 0 if not. This has been observed in VMs where the BIOS does
-not advertise an IO/APIC.
+This effectively reverts commit 7de109c0abe9 ("interconnect: icc-rpm:
+Add support for bus power domain").
 
-0 is an invalid interrupt number except for the legacy timer interrupt
-on x86. The return value is unchecked in the core code, so it ends up
-to allocate interrupt number 0 which is subsequently considered to be
-invalid by the caller, e.g. the MSI allocation code.
-
-The function has already a check for 0 in the case that an IO/APIC is
-registered, as ioapic_dynirq_base is 0 in case of device tree setups.
-
-Consolidate this and zero check for both ioapic_dynirq_base and gsi_top,
-which is used in the case that no IO/APIC is registered.
-
-Fixes: 3e5bedc2c258 ("x86/apic: Fix arch_dynirq_lower_bound() bug for DT enabled machines")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/1679988604-20308-1-git-send-email-ssengar@linux.microsoft.com
+Fixes: 7de109c0abe9 ("interconnect: icc-rpm: Add support for bus power domain")
+Cc: Yassine Oudjana <y.oudjana@protonmail.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # MSM8996 Sony Kagura
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230313084953.24088-3-johan+linaro@kernel.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/io_apic.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/interconnect/qcom/icc-rpm.c | 7 -------
+ drivers/interconnect/qcom/icc-rpm.h | 1 -
+ drivers/interconnect/qcom/msm8996.c | 1 -
+ 3 files changed, 9 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index c1bb384935b05..bb71b628edcb4 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -2479,17 +2479,21 @@ static int io_apic_get_redir_entries(int ioapic)
+diff --git a/drivers/interconnect/qcom/icc-rpm.c b/drivers/interconnect/qcom/icc-rpm.c
+index 4180a06681b2b..c80819557923e 100644
+--- a/drivers/interconnect/qcom/icc-rpm.c
++++ b/drivers/interconnect/qcom/icc-rpm.c
+@@ -11,7 +11,6 @@
+ #include <linux/of_device.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+-#include <linux/pm_domain.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
  
- unsigned int arch_dynirq_lower_bound(unsigned int from)
- {
-+	unsigned int ret;
-+
- 	/*
- 	 * dmar_alloc_hwirq() may be called before setup_IO_APIC(), so use
- 	 * gsi_top if ioapic_dynirq_base hasn't been initialized yet.
- 	 */
--	if (!ioapic_initialized)
--		return gsi_top;
-+	ret = ioapic_dynirq_base ? : gsi_top;
-+
- 	/*
--	 * For DT enabled machines ioapic_dynirq_base is irrelevant and not
--	 * updated. So simply return @from if ioapic_dynirq_base == 0.
-+	 * For DT enabled machines ioapic_dynirq_base is irrelevant and
-+	 * always 0. gsi_top can be 0 if there is no IO/APIC registered.
-+	 * 0 is an invalid interrupt number for dynamic allocations. Return
-+	 * @from instead.
- 	 */
--	return ioapic_dynirq_base ? : from;
-+	return ret ? : from;
- }
+@@ -496,12 +495,6 @@ int qnoc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
- #ifdef CONFIG_X86_32
+-	if (desc->has_bus_pd) {
+-		ret = dev_pm_domain_attach(dev, true);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	provider = &qp->provider;
+ 	provider->dev = dev;
+ 	provider->set = qcom_icc_set;
+diff --git a/drivers/interconnect/qcom/icc-rpm.h b/drivers/interconnect/qcom/icc-rpm.h
+index a49af844ab13e..02257b0d3d5c6 100644
+--- a/drivers/interconnect/qcom/icc-rpm.h
++++ b/drivers/interconnect/qcom/icc-rpm.h
+@@ -91,7 +91,6 @@ struct qcom_icc_desc {
+ 	size_t num_nodes;
+ 	const char * const *clocks;
+ 	size_t num_clocks;
+-	bool has_bus_pd;
+ 	enum qcom_icc_type type;
+ 	const struct regmap_config *regmap_cfg;
+ 	unsigned int qos_offset;
+diff --git a/drivers/interconnect/qcom/msm8996.c b/drivers/interconnect/qcom/msm8996.c
+index 25a1a32bc611f..14efd2761b7ab 100644
+--- a/drivers/interconnect/qcom/msm8996.c
++++ b/drivers/interconnect/qcom/msm8996.c
+@@ -1823,7 +1823,6 @@ static const struct qcom_icc_desc msm8996_a0noc = {
+ 	.num_nodes = ARRAY_SIZE(a0noc_nodes),
+ 	.clocks = bus_a0noc_clocks,
+ 	.num_clocks = ARRAY_SIZE(bus_a0noc_clocks),
+-	.has_bus_pd = true,
+ 	.regmap_cfg = &msm8996_a0noc_regmap_config
+ };
+ 
 -- 
 2.39.2
 
