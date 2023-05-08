@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BFEC6FAB28
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 375AD6FA7F4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233849AbjEHLKX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45816 "EHLO
+        id S234767AbjEHKg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234339AbjEHLJ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD1A146AA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:45 -0700 (PDT)
+        with ESMTP id S234776AbjEHKgF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9067124AAC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7456F62B21
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6685CC433D2;
-        Mon,  8 May 2023 11:09:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A6862789
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222C9C433EF;
+        Mon,  8 May 2023 10:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544184;
-        bh=KcdjGCERVhAYAgknl9UnSIXHyS5sM3UaahESDZw1D40=;
+        s=korg; t=1683542138;
+        bh=R/r9/N5dpoICBosk+yL44h4j/of3ULEGpIQVyYNnpsg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kJtug9XZ+Ss5Yb8SMfCj5U3AwKTCzsAyHaztetTePyr65wlSJy9aodEoLj7vZF+Kc
-         P0mA5rNW93Y5cUXdRWaAwYsraw0OWolvA9FxqHTqUMQRVUzyS7Kq5h3avV5VmKBder
-         skRwrY5l0DkjlEWLNhERo0wwcOdTSQ7eDGwNs+r0=
+        b=vdPNvh0kHcKYxg+LEX+yopCE/g2DvSFDn+0RvKXdwuJv7GLRB0Wmu9wOGXCcNDKwU
+         kUQjuwwaAVgaA3BdHTGPpvXiZRAPkRWgVVlDLskYIjWk7VbL5CCk6PcjMAAv5UWv7n
+         QBuIBxa7XnHgWl32W1FPNJyecCCgzseTdT90yX64=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Qilin Tan <qilin.tan@mediatek.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 329/694] wifi: ath11k: fix SAC bug on peer addition with sta band migration
+Subject: [PATCH 6.2 338/663] f2fs: fix iostat lock protection
 Date:   Mon,  8 May 2023 11:42:44 +0200
-Message-Id: <20230508094443.081806980@linuxfoundation.org>
+Message-Id: <20230508094439.129581643@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,60 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Qilin Tan <qilin.tan@mediatek.com>
 
-[ Upstream commit 60b7d62ba8cdbd073997bff0f1cdae8d844002c0 ]
+[ Upstream commit 144f1cd40bf91fb3ac1d41806470756ce774f389 ]
 
-Fix sleep in atomic context warning detected by Smatch static checker
-analyzer.
+Made iostat lock irq safe to avoid potentinal deadlock.
 
-Following the locking pattern for peer_rhash_add lock tbl_mtx_lock mutex
-always even if sta is not transitioning to another band.
-This is peer_add function and a more secure locking should not cause
-performance regression.
+Deadlock scenario:
+f2fs_attr_store
+  -> f2fs_sbi_store
+  -> _sbi_store
+  -> spin_lock(sbi->iostat_lock)
+    <interrupt request>
+    -> scsi_end_request
+    -> bio_endio
+    -> f2fs_dio_read_end_io
+    -> f2fs_update_iostat
+    -> spin_lock_irqsave(sbi->iostat_lock)  ===> Dead lock here
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
-
-Fixes: d673cb6fe6c0 ("wifi: ath11k: fix peer addition/deletion error on sta band migration")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230209222622.1751-1-ansuelsmth@gmail.com
+Fixes: 61803e984307 ("f2fs: fix iostat related lock protection")
+Fixes: a1e09b03e6f5 ("f2fs: use iomap for direct I/O")
+Signed-off-by: Qilin Tan <qilin.tan@mediatek.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/peer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/f2fs/sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
-index 1ae7af02c364e..1380811827a84 100644
---- a/drivers/net/wireless/ath/ath11k/peer.c
-+++ b/drivers/net/wireless/ath/ath11k/peer.c
-@@ -382,22 +382,23 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 		return -ENOBUFS;
- 	}
- 
-+	mutex_lock(&ar->ab->tbl_mtx_lock);
- 	spin_lock_bh(&ar->ab->base_lock);
- 	peer = ath11k_peer_find_by_addr(ar->ab, param->peer_addr);
- 	if (peer) {
- 		if (peer->vdev_id == param->vdev_id) {
- 			spin_unlock_bh(&ar->ab->base_lock);
-+			mutex_unlock(&ar->ab->tbl_mtx_lock);
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 088b816127ecb..2884efe5269ed 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -564,9 +564,9 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 	if (!strcmp(a->attr.name, "iostat_period_ms")) {
+ 		if (t < MIN_IOSTAT_PERIOD_MS || t > MAX_IOSTAT_PERIOD_MS)
  			return -EINVAL;
- 		}
- 
- 		/* Assume sta is transitioning to another band.
- 		 * Remove here the peer from rhash.
- 		 */
--		mutex_lock(&ar->ab->tbl_mtx_lock);
- 		ath11k_peer_rhash_delete(ar->ab, peer);
--		mutex_unlock(&ar->ab->tbl_mtx_lock);
+-		spin_lock(&sbi->iostat_lock);
++		spin_lock_irq(&sbi->iostat_lock);
+ 		sbi->iostat_period_ms = (unsigned int)t;
+-		spin_unlock(&sbi->iostat_lock);
++		spin_unlock_irq(&sbi->iostat_lock);
+ 		return count;
  	}
- 	spin_unlock_bh(&ar->ab->base_lock);
-+	mutex_unlock(&ar->ab->tbl_mtx_lock);
- 
- 	ret = ath11k_wmi_send_peer_create_cmd(ar, param);
- 	if (ret) {
+ #endif
 -- 
 2.39.2
 
