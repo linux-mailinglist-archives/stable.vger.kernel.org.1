@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA0946FA586
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5936FAD3D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234160AbjEHKKY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38508 "EHLO
+        id S235713AbjEHLcq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234153AbjEHKKX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:23 -0400
+        with ESMTP id S235773AbjEHLc1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:32:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4344735124
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7583DC9D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:31:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BAA40623BA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2376C433EF;
-        Mon,  8 May 2023 10:10:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACB2C63043
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9806C433EF;
+        Mon,  8 May 2023 11:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540621;
-        bh=QTt93Sxw1MUPEgQPdsBQtJ9pm28GNb+DdRQtsjtnGu0=;
+        s=korg; t=1683545496;
+        bh=+0RE+7ZUlgN+Hud6gu9TQz4rBrwna8HXuIwEzINMsqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n/tFeOXaZblsLPy8rTbIHL2U7XEIBgfmuugvuER1XXaT0YY3AYFU340waGg8nn4f0
-         SBGT9bNZxrIxkeEgq/JyhHa3yCq90aByp2sMb4lAEDHr+wPcWhnHNFnHgat5bQuYjL
-         zHvzMHxY5NvWShGvU2K0KVBiIOet6iZx2zm5ycCc=
+        b=znYrjj8YCF6Y2lD7AmkXKYSERJnhCYQAQtHd0yNANJjhg4nubphj6Uxvy3gnPCQeW
+         TU5dhmBCf/egk9QRFOPdUnXNbSJLcJVlqcPAJ4A2qp9LZq20FPstTG5zSdRFyH6LLN
+         AToHswAULzxf0Qciks/RZcU73KbCr8ZMDFCUZnCE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Yassine Oudjana <y.oudjana@protonmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 417/611] interconnect: qcom: rpm: drop bogus pm domain attach
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 058/371] sound/oss/dmasound: fix build when drivers are mixed =y/=m
 Date:   Mon,  8 May 2023 11:44:19 +0200
-Message-Id: <20230508094435.774573367@linuxfoundation.org>
+Message-Id: <20230508094814.380911635@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,82 +58,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 72b2720c18ecde92e6a36c4ac897dd5848e3f379 ]
+commit 9dd7c46346ca4390f84a7ea9933005eb1b175c15 upstream.
 
-Any power domain would already have been attached by the platform bus
-code so drop the bogus power domain attach which always succeeds from
-probe.
+When CONFIG_DMASOUND_ATARI=m and CONFIG_DMASOUND_Q40=y (or vice versa),
+dmasound_core.o can be built without dmasound_deinit() being defined,
+causing a build error:
 
-This effectively reverts commit 7de109c0abe9 ("interconnect: icc-rpm:
-Add support for bus power domain").
+ERROR: modpost: "dmasound_deinit" [sound/oss/dmasound/dmasound_atari.ko] undefined!
 
-Fixes: 7de109c0abe9 ("interconnect: icc-rpm: Add support for bus power domain")
-Cc: Yassine Oudjana <y.oudjana@protonmail.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # MSM8996 Sony Kagura
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230313084953.24088-3-johan+linaro@kernel.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Modify dmasound_core.c and dmasound.h so that dmasound_deinit() is
+always available.
+
+The mixed modes (=y/=m) also mean that several variables and structs
+have to be declared in all cases.
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: lore.kernel.org/r/202204032138.EFT9qGEd-lkp@intel.com
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: alsa-devel@alsa-project.org
+Link: https://lore.kernel.org/r/20220405234118.24830-1-rdunlap@infradead.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/icc-rpm.c | 7 -------
- drivers/interconnect/qcom/icc-rpm.h | 1 -
- drivers/interconnect/qcom/msm8996.c | 1 -
- 3 files changed, 9 deletions(-)
+ sound/oss/dmasound/dmasound.h      |    6 ------
+ sound/oss/dmasound/dmasound_core.c |   24 +-----------------------
+ 2 files changed, 1 insertion(+), 29 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/icc-rpm.c b/drivers/interconnect/qcom/icc-rpm.c
-index 6a9e6b563320b..9047481fafd48 100644
---- a/drivers/interconnect/qcom/icc-rpm.c
-+++ b/drivers/interconnect/qcom/icc-rpm.c
-@@ -11,7 +11,6 @@
- #include <linux/of_device.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
--#include <linux/pm_domain.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
+--- a/sound/oss/dmasound/dmasound.h
++++ b/sound/oss/dmasound/dmasound.h
+@@ -88,11 +88,7 @@ static inline int ioctl_return(int __use
+      */
  
-@@ -499,12 +498,6 @@ int qnoc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+ extern int dmasound_init(void);
+-#ifdef MODULE
+ extern void dmasound_deinit(void);
+-#else
+-#define dmasound_deinit()	do { } while (0)
+-#endif
  
--	if (desc->has_bus_pd) {
--		ret = dev_pm_domain_attach(dev, true);
--		if (ret)
--			return ret;
--	}
+ /* description of the set-up applies to either hard or soft settings */
+ 
+@@ -114,9 +110,7 @@ typedef struct {
+     void *(*dma_alloc)(unsigned int, gfp_t);
+     void (*dma_free)(void *, unsigned int);
+     int (*irqinit)(void);
+-#ifdef MODULE
+     void (*irqcleanup)(void);
+-#endif
+     void (*init)(void);
+     void (*silence)(void);
+     int (*setFormat)(int);
+--- a/sound/oss/dmasound/dmasound_core.c
++++ b/sound/oss/dmasound/dmasound_core.c
+@@ -206,12 +206,10 @@ module_param(writeBufSize, int, 0);
+ 
+ MODULE_LICENSE("GPL");
+ 
+-#ifdef MODULE
+ static int sq_unit = -1;
+ static int mixer_unit = -1;
+ static int state_unit = -1;
+ static int irq_installed;
+-#endif /* MODULE */
+ 
+ /* control over who can modify resources shared between play/record */
+ static fmode_t shared_resource_owner;
+@@ -391,9 +389,6 @@ static const struct file_operations mixe
+ 
+ static void mixer_init(void)
+ {
+-#ifndef MODULE
+-	int mixer_unit;
+-#endif
+ 	mixer_unit = register_sound_mixer(&mixer_fops, -1);
+ 	if (mixer_unit < 0)
+ 		return;
+@@ -1171,9 +1166,6 @@ static const struct file_operations sq_f
+ static int sq_init(void)
+ {
+ 	const struct file_operations *fops = &sq_fops;
+-#ifndef MODULE
+-	int sq_unit;
+-#endif
+ 
+ 	sq_unit = register_sound_dsp(fops, -1);
+ 	if (sq_unit < 0) {
+@@ -1366,9 +1358,6 @@ static const struct file_operations stat
+ 
+ static int state_init(void)
+ {
+-#ifndef MODULE
+-	int state_unit;
+-#endif
+ 	state_unit = register_sound_special(&state_fops, SND_DEV_STATUS);
+ 	if (state_unit < 0)
+ 		return state_unit ;
+@@ -1386,10 +1375,9 @@ static int state_init(void)
+ int dmasound_init(void)
+ {
+ 	int res ;
+-#ifdef MODULE
++
+ 	if (irq_installed)
+ 		return -EBUSY;
+-#endif
+ 
+ 	/* Set up sound queue, /dev/audio and /dev/dsp. */
+ 
+@@ -1408,9 +1396,7 @@ int dmasound_init(void)
+ 		printk(KERN_ERR "DMA sound driver: Interrupt initialization failed\n");
+ 		return -ENODEV;
+ 	}
+-#ifdef MODULE
+ 	irq_installed = 1;
+-#endif
+ 
+ 	printk(KERN_INFO "%s DMA sound driver rev %03d installed\n",
+ 		dmasound.mach.name, (DMASOUND_CORE_REVISION<<4) +
+@@ -1424,8 +1410,6 @@ int dmasound_init(void)
+ 	return 0;
+ }
+ 
+-#ifdef MODULE
 -
- 	provider = &qp->provider;
- 	provider->dev = dev;
- 	provider->set = qcom_icc_set;
-diff --git a/drivers/interconnect/qcom/icc-rpm.h b/drivers/interconnect/qcom/icc-rpm.h
-index a49af844ab13e..02257b0d3d5c6 100644
---- a/drivers/interconnect/qcom/icc-rpm.h
-+++ b/drivers/interconnect/qcom/icc-rpm.h
-@@ -91,7 +91,6 @@ struct qcom_icc_desc {
- 	size_t num_nodes;
- 	const char * const *clocks;
- 	size_t num_clocks;
--	bool has_bus_pd;
- 	enum qcom_icc_type type;
- 	const struct regmap_config *regmap_cfg;
- 	unsigned int qos_offset;
-diff --git a/drivers/interconnect/qcom/msm8996.c b/drivers/interconnect/qcom/msm8996.c
-index 25a1a32bc611f..14efd2761b7ab 100644
---- a/drivers/interconnect/qcom/msm8996.c
-+++ b/drivers/interconnect/qcom/msm8996.c
-@@ -1823,7 +1823,6 @@ static const struct qcom_icc_desc msm8996_a0noc = {
- 	.num_nodes = ARRAY_SIZE(a0noc_nodes),
- 	.clocks = bus_a0noc_clocks,
- 	.num_clocks = ARRAY_SIZE(bus_a0noc_clocks),
--	.has_bus_pd = true,
- 	.regmap_cfg = &msm8996_a0noc_regmap_config
- };
+ void dmasound_deinit(void)
+ {
+ 	if (irq_installed) {
+@@ -1444,8 +1428,6 @@ void dmasound_deinit(void)
+ 		unregister_sound_dsp(sq_unit);
+ }
  
--- 
-2.39.2
-
+-#else /* !MODULE */
+-
+ static int dmasound_setup(char *str)
+ {
+ 	int ints[6], size;
+@@ -1489,8 +1471,6 @@ static int dmasound_setup(char *str)
+ 
+ __setup("dmasound=", dmasound_setup);
+ 
+-#endif /* !MODULE */
+-
+     /*
+      *  Conversion tables
+      */
+@@ -1577,9 +1557,7 @@ char dmasound_alaw2dma8[] = {
+ 
+ EXPORT_SYMBOL(dmasound);
+ EXPORT_SYMBOL(dmasound_init);
+-#ifdef MODULE
+ EXPORT_SYMBOL(dmasound_deinit);
+-#endif
+ EXPORT_SYMBOL(dmasound_write_sq);
+ EXPORT_SYMBOL(dmasound_catchRadius);
+ #ifdef HAS_8BIT_TABLES
 
 
