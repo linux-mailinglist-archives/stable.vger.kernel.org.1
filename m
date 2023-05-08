@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6E256FA962
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F10F36FA658
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235224AbjEHKuY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:50:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54028 "EHLO
+        id S234395AbjEHKSi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:18:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235258AbjEHKty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 295902C3F2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:37 -0700 (PDT)
+        with ESMTP id S234421AbjEHKSa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9861BD2CB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C9D962917
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2516C433EF;
-        Mon,  8 May 2023 10:49:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 113CB61037
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1CBC433D2;
+        Mon,  8 May 2023 10:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542976;
-        bh=D31r2DfxlUkXDR2/rlDAxpp1ZWbfYiyAJfL2HzDwCyc=;
+        s=korg; t=1683541107;
+        bh=Urn5vg1mBdvCq+wg7pN/rwfg92IUT9GVI8Z68g60H/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KS4NEP/YZqgM26rKbNRqNTx1T34Aze275EHmvyT3YgDmVzRJU6QYKP1TJSo7gtQ8k
-         q72S35D56MTG0nLYpjYJy/esoWsFXpQbJUv6q+cOE+j03ULg7PqFppy3MkKrPeP81j
-         35yq3rSsOrKTiQUf5ChlXvSul8pz/ohGYZl5A72s=
+        b=Mx8BlWgD/UckYQBcHaNnB3fKtWt0I4+16HiIB4tN3U2b7s6IW3RT0gxUCfEJmEX+7
+         5LVChQ1UaY80PmlP9fodRHFd2vFvWnXuY6Utr/l0UhQg+3SKdgRQt5hOK10nhw4yaH
+         dp8C0MC6XIDrAqOuFNrDaeVDY5+CTVxVYdateB0E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
-        David Howells <dhowells@redhat.com>,
-        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 610/663] afs: Avoid endless loop if file is larger than expected
+        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 594/611] dm ioctl: fix nested locking in table_clear() to remove deadlock concern
 Date:   Mon,  8 May 2023 11:47:16 +0200
-Message-Id: <20230508094449.457046865@linuxfoundation.org>
+Message-Id: <20230508094441.208855404@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,60 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-[ Upstream commit 9ea4eff4b6f4f36546d537a74da44fd3f30903ab ]
+commit 3d32aaa7e66d5c1479a3c31d6c2c5d45dd0d3b89 upstream.
 
-afs_read_dir fetches an amount of data that's based on what the inode
-size is thought to be.  If the file on the server is larger than what
-was fetched, the code rechecks i_size and retries.  If the local i_size
-was not properly updated, this can lead to an endless loop of fetching
-i_size from the server and noticing each time that the size is larger on
-the server.
+syzkaller found the following problematic rwsem locking (with write
+lock already held):
 
-If it is known that the remote size is larger than i_size, bump up the
-fetch size to that size.
+ down_read+0x9d/0x450 kernel/locking/rwsem.c:1509
+ dm_get_inactive_table+0x2b/0xc0 drivers/md/dm-ioctl.c:773
+ __dev_status+0x4fd/0x7c0 drivers/md/dm-ioctl.c:844
+ table_clear+0x197/0x280 drivers/md/dm-ioctl.c:1537
 
-Fixes: f3ddee8dc4e2 ("afs: Fix directory handling")
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In table_clear, it first acquires a write lock
+https://elixir.bootlin.com/linux/v6.2/source/drivers/md/dm-ioctl.c#L1520
+down_write(&_hash_lock);
+
+Then before the lock is released at L1539, there is a path shown above:
+table_clear -> __dev_status -> dm_get_inactive_table ->  down_read
+https://elixir.bootlin.com/linux/v6.2/source/drivers/md/dm-ioctl.c#L773
+down_read(&_hash_lock);
+
+It tries to acquire the same read lock again, resulting in the deadlock
+problem.
+
+Fix this by moving table_clear()'s __dev_status() call to after its
+up_write(&_hash_lock);
+
+Cc: stable@vger.kernel.org
+Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/dir.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/dm-ioctl.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index b7c1f8c84b38a..be8f8da5b6b02 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -275,6 +275,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
- 	loff_t i_size;
- 	int nr_pages, i;
- 	int ret;
-+	loff_t remote_size = 0;
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1539,11 +1539,12 @@ static int table_clear(struct file *filp
+ 		has_new_map = true;
+ 	}
  
- 	_enter("");
- 
-@@ -289,6 +290,8 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
- 
- expand:
- 	i_size = i_size_read(&dvnode->netfs.inode);
-+	if (i_size < remote_size)
-+	    i_size = remote_size;
- 	if (i_size < 2048) {
- 		ret = afs_bad(dvnode, afs_file_error_dir_small);
- 		goto error;
-@@ -364,6 +367,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
- 			 * buffer.
- 			 */
- 			up_write(&dvnode->validate_lock);
-+			remote_size = req->file_size;
- 			goto expand;
- 		}
- 
--- 
-2.39.2
-
+-	param->flags &= ~DM_INACTIVE_PRESENT_FLAG;
+-
+-	__dev_status(hc->md, param);
+ 	md = hc->md;
+ 	up_write(&_hash_lock);
++
++	param->flags &= ~DM_INACTIVE_PRESENT_FLAG;
++	__dev_status(md, param);
++
+ 	if (old_map) {
+ 		dm_sync_table(md);
+ 		dm_table_destroy(old_map);
 
 
