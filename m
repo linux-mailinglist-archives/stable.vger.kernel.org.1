@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9726C6FACFB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7F76FAB5B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233988AbjEHLaD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44824 "EHLO
+        id S233856AbjEHLMZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235810AbjEHL3r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:47 -0400
+        with ESMTP id S233838AbjEHLMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CDA93C4A2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB77F35544
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61EFA62F07
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DE8C433EF;
-        Mon,  8 May 2023 11:29:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52DFD62B89
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF9EC433EF;
+        Mon,  8 May 2023 11:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545345;
-        bh=KQBoVz47dUV/NC1LnE0YmKV9npUXjJR4A2kw/fkkYek=;
+        s=korg; t=1683544337;
+        bh=51hDOMvaA6Vc4a/EuUEGsQVGDamth+kb82JDAF6VyaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ygxm+hdswAQF2uau/IjEHbQiq/Ff2CP8q1KYSvnjXVCA0vYWvjDaMlgrAPGDE1kUU
-         7ZfXKwht6MYBOyeYLUxIpoQGgwip+rOEGcDuw/HNenBB1cWvSLWcCeQC+JecqGCYUa
-         UFYmf+lgWPPZuBcXoX0cW3CHNYq2PQBqkNOimadg=
+        b=JuCKGDploF6xBu2ThwGZ4foYfkJooghmuXRv39UoelIDjaIWaYZFS+aLsC0+ecKHw
+         xtYy18SpANPBIsLLjyWWX8qHxQTCJIXN5pR40A+aYdefxXOWHGdM7WzWbgeC6k1yZo
+         QVxsRyTaSpylg568wfEN1rzPQJ8Lic2QVs6DsfzI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anson Tsao <anson.tsao@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 5.15 010/371] wifi: mt76: mt7921e: Set memory space enable in PCI_COMMAND if unset
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Gaurav Jain <gaurav.jain@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 376/694] crypto: caam - Clear some memory in instantiate_rng
 Date:   Mon,  8 May 2023 11:43:31 +0200
-Message-Id: <20230508094812.435739489@linuxfoundation.org>
+Message-Id: <20230508094445.077039489@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 09d4d6da1b65d09414e7bce61459593f3c80ead1 upstream.
+[ Upstream commit 9c19fb86a8cb2ee82a832c95e139f29ea05c4d08 ]
 
-When the BIOS has been configured for Fast Boot, systems with mt7921e
-have non-functional wifi.  Turning on Fast boot caused both bus master
-enable and memory space enable bits in PCI_COMMAND not to get configured.
+According to the comment at the end of the 'for' loop just a few lines
+below, it looks needed to clear 'desc'.
 
-The mt7921 driver already sets bus master enable, but explicitly check
-and set memory access enable as well to fix this problem.
+So it should also be cleared for the first iteration.
 
-Tested-by: Anson Tsao <anson.tsao@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the memset() to the beginning of the loop to be safe.
+
+Fixes: 281922a1d4f5 ("crypto: caam - add support for SEC v5.x RNG4")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/crypto/caam/ctrl.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -218,6 +218,7 @@ static int mt7921_pci_probe(struct pci_d
- 	struct mt7921_dev *dev;
- 	struct mt76_dev *mdev;
- 	int ret;
-+	u16 cmd;
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index 6278afb951c30..71b14269a9979 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -284,6 +284,10 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
+ 		const u32 rdsta_if = RDSTA_IF0 << sh_idx;
+ 		const u32 rdsta_pr = RDSTA_PR0 << sh_idx;
+ 		const u32 rdsta_mask = rdsta_if | rdsta_pr;
++
++		/* Clear the contents before using the descriptor */
++		memset(desc, 0x00, CAAM_CMD_SZ * 7);
++
+ 		/*
+ 		 * If the corresponding bit is set, this state handle
+ 		 * was initialized by somebody else, so it's left alone.
+@@ -327,8 +331,6 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
+ 		}
  
- 	ret = pcim_enable_device(pdev);
- 	if (ret)
-@@ -227,6 +228,11 @@ static int mt7921_pci_probe(struct pci_d
- 	if (ret)
- 		return ret;
+ 		dev_info(ctrldev, "Instantiated RNG4 SH%d\n", sh_idx);
+-		/* Clear the contents before recreating the descriptor */
+-		memset(desc, 0x00, CAAM_CMD_SZ * 7);
+ 	}
  
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	if (!(cmd & PCI_COMMAND_MEMORY)) {
-+		cmd |= PCI_COMMAND_MEMORY;
-+		pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+	}
- 	pci_set_master(pdev);
- 
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
+ 	kfree(desc);
+-- 
+2.39.2
+
 
 
