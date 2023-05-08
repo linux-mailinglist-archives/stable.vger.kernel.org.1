@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBAC56FAB06
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41706FA7D6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbjEHLIp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
+        id S234696AbjEHKfP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232160AbjEHLIO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342DB1C0E7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:13 -0700 (PDT)
+        with ESMTP id S234828AbjEHKet (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 711AB242CE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF77660B61
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A02C433EF;
-        Mon,  8 May 2023 11:08:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB4D16273C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BCFC433D2;
+        Mon,  8 May 2023 10:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544092;
-        bh=RpvIW+Ft0dC7DEmCAfNsCksIyZQLKRaSClsheU1onvg=;
+        s=korg; t=1683542051;
+        bh=PNYMvP+YiJ5MaCwtUxeo9OTfP4dLxRAvmSnk9XPJJp4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VK7jBS68bKXqfZsfMYkzn/4pkpc9FIoUuDgAgfiJObRCk6rvhBh8L6Cu2kXMX6bb/
-         +iJVNBp4xA82i9Prm3CM+MhyBMEoITL8IYXDacj5Bcenl8dyDCZ9LZLj2wPL3iowG8
-         PspfU47PkLIRnsnncCgZpjGtunoTPOK+Kd2tEG/Q=
+        b=Z69X3qDpoZ5jxGTDedDIyv7a0QjBrooJxuc+QHOX2HKqqHot8X+8O+UtohFpK40+K
+         p9mJM2HR2zhHrv4Wxfb3fUYC6hmAQ6QQdEF4O7XE6wlRMkYSpwyEHewV6aEX5lN3js
+         MZQcsXrVhk5MWvnhtvpgP3Gt9CKqXXbc+XN/rp40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev,
+        Mike Christie <michael.christie@oracle.com>,
+        Maurizio Lombardi <mlombard@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 299/694] media: rcar_fdp1: Fix refcount leak in probe and remove function
-Date:   Mon,  8 May 2023 11:42:14 +0200
-Message-Id: <20230508094441.979415591@linuxfoundation.org>
+Subject: [PATCH 6.2 309/663] scsi: target: Move sess cmd counter to new struct
+Date:   Mon,  8 May 2023 11:42:15 +0200
+Message-Id: <20230508094438.216379134@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,68 +56,311 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit c766c90faf93897b77c9c5daa603cffab85ba907 ]
+[ Upstream commit becd9be6069e7b183c084f460f0eb363e43cc487 ]
 
-rcar_fcp_get() take reference, which should be balanced with
-rcar_fcp_put(). Add missing rcar_fcp_put() in fdp1_remove and
-the error paths of fdp1_probe() to fix this.
+iSCSI needs to wait on outstanding commands like how SRP and the FC/FCoE
+drivers do. It can't use target_stop_session() because for MCS support we
+can't stop the entire session during recovery because if other connections
+are OK then we want to be able to continue to execute I/O on them.
 
-Fixes: 4710b752e029 ("[media] v4l: Add Renesas R-Car FDP1 Driver")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-[hverkuil: resolve merge conflict, remove() is now void]
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Move the per session cmd counters to a new struct so iSCSI can allocate
+them per connection. The xcopy code can also just not allocate in the
+future since it doesn't need to track commands.
+
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-2-michael.christie@oracle.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 395cee83d02d ("scsi: target: iscsit: Stop/wait on cmds during conn close")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar_fdp1.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/target/target_core_tpg.c         |   2 +-
+ drivers/target/target_core_transport.c   | 135 ++++++++++++++++-------
+ include/target/iscsi/iscsi_target_core.h |   1 +
+ include/target/target_core_base.h        |  13 ++-
+ 4 files changed, 107 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar_fdp1.c b/drivers/media/platform/renesas/rcar_fdp1.c
-index d80b3214dfae1..c548cb01957b0 100644
---- a/drivers/media/platform/renesas/rcar_fdp1.c
-+++ b/drivers/media/platform/renesas/rcar_fdp1.c
-@@ -2313,8 +2313,10 @@ static int fdp1_probe(struct platform_device *pdev)
+diff --git a/drivers/target/target_core_tpg.c b/drivers/target/target_core_tpg.c
+index 736847c933e5c..8ebccdbd94f0e 100644
+--- a/drivers/target/target_core_tpg.c
++++ b/drivers/target/target_core_tpg.c
+@@ -328,7 +328,7 @@ static void target_shutdown_sessions(struct se_node_acl *acl)
+ restart:
+ 	spin_lock_irqsave(&acl->nacl_sess_lock, flags);
+ 	list_for_each_entry(sess, &acl->acl_sess_list, sess_acl_list) {
+-		if (atomic_read(&sess->stopped))
++		if (sess->cmd_cnt && atomic_read(&sess->cmd_cnt->stopped))
+ 			continue;
  
- 	/* Determine our clock rate */
- 	clk = clk_get(&pdev->dev, NULL);
--	if (IS_ERR(clk))
--		return PTR_ERR(clk);
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto put_dev;
-+	}
+ 		list_del_init(&sess->sess_acl_list);
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 5926316252eb9..3d6034f00dcd8 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -220,11 +220,49 @@ void transport_subsystem_check_init(void)
+ 	sub_api_initialized = 1;
+ }
  
- 	fdp1->clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
-@@ -2323,7 +2325,7 @@ static int fdp1_probe(struct platform_device *pdev)
- 	ret = v4l2_device_register(&pdev->dev, &fdp1->v4l2_dev);
- 	if (ret) {
- 		v4l2_err(&fdp1->v4l2_dev, "Failed to register video device\n");
--		return ret;
-+		goto put_dev;
+-static void target_release_sess_cmd_refcnt(struct percpu_ref *ref)
++static void target_release_cmd_refcnt(struct percpu_ref *ref)
+ {
+-	struct se_session *sess = container_of(ref, typeof(*sess), cmd_count);
++	struct target_cmd_counter *cmd_cnt  = container_of(ref,
++							   typeof(*cmd_cnt),
++							   refcnt);
++	wake_up(&cmd_cnt->refcnt_wq);
++}
++
++static struct target_cmd_counter *target_alloc_cmd_counter(void)
++{
++	struct target_cmd_counter *cmd_cnt;
++	int rc;
++
++	cmd_cnt = kzalloc(sizeof(*cmd_cnt), GFP_KERNEL);
++	if (!cmd_cnt)
++		return NULL;
+ 
+-	wake_up(&sess->cmd_count_wq);
++	init_completion(&cmd_cnt->stop_done);
++	init_waitqueue_head(&cmd_cnt->refcnt_wq);
++	atomic_set(&cmd_cnt->stopped, 0);
++
++	rc = percpu_ref_init(&cmd_cnt->refcnt, target_release_cmd_refcnt, 0,
++			     GFP_KERNEL);
++	if (rc)
++		goto free_cmd_cnt;
++
++	return cmd_cnt;
++
++free_cmd_cnt:
++	kfree(cmd_cnt);
++	return NULL;
++}
++
++static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
++{
++	/*
++	 * Drivers like loop do not call target_stop_session during session
++	 * shutdown so we have to drop the ref taken at init time here.
++	 */
++	if (!atomic_read(&cmd_cnt->stopped))
++		percpu_ref_put(&cmd_cnt->refcnt);
++
++	percpu_ref_exit(&cmd_cnt->refcnt);
+ }
+ 
+ /**
+@@ -238,25 +276,17 @@ int transport_init_session(struct se_session *se_sess)
+ 	INIT_LIST_HEAD(&se_sess->sess_list);
+ 	INIT_LIST_HEAD(&se_sess->sess_acl_list);
+ 	spin_lock_init(&se_sess->sess_cmd_lock);
+-	init_waitqueue_head(&se_sess->cmd_count_wq);
+-	init_completion(&se_sess->stop_done);
+-	atomic_set(&se_sess->stopped, 0);
+-	return percpu_ref_init(&se_sess->cmd_count,
+-			       target_release_sess_cmd_refcnt, 0, GFP_KERNEL);
++	se_sess->cmd_cnt = target_alloc_cmd_counter();
++	if (!se_sess->cmd_cnt)
++		return -ENOMEM;
++
++	return  0;
+ }
+ EXPORT_SYMBOL(transport_init_session);
+ 
+ void transport_uninit_session(struct se_session *se_sess)
+ {
+-	/*
+-	 * Drivers like iscsi and loop do not call target_stop_session
+-	 * during session shutdown so we have to drop the ref taken at init
+-	 * time here.
+-	 */
+-	if (!atomic_read(&se_sess->stopped))
+-		percpu_ref_put(&se_sess->cmd_count);
+-
+-	percpu_ref_exit(&se_sess->cmd_count);
++	target_free_cmd_counter(se_sess->cmd_cnt);
+ }
+ 
+ /**
+@@ -2970,9 +3000,16 @@ int target_get_sess_cmd(struct se_cmd *se_cmd, bool ack_kref)
+ 		se_cmd->se_cmd_flags |= SCF_ACK_KREF;
  	}
  
- 	/* M2M registration */
-@@ -2393,6 +2395,8 @@ static int fdp1_probe(struct platform_device *pdev)
- unreg_dev:
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
+-	if (!percpu_ref_tryget_live(&se_sess->cmd_count))
+-		ret = -ESHUTDOWN;
+-
++	/*
++	 * Users like xcopy do not use counters since they never do a stop
++	 * and wait.
++	 */
++	if (se_sess->cmd_cnt) {
++		if (!percpu_ref_tryget_live(&se_sess->cmd_cnt->refcnt))
++			ret = -ESHUTDOWN;
++		else
++			se_cmd->cmd_cnt = se_sess->cmd_cnt;
++	}
+ 	if (ret && ack_kref)
+ 		target_put_sess_cmd(se_cmd);
  
-+put_dev:
-+	rcar_fcp_put(fdp1->fcp);
- 	return ret;
+@@ -2993,7 +3030,7 @@ static void target_free_cmd_mem(struct se_cmd *cmd)
+ static void target_release_cmd_kref(struct kref *kref)
+ {
+ 	struct se_cmd *se_cmd = container_of(kref, struct se_cmd, cmd_kref);
+-	struct se_session *se_sess = se_cmd->se_sess;
++	struct target_cmd_counter *cmd_cnt = se_cmd->cmd_cnt;
+ 	struct completion *free_compl = se_cmd->free_compl;
+ 	struct completion *abrt_compl = se_cmd->abrt_compl;
+ 
+@@ -3004,7 +3041,8 @@ static void target_release_cmd_kref(struct kref *kref)
+ 	if (abrt_compl)
+ 		complete(abrt_compl);
+ 
+-	percpu_ref_put(&se_sess->cmd_count);
++	if (cmd_cnt)
++		percpu_ref_put(&cmd_cnt->refcnt);
  }
  
-@@ -2404,6 +2408,7 @@ static void fdp1_remove(struct platform_device *pdev)
- 	video_unregister_device(&fdp1->vfd);
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 	pm_runtime_disable(&pdev->dev);
-+	rcar_fcp_put(fdp1->fcp);
+ /**
+@@ -3123,46 +3161,65 @@ void target_show_cmd(const char *pfx, struct se_cmd *cmd)
+ }
+ EXPORT_SYMBOL(target_show_cmd);
+ 
+-static void target_stop_session_confirm(struct percpu_ref *ref)
++static void target_stop_cmd_counter_confirm(struct percpu_ref *ref)
++{
++	struct target_cmd_counter *cmd_cnt = container_of(ref,
++						struct target_cmd_counter,
++						refcnt);
++	complete_all(&cmd_cnt->stop_done);
++}
++
++/**
++ * target_stop_cmd_counter - Stop new IO from being added to the counter.
++ * @cmd_cnt: counter to stop
++ */
++static void target_stop_cmd_counter(struct target_cmd_counter *cmd_cnt)
+ {
+-	struct se_session *se_sess = container_of(ref, struct se_session,
+-						  cmd_count);
+-	complete_all(&se_sess->stop_done);
++	pr_debug("Stopping command counter.\n");
++	if (!atomic_cmpxchg(&cmd_cnt->stopped, 0, 1))
++		percpu_ref_kill_and_confirm(&cmd_cnt->refcnt,
++					    target_stop_cmd_counter_confirm);
  }
  
- static int __maybe_unused fdp1_pm_runtime_suspend(struct device *dev)
+ /**
+  * target_stop_session - Stop new IO from being queued on the session.
+- * @se_sess:    session to stop
++ * @se_sess: session to stop
+  */
+ void target_stop_session(struct se_session *se_sess)
+ {
+-	pr_debug("Stopping session queue.\n");
+-	if (atomic_cmpxchg(&se_sess->stopped, 0, 1) == 0)
+-		percpu_ref_kill_and_confirm(&se_sess->cmd_count,
+-					    target_stop_session_confirm);
++	target_stop_cmd_counter(se_sess->cmd_cnt);
+ }
+ EXPORT_SYMBOL(target_stop_session);
+ 
+ /**
+- * target_wait_for_sess_cmds - Wait for outstanding commands
+- * @se_sess:    session to wait for active I/O
++ * target_wait_for_cmds - Wait for outstanding cmds.
++ * @cmd_cnt: counter to wait for active I/O for.
+  */
+-void target_wait_for_sess_cmds(struct se_session *se_sess)
++static void target_wait_for_cmds(struct target_cmd_counter *cmd_cnt)
+ {
+ 	int ret;
+ 
+-	WARN_ON_ONCE(!atomic_read(&se_sess->stopped));
++	WARN_ON_ONCE(!atomic_read(&cmd_cnt->stopped));
+ 
+ 	do {
+ 		pr_debug("Waiting for running cmds to complete.\n");
+-		ret = wait_event_timeout(se_sess->cmd_count_wq,
+-				percpu_ref_is_zero(&se_sess->cmd_count),
+-				180 * HZ);
++		ret = wait_event_timeout(cmd_cnt->refcnt_wq,
++					 percpu_ref_is_zero(&cmd_cnt->refcnt),
++					 180 * HZ);
+ 	} while (ret <= 0);
+ 
+-	wait_for_completion(&se_sess->stop_done);
++	wait_for_completion(&cmd_cnt->stop_done);
+ 	pr_debug("Waiting for cmds done.\n");
+ }
++
++/**
++ * target_wait_for_sess_cmds - Wait for outstanding commands
++ * @se_sess: session to wait for active I/O
++ */
++void target_wait_for_sess_cmds(struct se_session *se_sess)
++{
++	target_wait_for_cmds(se_sess->cmd_cnt);
++}
+ EXPORT_SYMBOL(target_wait_for_sess_cmds);
+ 
+ /*
+diff --git a/include/target/iscsi/iscsi_target_core.h b/include/target/iscsi/iscsi_target_core.h
+index 94d06ddfd80ad..229118156a1f6 100644
+--- a/include/target/iscsi/iscsi_target_core.h
++++ b/include/target/iscsi/iscsi_target_core.h
+@@ -600,6 +600,7 @@ struct iscsit_conn {
+ 	struct iscsi_tpg_np	*tpg_np;
+ 	/* Pointer to parent session */
+ 	struct iscsit_session	*sess;
++	struct target_cmd_counter *cmd_cnt;
+ 	int			bitmap_id;
+ 	int			rx_thread_active;
+ 	struct task_struct	*rx_thread;
+diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+index 12c9ba16217ef..bd299790e99c3 100644
+--- a/include/target/target_core_base.h
++++ b/include/target/target_core_base.h
+@@ -494,6 +494,7 @@ struct se_cmd {
+ 	struct se_lun		*se_lun;
+ 	/* Only used for internal passthrough and legacy TCM fabric modules */
+ 	struct se_session	*se_sess;
++	struct target_cmd_counter *cmd_cnt;
+ 	struct se_tmr_req	*se_tmr_req;
+ 	struct llist_node	se_cmd_list;
+ 	struct completion	*free_compl;
+@@ -619,22 +620,26 @@ static inline struct se_node_acl *fabric_stat_to_nacl(struct config_item *item)
+ 			acl_fabric_stat_group);
+ }
+ 
+-struct se_session {
++struct target_cmd_counter {
++	struct percpu_ref	refcnt;
++	wait_queue_head_t	refcnt_wq;
++	struct completion	stop_done;
+ 	atomic_t		stopped;
++};
++
++struct se_session {
+ 	u64			sess_bin_isid;
+ 	enum target_prot_op	sup_prot_ops;
+ 	enum target_prot_type	sess_prot_type;
+ 	struct se_node_acl	*se_node_acl;
+ 	struct se_portal_group *se_tpg;
+ 	void			*fabric_sess_ptr;
+-	struct percpu_ref	cmd_count;
+ 	struct list_head	sess_list;
+ 	struct list_head	sess_acl_list;
+ 	spinlock_t		sess_cmd_lock;
+-	wait_queue_head_t	cmd_count_wq;
+-	struct completion	stop_done;
+ 	void			*sess_cmd_map;
+ 	struct sbitmap_queue	sess_tag_pool;
++	struct target_cmd_counter *cmd_cnt;
+ };
+ 
+ struct se_device;
 -- 
 2.39.2
 
