@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F706FAC4F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D2366FA971
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235613AbjEHLXL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
+        id S235138AbjEHKvV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235627AbjEHLXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:08 -0400
+        with ESMTP id S235148AbjEHKu6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:50:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13C4C39492
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9EC2CFFD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E813562CCB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E412BC433D2;
-        Mon,  8 May 2023 11:23:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E2406292B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDF6C4339B;
+        Mon,  8 May 2023 10:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544983;
-        bh=mtk1jRQLs5sLc7mjQpW/vR5jAzlhjbDn5pGZ7T+l0dE=;
+        s=korg; t=1683543018;
+        bh=CiCQ4oLYF46ADq2hOVG06kJEsbvbYaGjgkcfshynec8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v59aPBlDAE2Dlp3iBHuRjWJ9MnyHfGq0ACJwVs+BaDwQlspmxCpTS4DEoyhCI/1gP
-         XQ7ZdN0pXBWLGIV70wJduMnzKvm57p9kTOPzWoch4UklsY+iiGGz75X5BqfyW3n1XS
-         0npgfCjQy4DkIrIPg3rCZsjgP5Z+r2l5Z6hCBnAk=
+        b=J632DB/S+QU+0Al6VuZi2TyihR1PTU47JE44EhUVKXOyCkwtI+NAYKY3Eo0MxYn5+
+         JxEwtfZNhHNW0jx8uOJaIA1Q05EooIdc24WlSn+YRy5vxhiVEzWAsWgKeDpl5dTtrl
+         p9Mq7dYZGi4Ycrtrdwc9xFEV9zoMPDX/W7CJROKw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 587/694] rtc: meson-vrtc: Use ktime_get_real_ts64() to get the current time
+Subject: [PATCH 6.2 596/663] pinctrl-bcm2835.c: fix race condition when setting gpio dir
 Date:   Mon,  8 May 2023 11:47:02 +0200
-Message-Id: <20230508094454.094979837@linuxfoundation.org>
+Message-Id: <20230508094448.830217821@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,58 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 0e6255fa3f649170da6bd1a544680589cfae1131 ]
+[ Upstream commit b7badd752de05312fdb1aeb388480f706d0c087f ]
 
-The VRTC alarm register can be programmed with an amount of seconds
-after which the SoC will be woken up by the VRTC timer again. We are
-already converting the alarm time from meson_vrtc_set_alarm() to
-"seconds since 1970". This means we also need to use "seconds since
-1970" for the current time.
+In the past setting the pin direction called pinctrl_gpio_direction()
+which uses a mutex to serialize this. That was changed to set the
+direction directly in the pin controller driver, but that lost the
+serialization mechanism. Since the direction of multiple pins are in
+the same register you can have a race condition, something that was
+in fact observed with the cec-gpio driver.
 
-This fixes a problem where setting the alarm to one minute in the future
-results in the firmware (which handles wakeup) to output (on the serial
-console) that the system will be woken up in billions of seconds.
-ktime_get_raw_ts64() returns the time since boot, not since 1970. Switch
-to ktime_get_real_ts64() to fix the calculation of the alarm time and to
-make the SoC wake up at the specified date/time. Also the firmware
-(which manages suspend) now prints either 59 or 60 seconds until wakeup
-(depending on how long it takes for the system to enter suspend).
+Add a new spinlock to serialize writing to the FSEL registers.
 
-Fixes: 6ef35398e827 ("rtc: Add Amlogic Virtual Wake RTC")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://lore.kernel.org/r/20230320212142.2355062-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 1a4541b68e25 ("pinctrl-bcm2835: don't call pinctrl_gpio_direction()")
+Link: https://lore.kernel.org/r/4302b66b-ca20-0f19-d2aa-ee8661118863@xs4all.nl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-meson-vrtc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/bcm/pinctrl-bcm2835.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-meson-vrtc.c b/drivers/rtc/rtc-meson-vrtc.c
-index 1463c86215615..648fa362ec447 100644
---- a/drivers/rtc/rtc-meson-vrtc.c
-+++ b/drivers/rtc/rtc-meson-vrtc.c
-@@ -23,7 +23,7 @@ static int meson_vrtc_read_time(struct device *dev, struct rtc_time *tm)
- 	struct timespec64 time;
+diff --git a/drivers/pinctrl/bcm/pinctrl-bcm2835.c b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+index c7cdccdb4332a..0f1ab0829ffe6 100644
+--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+@@ -90,6 +90,8 @@ struct bcm2835_pinctrl {
+ 	struct pinctrl_gpio_range gpio_range;
  
- 	dev_dbg(dev, "%s\n", __func__);
--	ktime_get_raw_ts64(&time);
-+	ktime_get_real_ts64(&time);
- 	rtc_time64_to_tm(time.tv_sec, tm);
+ 	raw_spinlock_t irq_lock[BCM2835_NUM_BANKS];
++	/* Protect FSEL registers */
++	spinlock_t fsel_lock;
+ };
  
- 	return 0;
-@@ -96,7 +96,7 @@ static int __maybe_unused meson_vrtc_suspend(struct device *dev)
- 		long alarm_secs;
- 		struct timespec64 time;
+ /* pins are just named GPIO0..GPIO53 */
+@@ -284,14 +286,19 @@ static inline void bcm2835_pinctrl_fsel_set(
+ 		struct bcm2835_pinctrl *pc, unsigned pin,
+ 		enum bcm2835_fsel fsel)
+ {
+-	u32 val = bcm2835_gpio_rd(pc, FSEL_REG(pin));
+-	enum bcm2835_fsel cur = (val >> FSEL_SHIFT(pin)) & BCM2835_FSEL_MASK;
++	u32 val;
++	enum bcm2835_fsel cur;
++	unsigned long flags;
++
++	spin_lock_irqsave(&pc->fsel_lock, flags);
++	val = bcm2835_gpio_rd(pc, FSEL_REG(pin));
++	cur = (val >> FSEL_SHIFT(pin)) & BCM2835_FSEL_MASK;
  
--		ktime_get_raw_ts64(&time);
-+		ktime_get_real_ts64(&time);
- 		local_time = time.tv_sec;
+ 	dev_dbg(pc->dev, "read %08x (%u => %s)\n", val, pin,
+-			bcm2835_functions[cur]);
++		bcm2835_functions[cur]);
  
- 		dev_dbg(dev, "alarm_time = %lus, local_time=%lus\n",
+ 	if (cur == fsel)
+-		return;
++		goto unlock;
+ 
+ 	if (cur != BCM2835_FSEL_GPIO_IN && fsel != BCM2835_FSEL_GPIO_IN) {
+ 		/* always transition through GPIO_IN */
+@@ -309,6 +316,9 @@ static inline void bcm2835_pinctrl_fsel_set(
+ 	dev_dbg(pc->dev, "write %08x (%u <= %s)\n", val, pin,
+ 			bcm2835_functions[fsel]);
+ 	bcm2835_gpio_wr(pc, FSEL_REG(pin), val);
++
++unlock:
++	spin_unlock_irqrestore(&pc->fsel_lock, flags);
+ }
+ 
+ static int bcm2835_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
+@@ -1248,6 +1258,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
+ 	pc->gpio_chip = *pdata->gpio_chip;
+ 	pc->gpio_chip.parent = dev;
+ 
++	spin_lock_init(&pc->fsel_lock);
+ 	for (i = 0; i < BCM2835_NUM_BANKS; i++) {
+ 		unsigned long events;
+ 		unsigned offset;
 -- 
 2.39.2
 
