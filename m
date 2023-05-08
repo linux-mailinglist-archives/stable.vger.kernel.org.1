@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 816076FAA36
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D71076FA6BE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235393AbjEHLAm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
+        id S234535AbjEHKXk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235151AbjEHK7m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:59:42 -0400
+        with ESMTP id S234435AbjEHKXB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5604D2BCF8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:58:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DDD526465
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87B5D629E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A6FC433EF;
-        Mon,  8 May 2023 10:58:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8D3162569
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA65EC433EF;
+        Mon,  8 May 2023 10:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543505;
-        bh=RLyEh+OIJXirIzvpUveRz37c6ipnLgLD4hpss99/e7M=;
+        s=korg; t=1683541368;
+        bh=umZwhx9moBd5VhiNpykp4gODR1Hew9NqKztJDGBaYKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SpVnM+l1QiMFoc89i4Nf9mEJjW2LwXDEvaZcMUHe73ZrJCbhMVMKeqFNGZWPrRZx6
-         noCzHWfv6sjGIqObArS6hVVavDYkEgnL0fcRh6O4y+XbpOeXyPe/PA+87oq/2Sa540
-         4VF/oSmiDKoTH+6erWFRyDl+C1c3H/uVwyCd5PWk=
+        b=kU9Wd5N2GHVx+OxvLydgkInN7kft4cA/uY2MkpBtDQJlKZ5vCHU/icjW3lCXDAfY8
+         zGZ/g62N3+BldN22vQvjKgXqg97mUZvFCsawXhJfp0qa0PirpADkI979lTWL261Szl
+         uSmt/RJ5Hh5VkYYskVOTDuHT7gjYyzOeDz8McOH4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Kishon Vijay Abraham I <kvijayab@amd.com>,
-        Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.3 083/694] iommu/amd: Fix "Guest Virtual APIC Table Root Pointer" configuration in IRTE
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.2 092/663] ksmbd: fix NULL pointer dereference in smb2_get_info_filesystem()
 Date:   Mon,  8 May 2023 11:38:38 +0200
-Message-Id: <20230508094435.222660394@linuxfoundation.org>
+Message-Id: <20230508094431.442700852@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kishon Vijay Abraham I <kvijayab@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit ccc62b827775915a9b82db42a29813d04f92df7a upstream.
+commit 3ac00a2ab69b34189942afa9e862d5170cdcb018 upstream.
 
-commit b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC
-(de-)activation code") while refactoring guest virtual APIC
-activation/de-activation code, stored information for activate/de-activate
-in "struct amd_ir_data". It used 32-bit integer data type for storing the
-"Guest Virtual APIC Table Root Pointer" (ga_root_ptr), though the
-"ga_root_ptr" is actually a 40-bit field in IRTE (Interrupt Remapping
-Table Entry).
+If share is , share->path is NULL and it cause NULL pointer
+dereference issue.
 
-This causes interrupts from PCIe devices to not reach the guest in the case
-of PCIe passthrough with SME (Secure Memory Encryption) enabled as _SME_
-bit in the "ga_root_ptr" is lost before writing it to the IRTE.
-
-Fix it by using 64-bit data type for storing the "ga_root_ptr". While at
-that also change the data type of "ga_tag" to u32 in order to match
-the IOMMU spec.
-
-Fixes: b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC (de-)activation code")
-Cc: stable@vger.kernel.org # v5.4+
-Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Link: https://lore.kernel.org/r/20230405130317.9351-1-kvijayab@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20479
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ksmbd/smb2pdu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -1001,8 +1001,8 @@ struct amd_ir_data {
- 	 */
- 	struct irq_cfg *cfg;
- 	int ga_vector;
--	int ga_root_ptr;
--	int ga_tag;
-+	u64 ga_root_ptr;
-+	u32 ga_tag;
- };
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -4915,6 +4915,9 @@ static int smb2_get_info_filesystem(stru
+ 	int rc = 0, len;
+ 	int fs_infoclass_size = 0;
  
- struct amd_irte_ops {
++	if (!share->path)
++		return -EIO;
++
+ 	rc = kern_path(share->path, LOOKUP_NO_SYMLINKS, &path);
+ 	if (rc) {
+ 		pr_err("cannot create vfs path\n");
 
 
