@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3FF56FAE72
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02EBA6FACC2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236268AbjEHLo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:44:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37242 "EHLO
+        id S235791AbjEHL2E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236300AbjEHLog (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:36 -0400
+        with ESMTP id S235793AbjEHL1j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBE310A07
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2042E30AEB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E9326367D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A786C4339B;
-        Mon,  8 May 2023 11:44:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA16562D14
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBFBC433EF;
+        Mon,  8 May 2023 11:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546241;
-        bh=7vmQrYF7q/34xC0SNPHT++e7H8K9Wk9o2nxkom5ATFc=;
+        s=korg; t=1683545243;
+        bh=mG7MorSJYrplD1lXuqZTVjBU4ZbXsIYrvjD+JABBHRc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IWBK3gfZ1KjtQ+NbM4JMNSS12DaRre68hv6YKcPlv7zlmQ068yGa/alzF1JLuRXG/
-         PBQwUeKCQrY8a2UnjThccQkCKDjwcY87Id/t1j2YUqe5cye9khQ2RWAS0SbZmt/jq3
-         BecLapY0gSKpcXqjIANWQVTcBIMDbOFfrrBtvT+o=
+        b=MoOdO5vJ+tMq0ddZiL1zpCp1+o1dgFcUxba6i8urgCQDXca7t/aWeS2j72CNOvAYK
+         raG94jhr0nElxDaCVNZI/oJw83dZIbhhBc19Z6n7sFnSYlFXfCcXSEFu4sOaUYaJR2
+         IFLs7JS4Y7aYQbnQ5zqsg8lAGUaTBAt72OOuUqU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com,
-        Zeng Heng <zengheng4@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/371] fs/ntfs3: Fix slab-out-of-bounds read in hdr_delete_de()
-Date:   Mon,  8 May 2023 11:48:25 +0200
-Message-Id: <20230508094824.123445642@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
+        David Howells <dhowells@redhat.com>,
+        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 671/694] afs: Avoid endless loop if file is larger than expected
+Date:   Mon,  8 May 2023 11:48:26 +0200
+Message-Id: <20230508094457.927978645@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,79 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit ab84eee4c7ab929996602eda7832854c35a6dda2 ]
+[ Upstream commit 9ea4eff4b6f4f36546d537a74da44fd3f30903ab ]
 
-Here is a BUG report from syzbot:
+afs_read_dir fetches an amount of data that's based on what the inode
+size is thought to be.  If the file on the server is larger than what
+was fetched, the code rechecks i_size and retries.  If the local i_size
+was not properly updated, this can lead to an endless loop of fetching
+i_size from the server and noticing each time that the size is larger on
+the server.
 
-BUG: KASAN: slab-out-of-bounds in hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
-Read of size 16842960 at addr ffff888079cc0600 by task syz-executor934/3631
+If it is known that the remote size is larger than i_size, bump up the
+fetch size to that size.
 
-Call Trace:
- memmove+0x25/0x60 mm/kasan/shadow.c:54
- hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
- indx_delete_entry+0x74f/0x3670 fs/ntfs3/index.c:2193
- ni_remove_name+0x27a/0x980 fs/ntfs3/frecord.c:2910
- ntfs_unlink_inode+0x3d4/0x720 fs/ntfs3/inode.c:1712
- ntfs_rename+0x41a/0xcb0 fs/ntfs3/namei.c:276
-
-Before using the meta-data in struct INDEX_HDR, we need to
-check index header valid or not. Otherwise, the corruptedi
-(or malicious) fs image can cause out-of-bounds access which
-could make kernel panic.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Reported-by: syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: f3ddee8dc4e2 ("afs: Fix directory handling")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c   | 2 +-
- fs/ntfs3/index.c   | 4 ++++
- fs/ntfs3/ntfs_fs.h | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ fs/afs/dir.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 88218831527c2..59f813cbdaa8e 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -2575,7 +2575,7 @@ static int read_next_log_rec(struct ntfs_log *log, struct lcb *lcb, u64 *lsn)
- 	return find_log_rec(log, *lsn, lcb);
- }
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 82690d1dd49a0..a97499fd747b6 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -275,6 +275,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
+ 	loff_t i_size;
+ 	int nr_pages, i;
+ 	int ret;
++	loff_t remote_size = 0;
  
--static inline bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
-+bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
- {
- 	__le16 mask;
- 	u32 min_de, de_off, used, total;
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 37688cf6e3d05..f62e0df7a7b4e 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -802,6 +802,10 @@ static inline struct NTFS_DE *hdr_delete_de(struct INDEX_HDR *hdr,
- 	u32 off = PtrOffset(hdr, re);
- 	int bytes = used - (off + esize);
+ 	_enter("");
  
-+	/* check INDEX_HDR valid before using INDEX_HDR */
-+	if (!check_index_header(hdr, le32_to_cpu(hdr->total)))
-+		return NULL;
-+
- 	if (off >= used || esize < sizeof(struct NTFS_DE) ||
- 	    bytes < sizeof(struct NTFS_DE))
- 		return NULL;
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 8aaec7e0804ef..e571e7643596e 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -575,6 +575,7 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
- bool ni_is_dirty(struct inode *inode);
+@@ -289,6 +290,8 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
  
- /* Globals from fslog.c */
-+bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
- int log_replay(struct ntfs_inode *ni, bool *initialized);
+ expand:
+ 	i_size = i_size_read(&dvnode->netfs.inode);
++	if (i_size < remote_size)
++	    i_size = remote_size;
+ 	if (i_size < 2048) {
+ 		ret = afs_bad(dvnode, afs_file_error_dir_small);
+ 		goto error;
+@@ -364,6 +367,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
+ 			 * buffer.
+ 			 */
+ 			up_write(&dvnode->validate_lock);
++			remote_size = req->file_size;
+ 			goto expand;
+ 		}
  
- /* Globals from fsntfs.c */
 -- 
 2.39.2
 
