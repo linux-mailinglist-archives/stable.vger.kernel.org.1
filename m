@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F8B6FA864
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84286FAB7E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234905AbjEHKkG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
+        id S233933AbjEHLOB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234942AbjEHKju (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F211226E81
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:44 -0700 (PDT)
+        with ESMTP id S233916AbjEHLN7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A67136541
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 839576120F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860DCC433D2;
-        Mon,  8 May 2023 10:39:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E51F762BBD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83A5C433D2;
+        Mon,  8 May 2023 11:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542383;
-        bh=tjDFfD1WoHMQZc2L8+tlEs3vsj7Ua2yoH9CfKxBCrsY=;
+        s=korg; t=1683544431;
+        bh=ynJjKYwqy3erZ80zvU8qzgrhA8o/yYdGFmvnvkqwDpM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QswgRukVFE3S7RuEgb7KrmKi9ww/CukJqy9uglQnQsx9gi6lUjemE9Bban9uNGZf+
-         E3jMaowpGNqc1LOPQB6QvdqTBfFs0waD9kkHioD2cPHa+WzYEfd2YgfHe8rZtgYfv3
-         z0NOXprdekfooOMElFFg2hozLGdpln/lJK4EUFqM=
+        b=iW/rKYYQUWhkdKkQ55cwDGGE41ntPQQotbRV+LR0shfu/icER4xH4YN8alQ0s0I+7
+         FLLjXg9lVzMnG2XYtJo4oYEhtr9A3KmYJnZQS4RhErHBYT/4z9Sap7/UoYrZsVbcxv
+         4OJUCXH6FzB0e/y4y78FXra0IcTeHqtGjKGUrjVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roi Dayan <roid@nvidia.com>,
-        Maor Dickman <maord@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 416/663] net/mlx5e: Fix error flow in representor failing to add vport rx rule
+        patches@lists.linux.dev, Yi Zhang <yi.zhang@redhat.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        "Ewan D. Milne" <emilne@redhat.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 407/694] nvme-fcloop: fix "inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage"
 Date:   Mon,  8 May 2023 11:44:02 +0200
-Message-Id: <20230508094441.584214766@linuxfoundation.org>
+Message-Id: <20230508094446.417913447@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,72 +55,203 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roi Dayan <roid@nvidia.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 0a6b069cc60d68d33b4f6e7dd7f1adc3ec749766 ]
+[ Upstream commit 4f86a6ff6fbd891232dda3ca97fd1b9630b59809 ]
 
-On representor init rx error flow the flow steering pointer is being
-released so mlx5e_attach_netdev() doesn't have a valid fs pointer
-in its error flow. Make sure the pointer is nullified when released
-and add a check in mlx5e_fs_cleanup() to verify fs is not null
-as representor cleanup callback would be called anyway.
+fcloop_fcp_op() could be called from flush request's ->end_io(flush_end_io) in
+which the spinlock of fq->mq_flush_lock is grabbed with irq saved/disabled.
 
-Fixes: af8bbf730068 ("net/mlx5e: Convert mlx5e_flow_steering member of mlx5e_priv to pointer")
-Signed-off-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Maor Dickman <maord@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+So fcloop_fcp_op() can't call spin_unlock_irq(&tfcp_req->reqlock) simply
+which enables irq unconditionally.
+
+Fixes the warning by switching to spin_lock_irqsave()/spin_unlock_irqrestore()
+
+Fixes: c38dbbfab1bc ("nvme-fcloop: fix inconsistent lock state warnings")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_fs.c   | 2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 1 +
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c  | 2 ++
- 3 files changed, 5 insertions(+)
+ drivers/nvme/target/fcloop.c | 48 ++++++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-index 7cd36f4ac3efc..edbe22d93c992 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-@@ -1471,6 +1471,8 @@ struct mlx5e_flow_steering *mlx5e_fs_init(const struct mlx5e_profile *profile,
+diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
+index 5c16372f3b533..c780af36c1d4a 100644
+--- a/drivers/nvme/target/fcloop.c
++++ b/drivers/nvme/target/fcloop.c
+@@ -614,10 +614,11 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
+ 	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
++	unsigned long flags;
+ 	int ret = 0;
+ 	bool aborted = false;
  
- void mlx5e_fs_cleanup(struct mlx5e_flow_steering *fs)
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 		tfcp_req->inistate = INI_IO_ACTIVE;
+@@ -626,11 +627,11 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 		aborted = true;
+ 		break;
+ 	default:
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		WARN_ON(1);
+ 		return;
+ 	}
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (unlikely(aborted))
+ 		ret = -ECANCELED;
+@@ -655,8 +656,9 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		container_of(work, struct fcloop_fcpreq, abort_rcv_work);
+ 	struct nvmefc_fcp_req *fcpreq;
+ 	bool completed = false;
++	unsigned long flags;
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_ABORTED:
+@@ -665,11 +667,11 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		completed = true;
+ 		break;
+ 	default:
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		WARN_ON(1);
+ 		return;
+ 	}
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (unlikely(completed)) {
+ 		/* remove reference taken in original abort downcall */
+@@ -681,9 +683,9 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
+ 					&tfcp_req->tgt_fcp_req);
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	tfcp_req->fcpreq = NULL;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
+ 	/* call_host_done releases reference for abort downcall */
+@@ -699,11 +701,12 @@ fcloop_tgt_fcprqst_done_work(struct work_struct *work)
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, tio_done_work);
+ 	struct nvmefc_fcp_req *fcpreq;
++	unsigned long flags;
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	fcpreq = tfcp_req->fcpreq;
+ 	tfcp_req->inistate = INI_IO_COMPLETED;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	fcloop_call_host_done(fcpreq, tfcp_req, tfcp_req->status);
+ }
+@@ -807,13 +810,14 @@ fcloop_fcp_op(struct nvmet_fc_target_port *tgtport,
+ 	u32 rsplen = 0, xfrlen = 0;
+ 	int fcp_err = 0, active, aborted;
+ 	u8 op = tgt_fcpreq->op;
++	unsigned long flags;
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	fcpreq = tfcp_req->fcpreq;
+ 	active = tfcp_req->active;
+ 	aborted = tfcp_req->aborted;
+ 	tfcp_req->active = true;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (unlikely(active))
+ 		/* illegal - call while i/o active */
+@@ -821,9 +825,9 @@ fcloop_fcp_op(struct nvmet_fc_target_port *tgtport,
+ 
+ 	if (unlikely(aborted)) {
+ 		/* target transport has aborted i/o prior */
+-		spin_lock_irq(&tfcp_req->reqlock);
++		spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 		tfcp_req->active = false;
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		tgt_fcpreq->transferred_length = 0;
+ 		tgt_fcpreq->fcp_error = -ECANCELED;
+ 		tgt_fcpreq->done(tgt_fcpreq);
+@@ -880,9 +884,9 @@ fcloop_fcp_op(struct nvmet_fc_target_port *tgtport,
+ 		break;
+ 	}
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	tfcp_req->active = false;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	tgt_fcpreq->transferred_length = xfrlen;
+ 	tgt_fcpreq->fcp_error = fcp_err;
+@@ -896,15 +900,16 @@ fcloop_tgt_fcp_abort(struct nvmet_fc_target_port *tgtport,
+ 			struct nvmefc_tgt_fcp_req *tgt_fcpreq)
  {
-+	if (!fs)
-+		return;
- 	mlx5e_fs_ethtool_free(fs);
- 	mlx5e_fs_tc_free(fs);
- 	mlx5e_fs_vlan_free(fs);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 1f4233b2842f7..53eba076c53fc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5208,6 +5208,7 @@ static void mlx5e_nic_cleanup(struct mlx5e_priv *priv)
- 	mlx5e_health_destroy_reporters(priv);
- 	mlx5e_ktls_cleanup(priv);
- 	mlx5e_fs_cleanup(priv->fs);
-+	priv->fs = NULL;
- }
+ 	struct fcloop_fcpreq *tfcp_req = tgt_fcp_req_to_fcpreq(tgt_fcpreq);
++	unsigned long flags;
  
- static int mlx5e_init_nic_rx(struct mlx5e_priv *priv)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 301a734b7c6a7..21426decc4bde 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -822,6 +822,7 @@ static int mlx5e_init_ul_rep(struct mlx5_core_dev *mdev,
- static void mlx5e_cleanup_rep(struct mlx5e_priv *priv)
- {
- 	mlx5e_fs_cleanup(priv->fs);
-+	priv->fs = NULL;
- }
+ 	/*
+ 	 * mark aborted only in case there were 2 threads in transport
+ 	 * (one doing io, other doing abort) and only kills ops posted
+ 	 * after the abort request
+ 	 */
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	tfcp_req->aborted = true;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
  
- static int mlx5e_create_rep_ttc_table(struct mlx5e_priv *priv)
-@@ -988,6 +989,7 @@ static int mlx5e_init_rep_rx(struct mlx5e_priv *priv)
- 	priv->rx_res = NULL;
- err_free_fs:
- 	mlx5e_fs_cleanup(priv->fs);
-+	priv->fs = NULL;
- 	return err;
- }
+ 	tfcp_req->status = NVME_SC_INTERNAL;
  
+@@ -946,6 +951,7 @@ fcloop_fcp_abort(struct nvme_fc_local_port *localport,
+ 	struct fcloop_ini_fcpreq *inireq = fcpreq->private;
+ 	struct fcloop_fcpreq *tfcp_req;
+ 	bool abortio = true;
++	unsigned long flags;
+ 
+ 	spin_lock(&inireq->inilock);
+ 	tfcp_req = inireq->tfcp_req;
+@@ -958,7 +964,7 @@ fcloop_fcp_abort(struct nvme_fc_local_port *localport,
+ 		return;
+ 
+ 	/* break initiator/target relationship for io */
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 	case INI_IO_ACTIVE:
+@@ -968,11 +974,11 @@ fcloop_fcp_abort(struct nvme_fc_local_port *localport,
+ 		abortio = false;
+ 		break;
+ 	default:
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		WARN_ON(1);
+ 		return;
+ 	}
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (abortio)
+ 		/* leave the reference while the work item is scheduled */
 -- 
 2.39.2
 
