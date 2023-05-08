@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D6636FA636
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B806FADEB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234372AbjEHKRd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:17:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46746 "EHLO
+        id S236098AbjEHLjf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234399AbjEHKRY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:24 -0400
+        with ESMTP id S236167AbjEHLjV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 352D4D059
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D2341562
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B25C8624BF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39ADC433D2;
-        Mon,  8 May 2023 10:17:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E22B6343B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:38:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C015C4339B;
+        Mon,  8 May 2023 11:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541035;
-        bh=Xdq6WHE3RMmxZGTNIrc9fX9lJQcBS0AbCx8tF2rpevg=;
+        s=korg; t=1683545929;
+        bh=pOoBRO0dJbmOclHfPDIwfvwzXfranY6xDAAuH6uuuSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h89kGaje1uTjUS85Y+DkzVZZPKSdkSOLPSWlc1FupXmlMP1MWKt01L5mgA3seSXUK
-         5HIj5vWcZLKgimZm0U6Qa5Hdtuqa7J3/AnEFdu+hLlgOlwuq2Z/jBt6QLITPzvUvtV
-         wyl+s+nv84yWiS40hWvmk5OP5je+/4gTuUbbm7hE=
+        b=JKItsSjL+/X49aOteA9ZqRnmUFphq6oFJSCYDOX76mP8GP0O6f9eHuUJtJcoJBDpH
+         DYZ9UUMESdjgfj+0ISUqScB4CPfHeMVLfRSHCjkK0oJ9SkqtOSPj9SEALaKfUvBr5t
+         9lZVkVND+PH9fSQ3N7PIsLIfSQfU4iZxFHxhoCkc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 560/611] parisc: Ensure page alignment in flush functions
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 201/371] selftests/bpf: Fix leaked bpf_link in get_stackid_cannot_attach
 Date:   Mon,  8 May 2023 11:46:42 +0200
-Message-Id: <20230508094440.183580728@linuxfoundation.org>
+Message-Id: <20230508094820.081765718@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,43 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Song Liu <song@kernel.org>
 
-commit d755bd2caeb47fd806e12399fe8b56798fa5d2cc upstream.
+[ Upstream commit c1e07a80cf23d3a6e96172bc9a73bfa912a9fcbc ]
 
-Matthew Wilcox noticed, that if ARCH_HAS_FLUSH_ON_KUNMAP is defined
-(which is the case for PA-RISC), __kunmap_local() calls
-kunmap_flush_on_unmap(), which may call the parisc flush functions with
-a non-page-aligned address and thus the page might not be fully flushed.
+skel->links.oncpu is leaked in one case. This causes test perf_branches
+fails when it runs after get_stackid_cannot_attach:
 
-This patch ensures that flush_kernel_dcache_page_asm() and
-flush_kernel_dcache_page_asm() will always operate on page-aligned
-addresses.
+./test_progs -t get_stackid_cannot_attach,perf_branches
+84      get_stackid_cannot_attach:OK
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:FAIL:output not valid no valid sample from prog
+146/1   perf_branches/perf_branches_hw:FAIL
+146/2   perf_branches/perf_branches_no_hw:OK
+146     perf_branches:FAIL
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+All error logs:
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:FAIL:output not valid no valid sample from prog
+146/1   perf_branches/perf_branches_hw:FAIL
+146     perf_branches:FAIL
+Summary: 1/1 PASSED, 0 SKIPPED, 1 FAILED
+
+Fix this by adding the missing bpf_link__destroy().
+
+Fixes: 346938e9380c ("selftests/bpf: Add get_stackid_cannot_attach")
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230412210423.900851-3-song@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/pacache.S |    2 ++
- 1 file changed, 2 insertions(+)
+ .../testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/parisc/kernel/pacache.S
-+++ b/arch/parisc/kernel/pacache.S
-@@ -889,6 +889,7 @@ ENDPROC_CFI(flush_icache_page_asm)
- ENTRY_CFI(flush_kernel_dcache_page_asm)
- 88:	ldil		L%dcache_stride, %r1
- 	ldw		R%dcache_stride(%r1), %r23
-+	depi_safe	0, 31,PAGE_SHIFT, %r26	/* Clear any offset bits */
+diff --git a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
+index 8d5a6023a1bbf..4022c89ea268a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
+@@ -65,6 +65,7 @@ void test_get_stackid_cannot_attach(void)
+ 	skel->links.oncpu = bpf_program__attach_perf_event(skel->progs.oncpu,
+ 							   pmu_fd);
+ 	ASSERT_OK_PTR(skel->links.oncpu, "attach_perf_event_callchain");
++	bpf_link__destroy(skel->links.oncpu);
+ 	close(pmu_fd);
  
- #ifdef CONFIG_64BIT
- 	depdi,z		1, 63-PAGE_SHIFT,1, %r25
-@@ -925,6 +926,7 @@ ENDPROC_CFI(flush_kernel_dcache_page_asm
- ENTRY_CFI(purge_kernel_dcache_page_asm)
- 88:	ldil		L%dcache_stride, %r1
- 	ldw		R%dcache_stride(%r1), %r23
-+	depi_safe	0, 31,PAGE_SHIFT, %r26	/* Clear any offset bits */
- 
- #ifdef CONFIG_64BIT
- 	depdi,z		1, 63-PAGE_SHIFT,1, %r25
+ 	/* add exclude_callchain_kernel, attach should fail */
+-- 
+2.39.2
+
 
 
