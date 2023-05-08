@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 539D26FA829
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62A646FAB36
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234706AbjEHKiM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:38:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38816 "EHLO
+        id S233336AbjEHLKh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234704AbjEHKh6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:37:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DFB824A91
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:37:54 -0700 (PDT)
+        with ESMTP id S233319AbjEHLK0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8464829C97
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04F5F62801
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:37:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F571C433EF;
-        Mon,  8 May 2023 10:37:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1131662B4A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF6CC433D2;
+        Mon,  8 May 2023 11:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542273;
-        bh=wRxzhg9uC7CkB7q8uB2nDfcARdCDXM/1ztROGycG8m8=;
+        s=korg; t=1683544224;
+        bh=KmgivwU1bmKH7J4o34D2w+USH2pR5xeRlBe0Xl86kVg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BbNCSazrOG1yuiWIbqSIRgZb+72zNWkX0B019aljvi/bT7l8/NDPAIWTwkdKNhUO7
-         K4G1rkttxubkuseIdZ72PYvKw1Bc221S3JqAFI8NnlAVptGUYz4p+edIiaIophLNoQ
-         etxA7WDcSe45Bz3Xrfj/nwe1nh1dKQLAfhF7J8C0=
+        b=nfRLatDanYwXzKtNAtflF0TGez7cV7vy0V7Rug7JfmoOdaViecR0HmlceBg+S3iCy
+         N68EXS148oD/12Cyi++dxQ2CscNNZXTBDurTTFocr0q6s8E/QBOk2fw6/sY5Utsbur
+         CThmtcyZ5bS2WwSX6+uK9d18ytBx1dOjjI/QCv60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuchang Li <lishuchang@hust.edu.cn>,
-        Justin Tee <justin.tee@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 350/663] scsi: lpfc: Fix ioremap issues in lpfc_sli4_pci_mem_setup()
+Subject: [PATCH 6.3 341/694] bpf: take into account liveness when propagating precision
 Date:   Mon,  8 May 2023 11:42:56 +0200
-Message-Id: <20230508094439.503811823@linuxfoundation.org>
+Message-Id: <20230508094443.573279770@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,68 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shuchang Li <lishuchang@hust.edu.cn>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 91a0c0c1413239d0548b5aac4c82f38f6d53a91e ]
+[ Upstream commit 52c2b005a3c18c565fc70cfd0ca49375f301e952 ]
 
-When if_type equals zero and pci_resource_start(pdev, PCI_64BIT_BAR4)
-returns false, drbl_regs_memmap_p is not remapped. This passes a NULL
-pointer to iounmap(), which can trigger a WARN() on certain arches.
+When doing state comparison, if old state has register that is not
+marked as REG_LIVE_READ, then we just skip comparison, regardless what's
+the state of corresponing register in current state. This is because not
+REG_LIVE_READ register is irrelevant for further program execution and
+correctness. All good here.
 
-When if_type equals six and pci_resource_start(pdev, PCI_64BIT_BAR4)
-returns true, drbl_regs_memmap_p may has been remapped and
-ctrl_regs_memmap_p is not remapped. This is a resource leak and passes a
-NULL pointer to iounmap().
+But when we get to precision propagation, after two states were declared
+equivalent, we don't take into account old register's liveness, and thus
+attempt to propagate precision for register in current state even if
+that register in old state was not REG_LIVE_READ anymore. This is bad,
+because register in current state could be anything at all and this
+could cause -EFAULT due to internal logic bugs.
 
-To fix these issues, we need to add null checks before iounmap(), and
-change some goto labels.
+Fix by taking into account REG_LIVE_READ liveness mark to keep the logic
+in state comparison in sync with precision propagation.
 
-Fixes: 1351e69fc6db ("scsi: lpfc: Add push-to-adapter support to sli4")
-Signed-off-by: Shuchang Li <lishuchang@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230404072133.1022-1-lishuchang@hust.edu.cn
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: a3ce685dd01a ("bpf: fix precision tracking")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20230309224131.57449-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_init.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index eeb73da754d0d..99d2694fe00a0 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -11970,7 +11970,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
- 				goto out_iounmap_all;
- 		} else {
- 			error = -ENOMEM;
--			goto out_iounmap_all;
-+			goto out_iounmap_ctrl;
- 		}
- 	}
- 
-@@ -11988,7 +11988,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
- 			dev_err(&pdev->dev,
- 			   "ioremap failed for SLI4 HBA dpp registers.\n");
- 			error = -ENOMEM;
--			goto out_iounmap_ctrl;
-+			goto out_iounmap_all;
- 		}
- 		phba->pci_bar4_memmap_p = phba->sli4_hba.dpp_regs_memmap_p;
- 	}
-@@ -12013,9 +12013,11 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
- 	return 0;
- 
- out_iounmap_all:
--	iounmap(phba->sli4_hba.drbl_regs_memmap_p);
-+	if (phba->sli4_hba.drbl_regs_memmap_p)
-+		iounmap(phba->sli4_hba.drbl_regs_memmap_p);
- out_iounmap_ctrl:
--	iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
-+	if (phba->sli4_hba.ctrl_regs_memmap_p)
-+		iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
- out_iounmap_conf:
- 	iounmap(phba->sli4_hba.conf_regs_memmap_p);
- 
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 767e8930b0bd5..63510f8a1c7dc 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -14225,7 +14225,8 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 		state_reg = state->regs;
+ 		for (i = 0; i < BPF_REG_FP; i++, state_reg++) {
+ 			if (state_reg->type != SCALAR_VALUE ||
+-			    !state_reg->precise)
++			    !state_reg->precise ||
++			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating r%d\n", i, fr);
+@@ -14239,7 +14240,8 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 				continue;
+ 			state_reg = &state->stack[i].spilled_ptr;
+ 			if (state_reg->type != SCALAR_VALUE ||
+-			    !state_reg->precise)
++			    !state_reg->precise ||
++			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating fp%d\n",
 -- 
 2.39.2
 
