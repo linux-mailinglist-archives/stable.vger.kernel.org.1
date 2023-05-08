@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8046B6FA564
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DFB86FA89E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234120AbjEHKI6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37168 "EHLO
+        id S234912AbjEHKna (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:43:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234122AbjEHKI5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:57 -0400
+        with ESMTP id S234927AbjEHKmu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B673293D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B371E1A111
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A16862395
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BE1C433EF;
-        Mon,  8 May 2023 10:08:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AF956283C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB05C433D2;
+        Mon,  8 May 2023 10:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540534;
-        bh=aOzlE+ANOfR7mTJy+fxUnHQ1jqdFhdAPuhJ7O6Q5pnI=;
+        s=korg; t=1683542509;
+        bh=BnSbQewCpv20UP2zeNoMqCWBrshaaxKJMLHDOEMbrqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jx11i5Cch/VXVQ/Bf3HhfcPiApLUS+uFhxNuqlu5GGUOSplC1NraWLOp0bw7jmz2O
-         B9g+BqvToKSS4iMyl0w4QCzGzo29HMcasOzzr78hl/nKrMCiEdSlnFCGmGQzMXxxxi
-         L3UYh4vQp263vgJa+nmsklP+uw0IL+Ph9HLds4Lc=
+        b=ri7swiacjPLuvI6HADWZdZzN6l/LSE60pCzNjMKo4WHB6IfgY+w4A58QW2XHHw3ih
+         MS00+ZzWyRXj3mh0+QXB5H4OKXZRvdJnLG0BECsWy/NmMlVNMro8XPZ3KUs++mlkh+
+         1zUzx94cplESUPEHPtS8sLiXE3DomdL6mE5y6xLE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Wang <wvw@google.com>,
-        Midas Chien <midaschieh@google.com>,
-        =?UTF-8?q?Chunhui=20Li=20 ?= <chunhui.li@mediatek.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Tony Luck <tony.luck@intel.com>, kernel-team@android.com,
-        John Stultz <jstultz@google.com>,
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+        Moshe Shemesh <moshe@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 401/611] pstore: Revert pmsg_lock back to a normal mutex
+Subject: [PATCH 6.2 417/663] net/mlx5: Remove "recovery" arg from mlx5_load_one() function
 Date:   Mon,  8 May 2023 11:44:03 +0200
-Message-Id: <20230508094435.312510323@linuxfoundation.org>
+Message-Id: <20230508094441.623657555@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,95 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Stultz <jstultz@google.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit 5239a89b06d6b199f133bf0ffea421683187f257 ]
+[ Upstream commit 5977ac3910f1cbaf44dca48179118b25c206ac29 ]
 
-This reverts commit 76d62f24db07f22ccf9bc18ca793c27d4ebef721.
+mlx5_load_one() is always called with recovery==false, so remove the
+unneeded function arg.
 
-So while priority inversion on the pmsg_lock is an occasional
-problem that an rt_mutex would help with, in uses where logging
-is writing to pmsg heavily from multiple threads, the pmsg_lock
-can be heavily contended.
-
-After this change landed, it was reported that cases where the
-mutex locking overhead was commonly adding on the order of 10s
-of usecs delay had suddenly jumped to ~msec delay with rtmutex.
-
-It seems the slight differences in the locks under this level
-of contention causes the normal mutexes to utilize the spinning
-optimizations, while the rtmutexes end up in the sleeping
-slowpath (which allows additional threads to pile on trying
-to take the lock).
-
-In this case, it devolves to a worse case senerio where the lock
-acquisition and scheduling overhead dominates, and each thread
-is waiting on the order of ~ms to do ~us of work.
-
-Obviously, having tons of threads all contending on a single
-lock for logging is non-optimal, so the proper fix is probably
-reworking pstore pmsg to have per-cpu buffers so we don't have
-contention.
-
-Additionally, Steven Rostedt has provided some furhter
-optimizations for rtmutexes that improves the rtmutex spinning
-path, but at least in my testing, I still see the test tripping
-into the sleeping path on rtmutexes while utilizing the spinning
-path with mutexes.
-
-But in the short term, lets revert the change to the rt_mutex
-and go back to normal mutexes to avoid a potentially major
-performance regression. And we can work on optimizations to both
-rtmutexes and finer-grained locking for pstore pmsg in the
-future.
-
-Cc: Wei Wang <wvw@google.com>
-Cc: Midas Chien<midaschieh@google.com>
-Cc: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Anton Vorontsov <anton@enomsg.org>
-Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: kernel-team@android.com
-Fixes: 76d62f24db07 ("pstore: Switch pmsg_lock to an rt_mutex to avoid priority inversion")
-Reported-by: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230308204043.2061631-1-jstultz@google.com
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: dfad99750c0f ("net/mlx5: Use recovery timeout on sync reset flow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/pmsg.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/main.c      | 9 ++++-----
+ drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h | 2 +-
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/fs/pstore/pmsg.c b/fs/pstore/pmsg.c
-index 18cf94b597e05..d8542ec2f38c6 100644
---- a/fs/pstore/pmsg.c
-+++ b/fs/pstore/pmsg.c
-@@ -7,10 +7,9 @@
- #include <linux/device.h>
- #include <linux/fs.h>
- #include <linux/uaccess.h>
--#include <linux/rtmutex.h>
- #include "internal.h"
- 
--static DEFINE_RT_MUTEX(pmsg_lock);
-+static DEFINE_MUTEX(pmsg_lock);
- 
- static ssize_t write_pmsg(struct file *file, const char __user *buf,
- 			  size_t count, loff_t *ppos)
-@@ -29,9 +28,9 @@ static ssize_t write_pmsg(struct file *file, const char __user *buf,
- 	if (!access_ok(buf, count))
- 		return -EFAULT;
- 
--	rt_mutex_lock(&pmsg_lock);
-+	mutex_lock(&pmsg_lock);
- 	ret = psinfo->write_user(&record, buf);
--	rt_mutex_unlock(&pmsg_lock);
-+	mutex_unlock(&pmsg_lock);
- 	return ret ? ret : count;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 1e46f9afa40e0..a1f460c9d3cde 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -154,7 +154,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
+ 		if (mlx5_health_wait_pci_up(dev))
+ 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
+ 		else
+-			mlx5_load_one(dev, false);
++			mlx5_load_one(dev);
+ 		devlink_remote_reload_actions_performed(priv_to_devlink(dev), 0,
+ 							BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
+ 							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index f4e0431da55b4..2772005be741a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1491,13 +1491,13 @@ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery)
+ 	return err;
  }
  
+-int mlx5_load_one(struct mlx5_core_dev *dev, bool recovery)
++int mlx5_load_one(struct mlx5_core_dev *dev)
+ {
+ 	struct devlink *devlink = priv_to_devlink(dev);
+ 	int ret;
+ 
+ 	devl_lock(devlink);
+-	ret = mlx5_load_one_devl_locked(dev, recovery);
++	ret = mlx5_load_one_devl_locked(dev, false);
+ 	devl_unlock(devlink);
+ 	return ret;
+ }
+@@ -1891,8 +1891,7 @@ static void mlx5_pci_resume(struct pci_dev *pdev)
+ 
+ 	mlx5_pci_trace(dev, "Enter, loading driver..\n");
+ 
+-	err = mlx5_load_one(dev, false);
+-
++	err = mlx5_load_one(dev);
+ 	if (!err)
+ 		devlink_health_reporter_state_update(dev->priv.health.fw_fatal_reporter,
+ 						     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
+@@ -1983,7 +1982,7 @@ static int mlx5_resume(struct pci_dev *pdev)
+ {
+ 	struct mlx5_core_dev *dev = pci_get_drvdata(pdev);
+ 
+-	return mlx5_load_one(dev, false);
++	return mlx5_load_one(dev);
+ }
+ 
+ static const struct pci_device_id mlx5_core_pci_table[] = {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index 029305a8b80a8..d670b28a73236 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -321,7 +321,7 @@ int mlx5_init_one(struct mlx5_core_dev *dev);
+ void mlx5_uninit_one(struct mlx5_core_dev *dev);
+ void mlx5_unload_one(struct mlx5_core_dev *dev);
+ void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev);
+-int mlx5_load_one(struct mlx5_core_dev *dev, bool recovery);
++int mlx5_load_one(struct mlx5_core_dev *dev);
+ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery);
+ 
+ int mlx5_vport_set_other_func_cap(struct mlx5_core_dev *dev, const void *hca_cap, u16 function_id,
 -- 
 2.39.2
 
