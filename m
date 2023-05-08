@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9F66FAC5C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1566FA95C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235612AbjEHLXh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39538 "EHLO
+        id S235188AbjEHKuT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235631AbjEHLXg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E6439B9B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:32 -0700 (PDT)
+        with ESMTP id S235090AbjEHKtq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9B82947C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5A0C62CCA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780C6C433EF;
-        Mon,  8 May 2023 11:23:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D210F6290D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F3DC433D2;
+        Mon,  8 May 2023 10:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545011;
-        bh=qhJnOiH9ivS867K9D5SpaU/jJxBK52Uiu3onzlfgRI4=;
+        s=korg; t=1683542957;
+        bh=FC884IW4HmSfoKS5dBzpF8BXVzOw0LBrRmhS3DCvSEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gf7w3RZWDAoYq1P8pl11zmEmgfHrdKfImvDaX+9fFywCvSRQAEJhYO4tfOCSvOFUG
-         GAlQQrAqrerMSXorqEPJfr4yZWLr9QcM82SG4rhXSMi95QazoiDT14/0vn6G8TINpq
-         OJWUqWkp0jBFr3q5qWFqPnHDiVv38upT6qB4K6Kw=
+        b=bimP2C8u5vjDCKmbdJ8cSXkFXJF4QSBfiFDByQ29MNJR2E/C8MDLbJrpIdw6EHkrv
+         e03TNhpZWX6wt4U7JfXf4RpqwmLGHzoU6cemPzfCmnuzfftnXGVix2Xuq95ytXLB9P
+         rn/fmd/JeMxNZRC/7gwWPyHgqDoloayhRNBlS5F8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com,
-        Zeng Heng <zengheng4@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Dipen Patel <dipenp@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 595/694] fs/ntfs3: Fix slab-out-of-bounds read in hdr_delete_de()
+Subject: [PATCH 6.2 604/663] hte: tegra-194: Fix off by one in tegra_hte_map_to_line_id()
 Date:   Mon,  8 May 2023 11:47:10 +0200
-Message-Id: <20230508094454.446203366@linuxfoundation.org>
+Message-Id: <20230508094449.182441223@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,79 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ab84eee4c7ab929996602eda7832854c35a6dda2 ]
+[ Upstream commit e078180d66848a6a890daf0a3ce28dc43cc66790 ]
 
-Here is a BUG report from syzbot:
+The "map_sz" is the number of elements in the "m" array so the >
+comparison needs to be changed to >= to prevent an out of bounds
+read.
 
-BUG: KASAN: slab-out-of-bounds in hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
-Read of size 16842960 at addr ffff888079cc0600 by task syz-executor934/3631
-
-Call Trace:
- memmove+0x25/0x60 mm/kasan/shadow.c:54
- hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
- indx_delete_entry+0x74f/0x3670 fs/ntfs3/index.c:2193
- ni_remove_name+0x27a/0x980 fs/ntfs3/frecord.c:2910
- ntfs_unlink_inode+0x3d4/0x720 fs/ntfs3/inode.c:1712
- ntfs_rename+0x41a/0xcb0 fs/ntfs3/namei.c:276
-
-Before using the meta-data in struct INDEX_HDR, we need to
-check index header valid or not. Otherwise, the corruptedi
-(or malicious) fs image can cause out-of-bounds access which
-could make kernel panic.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Reported-by: syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 09574cca6ad6 ("hte: Add Tegra194 HTE kernel provider")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Dipen Patel <dipenp@nvidia.com>
+Signed-off-by: Dipen Patel <dipenp@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c   | 2 +-
- fs/ntfs3/index.c   | 4 ++++
- fs/ntfs3/ntfs_fs.h | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/hte/hte-tegra194.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index dc723f03d6bb2..bf73964472845 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -2575,7 +2575,7 @@ static int read_next_log_rec(struct ntfs_log *log, struct lcb *lcb, u64 *lsn)
- 	return find_log_rec(log, *lsn, lcb);
- }
- 
--static inline bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
-+bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
+diff --git a/drivers/hte/hte-tegra194.c b/drivers/hte/hte-tegra194.c
+index 49a27af22742b..d1b579c822797 100644
+--- a/drivers/hte/hte-tegra194.c
++++ b/drivers/hte/hte-tegra194.c
+@@ -251,7 +251,7 @@ static int tegra_hte_map_to_line_id(u32 eid,
  {
- 	__le16 mask;
- 	u32 min_de, de_off, used, total;
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index ae9616becec15..7a1e01a2ed9ae 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -848,6 +848,10 @@ static inline struct NTFS_DE *hdr_delete_de(struct INDEX_HDR *hdr,
- 	u32 off = PtrOffset(hdr, re);
- 	int bytes = used - (off + esize);
  
-+	/* check INDEX_HDR valid before using INDEX_HDR */
-+	if (!check_index_header(hdr, le32_to_cpu(hdr->total)))
-+		return NULL;
-+
- 	if (off >= used || esize < sizeof(struct NTFS_DE) ||
- 	    bytes < sizeof(struct NTFS_DE))
- 		return NULL;
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 80072e5f96f70..15296f5690b5a 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -581,6 +581,7 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
- bool ni_is_dirty(struct inode *inode);
- 
- /* Globals from fslog.c */
-+bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
- int log_replay(struct ntfs_inode *ni, bool *initialized);
- 
- /* Globals from fsntfs.c */
+ 	if (m) {
+-		if (eid > map_sz)
++		if (eid >= map_sz)
+ 			return -EINVAL;
+ 		if (m[eid].slice == NV_AON_SLICE_INVALID)
+ 			return -EINVAL;
 -- 
 2.39.2
 
