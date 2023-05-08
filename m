@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D4D66FAA60
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D6966FA721
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235459AbjEHLCj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:02:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39528 "EHLO
+        id S234525AbjEHK2O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:28:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235510AbjEHLCQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:16 -0400
+        with ESMTP id S234604AbjEHK1r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:27:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274B830AF0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:00:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66AB6D2EC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:27:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CE9662A29
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91748C433EF;
-        Mon,  8 May 2023 11:00:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4536562630
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B85C433EF;
+        Mon,  8 May 2023 10:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543655;
-        bh=MAB3dtPYftmQz3ahY//MiHajMhjIR/dm2BqKGdUiJ/o=;
+        s=korg; t=1683541626;
+        bh=3TK63VG1uK1PZQkBjgQN8PfNH/JHskCpIbsgbRoGMYI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g3nbm4qzizRq4Jmp5PX6MJT/FMgdNLAIz6tjXpUS8gpiomkD4IA/+SXk8k+9c0gSs
-         pbslExffBWa6TUVKGeqxzZsfjfYKKoMLHtsItCtKB4A5i8z0nI29yM4wrcrulvY4xS
-         NhNBIp8uN2T0KYHYrjcOE+FLa3anTalBx2Aslvvw=
+        b=MKvgdwNyQfLL97TCA7AOekfXo11m0VP+8cTzmZx9dJ3dqUwZ2WLidVD6UR19Qb92Q
+         UIThTBa8DfDzWXzbZN4AXchF3NlsAvWjslIrBdmv9WCMIrEweKJJdEAhWym8mrS8BV
+         B2cFgna9AogdRR5mDHITbDOYVGoFUXNH8SuoJ2jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
-        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 159/694] soc: ti: pm33xx: Fix refcount leak in am33xx_pm_probe
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 168/663] arm64: dts: qcom: sc8280xp: Fix the PCI I/O port range
 Date:   Mon,  8 May 2023 11:39:54 +0200
-Message-Id: <20230508094437.585987736@linuxfoundation.org>
+Message-Id: <20230508094433.936709464@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,50 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 8f3c307b580a4a6425896007325bddefc36e8d91 ]
+[ Upstream commit 89fe81c01715f81c3a7d371e9e5f7d7ae5bc557c ]
 
-wkup_m3_ipc_get() takes refcount, which should be freed by
-wkup_m3_ipc_put(). Add missing refcount release in the error paths.
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
+(0x30200000, 0x32200000, 0x34200000, 0x38200000, 0x3c200000) specified in
+the ranges property for I/O region.
 
-Fixes: 5a99ae0092fe ("soc: ti: pm33xx: AM437X: Add rtc_only with ddr in self-refresh support")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20230106054022.947529-1-linmq006@gmail.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 813e83157001 ("arm64: dts: qcom: sc8280xp/sa8540p: add PCIe2-4 nodes")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-11-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/pm33xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
-index ce09c42eaed25..f04c21157904b 100644
---- a/drivers/soc/ti/pm33xx.c
-+++ b/drivers/soc/ti/pm33xx.c
-@@ -527,7 +527,7 @@ static int am33xx_pm_probe(struct platform_device *pdev)
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index 8363e82369854..966dca906bf07 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -902,7 +902,7 @@
+ 			reg-names = "parf", "dbi", "elbi", "atu", "config";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0x0 0x30200000 0x0 0x30200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x30200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x30300000 0x0 0x30300000 0x0 0x1d00000>;
+ 			bus-range = <0x00 0xff>;
  
- 	ret = am33xx_pm_alloc_sram();
- 	if (ret)
--		return ret;
-+		goto err_wkup_m3_ipc_put;
+@@ -1001,7 +1001,7 @@
+ 			reg-names = "parf", "dbi", "elbi", "atu", "config";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0x0 0x32200000 0x0 0x32200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x32200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x32300000 0x0 0x32300000 0x0 0x1d00000>;
+ 			bus-range = <0x00 0xff>;
  
- 	ret = am33xx_pm_rtc_setup();
- 	if (ret)
-@@ -572,13 +572,14 @@ static int am33xx_pm_probe(struct platform_device *pdev)
- 	pm_runtime_put_sync(dev);
- err_pm_runtime_disable:
- 	pm_runtime_disable(dev);
--	wkup_m3_ipc_put(m3_ipc);
- err_unsetup_rtc:
- 	iounmap(rtc_base_virt);
- 	clk_put(rtc_fck);
- err_free_sram:
- 	am33xx_pm_free_sram();
- 	pm33xx_dev = NULL;
-+err_wkup_m3_ipc_put:
-+	wkup_m3_ipc_put(m3_ipc);
- 	return ret;
- }
+@@ -1098,7 +1098,7 @@
+ 			reg-names = "parf", "dbi", "elbi", "atu", "config";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0x0 0x34200000 0x0 0x34200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x34200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x34300000 0x0 0x34300000 0x0 0x1d00000>;
+ 			bus-range = <0x00 0xff>;
+ 
+@@ -1198,7 +1198,7 @@
+ 			reg-names = "parf", "dbi", "elbi", "atu", "config";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0x0 0x38200000 0x0 0x38200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x38200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x38300000 0x0 0x38300000 0x0 0x1d00000>;
+ 			bus-range = <0x00 0xff>;
+ 
+@@ -1295,7 +1295,7 @@
+ 			reg-names = "parf", "dbi", "elbi", "atu", "config";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0x0 0x3c200000 0x0 0x3c200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x3c200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x3c300000 0x0 0x3c300000 0x0 0x1d00000>;
+ 			bus-range = <0x00 0xff>;
  
 -- 
 2.39.2
