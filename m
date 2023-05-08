@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D99F6FAACA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CC4F6FA780
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233487AbjEHLGk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
+        id S234686AbjEHKbM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:31:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233888AbjEHLGS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:18 -0400
+        with ESMTP id S234690AbjEHKbF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9532B33D78
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D9A24A8E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C27FD62A8E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE89FC433EF;
-        Mon,  8 May 2023 11:04:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E430A626CC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B0C433D2;
+        Mon,  8 May 2023 10:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543887;
-        bh=WyqNQpvNKFJk5B2YTcE5F2CmwTuzba0tZ/lxaYHRTUM=;
+        s=korg; t=1683541859;
+        bh=QpZGSFcUEdxc4V4AwY/r1ackKvIgcNwFVumQaCxvIpk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CXiB8G1/aNn8IyBZqGf5sJ1shsrWKxedT/kknPBoyb9cClYMF1uLkHMNc2HRqI3gU
-         mUJCUVX6yXdxZO+qsWrvuFvDMdRwN+nbBQnENDPjT0BH+vteZ0gNBOfQg3FflFlW4y
-         OEwB20eibImbTSPuI+uAdg8CrKxIshyt7m4o0lEA=
+        b=Q2JPEKgIdPJS9oPGcMhK2wtPurPP3DmwcfsbZ1iZMo/8yvCMXU/ghZ70giH4ndMnN
+         Arg4dsalMgTxIEeii+bXEcqWpZFGZlTi9tq9WI4oHnQ6TQiz3l7ikE4pwVjGeRvEUI
+         k5tyawPTlnr5tItWM8hVUJCE4mkfWwkIUPTIeFxg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
-        Dan Carpenter <error27@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 233/694] cpufreq: mediatek: fix passing zero to PTR_ERR
+Subject: [PATCH 6.2 242/663] media: mediatek: vcodec: making sure queue_work successfully
 Date:   Mon,  8 May 2023 11:41:08 +0200
-Message-Id: <20230508094439.919203831@linuxfoundation.org>
+Message-Id: <20230508094436.132932694@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,55 +55,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit d51c63230994f167126d9d8381011b4cb2b0ad22 ]
+[ Upstream commit 2e0ef56d81cb2569624d288b7e95a8a2734a7c74 ]
 
-In order to prevent passing zero to 'PTR_ERR' in
-mtk_cpu_dvfs_info_init(), we fix the return value of of_get_cci() using
-error pointer by explicitly casting error number.
+Putting core work to work queue using queue_work maybe fail, call
+queue_work again when the count of core work in work queue is less
+than core_list_cnt, making sure all the buffer in core list can be
+scheduled.
 
-Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
-Fixes: 0daa47325bae ("cpufreq: mediatek: Link CCI device to CPU")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/mediatek-cpufreq.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../platform/mediatek/vcodec/vdec_msg_queue.c | 31 ++++++++++++++-----
+ .../platform/mediatek/vcodec/vdec_msg_queue.h |  2 ++
+ 2 files changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index 7f2680bc9a0f4..01d949707c373 100644
---- a/drivers/cpufreq/mediatek-cpufreq.c
-+++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -373,13 +373,13 @@ static struct device *of_get_cci(struct device *cpu_dev)
- 	struct platform_device *pdev;
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index cdc539a46cb95..f3073d1e7f420 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -71,6 +71,7 @@ static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_in
+ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
+ {
+ 	struct list_head *head;
++	int status;
  
- 	np = of_parse_phandle(cpu_dev->of_node, "mediatek,cci", 0);
--	if (IS_ERR_OR_NULL(np))
--		return NULL;
-+	if (!np)
-+		return ERR_PTR(-ENODEV);
+ 	head = vdec_get_buf_list(msg_ctx->hardware_index, buf);
+ 	if (!head) {
+@@ -83,11 +84,17 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
+ 	msg_ctx->ready_num++;
  
- 	pdev = of_find_device_by_node(np);
- 	of_node_put(np);
--	if (IS_ERR_OR_NULL(pdev))
--		return NULL;
-+	if (!pdev)
-+		return ERR_PTR(-ENODEV);
+ 	vdec_msg_queue_inc(&buf->ctx->msg_queue, msg_ctx->hardware_index);
+-	if (msg_ctx->hardware_index != MTK_VDEC_CORE)
++	if (msg_ctx->hardware_index != MTK_VDEC_CORE) {
+ 		wake_up_all(&msg_ctx->ready_to_use);
+-	else
+-		queue_work(buf->ctx->dev->core_workqueue,
+-			   &buf->ctx->msg_queue.core_work);
++	} else {
++		if (buf->ctx->msg_queue.core_work_cnt <
++			atomic_read(&buf->ctx->msg_queue.core_list_cnt)) {
++			status = queue_work(buf->ctx->dev->core_workqueue,
++					    &buf->ctx->msg_queue.core_work);
++			if (status)
++				buf->ctx->msg_queue.core_work_cnt++;
++		}
++	}
  
- 	return &pdev->dev;
+ 	mtk_v4l2_debug(3, "enqueue buf type: %d addr: 0x%p num: %d",
+ 		       msg_ctx->hardware_index, buf, msg_ctx->ready_num);
+@@ -254,6 +261,7 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
+ 		container_of(msg_queue, struct mtk_vcodec_ctx, msg_queue);
+ 	struct mtk_vcodec_dev *dev = ctx->dev;
+ 	struct vdec_lat_buf *lat_buf;
++	int status;
+ 
+ 	lat_buf = vdec_msg_queue_dqbuf(&dev->msg_queue_core_ctx);
+ 	if (!lat_buf)
+@@ -270,11 +278,17 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
+ 	vdec_msg_queue_qbuf(&ctx->msg_queue.lat_ctx, lat_buf);
+ 
+ 	wake_up_all(&ctx->msg_queue.core_dec_done);
+-	if (atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
+-		mtk_v4l2_debug(3, "re-schedule to decode for core: %d",
+-			       dev->msg_queue_core_ctx.ready_num);
+-		queue_work(dev->core_workqueue, &msg_queue->core_work);
++	spin_lock(&dev->msg_queue_core_ctx.ready_lock);
++	lat_buf->ctx->msg_queue.core_work_cnt--;
++
++	if (lat_buf->ctx->msg_queue.core_work_cnt <
++		atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
++		status = queue_work(lat_buf->ctx->dev->core_workqueue,
++				    &lat_buf->ctx->msg_queue.core_work);
++		if (status)
++			lat_buf->ctx->msg_queue.core_work_cnt++;
+ 	}
++	spin_unlock(&dev->msg_queue_core_ctx.ready_lock);
  }
-@@ -401,7 +401,7 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 	info->ccifreq_bound = false;
- 	if (info->soc_data->ccifreq_supported) {
- 		info->cci_dev = of_get_cci(info->cpu_dev);
--		if (IS_ERR_OR_NULL(info->cci_dev)) {
-+		if (IS_ERR(info->cci_dev)) {
- 			ret = PTR_ERR(info->cci_dev);
- 			dev_err(cpu_dev, "cpu%d: failed to get cci device\n", cpu);
- 			return -ENODEV;
+ 
+ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+@@ -289,6 +303,7 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+ 		return 0;
+ 
+ 	msg_queue->ctx = ctx;
++	msg_queue->core_work_cnt = 0;
+ 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
+ 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
+ 
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+index a75c04418f52e..a5d44bc97c16b 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+@@ -77,6 +77,7 @@ struct vdec_lat_buf {
+  * @lat_list_cnt: used to record each instance lat list count
+  * @core_list_cnt: used to record each instance core list count
+  * @core_dec_done: core work queue decode done event
++ * @core_work_cnt: the number of core work in work queue
+  */
+ struct vdec_msg_queue {
+ 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
+@@ -92,6 +93,7 @@ struct vdec_msg_queue {
+ 	atomic_t lat_list_cnt;
+ 	atomic_t core_list_cnt;
+ 	wait_queue_head_t core_dec_done;
++	int core_work_cnt;
+ };
+ 
+ /**
 -- 
 2.39.2
 
