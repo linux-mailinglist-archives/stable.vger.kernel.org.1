@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A2636FA83F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A096FAB69
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234828AbjEHKi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41390 "EHLO
+        id S233873AbjEHLNL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234879AbjEHKil (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:41 -0400
+        with ESMTP id S233878AbjEHLNG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AEF29446
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6725D35552
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6F2361D57
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45E4C433D2;
-        Mon,  8 May 2023 10:38:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBFF062BA4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBC2C433D2;
+        Mon,  8 May 2023 11:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542319;
-        bh=dXgEGa6BFCGhBUfTgbDhuBvUxQVevaVdPPhVVcsOdBM=;
+        s=korg; t=1683544375;
+        bh=blmg2Z39pBez/9+eEXZiwrdH4dWEOu8SWhd1zIHJQPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UB6Pf71f8zZX/JS6E5rVvn2VXqR6S1QBmddf5jUqPgaPj/6ef52uo11EPLSILTiAn
-         5L1oWZj6b6tvAAZyWzkr6HL3c8GupPMncm9ZjWijjwV+rbQmQn5IkBjH+rdg1dPMBA
-         zkHpC/MVjAHmZ+DXEBl0E4YsTk9fv8UQhOo5Zq5g=
+        b=LsHkUxgcHs4jAtQd/2B1kUBkZc1IvDyWhLpwvlSizDaxbrFpCoUURrnHQnW2gVtnr
+         anU8EpdRFYjVonttFg7nc5g/c/TZdm7red4EqLGznrwiLUPHExzpOdTrRdCk/lbH13
+         Ou0J6JNSD7mi5P99SngSxEV2T0/liTB8322RN19I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quan Zhou <quan.zhou@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        patches@lists.linux.dev, Quentin Monnet <quentin@isovalent.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 398/663] wifi: mt76: mt7921e: fix probe timeout after reboot
-Date:   Mon,  8 May 2023 11:43:44 +0200
-Message-Id: <20230508094441.003788560@linuxfoundation.org>
+Subject: [PATCH 6.3 390/694] bpftool: Fix bug for long instructions in program CFG dumps
+Date:   Mon,  8 May 2023 11:43:45 +0200
+Message-Id: <20230508094445.702525733@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Quentin Monnet <quentin@isovalent.com>
 
-[ Upstream commit c397fc1e6365a2a9e5540a85b2c1d4ea412aa0e2 ]
+[ Upstream commit 67cf52cdb6c8fa6365d29106555dacf95c9fd374 ]
 
-In system warm reboot scene, due to the polling timeout(now 1000us)
-is too short to wait dma idle in time, it may make driver probe fail
-with error code -ETIMEDOUT. Meanwhile, we also found the dma may take
-around 70ms to enter idle state. Change the polling idle timeout to
-100ms to avoid the probabilistic probe fail.
+When dumping the control flow graphs for programs using the 16-byte long
+load instruction, we need to skip the second part of this instruction
+when looking for the next instruction to process. Otherwise, we end up
+printing "BUG_ld_00" from the kernel disassembler in the CFG.
 
-Tested pass with 5000 times warm reboot on x86 platform.
-
-[4.477496] pci 0000:01:00.0: attach allowed to drvr mt7921e [internal device]
-[4.478306] mt7921e 0000:01:00.0: ASIC revision: 79610010
-[4.480063] mt7921e: probe of 0000:01:00.0 failed with error -110
-
-Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: efcef17a6d65 ("tools: bpftool: generate .dot graph from CFG information")
+Signed-off-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/r/20230405132120.59886-3-quentin@isovalent.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/bpf/bpftool/xlated_dumper.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index d1f10f6d9adc3..dc4ccfef4b048 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -90,9 +90,9 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
+diff --git a/tools/bpf/bpftool/xlated_dumper.c b/tools/bpf/bpftool/xlated_dumper.c
+index 6fe3134ae45d4..3daa05d9bbb73 100644
+--- a/tools/bpf/bpftool/xlated_dumper.c
++++ b/tools/bpf/bpftool/xlated_dumper.c
+@@ -372,8 +372,15 @@ void dump_xlated_for_graph(struct dump_data *dd, void *buf_start, void *buf_end,
+ 	struct bpf_insn *insn_start = buf_start;
+ 	struct bpf_insn *insn_end = buf_end;
+ 	struct bpf_insn *cur = insn_start;
++	bool double_insn = false;
  
--	if (!mt76_poll(dev, MT_WFDMA0_GLO_CFG,
--		       MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
--		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
-+	if (!mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+				 MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
- 		return -ETIMEDOUT;
- 
- 	return 0;
+ 	for (; cur <= insn_end; cur++) {
++		if (double_insn) {
++			double_insn = false;
++			continue;
++		}
++		double_insn = cur->code == (BPF_LD | BPF_IMM | BPF_DW);
++
+ 		printf("% 4d: ", (int)(cur - insn_start + start_idx));
+ 		print_bpf_insn(&cbs, cur, true);
+ 		if (cur != insn_end)
 -- 
 2.39.2
 
