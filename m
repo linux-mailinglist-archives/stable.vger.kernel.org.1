@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF386FA753
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71B846FAAA3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234587AbjEHK3c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58876 "EHLO
+        id S233791AbjEHLEs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234640AbjEHK3U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:20 -0400
+        with ESMTP id S235438AbjEHLEb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:04:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4AF22551F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:29:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52FC2FA0D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 388A462678
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:29:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3311BC433D2;
-        Mon,  8 May 2023 10:29:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D395462A81
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1BEC433D2;
+        Mon,  8 May 2023 11:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541757;
-        bh=1gBYmoLoFVbN2uVz0sASRQB8yzD8hpkM8OGxQfWXyKQ=;
+        s=korg; t=1683543815;
+        bh=+vuOHB8dPLHS9Yj9hxner0KIaArF5FEpR6IGyKBLEfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BZL3XtyaN7QrklRZCg065B9WwrwfRq/dkyL6jhCs+PG8XhL4X85YR/tu5vO+2PzMc
-         pxmjILpRDAwpc35uOTCsyQQf7noNF7GKonqodFvG9DY5OPu8lhHpWeuW2uHMMW7VP/
-         DJRRVpqKiWeRmnOXryIMN7riZ9y6+P+PruBKM9jQ=
+        b=0qmt9Nuf7B+mSbwlariiuC3kwlIIH2Eypsr/PEixFHnm8dgknIIPzJaE4nJGa9QhS
+         OC22C4BTzsBqNVJZdXVS94ntknsh+d0qS6BQELybmuy0F+L0sOOGjyWHx5J2sFkdtg
+         WYSYkVvMy43uhIuyRYTfeHb4T70Ckz/FTFyQS4us=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 218/663] arm64: dts: qcom: msm8998-oneplus-cheeseburger: revert "fix backlight pin function"
+Subject: [PATCH 6.3 209/694] media: av7110: prevent underflow in write_ts_to_decoder()
 Date:   Mon,  8 May 2023 11:40:44 +0200
-Message-Id: <20230508094435.415837694@linuxfoundation.org>
+Message-Id: <20230508094439.151729240@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit 97b4fdc6b82d6d5cfb92a9b164540278720fb700 ]
+[ Upstream commit eed9496a0501357aa326ddd6b71408189ed872eb ]
 
-This reverts commit 46546f28825cf3a5ef6873b9cf947cd85c8a7258 because it
-mistakenly took PMIC pinctrl/GPIO as TLMM.  The TLMM pinctrl uses "gpio"
-function, but PMIC uses "normal", so original code was correct:
+The buf[4] value comes from the user via ts_play().  It is a value in
+the u8 range.  The final length we pass to av7110_ipack_instant_repack()
+is "len - (buf[4] + 1) - 4" so add a check to ensure that the length is
+not negative.  It's not clear that passing a negative len value does
+anything bad necessarily, but it's not best practice.
 
-  msm8998-oneplus-cheeseburger.dtb: pmic@2: gpio@c000:button-backlight-state: 'oneOf' conditional failed, one must be fixed:
-    'gpio' is not one of ['normal', 'paired', 'func1', 'func2', 'dtest1', 'dtest2', 'dtest3', 'dtest4', 'func3', 'func4']
+With the new bounds checking the "if (!len)" condition is no longer
+possible or required so remove that.
 
-Fixes: 46546f28825c ("arm64: dts: qcom: msm8998-oneplus-cheeseburger: fix backlight pin function")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230312183622.460488-5-krzysztof.kozlowski@linaro.org
+Fixes: fd46d16d602a ("V4L/DVB (11759): dvb-ttpci: Add TS replay capability")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998-oneplus-cheeseburger.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/av7110/av7110_av.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-oneplus-cheeseburger.dts b/arch/arm64/boot/dts/qcom/msm8998-oneplus-cheeseburger.dts
-index 9fb1fb9b85298..794e9f2ab77ab 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-oneplus-cheeseburger.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8998-oneplus-cheeseburger.dts
-@@ -34,7 +34,7 @@
- &pmi8998_gpio {
- 	button_backlight_default: button-backlight-state {
- 		pins = "gpio5";
--		function = "gpio";
-+		function = "normal";
- 		bias-pull-down;
- 		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
- 	};
+diff --git a/drivers/staging/media/av7110/av7110_av.c b/drivers/staging/media/av7110/av7110_av.c
+index 0bf513c26b6b5..a5c5bebad3061 100644
+--- a/drivers/staging/media/av7110/av7110_av.c
++++ b/drivers/staging/media/av7110/av7110_av.c
+@@ -823,10 +823,10 @@ static int write_ts_to_decoder(struct av7110 *av7110, int type, const u8 *buf, s
+ 		av7110_ipack_flush(ipack);
+ 
+ 	if (buf[3] & ADAPT_FIELD) {
++		if (buf[4] > len - 1 - 4)
++			return 0;
+ 		len -= buf[4] + 1;
+ 		buf += buf[4] + 1;
+-		if (!len)
+-			return 0;
+ 	}
+ 
+ 	av7110_ipack_instant_repack(buf + 4, len - 4, ipack);
 -- 
 2.39.2
 
