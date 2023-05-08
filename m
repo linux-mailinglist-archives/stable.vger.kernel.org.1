@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B906FAE4E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D2D56FA628
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236278AbjEHLnl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37242 "EHLO
+        id S234330AbjEHKQz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236257AbjEHLnX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:23 -0400
+        with ESMTP id S234332AbjEHKQy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF7772BE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5575532917
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 996A9635BE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903A8C433AA;
-        Mon,  8 May 2023 11:41:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFFCC624BA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C50C433D2;
+        Mon,  8 May 2023 10:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546112;
-        bh=oTlM6QwoHU60c8Rk06LcMqRQgGGh7eAg8gv0p/Gudpo=;
+        s=korg; t=1683541011;
+        bh=2+pifD5BQ9TqxoWBw3TXIm/3lmGhMa2zUTuk4bI/7+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bf8atGGsSM7bUYauLdtIEHyxRdIVdDhQDaZF/Jg6YPLTQlvBV0DVy/urwnu6fUorw
-         62yZeoQWnhhBB7pfVSuyOr3of9IQcrRetS9zEB4Z1fTBBua+71sIbYZYhGy8TJNM0i
-         NK9JhSDRQskKmkx0HiWTou6gz7OsNyD5IPdS9VVk=
+        b=JBSo9dl4k56SVFYUQcI+tlcajRgL5g7UaaL+uwjhXrLM+apYuhls9np8OgGD+dOzs
+         CpCNbQaWYolK6aPZ/gGl/dQoeaDXc6QOOnlfY/jA6Mktj7WPKXTLV7wdxSaZFJJkHt
+         hli5vpD6ZwAVGeDMxzzBHp7RoS+Kf6mqGwZUFtV0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Wang Zhao <wang.zhao@mediatek.com>,
-        Quan Zhou <quan.zhou@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/371] wifi: mt76: mt7921e: improve reliability of dma reset
-Date:   Mon,  8 May 2023 11:47:02 +0200
-Message-Id: <20230508094820.837459683@linuxfoundation.org>
+        patches@lists.linux.dev, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.1 581/611] wifi: rtw89: fix potential race condition between napi_init and napi_enable
+Date:   Mon,  8 May 2023 11:47:03 +0200
+Message-Id: <20230508094440.812368577@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,107 +56,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 87714bf6ed1589813e473db5471e6e9857755764 ]
+commit 47515664ecfbde11425dff121f298ae4499425c9 upstream.
 
-The hardware team has advised the driver that it is necessary to first put
-WFDMA into an idle state before resetting the WFDMA. Otherwise, the WFDMA
-may enter an unknown state where it cannot be polled with the right state
-successfully. To ensure that the DMA can work properly while a stressful
-cold reboot test was being made, we have reordered the programming sequence
-in the driver based on the hardware team's guidance.
+A race condition can happen if netdev is registered, but NAPI isn't
+initialized yet, and meanwhile user space starts the netdev that will
+enable NAPI. Then, it hits BUG_ON():
 
-The patch would modify the WFDMA disabling flow from
+ kernel BUG at net/core/dev.c:6423!
+ invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 0 PID: 417 Comm: iwd Not tainted 6.2.7-slab-dirty #3 eb0f5a8a9d91
+ Hardware name: LENOVO 21DL/LNVNB161216, BIOS JPCN20WW(V1.06) 09/20/2022
+ RIP: 0010:napi_enable+0x3f/0x50
+ Code: 48 89 c2 48 83 e2 f6 f6 81 89 08 00 00 02 74 0d 48 83 ...
+ RSP: 0018:ffffada1414f3548 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffffa01425802080 RCX: 0000000000000000
+ RDX: 00000000000002ff RSI: ffffada14e50c614 RDI: ffffa01425808dc0
+ RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000001 R11: 0000000000000100 R12: ffffa01425808f58
+ R13: 0000000000000000 R14: ffffa01423498940 R15: 0000000000000001
+ FS:  00007f5577c0a740(0000) GS:ffffa0169fc00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5577a19972 CR3: 0000000125a7a000 CR4: 0000000000750ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  rtw89_pci_ops_start+0x1c/0x70 [rtw89_pci 6cbc75429515c181cbc386478d5cfb32ffc5a0f8]
+  rtw89_core_start+0xbe/0x160 [rtw89_core fe07ecb874820b6d778370d4acb6ef8a37847f22]
+  rtw89_ops_start+0x26/0x40 [rtw89_core fe07ecb874820b6d778370d4acb6ef8a37847f22]
+  drv_start+0x42/0x100 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
+  ieee80211_do_open+0x311/0x7d0 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
+  ieee80211_open+0x6a/0x90 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
+  __dev_open+0xe0/0x180
+  __dev_change_flags+0x1da/0x250
+  dev_change_flags+0x26/0x70
+  do_setlink+0x37c/0x12c0
+  ? ep_poll_callback+0x246/0x290
+  ? __nla_validate_parse+0x61/0xd00
+  ? __wake_up_common_lock+0x8f/0xd0
 
-"DMA reset -> disabling DMASHDL -> disabling WFDMA -> polling and waiting
-until DMA idle" to "disabling WFDMA -> polling and waiting for DMA idle ->
-disabling DMASHDL -> DMA reset.
+To fix this, follow Jonas' suggestion to switch the order of these
+functions and move register netdev to be the last step of PCI probe.
+Also, correct the error handling of rtw89_core_register_hw().
 
-Where he polling and waiting until WFDMA is idle is coordinated with the
-operation of disabling WFDMA. Even while WFDMA is being disabled, it can
-still handle Tx/Rx requests. The additional polling allows sufficient time
-for WFDMA to process the last T/Rx request. When the idle state of WFDMA is
-reached, it is a reliable indication that DMASHDL is also idle to ensure it
-is safe to disable it and perform the DMA reset.
-
-Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Co-developed-by: Wang Zhao <wang.zhao@mediatek.com>
-Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Cc: stable@vger.kernel.org
+Reported-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Link: https://lore.kernel.org/linux-wireless/CAOiHx=n7EwK2B9CnBR07FVA=sEzFagb8TkS4XC_qBNq8OwcYUg@mail.gmail.com/T/#t
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Tested-by: Larry Finger<Larry.Finger@lwfinger.net>
+Reviewed-by: Larry Finger<Larry.Finger@lwfinger.net>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230323082839.20474-1-pkshih@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/dma.c   | 36 ++++++++++---------
- 1 file changed, 20 insertions(+), 16 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c |   10 +++++++---
+ drivers/net/wireless/realtek/rtw89/pci.c  |   19 ++++++++++---------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index 7e39bcfdb0b7a..983861edc6834 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -120,22 +120,6 @@ static void mt7921_dma_prefetch(struct mt7921_dev *dev)
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3290,18 +3290,22 @@ static int rtw89_core_register_hw(struct
+ 	ret = ieee80211_register_hw(hw);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to register hw\n");
+-		goto err;
++		goto err_free_supported_band;
+ 	}
  
- static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- {
--	if (force) {
--		/* reset */
--		mt76_clear(dev, MT_WFDMA0_RST,
--			   MT_WFDMA0_RST_DMASHDL_ALL_RST |
--			   MT_WFDMA0_RST_LOGIC_RST);
--
--		mt76_set(dev, MT_WFDMA0_RST,
--			 MT_WFDMA0_RST_DMASHDL_ALL_RST |
--			 MT_WFDMA0_RST_LOGIC_RST);
--	}
--
--	/* disable dmashdl */
--	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
--		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
--	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
--
- 	/* disable WFDMA0 */
- 	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
- 		   MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN |
-@@ -149,6 +133,22 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- 				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
- 		return -ETIMEDOUT;
+ 	ret = rtw89_regd_init(rtwdev, rtw89_regd_notifier);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to init regd\n");
+-		goto err;
++		goto err_unregister_hw;
+ 	}
  
-+	/* disable dmashdl */
-+	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
-+		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
-+	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
-+
-+	if (force) {
-+		/* reset */
-+		mt76_clear(dev, MT_WFDMA0_RST,
-+			   MT_WFDMA0_RST_DMASHDL_ALL_RST |
-+			   MT_WFDMA0_RST_LOGIC_RST);
-+
-+		mt76_set(dev, MT_WFDMA0_RST,
-+			 MT_WFDMA0_RST_DMASHDL_ALL_RST |
-+			 MT_WFDMA0_RST_LOGIC_RST);
-+	}
-+
  	return 0;
+ 
+-err:
++err_unregister_hw:
++	ieee80211_unregister_hw(hw);
++err_free_supported_band:
++	rtw89_core_clr_supported_band(rtwdev);
++
+ 	return ret;
  }
  
-@@ -354,6 +354,10 @@ void mt7921_dma_cleanup(struct mt7921_dev *dev)
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -3828,25 +3828,26 @@ int rtw89_pci_probe(struct pci_dev *pdev
+ 	rtw89_pci_link_cfg(rtwdev);
+ 	rtw89_pci_l1ss_cfg(rtwdev);
  
-+	mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+			    MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+			    MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1);
+-	ret = rtw89_core_register(rtwdev);
+-	if (ret) {
+-		rtw89_err(rtwdev, "failed to register core\n");
+-		goto err_clear_resource;
+-	}
+-
+ 	rtw89_core_napi_init(rtwdev);
+ 
+ 	ret = rtw89_pci_request_irq(rtwdev, pdev);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to request pci irq\n");
+-		goto err_unregister;
++		goto err_deinit_napi;
++	}
 +
- 	/* reset */
- 	mt76_clear(dev, MT_WFDMA0_RST,
- 		   MT_WFDMA0_RST_DMASHDL_ALL_RST |
--- 
-2.39.2
-
++	ret = rtw89_core_register(rtwdev);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to register core\n");
++		goto err_free_irq;
+ 	}
+ 
+ 	return 0;
+ 
+-err_unregister:
++err_free_irq:
++	rtw89_pci_free_irq(rtwdev, pdev);
++err_deinit_napi:
+ 	rtw89_core_napi_deinit(rtwdev);
+-	rtw89_core_unregister(rtwdev);
+ err_clear_resource:
+ 	rtw89_pci_clear_resource(rtwdev, pdev);
+ err_declaim_pci:
 
 
