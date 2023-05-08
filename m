@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 746776FA5FF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9566FA934
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234272AbjEHKPG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44104 "EHLO
+        id S235159AbjEHKtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234265AbjEHKPF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:05 -0400
+        with ESMTP id S235193AbjEHKtF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0D3419413
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AF22D787
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D85062472
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE0DC433D2;
-        Mon,  8 May 2023 10:15:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D82C261DFE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2F7C433EF;
+        Mon,  8 May 2023 10:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540902;
-        bh=KRIuxEBqVo7ra/HeQUGoQlPsdyNC4l3DOuCYFHX/pH4=;
+        s=korg; t=1683542902;
+        bh=hfEhiAuaVlMG4xQxmFS9RLPXYYi4UgQiJ+eh70j6rnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WAQVa3uaiqTXqIIyYsbU1RGxo4SWj9JAVuuNrQqSV4K3155hKNslp4o+LxmT2Lt09
-         V44whqiqrL1tNJ/7OvgKInEiLS3f2Wt80eeP6xyHLjRVgDBrbEOcsy9WPmahH2/2Ac
-         oW1jslsmKbx5b8QIXcTL269hRdLZmob1/uFBi3Kc=
+        b=lfXDy9OuwCTdMruk+yH3TOAAt3fBCv8P+UltXqytcHWNwIclHv3jfunuw4qGwwOBG
+         qOyq+FS/99MED+TQW9CQzQobvO1G18tKqn0I0Omwb/Dp1Q3PUSuYUJEH+cZG8Ea3lj
+         ZUugDUivvPHW/tf2ePkTuO+Dl+EOPWH+IrYuA7gU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 541/611] dmaengine: dw-edma: Fix to change for continuous transfer
-Date:   Mon,  8 May 2023 11:46:23 +0200
-Message-Id: <20230508094439.585448583@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 558/663] clk: qcom: gcc-sm8350: fix PCIe PIPE clocks handling
+Date:   Mon,  8 May 2023 11:46:24 +0200
+Message-Id: <20230508094447.244282864@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,88 +55,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shunsuke Mie <mie@igel.co.jp>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a251994a441ee0a69ba7062c8cd2d08ead3db379 ]
+[ Upstream commit 1a500e0bc97b6cb3c0d9859e81973b8dd07d1b7b ]
 
-The dw-edma driver stops after processing a DMA request even if a request
-remains in the issued queue, which is not the expected behavior. The DMA
-engine API requires continuous processing.
+On SM8350 platform the PCIe PIPE clocks require additional handling to
+function correctly. They are to be switched to the tcxo source before
+turning PCIe GDSCs off and should be switched to PHY PIPE source once
+they are working. Switch PCIe PHY clocks to use clk_regmap_phy_mux_ops,
+which provide support for this dance.
 
-Add a trigger to start after one processing finished if there are requests
-remain.
-
-Fixes: e63d79d1ffcd ("dmaengine: Add Synopsys eDMA IP core driver")
-Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
-Link: https://lore.kernel.org/r/20230411101758.438472-1-mie@igel.co.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 44c20c9ed37f ("clk: qcom: gcc: Add clock driver for SM8350")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230412134829.3686467-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-edma-core.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/clk/qcom/gcc-sm8350.c | 47 ++++++++++-------------------------
+ 1 file changed, 13 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index 52bdf04aff511..cb46cbef212ab 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -170,7 +170,7 @@ static void vchan_free_desc(struct virt_dma_desc *vdesc)
- 	dw_edma_free_desc(vd2dw_edma_desc(vdesc));
- }
+diff --git a/drivers/clk/qcom/gcc-sm8350.c b/drivers/clk/qcom/gcc-sm8350.c
+index c3731f96c8e6b..430ef407a8341 100644
+--- a/drivers/clk/qcom/gcc-sm8350.c
++++ b/drivers/clk/qcom/gcc-sm8350.c
+@@ -17,6 +17,7 @@
+ #include "clk-regmap.h"
+ #include "clk-regmap-divider.h"
+ #include "clk-regmap-mux.h"
++#include "clk-regmap-phy-mux.h"
+ #include "gdsc.h"
+ #include "reset.h"
  
--static void dw_edma_start_transfer(struct dw_edma_chan *chan)
-+static int dw_edma_start_transfer(struct dw_edma_chan *chan)
- {
- 	struct dw_edma_chunk *child;
- 	struct dw_edma_desc *desc;
-@@ -178,16 +178,16 @@ static void dw_edma_start_transfer(struct dw_edma_chan *chan)
+@@ -167,26 +168,6 @@ static const struct clk_parent_data gcc_parent_data_3[] = {
+ 	{ .fw_name = "core_bi_pll_test_se" },
+ };
  
- 	vd = vchan_next_desc(&chan->vc);
- 	if (!vd)
--		return;
-+		return 0;
+-static const struct parent_map gcc_parent_map_4[] = {
+-	{ P_PCIE_0_PIPE_CLK, 0 },
+-	{ P_BI_TCXO, 2 },
+-};
+-
+-static const struct clk_parent_data gcc_parent_data_4[] = {
+-	{ .fw_name = "pcie_0_pipe_clk", },
+-	{ .fw_name = "bi_tcxo" },
+-};
+-
+-static const struct parent_map gcc_parent_map_5[] = {
+-	{ P_PCIE_1_PIPE_CLK, 0 },
+-	{ P_BI_TCXO, 2 },
+-};
+-
+-static const struct clk_parent_data gcc_parent_data_5[] = {
+-	{ .fw_name = "pcie_1_pipe_clk" },
+-	{ .fw_name = "bi_tcxo" },
+-};
+-
+ static const struct parent_map gcc_parent_map_6[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_GCC_GPLL0_OUT_MAIN, 1 },
+@@ -289,32 +270,30 @@ static const struct clk_parent_data gcc_parent_data_14[] = {
+ 	{ .fw_name = "bi_tcxo" },
+ };
  
- 	desc = vd2dw_edma_desc(vd);
- 	if (!desc)
--		return;
-+		return 0;
+-static struct clk_regmap_mux gcc_pcie_0_pipe_clk_src = {
++static struct clk_regmap_phy_mux gcc_pcie_0_pipe_clk_src = {
+ 	.reg = 0x6b054,
+-	.shift = 0,
+-	.width = 2,
+-	.parent_map = gcc_parent_map_4,
+ 	.clkr = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_pcie_0_pipe_clk_src",
+-			.parent_data = gcc_parent_data_4,
+-			.num_parents = ARRAY_SIZE(gcc_parent_data_4),
+-			.ops = &clk_regmap_mux_closest_ops,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "pcie_0_pipe_clk",
++			},
++			.num_parents = 1,
++			.ops = &clk_regmap_phy_mux_ops,
+ 		},
+ 	},
+ };
  
- 	child = list_first_entry_or_null(&desc->chunk->list,
- 					 struct dw_edma_chunk, list);
- 	if (!child)
--		return;
-+		return 0;
- 
- 	dw_edma_v0_core_start(child, !desc->xfer_sz);
- 	desc->xfer_sz += child->ll_region.sz;
-@@ -195,6 +195,8 @@ static void dw_edma_start_transfer(struct dw_edma_chan *chan)
- 	list_del(&child->list);
- 	kfree(child);
- 	desc->chunks_alloc--;
-+
-+	return 1;
- }
- 
- static int dw_edma_device_config(struct dma_chan *dchan,
-@@ -572,14 +574,14 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- 		switch (chan->request) {
- 		case EDMA_REQ_NONE:
- 			desc = vd2dw_edma_desc(vd);
--			if (desc->chunks_alloc) {
--				chan->status = EDMA_ST_BUSY;
--				dw_edma_start_transfer(chan);
--			} else {
-+			if (!desc->chunks_alloc) {
- 				list_del(&vd->node);
- 				vchan_cookie_complete(vd);
--				chan->status = EDMA_ST_IDLE;
- 			}
-+
-+			/* Continue transferring if there are remaining chunks or issued requests.
-+			 */
-+			chan->status = dw_edma_start_transfer(chan) ? EDMA_ST_BUSY : EDMA_ST_IDLE;
- 			break;
- 
- 		case EDMA_REQ_STOP:
+-static struct clk_regmap_mux gcc_pcie_1_pipe_clk_src = {
++static struct clk_regmap_phy_mux gcc_pcie_1_pipe_clk_src = {
+ 	.reg = 0x8d054,
+-	.shift = 0,
+-	.width = 2,
+-	.parent_map = gcc_parent_map_5,
+ 	.clkr = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_pcie_1_pipe_clk_src",
+-			.parent_data = gcc_parent_data_5,
+-			.num_parents = ARRAY_SIZE(gcc_parent_data_5),
+-			.ops = &clk_regmap_mux_closest_ops,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "pcie_1_pipe_clk",
++			},
++			.num_parents = 1,
++			.ops = &clk_regmap_phy_mux_ops,
+ 		},
+ 	},
+ };
 -- 
 2.39.2
 
