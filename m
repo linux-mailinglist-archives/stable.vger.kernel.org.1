@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 812A06FAB58
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBC786FAD18
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233712AbjEHLMM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52668 "EHLO
+        id S235879AbjEHLaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233797AbjEHLMK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE582CFC9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:09 -0700 (PDT)
+        with ESMTP id S233991AbjEHLa2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0FA3C492
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3419D62B77
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C15FC433EF;
-        Mon,  8 May 2023 11:12:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9741563029
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92563C4339E;
+        Mon,  8 May 2023 11:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544328;
-        bh=zevV5lXBduTOwCOCqj1Ur2lmzj2a3fsfg+JMfkWnYvo=;
+        s=korg; t=1683545425;
+        bh=vC7xAvcNK/5F12cP1kHH0jxs8tc0Uao6TcKhF+rlFzc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mJDwftktE0msisXtVvNUBgD8PDdgAyT1ajfJzTyfxW01NgPVjTE7sL9v5EDMvRAi2
-         rj1pPnHNBZOqgjis2q2qz3IUNU0mKu0aC9RB8N7lfEASI3WVhAZxt4Gom0ifWiWwBG
-         4DeGD+OxgocIS3je48JCbySM26BvrxzyDSQviEgg=
+        b=Fs/fjtSrkTvUfw5nHo0pFNk+YYtQpGgr1JFKLwW4WdikQ/pl6QsCXFik4azVeVWSy
+         wnxBtDw8vU02NNPyse9Daq8RX8QTR40JdM9wvMuo1R+j18yu3Uu8PIH98RdsixDYFX
+         H8+9NRFG2VXMlqQZ62rJ21s7cBB0MZSiWkBfX/Ug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Qi Han <hanqi@vivo.com>, Yangtao Li <frank.li@vivo.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 374/694] f2fs: compress: fix to call f2fs_wait_on_page_writeback() in f2fs_write_raw_pages()
+Subject: [PATCH 5.15 008/371] x86/cpu: Add model number for Intel Arrow Lake processor
 Date:   Mon,  8 May 2023 11:43:29 +0200
-Message-Id: <20230508094444.990860163@linuxfoundation.org>
+Message-Id: <20230508094812.337829530@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,96 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit babedcbac164cec970872b8097401ca913a80e61 ]
+[ Upstream commit 81515ecf155a38f3532bf5ddef88d651898df6be ]
 
-BUG_ON() will be triggered when writing files concurrently,
-because the same page is writtenback multiple times.
+Successor to Lunar Lake.
 
-1597 void folio_end_writeback(struct folio *folio)
-1598 {
-		......
-1618     if (!__folio_end_writeback(folio))
-1619         BUG();
-		......
-1625 }
-
-kernel BUG at mm/filemap.c:1619!
-Call Trace:
- <TASK>
- f2fs_write_end_io+0x1a0/0x370
- blk_update_request+0x6c/0x410
- blk_mq_end_request+0x15/0x130
- blk_complete_reqs+0x3c/0x50
- __do_softirq+0xb8/0x29b
- ? sort_range+0x20/0x20
- run_ksoftirqd+0x19/0x20
- smpboot_thread_fn+0x10b/0x1d0
- kthread+0xde/0x110
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x22/0x30
- </TASK>
-
-Below is the concurrency scenario:
-
-[Process A]		[Process B]		[Process C]
-f2fs_write_raw_pages()
-  - redirty_page_for_writepage()
-  - unlock page()
-			f2fs_do_write_data_page()
-			  - lock_page()
-			  - clear_page_dirty_for_io()
-			  - set_page_writeback() [1st writeback]
-			    .....
-			    - unlock page()
-
-						generic_perform_write()
-						  - f2fs_write_begin()
-						    - wait_for_stable_page()
-
-						  - f2fs_write_end()
-						    - set_page_dirty()
-
-  - lock_page()
-    - f2fs_do_write_data_page()
-      - set_page_writeback() [2st writeback]
-
-This problem was introduced by the previous commit 7377e853967b ("f2fs:
-compress: fix potential deadlock of compress file"). All pagelocks were
-released in f2fs_write_raw_pages(), but whether the page was
-in the writeback state was ignored in the subsequent writing process.
-Let's fix it by waiting for the page to writeback before writing.
-
-Cc: Christoph Hellwig <hch@lst.de>
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Fixes: 7377e853967b ("f2fs: compress: fix potential deadlock of compress file")
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230404174641.426593-1-tony.luck@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/include/asm/intel-family.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index b40dec3d7f799..ff7db6c4ee134 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1456,6 +1456,12 @@ static int f2fs_write_raw_pages(struct compress_ctx *cc,
- 		if (!PageDirty(cc->rpages[i]))
- 			goto continue_unlock;
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index b8e7ea9e71e20..fc12d970a07c0 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -115,6 +115,8 @@
  
-+		if (PageWriteback(cc->rpages[i])) {
-+			if (wbc->sync_mode == WB_SYNC_NONE)
-+				goto continue_unlock;
-+			f2fs_wait_on_page_writeback(cc->rpages[i], DATA, true, true);
-+		}
+ #define INTEL_FAM6_LUNARLAKE_M		0xBD
+ 
++#define INTEL_FAM6_ARROWLAKE		0xC6
 +
- 		if (!clear_page_dirty_for_io(cc->rpages[i]))
- 			goto continue_unlock;
+ /* "Small Core" Processors (Atom/E-Core) */
  
+ #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
 -- 
 2.39.2
 
