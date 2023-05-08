@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A476FA589
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2750B6FABD2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234164AbjEHKKb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
+        id S235491AbjEHLRy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234153AbjEHKKa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22EB35124
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:29 -0700 (PDT)
+        with ESMTP id S235494AbjEHLRx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19483785F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7914B623AC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9CCC433EF;
-        Mon,  8 May 2023 10:10:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 447E062C27
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDB9C433D2;
+        Mon,  8 May 2023 11:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540628;
-        bh=Ec3INi9tzN8PK5EEiLrwzWnnI++tHTy0UMphsl0DaMI=;
+        s=korg; t=1683544663;
+        bh=OT/GsO8F9F43Fsq6NM1YeCyp3LHQpK/kHXQE7Oiyq4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QjTfyrcSKhgIhMEFgNkC3OJzIBXQeuftMMlM5tV9SsI9ZXapm8+qR/rD3NMtiCjNl
-         a1XsUsrZz5pFVV3yNEKVseDnMIdt37f1HqcvFVEmAKuLKYcfOaDFgIu4NVWPqxeot1
-         yO3X6WUEOztI2ONw1iYp1zCGt2JiZVSQ432N/ZxY=
+        b=KaRARAPS7FBqzeXRnnGI9W0uHG7GHNdOrDWl540Yl+ooPmKeVoazLdg3IusuRIxJJ
+         44b2ALz2cqWgHXqociSUc0Z89Zs8rNZjsf24kGDpHJY8EfT8R271Y3WdbEF3Hd4GVH
+         hMSbKypBS7/d9Rt9OtS5hWAEi873NJ54FVBoN+jI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhiyi Guo <zhguo@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Tarun Gupta <targupta@nvidia.com>,
-        Abhishek Sahu <abhsahu@nvidia.com>,
+        patches@lists.linux.dev, Ben Greear <greearb@candelatech.com>,
+        Isaac Konikoff <konikofi@candelatech.com>,
+        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/611] PCI/PM: Extend D3hot delay for NVIDIA HDA controllers
+Subject: [PATCH 6.3 444/694] wifi: mt76: fix 6GHz high channel not be scanned
 Date:   Mon,  8 May 2023 11:44:39 +0200
-Message-Id: <20230508094436.372439254@linuxfoundation.org>
+Message-Id: <20230508094447.912263236@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,63 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit a5a6dd2624698b6e3045c3a1450874d8c790d5d9 ]
+[ Upstream commit 23792cedaff02351b57bddd8957fc917fa88f2e0 ]
 
-Assignment of NVIDIA Ampere-based GPUs have seen a regression since the
-below referenced commit, where the reduced D3hot transition delay appears
-to introduce a small window where a D3hot->D0 transition followed by a bus
-reset can wedge the device.  The entire device is subsequently unavailable,
-returning -1 on config space read and is unrecoverable without a host
-reset.
+mt76 scan command only support 64 channels currently. If the
+channel count is larger than 64(for 2+5+6GHz), some channels will
+not be scanned. Hence change the scan type to full channel scan
+in case of the command cannot include proper list for chip.
 
-This has been observed with RTX A2000 and A5000 GPU and audio functions
-assigned to a Windows VM, where shutdown of the VM places the devices in
-D3hot prior to vfio-pci performing a bus reset when userspace releases the
-devices.  The issue has roughly a 2-3% chance of occurring per shutdown.
-
-Restoring the HDA controller d3hot_delay to the effective value before the
-below commit has been shown to resolve the issue.  NVIDIA confirms this
-change should be safe for all of their HDA controllers.
-
-Fixes: 3e347969a577 ("PCI/PM: Reduce D3hot delay with usleep_range()")
-Link: https://lore.kernel.org/r/20230413194042.605768-1-alex.williamson@redhat.com
-Reported-by: Zhiyi Guo <zhguo@redhat.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Tarun Gupta <targupta@nvidia.com>
-Cc: Abhishek Sahu <abhsahu@nvidia.com>
-Cc: Tarun Gupta <targupta@nvidia.com>
+Fixes: 399090ef9605 ("mt76: mt76_connac: move hw_scan and sched_scan routine in mt76_connac_mcu module")
+Reported-by: Ben Greear <greearb@candelatech.com>
+Tested-by: Isaac Konikoff <konikofi@candelatech.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.c    | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 494fa46f57671..8d32a3834688f 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -1939,6 +1939,19 @@ static void quirk_radeon_pm(struct pci_dev *dev)
- }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6741, quirk_radeon_pm);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 008ece1b16f8e..cb27885b5da7c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1678,8 +1678,16 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	req->channel_min_dwell_time = cpu_to_le16(duration);
+ 	req->channel_dwell_time = cpu_to_le16(duration);
  
-+/*
-+ * NVIDIA Ampere-based HDA controllers can wedge the whole device if a bus
-+ * reset is performed too soon after transition to D0, extend d3hot_delay
-+ * to previous effective default for all NVIDIA HDA controllers.
-+ */
-+static void quirk_nvidia_hda_pm(struct pci_dev *dev)
-+{
-+	quirk_d3hot_delay(dev, 20);
-+}
-+DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
-+			      PCI_CLASS_MULTIMEDIA_HD_AUDIO, 8,
-+			      quirk_nvidia_hda_pm);
+-	req->channels_num = min_t(u8, sreq->n_channels, 32);
+-	req->ext_channels_num = min_t(u8, ext_channels_num, 32);
++	if (sreq->n_channels == 0 || sreq->n_channels > 64) {
++		req->channel_type = 0;
++		req->channels_num = 0;
++		req->ext_channels_num = 0;
++	} else {
++		req->channel_type = 4;
++		req->channels_num = min_t(u8, sreq->n_channels, 32);
++		req->ext_channels_num = min_t(u8, ext_channels_num, 32);
++	}
 +
- /*
-  * Ryzen5/7 XHCI controllers fail upon resume from runtime suspend or s2idle.
-  * https://bugzilla.kernel.org/show_bug.cgi?id=205587
+ 	for (i = 0; i < req->channels_num + req->ext_channels_num; i++) {
+ 		if (i >= 32)
+ 			chan = &req->ext_channels[i - 32];
+@@ -1699,7 +1707,6 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		}
+ 		chan->channel_num = scan_list[i]->hw_value;
+ 	}
+-	req->channel_type = sreq->n_channels ? 4 : 0;
+ 
+ 	if (sreq->ie_len > 0) {
+ 		memcpy(req->ies, sreq->ie, sreq->ie_len);
 -- 
 2.39.2
 
