@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B5F6FAE59
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5003B6FA98B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236289AbjEHLoD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
+        id S235127AbjEHKwp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236121AbjEHLnp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF0510A07
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:10 -0700 (PDT)
+        with ESMTP id S235155AbjEHKwX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFAD2A85B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:51:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16943635FF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C45C4339B;
-        Mon,  8 May 2023 11:42:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06267628C8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:51:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D986C433D2;
+        Mon,  8 May 2023 10:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546160;
-        bh=aCIC9sQr548jZcogPS9Lv0lbzVz6WOsbLCrxYlf0DP8=;
+        s=korg; t=1683543109;
+        bh=LG06MaQ6uD4RZMKjqZxUXr5sq9BT3UZfbd8ZI6E8KDw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0q6shEpydYKbkgfjnQYPu+3iE4JaovI3Ct5f/bhtv7GGqw4QK6xHOYsDMSvEkRYL8
-         NI30+RGDbjW66Wlljy0DYZZ9HKXxgIgEbBY5y8U/hpdOob5Kt6fko0Jdu7c/39Wr7q
-         zxeNMD0C9k0RVLTpY2Px2g6GriCy7hKKH87OBiFw=
+        b=gHNLTG8GntH/PV3Y1lP0Dt00h7jhSirhow9BYHELI5SB5XQPoaZLGhXZCDDrNlk1T
+         BU8z+dhgGgTGYJNixKQgiaRx3Nhf0cAz9j0756/8d4rDmjbFxLRyMVebxXYzHh+34+
+         CqkZf3IhXTJN2WB4qeBpyZGhbtRED8uqMVletlew=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 276/371] staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
-Date:   Mon,  8 May 2023 11:47:57 +0200
-Message-Id: <20230508094822.967474100@linuxfoundation.org>
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.2 652/663] cifs: fix potential use-after-free bugs in TCP_Server_Info::hostname
+Date:   Mon,  8 May 2023 11:47:58 +0200
+Message-Id: <20230508094451.274456352@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,44 +54,153 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 3fac2397f562eb669ddc2f45867a253f3fc26184 ]
+commit 90c49fce1c43e1cc152695e20363ff5087897c09 upstream.
 
-When loading the driver for rtl8192e, the W_DISABLE# switch is working as
-intended. But when the WLAN is turned off in software and then turned on
-again the W_DISABLE# does not work anymore. Reason for this is that in
-the function _rtl92e_dm_check_rf_ctrl_gpio() the bfirst_after_down is
-checked and returned when true. bfirst_after_down is set true when
-switching the WLAN off in software. But it is not set to false again
-when WLAN is turned on again.
+TCP_Server_Info::hostname may be updated once or many times during
+reconnect, so protect its access outside reconnect path as well and
+then prevent any potential use-after-free bugs.
 
-Add bfirst_after_down = false in _rtl92e_sta_up to reset bit and fix
-above described bug.
-
-Fixes: 94a799425eee ("From: wlanfae <wlanfae@realtek.com> [PATCH 1/8] rtl8192e: Import new version of driver from realtek")
-Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Link: https://lore.kernel.org/r/20230418200201.GA17398@matrix-ESPRIMO-P710
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/cifs/cifs_debug.c |    7 ++++++-
+ fs/cifs/cifs_debug.h |   12 ++++++------
+ fs/cifs/connect.c    |   10 +++++++---
+ fs/cifs/sess.c       |    7 ++++---
+ 4 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-index 616ab3c8fde4f..48c696df8d015 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-@@ -768,6 +768,7 @@ static int _rtl92e_sta_up(struct net_device *dev, bool is_silent_reset)
- 	else
- 		netif_wake_queue(dev);
+--- a/fs/cifs/cifs_debug.c
++++ b/fs/cifs/cifs_debug.c
+@@ -279,8 +279,10 @@ static int cifs_debug_data_proc_show(str
+ 		seq_printf(m, "\n%d) ConnectionId: 0x%llx ",
+ 			c, server->conn_id);
  
-+	priv->bfirst_after_down = false;
- 	return 0;
- }
++		spin_lock(&server->srv_lock);
+ 		if (server->hostname)
+ 			seq_printf(m, "Hostname: %s ", server->hostname);
++		spin_unlock(&server->srv_lock);
+ #ifdef CONFIG_CIFS_SMB_DIRECT
+ 		if (!server->rdma)
+ 			goto skip_rdma;
+@@ -620,10 +622,13 @@ static int cifs_stats_proc_show(struct s
+ 				server->fastest_cmd[j],
+ 				server->slowest_cmd[j]);
+ 		for (j = 0; j < NUMBER_OF_SMB2_COMMANDS; j++)
+-			if (atomic_read(&server->smb2slowcmd[j]))
++			if (atomic_read(&server->smb2slowcmd[j])) {
++				spin_lock(&server->srv_lock);
+ 				seq_printf(m, "  %d slow responses from %s for command %d\n",
+ 					atomic_read(&server->smb2slowcmd[j]),
+ 					server->hostname, j);
++				spin_unlock(&server->srv_lock);
++			}
+ #endif /* STATS2 */
+ 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
+ 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
+--- a/fs/cifs/cifs_debug.h
++++ b/fs/cifs/cifs_debug.h
+@@ -81,19 +81,19 @@ do {									\
  
--- 
-2.39.2
-
+ #define cifs_server_dbg_func(ratefunc, type, fmt, ...)			\
+ do {									\
+-	const char *sn = "";						\
+-	if (server && server->hostname)					\
+-		sn = server->hostname;					\
++	spin_lock(&server->srv_lock);					\
+ 	if ((type) & FYI && cifsFYI & CIFS_INFO) {			\
+ 		pr_debug_ ## ratefunc("%s: \\\\%s " fmt,		\
+-				      __FILE__, sn, ##__VA_ARGS__);	\
++				      __FILE__, server->hostname,	\
++				      ##__VA_ARGS__);			\
+ 	} else if ((type) & VFS) {					\
+ 		pr_err_ ## ratefunc("VFS: \\\\%s " fmt,			\
+-				    sn, ##__VA_ARGS__);			\
++				    server->hostname, ##__VA_ARGS__);	\
+ 	} else if ((type) & NOISY && (NOISY != 0)) {			\
+ 		pr_debug_ ## ratefunc("\\\\%s " fmt,			\
+-				      sn, ##__VA_ARGS__);		\
++				      server->hostname, ##__VA_ARGS__);	\
+ 	}								\
++	spin_unlock(&server->srv_lock);					\
+ } while (0)
+ 
+ #define cifs_server_dbg(type, fmt, ...)					\
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -435,8 +435,10 @@ static int __reconnect_target_unlocked(s
+ 		if (server->hostname != target) {
+ 			hostname = extract_hostname(target);
+ 			if (!IS_ERR(hostname)) {
++				spin_lock(&server->srv_lock);
+ 				kfree(server->hostname);
+ 				server->hostname = hostname;
++				spin_unlock(&server->srv_lock);
+ 			} else {
+ 				cifs_dbg(FYI, "%s: couldn't extract hostname or address from dfs target: %ld\n",
+ 					 __func__, PTR_ERR(hostname));
+@@ -593,9 +595,7 @@ cifs_echo_request(struct work_struct *wo
+ 		goto requeue_echo;
+ 
+ 	rc = server->ops->echo ? server->ops->echo(server) : -ENOSYS;
+-	if (rc)
+-		cifs_dbg(FYI, "Unable to send echo request to server: %s\n",
+-			 server->hostname);
++	cifs_server_dbg(FYI, "send echo request: rc = %d\n", rc);
+ 
+ 	/* Check witness registrations */
+ 	cifs_swn_check();
+@@ -1445,6 +1445,8 @@ static int match_server(struct TCP_Serve
+ {
+ 	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
+ 
++	lockdep_assert_held(&server->srv_lock);
++
+ 	if (ctx->nosharesock)
+ 		return 0;
+ 
+@@ -1859,7 +1861,9 @@ cifs_setup_ipc(struct cifs_ses *ses, str
+ 	if (tcon == NULL)
+ 		return -ENOMEM;
+ 
++	spin_lock(&server->srv_lock);
+ 	scnprintf(unc, sizeof(unc), "\\\\%s\\IPC$", server->hostname);
++	spin_unlock(&server->srv_lock);
+ 
+ 	xid = get_xid();
+ 	tcon->ses = ses;
+--- a/fs/cifs/sess.c
++++ b/fs/cifs/sess.c
+@@ -159,6 +159,7 @@ cifs_chan_is_iface_active(struct cifs_se
+ /* returns number of channels added */
+ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
+ {
++	struct TCP_Server_Info *server = ses->server;
+ 	int old_chan_count, new_chan_count;
+ 	int left;
+ 	int rc = 0;
+@@ -178,16 +179,16 @@ int cifs_try_adding_channels(struct cifs
+ 		return 0;
+ 	}
+ 
+-	if (ses->server->dialect < SMB30_PROT_ID) {
++	if (server->dialect < SMB30_PROT_ID) {
+ 		spin_unlock(&ses->chan_lock);
+ 		cifs_dbg(VFS, "multichannel is not supported on this protocol version, use 3.0 or above\n");
+ 		return 0;
+ 	}
+ 
+-	if (!(ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
++	if (!(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+ 		ses->chan_max = 1;
+ 		spin_unlock(&ses->chan_lock);
+-		cifs_dbg(VFS, "server %s does not support multichannel\n", ses->server->hostname);
++		cifs_server_dbg(VFS, "no multichannel support\n");
+ 		return 0;
+ 	}
+ 	spin_unlock(&ses->chan_lock);
 
 
