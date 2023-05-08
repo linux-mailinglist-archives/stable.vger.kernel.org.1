@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49DD16FAD57
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 703746FA590
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236038AbjEHLdv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50704 "EHLO
+        id S234175AbjEHKKz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235913AbjEHLd2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:28 -0400
+        with ESMTP id S234176AbjEHKKx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A9C40204
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:32:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A89537E78
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5369363041
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AC7C433D2;
-        Mon,  8 May 2023 11:32:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F220623CA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F5FC433D2;
+        Mon,  8 May 2023 10:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545573;
-        bh=eQlu+AAUvvB5MxX9Rv+o6FBnde/Cws4SK9IQDge22Dc=;
+        s=korg; t=1683540647;
+        bh=Vl5hFgP8MYg0x/vOx8uph7RhIvyY1UHjcUzoV6BWXug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TvUtq2qHmafbFDD3SNAbftvnVRJ+SXS0Dyj22ZVNiEXPdgrewa74pNORhxv3w/KbD
-         7z1d3fsO/dQcBvZY2l1kwAb0IEYk7OH7qVf7iCh2Nx7BbY2OplCHhPbu1oIotM2B7d
-         xDbgROiBP/FqPR6B0+2vPrrQAKK5H1dPXgrhg2/M=
+        b=zLyz2WEPrfPUkrmtMrUSbeTcZheR+IGZoLhaYU8rIP2gTRU/C6pEj5lktm1fKc6bX
+         480IPw+LXXCceR+EEKbVHJZA6PdF379KecoakYo6rwpV7ILwh7oeBhNuea1OmY/MKn
+         zDtnpAOJCUh2dGGaEXBtagqQ2NrSe+ankzU/+mf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20Kohlsch=C3=BCtter?= 
-        <christian@kohlschutter.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/371] regulator: core: Shorten off-on-delay-us for always-on/boot-on by time since booted
-Date:   Mon,  8 May 2023 11:44:45 +0200
-Message-Id: <20230508094815.420248425@linuxfoundation.org>
+Subject: [PATCH 6.1 444/611] sh: sq: Fix incorrect element size for allocating bitmap buffer
+Date:   Mon,  8 May 2023 11:44:46 +0200
+Message-Id: <20230508094436.590291114@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,108 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-[ Upstream commit 691c1fcda5351ed98a44610b7dccc0e3ee920020 ]
+[ Upstream commit 80f746e2bd0e1da3fdb49a53570e54a1a225faac ]
 
-This is very close to a straight revert of commit 218320fec294
-("regulator: core: Fix off-on-delay-us for always-on/boot-on
-regulators"). We've identified that patch as causing a boot speed
-regression on sc7180-trogdor boards. While boot speed certainly isn't
-more important than making sure that power sequencing is correct,
-looking closely at the original change it doesn't seem to have been
-fully justified. It mentions "cycling issues" without describing
-exactly what the issues were. That means it's possible that the
-cycling issues were really a problem that should be fixed in a
-different way.
+The Store Queue code allocates a bitmap buffer with the size of
+multiple of sizeof(long) in sq_api_init(). While the buffer size
+is calculated correctly, the code uses the wrong element size to
+allocate the buffer which results in the allocated bitmap buffer
+being too small.
 
-Let's take a careful look at how we should handle regulators that have
-an off-on-delay and that are boot-on or always-on. Linux currently
-doesn't have any way to identify whether a GPIO regulator was already
-on when the kernel booted. That means that when the kernel boots we
-probe a regulator, see that it wants boot-on / always-on we, and then
-turn the regulator on. We could be in one of two cases when we do
-this:
+Fix this by allocating the buffer with kcalloc() with element size
+sizeof(long) instead of kzalloc() whose elements size defaults to
+sizeof(char).
 
-a) The regulator might have been left on by the bootloader and we're
-   ensuring that it stays on.
-b) The regulator might have been left off by the bootloader and we're
-   just now turning it on.
-
-For case a) we definitely don't need any sort of delay. For case b) we
-_might_ need some delay in case the bootloader turned the regulator
-off _right_ before booting the kernel. To get the proper delay for
-case b) then we can just assume a `last_off` of 0, which is what it
-gets initialized to by default.
-
-As per above, we can't tell whether we're in case a) or case b) so
-we'll assume the longer delay (case b). This basically puts the code
-to how it was before commit 218320fec294 ("regulator: core: Fix
-off-on-delay-us for always-on/boot-on regulators"). However, we add
-one important change: we make sure that the delay is actually honored
-if `last_off` is 0. Though the original "cycling issues" cited were
-vague, I'm hopeful that this important extra change will be enough to
-fix the issues that the initial commit mentioned.
-
-With this fix, I've confined that on a sc7180-trogdor board the delay
-at boot goes down from 500 ms to ~250 ms. That's not as good as the 0
-ms that we had prior to commit 218320fec294 ("regulator: core: Fix
-off-on-delay-us for always-on/boot-on regulators"), but it's probably
-safer because we don't know if the bootloader turned the regulator off
-right before booting.
-
-One note is that it's possible that we could be in a state that's not
-a) or b) if there are other issues in the kernel. The only one I can
-think of is related to pinctrl. If the pinctrl driver being used on a
-board isn't careful about avoiding glitches when setting up a pin then
-it's possible that setting up a pin could cause the regulator to "turn
-off" briefly immediately before the regulator probes. If this is
-indeed causing problems then the pinctrl driver should be fixed,
-perhaps in a similar way to what was done in commit d21f4b7ffc22
-("pinctrl: qcom: Avoid glitching lines when we first mux to output")
-
-Fixes: 218320fec294 ("regulator: core: Fix off-on-delay-us for always-on/boot-on regulators")
-Cc: Christian Kohlschütter <christian@kohlschutter.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20230313111806.1.I2eaad872be0932a805c239a7c7a102233fb0b03b@changeid
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d7c30c682a27 ("sh: Store Queue API rework.")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230419114854.528677-1-glaubitz@physik.fu-berlin.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/sh/kernel/cpu/sh4/sq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index cd10880378a6d..e876702d6ef36 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1539,9 +1539,6 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 			rdev->constraints->always_on = true;
- 	}
+diff --git a/arch/sh/kernel/cpu/sh4/sq.c b/arch/sh/kernel/cpu/sh4/sq.c
+index a76b94e41e913..8ddfe9989f5fc 100644
+--- a/arch/sh/kernel/cpu/sh4/sq.c
++++ b/arch/sh/kernel/cpu/sh4/sq.c
+@@ -382,7 +382,7 @@ static int __init sq_api_init(void)
+ 	if (unlikely(!sq_cache))
+ 		return ret;
  
--	if (rdev->desc->off_on_delay)
--		rdev->last_off = ktime_get_boottime();
--
- 	/* If the constraints say the regulator should be on at this point
- 	 * and we have control then make sure it is enabled.
- 	 */
-@@ -1575,6 +1572,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+-	sq_bitmap = kzalloc(size, GFP_KERNEL);
++	sq_bitmap = kcalloc(size, sizeof(long), GFP_KERNEL);
+ 	if (unlikely(!sq_bitmap))
+ 		goto out;
  
- 		if (rdev->constraints->always_on)
- 			rdev->use_count++;
-+	} else if (rdev->desc->off_on_delay) {
-+		rdev->last_off = ktime_get();
- 	}
- 
- 	print_constraints(rdev);
-@@ -2624,7 +2623,7 @@ static int _regulator_do_enable(struct regulator_dev *rdev)
- 
- 	trace_regulator_enable(rdev_get_name(rdev));
- 
--	if (rdev->desc->off_on_delay && rdev->last_off) {
-+	if (rdev->desc->off_on_delay) {
- 		/* if needed, keep a distance of off_on_delay from last time
- 		 * this regulator was disabled.
- 		 */
 -- 
 2.39.2
 
