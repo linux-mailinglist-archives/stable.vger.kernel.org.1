@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BBFE6FADF8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EE846FAC72
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235988AbjEHLkK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:40:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        id S235659AbjEHLYg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:24:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236112AbjEHLjh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:37 -0400
+        with ESMTP id S235668AbjEHLYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B5C3F2EA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAEA439BBA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 499586335B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EB4C433EF;
-        Mon,  8 May 2023 11:39:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 817D962D32
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D329C4339B;
+        Mon,  8 May 2023 11:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545965;
-        bh=mL1P054s32u91OzNJTWICd3HBWvvFwxbfG5aIg+LxUs=;
+        s=korg; t=1683545057;
+        bh=gX39DoRBJpT5cNtJczBvP/XQo875aKQmv20CC+EmjK8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A5MwgK9YUHDJxf/nIJEAhFzkRwIUkgTg1q1iwgPtNpkoHF/KjHJG4sOwkzFSC4CbK
-         sIKMUQRNmYnfzfbY4JBEB/XjkPs7L/z0+u7OUuzsN2f6L7u7Id0MzTXjrqPwlfBuW0
-         ASAdD1NB7ANaD2AyArVdo9fnuxv5zcOyTlDcwOe0=
+        b=MhRPKtIYn1UQ25vweFcRGAXOJJgOyaUr3gf7qbVU6a0fCZB1uU8++/vHoLNcJE2KX
+         niwJSbEW4tcQtZaNtZXqMk3RX1xTeXO4xWyaGmJawCamq/ie5QP5VFD4NrK+iAXm/n
+         AGbWuENCkkNmiTvFo9MYPWaeVFJM9BaD0+BEMH/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Gabay <daniel.gabay@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 212/371] wifi: iwlwifi: yoyo: Fix possible division by zero
-Date:   Mon,  8 May 2023 11:46:53 +0200
-Message-Id: <20230508094820.481510770@linuxfoundation.org>
+Subject: [PATCH 6.3 579/694] clk: mediatek: mt7622: Properly use CLK_IS_CRITICAL flag
+Date:   Mon,  8 May 2023 11:46:54 +0200
+Message-Id: <20230508094453.718528293@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +57,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit ba30415118eee374a08b39a0460a1d1e52c24a25 ]
+[ Upstream commit fa8c0d01df62130ff596d560380a6f844f62639e ]
 
-Don't allow buffer allocation TLV with zero req_size since it
-leads later to division by zero in iwl_dbg_tlv_alloc_fragments().
-Also, NPK/SRAM locations are allowed to have zero buffer req_size,
-don't discard them.
+Instead of calling clk_prepare_enable() for clocks that shall stay
+enabled, use the CLK_IS_CRITICAL flag, which purpose is exactly that.
 
-Fixes: a9248de42464 ("iwlwifi: dbg_ini: add TLV allocation new API support")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230413213309.5d6688ed74d8.I5c2f3a882b50698b708d54f4524dc5bdf11e3d32@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 2fc0a509e4ee ("clk: mediatek: add clock support for MT7622 SoC")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230306140543.1813621-24-angelogioacchino.delregno@collabora.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/clk/mediatek/clk-mt7622.c | 35 +++++++++++++------------------
+ 1 file changed, 15 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index fc4197bf2478e..f9bd081dd9e08 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -134,6 +134,12 @@ static int iwl_dbg_tlv_alloc_buf_alloc(struct iwl_trans *trans,
- 	    alloc_id != IWL_FW_INI_ALLOCATION_ID_DBGC1)
- 		goto err;
+diff --git a/drivers/clk/mediatek/clk-mt7622.c b/drivers/clk/mediatek/clk-mt7622.c
+index 41af8d420bbf8..1c0049fbeb69c 100644
+--- a/drivers/clk/mediatek/clk-mt7622.c
++++ b/drivers/clk/mediatek/clk-mt7622.c
+@@ -50,9 +50,9 @@
+ 		 _pd_reg, _pd_shift, _tuner_reg, _pcw_reg, _pcw_shift,  \
+ 		 NULL, "clkxtal")
  
-+	if (buf_location == IWL_FW_INI_LOCATION_DRAM_PATH &&
-+	    alloc->req_size == 0) {
-+		IWL_ERR(trans, "WRT: Invalid DRAM buffer allocation requested size (0)\n");
-+		return -EINVAL;
-+	}
+-#define GATE_APMIXED(_id, _name, _parent, _shift)			\
+-	GATE_MTK(_id, _name, _parent, &apmixed_cg_regs, _shift,		\
+-		 &mtk_clk_gate_ops_no_setclr_inv)
++#define GATE_APMIXED_AO(_id, _name, _parent, _shift)			\
++	GATE_MTK_FLAGS(_id, _name, _parent, &apmixed_cg_regs, _shift,	\
++		 &mtk_clk_gate_ops_no_setclr_inv, CLK_IS_CRITICAL)
+ 
+ #define GATE_INFRA(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &infra_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+@@ -66,6 +66,10 @@
+ #define GATE_PERI0(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &peri0_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+ 
++#define GATE_PERI0_AO(_id, _name, _parent, _shift)			\
++	GATE_MTK_FLAGS(_id, _name, _parent, &peri0_cg_regs, _shift,	\
++		 &mtk_clk_gate_ops_setclr, CLK_IS_CRITICAL)
 +
- 	trans->dbg.fw_mon_cfg[alloc_id] = *alloc;
+ #define GATE_PERI1(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &peri1_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+ 
+@@ -315,7 +319,7 @@ static const struct mtk_pll_data plls[] = {
+ };
+ 
+ static const struct mtk_gate apmixed_clks[] = {
+-	GATE_APMIXED(CLK_APMIXED_MAIN_CORE_EN, "main_core_en", "mainpll", 5),
++	GATE_APMIXED_AO(CLK_APMIXED_MAIN_CORE_EN, "main_core_en", "mainpll", 5),
+ };
+ 
+ static const struct mtk_gate infra_clks[] = {
+@@ -450,7 +454,7 @@ static const struct mtk_gate peri_clks[] = {
+ 	GATE_PERI0(CLK_PERI_AP_DMA_PD, "peri_ap_dma_pd", "axi_sel", 12),
+ 	GATE_PERI0(CLK_PERI_MSDC30_0_PD, "peri_msdc30_0", "msdc30_0_sel", 13),
+ 	GATE_PERI0(CLK_PERI_MSDC30_1_PD, "peri_msdc30_1", "msdc30_1_sel", 14),
+-	GATE_PERI0(CLK_PERI_UART0_PD, "peri_uart0_pd", "axi_sel", 17),
++	GATE_PERI0_AO(CLK_PERI_UART0_PD, "peri_uart0_pd", "axi_sel", 17),
+ 	GATE_PERI0(CLK_PERI_UART1_PD, "peri_uart1_pd", "axi_sel", 18),
+ 	GATE_PERI0(CLK_PERI_UART2_PD, "peri_uart2_pd", "axi_sel", 19),
+ 	GATE_PERI0(CLK_PERI_UART3_PD, "peri_uart3_pd", "axi_sel", 20),
+@@ -478,12 +482,12 @@ static struct mtk_composite infra_muxes[] = {
+ 
+ static struct mtk_composite top_muxes[] = {
+ 	/* CLK_CFG_0 */
+-	MUX_GATE(CLK_TOP_AXI_SEL, "axi_sel", axi_parents,
+-		 0x040, 0, 3, 7),
+-	MUX_GATE(CLK_TOP_MEM_SEL, "mem_sel", mem_parents,
+-		 0x040, 8, 1, 15),
+-	MUX_GATE(CLK_TOP_DDRPHYCFG_SEL, "ddrphycfg_sel", ddrphycfg_parents,
+-		 0x040, 16, 1, 23),
++	MUX_GATE_FLAGS(CLK_TOP_AXI_SEL, "axi_sel", axi_parents,
++		       0x040, 0, 3, 7, CLK_IS_CRITICAL),
++	MUX_GATE_FLAGS(CLK_TOP_MEM_SEL, "mem_sel", mem_parents,
++		       0x040, 8, 1, 15, CLK_IS_CRITICAL),
++	MUX_GATE_FLAGS(CLK_TOP_DDRPHYCFG_SEL, "ddrphycfg_sel", ddrphycfg_parents,
++		       0x040, 16, 1, 23, CLK_IS_CRITICAL),
+ 	MUX_GATE(CLK_TOP_ETH_SEL, "eth_sel", eth_parents,
+ 		 0x040, 24, 3, 31),
+ 
+@@ -621,10 +625,6 @@ static int mtk_topckgen_init(struct platform_device *pdev)
+ 	mtk_clk_register_gates(&pdev->dev, node, top_clks,
+ 			       ARRAY_SIZE(top_clks), clk_data);
+ 
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_AXI_SEL]->clk);
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_MEM_SEL]->clk);
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_DDRPHYCFG_SEL]->clk);
+-
+ 	return of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ }
+ 
+@@ -667,9 +667,6 @@ static int mtk_apmixedsys_init(struct platform_device *pdev)
+ 	mtk_clk_register_gates(&pdev->dev, node, apmixed_clks,
+ 			       ARRAY_SIZE(apmixed_clks), clk_data);
+ 
+-	clk_prepare_enable(clk_data->hws[CLK_APMIXED_ARMPLL]->clk);
+-	clk_prepare_enable(clk_data->hws[CLK_APMIXED_MAIN_CORE_EN]->clk);
+-
+ 	return of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ }
+ 
+@@ -697,8 +694,6 @@ static int mtk_pericfg_init(struct platform_device *pdev)
+ 	if (r)
+ 		return r;
+ 
+-	clk_prepare_enable(clk_data->hws[CLK_PERI_UART0_PD]->clk);
+-
+ 	mtk_register_reset_controller_with_dev(&pdev->dev, &clk_rst_desc[1]);
  
  	return 0;
 -- 
