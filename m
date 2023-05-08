@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 025EB6FA926
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D53546FAE0C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234944AbjEHKsq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:48:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48104 "EHLO
+        id S234015AbjEHLkf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234927AbjEHKs0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:26 -0400
+        with ESMTP id S235909AbjEHLkI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A24883EE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9685A3DC97
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE0E562850
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3109C433EF;
-        Mon,  8 May 2023 10:47:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AA6863491
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF43C433EF;
+        Mon,  8 May 2023 11:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542858;
-        bh=Jc8Mdawx3aHNq1LRGryHP7p+OBu3CO0SNO7/bQfcUPg=;
+        s=korg; t=1683546006;
+        bh=/D4HFmVF29VbRCOunX7NL9IqxRE+RbqSNO5pS4vJDts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YktfDHdnEl+DA6Aytqzwri9rBf1Ymmkedphlfzg5L47O4+4qVobuA8VdvuN1y+Da/
-         j28o9f+DCtsBoJHio2lXWH8Snk54bQXYxOrYLP8LPAVXzzOvQG7oQyKLkT1vhOvEAa
-         /QB9/y3zRLNI7wwvxeQgjNuHXGemgw1WfEVVHH1g=
+        b=JevidwwQjzTfB6H2K27booxfLch0rQI+3Tf9YXWtbihd2upKCyuPj9lhBBxZu3fbG
+         Z/SbLQWWdoDBQ/Mm9s7VaujbN8EBQrTJZBn2SBVvsCMBIzncCIq79UukTUaem9arPO
+         HqDoxPeuQvrarjoPMCJJC/FfdVrFMgzCTBc7/F/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stafford Horne <shorne@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 572/663] openrisc: Properly store r31 to pt_regs on unhandled exceptions
+        patches@lists.linux.dev,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 197/371] nvmet: fix I/O Command Set specific Identify Controller
 Date:   Mon,  8 May 2023 11:46:38 +0200
-Message-Id: <20230508094447.807941852@linuxfoundation.org>
+Message-Id: <20230508094819.929390510@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,54 +55,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stafford Horne <shorne@gmail.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[ Upstream commit 812489ac4dd91144a74ce65ecf232252a2e406fb ]
+[ Upstream commit a5a6ab0950b46ab1ef4a5c83c80234018b81b38a ]
 
-In commit 91993c8c2ed5 ("openrisc: use shadow registers to save regs on
-exception") the unhandled exception path was changed to do an early
-store of r30 instead of r31.  The entry code was not updated and r31 is
-not getting stored to pt_regs.
+For an identify command with cns set to NVME_ID_CNS_CS_CTRL, the NVMe
+2.0 specification states that:
 
-This patch updates the entry handler to store r31 instead of r30.  We
-also remove some misleading commented out store r30 and r31
-instructrions.
+If the I/O Command Set specified by the CSI field does not have an
+Identify Controller data structure, then the controller shall return
+a zero filled data structure. If the host requests a data structure for
+an I/O Command Set that the controller does not support, the controller
+shall abort the command with a status code of Invalid Field in Command.
 
-I noticed this while working on adding floating point exception
-handling,  This issue probably would never impact anything since we kill
-the process or Oops right away on unhandled exceptions.
+However, the current implementation of this identify command in
+nvmet_execute_identify() only handles the ZNS command set, returning an
+error for the NVM command set, which is not compliant with the
+specifications as we do support this command set.
 
-Fixes: 91993c8c2ed5 ("openrisc: use shadow registers to save regs on exception")
-Signed-off-by: Stafford Horne <shorne@gmail.com>
+Fix this by:
+1) Renaming nvmet_execute_identify_cns_cs_ctrl() to
+   nvmet_execute_identify_ctrl_zns() to continue handling the
+   ZNS command set as is.
+2) Introduce a nvmet_execute_identify_ctrl_ns() helper to handle the
+   NVM command set, returning a zero filled nvme_id_ctrl_nvm data
+   structure.
+3) Modify nvmet_execute_identify() to call these helpers based on
+   the csi specified, returning an error for unsupported command sets.
+
+Fixes: aaf2e048af27 ("nvmet: add ZBD over ZNS backend support")
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/openrisc/kernel/entry.S | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/nvme/target/admin-cmd.c | 22 ++++++++++++++++------
+ drivers/nvme/target/nvmet.h     |  2 +-
+ drivers/nvme/target/zns.c       |  2 +-
+ 3 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/arch/openrisc/kernel/entry.S b/arch/openrisc/kernel/entry.S
-index 54a87bba35caa..a130c4dac48d3 100644
---- a/arch/openrisc/kernel/entry.S
-+++ b/arch/openrisc/kernel/entry.S
-@@ -173,7 +173,6 @@ handler:							;\
- 	l.sw    PT_GPR28(r1),r28					;\
- 	l.sw    PT_GPR29(r1),r29					;\
- 	/* r30 already save */					;\
--/*        l.sw    PT_GPR30(r1),r30*/					;\
- 	l.sw    PT_GPR31(r1),r31					;\
- 	TRACE_IRQS_OFF_ENTRY						;\
- 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
-@@ -211,9 +210,8 @@ handler:							;\
- 	l.sw    PT_GPR27(r1),r27					;\
- 	l.sw    PT_GPR28(r1),r28					;\
- 	l.sw    PT_GPR29(r1),r29					;\
--	/* r31 already saved */					;\
--	l.sw    PT_GPR30(r1),r30					;\
--/*        l.sw    PT_GPR31(r1),r31	*/				;\
-+	/* r30 already saved */						;\
-+	l.sw    PT_GPR31(r1),r31					;\
- 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
- 	l.addi	r30,r0,-1					;\
- 	l.sw	PT_ORIG_GPR11(r1),r30				;\
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index 2b8227259786c..ec13f568785e5 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -680,6 +680,13 @@ static bool nvmet_handle_identify_desclist(struct nvmet_req *req)
+ 	}
+ }
+ 
++static void nvmet_execute_identify_ctrl_nvm(struct nvmet_req *req)
++{
++	/* Not supported: return zeroes */
++	nvmet_req_complete(req,
++		   nvmet_zero_sgl(req, 0, sizeof(struct nvme_id_ctrl_nvm)));
++}
++
+ static void nvmet_execute_identify(struct nvmet_req *req)
+ {
+ 	if (!nvmet_check_transfer_len(req, NVME_IDENTIFY_DATA_SIZE))
+@@ -703,13 +710,16 @@ static void nvmet_execute_identify(struct nvmet_req *req)
+ 		nvmet_execute_identify_ctrl(req);
+ 		return;
+ 	case NVME_ID_CNS_CS_CTRL:
+-		if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
+-			switch (req->cmd->identify.csi) {
+-			case NVME_CSI_ZNS:
+-				return nvmet_execute_identify_cns_cs_ctrl(req);
+-			default:
+-				break;
++		switch (req->cmd->identify.csi) {
++		case NVME_CSI_NVM:
++			nvmet_execute_identify_ctrl_nvm(req);
++			return;
++		case NVME_CSI_ZNS:
++			if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
++				nvmet_execute_identify_ctrl_zns(req);
++				return;
+ 			}
++			break;
+ 		}
+ 		break;
+ 	case NVME_ID_CNS_NS_ACTIVE_LIST:
+diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
+index abb5e78ab8919..17dd845514588 100644
+--- a/drivers/nvme/target/nvmet.h
++++ b/drivers/nvme/target/nvmet.h
+@@ -547,7 +547,7 @@ bool nvmet_ns_revalidate(struct nvmet_ns *ns);
+ u16 blk_to_nvme_status(struct nvmet_req *req, blk_status_t blk_sts);
+ 
+ bool nvmet_bdev_zns_enable(struct nvmet_ns *ns);
+-void nvmet_execute_identify_cns_cs_ctrl(struct nvmet_req *req);
++void nvmet_execute_identify_ctrl_zns(struct nvmet_req *req);
+ void nvmet_execute_identify_cns_cs_ns(struct nvmet_req *req);
+ void nvmet_bdev_execute_zone_mgmt_recv(struct nvmet_req *req);
+ void nvmet_bdev_execute_zone_mgmt_send(struct nvmet_req *req);
+diff --git a/drivers/nvme/target/zns.c b/drivers/nvme/target/zns.c
+index f4f8598cbdc15..ae617d66b1378 100644
+--- a/drivers/nvme/target/zns.c
++++ b/drivers/nvme/target/zns.c
+@@ -70,7 +70,7 @@ bool nvmet_bdev_zns_enable(struct nvmet_ns *ns)
+ 	return true;
+ }
+ 
+-void nvmet_execute_identify_cns_cs_ctrl(struct nvmet_req *req)
++void nvmet_execute_identify_ctrl_zns(struct nvmet_req *req)
+ {
+ 	u8 zasl = req->sq->ctrl->subsys->zasl;
+ 	struct nvmet_ctrl *ctrl = req->sq->ctrl;
 -- 
 2.39.2
 
