@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BE506FA56F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A40096FA874
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234125AbjEHKJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
+        id S234963AbjEHKky (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:40:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234135AbjEHKJZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:25 -0400
+        with ESMTP id S234969AbjEHKkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FEC13292B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B584BBF7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E89CF6239C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A480C433EF;
-        Mon,  8 May 2023 10:09:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E1D662848
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B197C433B3;
+        Mon,  8 May 2023 10:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540563;
-        bh=m2MAVz1sFRRcDP0NOl/MARcnCO2Q+y+I1t5a6wLEScU=;
+        s=korg; t=1683542411;
+        bh=dnAmpRik3/sJxBcBZkEsma7IARKC8054PdN9eqrCRI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OW25dm6qZJ+1oBMZ27GVwd4bZASIaBNeZQqM5dpIT01e5ag3bmbA/WBkb/oE/3UKH
-         M4d1gVCeWzQIZPmw4R3ivHt84+13MMf3LKqd/4Hsqp2/JPZE4BXDplrH3ZaaF/VxaH
-         6O++yzwDk6V6wwfOFXqAayiIqvLTfNRSIlEDVp+8=
+        b=u9G+cdgUd+TaKkMM9gRX7wYF9j8oO6UAQGuQcXU7K5kluMmryxaJWo8fhNfx3NQuU
+         sPygHETZEjUo1xg89RdmV4GzyyFcpSAP/XNSwa0R5ZM4tHE7P8RBdb1WppZ7uZvc3z
+         ihtQEudJrzyqT8Q7QNNTswVwlB/rMpJp/XXGgGzk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Sean Anderson <sean.anderson@seco.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 411/611] usb: gadget: udc: renesas_usb3: Fix use after free bug in renesas_usb3_remove due to race condition
+Subject: [PATCH 6.2 427/663] net: dpaa: Fix uninitialized variable in dpaa_stop()
 Date:   Mon,  8 May 2023 11:44:13 +0200
-Message-Id: <20230508094435.601676969@linuxfoundation.org>
+Message-Id: <20230508094441.922567428@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2b947f8769be8b8181dc795fd292d3e7120f5204 ]
+[ Upstream commit 461bb5b97049a149278f2c27a3aa12af16da6a2e ]
 
-In renesas_usb3_probe, role_work is bound with renesas_usb3_role_work.
-renesas_usb3_start will be called to start the work.
+The return value is not initialized on the success path.
 
-If we remove the driver which will call usbhs_remove, there may be
-an unfinished work. The possible sequence is as follows:
-
-CPU0                  			CPU1
-
-                    			 renesas_usb3_role_work
-renesas_usb3_remove
-usb_role_switch_unregister
-device_unregister
-kfree(sw)
-//free usb3->role_sw
-                    			 usb_role_switch_set_role
-                    			 //use usb3->role_sw
-
-The usb3->role_sw could be freed under such circumstance and then
-used in usb_role_switch_set_role.
-
-This bug was found by static analysis. And note that removing a
-driver is a root-only operation, and should never happen in normal
-case. But the root user may directly remove the device which
-will also trigger the remove function.
-
-Fix it by canceling the work before cleanup in the renesas_usb3_remove.
-
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://lore.kernel.org/r/20230320062931.505170-1-zyytlz.wz@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 901bdff2f529 ("net: fman: Change return type of disable to void")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/8c9dc377-8495-495f-a4e5-4d2d0ee12f0c@kili.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
-index 615ba0a6fbee1..32c9e369216c9 100644
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2596,6 +2596,7 @@ static int renesas_usb3_remove(struct platform_device *pdev)
- 	debugfs_remove_recursive(usb3->dentry);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+index 027fff9f7db07..48ec323e0a920 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -295,7 +295,8 @@ static int dpaa_stop(struct net_device *net_dev)
+ {
+ 	struct mac_device *mac_dev;
+ 	struct dpaa_priv *priv;
+-	int i, err, error;
++	int i, error;
++	int err = 0;
  
-+	cancel_work_sync(&usb3->role_work);
- 	usb_role_switch_unregister(usb3->role_sw);
- 
- 	usb_del_gadget_udc(&usb3->gadget);
+ 	priv = netdev_priv(net_dev);
+ 	mac_dev = priv->mac_dev;
 -- 
 2.39.2
 
