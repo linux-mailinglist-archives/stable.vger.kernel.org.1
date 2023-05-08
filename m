@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF186FABD6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5958A6FA8C8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235496AbjEHLSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59802 "EHLO
+        id S234983AbjEHKp1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235518AbjEHLSD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:03 -0400
+        with ESMTP id S235000AbjEHKpC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05CBC3763B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CC62C3D4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C4B862C17
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE68C4339B;
-        Mon,  8 May 2023 11:17:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0630862878
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F58C433EF;
+        Mon,  8 May 2023 10:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544675;
-        bh=LpM+4uLxYgU6aMCVQEAhxvugOS/zeOf4eaUdrQJjokM=;
+        s=korg; t=1683542628;
+        bh=HGjZEqd5idIF2ncHGUpmaXjOTrDom/+pr/bq4rGCoLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nhTfAiYqyRs5LurdLpFeUxc40qJUDL9Rgtb/nQIVFSB5Vt6eOU5hUHZ599MFZwrDm
-         ZFPMAR0LOxyD4zM8pNnjY8aCj9pFANGITtXiiDkd+rPgiBK9kzVs4R6oK46vhJboZ6
-         QZJVrXQA2or21og5e64+j78Wm+ynlqOSN6VpLTlA=
+        b=dGr1yvkXWuKx+6qmEtfZ7wlYriZYwRvtAZU0XRa43dQJ6wgoJe3jU27ADGNH9EwTz
+         BlCOIV2Q5HTI8xbKNZ2CZYmh2kgLEGbYFgPLuFhuj/rWahUYFBt2Tyf6UCueUbSumr
+         eqHWuso75vnBk2qw/haSIQfgizL3tgJIlNZvjP4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 488/694] usb: host: xhci-rcar: remove leftover quirk handling
+Subject: [PATCH 6.2 497/663] staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
 Date:   Mon,  8 May 2023 11:45:23 +0200
-Message-Id: <20230508094449.787072581@linuxfoundation.org>
+Message-Id: <20230508094444.624143997@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
 
-[ Upstream commit 5d67f4861884762ebc2bddb5d667444e45f25782 ]
+[ Upstream commit 3fac2397f562eb669ddc2f45867a253f3fc26184 ]
 
-Loading V3 firmware does not need a quirk anymore, remove the leftover
-code.
+When loading the driver for rtl8192e, the W_DISABLE# switch is working as
+intended. But when the WLAN is turned off in software and then turned on
+again the W_DISABLE# does not work anymore. Reason for this is that in
+the function _rtl92e_dm_check_rf_ctrl_gpio() the bfirst_after_down is
+checked and returned when true. bfirst_after_down is set true when
+switching the WLAN off in software. But it is not set to false again
+when WLAN is turned on again.
 
-Fixes: ed8603e11124 ("usb: host: xhci-rcar: Simplify getting the firmware name for R-Car Gen3")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20230307163041.3815-10-wsa+renesas@sang-engineering.com
+Add bfirst_after_down = false in _rtl92e_sta_up to reset bit and fix
+above described bug.
+
+Fixes: 94a799425eee ("From: wlanfae <wlanfae@realtek.com> [PATCH 1/8] rtl8192e: Import new version of driver from realtek")
+Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Link: https://lore.kernel.org/r/20230418200201.GA17398@matrix-ESPRIMO-P710
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-rcar.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/xhci-rcar.c b/drivers/usb/host/xhci-rcar.c
-index 7f18509a1d397..567b096a24e93 100644
---- a/drivers/usb/host/xhci-rcar.c
-+++ b/drivers/usb/host/xhci-rcar.c
-@@ -80,7 +80,6 @@ MODULE_FIRMWARE(XHCI_RCAR_FIRMWARE_NAME_V3);
- 
- /* For soc_device_attribute */
- #define RCAR_XHCI_FIRMWARE_V2   BIT(0) /* FIRMWARE V2 */
--#define RCAR_XHCI_FIRMWARE_V3   BIT(1) /* FIRMWARE V3 */
- 
- static const struct soc_device_attribute rcar_quirks_match[]  = {
- 	{
-@@ -152,8 +151,6 @@ static int xhci_rcar_download_firmware(struct usb_hcd *hcd)
- 
- 	if (quirks & RCAR_XHCI_FIRMWARE_V2)
- 		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V2;
--	else if (quirks & RCAR_XHCI_FIRMWARE_V3)
--		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V3;
+diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+index f8fbe78ccad9f..699ee7754428c 100644
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -716,6 +716,7 @@ static int _rtl92e_sta_up(struct net_device *dev, bool is_silent_reset)
  	else
- 		firmware_name = priv->firmware_name;
+ 		netif_wake_queue(dev);
+ 
++	priv->bfirst_after_down = false;
+ 	return 0;
+ }
  
 -- 
 2.39.2
