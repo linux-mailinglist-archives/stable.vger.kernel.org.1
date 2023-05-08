@@ -2,51 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 272126FAECB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D97276FA53A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236353AbjEHLrm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:47:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45186 "EHLO
+        id S234063AbjEHKHL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236359AbjEHLr1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:47:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550EA3F2FA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:47:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A4C639D2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:47:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFC3C433A4;
-        Mon,  8 May 2023 11:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546445;
-        bh=SMyDjsvPg0O3gSLkeDUOVPBL2g1q2ESth9owsfqiEPo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WOm9vFS0alDsVhr2x9RpPbmBJxQ8xG1kKCUTYII7qQIHBqIy/aU1vsb3BA9f2Tb5A
-         eqxJMulaoRa4qMbtehUEkst2mUqNRz7hcy9nQTDEwVXGV7p3e/CIdKFJjakbs1fti0
-         E3JtIvIvVYM6R0OJ0ja69fcpMZ6+ek5HKLUfW6/k=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 371/371] arm64: dts: qcom: sdm845: correct dynamic power coefficients - again
-Date:   Mon,  8 May 2023 11:49:32 +0200
-Message-Id: <20230508094826.758828006@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S234072AbjEHKHK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:10 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C9D1735
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:09 -0700 (PDT)
+Received: from fsav413.sakura.ne.jp (fsav413.sakura.ne.jp [133.242.250.112])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 348A77kK048641;
+        Mon, 8 May 2023 19:07:07 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav413.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav413.sakura.ne.jp);
+ Mon, 08 May 2023 19:07:07 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav413.sakura.ne.jp)
+Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 348A71m2048614
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 8 May 2023 19:07:06 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <c9738f09-b2a2-a8a0-ebee-ba4a3563f475@I-love.SAKURA.ne.jp>
+Date:   Mon, 8 May 2023 19:06:59 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 4.14.y] mm/page_alloc: fix potential deadlock on
+ zonelist_update_seq seqlock
+To:     Greg KH <greg@kroah.com>, Petr Mladek <pmladek@suse.com>
+Cc:     stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Michal Hocko <mhocko@suse.com>,
+        Patrick Daly <quic_pdaly@quicinc.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+References: <2023042455-skinless-muzzle-1c50@gregkh>
+ <20230507145629.4250-1-penguin-kernel@I-love.SAKURA.ne.jp>
+ <2023050828-asleep-semicolon-240e@gregkh>
+Content-Language: en-US
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <2023050828-asleep-semicolon-240e@gregkh>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,86 +62,22 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+On 2023/05/08 15:56, Greg KH wrote:
+> On Sun, May 07, 2023 at 11:56:29PM +0900, Tetsuo Handa wrote:
+>> commit 1007843a91909a4995ee78a538f62d8665705b66 upstream.
+> 
+> For obvious reasons, we can't just apply this to 4.14.y.  Please provide
+> fixes for all other stable trees as well so that you do not have a
+> regression when updating to a newer kernel.
+> 
+> I'll drop this from my review queue for now and wait for all of the
+> backported versions.
 
-commit 44750f153699b6e4f851a399287e5c8df208d696 upstream.
+5.15+ stable kernels already have the upstream patch applied.
 
-While stressing EAS on my dragonboard RB3, I have noticed that LITTLE cores
-where never selected as the most energy efficient CPU whatever the
-utilization level of waking task.
-
-energy model framework uses its cost field to estimate the energy with
-the formula:
-
-  nrg = cost of the selected OPP * utilization / CPU's max capacity
-
-which ends up selecting the CPU with lowest cost / max capacity ration
-as long as the utilization fits in the OPP's capacity.
-
-If we compare the cost of a little OPP with similar capacity of a big OPP
-like :
-       OPP(kHz)   OPP capacity    cost     max capacity   cost/max capacity
-LITTLE 1766400    407             351114   407            863
-big    1056000    408             520267   1024           508
-
-This can be interpreted as the LITTLE core consumes 70% more than big core
-for the same compute capacity.
-
-According to [1], LITTLE consumes 10% less than big core for Coremark
-benchmark at those OPPs. If we consider that everything else stays
-unchanged, the dynamic-power-coefficient of LITTLE core should be
-only 53% of the current value: 290 * 53% = 154
-
-Set the dynamic-power-coefficient of CPU0-3 to 154 to fix the energy model.
-
-[1] https://github.com/kdrag0n/freqbench/tree/master/results/sdm845/main
-
-Fixes: 0e0a8e35d725 ("arm64: dts: qcom: sdm845: correct dynamic power coefficients")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230106164618.1845281-1-vincent.guittot@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -197,7 +197,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -222,7 +222,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -244,7 +244,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-@@ -266,7 +266,7 @@
- 					   &LITTLE_CPU_SLEEP_1
- 					   &CLUSTER_SLEEP_0>;
- 			capacity-dmips-mhz = <611>;
--			dynamic-power-coefficient = <290>;
-+			dynamic-power-coefficient = <154>;
- 			qcom,freq-domain = <&cpufreq_hw 0>;
- 			operating-points-v2 = <&cpu0_opp_table>;
- 			interconnects = <&gladiator_noc MASTER_APPSS_PROC 3 &mem_noc SLAVE_EBI1 3>,
-
+Only 4.14/4.19/5.4/5.10 stable kernels failed to apply the upstream patch
+due to the need to append include/linux/printk.h part. I want to hear
+whether Petr Mladek is happy with this partial printk.h backport
+( https://lkml.kernel.org/r/ZC0298t3o6+TyASH@alley ) before I spam
+everyone with the same change for 4.19/5.4/5.10.
 
