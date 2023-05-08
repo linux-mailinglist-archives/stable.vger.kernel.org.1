@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1296FABC1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E6BF6FA5A6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235405AbjEHLRI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:17:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
+        id S234191AbjEHKLi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235347AbjEHLRH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:07 -0400
+        with ESMTP id S234197AbjEHKLg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E729634121
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD2F3A28F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 766F062C09
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41698C433D2;
-        Mon,  8 May 2023 11:17:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D4E3623DC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AA3C433EF;
+        Mon,  8 May 2023 10:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544624;
-        bh=Ogtcnyue6WqY7ThmAQjKC9J+kmtZ4GOChl8A33PQCm0=;
+        s=korg; t=1683540694;
+        bh=Hl1CeOmqL8RN0LahdOvA7GdYIF4hpMjs8AKYFZsm7ps=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EpBK6S6deup6i/bv5bT84gAcBIuzb/fZOQKR1Cz8Z2qXAi8Sz8gMcvuvx6IvSjKM8
-         x91EYu9nP9OKR4TfmLO5RzSPnQBUh1z5lhNI+CNitT57IQ2NHYBRR57NbeQ5UVAbrM
-         gEAnRDYjoeqsAN0HkjInN7Ux3ytHQif+G0dyAoxs=
+        b=yvHDzyfdOE3UebZZXbuiK0UuXSRMjt+aF8tIAkVYtn8uU1B3JXw3LXfD2IhrqDlU9
+         ez/pbN+XZuCC+/jfHuGRr747ePAqlufB2w1MF10M7PAqI/eLc/9wxq0o5FXqlEmoAN
+         wKKgFPu9HohUyCIjvZWUfcSUIQEIiV+lOG2wsRqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
-        Yan Wang <rk.code@outlook.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 470/694] net: stmmac:fix system hang when setting up tag_8021q VLAN for DSA ports
+Subject: [PATCH 6.1 463/611] macintosh: via-pmu-led: requires ATA to be set
 Date:   Mon,  8 May 2023 11:45:05 +0200
-Message-Id: <20230508094449.035771731@linuxfoundation.org>
+Message-Id: <20230508094437.189468520@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,74 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yan Wang <rk.code@outlook.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 35226750f7ab9d49140d95bc7d38a2a9b0f4fdfc ]
+[ Upstream commit 05dce4ba125336875cd3eed3c1503fa81cd2f691 ]
 
-The system hang because of dsa_tag_8021q_port_setup()->
-				stmmac_vlan_rx_add_vid().
+LEDS_TRIGGER_DISK depends on ATA, so selecting LEDS_TRIGGER_DISK
+when ATA is not set/enabled causes a Kconfig warning:
 
-I found in stmmac_drv_probe() that cailing pm_runtime_put()
-disabled the clock.
+WARNING: unmet direct dependencies detected for LEDS_TRIGGER_DISK
+  Depends on [n]: NEW_LEDS [=y] && LEDS_TRIGGERS [=y] && ATA [=n]
+  Selected by [y]:
+  - ADB_PMU_LED_DISK [=y] && MACINTOSH_DRIVERS [=y] && ADB_PMU_LED [=y] && LEDS_CLASS [=y]
 
-First, when the kernel is compiled with CONFIG_PM=y,The stmmac's
-resume/suspend is active.
+Fix this by making ADB_PMU_LED_DISK depend on ATA.
 
-Secondly,stmmac as DSA master,the dsa_tag_8021q_port_setup() function
-will callback stmmac_vlan_rx_add_vid when DSA dirver starts. However,
-The system is hanged for the stmmac_vlan_rx_add_vid() accesses its
-registers after stmmac's clock is closed.
+Seen on both PPC32 and PPC64.
 
-I would suggest adding the pm_runtime_resume_and_get() to the
-stmmac_vlan_rx_add_vid().This guarantees that resuming clock output
-while in use.
-
-Fixes: b3dcb3127786 ("net: stmmac: correct clocks enabled in stmmac_vlan_rx_kill_vid()")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Yan Wang <rk.code@outlook.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0e865a80c135 ("macintosh: Remove dependency on IDE_GD_ATA if ADB_PMU_LED_DISK is selected")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230223014241.20878-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/macintosh/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index d7fcab0570322..f9cd063f1fe30 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6350,6 +6350,10 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
- 	bool is_double = false;
- 	int ret;
+diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+index 539a2ed4e13dc..a0e717a986dcb 100644
+--- a/drivers/macintosh/Kconfig
++++ b/drivers/macintosh/Kconfig
+@@ -86,6 +86,7 @@ config ADB_PMU_LED
  
-+	ret = pm_runtime_resume_and_get(priv->device);
-+	if (ret < 0)
-+		return ret;
-+
- 	if (be16_to_cpu(proto) == ETH_P_8021AD)
- 		is_double = true;
- 
-@@ -6357,16 +6361,18 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
- 	ret = stmmac_vlan_update(priv, is_double);
- 	if (ret) {
- 		clear_bit(vid, priv->active_vlans);
--		return ret;
-+		goto err_pm_put;
- 	}
- 
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
- 		if (ret)
--			return ret;
-+			goto err_pm_put;
- 	}
-+err_pm_put:
-+	pm_runtime_put(priv->device);
- 
--	return 0;
-+	return ret;
- }
- 
- static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
+ config ADB_PMU_LED_DISK
+ 	bool "Use front LED as DISK LED by default"
++	depends on ATA
+ 	depends on ADB_PMU_LED
+ 	depends on LEDS_CLASS
+ 	select LEDS_TRIGGERS
 -- 
 2.39.2
 
