@@ -2,98 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9E26FAD80
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 056E76FAFE8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 14:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235969AbjEHLfO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56082 "EHLO
+        id S234005AbjEHM0L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 08:26:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235948AbjEHLfB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933253DCB2;
-        Mon,  8 May 2023 04:34:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 148B363223;
-        Mon,  8 May 2023 11:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F37C4339B;
-        Mon,  8 May 2023 11:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683545646;
-        bh=ZILwEctvAK18Hu7PlI1bveD9toRdgnBJ+HsGTT+MR2o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MnYZ8L4k2KG1HX52v5lWPCh69Y33RV3dEYpmXEuQ4LnfDqEayU0bhanLQ8PpxUGCD
-         q/Br9plvVRcCRjfZwXCM9Cpm/keXJf2w/gMpQXz9x//hxkur6ZDU+g1s4f849rQNhB
-         iRSalTnIxeWRZVbulB3xm/ueWXWqH6MryB3cKiuT3211/XS6gyGOUr+Kr0HBsEAlry
-         w4Gejl3Oea3kzYNwxOufZgyDo3PXtguZyYPCJdB5v+etjdvAgjJe9dhspQ811lmFoK
-         XFgbjLC0jEpGSQhhCqGkntcgCOCCKz8fNhlxZGcnzYxmHQiHglU2uYT4v3SGihXVk1
-         ZkxzYctQHHbnQ==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1pvz8I-0002MF-La; Mon, 08 May 2023 13:34:23 +0200
-Date:   Mon, 8 May 2023 13:34:22 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pratham Pratap <quic_ppratap@quicinc.com>,
-        Jack Pham <quic_jackp@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v9] usb: dwc3: debugfs: Prevent any register access when
- devices is runtime suspended
-Message-ID: <ZFjePu8Wb6NUwCav@hovoldconsulting.com>
-References: <20230505155103.30098-1-quic_ugoswami@quicinc.com>
- <20230506013036.j533xncixkky5uf6@synopsys.com>
+        with ESMTP id S233692AbjEHM0K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 08:26:10 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6814036108
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 05:26:08 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 348CPr2P072801;
+        Mon, 8 May 2023 07:25:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1683548753;
+        bh=RDz/QjzsouRcP6eQuX4xPWSD5h7MCVPLzBoVgB22EFc=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=pgVHqFu4ySWkdsll8EM2Zyw2y1B+0BiQ0evQe/leueGvO/Wc3D2zRGUEnOMhFuNjz
+         V9gwtJMUW6zoIbH9TdZE0z8bYWxF6RqCng3cV+rQhn9Kaf6kq390H/iQvJ9td9voX+
+         SBpFaALlXwxuUMzx0Oam1anoDNralc6CgXGkDVxg=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 348CPrrM012273
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 8 May 2023 07:25:53 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 8
+ May 2023 07:25:52 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 8 May 2023 07:25:53 -0500
+Received: from [10.24.69.26] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 348CPo3L111525;
+        Mon, 8 May 2023 07:25:51 -0500
+Message-ID: <0138fb50-507d-bccf-40bb-07340f3cbb33@ti.com>
+Date:   Mon, 8 May 2023 17:55:50 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230506013036.j533xncixkky5uf6@synopsys.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 6.1 455/611] spi: bcm63xx: remove PM_SLEEP based
+ conditional compilation
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <stable@vger.kernel.org>
+CC:     <patches@lists.linux.dev>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+References: <20230508094421.513073170@linuxfoundation.org>
+ <20230508094436.944529030@linuxfoundation.org>
+From:   Dhruva Gole <d-gole@ti.com>
+In-Reply-To: <20230508094436.944529030@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, May 06, 2023 at 01:30:52AM +0000, Thinh Nguyen wrote:
+Hi Greg,
 
-Udipto, looks like you just ignored my comment about fixing up the patch
-Subject.
-
-> On Fri, May 05, 2023, Udipto Goswami wrote:
-> > When the dwc3 device is runtime suspended, various required clocks would
-> > get disabled and it is not guaranteed that access to any registers would
-> > work. Depending on the SoC glue, a register read could be as benign as
-> > returning 0 or be fatal enough to hang the system.
-> > 
-> > In order to prevent such scenarios of fatal errors, make sure to resume
-> > dwc3 then allow the function to proceed.
-> > 
-> > Fixes: 62ba09d6bb63 ("usb: dwc3: debugfs: Dump internal LSP and ep registers")
+On 08/05/23 15:14, Greg Kroah-Hartman wrote:
+> From: Dhruva Gole <d-gole@ti.com>
 > 
-> This fix goes before the above change.
+> [ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
+> 
+> Get rid of conditional compilation based on CONFIG_PM_SLEEP because
+> it may introduce build issues with certain configs where it maybe disabled
+> This is because if above config is not enabled the suspend-resume
+> functions are never part of the code but the bcm63xx_spi_pm_ops struct
+> still inits them to non-existent suspend-resume functions.
+> 
+> Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
+> 
+> Signed-off-by: Dhruva Gole <d-gole@ti.com>
+> Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   drivers/spi/spi-bcm63xx.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+> index 80fa0ef8909ca..0324ab3ce1c84 100644
+> --- a/drivers/spi/spi-bcm63xx.c
+> +++ b/drivers/spi/spi-bcm63xx.c
+> @@ -630,7 +630,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
+>   	return 0;
+>   }
+>   
+> -#ifdef CONFIG_PM_SLEEP
+>   static int bcm63xx_spi_suspend(struct device *dev)
+>   {
+>   	struct spi_master *master = dev_get_drvdata(dev);
+> @@ -657,7 +656,6 @@ static int bcm63xx_spi_resume(struct device *dev)
+>   
+>   	return 0;
+>   }
+> -#endif
 
-Yes, this clearly is not the commit that first introduced this issue.
+This patch may cause build failures with some of the configs that 
+disable CONFIG_PM I understand,
+So to fix that I had sent another patch:
+https://lore.kernel.org/all/CAOiHx==anPTqXNJNG7zap1XP2zKUp5SbaVJdyUsUvvitKRUHZw@mail.gmail.com/
 
-Either add a Fixes tag for the oldest one or add one for each commit
-that introduced debugfs attributes with this issues.
+However missed out adding the fixes tag.
 
-> This also touches on many places and is more than 100 lines. While this
-> is a fix, I'm not sure if Cc stable is needed. Perhaps others can
-> comment.
+I humbly request you to add
+https://lore.kernel.org/all/20230424102546.1604484-1-d-gole@ti.com/
 
-I believe this should be backported as it fixes a crash/hang.
+this patch to fix this patch throughout the stable fixes trees.
 
-The stable rules are flexible, but it may also be possible to break the
-patch up in pieces and add a corresponding Fixes tag.
+It can also be found on Linus' master branch here:
 
-Johan
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-bcm63xx.c?id=cc5f6fa4f6590e3b9eb8d34302ea43af4a3cfed7
+>   
+>   static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
+>   	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
+
+-- 
+Thanks and Regards,
+Dhruva Gole
