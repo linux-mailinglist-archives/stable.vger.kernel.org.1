@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C496FA95B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E6E6FA652
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235160AbjEHKuS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:50:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48090 "EHLO
+        id S234353AbjEHKSc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235225AbjEHKtn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:43 -0400
+        with ESMTP id S234406AbjEHKSO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A5029FF4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8585D040
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD79361DA2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9013C433D2;
-        Mon,  8 May 2023 10:49:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6664A61031
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE11C433EF;
+        Mon,  8 May 2023 10:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542954;
-        bh=SYSH3aCgoCAv0uUDnMzc9nKHtw5VLDWrCEOQIbmsShw=;
+        s=korg; t=1683541091;
+        bh=lGR6HAMTqbcAsG99GjOZGFXlX6sQYubRIqziW6Cw2p4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bmmtg1f1Lma6PxxuMnA+4K2H8qi81YSuCzxokZjE6mcUzMXMCmqvNIytT2mMuaTfM
-         2LWG2yBopmq+vy+sJnxJsXsY3q/QUYxMM7N5D4dN3GwXsyup5HxvJfcuaHdL1uqs/e
-         FLn8utGLIXMEUrCiQ67YeaQYpswCNm76/pbbDlCc=
+        b=v1WBPpGLuBGBHKpSfbzrCRH/kNlx5e0qMLqdv+eAcRheqs2RSytC52Lff0yI8HYY8
+         2wnuAzDvwkkZ3durOP/bfAM+Via+yLAKSHc+ZzqG7KSg3oswnWLNC8TkLRfRqEDiX3
+         nfJB71pbCJXl9TNk9uuqdeyPFAEZvY4NovcVC3is=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 603/663] hte: tegra: fix struct of_device_id build error
-Date:   Mon,  8 May 2023 11:47:09 +0200
-Message-Id: <20230508094449.132030063@linuxfoundation.org>
+        patches@lists.linux.dev, Lorenzo Stoakes <lstoakes@gmail.com>,
+        kernel test robot <oliver.sang@intel.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 588/611] mm/mempolicy: correctly update prev when policy is equal on mbind
+Date:   Mon,  8 May 2023 11:47:10 +0200
+Message-Id: <20230508094441.024445739@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 6680c835ada1b34e882d0a32612f7294c62e27e0 ]
+commit 00ca0f2e86bf40b016a646e6323a8941a09cf106 upstream.
 
-Without the extra #include, this driver produces a build failure
-in some configurations.
+The refactoring in commit f4e9e0e69468 ("mm/mempolicy: fix use-after-free
+of VMA iterator") introduces a subtle bug which arises when attempting to
+apply a new NUMA policy across a range of VMAs in mbind_range().
 
-drivers/hte/hte-tegra194-test.c:96:34: error: array type has incomplete element type 'struct of_device_id'
-   96 | static const struct of_device_id tegra_hte_test_of_match[] = {
+The refactoring passes a **prev pointer to keep track of the previous VMA
+in order to reduce duplication, and in all but one case it keeps this
+correctly updated.
 
-Fixes: 9a75a7cd03c9 ("hte: Add Tegra HTE test driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Dipen Patel <dipenp@nvidia.com>
-Signed-off-by: Dipen Patel <dipenp@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The bug arises when a VMA within the specified range has an equivalent
+policy as determined by mpol_equal() - which unlike other cases, does not
+update prev.
+
+This can result in a situation where, later in the iteration, a VMA is
+found whose policy does need to change.  At this point, vma_merge() is
+invoked with prev pointing to a VMA which is before the previous VMA.
+
+Since vma_merge() discovers the curr VMA by looking for the one
+immediately after prev, it will now be in a situation where this VMA is
+incorrect and the merge will not proceed correctly.
+
+This is checked in the VM_WARN_ON() invariant case with end >
+curr->vm_end, which, if a merge is possible, results in a warning (if
+CONFIG_DEBUG_VM is specified).
+
+I note that vma_merge() performs these invariant checks only after
+merge_prev/merge_next are checked, which is debatable as it hides this
+issue if no merge is possible even though a buggy situation has arisen.
+
+The solution is simply to update the prev pointer even when policies are
+equal.
+
+This caused a bug to arise in the 6.2.y stable tree, and this patch
+resolves this bug.
+
+Link: https://lkml.kernel.org/r/83f1d612acb519d777bebf7f3359317c4e7f4265.1682866629.git.lstoakes@gmail.com
+Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+  Link: https://lore.kernel.org/oe-lkp/202304292203.44ddeff6-oliver.sang@intel.com
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hte/hte-tegra194-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/mempolicy.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hte/hte-tegra194-test.c b/drivers/hte/hte-tegra194-test.c
-index 5d776a185bd62..ce8c44e792213 100644
---- a/drivers/hte/hte-tegra194-test.c
-+++ b/drivers/hte/hte-tegra194-test.c
-@@ -6,6 +6,7 @@
-  */
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -802,8 +802,10 @@ static int mbind_range(struct vma_iterat
+ 		vmstart = vma->vm_start;
+ 	}
  
- #include <linux/err.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/interrupt.h>
--- 
-2.39.2
-
+-	if (mpol_equal(vma_policy(vma), new_pol))
++	if (mpol_equal(vma_policy(vma), new_pol)) {
++		*prev = vma;
+ 		return 0;
++	}
+ 
+ 	pgoff = vma->vm_pgoff + ((vmstart - vma->vm_start) >> PAGE_SHIFT);
+ 	merged = vma_merge(vma->vm_mm, *prev, vmstart, vmend, vma->vm_flags,
 
 
