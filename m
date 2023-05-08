@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA606FAA3F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E976FA719
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235487AbjEHLBB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33332 "EHLO
+        id S234646AbjEHK1s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235485AbjEHLA0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C3E3156D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:12 -0700 (PDT)
+        with ESMTP id S234647AbjEHK1U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:27:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC7FE733
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:26:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F232462A06
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B97C433D2;
-        Mon,  8 May 2023 10:59:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DF3362622
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D032C4339B;
+        Mon,  8 May 2023 10:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543551;
-        bh=PFzujYNTmew6l8XeW6aDxs5fEu9CBsRl9h2VDxCe/wI=;
+        s=korg; t=1683541603;
+        bh=rcCNi2gqp2QcHJz1A//bhUUI3LRvKEssIDdo5vWt9Uw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dWOfHbD2/jYy3I+5EjbiHM/jc+3OCFZwlmMzK9WGwvgcmBV+gfiscKKJI03fdwKOo
-         5/tM80D/W4vtaCrxozccw1H8OiX61mrdDGAsvqqjVIx1hEH+up/xtzowjauxOGELsn
-         KRs4U9w2FUAcUCHqOySXunHgZyUH6eLFgwvTTvZM=
+        b=gstdF/eCCrDc6pv33DDf9f6F0APqjcVqMtUjIrw6iol//KLKogm6kg04ieFH+mptQ
+         xMRwNJOmaLIpUpi9Nj8wwgCiyOOFii6eYqAr+6Ro7N62jAxDoXyJGqmT7LyMdE2M81
+         lz8Jg5TNLLH3uagktChx9aeDWf540qAcNDivZj5o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.3 127/694] wifi: rtw89: fix potential race condition between napi_init and napi_enable
+        patches@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>,
+        Dom Cobley <popcornmix@gmail.com>,
+        Maxime Ripard <maxime@cerno.tech>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 136/663] drm/probe-helper: Cancel previous job before starting new one
 Date:   Mon,  8 May 2023 11:39:22 +0200
-Message-Id: <20230508094436.587557174@linuxfoundation.org>
+Message-Id: <20230508094432.939578812@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,131 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Dom Cobley <popcornmix@gmail.com>
 
-commit 47515664ecfbde11425dff121f298ae4499425c9 upstream.
+[ Upstream commit a8e47884f1906cd7440fafa056adc8817568e73e ]
 
-A race condition can happen if netdev is registered, but NAPI isn't
-initialized yet, and meanwhile user space starts the netdev that will
-enable NAPI. Then, it hits BUG_ON():
+Currently we schedule a call to output_poll_execute from
+drm_kms_helper_poll_enable for 10s in future. Later we try to replace
+that in drm_helper_probe_single_connector_modes with a 0s schedule with
+delayed_event set.
 
- kernel BUG at net/core/dev.c:6423!
- invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 0 PID: 417 Comm: iwd Not tainted 6.2.7-slab-dirty #3 eb0f5a8a9d91
- Hardware name: LENOVO 21DL/LNVNB161216, BIOS JPCN20WW(V1.06) 09/20/2022
- RIP: 0010:napi_enable+0x3f/0x50
- Code: 48 89 c2 48 83 e2 f6 f6 81 89 08 00 00 02 74 0d 48 83 ...
- RSP: 0018:ffffada1414f3548 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffffa01425802080 RCX: 0000000000000000
- RDX: 00000000000002ff RSI: ffffada14e50c614 RDI: ffffa01425808dc0
- RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000001 R11: 0000000000000100 R12: ffffa01425808f58
- R13: 0000000000000000 R14: ffffa01423498940 R15: 0000000000000001
- FS:  00007f5577c0a740(0000) GS:ffffa0169fc00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f5577a19972 CR3: 0000000125a7a000 CR4: 0000000000750ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  rtw89_pci_ops_start+0x1c/0x70 [rtw89_pci 6cbc75429515c181cbc386478d5cfb32ffc5a0f8]
-  rtw89_core_start+0xbe/0x160 [rtw89_core fe07ecb874820b6d778370d4acb6ef8a37847f22]
-  rtw89_ops_start+0x26/0x40 [rtw89_core fe07ecb874820b6d778370d4acb6ef8a37847f22]
-  drv_start+0x42/0x100 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
-  ieee80211_do_open+0x311/0x7d0 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
-  ieee80211_open+0x6a/0x90 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
-  __dev_open+0xe0/0x180
-  __dev_change_flags+0x1da/0x250
-  dev_change_flags+0x26/0x70
-  do_setlink+0x37c/0x12c0
-  ? ep_poll_callback+0x246/0x290
-  ? __nla_validate_parse+0x61/0xd00
-  ? __wake_up_common_lock+0x8f/0xd0
+But as there is already a job in the queue this fails, and the immediate
+job we wanted with delayed_event set doesn't occur until 10s later.
 
-To fix this, follow Jonas' suggestion to switch the order of these
-functions and move register netdev to be the last step of PCI probe.
-Also, correct the error handling of rtw89_core_register_hw().
+And that call acts as if connector state has changed, reprobing modes.
+This has a side effect of waking up a display that has been blanked.
 
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-Cc: stable@vger.kernel.org
-Reported-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Link: https://lore.kernel.org/linux-wireless/CAOiHx=n7EwK2B9CnBR07FVA=sEzFagb8TkS4XC_qBNq8OwcYUg@mail.gmail.com/T/#t
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Tested-by: Larry Finger<Larry.Finger@lwfinger.net>
-Reviewed-by: Larry Finger<Larry.Finger@lwfinger.net>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230323082839.20474-1-pkshih@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure we cancel the old job before submitting the immediate one.
+
+Fixes: 162b6a57ac50 ("drm/probe-helper: don't lose hotplug event")
+Acked-by: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+[Maxime: Switched to mod_delayed_work]
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230127154052.452524-1-maxime@cerno.tech
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |   10 +++++++---
- drivers/net/wireless/realtek/rtw89/pci.c  |   19 ++++++++++---------
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/drm_probe_helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3401,18 +3401,22 @@ static int rtw89_core_register_hw(struct
- 	ret = ieee80211_register_hw(hw);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to register hw\n");
--		goto err;
-+		goto err_free_supported_band;
+diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
+index bcd9611dabfd9..1a672747c83b8 100644
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -556,8 +556,9 @@ int drm_helper_probe_single_connector_modes(struct drm_connector *connector,
+ 		 */
+ 		dev->mode_config.delayed_event = true;
+ 		if (dev->mode_config.poll_enabled)
+-			schedule_delayed_work(&dev->mode_config.output_poll_work,
+-					      0);
++			mod_delayed_work(system_wq,
++					 &dev->mode_config.output_poll_work,
++					 0);
  	}
  
- 	ret = rtw89_regd_init(rtwdev, rtw89_regd_notifier);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to init regd\n");
--		goto err;
-+		goto err_unregister_hw;
- 	}
- 
- 	return 0;
- 
--err:
-+err_unregister_hw:
-+	ieee80211_unregister_hw(hw);
-+err_free_supported_band:
-+	rtw89_core_clr_supported_band(rtwdev);
-+
- 	return ret;
- }
- 
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -3874,25 +3874,26 @@ int rtw89_pci_probe(struct pci_dev *pdev
- 	rtw89_pci_link_cfg(rtwdev);
- 	rtw89_pci_l1ss_cfg(rtwdev);
- 
--	ret = rtw89_core_register(rtwdev);
--	if (ret) {
--		rtw89_err(rtwdev, "failed to register core\n");
--		goto err_clear_resource;
--	}
--
- 	rtw89_core_napi_init(rtwdev);
- 
- 	ret = rtw89_pci_request_irq(rtwdev, pdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to request pci irq\n");
--		goto err_unregister;
-+		goto err_deinit_napi;
-+	}
-+
-+	ret = rtw89_core_register(rtwdev);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to register core\n");
-+		goto err_free_irq;
- 	}
- 
- 	return 0;
- 
--err_unregister:
-+err_free_irq:
-+	rtw89_pci_free_irq(rtwdev, pdev);
-+err_deinit_napi:
- 	rtw89_core_napi_deinit(rtwdev);
--	rtw89_core_unregister(rtwdev);
- err_clear_resource:
- 	rtw89_pci_clear_resource(rtwdev, pdev);
- err_declaim_pci:
+ 	/* Re-enable polling in case the global poll config changed. */
+-- 
+2.39.2
+
 
 
