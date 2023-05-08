@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF93D6FA9F4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 543626FA6AB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235423AbjEHK5Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:57:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33532 "EHLO
+        id S234478AbjEHKXJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235345AbjEHK46 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D6233FCE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:56 -0700 (PDT)
+        with ESMTP id S234480AbjEHKWY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D22DC42
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:21:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EC4D61236
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B37BC433D2;
-        Mon,  8 May 2023 10:55:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14EBC62558
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C14C433EF;
+        Mon,  8 May 2023 10:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543355;
-        bh=N/R7Po8+7ZtT6AqaiPTfprOII21Br8ErrKrIfU0RbTs=;
+        s=korg; t=1683541310;
+        bh=m5WhMiYc7GfuOvIz40X5bkkWN9A1O12/0g2+pv1YyoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RvYHEV7I5tuTrcOzenYM+LPVY0dvEruRC1dRSD3e/fgw+QhXN+p6h1nxcvRwo9iaW
-         QvcdVm6lD7t5/AlHIu+SPuEM68DRcbNEvs77sArHSzbSNC+UelthUyrRapSNMwbDcF
-         pxMWdXBnN1FN9j61Ldhw7NqCxZAk0Kw9UcUPYKRA=
+        b=RYfZ6yzoMlxXfD29IvZRnnNfkC/Wmr/6v5r7KwmnDGEcTa7FpsLy4mqYkdRXgjMyI
+         +Hq6dnUbMxw5o5gm290zwurWXWxg9Evmv6vnon9QjC9T6Nr374GkcgfkbXkv8FIJOc
+         eegebHBx+LzQ5DxABAcwzwmGNSpHlzUcvkPeOanM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Matlack <dmatlack@google.com>,
-        Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.3 064/694] KVM: RISC-V: Retry fault if vma_lookup() results become invalid
-Date:   Mon,  8 May 2023 11:38:19 +0200
-Message-Id: <20230508094434.641119058@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.2 074/663] rcu: Avoid stack overflow due to __rcu_irq_enter_check_tick() being kprobe-ed
+Date:   Mon,  8 May 2023 11:38:20 +0200
+Message-Id: <20230508094430.864721190@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,87 +55,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Matlack <dmatlack@google.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-commit 2ed90cb0938a45b12eb947af062d12c7af0067b3 upstream.
+commit 7a29fb4a4771124bc61de397dbfc1554dbbcc19c upstream.
 
-Read mmu_invalidate_seq before dropping the mmap_lock so that KVM can
-detect if the results of vma_lookup() (e.g. vma_shift) become stale
-before it acquires kvm->mmu_lock. This fixes a theoretical bug where a
-VMA could be changed by userspace after vma_lookup() and before KVM
-reads the mmu_invalidate_seq, causing KVM to install page table entries
-based on a (possibly) no-longer-valid vma_shift.
+Registering a kprobe on __rcu_irq_enter_check_tick() can cause kernel
+stack overflow as shown below. This issue can be reproduced by enabling
+CONFIG_NO_HZ_FULL and booting the kernel with argument "nohz_full=",
+and then giving the following commands at the shell prompt:
 
-Re-order the MMU cache top-up to earlier in user_mem_abort() so that it
-is not done after KVM has read mmu_invalidate_seq (i.e. so as to avoid
-inducing spurious fault retries).
+  # cd /sys/kernel/tracing/
+  # echo 'p:mp1 __rcu_irq_enter_check_tick' >> kprobe_events
+  # echo 1 > events/kprobes/enable
 
-It's unlikely that any sane userspace currently modifies VMAs in such a
-way as to trigger this race. And even with directed testing I was unable
-to reproduce it. But a sufficiently motivated host userspace might be
-able to exploit this race.
+This commit therefore adds __rcu_irq_enter_check_tick() to the kprobes
+blacklist using NOKPROBE_SYMBOL().
 
-Note KVM/ARM had the same bug and was fixed in a separate, near
-identical patch (see Link).
+Insufficient stack space to handle exception!
+ESR: 0x00000000f2000004 -- BRK (AArch64)
+FAR: 0x0000ffffccf3e510
+Task stack:     [0xffff80000ad30000..0xffff80000ad38000]
+IRQ stack:      [0xffff800008050000..0xffff800008058000]
+Overflow stack: [0xffff089c36f9f310..0xffff089c36fa0310]
+CPU: 5 PID: 190 Comm: bash Not tainted 6.2.0-rc2-00320-g1f5abbd77e2c #19
+Hardware name: linux,dummy-virt (DT)
+pstate: 400003c5 (nZcv DAIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __rcu_irq_enter_check_tick+0x0/0x1b8
+lr : ct_nmi_enter+0x11c/0x138
+sp : ffff80000ad30080
+x29: ffff80000ad30080 x28: ffff089c82e20000 x27: 0000000000000000
+x26: 0000000000000000 x25: ffff089c02a8d100 x24: 0000000000000000
+x23: 00000000400003c5 x22: 0000ffffccf3e510 x21: ffff089c36fae148
+x20: ffff80000ad30120 x19: ffffa8da8fcce148 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000000000000000 x15: ffffa8da8e44ea6c
+x14: ffffa8da8e44e968 x13: ffffa8da8e03136c x12: 1fffe113804d6809
+x11: ffff6113804d6809 x10: 0000000000000a60 x9 : dfff800000000000
+x8 : ffff089c026b404f x7 : 00009eec7fb297f7 x6 : 0000000000000001
+x5 : ffff80000ad30120 x4 : dfff800000000000 x3 : ffffa8da8e3016f4
+x2 : 0000000000000003 x1 : 0000000000000000 x0 : 0000000000000000
+Kernel panic - not syncing: kernel stack overflow
+CPU: 5 PID: 190 Comm: bash Not tainted 6.2.0-rc2-00320-g1f5abbd77e2c #19
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace+0xf8/0x108
+ show_stack+0x20/0x30
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x1c/0x38
+ panic+0x214/0x404
+ add_taint+0x0/0xf8
+ panic_bad_stack+0x144/0x160
+ handle_bad_stack+0x38/0x58
+ __bad_stack+0x78/0x7c
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ [...]
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ el1_interrupt+0x28/0x60
+ el1h_64_irq_handler+0x18/0x28
+ el1h_64_irq+0x64/0x68
+ __ftrace_set_clr_event_nolock+0x98/0x198
+ __ftrace_set_clr_event+0x58/0x80
+ system_enable_write+0x144/0x178
+ vfs_write+0x174/0x738
+ ksys_write+0xd0/0x188
+ __arm64_sys_write+0x4c/0x60
+ invoke_syscall+0x64/0x180
+ el0_svc_common.constprop.0+0x84/0x160
+ do_el0_svc+0x48/0xe8
+ el0_svc+0x34/0xd0
+ el0t_64_sync_handler+0xb8/0xc0
+ el0t_64_sync+0x190/0x194
+SMP: stopping secondary CPUs
+Kernel Offset: 0x28da86000000 from 0xffff800008000000
+PHYS_OFFSET: 0xfffff76600000000
+CPU features: 0x00000,01a00100,0000421b
+Memory Limit: none
 
-Link: https://lore.kernel.org/kvm/20230313235454.2964067-1-dmatlack@google.com/
-Fixes: 9955371cc014 ("RISC-V: KVM: Implement MMU notifiers")
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Link: https://lore.kernel.org/all/20221119040049.795065-1-zhengyejian1@huawei.com/
+Fixes: aaf2bc50df1f ("rcu: Abstract out rcu_irq_enter_check_tick() from rcu_nmi_enter()")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: David Matlack <dmatlack@google.com>
-Tested-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/mmu.c |   25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ kernel/rcu/tree.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -628,6 +628,13 @@ int kvm_riscv_gstage_map(struct kvm_vcpu
- 			!(memslot->flags & KVM_MEM_READONLY)) ? true : false;
- 	unsigned long vma_pagesize, mmu_seq;
- 
-+	/* We need minimum second+third level pages */
-+	ret = kvm_mmu_topup_memory_cache(pcache, gstage_pgd_levels);
-+	if (ret) {
-+		kvm_err("Failed to topup G-stage cache\n");
-+		return ret;
-+	}
-+
- 	mmap_read_lock(current->mm);
- 
- 	vma = vma_lookup(current->mm, hva);
-@@ -648,6 +655,15 @@ int kvm_riscv_gstage_map(struct kvm_vcpu
- 	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
- 		gfn = (gpa & huge_page_mask(hstate_vma(vma))) >> PAGE_SHIFT;
- 
-+	/*
-+	 * Read mmu_invalidate_seq so that KVM can detect if the results of
-+	 * vma_lookup() or gfn_to_pfn_prot() become stale priort to acquiring
-+	 * kvm->mmu_lock.
-+	 *
-+	 * Rely on mmap_read_unlock() for an implicit smp_rmb(), which pairs
-+	 * with the smp_wmb() in kvm_mmu_invalidate_end().
-+	 */
-+	mmu_seq = kvm->mmu_invalidate_seq;
- 	mmap_read_unlock(current->mm);
- 
- 	if (vma_pagesize != PUD_SIZE &&
-@@ -657,15 +673,6 @@ int kvm_riscv_gstage_map(struct kvm_vcpu
- 		return -EFAULT;
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -659,6 +659,7 @@ void __rcu_irq_enter_check_tick(void)
  	}
+ 	raw_spin_unlock_rcu_node(rdp->mynode);
+ }
++NOKPROBE_SYMBOL(__rcu_irq_enter_check_tick);
+ #endif /* CONFIG_NO_HZ_FULL */
  
--	/* We need minimum second+third level pages */
--	ret = kvm_mmu_topup_memory_cache(pcache, gstage_pgd_levels);
--	if (ret) {
--		kvm_err("Failed to topup G-stage cache\n");
--		return ret;
--	}
--
--	mmu_seq = kvm->mmu_invalidate_seq;
--
- 	hfn = gfn_to_pfn_prot(kvm, gfn, is_write, &writable);
- 	if (hfn == KVM_PFN_ERR_HWPOISON) {
- 		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
+ /*
 
 
