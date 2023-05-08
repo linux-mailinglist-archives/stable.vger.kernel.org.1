@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59CF86FAB4C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB2DE6FA532
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233764AbjEHLLp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:11:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
+        id S234079AbjEHKG5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233805AbjEHLLg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:36 -0400
+        with ESMTP id S234069AbjEHKG4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC4534E27
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F4E2CD21
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7E0A62B7E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0470C433EF;
-        Mon,  8 May 2023 11:11:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 082876235F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C111C433D2;
+        Mon,  8 May 2023 10:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544290;
-        bh=9+jG0odN+8JQ5OxQ8hciMjlXik1mpvj1mlrXPouo5ok=;
+        s=korg; t=1683540413;
+        bh=tzobr1ZDYEVm9gsJzCQFyLdLXHukthX5IbvbvsSCVfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V0g1oUaoDGW33Kk8aFkKt2q1ORvMd0zbSmHuw9OXedsW8+dQq4HAJGuaEC3S1oFqO
-         xcoOP4RO/JEzyK5qTEh1TkpokO4s4Db+PZb62Pl6MYvEvzwM4D2/EUg8GUzlbxAOK8
-         j6u/tK1cr/aRReBVyLzDXDuXACGXRMiE5c2uRZT0=
+        b=EfJuU4YnfTsoK4OX1OXv+LTJpMqYX1iazG/yYn/AKM+tzcv6A1PKYvxomc2ZP4GNU
+         s59a0FHfIjziU6dL9bUELlA1ysCCoooJ2qUAaHbzofVmYa7vW+2TYaRMY5ZqTYuERI
+         86Bo+1x9gRGLDjS5d8ktSHMfJHBVAerwXufWmN7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 363/694] scsi: target: Pass in cmd counter to use during cmd setup
+Subject: [PATCH 6.1 356/611] wifi: iwlwifi: mvm: initialize seq variable
 Date:   Mon,  8 May 2023 11:43:18 +0200
-Message-Id: <20230508094444.489473097@linuxfoundation.org>
+Message-Id: <20230508094433.965903480@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,197 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit 8e288be8606ad87c1726618eacfb8fbd3ab4b806 ]
+[ Upstream commit 11e94d2bcd88dea5d9ce99555b6b172f5232d3e2 ]
 
-Allow target_get_sess_cmd() users to pass in the cmd counter they want to
-use. Right now we pass in the session's cmd counter but in a subsequent
-commit iSCSI will switch from per session to per conn.
+Clang static analysis reports this issue
+d3.c:567:22: warning: The left operand of '>' is
+  a garbage value
+  if (seq.tkip.iv32 > cur_rx_iv32)
+      ~~~~~~~~~~~~~ ^
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-4-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 395cee83d02d ("scsi: target: iscsit: Stop/wait on cmds during conn close")
+seq is never initialized. Call ieee80211_get_key_rx_seq() to
+initialize seq.
+
+Fixes: 0419e5e672d6 ("iwlwifi: mvm: d3: separate TKIP data from key iteration")
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.6dd372f84f93.If1f708c90e6424a935b4eba3917dfb7582e0dd0a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c    | 10 +++++----
- drivers/target/target_core_transport.c | 28 ++++++++++++--------------
- drivers/target/target_core_xcopy.c     |  8 ++++----
- drivers/usb/gadget/function/f_tcm.c    |  4 ++--
- include/target/target_core_fabric.h    |  8 +++++---
- 5 files changed, 30 insertions(+), 28 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index baf4da7bb3b4e..87927a36f90df 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -1190,9 +1190,10 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 	 * Initialize struct se_cmd descriptor from target_core_mod infrastructure
- 	 */
- 	__target_init_cmd(&cmd->se_cmd, &iscsi_ops,
--			 conn->sess->se_sess, be32_to_cpu(hdr->data_length),
--			 cmd->data_direction, sam_task_attr,
--			 cmd->sense_buffer + 2, scsilun_to_int(&hdr->lun));
-+			  conn->sess->se_sess, be32_to_cpu(hdr->data_length),
-+			  cmd->data_direction, sam_task_attr,
-+			  cmd->sense_buffer + 2, scsilun_to_int(&hdr->lun),
-+			  conn->sess->se_sess->cmd_cnt);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 919b1f478b4ce..bbdda3e1ff3fc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -563,6 +563,7 @@ static void iwl_mvm_wowlan_get_tkip_data(struct ieee80211_hw *hw,
+ 		}
  
- 	pr_debug("Got SCSI Command, ITT: 0x%08x, CmdSN: 0x%08x,"
- 		" ExpXferLen: %u, Length: %u, CID: %hu\n", hdr->itt,
-@@ -2055,7 +2056,8 @@ iscsit_handle_task_mgt_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 	__target_init_cmd(&cmd->se_cmd, &iscsi_ops,
- 			  conn->sess->se_sess, 0, DMA_NONE,
- 			  TCM_SIMPLE_TAG, cmd->sense_buffer + 2,
--			  scsilun_to_int(&hdr->lun));
-+			  scsilun_to_int(&hdr->lun),
-+			  conn->sess->se_sess->cmd_cnt);
- 
- 	target_get_sess_cmd(&cmd->se_cmd, true);
- 
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 60647a49a1d31..c395606ab1a9c 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -1441,14 +1441,12 @@ target_cmd_size_check(struct se_cmd *cmd, unsigned int size)
-  *
-  * Preserves the value of @cmd->tag.
-  */
--void __target_init_cmd(
--	struct se_cmd *cmd,
--	const struct target_core_fabric_ops *tfo,
--	struct se_session *se_sess,
--	u32 data_length,
--	int data_direction,
--	int task_attr,
--	unsigned char *sense_buffer, u64 unpacked_lun)
-+void __target_init_cmd(struct se_cmd *cmd,
-+		       const struct target_core_fabric_ops *tfo,
-+		       struct se_session *se_sess, u32 data_length,
-+		       int data_direction, int task_attr,
-+		       unsigned char *sense_buffer, u64 unpacked_lun,
-+		       struct target_cmd_counter *cmd_cnt)
- {
- 	INIT_LIST_HEAD(&cmd->se_delayed_node);
- 	INIT_LIST_HEAD(&cmd->se_qf_node);
-@@ -1468,6 +1466,7 @@ void __target_init_cmd(
- 	cmd->sam_task_attr = task_attr;
- 	cmd->sense_buffer = sense_buffer;
- 	cmd->orig_fe_lun = unpacked_lun;
-+	cmd->cmd_cnt = cmd_cnt;
- 
- 	if (!(cmd->se_cmd_flags & SCF_USE_CPUID))
- 		cmd->cpuid = raw_smp_processor_id();
-@@ -1687,7 +1686,8 @@ int target_init_cmd(struct se_cmd *se_cmd, struct se_session *se_sess,
- 	 * target_core_fabric_ops->queue_status() callback
- 	 */
- 	__target_init_cmd(se_cmd, se_tpg->se_tpg_tfo, se_sess, data_length,
--			  data_dir, task_attr, sense, unpacked_lun);
-+			  data_dir, task_attr, sense, unpacked_lun,
-+			  se_sess->cmd_cnt);
- 
- 	/*
- 	 * Obtain struct se_cmd->cmd_kref reference. A second kref_get here is
-@@ -1982,7 +1982,8 @@ int target_submit_tmr(struct se_cmd *se_cmd, struct se_session *se_sess,
- 	BUG_ON(!se_tpg);
- 
- 	__target_init_cmd(se_cmd, se_tpg->se_tpg_tfo, se_sess,
--			  0, DMA_NONE, TCM_SIMPLE_TAG, sense, unpacked_lun);
-+			  0, DMA_NONE, TCM_SIMPLE_TAG, sense, unpacked_lun,
-+			  se_sess->cmd_cnt);
- 	/*
- 	 * FIXME: Currently expect caller to handle se_cmd->se_tmr_req
- 	 * allocation failure.
-@@ -2986,7 +2987,6 @@ EXPORT_SYMBOL(transport_generic_free_cmd);
-  */
- int target_get_sess_cmd(struct se_cmd *se_cmd, bool ack_kref)
- {
--	struct se_session *se_sess = se_cmd->se_sess;
- 	int ret = 0;
- 
- 	/*
-@@ -3003,11 +3003,9 @@ int target_get_sess_cmd(struct se_cmd *se_cmd, bool ack_kref)
- 	 * Users like xcopy do not use counters since they never do a stop
- 	 * and wait.
- 	 */
--	if (se_sess->cmd_cnt) {
--		if (!percpu_ref_tryget_live(&se_sess->cmd_cnt->refcnt))
-+	if (se_cmd->cmd_cnt) {
-+		if (!percpu_ref_tryget_live(&se_cmd->cmd_cnt->refcnt))
- 			ret = -ESHUTDOWN;
--		else
--			se_cmd->cmd_cnt = se_sess->cmd_cnt;
- 	}
- 	if (ret && ack_kref)
- 		target_put_sess_cmd(se_cmd);
-diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
-index 49a83500c8b75..91ed015b588c6 100644
---- a/drivers/target/target_core_xcopy.c
-+++ b/drivers/target/target_core_xcopy.c
-@@ -591,8 +591,8 @@ static int target_xcopy_read_source(
- 		(unsigned long long)src_lba, transfer_length_block, src_bytes);
- 
- 	__target_init_cmd(se_cmd, &xcopy_pt_tfo, &xcopy_pt_sess, src_bytes,
--			  DMA_FROM_DEVICE, 0, &xpt_cmd.sense_buffer[0], 0);
--
-+			  DMA_FROM_DEVICE, 0, &xpt_cmd.sense_buffer[0], 0,
-+			  NULL);
- 	rc = target_xcopy_setup_pt_cmd(&xpt_cmd, xop, src_dev, &cdb[0],
- 				remote_port);
- 	if (rc < 0) {
-@@ -636,8 +636,8 @@ static int target_xcopy_write_destination(
- 		(unsigned long long)dst_lba, transfer_length_block, dst_bytes);
- 
- 	__target_init_cmd(se_cmd, &xcopy_pt_tfo, &xcopy_pt_sess, dst_bytes,
--			  DMA_TO_DEVICE, 0, &xpt_cmd.sense_buffer[0], 0);
--
-+			  DMA_TO_DEVICE, 0, &xpt_cmd.sense_buffer[0], 0,
-+			  NULL);
- 	rc = target_xcopy_setup_pt_cmd(&xpt_cmd, xop, dst_dev, &cdb[0],
- 				remote_port);
- 	if (rc < 0) {
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index 658e2e21fdd0d..c21acebe8aae5 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1054,7 +1054,7 @@ static void usbg_cmd_work(struct work_struct *work)
- 				  tv_nexus->tvn_se_sess->se_tpg->se_tpg_tfo,
- 				  tv_nexus->tvn_se_sess, cmd->data_len, DMA_NONE,
- 				  cmd->prio_attr, cmd->sense_iu.sense,
--				  cmd->unpacked_lun);
-+				  cmd->unpacked_lun, NULL);
- 		goto out;
- 	}
- 
-@@ -1183,7 +1183,7 @@ static void bot_cmd_work(struct work_struct *work)
- 				  tv_nexus->tvn_se_sess->se_tpg->se_tpg_tfo,
- 				  tv_nexus->tvn_se_sess, cmd->data_len, DMA_NONE,
- 				  cmd->prio_attr, cmd->sense_iu.sense,
--				  cmd->unpacked_lun);
-+				  cmd->unpacked_lun, NULL);
- 		goto out;
- 	}
- 
-diff --git a/include/target/target_core_fabric.h b/include/target/target_core_fabric.h
-index 65527174b8bc6..d507e7885f17f 100644
---- a/include/target/target_core_fabric.h
-+++ b/include/target/target_core_fabric.h
-@@ -151,9 +151,11 @@ void	transport_deregister_session_configfs(struct se_session *);
- void	transport_deregister_session(struct se_session *);
- 
- 
--void	__target_init_cmd(struct se_cmd *,
--		const struct target_core_fabric_ops *,
--		struct se_session *, u32, int, int, unsigned char *, u64);
-+void	__target_init_cmd(struct se_cmd *cmd,
-+		const struct target_core_fabric_ops *tfo,
-+		struct se_session *sess, u32 data_length, int data_direction,
-+		int task_attr, unsigned char *sense_buffer, u64 unpacked_lun,
-+		struct target_cmd_counter *cmd_cnt);
- int	target_init_cmd(struct se_cmd *se_cmd, struct se_session *se_sess,
- 		unsigned char *sense, u64 unpacked_lun, u32 data_length,
- 		int task_attr, int data_dir, int flags);
+ 		for (i = 0; i < IWL_NUM_RSC; i++) {
++			ieee80211_get_key_rx_seq(key, i, &seq);
+ 			/* wrapping isn't allowed, AP must rekey */
+ 			if (seq.tkip.iv32 > cur_rx_iv32)
+ 				cur_rx_iv32 = seq.tkip.iv32;
 -- 
 2.39.2
 
