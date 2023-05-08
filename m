@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FF106FACB5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691736FACC3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235824AbjEHL1T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:27:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
+        id S233985AbjEHL2H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235756AbjEHL1H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C97C32351
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:54 -0700 (PDT)
+        with ESMTP id S235830AbjEHL1m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69FD137C42
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8E8E62DFF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8761C433EF;
-        Mon,  8 May 2023 11:26:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B392562E5A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A70C433EF;
+        Mon,  8 May 2023 11:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545213;
-        bh=7X98Q68tdnKC7dbExgak/ZRmpRf41AcaFLYx8neyNDA=;
+        s=korg; t=1683545246;
+        bh=4vR5/tlJdEYQUBQJYaJA1qYWOrxXxZyIjX1fCtvUiwg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o31T9IQm2fXB5GTLEO07dbt4NNubZktS2n7l7c5JTnv8+VYeClZirDrNWqNTZQbQc
-         rA3ktvugeTlqX5l0CUJJHnK0PIG5oueG/LQYYuPj7oZvDOtPAyM0FaPguci5FBLHXH
-         9jMsZmGaAHZphpqvZh8lrfSJoSZBAgQC7xHgHFVI=
+        b=Kil59Kl/UIGHyl+uh9TgYykNP01ISr/E2/JHw2rDCWxUcdLwvO97ru1XnFfVi00GS
+         7zlbL+LbUOOebRfCxAfR45S12SPGXo5sJ/u17i6R8IFNOaJrWhliM6yTE46G3+43L9
+         0fSnj7kqJlpykzmqmSGPF20hRuHt86qp8GKxpRTo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,9 +39,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Alexandre Mergnat <amergnat@baylibre.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 644/694] pwm: mtk-disp: Disable shadow registers before setting backlight values
-Date:   Mon,  8 May 2023 11:47:59 +0200
-Message-Id: <20230508094456.705105690@linuxfoundation.org>
+Subject: [PATCH 6.3 645/694] pwm: mtk-disp: Configure double buffering before reading in .get_state()
+Date:   Mon,  8 May 2023 11:48:00 +0200
+Message-Id: <20230508094456.754408197@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -49,9 +49,9 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,13 +61,33 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 36dd7f530ae7d9ce9e853ffb8aa337de65c6600b ]
+[ Upstream commit b16c310115f2084b8826a35b77ef42bab6786d9f ]
 
-If shadow registers usage is not desired, disable that before performing
-any write to CON0/1 registers in the .apply() callback, otherwise we may
-lose clkdiv or period/width updates.
+The DISP_PWM controller's default behavior is to always use register
+double buffering: all reads/writes are then performed on shadow
+registers instead of working registers and this becomes an issue
+in case our chosen configuration in Linux is different from the
+default (or from the one that was pre-applied by the bootloader).
 
-Fixes: cd4b45ac449a ("pwm: Add MediaTek MT2701 display PWM driver support")
+An example of broken behavior is when the controller is configured
+to use shadow registers, but this driver wants to configure it
+otherwise: what happens is that the .get_state() callback is called
+right after registering the pwmchip and checks whether the PWM is
+enabled by reading the DISP_PWM_EN register;
+At this point, if shadow registers are enabled but their content
+was not committed before booting Linux, we are *not* reading the
+current PWM enablement status, leading to the kernel knowing that
+the hardware is actually enabled when, in reality, it's not.
+
+The aforementioned issue emerged since this driver was fixed with
+commit 0b5ef3429d8f ("pwm: mtk-disp: Fix the parameters calculated
+by the enabled flag of disp_pwm") making it to read the enablement
+status from the right register.
+
+Configure the controller in the .get_state() callback to avoid
+this desync issue and get the backlight properly working again.
+
+Fixes: 3f2b16734914 ("pwm: mtk-disp: Implement atomic API .get_state()")
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
@@ -76,51 +96,30 @@ Tested-by: Alexandre Mergnat <amergnat@baylibre.com>
 Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mtk-disp.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/pwm/pwm-mtk-disp.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
-index 692a06121b286..82b430d881a20 100644
+index 82b430d881a20..fe9593f968eeb 100644
 --- a/drivers/pwm/pwm-mtk-disp.c
 +++ b/drivers/pwm/pwm-mtk-disp.c
-@@ -138,6 +138,19 @@ static int mtk_disp_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	high_width = mul_u64_u64_div_u64(state->duty_cycle, rate, div);
- 	value = period | (high_width << PWM_HIGH_WIDTH_SHIFT);
+@@ -196,6 +196,16 @@ static int mtk_disp_pwm_get_state(struct pwm_chip *chip,
+ 		return err;
+ 	}
  
-+	if (mdp->data->bls_debug && !mdp->data->has_commit) {
-+		/*
-+		 * For MT2701, disable double buffer before writing register
-+		 * and select manual mode and use PWM_PERIOD/PWM_HIGH_WIDTH.
-+		 */
++	/*
++	 * Apply DISP_PWM_DEBUG settings to choose whether to enable or disable
++	 * registers double buffer and manual commit to working register before
++	 * performing any read/write operation
++	 */
++	if (mdp->data->bls_debug)
 +		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
 +					 mdp->data->bls_debug_mask,
 +					 mdp->data->bls_debug_mask);
-+		mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
-+					 mdp->data->con0_sel,
-+					 mdp->data->con0_sel);
-+	}
 +
- 	mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
- 				 PWM_CLKDIV_MASK,
- 				 clk_div << PWM_CLKDIV_SHIFT);
-@@ -152,17 +165,6 @@ static int mtk_disp_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 		mtk_disp_pwm_update_bits(mdp, mdp->data->commit,
- 					 mdp->data->commit_mask,
- 					 0x0);
--	} else {
--		/*
--		 * For MT2701, disable double buffer before writing register
--		 * and select manual mode and use PWM_PERIOD/PWM_HIGH_WIDTH.
--		 */
--		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
--					 mdp->data->bls_debug_mask,
--					 mdp->data->bls_debug_mask);
--		mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
--					 mdp->data->con0_sel,
--					 mdp->data->con0_sel);
- 	}
- 
- 	mtk_disp_pwm_update_bits(mdp, DISP_PWM_EN, mdp->data->enable_mask,
+ 	rate = clk_get_rate(mdp->clk_main);
+ 	con0 = readl(mdp->base + mdp->data->con0);
+ 	con1 = readl(mdp->base + mdp->data->con1);
 -- 
 2.39.2
 
