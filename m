@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2795D6FA3E4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C54786FA3E6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233191AbjEHJwy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:52:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49330 "EHLO
+        id S233750AbjEHJw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:52:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233558AbjEHJwo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:52:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5583724521
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:52:42 -0700 (PDT)
+        with ESMTP id S233735AbjEHJwq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:52:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E43AE23A37
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:52:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB3B0621FE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDF4C433A0;
-        Mon,  8 May 2023 09:52:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B6DA614B1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:52:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7A3C433EF;
+        Mon,  8 May 2023 09:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539561;
-        bh=GDEKD06hoCmQmrfYT/KEdY/P49lDm8Y3saco0Dww344=;
+        s=korg; t=1683539563;
+        bh=5Nd3KwLurXLJ3q+bnw86FQWMK0Oauaq5h1mkvU4l7Kk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QbqDsHbgLXX4J6S5fZThVlnYKiiD5v05S72yLi0pdKlYwf+ufJe7/8FSqSbyTPhwp
-         qUWQfmaoWDnWH6uZ1oGJbBkUzIGkPABJtUtUmCGJHDhbvX5aOP+KUmAeC6Ki6fIj00
-         R+K95vvu1ytgaIs8Vwb5Ue1qhab6xwdJkFZ04FiI=
+        b=jkSzYE8BRbjTzBcKLoHhG3PhEtVmGbU0bCHEu0Cc9YE38Y5ut6U2kM0qT3o9OU+fs
+         32dhnivjQapSvlfqzWNgYRcYsNKZbtyYnzRUVUQb0YXtVxhbJtN9kLVgax0KsXe2Gm
+         XDV7qc2IKcjCAV2VrpU5zUaGOLCBbiglyX9lZK1k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Coverstone <brian@mainsequence.net>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.1 062/611] wifi: mt76: add missing locking to protect against concurrent rx/status calls
-Date:   Mon,  8 May 2023 11:38:24 +0200
-Message-Id: <20230508094423.990097534@linuxfoundation.org>
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Subject: [PATCH 6.1 063/611] pwm: meson: Fix axg ao mux parents
+Date:   Mon,  8 May 2023 11:38:25 +0200
+Message-Id: <20230508094424.025450444@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -43,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,104 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 5b8ccdfb943f6a03c676d2ea816dd38c149e920b upstream.
+commit eb411c0cf59ae6344b34bc6f0d298a22b300627e upstream.
 
-According to the documentation, ieee80211_rx_list must not run concurrently
-with ieee80211_tx_status (or its variants).
+This fix is basically the same as 9bce02ef0dfa ("pwm: meson: Fix the
+G12A AO clock parents order"). Vendor driver referenced there has
+xtal as first parent also for axg ao. In addition fix the name
+of the aoclk81 clock. Apparently name aoclk81 as used by the vendor
+driver was changed when mainlining the axg clock driver.
 
+Fixes: bccaa3f917c9 ("pwm: meson: Add clock source configuration for Meson-AXG")
 Cc: stable@vger.kernel.org
-Fixes: 88046b2c9f6d ("mt76: add support for reporting tx status with skb")
-Reported-by: Brian Coverstone <brian@mainsequence.net>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c         |    2 ++
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c  |    5 ++++-
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c  |    5 ++++-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c |    5 ++++-
- drivers/net/wireless/mediatek/mt76/tx.c          |    4 ++++
- 5 files changed, 18 insertions(+), 3 deletions(-)
+ drivers/pwm/pwm-meson.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -436,7 +436,9 @@ free:
- free_skb:
- 	status.skb = tx_info.skb;
- 	hw = mt76_tx_status_get_hw(dev, tx_info.skb);
-+	spin_lock_bh(&dev->rx_lock);
- 	ieee80211_tx_status_ext(hw, &status);
-+	spin_unlock_bh(&dev->rx_lock);
+--- a/drivers/pwm/pwm-meson.c
++++ b/drivers/pwm/pwm-meson.c
+@@ -418,7 +418,7 @@ static const struct meson_pwm_data pwm_a
+ };
  
- 	return ret;
- }
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1279,8 +1279,11 @@ void mt7603_mac_add_txs(struct mt7603_de
- 	if (wcidx >= MT7603_WTBL_STA || !sta)
- 		goto out;
+ static const char * const pwm_axg_ao_parent_names[] = {
+-	"aoclk81", "xtal", "fclk_div4", "fclk_div5"
++	"xtal", "axg_ao_clk81", "fclk_div4", "fclk_div5"
+ };
  
--	if (mt7603_fill_txs(dev, msta, &info, txs_data))
-+	if (mt7603_fill_txs(dev, msta, &info, txs_data)) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_noskb(mt76_hw(dev), sta, &info);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- out:
- 	rcu_read_unlock();
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1517,8 +1517,11 @@ static void mt7615_mac_add_txs(struct mt
- 	if (wcid->phy_idx && dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
- 
--	if (mt7615_fill_txs(dev, msta, &info, txs_data))
-+	if (mt7615_fill_txs(dev, msta, &info, txs_data)) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_noskb(mphy->hw, sta, &info);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- out:
- 	rcu_read_unlock();
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -631,8 +631,11 @@ void mt76x02_send_tx_status(struct mt76x
- 
- 	mt76_tx_status_unlock(mdev, &list);
- 
--	if (!status.skb)
-+	if (!status.skb) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_ext(mt76_hw(dev), &status);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- 	if (!len)
- 		goto out;
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -77,7 +77,9 @@ mt76_tx_status_unlock(struct mt76_dev *d
- 		}
- 
- 		hw = mt76_tx_status_get_hw(dev, skb);
-+		spin_lock_bh(&dev->rx_lock);
- 		ieee80211_tx_status_ext(hw, &status);
-+		spin_unlock_bh(&dev->rx_lock);
- 	}
- 	rcu_read_unlock();
- }
-@@ -263,7 +265,9 @@ void __mt76_tx_complete_skb(struct mt76_
- 	if (cb->pktid < MT_PACKET_ID_FIRST) {
- 		hw = mt76_tx_status_get_hw(dev, skb);
- 		status.sta = wcid_to_sta(wcid);
-+		spin_lock_bh(&dev->rx_lock);
- 		ieee80211_tx_status_ext(hw, &status);
-+		spin_unlock_bh(&dev->rx_lock);
- 		goto out;
- 	}
- 
+ static const struct meson_pwm_data pwm_axg_ao_data = {
 
 
