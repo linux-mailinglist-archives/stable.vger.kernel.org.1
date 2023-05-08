@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5003B6FA98B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E47456FACA7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235127AbjEHKwp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55174 "EHLO
+        id S235708AbjEHL0t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235155AbjEHKwX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:23 -0400
+        with ESMTP id S235712AbjEHL0l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFAD2A85B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:51:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49463B7BA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06267628C8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D986C433D2;
-        Mon,  8 May 2023 10:51:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B19262DC5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54984C433D2;
+        Mon,  8 May 2023 11:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543109;
-        bh=LG06MaQ6uD4RZMKjqZxUXr5sq9BT3UZfbd8ZI6E8KDw=;
+        s=korg; t=1683545179;
+        bh=ylIFTGy/IhV5JExQEPmoZMDFARD2nejl612OaW74Qpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gHNLTG8GntH/PV3Y1lP0Dt00h7jhSirhow9BYHELI5SB5XQPoaZLGhXZCDDrNlk1T
-         BU8z+dhgGgTGYJNixKQgiaRx3Nhf0cAz9j0756/8d4rDmjbFxLRyMVebxXYzHh+34+
-         CqkZf3IhXTJN2WB4qeBpyZGhbtRED8uqMVletlew=
+        b=l21xrrSg6nWAFkqPg3iQuMJIlm4+8y4+oA42gd5sLpEEfYsy5tyTdPvXswIzhANp0
+         JKhWZDQvS6jk93qIlZdP8TAodZLJ3NJDmx0R42V8UthIFEKk5AVhh7NAonerhyczyA
+         gXODJAgR8kqX/pdDXIzHp+DDEdhklSlflmxjgzSk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.2 652/663] cifs: fix potential use-after-free bugs in TCP_Server_Info::hostname
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 643/694] leds: tca6507: Fix error handling of using fwnode_property_read_string
 Date:   Mon,  8 May 2023 11:47:58 +0200
-Message-Id: <20230508094451.274456352@linuxfoundation.org>
+Message-Id: <20230508094456.665701909@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,153 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-commit 90c49fce1c43e1cc152695e20363ff5087897c09 upstream.
+[ Upstream commit c1087c29e96a48e9080377e168d35dcb52fb068b ]
 
-TCP_Server_Info::hostname may be updated once or many times during
-reconnect, so protect its access outside reconnect path as well and
-then prevent any potential use-after-free bugs.
+Commit 96f524105b9c ("leds: tca6507: use fwnode API instead of OF")
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+changed to fwnode API but did not take into account that a missing property
+"linux,default-trigger" now seems to return an error and as a side effect
+sets value to -1. This seems to be different from of_get_property() which
+always returned NULL in any case of error.
+
+Neglecting this side-effect leads to
+
+[   11.201965] Unable to handle kernel paging request at virtual address ffffffff when read
+
+in the strcmp() of led_trigger_set_default() if there is no led-trigger
+defined in the DTS.
+
+I don't know if this was recently introduced somewhere in the fwnode lib
+or if the effect was missed in initial testing. Anyways it seems to be a
+bug to ignore the error return value of an optional value here in the
+driver.
+
+Fixes: 96f524105b9c ("leds: tca6507: use fwnode API instead of OF")
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/cbae7617db83113de726fcc423a805ebaa1bfca6.1680433978.git.hns@goldelico.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_debug.c |    7 ++++++-
- fs/cifs/cifs_debug.h |   12 ++++++------
- fs/cifs/connect.c    |   10 +++++++---
- fs/cifs/sess.c       |    7 ++++---
- 4 files changed, 23 insertions(+), 13 deletions(-)
+ drivers/leds/leds-tca6507.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -279,8 +279,10 @@ static int cifs_debug_data_proc_show(str
- 		seq_printf(m, "\n%d) ConnectionId: 0x%llx ",
- 			c, server->conn_id);
+diff --git a/drivers/leds/leds-tca6507.c b/drivers/leds/leds-tca6507.c
+index 07dd12686a696..634cabd5bb796 100644
+--- a/drivers/leds/leds-tca6507.c
++++ b/drivers/leds/leds-tca6507.c
+@@ -691,8 +691,9 @@ tca6507_led_dt_init(struct device *dev)
+ 		if (fwnode_property_read_string(child, "label", &led.name))
+ 			led.name = fwnode_get_name(child);
  
-+		spin_lock(&server->srv_lock);
- 		if (server->hostname)
- 			seq_printf(m, "Hostname: %s ", server->hostname);
-+		spin_unlock(&server->srv_lock);
- #ifdef CONFIG_CIFS_SMB_DIRECT
- 		if (!server->rdma)
- 			goto skip_rdma;
-@@ -620,10 +622,13 @@ static int cifs_stats_proc_show(struct s
- 				server->fastest_cmd[j],
- 				server->slowest_cmd[j]);
- 		for (j = 0; j < NUMBER_OF_SMB2_COMMANDS; j++)
--			if (atomic_read(&server->smb2slowcmd[j]))
-+			if (atomic_read(&server->smb2slowcmd[j])) {
-+				spin_lock(&server->srv_lock);
- 				seq_printf(m, "  %d slow responses from %s for command %d\n",
- 					atomic_read(&server->smb2slowcmd[j]),
- 					server->hostname, j);
-+				spin_unlock(&server->srv_lock);
-+			}
- #endif /* STATS2 */
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
- 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
---- a/fs/cifs/cifs_debug.h
-+++ b/fs/cifs/cifs_debug.h
-@@ -81,19 +81,19 @@ do {									\
+-		fwnode_property_read_string(child, "linux,default-trigger",
+-					    &led.default_trigger);
++		if (fwnode_property_read_string(child, "linux,default-trigger",
++						&led.default_trigger))
++			led.default_trigger = NULL;
  
- #define cifs_server_dbg_func(ratefunc, type, fmt, ...)			\
- do {									\
--	const char *sn = "";						\
--	if (server && server->hostname)					\
--		sn = server->hostname;					\
-+	spin_lock(&server->srv_lock);					\
- 	if ((type) & FYI && cifsFYI & CIFS_INFO) {			\
- 		pr_debug_ ## ratefunc("%s: \\\\%s " fmt,		\
--				      __FILE__, sn, ##__VA_ARGS__);	\
-+				      __FILE__, server->hostname,	\
-+				      ##__VA_ARGS__);			\
- 	} else if ((type) & VFS) {					\
- 		pr_err_ ## ratefunc("VFS: \\\\%s " fmt,			\
--				    sn, ##__VA_ARGS__);			\
-+				    server->hostname, ##__VA_ARGS__);	\
- 	} else if ((type) & NOISY && (NOISY != 0)) {			\
- 		pr_debug_ ## ratefunc("\\\\%s " fmt,			\
--				      sn, ##__VA_ARGS__);		\
-+				      server->hostname, ##__VA_ARGS__);	\
- 	}								\
-+	spin_unlock(&server->srv_lock);					\
- } while (0)
- 
- #define cifs_server_dbg(type, fmt, ...)					\
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -435,8 +435,10 @@ static int __reconnect_target_unlocked(s
- 		if (server->hostname != target) {
- 			hostname = extract_hostname(target);
- 			if (!IS_ERR(hostname)) {
-+				spin_lock(&server->srv_lock);
- 				kfree(server->hostname);
- 				server->hostname = hostname;
-+				spin_unlock(&server->srv_lock);
- 			} else {
- 				cifs_dbg(FYI, "%s: couldn't extract hostname or address from dfs target: %ld\n",
- 					 __func__, PTR_ERR(hostname));
-@@ -593,9 +595,7 @@ cifs_echo_request(struct work_struct *wo
- 		goto requeue_echo;
- 
- 	rc = server->ops->echo ? server->ops->echo(server) : -ENOSYS;
--	if (rc)
--		cifs_dbg(FYI, "Unable to send echo request to server: %s\n",
--			 server->hostname);
-+	cifs_server_dbg(FYI, "send echo request: rc = %d\n", rc);
- 
- 	/* Check witness registrations */
- 	cifs_swn_check();
-@@ -1445,6 +1445,8 @@ static int match_server(struct TCP_Serve
- {
- 	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
- 
-+	lockdep_assert_held(&server->srv_lock);
-+
- 	if (ctx->nosharesock)
- 		return 0;
- 
-@@ -1859,7 +1861,9 @@ cifs_setup_ipc(struct cifs_ses *ses, str
- 	if (tcon == NULL)
- 		return -ENOMEM;
- 
-+	spin_lock(&server->srv_lock);
- 	scnprintf(unc, sizeof(unc), "\\\\%s\\IPC$", server->hostname);
-+	spin_unlock(&server->srv_lock);
- 
- 	xid = get_xid();
- 	tcon->ses = ses;
---- a/fs/cifs/sess.c
-+++ b/fs/cifs/sess.c
-@@ -159,6 +159,7 @@ cifs_chan_is_iface_active(struct cifs_se
- /* returns number of channels added */
- int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- {
-+	struct TCP_Server_Info *server = ses->server;
- 	int old_chan_count, new_chan_count;
- 	int left;
- 	int rc = 0;
-@@ -178,16 +179,16 @@ int cifs_try_adding_channels(struct cifs
- 		return 0;
- 	}
- 
--	if (ses->server->dialect < SMB30_PROT_ID) {
-+	if (server->dialect < SMB30_PROT_ID) {
- 		spin_unlock(&ses->chan_lock);
- 		cifs_dbg(VFS, "multichannel is not supported on this protocol version, use 3.0 or above\n");
- 		return 0;
- 	}
- 
--	if (!(ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+	if (!(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
- 		ses->chan_max = 1;
- 		spin_unlock(&ses->chan_lock);
--		cifs_dbg(VFS, "server %s does not support multichannel\n", ses->server->hostname);
-+		cifs_server_dbg(VFS, "no multichannel support\n");
- 		return 0;
- 	}
- 	spin_unlock(&ses->chan_lock);
+ 		led.flags = 0;
+ 		if (fwnode_device_is_compatible(child, "gpio"))
+-- 
+2.39.2
+
 
 
