@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C24E6FA81A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 867FE6FA531
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234805AbjEHKhh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:37:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39986 "EHLO
+        id S234061AbjEHKGy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234836AbjEHKhW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:37:22 -0400
+        with ESMTP id S234063AbjEHKGx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F6822F7D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:37:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20911989
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C768627AF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:37:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CE6C433EF;
-        Mon,  8 May 2023 10:37:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68EC662350
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1CEC433D2;
+        Mon,  8 May 2023 10:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542239;
-        bh=Mjst7bmZpPUiUZSg5yWZVfjDObcqJtMSa9f60EMADcs=;
+        s=korg; t=1683540410;
+        bh=rYiCoB+DKt+7REm0/FM7ikuKnN3Sy5KsDk4tv4VrQ/4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f7uQJ74zUNZluZJU5rbJoZh0+KK94XKkkMWHHDDqvyL20KeSvjpk/LvOwmOv5kxFC
-         /QTfVsyVvPcDmazN9LZs19JWsQn1FqViBHXcqutABlL2VBh2ZnMRy6GOnRoMgv/2y6
-         ToOCbW+ID8XJO+udfrBOZJgi6KdB3ns0iq3BxbBE=
+        b=Yivo1bPS3xJdv6ak6E+gsIWYa1N8CTGVfDPxTQRrCFaKvQoyMWlclDe6XbmsSijf1
+         7N6i35ZNZv6oYawahbS9WYQ+2NbENfyks/9brg15mOnAPka16Ak2AHcH3QV7wj7fc+
+         Uq3ER56bhUzn0BHo2Q3q7E8dveVDC9AEcMqswms8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daeho Jeong <daehojeong@google.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Daniel Gabay <daniel.gabay@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 371/663] f2fs: fix to check return value of inc_valid_block_count()
+Subject: [PATCH 6.1 355/611] wifi: iwlwifi: yoyo: Fix possible division by zero
 Date:   Mon,  8 May 2023 11:43:17 +0200
-Message-Id: <20230508094440.165160253@linuxfoundation.org>
+Message-Id: <20230508094433.936113178@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 935fc6fa6466cf18dd72dd1518ebc7bfc4cd58a4 ]
+[ Upstream commit ba30415118eee374a08b39a0460a1d1e52c24a25 ]
 
-In __replace_atomic_write_block(), we missed to check return value
-of inc_valid_block_count(), for extreme testcase that f2fs image is
-run out of space, it may cause inconsistent status in between SIT
-table and total valid block count.
+Don't allow buffer allocation TLV with zero req_size since it
+leads later to division by zero in iwl_dbg_tlv_alloc_fragments().
+Also, NPK/SRAM locations are allowed to have zero buffer req_size,
+don't discard them.
 
-Cc: Daeho Jeong <daehojeong@google.com>
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: a9248de42464 ("iwlwifi: dbg_ini: add TLV allocation new API support")
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230413213309.5d6688ed74d8.I5c2f3a882b50698b708d54f4524dc5bdf11e3d32@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 2822b04082eec..06991cf643296 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -246,10 +246,16 @@ static int __replace_atomic_write_block(struct inode *inode, pgoff_t index,
- 	} else {
- 		blkcnt_t count = 1;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+index 3237d4b528b5d..a1d34f3e7a9f4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -138,6 +138,12 @@ static int iwl_dbg_tlv_alloc_buf_alloc(struct iwl_trans *trans,
+ 	    alloc_id != IWL_FW_INI_ALLOCATION_ID_DBGC1)
+ 		goto err;
  
-+		err = inc_valid_block_count(sbi, inode, &count);
-+		if (err) {
-+			f2fs_put_dnode(&dn);
-+			return err;
-+		}
++	if (buf_location == IWL_FW_INI_LOCATION_DRAM_PATH &&
++	    alloc->req_size == 0) {
++		IWL_ERR(trans, "WRT: Invalid DRAM buffer allocation requested size (0)\n");
++		return -EINVAL;
++	}
 +
- 		*old_addr = dn.data_blkaddr;
- 		f2fs_truncate_data_blocks_range(&dn, 1);
- 		dec_valid_block_count(sbi, F2FS_I(inode)->cow_inode, count);
--		inc_valid_block_count(sbi, inode, &count);
-+
- 		f2fs_replace_block(sbi, &dn, dn.data_blkaddr, new_addr,
- 					ni.version, true, false);
- 	}
+ 	trans->dbg.fw_mon_cfg[alloc_id] = *alloc;
+ 
+ 	return 0;
 -- 
 2.39.2
 
