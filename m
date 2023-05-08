@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CF8A6FA5DC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C65A36FAC1D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234276AbjEHKNv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42526 "EHLO
+        id S233960AbjEHLU7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234289AbjEHKNi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4A13AA12
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:34 -0700 (PDT)
+        with ESMTP id S235573AbjEHLU6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C5B037C79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF84762411
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A96C433EF;
-        Mon,  8 May 2023 10:13:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A855662C60
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6774C4339B;
+        Mon,  8 May 2023 11:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540813;
-        bh=IZEgaRIaxIfcMamfLugvk7FgPFzcCz3PuZZj/kiup4Q=;
+        s=korg; t=1683544856;
+        bh=/qyJVCmu7PkrsAmZUbsr5bqu3noGu+c+1ATeTyLa1NQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xNykEqQGYV8HVA8xh9GkMrAfQoLg3w2tqvFmQKmt2Bd8i+qW3MdZtr0JtimBQ0VMv
-         /VNIih9r3lfKw95OV5Jby6LBCFBY72QWSheO5B66wZTnzae+a5oA2h52kN0gGKiWd1
-         +w7apG1i6bbhaVj6HUbrfW2e1QKe5gdZTi1w5gRY=
+        b=iKPRszNiLSx5Li98BqWe6KD3mEzn9Pl1WQ55tVZF2VU2asbvvSR7AU7EOu4itT7lt
+         nivLmMlL1pyNg3Bv3QKTODomyEHcSWqyPpBca+uYWlwxtG6sZ/6MtOPcM3E7Su9Vki
+         LRJBDF1pVLk9JMP22fs22qN0XkDkt4/zaKADeeDI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 507/611] clk: qcom: lpassaudiocc-sc7280: Add required gdsc power domain clks in lpass_cc_sc7280_desc
-Date:   Mon,  8 May 2023 11:45:49 +0200
-Message-Id: <20230508094438.538184649@linuxfoundation.org>
+Subject: [PATCH 6.3 515/694] spi: fsl-spi: Fix CPM/QE mode Litte Endian
+Date:   Mon,  8 May 2023 11:45:50 +0200
+Message-Id: <20230508094450.902669263@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit aad09fc7c4a522892eb64a79627b17a3869936cb ]
+[ Upstream commit c20c57d9868d7f9fd1b2904c7801b07e128f6322 ]
 
-Add GDSCs in lpass_cc_sc7280_desc struct.
-When qcom,adsp-pil-mode is enabled, GDSCs required to solve
-dependencies in lpass_audiocc probe().
+CPM has the same problem as QE so for CPM also use the fix added
+by commit 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian"):
 
-Fixes: 0cbcfbe50cbf ("clk: qcom: lpass: Handle the regmap overlap of lpasscc and lpass_aon")
-Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230407092255.119690-4-quic_mohs@quicinc.com
+  CPM mode uses Little Endian so words > 8 bits are byte swapped.
+  Workaround this by always enforcing wordsize 8 for 16 and 32 bits
+  words. Unfortunately this will not work for LSB transfers
+  where wordsize is > 8 bits so disable these for now.
+
+Also limit the workaround to 16 and 32 bits words because it can
+only work for multiples of 8-bits.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Fixes: 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian")
+Link: https://lore.kernel.org/r/1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/lpassaudiocc-sc7280.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-fsl-spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/qcom/lpassaudiocc-sc7280.c b/drivers/clk/qcom/lpassaudiocc-sc7280.c
-index 1339f9211a149..134eb1529ede2 100644
---- a/drivers/clk/qcom/lpassaudiocc-sc7280.c
-+++ b/drivers/clk/qcom/lpassaudiocc-sc7280.c
-@@ -696,6 +696,8 @@ static const struct qcom_cc_desc lpass_cc_sc7280_desc = {
- 	.config = &lpass_audio_cc_sc7280_regmap_config,
- 	.clks = lpass_cc_sc7280_clocks,
- 	.num_clks = ARRAY_SIZE(lpass_cc_sc7280_clocks),
-+	.gdscs = lpass_aon_cc_sc7280_gdscs,
-+	.num_gdscs = ARRAY_SIZE(lpass_aon_cc_sc7280_gdscs),
- };
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 08fa6e38f4eba..cdaaf70cb20b8 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -181,8 +181,8 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+ 				struct spi_device *spi,
+ 				int bits_per_word)
+ {
+-	/* QE uses Little Endian for words > 8
+-	 * so transform all words > 8 into 8 bits
++	/* CPM/QE uses Little Endian for words > 8
++	 * so transform 16 and 32 bits words into 8 bits
+ 	 * Unfortnatly that doesn't work for LSB so
+ 	 * reject these for now */
+ 	/* Note: 32 bits word, LSB works iff
+@@ -190,9 +190,11 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+ 	if (spi->mode & SPI_LSB_FIRST &&
+ 	    bits_per_word > 8)
+ 		return -EINVAL;
+-	if (bits_per_word > 8)
++	if (bits_per_word <= 8)
++		return bits_per_word;
++	if (bits_per_word == 16 || bits_per_word == 32)
+ 		return 8; /* pretend its 8 bits */
+-	return bits_per_word;
++	return -EINVAL;
+ }
  
- static const struct qcom_cc_desc lpass_audio_cc_sc7280_desc = {
+ static int fsl_spi_setup_transfer(struct spi_device *spi,
+@@ -222,7 +224,7 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
+ 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
+ 							   mpc8xxx_spi,
+ 							   bits_per_word);
+-	else if (mpc8xxx_spi->flags & SPI_QE)
++	else
+ 		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
+ 							  bits_per_word);
+ 
 -- 
 2.39.2
 
