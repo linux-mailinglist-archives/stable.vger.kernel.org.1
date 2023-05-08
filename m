@@ -2,57 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ED4D6FA66F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F0E46FA9DD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232975AbjEHKTg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:19:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49270 "EHLO
+        id S235361AbjEHK4d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:56:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234424AbjEHKT2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:28 -0400
+        with ESMTP id S235356AbjEHK4P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC93D869
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF582DD78
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FF2762509
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B4DC433D2;
-        Mon,  8 May 2023 10:19:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F315A61709
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7EBC433EF;
+        Mon,  8 May 2023 10:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541163;
-        bh=Rw0pSNQBVmqVnVO5qQ0fjbWqjjvpW2WvqxUM+ZkQmb4=;
+        s=korg; t=1683543308;
+        bh=UU1NovXoFjTYKdTrm1MJ5s5/F+F5eHXHNbaP5Zm3J5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dHe1TyytQD3+Aun8WUvjz4wszDaSn50nGpxCm6g4bOfglddwR8ST722XxKIhsIrse
-         0j4HEcqfNRo6kiZ3cVK3Pdr2AjwyvvFFoNDViTXIQnoynsFeVUsI62hFzSZZJT32yO
-         ncAJVwsx+xD+nwX5GybwxK/qUlwDwyBRONzvpQR4=
+        b=1ZlnY8qekFmeVGplT33FWkTN+OzaZgh5QJ9+wjee9rzjyhgW/MLVaqopib+Rl7+kw
+         9rdzyGnMyv9F/ZSVUOaEIVFwg/MjTIjIK81RvozF9aaYoH5DwlMB7l/ank36RUj6hy
+         YMIfqEdnPqH7F2xcZLoGXMrn755Hv/Y9BZf8T2sY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Michael Haeuptle <michael.haeuptle@hpe.com>,
-        Ian May <ian.may@canonical.com>,
-        Andrey Grodzovsky <andrey2805@gmail.com>,
-        Rahul Kumar <rahul.kumar1@amd.com>,
-        Jialin Zhang <zhangjialin11@huawei.com>,
-        Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dan Stein <dstein@hpe.com>, Ashok Raj <ashok.raj@intel.com>,
-        Alex Michon <amichon@kalrayinc.com>,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.2 026/663] PCI: pciehp: Fix AB-BA deadlock between reset_lock and device_lock
-Date:   Mon,  8 May 2023 11:37:32 +0200
-Message-Id: <20230508094429.288420815@linuxfoundation.org>
+        patches@lists.linux.dev, Martin Dimov <martin@dmarto.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.3 018/694] tpm: Add !tpm_amd_is_rng_defective() to the hwrng_unregister() call site
+Date:   Mon,  8 May 2023 11:37:33 +0200
+Message-Id: <20230508094433.219207397@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -67,178 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit f5eff5591b8f9c5effd25c92c758a127765f74c1 upstream.
+commit bd8621ca1510e6e802df9855bdc35a04a3cfa932 upstream.
 
-In 2013, commits
+The following crash was reported:
 
-  2e35afaefe64 ("PCI: pciehp: Add reset_slot() method")
-  608c388122c7 ("PCI: Add slot reset option to pci_dev_reset()")
+[ 1950.279393] list_del corruption, ffff99560d485790->next is NULL
+[ 1950.279400] ------------[ cut here ]------------
+[ 1950.279401] kernel BUG at lib/list_debug.c:49!
+[ 1950.279405] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[ 1950.279407] CPU: 11 PID: 5886 Comm: modprobe Tainted: G O 6.2.8_1 #1
+[ 1950.279409] Hardware name: Gigabyte Technology Co., Ltd. B550M AORUS PRO-P/B550M AORUS PRO-P,
+BIOS F15c 05/11/2022
+[ 1950.279410] RIP: 0010:__list_del_entry_valid+0x59/0xc0
+[ 1950.279415] Code: 48 8b 01 48 39 f8 75 5a 48 8b 72 08 48 39 c6 75 65 b8 01 00 00 00 c3 cc cc cc
+cc 48 89 fe 48 c7 c7 08 a8 13 9e e8 b7 0a bc ff <0f> 0b 48 89 fe 48 c7 c7 38 a8 13 9e e8 a6 0a bc
+ff 0f 0b 48 89 fe
+[ 1950.279416] RSP: 0018:ffffa96d05647e08 EFLAGS: 00010246
+[ 1950.279418] RAX: 0000000000000033 RBX: ffff99560d485750 RCX: 0000000000000000
+[ 1950.279419] RDX: 0000000000000000 RSI: ffffffff9e107c59 RDI: 00000000ffffffff
+[ 1950.279420] RBP: ffffffffc19c5168 R08: 0000000000000000 R09: ffffa96d05647cc8
+[ 1950.279421] R10: 0000000000000003 R11: ffffffff9ea2a568 R12: 0000000000000000
+[ 1950.279422] R13: ffff99560140a2e0 R14: ffff99560127d2e0 R15: 0000000000000000
+[ 1950.279422] FS: 00007f67da795380(0000) GS:ffff995d1f0c0000(0000) knlGS:0000000000000000
+[ 1950.279424] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1950.279424] CR2: 00007f67da7e65c0 CR3: 00000001feed2000 CR4: 0000000000750ee0
+[ 1950.279426] PKRU: 55555554
+[ 1950.279426] Call Trace:
+[ 1950.279428] <TASK>
+[ 1950.279430] hwrng_unregister+0x28/0xe0 [rng_core]
+[ 1950.279436] tpm_chip_unregister+0xd5/0xf0 [tpm]
 
-amended PCIe hotplug to mask Presence Detect Changed events during a
-Secondary Bus Reset.  The reset thus no longer causes gratuitous slot
-bringdown and bringup.
+Add the forgotten !tpm_amd_is_rng_defective() invariant to the
+hwrng_unregister() call site inside tpm_chip_unregister().
 
-However the commits neglected to serialize reset with code paths reading
-slot registers.  For instance, a slot bringup due to an earlier hotplug
-event may see the Presence Detect State bit cleared during a concurrent
-Secondary Bus Reset.
-
-In 2018, commit
-
-  5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-
-retrofitted the missing locking.  It introduced a reset_lock which
-serializes a Secondary Bus Reset with other parts of pciehp.
-
-Unfortunately the locking turns out to be overzealous:  reset_lock is
-held for the entire enumeration and de-enumeration of hotplugged devices,
-including driver binding and unbinding.
-
-Driver binding and unbinding acquires device_lock while the reset_lock
-of the ancestral hotplug port is held.  A concurrent Secondary Bus Reset
-acquires the ancestral reset_lock while already holding the device_lock.
-The asymmetric locking order in the two code paths can lead to AB-BA
-deadlocks.
-
-Michael Haeuptle reports such deadlocks on simultaneous hot-removal and
-vfio release (the latter implies a Secondary Bus Reset):
-
-  pciehp_ist()                                    # down_read(reset_lock)
-    pciehp_handle_presence_or_link_change()
-      pciehp_disable_slot()
-        __pciehp_disable_slot()
-          remove_board()
-            pciehp_unconfigure_device()
-              pci_stop_and_remove_bus_device()
-                pci_stop_bus_device()
-                  pci_stop_dev()
-                    device_release_driver()
-                      device_release_driver_internal()
-                        __device_driver_lock()    # device_lock()
-
-  SYS_munmap()
-    vfio_device_fops_release()
-      vfio_device_group_close()
-        vfio_device_close()
-          vfio_device_last_close()
-            vfio_pci_core_close_device()
-              vfio_pci_core_disable()             # device_lock()
-                __pci_reset_function_locked()
-                  pci_reset_bus_function()
-                    pci_dev_reset_slot_function()
-                      pci_reset_hotplug_slot()
-                        pciehp_reset_slot()       # down_write(reset_lock)
-
-Ian May reports the same deadlock on simultaneous hot-removal and an
-AER-induced Secondary Bus Reset:
-
-  aer_recover_work_func()
-    pcie_do_recovery()
-      aer_root_reset()
-        pci_bus_error_reset()
-          pci_slot_reset()
-            pci_slot_lock()                       # device_lock()
-            pci_reset_hotplug_slot()
-              pciehp_reset_slot()                 # down_write(reset_lock)
-
-Fix by releasing the reset_lock during driver binding and unbinding,
-thereby splitting and shrinking the critical section.
-
-Driver binding and unbinding is protected by the device_lock() and thus
-serialized with a Secondary Bus Reset.  There's no need to additionally
-protect it with the reset_lock.  However, pciehp does not bind and
-unbind devices directly, but rather invokes PCI core functions which
-also perform certain enumeration and de-enumeration steps.
-
-The reset_lock's purpose is to protect slot registers, not enumeration
-and de-enumeration of hotplugged devices.  That would arguably be the
-job of the PCI core, not the PCIe hotplug driver.  After all, an
-AER-induced Secondary Bus Reset may as well happen during boot-time
-enumeration of the PCI hierarchy and there's no locking to prevent that
-either.
-
-Exempting *de-enumeration* from the reset_lock is relatively harmless:
-A concurrent Secondary Bus Reset may foil config space accesses such as
-PME interrupt disablement.  But if the device is physically gone, those
-accesses are pointless anyway.  If the device is physically present and
-only logically removed through an Attention Button press or the sysfs
-"power" attribute, PME interrupts as well as DMA cannot come through
-because pciehp_unconfigure_device() disables INTx and Bus Master bits.
-That's still protected by the reset_lock in the present commit.
-
-Exempting *enumeration* from the reset_lock also has limited impact:
-The exempted call to pci_bus_add_device() may perform device accesses
-through pcibios_bus_add_device() and pci_fixup_device() which are now
-no longer protected from a concurrent Secondary Bus Reset.  Otherwise
-there should be no impact.
-
-In essence, the present commit seeks to fix the AB-BA deadlocks while
-still retaining a best-effort reset protection for enumeration and
-de-enumeration of hotplugged devices -- until a general solution is
-implemented in the PCI core.
-
-Link: https://lore.kernel.org/linux-pci/CS1PR8401MB0728FC6FDAB8A35C22BD90EC95F10@CS1PR8401MB0728.NAMPRD84.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20200615143250.438252-1-ian.may@canonical.com
-Link: https://lore.kernel.org/linux-pci/ce878dab-c0c4-5bd0-a725-9805a075682d@amd.com
-Link: https://lore.kernel.org/linux-pci/ed831249-384a-6d35-0831-70af191e9bce@huawei.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215590
-Fixes: 5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-Link: https://lore.kernel.org/r/fef2b2e9edf245c049a8c5b94743c0f74ff5008a.1681191902.git.lukas@wunner.de
-Reported-by: Michael Haeuptle <michael.haeuptle@hpe.com>
-Reported-by: Ian May <ian.may@canonical.com>
-Reported-by: Andrey Grodzovsky <andrey2805@gmail.com>
-Reported-by: Rahul Kumar <rahul.kumar1@amd.com>
-Reported-by: Jialin Zhang <zhangjialin11@huawei.com>
-Tested-by: Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Cc: Dan Stein <dstein@hpe.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Alex Michon <amichon@kalrayinc.com>
-Cc: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reported-by: Martin Dimov <martin@dmarto.com>
+Link: https://lore.kernel.org/linux-integrity/3d1d7e9dbfb8c96125bc93b6b58b90a7@dmarto.com/
+Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
+Fixes: b006c439d58d ("hwrng: core - start hwrng kthread also for untrusted sources")
+Tested-by: Martin Dimov <martin@dmarto.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/hotplug/pciehp_pci.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/char/tpm/tpm-chip.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/hotplug/pciehp_pci.c
-+++ b/drivers/pci/hotplug/pciehp_pci.c
-@@ -63,7 +63,14 @@ int pciehp_configure_device(struct contr
- 
- 	pci_assign_unassigned_bridge_resources(bridge);
- 	pcie_bus_configure_settings(parent);
-+
-+	/*
-+	 * Release reset_lock during driver binding
-+	 * to avoid AB-BA deadlock with device_lock.
-+	 */
-+	up_read(&ctrl->reset_lock);
- 	pci_bus_add_devices(parent);
-+	down_read_nested(&ctrl->reset_lock, ctrl->depth);
- 
-  out:
- 	pci_unlock_rescan_remove();
-@@ -104,7 +111,15 @@ void pciehp_unconfigure_device(struct co
- 	list_for_each_entry_safe_reverse(dev, temp, &parent->devices,
- 					 bus_list) {
- 		pci_dev_get(dev);
-+
-+		/*
-+		 * Release reset_lock during driver unbinding
-+		 * to avoid AB-BA deadlock with device_lock.
-+		 */
-+		up_read(&ctrl->reset_lock);
- 		pci_stop_and_remove_bus_device(dev);
-+		down_read_nested(&ctrl->reset_lock, ctrl->depth);
-+
- 		/*
- 		 * Ensure that no new Requests will be generated from
- 		 * the device.
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -682,7 +682,8 @@ EXPORT_SYMBOL_GPL(tpm_chip_register);
+ void tpm_chip_unregister(struct tpm_chip *chip)
+ {
+ 	tpm_del_legacy_sysfs(chip);
+-	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip))
++	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip) &&
++	    !tpm_amd_is_rng_defective(chip))
+ 		hwrng_unregister(&chip->hwrng);
+ 	tpm_bios_log_teardown(chip);
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2 && !tpm_is_firmware_upgrade(chip))
 
 
