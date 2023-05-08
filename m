@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 039286FA722
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ED396FAA70
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234511AbjEHK2S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:28:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
+        id S235500AbjEHLCw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:02:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234561AbjEHK1x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:27:53 -0400
+        with ESMTP id S235507AbjEHLCi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7FC25530
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:27:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 954022E822
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:01:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77CDE62622
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE1CC433D2;
-        Mon,  8 May 2023 10:27:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D34A762A49
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FE8C433EF;
+        Mon,  8 May 2023 11:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541631;
-        bh=wNWmtMDPNyG/bNCrvp1yfDXFETBZtd/ogoSPSsBFXDQ=;
+        s=korg; t=1683543686;
+        bh=hQfpgEJa6KYJGMHGAYNsWLGmH9T0lUzZYDTsxc6JByg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jXsj68gF1jJbMP3QGTvDm/97cxHwlt+CX4WM4RGB8kFolM2xECSij/ZwwO4G5s74v
-         +kkwjQZXC513OSqrHBRKlCBDPYngpR2o24EtQfcqTendl1fGhnR4yTRdyvdNuAyOaI
-         15v2+ryxJpMEA3DaaTx4UEwwattO6iWvuOr389HY=
+        b=2frkTQx8RkbwaBcBFnSr/bThlMclsicsnNp8upCY9bunvqouZy9o3hxjHolFFJsXi
+         +kqkCvhME2dME16wHzBrGiQELVxzWCwOEzZ7Lb1GLJgTDOtEH7gZZ1qGYiScTcnLQC
+         o07ioFjprvcGeZWzy454pzxJDwF/z9xqCACsczp8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        David Heidelberg <david@ixit.cz>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 177/663] media: platform: mtk-mdp3: Add missing check and free for ida_alloc
+Subject: [PATCH 6.3 168/694] ARM: dts: qcom-apq8064: Fix opp table child name
 Date:   Mon,  8 May 2023 11:40:03 +0200
-Message-Id: <20230508094434.198416791@linuxfoundation.org>
+Message-Id: <20230508094437.866389495@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,51 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d00f592250782538cda87745607695b0fe27dcd4 ]
+[ Upstream commit b9745c275246a7e43c34d1b3be5ff9a9f3cf9305 ]
 
-Add the check for the return value of the ida_alloc in order to avoid
-NULL pointer dereference.
-Moreover, free allocated "ctx->id" if mdp_m2m_open fails later in order
-to avoid memory leak.
+The opp-320000000 name is rather misleading with the opp-hz value
+of 450 MHz. Fix it!
 
-Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 8db0b6c7b636 ("ARM: dts: qcom: apq8064: Convert adreno from legacy gpu-pwrlevels to opp-v2")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230220120831.1591820-1-konrad.dybcio@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-apq8064.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
-index 5f74ea3b7a524..8612a48bde10f 100644
---- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
-+++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
-@@ -566,7 +566,11 @@ static int mdp_m2m_open(struct file *file)
- 		goto err_free_ctx;
- 	}
+diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
+index 92aa2b081901f..3aeac0cabb28b 100644
+--- a/arch/arm/boot/dts/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
+@@ -1260,7 +1260,7 @@
+ 			gpu_opp_table: opp-table {
+ 				compatible = "operating-points-v2";
  
--	ctx->id = ida_alloc(&mdp->mdp_ida, GFP_KERNEL);
-+	ret = ida_alloc(&mdp->mdp_ida, GFP_KERNEL);
-+	if (ret < 0)
-+		goto err_unlock_mutex;
-+	ctx->id = ret;
-+
- 	ctx->mdp_dev = mdp;
+-				opp-320000000 {
++				opp-450000000 {
+ 					opp-hz = /bits/ 64 <450000000>;
+ 				};
  
- 	v4l2_fh_init(&ctx->fh, vdev);
-@@ -617,6 +621,8 @@ static int mdp_m2m_open(struct file *file)
- 	v4l2_fh_del(&ctx->fh);
- err_exit_fh:
- 	v4l2_fh_exit(&ctx->fh);
-+	ida_free(&mdp->mdp_ida, ctx->id);
-+err_unlock_mutex:
- 	mutex_unlock(&mdp->m2m_lock);
- err_free_ctx:
- 	kfree(ctx);
 -- 
 2.39.2
 
