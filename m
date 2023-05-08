@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 804166FA842
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2547E6FA574
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234887AbjEHKjD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:39:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40874 "EHLO
+        id S234117AbjEHKJj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234862AbjEHKiu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D129122F6D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:48 -0700 (PDT)
+        with ESMTP id S234141AbjEHKJj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7465135124
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67328622B1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79751C433EF;
-        Mon,  8 May 2023 10:38:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED50D623A3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAE2C433D2;
+        Mon,  8 May 2023 10:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542327;
-        bh=bF/CdVjRLfAEe8YQNCndGxnOut6B4QQMvXsAIoWkrcc=;
+        s=korg; t=1683540576;
+        bh=O9E6wDXKVgCnNBLP9qRkPzoM3u6ZZYhy04M4gYai58E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z49/W7W34mPIAA0aJPkDi095JAyaIFVDTwdE0vlynU7RDOuVKcz5PNDsY5JSMSAea
-         88ewaANZdsnqlCd4UlC6M+0xVzG9VW10CqTLjU+4zgPZsmWfW2E9xN0BWlz8gjkOpw
-         zDEtn6KOd2Lc9m2fUvcd5KOlxtQ+utYxQ5HQcv+4=
+        b=d/qm2+theVF4rRQp4CODUdPwCHwTPQk+tjbtq+MiLyPba5z7ErCjCS5pLyvLVzAkk
+         AhHe+kP2h9MqX6MuoWGdAc6fZgqui60WRQ/33oHTZZw4AEREpOkl8cgYDTvzIALG3g
+         RUcFOKm04pRCYiWufuwK3R1/eH+bPNJdcC6jOApo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 400/663] mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
+        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
+        Maher Sanalla <msanalla@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 384/611] net/mlx5: Use recovery timeout on sync reset flow
 Date:   Mon,  8 May 2023 11:43:46 +0200
-Message-Id: <20230508094441.062853597@linuxfoundation.org>
+Message-Id: <20230508094434.794944266@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,93 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 12db28c3ef31f719bd18fa186a40bb152e6a527c ]
+[ Upstream commit dfad99750c0f83b0242572a573afa2c055f85b36 ]
 
-The MT7921 driver no longer uses eeprom.data, but the relevant code has not
-been removed completely since
-commit 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability").
-This could result in potential invalid memory access.
+Use the same timeout for sync reset flow and health recovery flow, since
+the former involves driver's recovery from firmware reset, which is
+similar to health recovery. Otherwise, in some cases, such as a firmware
+upgrade on the DPU, the firmware pre-init bit may not be ready within
+current timeout and the driver will abort loading back after reset.
 
-To fix the kernel panic issue in mt7921, it is necessary to avoid accessing
-unallocated eeprom.data which can lead to invalid memory access.
-
-Furthermore, it is possible to entirely eliminate the
-mt7921_mcu_parse_eeprom function and solely depend on
-mt7921_mcu_parse_response to divide the RxD header.
-
-[2.702735] BUG: kernel NULL pointer dereference, address: 0000000000000550
-[2.702740] #PF: supervisor write access in kernel mode
-[2.702741] #PF: error_code(0x0002) - not-present page
-[2.702743] PGD 0 P4D 0
-[2.702747] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[2.702755] RIP: 0010:mt7921_mcu_parse_response+0x147/0x170 [mt7921_common]
-[2.702758] RSP: 0018:ffffae7c00fef828 EFLAGS: 00010286
-[2.702760] RAX: ffffa367f57be024 RBX: ffffa367cc7bf500 RCX: 0000000000000000
-[2.702762] RDX: 0000000000000550 RSI: 0000000000000000 RDI: ffffa367cc7bf500
-[2.702763] RBP: ffffae7c00fef840 R08: ffffa367cb167000 R09: 0000000000000005
-[2.702764] R10: 0000000000000000 R11: ffffffffc04702e4 R12: ffffa367e8329f40
-[2.702766] R13: 0000000000000000 R14: 0000000000000001 R15: ffffa367e8329f40
-[2.702768] FS:  000079ee6cf20c40(0000) GS:ffffa36b2f940000(0000) knlGS:0000000000000000
-[2.702769] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2.702775] CR2: 0000000000000550 CR3: 00000001233c6004 CR4: 0000000000770ee0
-[2.702776] PKRU: 55555554
-[2.702777] Call Trace:
-[2.702782]  mt76_mcu_skb_send_and_get_msg+0xc3/0x11e [mt76 <HASH:1bc4 5>]
-[2.702785]  mt7921_run_firmware+0x241/0x853 [mt7921_common <HASH:6a2f 6>]
-[2.702789]  mt7921e_mcu_init+0x2b/0x56 [mt7921e <HASH:d290 7>]
-[2.702792]  mt7921_register_device+0x2eb/0x5a5 [mt7921_common <HASH:6a2f 6>]
-[2.702795]  ? mt7921_irq_tasklet+0x1d4/0x1d4 [mt7921e <HASH:d290 7>]
-[2.702797]  mt7921_pci_probe+0x2d6/0x319 [mt7921e <HASH:d290 7>]
-[2.702799]  pci_device_probe+0x9f/0x12a
-
-Fixes: 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Fixes: 37ca95e62ee2 ("net/mlx5: Increase FW pre-init timeout for health recovery")
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 20 -------------------
- 1 file changed, 20 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 7253ce90234ef..087a5dc2593db 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -16,24 +16,6 @@ static bool mt7921_disable_clc;
- module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
- MODULE_PARM_DESC(disable_clc, "disable CLC support");
- 
--static int
--mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
--{
--	struct mt7921_mcu_eeprom_info *res;
--	u8 *buf;
--
--	if (!skb)
--		return -EINVAL;
--
--	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
--
--	res = (struct mt7921_mcu_eeprom_info *)skb->data;
--	buf = dev->eeprom.data + le32_to_cpu(res->addr);
--	memcpy(buf, res->data, 16);
--
--	return 0;
--}
--
- int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 			      struct sk_buff *skb, int seq)
- {
-@@ -60,8 +42,6 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	} else if (cmd == MCU_EXT_CMD(THERMAL_CTRL)) {
- 		skb_pull(skb, sizeof(*rxd) + 4);
- 		ret = le32_to_cpu(*(__le32 *)skb->data);
--	} else if (cmd == MCU_EXT_CMD(EFUSE_ACCESS)) {
--		ret = mt7921_mcu_parse_eeprom(mdev, skb);
- 	} else if (cmd == MCU_UNI_CMD(DEV_INFO_UPDATE) ||
- 		   cmd == MCU_UNI_CMD(BSS_INFO_UPDATE) ||
- 		   cmd == MCU_UNI_CMD(STA_REC_UPDATE) ||
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 7f1f813b2f2d9..3749eb83d9e53 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -200,7 +200,7 @@ static int mlx5_devlink_reload_up(struct devlink *devlink, enum devlink_reload_a
+ 			break;
+ 		/* On fw_activate action, also driver is reloaded and reinit performed */
+ 		*actions_performed |= BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT);
+-		ret = mlx5_load_one_devl_locked(dev, false);
++		ret = mlx5_load_one_devl_locked(dev, true);
+ 		break;
+ 	default:
+ 		/* Unsupported action should not get to this function */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 2b74729180394..d219f8417d93a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -154,7 +154,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
+ 		if (mlx5_health_wait_pci_up(dev))
+ 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
+ 		else
+-			mlx5_load_one(dev, false);
++			mlx5_load_one(dev, true);
+ 		devlink_remote_reload_actions_performed(priv_to_devlink(dev), 0,
+ 							BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
+ 							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
+@@ -485,7 +485,7 @@ int mlx5_fw_reset_wait_reset_done(struct mlx5_core_dev *dev)
+ 	err = fw_reset->ret;
+ 	if (test_and_clear_bit(MLX5_FW_RESET_FLAGS_RELOAD_REQUIRED, &fw_reset->reset_flags)) {
+ 		mlx5_unload_one_devl_locked(dev, false);
+-		mlx5_load_one_devl_locked(dev, false);
++		mlx5_load_one_devl_locked(dev, true);
+ 	}
+ out:
+ 	clear_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP, &fw_reset->reset_flags);
 -- 
 2.39.2
 
