@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E1F6FA7F5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B976FAB2A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234877AbjEHKgb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33650 "EHLO
+        id S233853AbjEHLKY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234823AbjEHKgG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:06 -0400
+        with ESMTP id S234614AbjEHLJ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B6225277
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 225AA35D9E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E06F62793
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FBAC433EF;
-        Mon,  8 May 2023 10:35:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8277C62B28
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A4EC433EF;
+        Mon,  8 May 2023 11:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542141;
-        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
+        s=korg; t=1683544187;
+        bh=y2qKulYF0Q6jJuvhA6/caOOgLo7343Vbi2if3WcCA3o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sd/fIfWACOEQKcFQlJt8xlOz7oWXJt2KHtqWLhl5S8nsetIrTNkVcGK6RZ7mx+APg
-         2qh/PRSuzFBL+M5d/SceptPxSg89wkj9R1NBiXiFmyZqxMEyhwH1WLwtMTwQIJX8at
-         LYVDeDiwYJ20sjyw0pbW6/4UKpWmAs0lEDC57SN0=
+        b=IA4tZcMf5rzoYtxbxpmvfhAtpeR9ECdcyajDWbwlxs+YXWmY0gC+7Si9h4/Nvz79C
+         VXSCeeH3KUthq67E+bi0cIQKm9Lj+cIP8qkSC7vBIrWHqe4prt95HnLYu+1v90yJ3R
+         7COddiMLbUZzVBGLf/sjfQAeFgllOJoa6iRrxwwQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 339/663] net: qrtr: correct types of trace event parameters
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 330/694] wifi: rtl8xxxu: Remove always true condition in rtl8xxxu_print_chipinfo
 Date:   Mon,  8 May 2023 11:42:45 +0200
-Message-Id: <20230508094439.158647119@linuxfoundation.org>
+Message-Id: <20230508094443.118219733@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,106 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Horman <horms@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
+[ Upstream commit b9b1e4fe2957f361c86e288ecf373dc7895cf7c7 ]
 
-The arguments passed to the trace events are of type unsigned int,
-however the signature of the events used __le32 parameters.
+Fix a new smatch warning:
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:1580 rtl8xxxu_print_chipinfo() warn: always true condition '(priv->chip_cut <= 15) => (0-15 <= 15)'
 
-I may be missing the point here, but sparse flagged this and it
-does seem incorrect to me.
-
-  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
-  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ... (a lot more similar warnings)
-  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
-  net/qrtr/ns.c:115:47:    got unsigned int service
-  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
-  ... (a lot more similar warnings)
-
-Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202302140753.71IgU77A-lkp@intel.com/
+Fixes: 7b0ac469e331 ("wifi: rtl8xxxu: Recognise all possible chip cuts")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/68eff98b-a022-5a00-f330-adf623a35772@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
-index b1de14c3bb934..441132c67133f 100644
---- a/include/trace/events/qrtr.h
-+++ b/include/trace/events/qrtr.h
-@@ -10,15 +10,16 @@
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 620a5cc2bfdd1..54ca6f2ced3f3 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -1575,11 +1575,7 @@ rtl8xxxu_set_spec_sifs(struct rtl8xxxu_priv *priv, u16 cck, u16 ofdm)
+ static void rtl8xxxu_print_chipinfo(struct rtl8xxxu_priv *priv)
+ {
+ 	struct device *dev = &priv->udev->dev;
+-	char cut = '?';
+-
+-	/* Currently always true: chip_cut is 4 bits. */
+-	if (priv->chip_cut <= 15)
+-		cut = 'A' + priv->chip_cut;
++	char cut = 'A' + priv->chip_cut;
  
- TRACE_EVENT(qrtr_ns_service_announce_new,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
-@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
- 
- TRACE_EVENT(qrtr_ns_service_announce_del,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
-@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
- 
- TRACE_EVENT(qrtr_ns_server_add,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
+ 	dev_info(dev,
+ 		 "RTL%s rev %c (%s) romver %d, %iT%iR, TX queues %i, WiFi=%i, BT=%i, GPS=%i, HI PA=%i\n",
 -- 
 2.39.2
 
