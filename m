@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DE386FA679
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 933AA6FA6A8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjEHKTy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:19:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49150 "EHLO
+        id S234475AbjEHKXC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234429AbjEHKTl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C301D2C3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:40 -0700 (PDT)
+        with ESMTP id S234473AbjEHKWS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4151FDC55
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:21:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D746E62524
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB29C433D2;
-        Mon,  8 May 2023 10:19:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB4B462520
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D88C4339B;
+        Mon,  8 May 2023 10:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541179;
-        bh=8r1z6+zlLX5kZZjRsnVMbks8vuLgQJO5hKGKMtuVvsk=;
+        s=korg; t=1683541300;
+        bh=cw3OnQkRRzLSZofw1h00fHi3CqqZKFvyxjHDHAz3LDU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EMzqo2FUIcvgNT5abcThRUlS/M/Sndme+uGkWES1nfyHKCiYDtGCSaIdnRsvZvY4k
-         tCjy7ILahTVJMQjUBS6T36KfQzZ9Lm44Tl4fM2OMZow829VAHIosxpRuCriGoOqjQ4
-         511/8CMNMHlPggXOTQEvIUioB5FS3J3yhDWZqSAM=
+        b=0Jk9tJbNaHlQVI2IacaPz3KyXWLssR6iQtbQDS0i1MuVP+ma8m9T2yFEMzoLx0fyL
+         uSjhdB43z7Gipw/CA/Z7obzqh+WjXjRCZK66TfdNPH44YeaOjZu8tQCysJ4P+a4FLK
+         +A0YS7zW95mfdJz060vetjw49guI5Y23UT945Rh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.2 030/663] IMA: allow/fix UML builds
-Date:   Mon,  8 May 2023 11:37:36 +0200
-Message-Id: <20230508094429.426764388@linuxfoundation.org>
+        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
+        ValdikSS <iam@valdikss.org.ru>,
+        Alexandru gagniuc <mr.nuke.me@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.2 031/663] wifi: rtw88: usb: fix priority queue to endpoint mapping
+Date:   Mon,  8 May 2023 11:37:37 +0200
+Message-Id: <20230508094429.465189975@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -47,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,51 +57,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
+commit a6f187f92bcc2b17821538b4a11d61764e68b091 upstream.
 
-UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
-NO_IOMEM).
+The RTW88 chipsets have four different priority queues in hardware. For
+the USB type chipsets the packets destined for a specific priority queue
+must be sent through the endpoint corresponding to the queue. This was
+not fully understood when porting from the RTW88 USB out of tree driver
+and thus violated.
 
-Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
+This patch implements the qsel to endpoint mapping as in
+get_usb_bulkout_id_88xx() in the downstream driver.
 
-ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
-ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
-ld: security/integrity/ima/ima_init.o: in function `ima_init':
-ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
-ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
-ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
-ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
+Without this the driver often issues "timed out to flush queue 3"
+warnings and often TX stalls completely.
 
-Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
-is set, regardless of the UML Kconfig setting.
-This updates TCG_TPM from =m to =y and fixes the linker errors.
-
-Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
-Cc: Stable <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: ValdikSS <iam@valdikss.org.ru>
+Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230417140358.2240429-2-s.hauer@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/usb.c |   70 ++++++++++++++++++++-----------
+ 1 file changed, 47 insertions(+), 23 deletions(-)
 
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -8,7 +8,7 @@ config IMA
- 	select CRYPTO_HMAC
- 	select CRYPTO_SHA1
- 	select CRYPTO_HASH_INFO
--	select TCG_TPM if HAS_IOMEM && !UML
-+	select TCG_TPM if HAS_IOMEM
- 	select TCG_TIS if TCG_TPM && X86
- 	select TCG_CRB if TCG_TPM && ACPI
- 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -118,6 +118,22 @@ static void rtw_usb_write32(struct rtw_d
+ 	rtw_usb_write(rtwdev, addr, val, 4);
+ }
+ 
++static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
++{
++	switch (dma_mapping) {
++	case RTW_DMA_MAPPING_HIGH:
++		return 0;
++	case RTW_DMA_MAPPING_NORMAL:
++		return 1;
++	case RTW_DMA_MAPPING_LOW:
++		return 2;
++	case RTW_DMA_MAPPING_EXTRA:
++		return 3;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int rtw_usb_parse(struct rtw_dev *rtwdev,
+ 			 struct usb_interface *interface)
+ {
+@@ -129,6 +145,8 @@ static int rtw_usb_parse(struct rtw_dev
+ 	int num_out_pipes = 0;
+ 	int i;
+ 	u8 num;
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	const struct rtw_rqpn *rqpn;
+ 
+ 	for (i = 0; i < interface_desc->bNumEndpoints; i++) {
+ 		endpoint = &host_interface->endpoint[i].desc;
+@@ -183,31 +201,34 @@ static int rtw_usb_parse(struct rtw_dev
+ 
+ 	rtwdev->hci.bulkout_num = num_out_pipes;
+ 
+-	switch (num_out_pipes) {
+-	case 4:
+-	case 3:
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = 0;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = 0;
+-		break;
+-	case 2:
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 1;
+-		break;
+-	case 1:
+-		break;
+-	default:
+-		rtw_err(rtwdev, "failed to get out_pipes(%d)\n", num_out_pipes);
++	if (num_out_pipes < 1 || num_out_pipes > 4) {
++		rtw_err(rtwdev, "invalid number of endpoints %d\n", num_out_pipes);
+ 		return -EINVAL;
+ 	}
+ 
++	rqpn = &chip->rqpn_table[num_out_pipes];
++
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = dma_mapping_to_ep(rqpn->dma_map_be);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = dma_mapping_to_ep(rqpn->dma_map_bk);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = dma_mapping_to_ep(rqpn->dma_map_bk);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = dma_mapping_to_ep(rqpn->dma_map_be);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = dma_mapping_to_ep(rqpn->dma_map_vi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = dma_mapping_to_ep(rqpn->dma_map_vi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = dma_mapping_to_ep(rqpn->dma_map_vo);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = dma_mapping_to_ep(rqpn->dma_map_vo);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID8] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID9] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID10] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID11] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID12] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID13] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID14] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID15] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_BEACON] = dma_mapping_to_ep(rqpn->dma_map_hi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_HIGH] = dma_mapping_to_ep(rqpn->dma_map_hi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_MGMT] = dma_mapping_to_ep(rqpn->dma_map_mg);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_H2C] = dma_mapping_to_ep(rqpn->dma_map_hi);
++
+ 	return 0;
+ }
+ 
+@@ -250,7 +271,7 @@ static void rtw_usb_write_port_tx_comple
+ static int qsel_to_ep(struct rtw_usb *rtwusb, unsigned int qsel)
+ {
+ 	if (qsel >= ARRAY_SIZE(rtwusb->qsel_to_ep))
+-		return 0;
++		return -EINVAL;
+ 
+ 	return rtwusb->qsel_to_ep[qsel];
+ }
+@@ -265,6 +286,9 @@ static int rtw_usb_write_port(struct rtw
+ 	int ret;
+ 	int ep = qsel_to_ep(rtwusb, qsel);
+ 
++	if (ep < 0)
++		return ep;
++
+ 	pipe = usb_sndbulkpipe(usbd, rtwusb->out_ep[ep]);
+ 	urb = usb_alloc_urb(0, GFP_ATOMIC);
+ 	if (!urb)
 
 
