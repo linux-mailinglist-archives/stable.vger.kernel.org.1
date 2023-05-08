@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB7546FAAFF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB036FA7CE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233835AbjEHLId (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46000 "EHLO
+        id S234793AbjEHKfB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233462AbjEHLIA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:00 -0400
+        with ESMTP id S234683AbjEHKeg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A98342C905
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358F424ABE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 410D562ADB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D22C433D2;
-        Mon,  8 May 2023 11:07:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CCFE614EA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38BAC433EF;
+        Mon,  8 May 2023 10:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544070;
-        bh=qt0/3tTN3yauaAXAdXNKbmXSUH0lno0z/7537ylwbZU=;
+        s=korg; t=1683542026;
+        bh=37YQYnTPSWCGL/nUavN8krPlnbaJDu7mjmGtAkFMvXM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wjfcy2Ip8DuaKulAURg4oD7GMtczISCFqWBeUKNjuLJ3ioGnVlpYVT3Seb2yYb9hU
-         Y5E0b/R3jhUYIp35d1ROGMgaysv8Stm1B1tSx1LS7LnXE/HE9lRL6ygU31OTz+Zz+n
-         zTDyec9cMxDfak+3AaNqfLzm8C+nNoEFvvt/X1qk=
+        b=sC8CuAh/sNy/NXojOeeiIwSeuTqs7+IN/X2fTeoEtUZCWk85GRNSwvJtDIpqaXE0R
+         Had/mdEovLN9sWujJ3tFiA0iJUe+hdwjfvu4DP7BgTUONRYhqV3coe7+x4/mlBeF9Z
+         lVy1Hn9raGWQ0uVKKhsZf5h7lS3HrkI4PQYubN8o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sanket Goswami <Sanket.Goswami@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 293/694] platform/x86/amd: pmc: Move out of BIOS SMN pair for STB init
+Subject: [PATCH 6.2 302/663] net/packet: convert po->origdev to an atomic flag
 Date:   Mon,  8 May 2023 11:42:08 +0200
-Message-Id: <20230508094441.787912569@linuxfoundation.org>
+Message-Id: <20230508094437.990055397@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,84 +55,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8d99129eef8f42377b41c1bacee9f8ce806e9f44 ]
+[ Upstream commit ee5675ecdf7a4e713ed21d98a70c2871d6ebed01 ]
 
-The current SMN index used for the driver probe seems to be meant
-for the BIOS pair and there are potential concurrency problems that can
-occur with an inopportune SMI.
+syzbot/KCAN reported that po->origdev can be read
+while another thread is changing its value.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_6, which is
-what amd_nb.c provides and this function has protections to ensure that
-only one caller can use it at a time.
+We can avoid this splat by converting this field
+to an actual bit.
 
-Fixes: 426c0ff27b83 ("platform/x86: amd-pmc: Add support for AMD Smart Trace Buffer")
-Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230409185348.556161-7-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Following patches will convert remaining 1bit fields.
+
+Fixes: 80feaacb8a64 ("[AF_PACKET]: Add option to return orig_dev to userspace.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc.c | 26 ++++----------------------
- 1 file changed, 4 insertions(+), 22 deletions(-)
+ net/packet/af_packet.c | 10 ++++------
+ net/packet/diag.c      |  2 +-
+ net/packet/internal.h  | 22 +++++++++++++++++++++-
+ 3 files changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index 71fb8266133d8..69f305496643f 100644
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -38,8 +38,6 @@
- #define AMD_PMC_SCRATCH_REG_YC		0xD14
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index bc034de000fc4..1cda640d84ffa 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2186,7 +2186,7 @@ static int packet_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll = &PACKET_SKB_CB(skb)->sa.ll;
+ 	sll->sll_hatype = dev->type;
+ 	sll->sll_pkttype = skb->pkt_type;
+-	if (unlikely(po->origdev))
++	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+ 	else
+ 		sll->sll_ifindex = dev->ifindex;
+@@ -2461,7 +2461,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll->sll_hatype = dev->type;
+ 	sll->sll_protocol = skb->protocol;
+ 	sll->sll_pkttype = skb->pkt_type;
+-	if (unlikely(po->origdev))
++	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+ 	else
+ 		sll->sll_ifindex = dev->ifindex;
+@@ -3914,9 +3914,7 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
+ 		if (copy_from_sockptr(&val, optval, sizeof(val)))
+ 			return -EFAULT;
  
- /* STB Registers */
--#define AMD_PMC_STB_INDEX_ADDRESS	0xF8
--#define AMD_PMC_STB_INDEX_DATA		0xFC
- #define AMD_PMC_STB_PMI_0		0x03E30600
- #define AMD_PMC_STB_S2IDLE_PREPARE	0xC6000001
- #define AMD_PMC_STB_S2IDLE_RESTORE	0xC6000002
-@@ -923,17 +921,9 @@ static int amd_pmc_write_stb(struct amd_pmc_dev *dev, u32 data)
- {
- 	int err;
- 
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
-+	err = amd_smn_write(0, AMD_PMC_STB_PMI_0, data);
- 	if (err) {
--		dev_err(dev->dev, "failed to write addr in stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_ADDRESS);
--		return pcibios_err_to_errno(err);
--	}
--
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, data);
--	if (err) {
--		dev_err(dev->dev, "failed to write data in stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_DATA);
-+		dev_err(dev->dev, "failed to write data in stb: 0x%X\n", AMD_PMC_STB_PMI_0);
- 		return pcibios_err_to_errno(err);
+-		lock_sock(sk);
+-		po->origdev = !!val;
+-		release_sock(sk);
++		packet_sock_flag_set(po, PACKET_SOCK_ORIGDEV, val);
+ 		return 0;
  	}
+ 	case PACKET_VNET_HDR:
+@@ -4065,7 +4063,7 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
+ 		val = po->auxdata;
+ 		break;
+ 	case PACKET_ORIGDEV:
+-		val = po->origdev;
++		val = packet_sock_flag(po, PACKET_SOCK_ORIGDEV);
+ 		break;
+ 	case PACKET_VNET_HDR:
+ 		val = po->has_vnet_hdr;
+diff --git a/net/packet/diag.c b/net/packet/diag.c
+index 07812ae5ca073..e1ac9bb375b31 100644
+--- a/net/packet/diag.c
++++ b/net/packet/diag.c
+@@ -25,7 +25,7 @@ static int pdiag_put_info(const struct packet_sock *po, struct sk_buff *nlskb)
+ 		pinfo.pdi_flags |= PDI_RUNNING;
+ 	if (po->auxdata)
+ 		pinfo.pdi_flags |= PDI_AUXDATA;
+-	if (po->origdev)
++	if (packet_sock_flag(po, PACKET_SOCK_ORIGDEV))
+ 		pinfo.pdi_flags |= PDI_ORIGDEV;
+ 	if (po->has_vnet_hdr)
+ 		pinfo.pdi_flags |= PDI_VNETHDR;
+diff --git a/net/packet/internal.h b/net/packet/internal.h
+index 48af35b1aed25..178cd1852238d 100644
+--- a/net/packet/internal.h
++++ b/net/packet/internal.h
+@@ -116,9 +116,9 @@ struct packet_sock {
+ 	int			copy_thresh;
+ 	spinlock_t		bind_lock;
+ 	struct mutex		pg_vec_lock;
++	unsigned long		flags;
+ 	unsigned int		running;	/* bind_lock must be held */
+ 	unsigned int		auxdata:1,	/* writer must hold sock lock */
+-				origdev:1,
+ 				has_vnet_hdr:1,
+ 				tp_loss:1,
+ 				tp_tx_has_off:1;
+@@ -144,4 +144,24 @@ static inline struct packet_sock *pkt_sk(struct sock *sk)
+ 	return (struct packet_sock *)sk;
+ }
  
-@@ -944,18 +934,10 @@ static int amd_pmc_read_stb(struct amd_pmc_dev *dev, u32 *buf)
- {
- 	int i, err;
- 
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
--	if (err) {
--		dev_err(dev->dev, "error writing addr to stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_ADDRESS);
--		return pcibios_err_to_errno(err);
--	}
--
- 	for (i = 0; i < FIFO_SIZE; i++) {
--		err = pci_read_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, buf++);
-+		err = amd_smn_read(0, AMD_PMC_STB_PMI_0, buf++);
- 		if (err) {
--			dev_err(dev->dev, "error reading data from stb: 0x%X\n",
--				AMD_PMC_STB_INDEX_DATA);
-+			dev_err(dev->dev, "error reading data from stb: 0x%X\n", AMD_PMC_STB_PMI_0);
- 			return pcibios_err_to_errno(err);
- 		}
- 	}
++enum packet_sock_flags {
++	PACKET_SOCK_ORIGDEV,
++};
++
++static inline void packet_sock_flag_set(struct packet_sock *po,
++					enum packet_sock_flags flag,
++					bool val)
++{
++	if (val)
++		set_bit(flag, &po->flags);
++	else
++		clear_bit(flag, &po->flags);
++}
++
++static inline bool packet_sock_flag(const struct packet_sock *po,
++				    enum packet_sock_flags flag)
++{
++	return test_bit(flag, &po->flags);
++}
++
+ #endif
 -- 
 2.39.2
 
