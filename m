@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39216FACAC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42DE76FAE95
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235759AbjEHL0y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43886 "EHLO
+        id S236335AbjEHLqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235761AbjEHL0p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:45 -0400
+        with ESMTP id S236195AbjEHLps (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:45:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2993C984
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9E01FAB9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:45:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E26562DFF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0202EC433D2;
-        Mon,  8 May 2023 11:26:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC5D3636E6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B37C433D2;
+        Mon,  8 May 2023 11:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545191;
-        bh=f8KRRXTlVKzgW170xRhypNOpnQD72qg2PpVAo5qlaJ8=;
+        s=korg; t=1683546297;
+        bh=phjqaHvgDqfoU12UvCfaQ0GLoUIQQX6S27xtZsUbeN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TQasc6OGvmxASbiU29qzI7ndnVdNgAaBmSGKQIl8sbTgZSEj3ctuz0NbUoOvb/DOx
-         OaB5H/KA7iTaqAbxJnCBKXYui5ZybIl0XGlVd6MoIVVELfGUs0CJ2xodMqDCIdnWvv
-         Pg+lJ6uQz1BbKRsS+VSG5Hjhu3t7x9LHZFMopMTY=
+        b=yxLetob/TNZkethSMfzkLg08qnagmx6ohfy9fJ1Xhv8SqxqhmVSXbskwxuwv9cI6A
+         HvgRtdA+bf9AK0PRjjruTp4VDW7R1NMVRie05MHZ3sDXYTCp3FoRSHBu49ru+Mko/u
+         9M7HFMT7piUnlC1ivY/FamL8kzoydUYWHty4niU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 655/694] dmaengine: at_xdmac: restore the content of grws register
-Date:   Mon,  8 May 2023 11:48:10 +0200
-Message-Id: <20230508094457.209631002@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 290/371] Revert "objtool: Support addition to set CFA base"
+Date:   Mon,  8 May 2023 11:48:11 +0200
+Message-Id: <20230508094823.536946290@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,45 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 7c5eb63d16b01c202aaa95f374ae15a807745a73 ]
+[ Upstream commit e18398e80c73e3cc7d9c3d2e0bc06a4af8f4f1cb ]
 
-In case the system suspends to a deep sleep state where power to DMA
-controller is cut-off we need to restore the content of GRWS register.
-This is a write only register and writing bit X tells the controller
-to suspend read and write requests for channel X. Thus set GRWS before
-restoring the content of GE (Global Enable) regiter.
+Commit 468af56a7bba ("objtool: Support addition to set CFA base") was
+added as a preparatory patch for arm64 support, but that support never
+came.  It triggers a false positive warning on x86, so just revert it
+for now.
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-5-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes the following warning:
+
+  vmlinux.o: warning: objtool: cdce925_regmap_i2c_write+0xdb: stack state mismatch: cfa1=4+120 cfa2=5+40
+
+Fixes: 468af56a7bba ("objtool: Support addition to set CFA base")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/oe-kbuild-all/202304080538.j5G6h1AB-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/objtool/check.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index fa1e2e0da02f5..34c004a4b23cb 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -2211,6 +2211,15 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
- 					return ret;
- 				at_xdmac_device_resume_internal(atchan);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 32f119e8c3b2c..f331780f04252 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2481,17 +2481,6 @@ static int update_cfi_state(struct instruction *insn,
+ 				break;
  			}
-+
-+			/*
-+			 * We may resume from a deep sleep state where power
-+			 * to DMA controller is cut-off. Thus, restore the
-+			 * suspend state of channels set though dmaengine API.
-+			 */
-+			else if (at_xdmac_chan_is_paused(atchan))
-+				at_xdmac_device_pause_set(atxdmac, atchan);
-+
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDA, atchan->save_cnda);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
+ 
+-			if (!cfi->drap && op->src.reg == CFI_SP &&
+-			    op->dest.reg == CFI_BP && cfa->base == CFI_SP &&
+-			    check_reg_frame_pos(&regs[CFI_BP], -cfa->offset + op->src.offset)) {
+-
+-				/* lea disp(%rsp), %rbp */
+-				cfa->base = CFI_BP;
+-				cfa->offset -= op->src.offset;
+-				cfi->bp_scratch = false;
+-				break;
+-			}
+-
+ 			if (op->src.reg == CFI_SP && cfa->base == CFI_SP) {
+ 
+ 				/* drap: lea disp(%rsp), %drap */
 -- 
 2.39.2
 
