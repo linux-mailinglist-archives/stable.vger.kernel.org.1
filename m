@@ -2,110 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8366FA10D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 09:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F9E6FA134
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 09:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232847AbjEHHbX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 03:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42374 "EHLO
+        id S232949AbjEHHks (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 03:40:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233400AbjEHHbU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 03:31:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4860A30FC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 00:30:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683531035;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=15IZ3rCtajFgVKWwexbLZL0utwlWzVUecmF4CtNVjxc=;
-        b=RhA5VILn+m06GNweWRvx8MH9kh/Z+knbkVkeSBVKizh/wQa/kLt4U53E7JcHojxhdMJSlw
-        pmGm97WNAY3EYsSzwm8Z2UF2ftY6Mpwnn/579TbZE6MTx04NKuiLQhpuB+i/MmJL2Yh90A
-        J3RcMI9Y6bQ0qa5kyfmIV6+TiXhOgyI=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-484--tVSLQFwNYS2QWZ5k3kxfw-1; Mon, 08 May 2023 03:30:33 -0400
-X-MC-Unique: -tVSLQFwNYS2QWZ5k3kxfw-1
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-6435b907f46so2314476b3a.1
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 00:30:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683531032; x=1686123032;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=15IZ3rCtajFgVKWwexbLZL0utwlWzVUecmF4CtNVjxc=;
-        b=QFai+P4q1uEbZeoBHS9spH2VKHzsI/YxrW3vGh552Wtb+C8NznwjLN+lunpnE24w6T
-         hoVssUPeIRNkorEFNySxLj9D2UMCX2yuP0ylqx/nXg6ZpfsCrlc90IJgP1/Bg5ULNgxk
-         gSN+oaVgp2BMIvugO7UTZeMj61R8rjAAs8akYcmeM+qYPoKQe9geQtFCJwQjPp3sgqnT
-         Tq/lL6uIT63QaFsv00Dg3eaYp+eGM6vvcEx1HOyTYob9A4Y1Q2fdgiqvfNhWrZky5D+4
-         NpoIrujCZLrOjHtgtAPbYveLK1MH4435431js1w9yE+J9s5mjCT8CmGx2SdQUOe1L18N
-         JyIg==
-X-Gm-Message-State: AC+VfDz/8T1ncmgG/SpIU/YDKUFdTZjFjymK2ndmRevQG3vzoSf+ReSs
-        nd7VnIfXXlGgFADaSIhC5svDKxN8V6FEN6JlxgsDiQtYRPZlan8C2j1dUDdmKz0WuzXCsCMaNnO
-        a3YKfCZ96T46LkxRWHowT0lb2LzA=
-X-Received: by 2002:a05:6a00:88f:b0:644:ad29:fd37 with SMTP id q15-20020a056a00088f00b00644ad29fd37mr5941886pfj.28.1683531032401;
-        Mon, 08 May 2023 00:30:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5QGZuUlJ3qCljhw9rVxaHMWwdKhqk7pbQD45W0ZZO4JpdCYUgl445clyi6/LGEm5uUkJEjcQ==
-X-Received: by 2002:a05:6a00:88f:b0:644:ad29:fd37 with SMTP id q15-20020a056a00088f00b00644ad29fd37mr5941867pfj.28.1683531032100;
-        Mon, 08 May 2023 00:30:32 -0700 (PDT)
-Received: from [10.72.12.156] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id x13-20020aa784cd000000b0063b6cccd5dcsm5371185pfn.194.2023.05.08.00.30.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 00:30:31 -0700 (PDT)
-Message-ID: <b8938951-3737-6509-6cb5-547c84b12416@redhat.com>
-Date:   Mon, 8 May 2023 15:30:27 +0800
+        with ESMTP id S232274AbjEHHkr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 03:40:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A13E5B96
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 00:40:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0586A62021
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 07:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23F0C433EF;
+        Mon,  8 May 2023 07:40:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683531645;
+        bh=FdrIe+IdnTMkiyAKhDQac0+m0ZsjWRkv6OTYro5g5tw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OVs61uJ4WqDy9nYFOYBcY/N7U38uNV/rfMggXwW0q9wzbBUSnx2HeVez9vOR50Vtk
+         IflfraaqaQLpYIpOrbxrWjszY1qT23J5XGXprahGNpqK0bIcTMriyIwIDiSHgJoeIm
+         ZODXEmu/0cfuZKR2K2Ly0AgsJH87295+4Fe8mTmE=
+Date:   Mon, 8 May 2023 09:40:42 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Rai, Anjali" <anjali.rai@intel.com>
+Cc:     "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "Gandhi, Jinen" <jinen.gandhi@intel.com>,
+        "Qin, Kailun" <kailun.qin@intel.com>
+Subject: Re: Regression Issue
+Message-ID: <2023050851-trapper-preshow-2e4c@gregkh>
+References: <DM4PR11MB55183E4B87078E0F496386029A719@DM4PR11MB5518.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] ceph: fix the Smatch static checker warning in
- reconnect_caps_cb()
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        stable@vger.kernel.org
-References: <20230508065335.114409-1-xiubli@redhat.com>
- <83208f55-7c60-48a1-bbe2-5973e1f46a09@kili.mountain>
-From:   Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <83208f55-7c60-48a1-bbe2-5973e1f46a09@kili.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM4PR11MB55183E4B87078E0F496386029A719@DM4PR11MB5518.namprd11.prod.outlook.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, May 08, 2023 at 07:33:58AM +0000, Rai, Anjali wrote:
+> Hi
+> 
+> We have one test which test the functionality of "using the same loopback address and port for both IPV6 and IPV4", The test should result in EADDRINUSE for binding IPv4 to same port, but it was successful
+> 
+> Test Description:
+> The test creates sockets for both IPv4 and IPv6, and forces IPV6 to listen for both IPV4 and IPV6 connections; this in turn makes binding another (IPV4) socket on the same port meaningless and results in -EADDRINUSE
+> 
+> Our systems had Kernel v6.0.9 and the test was successfully executing, we recently upgraded our systems to v6.2, and we saw this as a failure. The systems which are not upgraded, there it is still passing.
+> 
+> We don't exactly at which point this test broke, but our assumption is https://github.com/torvalds/linux/commit/28044fc1d4953b07acec0da4d2fc4784c57ea6fb
 
-On 5/8/23 15:20, Dan Carpenter wrote:
-> On Mon, May 08, 2023 at 02:53:35PM +0800, xiubli@redhat.com wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> Smatch static checker warning:
->>
->>    fs/ceph/mds_client.c:3968 reconnect_caps_cb()
->>    warn: missing error code here? '__get_cap_for_mds()' failed. 'err' = '0'
->>
->> Cc: stable@vger.kernel.org
->> Fixes: aaf67de78807 ("ceph: fix potential use-after-free bug when trimming caps")
-> Of course, thanks for the patch. But this is not really a bug fix since
-> it doesn't change runtime at all.  And definitely no need to CC stable.
+Is there a specific reason you did not add cc: for the authors of that
+commit?
 
-The previous patch Cced the stable, so I just added it here.
+> Can you please check on your end whether this is an actual regression of a feature request.
 
-If that not necessary I will remove it.
+If you revert that commit, does it resolve the issue?  Have you worked
+with the Intel networking developers to help debug this further?
 
-Thanks
+thanks,
 
-- Xiubo
-
-> regards,
-> dan carpenter
->
-
+greg k-h
