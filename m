@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E21F56FA7E7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA2C6FA52F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234866AbjEHKf4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33410 "EHLO
+        id S234060AbjEHKGu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234769AbjEHKf3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:35:29 -0400
+        with ESMTP id S234059AbjEHKGt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1DA727879
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1C4173F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C62262767
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632F0C4339C;
-        Mon,  8 May 2023 10:35:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3512362361
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4844CC433D2;
+        Mon,  8 May 2023 10:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542100;
-        bh=aSFNXfwWMM7rrn6Wf1sNpsdwGY2Sz1jIh9jWdXjU+sE=;
+        s=korg; t=1683540405;
+        bh=WEAmJZGfFKqctGT2vUqWC3klLrFDB7+B8pLgO0w/uAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DUotUmY+TQuCky+ubHpVXQo5NLr3+DpCxDiCbjzLeO+i8Gipx06a+JM0dAYGl/DFl
-         NGXLx6uTheBHoiGa0bFhl0NPP2qzPexd7qn4eCDR2drmbEo7OI8KpokAGNqSosjmhu
-         Uitrdbd1gBcK/awPE3PVWf86y6ADj8avCJIXZxJg=
+        b=NBS/eBLuRONddjCIIox6FGbNWox3hD4h4obHNe/nzMvN6DjkcT0k/Z0eClzVbd0l0
+         4aAI8su1qg+Ca0Jad7UQLIHTHRQm2SZUVv0c43XFk04KTHQRafeEuje6QgstSfCL7S
+         s1/6MqFF+/SygTQMHG/xz9HL1QVmgftvah1a/Gno=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Xiang Chen <chenxiang66@hisilicon.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 327/663] scsi: hisi_sas: Handle NCQ error when IPTT is valid
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 311/611] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_reg()
 Date:   Mon,  8 May 2023 11:42:33 +0200
-Message-Id: <20230508094438.792209302@linuxfoundation.org>
+Message-Id: <20230508094432.547134556@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,87 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit bb544224da77b96b2c11a13872bf91ede1e015be ]
+[ Upstream commit 5dbe1f8eb8c5ac69394400a5b86fd81775e96c43 ]
 
-If an NCQ error occurs when the IPTT is valid and slot->abort flag is set
-in completion path, sas_task_abort() will be called to abort only one NCQ
-command now, and the host would be set to SHOST_RECOVERY state. But this
-may not kick-off EH Immediately until other outstanding QCs timeouts. As a
-result, the host may remain in the SHOST_RECOVERY state for up to 30
-seconds, such as follows:
+If there is a failure during copy_from_user or user-provided data buffer is
+invalid, rtl_debugfs_set_write_reg should return negative error code instead
+of a positive value count.
 
-[7972317.645234] hisi_sas_v3_hw 0000:74:04.0: erroneous completion iptt=3264 task=00000000466116b8 dev id=2 sas_addr=0x5000000000000502 CQ hdr: 0x1883 0x20cc0 0x40000 0x20420000 Error info: 0x0 0x0 0x200000 0x0
-[7972341.508264] sas: Enter sas_scsi_recover_host busy: 32 failed: 32
-[7972341.984731] sas: --- Exit sas_scsi_recover_host: busy: 0 failed: 32 tries: 1
+Fix this bug by returning correct error code. Moreover, the check of buffer
+against null is removed since it will be handled by copy_from_user.
 
-All NCQ commands that are in the queue should be aborted when an NCQ error
-occurs in this scenario.
-
-Fixes: 05d91b557af9 ("scsi: hisi_sas: Directly trigger SCSI error handling for completion errors")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1679283265-115066-3-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230326054217.93492-1-harperchen1110@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v1_hw.c | 6 +++++-
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 6 +++++-
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 6 +++++-
- 3 files changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-index d643c5a49aa94..70c24377c6a19 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-@@ -1258,7 +1258,11 @@ static void slot_complete_v1_hw(struct hisi_hba *hisi_hba,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index 602717928887d..9eb26dfe4ca92 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -278,8 +278,8 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
  
- 		slot_err_v1_hw(hisi_hba, task, slot);
- 		if (unlikely(slot->abort)) {
--			sas_task_abort(task);
-+			if (dev_is_sata(device) && task->ata_task.use_ncq)
-+				sas_ata_device_link_abort(device, true);
-+			else
-+				sas_task_abort(task);
-+
- 			return;
- 		}
- 		goto out;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index cded42f4ca445..02575d81afca2 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -2404,7 +2404,11 @@ static void slot_complete_v2_hw(struct hisi_hba *hisi_hba,
- 				 error_info[2], error_info[3]);
+ 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
  
- 		if (unlikely(slot->abort)) {
--			sas_task_abort(task);
-+			if (dev_is_sata(device) && task->ata_task.use_ncq)
-+				sas_ata_device_link_abort(device, true);
-+			else
-+				sas_task_abort(task);
-+
- 			return;
- 		}
- 		goto out;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index a63279f55d096..9afc23e3a80fc 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2320,7 +2320,11 @@ static void slot_complete_v3_hw(struct hisi_hba *hisi_hba,
- 					error_info[0], error_info[1],
- 					error_info[2], error_info[3]);
- 			if (unlikely(slot->abort)) {
--				sas_task_abort(task);
-+				if (dev_is_sata(device) && task->ata_task.use_ncq)
-+					sas_ata_device_link_abort(device, true);
-+				else
-+					sas_task_abort(task);
-+
- 				return;
- 			}
- 			goto out;
+-	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+-		return count;
++	if (copy_from_user(tmp, buffer, tmp_len))
++		return -EFAULT;
+ 
+ 	tmp[tmp_len] = '\0';
+ 
+@@ -287,7 +287,7 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
+ 	num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
+ 
+ 	if (num !=  3)
+-		return count;
++		return -EINVAL;
+ 
+ 	switch (len) {
+ 	case 1:
 -- 
 2.39.2
 
