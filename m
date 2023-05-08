@@ -2,93 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 547416FBB13
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 00:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947046FBB1B
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 00:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233680AbjEHW2g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 18:28:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57042 "EHLO
+        id S229492AbjEHWh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 18:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233813AbjEHW2d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 18:28:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC387AAC;
-        Mon,  8 May 2023 15:28:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3265162008;
-        Mon,  8 May 2023 22:28:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CD4C433EF;
-        Mon,  8 May 2023 22:28:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683584909;
-        bh=YLErWiO67rCOF3C7aewUGP9j3H2s5a80TaR7xABdUvY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Lt5G/T6qN01xsdTV90eNTuyZvkQ0UqIp96LBtvn7CJrONa5pIF+DAgWAqIdkcOf/v
-         OkLG70AU976JQGiUDx43UGk2LGb+AWJIPa5GIR++NOMqF24r6e0WGwTK639G3crd74
-         JVahwFNucBjMoAE70+uvpGtoPAc/EMoWPnIsTnm7WibdBmLyo43p6zzO9uW7U/8VfJ
-         n4EPruOa1PTqDVgY1k6kzKmuZkvs2Q4N8GL7U8b0ZlEDrRakmvNPTscbtFqJ0ylMTV
-         MfAnTvXBv0txCIU3HFdLERtnH7LIxS4nYd9rzkUrCpCO5q3geu0SUHNg1fJG4LnAle
-         xfQDvD3VgoCOQ==
-Date:   Mon, 8 May 2023 23:28:24 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 000/611] 6.1.28-rc1 review
-Message-ID: <20230508-widget-radiation-d4acf2192fda@spud>
-References: <20230508094421.513073170@linuxfoundation.org>
+        with ESMTP id S229486AbjEHWh6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 18:37:58 -0400
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A28C7AB0;
+        Mon,  8 May 2023 15:37:57 -0700 (PDT)
+Received: by mail-qv1-xf33.google.com with SMTP id 6a1803df08f44-61b40562054so25810796d6.2;
+        Mon, 08 May 2023 15:37:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683585476; x=1686177476;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MJkBy5EhvULhTIUWG0tl2IkSQVaZ72VNBGuYy2i26s0=;
+        b=EnPPvxkasliKAFV0S5FBDMJU5GlsgYqLJCJW6mFeVhF8OLKOJsHuoLxdP7Q1v1AjVI
+         0+zRgvGP/OKGkydl2UJ5Job/F69SEsR40IntmodAhgsm3sP6hagiwKEBJXOCkbcj8wtO
+         hgYZPSBxAwK31+fu9icI2Y+V2e1S/rnTuHrlSz0tr20KiykOl51q3fKcvSMeU7E5qf2X
+         KWMmML7FlqkycOWg2AN/LK9FRRRjTw4fO6XdjdcBCBcJhggfKbtOQSrdZBru++62rQan
+         +T5ZYfN+B1UOV0bxNsUc+JQ7prEMwPSR5iimEOurfdlTsF5LTGIyhOI/OpaS3h/JO1NQ
+         dSTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683585476; x=1686177476;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MJkBy5EhvULhTIUWG0tl2IkSQVaZ72VNBGuYy2i26s0=;
+        b=ePGCZVvdvKjWDxsQKdr0LaynSGJqMxXT3dQdRMXa8c8Xzzt+DP+anL/6ue8DPJjJeZ
+         VMmDxDctuaoGWzLzR1HNB1PIad3qrD17Zyu3wTic5khSQ4JIBMZB49LwJNrTlXAUB2cJ
+         icqZoWlHQovRX4cR0/2qPHtrJgtZycLc2kaf3IAS/YDEvinadPkbj375oNlnrmue/ZDt
+         SAJj+svAflUOHwGJ8NzmlYPCg1V84PardAM6u8FUAv6Eh0GNfoKKcVfOKXvFmncuw5aH
+         PQxW/0oadJkB8xRTMTqsCrefzLZiKMxncmrgZk0mU9xIGVgKXB2eqAIzpit07AD6od3d
+         II7A==
+X-Gm-Message-State: AC+VfDzMZkVIBGl0CZAJGamS0o3QbfQqmTK6EClzUG1ioPnM8ZUQW+Vv
+        NWa/0dWSfD5e35hy/bIu474=
+X-Google-Smtp-Source: ACHHUZ5OwMyCitYHah+w9aQCDUs8Wtq3PhzO/6Lf6RIKL760ylUrBGsJUx9djMI/3TmDM7N7a7r0kg==
+X-Received: by 2002:a05:6214:528b:b0:5ef:50a3:f9ca with SMTP id kj11-20020a056214528b00b005ef50a3f9camr14950747qvb.47.1683585476323;
+        Mon, 08 May 2023 15:37:56 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id o16-20020a0ce410000000b005dd8b93459esm316406qvl.54.2023.05.08.15.37.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 May 2023 15:37:55 -0700 (PDT)
+Message-ID: <b590760f-af50-5b01-079d-546724a3c21c@gmail.com>
+Date:   Mon, 8 May 2023 15:37:53 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="AtKzXF1T8O8D6nJ0"
-Content-Disposition: inline
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230508094432.603705160@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
---AtKzXF1T8O8D6nJ0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, May 08, 2023 at 11:37:22AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.28 release.
-> There are 611 patches in this series, all will be posted as a response
+On 5/8/23 02:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.2 release.
+> There are 694 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->=20
+> 
 > Responses should be made by Wed, 10 May 2023 09:42:40 +0000.
 > Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Other than the build breakage due to the bcm63xx stuff
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Tested-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian
 
-Thanks,
-Conor.
-
---AtKzXF1T8O8D6nJ0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFl3iAAKCRB4tDGHoIJi
-0tF4AQDiVnuSofK3ADTs8iiE1zmosnK+OZ2MuD8ilCrrUz0SQgD8Dw+HMtgb6jmO
-BWYAvwI2oXDnVgucsYT6ElzBOzrfCQM=
-=TGsY
------END PGP SIGNATURE-----
-
---AtKzXF1T8O8D6nJ0--
