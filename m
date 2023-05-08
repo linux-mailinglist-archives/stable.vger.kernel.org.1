@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1F8B6FAD70
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E736FABD1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235974AbjEHLfC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50664 "EHLO
+        id S234513AbjEHLRt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233772AbjEHLeq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8DC24017
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:09 -0700 (PDT)
+        with ESMTP id S235496AbjEHLRs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A563762E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AF2B62CD8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E00CC433EF;
-        Mon,  8 May 2023 11:33:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E08E62C2A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734CAC4339C;
+        Mon,  8 May 2023 11:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545583;
-        bh=CccfAYA50/kT11/I1+MmCiXyBiCUSeML+xRM6YRR4D4=;
+        s=korg; t=1683544660;
+        bh=LYlmOfJhulus+iBnWCJYT90K8x0aOUuWjfXyng6SEUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=avi/AsTfu9uxvGw+2sneuY7plGUcjd1KYlC8GaT+324ZzRoyyDjCJiO4QbGumml2y
-         1w4FV/hF35wdnALM3ExzSO83w1LGM+76liTxJ2xS87NeyudCGTb2t85FqpyTZEKgxw
-         jv5kI+Uchl50UYuNhm1zk5CnOu32rVLRClZpu4aQ=
+        b=tNm+sT5QM4Ih9HUWMymUq+6QX8l7s3H6HgvxrN3EX6ZlDLAX2czAx6QQJeHS6tnr7
+         aw/BQetmwMa7Pmj92vwInGAbMbnb5QAr2gA3qJKW99BEi7pl1Bp0lFhBLdwIVEow8M
+         JOlQs4KbjTQReGFqli/gHVqwmrEoFX43rgSbVBGU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/371] arm64: dts: Add DTS files for bcmbca SoC BCM63158
+Subject: [PATCH 6.3 453/694] netfilter: conntrack: fix wrong ct->timeout value
 Date:   Mon,  8 May 2023 11:44:48 +0200
-Message-Id: <20230508094815.539506374@linuxfoundation.org>
+Message-Id: <20230508094448.296956379@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,217 +54,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 076dcedc6628c6bf92bd17bfcf8fb7b1af62bfb6 ]
+[ Upstream commit 73db1b8f2bb6725b7391e85aab41fdf592b3c0c1 ]
 
-Add DTS for ARMv8 based broadband SoC BCM63158. bcm63158.dtsi is the
-SoC description DTS header and bcm963158.dts is a simple DTS file for
-Broadcom BCM963158 Reference board that only enable the UART port.
+(struct nf_conn)->timeout is an interval before the conntrack
+confirmed.  After confirmed, it becomes a timestamp.
 
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Stable-dep-of: 5cca02449490 ("arm64: dts: broadcom: bcmbca: bcm4908: fix NAND interrupt name")
+It is observed that timeout of an unconfirmed conntrack:
+- Set by calling ctnetlink_change_timeout(). As a result,
+  `nfct_time_stamp` was wrongly added to `ct->timeout` twice.
+- Get by calling ctnetlink_dump_timeout(). As a result,
+  `nfct_time_stamp` was wrongly subtracted.
+
+Call Trace:
+ <TASK>
+ dump_stack_lvl
+ ctnetlink_dump_timeout
+ __ctnetlink_glue_build
+ ctnetlink_glue_build
+ __nfqnl_enqueue_packet
+ nf_queue
+ nf_hook_slow
+ ip_mc_output
+ ? __pfx_ip_finish_output
+ ip_send_skb
+ ? __pfx_dst_output
+ udp_send_skb
+ udp_sendmsg
+ ? __pfx_ip_generic_getfrag
+ sock_sendmsg
+
+Separate the 2 cases in:
+- Setting `ct->timeout` in __nf_ct_set_timeout().
+- Getting `ct->timeout` in ctnetlink_dump_timeout().
+
+Pablo appends:
+
+Update ctnetlink to set up the timeout _after_ the IPS_CONFIRMED flag is
+set on, otherwise conntrack creation via ctnetlink breaks.
+
+Note that the problem described in this patch occurs since the
+introduction of the nfnetlink_queue conntrack support, select a
+sufficiently old Fixes: tag for -stable kernel to pick up this fix.
+
+Fixes: a4b4766c3ceb ("netfilter: nfnetlink_queue: rename related to nfqueue attaching conntrack info")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/broadcom/Makefile         |   1 +
- arch/arm64/boot/dts/broadcom/bcmbca/Makefile  |   2 +
- .../boot/dts/broadcom/bcmbca/bcm63158.dtsi    | 128 ++++++++++++++++++
- .../boot/dts/broadcom/bcmbca/bcm963158.dts    |  30 ++++
- 4 files changed, 161 insertions(+)
- create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/Makefile
- create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/bcm63158.dtsi
- create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/bcm963158.dts
+ include/net/netfilter/nf_conntrack_core.h |  6 +++++-
+ net/netfilter/nf_conntrack_netlink.c      | 13 +++++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/broadcom/Makefile b/arch/arm64/boot/dts/broadcom/Makefile
-index 11eae3e3a9447..9a0ea4b97ef23 100644
---- a/arch/arm64/boot/dts/broadcom/Makefile
-+++ b/arch/arm64/boot/dts/broadcom/Makefile
-@@ -7,5 +7,6 @@ dtb-$(CONFIG_ARCH_BCM2835) += bcm2711-rpi-400.dtb \
- 			      bcm2837-rpi-cm3-io3.dtb
+diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
+index 71d1269fe4d4f..3384859a89210 100644
+--- a/include/net/netfilter/nf_conntrack_core.h
++++ b/include/net/netfilter/nf_conntrack_core.h
+@@ -89,7 +89,11 @@ static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
+ {
+ 	if (timeout > INT_MAX)
+ 		timeout = INT_MAX;
+-	WRITE_ONCE(ct->timeout, nfct_time_stamp + (u32)timeout);
++
++	if (nf_ct_is_confirmed(ct))
++		WRITE_ONCE(ct->timeout, nfct_time_stamp + (u32)timeout);
++	else
++		ct->timeout = (u32)timeout;
+ }
  
- subdir-y	+= bcm4908
-+subdir-y	+= bcmbca
- subdir-y	+= northstar2
- subdir-y	+= stingray
-diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-new file mode 100644
-index 0000000000000..d5f89245336c4
---- /dev/null
-+++ b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0
-+dtb-$(CONFIG_ARCH_BCMBCA) += bcm963158.dtb
-diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/bcm63158.dtsi b/arch/arm64/boot/dts/broadcom/bcmbca/bcm63158.dtsi
-new file mode 100644
-index 0000000000000..13629702f70b8
---- /dev/null
-+++ b/arch/arm64/boot/dts/broadcom/bcmbca/bcm63158.dtsi
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2022 Broadcom Ltd.
-+ */
+ int __nf_ct_change_timeout(struct nf_conn *ct, u64 cta_timeout);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index d3ee188546982..6f3b23a6653cc 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -176,7 +176,12 @@ static int ctnetlink_dump_status(struct sk_buff *skb, const struct nf_conn *ct)
+ static int ctnetlink_dump_timeout(struct sk_buff *skb, const struct nf_conn *ct,
+ 				  bool skip_zero)
+ {
+-	long timeout = nf_ct_expires(ct) / HZ;
++	long timeout;
 +
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
++	if (nf_ct_is_confirmed(ct))
++		timeout = nf_ct_expires(ct) / HZ;
++	else
++		timeout = ct->timeout / HZ;
+ 
+ 	if (skip_zero && timeout == 0)
+ 		return 0;
+@@ -2253,9 +2258,6 @@ ctnetlink_create_conntrack(struct net *net,
+ 	if (!cda[CTA_TIMEOUT])
+ 		goto err1;
+ 
+-	timeout = (u64)ntohl(nla_get_be32(cda[CTA_TIMEOUT])) * HZ;
+-	__nf_ct_set_timeout(ct, timeout);
+-
+ 	rcu_read_lock();
+  	if (cda[CTA_HELP]) {
+ 		char *helpname = NULL;
+@@ -2319,6 +2321,9 @@ ctnetlink_create_conntrack(struct net *net,
+ 	/* we must add conntrack extensions before confirmation. */
+ 	ct->status |= IPS_CONFIRMED;
+ 
++	timeout = (u64)ntohl(nla_get_be32(cda[CTA_TIMEOUT])) * HZ;
++	__nf_ct_set_timeout(ct, timeout);
 +
-+/ {
-+	compatible = "brcm,bcm63158", "brcm,bcmbca";
-+	#address-cells = <2>;
-+	#size-cells = <2>;
-+
-+	interrupt-parent = <&gic>;
-+
-+	cpus {
-+		#address-cells = <2>;
-+		#size-cells = <0>;
-+
-+		B53_0: cpu@0 {
-+			compatible = "brcm,brahma-b53";
-+			device_type = "cpu";
-+			reg = <0x0 0x0>;
-+			next-level-cache = <&L2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		B53_1: cpu@1 {
-+			compatible = "brcm,brahma-b53";
-+			device_type = "cpu";
-+			reg = <0x0 0x1>;
-+			next-level-cache = <&L2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		B53_2: cpu@2 {
-+			compatible = "brcm,brahma-b53";
-+			device_type = "cpu";
-+			reg = <0x0 0x2>;
-+			next-level-cache = <&L2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		B53_3: cpu@3 {
-+			compatible = "brcm,brahma-b53";
-+			device_type = "cpu";
-+			reg = <0x0 0x3>;
-+			next-level-cache = <&L2_0>;
-+			enable-method = "psci";
-+		};
-+
-+		L2_0: l2-cache0 {
-+			compatible = "cache";
-+		};
-+	};
-+
-+	timer {
-+		compatible = "arm,armv8-timer";
-+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-+			<GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-+			<GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-+			<GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
-+	};
-+
-+	pmu: pmu {
-+		compatible = "arm,cortex-a53-pmu";
-+		interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
-+			<GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>,
-+			<GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
-+			<GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-affinity = <&B53_0>, <&B53_1>,
-+			<&B53_2>, <&B53_3>;
-+	};
-+
-+	clocks: clocks {
-+		periph_clk: periph-clk {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <200000000>;
-+		};
-+		uart_clk: uart-clk {
-+			compatible = "fixed-factor-clock";
-+			#clock-cells = <0>;
-+			clocks = <&periph_clk>;
-+			clock-div = <4>;
-+			clock-mult = <1>;
-+		};
-+	};
-+
-+	psci {
-+		compatible = "arm,psci-0.2";
-+		method = "smc";
-+	};
-+
-+	axi@81000000 {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges = <0x0 0x0 0x81000000 0x8000>;
-+
-+		gic: interrupt-controller@1000 {
-+			compatible = "arm,gic-400";
-+			#interrupt-cells = <3>;
-+			interrupt-controller;
-+			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
-+			reg = <0x1000 0x1000>,
-+				<0x2000 0x2000>,
-+				<0x4000 0x2000>,
-+				<0x6000 0x2000>;
-+		};
-+	};
-+
-+	bus@ff800000 {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges = <0x0 0x0 0xff800000 0x800000>;
-+
-+		uart0: serial@12000 {
-+			compatible = "arm,pl011", "arm,primecell";
-+			reg = <0x12000 0x1000>;
-+			interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&uart_clk>, <&uart_clk>;
-+			clock-names = "uartclk", "apb_pclk";
-+			status = "disabled";
-+		};
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/bcm963158.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm963158.dts
-new file mode 100644
-index 0000000000000..eba07e0b1ca6f
---- /dev/null
-+++ b/arch/arm64/boot/dts/broadcom/bcmbca/bcm963158.dts
-@@ -0,0 +1,30 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2022 Broadcom Ltd.
-+ */
-+
-+/dts-v1/;
-+
-+#include "bcm63158.dtsi"
-+
-+/ {
-+	model = "Broadcom BCM963158 Reference Board";
-+	compatible = "brcm,bcm963158", "brcm,bcm63158", "brcm,bcmbca";
-+
-+	aliases {
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x0 0x0 0x0 0x08000000>;
-+	};
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
+ 	if (cda[CTA_STATUS]) {
+ 		err = ctnetlink_change_status(ct, cda);
+ 		if (err < 0)
 -- 
 2.39.2
 
