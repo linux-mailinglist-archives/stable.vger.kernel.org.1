@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2121F6FAE7E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D4316FACEB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236189AbjEHLpO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38558 "EHLO
+        id S235794AbjEHL3g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236211AbjEHLo5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CBD910A1D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:27 -0700 (PDT)
+        with ESMTP id S234009AbjEHL3W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592793C4B2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:28:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6E026364D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C789BC433D2;
-        Mon,  8 May 2023 11:44:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B96A062EB2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:28:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB14BC4339B;
+        Mon,  8 May 2023 11:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546266;
-        bh=rLpkc4OJIAEGXTHVjQ+5SGNQRBQkgkc2DWEFZsFYS6U=;
+        s=korg; t=1683545319;
+        bh=pLLPCupZUWaX2m89C4O5brHMDqEPzEPD7ayhsNckI9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MensHHSCIOFBrKJC9+8cPQgoEbG9hn41IaKkswiSjfaft6X+PMmzFZV4L2WNCbrRi
-         8cGCW3X+2TsDgL1GGHj2NnYQip//vWcV3jbttE3FbY0NZMcZO32jkrI7AMwgwPMWi6
-         EhCdJokdRChp0Yz5fIEbMzLwgoRux4hVoVi5VX2I=
+        b=0x4VXSCJ6LmG5FIl9MxKKfZD4bC6vp0TwvFiJBc15vaY2C1yUY5ejnLaiaVxuz7W0
+         Zk+hiC4zI6ncw0sZj4sNQJ2/iDIZXvn0LAN+gZJhtBgakjJQ9oWUdIHsQ7204DBQvF
+         XA1iNR4kTDdgq5Ja/NuwwC5ShjwSPubWMHGlrDsI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Brendan Cunningham <bcunningham@cornelisnetworks.com>,
-        Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 311/371] IB/hfi1: Fix SDMA mmu_rb_node not being evicted in LRU order
-Date:   Mon,  8 May 2023 11:48:32 +0200
-Message-Id: <20230508094824.403797024@linuxfoundation.org>
+        patches@lists.linux.dev, Cindy Lu <lulu@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.3 678/694] vhost_vdpa: fix unmap process in no-batch mode
+Date:   Mon,  8 May 2023 11:48:33 +0200
+Message-Id: <20230508094458.254306648@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,93 +53,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+From: Cindy Lu <lulu@redhat.com>
 
-[ Upstream commit 9fe8fec5e43d5a80f43cbf61aaada1b047a1eb61 ]
+commit c82729e06644f4e087f5ff0f91b8fb15e03b8890 upstream.
 
-hfi1_mmu_rb_remove_unless_exact() did not move mmu_rb_node objects in
-mmu_rb_handler->lru_list after getting a cache hit on an mmu_rb_node.
+While using the vdpa device with vIOMMU enabled
+in the guest VM, when the vdpa device bind to vfio-pci and run testpmd
+then system will fail to unmap.
+The test process is
+Load guest VM --> attach to virtio driver--> bind to vfio-pci driver
+So the mapping process is
+1)batched mode map to normal MR
+2)batched mode unmapped the normal MR
+3)unmapped all the memory
+4)mapped to iommu MR
 
-As a result, hfi1_mmu_rb_evict() was not guaranteed to evict truly
-least-recently used nodes.
+This error happened in step 3). The iotlb was freed in step 2)
+and the function vhost_vdpa_process_iotlb_msg will return fail
+Which causes failure.
 
-This could be a performance issue for an application when that
-application:
-- Uses some long-lived buffers frequently.
-- Uses a large number of buffers once.
-- Hits the mmu_rb_handler cache size or pinned-page limits, forcing
-  mmu_rb_handler cache entries to be evicted.
+To fix this, we will not remove the AS while the iotlb->nmaps is 0.
+This will free in the vhost_vdpa_clean
 
-In this case, the one-time use buffers cause the long-lived buffer
-entries to eventually filter to the end of the LRU list where
-hfi1_mmu_rb_evict() will consider evicting a frequently-used long-lived
-entry instead of evicting one of the one-time use entries.
-
-Fix this by inserting new mmu_rb_node at the tail of
-mmu_rb_handler->lru_list and move mmu_rb_ndoe to the tail of
-mmu_rb_handler->lru_list when the mmu_rb_node is a hit in
-hfi1_mmu_rb_remove_unless_exact(). Change hfi1_mmu_rb_evict() to evict
-from the head of mmu_rb_handler->lru_list instead of the tail.
-
-Fixes: 0636e9ab8355 ("IB/hfi1: Add cache evict LRU list")
-Signed-off-by: Brendan Cunningham <bcunningham@cornelisnetworks.com>
-Signed-off-by: Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Link: https://lore.kernel.org/r/168088635931.3027109.10423156330761536044.stgit@252.162.96.66.static.eigbox.net
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: aaca8373c4b1 ("vhost-vdpa: support ASID based IOTLB API")
+Signed-off-by: Cindy Lu <lulu@redhat.com>
+Message-Id: <20230420151734.860168-1-lulu@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/mmu_rb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/vhost/vdpa.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/mmu_rb.c b/drivers/infiniband/hw/hfi1/mmu_rb.c
-index 7333646021bb8..af46ff2033426 100644
---- a/drivers/infiniband/hw/hfi1/mmu_rb.c
-+++ b/drivers/infiniband/hw/hfi1/mmu_rb.c
-@@ -130,7 +130,7 @@ int hfi1_mmu_rb_insert(struct mmu_rb_handler *handler,
- 		goto unlock;
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -851,11 +851,7 @@ static void vhost_vdpa_unmap(struct vhos
+ 		if (!v->in_batch)
+ 			ops->set_map(vdpa, asid, iotlb);
  	}
- 	__mmu_int_rb_insert(mnode, &handler->root);
--	list_add(&mnode->list, &handler->lru_list);
-+	list_add_tail(&mnode->list, &handler->lru_list);
- 
- 	ret = handler->ops->insert(handler->ops_arg, mnode);
- 	if (ret) {
-@@ -181,8 +181,10 @@ bool hfi1_mmu_rb_remove_unless_exact(struct mmu_rb_handler *handler,
- 	spin_lock_irqsave(&handler->lock, flags);
- 	node = __mmu_rb_search(handler, addr, len);
- 	if (node) {
--		if (node->addr == addr && node->len == len)
-+		if (node->addr == addr && node->len == len) {
-+			list_move_tail(&node->list, &handler->lru_list);
- 			goto unlock;
-+		}
- 		__mmu_int_rb_remove(node, &handler->root);
- 		list_del(&node->list); /* remove from LRU list */
- 		ret = true;
-@@ -206,8 +208,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
- 	INIT_LIST_HEAD(&del_list);
- 
- 	spin_lock_irqsave(&handler->lock, flags);
--	list_for_each_entry_safe_reverse(rbnode, ptr, &handler->lru_list,
--					 list) {
-+	list_for_each_entry_safe(rbnode, ptr, &handler->lru_list, list) {
- 		if (handler->ops->evict(handler->ops_arg, rbnode, evict_arg,
- 					&stop)) {
- 			__mmu_int_rb_remove(rbnode, &handler->root);
-@@ -219,9 +220,7 @@ void hfi1_mmu_rb_evict(struct mmu_rb_handler *handler, void *evict_arg)
- 	}
- 	spin_unlock_irqrestore(&handler->lock, flags);
- 
--	while (!list_empty(&del_list)) {
--		rbnode = list_first_entry(&del_list, struct mmu_rb_node, list);
--		list_del(&rbnode->list);
-+	list_for_each_entry_safe(rbnode, ptr, &del_list, list) {
- 		handler->ops->remove(handler->ops_arg, rbnode);
- 	}
+-	/* If we are in the middle of batch processing, delay the free
+-	 * of AS until BATCH_END.
+-	 */
+-	if (!v->in_batch && !iotlb->nmaps)
+-		vhost_vdpa_remove_as(v, asid);
++
  }
--- 
-2.39.2
-
+ 
+ static int vhost_vdpa_va_map(struct vhost_vdpa *v,
+@@ -1112,8 +1108,6 @@ static int vhost_vdpa_process_iotlb_msg(
+ 		if (v->in_batch && ops->set_map)
+ 			ops->set_map(vdpa, asid, iotlb);
+ 		v->in_batch = false;
+-		if (!iotlb->nmaps)
+-			vhost_vdpa_remove_as(v, asid);
+ 		break;
+ 	default:
+ 		r = -EINVAL;
 
 
