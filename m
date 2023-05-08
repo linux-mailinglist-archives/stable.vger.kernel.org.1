@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D076FAB1D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A7236FA7C3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233630AbjEHLKK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44842 "EHLO
+        id S234732AbjEHKev (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233496AbjEHLJp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F888D86C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:09 -0700 (PDT)
+        with ESMTP id S234733AbjEHKeP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB68125532
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15E6F62B16
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8ACC433D2;
-        Mon,  8 May 2023 11:09:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8149C62736
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87451C433EF;
+        Mon,  8 May 2023 10:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544148;
-        bh=zg/FSjekkU4algjXcqm//2iYeTCGAsgTynUgScWizjU=;
+        s=korg; t=1683541998;
+        bh=7k1f7joZo1YjPW06nG9XCmo++fUu2Aw18ach7E2efPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=moDjr3W2tSG1imxOlYzd4NPj6Wymefc3v94vZA8EYrNtNaxJWJ2zqQTkikev2b7ms
-         Y+zAVc4BSUZsTZZYVZlxKVW40uoov82YImrNkw0jdnzzDXtueffnZyF5k5tZ5ZxLMu
-         Bf+8g0cajupo/zFembpXfelqoenvaEegAHwPG1fQ=
+        b=e0R2Xn4+AvH8kqIFRI/4MbJgiCZNG3hqUau2Ti67zpSGn9+/2Yu46LhevTdRrJhDk
+         /z8sACsgNw3ijQjrn8C7CkuB/HngDN7gwGt5kJ+fsOAPrByBYI05pdqs4rMYbpO+fB
+         8DZopdxYKAnxpeimtz41zID1GfJoGtk+qt8QNbXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Shashank Gupta <shashank.gupta@intel.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 285/694] media: cedrus: fix use after free bug in cedrus_remove due to race condition
+Subject: [PATCH 6.2 294/663] crypto: qat - fix concurrency issue when device state changes
 Date:   Mon,  8 May 2023 11:42:00 +0200
-Message-Id: <20230508094441.539591894@linuxfoundation.org>
+Message-Id: <20230508094437.727797634@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,49 +55,204 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Shashank Gupta <shashank.gupta@intel.com>
 
-[ Upstream commit 50d0a7aea4809cef87979d4669911276aa23b71f ]
+[ Upstream commit 1bdc85550a2b59bb7f62ead7173134e66dd2d60e ]
 
-In cedrus_probe, dev->watchdog_work is bound with cedrus_watchdog function.
-In cedrus_device_run, it will started by schedule_delayed_work. If there is
-an unfinished work in cedrus_remove, there may be a race condition and
-trigger UAF bug.
+The sysfs `state` attribute is not protected against race conditions.
+If multiple processes perform a device state transition on the same
+device in parallel, unexpected behaviors might occur.
 
-CPU0                  CPU1
+For transitioning the device state, adf_sysfs.c calls the functions
+adf_dev_init(), adf_dev_start(), adf_dev_stop() and adf_dev_shutdown()
+which are unprotected and interdependent on each other. To perform a
+state transition, these functions needs to be called in a specific
+order:
+  * device up:   adf_dev_init() -> adf_dev_start()
+  * device down: adf_dev_stop() -> adf_dev_shutdown()
 
-                    |cedrus_watchdog
-cedrus_remove       |
-  v4l2_m2m_release  |
-  kfree(m2m_dev)    |
-                    |
-                    | v4l2_m2m_get_curr_priv
-                    |   m2m_dev //use
+This change introduces the functions adf_dev_up() and adf_dev_down()
+which wrap the state machine functions and protect them with a
+per-device lock. These are then used in adf_sysfs.c instead of the
+individual state transition functions.
 
-Fix it by canceling the worker in cedrus_remove.
-
-Fixes: 7c38a551bda1 ("media: cedrus: Add watchdog for job completion")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 5ee52118ac14 ("crypto: qat - expose device state through sysfs for 4xxx")
+Signed-off-by: Shashank Gupta <shashank.gupta@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/sunxi/cedrus/cedrus.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../crypto/qat/qat_common/adf_accel_devices.h |  1 +
+ .../crypto/qat/qat_common/adf_common_drv.h    |  3 +
+ drivers/crypto/qat/qat_common/adf_dev_mgr.c   |  2 +
+ drivers/crypto/qat/qat_common/adf_init.c      | 64 +++++++++++++++++++
+ drivers/crypto/qat/qat_common/adf_sysfs.c     | 23 +------
+ 5 files changed, 73 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/staging/media/sunxi/cedrus/cedrus.c b/drivers/staging/media/sunxi/cedrus/cedrus.c
-index a43d5ff667163..a50a4d0a8f715 100644
---- a/drivers/staging/media/sunxi/cedrus/cedrus.c
-+++ b/drivers/staging/media/sunxi/cedrus/cedrus.c
-@@ -547,6 +547,7 @@ static int cedrus_remove(struct platform_device *pdev)
- {
- 	struct cedrus_dev *dev = platform_get_drvdata(pdev);
+diff --git a/drivers/crypto/qat/qat_common/adf_accel_devices.h b/drivers/crypto/qat/qat_common/adf_accel_devices.h
+index 284f5aad3ee0b..7be933d6f0ffa 100644
+--- a/drivers/crypto/qat/qat_common/adf_accel_devices.h
++++ b/drivers/crypto/qat/qat_common/adf_accel_devices.h
+@@ -310,6 +310,7 @@ struct adf_accel_dev {
+ 			u8 pf_compat_ver;
+ 		} vf;
+ 	};
++	struct mutex state_lock; /* protect state of the device */
+ 	bool is_vf;
+ 	u32 accel_id;
+ };
+diff --git a/drivers/crypto/qat/qat_common/adf_common_drv.h b/drivers/crypto/qat/qat_common/adf_common_drv.h
+index 7189265573c08..4bf1fceb7052b 100644
+--- a/drivers/crypto/qat/qat_common/adf_common_drv.h
++++ b/drivers/crypto/qat/qat_common/adf_common_drv.h
+@@ -58,6 +58,9 @@ void adf_dev_stop(struct adf_accel_dev *accel_dev);
+ void adf_dev_shutdown(struct adf_accel_dev *accel_dev);
+ int adf_dev_shutdown_cache_cfg(struct adf_accel_dev *accel_dev);
  
-+	cancel_delayed_work_sync(&dev->watchdog_work);
- 	if (media_devnode_is_registered(dev->mdev.devnode)) {
- 		media_device_unregister(&dev->mdev);
- 		v4l2_m2m_unregister_media_controller(dev->m2m_dev);
++int adf_dev_up(struct adf_accel_dev *accel_dev, bool init_config);
++int adf_dev_down(struct adf_accel_dev *accel_dev, bool cache_config);
++
+ void adf_devmgr_update_class_index(struct adf_hw_device_data *hw_data);
+ void adf_clean_vf_map(bool);
+ 
+diff --git a/drivers/crypto/qat/qat_common/adf_dev_mgr.c b/drivers/crypto/qat/qat_common/adf_dev_mgr.c
+index 4c752eed10fea..86ee36feefad3 100644
+--- a/drivers/crypto/qat/qat_common/adf_dev_mgr.c
++++ b/drivers/crypto/qat/qat_common/adf_dev_mgr.c
+@@ -223,6 +223,7 @@ int adf_devmgr_add_dev(struct adf_accel_dev *accel_dev,
+ 		map->attached = true;
+ 		list_add_tail(&map->list, &vfs_table);
+ 	}
++	mutex_init(&accel_dev->state_lock);
+ unlock:
+ 	mutex_unlock(&table_lock);
+ 	return ret;
+@@ -269,6 +270,7 @@ void adf_devmgr_rm_dev(struct adf_accel_dev *accel_dev,
+ 		}
+ 	}
+ unlock:
++	mutex_destroy(&accel_dev->state_lock);
+ 	list_del(&accel_dev->list);
+ 	mutex_unlock(&table_lock);
+ }
+diff --git a/drivers/crypto/qat/qat_common/adf_init.c b/drivers/crypto/qat/qat_common/adf_init.c
+index cef7bb8ec0073..988cffd0b8338 100644
+--- a/drivers/crypto/qat/qat_common/adf_init.c
++++ b/drivers/crypto/qat/qat_common/adf_init.c
+@@ -400,3 +400,67 @@ int adf_dev_shutdown_cache_cfg(struct adf_accel_dev *accel_dev)
+ 
+ 	return 0;
+ }
++
++int adf_dev_down(struct adf_accel_dev *accel_dev, bool reconfig)
++{
++	int ret = 0;
++
++	if (!accel_dev)
++		return -EINVAL;
++
++	mutex_lock(&accel_dev->state_lock);
++
++	if (!adf_dev_started(accel_dev)) {
++		dev_info(&GET_DEV(accel_dev), "Device qat_dev%d already down\n",
++			 accel_dev->accel_id);
++		ret = -EINVAL;
++		goto out;
++	}
++
++	if (reconfig) {
++		ret = adf_dev_shutdown_cache_cfg(accel_dev);
++		goto out;
++	}
++
++	adf_dev_stop(accel_dev);
++	adf_dev_shutdown(accel_dev);
++
++out:
++	mutex_unlock(&accel_dev->state_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(adf_dev_down);
++
++int adf_dev_up(struct adf_accel_dev *accel_dev, bool config)
++{
++	int ret = 0;
++
++	if (!accel_dev)
++		return -EINVAL;
++
++	mutex_lock(&accel_dev->state_lock);
++
++	if (adf_dev_started(accel_dev)) {
++		dev_info(&GET_DEV(accel_dev), "Device qat_dev%d already up\n",
++			 accel_dev->accel_id);
++		ret = -EALREADY;
++		goto out;
++	}
++
++	if (config && GET_HW_DATA(accel_dev)->dev_config) {
++		ret = GET_HW_DATA(accel_dev)->dev_config(accel_dev);
++		if (unlikely(ret))
++			goto out;
++	}
++
++	ret = adf_dev_init(accel_dev);
++	if (unlikely(ret))
++		goto out;
++
++	ret = adf_dev_start(accel_dev);
++
++out:
++	mutex_unlock(&accel_dev->state_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(adf_dev_up);
+diff --git a/drivers/crypto/qat/qat_common/adf_sysfs.c b/drivers/crypto/qat/qat_common/adf_sysfs.c
+index e8b078e719c20..3eb6611ab1b11 100644
+--- a/drivers/crypto/qat/qat_common/adf_sysfs.c
++++ b/drivers/crypto/qat/qat_common/adf_sysfs.c
+@@ -50,38 +50,21 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+ 
+ 	switch (ret) {
+ 	case DEV_DOWN:
+-		if (!adf_dev_started(accel_dev)) {
+-			dev_info(dev, "Device qat_dev%d already down\n",
+-				 accel_id);
+-			return -EINVAL;
+-		}
+-
+ 		dev_info(dev, "Stopping device qat_dev%d\n", accel_id);
+ 
+-		ret = adf_dev_shutdown_cache_cfg(accel_dev);
++		ret = adf_dev_down(accel_dev, true);
+ 		if (ret < 0)
+ 			return -EINVAL;
+ 
+ 		break;
+ 	case DEV_UP:
+-		if (adf_dev_started(accel_dev)) {
+-			dev_info(dev, "Device qat_dev%d already up\n",
+-				 accel_id);
+-			return -EINVAL;
+-		}
+-
+ 		dev_info(dev, "Starting device qat_dev%d\n", accel_id);
+ 
+-		ret = GET_HW_DATA(accel_dev)->dev_config(accel_dev);
+-		if (!ret)
+-			ret = adf_dev_init(accel_dev);
+-		if (!ret)
+-			ret = adf_dev_start(accel_dev);
+-
++		ret = adf_dev_up(accel_dev, true);
+ 		if (ret < 0) {
+ 			dev_err(dev, "Failed to start device qat_dev%d\n",
+ 				accel_id);
+-			adf_dev_shutdown_cache_cfg(accel_dev);
++			adf_dev_down(accel_dev, true);
+ 			return ret;
+ 		}
+ 		break;
 -- 
 2.39.2
 
