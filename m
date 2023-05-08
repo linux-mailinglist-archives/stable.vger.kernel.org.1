@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925ED6FA617
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 762A46FAC43
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234310AbjEHKQJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45180 "EHLO
+        id S235606AbjEHLWn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234312AbjEHKQI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:08 -0400
+        with ESMTP id S235618AbjEHLWk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E433ACDB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29AA238F1E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E3F362472
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4006CC433D2;
-        Mon,  8 May 2023 10:16:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D5062CAE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B23C433D2;
+        Mon,  8 May 2023 11:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540966;
-        bh=sF7/9hSzn6I7He+vP/un3tn6wM1DRU3TVYvJjKahI4M=;
+        s=korg; t=1683544947;
+        bh=KAjYB6ti13f9wuDbnoHFG3N9xOQDs7WBjB0qrkRKfxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P3XloNcHasLj8qVYye/r2tuZakGTJsbI7zuf2aK2V1X+w7wdy1pNBLt+wJI+1qIqe
-         VrCSJsmZ5cu1vlBLYLWz4PlLsiPG5LZB8dMUASdjsEIW2Nb1x0it96FuB8VsLFAmyQ
-         9KmDtVaQjkZxcfLp66jEH7XqTKyfwtv9IJxhTjdM=
+        b=pfanL3xPKRwMqpvt+Qh8x/J84YNfMZm788zZIY3YG9mApt7aAH/sLbGPdqxg4dri8
+         TNDhAhbC8Nps6QjlwTzvjzSOGaeYLkiJ5qkyGodsrYYmHVNWM1pFRSMyz3N37EdVli
+         ZwrFKwv9PijzfTjsw/eZEEnLwNzFo2v1/MUjh2PQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 566/611] nilfs2: do not write dirty data after degenerating to read-only
+        patches@lists.linux.dev, Doug Cook <dcook@linux.microsoft.com>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 573/694] tracing/user_events: Ensure write index cannot be negative
 Date:   Mon,  8 May 2023 11:46:48 +0200
-Message-Id: <20230508094440.356747355@linuxfoundation.org>
+Message-Id: <20230508094453.464610229@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,61 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Beau Belgrave <beaub@linux.microsoft.com>
 
-commit 28a65b49eb53e172d23567005465019658bfdb4d upstream.
+[ Upstream commit cd98c93286a30cc4588dfd02453bec63c2f4acf4 ]
 
-According to syzbot's report, mark_buffer_dirty() called from
-nilfs_segctor_do_construct() outputs a warning with some patterns after
-nilfs2 detects metadata corruption and degrades to read-only mode.
+The write index indicates which event the data is for and accesses a
+per-file array. The index is passed by user processes during write()
+calls as the first 4 bytes. Ensure that it cannot be negative by
+returning -EINVAL to prevent out of bounds accesses.
 
-After such read-only degeneration, page cache data may be cleared through
-nilfs_clear_dirty_page() which may also clear the uptodate flag for their
-buffer heads.  However, even after the degeneration, log writes are still
-performed by unmount processing etc., which causes mark_buffer_dirty() to
-be called for buffer heads without the "uptodate" flag and causes the
-warning.
+Update ftrace self-test to ensure this occurs properly.
 
-Since any writes should not be done to a read-only file system in the
-first place, this fixes the warning in mark_buffer_dirty() by letting
-nilfs_segctor_do_construct() abort early if in read-only mode.
+Link: https://lkml.kernel.org/r/20230425225107.8525-2-beaub@linux.microsoft.com
 
-This also changes the retry check of nilfs_segctor_write_out() to avoid
-unnecessary log write retries if it detects -EROFS that
-nilfs_segctor_do_construct() returned.
-
-Link: https://lkml.kernel.org/r/20230427011526.13457-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com
-  Link: https://syzkaller.appspot.com/bug?extid=2af3bc9585be7f23f290
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f5a08c79df3 ("user_events: Add minimal support for trace_event into ftrace")
+Reported-by: Doug Cook <dcook@linux.microsoft.com>
+Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_user.c                  | 3 +++
+ tools/testing/selftests/user_events/ftrace_test.c | 5 +++++
+ 2 files changed, 8 insertions(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2039,6 +2039,9 @@ static int nilfs_segctor_do_construct(st
- 	struct the_nilfs *nilfs = sci->sc_super->s_fs_info;
- 	int err;
+diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
+index 908e8a13c675b..625cab4b9d945 100644
+--- a/kernel/trace/trace_events_user.c
++++ b/kernel/trace/trace_events_user.c
+@@ -1398,6 +1398,9 @@ static ssize_t user_events_write_core(struct file *file, struct iov_iter *i)
+ 	if (unlikely(copy_from_iter(&idx, sizeof(idx), i) != sizeof(idx)))
+ 		return -EFAULT;
  
-+	if (sb_rdonly(sci->sc_super))
-+		return -EROFS;
++	if (idx < 0)
++		return -EINVAL;
 +
- 	nilfs_sc_cstage_set(sci, NILFS_ST_INIT);
- 	sci->sc_cno = nilfs->ns_cno;
+ 	rcu_read_lock_sched();
  
-@@ -2722,7 +2725,7 @@ static void nilfs_segctor_write_out(stru
- 
- 		flush_work(&sci->sc_iput_work);
- 
--	} while (ret && retrycount-- > 0);
-+	} while (ret && ret != -EROFS && retrycount-- > 0);
+ 	refs = rcu_dereference_sched(info->refs);
+diff --git a/tools/testing/selftests/user_events/ftrace_test.c b/tools/testing/selftests/user_events/ftrace_test.c
+index 404a2713dcae8..1bc26e6476fc3 100644
+--- a/tools/testing/selftests/user_events/ftrace_test.c
++++ b/tools/testing/selftests/user_events/ftrace_test.c
+@@ -294,6 +294,11 @@ TEST_F(user, write_events) {
+ 	ASSERT_NE(-1, writev(self->data_fd, (const struct iovec *)io, 3));
+ 	after = trace_bytes();
+ 	ASSERT_GT(after, before);
++
++	/* Negative index should fail with EINVAL */
++	reg.write_index = -1;
++	ASSERT_EQ(-1, writev(self->data_fd, (const struct iovec *)io, 3));
++	ASSERT_EQ(EINVAL, errno);
  }
  
- /**
+ TEST_F(user, write_fault) {
+-- 
+2.39.2
+
 
 
