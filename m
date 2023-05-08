@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F15A26FAAE1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A0E76FA4B7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbjEHLHp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45926 "EHLO
+        id S233934AbjEHKCv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233703AbjEHLHC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:02 -0400
+        with ESMTP id S233952AbjEHKCt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E6F7AA6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C372EB02
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C093262A6A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF50C433EF;
-        Mon,  8 May 2023 11:06:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8546622E3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF71C433EF;
+        Mon,  8 May 2023 10:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543977;
-        bh=5f4nbK/hrp9CBAgQU0bptYs6wAEMK8Dc/y0MRXxliYw=;
+        s=korg; t=1683540150;
+        bh=0Z6DdtMkGxTiNOX7sZiAy6z98nFMchSsQYeqYLcH8TY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QtMQZ11E9X/+sSEY61SXozZIAyEVt2kf4yps9Fiht9fqq0RuGjkVmFsRFzu5HlLaB
-         dN65wznlGUSf7Jn5eeD2vrrP7pstKYB4nRLNF26rwm9KajSRPdlD7HDNPdAaRD9xI1
-         pIXs5RKI/uS5Qon2VEUe3OPOhX49ezmDmNqApgGw=
+        b=mLHngf3sRm7+Qs3SNuOtYQ+WeHlmz8MDecJzLh3KXXTxfO1hB3lM3Aaiz37Eb5iGr
+         Mjqj4mmaIPr0OjIotxbpgOp3yvS5A8S0vkl4GH3OjzhpLgHU3lHrchqXDNHVTAKk9E
+         ERyGzyfPDq54OCIR13AuqdmmJos0W/fmfyZdFMPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Akhil P Oommen <quic_akhilpo@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 263/694] Revert "drm/msm: Fix failure paths in msm_drm_init()"
+Subject: [PATCH 6.1 256/611] media: mediatek: vcodec: fix decoder disable pm crash
 Date:   Mon,  8 May 2023 11:41:38 +0200
-Message-Id: <20230508094440.813452029@linuxfoundation.org>
+Message-Id: <20230508094430.746076362@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,100 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit 652eadfde81031c7b3d8b21bdbcfdd6eb217dec8 ]
+[ Upstream commit 9d2f13fb47dcab6d094f34ecfd6a879a409722b3 ]
 
-This reverts commit 8636500300a01740d92b345c680b036b94555b1b.
+Can't call pm_runtime_disable when the architecture support sub device for
+'dev->pm.dev' is NUll, or will get below crash log.
 
-A recent commit tried to address a drm device leak in the early
-msm_drm_uninit() error paths but ended up making things worse.
+[   10.771551] pc : _raw_spin_lock_irq+0x4c/0xa0
+[   10.771556] lr : __pm_runtime_disable+0x30/0x130
+[   10.771558] sp : ffffffc01e4cb800
+[   10.771559] x29: ffffffc01e4cb800 x28: ffffffdf082108a8
+[   10.771563] x27: ffffffc01e4cbd70 x26: ffffff8605df55f0
+[   10.771567] x25: 0000000000000002 x24: 0000000000000002
+[   10.771570] x23: ffffff85c0dc9c00 x22: 0000000000000001
+[   10.771573] x21: 0000000000000001 x20: 0000000000000000
+[   10.771577] x19: 00000000000000f4 x18: ffffffdf2e9fbe18
+[   10.771580] x17: 0000000000000000 x16: ffffffdf2df13c74
+[   10.771583] x15: 00000000000002ea x14: 0000000000000058
+[   10.771587] x13: ffffffdf2de1b62c x12: ffffffdf2e9e30e4
+[   10.771590] x11: 0000000000000000 x10: 0000000000000001
+[   10.771593] x9 : 0000000000000000 x8 : 00000000000000f4
+[   10.771596] x7 : 6bff6264632c6264 x6 : 0000000000008000
+[   10.771600] x5 : 0080000000000000 x4 : 0000000000000001
+[   10.771603] x3 : 0000000000000008 x2 : 0000000000000001
+[   10.771608] x1 : 0000000000000000 x0 : 00000000000000f4
+[   10.771613] Call trace:
+[   10.771617]  _raw_spin_lock_irq+0x4c/0xa0
+[   10.771620]  __pm_runtime_disable+0x30/0x130
+[   10.771657]  mtk_vcodec_probe+0x69c/0x728 [mtk_vcodec_dec 800cc929d6631f79f9b273254c8db94d0d3500dc]
+[   10.771662]  platform_drv_probe+0x9c/0xbc
+[   10.771665]  really_probe+0x13c/0x3a0
+[   10.771668]  driver_probe_device+0x84/0xc0
+[   10.771671]  device_driver_attach+0x54/0x78
 
-Specifically, it moved the drm device reference put in msm_drm_uninit()
-to msm_drm_init() which means that the drm would now be leaked on normal
-unbind.
-
-For reasons that were never spelled out, it also added kms NULL pointer
-checks to a couple of helper functions that had nothing to do with the
-paths modified by the patch.
-
-Instead of trying to salvage this incrementally, let's revert the bad
-commit so that clean and backportable fixes can be added in its place.
-
-Fixes: 8636500300a0 ("drm/msm: Fix failure paths in msm_drm_init()")
-Cc: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525092/
-Link: https://lore.kernel.org/r/20230306100722.28485-3-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: ba31a5b39400 ("media: mtk-vcodec: Remove mtk_vcodec_release_dec_pm")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/msm_disp_snapshot.c |  3 ---
- drivers/gpu/drm/msm/msm_drv.c                | 11 ++++-------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot.c
-index b73031cd48e48..e75b97127c0d1 100644
---- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot.c
-+++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot.c
-@@ -129,9 +129,6 @@ void msm_disp_snapshot_destroy(struct drm_device *drm_dev)
- 	}
- 
- 	priv = drm_dev->dev_private;
--	if (!priv->kms)
--		return;
--
- 	kms = priv->kms;
- 
- 	if (kms->dump_worker)
-diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
-index b7f5a78eadd4a..9ded384acba46 100644
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -150,9 +150,6 @@ static void msm_irq_uninstall(struct drm_device *dev)
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct msm_kms *kms = priv->kms;
- 
--	if (!priv->kms)
--		return;
--
- 	kms->funcs->irq_uninstall(kms);
- 	if (kms->irq_requested)
- 		free_irq(kms->irq, dev);
-@@ -270,6 +267,8 @@ static int msm_drm_uninit(struct device *dev)
- 	component_unbind_all(dev, ddev);
- 
- 	ddev->dev_private = NULL;
-+	drm_dev_put(ddev);
-+
- 	destroy_workqueue(priv->wq);
- 
- 	return 0;
-@@ -442,12 +441,12 @@ static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
- 
- 	ret = msm_init_vram(ddev);
- 	if (ret)
--		goto err_drm_dev_put;
-+		return ret;
- 
- 	/* Bind all our sub-components: */
- 	ret = component_bind_all(dev, ddev);
- 	if (ret)
--		goto err_drm_dev_put;
-+		return ret;
- 
- 	dma_set_max_seg_size(dev, UINT_MAX);
- 
-@@ -542,8 +541,6 @@ static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
- 
- err_msm_uninit:
- 	msm_drm_uninit(dev);
--err_drm_dev_put:
--	drm_dev_put(ddev);
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
+index 174a6eec2f549..42df901e8beb4 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
+@@ -451,7 +451,8 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
+ 	if (IS_VDEC_LAT_ARCH(dev->vdec_pdata->hw_arch))
+ 		destroy_workqueue(dev->core_workqueue);
+ err_res:
+-	pm_runtime_disable(dev->pm.dev);
++	if (!dev->vdec_pdata->is_subdev_supported)
++		pm_runtime_disable(dev->pm.dev);
+ err_dec_pm:
+ 	mtk_vcodec_fw_release(dev->fw_handler);
  	return ret;
- }
- 
 -- 
 2.39.2
 
