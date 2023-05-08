@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CFF26FAC92
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B2346FAE45
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233976AbjEHL0C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41178 "EHLO
+        id S236220AbjEHLnS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjEHLZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:49 -0400
+        with ESMTP id S236189AbjEHLmt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:42:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6923B79C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45284106F8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AFB562D81
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE42AC433D2;
-        Mon,  8 May 2023 11:25:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A338635B1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C0DC433D2;
+        Mon,  8 May 2023 11:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545134;
-        bh=jFohSHbQ90/0FsrPv3Uz84Ua7EONv3eJb+p8ynrSSB4=;
+        s=korg; t=1683546135;
+        bh=wIFUqvJbRZ+Q1vPmpZKdn//Qt0aV7xG+4JhYuig5e5U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vW6nYgCjqiGlZLtbF+kdRvbDMtlC81eKhyGI6GXNrGdaJTFZeSUFmoJYKHNQ017SK
-         F13EtDBKIkN1YlDKLFKiPofc2u6G48nD8o30fDBuzmVd78wUC29gy+tko8cboHWd2s
-         g4OPnfm2T1oJ9PF8ZVTEI0Sjyc+ds0SRX5Oy5e0o=
+        b=j3q66T1r2dSw7N1LGLX/8c9jouO7peRucDsKwSynOuubYR6xKcI7W2PzlAFepGeDu
+         GVhG2TMvBSmzpEmgyeJCT+8Le78bw0cgKFWCjyyRUjKt/qBvJRI9jkGOLsch9kezLO
+         dbfTAIXFN+6GfdGJbZe+jk40B913mAZvpfVzSRf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hai Pham <hai.pham.ud@renesas.com>,
-        LUU HOAI <hoai.luu.ub@renesas.com>,
+        patches@lists.linux.dev,
         Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 635/694] pinctrl: renesas: r8a779a0: Remove incorrect AVB[01] pinmux configuration
+Subject: [PATCH 5.15 269/371] sh: sq: Fix incorrect element size for allocating bitmap buffer
 Date:   Mon,  8 May 2023 11:47:50 +0200
-Message-Id: <20230508094456.295179222@linuxfoundation.org>
+Message-Id: <20230508094822.729063949@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hai Pham <hai.pham.ud@renesas.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-[ Upstream commit a145c9a8674ac8fbfa1595276e1b6cbfc5139038 ]
+[ Upstream commit 80f746e2bd0e1da3fdb49a53570e54a1a225faac ]
 
-AVB[01]_{MAGIC,MDC,MDIO,TXCREFCLK} are registered as both
-PINMUX_SINGLE(fn) and PINMUX_IPSR_GPSR(fn) in the pinmux_data array.
+The Store Queue code allocates a bitmap buffer with the size of
+multiple of sizeof(long) in sq_api_init(). While the buffer size
+is calculated correctly, the code uses the wrong element size to
+allocate the buffer which results in the allocated bitmap buffer
+being too small.
 
-The latter are correct, hence remove the former.
-Without this fix, the Ethernet PHY is not operational on the MDIO bus.
+Fix this by allocating the buffer with kcalloc() with element size
+sizeof(long) instead of kzalloc() whose elements size defaults to
+sizeof(char).
 
-Signed-off-by: Hai Pham <hai.pham.ud@renesas.com>
-Signed-off-by: LUU HOAI <hoai.luu.ub@renesas.com>
-Fixes: 741a7370fc3b8b54 ("pinctrl: renesas: Initial R8A779A0 (V3U) PFC support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/6fd217b71e83ba9a8157513ed671a1fa218b23b6.1674824958.git.geert+renesas@glider.be
+Fixes: d7c30c682a27 ("sh: Store Queue API rework.")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230419114854.528677-1-glaubitz@physik.fu-berlin.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779a0.c | 8 --------
- 1 file changed, 8 deletions(-)
+ arch/sh/kernel/cpu/sh4/sq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779a0.c b/drivers/pinctrl/renesas/pfc-r8a779a0.c
-index 760c83a8740bd..6069869353bb4 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779a0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779a0.c
-@@ -696,16 +696,8 @@ static const u16 pinmux_data[] = {
- 	PINMUX_SINGLE(PCIE0_CLKREQ_N),
+diff --git a/arch/sh/kernel/cpu/sh4/sq.c b/arch/sh/kernel/cpu/sh4/sq.c
+index d432164b23b7c..c31ec0fea3003 100644
+--- a/arch/sh/kernel/cpu/sh4/sq.c
++++ b/arch/sh/kernel/cpu/sh4/sq.c
+@@ -381,7 +381,7 @@ static int __init sq_api_init(void)
+ 	if (unlikely(!sq_cache))
+ 		return ret;
  
- 	PINMUX_SINGLE(AVB0_PHY_INT),
--	PINMUX_SINGLE(AVB0_MAGIC),
--	PINMUX_SINGLE(AVB0_MDC),
--	PINMUX_SINGLE(AVB0_MDIO),
--	PINMUX_SINGLE(AVB0_TXCREFCLK),
+-	sq_bitmap = kzalloc(size, GFP_KERNEL);
++	sq_bitmap = kcalloc(size, sizeof(long), GFP_KERNEL);
+ 	if (unlikely(!sq_bitmap))
+ 		goto out;
  
- 	PINMUX_SINGLE(AVB1_PHY_INT),
--	PINMUX_SINGLE(AVB1_MAGIC),
--	PINMUX_SINGLE(AVB1_MDC),
--	PINMUX_SINGLE(AVB1_MDIO),
--	PINMUX_SINGLE(AVB1_TXCREFCLK),
- 
- 	PINMUX_SINGLE(AVB2_AVTP_PPS),
- 	PINMUX_SINGLE(AVB2_AVTP_CAPTURE),
 -- 
 2.39.2
 
