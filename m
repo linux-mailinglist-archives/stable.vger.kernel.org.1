@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB026FADF7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E93B6FAC4C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235890AbjEHLkI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
+        id S235614AbjEHLXG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236164AbjEHLjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:35 -0400
+        with ESMTP id S235572AbjEHLXE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53EC3F2DC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F49B391AE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7446B6341A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8ABC433EF;
-        Mon,  8 May 2023 11:39:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13E2162CD2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E07C433EF;
+        Mon,  8 May 2023 11:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545959;
-        bh=aiNiJIZSLZWF4BaIO4yHWsK7WdRl7o8Uh6ED2byGR9Q=;
+        s=korg; t=1683544974;
+        bh=FW0MD4duk7G0ZQQxdSx03KTE3SPBbXr9x06v/eNL08M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ytGrSQSmCBuEksYtKMtoop1c/MguuHEA5iHf4PiejWbHt0jGF+Vfv2uBmQgz5uBQd
-         97iFxNcAbPGSn3zE8XFrMCo/G9NmFEnyWt/9E/HB4SN0atf9xKAb0h8Wz0P7mgun9k
-         f6p1bcz9Z1JTKZqs9XPzs0R8lUOXh54D4wDRYYpw=
+        b=bbo4DPiAZHahs2g/Q5H82XC8RI1t3KUajmBbmuV2tcOgDUrhuv9v3Zn7G/2AlNrQZ
+         eX5oMqtZJPk1F8iSOhN4ldhVphA0KqID/MyvyhVSRUhgD20SN/9ddFkGzcELLGHWj4
+         56acO3/J+8h07K7iUjVXAFeMjzhh1tHuWtxJWMWw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Yu Kuai <yukuai3@huawei.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/371] md/raid10: dont call bio_start_io_acct twice for bio which experienced read error
+        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 576/694] RDMA/siw: Fix potential page_array out of range access
 Date:   Mon,  8 May 2023 11:46:51 +0200
-Message-Id: <20230508094820.394430028@linuxfoundation.org>
+Message-Id: <20230508094453.591927553@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,48 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 7cddb055bfda5f7b0be931e8ea750fc28bc18a27 ]
+[ Upstream commit 271bfcfb83a9f77cbae3d6e1a16e3c14132922f0 ]
 
-handle_read_error() will resumit r10_bio by raid10_read_request(), which
-will call bio_start_io_acct() again, while bio_end_io_acct() will only
-be called once.
+When seg is equal to MAX_ARRAY, the loop should break, otherwise
+it will result in out of range access.
 
-Fix the problem by don't account io again from handle_read_error().
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
-Suggested-by: Song Liu <song@kernel.org>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230314012258.2395894-1-yukuai1@huaweicloud.com
+Fixes: b9be6f18cf9e ("rdma/siw: transmit path")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://lore.kernel.org/r/20230227091751.589612-1-d.dulov@aladdin.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/siw/siw_qp_tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 9fc9198fc5c4f..5df5e7df6069c 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1216,7 +1216,8 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	}
- 	slot = r10_bio->read_slot;
+diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
+index 05052b49107f2..6bb9e9e81ff4c 100644
+--- a/drivers/infiniband/sw/siw/siw_qp_tx.c
++++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+@@ -558,7 +558,7 @@ static int siw_tx_hdt(struct siw_iwarp_tx *c_tx, struct socket *s)
+ 			data_len -= plen;
+ 			fp_off = 0;
  
--	if (blk_queue_io_stat(bio->bi_bdev->bd_disk->queue))
-+	if (!r10_bio->start_time &&
-+	    blk_queue_io_stat(bio->bi_bdev->bd_disk->queue))
- 		r10_bio->start_time = bio_start_io_acct(bio);
- 	read_bio = bio_clone_fast(bio, gfp, &mddev->bio_set);
- 
-@@ -1550,6 +1551,7 @@ static void __make_request(struct mddev *mddev, struct bio *bio, int sectors)
- 	r10_bio->sector = bio->bi_iter.bi_sector;
- 	r10_bio->state = 0;
- 	r10_bio->read_slot = -1;
-+	r10_bio->start_time = 0;
- 	memset(r10_bio->devs, 0, sizeof(r10_bio->devs[0]) *
- 			conf->geo.raid_disks);
- 
+-			if (++seg > (int)MAX_ARRAY) {
++			if (++seg >= (int)MAX_ARRAY) {
+ 				siw_dbg_qp(tx_qp(c_tx), "to many fragments\n");
+ 				siw_unmap_pages(iov, kmap_mask, seg-1);
+ 				wqe->processed -= c_tx->bytes_unsent;
 -- 
 2.39.2
 
