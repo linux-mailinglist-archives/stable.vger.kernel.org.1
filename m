@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EBED6FAB34
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8A96FA828
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233781AbjEHLKf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45874 "EHLO
+        id S234916AbjEHKiI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233850AbjEHLKX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C21534133
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:22 -0700 (PDT)
+        with ESMTP id S234838AbjEHKh4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:37:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 820492D417
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:37:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5B8762B41
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A39C4339B;
-        Mon,  8 May 2023 11:10:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1213862807
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:37:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AE0C4339C;
+        Mon,  8 May 2023 10:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544221;
-        bh=qyyPlVsgzeq49LuCrJDjq9+rJyja6bS0cfDPV+OUx50=;
+        s=korg; t=1683542270;
+        bh=ZqLfoduxLfHQFahstZ6eoMAgcXnV652PpVU7JyiSIvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZHE2AX1VNITwdNJu4pB/n262kmO4lXs6HyXrKVw6FNMX9LzfWHN2gkaSJv6qXl/r3
-         TvHEMLXmUh6BcjYfdIrmSi4aHpqwDHXS9bByeWlsyk/Lfvco8KGHNl8F16zACJghh9
-         oAtbBs+OI80KxPiwvV6NwU4jcAXlfVnj4TZdgPVE=
+        b=puY6rNeAJ0wU5g2szeQNpGin8hdQWYvGQ7bda2aQVrDNL7WoJwcdhgdbXb1GDNi6H
+         fDwb08DMNnt4QuigsMv05YC8nxB7ZKYUYmFJw4C0F4/m3DnlEpYKTz0lALUP/6Lqjr
+         Zp3jIoA3rdeC0y5wUm32eLBzVe8cPfSD4C+osugM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev,
+        Chengming Zhou <zhouchengming@bytedance.com>,
+        Feng Zhou <zhoufeng.zf@bytedance.com>,
         Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 340/694] selftests/bpf: Fix flaky fib_lookup test
+        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 349/663] bpf/btf: Fix is_int_ptr()
 Date:   Mon,  8 May 2023 11:42:55 +0200
-Message-Id: <20230508094443.540009604@linuxfoundation.org>
+Message-Id: <20230508094439.474799956@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,79 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Feng Zhou <zhoufeng.zf@bytedance.com>
 
-[ Upstream commit a6865576317f6249f3f83cf4c10ab56e627ee153 ]
+[ Upstream commit 91f2dc6838c19342f7f2993627c622835cc24890 ]
 
-There is a report that fib_lookup test is flaky when running in parallel.
-A symptom of slowness or delay. An example:
+When tracing a kernel function with arg type is u32*, btf_ctx_access()
+would report error: arg2 type INT is not a struct.
 
-Testing IPv6 stale neigh
-set_lookup_params:PASS:inet_pton(IPV6_IFACE_ADDR) 0 nsec
-test_fib_lookup:PASS:bpf_prog_test_run_opts 0 nsec
-test_fib_lookup:FAIL:fib_lookup_ret unexpected fib_lookup_ret: actual 0 != expected 7
-test_fib_lookup:FAIL:dmac not match unexpected dmac not match: actual 1 != expected 0
-dmac expected 11:11:11:11:11:11 actual 00:00:00:00:00:00
+The commit bb6728d75611 ("bpf: Allow access to int pointer arguments
+in tracing programs") added support for int pointer, but did not skip
+modifiers before checking it's type. This patch fixes it.
 
-[ Note that the "fib_lookup_ret unexpected fib_lookup_ret actual 0 ..."
-  is reversed in terms of expected and actual value. Fixing in this
-  patch also. ]
-
-One possibility is the testing stale neigh entry was marked dead by the
-gc (in neigh_periodic_work). The default gc_stale_time sysctl is 60s.
-This patch increases it to 15 mins.
-
-It also:
-
-- fixes the reversed arg (actual vs expected) in one of the
-  ASSERT_EQ test
-- removes the nodad command arg when adding v4 neigh entry which
-  currently has a warning.
-
-Fixes: 168de0233586 ("selftests/bpf: Add bpf_fib_lookup test")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: bb6728d75611 ("bpf: Allow access to int pointer arguments in tracing programs")
+Co-developed-by: Chengming Zhou <zhouchengming@bytedance.com>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Signed-off-by: Feng Zhou <zhoufeng.zf@bytedance.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230309060244.3242491-1-martin.lau@linux.dev
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230410085908.98493-2-zhoufeng.zf@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/fib_lookup.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ kernel/bpf/btf.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fib_lookup.c b/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
-index 429393caf6122..a1e7121058118 100644
---- a/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
-@@ -54,11 +54,19 @@ static int setup_netns(void)
- 	SYS(fail, "ip link add veth1 type veth peer name veth2");
- 	SYS(fail, "ip link set dev veth1 up");
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 70ab572f81bc7..7f18d48c4a15b 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -5848,12 +5848,8 @@ struct btf *bpf_prog_get_target_btf(const struct bpf_prog *prog)
  
-+	err = write_sysctl("/proc/sys/net/ipv4/neigh/veth1/gc_stale_time", "900");
-+	if (!ASSERT_OK(err, "write_sysctl(net.ipv4.neigh.veth1.gc_stale_time)"))
-+		goto fail;
-+
-+	err = write_sysctl("/proc/sys/net/ipv6/neigh/veth1/gc_stale_time", "900");
-+	if (!ASSERT_OK(err, "write_sysctl(net.ipv6.neigh.veth1.gc_stale_time)"))
-+		goto fail;
-+
- 	SYS(fail, "ip addr add %s/64 dev veth1 nodad", IPV6_IFACE_ADDR);
- 	SYS(fail, "ip neigh add %s dev veth1 nud failed", IPV6_NUD_FAILED_ADDR);
- 	SYS(fail, "ip neigh add %s dev veth1 lladdr %s nud stale", IPV6_NUD_STALE_ADDR, DMAC);
+ static bool is_int_ptr(struct btf *btf, const struct btf_type *t)
+ {
+-	/* t comes in already as a pointer */
+-	t = btf_type_by_id(btf, t->type);
+-
+-	/* allow const */
+-	if (BTF_INFO_KIND(t->info) == BTF_KIND_CONST)
+-		t = btf_type_by_id(btf, t->type);
++	/* skip modifiers */
++	t = btf_type_skip_modifiers(btf, t->type, NULL);
  
--	SYS(fail, "ip addr add %s/24 dev veth1 nodad", IPV4_IFACE_ADDR);
-+	SYS(fail, "ip addr add %s/24 dev veth1", IPV4_IFACE_ADDR);
- 	SYS(fail, "ip neigh add %s dev veth1 nud failed", IPV4_NUD_FAILED_ADDR);
- 	SYS(fail, "ip neigh add %s dev veth1 lladdr %s nud stale", IPV4_NUD_STALE_ADDR, DMAC);
- 
-@@ -158,7 +166,7 @@ void test_fib_lookup(void)
- 		if (!ASSERT_OK(err, "bpf_prog_test_run_opts"))
- 			continue;
- 
--		ASSERT_EQ(tests[i].expected_ret, skel->bss->fib_lookup_ret,
-+		ASSERT_EQ(skel->bss->fib_lookup_ret, tests[i].expected_ret,
- 			  "fib_lookup_ret");
- 
- 		ret = memcmp(tests[i].dmac, fib_params->dmac, sizeof(tests[i].dmac));
+ 	return btf_type_is_int(t);
+ }
 -- 
 2.39.2
 
