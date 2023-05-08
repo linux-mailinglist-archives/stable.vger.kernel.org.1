@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E686FA5B1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D1D6FA8DC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234238AbjEHKM2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:12:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40716 "EHLO
+        id S235037AbjEHKp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234232AbjEHKMU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:20 -0400
+        with ESMTP id S235039AbjEHKpb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5495D3ACC1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D5227F14
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C2AE623EA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B38C433EF;
-        Mon,  8 May 2023 10:12:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 39D846288E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297EFC433EF;
+        Mon,  8 May 2023 10:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540724;
-        bh=FW0MD4duk7G0ZQQxdSx03KTE3SPBbXr9x06v/eNL08M=;
+        s=korg; t=1683542690;
+        bh=Vl5hFgP8MYg0x/vOx8uph7RhIvyY1UHjcUzoV6BWXug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NxPAMY2lxRLIuSqGfSLzQxiqNMlI5pD4jqK9CqL3zxzlLVsKDeEIymIV4Iu7ba9Ez
-         rVl6YYmKI5+tvuhCCrZMLo1I1CVD4i667cIABhti8fbdgQewTpqIOgA3IN2HqAZDs1
-         yJcUytrNuZBBOW+1Ewj40DSACcJPgOMxcXUKz5H4=
+        b=0Xe329qRD7jEuvMUIkTzWaYvDFlE6q1xA2ynN8yedPFXj+c/pkluZu3QFcxdca5rQ
+         F6/CEXXjWeNqdMtcPxBEM5V8gyHNBlTTDE6UkobqfdSqq/fnTfZ0rJwxBPUmVmgFOb
+         Fgo+AUfg4/5TdO5iCtFb+w27nafF3CV9gss3DoSI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 473/611] RDMA/siw: Fix potential page_array out of range access
+Subject: [PATCH 6.2 489/663] sh: sq: Fix incorrect element size for allocating bitmap buffer
 Date:   Mon,  8 May 2023 11:45:15 +0200
-Message-Id: <20230508094437.478003079@linuxfoundation.org>
+Message-Id: <20230508094444.277595233@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-[ Upstream commit 271bfcfb83a9f77cbae3d6e1a16e3c14132922f0 ]
+[ Upstream commit 80f746e2bd0e1da3fdb49a53570e54a1a225faac ]
 
-When seg is equal to MAX_ARRAY, the loop should break, otherwise
-it will result in out of range access.
+The Store Queue code allocates a bitmap buffer with the size of
+multiple of sizeof(long) in sq_api_init(). While the buffer size
+is calculated correctly, the code uses the wrong element size to
+allocate the buffer which results in the allocated bitmap buffer
+being too small.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix this by allocating the buffer with kcalloc() with element size
+sizeof(long) instead of kzalloc() whose elements size defaults to
+sizeof(char).
 
-Fixes: b9be6f18cf9e ("rdma/siw: transmit path")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://lore.kernel.org/r/20230227091751.589612-1-d.dulov@aladdin.ru
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: d7c30c682a27 ("sh: Store Queue API rework.")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230419114854.528677-1-glaubitz@physik.fu-berlin.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_qp_tx.c | 2 +-
+ arch/sh/kernel/cpu/sh4/sq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
-index 05052b49107f2..6bb9e9e81ff4c 100644
---- a/drivers/infiniband/sw/siw/siw_qp_tx.c
-+++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
-@@ -558,7 +558,7 @@ static int siw_tx_hdt(struct siw_iwarp_tx *c_tx, struct socket *s)
- 			data_len -= plen;
- 			fp_off = 0;
+diff --git a/arch/sh/kernel/cpu/sh4/sq.c b/arch/sh/kernel/cpu/sh4/sq.c
+index a76b94e41e913..8ddfe9989f5fc 100644
+--- a/arch/sh/kernel/cpu/sh4/sq.c
++++ b/arch/sh/kernel/cpu/sh4/sq.c
+@@ -382,7 +382,7 @@ static int __init sq_api_init(void)
+ 	if (unlikely(!sq_cache))
+ 		return ret;
  
--			if (++seg > (int)MAX_ARRAY) {
-+			if (++seg >= (int)MAX_ARRAY) {
- 				siw_dbg_qp(tx_qp(c_tx), "to many fragments\n");
- 				siw_unmap_pages(iov, kmap_mask, seg-1);
- 				wqe->processed -= c_tx->bytes_unsent;
+-	sq_bitmap = kzalloc(size, GFP_KERNEL);
++	sq_bitmap = kcalloc(size, sizeof(long), GFP_KERNEL);
+ 	if (unlikely(!sq_bitmap))
+ 		goto out;
+ 
 -- 
 2.39.2
 
