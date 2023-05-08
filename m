@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4EF6FA89A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CECF6FAD34
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234981AbjEHKnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
+        id S235996AbjEHLcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235011AbjEHKme (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58822C3EF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:39 -0700 (PDT)
+        with ESMTP id S235949AbjEHLbs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:31:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0953D219
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:31:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F09AB6282E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C05C4339B;
-        Mon,  8 May 2023 10:41:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CA75630D6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:31:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C936C4339E;
+        Mon,  8 May 2023 11:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542497;
-        bh=a6KVxWyFJmvVYaTUpdceDWmvq1P4nLUv0D+8lOnTf4E=;
+        s=korg; t=1683545463;
+        bh=JA25SojDqvxn16AwM279tF7choKsE7axMyHFEfL8Kug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CACgECfNKB2C89sJ3RuAR8SQ65nIZauy5H+aTLIGNCP4k/qYXntmcHyAkODwo03Qh
-         kCXo8DeO4lTg/H2G0AoegQgp85YlCvN5lCD5pLD2giXAvpItNSQ1F5rvrUfUNXlkHT
-         WlmMSwzXN8Itp+SYgTP4LyGSL6wtrihbiobb5ixA=
+        b=0Kp639/08fx9WflW1kff8Tc3IHBWVR9/1volXvxhw6tl9PB//98n5x3kD05dHG/sC
+         0IEYLF6VGDToWg2iT9pJXpOheakaUyoEI4AyMTr6Kda2WN6wkVLjh2DBQaX7rjI+Hy
+         QTTD/gZV8VQDI3AZ5o5WEincvonav4QutBf0QdhQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
-        Yan Wang <rk.code@outlook.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 423/663] net: stmmac:fix system hang when setting up tag_8021q VLAN for DSA ports
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.15 048/371] ksmbd: fix memleak in session setup
 Date:   Mon,  8 May 2023 11:44:09 +0200
-Message-Id: <20230508094441.807107377@linuxfoundation.org>
+Message-Id: <20230508094813.969651242@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,76 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yan Wang <rk.code@outlook.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 35226750f7ab9d49140d95bc7d38a2a9b0f4fdfc ]
+commit 6d7cb549c2ca20e1f07593f15e936fd54b763028 upstream.
 
-The system hang because of dsa_tag_8021q_port_setup()->
-				stmmac_vlan_rx_add_vid().
+If client send session setup request with unknown NTLMSSP message type,
+session that does not included channel can be created. It will cause
+session memleak. because ksmbd_sessions_deregister() does not destroy
+session if channel is not included. This patch return error response if
+client send the request unknown NTLMSSP message type.
 
-I found in stmmac_drv_probe() that cailing pm_runtime_put()
-disabled the clock.
-
-First, when the kernel is compiled with CONFIG_PM=y,The stmmac's
-resume/suspend is active.
-
-Secondly,stmmac as DSA master,the dsa_tag_8021q_port_setup() function
-will callback stmmac_vlan_rx_add_vid when DSA dirver starts. However,
-The system is hanged for the stmmac_vlan_rx_add_vid() accesses its
-registers after stmmac's clock is closed.
-
-I would suggest adding the pm_runtime_resume_and_get() to the
-stmmac_vlan_rx_add_vid().This guarantees that resuming clock output
-while in use.
-
-Fixes: b3dcb3127786 ("net: stmmac: correct clocks enabled in stmmac_vlan_rx_kill_vid()")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Yan Wang <rk.code@outlook.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20593
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/ksmbd/smb2pdu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 014ce97f96b15..d0e64c1ab9a55 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6348,6 +6348,10 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
- 	bool is_double = false;
- 	int ret;
- 
-+	ret = pm_runtime_resume_and_get(priv->device);
-+	if (ret < 0)
-+		return ret;
-+
- 	if (be16_to_cpu(proto) == ETH_P_8021AD)
- 		is_double = true;
- 
-@@ -6355,16 +6359,18 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
- 	ret = stmmac_vlan_update(priv, is_double);
- 	if (ret) {
- 		clear_bit(vid, priv->active_vlans);
--		return ret;
-+		goto err_pm_put;
- 	}
- 
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
- 		if (ret)
--			return ret;
-+			goto err_pm_put;
- 	}
-+err_pm_put:
-+	pm_runtime_put(priv->device);
- 
--	return 0;
-+	return ret;
- }
- 
- static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
--- 
-2.39.2
-
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1786,6 +1786,10 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 				}
+ 				kfree(sess->Preauth_HashValue);
+ 				sess->Preauth_HashValue = NULL;
++			} else {
++				pr_info_ratelimited("Unknown NTLMSSP message type : 0x%x\n",
++						le32_to_cpu(negblob->MessageType));
++				rc = -EINVAL;
+ 			}
+ 		} else {
+ 			/* TODO: need one more negotiation */
 
 
