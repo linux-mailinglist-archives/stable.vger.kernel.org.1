@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7DC6FA599
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 539B26FAD6D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234183AbjEHKLP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:11:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39130 "EHLO
+        id S235910AbjEHLfA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234181AbjEHKLN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6620A3988D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:12 -0700 (PDT)
+        with ESMTP id S234002AbjEHLem (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE783EDB9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B29DA623D5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E55C433D2;
-        Mon,  8 May 2023 10:11:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC58F630EE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15F6C433EF;
+        Mon,  8 May 2023 11:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540671;
-        bh=qJukvqPquSrirTjGJMUxCsM2M72GFAlS7tjQZ05IVZQ=;
+        s=korg; t=1683545565;
+        bh=oRZYP3fl9VvAQMvBV6hIb/dLpZUR47uxCxsZ5EQ20/g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=shGhZlZHP/QV14Z333OvPhkJozb421ZMRTbYaKbSyWFFS+jxuOt2kIYXmJahls4pw
-         SR7vUJEz7YFNaoanpq3dGrPrnXCGRYBqx0eJfrfxvefkHnA+7ufCGxeDDR+urU9Qgi
-         cqVmwGl/sYELL0vMAYCmeAYIqtqIowwV4rjRo57I=
+        b=Thx9PlaTT0BiSgsIApu3lxcMl7iroHGGwrDKbXP6SBNz4XZfGlRGHgVERxispNhaj
+         ZgbxPOe1D6yZecDqvvpUvzhKu362XutgVeXjZk2LYK2tQVCy1Tpn2xdZRvg9pqnf7r
+         TC02sTVoNWg2n8JnEElfMkhO9Vec1w+PmmtYNZlE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 422/611] ia64: mm/contig: fix section mismatch warning/error
-Date:   Mon,  8 May 2023 11:44:24 +0200
-Message-Id: <20230508094435.929499239@linuxfoundation.org>
+Subject: [PATCH 5.15 064/371] selftests/resctrl: Check for return value after write_schemata()
+Date:   Mon,  8 May 2023 11:44:25 +0200
+Message-Id: <20230508094814.621598448@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 58deeb4ef3b054498747d0929d94ac53ab90981f ]
+[ Upstream commit 0d45c83b95da414e98ad333e723141a94f6e2c64 ]
 
-alloc_per_cpu_data() is called by find_memory(), which is marked as
-__init.  Therefore alloc_per_cpu_data() can also be marked as __init to
-remedy this modpost problem.
+MBA test case writes schemata but it does not check if the write is
+successful or not.
 
-WARNING: modpost: vmlinux.o: section mismatch in reference: alloc_per_cpu_data (section: .text) -> memblock_alloc_try_nid (section: .init.text)
+Add the error check and return error properly.
 
-Link: https://lkml.kernel.org/r/20230223034258.12917-1-rdunlap@infradead.org
-Fixes: 4b9ddc7cf272 ("[IA64] Fix section mismatch in contig.c version of per_cpu_init()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 01fee6b4d1f9 ("selftests/resctrl: Add MBA test")
+Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/ia64/mm/contig.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/mba_test.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
-index 24901d8093015..1e9eaa107eb73 100644
---- a/arch/ia64/mm/contig.c
-+++ b/arch/ia64/mm/contig.c
-@@ -77,7 +77,7 @@ void *per_cpu_init(void)
- 	return __per_cpu_start + __per_cpu_offset[smp_processor_id()];
- }
+diff --git a/tools/testing/selftests/resctrl/mba_test.c b/tools/testing/selftests/resctrl/mba_test.c
+index f32289ae17aeb..97dc98c0c9497 100644
+--- a/tools/testing/selftests/resctrl/mba_test.c
++++ b/tools/testing/selftests/resctrl/mba_test.c
+@@ -28,6 +28,7 @@ static int mba_setup(int num, ...)
+ 	struct resctrl_val_param *p;
+ 	char allocation_str[64];
+ 	va_list param;
++	int ret;
  
--static inline void
-+static inline __init void
- alloc_per_cpu_data(void)
- {
- 	size_t size = PERCPU_PAGE_SIZE * num_possible_cpus();
+ 	va_start(param, num);
+ 	p = va_arg(param, struct resctrl_val_param *);
+@@ -45,7 +46,11 @@ static int mba_setup(int num, ...)
+ 
+ 	sprintf(allocation_str, "%d", allocation);
+ 
+-	write_schemata(p->ctrlgrp, allocation_str, p->cpu_no, p->resctrl_val);
++	ret = write_schemata(p->ctrlgrp, allocation_str, p->cpu_no,
++			     p->resctrl_val);
++	if (ret < 0)
++		return ret;
++
+ 	allocation -= ALLOCATION_STEP;
+ 
+ 	return 0;
 -- 
 2.39.2
 
