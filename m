@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 756866FAB91
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6D16FA597
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbjEHLOz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:14:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
+        id S234180AbjEHKLI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234022AbjEHLOu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0BF736568
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:49 -0700 (PDT)
+        with ESMTP id S234176AbjEHKLI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B1E39885
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44FA762BAA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38813C433EF;
-        Mon,  8 May 2023 11:14:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FB8D623D1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE44C433D2;
+        Mon,  8 May 2023 10:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544488;
-        bh=nLdePqh2bTqCnlpaPt1P2wcp/nv/2C4fsrBJyidy/Ms=;
+        s=korg; t=1683540666;
+        bh=YMqxM6Zw/BVfOnFQwAV9PpUVwW4UGZskW9I3GAfdRiQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ig+stVdiiPx3Jh1RdxNiG3ZWDnVm7PwPaJRrTz34p7PiN50j2K5fxowoW7zgQvHi+
-         D3JdCeP5FJShcFH/AikREtaaoAGUL27XYUQ3+rc3kshbCPZnVglwJo1wZxKAPO2HbZ
-         dF6gb7KugRlt1TbUicIX2g83fUgEfyFvzGvMcEMU=
+        b=arUkUjfZvvo6UND9qBSjqKfadKfYHjkzsDQV7nxnFXjdb6qrGqV9RmxiqyMqRP8oZ
+         2KcIBh5u4nxCdnPK1d9r9M9XunYNI++pzY+QULcNdQ119Cle/pZxEVAZiLf0dB8fm9
+         eW7O/M6vmyUseydF9NkVgBg5NLJL0nZhajgbFKyQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 427/694] wifi: iwlwifi: fw: move memset before early return
+Subject: [PATCH 6.1 420/611] of: Fix modalias string generation
 Date:   Mon,  8 May 2023 11:44:22 +0200
-Message-Id: <20230508094447.202789839@linuxfoundation.org>
+Message-Id: <20230508094435.862282043@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,51 +57,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 8ce437dd5b2e4adef13aa4ecce07392f9966b1ab ]
+[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
 
-Clang static analysis reports this representative issue
-dbg.c:1455:6: warning: Branch condition evaluates to
-a garbage value
-  if (!rxf_data.size)
-       ^~~~~~~~~~~~~~
+The helper generating an OF based modalias (of_device_get_modalias())
+works fine, but due to the use of snprintf() internally it needs a
+buffer one byte longer than what should be needed just for the entire
+string (excluding the '\0'). Most users of this helper are sysfs hooks
+providing the modalias string to users. They all provide a PAGE_SIZE
+buffer which is way above the number of bytes required to fit the
+modalias string and hence do not suffer from this issue.
 
-This check depends on iwl_ini_get_rxf_data() to clear
-rxf_data but the function can return early without
-doing the clear.  So move the memset before the early
-return.
+There is another user though, of_device_request_module(), which is only
+called by drivers/usb/common/ulpi.c. This request module function is
+faulty, but maybe because in most cases there is an alternative, ULPI
+driver users have not noticed it.
 
-Fixes: cc9b6012d34b ("iwlwifi: yoyo: use hweight_long instead of bit manipulating")
-Signed-off-by: Tom Rix <trix@redhat.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230414130637.872a7175f1ff.I33802a77a91998276992b088fbe25f61c87c33ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In this function, of_device_get_modalias() is called twice. The first
+time without buffer just to get the number of bytes required by the
+modalias string (excluding the null byte), and a second time, after
+buffer allocation, to fill the buffer. The allocation asks for an
+additional byte, in order to store the trailing '\0'. However, the
+buffer *length* provided to of_device_get_modalias() excludes this extra
+byte. The internal use of snprintf() with a length that is exactly the
+number of bytes to be written has the effect of using the last available
+byte to store a '\0', which then smashes the last character of the
+modalias string.
+
+Provide the actual size of the buffer to of_device_get_modalias() to fix
+this issue.
+
+Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
+will anyway end the string with a null byte, but there is a possibility
+that this function might be called on a struct device_node without
+compatible, in this case snprintf() would not be executed. So we keep it
+just to avoid possible unbounded strings.
+
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/of/device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index bde6f0764a538..027360e63b926 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1388,13 +1388,13 @@ static void iwl_ini_get_rxf_data(struct iwl_fw_runtime *fwrt,
- 	if (!data)
- 		return;
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 8cefe5a7d04e2..ce225d2590b54 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -297,12 +297,15 @@ int of_device_request_module(struct device *dev)
+ 	if (size < 0)
+ 		return size;
  
-+	memset(data, 0, sizeof(*data));
+-	str = kmalloc(size + 1, GFP_KERNEL);
++	/* Reserve an additional byte for the trailing '\0' */
++	size++;
 +
- 	/* make sure only one bit is set in only one fid */
- 	if (WARN_ONCE(hweight_long(fid1) + hweight_long(fid2) != 1,
- 		      "fid1=%x, fid2=%x\n", fid1, fid2))
- 		return;
++	str = kmalloc(size, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
  
--	memset(data, 0, sizeof(*data));
--
- 	if (fid1) {
- 		fifo_idx = ffs(fid1) - 1;
- 		if (WARN_ONCE(fifo_idx >= MAX_NUM_LMAC, "fifo_idx=%d\n",
+ 	of_device_get_modalias(dev, str, size);
+-	str[size] = '\0';
++	str[size - 1] = '\0';
+ 	ret = request_module(str);
+ 	kfree(str);
+ 
 -- 
 2.39.2
 
