@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 492DE6FA569
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E4EF6FA89A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234124AbjEHKJO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37306 "EHLO
+        id S234981AbjEHKnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234131AbjEHKJK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2CC535108
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:08 -0700 (PDT)
+        with ESMTP id S235011AbjEHKme (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58822C3EF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3729562295
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4816CC433D2;
-        Mon,  8 May 2023 10:09:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F09AB6282E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C05C4339B;
+        Mon,  8 May 2023 10:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540547;
-        bh=X2ZQBkmNO4tFyqHEhbe8mX3cVuiFc3Tmpkey0gyQouA=;
+        s=korg; t=1683542497;
+        bh=a6KVxWyFJmvVYaTUpdceDWmvq1P4nLUv0D+8lOnTf4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y4SRR1KNYQrZYAA5/v+MRcA1TmNwskXcm3sMFHxPhYGa6RP9VAgC6RQ4XwHxpIUgn
-         AhoWAmn6xmBfpaw0b8lN23EaZJAdU4wQGKQLScW6egMiOctfoXWEWkEGpqr85fdQTg
-         CQKDE+G3p3dre4kvNOor9FAisTUK7MxXB1x9CtZo=
+        b=CACgECfNKB2C89sJ3RuAR8SQ65nIZauy5H+aTLIGNCP4k/qYXntmcHyAkODwo03Qh
+         kCXo8DeO4lTg/H2G0AoegQgp85YlCvN5lCD5pLD2giXAvpItNSQ1F5rvrUfUNXlkHT
+         WlmMSwzXN8Itp+SYgTP4LyGSL6wtrihbiobb5ixA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Yan Wang <rk.code@outlook.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 406/611] iio: light: max44009: add missing OF device matching
-Date:   Mon,  8 May 2023 11:44:08 +0200
-Message-Id: <20230508094435.458370582@linuxfoundation.org>
+Subject: [PATCH 6.2 423/663] net: stmmac:fix system hang when setting up tag_8021q VLAN for DSA ports
+Date:   Mon,  8 May 2023 11:44:09 +0200
+Message-Id: <20230508094441.807107377@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,61 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yan Wang <rk.code@outlook.com>
 
-[ Upstream commit b29c49026c3c05a11f845dba17cad0b3ba06836d ]
+[ Upstream commit 35226750f7ab9d49140d95bc7d38a2a9b0f4fdfc ]
 
-The driver currently matches only via i2c_device_id, but also has
-of_device_id table:
+The system hang because of dsa_tag_8021q_port_setup()->
+				stmmac_vlan_rx_add_vid().
 
-  drivers/iio/light/max44009.c:545:34: error: ‘max44009_of_match’ defined but not used [-Werror=unused-const-variable=]
+I found in stmmac_drv_probe() that cailing pm_runtime_put()
+disabled the clock.
 
-Fixes: 6aef699a7d7e ("iio: light: add driver for MAX44009")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230312153429.371702-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+First, when the kernel is compiled with CONFIG_PM=y,The stmmac's
+resume/suspend is active.
+
+Secondly,stmmac as DSA master,the dsa_tag_8021q_port_setup() function
+will callback stmmac_vlan_rx_add_vid when DSA dirver starts. However,
+The system is hanged for the stmmac_vlan_rx_add_vid() accesses its
+registers after stmmac's clock is closed.
+
+I would suggest adding the pm_runtime_resume_and_get() to the
+stmmac_vlan_rx_add_vid().This guarantees that resuming clock output
+while in use.
+
+Fixes: b3dcb3127786 ("net: stmmac: correct clocks enabled in stmmac_vlan_rx_kill_vid()")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Yan Wang <rk.code@outlook.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/max44009.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/max44009.c b/drivers/iio/light/max44009.c
-index 801e5a0ad496b..f3648f20ef2c0 100644
---- a/drivers/iio/light/max44009.c
-+++ b/drivers/iio/light/max44009.c
-@@ -528,6 +528,12 @@ static int max44009_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 014ce97f96b15..d0e64c1ab9a55 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6348,6 +6348,10 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	bool is_double = false;
+ 	int ret;
+ 
++	ret = pm_runtime_resume_and_get(priv->device);
++	if (ret < 0)
++		return ret;
++
+ 	if (be16_to_cpu(proto) == ETH_P_8021AD)
+ 		is_double = true;
+ 
+@@ -6355,16 +6359,18 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	ret = stmmac_vlan_update(priv, is_double);
+ 	if (ret) {
+ 		clear_bit(vid, priv->active_vlans);
+-		return ret;
++		goto err_pm_put;
+ 	}
+ 
+ 	if (priv->hw->num_vlan) {
+ 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+ 		if (ret)
+-			return ret;
++			goto err_pm_put;
+ 	}
++err_pm_put:
++	pm_runtime_put(priv->device);
+ 
+-	return 0;
++	return ret;
  }
  
-+static const struct of_device_id max44009_of_match[] = {
-+	{ .compatible = "maxim,max44009" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, max44009_of_match);
-+
- static const struct i2c_device_id max44009_id[] = {
- 	{ "max44009", 0 },
- 	{ }
-@@ -537,18 +543,13 @@ MODULE_DEVICE_TABLE(i2c, max44009_id);
- static struct i2c_driver max44009_driver = {
- 	.driver = {
- 		.name = MAX44009_DRV_NAME,
-+		.of_match_table = max44009_of_match,
- 	},
- 	.probe = max44009_probe,
- 	.id_table = max44009_id,
- };
- module_i2c_driver(max44009_driver);
- 
--static const struct of_device_id max44009_of_match[] = {
--	{ .compatible = "maxim,max44009" },
--	{ }
--};
--MODULE_DEVICE_TABLE(of, max44009_of_match);
--
- MODULE_AUTHOR("Robert Eshleman <bobbyeshleman@gmail.com>");
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("MAX44009 ambient light sensor driver");
+ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
 -- 
 2.39.2
 
