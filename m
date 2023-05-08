@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF336FA486
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180866FA462
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233887AbjEHKAX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56050 "EHLO
+        id S233856AbjEHJ6o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:58:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233886AbjEHKAV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:00:21 -0400
+        with ESMTP id S233858AbjEHJ6n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:58:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118252D405
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:00:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB0710A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:58:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95D04622B0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F78C433EF;
-        Mon,  8 May 2023 10:00:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 725DC62284
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:58:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80189C433D2;
+        Mon,  8 May 2023 09:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540019;
-        bh=MB/lyDL4/GEr019OeuI0dxOAPHRvFbVPNBjN44GEfV4=;
+        s=korg; t=1683539921;
+        bh=cxmpl7VmItIFpX27rqZRthfsFNnsIhrQm9vxsXwRfH0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fWCsyCPKptvXsi4c2b/mnQM/hOrwf6/12mOrj5MQYwiuTxd+dZjTj+nTo5oc+A5K5
-         m4+wTL6z1GjQ+WOJQVqujn1g/lrJTAWCVK06o945O+20pb0K4/60u8JO4G+eR85DLr
-         Z1KlcmYqzMiVoAs5ZX7tKmwPOqjqgo2m/euSzJzc=
+        b=c4PhmFxpCxfDbi/E3K0Z37VZqRmBL+kAz04QZ79+rDAbLPjVpTXjeK2QoGKqJp4vV
+         T60N5yTxIVkTXtZF+g6IHusHU+ecHZ+tB5YTPsldF6g9Lv88CGW4Nnuhnk/SPsN6Yl
+         4TaVUfGQMVYZB9QRi7SVpWXxj0KeEDmOymFGcdec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Adam Skladowski <a39.skl@gmail.com>,
         Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/611] drm/msm/adreno: drop bogus pm_runtime_set_active()
-Date:   Mon,  8 May 2023 11:40:22 +0200
-Message-Id: <20230508094428.213979501@linuxfoundation.org>
+Subject: [PATCH 6.1 181/611] drm: msm: adreno: Disable preemption on Adreno 510
+Date:   Mon,  8 May 2023 11:40:23 +0200
+Message-Id: <20230508094428.247269266@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -54,40 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Adam Skladowski <a39.skl@gmail.com>
 
-[ Upstream commit db7662d076c973072d788bd0e8130e04430307a1 ]
+[ Upstream commit 010c8bbad2cb8c33c47963e29f051f1e917e45a5 ]
 
-The runtime PM status can only be updated while runtime PM is disabled.
+Downstream driver appears to not support preemption on A510 target,
+trying to use one make device slow and fill log with rings related errors.
+Set num_rings to 1 to disable preemption.
 
-Drop the bogus pm_runtime_set_active() call that was made after enabling
-runtime PM and which (incidentally but correctly) left the runtime PM
-status set to 'suspended'.
-
-Fixes: 2c087a336676 ("drm/msm/adreno: Load the firmware before bringing up the hardware")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/524972/
-Link: https://lore.kernel.org/r/20230303164807.13124-4-johan+linaro@kernel.org
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: e20c9284c8f2 ("drm/msm/adreno: Add support for Adreno 510 GPU")
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/526898/
+Link: https://lore.kernel.org/r/20230314221757.13096-1-a39.skl@gmail.com
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
-index c5c4c93b3689c..cd009d56d35d5 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -438,9 +438,6 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
- 	 */
- 	pm_runtime_enable(&pdev->dev);
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+index 4f0dbeebb79fb..02ff306f96f42 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+@@ -1750,6 +1750,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 	struct a5xx_gpu *a5xx_gpu = NULL;
+ 	struct adreno_gpu *adreno_gpu;
+ 	struct msm_gpu *gpu;
++	unsigned int nr_rings;
+ 	int ret;
  
--	/* Make sure pm runtime is active and reset any previous errors */
--	pm_runtime_set_active(&pdev->dev);
--
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
- 		pm_runtime_put_sync(&pdev->dev);
+ 	if (!pdev) {
+@@ -1770,7 +1771,12 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 
+ 	check_speed_bin(&pdev->dev);
+ 
+-	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 4);
++	nr_rings = 4;
++
++	if (adreno_is_a510(adreno_gpu))
++		nr_rings = 1;
++
++	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
+ 	if (ret) {
+ 		a5xx_destroy(&(a5xx_gpu->base.base));
+ 		return ERR_PTR(ret);
 -- 
 2.39.2
 
