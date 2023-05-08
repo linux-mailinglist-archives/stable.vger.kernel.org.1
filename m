@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 466DC6FA96A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130286FAC6E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235201AbjEHKuo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:50:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48158 "EHLO
+        id S235702AbjEHLYe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:24:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235202AbjEHKuW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:50:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB732FCD7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:02 -0700 (PDT)
+        with ESMTP id S233979AbjEHLYQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F42D39B8B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0399A62917
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA31C4339B;
-        Mon,  8 May 2023 10:50:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A674462D26
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9521BC433EF;
+        Mon,  8 May 2023 11:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543001;
-        bh=GTTMHKXhuQKGN/ciIr5pTlTHX/TDFVT/E4fualPsiTM=;
+        s=korg; t=1683545055;
+        bh=Nwaio/23MqfKrZO9fQsnLuwnbQdnJwY5dXcd/I5cMGM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sQtmBuTwvtw+J7Ykhr0zGreY1Q0ryIay6xlHmSbTqGCSQXzzCHXWxBeRETgvYhtOB
-         obuavuqTgeyZWK5bp52242jrOeVYNe2wRhT49CaqaoCrPhVAyubkRMpg882Ny1nNgH
-         yoSqselZSHZ0zJZm1VICbB4F4rY2jtU0qIvT8xn4=
+        b=x/ePMtUAoH7VscewGDLWhqear0x9t0XKKT8ENwyTI9nF6ogrLPcHju+88LwbZLA2Z
+         4i8cra7xkJLLzVIfdljzYF/WrkQV/lp0liaPKLqTN2reAfb4uK9bR18/cWIg3vH2h8
+         8cB05Lm9MFYYmWQjltV4+ebyFpYZUJD78XWnWCNU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.2 617/663] ALSA: hda/realtek: Fix mute and micmute LEDs for an HP laptop
+        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 608/694] clk: imx: fracn-gppll: disable hardware select control
 Date:   Mon,  8 May 2023 11:47:23 +0200
-Message-Id: <20230508094449.744878621@linuxfoundation.org>
+Message-Id: <20230508094455.088193390@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,31 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 56fc217f0db4fc78e02a1b8450df06389474a5e5 upstream.
+[ Upstream commit 4435467b15b069e5a6f50ca9a9260e86b74dbc13 ]
 
-There's another laptop that needs the fixup to enable mute and micmute
-LEDs. So do it accordingly.
+When programming PLL, should disable Hardware control select to make PLL
+controlled by register, not hardware inputs through OSCPLL.
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230505125925.543601-1-kai.heng.feng@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b26cb8a77a4 ("clk: imx: support fracn gppll")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230403095300.3386988-3-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/imx/clk-fracn-gppll.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9479,6 +9479,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8b8d, "HP", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b8f, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b92, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8b96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bf0, "HP", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
+index ec50c41e2a4c9..f6674110a88e0 100644
+--- a/drivers/clk/imx/clk-fracn-gppll.c
++++ b/drivers/clk/imx/clk-fracn-gppll.c
+@@ -15,6 +15,7 @@
+ #include "clk.h"
+ 
+ #define PLL_CTRL		0x0
++#define HW_CTRL_SEL		BIT(16)
+ #define CLKMUX_BYPASS		BIT(2)
+ #define CLKMUX_EN		BIT(1)
+ #define POWERUP_MASK		BIT(0)
+@@ -193,6 +194,11 @@ static int clk_fracn_gppll_set_rate(struct clk_hw *hw, unsigned long drate,
+ 
+ 	rate = imx_get_pll_settings(pll, drate);
+ 
++	/* Hardware control select disable. PLL is control by register */
++	tmp = readl_relaxed(pll->base + PLL_CTRL);
++	tmp &= ~HW_CTRL_SEL;
++	writel_relaxed(tmp, pll->base + PLL_CTRL);
++
+ 	/* Disable output */
+ 	tmp = readl_relaxed(pll->base + PLL_CTRL);
+ 	tmp &= ~CLKMUX_EN;
+-- 
+2.39.2
+
 
 
