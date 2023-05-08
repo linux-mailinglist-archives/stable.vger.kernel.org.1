@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ED676FA61C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB9626FAE07
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234320AbjEHKQX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
+        id S236175AbjEHLk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234319AbjEHKQW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:22 -0400
+        with ESMTP id S236269AbjEHLkD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ADF93ACC1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560A23ED81
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 302B5624A3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D5BC433D2;
-        Mon,  8 May 2023 10:16:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5165634C1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33A4C433D2;
+        Mon,  8 May 2023 11:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540979;
-        bh=qOvvJq924e06I7uIyJbU8v/xPMYZ86zr0saVYma7EO8=;
+        s=korg; t=1683545997;
+        bh=KGUQS/DRWSp5iKNgxJTlWB6yjT1rySwd3LBm3XNJSJE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M/mBL5oWiBFe18eVsSzy8paLwikWUksCqjIFSbkR/UKqYKk8I1GTIbEps26dUGExi
-         MSwiBsuT0Wgnr/9olmcEUnf/uTKn/R1mroTkmAoezQyIq/GuuQZHkrpi5nrVh9ItAc
-         eFVjqyRa4g1T3vlWPbDETogs/YbMwqrk06hZMM3E=
+        b=AYDWPQXC5hLFw3AfnD2YSCsyvjgQmMMYHvfxGaREVxrZpFY5tNQDMuOg8QD5ovQod
+         8bC2LDDBl+aGobQueeRKODmclo+gfsmluPdue5mxqcfUTl1fbdUtF/oJQ9OYOmf1RQ
+         kegRIMFqXgpO6uJ7qlkwxwZpkQ6a6EwQO+/padms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?G=C3=A9=20Koerkamp?= <ge.koerkamp@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 553/611] ACPI: PM: Do not turn of unused power resources on the Toshiba Click Mini
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 194/371] nvmet: fix Identify Namespace handling
 Date:   Mon,  8 May 2023 11:46:35 +0200
-Message-Id: <20230508094439.972753037@linuxfoundation.org>
+Message-Id: <20230508094819.816646941@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,85 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[ Upstream commit 9b04d99788cf475cbd277f30ec66230ccb7e99f4 ]
+[ Upstream commit 8c098aa00118c35108f0c19bd3cdc45e11574948 ]
 
-The CPR3 power resource on the Toshiba Click Mini toggles a GPIO
-which is called SISP (for SIS touchscreen power?) on/off.
+The identify command with cns set to NVME_ID_CNS_NS does not directly
+depend on the command set. The NVMe specifications is rather confusing
+here as it appears that this command only applies to the NVM command
+set. However, footnote 8 of Figure 273 in the NVMe 2.0 base
+specifications clearly state that this command applies to NVM command
+sets that support logical blocks, that is, NVM and ZNS. Both the NVM and
+ZNS command set specifications also list this identify as mandatory.
 
-This CPR3 power resource is not listed in any _PR? lists, let alone
-in a _PR0 list for the SIS0817 touchscreen ACPI device which needs it.
+The command handling should thus not look at the csi field since it is
+defined as unused for this command. Given that we do not support the
+KV command set, simply remove the csi switch-case for that command
+handling and call directly nvmet_execute_identify_ns() in
+nvmet_execute_identify().
 
-Before commit a1224f34d72a ("ACPI: PM: Check states of power resources
-during initialization") this was not an issue because since nothing
-referenced the CPR3 power resource its state was always
-ACPI_POWER_RESOURCE_STATE_UNKNOWN and power resources with this state
-get ignored by acpi_turn_off_unused_power_resources().
-
-This clearly is a bug in the DSDT of this device. Add a DMI quirk
-to make acpi_turn_off_unused_power_resources() a no-op on this
-model to fix the touchscreen no longer working since kernel 5.16 .
-
-This quirk also causes 2 other power resources to not get turned
-off, but the _OFF method on these already was a no-op, so this makes
-no difference for the other 2 power resources.
-
-Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
-Reported-by: Gé Koerkamp <ge.koerkamp@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216946
-Link: https://lore.kernel.org/regressions/32a14a8a-9795-4c8c-7e00-da9012f548f8@leemhuis.info/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: ab5d0b38c047 ("nvmet: add Command Set Identifier support")
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/power.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/nvme/target/admin-cmd.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-index f2588aba8421e..aea8c994caeac 100644
---- a/drivers/acpi/power.c
-+++ b/drivers/acpi/power.c
-@@ -23,6 +23,7 @@
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index da873a7f8ff90..4911de26d7343 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -687,13 +687,8 @@ static void nvmet_execute_identify(struct nvmet_req *req)
  
- #define pr_fmt(fmt) "ACPI: PM: " fmt
- 
-+#include <linux/dmi.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -1022,6 +1023,21 @@ void acpi_resume_power_resources(void)
- }
- #endif
- 
-+static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
-+	{
-+		/*
-+		 * The Toshiba Click Mini has a CPR3 power-resource which must
-+		 * be on for the touchscreen to work, but which is not in any
-+		 * _PR? lists. The other 2 affected power-resources are no-ops.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
-+		},
-+	},
-+	{}
-+};
-+
- /**
-  * acpi_turn_off_unused_power_resources - Turn off power resources not in use.
-  */
-@@ -1029,6 +1045,9 @@ void acpi_turn_off_unused_power_resources(void)
- {
- 	struct acpi_power_resource *resource;
- 
-+	if (dmi_check_system(dmi_leave_unused_power_resources_on))
+ 	switch (req->cmd->identify.cns) {
+ 	case NVME_ID_CNS_NS:
+-		switch (req->cmd->identify.csi) {
+-		case NVME_CSI_NVM:
+-			return nvmet_execute_identify_ns(req);
+-		default:
+-			break;
+-		}
+-		break;
++		nvmet_execute_identify_ns(req);
 +		return;
-+
- 	mutex_lock(&power_resource_list_lock);
- 
- 	list_for_each_entry_reverse(resource, &acpi_power_resource_list, list_node) {
+ 	case NVME_ID_CNS_CS_NS:
+ 		if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
+ 			switch (req->cmd->identify.csi) {
 -- 
 2.39.2
 
