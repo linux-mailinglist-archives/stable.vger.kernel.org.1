@@ -2,112 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1F956FB09D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 14:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EE2B6FB117
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 15:15:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234065AbjEHMwA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 08:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50944 "EHLO
+        id S233044AbjEHNP0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 09:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233708AbjEHMv5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 08:51:57 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 608104689
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 05:51:56 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-50bc075d6b2so8572749a12.0
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 05:51:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1683550315; x=1686142315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yFivrtig9OalB2jQkNmqkqk5bNHkWlvaRKlvji8EAhM=;
-        b=jUNUAuQ8lqy2X4B5qryu0zGlFNNkgTQeSpmvwVdIc1290XSGbsy8n1Rbx0um+wwkap
-         V6vnQLrqEKql8a+cZKN50aEMj5Vh8+UhKjtCfRFvFRVsGUc8eg+Dh/zZWROt1XzE26Gd
-         qydb1wJrN6ohz1bA4iAZLJXFg6UCSU3Do4Ya+gaDCRS3E35/eteRxO5rWCpyKvKxDWJR
-         6Fq3gno/8DSlqoiZALVWS3oWEthH0THlAx5OfYLoNzNHoTh/vwUewyelLMooTq8TlLk1
-         0aKufMCb33d2URm9b8dykcStXthn2DV3Kl4ZQ3/9yeifD3DP5UGthO0qX3Qz5DMx9qKL
-         taPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683550315; x=1686142315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yFivrtig9OalB2jQkNmqkqk5bNHkWlvaRKlvji8EAhM=;
-        b=gnTaj5waaijEhdBKBQnaAfzOqB1fZfTz9JoqrjV33HN+XhHKd0wtneT9oItEmavYOn
-         vfIdfuv/3Ktf+9bXMgAx4Cx85ZHIvvOn9iercDtYcoGMcZqYgBX09Rzt6QIPDQj7vbju
-         HZbIY8dUSuU78tLm1+nWtf3rxUQd95jH9WygeCUgkfGHIy/m3VPh67LM+NTGw9sACV1E
-         JmxogAbanN71Prkz2sqQUrnBJZiCees3PnJ9mPH4O/Z7PyKY+BBAmqHu/JxYz7PMRbGK
-         kVuOc7RWt0hJCbrxI4TNmVxuXZeIzaod2BgnYK/NzsX1t25IK1kA8g/tado0rbLkZzv/
-         79bg==
-X-Gm-Message-State: AC+VfDzhkt24hpgvqmchFahzZaHWXpcimHM7e1ZwRaEbfAwNfQoN26Cx
-        1vonOpgh2I/svMOxtnk6r+xfwpMww4G/fYouBDLIGQ==
-X-Google-Smtp-Source: ACHHUZ7U/+wY/Vx6PFEt6WoITv7yJSSsKVa65gZ1L/PI1Bk8WFvhVMO5mg+66YWV8epPOITeYa8yUpVlYT6WyahnmLc=
-X-Received: by 2002:a17:906:58d5:b0:969:9fd0:7cee with SMTP id
- e21-20020a17090658d500b009699fd07ceemr234143ejs.10.1683550314783; Mon, 08 May
- 2023 05:51:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230508094421.513073170@linuxfoundation.org>
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Mon, 8 May 2023 21:51:43 +0900
-Message-ID: <CAKL4bV6QaUA-Psd3dpdBL7QKxg+QwCF3LwYdYVfM-qDKqZFYPw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/611] 6.1.28-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        with ESMTP id S232166AbjEHNPZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 09:15:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6531FF3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 06:15:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CCDC62634
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 13:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12610C433D2;
+        Mon,  8 May 2023 13:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683551723;
+        bh=/aKZsP8Y4HwsLNs8OhQVoDpConj7p5C4K1s6sMjltGs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=A70YHzriOprYmNeJpnhodizWLRNZpdfth5qDGs5NY9t8+/INZ0fdgiD1DqorNvSe6
+         bcqo8ndy2R6zBO37ACF9G4KPaJXipTLsZg3MeQARw3WTVg/tL9gmzS1zAEa6iQZAb6
+         p+U1ucAYFCqpGFVm8RkwPqJR9zxKPotpuge3COPk=
+Date:   Mon, 8 May 2023 15:15:15 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Dhruva Gole <d-gole@ti.com>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 455/611] spi: bcm63xx: remove PM_SLEEP based
+ conditional compilation
+Message-ID: <2023050808-overbite-dancing-53c5@gregkh>
+References: <20230508094421.513073170@linuxfoundation.org>
+ <20230508094436.944529030@linuxfoundation.org>
+ <0138fb50-507d-bccf-40bb-07340f3cbb33@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0138fb50-507d-bccf-40bb-07340f3cbb33@ti.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Mon, May 08, 2023 at 05:55:50PM +0530, Dhruva Gole wrote:
+> Hi Greg,
+> 
+> On 08/05/23 15:14, Greg Kroah-Hartman wrote:
+> > From: Dhruva Gole <d-gole@ti.com>
+> > 
+> > [ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
+> > 
+> > Get rid of conditional compilation based on CONFIG_PM_SLEEP because
+> > it may introduce build issues with certain configs where it maybe disabled
+> > This is because if above config is not enabled the suspend-resume
+> > functions are never part of the code but the bcm63xx_spi_pm_ops struct
+> > still inits them to non-existent suspend-resume functions.
+> > 
+> > Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
+> > 
+> > Signed-off-by: Dhruva Gole <d-gole@ti.com>
+> > Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
+> > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >   drivers/spi/spi-bcm63xx.c | 2 --
+> >   1 file changed, 2 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+> > index 80fa0ef8909ca..0324ab3ce1c84 100644
+> > --- a/drivers/spi/spi-bcm63xx.c
+> > +++ b/drivers/spi/spi-bcm63xx.c
+> > @@ -630,7 +630,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
+> >   	return 0;
+> >   }
+> > -#ifdef CONFIG_PM_SLEEP
+> >   static int bcm63xx_spi_suspend(struct device *dev)
+> >   {
+> >   	struct spi_master *master = dev_get_drvdata(dev);
+> > @@ -657,7 +656,6 @@ static int bcm63xx_spi_resume(struct device *dev)
+> >   	return 0;
+> >   }
+> > -#endif
+> 
+> This patch may cause build failures with some of the configs that disable
+> CONFIG_PM I understand,
+> So to fix that I had sent another patch:
+> https://lore.kernel.org/all/CAOiHx==anPTqXNJNG7zap1XP2zKUp5SbaVJdyUsUvvitKRUHZw@mail.gmail.com/
+> 
+> However missed out adding the fixes tag.
+> 
+> I humbly request you to add
+> https://lore.kernel.org/all/20230424102546.1604484-1-d-gole@ti.com/
+> 
+> this patch to fix this patch throughout the stable fixes trees.
+> 
+> It can also be found on Linus' master branch here:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-bcm63xx.c?id=cc5f6fa4f6590e3b9eb8d34302ea43af4a3cfed7
+> >   static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
+> >   	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
 
-On Mon, May 8, 2023 at 6:50=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.28 release.
-> There are 611 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 10 May 2023 09:42:40 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.28-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Sure, now queued up, thanks!
 
-6.1.28-rc1 tested.
-
-x86_64
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P, arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+greg k-h
