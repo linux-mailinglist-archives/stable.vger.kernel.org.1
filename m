@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA20E6FADDA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1ED6FA957
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235958AbjEHLjI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:39:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
+        id S234910AbjEHKuQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236121AbjEHLiw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:52 -0400
+        with ESMTP id S235219AbjEHKtk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8153F578
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC732945D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E06663393
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00535C433D2;
-        Mon,  8 May 2023 11:37:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBED161DA2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDB2C433EF;
+        Mon,  8 May 2023 10:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545869;
-        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
+        s=korg; t=1683542948;
+        bh=UoX9BlAcrEjfFtRGibc6e3zRYJyDqathBGUlgDLqds4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jo9JCTLm/3IoouK0+NQhLrGU+EhNatxKb1hMN8UaNIfJ+yCSB96wYb43O0iLym6qh
-         PYa/392yveRHGKUW+FDMS79HYqGKGLi5Mat1c8l8G0KsBiw3uSMc8StjUFTUFvDo8L
-         KQJ/UT/JlWesoUv7DK6chkSefVCqY5uC4HUpv9X4=
+        b=Ri/o5WDaOmmCwC9U79Pfu/jUoU71Ogez3wjLuupn4R2hXZUHukLSIg9aRAC8vLbaJ
+         qUH/daonLNjAETQpXjEmgQ2i3w01NjzuMNd0jPiNzIySBnNJ9HoMDiDPZFpv4ZuWry
+         nDGTtzlKX0HxWRBzKAVyrz+Jnh22NKI/uiQUx+jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Alexander Egorenkov <egorenar@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 180/371] net: qrtr: correct types of trace event parameters
+Subject: [PATCH 6.2 555/663] s390/checksum: always use cksm instruction
 Date:   Mon,  8 May 2023 11:46:21 +0200
-Message-Id: <20230508094819.286195587@linuxfoundation.org>
+Message-Id: <20230508094447.109640114@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,106 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Horman <horms@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
+[ Upstream commit e42ac7789df64120d7d3d57433dfc9f37ec0cb99 ]
 
-The arguments passed to the trace events are of type unsigned int,
-however the signature of the events used __le32 parameters.
+Commit dfe843dce775 ("s390/checksum: support GENERIC_CSUM, enable it for
+KASAN") switched s390 to use the generic checksum functions, so that KASAN
+instrumentation also works checksum functions by avoiding architecture
+specific inline assemblies.
 
-I may be missing the point here, but sparse flagged this and it
-does seem incorrect to me.
+There is however the problem that the generic csum_partial() function
+returns a 32 bit value with a 16 bit folded checksum, while the original
+s390 variant does not fold to 16 bit. This in turn causes that the
+ipib_checksum in lowcore contains different values depending on kernel
+config options.
 
-  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
-  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ... (a lot more similar warnings)
-  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
-  net/qrtr/ns.c:115:47:    got unsigned int service
-  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
-  ... (a lot more similar warnings)
+The ipib_checksum is used by system dumpers to verify if pointers in
+lowcore point to valid data. Verification is done by comparing checksum
+values. The system dumpers still use 32 bit checksum values which are not
+folded, and therefore the checksum verification fails (incorrectly).
 
-Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Symptom is that reboot after dump does not work anymore when a KASAN
+instrumented kernel is dumped.
+
+Fix this by not using the generic checksum implementation. Instead add an
+explicit kasan_check_read() so that KASAN knows about the read access from
+within the inline assembly.
+
+Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Fixes: dfe843dce775 ("s390/checksum: support GENERIC_CSUM, enable it for KASAN")
+Tested-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ arch/s390/Kconfig                | 4 ----
+ arch/s390/include/asm/checksum.h | 9 ++-------
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
-index b1de14c3bb934..441132c67133f 100644
---- a/include/trace/events/qrtr.h
-+++ b/include/trace/events/qrtr.h
-@@ -10,15 +10,16 @@
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 7fd08755a1f9e..854a6581d2f90 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -26,10 +26,6 @@ config GENERIC_BUG
+ config GENERIC_BUG_RELATIVE_POINTERS
+ 	def_bool y
  
- TRACE_EVENT(qrtr_ns_service_announce_new,
+-config GENERIC_CSUM
+-	bool
+-	default y if KASAN
+-
+ config GENERIC_LOCKBREAK
+ 	def_bool y if PREEMPTION
  
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
+diff --git a/arch/s390/include/asm/checksum.h b/arch/s390/include/asm/checksum.h
+index d977a3a2f6190..1b6b992cf18ed 100644
+--- a/arch/s390/include/asm/checksum.h
++++ b/arch/s390/include/asm/checksum.h
+@@ -12,12 +12,7 @@
+ #ifndef _S390_CHECKSUM_H
+ #define _S390_CHECKSUM_H
  
- 	TP_ARGS(service, instance, node, port),
+-#ifdef CONFIG_GENERIC_CSUM
+-
+-#include <asm-generic/checksum.h>
+-
+-#else /* CONFIG_GENERIC_CSUM */
+-
++#include <linux/kasan-checks.h>
+ #include <linux/uaccess.h>
+ #include <linux/in6.h>
  
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
+@@ -40,6 +35,7 @@ static inline __wsum csum_partial(const void *buff, int len, __wsum sum)
+ 		.odd = (unsigned long) len,
+ 	};
  
- 	TP_fast_assign(
-@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
++	kasan_check_read(buff, len);
+ 	asm volatile(
+ 		"0:	cksm	%[sum],%[rp]\n"
+ 		"	jo	0b\n"
+@@ -135,5 +131,4 @@ static inline __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	return csum_fold((__force __wsum)(sum >> 32));
+ }
  
- TRACE_EVENT(qrtr_ns_service_announce_del,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
-@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
- 
- TRACE_EVENT(qrtr_ns_server_add,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
+-#endif /* CONFIG_GENERIC_CSUM */
+ #endif /* _S390_CHECKSUM_H */
 -- 
 2.39.2
 
