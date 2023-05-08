@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D20F6FA667
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0240B6FA9AC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234402AbjEHKTP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49120 "EHLO
+        id S235162AbjEHKyX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234383AbjEHKTM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735BE3ACC1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:00 -0700 (PDT)
+        with ESMTP id S235284AbjEHKxr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 539762CFF4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4E4F62509
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD79C433EF;
-        Mon,  8 May 2023 10:18:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E08F1620DF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED67BC433D2;
+        Mon,  8 May 2023 10:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541139;
-        bh=VdKTzBskTyx38+rU4JVMnYU3o7mMWRuEms1LFfHxQco=;
+        s=korg; t=1683543185;
+        bh=mrgpcJp1jez0PTSngdROLwceoHAZ6raf/BohY3L9o/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ox13BGGc0zlZS6TH5FHxVXgI4A/Nu69heZmyEOeHpCw02yLiRTr7/8XbAazV/7Yo2
-         Kv2vm4sJkFMBixp2Cu9e0ogNMAVIWv1LH9QMW6eIrg3Ltr9eTEASvRC8E2pfb6852l
-         aUrLwiiWB6ib6eIjOcDHkFO5xH9UbOk6wXuXdwGs=
+        b=k4i/K0RewdtzxvSRMaSRqhLp4i0vtWQOrLtCurpR8T33TghZn9I0v9CsOykyodLJ/
+         C16wAoLoEm5vpqalZToXlzs83xR7oey18jPYUGTMEYzkxbl8qtyonTkUqDD0ISa/LT
+         nukJHHRhC78/J7KMm0uf6P5Az1AcWffGl9sGuq8U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 019/663] x86/cpu: Add model number for Intel Arrow Lake processor
-Date:   Mon,  8 May 2023 11:37:25 +0200
-Message-Id: <20230508094429.054879801@linuxfoundation.org>
+        patches@lists.linux.dev, Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.3 011/694] usb: gadget: udc: core: Invoke usb_gadget_connect only when started
+Date:   Mon,  8 May 2023 11:37:26 +0200
+Message-Id: <20230508094432.998156181@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,30 +52,359 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Luck <tony.luck@intel.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit 81515ecf155a38f3532bf5ddef88d651898df6be ]
+commit 0db213ea8eed5534a5169e807f28103cbc9d23df upstream.
 
-Successor to Lunar Lake.
+usb_udc_connect_control does not check to see if the udc has already
+been started. This causes gadget->ops->pullup to be called through
+usb_gadget_connect when invoked from usb_udc_vbus_handler even before
+usb_gadget_udc_start is called. Guard this by checking for udc->started
+in usb_udc_connect_control before invoking usb_gadget_connect.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230404174641.426593-1-tony.luck@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Guarding udc->vbus, udc->started, gadget->connect, gadget->deactivate
+related functions with connect_lock. usb_gadget_connect_locked,
+usb_gadget_disconnect_locked, usb_udc_connect_control_locked,
+usb_gadget_udc_start_locked, usb_gadget_udc_stop_locked are called with
+this lock held as they can be simulataneously invoked from different code
+paths.
+
+Adding an additional check to make sure udc is started(udc->started)
+before pullup callback is invoked.
+
+Fixes: 628ef0d273a6 ("usb: udc: add usb_udc_vbus_handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20230407030741.3163220-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/intel-family.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/udc/core.c |  148 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 104 insertions(+), 44 deletions(-)
 
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -125,6 +125,8 @@
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -37,6 +37,10 @@ static struct bus_type gadget_bus_type;
+  * @vbus: for udcs who care about vbus status, this value is real vbus status;
+  * for udcs who do not care about vbus status, this value is always true
+  * @started: the UDC's started state. True if the UDC had started.
++ * @connect_lock: protects udc->vbus, udc->started, gadget->connect, gadget->deactivate related
++ * functions. usb_gadget_connect_locked, usb_gadget_disconnect_locked,
++ * usb_udc_connect_control_locked, usb_gadget_udc_start_locked, usb_gadget_udc_stop_locked are
++ * called with this lock held.
+  *
+  * This represents the internal data structure which is used by the UDC-class
+  * to hold information about udc driver and gadget together.
+@@ -48,6 +52,7 @@ struct usb_udc {
+ 	struct list_head		list;
+ 	bool				vbus;
+ 	bool				started;
++	struct mutex			connect_lock;
+ };
  
- #define INTEL_FAM6_LUNARLAKE_M		0xBD
+ static struct class *udc_class;
+@@ -660,17 +665,9 @@ out:
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_vbus_disconnect);
  
-+#define INTEL_FAM6_ARROWLAKE		0xC6
+-/**
+- * usb_gadget_connect - software-controlled connect to USB host
+- * @gadget:the peripheral being connected
+- *
+- * Enables the D+ (or potentially D-) pullup.  The host will start
+- * enumerating this gadget when the pullup is active and a VBUS session
+- * is active (the link is powered).
+- *
+- * Returns zero on success, else negative errno.
+- */
+-int usb_gadget_connect(struct usb_gadget *gadget)
++/* Internal version of usb_gadget_connect needs to be called with connect_lock held. */
++static int usb_gadget_connect_locked(struct usb_gadget *gadget)
++	__must_hold(&gadget->udc->connect_lock)
+ {
+ 	int ret = 0;
+ 
+@@ -679,10 +676,12 @@ int usb_gadget_connect(struct usb_gadget
+ 		goto out;
+ 	}
+ 
+-	if (gadget->deactivated) {
++	if (gadget->deactivated || !gadget->udc->started) {
+ 		/*
+ 		 * If gadget is deactivated we only save new state.
+ 		 * Gadget will be connected automatically after activation.
++		 *
++		 * udc first needs to be started before gadget can be pulled up.
+ 		 */
+ 		gadget->connected = true;
+ 		goto out;
+@@ -697,22 +696,32 @@ out:
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(usb_gadget_connect);
+ 
+ /**
+- * usb_gadget_disconnect - software-controlled disconnect from USB host
+- * @gadget:the peripheral being disconnected
+- *
+- * Disables the D+ (or potentially D-) pullup, which the host may see
+- * as a disconnect (when a VBUS session is active).  Not all systems
+- * support software pullup controls.
++ * usb_gadget_connect - software-controlled connect to USB host
++ * @gadget:the peripheral being connected
+  *
+- * Following a successful disconnect, invoke the ->disconnect() callback
+- * for the current gadget driver so that UDC drivers don't need to.
++ * Enables the D+ (or potentially D-) pullup.  The host will start
++ * enumerating this gadget when the pullup is active and a VBUS session
++ * is active (the link is powered).
+  *
+  * Returns zero on success, else negative errno.
+  */
+-int usb_gadget_disconnect(struct usb_gadget *gadget)
++int usb_gadget_connect(struct usb_gadget *gadget)
++{
++	int ret;
 +
- /* "Small Core" Processors (Atom/E-Core) */
++	mutex_lock(&gadget->udc->connect_lock);
++	ret = usb_gadget_connect_locked(gadget);
++	mutex_unlock(&gadget->udc->connect_lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_connect);
++
++/* Internal version of usb_gadget_disconnect needs to be called with connect_lock held. */
++static int usb_gadget_disconnect_locked(struct usb_gadget *gadget)
++	__must_hold(&gadget->udc->connect_lock)
+ {
+ 	int ret = 0;
  
- #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
+@@ -724,10 +733,12 @@ int usb_gadget_disconnect(struct usb_gad
+ 	if (!gadget->connected)
+ 		goto out;
+ 
+-	if (gadget->deactivated) {
++	if (gadget->deactivated || !gadget->udc->started) {
+ 		/*
+ 		 * If gadget is deactivated we only save new state.
+ 		 * Gadget will stay disconnected after activation.
++		 *
++		 * udc should have been started before gadget being pulled down.
+ 		 */
+ 		gadget->connected = false;
+ 		goto out;
+@@ -747,6 +758,30 @@ out:
+ 
+ 	return ret;
+ }
++
++/**
++ * usb_gadget_disconnect - software-controlled disconnect from USB host
++ * @gadget:the peripheral being disconnected
++ *
++ * Disables the D+ (or potentially D-) pullup, which the host may see
++ * as a disconnect (when a VBUS session is active).  Not all systems
++ * support software pullup controls.
++ *
++ * Following a successful disconnect, invoke the ->disconnect() callback
++ * for the current gadget driver so that UDC drivers don't need to.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_disconnect(struct usb_gadget *gadget)
++{
++	int ret;
++
++	mutex_lock(&gadget->udc->connect_lock);
++	ret = usb_gadget_disconnect_locked(gadget);
++	mutex_unlock(&gadget->udc->connect_lock);
++
++	return ret;
++}
+ EXPORT_SYMBOL_GPL(usb_gadget_disconnect);
+ 
+ /**
+@@ -767,10 +802,11 @@ int usb_gadget_deactivate(struct usb_gad
+ 	if (gadget->deactivated)
+ 		goto out;
+ 
++	mutex_lock(&gadget->udc->connect_lock);
+ 	if (gadget->connected) {
+-		ret = usb_gadget_disconnect(gadget);
++		ret = usb_gadget_disconnect_locked(gadget);
+ 		if (ret)
+-			goto out;
++			goto unlock;
+ 
+ 		/*
+ 		 * If gadget was being connected before deactivation, we want
+@@ -780,6 +816,8 @@ int usb_gadget_deactivate(struct usb_gad
+ 	}
+ 	gadget->deactivated = true;
+ 
++unlock:
++	mutex_unlock(&gadget->udc->connect_lock);
+ out:
+ 	trace_usb_gadget_deactivate(gadget, ret);
+ 
+@@ -803,6 +841,7 @@ int usb_gadget_activate(struct usb_gadge
+ 	if (!gadget->deactivated)
+ 		goto out;
+ 
++	mutex_lock(&gadget->udc->connect_lock);
+ 	gadget->deactivated = false;
+ 
+ 	/*
+@@ -810,7 +849,8 @@ int usb_gadget_activate(struct usb_gadge
+ 	 * while it was being deactivated, we call usb_gadget_connect().
+ 	 */
+ 	if (gadget->connected)
+-		ret = usb_gadget_connect(gadget);
++		ret = usb_gadget_connect_locked(gadget);
++	mutex_unlock(&gadget->udc->connect_lock);
+ 
+ out:
+ 	trace_usb_gadget_activate(gadget, ret);
+@@ -1051,12 +1091,13 @@ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+ 
+ /* ------------------------------------------------------------------------- */
+ 
+-static void usb_udc_connect_control(struct usb_udc *udc)
++/* Acquire connect_lock before calling this function. */
++static void usb_udc_connect_control_locked(struct usb_udc *udc) __must_hold(&udc->connect_lock)
+ {
+-	if (udc->vbus)
+-		usb_gadget_connect(udc->gadget);
++	if (udc->vbus && udc->started)
++		usb_gadget_connect_locked(udc->gadget);
+ 	else
+-		usb_gadget_disconnect(udc->gadget);
++		usb_gadget_disconnect_locked(udc->gadget);
+ }
+ 
+ /**
+@@ -1072,10 +1113,12 @@ void usb_udc_vbus_handler(struct usb_gad
+ {
+ 	struct usb_udc *udc = gadget->udc;
+ 
++	mutex_lock(&udc->connect_lock);
+ 	if (udc) {
+ 		udc->vbus = status;
+-		usb_udc_connect_control(udc);
++		usb_udc_connect_control_locked(udc);
+ 	}
++	mutex_unlock(&udc->connect_lock);
+ }
+ EXPORT_SYMBOL_GPL(usb_udc_vbus_handler);
+ 
+@@ -1097,7 +1140,7 @@ void usb_gadget_udc_reset(struct usb_gad
+ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
+ 
+ /**
+- * usb_gadget_udc_start - tells usb device controller to start up
++ * usb_gadget_udc_start_locked - tells usb device controller to start up
+  * @udc: The UDC to be started
+  *
+  * This call is issued by the UDC Class driver when it's about
+@@ -1108,8 +1151,11 @@ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
+  * necessary to have it powered on.
+  *
+  * Returns zero on success, else negative errno.
++ *
++ * Caller should acquire connect_lock before invoking this function.
+  */
+-static inline int usb_gadget_udc_start(struct usb_udc *udc)
++static inline int usb_gadget_udc_start_locked(struct usb_udc *udc)
++	__must_hold(&udc->connect_lock)
+ {
+ 	int ret;
+ 
+@@ -1126,7 +1172,7 @@ static inline int usb_gadget_udc_start(s
+ }
+ 
+ /**
+- * usb_gadget_udc_stop - tells usb device controller we don't need it anymore
++ * usb_gadget_udc_stop_locked - tells usb device controller we don't need it anymore
+  * @udc: The UDC to be stopped
+  *
+  * This call is issued by the UDC Class driver after calling
+@@ -1135,8 +1181,11 @@ static inline int usb_gadget_udc_start(s
+  * The details are implementation specific, but it can go as
+  * far as powering off UDC completely and disable its data
+  * line pullups.
++ *
++ * Caller should acquire connect lock before invoking this function.
+  */
+-static inline void usb_gadget_udc_stop(struct usb_udc *udc)
++static inline void usb_gadget_udc_stop_locked(struct usb_udc *udc)
++	__must_hold(&udc->connect_lock)
+ {
+ 	if (!udc->started) {
+ 		dev_err(&udc->dev, "UDC had already stopped\n");
+@@ -1295,6 +1344,7 @@ int usb_add_gadget(struct usb_gadget *ga
+ 
+ 	udc->gadget = gadget;
+ 	gadget->udc = udc;
++	mutex_init(&udc->connect_lock);
+ 
+ 	udc->started = false;
+ 
+@@ -1496,11 +1546,15 @@ static int gadget_bind_driver(struct dev
+ 	if (ret)
+ 		goto err_bind;
+ 
+-	ret = usb_gadget_udc_start(udc);
+-	if (ret)
++	mutex_lock(&udc->connect_lock);
++	ret = usb_gadget_udc_start_locked(udc);
++	if (ret) {
++		mutex_unlock(&udc->connect_lock);
+ 		goto err_start;
++	}
+ 	usb_gadget_enable_async_callbacks(udc);
+-	usb_udc_connect_control(udc);
++	usb_udc_connect_control_locked(udc);
++	mutex_unlock(&udc->connect_lock);
+ 
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+ 	return 0;
+@@ -1531,12 +1585,14 @@ static void gadget_unbind_driver(struct
+ 
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+ 
+-	usb_gadget_disconnect(gadget);
++	mutex_lock(&udc->connect_lock);
++	usb_gadget_disconnect_locked(gadget);
+ 	usb_gadget_disable_async_callbacks(udc);
+ 	if (gadget->irq)
+ 		synchronize_irq(gadget->irq);
+ 	udc->driver->unbind(gadget);
+-	usb_gadget_udc_stop(udc);
++	usb_gadget_udc_stop_locked(udc);
++	mutex_unlock(&udc->connect_lock);
+ 
+ 	mutex_lock(&udc_lock);
+ 	driver->is_bound = false;
+@@ -1622,11 +1678,15 @@ static ssize_t soft_connect_store(struct
+ 	}
+ 
+ 	if (sysfs_streq(buf, "connect")) {
+-		usb_gadget_udc_start(udc);
+-		usb_gadget_connect(udc->gadget);
++		mutex_lock(&udc->connect_lock);
++		usb_gadget_udc_start_locked(udc);
++		usb_gadget_connect_locked(udc->gadget);
++		mutex_unlock(&udc->connect_lock);
+ 	} else if (sysfs_streq(buf, "disconnect")) {
+-		usb_gadget_disconnect(udc->gadget);
+-		usb_gadget_udc_stop(udc);
++		mutex_lock(&udc->connect_lock);
++		usb_gadget_disconnect_locked(udc->gadget);
++		usb_gadget_udc_stop_locked(udc);
++		mutex_unlock(&udc->connect_lock);
+ 	} else {
+ 		dev_err(dev, "unsupported command '%s'\n", buf);
+ 		ret = -EINVAL;
 
 
