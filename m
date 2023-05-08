@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A1236FA56E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE2896FABA8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234132AbjEHKJX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
+        id S234789AbjEHLP5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:15:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234117AbjEHKJW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12F035109
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:21 -0700 (PDT)
+        with ESMTP id S234892AbjEHLP4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A65536CDD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 593A36239F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694E6C433EF;
-        Mon,  8 May 2023 10:09:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4EE562BAA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFB0C433D2;
+        Mon,  8 May 2023 11:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540560;
-        bh=+pahezfLsBF468GwlA4Oz4DSe9oFNT+ZVOBlEo5ZTO4=;
+        s=korg; t=1683544554;
+        bh=kuwjK8WX1hE2MqCzeW5z7DKaYMEvES2jlPUmX+6qmHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=emenuEWvhJzJaHi6dfmFi08RBvdmjfC/ItInpIh9rVHCl9rHXBW33+C8M0zFKEXeI
-         B22AM5sigBF1bZkrffMAQFHfLUFYKw23Vsq65l5Nx5QnIUosawcm0DzVx2qnqtKrkA
-         77FWIKukb/VcbHxP0kYwT975GOUuSXfd3kSO15Iw=
+        b=Me/imLojB4k3bAI5TmA7M2Q0lJHBqN762iVGFO0F41Kj0h+J2Di6IPYcXrYabqFnp
+         SmMENYU2uMnoBaJ53xNyd5CNaDVQ9dxeyLnqsorpJ0s4nThFUD8DRWhvItjZI4Uz2L
+         +cWIUBm6HJTZ9JpyeGrrdC09ev0WIkgZkBuPsrrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Daeho Jeong <daehojeong@google.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 410/611] spi: imx: Dont skip cleanup in removes error path
+Subject: [PATCH 6.3 417/694] f2fs: fix to check return value of inc_valid_block_count()
 Date:   Mon,  8 May 2023 11:44:12 +0200
-Message-Id: <20230508094435.573408456@linuxfoundation.org>
+Message-Id: <20230508094446.805118081@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,47 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 11951c9e3f364d7ae3b568a0e52c8335d43066b5 ]
+[ Upstream commit 935fc6fa6466cf18dd72dd1518ebc7bfc4cd58a4 ]
 
-Returning early in a platform driver's remove callback is wrong. In this
-case the dma resources are not released in the error path. this is never
-retried later and so this is a permanent leak. To fix this, only skip
-hardware disabling if waking the device fails.
+In __replace_atomic_write_block(), we missed to check return value
+of inc_valid_block_count(), for extreme testcase that f2fs image is
+run out of space, it may cause inconsistent status in between SIT
+table and total valid block count.
 
-Fixes: d593574aff0a ("spi: imx: do not access registers while clocks disabled")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230306065733.2170662-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Daeho Jeong <daehojeong@google.com>
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/f2fs/segment.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index d209930069cf3..fbd7b354dd36b 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1864,13 +1864,11 @@ static int spi_imx_remove(struct platform_device *pdev)
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 1ca12ea8723b7..b2a080c660c86 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -246,10 +246,16 @@ static int __replace_atomic_write_block(struct inode *inode, pgoff_t index,
+ 	} else {
+ 		blkcnt_t count = 1;
  
- 	spi_unregister_controller(controller);
- 
--	ret = pm_runtime_resume_and_get(spi_imx->dev);
--	if (ret < 0) {
--		dev_err(spi_imx->dev, "failed to enable clock\n");
--		return ret;
--	}
--
--	writel(0, spi_imx->base + MXC_CSPICTRL);
-+	ret = pm_runtime_get_sync(spi_imx->dev);
-+	if (ret >= 0)
-+		writel(0, spi_imx->base + MXC_CSPICTRL);
-+	else
-+		dev_warn(spi_imx->dev, "failed to enable clock, skip hw disable\n");
- 
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
- 	pm_runtime_put_sync(spi_imx->dev);
++		err = inc_valid_block_count(sbi, inode, &count);
++		if (err) {
++			f2fs_put_dnode(&dn);
++			return err;
++		}
++
+ 		*old_addr = dn.data_blkaddr;
+ 		f2fs_truncate_data_blocks_range(&dn, 1);
+ 		dec_valid_block_count(sbi, F2FS_I(inode)->cow_inode, count);
+-		inc_valid_block_count(sbi, inode, &count);
++
+ 		f2fs_replace_block(sbi, &dn, dn.data_blkaddr, new_addr,
+ 					ni.version, true, false);
+ 	}
 -- 
 2.39.2
 
