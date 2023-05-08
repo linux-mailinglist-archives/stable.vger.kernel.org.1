@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F02906FAB47
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6AE6FA550
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233015AbjEHLLS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51076 "EHLO
+        id S234101AbjEHKII (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233724AbjEHLLS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:18 -0400
+        with ESMTP id S234099AbjEHKIH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF37534E1C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE6432919
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 361E562B71
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5015EC433D2;
-        Mon,  8 May 2023 11:11:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6ADC61662
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3302C433EF;
+        Mon,  8 May 2023 10:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544274;
-        bh=aLIHrtKppp7T/H5pskN+NwG4ATJ+sTc2Fi4cheBB1R8=;
+        s=korg; t=1683540485;
+        bh=Onfs1dHsbp4CHYPvAPJrJmhEzoGborvYhVCOzTxpJKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tIqTWnfsd0iJ79SIBEUsZATGykAzjcceMKeV0Jm8R0zGfZul3paZrLW9Ws6QicYd9
-         GO624QnYEuUcX/AlSc4V16NOT5nSerUUfwJWz+IlSyk25zMkCRSWIMO91N1T0jC+8o
-         QPB8OrLxUfdnTaQ6lQ+f8P4F6vcgLAGz5Nc6W/Y0=
+        b=MzIjiZiD9L0+BZcIQfHjLfBvCVCpZpL9HCly48Iag60ExK3UQvyTEpHr1S7jC2jUV
+         LxqhoTDi8dmAkzYZouYvkoJq1PlYaBcg1XF38D78rJsPoN67C2RqXaFZi8Q6W5gDcl
+         r1YIIMd35PnR/SmANLXKdTbdyLQz0i4AKV9fdr0o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Madhu Koriginja <madhu.koriginja@nxp.com>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 358/694] netfilter: keep conntrack reference until IPsecv6 policy checks are done
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 351/611] md/raid10: fix memleak of md thread
 Date:   Mon,  8 May 2023 11:43:13 +0200
-Message-Id: <20230508094444.274974803@linuxfoundation.org>
+Message-Id: <20230508094433.801597447@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,129 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Madhu Koriginja <madhu.koriginja@nxp.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit b0e214d212030fe497d4d150bb3474e50ad5d093 ]
+[ Upstream commit f0ddb83da3cbbf8a1f9087a642c448ff52ee9abd ]
 
-Keep the conntrack reference until policy checks have been performed for
-IPsec V6 NAT support, just like ipv4.
+In raid10_run(), if setup_conf() succeed and raid10_run() failed before
+setting 'mddev->thread', then in the error path 'conf->thread' is not
+freed.
 
-The reference needs to be dropped before a packet is
-queued to avoid having the conntrack module unloadable.
+Fix the problem by setting 'mddev->thread' right after setup_conf().
 
-Fixes: 58a317f1061c ("netfilter: ipv6: add IPv6 NAT support")
-Signed-off-by: Madhu Koriginja <madhu.koriginja@nxp.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 43a521238aca ("md-cluster: choose correct label when clustered layout is not supported")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230310073855.1337560-7-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv6.c      |  1 +
- net/ipv6/ip6_input.c | 14 ++++++--------
- net/ipv6/raw.c       |  5 ++---
- net/ipv6/tcp_ipv6.c  |  2 ++
- net/ipv6/udp.c       |  2 ++
- 5 files changed, 13 insertions(+), 11 deletions(-)
+ drivers/md/raid10.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index b9d7c3dd1cb39..c0fd8f5f3b94e 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -783,6 +783,7 @@ static int dccp_v6_rcv(struct sk_buff *skb)
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index c861db523d307..006c28edd1dd6 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -4148,6 +4148,9 @@ static int raid10_run(struct mddev *mddev)
+ 	if (!conf)
+ 		goto out;
  
- 	if (!xfrm6_policy_check(sk, XFRM_POLICY_IN, skb))
- 		goto discard_and_relse;
-+	nf_reset_ct(skb);
- 
- 	return __sk_receive_skb(sk, skb, 1, dh->dccph_doff * 4,
- 				refcounted) ? -1 : 0;
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index e1ebf5e42ebe9..d94041bb42872 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -404,10 +404,6 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
- 			/* Only do this once for first final protocol */
- 			have_final = true;
- 
--			/* Free reference early: we don't need it any more,
--			   and it may hold ip_conntrack module loaded
--			   indefinitely. */
--			nf_reset_ct(skb);
- 
- 			skb_postpull_rcsum(skb, skb_network_header(skb),
- 					   skb_network_header_len(skb));
-@@ -430,10 +426,12 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
- 				goto discard;
- 			}
- 		}
--		if (!(ipprot->flags & INET6_PROTO_NOPOLICY) &&
--		    !xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
--			SKB_DR_SET(reason, XFRM_POLICY);
--			goto discard;
-+		if (!(ipprot->flags & INET6_PROTO_NOPOLICY)) {
-+			if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
-+				SKB_DR_SET(reason, XFRM_POLICY);
-+				goto discard;
-+			}
-+			nf_reset_ct(skb);
- 		}
- 
- 		ret = INDIRECT_CALL_2(ipprot->handler, tcp_v6_rcv, udpv6_rcv,
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index a327aa481df48..9986e2d15c8be 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -193,10 +193,8 @@ static bool ipv6_raw_deliver(struct sk_buff *skb, int nexthdr)
- 			struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
- 
- 			/* Not releasing hash table! */
--			if (clone) {
--				nf_reset_ct(clone);
-+			if (clone)
- 				rawv6_rcv(sk, clone);
--			}
- 		}
- 	}
- 	rcu_read_unlock();
-@@ -389,6 +387,7 @@ int rawv6_rcv(struct sock *sk, struct sk_buff *skb)
- 		kfree_skb_reason(skb, SKB_DROP_REASON_XFRM_POLICY);
- 		return NET_RX_DROP;
- 	}
-+	nf_reset_ct(skb);
- 
- 	if (!rp->checksum)
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 1bf93b61aa06f..1e747241c7710 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1722,6 +1722,8 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
- 	if (drop_reason)
- 		goto discard_and_relse;
- 
-+	nf_reset_ct(skb);
++	mddev->thread = conf->thread;
++	conf->thread = NULL;
 +
- 	if (tcp_filter(sk, skb)) {
- 		drop_reason = SKB_DROP_REASON_SOCKET_FILTER;
- 		goto discard_and_relse;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index a675acfb901d1..c519f21632656 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -704,6 +704,7 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 		drop_reason = SKB_DROP_REASON_XFRM_POLICY;
- 		goto drop;
+ 	if (mddev_is_clustered(conf->mddev)) {
+ 		int fc, fo;
+ 
+@@ -4160,9 +4163,6 @@ static int raid10_run(struct mddev *mddev)
+ 		}
  	}
-+	nf_reset_ct(skb);
  
- 	if (static_branch_unlikely(&udpv6_encap_needed_key) && up->encap_type) {
- 		int (*encap_rcv)(struct sock *sk, struct sk_buff *skb);
-@@ -1027,6 +1028,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 
- 	if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb))
- 		goto discard;
-+	nf_reset_ct(skb);
- 
- 	if (udp_lib_checksum_complete(skb))
- 		goto csum_error;
+-	mddev->thread = conf->thread;
+-	conf->thread = NULL;
+-
+ 	if (mddev->queue) {
+ 		blk_queue_max_write_zeroes_sectors(mddev->queue, 0);
+ 		blk_queue_io_min(mddev->queue, mddev->chunk_sectors << 9);
 -- 
 2.39.2
 
