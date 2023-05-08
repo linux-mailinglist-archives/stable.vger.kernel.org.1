@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62ACC6FAAA7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208AB6FA752
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:29:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233133AbjEHLFX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39492 "EHLO
+        id S234494AbjEHK33 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:29:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233370AbjEHLEj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:04:39 -0400
+        with ESMTP id S234615AbjEHK3R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC442E80F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E423A25251
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:29:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC8BB6260A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7C8C433EF;
-        Mon,  8 May 2023 11:03:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DB4062695
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFF8C4339B;
+        Mon,  8 May 2023 10:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543812;
-        bh=LOBuAmjh6DX43wlSYEnAzz956FiqMx7LPlhIGDB2Cng=;
+        s=korg; t=1683541754;
+        bh=IbA2kI44DiybcmENrfW6ndxjyPxEF2oKV1ME6S9IHSo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q20LALxdffEeYKnPME0GszulS7GlxoCk5lpdmkYhFY4nFGMkNgv6VfYBhOS28NLiA
-         AZxIkO2Ssd1XzPUBRVljlvSwT1Bmh94OoU3wRgfrz+YTueep4cYax8u9/RTbIV0Dh6
-         cIUQl4aBer8jFbvVw3oNdqTzWlB0JX190fU9VSKE=
+        b=SK1bZhG4zUgDHt2xsCFNfF+6jB88szgP/oj2IWlpeRPQ6Vao4SGdRz+2TOZeXaWwJ
+         WVvAlM4uHE79U66p8oZh3QoCfSlGPuwKFdyqKx4sF3j5zYISNZ0O5V9HHt9xB8yF32
+         p8gFeZjoGLhNg+ompE1d2V7aapsJdKMRbwkioc/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 208/694] media: amphion: decoder implement display delay enable
+Subject: [PATCH 6.2 217/663] arm64: dts: qcom: sc7180-trogdor-pazquel: correct trackpad supply
 Date:   Mon,  8 May 2023 11:40:43 +0200
-Message-Id: <20230508094439.122342657@linuxfoundation.org>
+Message-Id: <20230508094435.387089485@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,105 +58,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit ffa331d9bf9407655fc4c4d57dcc92ed2868e326 ]
+[ Upstream commit 24f39eec6a70768e7c2eb2f3d8158f45050ff75a ]
 
-amphion vpu support a low latency mode,
-when V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE is enabled,
-decoder can display frame immediately after it's decoded.
-Only h264 is support yet.
+The hid-over-i2c takes VDD, not VCC supply.  Fix copy-pasta from other
+boards which use elan,ekth3000 with valid VCC:
 
-Fixes: 6de8d628df6e ("media: amphion: add v4l2 m2m vpu decoder stateful driver")
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+  sc7180-trogdor-pazquel360-lte.dtb: trackpad@15: 'vcc-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
+
+Fixes: fb69f6adaf88 ("arm64: dts: qcom: sc7180: Add pazquel dts files")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230312183622.460488-4-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vdec.c       | 32 +++++++++++++++++++++
- drivers/media/platform/amphion/vpu_codec.h  |  3 +-
- drivers/media/platform/amphion/vpu_malone.c |  4 ++-
- 3 files changed, 37 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index 87f9f8e90ab13..70633530d23a1 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -168,7 +168,31 @@ static const struct vpu_format vdec_formats[] = {
- 	{0, 0, 0, 0},
- };
+diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi
+index d06cc4ea33756..8823edbb4d6e2 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi
+@@ -39,7 +39,7 @@
+ 		interrupt-parent = <&tlmm>;
+ 		interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
  
-+static int vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
-+{
-+	struct vpu_inst *inst = ctrl_to_inst(ctrl);
-+	struct vdec_t *vdec = inst->priv;
-+	int ret = 0;
-+
-+	vpu_inst_lock(inst);
-+	switch (ctrl->id) {
-+	case V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE:
-+		vdec->params.display_delay_enable = ctrl->val;
-+		break;
-+	case V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY:
-+		vdec->params.display_delay = ctrl->val;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	vpu_inst_unlock(inst);
-+
-+	return ret;
-+}
-+
- static const struct v4l2_ctrl_ops vdec_ctrl_ops = {
-+	.s_ctrl = vdec_op_s_ctrl,
- 	.g_volatile_ctrl = vpu_helper_g_volatile_ctrl,
- };
- 
-@@ -181,6 +205,14 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
- 	if (ret)
- 		return ret;
- 
-+	v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
-+			  V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY,
-+			  0, 0, 1, 0);
-+
-+	v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
-+			  V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
-+			  0, 1, 1, 0);
-+
- 	ctrl = v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
- 				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
- 	if (ctrl)
-diff --git a/drivers/media/platform/amphion/vpu_codec.h b/drivers/media/platform/amphion/vpu_codec.h
-index 528a93f08ecd4..bac6d0d94f8a5 100644
---- a/drivers/media/platform/amphion/vpu_codec.h
-+++ b/drivers/media/platform/amphion/vpu_codec.h
-@@ -55,7 +55,8 @@ struct vpu_encode_params {
- struct vpu_decode_params {
- 	u32 codec_format;
- 	u32 output_format;
--	u32 b_dis_reorder;
-+	u32 display_delay_enable;
-+	u32 display_delay;
- 	u32 b_non_frame;
- 	u32 frame_count;
- 	u32 end_flag;
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index 2c9bfc6a5a72e..feb5c25e31044 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -641,7 +641,9 @@ static int vpu_malone_set_params(struct vpu_shared_addr *shared,
- 		hc->jpg[instance].jpg_mjpeg_interlaced = 0;
- 	}
- 
--	hc->codec_param[instance].disp_imm = params->b_dis_reorder ? 1 : 0;
-+	hc->codec_param[instance].disp_imm = params->display_delay_enable ? 1 : 0;
-+	if (malone_format != MALONE_FMT_AVC)
-+		hc->codec_param[instance].disp_imm = 0;
- 	hc->codec_param[instance].dbglog_enable = 0;
- 	iface->dbglog_desc.level = 0;
+-		vcc-supply = <&pp3300_fp_tp>;
++		vdd-supply = <&pp3300_fp_tp>;
+ 		post-power-on-delay-ms = <100>;
+ 		hid-descr-addr = <0x0001>;
  
 -- 
 2.39.2
