@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5382C6FA5DB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A2236FA90E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234251AbjEHKNt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42478 "EHLO
+        id S235139AbjEHKr0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:47:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234265AbjEHKNh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:37 -0400
+        with ESMTP id S235144AbjEHKqt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39AB22F58
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5362A9D3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A99D62428
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F507C433EF;
-        Mon,  8 May 2023 10:13:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C2B3628D3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B0DC433D2;
+        Mon,  8 May 2023 10:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540810;
-        bh=/lAsQmWa93y1/iPWwyBwlZ1Uz4b/QRa/wBsOKLMC9Ro=;
+        s=korg; t=1683542793;
+        bh=gHmSPUit+cKJJVg0Qx4WIqjFeLzHHhRYRl9x57STIbA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M6F1Aj8hdqAPLhmJAngPzMtmitZXkEmLiS3URgm3oUOlI7edwio3YFH8fe7SWuibr
-         ixipcEoMlYiPqUmtzx1Wvpt6bpiyFbWdSvDyelIgMNrT0stZMPHZGjSbFkoQ6EEOT1
-         uWX2RJ6cN6A2HeZ3nyR7fmAQUcA7Um9VXq921FsE=
+        b=0AsK2HxskFAzrwxKGaedVW3R7YOnqGVm9vKOzABR6Z/8f7aF689VmQ4Vq63h/A7gU
+         j742iWCHDDBkW2P6pqWdfyqCr/m/XZw/sF0rhUptY/ydsJmLu2zYnmAy3/Anbc3OuH
+         28dv9Pi3qIYD6PlRfq7CQl7StgQYMcKCEQcn/9xQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
-        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 506/611] clk: qcom: lpasscc-sc7280: Skip qdsp6ss clock registration
-Date:   Mon,  8 May 2023 11:45:48 +0200
-Message-Id: <20230508094438.509595629@linuxfoundation.org>
+Subject: [PATCH 6.2 523/663] clk: mediatek: mt8135: Properly use CLK_IS_CRITICAL flag
+Date:   Mon,  8 May 2023 11:45:49 +0200
+Message-Id: <20230508094445.807087375@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,56 +57,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 4fc1c2d9a2b7a394f3b873aae5e03bffd8b5cd31 ]
+[ Upstream commit f4f9a9c003b52ea3cffda186753bfb3e37b970f8 ]
 
-The qdsp6ss memory region is being shared by ADSP remoteproc device and
-lpasscc clock device, hence causing memory conflict.
-To avoid this, when qdsp6ss clocks are being enabled in remoteproc driver,
-skip qdsp6ss clock registration if "qcom,adsp-pil-mode" is enabled and
-also assign max_register value.
+Instead of calling clk_prepare_enable() for clocks that shall stay
+enabled, use the CLK_IS_CRITICAL flag, which purpose is exactly that.
 
-Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
-Signed-off-by: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
-Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230407092255.119690-3-quic_mohs@quicinc.com
+Fixes: a8aede794843 ("clk: mediatek: Add basic clocks for Mediatek MT8135.")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230306140543.1813621-52-angelogioacchino.delregno@collabora.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/lpasscc-sc7280.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/clk/mediatek/clk-mt8135.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/qcom/lpasscc-sc7280.c b/drivers/clk/qcom/lpasscc-sc7280.c
-index 5c1e17bd0d763..8486d7135ab10 100644
---- a/drivers/clk/qcom/lpasscc-sc7280.c
-+++ b/drivers/clk/qcom/lpasscc-sc7280.c
-@@ -118,14 +118,18 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
- 		goto destroy_pm_clk;
- 	}
+diff --git a/drivers/clk/mediatek/clk-mt8135.c b/drivers/clk/mediatek/clk-mt8135.c
+index 1cbe0958d9cd0..3ea06d2ec2f11 100644
+--- a/drivers/clk/mediatek/clk-mt8135.c
++++ b/drivers/clk/mediatek/clk-mt8135.c
+@@ -2,6 +2,8 @@
+ /*
+  * Copyright (c) 2014 MediaTek Inc.
+  * Author: James Liao <jamesjj.liao@mediatek.com>
++ * Copyright (c) 2023 Collabora, Ltd.
++ *               AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+  */
  
--	lpass_regmap_config.name = "qdsp6ss";
--	desc = &lpass_qdsp6ss_sc7280_desc;
--
--	ret = qcom_cc_probe_by_index(pdev, 0, desc);
--	if (ret)
--		goto destroy_pm_clk;
-+	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
-+		lpass_regmap_config.name = "qdsp6ss";
-+		lpass_regmap_config.max_register = 0x3f;
-+		desc = &lpass_qdsp6ss_sc7280_desc;
+ #include <linux/clk.h>
+@@ -390,7 +392,7 @@ static const struct mtk_composite top_muxes[] __initconst = {
+ 	MUX_GATE(CLK_TOP_GCPU_SEL, "gcpu_sel", gcpu_parents, 0x0164, 24, 3, 31),
+ 	/* CLK_CFG_9 */
+ 	MUX_GATE(CLK_TOP_DPI1_SEL, "dpi1_sel", dpi1_parents, 0x0168, 0, 2, 7),
+-	MUX_GATE(CLK_TOP_CCI_SEL, "cci_sel", cci_parents, 0x0168, 8, 3, 15),
++	MUX_GATE_FLAGS(CLK_TOP_CCI_SEL, "cci_sel", cci_parents, 0x0168, 8, 3, 15, CLK_IS_CRITICAL),
+ 	MUX_GATE(CLK_TOP_APLL_SEL, "apll_sel", apll_parents, 0x0168, 16, 3, 23),
+ 	MUX_GATE(CLK_TOP_HDMIPLL_SEL, "hdmipll_sel", hdmipll_parents, 0x0168, 24, 2, 31),
+ };
+@@ -404,6 +406,10 @@ static const struct mtk_gate_regs infra_cg_regs = {
+ #define GATE_ICG(_id, _name, _parent, _shift)	\
+ 	GATE_MTK(_id, _name, _parent, &infra_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+ 
++#define GATE_ICG_AO(_id, _name, _parent, _shift)	\
++	GATE_MTK_FLAGS(_id, _name, _parent, &infra_cg_regs, _shift,	\
++		       &mtk_clk_gate_ops_setclr, CLK_IS_CRITICAL)
 +
-+		ret = qcom_cc_probe_by_index(pdev, 0, desc);
-+		if (ret)
-+			goto destroy_pm_clk;
-+	}
+ static const struct mtk_gate infra_clks[] __initconst = {
+ 	GATE_ICG(CLK_INFRA_PMIC_WRAP, "pmic_wrap_ck", "axi_sel", 23),
+ 	GATE_ICG(CLK_INFRA_PMICSPI, "pmicspi_ck", "pmicspi_sel", 22),
+@@ -411,7 +417,7 @@ static const struct mtk_gate infra_clks[] __initconst = {
+ 	GATE_ICG(CLK_INFRA_CCIF0_AP_CTRL, "ccif0_ap_ctrl", "axi_sel", 20),
+ 	GATE_ICG(CLK_INFRA_KP, "kp_ck", "axi_sel", 16),
+ 	GATE_ICG(CLK_INFRA_CPUM, "cpum_ck", "cpum_tck_in", 15),
+-	GATE_ICG(CLK_INFRA_M4U, "m4u_ck", "mem_sel", 8),
++	GATE_ICG_AO(CLK_INFRA_M4U, "m4u_ck", "mem_sel", 8),
+ 	GATE_ICG(CLK_INFRA_MFGAXI, "mfgaxi_ck", "axi_sel", 7),
+ 	GATE_ICG(CLK_INFRA_DEVAPC, "devapc_ck", "axi_sel", 6),
+ 	GATE_ICG(CLK_INFRA_AUDIO, "audio_ck", "aud_intbus_sel", 5),
+@@ -533,8 +539,6 @@ static void __init mtk_topckgen_init(struct device_node *node)
+ 	mtk_clk_register_composites(top_muxes, ARRAY_SIZE(top_muxes), base,
+ 			&mt8135_clk_lock, clk_data);
  
- 	lpass_regmap_config.name = "top_cc";
-+	lpass_regmap_config.max_register = 0x4;
- 	desc = &lpass_cc_top_sc7280_desc;
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_CCI_SEL]->clk);
+-
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ 	if (r)
+ 		pr_err("%s(): could not register clock provider: %d\n",
+@@ -552,8 +556,6 @@ static void __init mtk_infrasys_init(struct device_node *node)
+ 	mtk_clk_register_gates(node, infra_clks, ARRAY_SIZE(infra_clks),
+ 						clk_data);
  
- 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+-	clk_prepare_enable(clk_data->hws[CLK_INFRA_M4U]->clk);
+-
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ 	if (r)
+ 		pr_err("%s(): could not register clock provider: %d\n",
 -- 
 2.39.2
 
