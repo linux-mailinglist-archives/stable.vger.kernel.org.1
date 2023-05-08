@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8C66FAB70
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C076C6FA558
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233866AbjEHLNV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53770 "EHLO
+        id S234110AbjEHKI2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:08:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233881AbjEHLNT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:19 -0400
+        with ESMTP id S234099AbjEHKI2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B324E35B06
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBEB43291A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3942862BA3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F80C433D2;
-        Mon,  8 May 2023 11:13:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ADF762383
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B77BC433D2;
+        Mon,  8 May 2023 10:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544396;
-        bh=lSIMjlvtWrNXAEm4UYmA5KaU0mwqi2BLwjWvFziYjzU=;
+        s=korg; t=1683540505;
+        bh=emNMdWt3FAv3Z0+lFpCvz7Ly2tt9NTbxZP+6Hybqlfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bxkMqxah/CVsBHY7TWxdsVHqPF4uDpI0uDnVhTCq/IK314j9LYAnFZXs6ayHR+FbM
-         bJCPDc5M0pk+phXSET2GmKlwNcFGC9PRkSFLuGTO45ywCrbqFd213AmAThUt1MP9wb
-         H+UWxAcC4SMU3/RyIM4Iu/Yz/aCS4yxlh5AOCcUQ=
+        b=XgV0m/7CjlSDVwa0tqOAwzBw3l8RN1tMDYFkKPXBNVOFKFQwfrIq+gSUevKwbHDJ4
+         rt6qLkt9xoo41hcvNYLo+8dLjeVT6sqg+8sAcsHP3NIA//elkoaAUEiETUcBixFkKN
+         iOzdk205C7DlvHENqrRA5K6ksaqhJYvV4Nwbf5qM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Davide Caratti <dcaratti@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 397/694] net: ethernet: stmmac: dwmac-rk: rework optional clock handling
-Date:   Mon,  8 May 2023 11:43:52 +0200
-Message-Id: <20230508094445.980902228@linuxfoundation.org>
+Subject: [PATCH 6.1 391/611] net/sched: sch_fq: fix integer overflow of "credit"
+Date:   Mon,  8 May 2023 11:43:53 +0200
+Message-Id: <20230508094434.995778541@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,342 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit ea449f7fa0bf3fcd02e04a770b9ff707bf5e8f96 ]
+[ Upstream commit 7041101ff6c3073fd8f2e99920f535b111c929cb ]
 
-The clock requesting code is quite repetitive. Fix this by requesting
-the clocks via devm_clk_bulk_get_optional. The optional variant has been
-used, since this is effectively what the old code did. The exact clocks
-required depend on the platform and configuration. As a side effect
-this change adds correct -EPROBE_DEFER handling.
+if sch_fq is configured with "initial quantum" having values greater than
+INT_MAX, the first assignment of "credit" does signed integer overflow to
+a very negative value.
+In this situation, the syzkaller script provided by Cristoph triggers the
+CPU soft-lockup warning even with few sockets. It's not an infinite loop,
+but "credit" wasn't probably meant to be minus 2Gb for each new flow.
+Capping "initial quantum" to INT_MAX proved to fix the issue.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Fixes: 7ad269ea1a2b ("GMAC: add driver for Rockchip RK3288 SoCs integrated GMAC")
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+v2: validation of "initial quantum" is done in fq_policy, instead of open
+    coding in fq_change() _ suggested by Jakub Kicinski
+
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/377
+Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://lore.kernel.org/r/7b3a3c7e36d03068707a021760a194a8eb5ad41a.1682002300.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 183 +++++++-----------
- 1 file changed, 70 insertions(+), 113 deletions(-)
+ net/sched/sch_fq.c                            |  6 ++++-
+ .../tc-testing/tc-tests/qdiscs/fq.json        | 22 +++++++++++++++++++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 4b8fd11563e49..7ac9ca9b49351 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -39,6 +39,24 @@ struct rk_gmac_ops {
- 	u32 regs[];
- };
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index 48d14fb90ba02..f59a2cb2c803d 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -779,13 +779,17 @@ static int fq_resize(struct Qdisc *sch, u32 log)
+ 	return 0;
+ }
  
-+static const char * const rk_clocks[] = {
-+	"aclk_mac", "pclk_mac", "mac_clk_tx", "clk_mac_speed",
++static struct netlink_range_validation iq_range = {
++	.max = INT_MAX,
 +};
 +
-+static const char * const rk_rmii_clocks[] = {
-+	"mac_clk_rx", "clk_mac_ref", "clk_mac_refout",
-+};
-+
-+enum rk_clocks_index {
-+	RK_ACLK_MAC = 0,
-+	RK_PCLK_MAC,
-+	RK_MAC_CLK_TX,
-+	RK_CLK_MAC_SPEED,
-+	RK_MAC_CLK_RX,
-+	RK_CLK_MAC_REF,
-+	RK_CLK_MAC_REFOUT,
-+};
-+
- struct rk_priv_data {
- 	struct platform_device *pdev;
- 	phy_interface_t phy_iface;
-@@ -51,15 +69,9 @@ struct rk_priv_data {
- 	bool clock_input;
- 	bool integrated_phy;
+ static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
+ 	[TCA_FQ_UNSPEC]			= { .strict_start_type = TCA_FQ_TIMER_SLACK },
  
-+	struct clk_bulk_data *clks;
-+	int num_clks;
- 	struct clk *clk_mac;
--	struct clk *gmac_clkin;
--	struct clk *mac_clk_rx;
--	struct clk *mac_clk_tx;
--	struct clk *clk_mac_ref;
--	struct clk *clk_mac_refout;
--	struct clk *clk_mac_speed;
--	struct clk *aclk_mac;
--	struct clk *pclk_mac;
- 	struct clk *clk_phy;
- 
- 	struct reset_control *phy_reset;
-@@ -104,10 +116,11 @@ static void px30_set_to_rmii(struct rk_priv_data *bsp_priv)
- 
- static void px30_set_rmii_speed(struct rk_priv_data *bsp_priv, int speed)
- {
-+	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
- 	struct device *dev = &bsp_priv->pdev->dev;
- 	int ret;
- 
--	if (IS_ERR(bsp_priv->clk_mac_speed)) {
-+	if (!clk_mac_speed) {
- 		dev_err(dev, "%s: Missing clk_mac_speed clock\n", __func__);
- 		return;
- 	}
-@@ -116,7 +129,7 @@ static void px30_set_rmii_speed(struct rk_priv_data *bsp_priv, int speed)
- 		regmap_write(bsp_priv->grf, PX30_GRF_GMAC_CON1,
- 			     PX30_GMAC_SPEED_10M);
- 
--		ret = clk_set_rate(bsp_priv->clk_mac_speed, 2500000);
-+		ret = clk_set_rate(clk_mac_speed, 2500000);
- 		if (ret)
- 			dev_err(dev, "%s: set clk_mac_speed rate 2500000 failed: %d\n",
- 				__func__, ret);
-@@ -124,7 +137,7 @@ static void px30_set_rmii_speed(struct rk_priv_data *bsp_priv, int speed)
- 		regmap_write(bsp_priv->grf, PX30_GRF_GMAC_CON1,
- 			     PX30_GMAC_SPEED_100M);
- 
--		ret = clk_set_rate(bsp_priv->clk_mac_speed, 25000000);
-+		ret = clk_set_rate(clk_mac_speed, 25000000);
- 		if (ret)
- 			dev_err(dev, "%s: set clk_mac_speed rate 25000000 failed: %d\n",
- 				__func__, ret);
-@@ -1066,6 +1079,7 @@ static void rk3568_set_to_rmii(struct rk_priv_data *bsp_priv)
- 
- static void rk3568_set_gmac_speed(struct rk_priv_data *bsp_priv, int speed)
- {
-+	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
- 	struct device *dev = &bsp_priv->pdev->dev;
- 	unsigned long rate;
- 	int ret;
-@@ -1085,7 +1099,7 @@ static void rk3568_set_gmac_speed(struct rk_priv_data *bsp_priv, int speed)
- 		return;
- 	}
- 
--	ret = clk_set_rate(bsp_priv->clk_mac_speed, rate);
-+	ret = clk_set_rate(clk_mac_speed, rate);
- 	if (ret)
- 		dev_err(dev, "%s: set clk_mac_speed rate %ld failed %d\n",
- 			__func__, rate, ret);
-@@ -1371,6 +1385,7 @@ static void rv1126_set_to_rmii(struct rk_priv_data *bsp_priv)
- 
- static void rv1126_set_rgmii_speed(struct rk_priv_data *bsp_priv, int speed)
- {
-+	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
- 	struct device *dev = &bsp_priv->pdev->dev;
- 	unsigned long rate;
- 	int ret;
-@@ -1390,7 +1405,7 @@ static void rv1126_set_rgmii_speed(struct rk_priv_data *bsp_priv, int speed)
- 		return;
- 	}
- 
--	ret = clk_set_rate(bsp_priv->clk_mac_speed, rate);
-+	ret = clk_set_rate(clk_mac_speed, rate);
- 	if (ret)
- 		dev_err(dev, "%s: set clk_mac_speed rate %ld failed %d\n",
- 			__func__, rate, ret);
-@@ -1398,6 +1413,7 @@ static void rv1126_set_rgmii_speed(struct rk_priv_data *bsp_priv, int speed)
- 
- static void rv1126_set_rmii_speed(struct rk_priv_data *bsp_priv, int speed)
- {
-+	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
- 	struct device *dev = &bsp_priv->pdev->dev;
- 	unsigned long rate;
- 	int ret;
-@@ -1414,7 +1430,7 @@ static void rv1126_set_rmii_speed(struct rk_priv_data *bsp_priv, int speed)
- 		return;
- 	}
- 
--	ret = clk_set_rate(bsp_priv->clk_mac_speed, rate);
-+	ret = clk_set_rate(clk_mac_speed, rate);
- 	if (ret)
- 		dev_err(dev, "%s: set clk_mac_speed rate %ld failed %d\n",
- 			__func__, rate, ret);
-@@ -1475,68 +1491,50 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
- {
- 	struct rk_priv_data *bsp_priv = plat->bsp_priv;
- 	struct device *dev = &bsp_priv->pdev->dev;
--	int ret;
-+	int phy_iface = bsp_priv->phy_iface;
-+	int i, j, ret;
- 
- 	bsp_priv->clk_enabled = false;
- 
--	bsp_priv->mac_clk_rx = devm_clk_get(dev, "mac_clk_rx");
--	if (IS_ERR(bsp_priv->mac_clk_rx))
--		dev_err(dev, "cannot get clock %s\n",
--			"mac_clk_rx");
--
--	bsp_priv->mac_clk_tx = devm_clk_get(dev, "mac_clk_tx");
--	if (IS_ERR(bsp_priv->mac_clk_tx))
--		dev_err(dev, "cannot get clock %s\n",
--			"mac_clk_tx");
-+	bsp_priv->num_clks = ARRAY_SIZE(rk_clocks);
-+	if (phy_iface == PHY_INTERFACE_MODE_RMII)
-+		bsp_priv->num_clks += ARRAY_SIZE(rk_rmii_clocks);
- 
--	bsp_priv->aclk_mac = devm_clk_get(dev, "aclk_mac");
--	if (IS_ERR(bsp_priv->aclk_mac))
--		dev_err(dev, "cannot get clock %s\n",
--			"aclk_mac");
-+	bsp_priv->clks = devm_kcalloc(dev, bsp_priv->num_clks,
-+				      sizeof(*bsp_priv->clks), GFP_KERNEL);
-+	if (!bsp_priv->clks)
-+		return -ENOMEM;
- 
--	bsp_priv->pclk_mac = devm_clk_get(dev, "pclk_mac");
--	if (IS_ERR(bsp_priv->pclk_mac))
--		dev_err(dev, "cannot get clock %s\n",
--			"pclk_mac");
-+	for (i = 0; i < ARRAY_SIZE(rk_clocks); i++)
-+		bsp_priv->clks[i].id = rk_clocks[i];
- 
--	bsp_priv->clk_mac = devm_clk_get(dev, "stmmaceth");
--	if (IS_ERR(bsp_priv->clk_mac))
--		dev_err(dev, "cannot get clock %s\n",
--			"stmmaceth");
--
--	if (bsp_priv->phy_iface == PHY_INTERFACE_MODE_RMII) {
--		bsp_priv->clk_mac_ref = devm_clk_get(dev, "clk_mac_ref");
--		if (IS_ERR(bsp_priv->clk_mac_ref))
--			dev_err(dev, "cannot get clock %s\n",
--				"clk_mac_ref");
--
--		if (!bsp_priv->clock_input) {
--			bsp_priv->clk_mac_refout =
--				devm_clk_get(dev, "clk_mac_refout");
--			if (IS_ERR(bsp_priv->clk_mac_refout))
--				dev_err(dev, "cannot get clock %s\n",
--					"clk_mac_refout");
--		}
-+	if (phy_iface == PHY_INTERFACE_MODE_RMII) {
-+		for (j = 0; j < ARRAY_SIZE(rk_rmii_clocks); j++)
-+			bsp_priv->clks[i++].id = rk_rmii_clocks[j];
- 	}
- 
--	bsp_priv->clk_mac_speed = devm_clk_get(dev, "clk_mac_speed");
--	if (IS_ERR(bsp_priv->clk_mac_speed))
--		dev_err(dev, "cannot get clock %s\n", "clk_mac_speed");
-+	ret = devm_clk_bulk_get_optional(dev, bsp_priv->num_clks,
-+					 bsp_priv->clks);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get clocks\n");
-+
-+	/* "stmmaceth" will be enabled by the core */
-+	bsp_priv->clk_mac = devm_clk_get(dev, "stmmaceth");
-+	ret = PTR_ERR_OR_ZERO(bsp_priv->clk_mac);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Cannot get stmmaceth clock\n");
- 
- 	if (bsp_priv->clock_input) {
- 		dev_info(dev, "clock input from PHY\n");
--	} else {
--		if (bsp_priv->phy_iface == PHY_INTERFACE_MODE_RMII)
--			clk_set_rate(bsp_priv->clk_mac, 50000000);
-+	} else if (phy_iface == PHY_INTERFACE_MODE_RMII) {
-+		clk_set_rate(bsp_priv->clk_mac, 50000000);
- 	}
- 
- 	if (plat->phy_node && bsp_priv->integrated_phy) {
- 		bsp_priv->clk_phy = of_clk_get(plat->phy_node, 0);
--		if (IS_ERR(bsp_priv->clk_phy)) {
--			ret = PTR_ERR(bsp_priv->clk_phy);
--			dev_err(dev, "Cannot get PHY clock: %d\n", ret);
--			return -EINVAL;
--		}
-+		ret = PTR_ERR_OR_ZERO(bsp_priv->clk_phy);
-+		if (ret)
-+			return dev_err_probe(dev, ret, "Cannot get PHY clock\n");
- 		clk_set_rate(bsp_priv->clk_phy, 50000000);
- 	}
- 
-@@ -1545,77 +1543,36 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
- 
- static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- {
--	int phy_iface = bsp_priv->phy_iface;
-+	int ret;
- 
- 	if (enable) {
- 		if (!bsp_priv->clk_enabled) {
--			if (phy_iface == PHY_INTERFACE_MODE_RMII) {
--				if (!IS_ERR(bsp_priv->mac_clk_rx))
--					clk_prepare_enable(
--						bsp_priv->mac_clk_rx);
--
--				if (!IS_ERR(bsp_priv->clk_mac_ref))
--					clk_prepare_enable(
--						bsp_priv->clk_mac_ref);
--
--				if (!IS_ERR(bsp_priv->clk_mac_refout))
--					clk_prepare_enable(
--						bsp_priv->clk_mac_refout);
--			}
--
--			if (!IS_ERR(bsp_priv->clk_phy))
--				clk_prepare_enable(bsp_priv->clk_phy);
--
--			if (!IS_ERR(bsp_priv->aclk_mac))
--				clk_prepare_enable(bsp_priv->aclk_mac);
--
--			if (!IS_ERR(bsp_priv->pclk_mac))
--				clk_prepare_enable(bsp_priv->pclk_mac);
--
--			if (!IS_ERR(bsp_priv->mac_clk_tx))
--				clk_prepare_enable(bsp_priv->mac_clk_tx);
-+			ret = clk_bulk_prepare_enable(bsp_priv->num_clks,
-+						      bsp_priv->clks);
-+			if (ret)
-+				return ret;
- 
--			if (!IS_ERR(bsp_priv->clk_mac_speed))
--				clk_prepare_enable(bsp_priv->clk_mac_speed);
-+			ret = clk_prepare_enable(bsp_priv->clk_phy);
-+			if (ret)
-+				return ret;
- 
- 			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
- 				bsp_priv->ops->set_clock_selection(bsp_priv,
- 					       bsp_priv->clock_input, true);
- 
--			/**
--			 * if (!IS_ERR(bsp_priv->clk_mac))
--			 *	clk_prepare_enable(bsp_priv->clk_mac);
--			 */
- 			mdelay(5);
- 			bsp_priv->clk_enabled = true;
- 		}
- 	} else {
- 		if (bsp_priv->clk_enabled) {
--			if (phy_iface == PHY_INTERFACE_MODE_RMII) {
--				clk_disable_unprepare(bsp_priv->mac_clk_rx);
--
--				clk_disable_unprepare(bsp_priv->clk_mac_ref);
--
--				clk_disable_unprepare(bsp_priv->clk_mac_refout);
--			}
--
-+			clk_bulk_disable_unprepare(bsp_priv->num_clks,
-+						   bsp_priv->clks);
- 			clk_disable_unprepare(bsp_priv->clk_phy);
- 
--			clk_disable_unprepare(bsp_priv->aclk_mac);
--
--			clk_disable_unprepare(bsp_priv->pclk_mac);
--
--			clk_disable_unprepare(bsp_priv->mac_clk_tx);
--
--			clk_disable_unprepare(bsp_priv->clk_mac_speed);
--
- 			if (bsp_priv->ops && bsp_priv->ops->set_clock_selection)
- 				bsp_priv->ops->set_clock_selection(bsp_priv,
- 					      bsp_priv->clock_input, false);
--			/**
--			 * if (!IS_ERR(bsp_priv->clk_mac))
--			 *	clk_disable_unprepare(bsp_priv->clk_mac);
--			 */
-+
- 			bsp_priv->clk_enabled = false;
- 		}
- 	}
+ 	[TCA_FQ_PLIMIT]			= { .type = NLA_U32 },
+ 	[TCA_FQ_FLOW_PLIMIT]		= { .type = NLA_U32 },
+ 	[TCA_FQ_QUANTUM]		= { .type = NLA_U32 },
+-	[TCA_FQ_INITIAL_QUANTUM]	= { .type = NLA_U32 },
++	[TCA_FQ_INITIAL_QUANTUM]	= NLA_POLICY_FULL_RANGE(NLA_U32, &iq_range),
+ 	[TCA_FQ_RATE_ENABLE]		= { .type = NLA_U32 },
+ 	[TCA_FQ_FLOW_DEFAULT_RATE]	= { .type = NLA_U32 },
+ 	[TCA_FQ_FLOW_MAX_RATE]		= { .type = NLA_U32 },
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
+index 8acb904d14193..3593fb8f79ad3 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
+@@ -114,6 +114,28 @@
+             "$IP link del dev $DUMMY type dummy"
+         ]
+     },
++    {
++        "id": "10f7",
++        "name": "Create FQ with invalid initial_quantum setting",
++        "category": [
++            "qdisc",
++            "fq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link add dev $DUMMY type dummy || /bin/true"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq initial_quantum 0x80000000",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc fq 1: root.*initial_quantum 2048Mb",
++        "matchCount": "0",
++        "teardown": [
++            "$IP link del dev $DUMMY type dummy"
++        ]
++    },
+     {
+         "id": "9398",
+         "name": "Create FQ with maxrate setting",
 -- 
 2.39.2
 
