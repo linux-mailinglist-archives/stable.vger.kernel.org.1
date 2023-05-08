@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD496FA4B0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3816FA4B2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbjEHKCg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:02:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58454 "EHLO
+        id S233953AbjEHKCj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233757AbjEHKCd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E712E078
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:07 -0700 (PDT)
+        with ESMTP id S233945AbjEHKCg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7672EB34
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53653622D9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A31C433D2;
-        Mon,  8 May 2023 10:02:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC929622D5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09674C433EF;
+        Mon,  8 May 2023 10:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540126;
-        bh=Wv30nxnmmr9JBuugpbhj65hrnNe2unOmsDnthNncaic=;
+        s=korg; t=1683540129;
+        bh=dFo8+hQ+MPyxL2bFbcdotG2r2BdsFswtxkQEm50Bspw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WqKNMArcDdeOzShnFYXSg1GkH+BOQC+mKVTny/bHmTOqF1p1O+iitxVhn6DA6lBag
-         hpIprvB/qfpWCHbmisFeha00qfPJHHA7eRbBsRdxXqUAtKbcvTKdNdj4nswLV48Oux
-         fhAHQiMWPTPqMRy5nMA4RpP0BA1PaJO/AgirSmfY=
+        b=NXxj3MMmP2d6LZSqo8YeV1W+1oDk5QWdikIDwT1oKkEqJuTDtYNKWt38c/Pzmt26d
+         /h3WTpJ6KcAot1sNC0r9/8XEVT5M7jIYF8+AH9USGIBaplRn4xpNATdX4VjT1PSgfi
+         1J9/ObXzFmgIv9G0y/q/eKo6OHCfmmz/7q6fTYNQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sanket Goswami <Sanket.Goswami@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Micha=C5=82=20Krawczyk?= <mk@semihalf.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/611] platform/x86/amd: pmc: Move out of BIOS SMN pair for STB init
-Date:   Mon,  8 May 2023 11:41:23 +0200
-Message-Id: <20230508094430.246665582@linuxfoundation.org>
+Subject: [PATCH 6.1 250/611] media: venus: dec: Fix handling of the start cmd
+Date:   Mon,  8 May 2023 11:41:32 +0200
+Message-Id: <20230508094430.540481343@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -45,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,84 +56,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Michał Krawczyk <mk@semihalf.com>
 
-[ Upstream commit 8d99129eef8f42377b41c1bacee9f8ce806e9f44 ]
+[ Upstream commit 50248ad9f190d527cbd578190ca769729518b703 ]
 
-The current SMN index used for the driver probe seems to be meant
-for the BIOS pair and there are potential concurrency problems that can
-occur with an inopportune SMI.
+The decoder driver should clear the last_buffer_dequeued flag of the
+capture queue upon receiving V4L2_DEC_CMD_START.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_6, which is
-what amd_nb.c provides and this function has protections to ensure that
-only one caller can use it at a time.
+The last_buffer_dequeued flag is set upon receiving EOS (which always
+happens upon receiving V4L2_DEC_CMD_STOP).
 
-Fixes: 426c0ff27b83 ("platform/x86: amd-pmc: Add support for AMD Smart Trace Buffer")
-Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230409185348.556161-7-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Without this patch, after issuing the V4L2_DEC_CMD_STOP and
+V4L2_DEC_CMD_START, the vb2_dqbuf() function will always fail, even if
+the buffers are completed by the hardware.
+
+Fixes: beac82904a87 ("media: venus: make decoder compliant with stateful codec API")
+
+Signed-off-by: Michał Krawczyk <mk@semihalf.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc.c | 26 ++++----------------------
- 1 file changed, 4 insertions(+), 22 deletions(-)
+ drivers/media/platform/qcom/venus/vdec.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index 2ecee810c960a..eb9fc6cb13e33 100644
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -38,8 +38,6 @@
- #define AMD_PMC_SCRATCH_REG_YC		0xD14
- 
- /* STB Registers */
--#define AMD_PMC_STB_INDEX_ADDRESS	0xF8
--#define AMD_PMC_STB_INDEX_DATA		0xFC
- #define AMD_PMC_STB_PMI_0		0x03E30600
- #define AMD_PMC_STB_S2IDLE_PREPARE	0xC6000001
- #define AMD_PMC_STB_S2IDLE_RESTORE	0xC6000002
-@@ -897,17 +895,9 @@ static int amd_pmc_write_stb(struct amd_pmc_dev *dev, u32 data)
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index 4ceaba37e2e57..9d26587716bf6 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -526,6 +526,7 @@ static int
+ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
  {
- 	int err;
+ 	struct venus_inst *inst = to_inst(file);
++	struct vb2_queue *dst_vq;
+ 	struct hfi_frame_data fdata = {0};
+ 	int ret;
  
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
-+	err = amd_smn_write(0, AMD_PMC_STB_PMI_0, data);
- 	if (err) {
--		dev_err(dev->dev, "failed to write addr in stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_ADDRESS);
--		return pcibios_err_to_errno(err);
--	}
--
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, data);
--	if (err) {
--		dev_err(dev->dev, "failed to write data in stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_DATA);
-+		dev_err(dev->dev, "failed to write data in stb: 0x%X\n", AMD_PMC_STB_PMI_0);
- 		return pcibios_err_to_errno(err);
- 	}
- 
-@@ -919,18 +909,10 @@ static int amd_pmc_read_stb(struct amd_pmc_dev *dev, u32 *buf)
- {
- 	int i, err;
- 
--	err = pci_write_config_dword(dev->rdev, AMD_PMC_STB_INDEX_ADDRESS, AMD_PMC_STB_PMI_0);
--	if (err) {
--		dev_err(dev->dev, "error writing addr to stb: 0x%X\n",
--			AMD_PMC_STB_INDEX_ADDRESS);
--		return pcibios_err_to_errno(err);
--	}
--
- 	for (i = 0; i < FIFO_SIZE; i++) {
--		err = pci_read_config_dword(dev->rdev, AMD_PMC_STB_INDEX_DATA, buf++);
-+		err = amd_smn_read(0, AMD_PMC_STB_PMI_0, buf++);
- 		if (err) {
--			dev_err(dev->dev, "error reading data from stb: 0x%X\n",
--				AMD_PMC_STB_INDEX_DATA);
-+			dev_err(dev->dev, "error reading data from stb: 0x%X\n", AMD_PMC_STB_PMI_0);
- 			return pcibios_err_to_errno(err);
+@@ -556,6 +557,13 @@ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
+ 			inst->codec_state = VENUS_DEC_STATE_DRAIN;
+ 			inst->drain_active = true;
  		}
++	} else if (cmd->cmd == V4L2_DEC_CMD_START &&
++		   inst->codec_state == VENUS_DEC_STATE_STOPPED) {
++		dst_vq = v4l2_m2m_get_vq(inst->fh.m2m_ctx,
++					 V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
++		vb2_clear_last_buffer_dequeued(dst_vq);
++
++		inst->codec_state = VENUS_DEC_STATE_DECODING;
  	}
+ 
+ unlock:
 -- 
 2.39.2
 
