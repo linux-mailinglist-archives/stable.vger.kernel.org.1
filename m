@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F1C6FA9D3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924E26FA693
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:21:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235299AbjEHK4V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32998 "EHLO
+        id S234498AbjEHKVw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:21:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235254AbjEHKzh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:55:37 -0400
+        with ESMTP id S234496AbjEHKVV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:21:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33EA2DD73
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04CADC42
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3900562947
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FC0C433D2;
-        Mon,  8 May 2023 10:54:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53E6A62537
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F74C433EF;
+        Mon,  8 May 2023 10:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543283;
-        bh=KM29yWhiiMeBte+kY9LuYP4UD1UubDEWVrm0UCqBewY=;
+        s=korg; t=1683541236;
+        bh=GRAUdwK3g0uB6qbs4mc8HpcNgecEEAsCozKvvrhm46g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bL0pwD5kmykk09X5jxBKj1EVV3VFcs125eRYSpHHKv+yIko2f39A1Q2QGlt9iDtyl
-         sgVe0HTuO+XRdpfyZOw6cLbOut3FVy48Kktrf0YyUc2dL/hsKK4W2hQM5k4qflYbGb
-         Mf1vg3f4zKHb5amPC65wzNudX0AICezOnK5whMqw=
+        b=loBuuxzFJ2MyjTAEMSI0kUXAOy2yCEPg0dnxJqOzB+WJLU9SFfB+uLyPBOYq3/CpM
+         HT9pHzCslcZi8uRGmnyFkvWryz5oaeiFFFAkcIkQqYtw6RsxAAWQXYURkCaTPd8zyu
+         LDD4GK8rITgEfAGSdi2qNkZnyWgQfSVZxsrcuEwU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Coverstone <brian@mainsequence.net>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.3 040/694] wifi: mt76: add missing locking to protect against concurrent rx/status calls
-Date:   Mon,  8 May 2023 11:37:55 +0200
-Message-Id: <20230508094433.929705136@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.2 050/663] serial: fix TIOCSRS485 locking
+Date:   Mon,  8 May 2023 11:37:56 +0200
+Message-Id: <20230508094430.105895877@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,104 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Johan Hovold <johan@kernel.org>
 
-commit 5b8ccdfb943f6a03c676d2ea816dd38c149e920b upstream.
+commit 9e4f2a8004213339e9d837d891a59cc80e082966 upstream.
 
-According to the documentation, ieee80211_rx_list must not run concurrently
-with ieee80211_tx_status (or its variants).
+The RS485 multipoint addressing support for some reason added a new
+ADDRB termios cflag which is (only!) updated from one of the RS485
+ioctls.
 
-Cc: stable@vger.kernel.org
-Fixes: 88046b2c9f6d ("mt76: add support for reporting tx status with skb")
-Reported-by: Brian Coverstone <brian@mainsequence.net>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Make sure to take the termios rw semaphore for the right ioctl (i.e.
+set, not get).
+
+Fixes: ae50bb275283 ("serial: take termios_rwsem for ->rs485_config() & pass termios as param")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20230412124811.11217-1-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c         |    2 ++
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c  |    5 ++++-
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c  |    5 ++++-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c |    5 ++++-
- drivers/net/wireless/mediatek/mt76/tx.c          |    4 ++++
- 5 files changed, 18 insertions(+), 3 deletions(-)
+ drivers/tty/serial/serial_core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -576,7 +576,9 @@ free:
- free_skb:
- 	status.skb = tx_info.skb;
- 	hw = mt76_tx_status_get_hw(dev, tx_info.skb);
-+	spin_lock_bh(&dev->rx_lock);
- 	ieee80211_tx_status_ext(hw, &status);
-+	spin_unlock_bh(&dev->rx_lock);
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1552,7 +1552,7 @@ uart_ioctl(struct tty_struct *tty, unsig
+ 		goto out;
  
+ 	/* rs485_config requires more locking than others */
+-	if (cmd == TIOCGRS485)
++	if (cmd == TIOCSRS485)
+ 		down_write(&tty->termios_rwsem);
+ 
+ 	mutex_lock(&port->mutex);
+@@ -1595,7 +1595,7 @@ uart_ioctl(struct tty_struct *tty, unsig
+ 	}
+ out_up:
+ 	mutex_unlock(&port->mutex);
+-	if (cmd == TIOCGRS485)
++	if (cmd == TIOCSRS485)
+ 		up_write(&tty->termios_rwsem);
+ out:
  	return ret;
- }
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1279,8 +1279,11 @@ void mt7603_mac_add_txs(struct mt7603_de
- 	if (wcidx >= MT7603_WTBL_STA || !sta)
- 		goto out;
- 
--	if (mt7603_fill_txs(dev, msta, &info, txs_data))
-+	if (mt7603_fill_txs(dev, msta, &info, txs_data)) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_noskb(mt76_hw(dev), sta, &info);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- out:
- 	rcu_read_unlock();
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1530,8 +1530,11 @@ static void mt7615_mac_add_txs(struct mt
- 	if (wcid->phy_idx && dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
- 
--	if (mt7615_fill_txs(dev, msta, &info, txs_data))
-+	if (mt7615_fill_txs(dev, msta, &info, txs_data)) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_noskb(mphy->hw, sta, &info);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- out:
- 	rcu_read_unlock();
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -631,8 +631,11 @@ void mt76x02_send_tx_status(struct mt76x
- 
- 	mt76_tx_status_unlock(mdev, &list);
- 
--	if (!status.skb)
-+	if (!status.skb) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_ext(mt76_hw(dev), &status);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- 	if (!len)
- 		goto out;
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -77,7 +77,9 @@ mt76_tx_status_unlock(struct mt76_dev *d
- 		}
- 
- 		hw = mt76_tx_status_get_hw(dev, skb);
-+		spin_lock_bh(&dev->rx_lock);
- 		ieee80211_tx_status_ext(hw, &status);
-+		spin_unlock_bh(&dev->rx_lock);
- 	}
- 	rcu_read_unlock();
- }
-@@ -263,7 +265,9 @@ void __mt76_tx_complete_skb(struct mt76_
- 	if (cb->pktid < MT_PACKET_ID_FIRST) {
- 		hw = mt76_tx_status_get_hw(dev, skb);
- 		status.sta = wcid_to_sta(wcid);
-+		spin_lock_bh(&dev->rx_lock);
- 		ieee80211_tx_status_ext(hw, &status);
-+		spin_unlock_bh(&dev->rx_lock);
- 		goto out;
- 	}
- 
 
 
