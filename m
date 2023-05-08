@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 296DB6FA7B4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A918F6FAABD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234810AbjEHKdy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:33:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33678 "EHLO
+        id S232784AbjEHLGM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234742AbjEHKd2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:28 -0400
+        with ESMTP id S233892AbjEHLFj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:05:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8A62676D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D4BC1BE9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:04:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E9516271D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917E4C433D2;
-        Mon,  8 May 2023 10:32:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C389B62A80
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A62C433EF;
+        Mon,  8 May 2023 11:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541963;
-        bh=dmJd4OCemEENWpqqoGuc7IUh4bnBGElRLNYG/eRgy2Y=;
+        s=korg; t=1683543884;
+        bh=qTk6e8J0Fp2AA8ygN0geMH0ulaG/Oosu4RqKgMum6fM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uv/HeX4S2S6Q8TySt+vV2KvNnxfAdt3DSUi2U7TysZqIJh7IUfYvGOoO+yp4H0UC5
-         i3FLPw5p5rJAoD4gO+H6pbO+s9Rs60/GPZubMHAYlEIbTkRuw4xlui1wZxtJqnVV4H
-         VaNqJ5dB38ZhA86lpZsv4hisgKGiPddcDNxqQZRc=
+        b=enO8kzBsh6gx6QPZt2YGtoU9QbDTNBWSpynbBeoGeRZTXW8ZxXI8QZLjHIcvkhHjP
+         ndKW050mGrEQdmS8yKdIh9Z0wsMP4X0T7zI02PlFabBmWKcnvMGde3pdkCdBfMUNjZ
+         wvsafnnsLOZaulGkLwtxxGymt8wzOzDjXcRxIyrE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
+        Sven Peter <sven@svenpeter.dev>,
+        Hector Martin <marcan@marcan.st>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 241/663] media: mediatek: vcodec: remove unused lat_buf
+Subject: [PATCH 6.3 232/694] arm64: dts: apple: t8103: Disable unused PCIe ports
 Date:   Mon,  8 May 2023 11:41:07 +0200
-Message-Id: <20230508094436.103199123@linuxfoundation.org>
+Message-Id: <20230508094439.889653378@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +55,199 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit af50b13dd3d7d5dbc1f08add1c462398e926a053 ]
+[ Upstream commit a0189fdfb73dac856b8fa9b9f9581e5099c9391f ]
 
-Remove unused lat_buf from core list, or leading to core list access
-NULL point.
+The PCIe ports are unused (without devices) so disable them instead of
+removing them.
 
-Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 7c77ab91b33d ("arm64: dts: apple: Add missing M1 (t8103) devices")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/vdec_msg_queue.c  | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/apple/t8103-j274.dts | 10 ++++++++++
+ arch/arm64/boot/dts/apple/t8103-j293.dts | 15 ---------------
+ arch/arm64/boot/dts/apple/t8103-j313.dts | 15 ---------------
+ arch/arm64/boot/dts/apple/t8103-j456.dts | 10 ++++++++++
+ arch/arm64/boot/dts/apple/t8103-j457.dts | 11 +++--------
+ arch/arm64/boot/dts/apple/t8103.dtsi     |  4 ++++
+ 6 files changed, 27 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index ce7c82e38103a..cdc539a46cb95 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -177,7 +177,7 @@ bool vdec_msg_queue_wait_lat_buf_full(struct vdec_msg_queue *msg_queue)
- 	struct vdec_lat_buf *buf, *tmp;
- 	struct list_head *list_core[3];
- 	struct vdec_msg_queue_ctx *core_ctx;
--	int ret, i, in_core_count = 0;
-+	int ret, i, in_core_count = 0, count = 0;
- 	long timeout_jiff;
+diff --git a/arch/arm64/boot/dts/apple/t8103-j274.dts b/arch/arm64/boot/dts/apple/t8103-j274.dts
+index b52ddc4098939..1c3e37f86d46d 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j274.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j274.dts
+@@ -37,10 +37,12 @@
  
- 	core_ctx = &msg_queue->ctx->dev->msg_queue_core_ctx;
-@@ -204,8 +204,20 @@ bool vdec_msg_queue_wait_lat_buf_full(struct vdec_msg_queue *msg_queue)
- 			       msg_queue->lat_ctx.ready_num);
- 		return true;
- 	}
--	mtk_v4l2_err("failed with lat buf isn't full: %d",
--		     msg_queue->lat_ctx.ready_num);
-+
-+	spin_lock(&core_ctx->ready_lock);
-+	list_for_each_entry_safe(buf, tmp, &core_ctx->ready_queue, core_list) {
-+		if (buf && buf->ctx == msg_queue->ctx) {
-+			count++;
-+			list_del(&buf->core_list);
-+		}
-+	}
-+	spin_unlock(&core_ctx->ready_lock);
-+
-+	mtk_v4l2_err("failed with lat buf isn't full: list(%d %d) count:%d",
-+		     atomic_read(&msg_queue->lat_list_cnt),
-+		     atomic_read(&msg_queue->core_list_cnt), count);
-+
- 	return false;
- }
+ &port01 {
+ 	bus-range = <2 2>;
++	status = "okay";
+ };
  
+ &port02 {
+ 	bus-range = <3 3>;
++	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+ 		reg = <0x30000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+@@ -48,6 +50,14 @@
+ 	};
+ };
+ 
++&pcie0_dart_1 {
++	status = "okay";
++};
++
++&pcie0_dart_2 {
++	status = "okay";
++};
++
+ &i2c2 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/apple/t8103-j293.dts b/arch/arm64/boot/dts/apple/t8103-j293.dts
+index 151074109a114..c363dfef80709 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j293.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j293.dts
+@@ -25,21 +25,6 @@
+ 	brcm,board-type = "apple,honshu";
+ };
+ 
+-/*
+- * Remove unused PCIe ports and disable the associated DARTs.
+- */
+-
+-&pcie0_dart_1 {
+-	status = "disabled";
+-};
+-
+-&pcie0_dart_2 {
+-	status = "disabled";
+-};
+-
+-/delete-node/ &port01;
+-/delete-node/ &port02;
+-
+ &i2c2 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/apple/t8103-j313.dts b/arch/arm64/boot/dts/apple/t8103-j313.dts
+index bc1f865aa7909..08409be1cf357 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j313.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j313.dts
+@@ -24,18 +24,3 @@
+ &wifi0 {
+ 	brcm,board-type = "apple,shikoku";
+ };
+-
+-/*
+- * Remove unused PCIe ports and disable the associated DARTs.
+- */
+-
+-&pcie0_dart_1 {
+-	status = "disabled";
+-};
+-
+-&pcie0_dart_2 {
+-	status = "disabled";
+-};
+-
+-/delete-node/ &port01;
+-/delete-node/ &port02;
+diff --git a/arch/arm64/boot/dts/apple/t8103-j456.dts b/arch/arm64/boot/dts/apple/t8103-j456.dts
+index 2db425ceb30f6..58c8e43789b48 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j456.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j456.dts
+@@ -55,13 +55,23 @@
+ 
+ &port01 {
+ 	bus-range = <2 2>;
++	status = "okay";
+ };
+ 
+ &port02 {
+ 	bus-range = <3 3>;
++	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+ 		reg = <0x30000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+ 		local-mac-address = [00 10 18 00 00 00];
+ 	};
+ };
++
++&pcie0_dart_1 {
++	status = "okay";
++};
++
++&pcie0_dart_2 {
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/apple/t8103-j457.dts b/arch/arm64/boot/dts/apple/t8103-j457.dts
+index 3821ff146c56b..152f95fd49a21 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j457.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j457.dts
+@@ -37,6 +37,7 @@
+ 
+ &port02 {
+ 	bus-range = <3 3>;
++	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+ 		reg = <0x30000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+@@ -44,12 +45,6 @@
+ 	};
+ };
+ 
+-/*
+- * Remove unused PCIe port and disable the associated DART.
+- */
+-
+-&pcie0_dart_1 {
+-	status = "disabled";
++&pcie0_dart_2 {
++	status = "okay";
+ };
+-
+-/delete-node/ &port01;
+diff --git a/arch/arm64/boot/dts/apple/t8103.dtsi b/arch/arm64/boot/dts/apple/t8103.dtsi
+index 9859219699f45..87a9c1ba6d0f4 100644
+--- a/arch/arm64/boot/dts/apple/t8103.dtsi
++++ b/arch/arm64/boot/dts/apple/t8103.dtsi
+@@ -724,6 +724,7 @@
+ 			interrupt-parent = <&aic>;
+ 			interrupts = <AIC_IRQ 699 IRQ_TYPE_LEVEL_HIGH>;
+ 			power-domains = <&ps_apcie_gp>;
++			status = "disabled";
+ 		};
+ 
+ 		pcie0_dart_2: iommu@683008000 {
+@@ -733,6 +734,7 @@
+ 			interrupt-parent = <&aic>;
+ 			interrupts = <AIC_IRQ 702 IRQ_TYPE_LEVEL_HIGH>;
+ 			power-domains = <&ps_apcie_gp>;
++			status = "disabled";
+ 		};
+ 
+ 		pcie0: pcie@690000000 {
+@@ -807,6 +809,7 @@
+ 						<0 0 0 2 &port01 0 0 0 1>,
+ 						<0 0 0 3 &port01 0 0 0 2>,
+ 						<0 0 0 4 &port01 0 0 0 3>;
++				status = "disabled";
+ 			};
+ 
+ 			port02: pci@2,0 {
+@@ -826,6 +829,7 @@
+ 						<0 0 0 2 &port02 0 0 0 1>,
+ 						<0 0 0 3 &port02 0 0 0 2>,
+ 						<0 0 0 4 &port02 0 0 0 3>;
++				status = "disabled";
+ 			};
+ 		};
+ 	};
 -- 
 2.39.2
 
