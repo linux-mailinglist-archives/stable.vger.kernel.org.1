@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DFB86FA89E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1998A6FAD1F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234912AbjEHKna (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42580 "EHLO
+        id S234009AbjEHLbP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234927AbjEHKmu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B371E1A111
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:50 -0700 (PDT)
+        with ESMTP id S235881AbjEHLaq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF583DCA6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AF956283C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB05C433D2;
-        Mon,  8 May 2023 10:41:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E6B796303A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DD0C433D2;
+        Mon,  8 May 2023 11:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542509;
-        bh=BnSbQewCpv20UP2zeNoMqCWBrshaaxKJMLHDOEMbrqg=;
+        s=korg; t=1683545443;
+        bh=QE8+x8mQqTZy8uzQu4KhN8yuBBPjeBq1MEVLqCcUFkI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ri7swiacjPLuvI6HADWZdZzN6l/LSE60pCzNjMKo4WHB6IfgY+w4A58QW2XHHw3ih
-         MS00+ZzWyRXj3mh0+QXB5H4OKXZRvdJnLG0BECsWy/NmMlVNMro8XPZ3KUs++mlkh+
-         1zUzx94cplESUPEHPtS8sLiXE3DomdL6mE5y6xLE=
+        b=M3dCgX+jb/GVev9CbFcZZ8jQlEXEyrmo9whtYAeWGJc8UoG9X6YtBlvyK5LdGDNTu
+         Y+8+hT6VBKH/n2n/qrzqan/KbdpvNkEtUlaOl0TdIqgJztlDShisjvYzUx8Ca7FY77
+         4alOjnX881wI8LT+oMKRRYmezBttYRpkCFcG3b0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 417/663] net/mlx5: Remove "recovery" arg from mlx5_load_one() function
+        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.15 042/371] reiserfs: Add security prefix to xattr name in reiserfs_security_write()
 Date:   Mon,  8 May 2023 11:44:03 +0200
-Message-Id: <20230508094441.623657555@linuxfoundation.org>
+Message-Id: <20230508094813.733618685@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,91 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 5977ac3910f1cbaf44dca48179118b25c206ac29 ]
+commit d82dcd9e21b77d338dc4875f3d4111f0db314a7c upstream.
 
-mlx5_load_one() is always called with recovery==false, so remove the
-unneeded function arg.
+Reiserfs sets a security xattr at inode creation time in two stages: first,
+it calls reiserfs_security_init() to obtain the xattr from active LSMs;
+then, it calls reiserfs_security_write() to actually write that xattr.
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: dfad99750c0f ("net/mlx5: Use recovery timeout on sync reset flow")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately, it seems there is a wrong expectation that LSMs provide the
+full xattr name in the form 'security.<suffix>'. However, LSMs always
+provided just the suffix, causing reiserfs to not write the xattr at all
+(if the suffix is shorter than the prefix), or to write an xattr with the
+wrong name.
+
+Add a temporary buffer in reiserfs_security_write(), and write to it the
+full xattr name, before passing it to reiserfs_xattr_set_handle().
+
+Also replace the name length check with a check that the full xattr name is
+not larger than XATTR_NAME_MAX.
+
+Cc: stable@vger.kernel.org # v2.6.x
+Fixes: 57fe60df6241 ("reiserfs: add atomic addition of selinux attributes during inode creation")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c  | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/main.c      | 9 ++++-----
- drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h | 2 +-
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ fs/reiserfs/xattr_security.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-index 1e46f9afa40e0..a1f460c9d3cde 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-@@ -154,7 +154,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
- 		if (mlx5_health_wait_pci_up(dev))
- 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
- 		else
--			mlx5_load_one(dev, false);
-+			mlx5_load_one(dev);
- 		devlink_remote_reload_actions_performed(priv_to_devlink(dev), 0,
- 							BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
- 							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index f4e0431da55b4..2772005be741a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1491,13 +1491,13 @@ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery)
- 	return err;
- }
- 
--int mlx5_load_one(struct mlx5_core_dev *dev, bool recovery)
-+int mlx5_load_one(struct mlx5_core_dev *dev)
+--- a/fs/reiserfs/xattr_security.c
++++ b/fs/reiserfs/xattr_security.c
+@@ -82,11 +82,15 @@ int reiserfs_security_write(struct reise
+ 			    struct inode *inode,
+ 			    struct reiserfs_security_handle *sec)
  {
- 	struct devlink *devlink = priv_to_devlink(dev);
- 	int ret;
++	char xattr_name[XATTR_NAME_MAX + 1] = XATTR_SECURITY_PREFIX;
+ 	int error;
+-	if (strlen(sec->name) < sizeof(XATTR_SECURITY_PREFIX))
++
++	if (XATTR_SECURITY_PREFIX_LEN + strlen(sec->name) > XATTR_NAME_MAX)
+ 		return -EINVAL;
  
- 	devl_lock(devlink);
--	ret = mlx5_load_one_devl_locked(dev, recovery);
-+	ret = mlx5_load_one_devl_locked(dev, false);
- 	devl_unlock(devlink);
- 	return ret;
- }
-@@ -1891,8 +1891,7 @@ static void mlx5_pci_resume(struct pci_dev *pdev)
- 
- 	mlx5_pci_trace(dev, "Enter, loading driver..\n");
- 
--	err = mlx5_load_one(dev, false);
--
-+	err = mlx5_load_one(dev);
- 	if (!err)
- 		devlink_health_reporter_state_update(dev->priv.health.fw_fatal_reporter,
- 						     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
-@@ -1983,7 +1982,7 @@ static int mlx5_resume(struct pci_dev *pdev)
- {
- 	struct mlx5_core_dev *dev = pci_get_drvdata(pdev);
- 
--	return mlx5_load_one(dev, false);
-+	return mlx5_load_one(dev);
- }
- 
- static const struct pci_device_id mlx5_core_pci_table[] = {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index 029305a8b80a8..d670b28a73236 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -321,7 +321,7 @@ int mlx5_init_one(struct mlx5_core_dev *dev);
- void mlx5_uninit_one(struct mlx5_core_dev *dev);
- void mlx5_unload_one(struct mlx5_core_dev *dev);
- void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev);
--int mlx5_load_one(struct mlx5_core_dev *dev, bool recovery);
-+int mlx5_load_one(struct mlx5_core_dev *dev);
- int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery);
- 
- int mlx5_vport_set_other_func_cap(struct mlx5_core_dev *dev, const void *hca_cap, u16 function_id,
--- 
-2.39.2
-
+-	error = reiserfs_xattr_set_handle(th, inode, sec->name, sec->value,
++	strlcat(xattr_name, sec->name, sizeof(xattr_name));
++
++	error = reiserfs_xattr_set_handle(th, inode, xattr_name, sec->value,
+ 					  sec->length, XATTR_CREATE);
+ 	if (error == -ENODATA || error == -EOPNOTSUPP)
+ 		error = 0;
 
 
