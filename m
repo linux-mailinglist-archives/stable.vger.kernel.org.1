@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C22FF6FAA5C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8B16FA717
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235343AbjEHLCf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39436 "EHLO
+        id S234654AbjEHK1k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:27:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235383AbjEHLBg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:01:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68DB12BCF9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:00:46 -0700 (PDT)
+        with ESMTP id S234588AbjEHK1J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:27:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66DBCE71B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:26:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3B5362A18
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:00:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E18C433EF;
-        Mon,  8 May 2023 11:00:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E96E1625FC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:26:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D70EC433D2;
+        Mon,  8 May 2023 10:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543645;
-        bh=cr8qEIPPK9/x+fTbmXyAuH2hxvKlJYg7RwWLSh5Rq0w=;
+        s=korg; t=1683541596;
+        bh=M82G4mt7f7DkARdfV2MTHP4hvUZr3/3CB7NtSy2CymA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aqIM/RlQxhxQDsmmFQkecLDIcdIaU63XUvizo07NL4kmV5H5jdaRaqHW42Tf0ywYj
-         zoufUoML+23y/M0lMF4polxt0VyS7OKoyomMZt1/qHBssNutz38WDfMqIqf0SgnIGQ
-         5vKdAjIJlBQiWro6dK2IYSQLGWA32yr1r3BV27/4=
+        b=EXhp5mIhKJp5v83tcs6PUcnNiT4dsUDYhoyIwNxNsOfmTl3WC4daEfDreVHskA+ur
+         NI+6oDjrAElFiM9OxGMa3SCoNd9A6Lq1RmPFOPi7OCrLMDRlZnUQx4gW9D4oanLhsZ
+         Jb9wsFkqBwA3MpbIJp6YCFDlCyVV1elmnJq/fADI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Orlando Chamberlain <orlandoch.dev@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 156/694] drm/amdgpu: register a vga_switcheroo client for MacBooks with apple-gmux
+Subject: [PATCH 6.2 165/663] arm64: dts: qcom: ipq6018: Fix the PCI I/O port range
 Date:   Mon,  8 May 2023 11:39:51 +0200
-Message-Id: <20230508094437.491064884@linuxfoundation.org>
+Message-Id: <20230508094433.835491128@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,88 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Orlando Chamberlain <orlandoch.dev@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit d37a3929ca0363ed1dce02b2772cd5bc547ca66d ]
+[ Upstream commit 75a6e1fdb351189f55097741e8460ca3f9b2883f ]
 
-Commit 3840c5bcc245 ("drm/amdgpu: disentangle runtime pm and
-vga_switcheroo") made amdgpu only register a vga_switcheroo client for
-GPU's with PX, however AMD GPUs in dual gpu Apple Macbooks do need to
-register, but don't have PX. Instead of AMD's PX, they use apple-gmux.
+For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI address
+(0x20200000) specified in the ranges property for I/O region.
 
-Use apple_gmux_detect() to identify these gpus, and
-pci_is_thunderbolt_attached() to ensure eGPUs connected to Dual GPU
-Macbooks don't register with vga_switcheroo.
+While at it, let's use the missing 0x prefix for the addresses.
 
-Fixes: 3840c5bcc245 ("drm/amdgpu: disentangle runtime pm and vga_switcheroo")
-Link: https://lore.kernel.org/amd-gfx/20230210044826.9834-10-orlandoch.dev@gmail.com/
-Signed-off-by: Orlando Chamberlain <orlandoch.dev@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 095bbdd9a5c3 ("arm64: dts: qcom: ipq6018: Add pcie support")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-7-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 3d98fc2ad36b0..6f715fb930bb4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -35,6 +35,7 @@
- #include <linux/devcoredump.h>
- #include <generated/utsrelease.h>
- #include <linux/pci-p2pdma.h>
-+#include <linux/apple-gmux.h>
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -441,8 +441,8 @@
+ 			phys = <&pcie_phy0>;
+ 			phy-names = "pciephy";
  
- #include <drm/drm_aperture.h>
- #include <drm/drm_atomic_helper.h>
-@@ -3945,12 +3946,15 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
- 		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
+-			ranges = <0x81000000 0 0x20200000 0 0x20200000 0 0x10000>,
+-				 <0x82000000 0 0x20220000 0 0x20220000 0 0xfde0000>;
++			ranges = <0x81000000 0x0 0x00000000 0x0 0x20200000 0x0 0x10000>,
++				 <0x82000000 0x0 0x20220000 0x0 0x20220000 0x0 0xfde0000>;
  
--	if (amdgpu_device_supports_px(ddev)) {
--		px = true;
-+	px = amdgpu_device_supports_px(ddev);
-+
-+	if (px || (!pci_is_thunderbolt_attached(adev->pdev) &&
-+				apple_gmux_detect(NULL, NULL)))
- 		vga_switcheroo_register_client(adev->pdev,
- 					       &amdgpu_switcheroo_ops, px);
-+
-+	if (px)
- 		vga_switcheroo_init_domain_pm_ops(adev->dev, &adev->vga_pm_domain);
--	}
- 
- 	if (adev->gmc.xgmi.pending_reset)
- 		queue_delayed_work(system_wq, &mgpu_info.delayed_reset_work,
-@@ -4054,6 +4058,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- void amdgpu_device_fini_sw(struct amdgpu_device *adev)
- {
- 	int idx;
-+	bool px;
- 
- 	amdgpu_fence_driver_sw_fini(adev);
- 	amdgpu_device_ip_fini(adev);
-@@ -4072,10 +4077,16 @@ void amdgpu_device_fini_sw(struct amdgpu_device *adev)
- 
- 	kfree(adev->bios);
- 	adev->bios = NULL;
--	if (amdgpu_device_supports_px(adev_to_drm(adev))) {
-+
-+	px = amdgpu_device_supports_px(adev_to_drm(adev));
-+
-+	if (px || (!pci_is_thunderbolt_attached(adev->pdev) &&
-+				apple_gmux_detect(NULL, NULL)))
- 		vga_switcheroo_unregister_client(adev->pdev);
-+
-+	if (px)
- 		vga_switcheroo_fini_domain_pm_ops(adev->dev);
--	}
-+
- 	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
- 		vga_client_unregister(adev->pdev);
- 
--- 
-2.39.2
-
+ 			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
 
 
