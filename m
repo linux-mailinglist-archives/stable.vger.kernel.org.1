@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A18DA6FA935
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C4446FA612
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235192AbjEHKtY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:49:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
+        id S234306AbjEHKP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:15:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235194AbjEHKtG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B620E2D7A9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:23 -0700 (PDT)
+        with ESMTP id S234301AbjEHKPz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560814BBC8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C65F561E10
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902A1C433EF;
-        Mon,  8 May 2023 10:47:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF13E62472
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CF7C4339C;
+        Mon,  8 May 2023 10:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542877;
-        bh=3CYDNyx4ObsCMYN5JhVl9mQVT3o1sKkEzwzG31RkGrI=;
+        s=korg; t=1683540953;
+        bh=xGAMcCnHDbRWVOogbJQae0UOmzlwX5hiD4oh9pluxW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iHIeeHjtDRhiERuClwyS4erZ4ag0JEws+UD/WoGrenOS7A9B/FBTka+dM+BoK5o+y
-         DMZKX8qpcUkLieHhe4tTZ1B/YEnEiRPWviRBGs7EN23vvqGnCQy4ITQxC6ugAv09FO
-         sgS7pCq33RDyl0fGG0blx/jFH7tvRBtqS/zxxKtw=
+        b=RuVrMgOVl024+3owo0KmPIh1aohFffHX74/bWQ+ZUQzHbZl7asRX5Trv/W6iWTudf
+         NH6cmjjxmby0FdHuhxTHi8UuQU+ao2QHwuUl66utVFzfx1CzdlBnL1guDSPu5x67U7
+         Tz7Zfw+2ZAjmOfqI4CzAyyzHvfCT2EYfwGEyLhW4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+bf4bb7731ef73b83a3b4@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Ye Bin <yebin10@huawei.com>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 577/663] ext4: fix use-after-free read in ext4_find_extent for bigalloc + inline
+        Geraldo Nascimento <geraldogabriel@gmail.com>,
+        =?UTF-8?q?Gr=C3=A9gory=20Desor?= <gregory.desor@free.fr>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 561/611] ALSA: usb-audio: Add quirk for Pioneer DDJ-800
 Date:   Mon,  8 May 2023 11:46:43 +0200
-Message-Id: <20230508094448.006889731@linuxfoundation.org>
+Message-Id: <20230508094440.213679847@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,93 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ye Bin <yebin10@huawei.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit 835659598c67907b98cd2aa57bb951dfaf675c69 ]
+commit 7501f472977df233d039d86c6981e0641708e1ca upstream.
 
-Syzbot found the following issue:
-loop0: detected capacity change from 0 to 2048
-EXT4-fs (loop0): mounted filesystem 00000000-0000-0000-0000-000000000000 without journal. Quota mode: none.
-==================================================================
-BUG: KASAN: use-after-free in ext4_ext_binsearch_idx fs/ext4/extents.c:768 [inline]
-BUG: KASAN: use-after-free in ext4_find_extent+0x76e/0xd90 fs/ext4/extents.c:931
-Read of size 4 at addr ffff888073644750 by task syz-executor420/5067
+One more Pioneer quirk, this time for DDJ-800, which is quite similar like
+other DJ DDJ models but with slightly different EPs or channels.
 
-CPU: 0 PID: 5067 Comm: syz-executor420 Not tainted 6.2.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
- print_address_description+0x74/0x340 mm/kasan/report.c:306
- print_report+0x107/0x1f0 mm/kasan/report.c:417
- kasan_report+0xcd/0x100 mm/kasan/report.c:517
- ext4_ext_binsearch_idx fs/ext4/extents.c:768 [inline]
- ext4_find_extent+0x76e/0xd90 fs/ext4/extents.c:931
- ext4_clu_mapped+0x117/0x970 fs/ext4/extents.c:5809
- ext4_insert_delayed_block fs/ext4/inode.c:1696 [inline]
- ext4_da_map_blocks fs/ext4/inode.c:1806 [inline]
- ext4_da_get_block_prep+0x9e8/0x13c0 fs/ext4/inode.c:1870
- ext4_block_write_begin+0x6a8/0x2290 fs/ext4/inode.c:1098
- ext4_da_write_begin+0x539/0x760 fs/ext4/inode.c:3082
- generic_perform_write+0x2e4/0x5e0 mm/filemap.c:3772
- ext4_buffered_write_iter+0x122/0x3a0 fs/ext4/file.c:285
- ext4_file_write_iter+0x1d0/0x18f0
- call_write_iter include/linux/fs.h:2186 [inline]
- new_sync_write fs/read_write.c:491 [inline]
- vfs_write+0x7dc/0xc50 fs/read_write.c:584
- ksys_write+0x177/0x2a0 fs/read_write.c:637
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f4b7a9737b9
-RSP: 002b:00007ffc5cac3668 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f4b7a9737b9
-RDX: 00000000175d9003 RSI: 0000000020000200 RDI: 0000000000000004
-RBP: 00007f4b7a933050 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000079f R11: 0000000000000246 R12: 00007f4b7a9330e0
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-Above issue is happens when enable bigalloc and inline data feature. As
-commit 131294c35ed6 fixed delayed allocation bug in ext4_clu_mapped for
-bigalloc + inline. But it only resolved issue when has inline data, if
-inline data has been converted to extent(ext4_da_convert_inline_data_to_extent)
-before writepages, there is no EXT4_STATE_MAY_INLINE_DATA flag. However
-i_data is still store inline data in this scene. Then will trigger UAF
-when find extent.
-To resolve above issue, there is need to add judge "ext4_has_inline_data(inode)"
-in ext4_clu_mapped().
-
-Fixes: 131294c35ed6 ("ext4: fix delayed allocation bug in ext4_clu_mapped for bigalloc + inline")
-Reported-by: syzbot+bf4bb7731ef73b83a3b4@syzkaller.appspotmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20230406111627.1916759-1-tudor.ambarus@linaro.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Tested-by: Grégory Desor <gregory.desor@free.fr>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/ZFLLzgEcsSF5aIHG@geday
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks-table.h |   58 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 9de1c9d1a13d3..ee5acf2bd5e67 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5802,7 +5802,8 @@ int ext4_clu_mapped(struct inode *inode, ext4_lblk_t lclu)
- 	 * mapped - no physical clusters have been allocated, and the
- 	 * file has no extents
- 	 */
--	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA))
-+	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA) ||
-+	    ext4_has_inline_data(inode))
- 		return 0;
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -3884,6 +3884,64 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+ 	}
+ },
  
- 	/* search for the extent closest to the first block in the cluster */
--- 
-2.39.2
-
++{
++	/*
++	 * PIONEER DJ DDJ-800
++	 * PCM is 6 channels out, 6 channels in @ 44.1 fixed
++	 * The Feedback for the output is the input
++	 */
++	USB_DEVICE_VENDOR_SPEC(0x2b73, 0x0029),
++		.driver_info = (unsigned long) &(const struct snd_usb_audio_quirk) {
++		.ifnum = QUIRK_ANY_INTERFACE,
++		.type = QUIRK_COMPOSITE,
++		.data = (const struct snd_usb_audio_quirk[]) {
++			{
++				.ifnum = 0,
++				.type = QUIRK_AUDIO_FIXED_ENDPOINT,
++				.data = &(const struct audioformat) {
++					.formats = SNDRV_PCM_FMTBIT_S24_3LE,
++					.channels = 6,
++					.iface = 0,
++					.altsetting = 1,
++					.altset_idx = 1,
++					.endpoint = 0x01,
++					.ep_attr = USB_ENDPOINT_XFER_ISOC|
++						USB_ENDPOINT_SYNC_ASYNC,
++					.rates = SNDRV_PCM_RATE_44100,
++					.rate_min = 44100,
++					.rate_max = 44100,
++					.nr_rates = 1,
++					.rate_table = (unsigned int[]) { 44100 }
++				}
++			},
++			{
++				.ifnum = 0,
++				.type = QUIRK_AUDIO_FIXED_ENDPOINT,
++				.data = &(const struct audioformat) {
++					.formats = SNDRV_PCM_FMTBIT_S24_3LE,
++					.channels = 6,
++					.iface = 0,
++					.altsetting = 1,
++					.altset_idx = 1,
++					.endpoint = 0x82,
++					.ep_idx = 1,
++					.ep_attr = USB_ENDPOINT_XFER_ISOC|
++						USB_ENDPOINT_SYNC_ASYNC|
++					USB_ENDPOINT_USAGE_IMPLICIT_FB,
++					.rates = SNDRV_PCM_RATE_44100,
++					.rate_min = 44100,
++					.rate_max = 44100,
++					.nr_rates = 1,
++					.rate_table = (unsigned int[]) { 44100 }
++				}
++			},
++			{
++				.ifnum = -1
++			}
++		}
++	}
++},
++
+ /*
+  * MacroSilicon MS2100/MS2106 based AV capture cards
+  *
 
 
