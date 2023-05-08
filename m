@@ -2,150 +2,263 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 965776FAA22
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FCC56FAB5D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235221AbjEHK7m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
+        id S233838AbjEHLM0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235151AbjEHK7B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:59:01 -0400
-Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6AFA29C9E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:57:55 -0700 (PDT)
-Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-769036b47a7so293886339f.0
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 03:57:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683543469; x=1686135469;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z4qQuGB5Gd1At6RmxvPzh/+T+MZCmyfXc4a+BLM5Q9w=;
-        b=jzI3g96/33uHU86M7D3qq2K1Rafozjvp0uvdLIoW4kuaCGqR6rc97p3TIgnDa8cMtv
-         2CiIT6d24uPTFYyH6gvya63xJCa7FkWRKHfx1Y7PVPsI8mJXXCAxzx7Ja0f9AKLy0Btp
-         6tbpnfFExGqjv2ZXa1tBOhyHMSnCjbgFL1Kq6BDd0sBvNbPtngkvTJj8vIS5HlghbFgs
-         k6H6zXzzaa27v9wQun+y1aaMaF2GnC7nh9yA+n9+TqedjzbYUfiH2i5qY4nbJslpbsjZ
-         ubJw47bEPBfSXjAExgYTlWON9CScDTr5B/NAS/bVFgwgBUof6yUoWUFrME7Rf49Bcadt
-         uP6g==
-X-Gm-Message-State: AC+VfDx4ZGWKgNkOgiRJBLoDmm3qxPLnpfa8woe0SF7qPZHkoRuNaTAV
-        NT+lXMw7wYAk6lnZu3NGYA0VdWsx7YHTaG3NCnLzYg3OI3aT
-X-Google-Smtp-Source: ACHHUZ7hRUvohGuXcxsd/2ky5NLQqnBo134yJZYBac/reMymj4KJ2Q+G6mM31hEWJ78rrVBaNvo2gykcXUW0yO4C6kwJ93Y7EVvB
+        with ESMTP id S233811AbjEHLMY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:24 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BDF1E988;
+        Mon,  8 May 2023 04:12:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Kj1i0Ngu8mJtgoQtXEhVAWXlPbCfeRVKO/2/QkGz15bNhpLW9G2iAoIBFsgtItGA6dAW3v9Tm6jagYttdza2BgLTPxfdA3zf7quzIcMwyJRgV4CDpqdzXswAUXUEJTeQgE0hTFi3g4e7LBgndIOhzw7HfRIkeiW5YQtgyhNilFbImET42f+ZlfaBhNxO021milvqr47MENJTzs1a5qP/z20B2j3/8AK6huGc+ucFl3j3S/3MLe1VL+zaerme/lST46oYQPpfOGOgauFuXga31tCd9y6iy2oSBWRTX2/HIb3joKkJu+47Ym2m8pO2Q95M+3hyecXEeUB9zbwSusJoIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6R4XJGajEbMpeZrvNsGENsapiH4kntdJzyvouTQpIoo=;
+ b=JSMM8U5OZTP2IQ6Y33a41SK2eXTtt2nkNQrxK3PMNQqOuKX1EySov2RHZ+KuZdSZ2AI2rAQCtf74hTQH6257yEeDHXfrXGjD3HM6g4WAvtJIfw6z6eQ644m+qpauJITrxbPntecgk2tKyJLtak/qPHasfgESRujfttwOYJCGIAAfGnTggNZPV6Nryf7fCNk1X4TvD+z9lxsxTnzhohuiOBVkuaLjczJ/m2TZbmn0fX2wdmkAXHe745MyC2VT0pRBvLE9O+pn9tWaEfH1+6qC4zAhRgJJ81daPmL2EKg077qmv4gRbFp7KQJpuBDb1RtMqhViTfeH6tRrnJGZbi59Gw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6R4XJGajEbMpeZrvNsGENsapiH4kntdJzyvouTQpIoo=;
+ b=m+BqXUCvI2mu8tKrIhlHZISb64C2gmPolDKpRjRy1L2Sf5I8+Tub3gfChvHj+IZtkVHXhDL2cJ34KUFYeIOS6WqlwThesMgHojkqWF32lz19LilWZnRn4tJSIoAVAo7MhbYZm6iXCoRNqM/New+7zzCiU3xf2w9C+rqY+YfVIJ8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH0PR12MB5346.namprd12.prod.outlook.com (2603:10b6:610:d5::24)
+ by CH0PR12MB5267.namprd12.prod.outlook.com (2603:10b6:610:d2::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Mon, 8 May
+ 2023 11:12:17 +0000
+Received: from CH0PR12MB5346.namprd12.prod.outlook.com
+ ([fe80::f9ed:3271:cc0a:9db3]) by CH0PR12MB5346.namprd12.prod.outlook.com
+ ([fe80::f9ed:3271:cc0a:9db3%4]) with mapi id 15.20.6363.032; Mon, 8 May 2023
+ 11:12:17 +0000
+Message-ID: <b43b203d-5759-0c33-8587-4e84025552d7@amd.com>
+Date:   Mon, 8 May 2023 16:42:04 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 1/1] tee: amdtee: Add return_origin to 'struct
+ tee_cmd_load_ta'
+To:     Jens Wiklander <jens.wiklander@linaro.org>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jan Dabros <jsd@semihalf.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org,
+        Mythri PK <Mythri.Pandeshwarakrishna@amd.com>,
+        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
+        stable@vger.kernel.org, Sourabh Das <sourabh.das@amd.com>,
+        Nimesh Easow <nimesh.easow@amd.com>
+References: <6a25613e87158947b4d102be4859f406edcb3f0b.1683008188.git.Rijo-john.Thomas@amd.com>
+ <CAHUa44Gm5jmm=mEfowcmabaoWFFbCLiDd5NdPSArCPHsjcpOBw@mail.gmail.com>
+Content-Language: en-US
+From:   Rijo Thomas <Rijo-john.Thomas@amd.com>
+In-Reply-To: <CAHUa44Gm5jmm=mEfowcmabaoWFFbCLiDd5NdPSArCPHsjcpOBw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN2PR01CA0223.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:ea::16) To CH0PR12MB5346.namprd12.prod.outlook.com
+ (2603:10b6:610:d5::24)
 MIME-Version: 1.0
-X-Received: by 2002:a02:93c7:0:b0:414:401d:b69a with SMTP id
- z65-20020a0293c7000000b00414401db69amr5076647jah.3.1683543469395; Mon, 08 May
- 2023 03:57:49 -0700 (PDT)
-Date:   Mon, 08 May 2023 03:57:49 -0700
-In-Reply-To: <0000000000002e17d105f02be919@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000751a2d05fb2c824a@google.com>
-Subject: Re: [syzbot] [ext4?] WARNING in print_tainted
-From:   syzbot <syzbot+5aed6c3aaba661f5b917@syzkaller.appspotmail.com>
-To:     adilger.kernel@dilger.ca, ast@kernel.org, bpf@vger.kernel.org,
-        daniel@iogearbox.net, davem@davemloft.net, edumazet@google.com,
-        gregkh@linuxfoundation.org, hawk@kernel.org,
-        john.fastabend@gmail.com, kernel@pengutronix.de, kuba@kernel.org,
-        linux-can@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mkl@pengutronix.de, netdev@vger.kernel.org, pabeni@redhat.com,
-        patches@lists.linux.dev, sashal@kernel.org, socketcan@hartkopp.net,
-        stable-commits@vger.kernel.org, stable@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com, tytso@mit.edu
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5346:EE_|CH0PR12MB5267:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20ce441a-0aa4-4fb3-bc7a-08db4fb515a0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pgM0FoiUTCgTXPjDIHZWT1IaPDxK1c1Z2ZNjU+V0vA6SAy/tJ0GT6Mdw3liJgYxn3vS6tNnsn8X39fu7Exq02OHWqswMDqvdb+4Oy9a1qAPazYvk9u5tPvsakvJZ4Z6ASAgoKj2HBPw1F33422cUVfE+C4XBHiNtxx/4aNeUlVz5Ruk7mXwDOEJxVWhSmgFUP1Rf9o46ROKu9rCdgU6aBzL5t886RoG+ZnY4+pdL3Bvrf6am9L6FgpJzFHrmxB+KZNZudBay/bH5kVe5J94X0nu5b0eV99ineSqHrbOCmHqg9/LOn8GYVb74WMcB+Gzc0tj7J95T3mrWjCpbJBov6jY3u52mOdy8fxl02mSKgr+6CK4NW4K9jvnK76HaDsSgdxJRj6jyTUToU/2HOD/tQK9khOLqIWR7qcL/cLscZNX56O26TbWWcybBAgsucQPmkDLzA1UmmDPBMILcJL9L28KFw2sBSo+yNHA4BMdBgRMhNTKaUb7+Md2pJqEDIRjDVjvRoxr+IEemUexzet2FSLSw/FxiW7DRpfE05Zv//fny6zlyN/pu87JNpnX92yF+N+W1Qd2StdmB+d9YRXyLo/FUX5VAgRv4frNoZMlogPrJHdN4JMSsxb2We3JZVtdE4ztNenHp+/CMoiANzsP46Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR12MB5346.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(136003)(366004)(396003)(346002)(451199021)(86362001)(36756003)(31696002)(6666004)(316002)(54906003)(66556008)(66476007)(6916009)(4326008)(6486002)(66946007)(478600001)(5660300002)(8676002)(2906002)(8936002)(41300700001)(38100700002)(186003)(53546011)(6506007)(6512007)(26005)(83380400001)(2616005)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RmVJSS96TGJ1QXVBY3lEd2ttSEdWQlBYYmExUkdTd2lwa3dESklBNW5zSHdC?=
+ =?utf-8?B?UUdneWNMVzllSE1FdWQ5Mms3N2JweVBlS1RBWFhoYWxnWkFBVFdGTGM4L2ln?=
+ =?utf-8?B?bit3emJCNHdGSXhPYUtPcnFiNHY3VWl6VzF5Qmp5MEVMSm42dVBiNm5Sa1B4?=
+ =?utf-8?B?a3U5T0N1aDBGamFJbjJMSm10dURySHNXLzJac1dQM1dIYXAxbnhhVjE0WElO?=
+ =?utf-8?B?Y0FrTkZDWk5RbHdRV1VBMFJlYUdXNDM0S0plTUlROTlEa2xrdVJMSnYySkFi?=
+ =?utf-8?B?aTBtT0lRU0U4TkMzdUtUSWlBVkliSS8yL3BtdGJNbHM5djZCMTk5NzNTK3ZG?=
+ =?utf-8?B?QVZCQnovMjd3QlpuVWJhNVJLaG5YNFVGOXZpRC80UkovRkxyWEdlbWRlL1Iz?=
+ =?utf-8?B?bXFaVVFlRDRCaUpMdTdVSHlzVTRlb3JZa2lOY0FhK1FiYldtRm1jREg5MzVy?=
+ =?utf-8?B?MzJNc0E2ei83MkFkQXQzenhleDVkWi9RVE1odVowaU5uVEplaTZnOHhCZll5?=
+ =?utf-8?B?T2NYQ3UwRDJoUExtMlQyc1lHampUb1VOYXNERHFrUDFGWEhpU21VMW1aK04z?=
+ =?utf-8?B?SWFWS2V2WUpsYy9XN0V1ZW02dDlneENuQnZQRG9XSnQydWwxUUcrSzV6T0tE?=
+ =?utf-8?B?b2xjTS9KV1o5SUxXOERQbEUvMHVyZnk2cFF3blpZNHdBZWZxZDU5NTdEZURF?=
+ =?utf-8?B?VWMvUlorVEdqNjRMS0xEMGFUc1JmTWw2YnpNejRzSk5PUGtFcTJsNmJjaVpj?=
+ =?utf-8?B?QWJMMnRwUVFLejllK3h2TzN3NDByZE05Y1BwVml6OURyNGZQQzg1Tkk3UFNJ?=
+ =?utf-8?B?dGpCelAxU1NRdDhYVzJFSjQ2MFlEL0JlK3IvOWZaNFZ3dEk1em44eXkrMFh4?=
+ =?utf-8?B?bEtMN1AwVUpIVnJNOWxmMFRINys2UFVIRVVPSjVtR2E5Y2NCU2REMVllTUVD?=
+ =?utf-8?B?OGp1akZZVDhOYy9UT1NGeFA0OVEvQ2sxb1lyUFliOGFITmtKa3Z3bE9Zczhh?=
+ =?utf-8?B?T05EVEFqSWhvbzh0V3N4eDRkYjU0YUpYTkcySk1VR0hoeXRYamxBUHRUc1Ix?=
+ =?utf-8?B?RXNOOERFOUF3M3RHYk1oK2xGdkdEUU4xZU1ZSGpIeUp4V3hjeUFER1JOa1E1?=
+ =?utf-8?B?amhtcmh5YXpXNk5ZeGdZWkVLQnVwWmQ2THh5Q0lSUW00RnFKRXNtd2J1Yll0?=
+ =?utf-8?B?NmhEekRvZjRPMlpCSjRzaHhHVlNGaEdxOWtFQWNZWG5xVHhWKys5ZDU5b3Zp?=
+ =?utf-8?B?NTEvSlg5anpHMldTWDVWQTVYeHUzT1o0dHRyRjlJeVlZZm9VQVBWb3lWQTdj?=
+ =?utf-8?B?OW5tSi8yNE5OOHJDMVhWdTdneEUzL1U2UHBxMTI4bWk1MzMxMXZvcjUrZ2FQ?=
+ =?utf-8?B?TnF3bjJMcVJzSEsvREtpVE5sRHBIVjhtc2x0cXlXcVhxMFJaN05xV2hmNEpB?=
+ =?utf-8?B?NzVYc2hWWGxYMXFNQmZsQzk2alhFenZvQ1IyQm5INEhTUnBoMFk0djdSQmZv?=
+ =?utf-8?B?azYzcENDc3pZZytMM1FNUUZtTjZXRC9Hek5zczNRSW1uWERhZHRJcy9LdUQr?=
+ =?utf-8?B?dVdhWEJyenN0UnNtUXVRMFpZSE9MT2pNZGl1ZHlLMlhISzM5cTlRem93TElO?=
+ =?utf-8?B?dU1PbnJwaXR5VXhXaG0zWStmQm9FK1ZjRzh6Tk5RVyt5WFNuQ1MwZzlMQmZB?=
+ =?utf-8?B?WkhnS0RmbGl2a3VSY3FvNmFGTU0xcHJCSXB1a3ZSMmI2THdTYWhiYlh4cFBj?=
+ =?utf-8?B?aWptZWlQWTcyRUtIbzM2S3Q3WnpXZXBpSHJ6Sy9EMWQvM0IxbnJHOVRrczFh?=
+ =?utf-8?B?QzdJZnh2bE9OdmZuZHpieEFqUEcrc0RVUkIyY0k4NU8rVXJaZmNYeTJXZlZy?=
+ =?utf-8?B?c3pKRDl3alBFUjVlZFJyOHNwY2tDdU5aMUVwWDJNenFDbjkwa0pOU1l4OXVt?=
+ =?utf-8?B?TnQzVlhobUZBT29hWVZpcENJVngvcXU5RHRqZlFrZFMrdjBDYzN5eTV3RUN4?=
+ =?utf-8?B?Tm90SzNDR0hNL3ZraWE0VnNqYm9rdkhTaVFpUGpHbmxRVjNrKzNFNjV0OFYv?=
+ =?utf-8?B?clZVNW4zTUxPeWtNbW5TSGpPRlJGckZ1SWpDZlNjSE52bytsbDN1U1RqWXN2?=
+ =?utf-8?Q?H7hLaHuXjg/Tm6RVX22zwy2u3?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20ce441a-0aa4-4fb3-bc7a-08db4fb515a0
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5346.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 11:12:17.7310
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sazGAcbESenxZu7t8A8/p1tD27bveCpVLNtqsDvEdeAxDxzr/Wm87zRoD8u7eL8rriXeWywsuCjz33OdMfskHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5267
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
-
-HEAD commit:    457391b03803 Linux 6.3
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=118e0b90280000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=385e197a58ca4afe
-dashboard link: https://syzkaller.appspot.com/bug?extid=5aed6c3aaba661f5b917
-compiler:       arm-linux-gnueabi-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-userspace arch: arm
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=178650b8280000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1646075a280000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/c35b5b2731d2/non_bootable_disk-457391b0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2a1bf3bafeb6/vmlinux-457391b0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/21f1e3b4a5a9/zImage-457391b0.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/bd66e85f728b/mount_0.gz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5aed6c3aaba661f5b917@syzkaller.appspotmail.com
-
-EXT4-fs (loop0): 1 truncate cleaned up
-EXT4-fs (loop0): mounted filesystem 00000000-0000-0000-0000-000000000000 without journal. Quota mode: writeback.
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 2947 at mm/slab_common.c:935 free_large_kmalloc+0x94/0xd0 mm/slab_common.c:935
-Modules linked in:
-Kernel panic - not syncing: kernel: panic_on_warn set ...
-CPU: 0 PID: 2947 Comm: syz-executor216 Not tainted 6.3.0-syzkaller #0
-Hardware name: ARM-Versatile Express
-Backtrace: 
-[<817b2528>] (dump_backtrace) from [<817b261c>] (show_stack+0x18/0x1c arch/arm/kernel/traps.c:256)
- r7:81d81ac0 r6:82422c04 r5:60000093 r4:81d901cc
-[<817b2604>] (show_stack) from [<817cec84>] (__dump_stack lib/dump_stack.c:88 [inline])
-[<817b2604>] (show_stack) from [<817cec84>] (dump_stack_lvl+0x48/0x54 lib/dump_stack.c:106)
-[<817cec3c>] (dump_stack_lvl) from [<817ceca8>] (dump_stack+0x18/0x1c lib/dump_stack.c:113)
- r5:00000000 r4:8264dd14
-[<817cec90>] (dump_stack) from [<817b3110>] (panic+0x11c/0x36c kernel/panic.c:340)
-[<817b2ff4>] (panic) from [<802422ec>] (print_tainted+0x0/0xa0 kernel/panic.c:236)
- r3:8240c488 r2:00000001 r1:81d79fcc r0:81d81ac0
- r7:80436a2c
-[<80242268>] (check_panic_on_warn) from [<802424e0>] (__warn+0x7c/0x180 kernel/panic.c:673)
-[<80242464>] (__warn) from [<802426bc>] (warn_slowpath_fmt+0xd8/0x1d8 kernel/panic.c:697)
- r8:00000009 r7:000003a7 r6:81da3124 r5:8240c954 r4:822ab6bc
-[<802425e8>] (warn_slowpath_fmt) from [<80436a2c>] (free_large_kmalloc+0x94/0xd0 mm/slab_common.c:935)
- r10:823e75a4 r9:00000704 r8:8436d7c0 r7:825dfc70 r6:823e75a4 r5:dde49c7c
- r4:dde49c7c
-[<80436998>] (free_large_kmalloc) from [<80436bb0>] (kfree+0x148/0x14c mm/slab_common.c:1013)
- r7:8436d880 r6:804292ac r5:dde49c7c r4:823e75a4
-[<80436a68>] (kfree) from [<804292ac>] (kvfree+0x2c/0x30 mm/util.c:649)
- r7:8436d880 r6:8436d700 r5:00000400 r4:823e75a4
-[<80429280>] (kvfree) from [<80619f90>] (ext4_xattr_move_to_block fs/ext4/xattr.c:2680 [inline])
-[<80429280>] (kvfree) from [<80619f90>] (ext4_xattr_make_inode_space fs/ext4/xattr.c:2743 [inline])
-[<80429280>] (kvfree) from [<80619f90>] (ext4_expand_extra_isize_ea+0x558/0x808 fs/ext4/xattr.c:2835)
- r5:00000400 r4:823e75a4
-[<80619a38>] (ext4_expand_extra_isize_ea) from [<805c514c>] (__ext4_expand_extra_isize+0xdc/0x148 fs/ext4/inode.c:5960)
- r10:8455e368 r9:8455e360 r8:00000001 r7:8455e5e4 r6:823e7500 r5:8455e3e8
- r4:00000040
-[<805c5070>] (__ext4_expand_extra_isize) from [<805cc188>] (ext4_try_to_expand_extra_isize fs/ext4/inode.c:6003 [inline])
-[<805c5070>] (__ext4_expand_extra_isize) from [<805cc188>] (__ext4_mark_inode_dirty+0x158/0x270 fs/ext4/inode.c:6081)
- r8:00000040 r7:00000cb7 r6:df969df4 r5:00000001 r4:8455e3e8
-[<805cc030>] (__ext4_mark_inode_dirty) from [<805ee79c>] (__ext4_unlink+0x2e0/0x370 fs/ext4/namei.c:3255)
- r10:df969e58 r9:82c9ac50 r8:00000000 r7:836ee3c0 r6:00000001 r5:8455e3e8
- r4:8455f0a8
-[<805ee4bc>] (__ext4_unlink) from [<805ee980>] (ext4_unlink+0x154/0x1e4 fs/ext4/namei.c:3298)
- r10:82c9ac38 r9:8455f130 r8:df969f3c r7:8455f0a8 r6:82c9ac38 r5:8455e3e8
- r4:00000000
-[<805ee82c>] (ext4_unlink) from [<804cc41c>] (vfs_unlink+0x13c/0x2e0 fs/namei.c:4250)
- r7:8455f0a8 r6:8455e3e8 r5:82c9ac38 r4:00000000
-[<804cc2e0>] (vfs_unlink) from [<804d0fa8>] (do_unlinkat+0x198/0x2b4 fs/namei.c:4316)
- r9:df969f38 r8:00000003 r7:8290b000 r6:00000000 r5:8455f0a8 r4:00000000
-[<804d0e10>] (do_unlinkat) from [<804d10fc>] (__do_sys_unlinkat fs/namei.c:4359 [inline])
-[<804d0e10>] (do_unlinkat) from [<804d10fc>] (sys_unlinkat+0x38/0x5c fs/namei.c:4352)
- r10:00000148 r9:831bae00 r8:80200288 r7:00000148 r6:00000000 r5:00000000
- r4:00000003
-[<804d10c4>] (sys_unlinkat) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:66)
-Exception stack(0xdf969fa8 to 0xdf969ff0)
-9fa0:                   00000000 00000000 00000003 20000000 00000000 00001015
-9fc0: 00000000 00000000 00000000 00000148 00000000 200002a2 20000276 00000000
-9fe0: 7ecdec50 7ecdec40 0001085c 0002bb80
- r5:00000000 r4:00000000
-Rebooting in 86400 seconds..
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+On 5/5/2023 1:00 PM, Jens Wiklander wrote:
+> Hi,
+> 
+> On Tue, May 2, 2023 at 8:25 AM Rijo Thomas <Rijo-john.Thomas@amd.com> wrote:
+>>
+>> After TEE has completed processing of TEE_CMD_ID_LOAD_TA, set proper
+>> value in 'return_origin' argument passed by open_session() call. To do
+>> so, add 'return_origin' field to the structure tee_cmd_load_ta. The
+>> Trusted OS shall update return_origin as part of TEE processing.
+>>
+>> This change to 'struct tee_cmd_load_ta' interface requires a similar update
+>> in AMD-TEE Trusted OS's TEE_CMD_ID_LOAD_TA interface.
+> 
+> This is an ABI change, but it's not clear if it's an incompatible ABI
+> change or not. What happens if the AMD-TEE Trusted OS isn't updated?
+> 
+
+If AMD-TEE Trusted OS isn't updated, load_cmd.return_origin value will be 0.
+
+load_cmd.return_origin will have non-zero value only if AMD-TEE Trusted OS on
+the platform has the necessary ABI change.
+
+At present, without this patch, arg->ret_origin is 0 and even with this patch
+it will be 0 unless AMD-TEE Trusted OS on the platform has the ABI update. So,
+this is not an incompatible ABI change.
+
+>>
+>> This patch has been verified on Phoenix Birman setup. On older APUs,
+>> return_origin value will be 0.
+> 
+> Why, because MD-TEE Trusted OS will not be updated on the older APUs?
+> 
+
+Yes, that's correct - older APUs will not have updated AMD-TEE Trusted OS.
+
+>>
+>> Cc: stable@vger.kernel.org
+> 
+> Which stable kernels are you targeting? A Fixes tag might answer that.
+> 
+
+Okay, I will add a Fixes tag and post v2 patch.
+
+Thanks,
+Rijo
+
+> Thanks,
+> Jens
+> 
+>> Tested-by: Sourabh Das <sourabh.das@amd.com>
+>> Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
+>> ---
+>>  drivers/tee/amdtee/amdtee_if.h | 10 ++++++----
+>>  drivers/tee/amdtee/call.c      | 30 +++++++++++++++++-------------
+>>  2 files changed, 23 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/drivers/tee/amdtee/amdtee_if.h b/drivers/tee/amdtee/amdtee_if.h
+>> index ff48c3e47375..e2014e21530a 100644
+>> --- a/drivers/tee/amdtee/amdtee_if.h
+>> +++ b/drivers/tee/amdtee/amdtee_if.h
+>> @@ -118,16 +118,18 @@ struct tee_cmd_unmap_shared_mem {
+>>
+>>  /**
+>>   * struct tee_cmd_load_ta - load Trusted Application (TA) binary into TEE
+>> - * @low_addr:    [in] bits [31:0] of the physical address of the TA binary
+>> - * @hi_addr:     [in] bits [63:32] of the physical address of the TA binary
+>> - * @size:        [in] size of TA binary in bytes
+>> - * @ta_handle:   [out] return handle of the loaded TA
+>> + * @low_addr:       [in] bits [31:0] of the physical address of the TA binary
+>> + * @hi_addr:        [in] bits [63:32] of the physical address of the TA binary
+>> + * @size:           [in] size of TA binary in bytes
+>> + * @ta_handle:      [out] return handle of the loaded TA
+>> + * @return_origin:  [out] origin of return code after TEE processing
+>>   */
+>>  struct tee_cmd_load_ta {
+>>         u32 low_addr;
+>>         u32 hi_addr;
+>>         u32 size;
+>>         u32 ta_handle;
+>> +       u32 return_origin;
+>>  };
+>>
+>>  /**
+>> diff --git a/drivers/tee/amdtee/call.c b/drivers/tee/amdtee/call.c
+>> index e8cd9aaa3467..e9b63dcb3194 100644
+>> --- a/drivers/tee/amdtee/call.c
+>> +++ b/drivers/tee/amdtee/call.c
+>> @@ -423,19 +423,23 @@ int handle_load_ta(void *data, u32 size, struct tee_ioctl_open_session_arg *arg)
+>>         if (ret) {
+>>                 arg->ret_origin = TEEC_ORIGIN_COMMS;
+>>                 arg->ret = TEEC_ERROR_COMMUNICATION;
+>> -       } else if (arg->ret == TEEC_SUCCESS) {
+>> -               ret = get_ta_refcount(load_cmd.ta_handle);
+>> -               if (!ret) {
+>> -                       arg->ret_origin = TEEC_ORIGIN_COMMS;
+>> -                       arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
+>> -
+>> -                       /* Unload the TA on error */
+>> -                       unload_cmd.ta_handle = load_cmd.ta_handle;
+>> -                       psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
+>> -                                           (void *)&unload_cmd,
+>> -                                           sizeof(unload_cmd), &ret);
+>> -               } else {
+>> -                       set_session_id(load_cmd.ta_handle, 0, &arg->session);
+>> +       } else {
+>> +               arg->ret_origin = load_cmd.return_origin;
+>> +
+>> +               if (arg->ret == TEEC_SUCCESS) {
+>> +                       ret = get_ta_refcount(load_cmd.ta_handle);
+>> +                       if (!ret) {
+>> +                               arg->ret_origin = TEEC_ORIGIN_COMMS;
+>> +                               arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
+>> +
+>> +                               /* Unload the TA on error */
+>> +                               unload_cmd.ta_handle = load_cmd.ta_handle;
+>> +                               psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
+>> +                                                   (void *)&unload_cmd,
+>> +                                                   sizeof(unload_cmd), &ret);
+>> +                       } else {
+>> +                               set_session_id(load_cmd.ta_handle, 0, &arg->session);
+>> +                       }
+>>                 }
+>>         }
+>>         mutex_unlock(&ta_refcount_mutex);
+>> --
+>> 2.25.1
+>>
