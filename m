@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 547A76FA94D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A306FA622
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235236AbjEHKtw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:49:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48100 "EHLO
+        id S234331AbjEHKQm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235188AbjEHKtX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:23 -0400
+        with ESMTP id S234333AbjEHKQj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D9E2715
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C5A4BBE2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A370862836
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6582C433D2;
-        Mon,  8 May 2023 10:48:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08ED2624A0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D2DC4339B;
+        Mon,  8 May 2023 10:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542924;
-        bh=/Jl9Jaavl05gJsehmzRCKJ6D3quk8GZDfuxJ44umj78=;
+        s=korg; t=1683540995;
+        bh=PtxQm6ebCP86wI7a0NbfcbRQJZlJ/6yGIi6c0zjSYzw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Rsyl5OLTIkjrXblhqqwOwDH5jVBS1pMS3A3CYi0O3ZvEQpqK6v2r8Odx8KAXPoW0
-         NNiXvP5F/JS89SeZ94/U/sJgeK3+m29gu5qCVv2Nbv6+TI76o5jbhw2DsSitWAVJ7J
-         +ONCQUeoCXQbztF0wcJGPnQgUG5M5mx6B/vLFFyE=
+        b=rcGW7NIOHlR2idy2hyEfpkYLM7KVXts8T1Bj+tfdhM8urVy74U9Z+z142cK6Bs1Nd
+         ERjSDjmWuu3gF+hANeBRQoftkvF8XY/YKlARJdaVuMllie9m3y2VciGb/arylYD2Tw
+         eLzE3jJ37M/8C6xRbpFF0ZviACeOTjDCHXu+C+rk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 591/663] phy: ti: j721e-wiz: Fix unreachable code in wiz_mode_select()
-Date:   Mon,  8 May 2023 11:46:57 +0200
-Message-Id: <20230508094448.620258094@linuxfoundation.org>
+        patches@lists.linux.dev, Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH 6.1 576/611] mtd: spi-nor: core: Update flashs current address mode when changing address mode
+Date:   Mon,  8 May 2023 11:46:58 +0200
+Message-Id: <20230508094440.667124175@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 57c0e1362fdd57d0cea7ab1e583b58abf4bd8c2d ]
+commit 37513c56139b79dd43c1774513c28f8ab2b05224 upstream.
 
-In the wiz_mode_select() function, the configuration performed for
-PHY_TYPE_USXGMII is unreachable. Fix it.
+The bug was obswerved while reading code. There are not many users of
+addr_mode_nbytes. Anyway, we should update the flash's current address
+mode when changing the address mode, fix it. We don't care for now about
+the set_4byte_addr_mode(nor, false) from spi_nor_restore(), as it is
+used at driver remove and shutdown.
 
-Fixes: b64a85fb8f53 ("phy: ti: phy-j721e-wiz.c: Add usxgmii support in wiz driver")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20230403094552.929108-1-s-vadapalli@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7931a215063 ("mtd: spi-nor: core: Track flash's internal address mode")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230331074606.3559258-9-tudor.ambarus@linaro.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-j721e-wiz.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/mtd/spi-nor/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
-index ddce5ef7711c6..c21b193fb5498 100644
---- a/drivers/phy/ti/phy-j721e-wiz.c
-+++ b/drivers/phy/ti/phy-j721e-wiz.c
-@@ -430,18 +430,17 @@ static int wiz_mode_select(struct wiz *wiz)
- 	int i;
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2696,6 +2696,7 @@ static int spi_nor_quad_enable(struct sp
  
- 	for (i = 0; i < num_lanes; i++) {
--		if (wiz->lane_phy_type[i] == PHY_TYPE_DP)
-+		if (wiz->lane_phy_type[i] == PHY_TYPE_DP) {
- 			mode = LANE_MODE_GEN1;
--		else if (wiz->lane_phy_type[i] == PHY_TYPE_QSGMII)
-+		} else if (wiz->lane_phy_type[i] == PHY_TYPE_QSGMII) {
- 			mode = LANE_MODE_GEN2;
--		else
--			continue;
--
--		if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
-+		} else if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
- 			ret = regmap_field_write(wiz->p0_mac_src_sel[i], 0x3);
- 			ret = regmap_field_write(wiz->p0_rxfclk_sel[i], 0x3);
- 			ret = regmap_field_write(wiz->p0_refclk_sel[i], 0x3);
- 			mode = LANE_MODE_GEN1;
-+		} else {
-+			continue;
- 		}
+ static int spi_nor_init(struct spi_nor *nor)
+ {
++	struct spi_nor_flash_parameter *params = nor->params;
+ 	int err;
  
- 		ret = regmap_field_write(wiz->p_standard_mode[i], mode);
--- 
-2.39.2
-
+ 	err = spi_nor_octal_dtr_enable(nor, true);
+@@ -2737,9 +2738,10 @@ static int spi_nor_init(struct spi_nor *
+ 		 */
+ 		WARN_ONCE(nor->flags & SNOR_F_BROKEN_RESET,
+ 			  "enabling reset hack; may not recover from unexpected reboots\n");
+-		err = nor->params->set_4byte_addr_mode(nor, true);
++		err = params->set_4byte_addr_mode(nor, true);
+ 		if (err && err != -ENOTSUPP)
+ 			return err;
++		params->addr_mode_nbytes = 4;
+ 	}
+ 
+ 	return 0;
 
 
