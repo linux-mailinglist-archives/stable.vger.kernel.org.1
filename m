@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3426FA692
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7F1C6FA9D3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234413AbjEHKVs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:21:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50230 "EHLO
+        id S235299AbjEHK4V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:56:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234453AbjEHKUs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:20:48 -0400
+        with ESMTP id S235254AbjEHKzh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:55:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7582E24034
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33EA2DD73
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC63C6252C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15BBC433D2;
-        Mon,  8 May 2023 10:20:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3900562947
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FC0C433D2;
+        Mon,  8 May 2023 10:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541233;
-        bh=ka65zs60x+QSe9eH/Rob1ZLl2kjLhdUvHSAhUNgccDc=;
+        s=korg; t=1683543283;
+        bh=KM29yWhiiMeBte+kY9LuYP4UD1UubDEWVrm0UCqBewY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e9/TL/5cvzSkcc2raJeaA332Mjd1qvvenJmryM00Mom6Zl7x6BJgzVjwvyZiah1W1
-         14MVvTmmr6FP2KCrLMtX0gAHBsHCO5PvDn2Ez5ycLg/oewHrt7CLjZvDJAH5e+LcH8
-         82CyspOs0sgS6L8ZQApWtTY0vRERZINGyOjkggyI=
+        b=bL0pwD5kmykk09X5jxBKj1EVV3VFcs125eRYSpHHKv+yIko2f39A1Q2QGlt9iDtyl
+         sgVe0HTuO+XRdpfyZOw6cLbOut3FVy48Kktrf0YyUc2dL/hsKK4W2hQM5k4qflYbGb
+         Mf1vg3f4zKHb5amPC65wzNudX0AICezOnK5whMqw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.2 049/663] xhci: fix debugfs register accesses while suspended
+        patches@lists.linux.dev, Brian Coverstone <brian@mainsequence.net>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.3 040/694] wifi: mt76: add missing locking to protect against concurrent rx/status calls
 Date:   Mon,  8 May 2023 11:37:55 +0200
-Message-Id: <20230508094430.071277981@linuxfoundation.org>
+Message-Id: <20230508094433.929705136@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,33 +53,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 735baf1b23458f71a8b15cb924af22c9ff9cd125 upstream.
+commit 5b8ccdfb943f6a03c676d2ea816dd38c149e920b upstream.
 
-Wire up the debugfs regset device pointer so that the controller is
-resumed before accessing registers to avoid crashing or locking up if it
-happens to be runtime suspended.
+According to the documentation, ieee80211_rx_list must not run concurrently
+with ieee80211_tx_status (or its variants).
 
-Fixes: 02b6fdc2a153 ("usb: xhci: Add debugfs interface for xHCI driver")
-Cc: stable@vger.kernel.org # 4.15: 30332eeefec8: debugfs: regset32: Add Runtime PM support
-Cc: stable@vger.kernel.org # 4.15
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230405090342.7363-1-johan+linaro@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 88046b2c9f6d ("mt76: add support for reporting tx status with skb")
+Reported-by: Brian Coverstone <brian@mainsequence.net>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-debugfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/dma.c         |    2 ++
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c  |    5 ++++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c  |    5 ++++-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c |    5 ++++-
+ drivers/net/wireless/mediatek/mt76/tx.c          |    4 ++++
+ 5 files changed, 18 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-debugfs.c
-+++ b/drivers/usb/host/xhci-debugfs.c
-@@ -133,6 +133,7 @@ static void xhci_debugfs_regset(struct x
- 	regset->regs = regs;
- 	regset->nregs = nregs;
- 	regset->base = hcd->regs + base;
-+	regset->dev = hcd->self.controller;
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -576,7 +576,9 @@ free:
+ free_skb:
+ 	status.skb = tx_info.skb;
+ 	hw = mt76_tx_status_get_hw(dev, tx_info.skb);
++	spin_lock_bh(&dev->rx_lock);
+ 	ieee80211_tx_status_ext(hw, &status);
++	spin_unlock_bh(&dev->rx_lock);
  
- 	debugfs_create_regset32((const char *)rgs->name, 0444, parent, regset);
+ 	return ret;
  }
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1279,8 +1279,11 @@ void mt7603_mac_add_txs(struct mt7603_de
+ 	if (wcidx >= MT7603_WTBL_STA || !sta)
+ 		goto out;
+ 
+-	if (mt7603_fill_txs(dev, msta, &info, txs_data))
++	if (mt7603_fill_txs(dev, msta, &info, txs_data)) {
++		spin_lock_bh(&dev->mt76.rx_lock);
+ 		ieee80211_tx_status_noskb(mt76_hw(dev), sta, &info);
++		spin_unlock_bh(&dev->mt76.rx_lock);
++	}
+ 
+ out:
+ 	rcu_read_unlock();
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1530,8 +1530,11 @@ static void mt7615_mac_add_txs(struct mt
+ 	if (wcid->phy_idx && dev->mt76.phys[MT_BAND1])
+ 		mphy = dev->mt76.phys[MT_BAND1];
+ 
+-	if (mt7615_fill_txs(dev, msta, &info, txs_data))
++	if (mt7615_fill_txs(dev, msta, &info, txs_data)) {
++		spin_lock_bh(&dev->mt76.rx_lock);
+ 		ieee80211_tx_status_noskb(mphy->hw, sta, &info);
++		spin_unlock_bh(&dev->mt76.rx_lock);
++	}
+ 
+ out:
+ 	rcu_read_unlock();
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -631,8 +631,11 @@ void mt76x02_send_tx_status(struct mt76x
+ 
+ 	mt76_tx_status_unlock(mdev, &list);
+ 
+-	if (!status.skb)
++	if (!status.skb) {
++		spin_lock_bh(&dev->mt76.rx_lock);
+ 		ieee80211_tx_status_ext(mt76_hw(dev), &status);
++		spin_unlock_bh(&dev->mt76.rx_lock);
++	}
+ 
+ 	if (!len)
+ 		goto out;
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -77,7 +77,9 @@ mt76_tx_status_unlock(struct mt76_dev *d
+ 		}
+ 
+ 		hw = mt76_tx_status_get_hw(dev, skb);
++		spin_lock_bh(&dev->rx_lock);
+ 		ieee80211_tx_status_ext(hw, &status);
++		spin_unlock_bh(&dev->rx_lock);
+ 	}
+ 	rcu_read_unlock();
+ }
+@@ -263,7 +265,9 @@ void __mt76_tx_complete_skb(struct mt76_
+ 	if (cb->pktid < MT_PACKET_ID_FIRST) {
+ 		hw = mt76_tx_status_get_hw(dev, skb);
+ 		status.sta = wcid_to_sta(wcid);
++		spin_lock_bh(&dev->rx_lock);
+ 		ieee80211_tx_status_ext(hw, &status);
++		spin_unlock_bh(&dev->rx_lock);
+ 		goto out;
+ 	}
+ 
 
 
