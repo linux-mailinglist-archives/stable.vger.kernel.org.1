@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D73B36FA8B6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1296FABC1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234929AbjEHKos (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42430 "EHLO
+        id S235405AbjEHLRI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234930AbjEHKoJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3A82A9ED
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:56 -0700 (PDT)
+        with ESMTP id S235347AbjEHLRH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E729634121
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06F026285D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015B5C433D2;
-        Mon,  8 May 2023 10:42:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 766F062C09
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41698C433D2;
+        Mon,  8 May 2023 11:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542575;
-        bh=Dw70lXX5xwC42VpQOj9Lt9Bo8BHCxzZFOJkwc5yELl0=;
+        s=korg; t=1683544624;
+        bh=Ogtcnyue6WqY7ThmAQjKC9J+kmtZ4GOChl8A33PQCm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LeHyJCHCBK9ANDX6SrSA0m0R3b+MSxLRVq3El1714whJr0263lnnljdWFWrDLmRlW
-         Euxd0norlZIIJnTC8hYME3dtkL86qax5vwmgGHC786ipJQqbhTow2WbJDHqi4rrLbt
-         1OtNLMlHDDO5GdbJs2Jptd2NmSdDk3ENEyi8QSkQ=
+        b=EpBK6S6deup6i/bv5bT84gAcBIuzb/fZOQKR1Cz8Z2qXAi8Sz8gMcvuvx6IvSjKM8
+         x91EYu9nP9OKR4TfmLO5RzSPnQBUh1z5lhNI+CNitT57IQ2NHYBRR57NbeQ5UVAbrM
+         gEAnRDYjoeqsAN0HkjInN7Ux3ytHQif+G0dyAoxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Suzuki K Poulose <suzuki.poulose@arm.com>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Yan Wang <rk.code@outlook.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 479/663] coresight: etm_pmu: Set the module field
+Subject: [PATCH 6.3 470/694] net: stmmac:fix system hang when setting up tag_8021q VLAN for DSA ports
 Date:   Mon,  8 May 2023 11:45:05 +0200
-Message-Id: <20230508094443.864935016@linuxfoundation.org>
+Message-Id: <20230508094449.035771731@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,33 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Yan Wang <rk.code@outlook.com>
 
-[ Upstream commit 18996a113f2567aef3057e300e3193ce2df1684c ]
+[ Upstream commit 35226750f7ab9d49140d95bc7d38a2a9b0f4fdfc ]
 
-struct pmu::module must be set to the module owning the PMU driver.
-Set this for the coresight etm_pmu.
+The system hang because of dsa_tag_8021q_port_setup()->
+				stmmac_vlan_rx_add_vid().
 
-Fixes: 8e264c52e1dab ("coresight: core: Allow the coresight core driver to be built as a module")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20230405094922.667834-1-suzuki.poulose@arm.com
+I found in stmmac_drv_probe() that cailing pm_runtime_put()
+disabled the clock.
+
+First, when the kernel is compiled with CONFIG_PM=y,The stmmac's
+resume/suspend is active.
+
+Secondly,stmmac as DSA master,the dsa_tag_8021q_port_setup() function
+will callback stmmac_vlan_rx_add_vid when DSA dirver starts. However,
+The system is hanged for the stmmac_vlan_rx_add_vid() accesses its
+registers after stmmac's clock is closed.
+
+I would suggest adding the pm_runtime_resume_and_get() to the
+stmmac_vlan_rx_add_vid().This guarantees that resuming clock output
+while in use.
+
+Fixes: b3dcb3127786 ("net: stmmac: correct clocks enabled in stmmac_vlan_rx_kill_vid()")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Yan Wang <rk.code@outlook.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm-perf.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
-index 43bbd5dc3d3b1..f9a0ee49d8e80 100644
---- a/drivers/hwtracing/coresight/coresight-etm-perf.c
-+++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
-@@ -870,6 +870,7 @@ int __init etm_perf_init(void)
- 	etm_pmu.addr_filters_sync	= etm_addr_filters_sync;
- 	etm_pmu.addr_filters_validate	= etm_addr_filters_validate;
- 	etm_pmu.nr_addr_filters		= ETM_ADDR_CMP_MAX;
-+	etm_pmu.module			= THIS_MODULE;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index d7fcab0570322..f9cd063f1fe30 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6350,6 +6350,10 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	bool is_double = false;
+ 	int ret;
  
- 	ret = perf_pmu_register(&etm_pmu, CORESIGHT_ETM_PMU_NAME, -1);
- 	if (ret == 0)
++	ret = pm_runtime_resume_and_get(priv->device);
++	if (ret < 0)
++		return ret;
++
+ 	if (be16_to_cpu(proto) == ETH_P_8021AD)
+ 		is_double = true;
+ 
+@@ -6357,16 +6361,18 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	ret = stmmac_vlan_update(priv, is_double);
+ 	if (ret) {
+ 		clear_bit(vid, priv->active_vlans);
+-		return ret;
++		goto err_pm_put;
+ 	}
+ 
+ 	if (priv->hw->num_vlan) {
+ 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+ 		if (ret)
+-			return ret;
++			goto err_pm_put;
+ 	}
++err_pm_put:
++	pm_runtime_put(priv->device);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
 -- 
 2.39.2
 
