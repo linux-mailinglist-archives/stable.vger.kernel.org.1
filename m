@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2392C6FAB9F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCDAE6FA88E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233954AbjEHLP2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56268 "EHLO
+        id S235028AbjEHKme (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234418AbjEHLP1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7982536CD0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:26 -0700 (PDT)
+        with ESMTP id S234986AbjEHKl6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ECC52A878
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C9AA62BDE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E11C433EF;
-        Mon,  8 May 2023 11:15:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54F7B62848
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62ED2C433D2;
+        Mon,  8 May 2023 10:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544525;
-        bh=5kcGwruRUB4YLkzfCyxdJ97CgKP2Mk4mSsIeZNBq+CQ=;
+        s=korg; t=1683542478;
+        bh=iuLf9SzfjGXvPRsP0q5LqlMIekYEJnAl5RUXrLLn9Sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iFfZrtNO5PyNbXBZ3zQjKn3JPwo6XkzI8LrIl7skTX5DK7sF+C0SEf0OKft3s1fHb
-         s7Th3Azdz/VC5dmZOf1NmQi4ruIPypQQtwLyujz1//PdZNbAt2Oru41yS3Zt0MsbhA
-         rcAgh+SNqR/bBO7vlvmov+5DrCqbMxl3haEctoTA=
+        b=qLLmbP+NCYDM6mqGdQwgJzA7zEhD5SUNfmi+U4NPaKnTaYWMZJcm6XnIDHZNPLYrS
+         /1wVl+k2rRY3piglF6oVZfBeKbpcihneEZAhGWawyYE4xU8idHnlr0aQQEUJgM8YNC
+         taCgGPyjimNh3opX4TBXoBbbUxn+qp3EX7LvSdYA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kang Chen <void0red@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 438/694] wifi: mt76: handle failure of vzalloc in mt7615_coredump_work
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 447/663] spi: atmel-quadspi: Dont leak clk enable count in pm resume
 Date:   Mon,  8 May 2023 11:44:33 +0200
-Message-Id: <20230508094447.638769426@linuxfoundation.org>
+Message-Id: <20230508094442.581576496@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,46 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kang Chen <void0red@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 9e47dd9f64a47ae00ca0123017584c37209ee900 ]
+[ Upstream commit c18bbac353ffed50be134b0a2a059a2bd540c503 ]
 
-vzalloc may fails, dump might be null and will cause
-illegal address access later.
+The pm resume call is supposed to enable two clocks. If the second enable
+fails the callback reports failure but doesn't undo the first enable.
 
-Link: https://lore.kernel.org/all/Y%2Fy5Asxw3T3m4jCw@lore-desk
-Fixes: d2bf7959d9c0 ("mt76: mt7663: introduce coredump support")
-Signed-off-by: Kang Chen <void0red@gmail.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+So call clk_disable() for the first clock when clk_enable() for the second
+one fails.
+
+Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20230317084232.142257-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/spi/atmel-quadspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 5c41ad5955f4b..eafa0f204c1f8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2355,7 +2355,7 @@ void mt7615_coredump_work(struct work_struct *work)
- 			break;
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 70637e46290a4..2dbb37b1840f3 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -786,7 +786,11 @@ static int __maybe_unused atmel_qspi_runtime_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- 		skb_pull(skb, sizeof(struct mt7615_mcu_rxd));
--		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
-+		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
- 			dev_kfree_skb(skb);
- 			continue;
- 		}
-@@ -2365,6 +2365,8 @@ void mt7615_coredump_work(struct work_struct *work)
- 
- 		dev_kfree_skb(skb);
- 	}
--	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
--		      GFP_KERNEL);
+-	return clk_enable(aq->qspick);
++	ret = clk_enable(aq->qspick);
++	if (ret)
++		clk_disable(aq->pclk);
 +
-+	if (dump)
-+		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
-+			      GFP_KERNEL);
++	return ret;
  }
+ 
+ static const struct dev_pm_ops __maybe_unused atmel_qspi_pm_ops = {
 -- 
 2.39.2
 
