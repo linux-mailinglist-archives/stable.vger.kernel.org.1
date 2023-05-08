@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F496FA5E2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B906FADC1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234290AbjEHKOK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42608 "EHLO
+        id S236071AbjEHLh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234292AbjEHKN4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421153A2A8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:50 -0700 (PDT)
+        with ESMTP id S235982AbjEHLhn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 759DA3F578
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE54F6241D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E218C433D2;
-        Mon,  8 May 2023 10:13:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23C536329C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D61AC4339B;
+        Mon,  8 May 2023 11:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540829;
-        bh=SC9y+pEQHlJguhFZnc3o3pY1UeyVIR8hohLDH+7tbHc=;
+        s=korg; t=1683545791;
+        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UeTKz/exMkuJgY6fcFTglwfTR+Jl9DbCC7FU8UUCq27r2m8MFnUI2iooYLVV6uilV
-         qMBizDmN2jr/zMtvmIkPRcqqKutlQpf4uOFJZZuD7+3lJrzcQIH920wCqzsln3+tF6
-         zezunN3OA3cg38bL+DAn6lq3PwXtJ0G6atMr1ZpE=
+        b=1GY5kCWAUMRvn92BgYWJ0yjM3FBM5JAPkqKYfglaq5YwxhjLWoMncciJ1oTAZKVbT
+         qpKYADjsZUcZ+vmjRD5Ribftn6VYTWUSA5bV2ndmnGh9hJb4kj2fetYtAb5CegSBlp
+         cPGLkKNx5rPJ6wfI9eyl8H074AaRQR407RwsbU0U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 513/611] swiotlb: fix debugfs reporting of reserved memory pools
+        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 154/371] wifi: ath6kl: reduce WARN to dev_dbg() in callback
 Date:   Mon,  8 May 2023 11:45:55 +0200
-Message-Id: <20230508094438.721712830@linuxfoundation.org>
+Message-Id: <20230508094818.187232566@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,46 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 5499d01c029069044a3b3e50501c77b474c96178 ]
+[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
 
-For io_tlb_nslabs, the debugfs code reports the correct value for a
-specific reserved memory pool.  But for io_tlb_used, the value reported
-is always for the default pool, not the specific reserved pool. Fix this.
+The warn is triggered on a known race condition, documented in the code above
+the test, that is correctly handled.  Using WARN() hinders automated testing.
+Reducing severity.
 
-Fixes: 5c850d31880e ("swiotlb: fix passing local variable to debugfs_create_ulong()")
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
+Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index bf1ed08ec541f..7f4ad5e70b40c 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -919,7 +919,9 @@ EXPORT_SYMBOL_GPL(is_swiotlb_active);
- 
- static int io_tlb_used_get(void *data, u64 *val)
- {
--	*val = mem_used(&io_tlb_default_mem);
-+	struct io_tlb_mem *mem = data;
-+
-+	*val = mem_used(mem);
- 	return 0;
- }
- DEFINE_DEBUGFS_ATTRIBUTE(fops_io_tlb_used, io_tlb_used_get, NULL, "%llu\n");
-@@ -932,7 +934,7 @@ static void swiotlb_create_debugfs_files(struct io_tlb_mem *mem,
- 		return;
- 
- 	debugfs_create_ulong("io_tlb_nslabs", 0400, mem->debugfs, &mem->nslabs);
--	debugfs_create_file("io_tlb_used", 0400, mem->debugfs, NULL,
-+	debugfs_create_file("io_tlb_used", 0400, mem->debugfs, mem,
- 			&fops_io_tlb_used);
- }
- 
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index c68848819a52d..9b88d96bfe96c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
+ 	 */
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
+ 	}
 -- 
 2.39.2
 
