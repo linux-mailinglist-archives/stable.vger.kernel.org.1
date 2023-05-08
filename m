@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 358B86FAA9A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD1806FA777
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233715AbjEHLEO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:04:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
+        id S234650AbjEHKar (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235610AbjEHLDu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:50 -0400
+        with ESMTP id S234615AbjEHKan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:30:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7147348BF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62EEFE72C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:30:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 79C8262A6A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A5FC433D2;
-        Mon,  8 May 2023 11:03:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93282626CF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B1CC433EF;
+        Mon,  8 May 2023 10:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543784;
-        bh=9MAsqeaazGuNiXMMAm5m2ptonWtBpnOK+mSH9waaEkE=;
+        s=korg; t=1683541841;
+        bh=XWG19OrXHotSvNPbXH+zJ8nVDfaw5KTqABFpEFd8XZ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FewynaTnHu9RTJzJqcdmlvqJ0+QgUuaqkeobSQDfzuZjkUSZqkJLHulB+kzRo3Nib
-         iTwhQpgOF4YzcF/T5oPySuW/yAnGZlopI6VUOMPRb5st9CfnUBtfX0cRX47Uyv0vBV
-         P3uk5XltYtlHwagoTuR5dhRGlmIAtap6aPAnfVWo=
+        b=Rql5i9Ne/+Y3i1hlWf9gU61kGYx29fV6zAIfi/1m/Ia0fV4+8kB0tuHqkpdPlCPQG
+         1xvXdMsarTX9BARsX6vBJ7FIBDeUB51KB5+Rr0exbH3hEsq9NjvSDZaV/O/kSm+n8g
+         7cdZCL/UNNNVfjCeyhNi6xWIFI8Rwy5KoBgUyQ1I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Xinlei Lee <xinlei.lee@mediatek.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 200/694] arm64: dts: qcom: sm8550: fix qup_spi0_cs node
+Subject: [PATCH 6.2 209/663] drm/mediatek: dp: Change the aux retries times when receiving AUX_DEFER
 Date:   Mon,  8 May 2023 11:40:35 +0200
-Message-Id: <20230508094438.890991816@linuxfoundation.org>
+Message-Id: <20230508094435.141546989@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,42 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Xinlei Lee <xinlei.lee@mediatek.com>
 
-[ Upstream commit 7629c7a525d163f2a3a08e260a69ff25163ab357 ]
+[ Upstream commit 9243d70e05c5989f84f840612965f96b524da925 ]
 
-The node is incomplete and doesn't need a subnode, add the missing
-properties and move everything to the root of qup-spi0-cs-state node.
+DP 1.4a Section 2.8.7.1.5.6.1:
+A DP Source device shall retry at least seven times upon receiving
+AUX_DEFER before giving up the AUX transaction.
 
-Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230308-topic-sm8550-upstream-dt-fixups-v1-2-595b02067672@linaro.org
+The drm_dp_i2c_do_msg() function in the drm_dp_helper.c file will
+judge the status of the msg->reply parameter passed to aux_transfer
+for different processing.
+
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Signed-off-by: Xinlei Lee <xinlei.lee@mediatek.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/1680072203-10394-1-git-send-email-xinlei.lee@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index ad42c451891d1..7da28b36470e8 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2792,10 +2792,10 @@
- 			};
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index d28326350ea93..007af69e5026f 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -806,10 +806,9 @@ static int mtk_dp_aux_wait_for_completion(struct mtk_dp *mtk_dp, bool is_read)
+ }
  
- 			qup_spi0_cs: qup-spi0-cs-state {
--				cs-pins {
--					pins = "gpio31";
--					function = "qup1_se0";
--				};
-+				pins = "gpio31";
-+				function = "qup1_se0";
-+				drive-strength = <6>;
-+				bias-disable;
- 			};
+ static int mtk_dp_aux_do_transfer(struct mtk_dp *mtk_dp, bool is_read, u8 cmd,
+-				  u32 addr, u8 *buf, size_t length)
++				  u32 addr, u8 *buf, size_t length, u8 *reply_cmd)
+ {
+ 	int ret;
+-	u32 reply_cmd;
  
- 			qup_spi0_data_clk: qup-spi0-data-clk-state {
+ 	if (is_read && (length > DP_AUX_MAX_PAYLOAD_BYTES ||
+ 			(cmd == DP_AUX_NATIVE_READ && !length)))
+@@ -841,10 +840,10 @@ static int mtk_dp_aux_do_transfer(struct mtk_dp *mtk_dp, bool is_read, u8 cmd,
+ 	/* Wait for feedback from sink device. */
+ 	ret = mtk_dp_aux_wait_for_completion(mtk_dp, is_read);
+ 
+-	reply_cmd = mtk_dp_read(mtk_dp, MTK_DP_AUX_P0_3624) &
+-		    AUX_RX_REPLY_COMMAND_AUX_TX_P0_MASK;
++	*reply_cmd = mtk_dp_read(mtk_dp, MTK_DP_AUX_P0_3624) &
++		     AUX_RX_REPLY_COMMAND_AUX_TX_P0_MASK;
+ 
+-	if (ret || reply_cmd) {
++	if (ret) {
+ 		u32 phy_status = mtk_dp_read(mtk_dp, MTK_DP_AUX_P0_3628) &
+ 				 AUX_RX_PHY_STATE_AUX_TX_P0_MASK;
+ 		if (phy_status != AUX_RX_PHY_STATE_AUX_TX_P0_RX_IDLE) {
+@@ -2071,7 +2070,7 @@ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
+ 		ret = mtk_dp_aux_do_transfer(mtk_dp, is_read, request,
+ 					     msg->address + accessed_bytes,
+ 					     msg->buffer + accessed_bytes,
+-					     to_access);
++					     to_access, &msg->reply);
+ 
+ 		if (ret) {
+ 			drm_info(mtk_dp->drm_dev,
+@@ -2081,7 +2080,6 @@ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
+ 		accessed_bytes += to_access;
+ 	} while (accessed_bytes < msg->size);
+ 
+-	msg->reply = DP_AUX_NATIVE_REPLY_ACK | DP_AUX_I2C_REPLY_ACK;
+ 	return msg->size;
+ err:
+ 	msg->reply = DP_AUX_NATIVE_REPLY_NACK | DP_AUX_I2C_REPLY_NACK;
 -- 
 2.39.2
 
