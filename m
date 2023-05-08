@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02EE06FA929
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D6636FA636
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235173AbjEHKs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
+        id S234372AbjEHKRd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235150AbjEHKsh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:37 -0400
+        with ESMTP id S234399AbjEHKRY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D82A278
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 352D4D059
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14BF8628F3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECFEC433EF;
-        Mon,  8 May 2023 10:47:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B25C8624BF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39ADC433D2;
+        Mon,  8 May 2023 10:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542873;
-        bh=s8Xmz8VdBjcI34aoBM3Iu6ndDRRe9lhqstXwP+IWaPw=;
+        s=korg; t=1683541035;
+        bh=Xdq6WHE3RMmxZGTNIrc9fX9lJQcBS0AbCx8tF2rpevg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tlx9cff4oANThkiGerCF03wxtZdiYIhxhwYLpxEwlMgPSawplTjE48s4t1BtMcjbf
-         MOlkQG9bEwmEeYVoq0xwShglkCyuBcNaRspEE+Z7n9c6R68i+ccO3VbqJKiNz4K2yh
-         ZOKhcB0QOO5OiPejRDUkCDzI766FSmCBYpQ1GwMg=
+        b=h89kGaje1uTjUS85Y+DkzVZZPKSdkSOLPSWlc1FupXmlMP1MWKt01L5mgA3seSXUK
+         5HIj5vWcZLKgimZm0U6Qa5Hdtuqa7J3/AnEFdu+hLlgOlwuq2Z/jBt6QLITPzvUvtV
+         wyl+s+nv84yWiS40hWvmk5OP5je+/4gTuUbbm7hE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 576/663] ext4: fix i_disksize exceeding i_size problem in paritally written case
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 560/611] parisc: Ensure page alignment in flush functions
 Date:   Mon,  8 May 2023 11:46:42 +0200
-Message-Id: <20230508094447.967939067@linuxfoundation.org>
+Message-Id: <20230508094440.183580728@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,80 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 1dedde690303c05ef732b7c5c8356fdf60a4ade3 ]
+commit d755bd2caeb47fd806e12399fe8b56798fa5d2cc upstream.
 
-It is possible for i_disksize can exceed i_size, triggering a warning.
+Matthew Wilcox noticed, that if ARCH_HAS_FLUSH_ON_KUNMAP is defined
+(which is the case for PA-RISC), __kunmap_local() calls
+kunmap_flush_on_unmap(), which may call the parisc flush functions with
+a non-page-aligned address and thus the page might not be fully flushed.
 
-generic_perform_write
- copied = iov_iter_copy_from_user_atomic(len) // copied < len
- ext4_da_write_end
- | ext4_update_i_disksize
- |  new_i_size = pos + copied;
- |  WRITE_ONCE(EXT4_I(inode)->i_disksize, newsize) // update i_disksize
- | generic_write_end
- |  copied = block_write_end(copied, len) // copied = 0
- |   if (unlikely(copied < len))
- |    if (!PageUptodate(page))
- |     copied = 0;
- |  if (pos + copied > inode->i_size) // return false
- if (unlikely(copied == 0))
-  goto again;
- if (unlikely(iov_iter_fault_in_readable(i, bytes))) {
-  status = -EFAULT;
-  break;
- }
+This patch ensures that flush_kernel_dcache_page_asm() and
+flush_kernel_dcache_page_asm() will always operate on page-aligned
+addresses.
 
-We get i_disksize greater than i_size here, which could trigger WARNING
-check 'i_size_read(inode) < EXT4_I(inode)->i_disksize' while doing dio:
-
-ext4_dio_write_iter
- iomap_dio_rw
-  __iomap_dio_rw // return err, length is not aligned to 512
- ext4_handle_inode_extension
-  WARN_ON_ONCE(i_size_read(inode) < EXT4_I(inode)->i_disksize) // Oops
-
- WARNING: CPU: 2 PID: 2609 at fs/ext4/file.c:319
- CPU: 2 PID: 2609 Comm: aa Not tainted 6.3.0-rc2
- RIP: 0010:ext4_file_write_iter+0xbc7
- Call Trace:
-  vfs_write+0x3b1
-  ksys_write+0x77
-  do_syscall_64+0x39
-
-Fix it by updating 'copied' value before updating i_disksize just like
-ext4_write_inline_data_end() does.
-
-A reproducer can be found in the buganizer link below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217209
-Fixes: 64769240bd07 ("ext4: Add delayed allocation support in data=writeback mode")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230321013721.89818-1-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/parisc/kernel/pacache.S |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 96517785a9f89..0b87665aaff13 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -3149,6 +3149,9 @@ static int ext4_da_write_end(struct file *file,
- 	    ext4_has_inline_data(inode))
- 		return ext4_write_inline_data_end(inode, pos, len, copied, page);
+--- a/arch/parisc/kernel/pacache.S
++++ b/arch/parisc/kernel/pacache.S
+@@ -889,6 +889,7 @@ ENDPROC_CFI(flush_icache_page_asm)
+ ENTRY_CFI(flush_kernel_dcache_page_asm)
+ 88:	ldil		L%dcache_stride, %r1
+ 	ldw		R%dcache_stride(%r1), %r23
++	depi_safe	0, 31,PAGE_SHIFT, %r26	/* Clear any offset bits */
  
-+	if (unlikely(copied < len) && !PageUptodate(page))
-+		copied = 0;
-+
- 	start = pos & (PAGE_SIZE - 1);
- 	end = start + copied - 1;
+ #ifdef CONFIG_64BIT
+ 	depdi,z		1, 63-PAGE_SHIFT,1, %r25
+@@ -925,6 +926,7 @@ ENDPROC_CFI(flush_kernel_dcache_page_asm
+ ENTRY_CFI(purge_kernel_dcache_page_asm)
+ 88:	ldil		L%dcache_stride, %r1
+ 	ldw		R%dcache_stride(%r1), %r23
++	depi_safe	0, 31,PAGE_SHIFT, %r26	/* Clear any offset bits */
  
--- 
-2.39.2
-
+ #ifdef CONFIG_64BIT
+ 	depdi,z		1, 63-PAGE_SHIFT,1, %r25
 
 
