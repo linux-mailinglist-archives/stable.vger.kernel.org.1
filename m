@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6DDE6FA406
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2F506FA407
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233602AbjEHJyU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:54:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50832 "EHLO
+        id S233408AbjEHJyX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233408AbjEHJyT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:54:19 -0400
+        with ESMTP id S233701AbjEHJyW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:54:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE0D25704
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:54:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 330AA25722
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:54:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A851662219
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:54:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5283AC433EF;
-        Mon,  8 May 2023 09:54:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC19B6221E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:54:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0361C4339B;
+        Mon,  8 May 2023 09:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539657;
-        bh=0jN8LvS7Yf2lUHNq9R3RkTYeahun7ajkEzxs4fj0IAA=;
+        s=korg; t=1683539660;
+        bh=LCapMZ1+/LjFxFu3lU0qCm2SE4KyPiinndmiipswXZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tkRmEqq7lgZT2OmDOaJGQnwzOWVNzcKvGjwTqccBQ5fC+FyK/E5VFWiuleAqzrDNS
-         nlDXUyYg2ol/674WKDAWf6/HGloQQWKlZVCu7UElpUhxm7kFFOkQatcXs93k0tMgWw
-         TuGgloN0wp7dHwitTMiYdkUSldiUQZ9YdPJUP0j8=
+        b=PLGszKpCQeUzg4ROKayiAL9zUpgoFrmPvHfwT3CavRI2R87DoJN6qOllRgv7qO+8m
+         ejfdIHsGZDrnLa/vgE+Bq28kBywKJl34NH7pWx2jCAlg8BmJomGJoW5C1rZxJ1L3Hw
+         5amMY4odMJPz2zkSCrhouBHrFlM0DrzAHrYaSx78=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Song Shuai <suagrfillet@gmail.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 095/611] riscv: mm: remove redundant parameter of create_fdt_early_page_table
-Date:   Mon,  8 May 2023 11:38:57 +0200
-Message-Id: <20230508094425.288664980@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 096/611] tracing: Fix permissions for the buffer_percent file
+Date:   Mon,  8 May 2023 11:38:58 +0200
+Message-Id: <20230508094425.332044972@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -55,47 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Shuai <suagrfillet@gmail.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit e4ef93edd4e0b022529303db1915766ff9de450e upstream.
+commit 4f94559f40ad06d627c0fdfc3319cec778a2845b upstream.
 
-create_fdt_early_page_table() explicitly uses early_pg_dir for
-32-bit fdt mapping and the pgdir parameter is redundant here.
-So remove it and its caller.
+This file defines both read and write operations, yet it is being
+created as read-only. This means that it can't be written to without the
+CAP_DAC_OVERRIDE capability. Fix the permissions to allow root to write
+to it without the need to override DAC perms.
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Fixes: ef69d2559fe9 ("riscv: Move early dtb mapping into the fixmap region")
+Link: https://lore.kernel.org/linux-trace-kernel/20230503140114.3280002-1-omosnace@redhat.com
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230426100009.685435-1-suagrfillet@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 03329f993978 ("tracing: Add tracefs file buffer_percentage")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/init.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/trace/trace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -842,8 +842,7 @@ static void __init create_kernel_page_ta
-  * this means 2 PMD entries whereas for 32-bit kernel, this is only 1 PGDIR
-  * entry.
-  */
--static void __init create_fdt_early_page_table(pgd_t *pgdir,
--					       uintptr_t fix_fdt_va,
-+static void __init create_fdt_early_page_table(uintptr_t fix_fdt_va,
- 					       uintptr_t dtb_pa)
- {
- 	uintptr_t pa = dtb_pa & ~(PMD_SIZE - 1);
-@@ -1033,8 +1032,7 @@ asmlinkage void __init setup_vm(uintptr_
- 	create_kernel_page_table(early_pg_dir, true);
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -9619,7 +9619,7 @@ init_tracer_tracefs(struct trace_array *
  
- 	/* Setup early mapping for FDT early scan */
--	create_fdt_early_page_table(early_pg_dir,
--				    __fix_to_virt(FIX_FDT), dtb_pa);
-+	create_fdt_early_page_table(__fix_to_virt(FIX_FDT), dtb_pa);
+ 	tr->buffer_percent = 50;
  
- 	/*
- 	 * Bootime fixmap only can handle PMD_SIZE mapping. Thus, boot-ioremap
+-	trace_create_file("buffer_percent", TRACE_MODE_READ, d_tracer,
++	trace_create_file("buffer_percent", TRACE_MODE_WRITE, d_tracer,
+ 			tr, &buffer_percent_fops);
+ 
+ 	create_trace_options_dir(tr);
 
 
