@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F936FA7BA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BA56FAB04
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234817AbjEHKeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
+        id S233343AbjEHLIn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234756AbjEHKd7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:59 -0400
+        with ESMTP id S233827AbjEHLIM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680019EF8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFF42E80F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9AF5615C0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0211C433EF;
-        Mon,  8 May 2023 10:33:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA0A362AF7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005EBC4339B;
+        Mon,  8 May 2023 11:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541983;
-        bh=OnMBrPOhbqSEDZrnyCAbKG7AEJDlktUCMvf7n3EpDlo=;
+        s=korg; t=1683544086;
+        bh=H6nX+IPDCB1/Hki+p6yuKcuoLcDBnA+Ax7F9m++mm6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KqT7xuLyBPB90Ca4fnly8QNx6RpZR4qUSx43VjmpNWVvne0wvllTUEE98+YAclStw
-         +AIDW7o5ww/i7dtqz9Bt1FduPLnWEpynoxUxCjJO6P2k/XfPfMMA9hpJ9if3q37zcJ
-         oNYSk3FVHbvRBnWJDzhOoP8FTNoKlq5exNDJ/1ww=
+        b=x8TXBq9d4N6dZgq7ufeA/FYcSgwlXbPMps2TN9qtl2jIhevA5cSDIey/slyYraJxC
+         g4Z0AHVANaJfcNwYdmnkK+bRfFp97vBAouP4MeMrrBHvla+5RKZOeBuENyxQ+rzQOx
+         q7wO61j09BXYyuLSQhMeHzJIHnEsEp3UG2/XFZLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luis Gerhorst <gerhorst@cs.fau.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Quentin Monnet <quentin@isovalent.com>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 289/663] tools: bpftool: Remove invalid \ json escape
+Subject: [PATCH 6.3 280/694] media: mediatek: vcodec: move lat_buf to the top of core list
 Date:   Mon,  8 May 2023 11:41:55 +0200
-Message-Id: <20230508094437.584628746@linuxfoundation.org>
+Message-Id: <20230508094441.359712285@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +57,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Gerhorst <gerhorst@cs.fau.de>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit c679bbd611c08b0559ffae079330bc4e5574696a ]
+[ Upstream commit 2cfca6c1bf8074175ea7a3b6b47f77ebdef8f701 ]
 
-RFC8259 ("The JavaScript Object Notation (JSON) Data Interchange
-Format") only specifies \", \\, \/, \b, \f, \n, \r, and \r as valid
-two-character escape sequences. This does not include \', which is not
-required in JSON because it exclusively uses double quotes as string
-separators.
+Current instance will decode done when begin to wait lat buf full,
+move the lat_buf of current instance to the top of core list to make
+sure current instance's lat_buf will be used firstly.
 
-Solidus (/) may be escaped, but does not have to. Only reverse
-solidus (\), double quotes ("), and the control characters have to be
-escaped. Therefore, with this fix, bpftool correctly supports all valid
-two-character escape sequences (but still does not support characters
-that require multi-character escape sequences).
-
-Witout this fix, attempting to load a JSON file generated by bpftool
-using Python 3.10.6's default json.load() may fail with the error
-"Invalid \escape" if the file contains the invalid escaped single
-quote (\').
-
-Fixes: b66e907cfee2 ("tools: bpftool: copy JSON writer from iproute2 repository")
-Signed-off-by: Luis Gerhorst <gerhorst@cs.fau.de>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <quentin@isovalent.com>
-Link: https://lore.kernel.org/bpf/20230227150853.16863-1-gerhorst@cs.fau.de
+Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/json_writer.c | 3 ---
- 1 file changed, 3 deletions(-)
+ .../platform/mediatek/vcodec/vdec_msg_queue.c | 21 ++++++++++++++++++-
+ .../platform/mediatek/vcodec/vdec_msg_queue.h |  2 ++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/json_writer.c b/tools/bpf/bpftool/json_writer.c
-index 7fea83bedf488..bca5dd0a59e34 100644
---- a/tools/bpf/bpftool/json_writer.c
-+++ b/tools/bpf/bpftool/json_writer.c
-@@ -80,9 +80,6 @@ static void jsonw_puts(json_writer_t *self, const char *str)
- 		case '"':
- 			fputs("\\\"", self->out);
- 			break;
--		case '\'':
--			fputs("\\\'", self->out);
--			break;
- 		default:
- 			putc(*str, self->out);
- 		}
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index ad5002ca953e0..0da6e3e2ef0b3 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -174,8 +174,26 @@ void vdec_msg_queue_update_ube_wptr(struct vdec_msg_queue *msg_queue, uint64_t u
+ 
+ bool vdec_msg_queue_wait_lat_buf_full(struct vdec_msg_queue *msg_queue)
+ {
++	struct vdec_lat_buf *buf, *tmp;
++	struct list_head *list_core[3];
++	struct vdec_msg_queue_ctx *core_ctx;
++	int ret, i, in_core_count = 0;
+ 	long timeout_jiff;
+-	int ret;
++
++	core_ctx = &msg_queue->ctx->dev->msg_queue_core_ctx;
++	spin_lock(&core_ctx->ready_lock);
++	list_for_each_entry_safe(buf, tmp, &core_ctx->ready_queue, core_list) {
++		if (buf && buf->ctx == msg_queue->ctx) {
++			list_core[in_core_count++] = &buf->core_list;
++			list_del(&buf->core_list);
++		}
++	}
++
++	for (i = 0; i < in_core_count; i++) {
++		list_add(list_core[in_core_count - (1 + i)], &core_ctx->ready_queue);
++		queue_work(msg_queue->ctx->dev->core_workqueue, &msg_queue->core_work);
++	}
++	spin_unlock(&core_ctx->ready_lock);
+ 
+ 	timeout_jiff = msecs_to_jiffies(1000 * (NUM_BUFFER_COUNT + 2));
+ 	ret = wait_event_timeout(msg_queue->lat_ctx.ready_to_use,
+@@ -257,6 +275,7 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+ 	if (msg_queue->wdma_addr.size)
+ 		return 0;
+ 
++	msg_queue->ctx = ctx;
+ 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
+ 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
+ 
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+index b1aa5572ba49f..56280d6682c5a 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+@@ -72,6 +72,7 @@ struct vdec_lat_buf {
+  * @wdma_wptr_addr: ube write point
+  * @core_work: core hardware work
+  * @lat_ctx: used to store lat buffer list
++ * @ctx: point to mtk_vcodec_ctx
+  *
+  * @lat_list_cnt: used to record each instance lat list count
+  * @core_list_cnt: used to record each instance core list count
+@@ -85,6 +86,7 @@ struct vdec_msg_queue {
+ 
+ 	struct work_struct core_work;
+ 	struct vdec_msg_queue_ctx lat_ctx;
++	struct mtk_vcodec_ctx *ctx;
+ 
+ 	atomic_t lat_list_cnt;
+ 	atomic_t core_list_cnt;
 -- 
 2.39.2
 
