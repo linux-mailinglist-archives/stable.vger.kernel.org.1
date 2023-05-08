@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1A3C6FAD79
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E696FA5AE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235795AbjEHLfI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52246 "EHLO
+        id S234196AbjEHKMS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236069AbjEHLe5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F06B83DC8B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:33 -0700 (PDT)
+        with ESMTP id S234212AbjEHKMK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FD31FE0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E0F161E2D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF2AC433D2;
-        Mon,  8 May 2023 11:33:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5716F623DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67279C433D2;
+        Mon,  8 May 2023 10:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545595;
-        bh=0TztSDO5Z6xQsL3XWqMBwQmz9L+fw2baZqZ/140Bci4=;
+        s=korg; t=1683540710;
+        bh=EajPEqyFvL9wvjV/fW0Q+paOkdzrup9PPAX+PJ7F0TA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PSoqyLxFiTgLglMNHSkXZo3OuovN2aTQxZHKAIy/7WsqbHx2e1nPuXmCKSFw0zGi2
-         zt5J5bvmx67PCsYh1p1gZGsN1dX31WclFp8JKxP9vXJNephXtBxO2euWLUAUHEA4Pf
-         bDrRM6EjMyMVFWr1dsWbbQCl5PhgOhffTFUtq1EU=
+        b=uu4cQmtA87oBiAwO/yWfVouxcsOj6qnEgXTuc1iDWWmLxF7zcwygGL2LKkuLO16Fu
+         n0//UhppX6bQXK9zT1meqOmJbZMKp4kHSl1jaLrwBqRLhoHR52AEDyDnesbH5hptdh
+         ezLZjihNrAGROGTFEpPqH7ZjZAfa8s+6I9oCaxhI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dhruva Gole <d-gole@ti.com>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/371] arm64: dts: Move BCM4908 dts to bcmbca folder
-Date:   Mon,  8 May 2023 11:44:52 +0200
-Message-Id: <20230508094815.679283238@linuxfoundation.org>
+Subject: [PATCH 6.1 451/611] spi: cadence-quadspi: use macro DEFINE_SIMPLE_DEV_PM_OPS
+Date:   Mon,  8 May 2023 11:44:53 +0200
+Message-Id: <20230508094436.813995530@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,99 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Dhruva Gole <d-gole@ti.com>
 
-[ Upstream commit ded8f22945899f4e87dd6d952bbc4abce6e64b7e ]
+[ Upstream commit be3206e8906e7a93df673ab2e96d69304a008edc ]
 
-As part of ARCH_BCM4908 to ARCH_BCMBCA migration, move the BCM4908 dts
-files to bcmbca folder and use CONFIG_ARCH_BCMBCA to build all the
-BCM4908 board dts. Delete bcm4908 folder and its makefile as well.
+Using this macro makes the code more readable.
+It also inits the members of dev_pm_ops in the following manner
+without us explicitly needing to:
 
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Link: https://lore.kernel.org/r/20220803175455.47638-5-william.zhang@broadcom.com
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Stable-dep-of: 5cca02449490 ("arm64: dts: broadcom: bcmbca: bcm4908: fix NAND interrupt name")
+.suspend = cqspi_suspend, \
+.resume = cqspi_resume, \
+.freeze = cqspi_suspend, \
+.thaw = cqspi_resume, \
+.poweroff = cqspi_suspend, \
+.restore = cqspi_resume
+
+Also get rid of conditional compilation based on CONFIG_PM_SLEEP because
+it introduces build issues with certain configs when CQSPI_DEV_PM_OPS is
+just NULL.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304191900.2fARFQW9-lkp@intel.com/
+Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
+Signed-off-by: Dhruva Gole <d-gole@ti.com>
+Link: https://lore.kernel.org/r/20230420054257.925092-1-d-gole@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/broadcom/Makefile                        | 1 -
- arch/arm64/boot/dts/broadcom/bcm4908/Makefile                | 5 -----
- arch/arm64/boot/dts/broadcom/bcmbca/Makefile                 | 4 ++++
- .../broadcom/{bcm4908 => bcmbca}/bcm4906-netgear-r8000p.dts  | 0
- .../{bcm4908 => bcmbca}/bcm4906-tplink-archer-c2300-v1.dts   | 0
- .../arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4906.dtsi | 0
- .../broadcom/{bcm4908 => bcmbca}/bcm4908-asus-gt-ac5300.dts  | 0
- .../broadcom/{bcm4908 => bcmbca}/bcm4908-netgear-raxe500.dts | 0
- .../arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4908.dtsi | 0
- 9 files changed, 4 insertions(+), 6 deletions(-)
- delete mode 100644 arch/arm64/boot/dts/broadcom/bcm4908/Makefile
- rename arch/arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4906-netgear-r8000p.dts (100%)
- rename arch/arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4906-tplink-archer-c2300-v1.dts (100%)
- rename arch/arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4906.dtsi (100%)
- rename arch/arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4908-asus-gt-ac5300.dts (100%)
- rename arch/arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4908-netgear-raxe500.dts (100%)
- rename arch/arm64/boot/dts/broadcom/{bcm4908 => bcmbca}/bcm4908.dtsi (100%)
+ drivers/spi/spi-cadence-quadspi.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/broadcom/Makefile b/arch/arm64/boot/dts/broadcom/Makefile
-index 9a0ea4b97ef23..bce0a12554539 100644
---- a/arch/arm64/boot/dts/broadcom/Makefile
-+++ b/arch/arm64/boot/dts/broadcom/Makefile
-@@ -6,7 +6,6 @@ dtb-$(CONFIG_ARCH_BCM2835) += bcm2711-rpi-400.dtb \
- 			      bcm2837-rpi-3-b-plus.dtb \
- 			      bcm2837-rpi-cm3-io3.dtb
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 4b028d325663f..30fd4bc90580e 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1763,7 +1763,6 @@ static int cqspi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
--subdir-y	+= bcm4908
- subdir-y	+= bcmbca
- subdir-y	+= northstar2
- subdir-y	+= stingray
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/Makefile b/arch/arm64/boot/dts/broadcom/bcm4908/Makefile
-deleted file mode 100644
-index 6e364e304d4fd..0000000000000
---- a/arch/arm64/boot/dts/broadcom/bcm4908/Makefile
-+++ /dev/null
-@@ -1,5 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0
--dtb-$(CONFIG_ARCH_BCM4908) += bcm4906-netgear-r8000p.dtb
--dtb-$(CONFIG_ARCH_BCM4908) += bcm4906-tplink-archer-c2300-v1.dtb
--dtb-$(CONFIG_ARCH_BCM4908) += bcm4908-asus-gt-ac5300.dtb
--dtb-$(CONFIG_ARCH_BCM4908) += bcm4908-netgear-raxe500.dtb
-diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-index fd60418478696..dc68357849a9b 100644
---- a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-+++ b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-@@ -1,5 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_ARCH_BCMBCA) += \
-+				bcm4906-netgear-r8000p.dtb \
-+				bcm4906-tplink-archer-c2300-v1.dtb \
-+				bcm4908-asus-gt-ac5300.dtb \
-+				bcm4908-netgear-raxe500.dtb \
- 				bcm4912-asus-gt-ax6000.dtb \
- 				bcm94912.dtb \
- 				bcm963158.dtb \
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4906-netgear-r8000p.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4906-netgear-r8000p.dts
-similarity index 100%
-rename from arch/arm64/boot/dts/broadcom/bcm4908/bcm4906-netgear-r8000p.dts
-rename to arch/arm64/boot/dts/broadcom/bcmbca/bcm4906-netgear-r8000p.dts
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4906-tplink-archer-c2300-v1.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4906-tplink-archer-c2300-v1.dts
-similarity index 100%
-rename from arch/arm64/boot/dts/broadcom/bcm4908/bcm4906-tplink-archer-c2300-v1.dts
-rename to arch/arm64/boot/dts/broadcom/bcmbca/bcm4906-tplink-archer-c2300-v1.dts
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4906.dtsi b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4906.dtsi
-similarity index 100%
-rename from arch/arm64/boot/dts/broadcom/bcm4908/bcm4906.dtsi
-rename to arch/arm64/boot/dts/broadcom/bcmbca/bcm4906.dtsi
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-asus-gt-ac5300.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4908-asus-gt-ac5300.dts
-similarity index 100%
-rename from arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-asus-gt-ac5300.dts
-rename to arch/arm64/boot/dts/broadcom/bcmbca/bcm4908-asus-gt-ac5300.dts
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-netgear-raxe500.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4908-netgear-raxe500.dts
-similarity index 100%
-rename from arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-netgear-raxe500.dts
-rename to arch/arm64/boot/dts/broadcom/bcmbca/bcm4908-netgear-raxe500.dts
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4908.dtsi b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4908.dtsi
-similarity index 100%
-rename from arch/arm64/boot/dts/broadcom/bcm4908/bcm4908.dtsi
-rename to arch/arm64/boot/dts/broadcom/bcmbca/bcm4908.dtsi
+-#ifdef CONFIG_PM_SLEEP
+ static int cqspi_suspend(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+@@ -1793,15 +1792,7 @@ static int cqspi_resume(struct device *dev)
+ 	return spi_master_resume(master);
+ }
+ 
+-static const struct dev_pm_ops cqspi__dev_pm_ops = {
+-	.suspend = cqspi_suspend,
+-	.resume = cqspi_resume,
+-};
+-
+-#define CQSPI_DEV_PM_OPS	(&cqspi__dev_pm_ops)
+-#else
+-#define CQSPI_DEV_PM_OPS	NULL
+-#endif
++static DEFINE_SIMPLE_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend, cqspi_resume);
+ 
+ static const struct cqspi_driver_platdata cdns_qspi = {
+ 	.quirks = CQSPI_DISABLE_DAC_MODE,
+@@ -1868,7 +1859,7 @@ static struct platform_driver cqspi_platform_driver = {
+ 	.remove = cqspi_remove,
+ 	.driver = {
+ 		.name = CQSPI_NAME,
+-		.pm = CQSPI_DEV_PM_OPS,
++		.pm = &cqspi_dev_pm_ops,
+ 		.of_match_table = cqspi_dt_ids,
+ 	},
+ };
 -- 
 2.39.2
 
