@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C53DF6FA713
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA606FAA3F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234429AbjEHK1R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:27:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
+        id S235487AbjEHLBB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:01:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234536AbjEHK0p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:26:45 -0400
+        with ESMTP id S235485AbjEHLA0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F7A22527F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:26:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C3E3156D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DE486260F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F54CC433D2;
-        Mon,  8 May 2023 10:26:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F232462A06
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B97C433D2;
+        Mon,  8 May 2023 10:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541585;
-        bh=J6OYouPg56YCcG27W7vCyoJ/xcd1Qb82+rcUXh5yyAs=;
+        s=korg; t=1683543551;
+        bh=PFzujYNTmew6l8XeW6aDxs5fEu9CBsRl9h2VDxCe/wI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FSfxS6goPDR1PYYsZS6l/uQL8i0nmEs3YrmWljc9CMYX9YTASyHiPcVbdxRbWa1Ry
-         Xr8cHiGgA21RLqGhXFoUoUUVRJH7+gWPjO1OsC1PahTYAGuX/F8uaDm6ijAXJPncNQ
-         5i9XOVLqOIUSfq6rZPYt9lImHFx7yaY52a/xRpBs=
+        b=dWOfHbD2/jYy3I+5EjbiHM/jc+3OCFZwlmMzK9WGwvgcmBV+gfiscKKJI03fdwKOo
+         5/tM80D/W4vtaCrxozccw1H8OiX61mrdDGAsvqqjVIx1hEH+up/xtzowjauxOGELsn
+         KRs4U9w2FUAcUCHqOySXunHgZyUH6eLFgwvTTvZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 135/663] drm/vgem: add missing mutex_destroy
-Date:   Mon,  8 May 2023 11:39:21 +0200
-Message-Id: <20230508094432.909809761@linuxfoundation.org>
+        patches@lists.linux.dev, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.3 127/694] wifi: rtw89: fix potential race condition between napi_init and napi_enable
+Date:   Mon,  8 May 2023 11:39:22 +0200
+Message-Id: <20230508094436.587557174@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,39 +56,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 7c18189b14b33c1fbf76480b1bd217877c086e67 ]
+commit 47515664ecfbde11425dff121f298ae4499425c9 upstream.
 
-vgem_fence_open() instantiates a mutex for a particular fence
-instance, but never destroys it by calling mutex_destroy() in
-vgem_fence_close().
+A race condition can happen if netdev is registered, but NAPI isn't
+initialized yet, and meanwhile user space starts the netdev that will
+enable NAPI. Then, it hits BUG_ON():
 
-So, add the missing mutex_destroy() to guarantee proper resource
-destruction.
+ kernel BUG at net/core/dev.c:6423!
+ invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 0 PID: 417 Comm: iwd Not tainted 6.2.7-slab-dirty #3 eb0f5a8a9d91
+ Hardware name: LENOVO 21DL/LNVNB161216, BIOS JPCN20WW(V1.06) 09/20/2022
+ RIP: 0010:napi_enable+0x3f/0x50
+ Code: 48 89 c2 48 83 e2 f6 f6 81 89 08 00 00 02 74 0d 48 83 ...
+ RSP: 0018:ffffada1414f3548 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffffa01425802080 RCX: 0000000000000000
+ RDX: 00000000000002ff RSI: ffffada14e50c614 RDI: ffffa01425808dc0
+ RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000001 R11: 0000000000000100 R12: ffffa01425808f58
+ R13: 0000000000000000 R14: ffffa01423498940 R15: 0000000000000001
+ FS:  00007f5577c0a740(0000) GS:ffffa0169fc00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5577a19972 CR3: 0000000125a7a000 CR4: 0000000000750ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  rtw89_pci_ops_start+0x1c/0x70 [rtw89_pci 6cbc75429515c181cbc386478d5cfb32ffc5a0f8]
+  rtw89_core_start+0xbe/0x160 [rtw89_core fe07ecb874820b6d778370d4acb6ef8a37847f22]
+  rtw89_ops_start+0x26/0x40 [rtw89_core fe07ecb874820b6d778370d4acb6ef8a37847f22]
+  drv_start+0x42/0x100 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
+  ieee80211_do_open+0x311/0x7d0 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
+  ieee80211_open+0x6a/0x90 [mac80211 c07fa22af8c3cf3f7d7ab3884ca990784d72e2d2]
+  __dev_open+0xe0/0x180
+  __dev_change_flags+0x1da/0x250
+  dev_change_flags+0x26/0x70
+  do_setlink+0x37c/0x12c0
+  ? ep_poll_callback+0x246/0x290
+  ? __nla_validate_parse+0x61/0xd00
+  ? __wake_up_common_lock+0x8f/0xd0
 
-Fixes: 407779848445 ("drm/vgem: Attach sw fences to exported vGEM dma-buf (ioctl)")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Maíra Canal <mairacanal@riseup.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230202125517.427976-1-mcanal@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this, follow Jonas' suggestion to switch the order of these
+functions and move register netdev to be the last step of PCI probe.
+Also, correct the error handling of rtw89_core_register_hw().
+
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Cc: stable@vger.kernel.org
+Reported-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Link: https://lore.kernel.org/linux-wireless/CAOiHx=n7EwK2B9CnBR07FVA=sEzFagb8TkS4XC_qBNq8OwcYUg@mail.gmail.com/T/#t
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Tested-by: Larry Finger<Larry.Finger@lwfinger.net>
+Reviewed-by: Larry Finger<Larry.Finger@lwfinger.net>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230323082839.20474-1-pkshih@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vgem/vgem_fence.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/core.c |   10 +++++++---
+ drivers/net/wireless/realtek/rtw89/pci.c  |   19 ++++++++++---------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/vgem/vgem_fence.c b/drivers/gpu/drm/vgem/vgem_fence.c
-index c2a879734d407..e157541783959 100644
---- a/drivers/gpu/drm/vgem/vgem_fence.c
-+++ b/drivers/gpu/drm/vgem/vgem_fence.c
-@@ -249,4 +249,5 @@ void vgem_fence_close(struct vgem_file *vfile)
- {
- 	idr_for_each(&vfile->fence_idr, __vgem_fence_idr_fini, vfile);
- 	idr_destroy(&vfile->fence_idr);
-+	mutex_destroy(&vfile->fence_mutex);
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3401,18 +3401,22 @@ static int rtw89_core_register_hw(struct
+ 	ret = ieee80211_register_hw(hw);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to register hw\n");
+-		goto err;
++		goto err_free_supported_band;
+ 	}
+ 
+ 	ret = rtw89_regd_init(rtwdev, rtw89_regd_notifier);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to init regd\n");
+-		goto err;
++		goto err_unregister_hw;
+ 	}
+ 
+ 	return 0;
+ 
+-err:
++err_unregister_hw:
++	ieee80211_unregister_hw(hw);
++err_free_supported_band:
++	rtw89_core_clr_supported_band(rtwdev);
++
+ 	return ret;
  }
--- 
-2.39.2
-
+ 
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -3874,25 +3874,26 @@ int rtw89_pci_probe(struct pci_dev *pdev
+ 	rtw89_pci_link_cfg(rtwdev);
+ 	rtw89_pci_l1ss_cfg(rtwdev);
+ 
+-	ret = rtw89_core_register(rtwdev);
+-	if (ret) {
+-		rtw89_err(rtwdev, "failed to register core\n");
+-		goto err_clear_resource;
+-	}
+-
+ 	rtw89_core_napi_init(rtwdev);
+ 
+ 	ret = rtw89_pci_request_irq(rtwdev, pdev);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to request pci irq\n");
+-		goto err_unregister;
++		goto err_deinit_napi;
++	}
++
++	ret = rtw89_core_register(rtwdev);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to register core\n");
++		goto err_free_irq;
+ 	}
+ 
+ 	return 0;
+ 
+-err_unregister:
++err_free_irq:
++	rtw89_pci_free_irq(rtwdev, pdev);
++err_deinit_napi:
+ 	rtw89_core_napi_deinit(rtwdev);
+-	rtw89_core_unregister(rtwdev);
+ err_clear_resource:
+ 	rtw89_pci_clear_resource(rtwdev, pdev);
+ err_declaim_pci:
 
 
