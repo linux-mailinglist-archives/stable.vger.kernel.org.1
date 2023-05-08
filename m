@@ -2,55 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4EF06FAB3A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 519846FA51E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233062AbjEHLKl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49092 "EHLO
+        id S234041AbjEHKGK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233620AbjEHLKj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B713237D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:38 -0700 (PDT)
+        with ESMTP id S234038AbjEHKGI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4DB3017B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB70D62B48
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF713C433D2;
-        Mon,  8 May 2023 11:10:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B27D62343
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404F2C433EF;
+        Mon,  8 May 2023 10:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544237;
-        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
+        s=korg; t=1683540366;
+        bh=SMytWO1wDOG2Cqs+GnUhSfWg9DaufGMagsoO4TON1Xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yd+94F0yq81xeh/Mc6hu1DGu1Shn8y/Ly/Pt//w6zoj8L+WAC5P2Kqvae9FRR74Ys
-         x9PMeCbvTO5sHuoThp/UD3oT1/EAl45TdyRshLqoyJpBTOZHApi87n6QGtoA6m63Sn
-         yveHg+UKz912ni3XDW4TDZWBxh07kY8XxNXvoNKE=
+        b=OkfWUSP3/oOF8ULtDq59dOdcOzC0UAeh4LZ89FexYxEBF5kGnHJ7tq/N18Y5aDFX7
+         +lblfs9nDaBLhDKE/9tR7G21ZahPJGes+FZXmrg4E2PeEMfM4Ho9ZTFlBEZp0hRVG9
+         y3zsM4ZvJeVeNqTiO2K0RRQbID1Pqvg3usNg8mDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 344/694] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+        patches@lists.linux.dev, Nate Thornton <nate.thornton@samsung.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Minwoo Im <minwoo.im@samsung.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 337/611] nvme: fix async event trace event
 Date:   Mon,  8 May 2023 11:42:59 +0200
-Message-Id: <20230508094443.694089191@linuxfoundation.org>
+Message-Id: <20230508094433.375229190@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,75 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
+[ Upstream commit 6622b76fe922b94189499a90ccdb714a4a8d0773 ]
 
-Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
-wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
+Mixing AER Event Type and Event Info has masking clashes. Just print the
+event type, but also include the event info of the AER result in the
+trace.
 
-For some reason we have no corresponding check for SO_PASSSEC.
-
-In the recvmsg(2) doc we have:
-       MSG_CTRUNC
-              indicates that some control data was discarded due to lack
-              of space in the buffer for ancillary data.
-
-So, we need to set MSG_CTRUNC flag for all types of SCM.
-
-This change can break applications those don't check MSG_CTRUNC flag.
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-v2:
-- commit message was rewritten according to Eric's suggestion
-Acked-by: Paul Moore <paul@paul-moore.com>
-
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 09bd1ff4b15143b ("nvme-core: add async event trace helper")
+Reported-by: Nate Thornton <nate.thornton@samsung.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/scm.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/nvme/host/core.c  |  5 +----
+ drivers/nvme/host/trace.h | 15 ++++++---------
+ 2 files changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index 1ce365f4c2560..585adc1346bd0 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
- 		}
- 	}
- }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return test_bit(SOCK_PASSSEC, &sock->flags);
-+}
- #else
- static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
- { }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SECURITY_NETWORK */
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index c54c6ffba0bcd..f502e032e7e46 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4769,8 +4769,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+ 	u32 aer_notice_type = nvme_aer_subtype(result);
+ 	bool requeue = true;
  
- static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
- 				struct scm_cookie *scm, int flags)
+-	trace_nvme_async_event(ctrl, aer_notice_type);
+-
+ 	switch (aer_notice_type) {
+ 	case NVME_AER_NOTICE_NS_CHANGED:
+ 		set_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events);
+@@ -4806,7 +4804,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+ 
+ static void nvme_handle_aer_persistent_error(struct nvme_ctrl *ctrl)
  {
- 	if (!msg->msg_control) {
--		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
-+		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
-+		    scm_has_secdata(sock))
- 			msg->msg_flags |= MSG_CTRUNC;
- 		scm_destroy(scm);
+-	trace_nvme_async_event(ctrl, NVME_AER_ERROR);
+ 	dev_warn(ctrl->device, "resetting controller due to AER\n");
+ 	nvme_reset_ctrl(ctrl);
+ }
+@@ -4822,6 +4819,7 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
+ 	if (le16_to_cpu(status) >> 1 != NVME_SC_SUCCESS)
  		return;
+ 
++	trace_nvme_async_event(ctrl, result);
+ 	switch (aer_type) {
+ 	case NVME_AER_NOTICE:
+ 		requeue = nvme_handle_aen_notice(ctrl, result);
+@@ -4839,7 +4837,6 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
+ 	case NVME_AER_SMART:
+ 	case NVME_AER_CSS:
+ 	case NVME_AER_VS:
+-		trace_nvme_async_event(ctrl, aer_type);
+ 		ctrl->aen_result = result;
+ 		break;
+ 	default:
+diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
+index 6f0eaf6a15282..4fb5922ffdac5 100644
+--- a/drivers/nvme/host/trace.h
++++ b/drivers/nvme/host/trace.h
+@@ -127,15 +127,12 @@ TRACE_EVENT(nvme_async_event,
+ 	),
+ 	TP_printk("nvme%d: NVME_AEN=%#08x [%s]",
+ 		__entry->ctrl_id, __entry->result,
+-		__print_symbolic(__entry->result,
+-		aer_name(NVME_AER_NOTICE_NS_CHANGED),
+-		aer_name(NVME_AER_NOTICE_ANA),
+-		aer_name(NVME_AER_NOTICE_FW_ACT_STARTING),
+-		aer_name(NVME_AER_NOTICE_DISC_CHANGED),
+-		aer_name(NVME_AER_ERROR),
+-		aer_name(NVME_AER_SMART),
+-		aer_name(NVME_AER_CSS),
+-		aer_name(NVME_AER_VS))
++		__print_symbolic(__entry->result & 0x7,
++			aer_name(NVME_AER_ERROR),
++			aer_name(NVME_AER_SMART),
++			aer_name(NVME_AER_NOTICE),
++			aer_name(NVME_AER_CSS),
++			aer_name(NVME_AER_VS))
+ 	)
+ );
+ 
 -- 
 2.39.2
 
