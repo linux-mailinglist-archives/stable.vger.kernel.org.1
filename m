@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 425D66FA633
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E693E6FA92A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234335AbjEHKRY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:17:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46716 "EHLO
+        id S235103AbjEHKtF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:49:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234375AbjEHKRP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:15 -0400
+        with ESMTP id S235058AbjEHKsn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB374BBDF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9F129FFA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE1F4623C3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D250DC433D2;
-        Mon,  8 May 2023 10:17:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0952E628FA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED1EC433D2;
+        Mon,  8 May 2023 10:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541027;
-        bh=z68mJqRInk+pcesD3Pww50pW2B9wZJjCKfYA9GNFuts=;
+        s=korg; t=1683542861;
+        bh=H/ZfZ1hzS2PyQpHjDFi1/dr4Nj22bcyPiNs0EuTLeEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2PhFyr7tYJbgF4zejXjHCKoBIWkbD6ykLSfjU7TmXHCQxs4thYRILYuHCZ9XkIPw/
-         rgHtzYZQKRirmIidQeOS/UAlDSSPFrRW3gxThHfAWn1Bkj9lhVy2ywY9whjMHJwED6
-         +3AeOCrVplKfjwDkDZTfhdG4DaswRe7n+vQig5Bc=
+        b=ZBwlZsrZy4Kx2T1HRWYo6hSmnWjUZkv06nSeEHUvFhsS7N+U68RS1n44XwKqiusYQ
+         9nv0Vvj9oPQ/PYahLrNibTeQ+Ctyin+QdzRtSUVeBXoAdcRs5vgEVQZXoqedladDK2
+         1WTQUVEObJtonoGhH3n7RvJy9pHK1Z7dkPBpqyFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 557/611] afs: Fix getattr to report server i_size on dirs, not local size
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        John Stultz <jstultz@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 573/663] timekeeping: Fix references to nonexistent ktime_get_fast_ns()
 Date:   Mon,  8 May 2023 11:46:39 +0200
-Message-Id: <20230508094440.088196358@linuxfoundation.org>
+Message-Id: <20230508094447.840798151@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 45f66fa03ba9943cca5af88d691399332b8bde08 ]
+[ Upstream commit 158009f1b4a33bc0f354b994eea361362bd83226 ]
 
-Fix afs_getattr() to report the server's idea of the file size of a
-directory rather than the local size.  The local size may differ as we edit
-the local copy to avoid having to redownload it and we may end up with a
-differently structured blob of a different size.
+There was never a function named ktime_get_fast_ns().
+Presumably these should refer to ktime_get_mono_fast_ns() instead.
 
-However, if the directory is discarded from the pagecache we then download
-it again and the user may see the directory file size apparently change.
-
-Fixes: 63a4681ff39c ("afs: Locally edit directory data for mkdir/create/unlink/...")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Fixes: c1ce406e80fb15fa ("timekeeping: Fix up function documentation for the NMI safe accessors")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/r/06df7b3cbd94f016403bbf6cd2b38e4368e7468f.1682516546.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/inode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/time/timekeeping.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 52d040ffde35f..5921dd3687e39 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -450,7 +450,7 @@ static void afs_get_inode_cache(struct afs_vnode *vnode)
- 				    0 : FSCACHE_ADV_SINGLE_CHUNK,
- 				    &key, sizeof(key),
- 				    &aux, sizeof(aux),
--				    vnode->status.size));
-+				    i_size_read(&vnode->netfs.inode)));
- #endif
- }
- 
-@@ -766,6 +766,13 @@ int afs_getattr(struct user_namespace *mnt_userns, const struct path *path,
- 		if (test_bit(AFS_VNODE_SILLY_DELETED, &vnode->flags) &&
- 		    stat->nlink > 0)
- 			stat->nlink -= 1;
-+
-+		/* Lie about the size of directories.  We maintain a locally
-+		 * edited copy and may make different allocation decisions on
-+		 * it, but we need to give userspace the server's size.
-+		 */
-+		if (S_ISDIR(inode->i_mode))
-+			stat->size = vnode->netfs.remote_i_size;
- 	} while (need_seqretry(&vnode->cb_lock, seq));
- 
- 	done_seqretry(&vnode->cb_lock, seq);
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 5579ead449f25..09d594900ee0b 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -526,7 +526,7 @@ EXPORT_SYMBOL_GPL(ktime_get_raw_fast_ns);
+  * partially updated.  Since the tk->offs_boot update is a rare event, this
+  * should be a rare occurrence which postprocessing should be able to handle.
+  *
+- * The caveats vs. timestamp ordering as documented for ktime_get_fast_ns()
++ * The caveats vs. timestamp ordering as documented for ktime_get_mono_fast_ns()
+  * apply as well.
+  */
+ u64 notrace ktime_get_boot_fast_ns(void)
+@@ -576,7 +576,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
+ /**
+  * ktime_get_real_fast_ns: - NMI safe and fast access to clock realtime.
+  *
+- * See ktime_get_fast_ns() for documentation of the time stamp ordering.
++ * See ktime_get_mono_fast_ns() for documentation of the time stamp ordering.
+  */
+ u64 ktime_get_real_fast_ns(void)
+ {
 -- 
 2.39.2
 
