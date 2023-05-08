@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7113C6FA97A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 730D76FAC79
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235229AbjEHKvs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:51:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55780 "EHLO
+        id S235644AbjEHLY4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235235AbjEHKvb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:31 -0400
+        with ESMTP id S235708AbjEHLYh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E44462CFE8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1CE39B98
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C46CE62926
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6706C433D2;
-        Mon,  8 May 2023 10:50:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46E7A62D37
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56573C433D2;
+        Mon,  8 May 2023 11:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543053;
-        bh=KRIuxEBqVo7ra/HeQUGoQlPsdyNC4l3DOuCYFHX/pH4=;
+        s=korg; t=1683545073;
+        bh=qsGsqDNzEEAAuLw5D7pi2FKVSXaQPg5MW2RmfWFuMPU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yWWQ/A31TclYJgIpaM39b29G7UwoX3MZwdhvY7vHmNFdiW4ugwzUE62RkbodZ8us3
-         wV34xuXMOCw0WJc1m3JTIFNi1tvdXTmp3Mt+aIlprDu1XeW3pyemc7uJHFmh5MRxnd
-         b3eKLEo6jiNceZ5VWJiMahp0T3dJ5A5N41B9xxQY=
+        b=BTMjAhQQLHeL9IEugJU3HqcCvE3iuiF8/6reJrSYS2cKEsPO1nXHl79mfna3EASrQ
+         UWG43gHUt8Z0o9HCV2U+uo75ZhOqz74184zx6hwI1oslREk4Obk7ShZeaDeC1PybxQ
+         3fSTdZJM2Dn3ZBTMFv5fEXsJDFo66UR90ER5J86o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 593/663] dmaengine: dw-edma: Fix to change for continuous transfer
+        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 584/694] workqueue: Fix hung time report of worker pools
 Date:   Mon,  8 May 2023 11:46:59 +0200
-Message-Id: <20230508094448.703100245@linuxfoundation.org>
+Message-Id: <20230508094453.963193325@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,88 +53,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shunsuke Mie <mie@igel.co.jp>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit a251994a441ee0a69ba7062c8cd2d08ead3db379 ]
+[ Upstream commit 335a42ebb0ca8ee9997a1731aaaae6dcd704c113 ]
 
-The dw-edma driver stops after processing a DMA request even if a request
-remains in the issued queue, which is not the expected behavior. The DMA
-engine API requires continuous processing.
+The workqueue watchdog prints a warning when there is no progress in
+a worker pool. Where the progress means that the pool started processing
+a pending work item.
 
-Add a trigger to start after one processing finished if there are requests
-remain.
+Note that it is perfectly fine to process work items much longer.
+The progress should be guaranteed by waking up or creating idle
+workers.
 
-Fixes: e63d79d1ffcd ("dmaengine: Add Synopsys eDMA IP core driver")
-Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
-Link: https://lore.kernel.org/r/20230411101758.438472-1-mie@igel.co.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+show_one_worker_pool() prints state of non-idle worker pool. It shows
+a delay since the last pool->watchdog_ts.
+
+The timestamp is updated when a first pending work is queued in
+__queue_work(). Also it is updated when a work is dequeued for
+processing in worker_thread() and rescuer_thread().
+
+The delay is misleading when there is no pending work item. In this
+case it shows how long the last work item is being proceed. Show
+zero instead. There is no stall if there is no pending work.
+
+Fixes: 82607adcf9cdf40fb7b ("workqueue: implement lockup detector")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-edma-core.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ kernel/workqueue.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index 52bdf04aff511..cb46cbef212ab 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -170,7 +170,7 @@ static void vchan_free_desc(struct virt_dma_desc *vdesc)
- 	dw_edma_free_desc(vd2dw_edma_desc(vdesc));
- }
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index b8b541caed485..2be9b0ecf22ce 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5002,10 +5002,16 @@ static void show_one_worker_pool(struct worker_pool *pool)
+ 	struct worker *worker;
+ 	bool first = true;
+ 	unsigned long flags;
++	unsigned long hung = 0;
  
--static void dw_edma_start_transfer(struct dw_edma_chan *chan)
-+static int dw_edma_start_transfer(struct dw_edma_chan *chan)
- {
- 	struct dw_edma_chunk *child;
- 	struct dw_edma_desc *desc;
-@@ -178,16 +178,16 @@ static void dw_edma_start_transfer(struct dw_edma_chan *chan)
- 
- 	vd = vchan_next_desc(&chan->vc);
- 	if (!vd)
--		return;
-+		return 0;
- 
- 	desc = vd2dw_edma_desc(vd);
- 	if (!desc)
--		return;
-+		return 0;
- 
- 	child = list_first_entry_or_null(&desc->chunk->list,
- 					 struct dw_edma_chunk, list);
- 	if (!child)
--		return;
-+		return 0;
- 
- 	dw_edma_v0_core_start(child, !desc->xfer_sz);
- 	desc->xfer_sz += child->ll_region.sz;
-@@ -195,6 +195,8 @@ static void dw_edma_start_transfer(struct dw_edma_chan *chan)
- 	list_del(&child->list);
- 	kfree(child);
- 	desc->chunks_alloc--;
+ 	raw_spin_lock_irqsave(&pool->lock, flags);
+ 	if (pool->nr_workers == pool->nr_idle)
+ 		goto next_pool;
 +
-+	return 1;
- }
- 
- static int dw_edma_device_config(struct dma_chan *dchan,
-@@ -572,14 +574,14 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- 		switch (chan->request) {
- 		case EDMA_REQ_NONE:
- 			desc = vd2dw_edma_desc(vd);
--			if (desc->chunks_alloc) {
--				chan->status = EDMA_ST_BUSY;
--				dw_edma_start_transfer(chan);
--			} else {
-+			if (!desc->chunks_alloc) {
- 				list_del(&vd->node);
- 				vchan_cookie_complete(vd);
--				chan->status = EDMA_ST_IDLE;
- 			}
++	/* How long the first pending work is waiting for a worker. */
++	if (!list_empty(&pool->worklist))
++		hung = jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000;
 +
-+			/* Continue transferring if there are remaining chunks or issued requests.
-+			 */
-+			chan->status = dw_edma_start_transfer(chan) ? EDMA_ST_BUSY : EDMA_ST_IDLE;
- 			break;
- 
- 		case EDMA_REQ_STOP:
+ 	/*
+ 	 * Defer printing to avoid deadlocks in console drivers that
+ 	 * queue work while holding locks also taken in their write
+@@ -5014,9 +5020,7 @@ static void show_one_worker_pool(struct worker_pool *pool)
+ 	printk_deferred_enter();
+ 	pr_info("pool %d:", pool->id);
+ 	pr_cont_pool_info(pool);
+-	pr_cont(" hung=%us workers=%d",
+-		jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000,
+-		pool->nr_workers);
++	pr_cont(" hung=%lus workers=%d", hung, pool->nr_workers);
+ 	if (pool->manager)
+ 		pr_cont(" manager: %d",
+ 			task_pid_nr(pool->manager->task));
 -- 
 2.39.2
 
