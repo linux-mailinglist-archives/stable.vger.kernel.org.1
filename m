@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 410C36FAE55
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A262B6FACD4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236182AbjEHLnv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36736 "EHLO
+        id S235744AbjEHL20 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236272AbjEHLna (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E01429EF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:56 -0700 (PDT)
+        with ESMTP id S235691AbjEHL2A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:28:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919233C48A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11B4F63636
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237ABC4339C;
-        Mon,  8 May 2023 11:42:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7168E62E9E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638BAC43445;
+        Mon,  8 May 2023 11:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546175;
-        bh=4WNKpJY51Zen0nKoUa08679tEHk7wFaULPhPhN7AHgQ=;
+        s=korg; t=1683545266;
+        bh=mVq8lib7lHcUdripA4slfZUmtLyDyfU1sOGZ+16/xKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SQ/xaC6KMdk89F5gR8cPBSf16eGTEOTqav8XigiCWTVuBZrRs2Xd158jrtrnfdHKz
-         hr1Tkjw2F7a5x07MVkwLFjglLfoZxhqkuttlTE3ZBPGmVle8zGubsin6t9puXBlF1+
-         798hRJ8qmUgT+3qB9jeB3RXeyXqBC4RIJCE9jJdo=
+        b=M+dnC6KlQNfHbPiUi89Wn4d9qFTk2xzlNa6Ux3BTgS0t1kS+1IP6WgsQj6OBlC1MT
+         2X/rc53YQv1xnkxu1ZGYBlPM0CHnwuFi2y5rNwWwOfXqra4lwzhZ7pxezkCQZ7vjy4
+         l8wASr0fF4ACczlJaISTk1xlvvXeb+MoL2dO9tiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 281/371] powerpc/mpc512x: fix resource printk format warning
-Date:   Mon,  8 May 2023 11:48:02 +0200
-Message-Id: <20230508094823.154208160@linuxfoundation.org>
+        patches@lists.linux.dev, Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 648/694] phy: ti: j721e-wiz: Fix unreachable code in wiz_mode_select()
+Date:   Mon,  8 May 2023 11:48:03 +0200
+Message-Id: <20230508094456.879504808@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,44 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 7538c97e2b80ff6b7a8ea2ecf16a04355461b439 ]
+[ Upstream commit 57c0e1362fdd57d0cea7ab1e583b58abf4bd8c2d ]
 
-Use "%pa" format specifier for resource_size_t to avoid a compiler
-printk format warning.
+In the wiz_mode_select() function, the configuration performed for
+PHY_TYPE_USXGMII is unreachable. Fix it.
 
-../arch/powerpc/platforms/512x/clock-commonclk.c: In function 'mpc5121_clk_provide_backwards_compat':
-../arch/powerpc/platforms/512x/clock-commonclk.c:989:44: error: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-  989 |         snprintf(devname, sizeof(devname), "%08x.%s", res.start, np->name); \
-      |                                            ^~~~~~~~~  ~~~~~~~~~
-      |                                                          |
-      |                                                          resource_size_t {aka long long unsigned int}
-
-Prevents 24 such warnings.
-
-Fixes: 01f25c371658 ("clk: mpc512x: add backwards compat to the CCF code")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-2-rdunlap@infradead.org
+Fixes: b64a85fb8f53 ("phy: ti: phy-j721e-wiz.c: Add usxgmii support in wiz driver")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20230403094552.929108-1-s-vadapalli@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/512x/clock-commonclk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/ti/phy-j721e-wiz.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/platforms/512x/clock-commonclk.c b/arch/powerpc/platforms/512x/clock-commonclk.c
-index 30342b60aa63f..42c3d40355d90 100644
---- a/arch/powerpc/platforms/512x/clock-commonclk.c
-+++ b/arch/powerpc/platforms/512x/clock-commonclk.c
-@@ -984,7 +984,7 @@ static void mpc5121_clk_provide_migration_support(void)
+diff --git a/drivers/phy/ti/phy-j721e-wiz.c b/drivers/phy/ti/phy-j721e-wiz.c
+index 1b83c98a78f0f..1b5f1a5e2b3ba 100644
+--- a/drivers/phy/ti/phy-j721e-wiz.c
++++ b/drivers/phy/ti/phy-j721e-wiz.c
+@@ -443,18 +443,17 @@ static int wiz_mode_select(struct wiz *wiz)
+ 	int i;
  
- #define NODE_PREP do { \
- 	of_address_to_resource(np, 0, &res); \
--	snprintf(devname, sizeof(devname), "%08x.%s", res.start, np->name); \
-+	snprintf(devname, sizeof(devname), "%pa.%s", &res.start, np->name); \
- } while (0)
+ 	for (i = 0; i < num_lanes; i++) {
+-		if (wiz->lane_phy_type[i] == PHY_TYPE_DP)
++		if (wiz->lane_phy_type[i] == PHY_TYPE_DP) {
+ 			mode = LANE_MODE_GEN1;
+-		else if (wiz->lane_phy_type[i] == PHY_TYPE_QSGMII)
++		} else if (wiz->lane_phy_type[i] == PHY_TYPE_QSGMII) {
+ 			mode = LANE_MODE_GEN2;
+-		else
+-			continue;
+-
+-		if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
++		} else if (wiz->lane_phy_type[i] == PHY_TYPE_USXGMII) {
+ 			ret = regmap_field_write(wiz->p0_mac_src_sel[i], 0x3);
+ 			ret = regmap_field_write(wiz->p0_rxfclk_sel[i], 0x3);
+ 			ret = regmap_field_write(wiz->p0_refclk_sel[i], 0x3);
+ 			mode = LANE_MODE_GEN1;
++		} else {
++			continue;
+ 		}
  
- #define NODE_CHK(clkname, clkitem, regnode, regflag) do { \
+ 		ret = regmap_field_write(wiz->p_standard_mode[i], mode);
 -- 
 2.39.2
 
