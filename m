@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 973456FA99F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 882FE6FAE6B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235155AbjEHKxk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
+        id S236301AbjEHLol (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235184AbjEHKxV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:21 -0400
+        with ESMTP id S236117AbjEHLoZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9794690
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24403AA4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D33A6296B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD1BC4339B;
-        Mon,  8 May 2023 10:52:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43FB66355D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35518C433D2;
+        Mon,  8 May 2023 11:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543159;
-        bh=8zr1kOPTgKzYczvIe0anltLdNVwdCDHYFNsZaTgHBiQ=;
+        s=korg; t=1683546202;
+        bh=hmdACvyceHtfwG6iZa0TlefPkqSpVkF36kkn55rWHqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OfcVpRoUkXy5tBogJwUpAwYQuvUNyxFuDFhZaODwxfkfm07jzGZrTBNLUzh1jv1iw
-         wUwA8yuqnSmLAmPXZ8xLvR1gwAqjv2eGOV9hH78D/6B/qvEnatPPulSID3sr29xTA/
-         CasCSy5c5pwwPaf5mjo0oyg6OY8X94km6s7KljaY=
+        b=HAa/eCP+U58CMxrY8wsFGu4WX6QFYj9ruK1nAvw0i/zCu6/vZw4CSrvpvGzilwFSg
+         xIvogHd+1t77btlxKQyX/AxPstiBCS9HJyMILxUYO2ZcOjiIJd648CkzYZhA4hg/IB
+         d8p64lBL0XKjcddWtRbkI09Edd4G14oIXFsDsQak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
-        Alexandru gagniuc <mr.nuke.me@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        ValdikSS <iam@valdikss.org.ru>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.2 635/663] wifi: rtw88: rtw8821c: Fix rfe_option field width
-Date:   Mon,  8 May 2023 11:47:41 +0200
-Message-Id: <20230508094450.519656447@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Leonard Crestez <leonard.crestez@nxp.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 261/371] scripts/gdb: bail early if there are no generic PD
+Date:   Mon,  8 May 2023 11:47:42 +0200
+Message-Id: <20230508094822.424221072@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,63 +58,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit 14705f969d98187a1cc2682e0c9bd2e230b8098f upstream.
+[ Upstream commit f19c3c2959e465209ade1a7a699e6cbf4359ce78 ]
 
-On my RTW8821CU chipset rfe_option reads as 0x22. Looking at the
-vendor driver suggests that the field width of rfe_option is 5 bit,
-so rfe_option should be masked with 0x1f.
+Avoid generating an exception if there are no generic power domain(s)
+registered:
 
-Without this the rfe_option comparisons with 2 further down the
-driver evaluate as false when they should really evaluate as true.
-The effect is that 2G channels do not work.
+(gdb) lx-genpd-summary
+domain                          status          children
+    /device                                             runtime status
+----------------------------------------------------------------------
+Python Exception <class 'gdb.error'>: No symbol "gpd_list" in current context.
+Error occurred in Python: No symbol "gpd_list" in current context.
+(gdb) quit
 
-rfe_option is also used as an array index into rtw8821c_rfe_defs[].
-rtw8821c_rfe_defs[34] (0x22) was added as part of adding USB support,
-likely because rfe_option reads as 0x22. As this now becomes 0x2,
-rtw8821c_rfe_defs[34] is no longer used and can be removed.
-
-Note that this might not be the whole truth. In the vendor driver
-there are indeed places where the unmasked rfe_option value is used.
-However, the driver has several places where rfe_option is tested
-with the pattern if (rfe_option == 2 || rfe_option == 0x22) or
-if (rfe_option == 4 || rfe_option == 0x24), so that rfe_option BIT(5)
-has no influence on the code path taken. We therefore mask BIT(5)
-out from rfe_option entirely until this assumption is proved wrong
-by some chip variant we do not know yet.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-Tested-by: ValdikSS <iam@valdikss.org.ru>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230417140358.2240429-3-s.hauer@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[f.fainelli@gmail.com: correctly invoke gdb_eval_or_none]
+  Link: https://lkml.kernel.org/r/20230327185746.3856407-1-f.fainelli@gmail.com
+Link: https://lkml.kernel.org/r/20230323231659.3319941-1-f.fainelli@gmail.com
+Fixes: 8207d4a88e1e ("scripts/gdb: add lx-genpd-summary command")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Leonard Crestez <leonard.crestez@nxp.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8821c.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ scripts/gdb/linux/genpd.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -47,7 +47,7 @@ static int rtw8821c_read_efuse(struct rt
+diff --git a/scripts/gdb/linux/genpd.py b/scripts/gdb/linux/genpd.py
+index 39cd1abd85590..b53649c0a77a6 100644
+--- a/scripts/gdb/linux/genpd.py
++++ b/scripts/gdb/linux/genpd.py
+@@ -5,7 +5,7 @@
+ import gdb
+ import sys
  
- 	map = (struct rtw8821c_efuse *)log_map;
+-from linux.utils import CachedType
++from linux.utils import CachedType, gdb_eval_or_none
+ from linux.lists import list_for_each_entry
  
--	efuse->rfe_option = map->rfe_option;
-+	efuse->rfe_option = map->rfe_option & 0x1f;
- 	efuse->rf_board_option = map->rf_board_option;
- 	efuse->crystal_cap = map->xtal_k;
- 	efuse->pa_type_2g = map->pa_type;
-@@ -1537,7 +1537,6 @@ static const struct rtw_rfe_def rtw8821c
- 	[2] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
- 	[4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
- 	[6] = RTW_DEF_RFE(8821c, 0, 0),
--	[34] = RTW_DEF_RFE(8821c, 0, 0),
- };
+ generic_pm_domain_type = CachedType('struct generic_pm_domain')
+@@ -70,6 +70,8 @@ Output is similar to /sys/kernel/debug/pm_genpd/pm_genpd_summary'''
+             gdb.write('    %-50s  %s\n' % (kobj_path, rtpm_status_str(dev)))
  
- static struct rtw_hw_reg rtw8821c_dig[] = {
+     def invoke(self, arg, from_tty):
++        if gdb_eval_or_none("&gpd_list") is None:
++            raise gdb.GdbError("No power domain(s) registered")
+         gdb.write('domain                          status          children\n');
+         gdb.write('    /device                                             runtime status\n');
+         gdb.write('----------------------------------------------------------------------\n');
+-- 
+2.39.2
+
 
 
