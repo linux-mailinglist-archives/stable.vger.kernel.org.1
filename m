@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8A96FA828
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91296FA51B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234916AbjEHKiI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:38:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39020 "EHLO
+        id S234034AbjEHKGE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234838AbjEHKh4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:37:56 -0400
+        with ESMTP id S234044AbjEHKGB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 820492D417
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:37:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AE030140
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1213862807
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:37:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AE0C4339C;
-        Mon,  8 May 2023 10:37:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5792662342
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E25C433EF;
+        Mon,  8 May 2023 10:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542270;
-        bh=ZqLfoduxLfHQFahstZ6eoMAgcXnV652PpVU7JyiSIvM=;
+        s=korg; t=1683540358;
+        bh=sKSLmzEMpXxAOJHwOYEAR1nU4w1/xppg6LLngVDd/k8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=puY6rNeAJ0wU5g2szeQNpGin8hdQWYvGQ7bda2aQVrDNL7WoJwcdhgdbXb1GDNi6H
-         fDwb08DMNnt4QuigsMv05YC8nxB7ZKYUYmFJw4C0F4/m3DnlEpYKTz0lALUP/6Lqjr
-         Zp3jIoA3rdeC0y5wUm32eLBzVe8cPfSD4C+osugM=
+        b=x6qdF65XJnntg/4/tWBsJUmUNnsRfxHqYooqyOTCttdou7/SMc36jDODO8rRrYkI6
+         dxgk7tOUlbMp0ozJcTMKFcya5ebroKbYXTFzZbSg11OJBkQx4gk08yzwvMgMRE0JfE
+         btnlZ/JduYQFWwxZ5Y/PW7tIUroFsDvD4ePze7qY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Feng Zhou <zhoufeng.zf@bytedance.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 349/663] bpf/btf: Fix is_int_ptr()
-Date:   Mon,  8 May 2023 11:42:55 +0200
-Message-Id: <20230508094439.474799956@linuxfoundation.org>
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 334/611] nvmet: fix Identify Controller handling
+Date:   Mon,  8 May 2023 11:42:56 +0200
+Message-Id: <20230508094433.278946777@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,48 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Feng Zhou <zhoufeng.zf@bytedance.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[ Upstream commit 91f2dc6838c19342f7f2993627c622835cc24890 ]
+[ Upstream commit 62904b3b333e7f3c0f879dc3513295eee5765c9f ]
 
-When tracing a kernel function with arg type is u32*, btf_ctx_access()
-would report error: arg2 type INT is not a struct.
+The identify command with cns set to NVME_ID_CNS_CTRL does not depend on
+the command set. The execution of this command should thus not look at
+the csi specified in the command. Simplify nvmet_execute_identify() to
+directly call nvmet_execute_identify_ctrl() without the csi switch-case.
 
-The commit bb6728d75611 ("bpf: Allow access to int pointer arguments
-in tracing programs") added support for int pointer, but did not skip
-modifiers before checking it's type. This patch fixes it.
-
-Fixes: bb6728d75611 ("bpf: Allow access to int pointer arguments in tracing programs")
-Co-developed-by: Chengming Zhou <zhouchengming@bytedance.com>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Signed-off-by: Feng Zhou <zhoufeng.zf@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20230410085908.98493-2-zhoufeng.zf@bytedance.com
+Fixes: ab5d0b38c047 ("nvmet: add Command Set Identifier support")
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/nvme/target/admin-cmd.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 70ab572f81bc7..7f18d48c4a15b 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -5848,12 +5848,8 @@ struct btf *bpf_prog_get_target_btf(const struct bpf_prog *prog)
- 
- static bool is_int_ptr(struct btf *btf, const struct btf_type *t)
- {
--	/* t comes in already as a pointer */
--	t = btf_type_by_id(btf, t->type);
--
--	/* allow const */
--	if (BTF_INFO_KIND(t->info) == BTF_KIND_CONST)
--		t = btf_type_by_id(btf, t->type);
-+	/* skip modifiers */
-+	t = btf_type_skip_modifiers(btf, t->type, NULL);
- 
- 	return btf_type_is_int(t);
- }
+diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
+index d4c6550c5a4a4..ea7ad4617f6e9 100644
+--- a/drivers/nvme/target/admin-cmd.c
++++ b/drivers/nvme/target/admin-cmd.c
+@@ -706,11 +706,8 @@ static void nvmet_execute_identify(struct nvmet_req *req)
+ 		}
+ 		break;
+ 	case NVME_ID_CNS_CTRL:
+-		switch (req->cmd->identify.csi) {
+-		case NVME_CSI_NVM:
+-			return nvmet_execute_identify_ctrl(req);
+-		}
+-		break;
++		nvmet_execute_identify_ctrl(req);
++		return;
+ 	case NVME_ID_CNS_CS_CTRL:
+ 		if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
+ 			switch (req->cmd->identify.csi) {
 -- 
 2.39.2
 
