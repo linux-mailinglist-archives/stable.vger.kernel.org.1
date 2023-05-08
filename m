@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AF36FA80C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 126C86FA53E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234726AbjEHKhN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39422 "EHLO
+        id S234076AbjEHKHU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234763AbjEHKgy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:54 -0400
+        with ESMTP id S234081AbjEHKHU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0262ADC5E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F26F619A7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E59A627D1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBB5C433EF;
-        Mon,  8 May 2023 10:36:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 855BD6235F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977C5C433EF;
+        Mon,  8 May 2023 10:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542211;
-        bh=GX31uYiQd+Qe+Ty2GIohKZrgGp6XxUZxZqptURN6Eas=;
+        s=korg; t=1683540438;
+        bh=suGItS/ta70a6CIxL0LTXnMMzE8hUaidPaRLPN92wok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mLqAv3t7XyxTvcT5cjVceEA/lTEVIenuuGagLk8Z5axhBnLrcNB2SkqadoxKf5bVv
-         hIMqPGSutkkcE17DBCYSGkfUg4+/iLNDGb62Mh6Zyd6Lmp6KLVbl+lZ8RN+qmxOZ5p
-         UFPzfpbwmXkknleZoJc0zRm+Ic8XDGkIrbuOprXE=
+        b=fsTU2VU0bH91tqnmKxW0sAqwIUuH5MroMsPeFIub7UNaOVtiQIptm+dj6Jv2YXE2N
+         FHx/Dh4+P0vemjTkMeqW2xU2EdM6C9VtbKe1n70EIHEk4kk/DsbO/z6C63wa7rJPFo
+         GhYpZUo3PVkrvGlK/VjbBrDFspEYklxNzZFWWLrs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Daeho Jeong <daehojeong@google.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 363/663] selftests/bpf: Fix leaked bpf_link in get_stackid_cannot_attach
+Subject: [PATCH 6.1 347/611] f2fs: fix to check return value of inc_valid_block_count()
 Date:   Mon,  8 May 2023 11:43:09 +0200
-Message-Id: <20230508094439.930291019@linuxfoundation.org>
+Message-Id: <20230508094433.685027944@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Liu <song@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit c1e07a80cf23d3a6e96172bc9a73bfa912a9fcbc ]
+[ Upstream commit 935fc6fa6466cf18dd72dd1518ebc7bfc4cd58a4 ]
 
-skel->links.oncpu is leaked in one case. This causes test perf_branches
-fails when it runs after get_stackid_cannot_attach:
+In __replace_atomic_write_block(), we missed to check return value
+of inc_valid_block_count(), for extreme testcase that f2fs image is
+run out of space, it may cause inconsistent status in between SIT
+table and total valid block count.
 
-./test_progs -t get_stackid_cannot_attach,perf_branches
-84      get_stackid_cannot_attach:OK
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:FAIL:output not valid no valid sample from prog
-146/1   perf_branches/perf_branches_hw:FAIL
-146/2   perf_branches/perf_branches_no_hw:OK
-146     perf_branches:FAIL
-
-All error logs:
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:FAIL:output not valid no valid sample from prog
-146/1   perf_branches/perf_branches_hw:FAIL
-146     perf_branches:FAIL
-Summary: 1/1 PASSED, 0 SKIPPED, 1 FAILED
-
-Fix this by adding the missing bpf_link__destroy().
-
-Fixes: 346938e9380c ("selftests/bpf: Add get_stackid_cannot_attach")
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230412210423.900851-3-song@kernel.org
+Cc: Daeho Jeong <daehojeong@google.com>
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/segment.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
-index 5308de1ed478e..2715c68301f52 100644
---- a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
-@@ -65,6 +65,7 @@ void test_get_stackid_cannot_attach(void)
- 	skel->links.oncpu = bpf_program__attach_perf_event(skel->progs.oncpu,
- 							   pmu_fd);
- 	ASSERT_OK_PTR(skel->links.oncpu, "attach_perf_event_callchain");
-+	bpf_link__destroy(skel->links.oncpu);
- 	close(pmu_fd);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index c926479485775..b0fbdee16a96c 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -245,10 +245,16 @@ static int __replace_atomic_write_block(struct inode *inode, pgoff_t index,
+ 	} else {
+ 		blkcnt_t count = 1;
  
- 	/* add exclude_callchain_kernel, attach should fail */
++		err = inc_valid_block_count(sbi, inode, &count);
++		if (err) {
++			f2fs_put_dnode(&dn);
++			return err;
++		}
++
+ 		*old_addr = dn.data_blkaddr;
+ 		f2fs_truncate_data_blocks_range(&dn, 1);
+ 		dec_valid_block_count(sbi, F2FS_I(inode)->cow_inode, count);
+-		inc_valid_block_count(sbi, inode, &count);
++
+ 		f2fs_replace_block(sbi, &dn, dn.data_blkaddr, new_addr,
+ 					ni.version, true, false);
+ 	}
 -- 
 2.39.2
 
