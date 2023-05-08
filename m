@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CA816FAA93
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A80956FA72F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233385AbjEHLEC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39696 "EHLO
+        id S234589AbjEHK2c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:28:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235546AbjEHLD1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 835F93411E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:50 -0700 (PDT)
+        with ESMTP id S234592AbjEHK2D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A25DE723
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:27:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14E4562A5F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCF3C433D2;
-        Mon,  8 May 2023 11:02:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3DCA625DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:27:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D09C433D2;
+        Mon,  8 May 2023 10:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543769;
-        bh=aZprBkywQ8QIao+70yB4yoQDZiCG2hdbtnke2ILmpyo=;
+        s=korg; t=1683541665;
+        bh=S00R2GvTOEyLcQPvlCwkBQkuaS3piATf0Dr9DeDfTfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OevdZLNos0gALxYKObTZNeIfceLqDGEcaxOc8I2ntsJtb/mff15ZvZ8uvSLof2W2e
-         mqxLdqJLPeKdwISVQTPPzjBrxkxolenHHhowWfG18Rfj0tVApe14hUFb+KxXcE2EVM
-         BWy38p6c6YC7scqPORcxiDXCXj8YnsnVD41Ollns=
+        b=cH8uP+A8bKUFlWaSVclbea7uJN6w1Uj5U5z3CGFn5Qc9Z4iUj2kyF8WTmlsWB/b4y
+         g0vQuw4ATa1J1+r/ddud0hNwA6nCk/cGHd34oKGYBCsTfcKXMqk8MjDa2BxFbX4IQV
+         e/KdIiBjtMDR61zaqCM2qupVKazgoVHwUMN82gK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abel Vesa <abel.vesa@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 178/694] arm64: dts: qcom: sm8550: Fix PCIe PHYs and controllers nodes
+Subject: [PATCH 6.2 187/663] drm: msm: adreno: Disable preemption on Adreno 510
 Date:   Mon,  8 May 2023 11:40:13 +0200
-Message-Id: <20230508094438.209752862@linuxfoundation.org>
+Message-Id: <20230508094434.491804885@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,204 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Adam Skladowski <a39.skl@gmail.com>
 
-[ Upstream commit 32734bbd1802efbd60ea4f0c3c1d5500bd0b20fe ]
+[ Upstream commit 010c8bbad2cb8c33c47963e29f051f1e917e45a5 ]
 
-First, move the pinctrl related propeties out from SoC dtsi and into the
-board dts and add blank lines before status properties in the PHY nodes
-to be consistent with the rest of the nodes. Then drop the pipe clock
-from the controller nodes. Rename the aggre0 and aggre1 clocks to more
-generic noc_aggr, and then the cnoc_pcie_sf_axi to cnoc_sf_axi. Add the
-cpu-pcie interconnects to both controller nodes. Rename the pcie1 second
-reset to link_down and drop the unnecessary enable-gpios. Switch the aux
-clock to GCC_PCIE_1_PHY_AUX_CLK for the pcie1 PHY and drop the aux_phy
-from clock-names. Also rename the nocsr reset to phy_nocsr. With this
-changes we are now in line with the SC8280XP bindings.
+Downstream driver appears to not support preemption on A510 target,
+trying to use one make device slow and fill log with rings related errors.
+Set num_rings to 1 to disable preemption.
 
-Fixes: 7d1158c984d3 ("arm64: dts: qcom: sm8550: Add PCIe PHYs and controllers nodes")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230208180020.2761766-12-abel.vesa@linaro.org
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: e20c9284c8f2 ("drm/msm/adreno: Add support for Adreno 510 GPU")
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/526898/
+Link: https://lore.kernel.org/r/20230314221757.13096-1-a39.skl@gmail.com
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550-mtp.dts | 10 +++++
- arch/arm64/boot/dts/qcom/sm8550.dtsi    | 52 +++++++++----------------
- 2 files changed, 28 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-mtp.dts b/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-index 5db6e789e6b87..44eab9308ff24 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-@@ -414,18 +414,27 @@
- &pcie0 {
- 	wake-gpios = <&tlmm 96 GPIO_ACTIVE_HIGH>;
- 	perst-gpios = <&tlmm 94 GPIO_ACTIVE_LOW>;
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+index 047c5e8c87ff4..f21f1bb7f886d 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+@@ -1743,6 +1743,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 	struct a5xx_gpu *a5xx_gpu = NULL;
+ 	struct adreno_gpu *adreno_gpu;
+ 	struct msm_gpu *gpu;
++	unsigned int nr_rings;
+ 	int ret;
+ 
+ 	if (!pdev) {
+@@ -1763,7 +1764,12 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 
+ 	check_speed_bin(&pdev->dev);
+ 
+-	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 4);
++	nr_rings = 4;
 +
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pcie0_default_state>;
++	if (adreno_is_a510(adreno_gpu))
++		nr_rings = 1;
 +
- 	status = "okay";
- };
- 
- &pcie0_phy {
- 	vdda-phy-supply = <&vreg_l1e_0p88>;
- 	vdda-pll-supply = <&vreg_l3e_1p2>;
-+
- 	status = "okay";
- };
- 
- &pcie1 {
- 	wake-gpios = <&tlmm 99 GPIO_ACTIVE_HIGH>;
- 	perst-gpios = <&tlmm 97 GPIO_ACTIVE_LOW>;
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pcie1_default_state>;
-+
- 	status = "okay";
- };
- 
-@@ -433,6 +442,7 @@
- 	vdda-phy-supply = <&vreg_l3c_0p91>;
- 	vdda-pll-supply = <&vreg_l3e_1p2>;
- 	vdda-qref-supply = <&vreg_l1e_0p88>;
-+
- 	status = "okay";
- };
- 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 5d0888398b3c3..ebc391bf1e4cc 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -1672,25 +1672,24 @@
- 					<0 0 0 3 &intc 0 0 0 151 IRQ_TYPE_LEVEL_HIGH>, /* int_c */
- 					<0 0 0 4 &intc 0 0 0 152 IRQ_TYPE_LEVEL_HIGH>; /* int_d */
- 
--			clocks = <&gcc GCC_PCIE_0_PIPE_CLK>,
--				 <&gcc GCC_PCIE_0_AUX_CLK>,
-+			clocks = <&gcc GCC_PCIE_0_AUX_CLK>,
- 				 <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
- 				 <&gcc GCC_PCIE_0_MSTR_AXI_CLK>,
- 				 <&gcc GCC_PCIE_0_SLV_AXI_CLK>,
- 				 <&gcc GCC_PCIE_0_SLV_Q2A_AXI_CLK>,
- 				 <&gcc GCC_DDRSS_PCIE_SF_QTB_CLK>,
- 				 <&gcc GCC_AGGRE_NOC_PCIE_AXI_CLK>;
--			clock-names = "pipe",
--				      "aux",
-+			clock-names = "aux",
- 				      "cfg",
- 				      "bus_master",
- 				      "bus_slave",
- 				      "slave_q2a",
- 				      "ddrss_sf_tbu",
--				      "aggre0";
-+				      "noc_aggr";
- 
--			interconnect-names = "pcie-mem";
--			interconnects = <&pcie_noc MASTER_PCIE_0 0 &mc_virt SLAVE_EBI1 0>;
-+			interconnects = <&pcie_noc MASTER_PCIE_0 0 &mc_virt SLAVE_EBI1 0>,
-+					<&gem_noc MASTER_APPSS_PROC 0 &cnoc_main SLAVE_PCIE_0 0>;
-+			interconnect-names = "pcie-mem", "cpu-pcie";
- 
- 			iommus = <&apps_smmu 0x1400 0x7f>;
- 			iommu-map = <0x0   &apps_smmu 0x1400 0x1>,
-@@ -1704,12 +1703,6 @@
- 			phys = <&pcie0_phy>;
- 			phy-names = "pciephy";
- 
--			perst-gpios = <&tlmm 94 GPIO_ACTIVE_LOW>;
--			wake-gpios = <&tlmm 96 GPIO_ACTIVE_HIGH>;
--
--			pinctrl-names = "default";
--			pinctrl-0 = <&pcie0_default_state>;
--
- 			status = "disabled";
- 		};
- 
-@@ -1771,8 +1764,7 @@
- 					<0 0 0 3 &intc 0 0 0 438 IRQ_TYPE_LEVEL_HIGH>, /* int_c */
- 					<0 0 0 4 &intc 0 0 0 439 IRQ_TYPE_LEVEL_HIGH>; /* int_d */
- 
--			clocks = <&gcc GCC_PCIE_1_PIPE_CLK>,
--				 <&gcc GCC_PCIE_1_AUX_CLK>,
-+			clocks = <&gcc GCC_PCIE_1_AUX_CLK>,
- 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
- 				 <&gcc GCC_PCIE_1_MSTR_AXI_CLK>,
- 				 <&gcc GCC_PCIE_1_SLV_AXI_CLK>,
-@@ -1780,21 +1772,21 @@
- 				 <&gcc GCC_DDRSS_PCIE_SF_QTB_CLK>,
- 				 <&gcc GCC_AGGRE_NOC_PCIE_AXI_CLK>,
- 				 <&gcc GCC_CNOC_PCIE_SF_AXI_CLK>;
--			clock-names = "pipe",
--				      "aux",
-+			clock-names = "aux",
- 				      "cfg",
- 				      "bus_master",
- 				      "bus_slave",
- 				      "slave_q2a",
- 				      "ddrss_sf_tbu",
--				      "aggre1",
--				      "cnoc_pcie_sf_axi";
-+				      "noc_aggr",
-+				      "cnoc_sf_axi";
- 
- 			assigned-clocks = <&gcc GCC_PCIE_1_AUX_CLK>;
- 			assigned-clock-rates = <19200000>;
- 
--			interconnect-names = "pcie-mem";
--			interconnects = <&pcie_noc MASTER_PCIE_1 0 &mc_virt SLAVE_EBI1 0>;
-+			interconnects = <&pcie_noc MASTER_PCIE_1 0 &mc_virt SLAVE_EBI1 0>,
-+					<&gem_noc MASTER_APPSS_PROC 0 &cnoc_main SLAVE_PCIE_1 0>;
-+			interconnect-names = "pcie-mem", "cpu-pcie";
- 
- 			iommus = <&apps_smmu 0x1480 0x7f>;
- 			iommu-map = <0x0   &apps_smmu 0x1480 0x1>,
-@@ -1802,20 +1794,13 @@
- 
- 			resets = <&gcc GCC_PCIE_1_BCR>,
- 				<&gcc GCC_PCIE_1_LINK_DOWN_BCR>;
--			reset-names = "pci",
--				"pcie_1_link_down_reset";
-+			reset-names = "pci", "link_down";
- 
- 			power-domains = <&gcc PCIE_1_GDSC>;
- 
- 			phys = <&pcie1_phy>;
- 			phy-names = "pciephy";
- 
--			perst-gpios = <&tlmm 97 GPIO_ACTIVE_LOW>;
--			enable-gpios = <&tlmm 99 GPIO_ACTIVE_HIGH>;
--
--			pinctrl-names = "default";
--			pinctrl-0 = <&pcie1_default_state>;
--
- 			status = "disabled";
- 		};
- 
-@@ -1823,18 +1808,17 @@
- 			compatible = "qcom,sm8550-qmp-gen4x2-pcie-phy";
- 			reg = <0x0 0x01c0e000 0x0 0x2000>;
- 
--			clocks = <&gcc GCC_PCIE_1_AUX_CLK>,
-+			clocks = <&gcc GCC_PCIE_1_PHY_AUX_CLK>,
- 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
- 				 <&tcsr TCSR_PCIE_1_CLKREF_EN>,
- 				 <&gcc GCC_PCIE_1_PHY_RCHNG_CLK>,
--				 <&gcc GCC_PCIE_1_PIPE_CLK>,
--				 <&gcc GCC_PCIE_1_PHY_AUX_CLK>;
-+				 <&gcc GCC_PCIE_1_PIPE_CLK>;
- 			clock-names = "aux", "cfg_ahb", "ref", "rchng",
--				      "pipe", "aux_phy";
-+				      "pipe";
- 
- 			resets = <&gcc GCC_PCIE_1_PHY_BCR>,
- 				 <&gcc GCC_PCIE_1_NOCSR_COM_PHY_BCR>;
--			reset-names = "phy", "nocsr";
-+			reset-names = "phy", "phy_nocsr";
- 
- 			assigned-clocks = <&gcc GCC_PCIE_1_PHY_RCHNG_CLK>;
- 			assigned-clock-rates = <100000000>;
++	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
+ 	if (ret) {
+ 		a5xx_destroy(&(a5xx_gpu->base.base));
+ 		return ERR_PTR(ret);
 -- 
 2.39.2
 
