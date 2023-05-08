@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C73876FA993
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 835976FACD8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235251AbjEHKw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55546 "EHLO
+        id S235846AbjEHL2f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235265AbjEHKwm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568182DD50
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:10 -0700 (PDT)
+        with ESMTP id S235795AbjEHL2M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:28:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6593C4B3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26C926295E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:51:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D523C433D2;
-        Mon,  8 May 2023 10:51:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFC0462CC5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56A4C433EF;
+        Mon,  8 May 2023 11:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543106;
-        bh=ujakiOkxRCfeZWWTPSSDaTrxq/vuoGwTRqtNmDk5QMA=;
+        s=korg; t=1683545278;
+        bh=PkJ+5BJhzEjPTSOB48zmeeYHqUYXCXNwn1ITOyAztkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oNryQd4EGm5v8IP+nQcoVMiebfxvHfbjULlxgNI6sFXUhHKfKccz7jp+8J2G3h508
-         H2A8F+wm6+3nlmCTUgw7y5V9TxxREfJj4mD4kGvXbiDUkNYfbVZ/zhXLvVDLGew1Rn
-         O/guafb4d9CDUzEN2Rd4tYw2PBwRC66VIhLMzMUY=
+        b=LG4oIyNgrYsul2C6K7S9AVSz/E491FhvZz459tsODz5fsfAYKeGLFSycPW/Y9Un6g
+         zohz5cqJkQMxleYFX3LigsQS9UrHfVNTcbZCCh1wWFMbCyygsoypeVx47degxDcQ01
+         B/f5uYO3K2K6IVI5gJrtn3SElowvEtX/NnCagDT0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.2 651/663] blk-iocost: avoid 64-bit division in ioc_timer_fn
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 642/694] dmaengine: mv_xor_v2: Fix an error code.
 Date:   Mon,  8 May 2023 11:47:57 +0200
-Message-Id: <20230508094451.236286732@linuxfoundation.org>
+Message-Id: <20230508094456.631564850@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,57 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 5f2779dfa7b8cc7dfd4a1b6586d86e0d193266f3 upstream.
+[ Upstream commit 827026ae2e56ec05ef1155661079badbbfc0b038 ]
 
-The behavior of 'enum' types has changed in gcc-13, so now the
-UNBUSY_THR_PCT constant is interpreted as a 64-bit number because
-it is defined as part of the same enum definition as some other
-constants that do not fit within a 32-bit integer. This in turn
-leads to some inefficient code on 32-bit architectures as well
-as a link error:
+If the probe is deferred, -EPROBE_DEFER should be returned, not
++EPROBE_DEFER.
 
-arm-linux-gnueabi/bin/arm-linux-gnueabi-ld: block/blk-iocost.o: in function `ioc_timer_fn':
-blk-iocost.c:(.text+0x68e8): undefined reference to `__aeabi_uldivmod'
-arm-linux-gnueabi-ld: blk-iocost.c:(.text+0x6908): undefined reference to `__aeabi_uldivmod'
-
-Split the enum definition to keep the 64-bit timing constants in
-a separate enum type from those constants that can clearly fit
-within a smaller type.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20230118080706.3303186-1-arnd@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3cd2c313f1d6 ("dmaengine: mv_xor_v2: Fix clock resource by adding a register clock")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/201170dff832a3c496d125772e10070cd834ebf2.1679814350.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/dma/mv_xor_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -258,6 +258,11 @@ enum {
- 	VRATE_MIN		= VTIME_PER_USEC * VRATE_MIN_PPM / MILLION,
- 	VRATE_CLAMP_ADJ_PCT	= 4,
+diff --git a/drivers/dma/mv_xor_v2.c b/drivers/dma/mv_xor_v2.c
+index 89790beba3052..0991b82658296 100644
+--- a/drivers/dma/mv_xor_v2.c
++++ b/drivers/dma/mv_xor_v2.c
+@@ -752,7 +752,7 @@ static int mv_xor_v2_probe(struct platform_device *pdev)
  
-+	/* switch iff the conditions are met for longer than this */
-+	AUTOP_CYCLE_NSEC	= 10LLU * NSEC_PER_SEC,
-+};
-+
-+enum {
- 	/* if IOs end up waiting for requests, issue less */
- 	RQ_WAIT_BUSY_PCT	= 5,
- 
-@@ -296,9 +301,6 @@ enum {
- 	/* don't let cmds which take a very long time pin lagging for too long */
- 	MAX_LAGGING_PERIODS	= 10,
- 
--	/* switch iff the conditions are met for longer than this */
--	AUTOP_CYCLE_NSEC	= 10LLU * NSEC_PER_SEC,
--
- 	/*
- 	 * Count IO size in 4k pages.  The 12bit shift helps keeping
- 	 * size-proportional components of cost calculation in closer
+ 	xor_dev->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (PTR_ERR(xor_dev->clk) == -EPROBE_DEFER) {
+-		ret = EPROBE_DEFER;
++		ret = -EPROBE_DEFER;
+ 		goto disable_reg_clk;
+ 	}
+ 	if (!IS_ERR(xor_dev->clk)) {
+-- 
+2.39.2
+
 
 
