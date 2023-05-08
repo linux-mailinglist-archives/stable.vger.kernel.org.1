@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBECB6FA546
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21D076FAB89
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234089AbjEHKHm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:07:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36082 "EHLO
+        id S233930AbjEHLO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234087AbjEHKHk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:40 -0400
+        with ESMTP id S232941AbjEHLO0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E65AB4EEF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E25436552
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78D2262372
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D85C433D2;
-        Mon,  8 May 2023 10:07:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE2A16296C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C63C433D2;
+        Mon,  8 May 2023 11:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540458;
-        bh=dSI/wb0Bo68/Pnt381Ba2aM94yZZMBwQt+ItJfbdtOU=;
+        s=korg; t=1683544464;
+        bh=WEAmJZGfFKqctGT2vUqWC3klLrFDB7+B8pLgO0w/uAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=urBUGocq1//J6kF9mUt6ufQl4MFC19NfYxUY6JS8vA1M+t+L/g4pwf27hgE9cg+bh
-         iLq0OYOI8Zbdd7O0zX3sc+4U5eD6vw8FDWL1gB0TTeKJ/oCz1Qce8t+lpFklkQV2aI
-         hxLTWEg1AvAYwj4zl2nZp01CzuwRqSNbhB3Iycgw=
+        b=whqXfxlvXKu+sNAalRcYOlU5w0eKtSVDmKuv1R0Vh+7TD2Dpga06JNm1+Jnu7Id52
+         NnGH3jZK9ahBGYKHamJVZ+XWlq47vcPh5EUsACYp3JcLi2/sxtcMyYRqFIpLWTSXod
+         0z2E3iAi4RDVFcivb/vKguEvXmtRU6qk+bWHu1WA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@stgraber.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 372/611] netfilter: conntrack: restore IPS_CONFIRMED out of nf_conntrack_hash_check_insert()
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 379/694] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_reg()
 Date:   Mon,  8 May 2023 11:43:34 +0200
-Message-Id: <20230508094434.446108211@linuxfoundation.org>
+Message-Id: <20230508094445.207732968@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 2cdaa3eefed83082923cf219c8b6a314e622da74 ]
+[ Upstream commit 5dbe1f8eb8c5ac69394400a5b86fd81775e96c43 ]
 
-e6d57e9ff0ae ("netfilter: conntrack: fix rmmod double-free race")
-consolidates IPS_CONFIRMED bit set in nf_conntrack_hash_check_insert().
-However, this breaks ctnetlink:
+If there is a failure during copy_from_user or user-provided data buffer is
+invalid, rtl_debugfs_set_write_reg should return negative error code instead
+of a positive value count.
 
- # conntrack -I -p tcp --timeout 123 --src 1.2.3.4 --dst 5.6.7.8 --state ESTABLISHED --sport 1 --dport 4 -u SEEN_REPLY
- conntrack v1.4.6 (conntrack-tools): Operation failed: Device or resource busy
+Fix this bug by returning correct error code. Moreover, the check of buffer
+against null is removed since it will be handled by copy_from_user.
 
-This is a partial revert of the aforementioned commit to restore
-IPS_CONFIRMED.
-
-Fixes: e6d57e9ff0ae ("netfilter: conntrack: fix rmmod double-free race")
-Reported-by: Stéphane Graber <stgraber@stgraber.org>
-Tested-by: Stéphane Graber <stgraber@stgraber.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230326054217.93492-1-harperchen1110@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_bpf.c     | 1 +
- net/netfilter/nf_conntrack_core.c    | 1 -
- net/netfilter/nf_conntrack_netlink.c | 3 +++
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
-index adae86e8e02e8..8639e7efd0e22 100644
---- a/net/netfilter/nf_conntrack_bpf.c
-+++ b/net/netfilter/nf_conntrack_bpf.c
-@@ -384,6 +384,7 @@ struct nf_conn *bpf_ct_insert_entry(struct nf_conn___init *nfct_i)
- 	struct nf_conn *nfct = (struct nf_conn *)nfct_i;
- 	int err;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index 602717928887d..9eb26dfe4ca92 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -278,8 +278,8 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
  
-+	nfct->status |= IPS_CONFIRMED;
- 	err = nf_conntrack_hash_check_insert(nfct);
- 	if (err < 0) {
- 		nf_conntrack_free(nfct);
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index 30ed45b1b57df..a0e9c7af08467 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -938,7 +938,6 @@ nf_conntrack_hash_check_insert(struct nf_conn *ct)
- 		goto out;
- 	}
+ 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
  
--	ct->status |= IPS_CONFIRMED;
- 	smp_wmb();
- 	/* The caller holds a reference to this object */
- 	refcount_set(&ct->ct_general.use, 2);
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index d095d3c1ceca6..a68391e228f0e 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2316,6 +2316,9 @@ ctnetlink_create_conntrack(struct net *net,
- 	nfct_seqadj_ext_add(ct);
- 	nfct_synproxy_ext_add(ct);
+-	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+-		return count;
++	if (copy_from_user(tmp, buffer, tmp_len))
++		return -EFAULT;
  
-+	/* we must add conntrack extensions before confirmation. */
-+	ct->status |= IPS_CONFIRMED;
-+
- 	if (cda[CTA_STATUS]) {
- 		err = ctnetlink_change_status(ct, cda);
- 		if (err < 0)
+ 	tmp[tmp_len] = '\0';
+ 
+@@ -287,7 +287,7 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
+ 	num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
+ 
+ 	if (num !=  3)
+-		return count;
++		return -EINVAL;
+ 
+ 	switch (len) {
+ 	case 1:
 -- 
 2.39.2
 
