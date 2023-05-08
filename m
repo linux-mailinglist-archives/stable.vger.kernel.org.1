@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC22C6FAAA8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F376FA73A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233452AbjEHLFX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38462 "EHLO
+        id S234549AbjEHK2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232784AbjEHLEl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:04:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38E02FA20
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:55 -0700 (PDT)
+        with ESMTP id S232541AbjEHK2S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F4C18DC2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A240762A84
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296A0C433EF;
-        Mon,  8 May 2023 11:03:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D6B161D79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A84C433EF;
+        Mon,  8 May 2023 10:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543834;
-        bh=a3SCL90UjeE99WJXPv9wC13MtunTaz7ORaH+ZZCcgic=;
+        s=korg; t=1683541686;
+        bh=dmuIp60d0leTSZJ+I+m6nowOfBegPVAQdNkDSZzb2s0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ut7z5U6HN37rTAZdCCMk7dQ3zKjWvyRPv7xvGPrSa+PxcByf627pxKsWMKFWYOgKI
-         iMFI7wr9UDcNMwIfuqilcmqBl0vfn2PtUckhk9QDhV4UJeL3i+dcvSAbwYD0NK81fI
-         hQAA2CY1AEdSDIRksoYVbv8JpTkYLsDrwiWO0qOo=
+        b=tm+4AyIX72TpixV5gsSNtBViqz0WFM40Gx9izZkHuPWCdjiiXFsDcvjRTzsJgQT95
+         shn+qJhEVT8uUXzjIYXE0Qtzxry2mL3Q0fI3AA6bPMWSxbaKsqVt0L00SVlfL4hyb3
+         DvilguETmVsO56qoFAa7vRND9byWKxGHuLD0YSaY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 185/694] arm64: dts: qcom: msm8998: Fix the PCI I/O port range
+Subject: [PATCH 6.2 194/663] drm: rcar-du: Fix a NULL vs IS_ERR() bug
 Date:   Mon,  8 May 2023 11:40:20 +0200
-Message-Id: <20230508094438.434846369@linuxfoundation.org>
+Message-Id: <20230508094434.701944900@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit c30a27dcfe4545edbda1578b3a63ed6147519cdd ]
+[ Upstream commit 40f43730f43699ce8557e4fe59622d4f4b69f44a ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI address
-(0x1b200000) specified in the ranges property for I/O region.
+The drmm_encoder_alloc() function returns error pointers.  It never
+returns NULL.  Fix the check accordingly.
 
-Fixes: b84dfd175c09 ("arm64: dts: qcom: msm8998: Add PCIe PHY and RC nodes")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-3-manivannan.sadhasivam@linaro.org
+Fixes: 7a1adbd23990 ("drm: rcar-du: Use drmm_encoder_alloc() to manage encoder")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rcar-du/rcar_du_encoder.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index adf7258b32695..2a2cfa905f5e0 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -922,7 +922,7 @@
- 			phy-names = "pciephy";
- 			status = "disabled";
+diff --git a/drivers/gpu/drm/rcar-du/rcar_du_encoder.c b/drivers/gpu/drm/rcar-du/rcar_du_encoder.c
+index b1787be31e92c..7ecec7b04a8d0 100644
+--- a/drivers/gpu/drm/rcar-du/rcar_du_encoder.c
++++ b/drivers/gpu/drm/rcar-du/rcar_du_encoder.c
+@@ -109,8 +109,8 @@ int rcar_du_encoder_init(struct rcar_du_device *rcdu,
+ 	renc = drmm_encoder_alloc(&rcdu->ddev, struct rcar_du_encoder, base,
+ 				  &rcar_du_encoder_funcs, DRM_MODE_ENCODER_NONE,
+ 				  NULL);
+-	if (!renc)
+-		return -ENOMEM;
++	if (IS_ERR(renc))
++		return PTR_ERR(renc);
  
--			ranges = <0x01000000 0x0 0x1b200000 0x1b200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x1b200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x1b300000 0x1b300000 0x0 0xd00000>;
+ 	renc->output = output;
  
- 			#interrupt-cells = <1>;
 -- 
 2.39.2
 
