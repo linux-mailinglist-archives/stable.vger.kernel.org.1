@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E40E6FA685
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7918D6FA9BC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234479AbjEHKUn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50452 "EHLO
+        id S235272AbjEHKzK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234483AbjEHKUN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:20:13 -0400
+        with ESMTP id S235244AbjEHKyZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7E4D863
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5B82271C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F411062537
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BABEC4339B;
-        Mon,  8 May 2023 10:20:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E5D56297D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46330C433D2;
+        Mon,  8 May 2023 10:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541205;
-        bh=mrgpcJp1jez0PTSngdROLwceoHAZ6raf/BohY3L9o/Y=;
+        s=korg; t=1683543225;
+        bh=M5Kcmpnpwm1+RnsAiVIKaAWpAWXV7fxXkG0s86o9yL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2iFMvbkKZhn09jo5ESaq6ENe7waiGbCezvTYmfyXtOtaewmdFzmTJNRcL6Wa1AsHb
-         MUwy0NglqKd2+o1cuwMZa9Hr64Zo1oZwENM8S4mX+wTRvLVv5VFJjpPzW+ryCNqSpv
-         8HiP10c57XW2cGwu6z0AYtX2B0eK2GPFFh2UR0Hs=
+        b=dJOF5mmEI4IesEHHYQXZbqtjvlEIif2QPbi2HIFWqBEKGybUox4Wqqj54yBMOeYym
+         YfoCrELWA1X95PgDUNHUbCAwcAYJnliLyDW/s036XuWSaZIF501xCn+qq58rc7HpQc
+         6upUhGHhK1IfJk4hwoGhiuUGEmn3QgYvJXTZmdOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.2 032/663] usb: gadget: udc: core: Invoke usb_gadget_connect only when started
+        patches@lists.linux.dev, Nathan Huckleberry <nhuck@google.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Eric Biggers <ebiggers@google.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.3 023/694] blk-mq: release crypto keyslot before reporting I/O complete
 Date:   Mon,  8 May 2023 11:37:38 +0200
-Message-Id: <20230508094429.495681611@linuxfoundation.org>
+Message-Id: <20230508094433.386537977@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,359 +55,194 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 0db213ea8eed5534a5169e807f28103cbc9d23df upstream.
+commit 9cd1e566676bbcb8a126acd921e4e194e6339603 upstream.
 
-usb_udc_connect_control does not check to see if the udc has already
-been started. This causes gadget->ops->pullup to be called through
-usb_gadget_connect when invoked from usb_udc_vbus_handler even before
-usb_gadget_udc_start is called. Guard this by checking for udc->started
-in usb_udc_connect_control before invoking usb_gadget_connect.
+Once all I/O using a blk_crypto_key has completed, filesystems can call
+blk_crypto_evict_key().  However, the block layer currently doesn't call
+blk_crypto_put_keyslot() until the request is being freed, which happens
+after upper layers have been told (via bio_endio()) the I/O has
+completed.  This causes a race condition where blk_crypto_evict_key()
+can see 'slot_refs != 0' without there being an actual bug.
 
-Guarding udc->vbus, udc->started, gadget->connect, gadget->deactivate
-related functions with connect_lock. usb_gadget_connect_locked,
-usb_gadget_disconnect_locked, usb_udc_connect_control_locked,
-usb_gadget_udc_start_locked, usb_gadget_udc_stop_locked are called with
-this lock held as they can be simulataneously invoked from different code
-paths.
+This makes __blk_crypto_evict_key() hit the
+'WARN_ON_ONCE(atomic_read(&slot->slot_refs) != 0)' and return without
+doing anything, eventually causing a use-after-free in
+blk_crypto_reprogram_all_keys().  (This is a very rare bug and has only
+been seen when per-file keys are being used with fscrypt.)
 
-Adding an additional check to make sure udc is started(udc->started)
-before pullup callback is invoked.
+There are two options to fix this: either release the keyslot before
+bio_endio() is called on the request's last bio, or make
+__blk_crypto_evict_key() ignore slot_refs.  Let's go with the first
+solution, since it preserves the ability to report bugs (via
+WARN_ON_ONCE) where a key is evicted while still in-use.
 
-Fixes: 628ef0d273a6 ("usb: udc: add usb_udc_vbus_handler")
+Fixes: a892c8d52c02 ("block: Inline encryption support for blk-mq")
 Cc: stable@vger.kernel.org
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20230407030741.3163220-1-badhri@google.com
+Reviewed-by: Nathan Huckleberry <nhuck@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |  148 +++++++++++++++++++++++++++++-------------
- 1 file changed, 104 insertions(+), 44 deletions(-)
+ block/blk-crypto-internal.h |   25 +++++++++++++++++++++----
+ block/blk-crypto.c          |   24 ++++++++++++------------
+ block/blk-merge.c           |    2 ++
+ block/blk-mq.c              |   15 ++++++++++++++-
+ 4 files changed, 49 insertions(+), 17 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -37,6 +37,10 @@ static struct bus_type gadget_bus_type;
-  * @vbus: for udcs who care about vbus status, this value is real vbus status;
-  * for udcs who do not care about vbus status, this value is always true
-  * @started: the UDC's started state. True if the UDC had started.
-+ * @connect_lock: protects udc->vbus, udc->started, gadget->connect, gadget->deactivate related
-+ * functions. usb_gadget_connect_locked, usb_gadget_disconnect_locked,
-+ * usb_udc_connect_control_locked, usb_gadget_udc_start_locked, usb_gadget_udc_stop_locked are
-+ * called with this lock held.
-  *
-  * This represents the internal data structure which is used by the UDC-class
-  * to hold information about udc driver and gadget together.
-@@ -48,6 +52,7 @@ struct usb_udc {
- 	struct list_head		list;
- 	bool				vbus;
- 	bool				started;
-+	struct mutex			connect_lock;
- };
- 
- static struct class *udc_class;
-@@ -660,17 +665,9 @@ out:
+--- a/block/blk-crypto-internal.h
++++ b/block/blk-crypto-internal.h
+@@ -65,6 +65,11 @@ static inline bool blk_crypto_rq_is_encr
+ 	return rq->crypt_ctx;
  }
- EXPORT_SYMBOL_GPL(usb_gadget_vbus_disconnect);
+ 
++static inline bool blk_crypto_rq_has_keyslot(struct request *rq)
++{
++	return rq->crypt_keyslot;
++}
++
+ blk_status_t blk_crypto_get_keyslot(struct blk_crypto_profile *profile,
+ 				    const struct blk_crypto_key *key,
+ 				    struct blk_crypto_keyslot **slot_ptr);
+@@ -119,6 +124,11 @@ static inline bool blk_crypto_rq_is_encr
+ 	return false;
+ }
+ 
++static inline bool blk_crypto_rq_has_keyslot(struct request *rq)
++{
++	return false;
++}
++
+ #endif /* CONFIG_BLK_INLINE_ENCRYPTION */
+ 
+ void __bio_crypt_advance(struct bio *bio, unsigned int bytes);
+@@ -153,14 +163,21 @@ static inline bool blk_crypto_bio_prep(s
+ 	return true;
+ }
+ 
+-blk_status_t __blk_crypto_init_request(struct request *rq);
+-static inline blk_status_t blk_crypto_init_request(struct request *rq)
++blk_status_t __blk_crypto_rq_get_keyslot(struct request *rq);
++static inline blk_status_t blk_crypto_rq_get_keyslot(struct request *rq)
+ {
+ 	if (blk_crypto_rq_is_encrypted(rq))
+-		return __blk_crypto_init_request(rq);
++		return __blk_crypto_rq_get_keyslot(rq);
+ 	return BLK_STS_OK;
+ }
+ 
++void __blk_crypto_rq_put_keyslot(struct request *rq);
++static inline void blk_crypto_rq_put_keyslot(struct request *rq)
++{
++	if (blk_crypto_rq_has_keyslot(rq))
++		__blk_crypto_rq_put_keyslot(rq);
++}
++
+ void __blk_crypto_free_request(struct request *rq);
+ static inline void blk_crypto_free_request(struct request *rq)
+ {
+@@ -199,7 +216,7 @@ static inline blk_status_t blk_crypto_in
+ {
+ 
+ 	if (blk_crypto_rq_is_encrypted(rq))
+-		return blk_crypto_init_request(rq);
++		return blk_crypto_rq_get_keyslot(rq);
+ 	return BLK_STS_OK;
+ }
+ 
+--- a/block/blk-crypto.c
++++ b/block/blk-crypto.c
+@@ -224,27 +224,27 @@ static bool bio_crypt_check_alignment(st
+ 	return true;
+ }
+ 
+-blk_status_t __blk_crypto_init_request(struct request *rq)
++blk_status_t __blk_crypto_rq_get_keyslot(struct request *rq)
+ {
+ 	return blk_crypto_get_keyslot(rq->q->crypto_profile,
+ 				      rq->crypt_ctx->bc_key,
+ 				      &rq->crypt_keyslot);
+ }
  
 -/**
-- * usb_gadget_connect - software-controlled connect to USB host
-- * @gadget:the peripheral being connected
+- * __blk_crypto_free_request - Uninitialize the crypto fields of a request.
 - *
-- * Enables the D+ (or potentially D-) pullup.  The host will start
-- * enumerating this gadget when the pullup is active and a VBUS session
-- * is active (the link is powered).
+- * @rq: The request whose crypto fields to uninitialize.
 - *
-- * Returns zero on success, else negative errno.
+- * Completely uninitializes the crypto fields of a request. If a keyslot has
+- * been programmed into some inline encryption hardware, that keyslot is
+- * released. The rq->crypt_ctx is also freed.
 - */
--int usb_gadget_connect(struct usb_gadget *gadget)
-+/* Internal version of usb_gadget_connect needs to be called with connect_lock held. */
-+static int usb_gadget_connect_locked(struct usb_gadget *gadget)
-+	__must_hold(&gadget->udc->connect_lock)
+-void __blk_crypto_free_request(struct request *rq)
++void __blk_crypto_rq_put_keyslot(struct request *rq)
  {
- 	int ret = 0;
- 
-@@ -679,10 +676,12 @@ int usb_gadget_connect(struct usb_gadget
- 		goto out;
- 	}
- 
--	if (gadget->deactivated) {
-+	if (gadget->deactivated || !gadget->udc->started) {
- 		/*
- 		 * If gadget is deactivated we only save new state.
- 		 * Gadget will be connected automatically after activation.
-+		 *
-+		 * udc first needs to be started before gadget can be pulled up.
- 		 */
- 		gadget->connected = true;
- 		goto out;
-@@ -697,22 +696,32 @@ out:
- 
- 	return ret;
+ 	blk_crypto_put_keyslot(rq->crypt_keyslot);
++	rq->crypt_keyslot = NULL;
++}
++
++void __blk_crypto_free_request(struct request *rq)
++{
++	/* The keyslot, if one was needed, should have been released earlier. */
++	if (WARN_ON_ONCE(rq->crypt_keyslot))
++		__blk_crypto_rq_put_keyslot(rq);
++
+ 	mempool_free(rq->crypt_ctx, bio_crypt_ctx_pool);
+-	blk_crypto_rq_set_defaults(rq);
++	rq->crypt_ctx = NULL;
  }
--EXPORT_SYMBOL_GPL(usb_gadget_connect);
  
  /**
-- * usb_gadget_disconnect - software-controlled disconnect from USB host
-- * @gadget:the peripheral being disconnected
-- *
-- * Disables the D+ (or potentially D-) pullup, which the host may see
-- * as a disconnect (when a VBUS session is active).  Not all systems
-- * support software pullup controls.
-+ * usb_gadget_connect - software-controlled connect to USB host
-+ * @gadget:the peripheral being connected
-  *
-- * Following a successful disconnect, invoke the ->disconnect() callback
-- * for the current gadget driver so that UDC drivers don't need to.
-+ * Enables the D+ (or potentially D-) pullup.  The host will start
-+ * enumerating this gadget when the pullup is active and a VBUS session
-+ * is active (the link is powered).
-  *
-  * Returns zero on success, else negative errno.
-  */
--int usb_gadget_disconnect(struct usb_gadget *gadget)
-+int usb_gadget_connect(struct usb_gadget *gadget)
-+{
-+	int ret;
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -867,6 +867,8 @@ static struct request *attempt_merge(str
+ 	if (!blk_discard_mergable(req))
+ 		elv_merge_requests(q, req, next);
+ 
++	blk_crypto_rq_put_keyslot(next);
 +
-+	mutex_lock(&gadget->udc->connect_lock);
-+	ret = usb_gadget_connect_locked(gadget);
-+	mutex_unlock(&gadget->udc->connect_lock);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(usb_gadget_connect);
-+
-+/* Internal version of usb_gadget_disconnect needs to be called with connect_lock held. */
-+static int usb_gadget_disconnect_locked(struct usb_gadget *gadget)
-+	__must_hold(&gadget->udc->connect_lock)
- {
- 	int ret = 0;
- 
-@@ -724,10 +733,12 @@ int usb_gadget_disconnect(struct usb_gad
- 	if (!gadget->connected)
- 		goto out;
- 
--	if (gadget->deactivated) {
-+	if (gadget->deactivated || !gadget->udc->started) {
- 		/*
- 		 * If gadget is deactivated we only save new state.
- 		 * Gadget will stay disconnected after activation.
-+		 *
-+		 * udc should have been started before gadget being pulled down.
- 		 */
- 		gadget->connected = false;
- 		goto out;
-@@ -747,6 +758,30 @@ out:
- 
- 	return ret;
- }
-+
-+/**
-+ * usb_gadget_disconnect - software-controlled disconnect from USB host
-+ * @gadget:the peripheral being disconnected
-+ *
-+ * Disables the D+ (or potentially D-) pullup, which the host may see
-+ * as a disconnect (when a VBUS session is active).  Not all systems
-+ * support software pullup controls.
-+ *
-+ * Following a successful disconnect, invoke the ->disconnect() callback
-+ * for the current gadget driver so that UDC drivers don't need to.
-+ *
-+ * Returns zero on success, else negative errno.
-+ */
-+int usb_gadget_disconnect(struct usb_gadget *gadget)
-+{
-+	int ret;
-+
-+	mutex_lock(&gadget->udc->connect_lock);
-+	ret = usb_gadget_disconnect_locked(gadget);
-+	mutex_unlock(&gadget->udc->connect_lock);
-+
-+	return ret;
-+}
- EXPORT_SYMBOL_GPL(usb_gadget_disconnect);
- 
- /**
-@@ -767,10 +802,11 @@ int usb_gadget_deactivate(struct usb_gad
- 	if (gadget->deactivated)
- 		goto out;
- 
-+	mutex_lock(&gadget->udc->connect_lock);
- 	if (gadget->connected) {
--		ret = usb_gadget_disconnect(gadget);
-+		ret = usb_gadget_disconnect_locked(gadget);
- 		if (ret)
--			goto out;
-+			goto unlock;
- 
- 		/*
- 		 * If gadget was being connected before deactivation, we want
-@@ -780,6 +816,8 @@ int usb_gadget_deactivate(struct usb_gad
- 	}
- 	gadget->deactivated = true;
- 
-+unlock:
-+	mutex_unlock(&gadget->udc->connect_lock);
- out:
- 	trace_usb_gadget_deactivate(gadget, ret);
- 
-@@ -803,6 +841,7 @@ int usb_gadget_activate(struct usb_gadge
- 	if (!gadget->deactivated)
- 		goto out;
- 
-+	mutex_lock(&gadget->udc->connect_lock);
- 	gadget->deactivated = false;
- 
  	/*
-@@ -810,7 +849,8 @@ int usb_gadget_activate(struct usb_gadge
- 	 * while it was being deactivated, we call usb_gadget_connect().
+ 	 * 'next' is going away, so update stats accordingly
  	 */
- 	if (gadget->connected)
--		ret = usb_gadget_connect(gadget);
-+		ret = usb_gadget_connect_locked(gadget);
-+	mutex_unlock(&gadget->udc->connect_lock);
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -840,6 +840,12 @@ static void blk_complete_request(struct
+ 		req->q->integrity.profile->complete_fn(req, total_bytes);
+ #endif
  
- out:
- 	trace_usb_gadget_activate(gadget, ret);
-@@ -1051,12 +1091,13 @@ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
++	/*
++	 * Upper layers may call blk_crypto_evict_key() anytime after the last
++	 * bio_endio().  Therefore, the keyslot must be released before that.
++	 */
++	blk_crypto_rq_put_keyslot(req);
++
+ 	blk_account_io_completion(req, total_bytes);
  
- /* ------------------------------------------------------------------------- */
+ 	do {
+@@ -905,6 +911,13 @@ bool blk_update_request(struct request *
+ 		req->q->integrity.profile->complete_fn(req, nr_bytes);
+ #endif
  
--static void usb_udc_connect_control(struct usb_udc *udc)
-+/* Acquire connect_lock before calling this function. */
-+static void usb_udc_connect_control_locked(struct usb_udc *udc) __must_hold(&udc->connect_lock)
- {
--	if (udc->vbus)
--		usb_gadget_connect(udc->gadget);
-+	if (udc->vbus && udc->started)
-+		usb_gadget_connect_locked(udc->gadget);
- 	else
--		usb_gadget_disconnect(udc->gadget);
-+		usb_gadget_disconnect_locked(udc->gadget);
- }
++	/*
++	 * Upper layers may call blk_crypto_evict_key() anytime after the last
++	 * bio_endio().  Therefore, the keyslot must be released before that.
++	 */
++	if (blk_crypto_rq_has_keyslot(req) && nr_bytes >= blk_rq_bytes(req))
++		__blk_crypto_rq_put_keyslot(req);
++
+ 	if (unlikely(error && !blk_rq_is_passthrough(req) &&
+ 		     !(req->rq_flags & RQF_QUIET)) &&
+ 		     !test_bit(GD_DEAD, &req->q->disk->state)) {
+@@ -2965,7 +2978,7 @@ void blk_mq_submit_bio(struct bio *bio)
  
- /**
-@@ -1072,10 +1113,12 @@ void usb_udc_vbus_handler(struct usb_gad
- {
- 	struct usb_udc *udc = gadget->udc;
+ 	blk_mq_bio_to_request(rq, bio, nr_segs);
  
-+	mutex_lock(&udc->connect_lock);
- 	if (udc) {
- 		udc->vbus = status;
--		usb_udc_connect_control(udc);
-+		usb_udc_connect_control_locked(udc);
- 	}
-+	mutex_unlock(&udc->connect_lock);
- }
- EXPORT_SYMBOL_GPL(usb_udc_vbus_handler);
- 
-@@ -1097,7 +1140,7 @@ void usb_gadget_udc_reset(struct usb_gad
- EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
- 
- /**
-- * usb_gadget_udc_start - tells usb device controller to start up
-+ * usb_gadget_udc_start_locked - tells usb device controller to start up
-  * @udc: The UDC to be started
-  *
-  * This call is issued by the UDC Class driver when it's about
-@@ -1108,8 +1151,11 @@ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
-  * necessary to have it powered on.
-  *
-  * Returns zero on success, else negative errno.
-+ *
-+ * Caller should acquire connect_lock before invoking this function.
-  */
--static inline int usb_gadget_udc_start(struct usb_udc *udc)
-+static inline int usb_gadget_udc_start_locked(struct usb_udc *udc)
-+	__must_hold(&udc->connect_lock)
- {
- 	int ret;
- 
-@@ -1126,7 +1172,7 @@ static inline int usb_gadget_udc_start(s
- }
- 
- /**
-- * usb_gadget_udc_stop - tells usb device controller we don't need it anymore
-+ * usb_gadget_udc_stop_locked - tells usb device controller we don't need it anymore
-  * @udc: The UDC to be stopped
-  *
-  * This call is issued by the UDC Class driver after calling
-@@ -1135,8 +1181,11 @@ static inline int usb_gadget_udc_start(s
-  * The details are implementation specific, but it can go as
-  * far as powering off UDC completely and disable its data
-  * line pullups.
-+ *
-+ * Caller should acquire connect lock before invoking this function.
-  */
--static inline void usb_gadget_udc_stop(struct usb_udc *udc)
-+static inline void usb_gadget_udc_stop_locked(struct usb_udc *udc)
-+	__must_hold(&udc->connect_lock)
- {
- 	if (!udc->started) {
- 		dev_err(&udc->dev, "UDC had already stopped\n");
-@@ -1295,6 +1344,7 @@ int usb_add_gadget(struct usb_gadget *ga
- 
- 	udc->gadget = gadget;
- 	gadget->udc = udc;
-+	mutex_init(&udc->connect_lock);
- 
- 	udc->started = false;
- 
-@@ -1496,11 +1546,15 @@ static int gadget_bind_driver(struct dev
- 	if (ret)
- 		goto err_bind;
- 
--	ret = usb_gadget_udc_start(udc);
--	if (ret)
-+	mutex_lock(&udc->connect_lock);
-+	ret = usb_gadget_udc_start_locked(udc);
-+	if (ret) {
-+		mutex_unlock(&udc->connect_lock);
- 		goto err_start;
-+	}
- 	usb_gadget_enable_async_callbacks(udc);
--	usb_udc_connect_control(udc);
-+	usb_udc_connect_control_locked(udc);
-+	mutex_unlock(&udc->connect_lock);
- 
- 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
- 	return 0;
-@@ -1531,12 +1585,14 @@ static void gadget_unbind_driver(struct
- 
- 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
- 
--	usb_gadget_disconnect(gadget);
-+	mutex_lock(&udc->connect_lock);
-+	usb_gadget_disconnect_locked(gadget);
- 	usb_gadget_disable_async_callbacks(udc);
- 	if (gadget->irq)
- 		synchronize_irq(gadget->irq);
- 	udc->driver->unbind(gadget);
--	usb_gadget_udc_stop(udc);
-+	usb_gadget_udc_stop_locked(udc);
-+	mutex_unlock(&udc->connect_lock);
- 
- 	mutex_lock(&udc_lock);
- 	driver->is_bound = false;
-@@ -1622,11 +1678,15 @@ static ssize_t soft_connect_store(struct
- 	}
- 
- 	if (sysfs_streq(buf, "connect")) {
--		usb_gadget_udc_start(udc);
--		usb_gadget_connect(udc->gadget);
-+		mutex_lock(&udc->connect_lock);
-+		usb_gadget_udc_start_locked(udc);
-+		usb_gadget_connect_locked(udc->gadget);
-+		mutex_unlock(&udc->connect_lock);
- 	} else if (sysfs_streq(buf, "disconnect")) {
--		usb_gadget_disconnect(udc->gadget);
--		usb_gadget_udc_stop(udc);
-+		mutex_lock(&udc->connect_lock);
-+		usb_gadget_disconnect_locked(udc->gadget);
-+		usb_gadget_udc_stop_locked(udc);
-+		mutex_unlock(&udc->connect_lock);
- 	} else {
- 		dev_err(dev, "unsupported command '%s'\n", buf);
- 		ret = -EINVAL;
+-	ret = blk_crypto_init_request(rq);
++	ret = blk_crypto_rq_get_keyslot(rq);
+ 	if (ret != BLK_STS_OK) {
+ 		bio->bi_status = ret;
+ 		bio_endio(bio);
 
 
