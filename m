@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15EB66FAC94
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5278F6FA9A1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235747AbjEHL0L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41582 "EHLO
+        id S235313AbjEHKxr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235722AbjEHLZ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:57 -0400
+        with ESMTP id S235284AbjEHKx1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7B83A5D4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38863A5E5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EABEB62D84
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF17C433D2;
-        Mon,  8 May 2023 11:25:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B60F362941
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A4BC433EF;
+        Mon,  8 May 2023 10:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545110;
-        bh=Jc8Mdawx3aHNq1LRGryHP7p+OBu3CO0SNO7/bQfcUPg=;
+        s=korg; t=1683543167;
+        bh=eUicCCTacN+4HZa4ZS17SedqqLgYkcBdUACFtoKMKHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YiiY26XMZg+m23mYtEKPP6caBG8nskflvKhrMnAGY//0OPSOHQzOhEAVXZELcj4W2
-         rJd2q0Zuvo6qqMTn3Y0eZkb9UM8XGG2Foq77oZ/SRZQsO7LV8ysQDD0bhUtJgVlSRm
-         5sicG7lixizeLqe/1XElUHPUMm+XFlIWaYta0oV8=
+        b=SQ0GGkkWbN5R66yfMy2Ud5Z7Z2ESp9QIfU9axNKoDiiHcS1shtAOrdpTMW+OlPpPB
+         tcb5HePD4/KwXXb8GhvrSevyZciJDd+KewAQPsIUetzgqC9//pxJOGjvGU3pKamkJi
+         glCV4HJPugAXZ+NoEGEVp5pjQ6h2BG1rpwmTdsPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stafford Horne <shorne@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 628/694] openrisc: Properly store r31 to pt_regs on unhandled exceptions
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.2 637/663] clk: microchip: fix potential UAF in auxdev release callback
 Date:   Mon,  8 May 2023 11:47:43 +0200
-Message-Id: <20230508094455.975725269@linuxfoundation.org>
+Message-Id: <20230508094450.607584891@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,56 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stafford Horne <shorne@gmail.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 812489ac4dd91144a74ce65ecf232252a2e406fb ]
+commit 7455b7007b9e93bcc2bc9c1c6c73a228e3152069 upstream.
 
-In commit 91993c8c2ed5 ("openrisc: use shadow registers to save regs on
-exception") the unhandled exception path was changed to do an early
-store of r30 instead of r31.  The entry code was not updated and r31 is
-not getting stored to pt_regs.
+Similar to commit 1c11289b34ab ("peci: cpu: Fix use-after-free in
+adev_release()"), the auxiliary device is not torn down in the correct
+order. If auxiliary_device_add() fails, the release callback will be
+called twice, resulting in a UAF. Due to timing, the auxdev code in this
+driver "took inspiration" from the aforementioned commit, and thus its
+bugs too!
 
-This patch updates the entry handler to store r31 instead of r30.  We
-also remove some misleading commented out store r30 and r31
-instructrions.
+Moving auxiliary_device_uninit() to the unregister callback instead
+avoids the issue.
 
-I noticed this while working on adding floating point exception
-handling,  This issue probably would never impact anything since we kill
-the process or Oops right away on unhandled exceptions.
-
-Fixes: 91993c8c2ed5 ("openrisc: use shadow registers to save regs on exception")
-Signed-off-by: Stafford Horne <shorne@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: b56bae2dd6fd ("clk: microchip: mpfs: add reset controller")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20230413-critter-synopsis-dac070a86cb4@spud
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/openrisc/kernel/entry.S | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/clk/microchip/clk-mpfs.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/openrisc/kernel/entry.S b/arch/openrisc/kernel/entry.S
-index 54a87bba35caa..a130c4dac48d3 100644
---- a/arch/openrisc/kernel/entry.S
-+++ b/arch/openrisc/kernel/entry.S
-@@ -173,7 +173,6 @@ handler:							;\
- 	l.sw    PT_GPR28(r1),r28					;\
- 	l.sw    PT_GPR29(r1),r29					;\
- 	/* r30 already save */					;\
--/*        l.sw    PT_GPR30(r1),r30*/					;\
- 	l.sw    PT_GPR31(r1),r31					;\
- 	TRACE_IRQS_OFF_ENTRY						;\
- 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
-@@ -211,9 +210,8 @@ handler:							;\
- 	l.sw    PT_GPR27(r1),r27					;\
- 	l.sw    PT_GPR28(r1),r28					;\
- 	l.sw    PT_GPR29(r1),r29					;\
--	/* r31 already saved */					;\
--	l.sw    PT_GPR30(r1),r30					;\
--/*        l.sw    PT_GPR31(r1),r31	*/				;\
-+	/* r30 already saved */						;\
-+	l.sw    PT_GPR31(r1),r31					;\
- 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
- 	l.addi	r30,r0,-1					;\
- 	l.sw	PT_ORIG_GPR11(r1),r30				;\
--- 
-2.39.2
-
+--- a/drivers/clk/microchip/clk-mpfs.c
++++ b/drivers/clk/microchip/clk-mpfs.c
+@@ -374,14 +374,13 @@ static void mpfs_reset_unregister_adev(v
+ 	struct auxiliary_device *adev = _adev;
+ 
+ 	auxiliary_device_delete(adev);
++	auxiliary_device_uninit(adev);
+ }
+ 
+ static void mpfs_reset_adev_release(struct device *dev)
+ {
+ 	struct auxiliary_device *adev = to_auxiliary_dev(dev);
+ 
+-	auxiliary_device_uninit(adev);
+-
+ 	kfree(adev);
+ }
+ 
 
 
