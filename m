@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A306FA622
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0A9B6FAE02
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234331AbjEHKQm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
+        id S236072AbjEHLkO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234333AbjEHKQj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:39 -0400
+        with ESMTP id S235977AbjEHLjv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C5A4BBE2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79D641183
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08ED2624A0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D2DC4339B;
-        Mon,  8 May 2023 10:16:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A5FE634A3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20086C4339B;
+        Mon,  8 May 2023 11:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540995;
-        bh=PtxQm6ebCP86wI7a0NbfcbRQJZlJ/6yGIi6c0zjSYzw=;
+        s=korg; t=1683545981;
+        bh=6ck7e7eI+hBXeJkDorrBdi8MeB8c0A3KgbQdy1z/BZk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rcGW7NIOHlR2idy2hyEfpkYLM7KVXts8T1Bj+tfdhM8urVy74U9Z+z142cK6Bs1Nd
-         ERjSDjmWuu3gF+hANeBRQoftkvF8XY/YKlARJdaVuMllie9m3y2VciGb/arylYD2Tw
-         eLzE3jJ37M/8C6xRbpFF0ZviACeOTjDCHXu+C+rk=
+        b=SoU+QSMfqitqXCRycEaVqw31e3MkUpu966qJEp0JtfBIF3I/28e0nrwNQ43dAOTt8
+         LuFJwtg/26tH1tjfxqauNS3cu+sLOgJLNjN0o4cTKiOdCzb1/y7+OQHtO+ir3kYQS+
+         2bfXwc96t8g3GzGEfXg0G2hUdj7X1kWpGb4sdlUw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: [PATCH 6.1 576/611] mtd: spi-nor: core: Update flashs current address mode when changing address mode
+        patches@lists.linux.dev, Kang Chen <void0red@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 217/371] wifi: mt76: handle failure of vzalloc in mt7615_coredump_work
 Date:   Mon,  8 May 2023 11:46:58 +0200
-Message-Id: <20230508094440.667124175@linuxfoundation.org>
+Message-Id: <20230508094820.680007151@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,46 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Kang Chen <void0red@gmail.com>
 
-commit 37513c56139b79dd43c1774513c28f8ab2b05224 upstream.
+[ Upstream commit 9e47dd9f64a47ae00ca0123017584c37209ee900 ]
 
-The bug was obswerved while reading code. There are not many users of
-addr_mode_nbytes. Anyway, we should update the flash's current address
-mode when changing the address mode, fix it. We don't care for now about
-the set_4byte_addr_mode(nor, false) from spi_nor_restore(), as it is
-used at driver remove and shutdown.
+vzalloc may fails, dump might be null and will cause
+illegal address access later.
 
-Fixes: d7931a215063 ("mtd: spi-nor: core: Track flash's internal address mode")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230331074606.3559258-9-tudor.ambarus@linaro.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/Y%2Fy5Asxw3T3m4jCw@lore-desk
+Fixes: d2bf7959d9c0 ("mt76: mt7663: introduce coredump support")
+Signed-off-by: Kang Chen <void0red@gmail.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2696,6 +2696,7 @@ static int spi_nor_quad_enable(struct sp
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index c7e084821b292..37bc307c19719 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -2273,7 +2273,7 @@ void mt7615_coredump_work(struct work_struct *work)
+ 			break;
  
- static int spi_nor_init(struct spi_nor *nor)
- {
-+	struct spi_nor_flash_parameter *params = nor->params;
- 	int err;
+ 		skb_pull(skb, sizeof(struct mt7615_mcu_rxd));
+-		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
++		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
+ 			dev_kfree_skb(skb);
+ 			continue;
+ 		}
+@@ -2283,6 +2283,8 @@ void mt7615_coredump_work(struct work_struct *work)
  
- 	err = spi_nor_octal_dtr_enable(nor, true);
-@@ -2737,9 +2738,10 @@ static int spi_nor_init(struct spi_nor *
- 		 */
- 		WARN_ONCE(nor->flags & SNOR_F_BROKEN_RESET,
- 			  "enabling reset hack; may not recover from unexpected reboots\n");
--		err = nor->params->set_4byte_addr_mode(nor, true);
-+		err = params->set_4byte_addr_mode(nor, true);
- 		if (err && err != -ENOTSUPP)
- 			return err;
-+		params->addr_mode_nbytes = 4;
+ 		dev_kfree_skb(skb);
  	}
- 
- 	return 0;
+-	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
+-		      GFP_KERNEL);
++
++	if (dump)
++		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
++			      GFP_KERNEL);
+ }
+-- 
+2.39.2
+
 
 
