@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79EF06FA4C0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A79B6FAAE7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbjEHKDC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58938 "EHLO
+        id S233122AbjEHLHv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233951AbjEHKDB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:01 -0400
+        with ESMTP id S233117AbjEHLHV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8473120BC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45582E82F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D1C8622E6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D96DC433D2;
-        Mon,  8 May 2023 10:02:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A6A162ABD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BFFC433EF;
+        Mon,  8 May 2023 11:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540165;
-        bh=JJXEF3sE+EiIAkPBgV37jmCIvWUqRe9SCSfkapufKvE=;
+        s=korg; t=1683543995;
+        bh=EcHEW2fxCkX8xvjdikGQmUSKlrbCfFMawQG2r9OCvjU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nUt0uKGU3sAiGSNpWpPZgG0bbOqo5KNf1Va8xTV9d8d0eJLsJsWYheR56DEWGlObH
-         HoE6n+GeyCMzBGcPRZhIL+IIQXYFwHu1MsfdvtYedL8ujeoibxxYgAmeEJ8ZPlHcw7
-         yZug01LhOlAxvuLl/yS5OKvOEjtRClFBQN84UmP4=
+        b=WhjgUvWddrWFA7Mn+Y++vyu6TVibVR6otvz81i4XtyX9BqkBT3IQ2qpumNy6lio0W
+         fd6evC3wJU84/1MaQnN0yaD526vv8DaBTrAl3uqx4lSetBMkfqTbflZLrxyeuZuzji
+         FldKinTX0Jqycq+tyJLZacGOheD74BA+fogSAXNw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Petr Vorel <pvorel@suse.cz>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/611] ACPI: bus: Ensure that notify handlers are not running after removal
+Subject: [PATCH 6.3 268/694] arm64: dts: qcom: msm8994-angler: Fix cont_splash_mem mapping
 Date:   Mon,  8 May 2023 11:41:43 +0200
-Message-Id: <20230508094430.893910085@linuxfoundation.org>
+Message-Id: <20230508094440.964198271@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Petr Vorel <pvorel@suse.cz>
 
-[ Upstream commit faae443738c6f0dac9b0d3d11d108f6911a989a9 ]
+[ Upstream commit fe88480a6be92ecbf6f205ff3a7d7e5ded0562dd ]
 
-Currently, acpi_device_remove_notify_handler() may return while the
-notify handler being removed is still running which may allow the
-module holding that handler to be torn down prematurely.
+Angler's cont_splash_mem mapping is shorter in downstream [1],
+therefore 380cd3a34b7f was wrong. Obviously also 0e5ded926f2a was wrong
+(workaround which fixed booting at the time).
 
-Address this issue by making acpi_device_remove_notify_handler() wait
-for the handling of all the ACPI events in progress to complete before
-returning.
+This fixes error:
+[    0.000000] memory@3401000 (0x0000000003401000--0x0000000005601000) overlaps with tzapp@4800000 (0x0000000004800000--0x0000000006100000)
 
-Fixes: 5894b0c46e49 ("ACPI / scan: Move bus operations and notification routines to bus.c")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[1] https://android.googlesource.com/kernel/msm/+/refs/heads/android-msm-angler-3.10-marshmallow-mr1/arch/arm64/boot/dts/huawei/huawei_msm8994_angler_row_vn1/huawei-fingerprint.dtsi#16
+
+Fixes: 380cd3a34b7f ("arm64: dts: msm8994-angler: fix the memory map")
+Fixes: 0e5ded926f2a ("arm64: dts: qcom: msm8994-angler: Disable cont_splash_mem")
+
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230131200414.24373-2-pvorel@suse.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 3b6146b1e25cc..a16b7de73d164 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -586,6 +586,7 @@ static void acpi_device_remove_notify_handler(struct acpi_device *device,
- 		acpi_remove_notify_handler(device->handle, type,
- 					   acpi_notify_device);
- 	}
-+	acpi_os_wait_events_complete();
- }
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
+index 7b0f62144c3ee..59b9ed78cf0cb 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
++++ b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (c) 2015, Huawei Inc. All rights reserved.
+  * Copyright (c) 2016, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022, Petr Vorel <petr.vorel@gmail.com>
++ * Copyright (c) 2021-2023, Petr Vorel <petr.vorel@gmail.com>
+  */
  
- /* Handle events targeting \_SB device (at present only graceful shutdown) */
+ /dts-v1/;
+@@ -31,6 +31,11 @@
+ 		#size-cells = <2>;
+ 		ranges;
+ 
++		cont_splash_mem: memory@3401000 {
++			reg = <0 0x03401000 0 0x1000000>;
++			no-map;
++		};
++
+ 		tzapp_mem: tzapp@4800000 {
+ 			reg = <0 0x04800000 0 0x1900000>;
+ 			no-map;
 -- 
 2.39.2
 
