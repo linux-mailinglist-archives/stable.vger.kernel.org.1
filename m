@@ -2,57 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 637446FACF6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBECB6FA546
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235737AbjEHL36 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44122 "EHLO
+        id S234089AbjEHKHm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235835AbjEHL3j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:39 -0400
+        with ESMTP id S234087AbjEHKHk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 627363C3F3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E65AB4EEF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EEDD62E8C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C7DC433EF;
-        Mon,  8 May 2023 11:29:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78D2262372
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D85C433D2;
+        Mon,  8 May 2023 10:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545354;
-        bh=Rw0pSNQBVmqVnVO5qQ0fjbWqjjvpW2WvqxUM+ZkQmb4=;
+        s=korg; t=1683540458;
+        bh=dSI/wb0Bo68/Pnt381Ba2aM94yZZMBwQt+ItJfbdtOU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UsE3Hg4Mr8j6uRrQHZE7CpLHGK4EBsgKkTCcza5jhORm/SkOC5x2BGmfjMqQWtED3
-         nfp9Q5Xv7GnWMuA3x1HdFHrovfp+jLjIVN0vTQtsgdjr0SGpAEXkJa5/xAJTjGwyQu
-         bKYbSbjyvs6RIeb7MWM0RcxhWzop6a+s13ObcPew=
+        b=urBUGocq1//J6kF9mUt6ufQl4MFC19NfYxUY6JS8vA1M+t+L/g4pwf27hgE9cg+bh
+         iLq0OYOI8Zbdd7O0zX3sc+4U5eD6vw8FDWL1gB0TTeKJ/oCz1Qce8t+lpFklkQV2aI
+         hxLTWEg1AvAYwj4zl2nZp01CzuwRqSNbhB3Iycgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Michael Haeuptle <michael.haeuptle@hpe.com>,
-        Ian May <ian.may@canonical.com>,
-        Andrey Grodzovsky <andrey2805@gmail.com>,
-        Rahul Kumar <rahul.kumar1@amd.com>,
-        Jialin Zhang <zhangjialin11@huawei.com>,
-        Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dan Stein <dstein@hpe.com>, Ashok Raj <ashok.raj@intel.com>,
-        Alex Michon <amichon@kalrayinc.com>,
-        Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 5.15 013/371] PCI: pciehp: Fix AB-BA deadlock between reset_lock and device_lock
+        =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@stgraber.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 372/611] netfilter: conntrack: restore IPS_CONFIRMED out of nf_conntrack_hash_check_insert()
 Date:   Mon,  8 May 2023 11:43:34 +0200
-Message-Id: <20230508094812.580448737@linuxfoundation.org>
+Message-Id: <20230508094434.446108211@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -67,178 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit f5eff5591b8f9c5effd25c92c758a127765f74c1 upstream.
+[ Upstream commit 2cdaa3eefed83082923cf219c8b6a314e622da74 ]
 
-In 2013, commits
+e6d57e9ff0ae ("netfilter: conntrack: fix rmmod double-free race")
+consolidates IPS_CONFIRMED bit set in nf_conntrack_hash_check_insert().
+However, this breaks ctnetlink:
 
-  2e35afaefe64 ("PCI: pciehp: Add reset_slot() method")
-  608c388122c7 ("PCI: Add slot reset option to pci_dev_reset()")
+ # conntrack -I -p tcp --timeout 123 --src 1.2.3.4 --dst 5.6.7.8 --state ESTABLISHED --sport 1 --dport 4 -u SEEN_REPLY
+ conntrack v1.4.6 (conntrack-tools): Operation failed: Device or resource busy
 
-amended PCIe hotplug to mask Presence Detect Changed events during a
-Secondary Bus Reset.  The reset thus no longer causes gratuitous slot
-bringdown and bringup.
+This is a partial revert of the aforementioned commit to restore
+IPS_CONFIRMED.
 
-However the commits neglected to serialize reset with code paths reading
-slot registers.  For instance, a slot bringup due to an earlier hotplug
-event may see the Presence Detect State bit cleared during a concurrent
-Secondary Bus Reset.
-
-In 2018, commit
-
-  5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-
-retrofitted the missing locking.  It introduced a reset_lock which
-serializes a Secondary Bus Reset with other parts of pciehp.
-
-Unfortunately the locking turns out to be overzealous:  reset_lock is
-held for the entire enumeration and de-enumeration of hotplugged devices,
-including driver binding and unbinding.
-
-Driver binding and unbinding acquires device_lock while the reset_lock
-of the ancestral hotplug port is held.  A concurrent Secondary Bus Reset
-acquires the ancestral reset_lock while already holding the device_lock.
-The asymmetric locking order in the two code paths can lead to AB-BA
-deadlocks.
-
-Michael Haeuptle reports such deadlocks on simultaneous hot-removal and
-vfio release (the latter implies a Secondary Bus Reset):
-
-  pciehp_ist()                                    # down_read(reset_lock)
-    pciehp_handle_presence_or_link_change()
-      pciehp_disable_slot()
-        __pciehp_disable_slot()
-          remove_board()
-            pciehp_unconfigure_device()
-              pci_stop_and_remove_bus_device()
-                pci_stop_bus_device()
-                  pci_stop_dev()
-                    device_release_driver()
-                      device_release_driver_internal()
-                        __device_driver_lock()    # device_lock()
-
-  SYS_munmap()
-    vfio_device_fops_release()
-      vfio_device_group_close()
-        vfio_device_close()
-          vfio_device_last_close()
-            vfio_pci_core_close_device()
-              vfio_pci_core_disable()             # device_lock()
-                __pci_reset_function_locked()
-                  pci_reset_bus_function()
-                    pci_dev_reset_slot_function()
-                      pci_reset_hotplug_slot()
-                        pciehp_reset_slot()       # down_write(reset_lock)
-
-Ian May reports the same deadlock on simultaneous hot-removal and an
-AER-induced Secondary Bus Reset:
-
-  aer_recover_work_func()
-    pcie_do_recovery()
-      aer_root_reset()
-        pci_bus_error_reset()
-          pci_slot_reset()
-            pci_slot_lock()                       # device_lock()
-            pci_reset_hotplug_slot()
-              pciehp_reset_slot()                 # down_write(reset_lock)
-
-Fix by releasing the reset_lock during driver binding and unbinding,
-thereby splitting and shrinking the critical section.
-
-Driver binding and unbinding is protected by the device_lock() and thus
-serialized with a Secondary Bus Reset.  There's no need to additionally
-protect it with the reset_lock.  However, pciehp does not bind and
-unbind devices directly, but rather invokes PCI core functions which
-also perform certain enumeration and de-enumeration steps.
-
-The reset_lock's purpose is to protect slot registers, not enumeration
-and de-enumeration of hotplugged devices.  That would arguably be the
-job of the PCI core, not the PCIe hotplug driver.  After all, an
-AER-induced Secondary Bus Reset may as well happen during boot-time
-enumeration of the PCI hierarchy and there's no locking to prevent that
-either.
-
-Exempting *de-enumeration* from the reset_lock is relatively harmless:
-A concurrent Secondary Bus Reset may foil config space accesses such as
-PME interrupt disablement.  But if the device is physically gone, those
-accesses are pointless anyway.  If the device is physically present and
-only logically removed through an Attention Button press or the sysfs
-"power" attribute, PME interrupts as well as DMA cannot come through
-because pciehp_unconfigure_device() disables INTx and Bus Master bits.
-That's still protected by the reset_lock in the present commit.
-
-Exempting *enumeration* from the reset_lock also has limited impact:
-The exempted call to pci_bus_add_device() may perform device accesses
-through pcibios_bus_add_device() and pci_fixup_device() which are now
-no longer protected from a concurrent Secondary Bus Reset.  Otherwise
-there should be no impact.
-
-In essence, the present commit seeks to fix the AB-BA deadlocks while
-still retaining a best-effort reset protection for enumeration and
-de-enumeration of hotplugged devices -- until a general solution is
-implemented in the PCI core.
-
-Link: https://lore.kernel.org/linux-pci/CS1PR8401MB0728FC6FDAB8A35C22BD90EC95F10@CS1PR8401MB0728.NAMPRD84.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20200615143250.438252-1-ian.may@canonical.com
-Link: https://lore.kernel.org/linux-pci/ce878dab-c0c4-5bd0-a725-9805a075682d@amd.com
-Link: https://lore.kernel.org/linux-pci/ed831249-384a-6d35-0831-70af191e9bce@huawei.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215590
-Fixes: 5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-Link: https://lore.kernel.org/r/fef2b2e9edf245c049a8c5b94743c0f74ff5008a.1681191902.git.lukas@wunner.de
-Reported-by: Michael Haeuptle <michael.haeuptle@hpe.com>
-Reported-by: Ian May <ian.may@canonical.com>
-Reported-by: Andrey Grodzovsky <andrey2805@gmail.com>
-Reported-by: Rahul Kumar <rahul.kumar1@amd.com>
-Reported-by: Jialin Zhang <zhangjialin11@huawei.com>
-Tested-by: Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Cc: Dan Stein <dstein@hpe.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Alex Michon <amichon@kalrayinc.com>
-Cc: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6d57e9ff0ae ("netfilter: conntrack: fix rmmod double-free race")
+Reported-by: Stéphane Graber <stgraber@stgraber.org>
+Tested-by: Stéphane Graber <stgraber@stgraber.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_pci.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/netfilter/nf_conntrack_bpf.c     | 1 +
+ net/netfilter/nf_conntrack_core.c    | 1 -
+ net/netfilter/nf_conntrack_netlink.c | 3 +++
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/hotplug/pciehp_pci.c
-+++ b/drivers/pci/hotplug/pciehp_pci.c
-@@ -63,7 +63,14 @@ int pciehp_configure_device(struct contr
+diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
+index adae86e8e02e8..8639e7efd0e22 100644
+--- a/net/netfilter/nf_conntrack_bpf.c
++++ b/net/netfilter/nf_conntrack_bpf.c
+@@ -384,6 +384,7 @@ struct nf_conn *bpf_ct_insert_entry(struct nf_conn___init *nfct_i)
+ 	struct nf_conn *nfct = (struct nf_conn *)nfct_i;
+ 	int err;
  
- 	pci_assign_unassigned_bridge_resources(bridge);
- 	pcie_bus_configure_settings(parent);
-+
-+	/*
-+	 * Release reset_lock during driver binding
-+	 * to avoid AB-BA deadlock with device_lock.
-+	 */
-+	up_read(&ctrl->reset_lock);
- 	pci_bus_add_devices(parent);
-+	down_read_nested(&ctrl->reset_lock, ctrl->depth);
++	nfct->status |= IPS_CONFIRMED;
+ 	err = nf_conntrack_hash_check_insert(nfct);
+ 	if (err < 0) {
+ 		nf_conntrack_free(nfct);
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index 30ed45b1b57df..a0e9c7af08467 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -938,7 +938,6 @@ nf_conntrack_hash_check_insert(struct nf_conn *ct)
+ 		goto out;
+ 	}
  
-  out:
- 	pci_unlock_rescan_remove();
-@@ -104,7 +111,15 @@ void pciehp_unconfigure_device(struct co
- 	list_for_each_entry_safe_reverse(dev, temp, &parent->devices,
- 					 bus_list) {
- 		pci_dev_get(dev);
+-	ct->status |= IPS_CONFIRMED;
+ 	smp_wmb();
+ 	/* The caller holds a reference to this object */
+ 	refcount_set(&ct->ct_general.use, 2);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index d095d3c1ceca6..a68391e228f0e 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -2316,6 +2316,9 @@ ctnetlink_create_conntrack(struct net *net,
+ 	nfct_seqadj_ext_add(ct);
+ 	nfct_synproxy_ext_add(ct);
+ 
++	/* we must add conntrack extensions before confirmation. */
++	ct->status |= IPS_CONFIRMED;
 +
-+		/*
-+		 * Release reset_lock during driver unbinding
-+		 * to avoid AB-BA deadlock with device_lock.
-+		 */
-+		up_read(&ctrl->reset_lock);
- 		pci_stop_and_remove_bus_device(dev);
-+		down_read_nested(&ctrl->reset_lock, ctrl->depth);
-+
- 		/*
- 		 * Ensure that no new Requests will be generated from
- 		 * the device.
+ 	if (cda[CTA_STATUS]) {
+ 		err = ctnetlink_change_status(ct, cda);
+ 		if (err < 0)
+-- 
+2.39.2
+
 
 
