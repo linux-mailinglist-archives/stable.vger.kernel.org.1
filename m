@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB98A6FAD5A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1976FA592
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235920AbjEHLeF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:34:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53534 "EHLO
+        id S234174AbjEHKK4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235932AbjEHLdn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3929C3D230
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:33:01 -0700 (PDT)
+        with ESMTP id S234170AbjEHKKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B3CC3988C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18CC362CCF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0870C433D2;
-        Mon,  8 May 2023 11:32:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88E7A6222E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2B4C433EF;
+        Mon,  8 May 2023 10:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545580;
-        bh=8Pu85LHb6gwQsv5qZ557RDqqttgjHxQBfNY6cUccObc=;
+        s=korg; t=1683540653;
+        bh=SRRVU7pNpi8dfrzAzAUHUGIFDuGGW7paUqDYtN6Yv7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EOn0uNjZQ7fbGfm77vCo9XUIAJ06vkvfZ7q2ZgB0b9hyIyGFr73QIhJMSZbLleB78
-         VPamurkOcasXMmOmXFeo8JrvVBy6QESon+Oaze3w9zHFaXgWtQbBjMlgyVb3QPi/hA
-         n15d0RLXUlgGGrAgZAw7qAgiVlELFGk3UHwl0snI=
+        b=G0mzmt/bI6Z36QBHKKgpJdGdBKci9ukHoTknmu2/Fuxsobt4TjbywzWyXUCiSPS0q
+         ruwIQ4xYWvxjAwqVl8FzFr2ZYTFy2hxw2WFDkWYY5I7ujub0F3T9jPVphGfK9tfzoT
+         OC+N275GDjSkMktGqFiXT0eu9S4Wv0TA80RbEyNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/371] arm64: dts: broadcom: bcm4908: add DT for Netgear RAXE500
+Subject: [PATCH 6.1 445/611] usb: gadget: tegra-xudc: Fix crash in vbus_draw
 Date:   Mon,  8 May 2023 11:44:47 +0200
-Message-Id: <20230508094815.505707559@linuxfoundation.org>
+Message-Id: <20230508094436.619414149@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,90 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit d0e68d354f345873e15876a7b35be1baaf5e3ec9 ]
+[ Upstream commit 5629d31955297ca47b9283c64fff70f2f34aa528 ]
 
-It's a home router based on BCM4908 SoC. It has: 1 GiB of RAM, 512 MiB
-NAND flash, 6 Ethernet ports and 3 x BCM43684 (WiFi). One of Ethernet
-ports is "2.5 G Multi-Gig port" that isn't described yet (it isn't known
-how it's wired up).
+Commit ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+populated the vbus_draw callback for the Tegra XUDC driver. The function
+tegra_xudc_gadget_vbus_draw(), that was added by this commit, assumes
+that the pointer 'curr_usbphy' has been initialised, which is not always
+the case because this is only initialised when the USB role is updated.
+Fix this crash, by checking that the 'curr_usbphy' is valid before
+dereferencing.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Stable-dep-of: 5cca02449490 ("arm64: dts: broadcom: bcmbca: bcm4908: fix NAND interrupt name")
+Fixes: ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230405181854.42355-1-jonathanh@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/broadcom/bcm4908/Makefile |  1 +
- .../bcm4908/bcm4908-netgear-raxe500.dts       | 50 +++++++++++++++++++
- 2 files changed, 51 insertions(+)
- create mode 100644 arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-netgear-raxe500.dts
+ drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/Makefile b/arch/arm64/boot/dts/broadcom/bcm4908/Makefile
-index cc75854519ac3..6e364e304d4fd 100644
---- a/arch/arm64/boot/dts/broadcom/bcm4908/Makefile
-+++ b/arch/arm64/boot/dts/broadcom/bcm4908/Makefile
-@@ -2,3 +2,4 @@
- dtb-$(CONFIG_ARCH_BCM4908) += bcm4906-netgear-r8000p.dtb
- dtb-$(CONFIG_ARCH_BCM4908) += bcm4906-tplink-archer-c2300-v1.dtb
- dtb-$(CONFIG_ARCH_BCM4908) += bcm4908-asus-gt-ac5300.dtb
-+dtb-$(CONFIG_ARCH_BCM4908) += bcm4908-netgear-raxe500.dtb
-diff --git a/arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-netgear-raxe500.dts b/arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-netgear-raxe500.dts
-new file mode 100644
-index 0000000000000..3c2cf2d238b6f
---- /dev/null
-+++ b/arch/arm64/boot/dts/broadcom/bcm4908/bcm4908-netgear-raxe500.dts
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+
-+#include "bcm4908.dtsi"
-+
-+/ {
-+	compatible = "netgear,raxe500", "brcm,bcm4908";
-+	model = "Netgear RAXE500";
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x00 0x00 0x00 0x40000000>;
-+	};
-+};
-+
-+&ehci {
-+	status = "okay";
-+};
-+
-+&ohci {
-+	status = "okay";
-+};
-+
-+&xhci {
-+	status = "okay";
-+};
-+
-+&ports {
-+	port@0 {
-+		label = "lan4";
-+	};
-+
-+	port@1 {
-+		label = "lan3";
-+	};
-+
-+	port@2 {
-+		label = "lan2";
-+	};
-+
-+	port@3 {
-+		label = "lan1";
-+	};
-+
-+	port@7 {
-+		reg = <7>;
-+		phy-mode = "internal";
-+		phy-handle = <&phy12>;
-+		label = "wan";
-+	};
-+};
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index 76919d7570d23..3c7ffb35c35cd 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -2160,7 +2160,7 @@ static int tegra_xudc_gadget_vbus_draw(struct usb_gadget *gadget,
+ 
+ 	dev_dbg(xudc->dev, "%s: %u mA\n", __func__, m_a);
+ 
+-	if (xudc->curr_usbphy->chg_type == SDP_TYPE)
++	if (xudc->curr_usbphy && xudc->curr_usbphy->chg_type == SDP_TYPE)
+ 		ret = usb_phy_set_power(xudc->curr_usbphy, m_a);
+ 
+ 	return ret;
 -- 
 2.39.2
 
