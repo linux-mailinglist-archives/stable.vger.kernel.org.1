@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6466FAA8C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 071EB6FA73E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233253AbjEHLDx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
+        id S234634AbjEHK2l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:28:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235511AbjEHLDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1970A4C13
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:25 -0700 (PDT)
+        with ESMTP id S234468AbjEHK2V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EBB824027
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A35B362A48
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D80C433EF;
-        Mon,  8 May 2023 11:02:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8818161D74
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809EDC433D2;
+        Mon,  8 May 2023 10:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543744;
-        bh=RYwn2FDu/hPflrlpPWCTINds9G4Ji7Sg9t2EgmZI/Qg=;
+        s=korg; t=1683541699;
+        bh=Tu800nFvGCDQ5VgkGZqPtD4GypRW+fWPYMQuXU0qUAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X1W31xy18KmEvYZwxyipZf5ZvvA0jIJcOcDg1kQkp+W+Qjo6wSa4EsT4VeSkcPnBQ
-         aY8nhLhZi+pqxXN/xR58nlfod1PsYBRXV4ZeuX7JY9/ao0iXK7C50mRKwvLt24qQG4
-         WtIFhJYgA2l4hAFHiejNWhgF5JGa80yQUcer7smM=
+        b=EPKqokpS1mSwsAtkOaw8lOsW/TJjFkUsjgrp74ZB7LdLmtAgnxv6tFGYVo8MycEx1
+         WxwhNK9yDBgkPhypLA8SaJXUFtTqKQ/m5mkf+SlljBoJKmcKnP4kp+kY7GQo04bOMH
+         /3sIUJvISEvhQwZFxDRdTzp+L1K0OzDfGGZuMyqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 188/694] arm64: dts: qcom: ipq8074: Fix the PCI I/O port range
+        patches@lists.linux.dev,
+        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 197/663] perf/arm-cmn: Move overlapping wp_combine field
 Date:   Mon,  8 May 2023 11:40:23 +0200
-Message-Id: <20230508094438.527655016@linuxfoundation.org>
+Message-Id: <20230508094434.787700670@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,59 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit e49eafefe5ab325e38dd074f2005076ffc271e54 ]
+[ Upstream commit f87e9114b5e590c2c6658ca21d7b714ca240bdd0 ]
 
-For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI addresses
-(0x10200000, 0x20200000) specified in the ranges property for I/O region.
+As eventid field was expanded to support new mesh versions, it started to
+overlap with wp_combine field. Move wp_combine to fix the issue.
 
-While at it, let's use the missing 0x prefix for the addresses and align
-them in a single line.
-
-Fixes: 33057e1672fe ("ARM: dts: ipq8074: Add pcie nodes")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-6-manivannan.sadhasivam@linaro.org
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/20230301175540.19891-1-ilkka@os.amperecomputing.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq8074.dtsi | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/perf/arm-cmn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-index 62d05d740646b..e8dad3ff4fcc7 100644
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -780,10 +780,8 @@
- 			phys = <&pcie_phy1>;
- 			phy-names = "pciephy";
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 1deb61b22bc76..bc4b1d1ba8fa2 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -166,7 +166,7 @@
+ #define CMN_EVENT_BYNODEID(event)	FIELD_GET(CMN_CONFIG_BYNODEID, (event)->attr.config)
+ #define CMN_EVENT_NODEID(event)		FIELD_GET(CMN_CONFIG_NODEID, (event)->attr.config)
  
--			ranges = <0x81000000 0 0x10200000 0x10200000
--				  0 0x10000>,   /* downstream I/O */
--				 <0x82000000 0 0x10220000 0x10220000
--				  0 0xfde0000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x10200000 0x0 0x10000>,   /* I/O */
-+				 <0x82000000 0x0 0x10220000 0x10220000 0x0 0xfde0000>; /* MEM */
- 
- 			interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -844,10 +842,8 @@
- 			phys = <&pcie_phy0>;
- 			phy-names = "pciephy";
- 
--			ranges = <0x81000000 0 0x20200000 0x20200000
--				  0 0x10000>, /* downstream I/O */
--				 <0x82000000 0 0x20220000 0x20220000
--				  0 0xfde0000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x20200000 0x0 0x10000>,   /* I/O */
-+				 <0x82000000 0x0 0x20220000 0x20220000 0x0 0xfde0000>; /* MEM */
- 
- 			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
+-#define CMN_CONFIG_WP_COMBINE		GENMASK_ULL(27, 24)
++#define CMN_CONFIG_WP_COMBINE		GENMASK_ULL(30, 27)
+ #define CMN_CONFIG_WP_DEV_SEL		GENMASK_ULL(50, 48)
+ #define CMN_CONFIG_WP_CHN_SEL		GENMASK_ULL(55, 51)
+ /* Note that we don't yet support the tertiary match group on newer IPs */
 -- 
 2.39.2
 
