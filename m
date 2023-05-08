@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FD2A6FA6A6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C796FA9C5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234543AbjEHKXA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:23:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49418 "EHLO
+        id S235179AbjEHKza (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234534AbjEHKWR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:17 -0400
+        with ESMTP id S235204AbjEHKyu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4608524016
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:21:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C28630AE7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CFE97624EF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D493DC433D2;
-        Mon,  8 May 2023 10:21:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B349362982
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48146C433D2;
+        Mon,  8 May 2023 10:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541294;
-        bh=1H8inirfF86VtdUTZ0NCRUH2MxsMhj5Kd9sRqf/wL+A=;
+        s=korg; t=1683543248;
+        bh=CC9/hwVLKb98IEzAX6NtHlZpxb0dADoMz3zXKRzqhns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jN3avo1N9je6SkNIrcy7ne2cxe17pc1Iy0T32rHxgiSgdTtEoPg+1O1YNDIZXmY18
-         Hh3VQwFY5Tzgu8rYJppWAwn98LxYoBw76VOKLneTP/s4gztayb4R40qy8L/vjy6dcL
-         gyaJwgkGPQ6z+asKckpFuHaTwEvcPbWMChDGLYPM=
+        b=hJkU9bmIGhc1HQYRWwrhJfnoWmhjjrYwhDcviAxGPge4JTzIUHr6zpLXJWOLqW3Fs
+         FlZbVJJdY0StFvyHLO1EFhA6lEZM2zlCSoT4PgEISb0ohGuoOnNhbLb5Ld3WFZUT92
+         mhpfzzT8gIClOCk0Q9vfbPZR9GjBf9BeZEkrfUvI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Dimov <martin@dmarto.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.2 039/663] tpm: Add !tpm_amd_is_rng_defective() to the hwrng_unregister() call site
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.3 030/694] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
 Date:   Mon,  8 May 2023 11:37:45 +0200
-Message-Id: <20230508094429.739844777@linuxfoundation.org>
+Message-Id: <20230508094433.621560791@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +53,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit bd8621ca1510e6e802df9855bdc35a04a3cfa932 upstream.
+commit 146a37e05d620cef4ad430e5d1c9c077fe6fa76f upstream.
 
-The following crash was reported:
+There's a potential race before THRE/TEMT deasserts when DMA Tx is
+starting up (or the next batch of continuous Tx is being submitted).
+This can lead to misdetecting Tx empty condition.
 
-[ 1950.279393] list_del corruption, ffff99560d485790->next is NULL
-[ 1950.279400] ------------[ cut here ]------------
-[ 1950.279401] kernel BUG at lib/list_debug.c:49!
-[ 1950.279405] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[ 1950.279407] CPU: 11 PID: 5886 Comm: modprobe Tainted: G O 6.2.8_1 #1
-[ 1950.279409] Hardware name: Gigabyte Technology Co., Ltd. B550M AORUS PRO-P/B550M AORUS PRO-P,
-BIOS F15c 05/11/2022
-[ 1950.279410] RIP: 0010:__list_del_entry_valid+0x59/0xc0
-[ 1950.279415] Code: 48 8b 01 48 39 f8 75 5a 48 8b 72 08 48 39 c6 75 65 b8 01 00 00 00 c3 cc cc cc
-cc 48 89 fe 48 c7 c7 08 a8 13 9e e8 b7 0a bc ff <0f> 0b 48 89 fe 48 c7 c7 38 a8 13 9e e8 a6 0a bc
-ff 0f 0b 48 89 fe
-[ 1950.279416] RSP: 0018:ffffa96d05647e08 EFLAGS: 00010246
-[ 1950.279418] RAX: 0000000000000033 RBX: ffff99560d485750 RCX: 0000000000000000
-[ 1950.279419] RDX: 0000000000000000 RSI: ffffffff9e107c59 RDI: 00000000ffffffff
-[ 1950.279420] RBP: ffffffffc19c5168 R08: 0000000000000000 R09: ffffa96d05647cc8
-[ 1950.279421] R10: 0000000000000003 R11: ffffffff9ea2a568 R12: 0000000000000000
-[ 1950.279422] R13: ffff99560140a2e0 R14: ffff99560127d2e0 R15: 0000000000000000
-[ 1950.279422] FS: 00007f67da795380(0000) GS:ffff995d1f0c0000(0000) knlGS:0000000000000000
-[ 1950.279424] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1950.279424] CR2: 00007f67da7e65c0 CR3: 00000001feed2000 CR4: 0000000000750ee0
-[ 1950.279426] PKRU: 55555554
-[ 1950.279426] Call Trace:
-[ 1950.279428] <TASK>
-[ 1950.279430] hwrng_unregister+0x28/0xe0 [rng_core]
-[ 1950.279436] tpm_chip_unregister+0xd5/0xf0 [tpm]
+It is entirely normal for THRE/TEMT to be set for some time after the
+DMA Tx had been setup in serial8250_tx_dma(). As Tx side is definitely
+not empty at that point, it seems incorrect for serial8250_tx_empty()
+claim Tx is empty.
 
-Add the forgotten !tpm_amd_is_rng_defective() invariant to the
-hwrng_unregister() call site inside tpm_chip_unregister().
+Fix the race by also checking in serial8250_tx_empty() whether there's
+DMA Tx active.
 
+Note: This fix only addresses in-kernel race mainly to make using
+TCSADRAIN/FLUSH robust. Userspace can still cause other races but they
+seem userspace concurrency control problems.
+
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
 Cc: stable@vger.kernel.org
-Reported-by: Martin Dimov <martin@dmarto.com>
-Link: https://lore.kernel.org/linux-integrity/3d1d7e9dbfb8c96125bc93b6b58b90a7@dmarto.com/
-Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
-Fixes: b006c439d58d ("hwrng: core - start hwrng kthread also for untrusted sources")
-Tested-by: Martin Dimov <martin@dmarto.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230317113318.31327-3-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-chip.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250.h      |   12 ++++++++++++
+ drivers/tty/serial/8250/8250_port.c |    7 ++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -683,7 +683,8 @@ EXPORT_SYMBOL_GPL(tpm_chip_register);
- void tpm_chip_unregister(struct tpm_chip *chip)
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -365,6 +365,13 @@ static inline void serial8250_do_prepare
+ 	if (dma->prepare_rx_dma)
+ 		dma->prepare_rx_dma(p);
+ }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	return dma && dma->tx_running;
++}
+ #else
+ static inline int serial8250_tx_dma(struct uart_8250_port *p)
  {
- 	tpm_del_legacy_sysfs(chip);
--	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip))
-+	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip) &&
-+	    !tpm_amd_is_rng_defective(chip))
- 		hwrng_unregister(&chip->hwrng);
- 	tpm_bios_log_teardown(chip);
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2 && !tpm_is_firmware_upgrade(chip))
+@@ -380,6 +387,11 @@ static inline int serial8250_request_dma
+ 	return -1;
+ }
+ static inline void serial8250_release_dma(struct uart_8250_port *p) { }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	return false;
++}
+ #endif
+ 
+ static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2016,18 +2016,19 @@ static int serial8250_tx_threshold_handl
+ static unsigned int serial8250_tx_empty(struct uart_port *port)
+ {
+ 	struct uart_8250_port *up = up_to_u8250p(port);
++	unsigned int result = 0;
+ 	unsigned long flags;
+-	u16 lsr;
+ 
+ 	serial8250_rpm_get(up);
+ 
+ 	spin_lock_irqsave(&port->lock, flags);
+-	lsr = serial_lsr_in(up);
++	if (!serial8250_tx_dma_running(up) && uart_lsr_tx_empty(serial_lsr_in(up)))
++		result = TIOCSER_TEMT;
+ 	spin_unlock_irqrestore(&port->lock, flags);
+ 
+ 	serial8250_rpm_put(up);
+ 
+-	return uart_lsr_tx_empty(lsr) ? TIOCSER_TEMT : 0;
++	return result;
+ }
+ 
+ unsigned int serial8250_do_get_mctrl(struct uart_port *port)
 
 
