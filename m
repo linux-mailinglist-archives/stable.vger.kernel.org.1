@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFEBB6FA3F3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A12CA6FA3FF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbjEHJx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50188 "EHLO
+        id S233798AbjEHJyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233289AbjEHJx0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:53:26 -0400
+        with ESMTP id S233819AbjEHJyF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:54:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE952453A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:53:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 823BA2571C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:53:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 461556220B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34382C433EF;
-        Mon,  8 May 2023 09:53:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18D5062205
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF82C433D2;
+        Mon,  8 May 2023 09:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539604;
-        bh=EgEpN3u6KUsqa3IMvxIf7z8hBKPx4Uxm1j8a+nHXDpA=;
+        s=korg; t=1683539635;
+        bh=mPkr//c79LSJHYWR7e9Y1r6ZiPKoPgbJhxbpkJZJhng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ww8gVhvITcnkTPGBizbSMSeA1VAANIisXi0rI998Au52K/cgdW8Hf3tyrvp1NFs/A
-         dfUWf+D4c/1OAM0zbpAmH4zFAcMMGNq+vUCnfO1gYZVFUsMA0O309loqfq+7E8yDvj
-         BesaRk2GqyDR1Tt/eckqf1pWeUOg0+ZYKLkUw0EI=
+        b=KvPGw3b2viNriVMc0t8pBesau3fn0CPE5/tPa+QeNpVDjiaPiZWaDAOPPAvbqSw3+
+         KWs1QITLyMeTnXyPTKpKf8m9Xwt2UYwKir2F8Ovm7KJghlxY91tK9Df6C4bPsBxIIQ
+         lhChgcRhIp1U+S/Kl9nHxkLDVlTRSOqyYOBQmlK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan McDowell <noodles@earth.li>,
+        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 070/611] crypto: safexcel - Cleanup ring IRQ workqueues on load failure
-Date:   Mon,  8 May 2023 11:38:32 +0200
-Message-Id: <20230508094424.281726071@linuxfoundation.org>
+Subject: [PATCH 6.1 071/611] crypto: arm64/aes-neonbs - fix crash with CFI enabled
+Date:   Mon,  8 May 2023 11:38:33 +0200
+Message-Id: <20230508094424.316611845@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -53,154 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonathan McDowell <noodles@earth.li>
+From: Eric Biggers <ebiggers@google.com>
 
-commit ca25c00ccbc5f942c63897ed23584cfc66e8ec81 upstream.
+commit 47446d7cd42358ca7d7a544f2f7823db03f616ff upstream.
 
-A failure loading the safexcel driver results in the following warning
-on boot, because the IRQ affinity has not been correctly cleaned up.
-Ensure we clean up the affinity and workqueues on a failure to load the
-driver.
+aesbs_ecb_encrypt(), aesbs_ecb_decrypt(), aesbs_xts_encrypt(), and
+aesbs_xts_decrypt() are called via indirect function calls.  Therefore
+they need to use SYM_TYPED_FUNC_START instead of SYM_FUNC_START to cause
+their type hashes to be emitted when the kernel is built with
+CONFIG_CFI_CLANG=y.  Otherwise, the code crashes with a CFI failure if
+the compiler doesn't happen to optimize out the indirect calls.
 
-crypto-safexcel: probe of f2800000.crypto failed with error -2
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 232 at kernel/irq/manage.c:1913 free_irq+0x300/0x340
-Modules linked in: hwmon mdio_i2c crypto_safexcel(+) md5 sha256_generic libsha256 authenc libdes omap_rng rng_core nft_masq nft_nat nft_chain_nat nf_nat nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables libcrc32c nfnetlink fuse autofs4
-CPU: 1 PID: 232 Comm: systemd-udevd Tainted: G        W          6.1.6-00002-g9d4898824677 #3
-Hardware name: MikroTik RB5009 (DT)
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : free_irq+0x300/0x340
-lr : free_irq+0x2e0/0x340
-sp : ffff800008fa3890
-x29: ffff800008fa3890 x28: 0000000000000000 x27: 0000000000000000
-x26: ffff8000008e6dc0 x25: ffff000009034cac x24: ffff000009034d50
-x23: 0000000000000000 x22: 000000000000004a x21: ffff0000093e0d80
-x20: ffff000009034c00 x19: ffff00000615fc00 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 000075f5c1584c5e
-x14: 0000000000000017 x13: 0000000000000000 x12: 0000000000000040
-x11: ffff000000579b60 x10: ffff000000579b62 x9 : ffff800008bbe370
-x8 : ffff000000579dd0 x7 : 0000000000000000 x6 : ffff000000579e18
-x5 : ffff000000579da8 x4 : ffff800008ca0000 x3 : ffff800008ca0188
-x2 : 0000000013033204 x1 : ffff000009034c00 x0 : ffff8000087eadf0
-Call trace:
- free_irq+0x300/0x340
- devm_irq_release+0x14/0x20
- devres_release_all+0xa0/0x100
- device_unbind_cleanup+0x14/0x60
- really_probe+0x198/0x2d4
- __driver_probe_device+0x74/0xdc
- driver_probe_device+0x3c/0x110
- __driver_attach+0x8c/0x190
- bus_for_each_dev+0x6c/0xc0
- driver_attach+0x20/0x30
- bus_add_driver+0x148/0x1fc
- driver_register+0x74/0x120
- __platform_driver_register+0x24/0x30
- safexcel_init+0x48/0x1000 [crypto_safexcel]
- do_one_initcall+0x4c/0x1b0
- do_init_module+0x44/0x1cc
- load_module+0x1724/0x1be4
- __do_sys_finit_module+0xbc/0x110
- __arm64_sys_finit_module+0x1c/0x24
- invoke_syscall+0x44/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x20/0x80
- el0_svc+0x14/0x4c
- el0t_64_sync_handler+0xb0/0xb4
- el0t_64_sync+0x148/0x14c
----[ end trace 0000000000000000 ]---
-
-Fixes: 1b44c5a60c13 ("inside-secure - add SafeXcel EIP197 crypto engine driver")
-Signed-off-by: Jonathan McDowell <noodles@earth.li>
+Fixes: c50d32859e70 ("arm64: Add types to indirect called assembly functions")
 Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/inside-secure/safexcel.c |   37 +++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ arch/arm64/crypto/aes-neonbs-core.S | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/crypto/inside-secure/safexcel.c
-+++ b/drivers/crypto/inside-secure/safexcel.c
-@@ -1631,19 +1631,23 @@ static int safexcel_probe_generic(void *
- 						     &priv->ring[i].rdr);
- 		if (ret) {
- 			dev_err(dev, "Failed to initialize rings\n");
--			return ret;
-+			goto err_cleanup_rings;
- 		}
+diff --git a/arch/arm64/crypto/aes-neonbs-core.S b/arch/arm64/crypto/aes-neonbs-core.S
+index 7278a37c2d5c..baf450717b24 100644
+--- a/arch/arm64/crypto/aes-neonbs-core.S
++++ b/arch/arm64/crypto/aes-neonbs-core.S
+@@ -15,6 +15,7 @@
+  */
  
- 		priv->ring[i].rdr_req = devm_kcalloc(dev,
- 			EIP197_DEFAULT_RING_SIZE,
- 			sizeof(*priv->ring[i].rdr_req),
- 			GFP_KERNEL);
--		if (!priv->ring[i].rdr_req)
--			return -ENOMEM;
-+		if (!priv->ring[i].rdr_req) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+ #include <linux/linkage.h>
++#include <linux/cfi_types.h>
+ #include <asm/assembler.h>
  
- 		ring_irq = devm_kzalloc(dev, sizeof(*ring_irq), GFP_KERNEL);
--		if (!ring_irq)
--			return -ENOMEM;
-+		if (!ring_irq) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+ 	.text
+@@ -620,12 +621,12 @@ SYM_FUNC_END(aesbs_decrypt8)
+ 	.endm
  
- 		ring_irq->priv = priv;
- 		ring_irq->ring = i;
-@@ -1657,7 +1661,8 @@ static int safexcel_probe_generic(void *
- 						ring_irq);
- 		if (irq < 0) {
- 			dev_err(dev, "Failed to get IRQ ID for ring %d\n", i);
--			return irq;
-+			ret = irq;
-+			goto err_cleanup_rings;
- 		}
+ 	.align		4
+-SYM_FUNC_START(aesbs_ecb_encrypt)
++SYM_TYPED_FUNC_START(aesbs_ecb_encrypt)
+ 	__ecb_crypt	aesbs_encrypt8, v0, v1, v4, v6, v3, v7, v2, v5
+ SYM_FUNC_END(aesbs_ecb_encrypt)
  
- 		priv->ring[i].irq = irq;
-@@ -1669,8 +1674,10 @@ static int safexcel_probe_generic(void *
- 		snprintf(wq_name, 9, "wq_ring%d", i);
- 		priv->ring[i].workqueue =
- 			create_singlethread_workqueue(wq_name);
--		if (!priv->ring[i].workqueue)
--			return -ENOMEM;
-+		if (!priv->ring[i].workqueue) {
-+			ret = -ENOMEM;
-+			goto err_cleanup_rings;
-+		}
+ 	.align		4
+-SYM_FUNC_START(aesbs_ecb_decrypt)
++SYM_TYPED_FUNC_START(aesbs_ecb_decrypt)
+ 	__ecb_crypt	aesbs_decrypt8, v0, v1, v6, v4, v2, v7, v3, v5
+ SYM_FUNC_END(aesbs_ecb_decrypt)
  
- 		priv->ring[i].requests = 0;
- 		priv->ring[i].busy = false;
-@@ -1687,16 +1694,26 @@ static int safexcel_probe_generic(void *
- 	ret = safexcel_hw_init(priv);
- 	if (ret) {
- 		dev_err(dev, "HW init failed (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
+@@ -799,11 +800,11 @@ SYM_FUNC_END(__xts_crypt8)
+ 	ret
+ 	.endm
  
- 	ret = safexcel_register_algorithms(priv);
- 	if (ret) {
- 		dev_err(dev, "Failed to register algorithms (%d)\n", ret);
--		return ret;
-+		goto err_cleanup_rings;
- 	}
+-SYM_FUNC_START(aesbs_xts_encrypt)
++SYM_TYPED_FUNC_START(aesbs_xts_encrypt)
+ 	__xts_crypt	aesbs_encrypt8, v0, v1, v4, v6, v3, v7, v2, v5
+ SYM_FUNC_END(aesbs_xts_encrypt)
  
- 	return 0;
-+
-+err_cleanup_rings:
-+	for (i = 0; i < priv->config.rings; i++) {
-+		if (priv->ring[i].irq)
-+			irq_set_affinity_hint(priv->ring[i].irq, NULL);
-+		if (priv->ring[i].workqueue)
-+			destroy_workqueue(priv->ring[i].workqueue);
-+	}
-+
-+	return ret;
- }
+-SYM_FUNC_START(aesbs_xts_decrypt)
++SYM_TYPED_FUNC_START(aesbs_xts_decrypt)
+ 	__xts_crypt	aesbs_decrypt8, v0, v1, v6, v4, v2, v7, v3, v5
+ SYM_FUNC_END(aesbs_xts_decrypt)
  
- static void safexcel_hw_reset_rings(struct safexcel_crypto_priv *priv)
+-- 
+2.40.1
+
 
 
