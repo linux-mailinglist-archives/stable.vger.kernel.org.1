@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 681046FA584
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8DD36FAD4C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234161AbjEHKKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38450 "EHLO
+        id S236002AbjEHLd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234153AbjEHKKR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDFDD3512F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:16 -0700 (PDT)
+        with ESMTP id S235784AbjEHLdL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DC040225
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:32:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6373D623AF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7412AC433EF;
-        Mon,  8 May 2023 10:10:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5A7F630F3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D904EC433D2;
+        Mon,  8 May 2023 11:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540615;
-        bh=3Kg9bkvKjVFpRgqLrECET1Xq25EDmdbWlu2X5wWnLlw=;
+        s=korg; t=1683545540;
+        bh=SPxZirT/bHY3dQIgrezzLp/sGUs+i2l6URTHdwbueDU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cMW5VitGYJKyXC/cK1JTDGmmEoYdFr1uHOukzRCQqQ1eltW4AQ9yeR4DDZCr7N3A/
-         o5zZirbeq+VkIziIdMGgSMl8ki13Gz1MGuHHZZZF8Zj/3LR6lOJ5ZHBhqmfJ/6amST
-         nRBw0xeEcg37Pz5jBrfYZH8Aa4Q+Ghhfna6t8/Nk=
+        b=e1W6TfvuAsC/WuwRW0pTb2nXf57jZhKZ9fNvT1VMde6kSknFEbmPTmRJ50O+/mmTu
+         Yhqb8s7nfgiNEKoOVeJbZksH1/kE0PAZytvXXln4jKAp/zfvQfLYdQ65+6B36IrvNw
+         LVOTr9E7hEs8b6j8DAxgccAkN52xK2QaSNyYoWZ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pierre Gondois <pierre.gondois@arm.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 433/611] cacheinfo: Check sib_leaf in cache_leaves_are_shared()
+        patches@lists.linux.dev, Jingbo Xu <jefflexu@linux.alibaba.com>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Chao Yu <chao@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/371] erofs: fix potential overflow calculating xattr_isize
 Date:   Mon,  8 May 2023 11:44:35 +0200
-Message-Id: <20230508094436.255366865@linuxfoundation.org>
+Message-Id: <20230508094815.058789635@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,57 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
 
-[ Upstream commit 7a306e3eabf2b2fd8cffa69b87b32dbf814d79ce ]
+[ Upstream commit 1b3567a1969b26f709d82a874498c0754ea841c3 ]
 
-If there is no ACPI/DT information, it is assumed that L1 caches
-are private and L2 (and higher) caches are shared. A cache is
-'shared' between two CPUs if it is accessible from these two
-CPUs.
+Given on-disk i_xattr_icount is 16 bits and xattr_isize is calculated
+from i_xattr_icount multiplying 4, xattr_isize has a theoretical maximum
+of 256K (64K * 4).
 
-Each CPU owns a representation (i.e. has a dedicated cacheinfo struct)
-of the caches it has access to. cache_leaves_are_shared() tries to
-identify whether two representations are designating the same actual
-cache.
+Thus declare xattr_isize as unsigned int to avoid the potential overflow.
 
-In cache_leaves_are_shared(), if 'this_leaf' is a L2 cache (or higher)
-and 'sib_leaf' is a L1 cache, the caches are detected as shared as
-only this_leaf's cache level is checked.
-This is leads to setting sib_leaf as being shared with another CPU,
-which is incorrect as this is a L1 cache.
-
-Check 'sib_leaf->level'. Also update the comment as the function is
-called when populating 'shared_cpu_map'.
-
-Fixes: f16d1becf96f ("cacheinfo: Use cache identifiers to check if the caches are shared if available")
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20230414081453.244787-2-pierre.gondois@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: bfb8674dc044 ("staging: erofs: add erofs in-memory stuffs")
+Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20230414061810.6479-1-jefflexu@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cacheinfo.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/erofs/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index f30256a524be6..c440d1af197a4 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -38,11 +38,10 @@ static inline bool cache_leaves_are_shared(struct cacheinfo *this_leaf,
- {
- 	/*
- 	 * For non DT/ACPI systems, assume unique level 1 caches,
--	 * system-wide shared caches for all other levels. This will be used
--	 * only if arch specific code has not populated shared_cpu_map
-+	 * system-wide shared caches for all other levels.
- 	 */
- 	if (!(IS_ENABLED(CONFIG_OF) || IS_ENABLED(CONFIG_ACPI)))
--		return !(this_leaf->level == 1);
-+		return (this_leaf->level != 1) && (sib_leaf->level != 1);
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index b77acf09726c6..beadb06d8feb9 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -226,7 +226,7 @@ struct erofs_inode {
  
- 	if ((sib_leaf->attributes & CACHE_ID) &&
- 	    (this_leaf->attributes & CACHE_ID))
+ 	unsigned char datalayout;
+ 	unsigned char inode_isize;
+-	unsigned short xattr_isize;
++	unsigned int xattr_isize;
+ 
+ 	unsigned int xattr_shared_count;
+ 	unsigned int *xattr_shared_xattrs;
 -- 
 2.39.2
 
