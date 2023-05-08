@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE4C6FAD0D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F35766FA847
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233992AbjEHLa1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45782 "EHLO
+        id S234875AbjEHKjH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235892AbjEHLaJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A50997D8E;
-        Mon,  8 May 2023 04:30:04 -0700 (PDT)
+        with ESMTP id S234820AbjEHKi7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9325D24A91
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C84862F17;
-        Mon,  8 May 2023 11:30:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66052C433D2;
-        Mon,  8 May 2023 11:30:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A96662816
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FFAC4339B;
+        Mon,  8 May 2023 10:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545403;
-        bh=3qmFmD2M8/KbSPqVMejjyoxWA9V0uDStusiJLFPaRkM=;
+        s=korg; t=1683542336;
+        bh=skFFywk52dAcgXA3YocwB7KdKfo0s77CUk/BIdMXGgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uBo1wgy4GEbLt9MDLEUF2DE95fZNJ8m41x7/qUU1degvZH2DH8z2vyGj0r3pHrelj
-         qABFOJYXGqc8WLYd1flrUZYpcf3Am0CnRqYrA7F2gE5XCSDQnW2acmvhterTD0P3HR
-         cyKxpJocyKLYP6mrjaBIUs4L/Pi2tvxcaXh7FC00=
+        b=eTkgqE7Dk+BbVb3p6LJBCw/p3abbs9KN5AFepW5O5rBtMZsi6jDb+E3zKUM1tJKlm
+         3usXO/hA03HDNTAWhYaOXVQTSfxnA+Ntm/21wFwPtZE+W68ow1UnZoOM+jpCg0UzRK
+         9iQgkAhBzw2rwizPuz+cSWpi7btyXI/lVbro/mWE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frederic Weisbecker <frederic@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Zhouyi Zhou <zhouzhouyi@gmail.com>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        rcu <rcu@vger.kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Subject: [PATCH 5.15 028/371] tick/nohz: Fix cpu_is_hotpluggable() by checking with nohz subsystem
+        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Wang Zhao <wang.zhao@mediatek.com>,
+        Quan Zhou <quan.zhou@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 403/663] wifi: mt76: mt7921e: stop chip reset worker in unregister hook
 Date:   Mon,  8 May 2023 11:43:49 +0200
-Message-Id: <20230508094813.229511793@linuxfoundation.org>
+Message-Id: <20230508094441.160529119@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,97 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-commit 58d7668242647e661a20efe065519abd6454287e upstream.
+[ Upstream commit 3d78c46423c6567ed25ca033e086865b1b4d5ae1 ]
 
-For CONFIG_NO_HZ_FULL systems, the tick_do_timer_cpu cannot be offlined.
-However, cpu_is_hotpluggable() still returns true for those CPUs. This causes
-torture tests that do offlining to end up trying to offline this CPU causing
-test failures. Such failure happens on all architectures.
+If the chip reset worker is triggered during the remove process, the chip
+DMA may not be properly pushed back to the idle state. This can lead to
+corruption of the DMA flow due to the chip reset. Therefore, it is
+necessary to stop the chip reset before the DMA is finalized.
 
-Fix the repeated error messages thrown by this (even if the hotplug errors are
-harmless) by asking the opinion of the nohz subsystem on whether the CPU can be
-hotplugged.
+To avoid resetting the chip after the reset worker is cancelled, use
+__mt7921_mcu_drv_pmctrl() instead of mt7921_mcu_drv_pmctrl(). It is safe to
+ignore the pm mutex because the pm worker and wake worker have already been
+cancelled.
 
-[ Apply Frederic Weisbecker feedback on refactoring tick_nohz_cpu_down(). ]
-
-For drivers/base/ portion:
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: rcu <rcu@vger.kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 2987557f52b9 ("driver-core/cpu: Expose hotpluggability to the rest of the kernel")
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 033ae79b3830 ("mt76: mt7921: refactor init.c to be bus independent")
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Co-developed-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cpu.c       |    3 ++-
- include/linux/tick.h     |    2 ++
- kernel/time/tick-sched.c |   11 ++++++++---
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -487,7 +487,8 @@ static const struct attribute_group *cpu
- bool cpu_is_hotpluggable(unsigned int cpu)
- {
- 	struct device *dev = get_cpu_device(cpu);
--	return dev && container_of(dev, struct cpu, dev)->hotpluggable;
-+	return dev && container_of(dev, struct cpu, dev)->hotpluggable
-+		&& tick_nohz_cpu_hotpluggable(cpu);
- }
- EXPORT_SYMBOL_GPL(cpu_is_hotpluggable);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index bda92d8359692..aa4ecf008a3c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -115,9 +115,10 @@ static void mt7921e_unregister_device(struct mt7921_dev *dev)
+ 		napi_disable(&dev->mt76.napi[i]);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
++	cancel_work_sync(&dev->reset_work);
  
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -216,6 +216,7 @@ extern void tick_nohz_dep_set_signal(str
- 				     enum tick_dep_bits bit);
- extern void tick_nohz_dep_clear_signal(struct signal_struct *signal,
- 				       enum tick_dep_bits bit);
-+extern bool tick_nohz_cpu_hotpluggable(unsigned int cpu);
- 
- /*
-  * The below are tick_nohz_[set,clear]_dep() wrappers that optimize off-cases
-@@ -280,6 +281,7 @@ static inline void tick_nohz_full_add_cp
- 
- static inline void tick_nohz_dep_set_cpu(int cpu, enum tick_dep_bits bit) { }
- static inline void tick_nohz_dep_clear_cpu(int cpu, enum tick_dep_bits bit) { }
-+static inline bool tick_nohz_cpu_hotpluggable(unsigned int cpu) { return true; }
- 
- static inline void tick_dep_set(enum tick_dep_bits bit) { }
- static inline void tick_dep_clear(enum tick_dep_bits bit) { }
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -510,7 +510,7 @@ void __init tick_nohz_full_setup(cpumask
- 	tick_nohz_full_running = true;
- }
- 
--static int tick_nohz_cpu_down(unsigned int cpu)
-+bool tick_nohz_cpu_hotpluggable(unsigned int cpu)
- {
- 	/*
- 	 * The tick_do_timer_cpu CPU handles housekeeping duty (unbound
-@@ -518,8 +518,13 @@ static int tick_nohz_cpu_down(unsigned i
- 	 * CPUs. It must remain online when nohz full is enabled.
- 	 */
- 	if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
--		return -EBUSY;
--	return 0;
-+		return false;
-+	return true;
-+}
-+
-+static int tick_nohz_cpu_down(unsigned int cpu)
-+{
-+	return tick_nohz_cpu_hotpluggable(cpu) ? 0 : -EBUSY;
- }
- 
- void __init tick_nohz_init(void)
+ 	mt7921_tx_token_put(dev);
+-	mt7921_mcu_drv_pmctrl(dev);
++	__mt7921_mcu_drv_pmctrl(dev);
+ 	mt7921_dma_cleanup(dev);
+ 	mt7921_wfsys_reset(dev);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+-- 
+2.39.2
+
 
 
