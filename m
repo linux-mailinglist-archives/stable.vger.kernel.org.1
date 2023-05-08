@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 541076FA52D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 578226FAB25
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234053AbjEHKGo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:06:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
+        id S233750AbjEHLKV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234063AbjEHKGn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C02A30470
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:41 -0700 (PDT)
+        with ESMTP id S233911AbjEHLJy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5971BC2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0194B62349
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17274C433EF;
-        Mon,  8 May 2023 10:06:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5366662B24
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567B7C4339B;
+        Mon,  8 May 2023 11:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540400;
-        bh=6lPXuO/FTUQYYsQVatYl35K5D/GRL/yIRCdyq2MrJXM=;
+        s=korg; t=1683544175;
+        bh=9vv6OlxppSJicEcKSps3rEBEbW0WFtP3253I5VxaCqc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LaG3zQWBKW3ehbbwyzhH882e9BADeZ+KzwYmnG2+qr0c7rU/vZbqoX/0Z6AyeqjJC
-         3GE3tJvLa5nHM15soI14EyP/A+ud8Y4GGyCodX2Z975wXTTNc/8w7SrWP+PRj8ot5P
-         iedQxDq6e1IIzmaQPgSNL+CQZqJYTRFaEux+9RK8=
+        b=TS9JaDx9TgQJzpJY9u3tjevY/FrpzHZmpNe+W+4Mdyw/vZ/sca+mzRAprf8sF+wss
+         c8CzIJBpEhJbqQ9x1k928BZ8JshpYVIUuuhtSJc2B2VWwyZOwWVY6E/o5zUWdqsl6b
+         YW2uB1DRb6ptCA5XbWK2ISSdBzcGBRbHyA3PuErE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kal Conley <kal.conley@dectris.com>,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Jun Yu <junyuu@chromium.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 319/611] selftests: xsk: Deflakify STATS_RX_DROPPED test
+Subject: [PATCH 6.3 326/694] wifi: ath11k: Use platform_get_irq() to get the interrupt
 Date:   Mon,  8 May 2023 11:42:41 +0200
-Message-Id: <20230508094432.809074941@linuxfoundation.org>
+Message-Id: <20230508094442.946076328@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,64 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kal Conley <kal.conley@dectris.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 68e7322142f5e731af222892d384d311835db0f1 ]
+[ Upstream commit f117276638b7600b981b3fe28550823cfbe1ef23 ]
 
-Fix flaky STATS_RX_DROPPED test. The receiver calls getsockopt after
-receiving the last (valid) packet which is not the final packet sent in
-the test (valid and invalid packets are sent in alternating fashion with
-the final packet being invalid). Since the last packet may or may not
-have been dropped already, both outcomes must be allowed.
+As of commit a1a2b7125e10 ("of/platform: Drop static setup of IRQ
+resource from DT core"), we need to use platform_get_irq() instead of
+platform_get_resource() to get our IRQs because
+platform_get_resource() simply won't get them anymore.
 
-This issue could also be fixed by making sure the last packet sent is
-valid. This alternative is left as an exercise to the reader (or the
-benevolent maintainers of this file).
+This was already fixed in several other Atheros WiFi drivers,
+apparently in response to Zeal Robot reports. An example of another
+fix is commit 9503a1fc123d ("ath9k: Use platform_get_irq() to get the
+interrupt"). ath11k seems to have been missed in this effort, though.
 
-This problem was quite visible on certain setups. On one machine this
-failure was observed 50% of the time.
+Without this change, WiFi wasn't coming up on my Qualcomm sc7280-based
+hardware. Specifically, "platform_get_resource(pdev, IORESOURCE_IRQ,
+i)" was failing even for i=0.
 
-Also, remove a redundant assignment of pkt_stream->nb_pkts. This field
-is already initialized by __pkt_stream_alloc.
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
 
-Fixes: 27e934bec35b ("selftests: xsk: make stat tests not spin on getsockopt")
-Signed-off-by: Kal Conley <kal.conley@dectris.com>
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Link: https://lore.kernel.org/r/20230403120400.31018-1-kal.conley@dectris.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: a1a2b7125e10 ("of/platform: Drop static setup of IRQ resource from DT core")
+Fixes: 00402f49d26f ("ath11k: Add support for WCN6750 device")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Jun Yu <junyuu@chromium.org>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230201084131.v2.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/xskxceiver.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/ahb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
-index 44ca500ec6b4f..cd6578928c28a 100644
---- a/tools/testing/selftests/bpf/xskxceiver.c
-+++ b/tools/testing/selftests/bpf/xskxceiver.c
-@@ -649,7 +649,6 @@ static struct pkt_stream *pkt_stream_generate(struct xsk_umem_info *umem, u32 nb
- 	if (!pkt_stream)
- 		exit_with_error(ENOMEM);
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index bad3946b44bf6..b549576d0b513 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -874,11 +874,11 @@ static int ath11k_ahb_setup_msi_resources(struct ath11k_base *ab)
+ 	ab->pci.msi.ep_base_data = int_prop + 32;
  
--	pkt_stream->nb_pkts = nb_pkts;
- 	for (i = 0; i < nb_pkts; i++) {
- 		pkt_set(umem, &pkt_stream->pkts[i], (i % umem->num_frames) * umem->frame_size,
- 			pkt_len);
-@@ -1141,7 +1140,14 @@ static int validate_rx_dropped(struct ifobject *ifobject)
- 	if (err)
- 		return TEST_FAILURE;
+ 	for (i = 0; i < ab->pci.msi.config->total_vectors; i++) {
+-		res = platform_get_resource(pdev, IORESOURCE_IRQ, i);
+-		if (!res)
+-			return -ENODEV;
++		ret = platform_get_irq(pdev, i);
++		if (ret < 0)
++			return ret;
  
--	if (stats.rx_dropped == ifobject->pkt_stream->nb_pkts / 2)
-+	/* The receiver calls getsockopt after receiving the last (valid)
-+	 * packet which is not the final packet sent in this test (valid and
-+	 * invalid packets are sent in alternating fashion with the final
-+	 * packet being invalid). Since the last packet may or may not have
-+	 * been dropped already, both outcomes must be allowed.
-+	 */
-+	if (stats.rx_dropped == ifobject->pkt_stream->nb_pkts / 2 ||
-+	    stats.rx_dropped == ifobject->pkt_stream->nb_pkts / 2 - 1)
- 		return TEST_PASS;
+-		ab->pci.msi.irqs[i] = res->start;
++		ab->pci.msi.irqs[i] = ret;
+ 	}
  
- 	return TEST_FAILURE;
+ 	set_bit(ATH11K_FLAG_MULTI_MSI_VECTORS, &ab->dev_flags);
 -- 
 2.39.2
 
