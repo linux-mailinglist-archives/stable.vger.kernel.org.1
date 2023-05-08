@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A566FAC67
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D109C6FA966
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235666AbjEHLYT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39736 "EHLO
+        id S235263AbjEHKu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235669AbjEHLYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB3C43A5C3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:56 -0700 (PDT)
+        with ESMTP id S235296AbjEHKt7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C861F2D7A9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3711B62CB6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40271C433D2;
-        Mon,  8 May 2023 11:23:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E79D62921
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F49EC433D2;
+        Mon,  8 May 2023 10:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545035;
-        bh=5/KW8/3EItBLc9UBUUaDb0w2KeFPpQgFskCT7kx31xI=;
+        s=korg; t=1683542988;
+        bh=xGAMcCnHDbRWVOogbJQae0UOmzlwX5hiD4oh9pluxW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K0KZ6DU1HcfHUp8/7ljmOEoUIofL5SYlDiG5c0vf98ef6YRsKDzYWuZBGTJt2v7fw
-         Lxp9gkYqAmZt8wHxrr8NMUfsRR5t+nrYW9ku5Gnlm5P0+dlRhTXwT1KMX3wyuploF/
-         HutGXKXTLKM5Qx5YcmNjZb2u9mDgHB3ItKYvwtno=
+        b=i/jxSNCt53uohD/gY0seqF5Z1gHFf5INc/tcG7M+1tPAxRbL0DE03v/DYXLGrFU5W
+         aK7hRYauCyp4lSCpnI7Y4N2fWTGT17bsEvkajbNdktDwZIanupNbtUPk6qSOWZRiOI
+         WsedvavrZrSaP8saNhghoRCfTLVscTwJN7mnu5IQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 603/694] RDMA/cm: Trace icm_send_rej event before the cm state is reset
-Date:   Mon,  8 May 2023 11:47:18 +0200
-Message-Id: <20230508094454.836222641@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Geraldo Nascimento <geraldogabriel@gmail.com>,
+        =?UTF-8?q?Gr=C3=A9gory=20Desor?= <gregory.desor@free.fr>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.2 613/663] ALSA: usb-audio: Add quirk for Pioneer DDJ-800
+Date:   Mon,  8 May 2023 11:47:19 +0200
+Message-Id: <20230508094449.582325295@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit bd9de1badac7e4ff6780365d4aa38983f5e2a436 ]
+commit 7501f472977df233d039d86c6981e0641708e1ca upstream.
 
-Trace icm_send_rej event before the cm state is reset to idle, so that
-correct cm state will be logged. For example when an incoming request is
-rejected, the old trace log was:
-    icm_send_rej: local_id=961102742 remote_id=3829151631 state=IDLE reason=REJ_CONSUMER_DEFINED
-With this patch:
-    icm_send_rej: local_id=312971016 remote_id=3778819983 state=MRA_REQ_SENT reason=REJ_CONSUMER_DEFINED
+One more Pioneer quirk, this time for DDJ-800, which is quite similar like
+other DJ DDJ models but with slightly different EPs or channels.
 
-Fixes: 8dc105befe16 ("RDMA/cm: Add tracepoints to track MAD send operations")
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/20230330072351.481200-1-markzhang@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Tested-by: Grégory Desor <gregory.desor@free.fr>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/ZFLLzgEcsSF5aIHG@geday
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/cm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks-table.h |   58 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
-index 603c0aecc3614..ff58058aeadca 100644
---- a/drivers/infiniband/core/cm.c
-+++ b/drivers/infiniband/core/cm.c
-@@ -2912,6 +2912,8 @@ static int cm_send_rej_locked(struct cm_id_private *cm_id_priv,
- 	    (ari && ari_length > IB_CM_REJ_ARI_LENGTH))
- 		return -EINVAL;
- 
-+	trace_icm_send_rej(&cm_id_priv->id, reason);
-+
- 	switch (state) {
- 	case IB_CM_REQ_SENT:
- 	case IB_CM_MRA_REQ_RCVD:
-@@ -2942,7 +2944,6 @@ static int cm_send_rej_locked(struct cm_id_private *cm_id_priv,
- 		return -EINVAL;
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -3884,6 +3884,64 @@ YAMAHA_DEVICE(0x7010, "UB99"),
  	}
+ },
  
--	trace_icm_send_rej(&cm_id_priv->id, reason);
- 	ret = ib_post_send_mad(msg, NULL);
- 	if (ret) {
- 		cm_free_msg(msg);
--- 
-2.39.2
-
++{
++	/*
++	 * PIONEER DJ DDJ-800
++	 * PCM is 6 channels out, 6 channels in @ 44.1 fixed
++	 * The Feedback for the output is the input
++	 */
++	USB_DEVICE_VENDOR_SPEC(0x2b73, 0x0029),
++		.driver_info = (unsigned long) &(const struct snd_usb_audio_quirk) {
++		.ifnum = QUIRK_ANY_INTERFACE,
++		.type = QUIRK_COMPOSITE,
++		.data = (const struct snd_usb_audio_quirk[]) {
++			{
++				.ifnum = 0,
++				.type = QUIRK_AUDIO_FIXED_ENDPOINT,
++				.data = &(const struct audioformat) {
++					.formats = SNDRV_PCM_FMTBIT_S24_3LE,
++					.channels = 6,
++					.iface = 0,
++					.altsetting = 1,
++					.altset_idx = 1,
++					.endpoint = 0x01,
++					.ep_attr = USB_ENDPOINT_XFER_ISOC|
++						USB_ENDPOINT_SYNC_ASYNC,
++					.rates = SNDRV_PCM_RATE_44100,
++					.rate_min = 44100,
++					.rate_max = 44100,
++					.nr_rates = 1,
++					.rate_table = (unsigned int[]) { 44100 }
++				}
++			},
++			{
++				.ifnum = 0,
++				.type = QUIRK_AUDIO_FIXED_ENDPOINT,
++				.data = &(const struct audioformat) {
++					.formats = SNDRV_PCM_FMTBIT_S24_3LE,
++					.channels = 6,
++					.iface = 0,
++					.altsetting = 1,
++					.altset_idx = 1,
++					.endpoint = 0x82,
++					.ep_idx = 1,
++					.ep_attr = USB_ENDPOINT_XFER_ISOC|
++						USB_ENDPOINT_SYNC_ASYNC|
++					USB_ENDPOINT_USAGE_IMPLICIT_FB,
++					.rates = SNDRV_PCM_RATE_44100,
++					.rate_min = 44100,
++					.rate_max = 44100,
++					.nr_rates = 1,
++					.rate_table = (unsigned int[]) { 44100 }
++				}
++			},
++			{
++				.ifnum = -1
++			}
++		}
++	}
++},
++
+ /*
+  * MacroSilicon MS2100/MS2106 based AV capture cards
+  *
 
 
