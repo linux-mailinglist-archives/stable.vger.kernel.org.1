@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5D26FAB02
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F526FA7D3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233612AbjEHLIk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45774 "EHLO
+        id S234849AbjEHKfI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:35:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233764AbjEHLII (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:08 -0400
+        with ESMTP id S234825AbjEHKem (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2422C906
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4AD2242C0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4CB261730
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E5FC433EF;
-        Mon,  8 May 2023 11:07:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 60AC761408
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58072C433EF;
+        Mon,  8 May 2023 10:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544080;
-        bh=oJGSdN700irTBfOAhWe/HAnxt0W7uX5X0mBBazGBAQI=;
+        s=korg; t=1683542041;
+        bh=mP3CQFE5FNSxxr1UORwCmJm0IV2bpi0HVX/gNEk/He4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UVskMrF37JxQCQ7iiBpCOSx2FdlOulT8yp4uZHVvnT+32jLkg4oizvswikb3S3ulp
-         UuDk+ype0QH9THso+YqJZMmr06XPDU/mv0qfZEWlTE4kfBUR+PqhSh6kildoWj6D4B
-         ip/Le0jQwIBzK+dxpH9ZTF7oWIoh+WstkYp5MLnk=
+        b=miX1WwaT/DAdKFjvo9LEBBx6J4/LrN1flfJUG7inZLuTbTgCkd/FF2Pm2F4Eod+0S
+         BP6XBdMqc55ezt+lPEf0cIw4eS2zJhhffDxGeAJy6h8kWLoXB0fDWnJbhehhj/WMUS
+         BIVRLzXZmLkF0hjtJFYazr4JjUqsk1Ekk5DgN3yQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moudy Ho <moudy.ho@mediatek.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Madhu Koriginja <madhu.koriginja@nxp.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 296/694] media: platform: mtk-mdp3: fix potential frame size overflow in mdp_try_fmt_mplane()
-Date:   Mon,  8 May 2023 11:42:11 +0200
-Message-Id: <20230508094441.888563819@linuxfoundation.org>
+Subject: [PATCH 6.2 306/663] netfilter: keep conntrack reference until IPsecv6 policy checks are done
+Date:   Mon,  8 May 2023 11:42:12 +0200
+Message-Id: <20230508094438.116578747@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +54,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moudy Ho <moudy.ho@mediatek.com>
+From: Madhu Koriginja <madhu.koriginja@nxp.com>
 
-[ Upstream commit 4168720753ce6c14c5d3a35302fc2e1841383443 ]
+[ Upstream commit b0e214d212030fe497d4d150bb3474e50ad5d093 ]
 
-Fix overflow risk when setting certain formats whose frame size exceeds
-a RGB24 with 7723x7723 resolution.
+Keep the conntrack reference until policy checks have been performed for
+IPsec V6 NAT support, just like ipv4.
 
-For example, a 7723x7724 RGB24 frame:
-    1. bpl (byte per line) = 7723 * 3.
-    2. Overflow occurs when bpl * 7724 * depth.
+The reference needs to be dropped before a packet is
+queued to avoid having the conntrack module unloadable.
 
-Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
-Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 58a317f1061c ("netfilter: ipv6: add IPv6 NAT support")
+Signed-off-by: Madhu Koriginja <madhu.koriginja@nxp.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/mdp3/mtk-mdp3-regs.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/dccp/ipv6.c      |  1 +
+ net/ipv6/ip6_input.c | 14 ++++++--------
+ net/ipv6/raw.c       |  5 ++---
+ net/ipv6/tcp_ipv6.c  |  2 ++
+ net/ipv6/udp.c       |  2 ++
+ 5 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-regs.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-regs.c
-index 4e84a37ecdfc1..36336d169bd91 100644
---- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-regs.c
-+++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-regs.c
-@@ -4,6 +4,7 @@
-  * Author: Ping-Hsun Wu <ping-hsun.wu@mediatek.com>
-  */
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index b9d7c3dd1cb39..c0fd8f5f3b94e 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -783,6 +783,7 @@ static int dccp_v6_rcv(struct sk_buff *skb)
  
-+#include <linux/math64.h>
- #include <media/v4l2-common.h>
- #include <media/videobuf2-v4l2.h>
- #include <media/videobuf2-dma-contig.h>
-@@ -428,14 +429,15 @@ const struct mdp_format *mdp_try_fmt_mplane(struct v4l2_format *f,
- 		u32 bpl = pix_mp->plane_fmt[i].bytesperline;
- 		u32 min_si, max_si;
- 		u32 si = pix_mp->plane_fmt[i].sizeimage;
-+		u64 di;
+ 	if (!xfrm6_policy_check(sk, XFRM_POLICY_IN, skb))
+ 		goto discard_and_relse;
++	nf_reset_ct(skb);
  
- 		bpl = clamp(bpl, min_bpl, max_bpl);
- 		pix_mp->plane_fmt[i].bytesperline = bpl;
+ 	return __sk_receive_skb(sk, skb, 1, dh->dccph_doff * 4,
+ 				refcounted) ? -1 : 0;
+diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
+index e1ebf5e42ebe9..d94041bb42872 100644
+--- a/net/ipv6/ip6_input.c
++++ b/net/ipv6/ip6_input.c
+@@ -404,10 +404,6 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
+ 			/* Only do this once for first final protocol */
+ 			have_final = true;
  
--		min_si = (bpl * pix_mp->height * fmt->depth[i]) /
--			 fmt->row_depth[i];
--		max_si = (bpl * s.max_height * fmt->depth[i]) /
--			 fmt->row_depth[i];
-+		di = (u64)bpl * pix_mp->height * fmt->depth[i];
-+		min_si = (u32)div_u64(di, fmt->row_depth[i]);
-+		di = (u64)bpl * s.max_height * fmt->depth[i];
-+		max_si = (u32)div_u64(di, fmt->row_depth[i]);
+-			/* Free reference early: we don't need it any more,
+-			   and it may hold ip_conntrack module loaded
+-			   indefinitely. */
+-			nf_reset_ct(skb);
  
- 		si = clamp(si, min_si, max_si);
- 		pix_mp->plane_fmt[i].sizeimage = si;
+ 			skb_postpull_rcsum(skb, skb_network_header(skb),
+ 					   skb_network_header_len(skb));
+@@ -430,10 +426,12 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
+ 				goto discard;
+ 			}
+ 		}
+-		if (!(ipprot->flags & INET6_PROTO_NOPOLICY) &&
+-		    !xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
+-			SKB_DR_SET(reason, XFRM_POLICY);
+-			goto discard;
++		if (!(ipprot->flags & INET6_PROTO_NOPOLICY)) {
++			if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
++				SKB_DR_SET(reason, XFRM_POLICY);
++				goto discard;
++			}
++			nf_reset_ct(skb);
+ 		}
+ 
+ 		ret = INDIRECT_CALL_2(ipprot->handler, tcp_v6_rcv, udpv6_rcv,
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 4fc511bdf176c..f44b99f7ecdcc 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -193,10 +193,8 @@ static bool ipv6_raw_deliver(struct sk_buff *skb, int nexthdr)
+ 			struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
+ 
+ 			/* Not releasing hash table! */
+-			if (clone) {
+-				nf_reset_ct(clone);
++			if (clone)
+ 				rawv6_rcv(sk, clone);
+-			}
+ 		}
+ 	}
+ 	rcu_read_unlock();
+@@ -387,6 +385,7 @@ int rawv6_rcv(struct sock *sk, struct sk_buff *skb)
+ 		kfree_skb(skb);
+ 		return NET_RX_DROP;
+ 	}
++	nf_reset_ct(skb);
+ 
+ 	if (!rp->checksum)
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index a52a4f12f1467..e4da7267ed4bd 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1721,6 +1721,8 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 	if (drop_reason)
+ 		goto discard_and_relse;
+ 
++	nf_reset_ct(skb);
++
+ 	if (tcp_filter(sk, skb)) {
+ 		drop_reason = SKB_DROP_REASON_SOCKET_FILTER;
+ 		goto discard_and_relse;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index a675acfb901d1..c519f21632656 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -704,6 +704,7 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		drop_reason = SKB_DROP_REASON_XFRM_POLICY;
+ 		goto drop;
+ 	}
++	nf_reset_ct(skb);
+ 
+ 	if (static_branch_unlikely(&udpv6_encap_needed_key) && up->encap_type) {
+ 		int (*encap_rcv)(struct sock *sk, struct sk_buff *skb);
+@@ -1027,6 +1028,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
+ 
+ 	if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb))
+ 		goto discard;
++	nf_reset_ct(skb);
+ 
+ 	if (udp_lib_checksum_complete(skb))
+ 		goto csum_error;
 -- 
 2.39.2
 
