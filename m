@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6386FA772
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AA196FAAB6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:05:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234562AbjEHKam (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:30:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60220 "EHLO
+        id S234495AbjEHLFn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:05:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234602AbjEHKab (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:30:31 -0400
+        with ESMTP id S233687AbjEHLF2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:05:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BE7D2E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:30:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7011E3410E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:04:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3813E626BF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80A9C4339B;
-        Mon,  8 May 2023 10:30:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5075F62A87
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484DBC433EF;
+        Mon,  8 May 2023 11:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541825;
-        bh=V6c7x2Bkf/H7GdclbSjZoJir9+56LWuFk27QSP9RJfU=;
+        s=korg; t=1683543868;
+        bh=KWcUtEHrvHoTXz29tiMP/kOWXAHBwhAtE1u78eiKzW0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N8OrtlNrEf1gGfj/gVa2NkgfgwppHPH4nM4Hp4PJDXJ+TGjx8lwLVrBTD7zeINlr4
-         xhdJSDXVIXphlJ0hrKZqehuZCt+ToJfoCbjHcI2C+2n0/B7O4L1Hidi7ckz0kTjZc3
-         CIkIf0dC1hQD4tZfaEp+GDhFX7f+C4vRx4EIBHPw=
+        b=bfxnqxEZdXgc3JKJtT+D5aoXNs+yUlMWf/IDzf+2vdSUPmtN8PkFu53Va3fReIme5
+         D2/Ry59Pi7g5oT6Kn7I/51S+AnM4uOKXA/nv+fg/N2W24W+t+AgnLeyyXojpdN1qBH
+         gHlUfKNQ+oCRpVmLlnk0SQL+0S0wbinIYvf5kho8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 237/663] media: mediatek: vcodec: add params to record lat and core lat_buf count
+Subject: [PATCH 6.3 228/694] firmware: arm_scmi: Fix xfers allocation on Rx channel
 Date:   Mon,  8 May 2023 11:41:03 +0200
-Message-Id: <20230508094435.977644806@linuxfoundation.org>
+Message-Id: <20230508094439.769012904@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,106 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 5bbb6e2ca67477ab41163b32e6b3444faea74a5e ]
+[ Upstream commit b2ccba9e8cdc6fb3985cc227844e7c6af309ffb1 ]
 
-Using lat_buf to share decoder information between lat and core work
-queue, adding params to record the buf count.
+Two distinct pools of xfer descriptors are allocated at initialization
+time: one (Tx) used to provide xfers to track commands and their replies
+(or delayed replies) and another (Rx) to pick xfers from to be used for
+processing notifications.
 
-Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Such pools, though, are allocated globally to be used by the whole SCMI
+instance, they are not allocated per-channel and as such the allocation of
+notifications xfers cannot be simply skipped if no Rx channel was found for
+the base protocol common channel, because there could be defined more
+optional per-protocol dedicated channels that instead support Rx channels.
+
+Change the conditional check to skip allocation for the notification pool
+only if no Rx channel has been detected on any per-channel protocol at all.
+
+Fixes: 4ebd8f6dea81 ("firmware: arm_scmi: Add receive buffer support for notifications")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20230326203449.3492948-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/vdec_msg_queue.c | 23 ++++++++++++++++++-
- .../platform/mediatek/vcodec/vdec_msg_queue.h |  6 +++++
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index dc2004790a472..3f016c87d722c 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -52,6 +52,22 @@ static struct list_head *vdec_get_buf_list(int hardware_index, struct vdec_lat_b
- 	}
- }
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index dbc474ff62b71..e7d97b59963b0 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -2289,7 +2289,7 @@ static int scmi_xfer_info_init(struct scmi_info *sinfo)
+ 		return ret;
  
-+static void vdec_msg_queue_inc(struct vdec_msg_queue *msg_queue, int hardware_index)
-+{
-+	if (hardware_index == MTK_VDEC_CORE)
-+		atomic_inc(&msg_queue->core_list_cnt);
-+	else
-+		atomic_inc(&msg_queue->lat_list_cnt);
-+}
-+
-+static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_index)
-+{
-+	if (hardware_index == MTK_VDEC_CORE)
-+		atomic_dec(&msg_queue->core_list_cnt);
-+	else
-+		atomic_dec(&msg_queue->lat_list_cnt);
-+}
-+
- int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
- {
- 	struct list_head *head;
-@@ -66,6 +82,7 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
- 	list_add_tail(head, &msg_ctx->ready_queue);
- 	msg_ctx->ready_num++;
+ 	ret = __scmi_xfer_info_init(sinfo, &sinfo->tx_minfo);
+-	if (!ret && idr_find(&sinfo->rx_idr, SCMI_PROTOCOL_BASE))
++	if (!ret && !idr_is_empty(&sinfo->rx_idr))
+ 		ret = __scmi_xfer_info_init(sinfo, &sinfo->rx_minfo);
  
-+	vdec_msg_queue_inc(&buf->ctx->msg_queue, msg_ctx->hardware_index);
- 	if (msg_ctx->hardware_index != MTK_VDEC_CORE)
- 		wake_up_all(&msg_ctx->ready_to_use);
- 	else
-@@ -127,6 +144,7 @@ struct vdec_lat_buf *vdec_msg_queue_dqbuf(struct vdec_msg_queue_ctx *msg_ctx)
- 		return NULL;
- 	}
- 	list_del(head);
-+	vdec_msg_queue_dec(&buf->ctx->msg_queue, msg_ctx->hardware_index);
- 
- 	msg_ctx->ready_num--;
- 	mtk_v4l2_debug(3, "dqueue buf type:%d addr: 0x%p num: %d",
-@@ -241,10 +259,13 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
- 
- 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
- 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
-+
-+	atomic_set(&msg_queue->lat_list_cnt, 0);
-+	atomic_set(&msg_queue->core_list_cnt, 0);
-+
- 	msg_queue->wdma_addr.size =
- 		vde_msg_queue_get_trans_size(ctx->picinfo.buf_w,
- 					     ctx->picinfo.buf_h);
--
- 	err = mtk_vcodec_mem_alloc(ctx, &msg_queue->wdma_addr);
- 	if (err) {
- 		mtk_v4l2_err("failed to allocate wdma_addr buf");
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-index c43d427f5f544..b1aa5572ba49f 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-@@ -72,6 +72,9 @@ struct vdec_lat_buf {
-  * @wdma_wptr_addr: ube write point
-  * @core_work: core hardware work
-  * @lat_ctx: used to store lat buffer list
-+ *
-+ * @lat_list_cnt: used to record each instance lat list count
-+ * @core_list_cnt: used to record each instance core list count
-  */
- struct vdec_msg_queue {
- 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
-@@ -82,6 +85,9 @@ struct vdec_msg_queue {
- 
- 	struct work_struct core_work;
- 	struct vdec_msg_queue_ctx lat_ctx;
-+
-+	atomic_t lat_list_cnt;
-+	atomic_t core_list_cnt;
- };
- 
- /**
+ 	return ret;
 -- 
 2.39.2
 
