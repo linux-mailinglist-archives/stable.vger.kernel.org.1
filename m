@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4464D6FA9EC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CD096FA6C7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235287AbjEHK5I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
+        id S234580AbjEHKYB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235369AbjEHK4m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:42 -0400
+        with ESMTP id S234472AbjEHKXV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A9233865
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C5603A286
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:23:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A3EA629AE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605E6C433D2;
-        Mon,  8 May 2023 10:55:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7510160F91
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:23:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2C4C433D2;
+        Mon,  8 May 2023 10:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543339;
-        bh=SMFIXUIWqeYELLyq6WxcJPxoahWwHnZMCJ12D43Z72w=;
+        s=korg; t=1683541383;
+        bh=duRt4LgUNl++PHPCMA9gvR2w1QMev+j6ur1tOjUHma0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H+QyP9Kduunb2noRS+35RHRnMblSSxtmJVJDQOqK6sd3PQWGcQgn3FBsKb1t28RSJ
-         rdDhZ+TbIvMU5JLqWT3RbVRu4psHUC/m33UhTYFww0k1HXCrXxXFWV71bP1CkM3Y2d
-         vGa75NJJNMUryuXw5X/fQEusxt4PSsbe8dnh53IE=
+        b=Zu1bvH/Wo1ysIhrreU5+QH97KEn8tU8uCHwpbbE/rfHfLDhZ02E32MI3OkF92VhCc
+         NRywG/S37wvKMQVM3GNTCxqN1BYsMmnnucXy58yNaqmslGdDB3LVRlIbfX8Yyv0Y6w
+         3Kl4adrXKlJ6qNv56L94/E3sus3H44vEY+GEbGvA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Linton <jeremy.linton@arm.com>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.3 059/694] KVM: arm64: Avoid lock inversion when setting the VM register width
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.2 068/663] ring-buffer: Sync IRQ works before buffer destruction
 Date:   Mon,  8 May 2023 11:38:14 +0200
-Message-Id: <20230508094434.496428690@linuxfoundation.org>
+Message-Id: <20230508094430.675500001@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,118 +54,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit c43120afb5c66a3465c7468f5cf9806a26484cde upstream.
+commit 675751bb20634f981498c7d66161584080cc061e upstream.
 
-kvm->lock must be taken outside of the vcpu->mutex. Of course, the
-locking documentation for KVM makes this abundantly clear. Nonetheless,
-the locking order in KVM/arm64 has been wrong for quite a while; we
-acquire the kvm->lock while holding the vcpu->mutex all over the shop.
+If something was written to the buffer just before destruction,
+it may be possible (maybe not in a real system, but it did
+happen in ARCH=um with time-travel) to destroy the ringbuffer
+before the IRQ work ran, leading this KASAN report (or a crash
+without KASAN):
 
-All was seemingly fine until commit 42a90008f890 ("KVM: Ensure lockdep
-knows about kvm->lock vs. vcpu->mutex ordering rule") caught us with our
-pants down, leading to lockdep barfing:
+    BUG: KASAN: slab-use-after-free in irq_work_run_list+0x11a/0x13a
+    Read of size 8 at addr 000000006d640a48 by task swapper/0
 
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.2.0-rc7+ #19 Not tainted
- ------------------------------------------------------
- qemu-system-aar/859 is trying to acquire lock:
- ffff5aa69269eba0 (&host_kvm->lock){+.+.}-{3:3}, at: kvm_reset_vcpu+0x34/0x274
+    CPU: 0 PID: 0 Comm: swapper Tainted: G        W  O       6.3.0-rc1 #7
+    Stack:
+     60c4f20f 0c203d48 41b58ab3 60f224fc
+     600477fa 60f35687 60c4f20f 601273dd
+     00000008 6101eb00 6101eab0 615be548
+    Call Trace:
+     [<60047a58>] show_stack+0x25e/0x282
+     [<60c609e0>] dump_stack_lvl+0x96/0xfd
+     [<60c50d4c>] print_report+0x1a7/0x5a8
+     [<603078d3>] kasan_report+0xc1/0xe9
+     [<60308950>] __asan_report_load8_noabort+0x1b/0x1d
+     [<60232844>] irq_work_run_list+0x11a/0x13a
+     [<602328b4>] irq_work_tick+0x24/0x34
+     [<6017f9dc>] update_process_times+0x162/0x196
+     [<6019f335>] tick_sched_handle+0x1a4/0x1c3
+     [<6019fd9e>] tick_sched_timer+0x79/0x10c
+     [<601812b9>] __hrtimer_run_queues.constprop.0+0x425/0x695
+     [<60182913>] hrtimer_interrupt+0x16c/0x2c4
+     [<600486a3>] um_timer+0x164/0x183
+     [...]
 
- but task is already holding lock:
- ffff5aa68768c0b8 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x8c/0xba0
+    Allocated by task 411:
+     save_stack_trace+0x99/0xb5
+     stack_trace_save+0x81/0x9b
+     kasan_save_stack+0x2d/0x54
+     kasan_set_track+0x34/0x3e
+     kasan_save_alloc_info+0x25/0x28
+     ____kasan_kmalloc+0x8b/0x97
+     __kasan_kmalloc+0x10/0x12
+     __kmalloc+0xb2/0xe8
+     load_elf_phdrs+0xee/0x182
+     [...]
 
- which lock already depends on the new lock.
+    The buggy address belongs to the object at 000000006d640800
+     which belongs to the cache kmalloc-1k of size 1024
+    The buggy address is located 584 bytes inside of
+     freed 1024-byte region [000000006d640800, 000000006d640c00)
 
-Add a dedicated lock to serialize writes to VM-scoped configuration from
-the context of a vCPU. Protect the register width flags with the new
-lock, thus avoiding the need to grab the kvm->lock while holding
-vcpu->mutex in kvm_reset_vcpu().
+Add the appropriate irq_work_sync() so the work finishes before
+the buffers are destroyed.
+
+Prior to the commit in the Fixes tag below, there was only a
+single global IRQ work, so this issue didn't exist.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230427175920.a76159263122.I8295e405c44362a86c995e9c2c37e3e03810aa56@changeid
 
 Cc: stable@vger.kernel.org
-Reported-by: Jeremy Linton <jeremy.linton@arm.com>
-Link: https://lore.kernel.org/kvmarm/f6452cdd-65ff-34b8-bab0-5c06416da5f6@arm.com/
-Tested-by: Jeremy Linton <jeremy.linton@arm.com>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230327164747.2466958-3-oliver.upton@linux.dev
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 15693458c4bc ("tracing/ring-buffer: Move poll wake ups into ring buffer code")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h |    3 +++
- arch/arm64/kvm/arm.c              |   18 ++++++++++++++++++
- arch/arm64/kvm/reset.c            |    6 +++---
- 3 files changed, 24 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -199,6 +199,9 @@ struct kvm_arch {
- 	/* Mandated version of PSCI */
- 	u32 psci_version;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1778,6 +1778,8 @@ static void rb_free_cpu_buffer(struct ri
+ 	struct list_head *head = cpu_buffer->pages;
+ 	struct buffer_page *bpage, *tmp;
  
-+	/* Protects VM-scoped configuration data */
-+	struct mutex config_lock;
++	irq_work_sync(&cpu_buffer->irq_work.work);
 +
- 	/*
- 	 * If we encounter a data abort without valid instruction syndrome
- 	 * information, report this to user space.  User space can (and
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -128,6 +128,16 @@ int kvm_arch_init_vm(struct kvm *kvm, un
- {
- 	int ret;
+ 	free_buffer_page(cpu_buffer->reader_page);
  
-+	mutex_init(&kvm->arch.config_lock);
+ 	if (head) {
+@@ -1884,6 +1886,8 @@ ring_buffer_free(struct trace_buffer *bu
+ 
+ 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
+ 
++	irq_work_sync(&buffer->irq_work.work);
 +
-+#ifdef CONFIG_LOCKDEP
-+	/* Clue in lockdep that the config_lock must be taken inside kvm->lock */
-+	mutex_lock(&kvm->lock);
-+	mutex_lock(&kvm->arch.config_lock);
-+	mutex_unlock(&kvm->arch.config_lock);
-+	mutex_unlock(&kvm->lock);
-+#endif
-+
- 	ret = kvm_share_hyp(kvm, kvm + 1);
- 	if (ret)
- 		return ret;
-@@ -329,6 +339,14 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
+ 	for_each_buffer_cpu(buffer, cpu)
+ 		rb_free_cpu_buffer(buffer->buffers[cpu]);
  
- 	spin_lock_init(&vcpu->arch.mp_state_lock);
- 
-+#ifdef CONFIG_LOCKDEP
-+	/* Inform lockdep that the config_lock is acquired after vcpu->mutex */
-+	mutex_lock(&vcpu->mutex);
-+	mutex_lock(&vcpu->kvm->arch.config_lock);
-+	mutex_unlock(&vcpu->kvm->arch.config_lock);
-+	mutex_unlock(&vcpu->mutex);
-+#endif
-+
- 	/* Force users to call KVM_ARM_VCPU_INIT */
- 	vcpu->arch.target = -1;
- 	bitmap_zero(vcpu->arch.features, KVM_VCPU_MAX_FEATURES);
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -205,7 +205,7 @@ static int kvm_set_vm_width(struct kvm_v
- 
- 	is32bit = vcpu_has_feature(vcpu, KVM_ARM_VCPU_EL1_32BIT);
- 
--	lockdep_assert_held(&kvm->lock);
-+	lockdep_assert_held(&kvm->arch.config_lock);
- 
- 	if (test_bit(KVM_ARCH_FLAG_REG_WIDTH_CONFIGURED, &kvm->arch.flags)) {
- 		/*
-@@ -262,9 +262,9 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu
- 	bool loaded;
- 	u32 pstate;
- 
--	mutex_lock(&vcpu->kvm->lock);
-+	mutex_lock(&vcpu->kvm->arch.config_lock);
- 	ret = kvm_set_vm_width(vcpu);
--	mutex_unlock(&vcpu->kvm->lock);
-+	mutex_unlock(&vcpu->kvm->arch.config_lock);
- 
- 	if (ret)
- 		return ret;
 
 
