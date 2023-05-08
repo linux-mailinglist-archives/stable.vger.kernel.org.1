@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F0596FAD99
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180846FABC0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236006AbjEHLfz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56906 "EHLO
+        id S235397AbjEHLRE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236008AbjEHLfk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B1CA3E77D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:35:23 -0700 (PDT)
+        with ESMTP id S235347AbjEHLRD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A7635DAF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A4E3632E8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FF9C433EF;
-        Mon,  8 May 2023 11:35:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C3CB862C09
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40E1C4339B;
+        Mon,  8 May 2023 11:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545722;
-        bh=6F9jg284flEmvZXZwX7l9QqDf8kXNTDlsynVvc3zk20=;
+        s=korg; t=1683544621;
+        bh=GOjHeHpnrSlsa9sf0U5NTqqdlI82C0iRun9451gzg64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LdBDgg+wO02+Ct2xTo7/myjm/UvBTndeRUIbmV/cz2HZ/N3VvinvfeVwjF7XT//h6
-         yaDkBBj99bv7pgC5qhrWBveS9KaouhiFei/8wqnmR0tXRPN0jrmdAM9N6ma7SV4A6K
-         EebyuZh95zyVVzclMbOl1BnU55THH1cgY2FGaxWk=
+        b=Z6Z7W3whFkAiMV182sU7jN2rm6nN6r8qcIdTByLqb5bS7bImL5dS11FALWE7twxKM
+         Iztc3N0KKSWZTqCqUKMoS49QzQtizauhjYyYDQOqDJWodWLQw5ZiPhKKwa+9anpAP7
+         AFLjPZkoQS0BWGSJ15eRXohghdyy8aFgMRovLoZ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        Jonathan McDowell <noodles@earth.li>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
+        Roi Dayan <roid@nvidia.com>, Maor Dickman <maord@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/371] ARM: dts: qcom: ipq8064: reduce pci IO size to 64K
+Subject: [PATCH 6.3 469/694] Revert "net/mlx5e: Dont use termination table when redundant"
 Date:   Mon,  8 May 2023 11:45:04 +0200
-Message-Id: <20230508094816.105442199@linuxfoundation.org>
+Message-Id: <20230508094448.984255959@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,60 +55,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 8fafb7e5c041814876266259e5e439f93571dcef ]
+[ Upstream commit 081abcacaf0a9505c0d4cc9780b12e6ce5d33630 ]
 
-The current value for pci IO is problematic for ath10k wifi card
-commonly connected to ipq8064 SoC.
-The current value is probably a typo and is actually uncommon to find
-1MB IO space even on a x86 arch. Also with recent changes to the pci
-driver, pci1 and pci2 now fails to function as any connected device
-fails any reg read/write. Reduce this to 64K as it should be more than
-enough and 3 * 64K of total IO space doesn't exceed the IO_SPACE_LIMIT
-hardcoded for the ARM arch.
+This reverts commit 14624d7247fcd0f3114a6f5f17b3c8d1020fbbb7.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Tested-by: Jonathan McDowell <noodles@earth.li>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/20220707010943.20857-7-ansuelsmth@gmail.com
-Stable-dep-of: 0b16b34e4916 ("ARM: dts: qcom: ipq8064: Fix the PCI I/O port range")
+The termination table usage is requires for DMFS steering mode as firmware
+doesn't support mixed table destinations list which causes following
+syndrome with hairpin rules:
+
+[81922.283225] mlx5_core 0000:08:00.0: mlx5_cmd_out_err:803:(pid 25977): SET_FLOW_TABLE_ENTRY(0x936) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0xaca205), err(-22)
+
+Fixes: 14624d7247fc ("net/mlx5e: Don't use termination table when redundant")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Roi Dayan <roid@nvidia.com>
+Reviewed-by: Maor Dickman <maord@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-ipq8064.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../mlx5/core/eswitch_offloads_termtbl.c      | 32 +++----------------
+ 1 file changed, 4 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-ipq8064.dtsi b/arch/arm/boot/dts/qcom-ipq8064.dtsi
-index 4139d3817bd6f..8ec927f044c38 100644
---- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
-@@ -808,7 +808,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c
+index 3a9a6bb9158de..edd9102583144 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c
+@@ -210,18 +210,6 @@ static bool mlx5_eswitch_offload_is_uplink_port(const struct mlx5_eswitch *esw,
+ 	return (port_mask & port_value) == MLX5_VPORT_UPLINK;
+ }
  
--			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00100000   /* downstream I/O */
-+			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00010000   /* downstream I/O */
- 				  0x82000000 0 0x08000000 0x08000000 0 0x07e00000>; /* non-prefetchable memory */
+-static bool
+-mlx5_eswitch_is_push_vlan_no_cap(struct mlx5_eswitch *esw,
+-				 struct mlx5_flow_act *flow_act)
+-{
+-	if (flow_act->action & MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH &&
+-	    !(mlx5_fs_get_capabilities(esw->dev, MLX5_FLOW_NAMESPACE_FDB) &
+-	      MLX5_FLOW_STEERING_CAP_VLAN_PUSH_ON_RX))
+-		return true;
+-
+-	return false;
+-}
+-
+ bool
+ mlx5_eswitch_termtbl_required(struct mlx5_eswitch *esw,
+ 			      struct mlx5_flow_attr *attr,
+@@ -237,7 +225,10 @@ mlx5_eswitch_termtbl_required(struct mlx5_eswitch *esw,
+ 	    (!mlx5_eswitch_offload_is_uplink_port(esw, spec) && !esw_attr->int_port))
+ 		return false;
  
- 			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
-@@ -859,7 +859,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+-	if (mlx5_eswitch_is_push_vlan_no_cap(esw, flow_act))
++	/* push vlan on RX */
++	if (flow_act->action & MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH &&
++	    !(mlx5_fs_get_capabilities(esw->dev, MLX5_FLOW_NAMESPACE_FDB) &
++	      MLX5_FLOW_STEERING_CAP_VLAN_PUSH_ON_RX))
+ 		return true;
  
--			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00100000   /* downstream I/O */
-+			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00010000   /* downstream I/O */
- 				  0x82000000 0 0x2e000000 0x2e000000 0 0x03e00000>; /* non-prefetchable memory */
+ 	/* hairpin */
+@@ -261,31 +252,19 @@ mlx5_eswitch_add_termtbl_rule(struct mlx5_eswitch *esw,
+ 	struct mlx5_flow_act term_tbl_act = {};
+ 	struct mlx5_flow_handle *rule = NULL;
+ 	bool term_table_created = false;
+-	bool is_push_vlan_on_rx;
+ 	int num_vport_dests = 0;
+ 	int i, curr_dest;
  
- 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-@@ -910,7 +910,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+-	is_push_vlan_on_rx = mlx5_eswitch_is_push_vlan_no_cap(esw, flow_act);
+ 	mlx5_eswitch_termtbl_actions_move(flow_act, &term_tbl_act);
+ 	term_tbl_act.action |= MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
  
--			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00100000   /* downstream I/O */
-+			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00010000   /* downstream I/O */
- 				  0x82000000 0 0x32000000 0x32000000 0 0x03e00000>; /* non-prefetchable memory */
+ 	for (i = 0; i < num_dest; i++) {
+ 		struct mlx5_termtbl_handle *tt;
+-		bool hairpin = false;
  
- 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+ 		/* only vport destinations can be terminated */
+ 		if (dest[i].type != MLX5_FLOW_DESTINATION_TYPE_VPORT)
+ 			continue;
+ 
+-		if (attr->dests[num_vport_dests].rep &&
+-		    attr->dests[num_vport_dests].rep->vport == MLX5_VPORT_UPLINK)
+-			hairpin = true;
+-
+-		if (!is_push_vlan_on_rx && !hairpin) {
+-			num_vport_dests++;
+-			continue;
+-		}
+-
+ 		if (attr->dests[num_vport_dests].flags & MLX5_ESW_DEST_ENCAP) {
+ 			term_tbl_act.action |= MLX5_FLOW_CONTEXT_ACTION_PACKET_REFORMAT;
+ 			term_tbl_act.pkt_reformat = attr->dests[num_vport_dests].pkt_reformat;
+@@ -333,9 +312,6 @@ mlx5_eswitch_add_termtbl_rule(struct mlx5_eswitch *esw,
+ 	for (curr_dest = 0; curr_dest < num_vport_dests; curr_dest++) {
+ 		struct mlx5_termtbl_handle *tt = attr->dests[curr_dest].termtbl;
+ 
+-		if (!tt)
+-			continue;
+-
+ 		attr->dests[curr_dest].termtbl = NULL;
+ 
+ 		/* search for the destination associated with the
 -- 
 2.39.2
 
