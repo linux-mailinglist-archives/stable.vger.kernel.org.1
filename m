@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CE76FA58B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F86E6FABB9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234153AbjEHKKh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38618 "EHLO
+        id S233942AbjEHLQt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:16:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233987AbjEHKKg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:36 -0400
+        with ESMTP id S235390AbjEHLQs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:16:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E85B35124
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2A337611
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:16:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 136C1623A7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AA5C433D2;
-        Mon,  8 May 2023 10:10:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DDA362C09
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:16:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7F9C433EF;
+        Mon,  8 May 2023 11:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540634;
-        bh=++ssRz9KuCikvKFycek7MqRiKRotGoLs0f0xIZTCaCA=;
+        s=korg; t=1683544603;
+        bh=TDiau+zfBxFbKvVSuhNND9OxJa3qdwFgDMrE057EEFk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vCDVdxyyINWOUupBdZd7qD/q9/ZszMPCXxcYz1YqVpju2UUmz215gxCGTfq0Hph8V
-         TN0/mTNOEZExUw73OyTp8006M2Eu3oi+PT6akg1NqaLMfCVs1ZPjWFn6mn3h4tVsck
-         /ZoyFaXAXgrcd/nHRQuc2uf7dQ7Li9ZEVng4AuXM=
+        b=Ap12QYBGHd/4QSzQ5dVoYls21d2jaifR/IeBIN59G9x7CviEbMthBs11sSxyYbsdX
+         Du4iHIqxoiT2cHDFYOSaEJ9Z1o/75qNLOeiZNOHsaKbULzTxnKrFtfCy1n8NqKMCpS
+         lUkZAW6KLhKKGfseMd25JVPBMUcq6u0NfnjKl11o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 439/611] spi: cadence-quadspi: fix suspend-resume implementations
+        patches@lists.linux.dev, Jiefeng Li <jiefeng_li@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 446/694] wifi: mt76: mt7921: fix missing unwind goto in `mt7921u_probe`
 Date:   Mon,  8 May 2023 11:44:41 +0200
-Message-Id: <20230508094436.435736439@linuxfoundation.org>
+Message-Id: <20230508094448.012281431@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,66 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Jiefeng Li <jiefeng_li@hust.edu.cn>
 
-[ Upstream commit 2087e85bb66ee3652dafe732bb9b9b896229eafc ]
+[ Upstream commit 5c47cdebbaeb7724df6f9f46917c93e53f791547 ]
 
-The cadence QSPI driver misbehaves after performing a full system suspend
-resume:
-...
-spi-nor spi0.0: resume() failed
-...
-This results in a flash connected via OSPI interface after system suspend-
-resume to be unusable.
-fix these suspend and resume functions.
+`mt7921u_dma_init` can only return zero or negative number according to its
+definition. When it returns non-zero number, there exists an error and this
+function should handle this error rather than return directly.
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230417091027.966146-3-d-gole@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0d2afe09fad5 ("mt76: mt7921: add mt7921u driver")
+Signed-off-by: Jiefeng Li <jiefeng_li@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 4472305479452..4b028d325663f 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1767,17 +1767,30 @@ static int cqspi_remove(struct platform_device *pdev)
- static int cqspi_suspend(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 8fef09ed29c91..70c9bbdbf60e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -272,7 +272,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
  
-+	ret = spi_master_suspend(master);
- 	cqspi_controller_enable(cqspi, 0);
--	return 0;
-+
-+	clk_disable_unprepare(cqspi->clk);
-+
-+	return ret;
- }
+ 	ret = mt7921u_dma_init(dev, false);
+ 	if (ret)
+-		return ret;
++		goto error;
  
- static int cqspi_resume(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 
--	cqspi_controller_enable(cqspi, 1);
--	return 0;
-+	clk_prepare_enable(cqspi->clk);
-+	cqspi_wait_idle(cqspi);
-+	cqspi_controller_init(cqspi);
-+
-+	cqspi->current_cs = -1;
-+	cqspi->sclk = 0;
-+
-+	return spi_master_resume(master);
- }
- 
- static const struct dev_pm_ops cqspi__dev_pm_ops = {
+ 	hw = mt76_hw(dev);
+ 	/* check hw sg support in order to enable AMSDU */
 -- 
 2.39.2
 
