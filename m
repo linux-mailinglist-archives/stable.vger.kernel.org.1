@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D7B86FAC09
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27F9A6FA8F0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235555AbjEHLUH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:20:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33900 "EHLO
+        id S235076AbjEHKqe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235556AbjEHLUF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E5037C79
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:59 -0700 (PDT)
+        with ESMTP id S235083AbjEHKqL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3EE2A85A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:45:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B38EE62C66
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A805CC433EF;
-        Mon,  8 May 2023 11:19:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 104E1628B3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:45:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F364AC433D2;
+        Mon,  8 May 2023 10:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544798;
-        bh=nwKkOU7fRPygFwl7dL6Q7xGSBIAmTYHM68+y6GOfCVk=;
+        s=korg; t=1683542751;
+        bh=mJBngOkGDYxboBQlyi79GCfB4L2gSFOz7WyVvDY2kbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VAVuvEVtLtJlBjy9V6Gut9MWFy/AVDKwZHlIs0+yR7a/TBY13dS/p/lIfWf+t/myG
-         AdnW91Ja3LbSKmPjW0+07jCOxPJVs0vn46x+QSfhnXFZAiT9xnNJAI+FutCgPOlbwF
-         ChdQwVRdzdPWm1Npvt6tCV9frtgNqh/turBd91u0=
+        b=X0dZYCHgf+SH0FSDJtAL7VW8SQRAbkfU9do5QR7QNCUirr2J8hgvNSBbcL63WVla3
+         0GORk93jx625mGuWeF+VfhgLvxRP5a83oE1iejaOUrlK4C3WB24esnHbJRCJWKUD3d
+         ALX9vaMue16CNBqDb5LYqnbp0yFbo16Lkwhj962c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 527/694] HID: amd_sfh: Add support for shutdown operation
-Date:   Mon,  8 May 2023 11:46:02 +0200
-Message-Id: <20230508094451.419077378@linuxfoundation.org>
+        syzbot+d882d57193079e379309@syzkaller.appspotmail.com,
+        ZhangPeng <zhangpeng362@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 537/663] fs/ntfs3: Fix OOB read in indx_insert_into_buffer
+Date:   Mon,  8 May 2023 11:46:03 +0200
+Message-Id: <20230508094446.383752048@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,48 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: ZhangPeng <zhangpeng362@huawei.com>
 
-[ Upstream commit 1353ecaf1830d6d1b74f3225378a9498b4e14fdd ]
+[ Upstream commit b8c44949044e5f7f864525fdffe8e95135ce9ce5 ]
 
-As soon as the system is booted after shutdown, the sensors may remain in
-a weird state and fail to initialize. Therefore, all sensors should be
-turned off during shutdown.
+Syzbot reported a OOB read bug:
 
-Fixes: 4f567b9f8141 ("SFH: PCIe driver to add support of AMD sensor fusion hub")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+BUG: KASAN: slab-out-of-bounds in indx_insert_into_buffer+0xaa3/0x13b0
+fs/ntfs3/index.c:1755
+Read of size 17168 at addr ffff8880255e06c0 by task syz-executor308/3630
+
+Call Trace:
+ <TASK>
+ memmove+0x25/0x60 mm/kasan/shadow.c:54
+ indx_insert_into_buffer+0xaa3/0x13b0 fs/ntfs3/index.c:1755
+ indx_insert_entry+0x446/0x6b0 fs/ntfs3/index.c:1863
+ ntfs_create_inode+0x1d3f/0x35c0 fs/ntfs3/inode.c:1548
+ ntfs_create+0x3e/0x60 fs/ntfs3/namei.c:100
+ lookup_open fs/namei.c:3413 [inline]
+
+If the member struct INDEX_BUFFER *index of struct indx_node is
+incorrect, that is, the value of __le32 used is greater than the value
+of __le32 total in struct INDEX_HDR. Therefore, OOB read occurs when
+memmove is called in indx_insert_into_buffer().
+Fix this by adding a check in hdr_find_e().
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Reported-by: syzbot+d882d57193079e379309@syzkaller.appspotmail.com
+Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/amd_sfh_pcie.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/ntfs3/index.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
-index 47774b9ab3de0..c936d6a51c0cd 100644
---- a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
-+++ b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
-@@ -367,6 +367,14 @@ static int amd_mp2_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
- 	return devm_add_action_or_reset(&pdev->dev, privdata->mp2_ops->remove, privdata);
- }
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 51ab759546403..ae9616becec15 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -725,9 +725,13 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
+ 	u32 e_size, e_key_len;
+ 	u32 end = le32_to_cpu(hdr->used);
+ 	u32 off = le32_to_cpu(hdr->de_off);
++	u32 total = le32_to_cpu(hdr->total);
+ 	u16 offs[128];
  
-+static void amd_sfh_shutdown(struct pci_dev *pdev)
-+{
-+	struct amd_mp2_dev *mp2 = pci_get_drvdata(pdev);
+ fill_table:
++	if (end > total)
++		return NULL;
 +
-+	if (mp2 && mp2->mp2_ops)
-+		mp2->mp2_ops->stop_all(mp2);
-+}
-+
- static int __maybe_unused amd_mp2_pci_resume(struct device *dev)
- {
- 	struct amd_mp2_dev *mp2 = dev_get_drvdata(dev);
-@@ -401,6 +409,7 @@ static struct pci_driver amd_mp2_pci_driver = {
- 	.id_table	= amd_mp2_pci_tbl,
- 	.probe		= amd_mp2_pci_probe,
- 	.driver.pm	= &amd_mp2_pm_ops,
-+	.shutdown	= amd_sfh_shutdown,
- };
- module_pci_driver(amd_mp2_pci_driver);
+ 	if (off + sizeof(struct NTFS_DE) > end)
+ 		return NULL;
  
 -- 
 2.39.2
