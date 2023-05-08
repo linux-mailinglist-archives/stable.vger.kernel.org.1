@@ -2,62 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D81E76FB435
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 17:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 416906FB436
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 17:47:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234593AbjEHPrs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S234541AbjEHPrs (ORCPT <rfc822;lists+stable@lfdr.de>);
         Mon, 8 May 2023 11:47:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234541AbjEHPrq (ORCPT
+        with ESMTP id S234116AbjEHPrq (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 11:47:46 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B609F9012
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 08:47:25 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-50be0d835aaso8592504a12.3
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 08:47:25 -0700 (PDT)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD65A261
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 08:47:26 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-50bcb00a4c2so7479159a12.1
+        for <stable@vger.kernel.org>; Mon, 08 May 2023 08:47:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1683560844; x=1686152844;
+        d=grsecurity.net; s=grsec; t=1683560845; x=1686152845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BZhxwX5YJmwh3Xb5Pl4fKRR45KPDMOBgNGiklYWsEI0=;
-        b=oZynVFASdBKAgYyOG49mPvnYjqQSeNV4wMohU0REK+FMcD8WGiPgcjLMPs2eAGQ064
-         dc1QygcLHggCd+KzNEHvccDTgGDEtn96BD6nvR9mrscA3+4sYLeuUv8RpTYxkK2wvYlZ
-         D+C/XNnVrIhH53qaEMos3PpbRzQ5OlIn9vKHge2O2h6A1O15qAS4QyXxSp2YRXwNUDuW
-         FFW2QDm5o+gBK0C555Xy6Gk0Z/1pVZkDM5K9RgdWsJM2+Uiuj/ozFDxGmJ7xzURyMtOO
-         NDggZpm8gRWMkjhip2lUICJ67yY0y7THRHLmY7AWBOXzNSxRx/siRaeyI1avOs3Sf6uv
-         w0UA==
+        bh=XACjbBOAT3WTujlADfwySgVeuYdWzCzKnAbBojJJLuw=;
+        b=m7nGtVjV2YeIOSfS3Jjm4gpCaMSLaErxADIokVRVlHjAiPwnRRl6L2jg/UsbB2Me2K
+         jJcZl2nsCtSmDJpYZI9Uv0a5E3zYHY2vwo1Ht2ChJkVtX/iCe41QtRIFbuv0Ar73VrID
+         sTCFVqBLMx7HPoG7tXhL/EgXaHaXt9GanXQ7pib7qDUtHCniLsejZi02HHA/rU98aOYd
+         2qlVtW6aNMR8z27i0vK53ii2Cg6+hFtcQh53L/Al7Q56B/ixzlDhtkok1UzK2mbqIXZa
+         zVjUcz9MYmIzjJPN6pxiUHYlto8Nu0Ey95VFPo43TQR9HqURz2pZYae054PQjU9kzo0U
+         El9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683560844; x=1686152844;
+        d=1e100.net; s=20221208; t=1683560845; x=1686152845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BZhxwX5YJmwh3Xb5Pl4fKRR45KPDMOBgNGiklYWsEI0=;
-        b=k8gEDmnK8y1f7O4Tb5KhndMaQlnZYPFVikhcAY7UtVzqpD+GZxNKpzaftCBHruxysz
-         yN7IfvUqlT8F80CbIG6ohyfiNI3xC27eQJi4Q4R+XQ2IMolvz6pheMQz/bsiixMmu5qz
-         LSBMQfQ1Wvpl+Oy102hYiLKatHt4Stw+SqGJMmjpJ0c+/iz/Z3wWOWEZAPMjn+qKFZMD
-         X9fZlDunm3p+TCcqpH41mciR7C9ZMVqMV8B8GUP8mo1Yqh//BInyof3SFBUsBc1zIxbz
-         IELiKv3cVh2WkB+rw+C0stuV0rQdp29QLYO+c0FD+0rWwIpgeeEbeAX1yaKP0FZG7V2b
-         HqWQ==
-X-Gm-Message-State: AC+VfDzIXAt3cIrm/VwN1tes9GrIwRG7Fvh66klO7IzRlMWl0gAMacSF
-        X64zuPRzrxZu+HqeKvRDZ6nTcbm5KIAsrpG/ZeeLqA==
-X-Google-Smtp-Source: ACHHUZ7jRf5X6LPF8KMEFLEm2MTP5YhZaRBxEQCBPsfU8Vbbnma77M/DqG3AdqvmB9K/0uHX2MZMMQ==
-X-Received: by 2002:a17:906:58c9:b0:94f:6218:191d with SMTP id e9-20020a17090658c900b0094f6218191dmr10485675ejs.32.1683560843813;
-        Mon, 08 May 2023 08:47:23 -0700 (PDT)
+        bh=XACjbBOAT3WTujlADfwySgVeuYdWzCzKnAbBojJJLuw=;
+        b=k0K3Vps1Q5r02CtRQDewWPgEWc5198rI+tZEI0QjpBpgmi8PQuHKzIzUvfpLHNol+F
+         m0rRTOuYghViv0X3WQV4zxcHpeh2bOmGdxhjNDy/5w7UADsOA8rKYHAHjxAgYDEd8JCP
+         8cjgILR2MRPHajcznHeiXrDmAzHG2spXfzeqvAPexEaIM2YaGtGlp9RkJJ2KHcvjobfc
+         MqGGR7hKuqMWgETl2YVK8tJ+Ybbm/Pi+kTl1m6naml8SloS9otCqt45qqCwFgnvKXxdH
+         VOxsTwkGygzpe9wekIm0wkS3D5ZgkfpnTjjIwt9wIeBEMlrEFCUaVVjFOlzpv10zCw53
+         uLzA==
+X-Gm-Message-State: AC+VfDw2AKKps7YwKXeZzt8YqKH1wcQqIEOmCyG99aDZOuPsGNFeC2ip
+        Zv301pjeVkbwwjgYa5lqkQPAIhlwHgtGpyem5pWzMQ==
+X-Google-Smtp-Source: ACHHUZ63TaqJofUXKI+zdSUTTIvLT5pVplgiYOGyW9hpQdis6FbkN7Ux8zdhRTtehvfqI/ituU6ZiQ==
+X-Received: by 2002:a17:907:a01:b0:94a:5d5c:fe6f with SMTP id bb1-20020a1709070a0100b0094a5d5cfe6fmr8602857ejc.47.1683560844851;
+        Mon, 08 May 2023 08:47:24 -0700 (PDT)
 Received: from localhost.localdomain (p549211c7.dip0.t-ipconnect.de. [84.146.17.199])
-        by smtp.gmail.com with ESMTPSA id md1-20020a170906ae8100b0094b5ce9d43dsm121822ejb.85.2023.05.08.08.47.22
+        by smtp.gmail.com with ESMTPSA id md1-20020a170906ae8100b0094b5ce9d43dsm121822ejb.85.2023.05.08.08.47.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 08:47:23 -0700 (PDT)
+        Mon, 08 May 2023 08:47:24 -0700 (PDT)
 From:   Mathias Krause <minipli@grsecurity.net>
 To:     stable@vger.kernel.org
 Cc:     Paolo Bonzini <pbonzini@redhat.com>,
         Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
         Mathias Krause <minipli@grsecurity.net>,
         Lai Jiangshan <laijs@linux.alibaba.com>
-Subject: [PATCH 5.15 6/8] KVM: X86: Don't reset mmu context when toggling X86_CR4_PGE
-Date:   Mon,  8 May 2023 17:47:07 +0200
-Message-Id: <20230508154709.30043-7-minipli@grsecurity.net>
+Subject: [PATCH 5.15 7/8] KVM: x86/mmu: Reconstruct shadow page root if the guest PDPTEs is changed
+Date:   Mon,  8 May 2023 17:47:08 +0200
+Message-Id: <20230508154709.30043-8-minipli@grsecurity.net>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230508154709.30043-1-minipli@grsecurity.net>
 References: <20230508154709.30043-1-minipli@grsecurity.net>
@@ -75,56 +75,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Lai Jiangshan <laijs@linux.alibaba.com>
 
-[ Upstream commit a91a7c7096005113d8e749fd8dfdd3e1eecee263 ]
+[ Upstream commit 6b123c3a89a90ac6418e4d64b1e23f09d458a77d ]
 
-X86_CR4_PGE doesn't participate in kvm_mmu_role, so the mmu context
-doesn't need to be reset.  It is only required to flush all the guest
-tlb.
+For shadow paging, the page table needs to be reconstructed before the
+coming VMENTER if the guest PDPTEs is changed.
 
-It is also inconsistent that X86_CR4_PGE is in KVM_MMU_CR4_ROLE_BITS
-while kvm_mmu_role doesn't use X86_CR4_PGE.  So X86_CR4_PGE is also
-removed from KVM_MMU_CR4_ROLE_BITS.
+But not all paths that call load_pdptrs() will cause the page tables to be
+reconstructed. Normally, kvm_mmu_reset_context() and kvm_mmu_free_roots()
+are used to launch later reconstruction.
 
+The commit d81135a57aa6("KVM: x86: do not reset mmu if CR0.CD and
+CR0.NW are changed") skips kvm_mmu_reset_context() after load_pdptrs()
+when changing CR0.CD and CR0.NW.
+
+The commit 21823fbda552("KVM: x86: Invalidate all PGDs for the current
+PCID on MOV CR3 w/ flush") skips kvm_mmu_free_roots() after
+load_pdptrs() when rewriting the CR3 with the same value.
+
+The commit a91a7c709600("KVM: X86: Don't reset mmu context when
+toggling X86_CR4_PGE") skips kvm_mmu_reset_context() after
+load_pdptrs() when changing CR4.PGE.
+
+Guests like linux would keep the PDPTEs unchanged for every instance of
+pagetable, so this missing reconstruction has no problem for linux
+guests.
+
+Fixes: d81135a57aa6("KVM: x86: do not reset mmu if CR0.CD and CR0.NW are changed")
+Fixes: 21823fbda552("KVM: x86: Invalidate all PGDs for the current PCID on MOV CR3 w/ flush")
+Fixes: a91a7c709600("KVM: X86: Don't reset mmu context when toggling X86_CR4_PGE")
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Lai Jiangshan <laijs@linux.alibaba.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20210919024246.89230-3-jiangshanlai@gmail.com>
+Message-Id: <20211216021938.11752-3-jiangshanlai@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Mathias Krause <minipli@grsecurity.net>
 ---
- arch/x86/kvm/mmu.h | 5 ++---
- arch/x86/kvm/x86.c | 3 ++-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index baafc5d8bb9e..03a9e37e446a 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -44,9 +44,8 @@
- #define PT32_ROOT_LEVEL 2
- #define PT32E_ROOT_LEVEL 3
- 
--#define KVM_MMU_CR4_ROLE_BITS (X86_CR4_PGE | X86_CR4_PSE | X86_CR4_PAE | \
--			       X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_PKE | \
--			       X86_CR4_LA57)
-+#define KVM_MMU_CR4_ROLE_BITS (X86_CR4_PSE | X86_CR4_PAE | X86_CR4_LA57 | \
-+			       X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_PKE)
- 
- #define KVM_MMU_CR0_ROLE_BITS (X86_CR0_PG | X86_CR0_WP)
- #define KVM_MMU_EFER_ROLE_BITS (EFER_LME | EFER_NX)
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 515033d01b12..ea3bdc4f2284 100644
+index ea3bdc4f2284..a9f80a544ff1 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -1083,7 +1083,8 @@ void kvm_post_set_cr4(struct kvm_vcpu *vcpu, unsigned long old_cr4, unsigned lon
- {
- 	if ((cr4 ^ old_cr4) & KVM_MMU_CR4_ROLE_BITS)
- 		kvm_mmu_reset_context(vcpu);
--	else if (!(cr4 & X86_CR4_PCIDE) && (old_cr4 & X86_CR4_PCIDE))
-+	else if (((cr4 ^ old_cr4) & X86_CR4_PGE) ||
-+		 (!(cr4 & X86_CR4_PCIDE) && (old_cr4 & X86_CR4_PCIDE)))
- 		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
- }
- EXPORT_SYMBOL_GPL(kvm_post_set_cr4);
+@@ -865,6 +865,13 @@ int load_pdptrs(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu, unsigned long cr3)
+ 	}
+ 	ret = 1;
+ 
++	/*
++	 * Marking VCPU_EXREG_PDPTR dirty doesn't work for !tdp_enabled.
++	 * Shadow page roots need to be reconstructed instead.
++	 */
++	if (!tdp_enabled && memcmp(mmu->pdptrs, pdpte, sizeof(mmu->pdptrs)))
++		kvm_mmu_free_roots(vcpu, mmu, KVM_MMU_ROOT_CURRENT);
++
+ 	memcpy(mmu->pdptrs, pdpte, sizeof(mmu->pdptrs));
+ 	kvm_register_mark_dirty(vcpu, VCPU_EXREG_PDPTR);
+ 	kvm_make_request(KVM_REQ_LOAD_MMU_PGD, vcpu);
 -- 
 2.39.2
 
