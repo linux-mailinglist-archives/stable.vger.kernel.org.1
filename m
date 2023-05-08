@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0E46FA9DD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6DC6FA670
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235361AbjEHK4d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33522 "EHLO
+        id S234424AbjEHKTh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235356AbjEHK4P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:15 -0400
+        with ESMTP id S234422AbjEHKTb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF582DD78
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CB47D847
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F315A61709
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7EBC433EF;
-        Mon,  8 May 2023 10:55:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 970846251B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875B0C433D2;
+        Mon,  8 May 2023 10:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543308;
-        bh=UU1NovXoFjTYKdTrm1MJ5s5/F+F5eHXHNbaP5Zm3J5g=;
+        s=korg; t=1683541167;
+        bh=MEACxn/zpMzbhqq86dLq4wkHss4RrtzzpaTJ1PMD/NY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1ZlnY8qekFmeVGplT33FWkTN+OzaZgh5QJ9+wjee9rzjyhgW/MLVaqopib+Rl7+kw
-         9rdzyGnMyv9F/ZSVUOaEIVFwg/MjTIjIK81RvozF9aaYoH5DwlMB7l/ank36RUj6hy
-         YMIfqEdnPqH7F2xcZLoGXMrn755Hv/Y9BZf8T2sY=
+        b=BW+kNFqrXTsyce3xPR5RRJQnaEg3ea1l/HldbNnKuGLC5+cLTULvQyPWdv4fMekV4
+         P50tIp6Hn3cVDByC+seDHldNiKkkFdWliHENH3vh3ydJOJarVV0+0PKtg8ACZg8c/x
+         A60GuIprrRF4eG0hPZQDqgybZ30o6WZgSgsLG2Fw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Dimov <martin@dmarto.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.3 018/694] tpm: Add !tpm_amd_is_rng_defective() to the hwrng_unregister() call site
+        patches@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 6.2 027/663] PCI: qcom: Fix the incorrect register usage in v2.7.0 config
 Date:   Mon,  8 May 2023 11:37:33 +0200
-Message-Id: <20230508094433.219207397@linuxfoundation.org>
+Message-Id: <20230508094429.323723205@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit bd8621ca1510e6e802df9855bdc35a04a3cfa932 upstream.
+commit 2542e16c392508800f1d9037feee881a9c444951 upstream.
 
-The following crash was reported:
+Qcom PCIe IP version v2.7.0 and its derivatives don't contain the
+PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT register. Instead, they have the new
+PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2 register. So fix the incorrect
+register usage which is modifying a different register.
 
-[ 1950.279393] list_del corruption, ffff99560d485790->next is NULL
-[ 1950.279400] ------------[ cut here ]------------
-[ 1950.279401] kernel BUG at lib/list_debug.c:49!
-[ 1950.279405] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[ 1950.279407] CPU: 11 PID: 5886 Comm: modprobe Tainted: G O 6.2.8_1 #1
-[ 1950.279409] Hardware name: Gigabyte Technology Co., Ltd. B550M AORUS PRO-P/B550M AORUS PRO-P,
-BIOS F15c 05/11/2022
-[ 1950.279410] RIP: 0010:__list_del_entry_valid+0x59/0xc0
-[ 1950.279415] Code: 48 8b 01 48 39 f8 75 5a 48 8b 72 08 48 39 c6 75 65 b8 01 00 00 00 c3 cc cc cc
-cc 48 89 fe 48 c7 c7 08 a8 13 9e e8 b7 0a bc ff <0f> 0b 48 89 fe 48 c7 c7 38 a8 13 9e e8 a6 0a bc
-ff 0f 0b 48 89 fe
-[ 1950.279416] RSP: 0018:ffffa96d05647e08 EFLAGS: 00010246
-[ 1950.279418] RAX: 0000000000000033 RBX: ffff99560d485750 RCX: 0000000000000000
-[ 1950.279419] RDX: 0000000000000000 RSI: ffffffff9e107c59 RDI: 00000000ffffffff
-[ 1950.279420] RBP: ffffffffc19c5168 R08: 0000000000000000 R09: ffffa96d05647cc8
-[ 1950.279421] R10: 0000000000000003 R11: ffffffff9ea2a568 R12: 0000000000000000
-[ 1950.279422] R13: ffff99560140a2e0 R14: ffff99560127d2e0 R15: 0000000000000000
-[ 1950.279422] FS: 00007f67da795380(0000) GS:ffff995d1f0c0000(0000) knlGS:0000000000000000
-[ 1950.279424] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1950.279424] CR2: 00007f67da7e65c0 CR3: 00000001feed2000 CR4: 0000000000750ee0
-[ 1950.279426] PKRU: 55555554
-[ 1950.279426] Call Trace:
-[ 1950.279428] <TASK>
-[ 1950.279430] hwrng_unregister+0x28/0xe0 [rng_core]
-[ 1950.279436] tpm_chip_unregister+0xd5/0xf0 [tpm]
+Also in this IP version, this register change doesn't depend on MSI
+being enabled. So remove that check also.
 
-Add the forgotten !tpm_amd_is_rng_defective() invariant to the
-hwrng_unregister() call site inside tpm_chip_unregister().
-
-Cc: stable@vger.kernel.org
-Reported-by: Martin Dimov <martin@dmarto.com>
-Link: https://lore.kernel.org/linux-integrity/3d1d7e9dbfb8c96125bc93b6b58b90a7@dmarto.com/
-Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
-Fixes: b006c439d58d ("hwrng: core - start hwrng kthread also for untrusted sources")
-Tested-by: Martin Dimov <martin@dmarto.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20230316081117.14288-2-manivannan.sadhasivam@linaro.org
+Fixes: ed8cc3b1fc84 ("PCI: qcom: Add support for SDM845 PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.6+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-chip.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -682,7 +682,8 @@ EXPORT_SYMBOL_GPL(tpm_chip_register);
- void tpm_chip_unregister(struct tpm_chip *chip)
- {
- 	tpm_del_legacy_sysfs(chip);
--	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip))
-+	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip) &&
-+	    !tpm_amd_is_rng_defective(chip))
- 		hwrng_unregister(&chip->hwrng);
- 	tpm_bios_log_teardown(chip);
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2 && !tpm_is_firmware_upgrade(chip))
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1279,11 +1279,9 @@ static int qcom_pcie_init_2_7_0(struct q
+ 	val &= ~REQ_NOT_ENTR_L1;
+ 	writel(val, pcie->parf + PCIE20_PARF_PM_CTRL);
+ 
+-	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+-		val = readl(pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT);
+-		val |= BIT(31);
+-		writel(val, pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT);
+-	}
++	val = readl(pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2);
++	val |= BIT(31);
++	writel(val, pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2);
+ 
+ 	return 0;
+ err_disable_clocks:
 
 
