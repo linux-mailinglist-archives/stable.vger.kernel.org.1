@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C7E96FA4AD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4536FA4AF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233925AbjEHKCW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:02:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57644 "EHLO
+        id S233923AbjEHKCb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:02:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233933AbjEHKCT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:19 -0400
+        with ESMTP id S233924AbjEHKC3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E2E2E6A9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:01:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561092EB24
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9FD1622C9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:01:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF69AC433EF;
-        Mon,  8 May 2023 10:01:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65A08622CE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:01:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784ADC433EF;
+        Mon,  8 May 2023 10:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540107;
-        bh=8ElnCk7RhZFYWxYkaXrS4LVADxmCJ3RdlsSCDH5IXAg=;
+        s=korg; t=1683540109;
+        bh=lWZ+TxW3uhtV6kEXK0RbzEn9ncicLrRpbMXnruI/lZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ufQZvcT1vHH8u4KSCqPlyFiMKLh5u75STXLM2bCsZ7KEdcVX17Oia6SywHTzVjaRP
-         cvBa3Kgx/mfQgNyIKUSd3j4i/dN1C9ejhSDkZP9QNLRYnQbA+R/EkicFjczaAadNK0
-         hoB2Dz86PvRy48e17b5DB35iabX5JEj6dYyH9Vhs=
+        b=gG5Cc1aUPPNNJuh/dr0Jzg+3ahbcs7iBa8cjMWmdJadvuXkugsvy2hX3aE4elxomQ
+         z/WnYHy5U1wmJOOqesW6llAXPh8mekNUTavlMQ25PLpsy+Iw+N7OKInGoLmOFqLprO
+         WbC3g2+VeYZ9qmE+vgZstI21M31/2DXZxH+FAlFo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/611] arm64: dts: qcom: sc7180-trogdor-pazquel: correct trackpad supply
-Date:   Mon,  8 May 2023 11:40:52 +0200
-Message-Id: <20230508094429.228389235@linuxfoundation.org>
+Subject: [PATCH 6.1 211/611] arm64: dts: qcom: msm8994-kitakami: drop unit address from PMI8994 regulator
+Date:   Mon,  8 May 2023 11:40:53 +0200
+Message-Id: <20230508094429.261529362@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -60,38 +58,34 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 24f39eec6a70768e7c2eb2f3d8158f45050ff75a ]
+[ Upstream commit 3555dd528ba9c08d6ccd56239c695dbeac3b63e3 ]
 
-The hid-over-i2c takes VDD, not VCC supply.  Fix copy-pasta from other
-boards which use elan,ekth3000 with valid VCC:
+The PMIC regulators are not supposed to have unit addresses.
 
-  sc7180-trogdor-pazquel360-lte.dtb: trackpad@15: 'vcc-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
-
-Fixes: fb69f6adaf88 ("arm64: dts: qcom: sc7180: Add pazquel dts files")
+Fixes: e9783584c9b7 ("arm64: dts: qcom: msm8994-kitakami: Add VDD_GFX regulator")
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230312183622.460488-4-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20230312183622.460488-6-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi
-index 56d787785fd59..2e35c69a978fb 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel.dtsi
-@@ -39,7 +39,7 @@
- 		interrupt-parent = <&tlmm>;
- 		interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
- 
--		vcc-supply = <&pp3300_fp_tp>;
-+		vdd-supply = <&pp3300_fp_tp>;
- 		post-power-on-delay-ms = <100>;
- 		hid-descr-addr = <0x0001>;
- 
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
+index ff60b7004d260..2ecf455db8307 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
+@@ -173,8 +173,7 @@
+ 	 * power domain.. which still isn't enough and forces us to bind
+ 	 * OXILI_CX and OXILI_GX together!
+ 	 */
+-	vdd_gfx: s2@1700 {
+-		reg = <0x1700 0x100>;
++	vdd_gfx: s2 {
+ 		regulator-name = "VDD_GFX";
+ 		regulator-min-microvolt = <980000>;
+ 		regulator-max-microvolt = <980000>;
 -- 
 2.39.2
 
