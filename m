@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9050E6FAD3B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08AB76FA87A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235859AbjEHLco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52342 "EHLO
+        id S234955AbjEHKlZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:41:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235993AbjEHLcX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:32:23 -0400
+        with ESMTP id S234957AbjEHKkw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39AB40218
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:31:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62B1B29479
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC8846308A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7686C433D2;
-        Mon,  8 May 2023 11:31:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDC9B6283D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6906C433EF;
+        Mon,  8 May 2023 10:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545490;
-        bh=/3rlLhmMAvHeAsdHIsHAOpAxcq2GEp/Sku0FfycaN+I=;
+        s=korg; t=1683542424;
+        bh=HZbOggi+UOx+XC9gbCjnC4ZeG3/wFDzNw3GlUReWJ9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k6b/wv2U5EbZ/swqZEEQ702jALz2suc/xlV4XY8tHdYMgayh41VFs36Ct4jcWqLV+
-         iO2CvR7j0okTLnhDKTzUc+IuQXNLklg5PiwHJfGDC4wGRaCtg5DD4JEvny85XTJK2z
-         8ZKylGxDHci0ZMZSs4t9lIm4Es9CHOKcTwvhB2CQ=
+        b=vw9zrtsSTj64rSwY5y6JJHk2MV+sQXtYsPVug9DqYRJn6WeannT40plgA6VNA2xy2
+         YcXb3fMIIqyQW9ZXhgvkiyEYqAu1aw56AHwYJxJZoLK03tBXTC3osfuZVhDYxstise
+         OwOB5yJ5U7c7muN5B4365+PwUGhT9VnidtGSiMFw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.15 056/371] ubifs: Free memory for tmpfile name
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 431/663] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
 Date:   Mon,  8 May 2023 11:44:17 +0200
-Message-Id: <20230508094814.289587105@linuxfoundation.org>
+Message-Id: <20230508094442.042714066@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,49 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mårten Lindahl <marten.lindahl@axis.com>
+From: Liu Jian <liujian56@huawei.com>
 
-commit 1fb815b38bb31d6af9bd0540b8652a0d6fe6cfd3 upstream.
+[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
 
-When opening a ubifs tmpfile on an encrypted directory, function
-fscrypt_setup_filename allocates memory for the name that is to be
-stored in the directory entry, but after the name has been copied to the
-directory entry inode, the memory is not freed.
+This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
 
-When running kmemleak on it we see that it is registered as a leak. The
-report below is triggered by a simple program 'tmpfile' just opening a
-tmpfile:
+This patch introduces a possible null-ptr-def problem. Revert it. And the
+fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
+btsdio: fix use after free bug in btsdio_remove due to race condition").
 
-  unreferenced object 0xffff88810178f380 (size 32):
-    comm "tmpfile", pid 509, jiffies 4294934744 (age 1524.742s)
-    backtrace:
-      __kmem_cache_alloc_node
-      __kmalloc
-      fscrypt_setup_filename
-      ubifs_tmpfile
-      vfs_tmpfile
-      path_openat
-
-Free this memory after it has been copied to the inode.
-
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/dir.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btsdio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -488,6 +488,7 @@ static int ubifs_tmpfile(struct user_nam
- 	unlock_2_inodes(dir, inode);
+diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
+index 02893600db390..795be33f2892d 100644
+--- a/drivers/bluetooth/btsdio.c
++++ b/drivers/bluetooth/btsdio.c
+@@ -354,7 +354,6 @@ static void btsdio_remove(struct sdio_func *func)
  
- 	ubifs_release_budget(c, &req);
-+	fscrypt_free_filename(&nm);
+ 	BT_DBG("func %p", func);
  
- 	return 0;
+-	cancel_work_sync(&data->work);
+ 	if (!data)
+ 		return;
  
+-- 
+2.39.2
+
 
 
