@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB496FA488
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3A06FA494
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233890AbjEHKA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
+        id S233902AbjEHKBF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:01:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233888AbjEHKA1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:00:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FD12D426
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:00:26 -0700 (PDT)
+        with ESMTP id S233916AbjEHKBC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:01:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3EE2E051
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:01:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EB42622B8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:00:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C08C433D2;
-        Mon,  8 May 2023 10:00:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8555622A1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3BDC433EF;
+        Mon,  8 May 2023 10:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540025;
-        bh=uFdnm6oDQNvJJlSMqWdEciZCwq9VWtlp2q1WAeJTGCE=;
+        s=korg; t=1683540059;
+        bh=HEjMVt6eg9+7Bfdh+LVYmI3FS0FXpR+FmZYb1shKdaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Rv7QtpS1OctDydfVooWFBPUZYWJ2AeHimFh2+OOAgUHBMzV8nGWhw1E/YX0L7qXt
-         u+mTkKVNJX2GYqSIujhRn6OyTMAqKG49yItDQjzzGl357LQcbT51jyrFiuE9odvwlF
-         EdGrw9dJFIWGhQ/YguOAl1ZFljv5MYJ4ivkpQqSE=
+        b=LA9amb+IE8nYgJcxsjbVhCdhFvn0/vQ/CRTtOhApmjMNUXDVvfrUFzkFRk6ZVpyp5
+         2ctfJDmeOJppQrcBxQXV838X4kFpak9iRpGFg6Uw6dtAAZcSBmqZFH9dLq1j3yE+YP
+         q7uCuqYg16nMD+AwHrnvxjpeG105JaqSgOc2ewp4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/611] gpu: host1x: Fix memory leak of device names
-Date:   Mon,  8 May 2023 11:40:49 +0200
-Message-Id: <20230508094429.109932336@linuxfoundation.org>
+Subject: [PATCH 6.1 208/611] arm64: dts: qcom: sc7280-herobrine-villager: correct trackpad supply
+Date:   Mon,  8 May 2023 11:40:50 +0200
+Message-Id: <20230508094429.145559414@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -45,8 +48,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,111 +58,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 55879dad0f3ae8468444b42f785ad79eac05fe5b ]
+[ Upstream commit de88b1759b35086d5e63736fb604ea2d06486b1a ]
 
-The device names allocated by dev_set_name() need be freed
-before module unloading, but they can not be freed because
-the kobject's refcount which was set in device_initialize()
-has not be decreased to 0.
+The hid-over-i2c takes VDD, not VCC supply.  Fix copy-pasta from other
+Herobrine boards which use elan,ekth3000 with valid VCC:
 
-As comment of device_add() says, if it fails, use only
-put_device() drop the refcount, then the name will be
-freed in kobejct_cleanup().
+  sc7280-herobrine-villager-r1-lte.dtb: trackpad@2c: 'vcc-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-device_del() and put_device() can be replaced with
-device_unregister(), so call it to unregister the added
-successfully devices, and just call put_device() to the
-not added device.
-
-Add a release() function to device to avoid null release()
-function WARNING in device_release(), it's empty, because
-the context devices are freed together in
-host1x_memory_context_list_free().
-
-Fixes: 8aa5bcb61612 ("gpu: host1x: Add context device management code")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: ee2a62116015 ("arm64: dts: qcom: sc7280: Add device tree for herobrine villager")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230312183622.460488-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/host1x/context.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/host1x/context.c b/drivers/gpu/host1x/context.c
-index 291f34562e2e6..047696432eb21 100644
---- a/drivers/gpu/host1x/context.c
-+++ b/drivers/gpu/host1x/context.c
-@@ -13,6 +13,11 @@
- #include "context.h"
- #include "dev.h"
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi
+index 4566722bf4ddf..8f5d82885e447 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi
+@@ -33,7 +33,7 @@ ap_tp_i2c: &i2c0 {
+ 		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
  
-+static void host1x_memory_context_release(struct device *dev)
-+{
-+	/* context device is freed in host1x_memory_context_list_free() */
-+}
-+
- int host1x_memory_context_list_init(struct host1x *host1x)
- {
- 	struct host1x_memory_context_list *cdl = &host1x->context_list;
-@@ -53,28 +58,30 @@ int host1x_memory_context_list_init(struct host1x *host1x)
- 		dev_set_name(&ctx->dev, "host1x-ctx.%d", i);
- 		ctx->dev.bus = &host1x_context_device_bus_type;
- 		ctx->dev.parent = host1x->dev;
-+		ctx->dev.release = host1x_memory_context_release;
+ 		hid-descr-addr = <0x20>;
+-		vcc-supply = <&pp3300_z1>;
++		vdd-supply = <&pp3300_z1>;
  
- 		dma_set_max_seg_size(&ctx->dev, UINT_MAX);
- 
- 		err = device_add(&ctx->dev);
- 		if (err) {
- 			dev_err(host1x->dev, "could not add context device %d: %d\n", i, err);
--			goto del_devices;
-+			put_device(&ctx->dev);
-+			goto unreg_devices;
- 		}
- 
- 		err = of_dma_configure_id(&ctx->dev, node, true, &i);
- 		if (err) {
- 			dev_err(host1x->dev, "IOMMU configuration failed for context device %d: %d\n",
- 				i, err);
--			device_del(&ctx->dev);
--			goto del_devices;
-+			device_unregister(&ctx->dev);
-+			goto unreg_devices;
- 		}
- 
- 		fwspec = dev_iommu_fwspec_get(&ctx->dev);
- 		if (!fwspec || !device_iommu_mapped(&ctx->dev)) {
- 			dev_err(host1x->dev, "Context device %d has no IOMMU!\n", i);
--			device_del(&ctx->dev);
--			goto del_devices;
-+			device_unregister(&ctx->dev);
-+			goto unreg_devices;
- 		}
- 
- 		ctx->stream_id = fwspec->ids[0] & 0xffff;
-@@ -82,9 +89,9 @@ int host1x_memory_context_list_init(struct host1x *host1x)
- 
- 	return 0;
- 
--del_devices:
-+unreg_devices:
- 	while (i--)
--		device_del(&cdl->devs[i].dev);
-+		device_unregister(&cdl->devs[i].dev);
- 
- 	kfree(cdl->devs);
- 	cdl->devs = NULL;
-@@ -98,7 +105,7 @@ void host1x_memory_context_list_free(struct host1x_memory_context_list *cdl)
- 	unsigned int i;
- 
- 	for (i = 0; i < cdl->len; i++)
--		device_del(&cdl->devs[i].dev);
-+		device_unregister(&cdl->devs[i].dev);
- 
- 	kfree(cdl->devs);
- 	cdl->len = 0;
+ 		wakeup-source;
+ 	};
 -- 
 2.39.2
 
