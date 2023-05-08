@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 433286FA892
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681046FA584
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235024AbjEHKml (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:42:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42924 "EHLO
+        id S234161AbjEHKKS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234914AbjEHKmN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD432C3D6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:30 -0700 (PDT)
+        with ESMTP id S234153AbjEHKKR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDFDD3512F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 565C16283C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A53C433D2;
-        Mon,  8 May 2023 10:41:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6373D623AF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7412AC433EF;
+        Mon,  8 May 2023 10:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542484;
-        bh=PkAFS26IckiG+N7LtjU4dEnHOLPcJjweGya5lWBk5hg=;
+        s=korg; t=1683540615;
+        bh=3Kg9bkvKjVFpRgqLrECET1Xq25EDmdbWlu2X5wWnLlw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kJA3VOt2ek0TLBBETm5SNjjQUo0uiuillP/Gsni3L5PlvT72Fv4zoPZz7opw2660n
-         pAbmTBdH1nBkRTr82YjSmX9hCRIW8r5aYqPI/Kmn38m7SzxnyB4ySKH6Vg/I3zH9oG
-         WqPF1EARQETFZJJfeWan2pyC0yz6W8tOhEMOwjBY=
+        b=cMW5VitGYJKyXC/cK1JTDGmmEoYdFr1uHOukzRCQqQ1eltW4AQ9yeR4DDZCr7N3A/
+         o5zZirbeq+VkIziIdMGgSMl8ki13Gz1MGuHHZZZF8Zj/3LR6lOJ5ZHBhqmfJ/6amST
+         nRBw0xeEcg37Pz5jBrfYZH8Aa4Q+Ghhfna6t8/Nk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Pierre Gondois <pierre.gondois@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 449/663] spi: imx: Dont skip cleanup in removes error path
+Subject: [PATCH 6.1 433/611] cacheinfo: Check sib_leaf in cache_leaves_are_shared()
 Date:   Mon,  8 May 2023 11:44:35 +0200
-Message-Id: <20230508094442.657477808@linuxfoundation.org>
+Message-Id: <20230508094436.255366865@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,47 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit 11951c9e3f364d7ae3b568a0e52c8335d43066b5 ]
+[ Upstream commit 7a306e3eabf2b2fd8cffa69b87b32dbf814d79ce ]
 
-Returning early in a platform driver's remove callback is wrong. In this
-case the dma resources are not released in the error path. this is never
-retried later and so this is a permanent leak. To fix this, only skip
-hardware disabling if waking the device fails.
+If there is no ACPI/DT information, it is assumed that L1 caches
+are private and L2 (and higher) caches are shared. A cache is
+'shared' between two CPUs if it is accessible from these two
+CPUs.
 
-Fixes: d593574aff0a ("spi: imx: do not access registers while clocks disabled")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230306065733.2170662-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Each CPU owns a representation (i.e. has a dedicated cacheinfo struct)
+of the caches it has access to. cache_leaves_are_shared() tries to
+identify whether two representations are designating the same actual
+cache.
+
+In cache_leaves_are_shared(), if 'this_leaf' is a L2 cache (or higher)
+and 'sib_leaf' is a L1 cache, the caches are detected as shared as
+only this_leaf's cache level is checked.
+This is leads to setting sib_leaf as being shared with another CPU,
+which is incorrect as this is a L1 cache.
+
+Check 'sib_leaf->level'. Also update the comment as the function is
+called when populating 'shared_cpu_map'.
+
+Fixes: f16d1becf96f ("cacheinfo: Use cache identifiers to check if the caches are shared if available")
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20230414081453.244787-2-pierre.gondois@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/base/cacheinfo.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e4ccd0c329d06..6c9c87cd14cae 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1856,13 +1856,11 @@ static int spi_imx_remove(struct platform_device *pdev)
+diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+index f30256a524be6..c440d1af197a4 100644
+--- a/drivers/base/cacheinfo.c
++++ b/drivers/base/cacheinfo.c
+@@ -38,11 +38,10 @@ static inline bool cache_leaves_are_shared(struct cacheinfo *this_leaf,
+ {
+ 	/*
+ 	 * For non DT/ACPI systems, assume unique level 1 caches,
+-	 * system-wide shared caches for all other levels. This will be used
+-	 * only if arch specific code has not populated shared_cpu_map
++	 * system-wide shared caches for all other levels.
+ 	 */
+ 	if (!(IS_ENABLED(CONFIG_OF) || IS_ENABLED(CONFIG_ACPI)))
+-		return !(this_leaf->level == 1);
++		return (this_leaf->level != 1) && (sib_leaf->level != 1);
  
- 	spi_unregister_controller(controller);
- 
--	ret = pm_runtime_resume_and_get(spi_imx->dev);
--	if (ret < 0) {
--		dev_err(spi_imx->dev, "failed to enable clock\n");
--		return ret;
--	}
--
--	writel(0, spi_imx->base + MXC_CSPICTRL);
-+	ret = pm_runtime_get_sync(spi_imx->dev);
-+	if (ret >= 0)
-+		writel(0, spi_imx->base + MXC_CSPICTRL);
-+	else
-+		dev_warn(spi_imx->dev, "failed to enable clock, skip hw disable\n");
- 
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
- 	pm_runtime_put_sync(spi_imx->dev);
+ 	if ((sib_leaf->attributes & CACHE_ID) &&
+ 	    (this_leaf->attributes & CACHE_ID))
 -- 
 2.39.2
 
