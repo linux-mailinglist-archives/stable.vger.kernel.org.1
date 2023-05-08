@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9CE6FA5DE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833D16FAC1F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234257AbjEHKN4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42624 "EHLO
+        id S235578AbjEHLVB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234303AbjEHKNl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:41 -0400
+        with ESMTP id S235574AbjEHLVB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E18AC3ACEB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3AE38F1C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 275F46240B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F87DC433EF;
-        Mon,  8 May 2023 10:13:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 705C762C60
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F45C4339B;
+        Mon,  8 May 2023 11:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540818;
-        bh=OxINo+q/tSjvY3Nxtj2ly40l4J7dXpR1eGk+vhx47Ck=;
+        s=korg; t=1683544858;
+        bh=9LJbx+ELuwApZUsSfMPBiPMGyel/4ljM8YpTP5ivLhg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tBGUEEAB5WdlkdFXNEc+lxPKAcw4kicOok6v88kuvWHVWxoG0bO3DWlJvn8rtHx0u
-         xFP+C6lFbQomvRygAGCmTUOiUlbs8AwqTzXYd8WIkGg4rxE8hdpYbVRs22tUHUMNqM
-         YOY55g6ULV6ZgxpN4/4gwZjStnuMHDZTY4Rjov7s=
+        b=bfNqnqMWDlcYx4tgHWNo9fOLhQM1H3JhBrryK7seSPFBmlU5kcizRe1gs4crUZjOg
+         +HGZa1DL9yDzbm9xKVQRSeu8EPMwdJhghzopao0V0QjDeVNe0kop3bSbWHnD82WzVy
+         1xCscgsGhJQOven1QHATy4nFWitD5A8HP6GltUow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, "Dae R. Jeong" <threeearcat@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 509/611] clk: qcom: dispcc-qcm2290: get rid of test clock
+Subject: [PATCH 6.3 516/694] vmci_host: fix a race condition in vmci_host_poll() causing GPF
 Date:   Mon,  8 May 2023 11:45:51 +0200
-Message-Id: <20230508094438.596979657@linuxfoundation.org>
+Message-Id: <20230508094450.941577617@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,74 +53,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Dae R. Jeong <threeearcat@gmail.com>
 
-[ Upstream commit 62db82f9c8004f1226f5cec8a5441fb89eb984fa ]
+[ Upstream commit ae13381da5ff0e8e084c0323c3cc0a945e43e9c7 ]
 
-The test clock apparently it's not used by anyone upstream. Remove it.
+During fuzzing, a general protection fault is observed in
+vmci_host_poll().
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20221228185237.3111988-9-dmitry.baryshkov@linaro.org
-Stable-dep-of: 68d1151f0306 ("clk: qcom: dispcc-qcm2290: Remove inexistent DSI1PHY clk")
+general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
+RIP: 0010:__lock_acquire+0xf3/0x5e00 kernel/locking/lockdep.c:4926
+<- omitting registers ->
+Call Trace:
+ <TASK>
+ lock_acquire+0x1a4/0x4a0 kernel/locking/lockdep.c:5672
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0xb3/0x100 kernel/locking/spinlock.c:162
+ add_wait_queue+0x3d/0x260 kernel/sched/wait.c:22
+ poll_wait include/linux/poll.h:49 [inline]
+ vmci_host_poll+0xf8/0x2b0 drivers/misc/vmw_vmci/vmci_host.c:174
+ vfs_poll include/linux/poll.h:88 [inline]
+ do_pollfd fs/select.c:873 [inline]
+ do_poll fs/select.c:921 [inline]
+ do_sys_poll+0xc7c/0x1aa0 fs/select.c:1015
+ __do_sys_ppoll fs/select.c:1121 [inline]
+ __se_sys_ppoll+0x2cc/0x330 fs/select.c:1101
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x4e/0xa0 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+Example thread interleaving that causes the general protection fault
+is as follows:
+
+CPU1 (vmci_host_poll)               CPU2 (vmci_host_do_init_context)
+-----                               -----
+// Read uninitialized context
+context = vmci_host_dev->context;
+                                    // Initialize context
+                                    vmci_host_dev->context = vmci_ctx_create();
+                                    vmci_host_dev->ct_type = VMCIOBJ_CONTEXT;
+
+if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
+    // Dereferencing the wrong pointer
+    poll_wait(..., &context->host_context);
+}
+
+In this scenario, vmci_host_poll() reads vmci_host_dev->context first,
+and then reads vmci_host_dev->ct_type to check that
+vmci_host_dev->context is initialized. However, since these two reads
+are not atomically executed, there is a chance of a race condition as
+described above.
+
+To fix this race condition, read vmci_host_dev->context after checking
+the value of vmci_host_dev->ct_type so that vmci_host_poll() always
+reads an initialized context.
+
+Reported-by: Dae R. Jeong <threeearcat@gmail.com>
+Fixes: 8bf503991f87 ("VMCI: host side driver implementation.")
+Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
+Link: https://lore.kernel.org/r/ZCGFsdBAU4cYww5l@dragonet
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-qcm2290.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/misc/vmw_vmci/vmci_host.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-qcm2290.c b/drivers/clk/qcom/dispcc-qcm2290.c
-index 96b149365912a..2ebd9a02b8950 100644
---- a/drivers/clk/qcom/dispcc-qcm2290.c
-+++ b/drivers/clk/qcom/dispcc-qcm2290.c
-@@ -71,7 +71,6 @@ static const struct parent_map disp_cc_parent_map_0[] = {
- static const struct clk_parent_data disp_cc_parent_data_0[] = {
- 	{ .fw_name = "bi_tcxo" },
- 	{ .fw_name = "dsi0_phy_pll_out_byteclk" },
--	{ .fw_name = "core_bi_pll_test_se" },
- };
+diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
+index 857b9851402a6..abe79f6fd2a79 100644
+--- a/drivers/misc/vmw_vmci/vmci_host.c
++++ b/drivers/misc/vmw_vmci/vmci_host.c
+@@ -165,10 +165,16 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
+ static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
+ {
+ 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
+-	struct vmci_ctx *context = vmci_host_dev->context;
++	struct vmci_ctx *context;
+ 	__poll_t mask = 0;
  
- static const struct parent_map disp_cc_parent_map_1[] = {
-@@ -80,7 +79,6 @@ static const struct parent_map disp_cc_parent_map_1[] = {
- 
- static const struct clk_parent_data disp_cc_parent_data_1[] = {
- 	{ .fw_name = "bi_tcxo" },
--	{ .fw_name = "core_bi_pll_test_se" },
- };
- 
- static const struct parent_map disp_cc_parent_map_2[] = {
-@@ -91,7 +89,6 @@ static const struct parent_map disp_cc_parent_map_2[] = {
- static const struct clk_parent_data disp_cc_parent_data_2[] = {
- 	{ .fw_name = "bi_tcxo_ao" },
- 	{ .fw_name = "gcc_disp_gpll0_div_clk_src" },
--	{ .fw_name = "core_bi_pll_test_se" },
- };
- 
- static const struct parent_map disp_cc_parent_map_3[] = {
-@@ -104,7 +101,6 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
- 	{ .fw_name = "bi_tcxo" },
- 	{ .hw = &disp_cc_pll0.clkr.hw },
- 	{ .fw_name = "gcc_disp_gpll0_clk_src" },
--	{ .fw_name = "core_bi_pll_test_se" },
- };
- 
- static const struct parent_map disp_cc_parent_map_4[] = {
-@@ -117,7 +113,6 @@ static const struct clk_parent_data disp_cc_parent_data_4[] = {
- 	{ .fw_name = "bi_tcxo" },
- 	{ .fw_name = "dsi0_phy_pll_out_dsiclk" },
- 	{ .fw_name = "dsi1_phy_pll_out_dsiclk" },
--	{ .fw_name = "core_bi_pll_test_se" },
- };
- 
- static const struct parent_map disp_cc_parent_map_5[] = {
-@@ -126,7 +121,6 @@ static const struct parent_map disp_cc_parent_map_5[] = {
- 
- static const struct clk_parent_data disp_cc_parent_data_5[] = {
- 	{ .fw_name = "sleep_clk" },
--	{ .fw_name = "core_bi_pll_test_se" },
- };
- 
- static struct clk_rcg2 disp_cc_mdss_byte0_clk_src = {
+ 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
++		/*
++		 * Read context only if ct_type == VMCIOBJ_CONTEXT to make
++		 * sure that context is initialized
++		 */
++		context = vmci_host_dev->context;
++
+ 		/* Check for VMCI calls to this VM context. */
+ 		if (wait)
+ 			poll_wait(filp, &context->host_context.wait_queue,
 -- 
 2.39.2
 
