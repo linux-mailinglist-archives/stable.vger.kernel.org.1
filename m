@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 640BE6FA980
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E3966FAC91
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235222AbjEHKwJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:52:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55356 "EHLO
+        id S235677AbjEHL0B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235268AbjEHKvr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:47 -0400
+        with ESMTP id S235692AbjEHLZt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4EA22DD6E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:51:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F9F39B9B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7788962917
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:51:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DCDC433D2;
-        Mon,  8 May 2023 10:51:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6CE562D69
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39E9C433EF;
+        Mon,  8 May 2023 11:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543077;
-        bh=lGR6HAMTqbcAsG99GjOZGFXlX6sQYubRIqziW6Cw2p4=;
+        s=korg; t=1683545131;
+        bh=YtUHGK12kct54QqhmYVgPRys+B+WnIg7FSZ16nVxsDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qnifV8F7iWqrm68v+1wZ/BgSa8IYHhpV1cGc/rjBgmuzraSwYME70mKri9vX/x6te
-         5SdsSiyvbPneZgdTOvVWTQ+gKvJEpirUfHhHfjueZVsiU72PfjVOZHKSAN2E58dgcI
-         k7YQo2LZxLCfkhOItsuBINZXjytMF1VwiKtcQEao=
+        b=n1RQ7raMNYKog/I1e4Y4jpFO4s5AP66XKbYCTCyqYtG3Lti8esdf85QBAjFCg+6Hb
+         jCqLwDZNwG+PlaHqeLGbMYorgmKKAwDBsObj8nw+neDPPkWOZO/oKl/6KtTsTs+6CW
+         b2Wn6ke8B1Vc19R4oZr2qaNRua+Pqx5hYIbJzKzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lorenzo Stoakes <lstoakes@gmail.com>,
-        kernel test robot <oliver.sang@intel.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.2 643/663] mm/mempolicy: correctly update prev when policy is equal on mbind
+        patches@lists.linux.dev,
+        syzbot+bf4bb7731ef73b83a3b4@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Ye Bin <yebin10@huawei.com>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 634/694] ext4: fix use-after-free read in ext4_find_extent for bigalloc + inline
 Date:   Mon,  8 May 2023 11:47:49 +0200
-Message-Id: <20230508094450.883703893@linuxfoundation.org>
+Message-Id: <20230508094456.246506459@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,71 +56,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 00ca0f2e86bf40b016a646e6323a8941a09cf106 upstream.
+[ Upstream commit 835659598c67907b98cd2aa57bb951dfaf675c69 ]
 
-The refactoring in commit f4e9e0e69468 ("mm/mempolicy: fix use-after-free
-of VMA iterator") introduces a subtle bug which arises when attempting to
-apply a new NUMA policy across a range of VMAs in mbind_range().
+Syzbot found the following issue:
+loop0: detected capacity change from 0 to 2048
+EXT4-fs (loop0): mounted filesystem 00000000-0000-0000-0000-000000000000 without journal. Quota mode: none.
+==================================================================
+BUG: KASAN: use-after-free in ext4_ext_binsearch_idx fs/ext4/extents.c:768 [inline]
+BUG: KASAN: use-after-free in ext4_find_extent+0x76e/0xd90 fs/ext4/extents.c:931
+Read of size 4 at addr ffff888073644750 by task syz-executor420/5067
 
-The refactoring passes a **prev pointer to keep track of the previous VMA
-in order to reduce duplication, and in all but one case it keeps this
-correctly updated.
+CPU: 0 PID: 5067 Comm: syz-executor420 Not tainted 6.2.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
+ print_address_description+0x74/0x340 mm/kasan/report.c:306
+ print_report+0x107/0x1f0 mm/kasan/report.c:417
+ kasan_report+0xcd/0x100 mm/kasan/report.c:517
+ ext4_ext_binsearch_idx fs/ext4/extents.c:768 [inline]
+ ext4_find_extent+0x76e/0xd90 fs/ext4/extents.c:931
+ ext4_clu_mapped+0x117/0x970 fs/ext4/extents.c:5809
+ ext4_insert_delayed_block fs/ext4/inode.c:1696 [inline]
+ ext4_da_map_blocks fs/ext4/inode.c:1806 [inline]
+ ext4_da_get_block_prep+0x9e8/0x13c0 fs/ext4/inode.c:1870
+ ext4_block_write_begin+0x6a8/0x2290 fs/ext4/inode.c:1098
+ ext4_da_write_begin+0x539/0x760 fs/ext4/inode.c:3082
+ generic_perform_write+0x2e4/0x5e0 mm/filemap.c:3772
+ ext4_buffered_write_iter+0x122/0x3a0 fs/ext4/file.c:285
+ ext4_file_write_iter+0x1d0/0x18f0
+ call_write_iter include/linux/fs.h:2186 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x7dc/0xc50 fs/read_write.c:584
+ ksys_write+0x177/0x2a0 fs/read_write.c:637
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f4b7a9737b9
+RSP: 002b:00007ffc5cac3668 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f4b7a9737b9
+RDX: 00000000175d9003 RSI: 0000000020000200 RDI: 0000000000000004
+RBP: 00007f4b7a933050 R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000079f R11: 0000000000000246 R12: 00007f4b7a9330e0
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
-The bug arises when a VMA within the specified range has an equivalent
-policy as determined by mpol_equal() - which unlike other cases, does not
-update prev.
+Above issue is happens when enable bigalloc and inline data feature. As
+commit 131294c35ed6 fixed delayed allocation bug in ext4_clu_mapped for
+bigalloc + inline. But it only resolved issue when has inline data, if
+inline data has been converted to extent(ext4_da_convert_inline_data_to_extent)
+before writepages, there is no EXT4_STATE_MAY_INLINE_DATA flag. However
+i_data is still store inline data in this scene. Then will trigger UAF
+when find extent.
+To resolve above issue, there is need to add judge "ext4_has_inline_data(inode)"
+in ext4_clu_mapped().
 
-This can result in a situation where, later in the iteration, a VMA is
-found whose policy does need to change.  At this point, vma_merge() is
-invoked with prev pointing to a VMA which is before the previous VMA.
-
-Since vma_merge() discovers the curr VMA by looking for the one
-immediately after prev, it will now be in a situation where this VMA is
-incorrect and the merge will not proceed correctly.
-
-This is checked in the VM_WARN_ON() invariant case with end >
-curr->vm_end, which, if a merge is possible, results in a warning (if
-CONFIG_DEBUG_VM is specified).
-
-I note that vma_merge() performs these invariant checks only after
-merge_prev/merge_next are checked, which is debatable as it hides this
-issue if no merge is possible even though a buggy situation has arisen.
-
-The solution is simply to update the prev pointer even when policies are
-equal.
-
-This caused a bug to arise in the 6.2.y stable tree, and this patch
-resolves this bug.
-
-Link: https://lkml.kernel.org/r/83f1d612acb519d777bebf7f3359317c4e7f4265.1682866629.git.lstoakes@gmail.com
-Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-  Link: https://lore.kernel.org/oe-lkp/202304292203.44ddeff6-oliver.sang@intel.com
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 131294c35ed6 ("ext4: fix delayed allocation bug in ext4_clu_mapped for bigalloc + inline")
+Reported-by: syzbot+bf4bb7731ef73b83a3b4@syzkaller.appspotmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Tested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20230406111627.1916759-1-tudor.ambarus@linaro.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mempolicy.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -802,8 +802,10 @@ static int mbind_range(struct vma_iterat
- 		vmstart = vma->vm_start;
- 	}
- 
--	if (mpol_equal(vma_policy(vma), new_pol))
-+	if (mpol_equal(vma_policy(vma), new_pol)) {
-+		*prev = vma;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 3559ea6b07818..74251eebf8313 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5802,7 +5802,8 @@ int ext4_clu_mapped(struct inode *inode, ext4_lblk_t lclu)
+ 	 * mapped - no physical clusters have been allocated, and the
+ 	 * file has no extents
+ 	 */
+-	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA))
++	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA) ||
++	    ext4_has_inline_data(inode))
  		return 0;
-+	}
  
- 	pgoff = vma->vm_pgoff + ((vmstart - vma->vm_start) >> PAGE_SHIFT);
- 	merged = vma_merge(vma->vm_mm, *prev, vmstart, vmend, vma->vm_flags,
+ 	/* search for the extent closest to the first block in the cluster */
+-- 
+2.39.2
+
 
 
