@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD38E6FA748
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B14916FAA67
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234492AbjEHK3E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:29:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58266 "EHLO
+        id S233450AbjEHLCs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:02:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234647AbjEHK2r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F132157C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:44 -0700 (PDT)
+        with ESMTP id S235497AbjEHLCa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A392CFDF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:01:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A77062676
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7F6C433EF;
-        Mon,  8 May 2023 10:28:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BADBE62A38
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC39C4339B;
+        Mon,  8 May 2023 11:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541723;
-        bh=PpYlT7tpTRxlKuX8uWx6GK0P4exLtijtg/YZhiM8g+M=;
+        s=korg; t=1683543671;
+        bh=VBD6nhKNNZiwl8wWH1AEL8jtVPgKCn2EUc4nX1gLjaI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gI6rLpg6A9CsabqXLJBf4OMU1vHL4KQ4zQH4TAdF/Z7DtW0yLStDMLYdYQjRfxRGu
-         46DLQESHabkbnPDaRIekOitdZ5V1c3GuDIUqhSCPeR4oX1NLmTnyNa0x4EWp5wZUlI
-         Qa6XkJC38l1dCOO9G7ivqQNbvO/LH6cT5ZVl3Hno=
+        b=XLTpHRLmgQU3gwOVvxdQ4KB+9Sx6VEAQqkUvode3vpFACskmBOyEiMMFCuUc6xTbr
+         +Yqndya5EeoQoqknBe7zIBbEO5fHCvbAc69l7rBak1XLikyV5TT7HxxlGeehvkhfNM
+         8VXeAQL3lIokofpMN59IsRX5mJ3qxhG2l2keBbvs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 172/663] ARM: dts: qcom: ipq8064: Fix the PCI I/O port range
+Subject: [PATCH 6.3 163/694] arm64: dts: renesas: r9a07g054: Update IRQ numbers for SSI channels
 Date:   Mon,  8 May 2023 11:39:58 +0200
-Message-Id: <20230508094434.052919230@linuxfoundation.org>
+Message-Id: <20230508094437.701298719@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,66 +56,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 0b16b34e491629016109e56747ad64588074194b ]
+[ Upstream commit c2b0dc0e83ef4a74cbe381fd0c84cea16cf067f0 ]
 
-For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI addresses
-(0x0fe00000, 0x31e00000, 0x35e00000) specified in the ranges property for
-I/O region.
+>From R01UH0936EJ0120 Rev.1.20 HW manual the interrupt numbers for SSI
+channels have been updated,
 
-While at it, let's use the missing 0x prefix for the addresses.
+SPI 329 - SSIF0 is now marked as reserved
+SPI 333 - SSIF1 is now marked as reserved
+SPI 335 - SSIF2 is now marked as reserved
+SPI 336 - SSIF2 is now marked as reserved
+SPI 341 - SSIF3 is now marked as reserved
 
-Fixes: 93241840b664 ("ARM: dts: qcom: Add pcie nodes for ipq8064")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-17-manivannan.sadhasivam@linaro.org
+This patch drops the above IRQs from SoC DTSI.
+
+Fixes: cd0339ec25895c0b ("arm64: dts: renesas: r9a07g054: Add SSI{1,2,3} nodes and fillup the SSI0 stub node")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230217185225.43310-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-ipq8064.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/renesas/r9a07g054.dtsi | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-ipq8064.dtsi b/arch/arm/boot/dts/qcom-ipq8064.dtsi
-index 7e784b0995da2..1e6eb6773a0b0 100644
---- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
-@@ -1082,8 +1082,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00010000   /* downstream I/O */
--				  0x82000000 0 0x08000000 0x08000000 0 0x07e00000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x0fe00000 0x0 0x00010000   /* I/O */
-+				  0x82000000 0x0 0x08000000 0x08000000 0x0 0x07e00000>; /* MEM */
- 
- 			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -1133,8 +1133,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00010000   /* downstream I/O */
--				  0x82000000 0 0x2e000000 0x2e000000 0 0x03e00000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x31e00000 0x0 0x00010000   /* I/O */
-+				  0x82000000 0x0 0x2e000000 0x2e000000 0x0 0x03e00000>; /* MEM */
- 
- 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -1184,8 +1184,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00010000   /* downstream I/O */
--				  0x82000000 0 0x32000000 0x32000000 0 0x03e00000>; /* non-prefetchable memory */
-+			ranges = <0x81000000 0x0 0x00000000 0x35e00000 0x0 0x00010000   /* I/O */
-+				  0x82000000 0x0 0x32000000 0x32000000 0x0 0x03e00000>; /* MEM */
- 
- 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
+index 304ade54425bf..fea537d9fce66 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
+@@ -175,9 +175,8 @@
+ 			reg = <0 0x10049c00 0 0x400>;
+ 			interrupts = <GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 327 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 328 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 329 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
++				     <GIC_SPI 328 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "int_req", "dma_rx", "dma_tx";
+ 			clocks = <&cpg CPG_MOD R9A07G054_SSI0_PCLK2>,
+ 				 <&cpg CPG_MOD R9A07G054_SSI0_PCLK_SFR>,
+ 				 <&audio_clk1>, <&audio_clk2>;
+@@ -196,9 +195,8 @@
+ 			reg = <0 0x1004a000 0 0x400>;
+ 			interrupts = <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 331 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 332 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 333 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
++				     <GIC_SPI 332 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "int_req", "dma_rx", "dma_tx";
+ 			clocks = <&cpg CPG_MOD R9A07G054_SSI1_PCLK2>,
+ 				 <&cpg CPG_MOD R9A07G054_SSI1_PCLK_SFR>,
+ 				 <&audio_clk1>, <&audio_clk2>;
+@@ -216,10 +214,8 @@
+ 				     "renesas,rz-ssi";
+ 			reg = <0 0x1004a400 0 0x400>;
+ 			interrupts = <GIC_SPI 334 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 335 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 336 IRQ_TYPE_EDGE_RISING>,
+ 				     <GIC_SPI 337 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
++			interrupt-names = "int_req", "dma_rt";
+ 			clocks = <&cpg CPG_MOD R9A07G054_SSI2_PCLK2>,
+ 				 <&cpg CPG_MOD R9A07G054_SSI2_PCLK_SFR>,
+ 				 <&audio_clk1>, <&audio_clk2>;
+@@ -238,9 +234,8 @@
+ 			reg = <0 0x1004a800 0 0x400>;
+ 			interrupts = <GIC_SPI 338 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 339 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 340 IRQ_TYPE_EDGE_RISING>,
+-				     <GIC_SPI 341 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
++				     <GIC_SPI 340 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "int_req", "dma_rx", "dma_tx";
+ 			clocks = <&cpg CPG_MOD R9A07G054_SSI3_PCLK2>,
+ 				 <&cpg CPG_MOD R9A07G054_SSI3_PCLK_SFR>,
+ 				 <&audio_clk1>, <&audio_clk2>;
 -- 
 2.39.2
 
