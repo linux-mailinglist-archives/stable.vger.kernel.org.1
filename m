@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28A436FA6FF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB2B16FAA48
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234639AbjEHK0D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54366 "EHLO
+        id S235448AbjEHLBO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234431AbjEHKZg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:25:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9676DDB9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:25:31 -0700 (PDT)
+        with ESMTP id S235337AbjEHLA5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47CE829C9C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E2E0625D8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:25:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6770CC433D2;
-        Mon,  8 May 2023 10:25:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEB2962A15
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE02DC433EF;
+        Mon,  8 May 2023 10:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541530;
-        bh=pSZNQmukmon3+H2q0ZpWfO5Ii5FE9LSWG3VB8i6lqeM=;
+        s=korg; t=1683543582;
+        bh=ZFtxEkoyIM91pwb5W2teSJjQ0FQmaALSSZaGTpaoUEU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A1iv5TUu+9HrlQ8YU2mzqjxTsRbxxGFGpJF4oOCSf5xtIqyU8ZblW1tcwkl8wCXZC
-         jxotbEsJPqi/fLIEgFOjWWJ431SWeYnY4k2dA88ZD9plRud+XKdCKU3OG4C7rL8jwJ
-         lJKuSB4hmMWQGoUyhP8zdXZQ+ANmM4MYAM+AI9qo=
+        b=l8waQZk379iq2MyXV75zhdHGpS79peX/XuJdzCInufNEi8ksy5iYDmLvWzHzUD6gh
+         qBIBz2ONxNG3uX8tFYANltchylcCGMfeOJyYsUYxLBGwRfbrT64zvHKnA1aRe3uCCc
+         uTaJcxgT377Nysc7+qJg0xORPTM4iPavJtwd0Ukw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 145/663] arm64: dts: renesas: r9a07g043: Update IRQ numbers for SSI channels
+Subject: [PATCH 6.3 136/694] ARM: 9292/1: vfp: Pass thread_info pointer to vfp_support_entry
 Date:   Mon,  8 May 2023 11:39:31 +0200
-Message-Id: <20230508094433.211787662@linuxfoundation.org>
+Message-Id: <20230508094436.875285899@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,84 +56,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 2a5c9891392dca47f6865a2add1986876e40849c ]
+[ Upstream commit dae904d96ad6a5fa79bd9d99a3decf93685d398b ]
 
->From R01UH0968EJ0100 Rev.1.00 HW manual the interrupt numbers for SSI
-channels have been updated,
+Instead of dereferencing thread_info in do_vfp, pass the thread_info
+pointer to vfp_support_entry via R1. That way, we only use a single
+caller save register, which makes it easier to convert do_vfp to C code
+in a subsequent patch.
 
-SPI 329 - SSIF0 is now marked as reserved
-SPI 333 - SSIF1 is now marked as reserved
-SPI 335 - SSIF2 is now marked as reserved
-SPI 336 - SSIF2 is now marked as reserved
-SPI 341 - SSIF3 is now marked as reserved
+Note that, unlike the CPU number, which can change due to preemption,
+passing the thread_info pointer can safely be done with preemption
+enabled.
 
-This patch drops the above IRQs from SoC DTSI.
-
-Fixes: 559f2b0708c70 ("arm64: dts: renesas: r9a07g043: Add SSI{1,2,3} nodes and fillup the SSI0 stub node")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230217185225.43310-5-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Stable-dep-of: c76c6c4ecbec ("ARM: 9294/2: vfp: Fix broken softirq handling with instrumentation enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a07g043.dtsi | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ arch/arm/vfp/entry.S |  5 +----
+ arch/arm/vfp/vfphw.S | 10 +++++++---
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a07g043.dtsi b/arch/arm64/boot/dts/renesas/r9a07g043.dtsi
-index 3f7d451b11995..95817679b3884 100644
---- a/arch/arm64/boot/dts/renesas/r9a07g043.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a07g043.dtsi
-@@ -80,9 +80,8 @@
- 			reg = <0 0x10049c00 0 0x400>;
- 			interrupts = <SOC_PERIPHERAL_IRQ(326) IRQ_TYPE_LEVEL_HIGH>,
- 				     <SOC_PERIPHERAL_IRQ(327) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(328) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(329) IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+				     <SOC_PERIPHERAL_IRQ(328) IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "int_req", "dma_rx", "dma_tx";
- 			clocks = <&cpg CPG_MOD R9A07G043_SSI0_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G043_SSI0_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
-@@ -101,9 +100,8 @@
- 			reg = <0 0x1004a000 0 0x400>;
- 			interrupts = <SOC_PERIPHERAL_IRQ(330) IRQ_TYPE_LEVEL_HIGH>,
- 				     <SOC_PERIPHERAL_IRQ(331) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(332) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(333) IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+				     <SOC_PERIPHERAL_IRQ(332) IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "int_req", "dma_rx", "dma_tx";
- 			clocks = <&cpg CPG_MOD R9A07G043_SSI1_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G043_SSI1_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
-@@ -121,10 +119,8 @@
- 				     "renesas,rz-ssi";
- 			reg = <0 0x1004a400 0 0x400>;
- 			interrupts = <SOC_PERIPHERAL_IRQ(334) IRQ_TYPE_LEVEL_HIGH>,
--				     <SOC_PERIPHERAL_IRQ(335) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(336) IRQ_TYPE_EDGE_RISING>,
- 				     <SOC_PERIPHERAL_IRQ(337) IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+			interrupt-names = "int_req", "dma_rt";
- 			clocks = <&cpg CPG_MOD R9A07G043_SSI2_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G043_SSI2_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
-@@ -143,9 +139,8 @@
- 			reg = <0 0x1004a800 0 0x400>;
- 			interrupts = <SOC_PERIPHERAL_IRQ(338) IRQ_TYPE_LEVEL_HIGH>,
- 				     <SOC_PERIPHERAL_IRQ(339) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(340) IRQ_TYPE_EDGE_RISING>,
--				     <SOC_PERIPHERAL_IRQ(341) IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "int_req", "dma_rx", "dma_tx", "dma_rt";
-+				     <SOC_PERIPHERAL_IRQ(340) IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "int_req", "dma_rx", "dma_tx";
- 			clocks = <&cpg CPG_MOD R9A07G043_SSI3_PCLK2>,
- 				 <&cpg CPG_MOD R9A07G043_SSI3_PCLK_SFR>,
- 				 <&audio_clk1>, <&audio_clk2>;
+diff --git a/arch/arm/vfp/entry.S b/arch/arm/vfp/entry.S
+index 9a89264cdcc0b..cfedc2a3dbd68 100644
+--- a/arch/arm/vfp/entry.S
++++ b/arch/arm/vfp/entry.S
+@@ -22,15 +22,12 @@
+ @  IRQs enabled.
+ @
+ ENTRY(do_vfp)
+-	local_bh_disable r10, r4
++	mov	r1, r10
+  	ldr	r4, .LCvfp
+-	ldr	r11, [r10, #TI_CPU]	@ CPU number
+-	add	r10, r10, #TI_VFPSTATE	@ r10 = workspace
+ 	ldr	pc, [r4]		@ call VFP entry point
+ ENDPROC(do_vfp)
+ 
+ ENTRY(vfp_null_entry)
+-	local_bh_enable_ti r10, r4
+ 	ret	lr
+ ENDPROC(vfp_null_entry)
+ 
+diff --git a/arch/arm/vfp/vfphw.S b/arch/arm/vfp/vfphw.S
+index 26c4f61ecfa39..6d056d810e486 100644
+--- a/arch/arm/vfp/vfphw.S
++++ b/arch/arm/vfp/vfphw.S
+@@ -6,9 +6,9 @@
+  *  Written by Deep Blue Solutions Limited.
+  *
+  * This code is called from the kernel's undefined instruction trap.
++ * r1 holds the thread_info pointer
+  * r9 holds the return address for successful handling.
+  * lr holds the return address for unrecognised instructions.
+- * r10 points at the start of the private FP workspace in the thread structure
+  * sp points to a struct pt_regs (as defined in include/asm/proc/ptrace.h)
+  */
+ #include <linux/init.h>
+@@ -69,13 +69,17 @@
+ @ VFP hardware support entry point.
+ @
+ @  r0  = instruction opcode (32-bit ARM or two 16-bit Thumb)
++@  r1  = thread_info pointer
+ @  r2  = PC value to resume execution after successful emulation
+ @  r9  = normal "successful" return address
+-@  r10 = vfp_state union
+-@  r11 = CPU number
+ @  lr  = unrecognised instruction return address
+ @  IRQs enabled.
+ ENTRY(vfp_support_entry)
++	local_bh_disable r1, r4
++
++	ldr	r11, [r1, #TI_CPU]	@ CPU number
++	add	r10, r1, #TI_VFPSTATE	@ r10 = workspace
++
+ 	DBGSTR3	"instr %08x pc %08x state %p", r0, r2, r10
+ 
+ 	.fpu	vfpv2
 -- 
 2.39.2
 
