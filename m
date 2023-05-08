@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8D46FA476
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 194386FA477
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233877AbjEHJ7m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55568 "EHLO
+        id S229561AbjEHJ7r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:59:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjEHJ7l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:59:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F6802CD0D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:59:40 -0700 (PDT)
+        with ESMTP id S233882AbjEHJ7o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:59:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 433722D402
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:59:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7F50622A1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:59:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96CDC433D2;
-        Mon,  8 May 2023 09:59:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CADB76229E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE82C433EF;
+        Mon,  8 May 2023 09:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539979;
-        bh=15RMTC+ZN1QytF2d7EaMMDUeqoxF3Gg6R/lbc1gyPqU=;
+        s=korg; t=1683539982;
+        bh=P3W5YrNDzx5SS2ocMteFdnJlj3b6PdNMkOPFR6PYjVw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NoNqItQRakZ2oTJVoWmRwrrxWP2y5gqOtdXrgm+Yq3H8s0LHeotZTS6BeQx4OMcdu
-         hi6zvhJgOK7yR8DtLO/XeAf1L3ucONwQsXyuPuCeGad5pj5t6rk+T0TcEaLJ7dd4Xm
-         sjdtMWxYxfgQ50f+aaXgURhxu4ib8gbGGAT5v51U=
+        b=zuZd/z6GapBOqF1YnVizfBYLQ0Tk+1R2sdgNMdUGUqpnrHex+WCuWGTlkDJAFt+NI
+         RerPRwJPdSIH4W85v26A9hJymIF7BLwM/koG57XQ8Djy1H3AZATYq1YjWhaes1FdHJ
+         2WjttYg7P4lDjNbQv09hlRzZHrWegyLwMiGzo46w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-yu Tsai <wenst@chromium.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev, Eric Auger <eric.auger@redhat.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 199/611] arm64: dts: mediatek: mt8192-asurada: Fix voltage constraint for Vgpu
-Date:   Mon,  8 May 2023 11:40:41 +0200
-Message-Id: <20230508094428.838297703@linuxfoundation.org>
+Subject: [PATCH 6.1 200/611] ACPI: VIOT: Initialize the correct IOMMU fwspec
+Date:   Mon,  8 May 2023 11:40:42 +0200
+Message-Id: <20230508094428.867160280@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -47,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,41 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-[ Upstream commit ff4c868ba8df9dcd144ab4943a50adca1cf33ba2 ]
+[ Upstream commit 47d26684185d09e083669bbbd0c465ab3493a51f ]
 
-The MT8192 SoC specifies a maximum voltage for the GPU's digital supply
-of 0.88V and the GPU OPPs are declaring a maximum voltage of 0.80V.
+When setting up DMA for a PCI device, we need to initialize its
+iommu_fwspec with all possible alias RIDs (such as PCI bridges). To do
+this we use pci_for_each_dma_alias() which calls
+viot_pci_dev_iommu_init(). This function incorrectly initializes the
+fwspec of the bridge instead of the device being configured. Fix it by
+passing the original device as context to pci_for_each_dma_alias().
 
-In order to keep the GPU voltage in the safe range, change the maximum
-voltage for mt6315@7's vbuck1 to 0.80V as sending, for any mistake,
-1.193V would be catastrophic.
-
-Fixes: 3183cb62b033 ("arm64: dts: mediatek: asurada: Add SPMI regulators")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-yu Tsai <wenst@chromium.org>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20230301095523.428461-12-angelogioacchino.delregno@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: 3cf485540e7b ("ACPI: Add driver for the VIOT table")
+Link: https://lore.kernel.org/all/Y8qzOKm6kvhGWG1T@myrica
+Reported-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/viot.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-index 4b314435f8fd6..50367da93cd79 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-@@ -935,7 +935,7 @@
- 				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
- 				regulator-min-microvolt = <606250>;
--				regulator-max-microvolt = <1193750>;
-+				regulator-max-microvolt = <800000>;
- 				regulator-enable-ramp-delay = <256>;
- 				regulator-allowed-modes = <0 1 2>;
- 			};
+diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
+index ed752cbbe6362..c8025921c129b 100644
+--- a/drivers/acpi/viot.c
++++ b/drivers/acpi/viot.c
+@@ -328,6 +328,7 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
+ {
+ 	u32 epid;
+ 	struct viot_endpoint *ep;
++	struct device *aliased_dev = data;
+ 	u32 domain_nr = pci_domain_nr(pdev->bus);
+ 
+ 	list_for_each_entry(ep, &viot_pci_ranges, list) {
+@@ -338,7 +339,7 @@ static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
+ 			epid = ((domain_nr - ep->segment_start) << 16) +
+ 				dev_id - ep->bdf_start + ep->endpoint_id;
+ 
+-			return viot_dev_iommu_init(&pdev->dev, ep->viommu,
++			return viot_dev_iommu_init(aliased_dev, ep->viommu,
+ 						   epid);
+ 		}
+ 	}
+@@ -372,7 +373,7 @@ int viot_iommu_configure(struct device *dev)
+ {
+ 	if (dev_is_pci(dev))
+ 		return pci_for_each_dma_alias(to_pci_dev(dev),
+-					      viot_pci_dev_iommu_init, NULL);
++					      viot_pci_dev_iommu_init, dev);
+ 	else if (dev_is_platform(dev))
+ 		return viot_mmio_dev_iommu_init(to_platform_device(dev));
+ 	return -ENODEV;
 -- 
 2.39.2
 
