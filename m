@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 005C96FAB74
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1F76FA55A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233881AbjEHLNb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54230 "EHLO
+        id S234113AbjEHKId (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjEHLNa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF35035B2F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:29 -0700 (PDT)
+        with ESMTP id S234112AbjEHKId (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3363332929
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 770D262BAA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B26C433EF;
-        Mon,  8 May 2023 11:13:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9073F62386
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1816C433EF;
+        Mon,  8 May 2023 10:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544408;
-        bh=YA8fMVyRQf4LDjVWfmZtuyBEellaq0Uw6trX5oHv7D8=;
+        s=korg; t=1683540511;
+        bh=HZbOggi+UOx+XC9gbCjnC4ZeG3/wFDzNw3GlUReWJ9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m8U9bRp2OpLt83EJwnD8rCz/hgQDgIuEg5vK4LGCJ0Un0UsrsRZoezjEd2tWtcHoW
-         9t0/oCkvovSqEq85fQijJIVFYtZcy3WE0VxCX4uG8LrZGPz2UELyRmkrT2TUTC9ftf
-         FgyhTTGBkpS1PomXDnSvw4CRrBmW64vCf+FtnCyY=
+        b=PnAjsBmy5p/3Az1ZxdEi39V2rKPrh13/tjDI8o8WI2eSCN7JRdvAaFb4mFaxgezco
+         FhCqy+ehtbmByOAlVRdsw350fDcN3kWLmoXJ7rizbf9bmPtLFlrFeivY9L6W4r+88o
+         OULgaI7MU+oYnXcyJKk/08nISfus+GYHru6pzI3s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        Xin Liu <liuxin350@huawei.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 400/694] bpf, sockmap: fix deadlocks in the sockhash and sockmap
+Subject: [PATCH 6.1 393/611] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
 Date:   Mon,  8 May 2023 11:43:55 +0200
-Message-Id: <20230508094446.120271753@linuxfoundation.org>
+Message-Id: <20230508094435.058451971@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,80 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Liu <liuxin350@huawei.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
+[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
 
-When huang uses sched_switch tracepoint, the tracepoint
-does only one thing in the mounted ebpf program, which
-deletes the fixed elements in sockhash ([0])
+This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
 
-It seems that elements in sockhash are rarely actively
-deleted by users or ebpf program. Therefore, we do not
-pay much attention to their deletion. Compared with hash
-maps, sockhash only provides spin_lock_bh protection.
-This causes it to appear to have self-locking behavior
-in the interrupt context.
+This patch introduces a possible null-ptr-def problem. Revert it. And the
+fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
+btsdio: fix use after free bug in btsdio_remove due to race condition").
 
-  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
-
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Xin Liu <liuxin350@huawei.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btsdio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index a055139f410e2..dd5d7b1fa3580 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -414,8 +414,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- {
- 	struct sock *sk;
- 	int err = 0;
-+	unsigned long flags;
+diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
+index 02893600db390..795be33f2892d 100644
+--- a/drivers/bluetooth/btsdio.c
++++ b/drivers/bluetooth/btsdio.c
+@@ -354,7 +354,6 @@ static void btsdio_remove(struct sdio_func *func)
  
--	raw_spin_lock_bh(&stab->lock);
-+	raw_spin_lock_irqsave(&stab->lock, flags);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
- 		sk = xchg(psk, NULL);
-@@ -425,7 +426,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- 	else
- 		err = -EINVAL;
+ 	BT_DBG("func %p", func);
  
--	raw_spin_unlock_bh(&stab->lock);
-+	raw_spin_unlock_irqrestore(&stab->lock, flags);
- 	return err;
- }
- 
-@@ -923,11 +924,12 @@ static long sock_hash_delete_elem(struct bpf_map *map, void *key)
- 	struct bpf_shtab_bucket *bucket;
- 	struct bpf_shtab_elem *elem;
- 	int ret = -ENOENT;
-+	unsigned long flags;
- 
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
--	raw_spin_lock_bh(&bucket->lock);
-+	raw_spin_lock_irqsave(&bucket->lock, flags);
- 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
- 	if (elem) {
- 		hlist_del_rcu(&elem->node);
-@@ -935,7 +937,7 @@ static long sock_hash_delete_elem(struct bpf_map *map, void *key)
- 		sock_hash_free_elem(htab, elem);
- 		ret = 0;
- 	}
--	raw_spin_unlock_bh(&bucket->lock);
-+	raw_spin_unlock_irqrestore(&bucket->lock, flags);
- 	return ret;
- }
+-	cancel_work_sync(&data->work);
+ 	if (!data)
+ 		return;
  
 -- 
 2.39.2
