@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8E1B6FA7D7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB77B6FAB0B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234812AbjEHKfQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
+        id S233663AbjEHLIr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234829AbjEHKet (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:49 -0400
+        with ESMTP id S232911AbjEHLI3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125031BD7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EFE733D64
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CE3362739
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6175BC433EF;
-        Mon,  8 May 2023 10:34:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8D3D62B02
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3D2C433EF;
+        Mon,  8 May 2023 11:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542055;
-        bh=jhaS2KqOfxRTPe4+M5q9wdH/42iAqlxw2qnQXJCgFXU=;
+        s=korg; t=1683544099;
+        bh=/PxnHSArEIzcdqlsIpz5kh7HkrZk3vIOP5r85rtzA68=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cGveJcSkNzOVzE3mJtNtocWS0u9BH9VtCp5hOeJ9+HdgRm4gGq54wnzDuJW2hwXj3
-         iDn9xWLU/uD34kxLuEGBjC1/RcWyNAN+SvwOLGatw+PeU/AQCyAQsrTFBuXpipEcG2
-         0Q3UKqO/+68Yz/k3HQmzftALHuxbyKWF7Mhu5TBI=
+        b=otK1NlMnX5jnoNaAbFhJqZrkv9nfOuih64++rAqEuUv2AlKMO/sbMfgPHtIk17XGy
+         ck26mEW1DvvvPzdei38s1K8Whhc0rx4XOKmAZAdUsEsqRMTLnVOHWEXFhts0BqJ3EM
+         Q9+Vul2zZFV3TZpTis2FBvd+hnxlu4fPbQAZZmiI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 310/663] scsi: target: Move cmd counter allocation
+Subject: [PATCH 6.3 301/694] media: hi846: Fix memleak in hi846_init_controls()
 Date:   Mon,  8 May 2023 11:42:16 +0200
-Message-Id: <20230508094438.250017077@linuxfoundation.org>
+Message-Id: <20230508094442.039511410@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,265 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 4edba7e4a8f39112398d3cda94128a8e13a7d527 ]
+[ Upstream commit 2649c1a20e8e399ee955d0e22192f9992662c3d2 ]
 
-iSCSI needs to allocate its cmd counter per connection for MCS support
-where we need to stop and wait on commands running on a connection instead
-of per session. This moves the cmd counter allocation to
-target_setup_session() which is used by drivers that need the stop+wait
-behavior per session.
+hi846_init_controls doesn't clean the allocated ctrl_hdlr
+in case there is a failure, which causes memleak. Add
+v4l2_ctrl_handler_free to free the resource properly.
 
-xcopy doesn't need stop+wait at all, so we will be OK moving the cmd
-counter allocation outside of transport_init_session().
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-3-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 395cee83d02d ("scsi: target: iscsit: Stop/wait on cmds during conn close")
+Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Reviewed-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_login.c | 10 +++++
- drivers/target/target_core_internal.h     |  1 -
- drivers/target/target_core_transport.c    | 55 +++++++++++------------
- drivers/target/target_core_xcopy.c        | 15 +------
- include/target/target_core_fabric.h       |  4 +-
- 5 files changed, 42 insertions(+), 43 deletions(-)
+ drivers/media/i2c/hi846.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
-index 27e448c2d066c..8ab6c0107d89c 100644
---- a/drivers/target/iscsi/iscsi_target_login.c
-+++ b/drivers/target/iscsi/iscsi_target_login.c
-@@ -324,8 +324,18 @@ static int iscsi_login_zero_tsih_s1(
- 		goto free_ops;
+diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
+index 7c61873b71981..306dc35e925fd 100644
+--- a/drivers/media/i2c/hi846.c
++++ b/drivers/media/i2c/hi846.c
+@@ -1472,21 +1472,26 @@ static int hi846_init_controls(struct hi846 *hi846)
+ 	if (ctrl_hdlr->error) {
+ 		dev_err(&client->dev, "v4l ctrl handler error: %d\n",
+ 			ctrl_hdlr->error);
+-		return ctrl_hdlr->error;
++		ret = ctrl_hdlr->error;
++		goto error;
  	}
  
-+	/*
-+	 * This is temp for iser. It will be moved to per conn in later
-+	 * patches for iscsi.
-+	 */
-+	sess->se_sess->cmd_cnt = target_alloc_cmd_counter();
-+	if (!sess->se_sess->cmd_cnt)
-+		goto free_se_sess;
-+
- 	return 0;
+ 	ret = v4l2_fwnode_device_parse(&client->dev, &props);
+ 	if (ret)
+-		return ret;
++		goto error;
  
-+free_se_sess:
-+	transport_free_session(sess->se_sess);
- free_ops:
- 	kfree(sess->sess_ops);
- free_id:
-diff --git a/drivers/target/target_core_internal.h b/drivers/target/target_core_internal.h
-index 38a6d08f75b34..85e35cf582e50 100644
---- a/drivers/target/target_core_internal.h
-+++ b/drivers/target/target_core_internal.h
-@@ -138,7 +138,6 @@ int	init_se_kmem_caches(void);
- void	release_se_kmem_caches(void);
- u32	scsi_get_new_index(scsi_index_t);
- void	transport_subsystem_check_init(void);
--void	transport_uninit_session(struct se_session *);
- unsigned char *transport_dump_cmd_direction(struct se_cmd *);
- void	transport_dump_dev_state(struct se_device *, char *, int *);
- void	transport_dump_dev_info(struct se_device *, struct se_lun *,
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 3d6034f00dcd8..60647a49a1d31 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -228,7 +228,7 @@ static void target_release_cmd_refcnt(struct percpu_ref *ref)
- 	wake_up(&cmd_cnt->refcnt_wq);
- }
+ 	ret = v4l2_ctrl_new_fwnode_properties(ctrl_hdlr, &hi846_ctrl_ops,
+ 					      &props);
+ 	if (ret)
+-		return ret;
++		goto error;
  
--static struct target_cmd_counter *target_alloc_cmd_counter(void)
-+struct target_cmd_counter *target_alloc_cmd_counter(void)
- {
- 	struct target_cmd_counter *cmd_cnt;
- 	int rc;
-@@ -252,6 +252,7 @@ static struct target_cmd_counter *target_alloc_cmd_counter(void)
- 	kfree(cmd_cnt);
- 	return NULL;
- }
-+EXPORT_SYMBOL_GPL(target_alloc_cmd_counter);
- 
- static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
- {
-@@ -271,24 +272,14 @@ static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
-  *
-  * The caller must have zero-initialized @se_sess before calling this function.
-  */
--int transport_init_session(struct se_session *se_sess)
-+void transport_init_session(struct se_session *se_sess)
- {
- 	INIT_LIST_HEAD(&se_sess->sess_list);
- 	INIT_LIST_HEAD(&se_sess->sess_acl_list);
- 	spin_lock_init(&se_sess->sess_cmd_lock);
--	se_sess->cmd_cnt = target_alloc_cmd_counter();
--	if (!se_sess->cmd_cnt)
--		return -ENOMEM;
--
--	return  0;
- }
- EXPORT_SYMBOL(transport_init_session);
- 
--void transport_uninit_session(struct se_session *se_sess)
--{
--	target_free_cmd_counter(se_sess->cmd_cnt);
--}
--
- /**
-  * transport_alloc_session - allocate a session object and initialize it
-  * @sup_prot_ops: bitmask that defines which T10-PI modes are supported.
-@@ -296,7 +287,6 @@ void transport_uninit_session(struct se_session *se_sess)
- struct se_session *transport_alloc_session(enum target_prot_op sup_prot_ops)
- {
- 	struct se_session *se_sess;
--	int ret;
- 
- 	se_sess = kmem_cache_zalloc(se_sess_cache, GFP_KERNEL);
- 	if (!se_sess) {
-@@ -304,11 +294,7 @@ struct se_session *transport_alloc_session(enum target_prot_op sup_prot_ops)
- 				" se_sess_cache\n");
- 		return ERR_PTR(-ENOMEM);
- 	}
--	ret = transport_init_session(se_sess);
--	if (ret < 0) {
--		kmem_cache_free(se_sess_cache, se_sess);
--		return ERR_PTR(ret);
--	}
-+	transport_init_session(se_sess);
- 	se_sess->sup_prot_ops = sup_prot_ops;
- 
- 	return se_sess;
-@@ -474,8 +460,13 @@ target_setup_session(struct se_portal_group *tpg,
- 		     int (*callback)(struct se_portal_group *,
- 				     struct se_session *, void *))
- {
-+	struct target_cmd_counter *cmd_cnt;
- 	struct se_session *sess;
-+	int rc;
- 
-+	cmd_cnt = target_alloc_cmd_counter();
-+	if (!cmd_cnt)
-+		return ERR_PTR(-ENOMEM);
- 	/*
- 	 * If the fabric driver is using percpu-ida based pre allocation
- 	 * of I/O descriptor tags, go ahead and perform that setup now..
-@@ -485,29 +476,36 @@ target_setup_session(struct se_portal_group *tpg,
- 	else
- 		sess = transport_alloc_session(prot_op);
- 
--	if (IS_ERR(sess))
--		return sess;
-+	if (IS_ERR(sess)) {
-+		rc = PTR_ERR(sess);
-+		goto free_cnt;
-+	}
-+	sess->cmd_cnt = cmd_cnt;
- 
- 	sess->se_node_acl = core_tpg_check_initiator_node_acl(tpg,
- 					(unsigned char *)initiatorname);
- 	if (!sess->se_node_acl) {
--		transport_free_session(sess);
--		return ERR_PTR(-EACCES);
-+		rc = -EACCES;
-+		goto free_sess;
- 	}
- 	/*
- 	 * Go ahead and perform any remaining fabric setup that is
- 	 * required before transport_register_session().
- 	 */
- 	if (callback != NULL) {
--		int rc = callback(tpg, sess, private);
--		if (rc) {
--			transport_free_session(sess);
--			return ERR_PTR(rc);
--		}
-+		rc = callback(tpg, sess, private);
-+		if (rc)
-+			goto free_sess;
- 	}
- 
- 	transport_register_session(tpg, sess->se_node_acl, sess, private);
- 	return sess;
-+
-+free_sess:
-+	transport_free_session(sess);
-+free_cnt:
-+	target_free_cmd_counter(cmd_cnt);
-+	return ERR_PTR(rc);
- }
- EXPORT_SYMBOL(target_setup_session);
- 
-@@ -632,7 +630,8 @@ void transport_free_session(struct se_session *se_sess)
- 		sbitmap_queue_free(&se_sess->sess_tag_pool);
- 		kvfree(se_sess->sess_cmd_map);
- 	}
--	transport_uninit_session(se_sess);
-+	if (se_sess->cmd_cnt)
-+		target_free_cmd_counter(se_sess->cmd_cnt);
- 	kmem_cache_free(se_sess_cache, se_sess);
- }
- EXPORT_SYMBOL(transport_free_session);
-diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
-index 49eaee022ef1d..49a83500c8b75 100644
---- a/drivers/target/target_core_xcopy.c
-+++ b/drivers/target/target_core_xcopy.c
-@@ -461,8 +461,6 @@ static const struct target_core_fabric_ops xcopy_pt_tfo = {
- 
- int target_xcopy_setup_pt(void)
- {
--	int ret;
--
- 	xcopy_wq = alloc_workqueue("xcopy_wq", WQ_MEM_RECLAIM, 0);
- 	if (!xcopy_wq) {
- 		pr_err("Unable to allocate xcopy_wq\n");
-@@ -479,9 +477,7 @@ int target_xcopy_setup_pt(void)
- 	INIT_LIST_HEAD(&xcopy_pt_nacl.acl_list);
- 	INIT_LIST_HEAD(&xcopy_pt_nacl.acl_sess_list);
- 	memset(&xcopy_pt_sess, 0, sizeof(struct se_session));
--	ret = transport_init_session(&xcopy_pt_sess);
--	if (ret < 0)
--		goto destroy_wq;
-+	transport_init_session(&xcopy_pt_sess);
- 
- 	xcopy_pt_nacl.se_tpg = &xcopy_pt_tpg;
- 	xcopy_pt_nacl.nacl_sess = &xcopy_pt_sess;
-@@ -490,19 +486,12 @@ int target_xcopy_setup_pt(void)
- 	xcopy_pt_sess.se_node_acl = &xcopy_pt_nacl;
+ 	hi846->sd.ctrl_handler = ctrl_hdlr;
  
  	return 0;
--
--destroy_wq:
--	destroy_workqueue(xcopy_wq);
--	xcopy_wq = NULL;
--	return ret;
- }
- 
- void target_xcopy_release_pt(void)
- {
--	if (xcopy_wq) {
-+	if (xcopy_wq)
- 		destroy_workqueue(xcopy_wq);
--		transport_uninit_session(&xcopy_pt_sess);
--	}
- }
- 
- /*
-diff --git a/include/target/target_core_fabric.h b/include/target/target_core_fabric.h
-index 38f0662476d14..65527174b8bc6 100644
---- a/include/target/target_core_fabric.h
-+++ b/include/target/target_core_fabric.h
-@@ -133,7 +133,9 @@ struct se_session *target_setup_session(struct se_portal_group *,
- 				struct se_session *, void *));
- void target_remove_session(struct se_session *);
- 
--int transport_init_session(struct se_session *se_sess);
-+struct target_cmd_counter *target_alloc_cmd_counter(void);
 +
-+void transport_init_session(struct se_session *se_sess);
- struct se_session *transport_alloc_session(enum target_prot_op);
- int transport_alloc_session_tags(struct se_session *, unsigned int,
- 		unsigned int);
++error:
++	v4l2_ctrl_handler_free(ctrl_hdlr);
++	return ret;
+ }
+ 
+ static int hi846_set_video_mode(struct hi846 *hi846, int fps)
 -- 
 2.39.2
 
