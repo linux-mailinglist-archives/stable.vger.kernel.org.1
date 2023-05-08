@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFC8B6FA95A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD326FA624
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235146AbjEHKuR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:50:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47706 "EHLO
+        id S234324AbjEHKQq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235220AbjEHKtl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDAD29FDC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:12 -0700 (PDT)
+        with ESMTP id S234335AbjEHKQn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240194BBF2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7086628FD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BFAC433A0;
-        Mon,  8 May 2023 10:49:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54E52624A8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66379C4339B;
+        Mon,  8 May 2023 10:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542951;
-        bh=y2N7+oE41vBXkxludOGv3SC0Y9LV09mk2h/wIlGf6eI=;
+        s=korg; t=1683541000;
+        bh=vRjU1lKAmaumq8aeGycusT7BuNArQ2TUuSNHNRF4xvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sQ74egQWNFkezhIfylpqZkntOca7pHC5l+jed2F5Px+jN9/WQMw2n8eqzv+K2HDai
-         D+EgACFThCZHSL1IdFQfBK19HllRh+6LxpDSXeQa28BeRk//rMGI7/alFBtKYuHpzH
-         dUVEXlBbETDX3RAgr8mkP4uUSDN6tNemKsvN/mts=
+        b=k0idLX5sHtHWOYOQA3VaYSuOB5DsltX0WSiimguOehSKDwmazfIKUKII4Ax42PSlM
+         tHNQanu+WhaVt6yN5/JBtOunwdCANRvLNycinQVOm01FB5mirHKBNtu2/Zu6cT3GPz
+         siatIqvCq/PyKdte0ypPw0BhLAb22QuFvScS1lmU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 594/663] dmaengine: dw-edma: Fix to enable to issue dma request on DMA processing
+        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
+        Marco Elver <elver@google.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.1 578/611] kcsan: Avoid READ_ONCE() in read_instrumented_memory()
 Date:   Mon,  8 May 2023 11:47:00 +0200
-Message-Id: <20230508094448.743585728@linuxfoundation.org>
+Message-Id: <20230508094440.725592755@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,43 +54,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shunsuke Mie <mie@igel.co.jp>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 970b17dfe264a9085ba4e593730ecfd496b950ab ]
+commit 8dec88070d964bfeb4198f34cb5956d89dd1f557 upstream.
 
-The issue_pending request is ignored while driver is processing a DMA
-request. Fix to issue the pending requests on any dma channel status.
+Haibo Li reported:
 
-Fixes: e63d79d1ffcd ("dmaengine: Add Synopsys eDMA IP core driver")
-Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
-Link: https://lore.kernel.org/r/20230411101758.438472-2-mie@igel.co.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ | Unable to handle kernel paging request at virtual address
+ |   ffffff802a0d8d7171
+ | Mem abort info:o:
+ |   ESR = 0x9600002121
+ |   EC = 0x25: DABT (current EL), IL = 32 bitsts
+ |   SET = 0, FnV = 0 0
+ |   EA = 0, S1PTW = 0 0
+ |   FSC = 0x21: alignment fault
+ | Data abort info:o:
+ |   ISV = 0, ISS = 0x0000002121
+ |   CM = 0, WnR = 0 0
+ | swapper pgtable: 4k pages, 39-bit VAs, pgdp=000000002835200000
+ | [ffffff802a0d8d71] pgd=180000005fbf9003, p4d=180000005fbf9003,
+ | pud=180000005fbf9003, pmd=180000005fbe8003, pte=006800002a0d8707
+ | Internal error: Oops: 96000021 [#1] PREEMPT SMP
+ | Modules linked in:
+ | CPU: 2 PID: 45 Comm: kworker/u8:2 Not tainted
+ |   5.15.78-android13-8-g63561175bbda-dirty #1
+ | ...
+ | pc : kcsan_setup_watchpoint+0x26c/0x6bc
+ | lr : kcsan_setup_watchpoint+0x88/0x6bc
+ | sp : ffffffc00ab4b7f0
+ | x29: ffffffc00ab4b800 x28: ffffff80294fe588 x27: 0000000000000001
+ | x26: 0000000000000019 x25: 0000000000000001 x24: ffffff80294fdb80
+ | x23: 0000000000000000 x22: ffffffc00a70fb68 x21: ffffff802a0d8d71
+ | x20: 0000000000000002 x19: 0000000000000000 x18: ffffffc00a9bd060
+ | x17: 0000000000000001 x16: 0000000000000000 x15: ffffffc00a59f000
+ | x14: 0000000000000001 x13: 0000000000000000 x12: ffffffc00a70faa0
+ | x11: 00000000aaaaaaab x10: 0000000000000054 x9 : ffffffc00839adf8
+ | x8 : ffffffc009b4cf00 x7 : 0000000000000000 x6 : 0000000000000007
+ | x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffffffc00a70fb70
+ | x2 : 0005ff802a0d8d71 x1 : 0000000000000000 x0 : 0000000000000000
+ | Call trace:
+ |  kcsan_setup_watchpoint+0x26c/0x6bc
+ |  __tsan_read2+0x1f0/0x234
+ |  inflate_fast+0x498/0x750
+ |  zlib_inflate+0x1304/0x2384
+ |  __gunzip+0x3a0/0x45c
+ |  gunzip+0x20/0x30
+ |  unpack_to_rootfs+0x2a8/0x3fc
+ |  do_populate_rootfs+0xe8/0x11c
+ |  async_run_entry_fn+0x58/0x1bc
+ |  process_one_work+0x3ec/0x738
+ |  worker_thread+0x4c4/0x838
+ |  kthread+0x20c/0x258
+ |  ret_from_fork+0x10/0x20
+ | Code: b8bfc2a8 2a0803f7 14000007 d503249f (78bfc2a8) )
+ | ---[ end trace 613a943cb0a572b6 ]-----
+
+The reason for this is that on certain arm64 configuration since
+e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when
+CONFIG_LTO=y"), READ_ONCE() may be promoted to a full atomic acquire
+instruction which cannot be used on unaligned addresses.
+
+Fix it by avoiding READ_ONCE() in read_instrumented_memory(), and simply
+forcing the compiler to do the required access by casting to the
+appropriate volatile type. In terms of generated code this currently
+only affects architectures that do not use the default READ_ONCE()
+implementation.
+
+The only downside is that we are not guaranteed atomicity of the access
+itself, although on most architectures a plain load up to machine word
+size should still be atomic (a fact the default READ_ONCE() still relies
+on itself).
+
+Reported-by: Haibo Li <haibo.li@mediatek.com>
+Tested-by: Haibo Li <haibo.li@mediatek.com>
+Cc: <stable@vger.kernel.org> # 5.17+
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-edma-core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/kcsan/core.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index cb46cbef212ab..ef4cdcf6beba0 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -279,9 +279,12 @@ static void dw_edma_device_issue_pending(struct dma_chan *dchan)
- 	struct dw_edma_chan *chan = dchan2dw_edma_chan(dchan);
- 	unsigned long flags;
- 
-+	if (!chan->configured)
-+		return;
-+
- 	spin_lock_irqsave(&chan->vc.lock, flags);
--	if (chan->configured && chan->request == EDMA_REQ_NONE &&
--	    chan->status == EDMA_ST_IDLE && vchan_issue_pending(&chan->vc)) {
-+	if (vchan_issue_pending(&chan->vc) && chan->request == EDMA_REQ_NONE &&
-+	    chan->status == EDMA_ST_IDLE) {
- 		chan->status = EDMA_ST_BUSY;
- 		dw_edma_start_transfer(chan);
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -337,11 +337,20 @@ static void delay_access(int type)
+  */
+ static __always_inline u64 read_instrumented_memory(const volatile void *ptr, size_t size)
+ {
++	/*
++	 * In the below we don't necessarily need the read of the location to
++	 * be atomic, and we don't use READ_ONCE(), since all we need for race
++	 * detection is to observe 2 different values.
++	 *
++	 * Furthermore, on certain architectures (such as arm64), READ_ONCE()
++	 * may turn into more complex instructions than a plain load that cannot
++	 * do unaligned accesses.
++	 */
+ 	switch (size) {
+-	case 1:  return READ_ONCE(*(const u8 *)ptr);
+-	case 2:  return READ_ONCE(*(const u16 *)ptr);
+-	case 4:  return READ_ONCE(*(const u32 *)ptr);
+-	case 8:  return READ_ONCE(*(const u64 *)ptr);
++	case 1:  return *(const volatile u8 *)ptr;
++	case 2:  return *(const volatile u16 *)ptr;
++	case 4:  return *(const volatile u32 *)ptr;
++	case 8:  return *(const volatile u64 *)ptr;
+ 	default: return 0; /* Ignore; we do not diff the values. */
  	}
--- 
-2.39.2
-
+ }
 
 
