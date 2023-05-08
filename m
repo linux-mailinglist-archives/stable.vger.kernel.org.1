@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 165CF6FA566
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6FF76FAD23
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234122AbjEHKJL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37306 "EHLO
+        id S235691AbjEHLbv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234132AbjEHKJG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:06 -0400
+        with ESMTP id S233991AbjEHLbg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:31:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16F832935
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE6B3DC97
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A90F62397
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79848C433D2;
-        Mon,  8 May 2023 10:08:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EB8663030
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C24C4339B;
+        Mon,  8 May 2023 11:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540539;
-        bh=e9Hy3WyXCvO+inDwzw0IUhXfCZEF145FMdZ9nPigEKA=;
+        s=korg; t=1683545450;
+        bh=TqhDylr0mgzPohfexxYqFOWmzDhqykEIKRLO6VGx6vQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ey/r1fKW8BY1pzy9VWB/n949Gz0BCkZ1699sGjZ4wdwnA1tg6qo/hLKnloOarRUXA
-         xGKq0eMtsUnw/EOQTzc+6P2i1zI4W3f9PP43b/QeWbWh38kkBU82wAXF0uTz0oqECq
-         UJkvluz+1ka58da6QYq+zfc67yVCXvT4eidLjbQc=
+        b=fFzloLPeabaa0y60P6T/4YoDrtJnLXnYH1wsJ8WIzN++5cHPyJPnfqRI024dlnL8V
+         lKNFr8Rgg49ta1kKI4P1ybClF0zji0LwuVqSHDDpXpfNRvPvtc05FErvpBpqA5EOzd
+         D49UllMM/8wjN8yjoJuBwllOZ/oB824+tAQtYJCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 403/611] usb: dwc3: gadget: Change condition for processing suspend event
+        patches@lists.linux.dev, Zhang Zhengming <zhang.zhengming@h3c.com>,
+        Zhao Lei <zhao_lei1@hoperun.com>,
+        Zhou Kete <zhou.kete@h3c.com>,
+        Pengcheng Yang <yangpc@wangsu.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 044/371] relayfs: fix out-of-bounds access in relay_file_read
 Date:   Mon,  8 May 2023 11:44:05 +0200
-Message-Id: <20230508094435.369573114@linuxfoundation.org>
+Message-Id: <20230508094813.812412440@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +57,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Zhang Zhengming <zhang.zhengming@h3c.com>
 
-[ Upstream commit 4decf4060ecfee1f7a710999fcd421645ac0c419 ]
+commit 43ec16f1450f4936025a9bdf1a273affdb9732c1 upstream.
 
-Currently we process the suspend interrupt event only if the
-device is in configured state. Consider a case where device
-is not configured and got suspend interrupt, in that case our
-gadget will still use 100mA as composite_suspend didn't happen.
-But battery charging specification (BC1.2) expects a downstream
-device to draw less than 2.5mA when unconnected OR suspended.
+There is a crash in relay_file_read, as the var from
+point to the end of last subbuf.
 
-Fix this by removing the condition for processing suspend event,
-and thus composite_resume would set vbus draw to 2.
+The oops looks something like:
+pc : __arch_copy_to_user+0x180/0x310
+lr : relay_file_read+0x20c/0x2c8
+Call trace:
+ __arch_copy_to_user+0x180/0x310
+ full_proxy_read+0x68/0x98
+ vfs_read+0xb0/0x1d0
+ ksys_read+0x6c/0xf0
+ __arm64_sys_read+0x20/0x28
+ el0_svc_common.constprop.3+0x84/0x108
+ do_el0_svc+0x74/0x90
+ el0_svc+0x1c/0x28
+ el0_sync_handler+0x88/0xb0
+ el0_sync+0x148/0x180
 
-Fixes: 72704f876f50 ("dwc3: gadget: Implement the suspend entry event handler")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/1677217619-10261-2-git-send-email-quic_prashk@quicinc.com
+We get the condition by analyzing the vmcore:
+
+1). The last produced byte and last consumed byte
+    both at the end of the last subbuf
+
+2). A softirq calls function(e.g __blk_add_trace)
+    to write relay buffer occurs when an program is calling
+    relay_file_read_avail().
+
+        relay_file_read
+                relay_file_read_avail
+                        relay_file_read_consume(buf, 0, 0);
+                        //interrupted by softirq who will write subbuf
+                        ....
+                        return 1;
+                //read_start point to the end of the last subbuf
+                read_start = relay_file_read_start_pos
+                //avail is equal to subsize
+                avail = relay_file_read_subbuf_avail
+                //from  points to an invalid memory address
+                from = buf->start + read_start
+                //system is crashed
+                copy_to_user(buffer, from, avail)
+
+Link: https://lkml.kernel.org/r/20230419040203.37676-1-zhang.zhengming@h3c.com
+Fixes: 8d62fdebdaf9 ("relay file read: start-pos fix")
+Signed-off-by: Zhang Zhengming <zhang.zhengming@h3c.com>
+Reviewed-by: Zhao Lei <zhao_lei1@hoperun.com>
+Reviewed-by: Zhou Kete <zhou.kete@h3c.com>
+Reviewed-by: Pengcheng Yang <yangpc@wangsu.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ kernel/relay.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 79627ee761c25..d2622378ce040 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4252,15 +4252,8 @@ static void dwc3_gadget_interrupt(struct dwc3 *dwc,
- 		break;
- 	case DWC3_DEVICE_EVENT_SUSPEND:
- 		/* It changed to be suspend event for version 2.30a and above */
--		if (!DWC3_VER_IS_PRIOR(DWC3, 230A)) {
--			/*
--			 * Ignore suspend event until the gadget enters into
--			 * USB_STATE_CONFIGURED state.
--			 */
--			if (dwc->gadget->state >= USB_STATE_CONFIGURED)
--				dwc3_gadget_suspend_interrupt(dwc,
--						event->event_info);
--		}
-+		if (!DWC3_VER_IS_PRIOR(DWC3, 230A))
-+			dwc3_gadget_suspend_interrupt(dwc, event->event_info);
- 		break;
- 	case DWC3_DEVICE_EVENT_SOF:
- 	case DWC3_DEVICE_EVENT_ERRATIC_ERROR:
--- 
-2.39.2
-
+--- a/kernel/relay.c
++++ b/kernel/relay.c
+@@ -992,7 +992,8 @@ static size_t relay_file_read_start_pos(
+ 	size_t subbuf_size = buf->chan->subbuf_size;
+ 	size_t n_subbufs = buf->chan->n_subbufs;
+ 	size_t consumed = buf->subbufs_consumed % n_subbufs;
+-	size_t read_pos = consumed * subbuf_size + buf->bytes_consumed;
++	size_t read_pos = (consumed * subbuf_size + buf->bytes_consumed)
++			% (n_subbufs * subbuf_size);
+ 
+ 	read_subbuf = read_pos / subbuf_size;
+ 	padding = buf->padding[read_subbuf];
 
 
