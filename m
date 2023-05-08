@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A816FA871
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2187A6FA548
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234962AbjEHKka (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
+        id S234091AbjEHKHq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234904AbjEHKkF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:05 -0400
+        with ESMTP id S234087AbjEHKHq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90FB32922
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231843046B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DA0861D57
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD0EC433D2;
-        Mon,  8 May 2023 10:40:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACC8162376
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC70C433D2;
+        Mon,  8 May 2023 10:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542401;
-        bh=45BlrRSG2Q3CRRVrb+ejVd6v8zZOzOg6742hIPrUdHU=;
+        s=korg; t=1683540464;
+        bh=HYG0zAPTt7XmBrbwIywNUL5DsNgcETV14du3TNuch+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SSvwo4d/KSW0GWmeYhhezuhnUkdgKtL0fFtnQyBOmtvMWfx2l994x8vYX0dYDVuci
-         r5cFWUrEfSvhETjEiFU0dbE+uSmho1VN68ZCkEO7XcIuTFPZGJNcW9dpwTfOEQcdVl
-         BwUfXIXX4u/xrqIrnbheVdKfTpHbBcsN/gtv564g=
+        b=m5pw8PpW26ygo0TKynh0of64hXOep+b/C0vdFP4AdCUtNBMpjCcBcEN5s8Vdw6S/+
+         wqDljGDOCGcH5FxLKldA3UKfEiajqXxSLxW+BfM5aZD4n3J6YhGfphaK37MwwDzf+I
+         nGI9xW2+lPiypYWrgcIvaX0xbZARF+v1LiqSJZ/Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 389/663] wifi: mt76: mt7996: fix radiotap bitfield
-Date:   Mon,  8 May 2023 11:43:35 +0200
-Message-Id: <20230508094440.726775806@linuxfoundation.org>
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 374/611] wifi: iwlwifi: fw: fix memory leak in debugfs
+Date:   Mon,  8 May 2023 11:43:36 +0200
+Message-Id: <20230508094434.508124645@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,211 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 63a3724632464559d1e98d90d2c63d43ec6ef6f5 ]
+[ Upstream commit 3d90d2f4a018fe8cfd65068bc6350b6222be4852 ]
 
-The 11be generation's radiotap bitfields were wrongly copy-and-pasted
-from 11ax driver, so fix them accordingly.
+Fix a memory leak that occurs when reading the fw_info
+file all the way, since we return NULL indicating no
+more data, but don't free the status tracking object.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 36dfe9ac6e8b ("iwlwifi: dump api version in yaml format")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230418122405.239e501b3b8d.I4268f87809ef91209cbcd748eee0863195e70fa2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 54 ++++++++++---------
- .../net/wireless/mediatek/mt76/mt7996/mac.h   | 41 +++++++-------
- 2 files changed, 47 insertions(+), 48 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 0eb9e4d73f2c1..c4567641210b1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -253,12 +253,9 @@ mt7996_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
- 				 struct ieee80211_radiotap_he *he,
- 				 __le32 *rxv)
- {
--	u32 ru_h, ru_l;
--	u8 ru, offs = 0;
-+	u32 ru, offs = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 43e997283db0f..607e07ed2477c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -317,8 +317,10 @@ static void *iwl_dbgfs_fw_info_seq_next(struct seq_file *seq,
+ 	const struct iwl_fw *fw = priv->fwrt->fw;
  
--	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
--	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
--	ru = (u8)(ru_l | ru_h << 4);
-+	ru = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC);
+ 	*pos = ++state->pos;
+-	if (*pos >= fw->ucode_capa.n_cmd_versions)
++	if (*pos >= fw->ucode_capa.n_cmd_versions) {
++		kfree(state);
+ 		return NULL;
++	}
  
- 	status->bw = RATE_INFO_BW_HE_RU;
- 
-@@ -323,18 +320,23 @@ mt7996_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
- 
- 	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
- 			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
--				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
-+				 le32_get_bits(rxv[4], MT_CRXV_HE_NUM_USER));
- 
--	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
-+	he_mu->ru_ch1[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU0) & 0xff;
- 
- 	if (status->bw >= RATE_INFO_BW_40) {
- 		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
-+		he_mu->ru_ch2[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU1) & 0xff;
- 	}
- 
- 	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
--		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
-+		u32 ru_h, ru_l;
-+
-+		he_mu->ru_ch1[1] = le32_get_bits(rxv[16], MT_CRXV_HE_RU2) & 0xff;
-+
-+		ru_l = le32_get_bits(rxv[16], MT_CRXV_HE_RU3_L);
-+		ru_h = le32_get_bits(rxv[17], MT_CRXV_HE_RU3_H) & 0x7;
-+		he_mu->ru_ch2[1] = (u8)(ru_l | ru_h << 4);
- 	}
+ 	return state;
  }
- 
-@@ -357,23 +359,23 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			 HE_BITS(DATA2_TXOP_KNOWN),
- 	};
- 	struct ieee80211_radiotap_he *he = NULL;
--	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
-+	u32 ltf_size = le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
- 
- 	status->flag |= RX_FLAG_RADIOTAP_HE;
- 
- 	he = skb_push(skb, sizeof(known));
- 	memcpy(he, &known, sizeof(known));
- 
--	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
--		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
--	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
--	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
-+	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[9]) |
-+		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[4]);
-+	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[13]);
-+	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[5]) |
- 		    le16_encode_bits(ltf_size,
- 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
- 	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
- 		he->data5 |= HE_BITS(DATA5_TXBF);
--	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
--		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
-+	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[9]) |
-+		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[9]);
- 
- 	switch (mode) {
- 	case MT_PHY_TYPE_HE_SU:
-@@ -382,22 +384,22 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
- 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
--			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[8]) |
-+			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
- 		break;
- 	case MT_PHY_TYPE_HE_EXT_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
- 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
- 		break;
- 	case MT_PHY_TYPE_HE_MU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
-+		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[8]);
- 
- 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
- 		mt7996_mac_decode_he_mu_radiotap(skb, rxv);
-@@ -408,10 +410,10 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
- 			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
- 
--		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
-+		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[13]);
- 
- 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-index 9f68852012b9e..ed79388e59713 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-@@ -102,8 +102,7 @@ enum rx_pkt_type {
- #define MT_PRXV_NSTS			GENMASK(10, 7)
- #define MT_PRXV_TXBF			BIT(11)
- #define MT_PRXV_HT_AD_CODE		BIT(12)
--#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
--#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
-+#define MT_PRXV_HE_RU_ALLOC		GENMASK(30, 22)
- #define MT_PRXV_RCPI3			GENMASK(31, 24)
- #define MT_PRXV_RCPI2			GENMASK(23, 16)
- #define MT_PRXV_RCPI1			GENMASK(15, 8)
-@@ -113,34 +112,32 @@ enum rx_pkt_type {
- #define MT_PRXV_TX_MODE			GENMASK(14, 11)
- #define MT_PRXV_FRAME_MODE		GENMASK(2, 0)
- #define MT_PRXV_DCM			BIT(5)
--#define MT_PRXV_NUM_RX			BIT(8, 6)
- 
- /* C-RXV */
--#define MT_CRXV_HT_STBC			GENMASK(1, 0)
--#define MT_CRXV_TX_MODE			GENMASK(7, 4)
--#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
--#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
--#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
--#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
--#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
--#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
--#define MT_CRXV_HE_UPLINK		BIT(31)
--#define MT_CRXV_HE_RU0			GENMASK(7, 0)
--#define MT_CRXV_HE_RU1			GENMASK(15, 8)
--#define MT_CRXV_HE_RU2			GENMASK(23, 16)
--#define MT_CRXV_HE_RU3			GENMASK(31, 24)
--
--#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
-+#define MT_CRXV_HE_NUM_USER		GENMASK(26, 20)
-+#define MT_CRXV_HE_LTF_SIZE		GENMASK(28, 27)
-+#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(30)
-+
-+#define MT_CRXV_HE_PE_DISAMBIG		BIT(1)
-+#define MT_CRXV_HE_UPLINK		BIT(2)
-+
-+#define MT_CRXV_HE_MU_AID		GENMASK(27, 17)
-+#define MT_CRXV_HE_BEAM_CHNG		BIT(29)
-+
-+#define MT_CRXV_HE_DOPPLER		BIT(0)
-+#define MT_CRXV_HE_BSS_COLOR		GENMASK(15, 10)
-+#define MT_CRXV_HE_TXOP_DUR		GENMASK(19, 17)
- 
- #define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
- #define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
- #define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
- #define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
- 
--#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
--#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
--#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
--#define MT_CRXV_HE_DOPPLER		BIT(16)
-+#define MT_CRXV_HE_RU0			GENMASK(8, 0)
-+#define MT_CRXV_HE_RU1			GENMASK(17, 9)
-+#define MT_CRXV_HE_RU2			GENMASK(26, 18)
-+#define MT_CRXV_HE_RU3_L		GENMASK(31, 27)
-+#define MT_CRXV_HE_RU3_H		GENMASK(3, 0)
- 
- enum tx_header_format {
- 	MT_HDR_FORMAT_802_3,
 -- 
 2.39.2
 
