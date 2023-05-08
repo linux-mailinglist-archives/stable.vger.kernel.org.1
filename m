@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2FCC6FA8D8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DF206FADAA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235001AbjEHKpv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
+        id S235960AbjEHLgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234982AbjEHKpZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:25 -0400
+        with ESMTP id S235953AbjEHLga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:36:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B28572A871
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339D21993E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2AA062886
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B67C433D2;
-        Mon,  8 May 2023 10:44:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34A3763327
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F222C4339B;
+        Mon,  8 May 2023 11:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542678;
-        bh=5FQnNizxAeg/D9Je3T6aRDxQAIyYUeU5KxvGIAY73nk=;
+        s=korg; t=1683545735;
+        bh=kChHTehMV1l8xDYafLA9Zt7gyOSafMvzNRV+SfBQ4AA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dEPgTglboU9rPr3IKX8YAqv/1S0yIASSKTwDPPCdGRNiDOcwCbiMPtdzk8EpRwncx
-         gCe1YC5VvrSvyK9Ac6LZE6RzezPvi3aJmVm7w05vCyZAA5gU8rKEPXLL//YpXLJren
-         pOtVlxCO1bGhNGsykpXjgnE4Of7dYxTPhEFR3Xp8=
+        b=vNdZFR97mbHc7HmTbyG/Pn3LsGUcj0IoTVVkIWWju7jwx8jKqIEWX1jDsVrm7ij6z
+         KU00qMyW+1j8pryVFRQuet/YFeuJzYuMheBPt/eoj5TndRachPtLEEOR4t2AoEuFOB
+         /lPFYG6klm96BVH1QRPkV1P/mai23B1QhOy53Ybw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 512/663] Revert "objtool: Support addition to set CFA base"
+Subject: [PATCH 5.15 137/371] media: rcar_fdp1: Convert to platform remove callback returning void
 Date:   Mon,  8 May 2023 11:45:38 +0200
-Message-Id: <20230508094445.346420850@linuxfoundation.org>
+Message-Id: <20230508094817.481577015@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +57,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit e18398e80c73e3cc7d9c3d2e0bc06a4af8f4f1cb ]
+[ Upstream commit 0e82d3715fd208de567b8e4307fbf91ae5e57db4 ]
 
-Commit 468af56a7bba ("objtool: Support addition to set CFA base") was
-added as a preparatory patch for arm64 support, but that support never
-came.  It triggers a false positive warning on x86, so just revert it
-for now.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Fixes the following warning:
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-  vmlinux.o: warning: objtool: cdce925_regmap_i2c_write+0xdb: stack state mismatch: cfa1=4+120 cfa2=5+40
-
-Fixes: 468af56a7bba ("objtool: Support addition to set CFA base")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/oe-kbuild-all/202304080538.j5G6h1AB-lkp@intel.com/
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/media/platform/rcar_fdp1.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index ea1e7cdeb1b34..3b1e19894b21a 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2913,17 +2913,6 @@ static int update_cfi_state(struct instruction *insn,
- 				break;
- 			}
+diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
+index 37ecf489d112e..d80b3214dfae1 100644
+--- a/drivers/media/platform/rcar_fdp1.c
++++ b/drivers/media/platform/rcar_fdp1.c
+@@ -2396,7 +2396,7 @@ static int fdp1_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
--			if (!cfi->drap && op->src.reg == CFI_SP &&
--			    op->dest.reg == CFI_BP && cfa->base == CFI_SP &&
--			    check_reg_frame_pos(&regs[CFI_BP], -cfa->offset + op->src.offset)) {
--
--				/* lea disp(%rsp), %rbp */
--				cfa->base = CFI_BP;
--				cfa->offset -= op->src.offset;
--				cfi->bp_scratch = false;
--				break;
--			}
--
- 			if (op->src.reg == CFI_SP && cfa->base == CFI_SP) {
+-static int fdp1_remove(struct platform_device *pdev)
++static void fdp1_remove(struct platform_device *pdev)
+ {
+ 	struct fdp1_dev *fdp1 = platform_get_drvdata(pdev);
  
- 				/* drap: lea disp(%rsp), %drap */
+@@ -2404,8 +2404,6 @@ static int fdp1_remove(struct platform_device *pdev)
+ 	video_unregister_device(&fdp1->vfd);
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 	pm_runtime_disable(&pdev->dev);
+-
+-	return 0;
+ }
+ 
+ static int __maybe_unused fdp1_pm_runtime_suspend(struct device *dev)
+@@ -2441,7 +2439,7 @@ MODULE_DEVICE_TABLE(of, fdp1_dt_ids);
+ 
+ static struct platform_driver fdp1_pdrv = {
+ 	.probe		= fdp1_probe,
+-	.remove		= fdp1_remove,
++	.remove_new	= fdp1_remove,
+ 	.driver		= {
+ 		.name	= DRIVER_NAME,
+ 		.of_match_table = fdp1_dt_ids,
 -- 
 2.39.2
 
