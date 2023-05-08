@@ -2,124 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 691736FACC3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3F56FAE5C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233985AbjEHL2H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:28:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44796 "EHLO
+        id S236280AbjEHLoP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235830AbjEHL1m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:42 -0400
+        with ESMTP id S236264AbjEHLny (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69FD137C42
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A590910A2C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B392562E5A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A70C433EF;
-        Mon,  8 May 2023 11:27:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16A036363E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09822C43443;
+        Mon,  8 May 2023 11:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545246;
-        bh=4vR5/tlJdEYQUBQJYaJA1qYWOrxXxZyIjX1fCtvUiwg=;
+        s=korg; t=1683546169;
+        bh=IOZYk8KpdKtsbW9Br6tBpxV20ZwRAxeWYvI6+1F/B7M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kil59Kl/UIGHyl+uh9TgYykNP01ISr/E2/JHw2rDCWxUcdLwvO97ru1XnFfVi00GS
-         7zlbL+LbUOOebRfCxAfR45S12SPGXo5sJ/u17i6R8IFNOaJrWhliM6yTE46G3+43L9
-         0fSnj7kqJlpykzmqmSGPF20hRuHt86qp8GKxpRTo=
+        b=mR0YoP5X+VBN9noYyEipe/KBv+g1MKwO/IyHFyHQMV27uISRN5LGizIG+XaX8HcSx
+         Tb3vp3yWB244bTEVsCWvDlQN2zwQxt3l98CZTb3PL94bwXtI2EXiV6Ut2h2h1+AKSh
+         Qmpt8ehpQL274aiKcn2yJd2adh5zKVqhnv/WLGug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 645/694] pwm: mtk-disp: Configure double buffering before reading in .get_state()
+Subject: [PATCH 5.15 279/371] spi: bcm63xx: remove PM_SLEEP based conditional compilation
 Date:   Mon,  8 May 2023 11:48:00 +0200
-Message-Id: <20230508094456.754408197@linuxfoundation.org>
+Message-Id: <20230508094823.072451257@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Dhruva Gole <d-gole@ti.com>
 
-[ Upstream commit b16c310115f2084b8826a35b77ef42bab6786d9f ]
+[ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
 
-The DISP_PWM controller's default behavior is to always use register
-double buffering: all reads/writes are then performed on shadow
-registers instead of working registers and this becomes an issue
-in case our chosen configuration in Linux is different from the
-default (or from the one that was pre-applied by the bootloader).
+Get rid of conditional compilation based on CONFIG_PM_SLEEP because
+it may introduce build issues with certain configs where it maybe disabled
+This is because if above config is not enabled the suspend-resume
+functions are never part of the code but the bcm63xx_spi_pm_ops struct
+still inits them to non-existent suspend-resume functions.
 
-An example of broken behavior is when the controller is configured
-to use shadow registers, but this driver wants to configure it
-otherwise: what happens is that the .get_state() callback is called
-right after registering the pwmchip and checks whether the PWM is
-enabled by reading the DISP_PWM_EN register;
-At this point, if shadow registers are enabled but their content
-was not committed before booting Linux, we are *not* reading the
-current PWM enablement status, leading to the kernel knowing that
-the hardware is actually enabled when, in reality, it's not.
+Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
 
-The aforementioned issue emerged since this driver was fixed with
-commit 0b5ef3429d8f ("pwm: mtk-disp: Fix the parameters calculated
-by the enabled flag of disp_pwm") making it to read the enablement
-status from the right register.
-
-Configure the controller in the .get_state() callback to avoid
-this desync issue and get the backlight properly working again.
-
-Fixes: 3f2b16734914 ("pwm: mtk-disp: Implement atomic API .get_state()")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Tested-by: Alexandre Mergnat <amergnat@baylibre.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Dhruva Gole <d-gole@ti.com>
+Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mtk-disp.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-bcm63xx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
-index 82b430d881a20..fe9593f968eeb 100644
---- a/drivers/pwm/pwm-mtk-disp.c
-+++ b/drivers/pwm/pwm-mtk-disp.c
-@@ -196,6 +196,16 @@ static int mtk_disp_pwm_get_state(struct pwm_chip *chip,
- 		return err;
- 	}
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 80fa0ef8909ca..0324ab3ce1c84 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -630,7 +630,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
-+	/*
-+	 * Apply DISP_PWM_DEBUG settings to choose whether to enable or disable
-+	 * registers double buffer and manual commit to working register before
-+	 * performing any read/write operation
-+	 */
-+	if (mdp->data->bls_debug)
-+		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
-+					 mdp->data->bls_debug_mask,
-+					 mdp->data->bls_debug_mask);
-+
- 	rate = clk_get_rate(mdp->clk_main);
- 	con0 = readl(mdp->base + mdp->data->con0);
- 	con1 = readl(mdp->base + mdp->data->con1);
+-#ifdef CONFIG_PM_SLEEP
+ static int bcm63xx_spi_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+@@ -657,7 +656,6 @@ static int bcm63xx_spi_resume(struct device *dev)
+ 
+ 	return 0;
+ }
+-#endif
+ 
+ static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
 -- 
 2.39.2
 
