@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEABE6FA711
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5639C6FAA84
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234341AbjEHK1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54366 "EHLO
+        id S235387AbjEHLDu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:03:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbjEHK0d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:26:33 -0400
+        with ESMTP id S235378AbjEHLCu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5698425524
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:26:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7410330E5A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C001D625DE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:26:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCC0C433D2;
-        Mon,  8 May 2023 10:26:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F196562A49
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F375BC433D2;
+        Mon,  8 May 2023 11:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541579;
-        bh=OxRzY70GoSDja6DnQBQao5l48S/JAOIr32/qASEbKuQ=;
+        s=korg; t=1683543729;
+        bh=0YrKf/beVTk1AI+yMEjg4ld6p9qdHxmCpEpdASI0VX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wtcRmpceScOog+b3gRiahygX7jL7KhmCBjxYGpT0+crBpE6Z9tKvRXyxuroaBeKwL
-         /DJN7DME3z5WKtDEAanZJRUJQZqp+ZGrsVNDz4j/FTaYtbTnIiAWi7VYBaXb+a37GD
-         trCMkiAPGa0/UOUaPELfaPqTc9lXqb2h/wqugYIk=
+        b=z5RYQG/Fjd/paZYm4Jedc+TNTFxTUHs3zo+MR0Pjw1ae8QTPf55/UMpe1l+hJ7BmP
+         NLVpk40V1ehV6qXUex9DTMHICTfSuAr+fp3X6yIG5KPetuS4Xr3uuhQtp99D4gMBcc
+         y+lBUcNzfqzH5H4fXH05s0R9m6pYKO3+TCklT7MY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 160/663] arm64: dts: qcom: sdm845: Fix the PCI I/O port range
+Subject: [PATCH 6.3 151/694] drm/rockchip: Drop unbalanced obj unref
 Date:   Mon,  8 May 2023 11:39:46 +0200
-Message-Id: <20230508094433.688473908@linuxfoundation.org>
+Message-Id: <20230508094437.336300851@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 67aa109eee654c76dcc100554e637fa64d5aa099 ]
+[ Upstream commit 8ee3b0e85f6ccd9e6c527bc50eaba774c3bb18d0 ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
-(0x60200000, 0x40200000) specified in the ranges property for I/O region.
+In the error path, rockchip_drm_gem_object_mmap() is dropping an obj
+reference that it doesn't own.
 
-While at it, let's use the missing 0x prefix for the addresses.
-
-Fixes: 42ad231338c1 ("arm64: dts: qcom: sdm845: Add second PCIe PHY and controller")
-Fixes: 5c538e09cb19 ("arm64: dts: qcom: sdm845: Add first PCIe controller and PHY")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-2-manivannan.sadhasivam@linaro.org
+Fixes: 41315b793e13 ("drm/rockchip: use drm_gem_mmap helpers")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230119231734.2884543-1-robdclark@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_gem.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index ed525397d2335..0b263a7da981c 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -2226,8 +2226,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+index 8ea09d915c3ca..6c0800083aad8 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+@@ -261,9 +261,6 @@ static int rockchip_drm_gem_object_mmap(struct drm_gem_object *obj,
+ 	else
+ 		ret = rockchip_drm_gem_object_mmap_dma(obj, vma);
  
--			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
--				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0xd00000>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0xd00000>;
+-	if (ret)
+-		drm_gem_vm_close(vma);
+-
+ 	return ret;
+ }
  
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -2331,7 +2331,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
- 
- 			interrupts = <GIC_SPI 307 IRQ_TYPE_EDGE_RISING>;
 -- 
 2.39.2
 
