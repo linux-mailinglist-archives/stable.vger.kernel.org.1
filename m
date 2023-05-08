@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1D836FA6D0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A77156FAA1C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:59:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234565AbjEHKYZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49536 "EHLO
+        id S235450AbjEHK7d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:59:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234468AbjEHKXg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:36 -0400
+        with ESMTP id S235456AbjEHK6z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:58:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C48830451
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:23:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04EA203E2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:57:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFDD66257B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:23:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CA9C433EF;
-        Mon,  8 May 2023 10:23:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34568629DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:57:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A72C433D2;
+        Mon,  8 May 2023 10:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541408;
-        bh=iqzJxMCoDWFS2cMLhNtb4ZYORu0PCokX+vciUYk5c4c=;
+        s=korg; t=1683543458;
+        bh=oIOOJG9JAWleWKQt63LIwerpBdwymQYAQW7CkrOGfV8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VfnRZhHLbo6hscW7hQpFaNyQnlmDFzFHKYZNHR/XGEzAeW9T/h8AVbVOhJiK18/Am
-         iQDbBkpCDw+mNyMA9a/umGG9FULXHByv5WNvOhKJgc8+jap+DugYxzo0vtCy4wkkv0
-         4jo5Xd+FzDcrpPlDINcpXD0R5OyJvcf9u9WxspGo=
+        b=xKKxKJjS3LGDkWdNxX89w6HPXmFnxqC+rrk0syVqnmFWgCe7rqqOxXwXoOSYWzEyo
+         GT1iOZoUiOZZWpujTH/ilYKCAFbOG62gA85+mildb1XozpT+UnCCdoZMWf4r9kVg3C
+         L5pL3QfF1wFSumtyiejXnGUOAgvy2JdGcJXnRDQE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.2 106/663] ubifs: Free memory for tmpfile name
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Carl Vanderlip <quic_carlv@quicinc.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.3 097/694] bus: mhi: host: Use mhi_tryset_pm_state() for setting fw error state
 Date:   Mon,  8 May 2023 11:38:52 +0200
-Message-Id: <20230508094431.924265063@linuxfoundation.org>
+Message-Id: <20230508094435.658356082@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,49 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mårten Lindahl <marten.lindahl@axis.com>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-commit 1fb815b38bb31d6af9bd0540b8652a0d6fe6cfd3 upstream.
+commit 1d1493bdc25f498468a606a4ece947d155cfa3a9 upstream.
 
-When opening a ubifs tmpfile on an encrypted directory, function
-fscrypt_setup_filename allocates memory for the name that is to be
-stored in the directory entry, but after the name has been copied to the
-directory entry inode, the memory is not freed.
+If firmware loading fails, the controller's pm_state is updated to
+MHI_PM_FW_DL_ERR unconditionally.  This can corrupt the pm_state as the
+update is not done under the proper lock, and also does not validate
+the state transition.  The firmware loading can fail due to a detected
+syserr, but if MHI_PM_FW_DL_ERR is unconditionally set as the pm_state,
+the handling of the syserr can break when it attempts to transition from
+syserr detect, to syserr process.
 
-When running kmemleak on it we see that it is registered as a leak. The
-report below is triggered by a simple program 'tmpfile' just opening a
-tmpfile:
+By grabbing the lock, we ensure we don't race with some other pm_state
+update.  By using mhi_try_set_pm_state(), we check that the transition
+to MHI_PM_FW_DL_ERR is valid via the state machine logic.  If it is not
+valid, then some other transition is occurring like syserr processing, and
+we assume that will resolve the firmware loading error.
 
-  unreferenced object 0xffff88810178f380 (size 32):
-    comm "tmpfile", pid 509, jiffies 4294934744 (age 1524.742s)
-    backtrace:
-      __kmem_cache_alloc_node
-      __kmalloc
-      fscrypt_setup_filename
-      ubifs_tmpfile
-      vfs_tmpfile
-      path_openat
-
-Free this memory after it has been copied to the inode.
-
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Fixes: 12e050c77be0 ("bus: mhi: core: Move to an error state on any firmware load failure")
 Cc: stable@vger.kernel.org
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://lore.kernel.org/r/1681142292-27571-3-git-send-email-quic_jhugo@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/dir.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/bus/mhi/host/boot.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -492,6 +492,7 @@ static int ubifs_tmpfile(struct user_nam
- 	unlock_2_inodes(dir, inode);
+--- a/drivers/bus/mhi/host/boot.c
++++ b/drivers/bus/mhi/host/boot.c
+@@ -391,6 +391,7 @@ void mhi_fw_load_handler(struct mhi_cont
+ {
+ 	const struct firmware *firmware = NULL;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
++	enum mhi_pm_state new_state;
+ 	const char *fw_name;
+ 	void *buf;
+ 	dma_addr_t dma_addr;
+@@ -508,14 +509,18 @@ error_ready_state:
+ 	}
  
- 	ubifs_release_budget(c, &req);
-+	fscrypt_free_filename(&nm);
+ error_fw_load:
+-	mhi_cntrl->pm_state = MHI_PM_FW_DL_ERR;
+-	wake_up_all(&mhi_cntrl->state_event);
++	write_lock_irq(&mhi_cntrl->pm_lock);
++	new_state = mhi_tryset_pm_state(mhi_cntrl, MHI_PM_FW_DL_ERR);
++	write_unlock_irq(&mhi_cntrl->pm_lock);
++	if (new_state == MHI_PM_FW_DL_ERR)
++		wake_up_all(&mhi_cntrl->state_event);
+ }
  
- 	return finish_open_simple(file, 0);
+ int mhi_download_amss_image(struct mhi_controller *mhi_cntrl)
+ {
+ 	struct image_info *image_info = mhi_cntrl->fbc_image;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
++	enum mhi_pm_state new_state;
+ 	int ret;
  
+ 	if (!image_info)
+@@ -526,8 +531,11 @@ int mhi_download_amss_image(struct mhi_c
+ 			       &image_info->mhi_buf[image_info->entries - 1]);
+ 	if (ret) {
+ 		dev_err(dev, "MHI did not load AMSS, ret:%d\n", ret);
+-		mhi_cntrl->pm_state = MHI_PM_FW_DL_ERR;
+-		wake_up_all(&mhi_cntrl->state_event);
++		write_lock_irq(&mhi_cntrl->pm_lock);
++		new_state = mhi_tryset_pm_state(mhi_cntrl, MHI_PM_FW_DL_ERR);
++		write_unlock_irq(&mhi_cntrl->pm_lock);
++		if (new_state == MHI_PM_FW_DL_ERR)
++			wake_up_all(&mhi_cntrl->state_event);
+ 	}
+ 
+ 	return ret;
 
 
