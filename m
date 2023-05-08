@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7403F6FA473
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9E06FA474
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233871AbjEHJ7c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:59:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55486 "EHLO
+        id S233875AbjEHJ7f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjEHJ7b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:59:31 -0400
+        with ESMTP id S229561AbjEHJ7f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:59:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A6BB2CD2B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:59:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086742CD13
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:59:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 950FA6229C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:59:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3F5C433D2;
-        Mon,  8 May 2023 09:59:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92FE96229B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5CAC4339B;
+        Mon,  8 May 2023 09:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539970;
-        bh=7yAbatqgq7LIvEWfrKnftoaGmhpPFDRJmzZFO4NpaqQ=;
+        s=korg; t=1683539973;
+        bh=6QHdSxgOiOqKxFvZzYeaWNF3IttFGI+xjhYuVopaj3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O+2wbzUEPY6IBZ7UOPUryDj3+HB8veTTFvABdoLWcn1/HO1u6YL0ylqcMVFlgfMdy
-         01h/hOBgMfLFY6Qle0z27ImNpceA0GcZyNQf59lSYCARSN3Codd8eWg93bo7s67ckt
-         4Nqm666wnw4JESXlL6qtzXlJoTBXzIZhcDFyF0PQ=
+        b=GnLX4UL69Z1sJ1sCgp/yDJauN0Dg/sQRBQnt0CaGN6C7H3VXJj5aYKn/Fe0u+yd8D
+         9UcQyQ2WHqEABUWub3tdaZodds+Uq5XxIKEAAhhFp0kN/GloJcfpTk9Z7XwmI5x7cw
+         xF1fr/ktnSigS4gZmnMQzO/wSais/s6J+q/SQxYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
-        Nick Hainke <vincent@systemli.org>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
+        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/611] cpufreq: mediatek: raise proc/sram max voltage for MT8516
-Date:   Mon,  8 May 2023 11:40:38 +0200
-Message-Id: <20230508094428.746679005@linuxfoundation.org>
+Subject: [PATCH 6.1 197/611] cpufreq: mediatek: Raise proc and sram max voltage for MT7622/7623
+Date:   Mon,  8 May 2023 11:40:39 +0200
+Message-Id: <20230508094428.776187519@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -58,20 +57,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit d3296bb4cafd4bad4a5cf2eeab9d19cc94f9e30e ]
+[ Upstream commit 0883426fd07e39355362e3f2eb9aee1a154dcaf6 ]
 
-Since the upper boundary of proc/sram voltage of MT8516 is 1300 mV,
-which is greater than the value of MT2701 1150 mV, we fix it by adding
-the corresponding platform data and specify proc/sram_max_volt to
-support MT8516.
+During the addition of SRAM voltage tracking for CCI scaling, this
+driver got some voltage limits set for the vtrack algorithm: these
+were moved to platform data first, then enforced in a later commit
+6a17b3876bc8 ("cpufreq: mediatek: Refine mtk_cpufreq_voltage_tracking()")
+using these as max values for the regulator_set_voltage() calls.
 
-Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+In this case, the vsram/vproc constraints for MT7622 and MT7623
+were supposed to be the same as MT2701 (and a number of other SoCs),
+but that turned out to be a mistake because the aforementioned two
+SoCs' maximum voltage for both VPROC and VPROC_SRAM is 1.36V.
+
+Fix that by adding new platform data for MT7622/7623 declaring the
+right {proc,sram}_max_volt parameter.
+
 Fixes: ead858bd128d ("cpufreq: mediatek: Move voltage limits to platform data")
 Fixes: 6a17b3876bc8 ("cpufreq: mediatek: Refine mtk_cpufreq_voltage_tracking()")
-Reported-by: Nick Hainke <vincent@systemli.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -79,41 +86,36 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index 6dc225546a8d6..764e4fbdd536c 100644
+index 764e4fbdd536c..9a39a7ccfae96 100644
 --- a/drivers/cpufreq/mediatek-cpufreq.c
 +++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -711,20 +711,29 @@ static const struct mtk_cpufreq_platform_data mt8186_platform_data = {
- 	.ccifreq_supported = true,
+@@ -693,6 +693,15 @@ static const struct mtk_cpufreq_platform_data mt2701_platform_data = {
+ 	.ccifreq_supported = false,
  };
  
-+static const struct mtk_cpufreq_platform_data mt8516_platform_data = {
++static const struct mtk_cpufreq_platform_data mt7622_platform_data = {
 +	.min_volt_shift = 100000,
 +	.max_volt_shift = 200000,
-+	.proc_max_volt = 1310000,
++	.proc_max_volt = 1360000,
 +	.sram_min_volt = 0,
-+	.sram_max_volt = 1310000,
++	.sram_max_volt = 1360000,
 +	.ccifreq_supported = false,
 +};
 +
- /* List of machines supported by this driver */
+ static const struct mtk_cpufreq_platform_data mt8183_platform_data = {
+ 	.min_volt_shift = 100000,
+ 	.max_volt_shift = 200000,
+@@ -724,8 +733,8 @@ static const struct mtk_cpufreq_platform_data mt8516_platform_data = {
  static const struct of_device_id mtk_cpufreq_machines[] __initconst = {
  	{ .compatible = "mediatek,mt2701", .data = &mt2701_platform_data },
  	{ .compatible = "mediatek,mt2712", .data = &mt2701_platform_data },
- 	{ .compatible = "mediatek,mt7622", .data = &mt2701_platform_data },
- 	{ .compatible = "mediatek,mt7623", .data = &mt2701_platform_data },
--	{ .compatible = "mediatek,mt8167", .data = &mt2701_platform_data },
-+	{ .compatible = "mediatek,mt8167", .data = &mt8516_platform_data },
+-	{ .compatible = "mediatek,mt7622", .data = &mt2701_platform_data },
+-	{ .compatible = "mediatek,mt7623", .data = &mt2701_platform_data },
++	{ .compatible = "mediatek,mt7622", .data = &mt7622_platform_data },
++	{ .compatible = "mediatek,mt7623", .data = &mt7622_platform_data },
+ 	{ .compatible = "mediatek,mt8167", .data = &mt8516_platform_data },
  	{ .compatible = "mediatek,mt817x", .data = &mt2701_platform_data },
  	{ .compatible = "mediatek,mt8173", .data = &mt2701_platform_data },
- 	{ .compatible = "mediatek,mt8176", .data = &mt2701_platform_data },
- 	{ .compatible = "mediatek,mt8183", .data = &mt8183_platform_data },
- 	{ .compatible = "mediatek,mt8186", .data = &mt8186_platform_data },
- 	{ .compatible = "mediatek,mt8365", .data = &mt2701_platform_data },
--	{ .compatible = "mediatek,mt8516", .data = &mt2701_platform_data },
-+	{ .compatible = "mediatek,mt8516", .data = &mt8516_platform_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, mtk_cpufreq_machines);
 -- 
 2.39.2
 
