@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DE476FA565
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25E856FAB81
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234137AbjEHKJJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37216 "EHLO
+        id S233939AbjEHLOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234126AbjEHKI7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:59 -0400
+        with ESMTP id S233943AbjEHLOF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4114A35108
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AEBC35B32
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9BC162398
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4C6C433D2;
-        Mon,  8 May 2023 10:08:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0076062BAA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18904C433D2;
+        Mon,  8 May 2023 11:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540537;
-        bh=fI1mcV4a/Jpfj5PwrHfeeZHCk7Bp7x/rMICOqK3oL5o=;
+        s=korg; t=1683544440;
+        bh=GX31uYiQd+Qe+Ty2GIohKZrgGp6XxUZxZqptURN6Eas=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zi3GZkAoj2wbEqUbdn8SAHmbDSiKD9o2s5Kx/43W1d0tUSM9AzwPmx86a5V81CgFx
-         R62G0Q6Pfbv6ZfNxoG/X0TO68EkeHxl+F0Wpaa6samBgVk0cYPv4bjss7mciasD36Z
-         vtEd/Tne+tw3PiX9rpETQQU6qEQRqbnPaBTHSJPo=
+        b=HYO13rHnx4AkofWRzJnsZ0hUZL4JI9oH43HDb3oZKwSEQ664um/pWQe35nM9XcFFq
+         56S3LFtHt9+DCaAlezTK2cHg16RB52B2GAvn8fM4FWEhvq0x0syThXn3qkzIDgFJ2h
+         pm2adeJ2/ukuEveB+XzeKWTR3OIOft8kOAO9tL5o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 402/611] usb: host: xhci-rcar: remove leftover quirk handling
+Subject: [PATCH 6.3 409/694] selftests/bpf: Fix leaked bpf_link in get_stackid_cannot_attach
 Date:   Mon,  8 May 2023 11:44:04 +0200
-Message-Id: <20230508094435.341251963@linuxfoundation.org>
+Message-Id: <20230508094446.503962755@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,44 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 5d67f4861884762ebc2bddb5d667444e45f25782 ]
+[ Upstream commit c1e07a80cf23d3a6e96172bc9a73bfa912a9fcbc ]
 
-Loading V3 firmware does not need a quirk anymore, remove the leftover
-code.
+skel->links.oncpu is leaked in one case. This causes test perf_branches
+fails when it runs after get_stackid_cannot_attach:
 
-Fixes: ed8603e11124 ("usb: host: xhci-rcar: Simplify getting the firmware name for R-Car Gen3")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20230307163041.3815-10-wsa+renesas@sang-engineering.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+./test_progs -t get_stackid_cannot_attach,perf_branches
+84      get_stackid_cannot_attach:OK
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:FAIL:output not valid no valid sample from prog
+146/1   perf_branches/perf_branches_hw:FAIL
+146/2   perf_branches/perf_branches_no_hw:OK
+146     perf_branches:FAIL
+
+All error logs:
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:FAIL:output not valid no valid sample from prog
+146/1   perf_branches/perf_branches_hw:FAIL
+146     perf_branches:FAIL
+Summary: 1/1 PASSED, 0 SKIPPED, 1 FAILED
+
+Fix this by adding the missing bpf_link__destroy().
+
+Fixes: 346938e9380c ("selftests/bpf: Add get_stackid_cannot_attach")
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230412210423.900851-3-song@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-rcar.c | 3 ---
- 1 file changed, 3 deletions(-)
+ .../testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/xhci-rcar.c b/drivers/usb/host/xhci-rcar.c
-index aef0258a7160d..98525704be9d4 100644
---- a/drivers/usb/host/xhci-rcar.c
-+++ b/drivers/usb/host/xhci-rcar.c
-@@ -75,7 +75,6 @@ MODULE_FIRMWARE(XHCI_RCAR_FIRMWARE_NAME_V3);
+diff --git a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
+index 5308de1ed478e..2715c68301f52 100644
+--- a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
+@@ -65,6 +65,7 @@ void test_get_stackid_cannot_attach(void)
+ 	skel->links.oncpu = bpf_program__attach_perf_event(skel->progs.oncpu,
+ 							   pmu_fd);
+ 	ASSERT_OK_PTR(skel->links.oncpu, "attach_perf_event_callchain");
++	bpf_link__destroy(skel->links.oncpu);
+ 	close(pmu_fd);
  
- /* For soc_device_attribute */
- #define RCAR_XHCI_FIRMWARE_V2   BIT(0) /* FIRMWARE V2 */
--#define RCAR_XHCI_FIRMWARE_V3   BIT(1) /* FIRMWARE V3 */
- 
- static const struct soc_device_attribute rcar_quirks_match[]  = {
- 	{
-@@ -147,8 +146,6 @@ static int xhci_rcar_download_firmware(struct usb_hcd *hcd)
- 
- 	if (quirks & RCAR_XHCI_FIRMWARE_V2)
- 		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V2;
--	else if (quirks & RCAR_XHCI_FIRMWARE_V3)
--		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V3;
- 	else
- 		firmware_name = priv->firmware_name;
- 
+ 	/* add exclude_callchain_kernel, attach should fail */
 -- 
 2.39.2
 
