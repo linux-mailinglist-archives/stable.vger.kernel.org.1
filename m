@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E5316FAC1B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2FE46FA8F3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235571AbjEHLUy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:20:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34802 "EHLO
+        id S235126AbjEHKqi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235567AbjEHLUw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:52 -0400
+        with ESMTP id S234914AbjEHKqQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6381238F09
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645CF27F20
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED07762C90
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC07C433EF;
-        Mon,  8 May 2023 11:20:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EDAD2628BF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEE7C433EF;
+        Mon,  8 May 2023 10:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544850;
-        bh=bcymKhKH7LHzTjrUPVkh0qE5nI59hjDOuuGm63rXG0k=;
+        s=korg; t=1683542760;
+        bh=FLJkWd5QJwvdpXyGn7+Ubl8/m722AyvF0IM+ucBfds8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G/db0cJcGx/8iBaSewasTB7bDcWkVKE5Ol3U49UZ17gnOUjGxRNOf5XA3S+WuzUBU
-         CUHmHpLeipslXSShyV3v5svySSsKu4oCw8CaFe07Ceh0bFqfcM08V4egN5QOGXtByd
-         FqcIIRRasvxO0L1VMzk28o0oyUYk4ITvPOr3zoo0=
+        b=TV72+IzNwf9Dt5FIxeTO1aOzONYAUBrBTqLpr7Up1WWQrnw6Fulzc8cAga8mJmLKf
+         TJdhd/TFFuAfwX8t+vOVrNF9umO4umteO1oNv7f8eTsEW37e1yoiVrLWqiI4Jjerlx
+         6v5+Lzayy/r1I16GZOFRIghZpd0M+mwyzVM/hb7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 513/694] spi: mpc5xxx-psc: Remove unused platform_data
+Subject: [PATCH 6.2 522/663] clk: mediatek: mt7622: Properly use CLK_IS_CRITICAL flag
 Date:   Mon,  8 May 2023 11:45:48 +0200
-Message-Id: <20230508094450.833150644@linuxfoundation.org>
+Message-Id: <20230508094445.757418330@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,191 +57,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Herring <robh@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 04725901d9933b3134e6dee6b5bc1efb67f8d43f ]
+[ Upstream commit fa8c0d01df62130ff596d560380a6f844f62639e ]
 
-The platform_data for the MPC5xxx PSC SPI controllers is never used, so
-remove it and the resulting code which depends on it.
+Instead of calling clk_prepare_enable() for clocks that shall stay
+enabled, use the CLK_IS_CRITICAL flag, which purpose is exactly that.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230217-dt-mpc5xxx-spi-v1-1-3be8602fce1e@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 45d2af82e0e6 ("spi: mchp-pci1xxxx: Fix improper implementation of disabling chip select lines")
+Fixes: 2fc0a509e4ee ("clk: mediatek: add clock support for MT7622 SoC")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230306140543.1813621-24-angelogioacchino.delregno@collabora.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mpc512x-psc.c | 28 ++++---------------------
- drivers/spi/spi-mpc52xx-psc.c | 39 +++--------------------------------
- 2 files changed, 7 insertions(+), 60 deletions(-)
+ drivers/clk/mediatek/clk-mt7622.c | 35 +++++++++++++------------------
+ 1 file changed, 15 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 03630359ce70d..0b4d49ef84de8 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -22,7 +22,6 @@
- #include <linux/delay.h>
- #include <linux/clk.h>
- #include <linux/spi/spi.h>
--#include <linux/fsl_devices.h>
- #include <asm/mpc52xx_psc.h>
+diff --git a/drivers/clk/mediatek/clk-mt7622.c b/drivers/clk/mediatek/clk-mt7622.c
+index 41b3d032bf91c..eebbb87906930 100644
+--- a/drivers/clk/mediatek/clk-mt7622.c
++++ b/drivers/clk/mediatek/clk-mt7622.c
+@@ -50,9 +50,9 @@
+ 		 _pd_reg, _pd_shift, _tuner_reg, _pcw_reg, _pcw_shift,  \
+ 		 NULL, "clkxtal")
  
- enum {
-@@ -51,8 +50,6 @@ enum {
- 	__ret; })
+-#define GATE_APMIXED(_id, _name, _parent, _shift)			\
+-	GATE_MTK(_id, _name, _parent, &apmixed_cg_regs, _shift,		\
+-		 &mtk_clk_gate_ops_no_setclr_inv)
++#define GATE_APMIXED_AO(_id, _name, _parent, _shift)			\
++	GATE_MTK_FLAGS(_id, _name, _parent, &apmixed_cg_regs, _shift,	\
++		 &mtk_clk_gate_ops_no_setclr_inv, CLK_IS_CRITICAL)
  
- struct mpc512x_psc_spi {
--	void (*cs_control)(struct spi_device *spi, bool on);
+ #define GATE_INFRA(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &infra_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+@@ -66,6 +66,10 @@
+ #define GATE_PERI0(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &peri0_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+ 
++#define GATE_PERI0_AO(_id, _name, _parent, _shift)			\
++	GATE_MTK_FLAGS(_id, _name, _parent, &peri0_cg_regs, _shift,	\
++		 &mtk_clk_gate_ops_setclr, CLK_IS_CRITICAL)
++
+ #define GATE_PERI1(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &peri1_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+ 
+@@ -315,7 +319,7 @@ static const struct mtk_pll_data plls[] = {
+ };
+ 
+ static const struct mtk_gate apmixed_clks[] = {
+-	GATE_APMIXED(CLK_APMIXED_MAIN_CORE_EN, "main_core_en", "mainpll", 5),
++	GATE_APMIXED_AO(CLK_APMIXED_MAIN_CORE_EN, "main_core_en", "mainpll", 5),
+ };
+ 
+ static const struct mtk_gate infra_clks[] = {
+@@ -450,7 +454,7 @@ static const struct mtk_gate peri_clks[] = {
+ 	GATE_PERI0(CLK_PERI_AP_DMA_PD, "peri_ap_dma_pd", "axi_sel", 12),
+ 	GATE_PERI0(CLK_PERI_MSDC30_0_PD, "peri_msdc30_0", "msdc30_0_sel", 13),
+ 	GATE_PERI0(CLK_PERI_MSDC30_1_PD, "peri_msdc30_1", "msdc30_1_sel", 14),
+-	GATE_PERI0(CLK_PERI_UART0_PD, "peri_uart0_pd", "axi_sel", 17),
++	GATE_PERI0_AO(CLK_PERI_UART0_PD, "peri_uart0_pd", "axi_sel", 17),
+ 	GATE_PERI0(CLK_PERI_UART1_PD, "peri_uart1_pd", "axi_sel", 18),
+ 	GATE_PERI0(CLK_PERI_UART2_PD, "peri_uart2_pd", "axi_sel", 19),
+ 	GATE_PERI0(CLK_PERI_UART3_PD, "peri_uart3_pd", "axi_sel", 20),
+@@ -478,12 +482,12 @@ static struct mtk_composite infra_muxes[] = {
+ 
+ static struct mtk_composite top_muxes[] = {
+ 	/* CLK_CFG_0 */
+-	MUX_GATE(CLK_TOP_AXI_SEL, "axi_sel", axi_parents,
+-		 0x040, 0, 3, 7),
+-	MUX_GATE(CLK_TOP_MEM_SEL, "mem_sel", mem_parents,
+-		 0x040, 8, 1, 15),
+-	MUX_GATE(CLK_TOP_DDRPHYCFG_SEL, "ddrphycfg_sel", ddrphycfg_parents,
+-		 0x040, 16, 1, 23),
++	MUX_GATE_FLAGS(CLK_TOP_AXI_SEL, "axi_sel", axi_parents,
++		       0x040, 0, 3, 7, CLK_IS_CRITICAL),
++	MUX_GATE_FLAGS(CLK_TOP_MEM_SEL, "mem_sel", mem_parents,
++		       0x040, 8, 1, 15, CLK_IS_CRITICAL),
++	MUX_GATE_FLAGS(CLK_TOP_DDRPHYCFG_SEL, "ddrphycfg_sel", ddrphycfg_parents,
++		       0x040, 16, 1, 23, CLK_IS_CRITICAL),
+ 	MUX_GATE(CLK_TOP_ETH_SEL, "eth_sel", eth_parents,
+ 		 0x040, 24, 3, 31),
+ 
+@@ -620,10 +624,6 @@ static int mtk_topckgen_init(struct platform_device *pdev)
+ 	mtk_clk_register_gates(node, top_clks, ARRAY_SIZE(top_clks),
+ 			       clk_data);
+ 
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_AXI_SEL]->clk);
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_MEM_SEL]->clk);
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_DDRPHYCFG_SEL]->clk);
 -
- 	/* driver internal data */
- 	int type;
- 	void __iomem *psc;
-@@ -128,26 +125,16 @@ static void mpc512x_psc_spi_activate_cs(struct spi_device *spi)
- 	mps->bits_per_word = cs->bits_per_word;
- 
- 	if (spi->cs_gpiod) {
--		if (mps->cs_control)
--			/* boardfile override */
--			mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 1 : 0);
--		else
--			/* gpiolib will deal with the inversion */
--			gpiod_set_value(spi->cs_gpiod, 1);
-+		/* gpiolib will deal with the inversion */
-+		gpiod_set_value(spi->cs_gpiod, 1);
- 	}
+ 	return of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
  }
  
- static void mpc512x_psc_spi_deactivate_cs(struct spi_device *spi)
- {
--	struct mpc512x_psc_spi *mps = spi_master_get_devdata(spi->master);
+@@ -666,9 +666,6 @@ static int mtk_apmixedsys_init(struct platform_device *pdev)
+ 	mtk_clk_register_gates(node, apmixed_clks,
+ 			       ARRAY_SIZE(apmixed_clks), clk_data);
+ 
+-	clk_prepare_enable(clk_data->hws[CLK_APMIXED_ARMPLL]->clk);
+-	clk_prepare_enable(clk_data->hws[CLK_APMIXED_MAIN_CORE_EN]->clk);
 -
- 	if (spi->cs_gpiod) {
--		if (mps->cs_control)
--			/* boardfile override */
--			mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
--		else
--			/* gpiolib will deal with the inversion */
--			gpiod_set_value(spi->cs_gpiod, 0);
-+		/* gpiolib will deal with the inversion */
-+		gpiod_set_value(spi->cs_gpiod, 0);
- 	}
+ 	return of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
  }
  
-@@ -474,7 +461,6 @@ static irqreturn_t mpc512x_psc_spi_isr(int irq, void *dev_id)
- static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 					      u32 size, unsigned int irq)
- {
--	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
- 	struct mpc512x_psc_spi *mps;
- 	struct spi_master *master;
- 	int ret;
-@@ -490,12 +476,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	mps->type = (int)of_device_get_match_data(dev);
- 	mps->irq = irq;
+@@ -695,8 +692,6 @@ static int mtk_pericfg_init(struct platform_device *pdev)
+ 	if (r)
+ 		return r;
  
--	if (pdata) {
--		mps->cs_control = pdata->cs_control;
--		master->bus_num = pdata->bus_num;
--		master->num_chipselect = pdata->max_chipselect;
--	}
+-	clk_prepare_enable(clk_data->hws[CLK_PERI_UART0_PD]->clk);
 -
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
- 	master->setup = mpc512x_psc_spi_setup;
- 	master->prepare_transfer_hardware = mpc512x_psc_spi_prep_xfer_hw;
-diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index 609311231e64b..604868df913c4 100644
---- a/drivers/spi/spi-mpc52xx-psc.c
-+++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -18,7 +18,6 @@
- #include <linux/io.h>
- #include <linux/delay.h>
- #include <linux/spi/spi.h>
--#include <linux/fsl_devices.h>
- #include <linux/slab.h>
- #include <linux/of_irq.h>
+ 	mtk_register_reset_controller_with_dev(&pdev->dev, &clk_rst_desc[1]);
  
-@@ -28,10 +27,6 @@
- #define MCLK 20000000 /* PSC port MClk in hz */
- 
- struct mpc52xx_psc_spi {
--	/* fsl_spi_platform data */
--	void (*cs_control)(struct spi_device *spi, bool on);
--	u32 sysclk;
--
- 	/* driver internal data */
- 	struct mpc52xx_psc __iomem *psc;
- 	struct mpc52xx_psc_fifo __iomem *fifo;
-@@ -101,17 +96,6 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
- 		ccr |= (MCLK / 1000000 - 1) & 0xFF;
- 	out_be16((u16 __iomem *)&psc->ccr, ccr);
- 	mps->bits_per_word = cs->bits_per_word;
--
--	if (mps->cs_control)
--		mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 1 : 0);
--}
--
--static void mpc52xx_psc_spi_deactivate_cs(struct spi_device *spi)
--{
--	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(spi->master);
--
--	if (mps->cs_control)
--		mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
- }
- 
- #define MPC52xx_PSC_BUFSIZE (MPC52xx_PSC_RFNUM_MASK + 1)
-@@ -220,14 +204,9 @@ int mpc52xx_psc_spi_transfer_one_message(struct spi_controller *ctlr,
- 		m->actual_length += t->len;
- 
- 		spi_transfer_delay_exec(t);
--
--		if (cs_change)
--			mpc52xx_psc_spi_deactivate_cs(spi);
- 	}
- 
- 	m->status = status;
--	if (status || !cs_change)
--		mpc52xx_psc_spi_deactivate_cs(spi);
- 
- 	mpc52xx_psc_spi_transfer_setup(spi, NULL);
- 
-@@ -269,7 +248,7 @@ static int mpc52xx_psc_spi_port_config(int psc_id, struct mpc52xx_psc_spi *mps)
- 	int ret;
- 
- 	/* default sysclk is 512MHz */
--	mclken_div = (mps->sysclk ? mps->sysclk : 512000000) / MCLK;
-+	mclken_div = 512000000 / MCLK;
- 	ret = mpc52xx_set_psc_clkdiv(psc_id, mclken_div);
- 	if (ret)
- 		return ret;
-@@ -317,7 +296,6 @@ static irqreturn_t mpc52xx_psc_spi_isr(int irq, void *dev_id)
- static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 				u32 size, unsigned int irq, s16 bus_num)
- {
--	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
- 	struct mpc52xx_psc_spi *mps;
- 	struct spi_master *master;
- 	int ret;
-@@ -333,19 +311,8 @@ static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
- 
- 	mps->irq = irq;
--	if (pdata == NULL) {
--		dev_warn(dev,
--			 "probe called without platform data, no cs_control function will be called\n");
--		mps->cs_control = NULL;
--		mps->sysclk = 0;
--		master->bus_num = bus_num;
--		master->num_chipselect = 255;
--	} else {
--		mps->cs_control = pdata->cs_control;
--		mps->sysclk = pdata->sysclk;
--		master->bus_num = pdata->bus_num;
--		master->num_chipselect = pdata->max_chipselect;
--	}
-+	master->bus_num = bus_num;
-+	master->num_chipselect = 255;
- 	master->setup = mpc52xx_psc_spi_setup;
- 	master->transfer_one_message = mpc52xx_psc_spi_transfer_one_message;
- 	master->cleanup = mpc52xx_psc_spi_cleanup;
+ 	return 0;
 -- 
 2.39.2
 
