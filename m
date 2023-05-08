@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D1D6FA8DC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C74D06FAD89
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235037AbjEHKp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48028 "EHLO
+        id S236013AbjEHLfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235039AbjEHKpb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D5227F14
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:51 -0700 (PDT)
+        with ESMTP id S234003AbjEHLfH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3460340208
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39D846288E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297EFC433EF;
-        Mon,  8 May 2023 10:44:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4014632D0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:34:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A7FC433EF;
+        Mon,  8 May 2023 11:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542690;
-        bh=Vl5hFgP8MYg0x/vOx8uph7RhIvyY1UHjcUzoV6BWXug=;
+        s=korg; t=1683545671;
+        bh=wDaNiTmRHD9BLu+xUrlLKNRijVELQCA4075hxw/AU68=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Xe329qRD7jEuvMUIkTzWaYvDFlE6q1xA2ynN8yedPFXj+c/pkluZu3QFcxdca5rQ
-         F6/CEXXjWeNqdMtcPxBEM5V8gyHNBlTTDE6UkobqfdSqq/fnTfZ0rJwxBPUmVmgFOb
-         Fgo+AUfg4/5TdO5iCtFb+w27nafF3CV9gss3DoSI=
+        b=OnLJlw+uY6CbTtay4nIPP/zdGrN9+kIck9uXWSOkeyHUpMO6K+mpnrM7WUrNkHnPv
+         j1hSgg+2UkGDMcHI0YF8sGAqF1cHoJcZ3h9873uCAvIpoyMibVypWy2HZJ0xQFHtO3
+         aqvsDiLXFgrZbuZuNnIi90mYAvBjNsMfQxcxXjRk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 489/663] sh: sq: Fix incorrect element size for allocating bitmap buffer
-Date:   Mon,  8 May 2023 11:45:15 +0200
-Message-Id: <20230508094444.277595233@linuxfoundation.org>
+Subject: [PATCH 5.15 115/371] ACPI: processor: Fix evaluating _PDC method when running as Xen dom0
+Date:   Mon,  8 May 2023 11:45:16 +0200
+Message-Id: <20230508094816.587330149@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +56,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 80f746e2bd0e1da3fdb49a53570e54a1a225faac ]
+[ Upstream commit 073828e954459b883f23e53999d31e4c55ab9654 ]
 
-The Store Queue code allocates a bitmap buffer with the size of
-multiple of sizeof(long) in sq_api_init(). While the buffer size
-is calculated correctly, the code uses the wrong element size to
-allocate the buffer which results in the allocated bitmap buffer
-being too small.
+In ACPI systems, the OS can direct power management, as opposed to the
+firmware.  This OS-directed Power Management is called OSPM.  Part of
+telling the firmware that the OS going to direct power management is
+making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
+methods must be evaluated for every processor object.  If these _PDC
+calls are not completed for every processor it can lead to
+inconsistency and later failures in things like the CPU frequency
+driver.
 
-Fix this by allocating the buffer with kcalloc() with element size
-sizeof(long) instead of kzalloc() whose elements size defaults to
-sizeof(char).
+In a Xen system, the dom0 kernel is responsible for system-wide power
+management.  The dom0 kernel is in charge of OSPM.  However, the
+number of CPUs available to dom0 can be different than the number of
+CPUs physically present on the system.
 
-Fixes: d7c30c682a27 ("sh: Store Queue API rework.")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230419114854.528677-1-glaubitz@physik.fu-berlin.de
+This leads to a problem: the dom0 kernel needs to evaluate _PDC for
+all the processors, but it can't always see them.
+
+In dom0 kernels, ignore the existing ACPI method for determining if a
+processor is physically present because it might not be accurate.
+Instead, ask the hypervisor for this information.
+
+Fix this by introducing a custom function to use when running as Xen
+dom0 in order to check whether a processor object matches a CPU that's
+online.  Such checking is done using the existing information fetched
+by the Xen pCPU subsystem, extending it to also store the ACPI ID.
+
+This ensures that _PDC method gets evaluated for all physically online
+CPUs, regardless of the number of CPUs made available to dom0.
+
+Fixes: 5d554a7bb064 ("ACPI: processor: add internal processor_physically_present()")
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/cpu/sh4/sq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/processor_pdc.c | 11 +++++++++++
+ drivers/xen/pcpu.c           | 20 ++++++++++++++++++++
+ include/xen/xen.h            | 11 +++++++++++
+ 3 files changed, 42 insertions(+)
 
-diff --git a/arch/sh/kernel/cpu/sh4/sq.c b/arch/sh/kernel/cpu/sh4/sq.c
-index a76b94e41e913..8ddfe9989f5fc 100644
---- a/arch/sh/kernel/cpu/sh4/sq.c
-+++ b/arch/sh/kernel/cpu/sh4/sq.c
-@@ -382,7 +382,7 @@ static int __init sq_api_init(void)
- 	if (unlikely(!sq_cache))
- 		return ret;
+diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+index 8c3f82c9fff35..18fb04523f93b 100644
+--- a/drivers/acpi/processor_pdc.c
++++ b/drivers/acpi/processor_pdc.c
+@@ -14,6 +14,8 @@
+ #include <linux/acpi.h>
+ #include <acpi/processor.h>
  
--	sq_bitmap = kzalloc(size, GFP_KERNEL);
-+	sq_bitmap = kcalloc(size, sizeof(long), GFP_KERNEL);
- 	if (unlikely(!sq_bitmap))
- 		goto out;
++#include <xen/xen.h>
++
+ #include "internal.h"
  
+ static bool __init processor_physically_present(acpi_handle handle)
+@@ -47,6 +49,15 @@ static bool __init processor_physically_present(acpi_handle handle)
+ 		return false;
+ 	}
+ 
++	if (xen_initial_domain())
++		/*
++		 * When running as a Xen dom0 the number of processors Linux
++		 * sees can be different from the real number of processors on
++		 * the system, and we still need to execute _PDC for all of
++		 * them.
++		 */
++		return xen_processor_present(acpi_id);
++
+ 	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
+ 	cpuid = acpi_get_cpuid(handle, type, acpi_id);
+ 
+diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
+index fd3a644b08559..b3e3d1bb37f3e 100644
+--- a/drivers/xen/pcpu.c
++++ b/drivers/xen/pcpu.c
+@@ -58,6 +58,7 @@ struct pcpu {
+ 	struct list_head list;
+ 	struct device dev;
+ 	uint32_t cpu_id;
++	uint32_t acpi_id;
+ 	uint32_t flags;
+ };
+ 
+@@ -249,6 +250,7 @@ static struct pcpu *create_and_register_pcpu(struct xenpf_pcpuinfo *info)
+ 
+ 	INIT_LIST_HEAD(&pcpu->list);
+ 	pcpu->cpu_id = info->xen_cpuid;
++	pcpu->acpi_id = info->acpi_id;
+ 	pcpu->flags = info->flags;
+ 
+ 	/* Need hold on xen_pcpu_lock before pcpu list manipulations */
+@@ -381,3 +383,21 @@ static int __init xen_pcpu_init(void)
+ 	return ret;
+ }
+ arch_initcall(xen_pcpu_init);
++
++#ifdef CONFIG_ACPI
++bool __init xen_processor_present(uint32_t acpi_id)
++{
++	const struct pcpu *pcpu;
++	bool online = false;
++
++	mutex_lock(&xen_pcpu_lock);
++	list_for_each_entry(pcpu, &xen_pcpus, list)
++		if (pcpu->acpi_id == acpi_id) {
++			online = pcpu->flags & XEN_PCPU_FLAGS_ONLINE;
++			break;
++		}
++	mutex_unlock(&xen_pcpu_lock);
++
++	return online;
++}
++#endif
+diff --git a/include/xen/xen.h b/include/xen/xen.h
+index 43efba045acc7..5a6a2ab675bed 100644
+--- a/include/xen/xen.h
++++ b/include/xen/xen.h
+@@ -61,4 +61,15 @@ void xen_free_unpopulated_pages(unsigned int nr_pages, struct page **pages);
+ #include <xen/balloon.h>
+ #endif
+ 
++#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI) && defined(CONFIG_X86)
++bool __init xen_processor_present(uint32_t acpi_id);
++#else
++#include <linux/bug.h>
++static inline bool xen_processor_present(uint32_t acpi_id)
++{
++	BUG();
++	return false;
++}
++#endif
++
+ #endif	/* _XEN_XEN_H */
 -- 
 2.39.2
 
