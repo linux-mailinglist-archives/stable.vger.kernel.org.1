@@ -2,58 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 423F76FAAC0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B1516FA769
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233582AbjEHLGV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:06:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
+        id S234667AbjEHKaT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233701AbjEHLFz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:05:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA272BCEC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:04:51 -0700 (PDT)
+        with ESMTP id S234672AbjEHKaJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:30:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE6A24A85
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:30:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D41C962A61
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EA6C433D2;
-        Mon,  8 May 2023 11:04:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 366CD626B2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAD7C433D2;
+        Mon,  8 May 2023 10:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543850;
-        bh=U3AASTqeuFKaMjf51fir0o9dcPQyM3LFthotgOzvu8Y=;
+        s=korg; t=1683541806;
+        bh=gUzbTRmh/hdvIxFEop95lgP8rXOvYzPuzE2r3ceH+L0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ozEJUJrp+6y2w8/8ON9al7hwpnvPukEwpMlaB7p2H4dT6AfewETt65p4RinId8CCU
-         eQDnSPI1X3mTDnzni+nvLKsg2l2cqs16Cw0lH7wiwhkS3Qs9G4wEPUqPUjhIh0DA9a
-         Lb+AEbjO6pZjZHmLoW3lwT5jPzMogGYVRm70j+Ng=
+        b=j0j5f3oQJLLXD9AsmxzERhQ2rfAbUBUvaw9J+4xvlx6yeB0Vwg2xY1EVHthpL29cz
+         gMmXLKHbxwZ2/i052owajjHQ3lsFReU/cse0BWaxfyElT2+ZR5PWqzG0Jj9ZhwsLiR
+         6szRN0TRaMx0Zyrfzpvm+n4GjtgzCyznIBYsi7EQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mauro Rossi <issor.oruam@gmail.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 222/694] drm/amd/display/dc/dce60/Makefile: Fix previous attempt to silence known override-init warnings
-Date:   Mon,  8 May 2023 11:40:57 +0200
-Message-Id: <20230508094439.566331883@linuxfoundation.org>
+        patches@lists.linux.dev, kyrie wu <kyrie.wu@mediatek.com>,
+        irui wang <irui.wang@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 232/663] media: mtk-jpeg: Fixes jpeghw multi-core judgement
+Date:   Mon,  8 May 2023 11:40:58 +0200
+Message-Id: <20230508094435.823323870@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,57 +58,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: kyrie wu <kyrie.wu@mediatek.com>
 
-[ Upstream commit 4082b9f5ead4966797dddcfef0905d59e5a83873 ]
+[ Upstream commit 75c38caf66a10983acc5a59069bfc9492c43d682 ]
 
-Fixes the following W=1 kernel build warning(s):
+some chips have multi-hw, but others have only one,
+modify the condition of multi-hw judgement
 
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:157:21: note: in expansion of macro ‘mmCRTC1_DCFE_MEM_LIGHT_SLEEP_CNTL’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_transform.h:170:9: note: in expansion of macro ‘SRI’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:183:17: note: in expansion of macro ‘XFM_COMMON_REG_LIST_DCE60’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:188:17: note: in expansion of macro ‘transform_regs’
- drivers/gpu/drm/amd/amdgpu/../include/asic_reg/dce/dce_6_0_d.h:722:43: warning: initialized field overwritten [-Woverride-init]
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:157:21: note: in expansion of macro ‘mmCRTC2_DCFE_MEM_LIGHT_SLEEP_CNTL’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_transform.h:170:9: note: in expansion of macro ‘SRI’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:183:17: note: in expansion of macro ‘XFM_COMMON_REG_LIST_DCE60’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:189:17: note: in expansion of macro ‘transform_regs’
- drivers/gpu/drm/amd/amdgpu/../include/asic_reg/dce/dce_6_0_d.h:722:43: note: (near initialization for ‘xfm_regs[2].DCFE_MEM_LIGHT_SLEEP_CN
-
-[100 lines snipped for brevity]
-
-Fixes: ceb3cf476a441 ("drm/amd/display/dc/dce60/Makefile: Ignore -Woverride-init warning")
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Mauro Rossi <issor.oruam@gmail.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 934e8bccac95 ("mtk-jpegenc: support jpegenc multi-hardware")
+Signed-off-by: kyrie wu <kyrie.wu@mediatek.com>
+Signed-off-by: irui wang <irui.wang@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce60/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 5 ++++-
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h | 2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce60/Makefile b/drivers/gpu/drm/amd/display/dc/dce60/Makefile
-index dda596fa1cd76..fee331accc0e7 100644
---- a/drivers/gpu/drm/amd/display/dc/dce60/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dce60/Makefile
-@@ -23,7 +23,7 @@
- # Makefile for the 'controller' sub-component of DAL.
- # It provides the control and status of HW CRTC block.
+diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+index 969516a940ba7..6d052747a15e8 100644
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1692,7 +1692,7 @@ static int mtk_jpeg_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
--CFLAGS_AMDDALPATH)/dc/dce60/dce60_resource.o = $(call cc-disable-warning, override-init)
-+CFLAGS_$(AMDDALPATH)/dc/dce60/dce60_resource.o = $(call cc-disable-warning, override-init)
+-	if (list_empty(&pdev->dev.devres_head)) {
++	if (!jpeg->variant->multi_core) {
+ 		INIT_DELAYED_WORK(&jpeg->job_timeout_work,
+ 				  mtk_jpeg_job_timeout_work);
  
- DCE60 = dce60_timing_generator.o dce60_hw_sequencer.o \
- 	dce60_resource.o
+@@ -1874,6 +1874,7 @@ static const struct mtk_jpeg_variant mtk_jpeg_drvdata = {
+ 	.ioctl_ops = &mtk_jpeg_enc_ioctl_ops,
+ 	.out_q_default_fourcc = V4L2_PIX_FMT_YUYV,
+ 	.cap_q_default_fourcc = V4L2_PIX_FMT_JPEG,
++	.multi_core = false,
+ };
+ 
+ static struct mtk_jpeg_variant mtk8195_jpegenc_drvdata = {
+@@ -1885,6 +1886,7 @@ static struct mtk_jpeg_variant mtk8195_jpegenc_drvdata = {
+ 	.ioctl_ops = &mtk_jpeg_enc_ioctl_ops,
+ 	.out_q_default_fourcc = V4L2_PIX_FMT_YUYV,
+ 	.cap_q_default_fourcc = V4L2_PIX_FMT_JPEG,
++	.multi_core = true,
+ };
+ 
+ static const struct mtk_jpeg_variant mtk8195_jpegdec_drvdata = {
+@@ -1896,6 +1898,7 @@ static const struct mtk_jpeg_variant mtk8195_jpegdec_drvdata = {
+ 	.ioctl_ops = &mtk_jpeg_dec_ioctl_ops,
+ 	.out_q_default_fourcc = V4L2_PIX_FMT_JPEG,
+ 	.cap_q_default_fourcc = V4L2_PIX_FMT_YUV420M,
++	.multi_core = true,
+ };
+ 
+ #if defined(CONFIG_OF)
+diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
+index b9126476be8fa..f87358cc9f47f 100644
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
+@@ -60,6 +60,7 @@ enum mtk_jpeg_ctx_state {
+  * @ioctl_ops:			the callback of jpeg v4l2_ioctl_ops
+  * @out_q_default_fourcc:	output queue default fourcc
+  * @cap_q_default_fourcc:	capture queue default fourcc
++ * @multi_core:		mark jpeg hw is multi_core or not
+  */
+ struct mtk_jpeg_variant {
+ 	struct clk_bulk_data *clks;
+@@ -74,6 +75,7 @@ struct mtk_jpeg_variant {
+ 	const struct v4l2_ioctl_ops *ioctl_ops;
+ 	u32 out_q_default_fourcc;
+ 	u32 cap_q_default_fourcc;
++	bool multi_core;
+ };
+ 
+ struct mtk_jpeg_src_buf {
 -- 
 2.39.2
 
