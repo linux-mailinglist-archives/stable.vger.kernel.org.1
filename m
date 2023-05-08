@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 949836FA78C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D5536FAAF3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234666AbjEHKcD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:32:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33106 "EHLO
+        id S233354AbjEHLIJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234679AbjEHKbk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63702785B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:23 -0700 (PDT)
+        with ESMTP id S233309AbjEHLHw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FC831EF5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C614626CC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE08C433EF;
-        Mon,  8 May 2023 10:31:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC38062AB4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4279C433D2;
+        Mon,  8 May 2023 11:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541883;
-        bh=A/G/qIIkVXdZxnyHqJNtSfAfP5uBuVotfaZ4wm5O3TI=;
+        s=korg; t=1683544034;
+        bh=aHRk0qezGA9Wl1a3lQ4lKIOVMda2VzdL4zUAQ7eltqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D7T804NVxuSiBNkJuDKXEuAz/pKNIkkLKaBaGn8zbD+y2lfnC3UnzAf9Eul1/dzPX
-         oif2VYDOfQGlFeo7/tjqor9SNF4gIvUINdYmWZ5psutCv1MRb606Nrv1i/Nk8X6464
-         3o/5wWDOiFdWxPS4f5J0eeW/nYy4HHlMKcDrbAI4=
+        b=18ccILrzsMIrKNCzipaYqdmD4tbCJKCfOCR0MpXJXwDHhezOBtVDkboFOjYCt+c7P
+         fQCv9vSSFljKmuiPD6Y/dnJl7tDhvogwYiDQDvA5lyKZFS/Y9RqWbbt2qF9x/0zHtq
+         Dg9pEMM5J7SZILyYvMPiVF8iOkTcXyyJbkndfuEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 258/663] media: rcar_fdp1: Convert to platform remove callback returning void
+Subject: [PATCH 6.3 249/694] arm64: dts: qcom: sc7180-trogdor-lazor: correct trackpad supply
 Date:   Mon,  8 May 2023 11:41:24 +0200
-Message-Id: <20230508094436.624042806@linuxfoundation.org>
+Message-Id: <20230508094440.385913681@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,61 +58,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0e82d3715fd208de567b8e4307fbf91ae5e57db4 ]
+[ Upstream commit 52e2996f253d82520011340d40dbc1c76ea79208 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+The hid-over-i2c takes VDD, not VCC supply.  Fix copy-pasta from other
+boards which use elan,ekth3000 with valid VCC:
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+  sc7180-trogdor-lazor-limozeen-nots-r4.dtb: trackpad@2c: 'vcc-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
+Fixes: 2c26adb8dbab ("arm64: dts: qcom: Add sc7180-lazor-limozeen skus")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230312183622.460488-3-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar_fdp1.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../boot/dts/qcom/sc7180-trogdor-lazor-limozeen-nots-r4.dts     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/renesas/rcar_fdp1.c b/drivers/media/platform/renesas/rcar_fdp1.c
-index 37ecf489d112e..d80b3214dfae1 100644
---- a/drivers/media/platform/renesas/rcar_fdp1.c
-+++ b/drivers/media/platform/renesas/rcar_fdp1.c
-@@ -2396,7 +2396,7 @@ static int fdp1_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-lazor-limozeen-nots-r4.dts b/arch/arm64/boot/dts/qcom/sc7180-trogdor-lazor-limozeen-nots-r4.dts
+index 850776c5323d1..70d5a7aa88735 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-lazor-limozeen-nots-r4.dts
++++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-lazor-limozeen-nots-r4.dts
+@@ -26,7 +26,7 @@
+ 		interrupt-parent = <&tlmm>;
+ 		interrupts = <58 IRQ_TYPE_EDGE_FALLING>;
  
--static int fdp1_remove(struct platform_device *pdev)
-+static void fdp1_remove(struct platform_device *pdev)
- {
- 	struct fdp1_dev *fdp1 = platform_get_drvdata(pdev);
+-		vcc-supply = <&pp3300_fp_tp>;
++		vdd-supply = <&pp3300_fp_tp>;
+ 		hid-descr-addr = <0x20>;
  
-@@ -2404,8 +2404,6 @@ static int fdp1_remove(struct platform_device *pdev)
- 	video_unregister_device(&fdp1->vfd);
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 	pm_runtime_disable(&pdev->dev);
--
--	return 0;
- }
- 
- static int __maybe_unused fdp1_pm_runtime_suspend(struct device *dev)
-@@ -2441,7 +2439,7 @@ MODULE_DEVICE_TABLE(of, fdp1_dt_ids);
- 
- static struct platform_driver fdp1_pdrv = {
- 	.probe		= fdp1_probe,
--	.remove		= fdp1_remove,
-+	.remove_new	= fdp1_remove,
- 	.driver		= {
- 		.name	= DRIVER_NAME,
- 		.of_match_table = fdp1_dt_ids,
+ 		wakeup-source;
 -- 
 2.39.2
 
