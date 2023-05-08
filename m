@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C7056FAB59
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC496FAD19
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233805AbjEHLMO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:12:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52726 "EHLO
+        id S235798AbjEHLar (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233797AbjEHLMO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:14 -0400
+        with ESMTP id S235795AbjEHLab (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD7931E988
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34703C995
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3033962B89
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242F0C433EF;
-        Mon,  8 May 2023 11:12:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AFE763017
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3C9C4339B;
+        Mon,  8 May 2023 11:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544331;
-        bh=yOqpS3YhiBeQh3SMvS0w9c23/0OzxPWSez7K9On06bE=;
+        s=korg; t=1683545428;
+        bh=2mpnOqWxpEpI0cTAts/u0E+GMwSudv3Lxo6rRUfhOzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ShSGfNPekFKtnIyp3zAVNVXBgeQkUY9Of+khpqJbFGIUvjOT69Of1FfiWm54xvLU1
-         dx14lLcME2NZluwyjM0zKu+jMT/Cw1Ln58S5dt5r/iWj1DDTBh3nHnrhBMf5UrNlza
-         H+y+WMJGuqj+dYxCumMU/4xPASvOdlAx7CZ0c7p8=
+        b=H8KVB70g3fYEEYX0Ux0pId1OGHE/hqPj6ny1NXXMw+7ENa7rj2WRkoGSGcCkU+dhm
+         a7XngCON4KzP+6h/C8EDRSzqaF+glgcsiNNBA9k+Txdi/lj04kZ7qMzmJYPpzSCMWd
+         25r0QdfOhiulu14ccA3uR98hwAhxG9hq7KjPIeyM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 375/694] f2fs: fix scheduling while atomic in decompression path
+        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Chris Clayton <chris2553@googlemail.com>
+Subject: [PATCH 5.15 009/371] wireguard: timers: cast enum limits members to int in prints
 Date:   Mon,  8 May 2023 11:43:30 +0200
-Message-Id: <20230508094445.035091067@linuxfoundation.org>
+Message-Id: <20230508094812.385031693@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,110 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 1aa161e43106d46ca8e9a86f4aa28d420258134b ]
+commit 2d4ee16d969c97996e80e4c9cb6de0acaff22c9f upstream.
 
-[   16.945668][    C0] Call trace:
-[   16.945678][    C0]  dump_backtrace+0x110/0x204
-[   16.945706][    C0]  dump_stack_lvl+0x84/0xbc
-[   16.945735][    C0]  __schedule_bug+0xb8/0x1ac
-[   16.945756][    C0]  __schedule+0x724/0xbdc
-[   16.945778][    C0]  schedule+0x154/0x258
-[   16.945793][    C0]  bit_wait_io+0x48/0xa4
-[   16.945808][    C0]  out_of_line_wait_on_bit+0x114/0x198
-[   16.945824][    C0]  __sync_dirty_buffer+0x1f8/0x2e8
-[   16.945853][    C0]  __f2fs_commit_super+0x140/0x1f4
-[   16.945881][    C0]  f2fs_commit_super+0x110/0x28c
-[   16.945898][    C0]  f2fs_handle_error+0x1f4/0x2f4
-[   16.945917][    C0]  f2fs_decompress_cluster+0xc4/0x450
-[   16.945942][    C0]  f2fs_end_read_compressed_page+0xc0/0xfc
-[   16.945959][    C0]  f2fs_handle_step_decompress+0x118/0x1cc
-[   16.945978][    C0]  f2fs_read_end_io+0x168/0x2b0
-[   16.945993][    C0]  bio_endio+0x25c/0x2c8
-[   16.946015][    C0]  dm_io_dec_pending+0x3e8/0x57c
-[   16.946052][    C0]  clone_endio+0x134/0x254
-[   16.946069][    C0]  bio_endio+0x25c/0x2c8
-[   16.946084][    C0]  blk_update_request+0x1d4/0x478
-[   16.946103][    C0]  scsi_end_request+0x38/0x4cc
-[   16.946129][    C0]  scsi_io_completion+0x94/0x184
-[   16.946147][    C0]  scsi_finish_command+0xe8/0x154
-[   16.946164][    C0]  scsi_complete+0x90/0x1d8
-[   16.946181][    C0]  blk_done_softirq+0xa4/0x11c
-[   16.946198][    C0]  _stext+0x184/0x614
-[   16.946214][    C0]  __irq_exit_rcu+0x78/0x144
-[   16.946234][    C0]  handle_domain_irq+0xd4/0x154
-[   16.946260][    C0]  gic_handle_irq.33881+0x5c/0x27c
-[   16.946281][    C0]  call_on_irq_stack+0x40/0x70
-[   16.946298][    C0]  do_interrupt_handler+0x48/0xa4
-[   16.946313][    C0]  el1_interrupt+0x38/0x68
-[   16.946346][    C0]  el1h_64_irq_handler+0x20/0x30
-[   16.946362][    C0]  el1h_64_irq+0x78/0x7c
-[   16.946377][    C0]  finish_task_switch+0xc8/0x3d8
-[   16.946394][    C0]  __schedule+0x600/0xbdc
-[   16.946408][    C0]  preempt_schedule_common+0x34/0x5c
-[   16.946423][    C0]  preempt_schedule+0x44/0x48
-[   16.946438][    C0]  process_one_work+0x30c/0x550
-[   16.946456][    C0]  worker_thread+0x414/0x8bc
-[   16.946472][    C0]  kthread+0x16c/0x1e0
-[   16.946486][    C0]  ret_from_fork+0x10/0x20
+Since gcc13, each member of an enum has the same type as the enum. And
+that is inherited from its members. Provided "REKEY_AFTER_MESSAGES =
+1ULL << 60", the named type is unsigned long.
 
-Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
-Fixes: 95fa90c9e5a7 ("f2fs: support recording errors into superblock")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This generates warnings with gcc-13:
+  error: format '%d' expects argument of type 'int', but argument 6 has type 'long unsigned int'
+
+Cast those particular enum members to int when printing them.
+
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=36113
+Cc: Martin Liska <mliska@suse.cz>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://lore.kernel.org/all/20221213225208.3343692-2-Jason@zx2c4.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Chris Clayton <chris2553@googlemail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c | 7 ++++++-
- fs/f2fs/f2fs.h     | 1 +
- fs/f2fs/super.c    | 2 +-
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireguard/timers.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index ff7db6c4ee134..25f8162d292da 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -755,7 +755,12 @@ void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
+--- a/drivers/net/wireguard/timers.c
++++ b/drivers/net/wireguard/timers.c
+@@ -46,7 +46,7 @@ static void wg_expired_retransmit_handsh
+ 	if (peer->timer_handshake_attempts > MAX_TIMER_HANDSHAKES) {
+ 		pr_debug("%s: Handshake for peer %llu (%pISpfsc) did not complete after %d attempts, giving up\n",
+ 			 peer->device->dev->name, peer->internal_id,
+-			 &peer->endpoint.addr, MAX_TIMER_HANDSHAKES + 2);
++			 &peer->endpoint.addr, (int)MAX_TIMER_HANDSHAKES + 2);
  
- 	if (dic->clen > PAGE_SIZE * dic->nr_cpages - COMPRESS_HEADER_SIZE) {
- 		ret = -EFSCORRUPTED;
--		f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
-+
-+		/* Avoid f2fs_commit_super in irq context */
-+		if (in_task)
-+			f2fs_save_errors(sbi, ERROR_FAIL_DECOMPRESSION);
-+		else
-+			f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
- 		goto out_release;
- 	}
+ 		del_timer(&peer->timer_send_keepalive);
+ 		/* We drop all packets without a keypair and don't try again,
+@@ -64,7 +64,7 @@ static void wg_expired_retransmit_handsh
+ 		++peer->timer_handshake_attempts;
+ 		pr_debug("%s: Handshake for peer %llu (%pISpfsc) did not complete after %d seconds, retrying (try %d)\n",
+ 			 peer->device->dev->name, peer->internal_id,
+-			 &peer->endpoint.addr, REKEY_TIMEOUT,
++			 &peer->endpoint.addr, (int)REKEY_TIMEOUT,
+ 			 peer->timer_handshake_attempts + 1);
  
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index b0ab2062038a0..620343c65ab67 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3554,6 +3554,7 @@ int f2fs_quota_sync(struct super_block *sb, int type);
- loff_t max_file_blocks(struct inode *inode);
- void f2fs_quota_off_umount(struct super_block *sb);
- void f2fs_handle_stop(struct f2fs_sb_info *sbi, unsigned char reason);
-+void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag);
- void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error);
- int f2fs_commit_super(struct f2fs_sb_info *sbi, bool recover);
- int f2fs_sync_fs(struct super_block *sb, int sync);
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index fbaaabbcd6de7..5c1c3a84501fe 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3885,7 +3885,7 @@ void f2fs_handle_stop(struct f2fs_sb_info *sbi, unsigned char reason)
- 	f2fs_up_write(&sbi->sb_lock);
- }
+ 		/* We clear the endpoint address src address, in case this is
+@@ -94,7 +94,7 @@ static void wg_expired_new_handshake(str
  
--static void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag)
-+void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag)
- {
- 	spin_lock(&sbi->error_lock);
- 	if (!test_bit(flag, (unsigned long *)sbi->errors)) {
--- 
-2.39.2
-
+ 	pr_debug("%s: Retrying handshake with peer %llu (%pISpfsc) because we stopped hearing back after %d seconds\n",
+ 		 peer->device->dev->name, peer->internal_id,
+-		 &peer->endpoint.addr, KEEPALIVE_TIMEOUT + REKEY_TIMEOUT);
++		 &peer->endpoint.addr, (int)(KEEPALIVE_TIMEOUT + REKEY_TIMEOUT));
+ 	/* We clear the endpoint address src address, in case this is the cause
+ 	 * of trouble.
+ 	 */
+@@ -126,7 +126,7 @@ static void wg_queued_expired_zero_key_m
+ 
+ 	pr_debug("%s: Zeroing out all keys for peer %llu (%pISpfsc), since we haven't received a new one in %d seconds\n",
+ 		 peer->device->dev->name, peer->internal_id,
+-		 &peer->endpoint.addr, REJECT_AFTER_TIME * 3);
++		 &peer->endpoint.addr, (int)REJECT_AFTER_TIME * 3);
+ 	wg_noise_handshake_clear(&peer->handshake);
+ 	wg_noise_keypairs_clear(&peer->keypairs);
+ 	wg_peer_put(peer);
 
 
