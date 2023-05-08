@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B16CA6FAD7B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106EC6FA8A5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236063AbjEHLfL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
+        id S235030AbjEHKn5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233993AbjEHLe7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:59 -0400
+        with ESMTP id S234898AbjEHKnV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 275113C1FC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA842A9C0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F449631F1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039E1C433EF;
-        Mon,  8 May 2023 11:33:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B93DD6285F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82EEC433EF;
+        Mon,  8 May 2023 10:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545592;
-        bh=kJyaHs26vV7b10N/2jLFniZqgqmXHWG7MJkSTdHBs3Q=;
+        s=korg; t=1683542529;
+        bh=eadT1um1fonIU1gkIfIOUAen4yVN/LhJ6PXOns8kotY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Akb28onVxs4M8JcfBj4P5n+a+SQcE5MetA6Tj0Pv2WvUidipgzyzpv6g6ymIs/jKF
-         prbQ9TVPV90JR/1VEJQWC1G/+ydINcakwGolT4s3mBAs+hpNEDonFfuRhwMaSUFwqn
-         Imt7OlxmDw9tSlzsTtlzPqP/hreKTr6q2PFadeP4=
+        b=Vwpw4o5zgAztl3e7HXda5IU4MPpzj8gGwik9ragQpuv32cvZJr0svB3/AY7hvWEWb
+         pOp3XX604ztfa44YJwHnASxgTmF1D2jVDkj3ilv0mRvAJo4YtuCA0MFu91h3dguqQ8
+         SdZdjFXz/Q/G6GeKWZVGtIYf85FDi53KyeG4q4p0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/371] arm64: dts: Add base DTS file for bcmbca device Asus GT-AX6000
+Subject: [PATCH 6.2 465/663] of: Fix modalias string generation
 Date:   Mon,  8 May 2023 11:44:51 +0200
-Message-Id: <20230508094815.648714839@linuxfoundation.org>
+Message-Id: <20230508094443.275277309@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,61 +57,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit f3f575c4bef95384e68de552c7b29938fd0d9201 ]
+[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
 
-It's a home router with 1 GiB of RAM, 6 Ethernet ports, 2 USB ports.
+The helper generating an OF based modalias (of_device_get_modalias())
+works fine, but due to the use of snprintf() internally it needs a
+buffer one byte longer than what should be needed just for the entire
+string (excluding the '\0'). Most users of this helper are sysfs hooks
+providing the modalias string to users. They all provide a PAGE_SIZE
+buffer which is way above the number of bytes required to fit the
+modalias string and hence do not suffer from this issue.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Acked-by: William Zhang <william.zhang@broadcom.com>
-Link: https://lore.kernel.org/r/20220713200351.28526-2-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Stable-dep-of: 5cca02449490 ("arm64: dts: broadcom: bcmbca: bcm4908: fix NAND interrupt name")
+There is another user though, of_device_request_module(), which is only
+called by drivers/usb/common/ulpi.c. This request module function is
+faulty, but maybe because in most cases there is an alternative, ULPI
+driver users have not noticed it.
+
+In this function, of_device_get_modalias() is called twice. The first
+time without buffer just to get the number of bytes required by the
+modalias string (excluding the null byte), and a second time, after
+buffer allocation, to fill the buffer. The allocation asks for an
+additional byte, in order to store the trailing '\0'. However, the
+buffer *length* provided to of_device_get_modalias() excludes this extra
+byte. The internal use of snprintf() with a length that is exactly the
+number of bytes to be written has the effect of using the last available
+byte to store a '\0', which then smashes the last character of the
+modalias string.
+
+Provide the actual size of the buffer to of_device_get_modalias() to fix
+this issue.
+
+Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
+will anyway end the string with a null byte, but there is a possibility
+that this function might be called on a struct device_node without
+compatible, in this case snprintf() would not be executed. So we keep it
+just to avoid possible unbounded strings.
+
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/broadcom/bcmbca/Makefile  |  4 +++-
- .../bcmbca/bcm4912-asus-gt-ax6000.dts         | 19 +++++++++++++++++++
- 2 files changed, 22 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts
+ drivers/of/device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-index 4161d557b1329..fd60418478696 100644
---- a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-+++ b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
-@@ -1,4 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
--dtb-$(CONFIG_ARCH_BCMBCA) += bcm94912.dtb \
-+dtb-$(CONFIG_ARCH_BCMBCA) += \
-+				bcm4912-asus-gt-ax6000.dtb \
-+				bcm94912.dtb \
- 				bcm963158.dtb \
- 				bcm96858.dtb
-diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts
-new file mode 100644
-index 0000000000000..ed554666e95ea
---- /dev/null
-+++ b/arch/arm64/boot/dts/broadcom/bcmbca/bcm4912-asus-gt-ax6000.dts
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index c674a13c30558..877f50379fab5 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -297,12 +297,15 @@ int of_device_request_module(struct device *dev)
+ 	if (size < 0)
+ 		return size;
+ 
+-	str = kmalloc(size + 1, GFP_KERNEL);
++	/* Reserve an additional byte for the trailing '\0' */
++	size++;
 +
-+/dts-v1/;
-+
-+#include "bcm4912.dtsi"
-+
-+/ {
-+	compatible = "asus,gt-ax6000", "brcm,bcm4912", "brcm,bcmbca";
-+	model = "Asus GT-AX6000";
-+
-+	memory@0 {
-+		device_type = "memory";
-+		reg = <0x00 0x00 0x00 0x40000000>;
-+	};
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
++	str = kmalloc(size, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
+ 
+ 	of_device_get_modalias(dev, str, size);
+-	str[size] = '\0';
++	str[size - 1] = '\0';
+ 	ret = request_module(str);
+ 	kfree(str);
+ 
 -- 
 2.39.2
 
