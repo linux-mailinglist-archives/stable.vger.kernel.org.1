@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C5F6FAE67
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C90B6FA9A2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236302AbjEHLo2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:44:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
+        id S235255AbjEHKxu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236121AbjEHLoF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4687A10A37
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:29 -0700 (PDT)
+        with ESMTP id S235244AbjEHKxa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D987426EB1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04FFE63591
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F083EC433D2;
-        Mon,  8 May 2023 11:43:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8F1C6294F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F6FC433EF;
+        Mon,  8 May 2023 10:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546208;
-        bh=z8XfetHkFZzR3qr+OmK+bDbCz2burq1nYoHSYsrEfiw=;
+        s=korg; t=1683543170;
+        bh=5fQ5y72D87pbjtsucMhK2m9RxRbYB2ED2k1h/yzN+fo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v6YdnMyNPQ9DmCa6C7eyn7uU3zu4pneuG5YRpXKnln3U/Up9Dmvn6MQ5QO2x3YRY2
-         eZ5g66P/ymv97UurMA6j9X7qzpdTkiDHomgDJZSdjBHaAzA4fccQxVka2iKLXyiUOA
-         6ffiOAdWfP5Co3Xfsq+JzLrpWb7IRkWVrwv80nZE=
+        b=BRNOoiRZ4FgAyyEH+gGkFDaCWENxxsFZg+YeQNVXoGRQu8N495LQnLt2p0TVm+3Wc
+         u8p0/30UQfqWuaKBR7TsbtmTRmLea2xi90CHria4XAW55GNotWk/VP7iNRoPzl7Dh8
+         L1zpQ+5jRNrOO4KuAI6dzYOWchf/NkrIB54e0eMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 253/371] spi: qup: Dont skip cleanup in removes error path
+        patches@lists.linux.dev, Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH 6.2 628/663] mtd: spi-nor: core: Update flashs current address mode when changing address mode
 Date:   Mon,  8 May 2023 11:47:34 +0200
-Message-Id: <20230508094822.119958088@linuxfoundation.org>
+Message-Id: <20230508094450.237775518@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,62 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 61f49171a43ab1f80c73c5c88c508770c461e0f2 ]
+commit 37513c56139b79dd43c1774513c28f8ab2b05224 upstream.
 
-Returning early in a platform driver's remove callback is wrong. In this
-case the dma resources are not released in the error path. this is never
-retried later and so this is a permanent leak. To fix this, only skip
-hardware disabling if waking the device fails.
+The bug was obswerved while reading code. There are not many users of
+addr_mode_nbytes. Anyway, we should update the flash's current address
+mode when changing the address mode, fix it. We don't care for now about
+the set_4byte_addr_mode(nor, false) from spi_nor_restore(), as it is
+used at driver remove and shutdown.
 
-Fixes: 64ff247a978f ("spi: Add Qualcomm QUP SPI controller support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230330210341.2459548-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7931a215063 ("mtd: spi-nor: core: Track flash's internal address mode")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230331074606.3559258-9-tudor.ambarus@linaro.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qup.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/mtd/spi-nor/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index f3877eeb3da65..8bf58510cca6d 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -1276,18 +1276,22 @@ static int spi_qup_remove(struct platform_device *pdev)
- 	struct spi_qup *controller = spi_master_get_devdata(master);
- 	int ret;
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2733,6 +2733,7 @@ static int spi_nor_quad_enable(struct sp
  
--	ret = pm_runtime_resume_and_get(&pdev->dev);
--	if (ret < 0)
--		return ret;
-+	ret = pm_runtime_get_sync(&pdev->dev);
+ static int spi_nor_init(struct spi_nor *nor)
+ {
++	struct spi_nor_flash_parameter *params = nor->params;
+ 	int err;
  
--	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
--	if (ret)
--		return ret;
-+	if (ret >= 0) {
-+		ret = spi_qup_set_state(controller, QUP_STATE_RESET);
-+		if (ret)
-+			dev_warn(&pdev->dev, "failed to reset controller (%pe)\n",
-+				 ERR_PTR(ret));
+ 	err = spi_nor_octal_dtr_enable(nor, true);
+@@ -2774,9 +2775,10 @@ static int spi_nor_init(struct spi_nor *
+ 		 */
+ 		WARN_ONCE(nor->flags & SNOR_F_BROKEN_RESET,
+ 			  "enabling reset hack; may not recover from unexpected reboots\n");
+-		err = nor->params->set_4byte_addr_mode(nor, true);
++		err = params->set_4byte_addr_mode(nor, true);
+ 		if (err && err != -ENOTSUPP)
+ 			return err;
++		params->addr_mode_nbytes = 4;
+ 	}
  
--	spi_qup_release_dma(master);
-+		clk_disable_unprepare(controller->cclk);
-+		clk_disable_unprepare(controller->iclk);
-+	} else {
-+		dev_warn(&pdev->dev, "failed to resume, skip hw disable (%pe)\n",
-+			 ERR_PTR(ret));
-+	}
- 
--	clk_disable_unprepare(controller->cclk);
--	clk_disable_unprepare(controller->iclk);
-+	spi_qup_release_dma(master);
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--- 
-2.39.2
-
+ 	return 0;
 
 
