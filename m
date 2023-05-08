@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACA0B6FAD63
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 021806FAD6C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235769AbjEHLe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50202 "EHLO
+        id S235913AbjEHLfA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235997AbjEHLeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4511F3DCB6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:33:30 -0700 (PDT)
+        with ESMTP id S235966AbjEHLen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7265A3DC9E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E848262F04
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9A6C433EF;
-        Mon,  8 May 2023 11:32:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD14B631C3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C70C433D2;
+        Mon,  8 May 2023 11:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545562;
-        bh=SGPhHBryQm1bcXIDesbpsA5tl+pAabv8YSVP8MgXpdc=;
+        s=korg; t=1683545568;
+        bh=FyRSMsruWJmhoNEsElt/l5MHC/crHin+tdK/RoLzLGg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aMRcD3ktRVIBuMeohyVjf4fxD9rDkRafqx2IQY16GZ8H4ysxwxStgbTo5SNbT9jC9
-         BYTDuO6OZSCRyOtV6usYm15HDY55l8hy0H9dzDP0dGIOJzwjtC+OHC4l2rqrvG1D+F
-         Fg+1hslgQP1qeu33KzPI24b0dgGlZzknbUTQmLNk=
+        b=HG5IqPtlbgE8YO0zDjwZOIk370KgBcn+6Rch3b0ZHg1EQFMHLR4TpX5rEJypYQ1vo
+         cDdepQX/7ec1FXTuELckyOrBHgeXbag847aPf2rGM8hkwguZs0umYL9b5olurlR4qg
+         PttioS+R61q70CEeUB8GCPoBNpvZSWqB6vBmlGeA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/371] arm64: dts: renesas: r8a774c0: Remove bogus voltages from OPP table
-Date:   Mon,  8 May 2023 11:44:42 +0200
-Message-Id: <20230508094815.318633073@linuxfoundation.org>
+Subject: [PATCH 5.15 082/371] drm/msm/disp/dpu: check for crtc enable rather than crtc active to release shared resources
+Date:   Mon,  8 May 2023 11:44:43 +0200
+Message-Id: <20230508094815.360390827@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
 References: <20230508094811.912279944@linuxfoundation.org>
@@ -44,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,48 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Vinod Polimera <quic_vpolimer@quicinc.com>
 
-[ Upstream commit 554edc3e9239bb81e61be9f0f5dbbeb528a69e72 ]
+[ Upstream commit b6975693846b562c4d3e0e60cc884affc5bdac00 ]
 
-According to the RZ/G Series, 2nd Generation Hardware User’s Manual
-Rev. 1.11, the System CPU cores on RZ/G2E do not have their own power
-supply, but use the common internal power supply (typical 1.03V).
+According to KMS documentation, The driver must not release any shared
+resources if active is set to false but enable still true.
 
-Hence remove the "opp-microvolt" properties from the Operating
-Performance Points table.  They are optional, and unused, when none of
-the CPU nodes is tied to a regulator using the "cpu-supply" property.
-
-Fixes: 231d8908a66fa98f ("arm64: dts: renesas: r8a774c0: Add OPPs table for cpu devices")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/8348e18a011ded94e35919cd8e17c0be1f9acf2f.1676560856.git.geert+renesas@glider.be
+Fixes: ccc862b957c6 ("drm/msm/dpu: Fix reservation failures in modeset")
+Signed-off-by: Vinod Polimera <quic_vpolimer@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/524726/
+Link: https://lore.kernel.org/r/1677774797-31063-5-git-send-email-quic_vpolimer@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a774c0.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a774c0.dtsi b/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
-index 9eb08be3b98e2..50189209b6605 100644
---- a/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a774c0.dtsi
-@@ -49,17 +49,14 @@
- 		opp-shared;
- 		opp-800000000 {
- 			opp-hz = /bits/ 64 <800000000>;
--			opp-microvolt = <820000>;
- 			clock-latency-ns = <300000>;
- 		};
- 		opp-1000000000 {
- 			opp-hz = /bits/ 64 <1000000000>;
--			opp-microvolt = <820000>;
- 			clock-latency-ns = <300000>;
- 		};
- 		opp-1200000000 {
- 			opp-hz = /bits/ 64 <1200000000>;
--			opp-microvolt = <820000>;
- 			clock-latency-ns = <300000>;
- 			opp-suspend;
- 		};
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 5f236395677e6..03bddd904d1a1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -637,7 +637,7 @@ static int dpu_encoder_virt_atomic_check(
+ 		if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+ 			dpu_rm_release(global_state, drm_enc);
+ 
+-			if (!crtc_state->active_changed || crtc_state->active)
++			if (!crtc_state->active_changed || crtc_state->enable)
+ 				ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
+ 						drm_enc, crtc_state, topology);
+ 		}
 -- 
 2.39.2
 
