@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD376FA91E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E8B6FADDB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235183AbjEHKsR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:48:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
+        id S235675AbjEHLjK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235092AbjEHKr7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:47:59 -0400
+        with ESMTP id S236133AbjEHLiy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9182F2D787
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC9F3F57B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECBA3628F1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01DDC433EF;
-        Mon,  8 May 2023 10:47:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D66863364
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F5C433EF;
+        Mon,  8 May 2023 11:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542833;
-        bh=/lAsQmWa93y1/iPWwyBwlZ1Uz4b/QRa/wBsOKLMC9Ro=;
+        s=korg; t=1683545872;
+        bh=mTtuV/Ql6GroExZ/32vNesA1ayUEF9XzBKMzH+XnVdk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uoGTw63j72vluAc5EW1SY5u37xE8mXt9v2vD6l9u/uQ3t5ntpPBLxAFTUqLXPuhtc
-         Nmy90cOX0K0150ahQP4jvVY0fFksrlyxnKM7ENkornFLNBcLWQ2R+wb2AP2kYkMlzJ
-         anhChdpxNrEn8LvF4KHf8GOnpV9colPpAgZLIyHA=
+        b=DTKKaTQTq0w3wg4p7B5a59ZM1X/w7f+GZxqUdWybOGX6d8INVMQxm/U/ZHILZMYgN
+         h2RcsCtuwBtno3e0v6szD3NUmmOo7EWAiAc5FpHFiAfa9S7M8X2YZB6B//sHTzlpAe
+         OarOlCA+dGtplnmukZTWMHn/xq/21ksDkJ+Edhg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
-        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Kal Conley <kal.conley@dectris.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 556/663] clk: qcom: lpasscc-sc7280: Skip qdsp6ss clock registration
+Subject: [PATCH 5.15 181/371] selftests: xsk: Disable IPv6 on VETH1
 Date:   Mon,  8 May 2023 11:46:22 +0200
-Message-Id: <20230508094447.163628477@linuxfoundation.org>
+Message-Id: <20230508094819.329939567@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,56 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
+From: Kal Conley <kal.conley@dectris.com>
 
-[ Upstream commit 4fc1c2d9a2b7a394f3b873aae5e03bffd8b5cd31 ]
+[ Upstream commit f2b50f17268390567bc0e95642170d88f336c8f4 ]
 
-The qdsp6ss memory region is being shared by ADSP remoteproc device and
-lpasscc clock device, hence causing memory conflict.
-To avoid this, when qdsp6ss clocks are being enabled in remoteproc driver,
-skip qdsp6ss clock registration if "qcom,adsp-pil-mode" is enabled and
-also assign max_register value.
+This change fixes flakiness in the BIDIRECTIONAL test:
 
-Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
-Signed-off-by: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
-Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230407092255.119690-3-quic_mohs@quicinc.com
+    # [is_pkt_valid] expected length [60], got length [90]
+    not ok 1 FAIL: SKB BUSY-POLL BIDIRECTIONAL
+
+When IPv6 is enabled, the interface will periodically send MLDv1 and
+MLDv2 packets. These packets can cause the BIDIRECTIONAL test to fail
+since it uses VETH0 for RX.
+
+For other tests, this was not a problem since they only receive on VETH1
+and IPv6 was already disabled on VETH0.
+
+Fixes: a89052572ebb ("selftests/bpf: Xsk selftests framework")
+Signed-off-by: Kal Conley <kal.conley@dectris.com>
+Link: https://lore.kernel.org/r/20230405082905.6303-1-kal.conley@dectris.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/lpasscc-sc7280.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/test_xsk.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/lpasscc-sc7280.c b/drivers/clk/qcom/lpasscc-sc7280.c
-index 5c1e17bd0d763..8486d7135ab10 100644
---- a/drivers/clk/qcom/lpasscc-sc7280.c
-+++ b/drivers/clk/qcom/lpasscc-sc7280.c
-@@ -118,14 +118,18 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
- 		goto destroy_pm_clk;
- 	}
- 
--	lpass_regmap_config.name = "qdsp6ss";
--	desc = &lpass_qdsp6ss_sc7280_desc;
--
--	ret = qcom_cc_probe_by_index(pdev, 0, desc);
--	if (ret)
--		goto destroy_pm_clk;
-+	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
-+		lpass_regmap_config.name = "qdsp6ss";
-+		lpass_regmap_config.max_register = 0x3f;
-+		desc = &lpass_qdsp6ss_sc7280_desc;
-+
-+		ret = qcom_cc_probe_by_index(pdev, 0, desc);
-+		if (ret)
-+			goto destroy_pm_clk;
-+	}
- 
- 	lpass_regmap_config.name = "top_cc";
-+	lpass_regmap_config.max_register = 0x4;
- 	desc = &lpass_cc_top_sc7280_desc;
- 
- 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+diff --git a/tools/testing/selftests/bpf/test_xsk.sh b/tools/testing/selftests/bpf/test_xsk.sh
+index cd7bf32e6a173..661995af75602 100755
+--- a/tools/testing/selftests/bpf/test_xsk.sh
++++ b/tools/testing/selftests/bpf/test_xsk.sh
+@@ -106,6 +106,7 @@ setup_vethPairs() {
+ 	ip link add ${VETH0} numtxqueues 4 numrxqueues 4 type veth peer name ${VETH1} numtxqueues 4 numrxqueues 4
+ 	if [ -f /proc/net/if_inet6 ]; then
+ 		echo 1 > /proc/sys/net/ipv6/conf/${VETH0}/disable_ipv6
++		echo 1 > /proc/sys/net/ipv6/conf/${VETH1}/disable_ipv6
+ 	fi
+ 	if [[ $verbose -eq 1 ]]; then
+ 	        echo "setting up ${VETH1}: namespace: ${NS1}"
 -- 
 2.39.2
 
