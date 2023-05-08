@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7392B6FAC5B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60F236FA937
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235628AbjEHLXc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
+        id S235200AbjEHKt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235612AbjEHLXa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:30 -0400
+        with ESMTP id S235128AbjEHKtJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE6539B93
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30AA12A87C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 855B762CCB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0FAC433EF;
-        Mon,  8 May 2023 11:23:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCFBF628DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB5CC433D2;
+        Mon,  8 May 2023 10:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545008;
-        bh=t8XsCilx76A6pVwDbek8LMrrBAnJbKUvRm0cknWZSyk=;
+        s=korg; t=1683542908;
+        bh=fR447qCUHqd1XIcwE65uEDSnE7I+CdeCFZ5MJpYYjOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dxMKE6Ll/NN05V06opZxxCCmDcYxuQsPVFIwJS3p4h3Gby+WCZPWJ7Vl6xF/PMopd
-         gjEwPvZ2iCEQ4jI/eU8GFxivBehSGXP3SC5N6faWQCOd/idPpqqSa8ZywPc+s+QDxY
-         ID0ttowax7/WYrvBs9LzUHMpv51wwTVF87drrjgY=
+        b=cPq9+a/KhPlR7ze6Ag4Y7yh8FhJckn68hfvMG88c3mrCFIiZfQHohf/OgoQKyB5CS
+         ANZe/fXCw0ahvBuyjMYIHG5PSSg5oCe85YUv20zrpAxxAmz8DXXYoxdkdJorIQap6R
+         GK2M62ALvcbDbcBNMKvkUfxF0jYKTXzoh3cizsAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 577/694] clk: mediatek: mt2712: Add error handling to clk_mt2712_apmixed_probe()
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 586/663] leds: tca6507: Fix error handling of using fwnode_property_read_string
 Date:   Mon,  8 May 2023 11:46:52 +0200
-Message-Id: <20230508094453.624559633@linuxfoundation.org>
+Message-Id: <20230508094448.399723195@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,56 +56,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit 20cace1b9d7e33f68f0ee17196bf0df618dbacbe ]
+[ Upstream commit c1087c29e96a48e9080377e168d35dcb52fb068b ]
 
-This function was completely missing error handling: add it.
+Commit 96f524105b9c ("leds: tca6507: use fwnode API instead of OF")
 
-Fixes: e2f744a82d72 ("clk: mediatek: Add MT2712 clock support")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20230306140543.1813621-8-angelogioacchino.delregno@collabora.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+changed to fwnode API but did not take into account that a missing property
+"linux,default-trigger" now seems to return an error and as a side effect
+sets value to -1. This seems to be different from of_get_property() which
+always returned NULL in any case of error.
+
+Neglecting this side-effect leads to
+
+[   11.201965] Unable to handle kernel paging request at virtual address ffffffff when read
+
+in the strcmp() of led_trigger_set_default() if there is no led-trigger
+defined in the DTS.
+
+I don't know if this was recently introduced somewhere in the fwnode lib
+or if the effect was missed in initial testing. Anyways it seems to be a
+bug to ignore the error return value of an optional value here in the
+driver.
+
+Fixes: 96f524105b9c ("leds: tca6507: use fwnode API instead of OF")
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/cbae7617db83113de726fcc423a805ebaa1bfca6.1680433978.git.hns@goldelico.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt2712.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/leds/leds-tca6507.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt2712.c b/drivers/clk/mediatek/clk-mt2712.c
-index 94f8fc2a4f7bd..aa39d006358a3 100644
---- a/drivers/clk/mediatek/clk-mt2712.c
-+++ b/drivers/clk/mediatek/clk-mt2712.c
-@@ -1283,15 +1283,25 @@ static int clk_mt2712_apmixed_probe(struct platform_device *pdev)
- 	struct device_node *node = pdev->dev.of_node;
+diff --git a/drivers/leds/leds-tca6507.c b/drivers/leds/leds-tca6507.c
+index 161bef65c6b7b..62a968613cc37 100644
+--- a/drivers/leds/leds-tca6507.c
++++ b/drivers/leds/leds-tca6507.c
+@@ -691,8 +691,9 @@ tca6507_led_dt_init(struct device *dev)
+ 		if (fwnode_property_read_string(child, "label", &led.name))
+ 			led.name = fwnode_get_name(child);
  
- 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
-+	if (!clk_data)
-+		return -ENOMEM;
+-		fwnode_property_read_string(child, "linux,default-trigger",
+-					    &led.default_trigger);
++		if (fwnode_property_read_string(child, "linux,default-trigger",
++						&led.default_trigger))
++			led.default_trigger = NULL;
  
--	mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
-+	r = mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
-+	if (r)
-+		goto free_clk_data;
- 
- 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
-+	if (r) {
-+		dev_err(&pdev->dev, "Cannot register clock provider: %d\n", r);
-+		goto unregister_plls;
-+	}
- 
--	if (r != 0)
--		pr_err("%s(): could not register clock provider: %d\n",
--			__func__, r);
-+	return 0;
- 
-+unregister_plls:
-+	mtk_clk_unregister_plls(plls, ARRAY_SIZE(plls), clk_data);
-+free_clk_data:
-+	mtk_free_clk_data(clk_data);
- 	return r;
- }
- 
+ 		led.flags = 0;
+ 		if (fwnode_property_match_string(child, "compatible",
 -- 
 2.39.2
 
