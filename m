@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E74B6FABDE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE666FAD84
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233913AbjEHLSV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60096 "EHLO
+        id S233995AbjEHLfR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235494AbjEHLSV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3E137844
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:20 -0700 (PDT)
+        with ESMTP id S236006AbjEHLfF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B0493E33F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9735661D7C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F875C4339B;
-        Mon,  8 May 2023 11:18:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BDAA63296
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:34:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1CEC433EF;
+        Mon,  8 May 2023 11:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544699;
-        bh=9dP2pkoC/WQM0vP0ptL6LnIEekN5wSGvTMthfXdWkt4=;
+        s=korg; t=1683545659;
+        bh=o2sP2FvTlBNfPBIjt96CcSxigoA8+0TGU+aq5Py8swY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cYRSPJ2qxam7d6o9vNwz4ZNYAOyu/TNvt1doNc/bEsAUkYnyQBr5wMbwWXRkVg1n9
-         usay/6aroJZUPKQUjD9yQG7upmOt+kAZw92IyMTnSrkugjMl1yojIfhH64bejAMjRu
-         Xm83nd2PcN2xHVjo3ywQcMqiPhbETaT6v7DmkVfI=
+        b=SAfR/mgzo1+sGmNK71o1EwlsaVsR3U6odipDGJrouM0iWqIkHnukwSzdPwe+BN2IL
+         S0Ohp0McwS6NAwuM0I6XG3OR4BoGOO5N+CtnsyqAfFin/qWCa/Ub7MxNYxQoOCV/R6
+         AqfX2JpXanls3W03uqAcLt6LNME77uRDLPnZqiq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        netdev@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 478/694] rxrpc: Fix error when reading rxrpc tokens
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Rob Clark <robdclark@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 112/371] drm/msm/adreno: drop bogus pm_runtime_set_active()
 Date:   Mon,  8 May 2023 11:45:13 +0200
-Message-Id: <20230508094449.355890639@linuxfoundation.org>
+Message-Id: <20230508094816.467519454@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,44 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit fadfc57cc8047080a123b16f288b7138524fb1e2 ]
+[ Upstream commit db7662d076c973072d788bd0e8130e04430307a1 ]
 
-When converting from ASSERTCMP to WARN_ON, the tested condition must
-be inverted, which was missed for this case.
+The runtime PM status can only be updated while runtime PM is disabled.
 
-This would cause an EIO error when trying to read an rxrpc token, for
-instance when trying to display tokens with AuriStor's "tokens" command.
+Drop the bogus pm_runtime_set_active() call that was made after enabling
+runtime PM and which (incidentally but correctly) left the runtime PM
+status set to 'suspended'.
 
-Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2c087a336676 ("drm/msm/adreno: Load the firmware before bringing up the hardware")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/524972/
+Link: https://lore.kernel.org/r/20230303164807.13124-4-johan+linaro@kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/key.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/adreno_device.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
-index 8d53aded09c42..33e8302a79e33 100644
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -680,7 +680,7 @@ static long rxrpc_read(const struct key *key,
- 			return -ENOPKG;
- 		}
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
+index 32207bc42b281..3eb9146653444 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -404,9 +404,6 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
+ 	 */
+ 	pm_runtime_enable(&pdev->dev);
  
--		if (WARN_ON((unsigned long)xdr - (unsigned long)oldxdr ==
-+		if (WARN_ON((unsigned long)xdr - (unsigned long)oldxdr !=
- 			    toksize))
- 			return -EIO;
- 	}
+-	/* Make sure pm runtime is active and reset any previous errors */
+-	pm_runtime_set_active(&pdev->dev);
+-
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0) {
+ 		pm_runtime_put_sync(&pdev->dev);
 -- 
 2.39.2
 
