@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 582B26FA8AB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 504EA6FA99D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235057AbjEHKoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
+        id S235149AbjEHKxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234946AbjEHKne (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:34 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64BF126EB2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:27 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f4271185daso5528165e9.2
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 03:42:27 -0700 (PDT)
+        with ESMTP id S235144AbjEHKxR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:17 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507EA2B418
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:33 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3f427118644so5494295e9.0
+        for <stable@vger.kernel.org>; Mon, 08 May 2023 03:52:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20221208.gappssmtp.com; s=20221208; t=1683542545; x=1686134545;
+        d=linbit-com.20221208.gappssmtp.com; s=20221208; t=1683543151; x=1686135151;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gFsL+2XHh4zjwVpIcd9Ep6UeCADXdby3B06oiahzjYE=;
-        b=lM6aIlfz73aEM/7lO1UPJVX9GOhhLN+k1SA/7ECSWqumhfH9yRUgGb2O46FZV9MLqU
-         S8OAtBqL8v+NCTL6e1/uQ7YsKD7Pz/f9CapFrL8uUk3GVQMKGDzZEu2yfrjA8bzSHgIG
-         btmvz+M2YS5Ogp5/pY4tzJ/vRRkipI+ZvR3PVeMhiGHuAjQlDPjbXCgO2QpyIOfdSZ+0
-         g6DAGDTA5tI62QRK0Z/J9icUThCv4w6hnWXBFdhb9P5vo8aJ8z4VGWn1izLZ1ZEX90zc
-         35Oma/sfWPOIjckz4JtMXp2wsJJTmJQCR1yLjm6zN52AQKZbDXaRb4EQWaCkt2Y9zY1C
-         OrIQ==
+        bh=GWD1lUHsoofgu/PdyMM1mBZ7PEtH3S1SV5gJRNJ3wSc=;
+        b=lbkHQzDbQyUk0OS2nAfQBTEKPvVewjNDiAbKFGlPphch+47tIrbt30FabVC2SJL1OL
+         UFOyi082BXR+XXjORnijRhyL6T7UQqFCVuMrkjqj+14LSID2JUh34DbHFW3qcd57E+5U
+         mmhZDp3lNDoN+GMkTFgWr9V9YrQg3V3FFK2ecM6k+0U9SLeub772J3kAka90eVdOsEco
+         4sOTrelSv0DNoqMqwfJMwHgnZ4UHh/TH9SaeaJwlbGxPrB8Acrqqh9PtmDM6lCxsJOfS
+         67RiUEIhNtv46QSgifeRbjqovJR8MOmKnO9Eu160MT7JN0yx9A//aVw08ATRlTcg6Bq3
+         8Q+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683542545; x=1686134545;
+        d=1e100.net; s=20221208; t=1683543151; x=1686135151;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gFsL+2XHh4zjwVpIcd9Ep6UeCADXdby3B06oiahzjYE=;
-        b=J3y6qdZtVIYH8lrPujyTTKnQm1Gbz72OCpyNzlgzQVNDrOI0c6oEMwsKKF5vookJBR
-         JRySLVcro8arGajIS34FbAT3l0Sn/7Xl1Je8DbTongq9QYxBduBxlEPSFFCDTaR9X1OC
-         uOWFvUQgREjq2hkLy5k2uVDah07M6ApHGmiQ8zanM9K9zvckpmG3c9uEYuJ8bgEDOqaC
-         vrOxQDgAzELr6sK4bLVem81i0dUJ9L9z1tyoj8uixYFJJcLHXiwMovEVPL+Ryh53tpOU
-         4qFgUt1jKlsDTROyLUEQ0G8YMhO25/DZacKG8n+UCVITfHwKYLY/7EtJ7v0iSMrmVm8/
-         MIVg==
-X-Gm-Message-State: AC+VfDyWUv4VDCvTsgIcRPMO7MyCd3JYESzI1Qv+n3dJPM2x+wKNOIND
-        t4yBSH2gdJnqXHGHwGoAVHPOX3BcIFcD90wZvgfMkg==
-X-Google-Smtp-Source: ACHHUZ5MHLCfgy2+yKxqxREglukkmSRM2Z1IBN/mXxrCg4aw0jNeKmTsnIDUJm5vZ3tsUwRiKUePhQ==
-X-Received: by 2002:a05:600c:2210:b0:3f4:2174:b288 with SMTP id z16-20020a05600c221000b003f42174b288mr3216221wml.4.1683542545554;
-        Mon, 08 May 2023 03:42:25 -0700 (PDT)
+        bh=GWD1lUHsoofgu/PdyMM1mBZ7PEtH3S1SV5gJRNJ3wSc=;
+        b=AKH4mFi1ZUEpkFfycC5R43N+cs9yGt5RF2MLfuKgd+uQKw2czfFujvTbaBlJLP2FWa
+         0DeGFnKM4JdWBHDg8Yzz2IJJTMWgMRc5oaYsT+9teCpVGfvIum+UrKQahQ8AtPe3U3rG
+         YMtszjADPlT7AtnZi2d3gxFmm/Qzv5IV6KSau/2ZUysMKsHI28/innOIKLwE8HaBGKWu
+         yi6771JWduzrMHJZ8gnnKTSVEFey+xdSlH+FjPlomMkSwbKtX/K+jaSRpDDX94cUB4A8
+         iTbe9ENQVtTMEk16zBmiDfcTw8dM6t1zeIw4eLQk2mjSNa+1dfwBRJ/GfHtB4ogdCB9a
+         f7tw==
+X-Gm-Message-State: AC+VfDyomqr7wOFWKy6YJm+WTcJSywpShQEplv5k+rUMY5qs87M5xaaV
+        gWEdEskRaL0/fXWS3mmkWOGqCW0euJLE2gb8m5bofA==
+X-Google-Smtp-Source: ACHHUZ4J4dSgvpiifkDE8XeQuYx7mxlTEvZM8f3uHK3A0gdxyO9IIIRydFgXXL3iZxF4Hf+V7if4pQ==
+X-Received: by 2002:a05:600c:3646:b0:3f4:2215:6d6 with SMTP id y6-20020a05600c364600b003f4221506d6mr3138312wmq.33.1683543151565;
+        Mon, 08 May 2023 03:52:31 -0700 (PDT)
 Received: from localhost (h082218028181.host.wavenet.at. [82.218.28.181])
-        by smtp.gmail.com with ESMTPSA id u16-20020a05600c00d000b003f428c4155csm528288wmm.11.2023.05.08.03.42.24
+        by smtp.gmail.com with ESMTPSA id z18-20020a1c4c12000000b003f188f608b9sm16423426wmf.8.2023.05.08.03.52.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 03:42:25 -0700 (PDT)
+        Mon, 08 May 2023 03:52:31 -0700 (PDT)
 From:   =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= 
         <christoph.boehmwalder@linbit.com>
 To:     stable@vger.kernel.org
@@ -57,12 +57,12 @@ Cc:     =?UTF-8?q?Christoph=20B=C3=B6hmwalder?=
         Christoph Hellwig <hch@infradead.org>,
         Thomas Voegtle <tv@lio96.de>, Christoph Hellwig <hch@lst.de>,
         Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4.y] drbd: correctly submit flush bio on barrier
-Date:   Mon,  8 May 2023 12:42:08 +0200
-Message-Id: <20230508104208.4111006-1-christoph.boehmwalder@linbit.com>
+Subject: [PATCH 5.10.y] drbd: correctly submit flush bio on barrier
+Date:   Mon,  8 May 2023 12:52:27 +0200
+Message-Id: <20230508105227.4189035-1-christoph.boehmwalder@linbit.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2023050710-headache-grinch-e08f@gregkh>
-References: <2023050710-headache-grinch-e08f@gregkh>
+In-Reply-To: <2023050709-pebbly-partridge-c4e9@gregkh>
+References: <2023050709-pebbly-partridge-c4e9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -102,10 +102,10 @@ Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
-index 2b3103c30857..d94f41a0abbe 100644
+index dc333dbe5232..405e09575f08 100644
 --- a/drivers/block/drbd/drbd_receiver.c
 +++ b/drivers/block/drbd/drbd_receiver.c
-@@ -1298,7 +1298,7 @@ static void submit_one_flush(struct drbd_device *device, struct issue_flush_cont
+@@ -1299,7 +1299,7 @@ static void submit_one_flush(struct drbd_device *device, struct issue_flush_cont
  	bio_set_dev(bio, device->ldev->backing_bdev);
  	bio->bi_private = octx;
  	bio->bi_end_io = one_flush_endio;
