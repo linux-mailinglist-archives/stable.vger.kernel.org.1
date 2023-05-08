@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F09026FADC4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 413216FA8F6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236132AbjEHLiD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:38:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
+        id S235107AbjEHKqn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236131AbjEHLhu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:50 -0400
+        with ESMTP id S234952AbjEHKqY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E403D57C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6239FA243
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E69456335D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0696FC433EF;
-        Mon,  8 May 2023 11:37:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2A96628BE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EE2C433EF;
+        Mon,  8 May 2023 10:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545827;
-        bh=74LGtcgmRdwELKQ2FSBwgSd+GcQh/Xot23mEF1eOB6U=;
+        s=korg; t=1683542769;
+        bh=G0tGC8k0SBDCDGJ6Iv4A5FGuN2gQNmpMbtGLNVHDqD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bt0FQ28VIKeQCEhh1ruA3kKts7T0LYvrEq2v6BjKKORy26Q53Z9ACQtS2NPpjlI58
-         zfC8XmXeWKmzXJ4Ea4W04AvgSV36jI8v6VCiT0bS2SI0XGm//4wEg427ojLxV11R+E
-         fpezFOkifTQxj0IHPSo5rh+JO6yb3tE7rlsJx0No=
+        b=rjLE7DympG84lLa6Y27G8tOLD3URHhG3NBLDAWw9iCLiGcI3glJJOFP/pifxJL0KG
+         QU+uL/Cwjq28DSUU9+F9FctivE2w8N9HjWV2E428Gr/hlnvCnKz14oHATtPX+s26AN
+         GNaQwLsQdw+sIv+Sr7OktvfayWRvU2MaKnCdwbIA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/371] net/packet: convert po->auxdata to an atomic flag
+Subject: [PATCH 6.2 542/663] clk: add missing of_node_put() in "assigned-clocks" property parsing
 Date:   Mon,  8 May 2023 11:46:08 +0200
-Message-Id: <20230508094818.744810945@linuxfoundation.org>
+Message-Id: <20230508094446.600105188@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,93 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Clément Léger <clement.leger@bootlin.com>
 
-[ Upstream commit fd53c297aa7b077ae98a3d3d2d3aa278a1686ba6 ]
+[ Upstream commit 27a6e1b09a782517fddac91259970ac466a3f7b6 ]
 
-po->auxdata can be read while another thread
-is changing its value, potentially raising KCSAN splat.
+When returning from of_parse_phandle_with_args(), the np member of the
+of_phandle_args structure should be put after usage. Add missing
+of_node_put() calls in both __set_clk_parents() and __set_clk_rates().
 
-Convert it to PACKET_SOCK_AUXDATA flag.
-
-Fixes: 8dc419447415 ("[PACKET]: Add optional checksum computation for recvmsg")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 86be408bfbd8 ("clk: Support for clock parents and rates assigned from device tree")
+Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+Link: https://lore.kernel.org/r/20230131083227.10990-1-clement.leger@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 8 +++-----
- net/packet/diag.c      | 2 +-
- net/packet/internal.h  | 4 ++--
- 3 files changed, 6 insertions(+), 8 deletions(-)
+ drivers/clk/clk-conf.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index cb944ae999471..0db871edd3a18 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3485,7 +3485,7 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		memcpy(msg->msg_name, &PACKET_SKB_CB(skb)->sa, copy_len);
- 	}
+diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
+index 2ef819606c417..1a4e6340f95ce 100644
+--- a/drivers/clk/clk-conf.c
++++ b/drivers/clk/clk-conf.c
+@@ -33,9 +33,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
+ 			else
+ 				return rc;
+ 		}
+-		if (clkspec.np == node && !clk_supplier)
++		if (clkspec.np == node && !clk_supplier) {
++			of_node_put(clkspec.np);
+ 			return 0;
++		}
+ 		pclk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(pclk)) {
+ 			if (PTR_ERR(pclk) != -EPROBE_DEFER)
+ 				pr_warn("clk: couldn't get parent clock %d for %pOF\n",
+@@ -48,10 +51,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
+ 		if (rc < 0)
+ 			goto err;
+ 		if (clkspec.np == node && !clk_supplier) {
++			of_node_put(clkspec.np);
+ 			rc = 0;
+ 			goto err;
+ 		}
+ 		clk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(clk)) {
+ 			if (PTR_ERR(clk) != -EPROBE_DEFER)
+ 				pr_warn("clk: couldn't get assigned clock %d for %pOF\n",
+@@ -93,10 +98,13 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
+ 				else
+ 					return rc;
+ 			}
+-			if (clkspec.np == node && !clk_supplier)
++			if (clkspec.np == node && !clk_supplier) {
++				of_node_put(clkspec.np);
+ 				return 0;
++			}
  
--	if (pkt_sk(sk)->auxdata) {
-+	if (packet_sock_flag(pkt_sk(sk), PACKET_SOCK_AUXDATA)) {
- 		struct tpacket_auxdata aux;
- 
- 		aux.tp_status = TP_STATUS_USER;
-@@ -3869,9 +3869,7 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
- 		if (copy_from_sockptr(&val, optval, sizeof(val)))
- 			return -EFAULT;
- 
--		lock_sock(sk);
--		po->auxdata = !!val;
--		release_sock(sk);
-+		packet_sock_flag_set(po, PACKET_SOCK_AUXDATA, val);
- 		return 0;
- 	}
- 	case PACKET_ORIGDEV:
-@@ -4029,7 +4027,7 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
- 
- 		break;
- 	case PACKET_AUXDATA:
--		val = po->auxdata;
-+		val = packet_sock_flag(po, PACKET_SOCK_AUXDATA);
- 		break;
- 	case PACKET_ORIGDEV:
- 		val = packet_sock_flag(po, PACKET_SOCK_ORIGDEV);
-diff --git a/net/packet/diag.c b/net/packet/diag.c
-index e1ac9bb375b31..d704c7bf51b20 100644
---- a/net/packet/diag.c
-+++ b/net/packet/diag.c
-@@ -23,7 +23,7 @@ static int pdiag_put_info(const struct packet_sock *po, struct sk_buff *nlskb)
- 	pinfo.pdi_flags = 0;
- 	if (po->running)
- 		pinfo.pdi_flags |= PDI_RUNNING;
--	if (po->auxdata)
-+	if (packet_sock_flag(po, PACKET_SOCK_AUXDATA))
- 		pinfo.pdi_flags |= PDI_AUXDATA;
- 	if (packet_sock_flag(po, PACKET_SOCK_ORIGDEV))
- 		pinfo.pdi_flags |= PDI_ORIGDEV;
-diff --git a/net/packet/internal.h b/net/packet/internal.h
-index 178cd1852238d..3bae8ea7a36f5 100644
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -118,8 +118,7 @@ struct packet_sock {
- 	struct mutex		pg_vec_lock;
- 	unsigned long		flags;
- 	unsigned int		running;	/* bind_lock must be held */
--	unsigned int		auxdata:1,	/* writer must hold sock lock */
--				has_vnet_hdr:1,
-+	unsigned int		has_vnet_hdr:1, /* writer must hold sock lock */
- 				tp_loss:1,
- 				tp_tx_has_off:1;
- 	int			pressure;
-@@ -146,6 +145,7 @@ static inline struct packet_sock *pkt_sk(struct sock *sk)
- 
- enum packet_sock_flags {
- 	PACKET_SOCK_ORIGDEV,
-+	PACKET_SOCK_AUXDATA,
- };
- 
- static inline void packet_sock_flag_set(struct packet_sock *po,
+ 			clk = of_clk_get_from_provider(&clkspec);
++			of_node_put(clkspec.np);
+ 			if (IS_ERR(clk)) {
+ 				if (PTR_ERR(clk) != -EPROBE_DEFER)
+ 					pr_warn("clk: couldn't get clock %d for %pOF\n",
 -- 
 2.39.2
 
