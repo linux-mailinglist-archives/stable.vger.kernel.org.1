@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7330E6FA653
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EEE6FAC5D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234348AbjEHKSe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46688 "EHLO
+        id S233970AbjEHLXj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234349AbjEHKSQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B65D04D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:15 -0700 (PDT)
+        with ESMTP id S235638AbjEHLXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E2239194
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BF2261031
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BD0C433EF;
-        Mon,  8 May 2023 10:18:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE1B362D0A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EA2C433EF;
+        Mon,  8 May 2023 11:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541094;
-        bh=SSfty5k5frekUJIoyYf4pgyqGQ8iyw42iJoT+FBngcE=;
+        s=korg; t=1683545014;
+        bh=pZVt+N6axvmewFN3GR7/rsEHSCtBpr4N01uaJxT+KeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v9HnDbC5hfhF1Eff2uKq0LQBmML2SSF/qJ2xmAT3M+0jUvpZfU37qzzNN8olj+Juy
-         La90D5tjRKpWGUHstjENVloeNEv71S/p9BDJQ2N/rS32izB3PNG3bVV2aJLgk8qLRB
-         S4hM6X365XT5FKOPh84BYFVMhzjJ+DnpuRy0QZ24=
+        b=cAmHvMcUd4l0jIxPiTmahV+CRHMPqJu5jbhxPW/LoZ0nx6BGaRFAoVZ/xv7JSJv1z
+         /UQVwE4y0zr3XAiKcu/JXPY6BSJKzIt5Owpoaw+l6wsg+j6BsjFx0U1f4aTiwqeN23
+         ++0KlqqGNlhii9c1vIrxjOGkpGEQLJ2hH4qxlkIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cindy Lu <lulu@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.1 589/611] vhost_vdpa: fix unmap process in no-batch mode
+        patches@lists.linux.dev, "Chengci.Xu" <chengci.xu@mediatek.com>,
+        Yong Wu <yong.wu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 596/694] iommu/mediatek: Set dma_mask for PGTABLE_PA_35_EN
 Date:   Mon,  8 May 2023 11:47:11 +0200
-Message-Id: <20230508094441.053633775@linuxfoundation.org>
+Message-Id: <20230508094454.501499511@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,61 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cindy Lu <lulu@redhat.com>
+From: Yong Wu <yong.wu@mediatek.com>
 
-commit c82729e06644f4e087f5ff0f91b8fb15e03b8890 upstream.
+[ Upstream commit f045e9df6537175d02565f21616ac1a9dd59b61c ]
 
-While using the vdpa device with vIOMMU enabled
-in the guest VM, when the vdpa device bind to vfio-pci and run testpmd
-then system will fail to unmap.
-The test process is
-Load guest VM --> attach to virtio driver--> bind to vfio-pci driver
-So the mapping process is
-1)batched mode map to normal MR
-2)batched mode unmapped the normal MR
-3)unmapped all the memory
-4)mapped to iommu MR
+When we enable PGTABLE_PA_35_EN, the PA for pgtable may be 35bits.
+Thus add dma_mask for it.
 
-This error happened in step 3). The iotlb was freed in step 2)
-and the function vhost_vdpa_process_iotlb_msg will return fail
-Which causes failure.
-
-To fix this, we will not remove the AS while the iotlb->nmaps is 0.
-This will free in the vhost_vdpa_clean
-
-Cc: stable@vger.kernel.org
-Fixes: aaca8373c4b1 ("vhost-vdpa: support ASID based IOTLB API")
-Signed-off-by: Cindy Lu <lulu@redhat.com>
-Message-Id: <20230420151734.860168-1-lulu@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 301c3ca12576 ("iommu/mediatek: Allow page table PA up to 35bit")
+Signed-off-by: Chengci.Xu <chengci.xu@mediatek.com>
+Signed-off-by: Yong Wu <yong.wu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230316101445.12443-1-yong.wu@mediatek.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vdpa.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/iommu/mtk_iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -819,11 +819,7 @@ static void vhost_vdpa_unmap(struct vhos
- 		if (!v->in_batch)
- 			ops->set_map(vdpa, asid, iotlb);
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index d5a4955910ff5..6a00ce208dc2b 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1258,6 +1258,14 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 			return PTR_ERR(data->bclk);
  	}
--	/* If we are in the middle of batch processing, delay the free
--	 * of AS until BATCH_END.
--	 */
--	if (!v->in_batch && !iotlb->nmaps)
--		vhost_vdpa_remove_as(v, asid);
-+
- }
  
- static int vhost_vdpa_va_map(struct vhost_vdpa *v,
-@@ -1080,8 +1076,6 @@ static int vhost_vdpa_process_iotlb_msg(
- 		if (v->in_batch && ops->set_map)
- 			ops->set_map(vdpa, asid, iotlb);
- 		v->in_batch = false;
--		if (!iotlb->nmaps)
--			vhost_vdpa_remove_as(v, asid);
- 		break;
- 	default:
- 		r = -EINVAL;
++	if (MTK_IOMMU_HAS_FLAG(data->plat_data, PGTABLE_PA_35_EN)) {
++		ret = dma_set_mask(dev, DMA_BIT_MASK(35));
++		if (ret) {
++			dev_err(dev, "Failed to set dma_mask 35.\n");
++			return ret;
++		}
++	}
++
+ 	pm_runtime_enable(dev);
+ 
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
+-- 
+2.39.2
+
 
 
