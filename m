@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3B36FA7F7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95BD96FAB11
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234825AbjEHKgd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33680 "EHLO
+        id S233680AbjEHLJH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:09:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234728AbjEHKgI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37A128906
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:48 -0700 (PDT)
+        with ESMTP id S233780AbjEHLIj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2682A1B7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46F416276C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6AFC433EF;
-        Mon,  8 May 2023 10:35:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF11B62B02
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BEBC433EF;
+        Mon,  8 May 2023 11:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542147;
-        bh=Qida51R40wqvaaDDyBXNknlDK63bTZyHq7PMLRbvU0w=;
+        s=korg; t=1683544113;
+        bh=VXDgDRPaXFJnjVtytghjh/juy7EXzf6f2L6oSo/T/Kc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jSwsR9YFMXHzBJ7lO4Suh4moD4/IGUzPRiKdxc2dUcLl1AakiMDmQ/egx/WuTRCC6
-         0/p25sqSJQ8M5ZyyQnYXORIHm1pysjIUvzqYVYPDj5Jb72CPTpBh0X1wgohhk/3UXi
-         CbChrU8zGRa3AJnY1hTj64ErhO5LpRTN+m2mvsW8=
+        b=FaZw6JTJPpRJ8R6FlnJAT2PA7d6YtfhcEeFMt2jbRslomiJYKyYwsbOz7HhqItvjX
+         pLNID7SgPZPH1n26LWt10aYb4UIhE///z6PjNNyx93cHPlICjmiyIiEqGr3t9oRYfx
+         t+cvRxT28Wa/0Orb+UJL8yV5Ul98I83GH0UG5eIQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 314/663] scsi: target: Fix multiple LUN_RESET handling
+Subject: [PATCH 6.3 305/694] media: venus: dec: Fix capture formats enumeration order
 Date:   Mon,  8 May 2023 11:42:20 +0200
-Message-Id: <20230508094438.379908903@linuxfoundation.org>
+Message-Id: <20230508094442.185479217@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,140 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Javier Martinez Canillas <javierm@redhat.com>
 
-[ Upstream commit 673db054d7a2b5a470d7a25baf65956d005ad729 ]
+[ Upstream commit a9d45ec74c8e68aaafe90191928eddbf79f4644f ]
 
-This fixes a bug where an initiator thinks a LUN_RESET has cleaned up
-running commands when it hasn't. The bug was added in commit 51ec502a3266
-("target: Delete tmr from list before processing").
+Commit 9593126dae3e ("media: venus: Add a handling of QC08C compressed
+format") and commit cef92b14e653 ("media: venus: Add a handling of QC10C
+compressed format") added support for the QC08C and QC10C compressed
+formats respectively.
 
-The problem occurs when:
+But these also caused a regression, because the new formats where added
+at the beginning of the vdec_formats[] array and the vdec_inst_init()
+function sets the default format output and capture using fixed indexes
+of that array:
 
- 1. We have N I/O cmds running in the target layer spread over 2 sessions.
+static void vdec_inst_init(struct venus_inst *inst)
+{
+...
+	inst->fmt_out = &vdec_formats[8];
+	inst->fmt_cap = &vdec_formats[0];
+...
+}
 
- 2. The initiator sends a LUN_RESET for each session.
+Since now V4L2_PIX_FMT_NV12 is not the first entry in the array anymore,
+the default capture format is not set to that as it was done before.
 
- 3. session1's LUN_RESET loops over all the running commands from both
-    sessions and moves them to its local drain_task_list.
+Both commits changed the first index to keep inst->fmt_out default format
+set to V4L2_PIX_FMT_H264, but did not update the latter to keep .fmt_out
+default format set to V4L2_PIX_FMT_NV12.
 
- 4. session2's LUN_RESET does not see the LUN_RESET from session1 because
-    the commit above has it remove itself. session2 also does not see any
-    commands since the other reset moved them off the state lists.
+Rather than updating the index to the current V4L2_PIX_FMT_NV12 position,
+let's reorder the entries so that this format is the first entry again.
 
- 5. sessions2's LUN_RESET will then complete with a successful response.
+This would also make VIDIOC_ENUM_FMT report the V4L2_PIX_FMT_NV12 format
+with an index 0 as it did before the QC08C and QC10C formats were added.
 
- 6. sessions2's inititor believes the running commands on its session are
-    now cleaned up due to the successful response and cleans up the running
-    commands from its side. It then restarts them.
-
- 7. The commands do eventually complete on the backend and the target
-    starts to return aborted task statuses for them. The initiator will
-    either throw a invalid ITT error or might accidentally lookup a new
-    task if the ITT has been reallocated already.
-
-Fix the bug by reverting the patch, and serialize the execution of
-LUN_RESETs and Preempt and Aborts.
-
-Also prevent us from waiting on LUN_RESETs in core_tmr_drain_tmr_list,
-because it turns out the original patch fixed a bug that was not
-mentioned. For LUN_RESET1 core_tmr_drain_tmr_list can see a second
-LUN_RESET and wait on it. Then the second reset will run
-core_tmr_drain_tmr_list and see the first reset and wait on it resulting in
-a deadlock.
-
-Fixes: 51ec502a3266 ("target: Delete tmr from list before processing")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-8-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9593126dae3e ("media: venus: Add a handling of QC08C compressed format")
+Fixes: cef92b14e653 ("media: venus: Add a handling of QC10C compressed format")
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c |  1 +
- drivers/target/target_core_tmr.c    | 26 +++++++++++++++++++++++---
- include/target/target_core_base.h   |  1 +
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/venus/vdec.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index f6e58410ec3f9..aeb03136773d5 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -782,6 +782,7 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
- 	spin_lock_init(&dev->t10_alua.lba_map_lock);
- 
- 	INIT_WORK(&dev->delayed_cmd_work, target_do_delayed_work);
-+	mutex_init(&dev->lun_reset_mutex);
- 
- 	dev->t10_wwn.t10_dev = dev;
- 	/*
-diff --git a/drivers/target/target_core_tmr.c b/drivers/target/target_core_tmr.c
-index 2b95b4550a637..4718db628222b 100644
---- a/drivers/target/target_core_tmr.c
-+++ b/drivers/target/target_core_tmr.c
-@@ -188,14 +188,23 @@ static void core_tmr_drain_tmr_list(
- 	 * LUN_RESET tmr..
- 	 */
- 	spin_lock_irqsave(&dev->se_tmr_lock, flags);
--	if (tmr)
--		list_del_init(&tmr->tmr_list);
- 	list_for_each_entry_safe(tmr_p, tmr_pp, &dev->dev_tmr_list, tmr_list) {
-+		if (tmr_p == tmr)
-+			continue;
-+
- 		cmd = tmr_p->task_cmd;
- 		if (!cmd) {
- 			pr_err("Unable to locate struct se_cmd for TMR\n");
- 			continue;
- 		}
-+
-+		/*
-+		 * We only execute one LUN_RESET at a time so we can't wait
-+		 * on them below.
-+		 */
-+		if (tmr_p->function == TMR_LUN_RESET)
-+			continue;
-+
- 		/*
- 		 * If this function was called with a valid pr_res_key
- 		 * parameter (eg: for PROUT PREEMPT_AND_ABORT service action
-@@ -379,14 +388,25 @@ int core_tmr_lun_reset(
- 				tmr_nacl->initiatorname);
- 		}
- 	}
-+
-+
-+	/*
-+	 * We only allow one reset or preempt and abort to execute at a time
-+	 * to prevent one call from claiming all the cmds causing a second
-+	 * call from returning while cmds it should have waited on are still
-+	 * running.
-+	 */
-+	mutex_lock(&dev->lun_reset_mutex);
-+
- 	pr_debug("LUN_RESET: %s starting for [%s], tas: %d\n",
- 		(preempt_and_abort_list) ? "Preempt" : "TMR",
- 		dev->transport->name, tas);
--
- 	core_tmr_drain_tmr_list(dev, tmr, preempt_and_abort_list);
- 	core_tmr_drain_state_list(dev, prout_cmd, tmr_sess, tas,
- 				preempt_and_abort_list);
- 
-+	mutex_unlock(&dev->lun_reset_mutex);
-+
- 	/*
- 	 * Clear any legacy SPC-2 reservation when called during
- 	 * LOGICAL UNIT RESET
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index bd299790e99c3..8cc42ad65c925 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -872,6 +872,7 @@ struct se_device {
- 	struct rcu_head		rcu_head;
- 	int			queue_cnt;
- 	struct se_device_queue	*queues;
-+	struct mutex		lun_reset_mutex;
- };
- 
- struct target_opcode_descriptor {
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index 9d26587716bf6..1a52c2ea2da5b 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -31,15 +31,15 @@
+  */
+ static const struct venus_format vdec_formats[] = {
+ 	{
+-		.pixfmt = V4L2_PIX_FMT_QC08C,
++		.pixfmt = V4L2_PIX_FMT_NV12,
+ 		.num_planes = 1,
+ 		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
+ 	}, {
+-		.pixfmt = V4L2_PIX_FMT_QC10C,
++		.pixfmt = V4L2_PIX_FMT_QC08C,
+ 		.num_planes = 1,
+ 		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
+-	},{
+-		.pixfmt = V4L2_PIX_FMT_NV12,
++	}, {
++		.pixfmt = V4L2_PIX_FMT_QC10C,
+ 		.num_planes = 1,
+ 		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
+ 	}, {
 -- 
 2.39.2
 
