@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493F36FA995
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0C56FACD2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235210AbjEHKxY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:53:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54544 "EHLO
+        id S235801AbjEHL2Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235207AbjEHKwu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA892FCFA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:17 -0700 (PDT)
+        with ESMTP id S235806AbjEHL1y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73BF3D571
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DFA662951
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9102CC433D2;
-        Mon,  8 May 2023 10:51:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F9ED62D14
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7230FC433EF;
+        Mon,  8 May 2023 11:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543119;
-        bh=v7ZkMBBHs4eAOBljkwszUkK0taYsw31Y3yi/Js/SBNE=;
+        s=korg; t=1683545264;
+        bh=q/cr+/ShrOiMn/Zei411k4VxegYT8rXbHLsFAw9QJtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X/e8XZu2AIf2hQwhWxLgCjr7vYSZqjCUU6y5Sqzf8W7QaXi/zZ23fR1c4hqZdkA33
-         2EqIFrJA2uZmqsAI+PDCzl/3P+iKIkWGjSQzwsE9RIUyOkiPx/+fsuh8uyQZ+aPren
-         sxySC48u0c7gHOyfe5U4MrQ3Hy4M6QMvXvvxXNMA=
+        b=abea1WCwh1bgIvDvFMy9L0GKEt60uUfJaNsNIkNPTU7AbyeuWfVKBrSooAYziX5ie
+         J8NE8p8mqaop/r1nU2Iij5HKOicyp2I0Qdpspf+zqd75HgmtkdISCyFlaHmE0cF7wj
+         X3wM2vpjWi1/bTMJD3Z3Vr4NE3XltWVxzVzb2Ehw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.2 655/663] cifs: fix potential race when tree connecting ipc
-Date:   Mon,  8 May 2023 11:48:01 +0200
-Message-Id: <20230508094451.396156217@linuxfoundation.org>
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 647/694] phy: tegra: xusb: Add missing tegra_xusb_port_unregister for usb2_port and ulpi_port
+Date:   Mon,  8 May 2023 11:48:02 +0200
+Message-Id: <20230508094456.841185149@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,109 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-commit ee20d7c6100752eaf2409d783f4f1449c29ea33d upstream.
+[ Upstream commit e024854048e733391b31fe5a398704b31b9af803 ]
 
-Protect access of TCP_Server_Info::hostname when building the ipc tree
-name as it might get freed in cifsd thread and thus causing an
-use-after-free bug in __tree_connect_dfs_target().  Also, while at it,
-update status of IPC tcon on success and then avoid any extra tree
-connects.
+The tegra_xusb_port_unregister should be called when usb2_port
+and ulpi_port map fails in tegra_xusb_add_usb2_port() or in
+tegra_xusb_add_ulpi_port(), fix it.
 
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20221129111634.1547747-1-cuigaosheng1@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/dfs.c |   57 ++++++++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 50 insertions(+), 7 deletions(-)
+ drivers/phy/tegra/xusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/cifs/dfs.c
-+++ b/fs/cifs/dfs.c
-@@ -398,6 +398,54 @@ static int target_share_matches_server(s
- 	return rc;
- }
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 78045bd6c2140..a90aea33e06ac 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -805,6 +805,7 @@ static int tegra_xusb_add_usb2_port(struct tegra_xusb_padctl *padctl,
+ 	usb2->base.lane = usb2->base.ops->map(&usb2->base);
+ 	if (IS_ERR(usb2->base.lane)) {
+ 		err = PTR_ERR(usb2->base.lane);
++		tegra_xusb_port_unregister(&usb2->base);
+ 		goto out;
+ 	}
  
-+static void __tree_connect_ipc(const unsigned int xid, char *tree,
-+			       struct cifs_sb_info *cifs_sb,
-+			       struct cifs_ses *ses)
-+{
-+	struct TCP_Server_Info *server = ses->server;
-+	struct cifs_tcon *tcon = ses->tcon_ipc;
-+	int rc;
-+
-+	spin_lock(&ses->ses_lock);
-+	spin_lock(&ses->chan_lock);
-+	if (cifs_chan_needs_reconnect(ses, server) ||
-+	    ses->ses_status != SES_GOOD) {
-+		spin_unlock(&ses->chan_lock);
-+		spin_unlock(&ses->ses_lock);
-+		cifs_server_dbg(FYI, "%s: skipping ipc reconnect due to disconnected ses\n",
-+				__func__);
-+		return;
-+	}
-+	spin_unlock(&ses->chan_lock);
-+	spin_unlock(&ses->ses_lock);
-+
-+	cifs_server_lock(server);
-+	scnprintf(tree, MAX_TREE_SIZE, "\\\\%s\\IPC$", server->hostname);
-+	cifs_server_unlock(server);
-+
-+	rc = server->ops->tree_connect(xid, ses, tree, tcon,
-+				       cifs_sb->local_nls);
-+	cifs_server_dbg(FYI, "%s: tree_reconnect %s: %d\n", __func__, tree, rc);
-+	spin_lock(&tcon->tc_lock);
-+	if (rc) {
-+		tcon->status = TID_NEED_TCON;
-+	} else {
-+		tcon->status = TID_GOOD;
-+		tcon->need_reconnect = false;
-+	}
-+	spin_unlock(&tcon->tc_lock);
-+}
-+
-+static void tree_connect_ipc(const unsigned int xid, char *tree,
-+			     struct cifs_sb_info *cifs_sb,
-+			     struct cifs_tcon *tcon)
-+{
-+	struct cifs_ses *ses = tcon->ses;
-+
-+	__tree_connect_ipc(xid, tree, cifs_sb, ses);
-+	__tree_connect_ipc(xid, tree, cifs_sb, CIFS_DFS_ROOT_SES(ses));
-+}
-+
- static int __tree_connect_dfs_target(const unsigned int xid, struct cifs_tcon *tcon,
- 				     struct cifs_sb_info *cifs_sb, char *tree, bool islink,
- 				     struct dfs_cache_tgt_list *tl)
-@@ -406,7 +454,6 @@ static int __tree_connect_dfs_target(con
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	const struct smb_version_operations *ops = server->ops;
- 	struct cifs_ses *root_ses = CIFS_DFS_ROOT_SES(tcon->ses);
--	struct cifs_tcon *ipc = root_ses->tcon_ipc;
- 	char *share = NULL, *prefix = NULL;
- 	struct dfs_cache_tgt_iterator *tit;
- 	bool target_match;
-@@ -442,18 +489,14 @@ static int __tree_connect_dfs_target(con
- 		}
+@@ -871,6 +872,7 @@ static int tegra_xusb_add_ulpi_port(struct tegra_xusb_padctl *padctl,
+ 	ulpi->base.lane = ulpi->base.ops->map(&ulpi->base);
+ 	if (IS_ERR(ulpi->base.lane)) {
+ 		err = PTR_ERR(ulpi->base.lane);
++		tegra_xusb_port_unregister(&ulpi->base);
+ 		goto out;
+ 	}
  
- 		dfs_cache_noreq_update_tgthint(server->current_fullpath + 1, tit);
--
--		if (ipc->need_reconnect) {
--			scnprintf(tree, MAX_TREE_SIZE, "\\\\%s\\IPC$", server->hostname);
--			rc = ops->tree_connect(xid, ipc->ses, tree, ipc, cifs_sb->local_nls);
--			cifs_dbg(FYI, "%s: reconnect ipc: %d\n", __func__, rc);
--		}
-+		tree_connect_ipc(xid, tree, cifs_sb, tcon);
- 
- 		scnprintf(tree, MAX_TREE_SIZE, "\\%s", share);
- 		if (!islink) {
- 			rc = ops->tree_connect(xid, tcon->ses, tree, tcon, cifs_sb->local_nls);
- 			break;
- 		}
-+
- 		/*
- 		 * If no dfs referrals were returned from link target, then just do a TREE_CONNECT
- 		 * to it.  Otherwise, cache the dfs referral and then mark current tcp ses for
+-- 
+2.39.2
+
 
 
