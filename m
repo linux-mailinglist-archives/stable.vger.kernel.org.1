@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06E96FA7A3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5B26FAADD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234725AbjEHKdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
+        id S233490AbjEHLHk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234727AbjEHKcy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:32:54 -0400
+        with ESMTP id S233530AbjEHLG5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF2F2551F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C19734895
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6347626F1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20F4C433D2;
-        Mon,  8 May 2023 10:31:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C57A762AAD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAEBC433EF;
+        Mon,  8 May 2023 11:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541917;
-        bh=18QJBnk7y/+3WJD9t6hXAxdmImRwjGoYco0gU2ChhCc=;
+        s=korg; t=1683543965;
+        bh=/lGom4PQm//Oe2cxKaS1u1inmDmDEVEx32AYWHfP2NY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wc2Eh53t5IYrc+4ThOQIM+vS+jZzOYyZEatZM0i82se1BJG6pTQBmwoQQaJY8lOKY
-         D5sE7sGoT9eGR7RcZAxy8C9s6PVV+nnAhN1p8KZj1IzKGNSb3QnsSSwux3agt8DyQV
-         Qp5AFaoZoKpSoQUUk3YVumtAje9HO233cUfAABBw=
+        b=OZnoOpCenBqxJI2ODijpy26cVubWYJhP+XF2FypfidAfQSkmIUu4lqemjZcgQWrgX
+         6aEKTxnmkEwzz46aeuXUZtM4xV+zev3KGoBlB9Hd2FWCFQXFB78+XxbyV/uXqBmGsv
+         e7GGK2IVlILOFlt8FFYx/vf5fqoG02N9XdZdMjfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Li <liwei391@huawei.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 268/663] arm64: kgdb: Set PSTATE.SS to 1 to re-enable single-step
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Huang Rui <ray.huang@amd.com>, dri-devel@lists.freedesktop.org,
+        =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 259/694] drm/ttm/pool: Fix ttm_pool_alloc error path
 Date:   Mon,  8 May 2023 11:41:34 +0200
-Message-Id: <20230508094436.941757870@linuxfoundation.org>
+Message-Id: <20230508094440.695664175@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,126 +57,190 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit af6c0bd59f4f3ad5daad2f7b777954b1954551d5 ]
+[ Upstream commit 379989e7cbdc7aa7496a00ee286ec146c7599cf0 ]
 
-Currently only the first attempt to single-step has any effect. After
-that all further stepping remains "stuck" at the same program counter
-value.
+When hitting an error, the error path forgot to unmap dma mappings and
+could call set_pages_wb() on already uncached pages.
 
-Refer to the ARM Architecture Reference Manual (ARM DDI 0487E.a) D2.12,
-PSTATE.SS=1 should be set at each step before transferring the PE to the
-'Active-not-pending' state. The problem here is PSTATE.SS=1 is not set
-since the second single-step.
+Fix this by introducing a common ttm_pool_free_range() function that
+does the right thing.
 
-After the first single-step, the PE transferes to the 'Inactive' state,
-with PSTATE.SS=0 and MDSCR.SS=1, thus PSTATE.SS won't be set to 1 due to
-kernel_active_single_step()=true. Then the PE transferes to the
-'Active-pending' state when ERET and returns to the debugger by step
-exception.
+v2:
+- Simplify that common function (Christian König)
+v3:
+- Rename that common function to ttm_pool_free_range() (Christian König)
 
-Before this patch:
-==================
-Entering kdb (current=0xffff3376039f0000, pid 1) on processor 0 due to Keyboard Entry
-[0]kdb>
-
-[0]kdb>
-[0]kdb> bp write_sysrq_trigger
-Instruction(i) BP #0 at 0xffffa45c13d09290 (write_sysrq_trigger)
-    is enabled   addr at ffffa45c13d09290, hardtype=0 installed=0
-
-[0]kdb> go
-$ echo h > /proc/sysrq-trigger
-
-Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to Breakpoint @ 0xffffad651a309290
-[1]kdb> ss
-
-Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to SS trap @ 0xffffad651a309294
-[1]kdb> ss
-
-Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to SS trap @ 0xffffad651a309294
-[1]kdb>
-
-After this patch:
-=================
-Entering kdb (current=0xffff6851c39f0000, pid 1) on processor 0 due to Keyboard Entry
-[0]kdb> bp write_sysrq_trigger
-Instruction(i) BP #0 at 0xffffc02d2dd09290 (write_sysrq_trigger)
-    is enabled   addr at ffffc02d2dd09290, hardtype=0 installed=0
-
-[0]kdb> go
-$ echo h > /proc/sysrq-trigger
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to Breakpoint @ 0xffffc02d2dd09290
-[1]kdb> ss
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd09294
-[1]kdb> ss
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd09298
-[1]kdb> ss
-
-Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd0929c
-[1]kdb>
-
-Fixes: 44679a4f142b ("arm64: KGDB: Add step debugging support")
-Co-developed-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Tested-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://lore.kernel.org/r/20230202073148.657746-3-sumit.garg@linaro.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: d099fc8f540a ("drm/ttm: new TT backend allocation pool v3")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230404200650.11043-2-thomas.hellstrom@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/debug-monitors.h | 1 +
- arch/arm64/kernel/debug-monitors.c      | 5 +++++
- arch/arm64/kernel/kgdb.c                | 2 ++
- 3 files changed, 8 insertions(+)
+ drivers/gpu/drm/ttm/ttm_pool.c | 81 +++++++++++++++++++++-------------
+ 1 file changed, 51 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include/asm/debug-monitors.h
-index 7b7e05c02691c..13d437bcbf58c 100644
---- a/arch/arm64/include/asm/debug-monitors.h
-+++ b/arch/arm64/include/asm/debug-monitors.h
-@@ -104,6 +104,7 @@ void user_regs_reset_single_step(struct user_pt_regs *regs,
- void kernel_enable_single_step(struct pt_regs *regs);
- void kernel_disable_single_step(void);
- int kernel_active_single_step(void);
-+void kernel_rewind_single_step(struct pt_regs *regs);
- 
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- int reinstall_suspended_bps(struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
-index 3da09778267ec..64f2ecbdfe5c2 100644
---- a/arch/arm64/kernel/debug-monitors.c
-+++ b/arch/arm64/kernel/debug-monitors.c
-@@ -438,6 +438,11 @@ int kernel_active_single_step(void)
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+index aa116a7bbae3a..dfce896c4baeb 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -367,6 +367,43 @@ static int ttm_pool_page_allocated(struct ttm_pool *pool, unsigned int order,
+ 	return 0;
  }
- NOKPROBE_SYMBOL(kernel_active_single_step);
  
-+void kernel_rewind_single_step(struct pt_regs *regs)
++/**
++ * ttm_pool_free_range() - Free a range of TTM pages
++ * @pool: The pool used for allocating.
++ * @tt: The struct ttm_tt holding the page pointers.
++ * @caching: The page caching mode used by the range.
++ * @start_page: index for first page to free.
++ * @end_page: index for last page to free + 1.
++ *
++ * During allocation the ttm_tt page-vector may be populated with ranges of
++ * pages with different attributes if allocation hit an error without being
++ * able to completely fulfill the allocation. This function can be used
++ * to free these individual ranges.
++ */
++static void ttm_pool_free_range(struct ttm_pool *pool, struct ttm_tt *tt,
++				enum ttm_caching caching,
++				pgoff_t start_page, pgoff_t end_page)
 +{
-+	set_regs_spsr_ss(regs);
++	struct page **pages = tt->pages;
++	unsigned int order;
++	pgoff_t i, nr;
++
++	for (i = start_page; i < end_page; i += nr, pages += nr) {
++		struct ttm_pool_type *pt = NULL;
++
++		order = ttm_pool_page_order(pool, *pages);
++		nr = (1UL << order);
++		if (tt->dma_address)
++			ttm_pool_unmap(pool, tt->dma_address[i], nr);
++
++		pt = ttm_pool_select_type(pool, caching, order);
++		if (pt)
++			ttm_pool_type_give(pt, *pages);
++		else
++			ttm_pool_free_page(pool, caching, order, *pages);
++	}
 +}
 +
- /* ptrace API */
- void user_enable_single_step(struct task_struct *task)
+ /**
+  * ttm_pool_alloc - Fill a ttm_tt object
+  *
+@@ -382,12 +419,14 @@ static int ttm_pool_page_allocated(struct ttm_pool *pool, unsigned int order,
+ int ttm_pool_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 		   struct ttm_operation_ctx *ctx)
  {
-diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
-index cda9c1e9864f7..4e1f983df3d1c 100644
---- a/arch/arm64/kernel/kgdb.c
-+++ b/arch/arm64/kernel/kgdb.c
-@@ -224,6 +224,8 @@ int kgdb_arch_handle_exception(int exception_vector, int signo,
- 		 */
- 		if (!kernel_active_single_step())
- 			kernel_enable_single_step(linux_regs);
-+		else
-+			kernel_rewind_single_step(linux_regs);
- 		err = 0;
- 		break;
- 	default:
+-	unsigned long num_pages = tt->num_pages;
++	pgoff_t num_pages = tt->num_pages;
+ 	dma_addr_t *dma_addr = tt->dma_address;
+ 	struct page **caching = tt->pages;
+ 	struct page **pages = tt->pages;
++	enum ttm_caching page_caching;
+ 	gfp_t gfp_flags = GFP_USER;
+-	unsigned int i, order;
++	pgoff_t caching_divide;
++	unsigned int order;
+ 	struct page *p;
+ 	int r;
+ 
+@@ -410,6 +449,7 @@ int ttm_pool_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 	     order = min_t(unsigned int, order, __fls(num_pages))) {
+ 		struct ttm_pool_type *pt;
+ 
++		page_caching = tt->caching;
+ 		pt = ttm_pool_select_type(pool, tt->caching, order);
+ 		p = pt ? ttm_pool_type_take(pt) : NULL;
+ 		if (p) {
+@@ -418,6 +458,7 @@ int ttm_pool_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 			if (r)
+ 				goto error_free_page;
+ 
++			caching = pages;
+ 			do {
+ 				r = ttm_pool_page_allocated(pool, order, p,
+ 							    &dma_addr,
+@@ -426,14 +467,15 @@ int ttm_pool_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 				if (r)
+ 					goto error_free_page;
+ 
++				caching = pages;
+ 				if (num_pages < (1 << order))
+ 					break;
+ 
+ 				p = ttm_pool_type_take(pt);
+ 			} while (p);
+-			caching = pages;
+ 		}
+ 
++		page_caching = ttm_cached;
+ 		while (num_pages >= (1 << order) &&
+ 		       (p = ttm_pool_alloc_page(pool, gfp_flags, order))) {
+ 
+@@ -442,6 +484,7 @@ int ttm_pool_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 							   tt->caching);
+ 				if (r)
+ 					goto error_free_page;
++				caching = pages;
+ 			}
+ 			r = ttm_pool_page_allocated(pool, order, p, &dma_addr,
+ 						    &num_pages, &pages);
+@@ -468,15 +511,13 @@ int ttm_pool_alloc(struct ttm_pool *pool, struct ttm_tt *tt,
+ 	return 0;
+ 
+ error_free_page:
+-	ttm_pool_free_page(pool, tt->caching, order, p);
++	ttm_pool_free_page(pool, page_caching, order, p);
+ 
+ error_free_all:
+ 	num_pages = tt->num_pages - num_pages;
+-	for (i = 0; i < num_pages; ) {
+-		order = ttm_pool_page_order(pool, tt->pages[i]);
+-		ttm_pool_free_page(pool, tt->caching, order, tt->pages[i]);
+-		i += 1 << order;
+-	}
++	caching_divide = caching - tt->pages;
++	ttm_pool_free_range(pool, tt, tt->caching, 0, caching_divide);
++	ttm_pool_free_range(pool, tt, ttm_cached, caching_divide, num_pages);
+ 
+ 	return r;
+ }
+@@ -492,27 +533,7 @@ EXPORT_SYMBOL(ttm_pool_alloc);
+  */
+ void ttm_pool_free(struct ttm_pool *pool, struct ttm_tt *tt)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < tt->num_pages; ) {
+-		struct page *p = tt->pages[i];
+-		unsigned int order, num_pages;
+-		struct ttm_pool_type *pt;
+-
+-		order = ttm_pool_page_order(pool, p);
+-		num_pages = 1ULL << order;
+-		if (tt->dma_address)
+-			ttm_pool_unmap(pool, tt->dma_address[i], num_pages);
+-
+-		pt = ttm_pool_select_type(pool, tt->caching, order);
+-		if (pt)
+-			ttm_pool_type_give(pt, tt->pages[i]);
+-		else
+-			ttm_pool_free_page(pool, tt->caching, order,
+-					   tt->pages[i]);
+-
+-		i += num_pages;
+-	}
++	ttm_pool_free_range(pool, tt, tt->caching, 0, tt->num_pages);
+ 
+ 	while (atomic_long_read(&allocated_pages) > page_pool_size)
+ 		ttm_pool_shrink();
 -- 
 2.39.2
 
