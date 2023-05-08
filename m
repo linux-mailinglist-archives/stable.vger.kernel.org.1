@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B14486FA8EB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A04636FA5E6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235039AbjEHKqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
+        id S234250AbjEHKOS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235042AbjEHKp6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:58 -0400
+        with ESMTP id S234308AbjEHKOC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D1DF27F3E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:45:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3633A2A9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A950C628AC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:45:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEDAC433D2;
-        Mon,  8 May 2023 10:45:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10B906242B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27766C433D2;
+        Mon,  8 May 2023 10:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542736;
-        bh=ZWSsbtjvn51hD3F/mhWjOTtUVCLJaFCrwRlHmU/IgJo=;
+        s=korg; t=1683540839;
+        bh=e5jtWDxRlffjZF3efv/oSBIxNOwPeDQjzwmAj58iVWk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xbjxKbuvW18jbPzo2pygfRcQ8JxJGqGF8Y/ySz/3sTSaITIiRigqpB5CtCmA465PY
-         3ezjwefHyfEQ+wvlJahdrtCSPoU0Nu0AvH9m0AS3y7kTUZVahrj08fY6Q3xD1084G3
-         x/f7pURBRzI1BISntzh7y6smo9ywScacO5qNM7hQ=
+        b=zt1Y5SqelhWKhGH/mKlNUkGPlfbZA/HYE4C28yVLz0fj9ZeN8iI77vk6CDv/2xtBR
+         qGXUCcgRtF7nyV5jEWRetXWjwXsvTqFnEzGIFAJP2XeMcBnZlisyK/fiQ0Ez2Wa3AN
+         d8eOp1FK7iyNz/f8BVvXZWBc6mI2C0hzGnwa4X04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Helen Chao <helen.chao@oracle.com>,
+        Dai Ngo <dai.ngo@oracle.com>, Jeff Layton <jlayton@kernel.org>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 532/663] RDMA/rxe: Replace exists by rxe in rxe.c
+Subject: [PATCH 6.1 516/611] SUNRPC: remove the maximum number of retries in call_bind_status
 Date:   Mon,  8 May 2023 11:45:58 +0200
-Message-Id: <20230508094446.162710711@linuxfoundation.org>
+Message-Id: <20230508094438.808852300@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,62 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 9168d125ea032ad199275193493c13cb077da5cc ]
+[ Upstream commit 691d0b782066a6eeeecbfceb7910a8f6184e6105 ]
 
-'exists' looks like a boolean. This patch replaces it by the
-normal name used for the rxe device, 'rxe', which should be a
-little less confusing. The second rxe_dbg() message is
-incorrect since rxe is known to be NULL and this will cause a
-seg fault if this message were ever sent. Replace it by pr_debug
-for the moment.
+Currently call_bind_status places a hard limit of 3 to the number of
+retries on EACCES error. This limit was done to prevent NLM unlock
+requests from being hang forever when the server keeps returning garbage.
+However this change causes problem for cases when NLM service takes
+longer than 9 seconds to register with the port mapper after a restart.
 
-Fixes: c6aba5ea0055 ("RDMA/rxe: Replace pr_xxx by rxe_dbg_xxx in rxe.c")
-Link: https://lore.kernel.org/r/20230303221623.8053-2-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+This patch removes this hard coded limit and let the RPC handles
+the retry based on the standard hard/soft task semantics.
+
+Fixes: 0b760113a3a1 ("NLM: Don't hang forever on NLM unlock requests")
+Reported-by: Helen Chao <helen.chao@oracle.com>
+Tested-by: Helen Chao <helen.chao@oracle.com>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/sunrpc/sched.h | 3 +--
+ net/sunrpc/clnt.c            | 3 ---
+ net/sunrpc/sched.c           | 1 -
+ 3 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index 136c2efe34660..a3f05fdd9fac2 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -175,7 +175,7 @@ int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name)
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index b8ca3ecaf8d76..8ada7dc802d30 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -90,8 +90,7 @@ struct rpc_task {
+ #endif
+ 	unsigned char		tk_priority : 2,/* Task priority */
+ 				tk_garb_retry : 2,
+-				tk_cred_retry : 2,
+-				tk_rebind_retry : 2;
++				tk_cred_retry : 2;
+ };
  
- static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
- {
--	struct rxe_dev *exists;
-+	struct rxe_dev *rxe;
- 	int err = 0;
+ typedef void			(*rpc_action)(struct rpc_task *);
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index fd7e1c630493e..d2ee566343083 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2050,9 +2050,6 @@ call_bind_status(struct rpc_task *task)
+ 			status = -EOPNOTSUPP;
+ 			break;
+ 		}
+-		if (task->tk_rebind_retry == 0)
+-			break;
+-		task->tk_rebind_retry--;
+ 		rpc_delay(task, 3*HZ);
+ 		goto retry_timeout;
+ 	case -ENOBUFS:
+diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
+index be587a308e05a..c8321de341eea 100644
+--- a/net/sunrpc/sched.c
++++ b/net/sunrpc/sched.c
+@@ -817,7 +817,6 @@ rpc_init_task_statistics(struct rpc_task *task)
+ 	/* Initialize retry counters */
+ 	task->tk_garb_retry = 2;
+ 	task->tk_cred_retry = 2;
+-	task->tk_rebind_retry = 2;
  
- 	if (is_vlan_dev(ndev)) {
-@@ -184,17 +184,17 @@ static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
- 		goto err;
- 	}
- 
--	exists = rxe_get_dev_from_net(ndev);
--	if (exists) {
--		ib_device_put(&exists->ib_dev);
--		rxe_dbg(exists, "already configured on %s\n", ndev->name);
-+	rxe = rxe_get_dev_from_net(ndev);
-+	if (rxe) {
-+		ib_device_put(&rxe->ib_dev);
-+		rxe_dbg(rxe, "already configured on %s\n", ndev->name);
- 		err = -EEXIST;
- 		goto err;
- 	}
- 
- 	err = rxe_net_add(ibdev_name, ndev);
- 	if (err) {
--		rxe_dbg(exists, "failed to add %s\n", ndev->name);
-+		pr_debug("failed to add %s\n", ndev->name);
- 		goto err;
- 	}
- err:
+ 	/* starting timestamp */
+ 	task->tk_start = ktime_get();
 -- 
 2.39.2
 
