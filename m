@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 718E06FAB31
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD77C6FA830
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233644AbjEHLKa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44918 "EHLO
+        id S234850AbjEHKig (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233496AbjEHLKL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:11 -0400
+        with ESMTP id S234922AbjEHKiL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8A93315E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF0F28925
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C868262B14
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B02C433EF;
-        Mon,  8 May 2023 11:10:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 628C861D13
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4CDC433D2;
+        Mon,  8 May 2023 10:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544209;
-        bh=nevuDMl1SG2woGI0AghotnSi8v0EJbipHf362ZSLz3k=;
+        s=korg; t=1683542288;
+        bh=JJC5MjBV8lpgp/Q8c9FLB/NnPE+kU9YVY1zWbSiuN+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iC6dOss0NrJJq9DTodkBjHdd51JPXepMQ0Kr7giHr9TeKbvJMfDONamMemNS5Grhk
-         pw35NHjBuLv5RbnPGSOjcogR20XOvTuuiGqCI11+d39nce9wFjQaHMLfmmLHlxPZ6G
-         ZPci/cq8+He3qTeMHb8mDn5Z4klxEnNuyID875A4=
+        b=HXzLdx+2m+QuZ4GqwwrAvGAgd/1D/C0owXiulddCtCuq2ksJwj0goh7PBnwr5LQol
+         YdSUHExdiX/6OTFfO1QZuA9TV+5nRiXTJ9Nwh9VKjIzPjxGIZ4DdYuqRv2kRC8go5w
+         x+lKSnfyk5gyN5MG1HVdSXxlC/LHvOJOngKB593s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 336/694] wifi: rtw88: mac: Return the original error from rtw_pwr_seq_parser()
+        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
+        Stephan Mueller <smueller@chronox.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 345/663] crypto: drbg - Only fail when jent is unavailable in FIPS mode
 Date:   Mon,  8 May 2023 11:42:51 +0200
-Message-Id: <20230508094443.374769628@linuxfoundation.org>
+Message-Id: <20230508094439.336522022@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit b7ed9fa2cb76ca7a3c3cd4a6d35748fe1fbda9f6 ]
+[ Upstream commit 686cd976b6ddedeeb1a1fb09ba53a891d3cc9a03 ]
 
-rtw_pwr_seq_parser() calls rtw_sub_pwr_seq_parser() which can either
-return -EBUSY, -EINVAL or 0. Propagate the original error code instead
-of unconditionally returning -EBUSY in case of an error.
+When jent initialisation fails for any reason other than ENOENT,
+the entire drbg fails to initialise, even when we're not in FIPS
+mode.  This is wrong because we can still use the kernel RNG when
+we're not in FIPS mode.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230226221004.138331-2-martin.blumenstingl@googlemail.com
+Change it so that it only fails when we are in FIPS mode.
+
+Fixes: 57225e679788 ("crypto: drbg - Use callback API for random readiness")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 2 +-
+ crypto/drbg.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index dae64901bac5a..663907c38327f 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -233,7 +233,7 @@ static int rtw_pwr_seq_parser(struct rtw_dev *rtwdev,
+diff --git a/crypto/drbg.c b/crypto/drbg.c
+index 982d4ca4526d8..ff4ebbc68efab 100644
+--- a/crypto/drbg.c
++++ b/crypto/drbg.c
+@@ -1546,7 +1546,7 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
+ 		const int err = PTR_ERR(drbg->jent);
  
- 		ret = rtw_sub_pwr_seq_parser(rtwdev, intf_mask, cut_mask, cmd);
- 		if (ret)
--			return -EBUSY;
-+			return ret;
- 
- 		idx++;
- 	} while (1);
+ 		drbg->jent = NULL;
+-		if (fips_enabled || err != -ENOENT)
++		if (fips_enabled)
+ 			return err;
+ 		pr_info("DRBG: Continuing without Jitter RNG\n");
+ 	}
 -- 
 2.39.2
 
