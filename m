@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721676FAC3E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9606FA92B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235617AbjEHLWY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:22:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37492 "EHLO
+        id S235176AbjEHKtG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235613AbjEHLWV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:21 -0400
+        with ESMTP id S235128AbjEHKso (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4524D37001
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3563D28ABD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39FCF62CB9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAB9C433D2;
-        Mon,  8 May 2023 11:22:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBA9562903
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8235C433EF;
+        Mon,  8 May 2023 10:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544931;
-        bh=tUzZwBidde6xtSinxYe2xVHPpnOjyXOU14PA1HMpBwo=;
+        s=korg; t=1683542880;
+        bh=jFohSHbQ90/0FsrPv3Uz84Ua7EONv3eJb+p8ynrSSB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wnJVdSepXcbf6LNlcNJavAd49uOPGAuox7UIphBG1O4QMrH+wOkwFVN+cWYMeQ4wy
-         DxwVYxXKkmv6sncCOEWwSOG/3wDeM4eLBJA5k4vGiX0fo2PclE8SmUQOwb//mHX2mA
-         EyG2pWzpDIQdpJ9WLH5reMUYRJ+j4xV2z7S3/nNk=
+        b=u/dSV0azaJ4TSRfVXx28yDj5WhtP3QBqGv1o5vjCQ87naUdV4t0TsSD1WfxGXwkmJ
+         370fx5mqrsWmA8tW0ELSbqv3sUyzcGDQbQXrBBPikOTD0STpc8eVjC4sKDJ3OayjKO
+         W/SHjJ2pOyKworGqKlhBpcOrvOLYSLkTDEMAVrOM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Schspa Shi <schspa@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Dwaine Gonyier <dgonyier@redhat.com>,
+        patches@lists.linux.dev, Hai Pham <hai.pham.ud@renesas.com>,
+        LUU HOAI <hoai.luu.ub@renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 569/694] sched/rt: Fix bad task migration for rt tasks
+Subject: [PATCH 6.2 578/663] pinctrl: renesas: r8a779a0: Remove incorrect AVB[01] pinmux configuration
 Date:   Mon,  8 May 2023 11:46:44 +0200
-Message-Id: <20230508094453.276126653@linuxfoundation.org>
+Message-Id: <20230508094448.047239444@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,83 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Schspa Shi <schspa@gmail.com>
+From: Hai Pham <hai.pham.ud@renesas.com>
 
-[ Upstream commit feffe5bb274dd3442080ef0e4053746091878799 ]
+[ Upstream commit a145c9a8674ac8fbfa1595276e1b6cbfc5139038 ]
 
-Commit 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
-allows find_lock_lowest_rq() to pick a task with migration disabled.
-The purpose of the commit is to push the current running task on the
-CPU that has the migrate_disable() task away.
+AVB[01]_{MAGIC,MDC,MDIO,TXCREFCLK} are registered as both
+PINMUX_SINGLE(fn) and PINMUX_IPSR_GPSR(fn) in the pinmux_data array.
 
-However, there is a race which allows a migrate_disable() task to be
-migrated. Consider:
+The latter are correct, hence remove the former.
+Without this fix, the Ethernet PHY is not operational on the MDIO bus.
 
-  CPU0                                    CPU1
-  push_rt_task
-    check is_migration_disabled(next_task)
-
-                                          task not running and
-                                          migration_disabled == 0
-
-    find_lock_lowest_rq(next_task, rq);
-      _double_lock_balance(this_rq, busiest);
-        raw_spin_rq_unlock(this_rq);
-        double_rq_lock(this_rq, busiest);
-          <<wait for busiest rq>>
-                                              <wakeup>
-                                          task become running
-                                          migrate_disable();
-                                            <context out>
-    deactivate_task(rq, next_task, 0);
-    set_task_cpu(next_task, lowest_rq->cpu);
-      WARN_ON_ONCE(is_migration_disabled(p));
-
-Fixes: 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
-Signed-off-by: Schspa Shi <schspa@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Tested-by: Dwaine Gonyier <dgonyier@redhat.com>
+Signed-off-by: Hai Pham <hai.pham.ud@renesas.com>
+Signed-off-by: LUU HOAI <hoai.luu.ub@renesas.com>
+Fixes: 741a7370fc3b8b54 ("pinctrl: renesas: Initial R8A779A0 (V3U) PFC support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/6fd217b71e83ba9a8157513ed671a1fa218b23b6.1674824958.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 1 +
- kernel/sched/rt.c       | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/pinctrl/renesas/pfc-r8a779a0.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 71b24371a6f77..ac8010f6f3a22 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2246,6 +2246,7 @@ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
- 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
- 				     task_on_cpu(rq, task) ||
- 				     !dl_task(task) ||
-+				     is_migration_disabled(task) ||
- 				     !task_on_rq_queued(task))) {
- 				double_unlock_balance(rq, later_rq);
- 				later_rq = NULL;
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 0a11f44adee57..4f5796dd26a56 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2000,11 +2000,15 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
- 			 * the mean time, task could have
- 			 * migrated already or had its affinity changed.
- 			 * Also make sure that it wasn't scheduled on its rq.
-+			 * It is possible the task was scheduled, set
-+			 * "migrate_disabled" and then got preempted, so we must
-+			 * check the task migration disable flag here too.
- 			 */
- 			if (unlikely(task_rq(task) != rq ||
- 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
- 				     task_on_cpu(rq, task) ||
- 				     !rt_task(task) ||
-+				     is_migration_disabled(task) ||
- 				     !task_on_rq_queued(task))) {
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779a0.c b/drivers/pinctrl/renesas/pfc-r8a779a0.c
+index 760c83a8740bd..6069869353bb4 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779a0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779a0.c
+@@ -696,16 +696,8 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_SINGLE(PCIE0_CLKREQ_N),
  
- 				double_unlock_balance(rq, lowest_rq);
+ 	PINMUX_SINGLE(AVB0_PHY_INT),
+-	PINMUX_SINGLE(AVB0_MAGIC),
+-	PINMUX_SINGLE(AVB0_MDC),
+-	PINMUX_SINGLE(AVB0_MDIO),
+-	PINMUX_SINGLE(AVB0_TXCREFCLK),
+ 
+ 	PINMUX_SINGLE(AVB1_PHY_INT),
+-	PINMUX_SINGLE(AVB1_MAGIC),
+-	PINMUX_SINGLE(AVB1_MDC),
+-	PINMUX_SINGLE(AVB1_MDIO),
+-	PINMUX_SINGLE(AVB1_TXCREFCLK),
+ 
+ 	PINMUX_SINGLE(AVB2_AVTP_PPS),
+ 	PINMUX_SINGLE(AVB2_AVTP_CAPTURE),
 -- 
 2.39.2
 
