@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C09E6FAAF6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6EF6FA4D1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232291AbjEHLIN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45812 "EHLO
+        id S233962AbjEHKDb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:03:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233808AbjEHLHy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:54 -0400
+        with ESMTP id S233965AbjEHKD3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7450A34103
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71152ABE0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09AB862ADD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1291C433D2;
-        Mon,  8 May 2023 11:07:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A19462024
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:03:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE9FC433EF;
+        Mon,  8 May 2023 10:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544043;
-        bh=AgrqtO/xJrLcnNHEcQt7FP6+ZXM1I6xKHX0lnHmtzRs=;
+        s=korg; t=1683540207;
+        bh=Z/QWEeChUg/0tX5Wv/oH0TJy2/Dcj2j0rB7GzzZhVIU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zRwGWGXMAXs1Xf9425yLv2sIVw1zejATgohaXbi8RTLqFbCiECX7RW6Pb77hKuWWG
-         lyR5+YaCqMdkdTc46pxQzGrirOQ1/nvFxjygEwI41eEUrTIuDHgiSzyULXDPEHOa24
-         VIm/GrixXtlqG/JVN5gLMMsr625KZ6cyoI/FkB9k=
+        b=BC5i5OwL7pLBy2WVaX5TsEn8obeoH3EobMKoPT42EYghUEFnyl+mOB3g6rTbdfZtq
+         D1dQlgqNS9bCUbMPxpSz8MR3KGvulrtK11H+aeVLxkWDCUA2qOAwiGl/6Jbf8FCH/K
+         MLSTljHOFe7vbbMK/A+bngrk7wbjUq5UmHa6nj8U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 252/694] arm64: dts: qcom: msm8994-kitakami: drop unit address from PMI8994 regulator
+Subject: [PATCH 6.1 245/611] media: rcar_fdp1: Fix refcount leak in probe and remove function
 Date:   Mon,  8 May 2023 11:41:27 +0200
-Message-Id: <20230508094440.473282539@linuxfoundation.org>
+Message-Id: <20230508094430.380308590@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 3555dd528ba9c08d6ccd56239c695dbeac3b63e3 ]
+[ Upstream commit c766c90faf93897b77c9c5daa603cffab85ba907 ]
 
-The PMIC regulators are not supposed to have unit addresses.
+rcar_fcp_get() take reference, which should be balanced with
+rcar_fcp_put(). Add missing rcar_fcp_put() in fdp1_remove and
+the error paths of fdp1_probe() to fix this.
 
-Fixes: e9783584c9b7 ("arm64: dts: qcom: msm8994-kitakami: Add VDD_GFX regulator")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230312183622.460488-6-krzysztof.kozlowski@linaro.org
+Fixes: 4710b752e029 ("[media] v4l: Add Renesas R-Car FDP1 Driver")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+[hverkuil: resolve merge conflict, remove() is now void]
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/platform/renesas/rcar_fdp1.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-index 3ceb86b06209a..26059f861250f 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-@@ -173,8 +173,7 @@
- 	 * power domain.. which still isn't enough and forces us to bind
- 	 * OXILI_CX and OXILI_GX together!
- 	 */
--	vdd_gfx: s2@1700 {
--		reg = <0x1700 0x100>;
-+	vdd_gfx: s2 {
- 		regulator-name = "VDD_GFX";
- 		regulator-min-microvolt = <980000>;
- 		regulator-max-microvolt = <980000>;
+diff --git a/drivers/media/platform/renesas/rcar_fdp1.c b/drivers/media/platform/renesas/rcar_fdp1.c
+index 37ecf489d112e..dea22e3579052 100644
+--- a/drivers/media/platform/renesas/rcar_fdp1.c
++++ b/drivers/media/platform/renesas/rcar_fdp1.c
+@@ -2313,8 +2313,10 @@ static int fdp1_probe(struct platform_device *pdev)
+ 
+ 	/* Determine our clock rate */
+ 	clk = clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto put_dev;
++	}
+ 
+ 	fdp1->clk_rate = clk_get_rate(clk);
+ 	clk_put(clk);
+@@ -2323,7 +2325,7 @@ static int fdp1_probe(struct platform_device *pdev)
+ 	ret = v4l2_device_register(&pdev->dev, &fdp1->v4l2_dev);
+ 	if (ret) {
+ 		v4l2_err(&fdp1->v4l2_dev, "Failed to register video device\n");
+-		return ret;
++		goto put_dev;
+ 	}
+ 
+ 	/* M2M registration */
+@@ -2393,6 +2395,8 @@ static int fdp1_probe(struct platform_device *pdev)
+ unreg_dev:
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 
++put_dev:
++	rcar_fcp_put(fdp1->fcp);
+ 	return ret;
+ }
+ 
+@@ -2404,6 +2408,7 @@ static int fdp1_remove(struct platform_device *pdev)
+ 	video_unregister_device(&fdp1->vfd);
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 	pm_runtime_disable(&pdev->dev);
++	rcar_fcp_put(fdp1->fcp);
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
