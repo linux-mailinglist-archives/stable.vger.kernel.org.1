@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18026FA812
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02906FAB47
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234746AbjEHKhY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39258 "EHLO
+        id S233015AbjEHLLS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:11:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234838AbjEHKhJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:37:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFCA24A91
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:37:08 -0700 (PDT)
+        with ESMTP id S233724AbjEHLLS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF37534E1C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D95F627DA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9367EC433D2;
-        Mon,  8 May 2023 10:37:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 361E562B71
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5015EC433D2;
+        Mon,  8 May 2023 11:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542227;
-        bh=Vz6FXD+nTESi9ykuQCZ8RPeDHcdB9OmyxMqaP7lU10I=;
+        s=korg; t=1683544274;
+        bh=aLIHrtKppp7T/H5pskN+NwG4ATJ+sTc2Fi4cheBB1R8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gvb8MY71MaPUz79XGyGOrIqwMAmX3YSgRv1T6q0dFu9Qyn5++Dp+jqRk2N8xiXaRa
-         FT7wvT2/z3TD68xK1QjtPmRDsLLrBWsV9fBDjoB5CqBEa9qlWtgBrKRqAzn5vT14fc
-         AhGsF+7KDsmzzaHkFRsySmMpADPF2WQPuuK4sQIw=
+        b=tIqTWnfsd0iJ79SIBEUsZATGykAzjcceMKeV0Jm8R0zGfZul3paZrLW9Ws6QicYd9
+         GO624QnYEuUcX/AlSc4V16NOT5nSerUUfwJWz+IlSyk25zMkCRSWIMO91N1T0jC+8o
+         QPB8OrLxUfdnTaQ6lQ+f8P4F6vcgLAGz5Nc6W/Y0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avraham Stern <avraham.stern@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Madhu Koriginja <madhu.koriginja@nxp.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 367/663] wifi: iwlwifi: trans: dont trigger d3 interrupt twice
+Subject: [PATCH 6.3 358/694] netfilter: keep conntrack reference until IPsecv6 policy checks are done
 Date:   Mon,  8 May 2023 11:43:13 +0200
-Message-Id: <20230508094440.044846977@linuxfoundation.org>
+Message-Id: <20230508094444.274974803@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,53 +54,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Madhu Koriginja <madhu.koriginja@nxp.com>
 
-[ Upstream commit 277f56a141fc54ef7f9e09dba65fb2e12021411d ]
+[ Upstream commit b0e214d212030fe497d4d150bb3474e50ad5d093 ]
 
-When the IPC registers are used for sleep control, setting
-the IPC sleep bit already triggers an interrupt to the fw, so
-there is no need to also set the doorbell. Setting also the
-doorbell triggers the sleep interrupt twice which lead to
-an assert.
+Keep the conntrack reference until policy checks have been performed for
+IPsec V6 NAT support, just like ipv4.
 
-Fixes: af08571d3925 ("iwlwifi: pcie: support Bz suspend/resume trigger")
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230413102635.b5f2f6e44d38.I4cb5b6ad4914db47a714e731c4c8b4db679cabce@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The reference needs to be dropped before a packet is
+queued to avoid having the conntrack module unloadable.
+
+Fixes: 58a317f1061c ("netfilter: ipv6: add IPv6 NAT support")
+Signed-off-by: Madhu Koriginja <madhu.koriginja@nxp.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/dccp/ipv6.c      |  1 +
+ net/ipv6/ip6_input.c | 14 ++++++--------
+ net/ipv6/raw.c       |  5 ++---
+ net/ipv6/tcp_ipv6.c  |  2 ++
+ net/ipv6/udp.c       |  2 ++
+ 5 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 0a9af1ad1f206..40283fe622daa 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1522,19 +1522,16 @@ static int iwl_pcie_d3_handshake(struct iwl_trans *trans, bool suspend)
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	int ret;
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index b9d7c3dd1cb39..c0fd8f5f3b94e 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -783,6 +783,7 @@ static int dccp_v6_rcv(struct sk_buff *skb)
  
--	if (trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_AX210) {
-+	if (trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_AX210)
- 		iwl_write_umac_prph(trans, UREG_DOORBELL_TO_ISR6,
- 				    suspend ? UREG_DOORBELL_TO_ISR6_SUSPEND :
- 					      UREG_DOORBELL_TO_ISR6_RESUME);
--	} else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
-+	else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
- 		iwl_write32(trans, CSR_IPC_SLEEP_CONTROL,
- 			    suspend ? CSR_IPC_SLEEP_CONTROL_SUSPEND :
- 				      CSR_IPC_SLEEP_CONTROL_RESUME);
--		iwl_write_umac_prph(trans, UREG_DOORBELL_TO_ISR6,
--				    UREG_DOORBELL_TO_ISR6_SLEEP_CTRL);
--	} else {
-+	else
- 		return 0;
--	}
+ 	if (!xfrm6_policy_check(sk, XFRM_POLICY_IN, skb))
+ 		goto discard_and_relse;
++	nf_reset_ct(skb);
  
- 	ret = wait_event_timeout(trans_pcie->sx_waitq,
- 				 trans_pcie->sx_complete, 2 * HZ);
+ 	return __sk_receive_skb(sk, skb, 1, dh->dccph_doff * 4,
+ 				refcounted) ? -1 : 0;
+diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
+index e1ebf5e42ebe9..d94041bb42872 100644
+--- a/net/ipv6/ip6_input.c
++++ b/net/ipv6/ip6_input.c
+@@ -404,10 +404,6 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
+ 			/* Only do this once for first final protocol */
+ 			have_final = true;
+ 
+-			/* Free reference early: we don't need it any more,
+-			   and it may hold ip_conntrack module loaded
+-			   indefinitely. */
+-			nf_reset_ct(skb);
+ 
+ 			skb_postpull_rcsum(skb, skb_network_header(skb),
+ 					   skb_network_header_len(skb));
+@@ -430,10 +426,12 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
+ 				goto discard;
+ 			}
+ 		}
+-		if (!(ipprot->flags & INET6_PROTO_NOPOLICY) &&
+-		    !xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
+-			SKB_DR_SET(reason, XFRM_POLICY);
+-			goto discard;
++		if (!(ipprot->flags & INET6_PROTO_NOPOLICY)) {
++			if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
++				SKB_DR_SET(reason, XFRM_POLICY);
++				goto discard;
++			}
++			nf_reset_ct(skb);
+ 		}
+ 
+ 		ret = INDIRECT_CALL_2(ipprot->handler, tcp_v6_rcv, udpv6_rcv,
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index a327aa481df48..9986e2d15c8be 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -193,10 +193,8 @@ static bool ipv6_raw_deliver(struct sk_buff *skb, int nexthdr)
+ 			struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
+ 
+ 			/* Not releasing hash table! */
+-			if (clone) {
+-				nf_reset_ct(clone);
++			if (clone)
+ 				rawv6_rcv(sk, clone);
+-			}
+ 		}
+ 	}
+ 	rcu_read_unlock();
+@@ -389,6 +387,7 @@ int rawv6_rcv(struct sock *sk, struct sk_buff *skb)
+ 		kfree_skb_reason(skb, SKB_DROP_REASON_XFRM_POLICY);
+ 		return NET_RX_DROP;
+ 	}
++	nf_reset_ct(skb);
+ 
+ 	if (!rp->checksum)
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 1bf93b61aa06f..1e747241c7710 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1722,6 +1722,8 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 	if (drop_reason)
+ 		goto discard_and_relse;
+ 
++	nf_reset_ct(skb);
++
+ 	if (tcp_filter(sk, skb)) {
+ 		drop_reason = SKB_DROP_REASON_SOCKET_FILTER;
+ 		goto discard_and_relse;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index a675acfb901d1..c519f21632656 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -704,6 +704,7 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		drop_reason = SKB_DROP_REASON_XFRM_POLICY;
+ 		goto drop;
+ 	}
++	nf_reset_ct(skb);
+ 
+ 	if (static_branch_unlikely(&udpv6_encap_needed_key) && up->encap_type) {
+ 		int (*encap_rcv)(struct sock *sk, struct sk_buff *skb);
+@@ -1027,6 +1028,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
+ 
+ 	if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb))
+ 		goto discard;
++	nf_reset_ct(skb);
+ 
+ 	if (udp_lib_checksum_complete(skb))
+ 		goto csum_error;
 -- 
 2.39.2
 
