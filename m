@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276E46FA4E2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBAC56FAB06
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233988AbjEHKEK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
+        id S230076AbjEHLIp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233985AbjEHKEJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57E32EB2E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:06 -0700 (PDT)
+        with ESMTP id S232160AbjEHLIO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342DB1C0E7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3659061EF7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4850EC433EF;
-        Mon,  8 May 2023 10:04:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF77660B61
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A02C433EF;
+        Mon,  8 May 2023 11:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540245;
-        bh=YoVY1tZMegFFFnf0lVS57XTOL8GTnLz9g0yv7rFN2dg=;
+        s=korg; t=1683544092;
+        bh=RpvIW+Ft0dC7DEmCAfNsCksIyZQLKRaSClsheU1onvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xtkcMJK81/JTlRqMiW6QWtfa+JJ/3x6iVIe4Tm9MSlH38nehmN3pdoXB5M1TPO4Kg
-         LYQiOuQR0IRhG12kT9pQ/G30QDAXI0ajYee+8xsTsjEuyaWpph7Cj3gGKHDOkW6qmx
-         hjUnXqnqZMMS/bIHl5rMQ/485K1EwTnVWynjb+H4=
+        b=VK7jBS68bKXqfZsfMYkzn/4pkpc9FIoUuDgAgfiJObRCk6rvhBh8L6Cu2kXMX6bb/
+         +iJVNBp4xA82i9Prm3CM+MhyBMEoITL8IYXDacj5Bcenl8dyDCZ9LZLj2wPL3iowG8
+         PspfU47PkLIRnsnncCgZpjGtunoTPOK+Kd2tEG/Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Kuohai <xukuohai@huaweicloud.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
+        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 292/611] bpf: Fix __reg_bound_offset 64->32 var_off subreg propagation
+Subject: [PATCH 6.3 299/694] media: rcar_fdp1: Fix refcount leak in probe and remove function
 Date:   Mon,  8 May 2023 11:42:14 +0200
-Message-Id: <20230508094431.898575322@linuxfoundation.org>
+Message-Id: <20230508094441.979415591@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,264 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 7be14c1c9030f73cc18b4ff23b78a0a081f16188 ]
+[ Upstream commit c766c90faf93897b77c9c5daa603cffab85ba907 ]
 
-Xu reports that after commit 3f50f132d840 ("bpf: Verifier, do explicit ALU32
-bounds tracking"), the following BPF program is rejected by the verifier:
+rcar_fcp_get() take reference, which should be balanced with
+rcar_fcp_put(). Add missing rcar_fcp_put() in fdp1_remove and
+the error paths of fdp1_probe() to fix this.
 
-   0: (61) r2 = *(u32 *)(r1 +0)          ; R2_w=pkt(off=0,r=0,imm=0)
-   1: (61) r3 = *(u32 *)(r1 +4)          ; R3_w=pkt_end(off=0,imm=0)
-   2: (bf) r1 = r2
-   3: (07) r1 += 1
-   4: (2d) if r1 > r3 goto pc+8
-   5: (71) r1 = *(u8 *)(r2 +0)           ; R1_w=scalar(umax=255,var_off=(0x0; 0xff))
-   6: (18) r0 = 0x7fffffffffffff10
-   8: (0f) r1 += r0                      ; R1_w=scalar(umin=0x7fffffffffffff10,umax=0x800000000000000f)
-   9: (18) r0 = 0x8000000000000000
-  11: (07) r0 += 1
-  12: (ad) if r0 < r1 goto pc-2
-  13: (b7) r0 = 0
-  14: (95) exit
-
-And the verifier log says:
-
-  func#0 @0
-  0: R1=ctx(off=0,imm=0) R10=fp0
-  0: (61) r2 = *(u32 *)(r1 +0)          ; R1=ctx(off=0,imm=0) R2_w=pkt(off=0,r=0,imm=0)
-  1: (61) r3 = *(u32 *)(r1 +4)          ; R1=ctx(off=0,imm=0) R3_w=pkt_end(off=0,imm=0)
-  2: (bf) r1 = r2                       ; R1_w=pkt(off=0,r=0,imm=0) R2_w=pkt(off=0,r=0,imm=0)
-  3: (07) r1 += 1                       ; R1_w=pkt(off=1,r=0,imm=0)
-  4: (2d) if r1 > r3 goto pc+8          ; R1_w=pkt(off=1,r=1,imm=0) R3_w=pkt_end(off=0,imm=0)
-  5: (71) r1 = *(u8 *)(r2 +0)           ; R1_w=scalar(umax=255,var_off=(0x0; 0xff)) R2_w=pkt(off=0,r=1,imm=0)
-  6: (18) r0 = 0x7fffffffffffff10       ; R0_w=9223372036854775568
-  8: (0f) r1 += r0                      ; R0_w=9223372036854775568 R1_w=scalar(umin=9223372036854775568,umax=9223372036854775823,s32_min=-240,s32_max=15)
-  9: (18) r0 = 0x8000000000000000       ; R0_w=-9223372036854775808
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775807
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775807 R1_w=scalar(umin=9223372036854775568,umax=9223372036854775809)
-  13: (b7) r0 = 0                       ; R0_w=0
-  14: (95) exit
-
-  from 12 to 11: R0_w=-9223372036854775807 R1_w=scalar(umin=9223372036854775810,umax=9223372036854775823,var_off=(0x8000000000000000; 0xffffffff)) R2_w=pkt(off=0,r=1,imm=0) R3_w=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775806
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775806 R1_w=scalar(umin=9223372036854775810,umax=9223372036854775810,var_off=(0x8000000000000000; 0xffffffff))
-  13: safe
-
-  [...]
-
-  from 12 to 11: R0_w=-9223372036854775795 R1=scalar(umin=9223372036854775822,umax=9223372036854775823,var_off=(0x8000000000000000; 0xffffffff)) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775794
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775794 R1=scalar(umin=9223372036854775822,umax=9223372036854775822,var_off=(0x8000000000000000; 0xffffffff))
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775794 R1=scalar(umin=9223372036854775823,umax=9223372036854775823,var_off=(0x8000000000000000; 0xffffffff)) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775793
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775793 R1=scalar(umin=9223372036854775823,umax=9223372036854775823,var_off=(0x8000000000000000; 0xffffffff))
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775793 R1=scalar(umin=9223372036854775824,umax=9223372036854775823,var_off=(0x8000000000000000; 0xffffffff)) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775792
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775792 R1=scalar(umin=9223372036854775824,umax=9223372036854775823,var_off=(0x8000000000000000; 0xffffffff))
-  13: safe
-
-  [...]
-
-The 64bit umin=9223372036854775810 bound continuously bumps by +1 while
-umax=9223372036854775823 stays as-is until the verifier complexity limit
-is reached and the program gets finally rejected. During this simulation,
-the umin also eventually surpasses umax. Looking at the first 'from 12
-to 11' output line from the loop, R1 has the following state:
-
-  R1_w=scalar(umin=0x8000000000000002 (9223372036854775810),
-              umax=0x800000000000000f (9223372036854775823),
-          var_off=(0x8000000000000000;
-                           0xffffffff))
-
-The var_off has technically not an inconsistent state but it's very
-imprecise and far off surpassing 64bit umax bounds whereas the expected
-output with refined known bits in var_off should have been like:
-
-  R1_w=scalar(umin=0x8000000000000002 (9223372036854775810),
-              umax=0x800000000000000f (9223372036854775823),
-          var_off=(0x8000000000000000;
-                                  0xf))
-
-In the above log, var_off stays as var_off=(0x8000000000000000; 0xffffffff)
-and does not converge into a narrower mask where more bits become known,
-eventually transforming R1 into a constant upon umin=9223372036854775823,
-umax=9223372036854775823 case where the verifier would have terminated and
-let the program pass.
-
-The __reg_combine_64_into_32() marks the subregister unknown and propagates
-64bit {s,u}min/{s,u}max bounds to their 32bit equivalents iff they are within
-the 32bit universe. The question came up whether __reg_combine_64_into_32()
-should special case the situation that when 64bit {s,u}min bounds have
-the same value as 64bit {s,u}max bounds to then assign the latter as
-well to the 32bit reg->{s,u}32_{min,max}_value. As can be seen from the
-above example however, that is just /one/ special case and not a /generic/
-solution given above example would still not be addressed this way and
-remain at an imprecise var_off=(0x8000000000000000; 0xffffffff).
-
-The improvement is needed in __reg_bound_offset() to refine var32_off with
-the updated var64_off instead of the prior reg->var_off. The reg_bounds_sync()
-code first refines information about the register's min/max bounds via
-__update_reg_bounds() from the current var_off, then in __reg_deduce_bounds()
-from sign bit and with the potentially learned bits from bounds it'll
-update the var_off tnum in __reg_bound_offset(). For example, intersecting
-with the old var_off might have improved bounds slightly, e.g. if umax
-was 0x7f...f and var_off was (0; 0xf...fc), then new var_off will then
-result in (0; 0x7f...fc). The intersected var64_off holds then the
-universe which is a superset of var32_off. The point for the latter is
-not to broaden, but to further refine known bits based on the intersection
-of var_off with 32 bit bounds, so that we later construct the final var_off
-from upper and lower 32 bits. The final __update_reg_bounds() can then
-potentially still slightly refine bounds if more bits became known from the
-new var_off.
-
-After the improvement, we can see R1 converging successively:
-
-  func#0 @0
-  0: R1=ctx(off=0,imm=0) R10=fp0
-  0: (61) r2 = *(u32 *)(r1 +0)          ; R1=ctx(off=0,imm=0) R2_w=pkt(off=0,r=0,imm=0)
-  1: (61) r3 = *(u32 *)(r1 +4)          ; R1=ctx(off=0,imm=0) R3_w=pkt_end(off=0,imm=0)
-  2: (bf) r1 = r2                       ; R1_w=pkt(off=0,r=0,imm=0) R2_w=pkt(off=0,r=0,imm=0)
-  3: (07) r1 += 1                       ; R1_w=pkt(off=1,r=0,imm=0)
-  4: (2d) if r1 > r3 goto pc+8          ; R1_w=pkt(off=1,r=1,imm=0) R3_w=pkt_end(off=0,imm=0)
-  5: (71) r1 = *(u8 *)(r2 +0)           ; R1_w=scalar(umax=255,var_off=(0x0; 0xff)) R2_w=pkt(off=0,r=1,imm=0)
-  6: (18) r0 = 0x7fffffffffffff10       ; R0_w=9223372036854775568
-  8: (0f) r1 += r0                      ; R0_w=9223372036854775568 R1_w=scalar(umin=9223372036854775568,umax=9223372036854775823,s32_min=-240,s32_max=15)
-  9: (18) r0 = 0x8000000000000000       ; R0_w=-9223372036854775808
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775807
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775807 R1_w=scalar(umin=9223372036854775568,umax=9223372036854775809)
-  13: (b7) r0 = 0                       ; R0_w=0
-  14: (95) exit
-
-  from 12 to 11: R0_w=-9223372036854775807 R1_w=scalar(umin=9223372036854775810,umax=9223372036854775823,var_off=(0x8000000000000000; 0xf),s32_min=0,s32_max=15,u32_max=15) R2_w=pkt(off=0,r=1,imm=0) R3_w=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775806
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775806 R1_w=-9223372036854775806
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775806 R1_w=scalar(umin=9223372036854775811,umax=9223372036854775823,var_off=(0x8000000000000000; 0xf),s32_min=0,s32_max=15,u32_max=15) R2_w=pkt(off=0,r=1,imm=0) R3_w=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775805
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775805 R1_w=-9223372036854775805
-  13: safe
-
-  [...]
-
-  from 12 to 11: R0_w=-9223372036854775798 R1=scalar(umin=9223372036854775819,umax=9223372036854775823,var_off=(0x8000000000000008; 0x7),s32_min=8,s32_max=15,u32_min=8,u32_max=15) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775797
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775797 R1=-9223372036854775797
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775797 R1=scalar(umin=9223372036854775820,umax=9223372036854775823,var_off=(0x800000000000000c; 0x3),s32_min=12,s32_max=15,u32_min=12,u32_max=15) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775796
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775796 R1=-9223372036854775796
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775796 R1=scalar(umin=9223372036854775821,umax=9223372036854775823,var_off=(0x800000000000000c; 0x3),s32_min=12,s32_max=15,u32_min=12,u32_max=15) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775795
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775795 R1=-9223372036854775795
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775795 R1=scalar(umin=9223372036854775822,umax=9223372036854775823,var_off=(0x800000000000000e; 0x1),s32_min=14,s32_max=15,u32_min=14,u32_max=15) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775794
-  12: (ad) if r0 < r1 goto pc-2         ; R0_w=-9223372036854775794 R1=-9223372036854775794
-  13: safe
-
-  from 12 to 11: R0_w=-9223372036854775794 R1=-9223372036854775793 R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  11: (07) r0 += 1                      ; R0_w=-9223372036854775793
-  12: (ad) if r0 < r1 goto pc-2
-  last_idx 12 first_idx 12
-  parent didn't have regs=1 stack=0 marks: R0_rw=P-9223372036854775801 R1_r=scalar(umin=9223372036854775815,umax=9223372036854775823,var_off=(0x8000000000000000; 0xf),s32_min=0,s32_max=15,u32_max=15) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  last_idx 11 first_idx 11
-  regs=1 stack=0 before 11: (07) r0 += 1
-  parent didn't have regs=1 stack=0 marks: R0_rw=P-9223372036854775805 R1_rw=scalar(umin=9223372036854775812,umax=9223372036854775823,var_off=(0x8000000000000000; 0xf),s32_min=0,s32_max=15,u32_max=15) R2_w=pkt(off=0,r=1,imm=0) R3_w=pkt_end(off=0,imm=0) R10=fp0
-  last_idx 12 first_idx 0
-  regs=1 stack=0 before 12: (ad) if r0 < r1 goto pc-2
-  regs=1 stack=0 before 11: (07) r0 += 1
-  regs=1 stack=0 before 12: (ad) if r0 < r1 goto pc-2
-  regs=1 stack=0 before 11: (07) r0 += 1
-  regs=1 stack=0 before 12: (ad) if r0 < r1 goto pc-2
-  regs=1 stack=0 before 11: (07) r0 += 1
-  regs=1 stack=0 before 9: (18) r0 = 0x8000000000000000
-  last_idx 12 first_idx 12
-  parent didn't have regs=2 stack=0 marks: R0_rw=P-9223372036854775801 R1_r=Pscalar(umin=9223372036854775815,umax=9223372036854775823,var_off=(0x8000000000000000; 0xf),s32_min=0,s32_max=15,u32_max=15) R2=pkt(off=0,r=1,imm=0) R3=pkt_end(off=0,imm=0) R10=fp0
-  last_idx 11 first_idx 11
-  regs=2 stack=0 before 11: (07) r0 += 1
-  parent didn't have regs=2 stack=0 marks: R0_rw=P-9223372036854775805 R1_rw=Pscalar(umin=9223372036854775812,umax=9223372036854775823,var_off=(0x8000000000000000; 0xf),s32_min=0,s32_max=15,u32_max=15) R2_w=pkt(off=0,r=1,imm=0) R3_w=pkt_end(off=0,imm=0) R10=fp0
-  last_idx 12 first_idx 0
-  regs=2 stack=0 before 12: (ad) if r0 < r1 goto pc-2
-  regs=2 stack=0 before 11: (07) r0 += 1
-  regs=2 stack=0 before 12: (ad) if r0 < r1 goto pc-2
-  regs=2 stack=0 before 11: (07) r0 += 1
-  regs=2 stack=0 before 12: (ad) if r0 < r1 goto pc-2
-  regs=2 stack=0 before 11: (07) r0 += 1
-  regs=2 stack=0 before 9: (18) r0 = 0x8000000000000000
-  regs=2 stack=0 before 8: (0f) r1 += r0
-  regs=3 stack=0 before 6: (18) r0 = 0x7fffffffffffff10
-  regs=2 stack=0 before 5: (71) r1 = *(u8 *)(r2 +0)
-  13: safe
-
-  from 4 to 13: safe
-  verification time 322 usec
-  stack depth 0
-  processed 56 insns (limit 1000000) max_states_per_insn 1 total_states 3 peak_states 3 mark_read 1
-
-This also fixes up a test case along with this improvement where we match
-on the verifier log. The updated log now has a refined var_off, too.
-
-Fixes: 3f50f132d840 ("bpf: Verifier, do explicit ALU32 bounds tracking")
-Reported-by: Xu Kuohai <xukuohai@huaweicloud.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20230314203424.4015351-2-xukuohai@huaweicloud.com
-Link: https://lore.kernel.org/bpf/20230322213056.2470-1-daniel@iogearbox.net
+Fixes: 4710b752e029 ("[media] v4l: Add Renesas R-Car FDP1 Driver")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+[hverkuil: resolve merge conflict, remove() is now void]
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                          | 6 +++---
- tools/testing/selftests/bpf/prog_tests/align.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/media/platform/renesas/rcar_fdp1.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 32ea9aaa8b8db..8726161076134 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -1590,9 +1590,9 @@ static void __reg_bound_offset(struct bpf_reg_state *reg)
- 	struct tnum var64_off = tnum_intersect(reg->var_off,
- 					       tnum_range(reg->umin_value,
- 							  reg->umax_value));
--	struct tnum var32_off = tnum_intersect(tnum_subreg(reg->var_off),
--						tnum_range(reg->u32_min_value,
--							   reg->u32_max_value));
-+	struct tnum var32_off = tnum_intersect(tnum_subreg(var64_off),
-+					       tnum_range(reg->u32_min_value,
-+							  reg->u32_max_value));
+diff --git a/drivers/media/platform/renesas/rcar_fdp1.c b/drivers/media/platform/renesas/rcar_fdp1.c
+index d80b3214dfae1..c548cb01957b0 100644
+--- a/drivers/media/platform/renesas/rcar_fdp1.c
++++ b/drivers/media/platform/renesas/rcar_fdp1.c
+@@ -2313,8 +2313,10 @@ static int fdp1_probe(struct platform_device *pdev)
  
- 	reg->var_off = tnum_or(tnum_clear_subreg(var64_off), var32_off);
+ 	/* Determine our clock rate */
+ 	clk = clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto put_dev;
++	}
+ 
+ 	fdp1->clk_rate = clk_get_rate(clk);
+ 	clk_put(clk);
+@@ -2323,7 +2325,7 @@ static int fdp1_probe(struct platform_device *pdev)
+ 	ret = v4l2_device_register(&pdev->dev, &fdp1->v4l2_dev);
+ 	if (ret) {
+ 		v4l2_err(&fdp1->v4l2_dev, "Failed to register video device\n");
+-		return ret;
++		goto put_dev;
+ 	}
+ 
+ 	/* M2M registration */
+@@ -2393,6 +2395,8 @@ static int fdp1_probe(struct platform_device *pdev)
+ unreg_dev:
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 
++put_dev:
++	rcar_fcp_put(fdp1->fcp);
+ 	return ret;
  }
-diff --git a/tools/testing/selftests/bpf/prog_tests/align.c b/tools/testing/selftests/bpf/prog_tests/align.c
-index 970f09156eb46..de27a29af2703 100644
---- a/tools/testing/selftests/bpf/prog_tests/align.c
-+++ b/tools/testing/selftests/bpf/prog_tests/align.c
-@@ -565,14 +565,14 @@ static struct bpf_align_test tests[] = {
- 			/* New unknown value in R7 is (4n), >= 76 */
- 			{14, "R7_w=scalar(umin=76,umax=1096,var_off=(0x0; 0x7fc))"},
- 			/* Adding it to packet pointer gives nice bounds again */
--			{16, "R5_w=pkt(id=3,off=0,r=0,umin=2,umax=1082,var_off=(0x2; 0xfffffffc)"},
-+			{16, "R5_w=pkt(id=3,off=0,r=0,umin=2,umax=1082,var_off=(0x2; 0x7fc)"},
- 			/* At the time the word size load is performed from R5,
- 			 * its total fixed offset is NET_IP_ALIGN + reg->off (0)
- 			 * which is 2.  Then the variable offset is (4n+2), so
- 			 * the total offset is 4-byte aligned and meets the
- 			 * load's requirements.
- 			 */
--			{20, "R5=pkt(id=3,off=0,r=4,umin=2,umax=1082,var_off=(0x2; 0xfffffffc)"},
-+			{20, "R5=pkt(id=3,off=0,r=4,umin=2,umax=1082,var_off=(0x2; 0x7fc)"},
- 		},
- 	},
- };
+ 
+@@ -2404,6 +2408,7 @@ static void fdp1_remove(struct platform_device *pdev)
+ 	video_unregister_device(&fdp1->vfd);
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 	pm_runtime_disable(&pdev->dev);
++	rcar_fcp_put(fdp1->fcp);
+ }
+ 
+ static int __maybe_unused fdp1_pm_runtime_suspend(struct device *dev)
 -- 
 2.39.2
 
