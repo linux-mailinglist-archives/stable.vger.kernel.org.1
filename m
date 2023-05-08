@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DB06FACA1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3806FAE32
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235645AbjEHL0i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
+        id S236112AbjEHLmW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:42:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233980AbjEHL0a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:30 -0400
+        with ESMTP id S236245AbjEHLlx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:41:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9BC239BAD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0405C3A8C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99F4E62D6A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88794C433EF;
-        Mon,  8 May 2023 11:26:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88A016355D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F83CC433D2;
+        Mon,  8 May 2023 11:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545168;
-        bh=xghh3jpNNkWugck2oAidqLtKhwyzrLdC9xihcEx88bU=;
+        s=korg; t=1683546082;
+        bh=hBy+kXqsr/BD3HYsJvD/K1V3BjTYwHWYK9CghkQfEa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QK9VLS6yOvEB7gzAsVxQVYuqrbpb9NVpb6knLAxfRpyGTP9YdDjF6EZ8qhU3iHa/W
-         TuNyaCd+R7hF5oEywlapnW//abXG+Xx1Jwpoo79OTTLz71aQDaR6KbMpSdUcspNxKs
-         ottc8vqJqIVJ/58Suimta0tkzYYXGns9ei2A3NdU=
+        b=1Fg7I+flzV5qZBCtb4+lm9zcBuW3PKyWmvXgX+3+i1Cd4UMvo23C/+80J1VG0Lb96
+         9aiJlqNaMp8sTEseINKtZJaj6GONForqTM3dPw0Eey4Nax70SNgxD9FkhUxCzRH2F3
+         MUiJ78k9KKeYtrg7jI2lcOHe5JQstrvYMKeMf6fI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 616/694] clk: qcom: dispcc-qcm2290: Remove inexistent DSI1PHY clk
+Subject: [PATCH 5.15 250/371] PCI: imx6: Install the fault handler only on compatible match
 Date:   Mon,  8 May 2023 11:47:31 +0200
-Message-Id: <20230508094455.465888735@linuxfoundation.org>
+Message-Id: <20230508094821.990880523@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-[ Upstream commit 68d1151f03067533827fc50b770954ef33149533 ]
+[ Upstream commit 5f5ac460dfe7f4e11f99de9870f240e39189cf72 ]
 
-There's only one DSI PHY on this SoC. Remove the ghost entry for the
-clock produced by a secondary one.
+commit bb38919ec56e ("PCI: imx6: Add support for i.MX6 PCIe controller")
+added a fault hook to this driver in the probe function. So it was only
+installed if needed.
 
-Fixes: cc517ea3333f ("clk: qcom: Add display clock controller driver for QCM2290")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230412-topic-qcm_dispcc-v1-2-bf2989a75ae4@linaro.org
+commit bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
+moved it from probe to driver init which installs the hook unconditionally
+as soon as the driver is compiled into a kernel.
+
+When this driver is compiled as a module, the hook is not registered
+until after the driver has been matched with a .compatible and
+loaded.
+
+commit 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
+extended the fault handling code.
+
+commit 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+added some protection for non-ARM architectures, but this does not
+protect non-i.MX ARM architectures.
+
+Since fault handlers can be triggered on any architecture for different
+reasons, there is no guarantee that they will be triggered only for the
+assumed situation, leading to improper error handling (i.MX6-specific
+imx6q_pcie_abort_handler) on foreign systems.
+
+I had seen strange L3 imprecise external abort messages several times on
+OMAP4 and OMAP5 devices and couldn't make sense of them until I realized
+they were related to this unused imx6q driver because I had
+CONFIG_PCI_IMX6=y.
+
+Note that CONFIG_PCI_IMX6=y is useful for kernel binaries that are designed
+to run on different ARM SoC and be differentiated only by device tree
+binaries. So turning off CONFIG_PCI_IMX6 is not a solution.
+
+Therefore we check the compatible in the init function before registering
+the fault handler.
+
+Link: https://lore.kernel.org/r/e1bcfc3078c82b53aa9b78077a89955abe4ea009.1678380991.git.hns@goldelico.com
+Fixes: bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
+Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-qcm2290.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-qcm2290.c b/drivers/clk/qcom/dispcc-qcm2290.c
-index 2ebd9a02b8950..24755dc841f9d 100644
---- a/drivers/clk/qcom/dispcc-qcm2290.c
-+++ b/drivers/clk/qcom/dispcc-qcm2290.c
-@@ -26,7 +26,6 @@ enum {
- 	P_DISP_CC_PLL0_OUT_MAIN,
- 	P_DSI0_PHY_PLL_OUT_BYTECLK,
- 	P_DSI0_PHY_PLL_OUT_DSICLK,
--	P_DSI1_PHY_PLL_OUT_DSICLK,
- 	P_GPLL0_OUT_MAIN,
- 	P_SLEEP_CLK,
- };
-@@ -106,13 +105,11 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
- static const struct parent_map disp_cc_parent_map_4[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_DSI0_PHY_PLL_OUT_DSICLK, 1 },
--	{ P_DSI1_PHY_PLL_OUT_DSICLK, 2 },
- };
- 
- static const struct clk_parent_data disp_cc_parent_data_4[] = {
- 	{ .fw_name = "bi_tcxo" },
- 	{ .fw_name = "dsi0_phy_pll_out_dsiclk" },
--	{ .fw_name = "dsi1_phy_pll_out_dsiclk" },
- };
- 
- static const struct parent_map disp_cc_parent_map_5[] = {
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 67dbf9d88d222..6a3336f2105b8 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1258,6 +1258,13 @@ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_SYNOPSYS, 0xabcd,
+ static int __init imx6_pcie_init(void)
+ {
+ #ifdef CONFIG_ARM
++	struct device_node *np;
++
++	np = of_find_matching_node(NULL, imx6_pcie_of_match);
++	if (!np)
++		return -ENODEV;
++	of_node_put(np);
++
+ 	/*
+ 	 * Since probe() can be deferred we need to make sure that
+ 	 * hook_fault_code is not called after __init memory is freed
 -- 
 2.39.2
 
