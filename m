@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1923B6FADBB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8C66FA5DD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234017AbjEHLhv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:37:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57534 "EHLO
+        id S234283AbjEHKNw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:13:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236050AbjEHLhV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB66C31EE3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:57 -0700 (PDT)
+        with ESMTP id S234291AbjEHKNj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87D73AA1F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 136E36336D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEEFC433D2;
-        Mon,  8 May 2023 11:36:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 84FCF62406
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987CDC433EF;
+        Mon,  8 May 2023 10:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545776;
-        bh=C3TNWy7E2eTHc/6V+meOjr38etecp82m9YMJVtbCKiY=;
+        s=korg; t=1683540816;
+        bh=hfEhiAuaVlMG4xQxmFS9RLPXYYi4UgQiJ+eh70j6rnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wsgkUF1CCnySU/c//Qe1VZwWu2sf7Xid+e8M/iJjbOq3rZUl062DeZLR7eFD3VByy
-         Qdyx/a0ccMwxVszXaBX9WxCYkRmiXLnjMy0tsTQFWmSm69ycWumYFuXDFsSzznp4wK
-         YZk/PhhIy2TZz0yy5kglVg7Wj6mDdZ5X/k2/Yw7A=
+        b=mq5SP5MYCx1dJDxJuPRyO71lgHl1ycjCDXibZwQhlxgWbmD33RdDO6qfNyUgYKXab
+         jPk7sQErbl/Z789vM18t+/tmQlYWTB1htbD4Wpzc56j5fb1Mi2sRnNQ6ibdd3x72hf
+         pXYOUJrKa+hFlDUvjhYp1fFBcYIRa/jR+BnCFfw4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-        =?UTF-8?q?Tom=C3=A1=C5=A1=20Pecka?= <tomas.pecka@cesnet.cz>,
-        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/371] hwmon: (pmbus/fsp-3y) Fix functionality bitmask in FSP-3Y YM-2151E
+Subject: [PATCH 6.1 508/611] clk: qcom: gcc-sm8350: fix PCIe PIPE clocks handling
 Date:   Mon,  8 May 2023 11:45:50 +0200
-Message-Id: <20230508094817.975893032@linuxfoundation.org>
+Message-Id: <20230508094438.567851361@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +55,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tomáš Pecka <tomas.pecka@cesnet.cz>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 93822f5161a2dc57a60b95b35b3cb8589f53413e ]
+[ Upstream commit 1a500e0bc97b6cb3c0d9859e81973b8dd07d1b7b ]
 
-The bit flags in pmbus_driver_info functionality for YM-2151E chip were
-joined with a comma operator instead of a bitwise OR. This means that
-the last constant PMBUS_HAVE_IIN was not OR-ed with the other
-PM_BUS_HAVE_* constants for this page but it initialized the next element
-of the func array (which was not accessed from anywhere because of the
-number of pages).
+On SM8350 platform the PCIe PIPE clocks require additional handling to
+function correctly. They are to be switched to the tcxo source before
+turning PCIe GDSCs off and should be switched to PHY PIPE source once
+they are working. Switch PCIe PHY clocks to use clk_regmap_phy_mux_ops,
+which provide support for this dance.
 
-However, there is no need for setting PMBUS_HAVE_IIN in the 5Vsb page
-because this command does not seem to be paged. Obviously, the device
-only has one IIN sensor, so it doesn't make sense to query it again from
-the second page.
-
-Fixes: 1734b4135a62 ("hwmon: Add driver for fsp-3y PSUs and PDUs")
-Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Signed-off-by: Tomáš Pecka <tomas.pecka@cesnet.cz>
-Link: https://lore.kernel.org/r/20230420171939.212040-1-tomas.pecka@cesnet.cz
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 44c20c9ed37f ("clk: qcom: gcc: Add clock driver for SM8350")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230412134829.3686467-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/fsp-3y.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/qcom/gcc-sm8350.c | 47 ++++++++++-------------------------
+ 1 file changed, 13 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/fsp-3y.c b/drivers/hwmon/pmbus/fsp-3y.c
-index aec294cc72d1f..c7469d2cdedcf 100644
---- a/drivers/hwmon/pmbus/fsp-3y.c
-+++ b/drivers/hwmon/pmbus/fsp-3y.c
-@@ -180,7 +180,6 @@ static struct pmbus_driver_info fsp3y_info[] = {
- 			PMBUS_HAVE_FAN12,
- 		.func[YM2151_PAGE_5VSB_LOG] =
- 			PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT,
--			PMBUS_HAVE_IIN,
- 		.read_word_data = fsp3y_read_word_data,
- 		.read_byte_data = fsp3y_read_byte_data,
+diff --git a/drivers/clk/qcom/gcc-sm8350.c b/drivers/clk/qcom/gcc-sm8350.c
+index c3731f96c8e6b..430ef407a8341 100644
+--- a/drivers/clk/qcom/gcc-sm8350.c
++++ b/drivers/clk/qcom/gcc-sm8350.c
+@@ -17,6 +17,7 @@
+ #include "clk-regmap.h"
+ #include "clk-regmap-divider.h"
+ #include "clk-regmap-mux.h"
++#include "clk-regmap-phy-mux.h"
+ #include "gdsc.h"
+ #include "reset.h"
+ 
+@@ -167,26 +168,6 @@ static const struct clk_parent_data gcc_parent_data_3[] = {
+ 	{ .fw_name = "core_bi_pll_test_se" },
+ };
+ 
+-static const struct parent_map gcc_parent_map_4[] = {
+-	{ P_PCIE_0_PIPE_CLK, 0 },
+-	{ P_BI_TCXO, 2 },
+-};
+-
+-static const struct clk_parent_data gcc_parent_data_4[] = {
+-	{ .fw_name = "pcie_0_pipe_clk", },
+-	{ .fw_name = "bi_tcxo" },
+-};
+-
+-static const struct parent_map gcc_parent_map_5[] = {
+-	{ P_PCIE_1_PIPE_CLK, 0 },
+-	{ P_BI_TCXO, 2 },
+-};
+-
+-static const struct clk_parent_data gcc_parent_data_5[] = {
+-	{ .fw_name = "pcie_1_pipe_clk" },
+-	{ .fw_name = "bi_tcxo" },
+-};
+-
+ static const struct parent_map gcc_parent_map_6[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_GCC_GPLL0_OUT_MAIN, 1 },
+@@ -289,32 +270,30 @@ static const struct clk_parent_data gcc_parent_data_14[] = {
+ 	{ .fw_name = "bi_tcxo" },
+ };
+ 
+-static struct clk_regmap_mux gcc_pcie_0_pipe_clk_src = {
++static struct clk_regmap_phy_mux gcc_pcie_0_pipe_clk_src = {
+ 	.reg = 0x6b054,
+-	.shift = 0,
+-	.width = 2,
+-	.parent_map = gcc_parent_map_4,
+ 	.clkr = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_pcie_0_pipe_clk_src",
+-			.parent_data = gcc_parent_data_4,
+-			.num_parents = ARRAY_SIZE(gcc_parent_data_4),
+-			.ops = &clk_regmap_mux_closest_ops,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "pcie_0_pipe_clk",
++			},
++			.num_parents = 1,
++			.ops = &clk_regmap_phy_mux_ops,
+ 		},
  	},
+ };
+ 
+-static struct clk_regmap_mux gcc_pcie_1_pipe_clk_src = {
++static struct clk_regmap_phy_mux gcc_pcie_1_pipe_clk_src = {
+ 	.reg = 0x8d054,
+-	.shift = 0,
+-	.width = 2,
+-	.parent_map = gcc_parent_map_5,
+ 	.clkr = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_pcie_1_pipe_clk_src",
+-			.parent_data = gcc_parent_data_5,
+-			.num_parents = ARRAY_SIZE(gcc_parent_data_5),
+-			.ops = &clk_regmap_mux_closest_ops,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "pcie_1_pipe_clk",
++			},
++			.num_parents = 1,
++			.ops = &clk_regmap_phy_mux_ops,
+ 		},
+ 	},
+ };
 -- 
 2.39.2
 
