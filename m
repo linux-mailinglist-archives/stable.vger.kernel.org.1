@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106E26FAC93
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C82B36FAE52
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235692AbjEHL0D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
+        id S236288AbjEHLno (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235751AbjEHLZv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:51 -0400
+        with ESMTP id S236261AbjEHLnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFA539BB7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91BEF2CFF5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A776762D6C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE51C433EF;
-        Mon,  8 May 2023 11:25:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BD68635BC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80571C4339B;
+        Mon,  8 May 2023 11:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545137;
-        bh=gg0wWCJjlLBpsAl2t/fYYFgCGyh4qfQb8ZDKeNIUork=;
+        s=korg; t=1683546139;
+        bh=RJUzYLeux8z2FCQSB0NNngPgxTcgi8htwE0TV0xh0P8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zfruoXgc1G4oEc14IItJpEVIcdOxTaFoZjfZ/CELZCt9mLl57qpVjaon3NWzhcmlp
-         7vFyvovEQiX3ozxWf5u1ar5oinI8xMXjmsdirU7Z1AE9JRDmqsbghk0rf3rJ9ao+tV
-         tPtVNP1rd7NevHZZJFa7KO5LTylOt1zQekHKtWWE=
+        b=WYJ6NMRGnOqC4TA2jzuGYpF/OARWyuxnxPiuZA0tNeSCWbt48JTLcbl8ii33Ba+Q9
+         7c0jAxAHbcv1UvZJyIUhgoJXYeo/QE+78s4BKhIzFzm00aUwWeRhVN1BY46JJ7FJtZ
+         fJN6hMLljAUkUee3Upuaq0g4x15nHJCy4IjA+ScA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phong Hoang <phong.hoang.wz@renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 636/694] pinctrl: renesas: r8a779f0: Fix tsn1_avtp_pps pin group
+Subject: [PATCH 5.15 270/371] usb: gadget: tegra-xudc: Fix crash in vbus_draw
 Date:   Mon,  8 May 2023 11:47:51 +0200
-Message-Id: <20230508094456.343419757@linuxfoundation.org>
+Message-Id: <20230508094822.759317471@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,35 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Phong Hoang <phong.hoang.wz@renesas.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 60003351e99167d8cfa7c161e95856efc016f381 ]
+[ Upstream commit 5629d31955297ca47b9283c64fff70f2f34aa528 ]
 
-Correct a typo mistake in the definition of the tsn1_avtp_pps pin group
-mux.
+Commit ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+populated the vbus_draw callback for the Tegra XUDC driver. The function
+tegra_xudc_gadget_vbus_draw(), that was added by this commit, assumes
+that the pointer 'curr_usbphy' has been initialised, which is not always
+the case because this is only initialised when the USB role is updated.
+Fix this crash, by checking that the 'curr_usbphy' is valid before
+dereferencing.
 
-Signed-off-by: Phong Hoang <phong.hoang.wz@renesas.com>
-Fixes: babe298e9caaa3d7 ("pinctrl: renesas: r8a779f0: Add Ethernet pins, groups, and functions")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/45ea6e87b91c36fd0b9706cf58ff50a4d1a99c44.1674825039.git.geert+renesas@glider.be
+Fixes: ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230405181854.42355-1-jonathanh@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779f0.c | 2 +-
+ drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779f0.c b/drivers/pinctrl/renesas/pfc-r8a779f0.c
-index 417c357f16b19..65c141ce909ac 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779f0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779f0.c
-@@ -1213,7 +1213,7 @@ static const unsigned int tsn1_avtp_pps_pins[] = {
- 	RCAR_GP_PIN(3, 13),
- };
- static const unsigned int tsn1_avtp_pps_mux[] = {
--	TSN0_AVTP_PPS_MARK,
-+	TSN1_AVTP_PPS_MARK,
- };
- static const unsigned int tsn1_avtp_capture_a_pins[] = {
- 	/* TSN1_AVTP_CAPTURE_A */
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index cb4ddfa52cb0f..1cb4258077bd3 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -2154,7 +2154,7 @@ static int tegra_xudc_gadget_vbus_draw(struct usb_gadget *gadget,
+ 
+ 	dev_dbg(xudc->dev, "%s: %u mA\n", __func__, m_a);
+ 
+-	if (xudc->curr_usbphy->chg_type == SDP_TYPE)
++	if (xudc->curr_usbphy && xudc->curr_usbphy->chg_type == SDP_TYPE)
+ 		ret = usb_phy_set_power(xudc->curr_usbphy, m_a);
+ 
+ 	return ret;
 -- 
 2.39.2
 
