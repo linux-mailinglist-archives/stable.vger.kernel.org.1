@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106EC6FA8A5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC116FA5A1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235030AbjEHKn5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42134 "EHLO
+        id S234185AbjEHKL1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234898AbjEHKnV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:21 -0400
+        with ESMTP id S234191AbjEHKLX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA842A9C0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7033989A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B93DD6285F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82EEC433EF;
-        Mon,  8 May 2023 10:42:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24883623D8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388E6C433EF;
+        Mon,  8 May 2023 10:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542529;
-        bh=eadT1um1fonIU1gkIfIOUAen4yVN/LhJ6PXOns8kotY=;
+        s=korg; t=1683540681;
+        bh=99+RV+m1UrRspcfPc/tKZycQpkUXI/tfPtJT3S/XQyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vwpw4o5zgAztl3e7HXda5IU4MPpzj8gGwik9ragQpuv32cvZJr0svB3/AY7hvWEWb
-         pOp3XX604ztfa44YJwHnASxgTmF1D2jVDkj3ilv0mRvAJo4YtuCA0MFu91h3dguqQ8
-         SdZdjFXz/Q/G6GeKWZVGtIYf85FDi53KyeG4q4p0=
+        b=cI27xZAkWv1GefNTzf4O074752VugNyQSyUCWaKN0e2euBLmwPqLa8de3BGE1ozoE
+         UNrQ7NT7+7P79bfSD/f+PDOHyN655M+bVI54S11IZi6H38gqaXRN/0+nc1O6ZwrbwW
+         zsol/A3zCUbIfhEE2j9tCUE7Mr7hOgbZmzMNd+HE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
-        Peter Chen <peter.chen@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Rob Herring <robh@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 465/663] of: Fix modalias string generation
-Date:   Mon,  8 May 2023 11:44:51 +0200
-Message-Id: <20230508094443.275277309@linuxfoundation.org>
+Subject: [PATCH 6.1 450/611] serial: 8250: Add missing wakeup event reporting
+Date:   Mon,  8 May 2023 11:44:52 +0200
+Message-Id: <20230508094436.776072178@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,78 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
+[ Upstream commit 0ba9e3a13c6adfa99e32b2576d20820ab10ad48a ]
 
-The helper generating an OF based modalias (of_device_get_modalias())
-works fine, but due to the use of snprintf() internally it needs a
-buffer one byte longer than what should be needed just for the entire
-string (excluding the '\0'). Most users of this helper are sysfs hooks
-providing the modalias string to users. They all provide a PAGE_SIZE
-buffer which is way above the number of bytes required to fit the
-modalias string and hence do not suffer from this issue.
+An 8250 UART configured as a wake-up source would not have reported
+itself through sysfs as being the source of wake-up, correct that.
 
-There is another user though, of_device_request_module(), which is only
-called by drivers/usb/common/ulpi.c. This request module function is
-faulty, but maybe because in most cases there is an alternative, ULPI
-driver users have not noticed it.
-
-In this function, of_device_get_modalias() is called twice. The first
-time without buffer just to get the number of bytes required by the
-modalias string (excluding the null byte), and a second time, after
-buffer allocation, to fill the buffer. The allocation asks for an
-additional byte, in order to store the trailing '\0'. However, the
-buffer *length* provided to of_device_get_modalias() excludes this extra
-byte. The internal use of snprintf() with a length that is exactly the
-number of bytes to be written has the effect of using the last available
-byte to store a '\0', which then smashes the last character of the
-modalias string.
-
-Provide the actual size of the buffer to of_device_get_modalias() to fix
-this issue.
-
-Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
-will anyway end the string with a null byte, but there is a possibility
-that this function might be called on a struct device_node without
-compatible, in this case snprintf() would not be executed. So we keep it
-just to avoid possible unbounded strings.
-
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Peter Chen <peter.chen@kernel.org>
-Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
+Fixes: b3b708fa2780 ("wake up from a serial port")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://lore.kernel.org/r/20230414170241.2016255-1-f.fainelli@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/device.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_port.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index c674a13c30558..877f50379fab5 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -297,12 +297,15 @@ int of_device_request_module(struct device *dev)
- 	if (size < 0)
- 		return size;
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index b82dce557c383..b8e8a96c3eb63 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -15,6 +15,7 @@
+ #include <linux/moduleparam.h>
+ #include <linux/ioport.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/console.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/sysrq.h>
+@@ -1926,6 +1927,7 @@ static bool handle_rx_dma(struct uart_8250_port *up, unsigned int iir)
+ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
+ {
+ 	struct uart_8250_port *up = up_to_u8250p(port);
++	struct tty_port *tport = &port->state->port;
+ 	bool skip_rx = false;
+ 	unsigned long flags;
+ 	u16 status;
+@@ -1951,6 +1953,8 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
+ 		skip_rx = true;
  
--	str = kmalloc(size + 1, GFP_KERNEL);
-+	/* Reserve an additional byte for the trailing '\0' */
-+	size++;
-+
-+	str = kmalloc(size, GFP_KERNEL);
- 	if (!str)
- 		return -ENOMEM;
- 
- 	of_device_get_modalias(dev, str, size);
--	str[size] = '\0';
-+	str[size - 1] = '\0';
- 	ret = request_module(str);
- 	kfree(str);
- 
+ 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
++		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
++			pm_wakeup_event(tport->tty->dev, 0);
+ 		if (!up->dma || handle_rx_dma(up, iir))
+ 			status = serial8250_rx_chars(up, status);
+ 	}
 -- 
 2.39.2
 
