@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 561B66FAD6A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A3A6FAB9C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233895AbjEHLe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:34:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56086 "EHLO
+        id S233904AbjEHLPW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235947AbjEHLek (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 432223EDA3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:33:58 -0700 (PDT)
+        with ESMTP id S234418AbjEHLPV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B8736568
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02C6663244
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC92AC433D2;
-        Mon,  8 May 2023 11:33:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C3D562BDA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257D6C433EF;
+        Mon,  8 May 2023 11:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545620;
-        bh=zNLmtlvE92e+a6GUH7QTXZjn1URMTLYoWikuSwWheO8=;
+        s=korg; t=1683544519;
+        bh=VN4hcio/mP5PNOFrgXjwtSkD8z55lfLlc7H7NHAA4n4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nqXciFoW/IdiHLzQxKcnd5ZCj2M6UEEShqBnWoPnDmORC5saTBrQb7+G5Wq1M9FdV
-         EVzUS8/pGfaDHWqa2hzkP1Qe1Cpk7+yp7DfH5L7dxRKlrR0Cc/a64TRe/e2Ouxt8Se
-         hDnELTeZBi5iHQGAPP9fPu5UtsDoRuMwmMi10OWg=
+        b=iqV3r5avbAZR24lXnxZyox1SPxjndVsUkokZpHPIqpNRyynC4zcL4Om2JBnMAq0+l
+         QCFWKoyAYbE/B0F1FWG6Xh7XFqhvgBvFP7q3BxSluKMS/6GnfnEuk6zgs10CB40HoJ
+         JttMut2xwjTqMGDROp8TTxUAgsXFJMkZvOEpCca4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/371] tpm, tpm_tis: Claim locality before writing interrupt registers
+        patches@lists.linux.dev, Lorenz Brun <lorenz@brun.one>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 436/694] wifi: mt76: mt7915: expose device tree match table
 Date:   Mon,  8 May 2023 11:44:31 +0200
-Message-Id: <20230508094814.897191675@linuxfoundation.org>
+Message-Id: <20230508094447.559913135@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,83 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Lorenz Brun <lorenz@brun.one>
 
-[ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
+[ Upstream commit 90fb69212c60e26ef70ed0e8532b116c7649ac88 ]
 
-In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
-TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
-Currently these modifications are done without holding a locality thus they
-have no effect. Fix this by claiming the (default) locality before the
-registers are written.
+On MT7986 the WiFi driver currently does not get automatically loaded,
+requiring manual modprobing because the device tree compatibles are not
+exported into metadata.
 
-Since now tpm_tis_gen_interrupt() is called with the locality already
-claimed remove locality request and release from this function.
+Add the missing MODULE_DEVICE_TABLE macro to fix this.
 
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
+Fixes: 99ad32a4ca3a2 ("mt76: mt7915: add support for MT7986")
+Signed-off-by: Lorenz Brun <lorenz@brun.one>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/soc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 99cbf6fb062ce..52826a7edf800 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -721,16 +721,10 @@ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
- 	cap_t cap;
- 	int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+index 2ac0a0f2859cb..32c137066e7f7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+@@ -1239,6 +1239,8 @@ static const struct of_device_id mt7986_wmac_of_match[] = {
+ 	{},
+ };
  
--	ret = request_locality(chip, 0);
--	if (ret < 0)
--		return;
--
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
- 	else
- 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
--
--	release_locality(chip, 0);
- }
- 
- /* Register the IRQ and issue a command that will cause an interrupt. If an
-@@ -753,10 +747,16 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	}
- 	priv->irq = irq;
- 
-+	rc = request_locality(chip, 0);
-+	if (rc < 0)
-+		return rc;
++MODULE_DEVICE_TABLE(of, mt7986_wmac_of_match);
 +
- 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
- 			   &original_int_vec);
--	if (rc < 0)
-+	if (rc < 0) {
-+		release_locality(chip, priv->locality);
- 		return rc;
-+	}
- 
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
- 	if (rc < 0)
-@@ -790,10 +790,12 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
- 		tpm_tis_write8(priv, original_int_vec,
- 			       TPM_INT_VECTOR(priv->locality));
--		return -1;
-+		rc = -1;
- 	}
- 
--	return 0;
-+	release_locality(chip, priv->locality);
-+
-+	return rc;
- }
- 
- /* Try to find the IRQ the TPM is using. This is for legacy x86 systems that
+ struct platform_driver mt7986_wmac_driver = {
+ 	.driver = {
+ 		.name = "mt7986-wmac",
 -- 
 2.39.2
 
