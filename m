@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBF36FA40F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E32886FA43A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:56:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233701AbjEHJyq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51068 "EHLO
+        id S233120AbjEHJ4w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:56:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233816AbjEHJyo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:54:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68B0327385
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:54:42 -0700 (PDT)
+        with ESMTP id S233690AbjEHJ4u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:56:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E30D1199A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:56:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECF1D62222
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEFFC433EF;
-        Mon,  8 May 2023 09:54:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D8BC62258
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:56:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D222C433D2;
+        Mon,  8 May 2023 09:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539681;
-        bh=W5b+sfXG6vdvGdFoAhDY6Q/wLz64qFKhxa/mkAulGxE=;
+        s=korg; t=1683539807;
+        bh=BeaBmBFLMhn6wR0QhlMdNixRueD2HU3RQaKSeAdF75M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FzDJIw1mIQozKzZhMsHfX/XpRINoUcvbqfre4DxRy6UyleMpOHwfZKWuta9bI4nY0
-         8J/C8UcGE3jAp9Fr6JVLwBIkA+ZoWLImwV8gkBleSAaawULHSsG0xi/ryxcIeQRrWW
-         tTmgDNQTFPhnykogkaPcvdeEyf3JMjRiyY/kqGts=
+        b=iEztkvYxEtUzLJU4WJC4JI/a2OjloEAe0IXjEbi/nBKLrCUF4leEhAjoZ2MFd+v/S
+         mC2LLu9sJbMjJxgD3b6rX8rNXK1QYcUaNJeaZeTPylHtVQAAGgTnc4egK1BV4TLQ+c
+         J0O7Pah8E8rX6fiPar9B3X8Jkojk0kHEHsg7rIS0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        patches@lists.linux.dev, Wang YanQing <udknight@gmail.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
         Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.1 102/611] ubifs: Fix memleak when insert_old_idx() failed
-Date:   Mon,  8 May 2023 11:39:04 +0200
-Message-Id: <20230508094425.543256659@linuxfoundation.org>
+Subject: [PATCH 6.1 103/611] ubi: Fix return value overwrite issue in try_write_vid_and_data()
+Date:   Mon,  8 May 2023 11:39:05 +0200
+Message-Id: <20230508094425.573721345@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -43,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,222 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Wang YanQing <udknight@gmail.com>
 
-commit b5fda08ef213352ac2df7447611eb4d383cce929 upstream.
+commit 31a149d5c13c4cbcf97de3435817263a2d8c9d6e upstream.
 
-Following process will cause a memleak for copied up znode:
+The commit 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
+adds helper function, try_write_vid_and_data(), to simplify the code, but this
+helper function has bug, it will return 0 (success) when ubi_io_write_vid_hdr()
+or the ubi_io_write_data() return error number (-EIO, etc), because the return
+value of ubi_wl_put_peb() will overwrite the original return value.
 
-dirty_cow_znode
-  zn = copy_znode(c, znode);
-  err = insert_old_idx(c, zbr->lnum, zbr->offs);
-  if (unlikely(err))
-     return ERR_PTR(err);   // No one refers to zn.
+This issue will cause unexpected data loss issue, because the caller of this
+function and UBIFS willn't know the data is lost.
 
-Fetch a reproducer in [Link].
-
-Function copy_znode() is split into 2 parts: resource allocation
-and znode replacement, insert_old_idx() is split in similar way,
-so resource cleanup could be done in error handling path without
-corrupting metadata(mem & disk).
-It's okay that old index inserting is put behind of add_idx_dirt(),
-old index is used in layout_leb_in_gaps(), so the two processes do
-not depend on each other.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216705
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Fixes: 2d78aee426d8 ("UBI: simplify LEB write and atomic LEB change code")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Wang YanQing <udknight@gmail.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/tnc.c |  137 ++++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 87 insertions(+), 50 deletions(-)
+ drivers/mtd/ubi/eba.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -44,6 +44,33 @@ enum {
- 	NOT_ON_MEDIA = 3,
- };
- 
-+static void do_insert_old_idx(struct ubifs_info *c,
-+			      struct ubifs_old_idx *old_idx)
-+{
-+	struct ubifs_old_idx *o;
-+	struct rb_node **p, *parent = NULL;
-+
-+	p = &c->old_idx.rb_node;
-+	while (*p) {
-+		parent = *p;
-+		o = rb_entry(parent, struct ubifs_old_idx, rb);
-+		if (old_idx->lnum < o->lnum)
-+			p = &(*p)->rb_left;
-+		else if (old_idx->lnum > o->lnum)
-+			p = &(*p)->rb_right;
-+		else if (old_idx->offs < o->offs)
-+			p = &(*p)->rb_left;
-+		else if (old_idx->offs > o->offs)
-+			p = &(*p)->rb_right;
-+		else {
-+			ubifs_err(c, "old idx added twice!");
-+			kfree(old_idx);
-+		}
-+	}
-+	rb_link_node(&old_idx->rb, parent, p);
-+	rb_insert_color(&old_idx->rb, &c->old_idx);
-+}
-+
- /**
-  * insert_old_idx - record an index node obsoleted since the last commit start.
-  * @c: UBIFS file-system description object
-@@ -69,35 +96,15 @@ enum {
-  */
- static int insert_old_idx(struct ubifs_info *c, int lnum, int offs)
+--- a/drivers/mtd/ubi/eba.c
++++ b/drivers/mtd/ubi/eba.c
+@@ -946,7 +946,7 @@ static int try_write_vid_and_data(struct
+ 				  int offset, int len)
  {
--	struct ubifs_old_idx *old_idx, *o;
--	struct rb_node **p, *parent = NULL;
-+	struct ubifs_old_idx *old_idx;
+ 	struct ubi_device *ubi = vol->ubi;
+-	int pnum, opnum, err, vol_id = vol->vol_id;
++	int pnum, opnum, err, err2, vol_id = vol->vol_id;
  
- 	old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
- 	if (unlikely(!old_idx))
- 		return -ENOMEM;
- 	old_idx->lnum = lnum;
- 	old_idx->offs = offs;
-+	do_insert_old_idx(c, old_idx);
+ 	pnum = ubi_wl_get_peb(ubi);
+ 	if (pnum < 0) {
+@@ -981,10 +981,19 @@ static int try_write_vid_and_data(struct
+ out_put:
+ 	up_read(&ubi->fm_eba_sem);
  
--	p = &c->old_idx.rb_node;
--	while (*p) {
--		parent = *p;
--		o = rb_entry(parent, struct ubifs_old_idx, rb);
--		if (lnum < o->lnum)
--			p = &(*p)->rb_left;
--		else if (lnum > o->lnum)
--			p = &(*p)->rb_right;
--		else if (offs < o->offs)
--			p = &(*p)->rb_left;
--		else if (offs > o->offs)
--			p = &(*p)->rb_right;
--		else {
--			ubifs_err(c, "old idx added twice!");
--			kfree(old_idx);
--			return 0;
--		}
--	}
--	rb_link_node(&old_idx->rb, parent, p);
--	rb_insert_color(&old_idx->rb, &c->old_idx);
- 	return 0;
- }
- 
-@@ -199,23 +206,6 @@ static struct ubifs_znode *copy_znode(st
- 	__set_bit(DIRTY_ZNODE, &zn->flags);
- 	__clear_bit(COW_ZNODE, &zn->flags);
- 
--	ubifs_assert(c, !ubifs_zn_obsolete(znode));
--	__set_bit(OBSOLETE_ZNODE, &znode->flags);
--
--	if (znode->level != 0) {
--		int i;
--		const int n = zn->child_cnt;
--
--		/* The children now have new parent */
--		for (i = 0; i < n; i++) {
--			struct ubifs_zbranch *zbr = &zn->zbranch[i];
--
--			if (zbr->znode)
--				zbr->znode->parent = zn;
--		}
--	}
--
--	atomic_long_inc(&c->dirty_zn_cnt);
- 	return zn;
- }
- 
-@@ -234,6 +224,42 @@ static int add_idx_dirt(struct ubifs_inf
- }
- 
- /**
-+ * replace_znode - replace old znode with new znode.
-+ * @c: UBIFS file-system description object
-+ * @new_zn: new znode
-+ * @old_zn: old znode
-+ * @zbr: the branch of parent znode
-+ *
-+ * Replace old znode with new znode in TNC.
-+ */
-+static void replace_znode(struct ubifs_info *c, struct ubifs_znode *new_zn,
-+			  struct ubifs_znode *old_zn, struct ubifs_zbranch *zbr)
-+{
-+	ubifs_assert(c, !ubifs_zn_obsolete(old_zn));
-+	__set_bit(OBSOLETE_ZNODE, &old_zn->flags);
-+
-+	if (old_zn->level != 0) {
-+		int i;
-+		const int n = new_zn->child_cnt;
-+
-+		/* The children now have new parent */
-+		for (i = 0; i < n; i++) {
-+			struct ubifs_zbranch *child = &new_zn->zbranch[i];
-+
-+			if (child->znode)
-+				child->znode->parent = new_zn;
+-	if (err && pnum >= 0)
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
+-	else if (!err && opnum >= 0)
+-		err = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
++	if (err && pnum >= 0) {
++		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, pnum, 1);
++		if (err2) {
++			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
++				 pnum, err2);
++		}
++	} else if (!err && opnum >= 0) {
++		err2 = ubi_wl_put_peb(ubi, vol_id, lnum, opnum, 0);
++		if (err2) {
++			ubi_warn(ubi, "failed to return physical eraseblock %d, error %d",
++				 opnum, err2);
 +		}
 +	}
-+
-+	zbr->znode = new_zn;
-+	zbr->lnum = 0;
-+	zbr->offs = 0;
-+	zbr->len = 0;
-+
-+	atomic_long_inc(&c->dirty_zn_cnt);
-+}
-+
-+/**
-  * dirty_cow_znode - ensure a znode is not being committed.
-  * @c: UBIFS file-system description object
-  * @zbr: branch of znode to check
-@@ -265,21 +291,32 @@ static struct ubifs_znode *dirty_cow_zno
- 		return zn;
  
- 	if (zbr->len) {
--		err = insert_old_idx(c, zbr->lnum, zbr->offs);
--		if (unlikely(err))
--			return ERR_PTR(err);
-+		struct ubifs_old_idx *old_idx;
-+
-+		old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
-+		if (unlikely(!old_idx)) {
-+			err = -ENOMEM;
-+			goto out;
-+		}
-+		old_idx->lnum = zbr->lnum;
-+		old_idx->offs = zbr->offs;
-+
- 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
--	} else
--		err = 0;
-+		if (err) {
-+			kfree(old_idx);
-+			goto out;
-+		}
- 
--	zbr->znode = zn;
--	zbr->lnum = 0;
--	zbr->offs = 0;
--	zbr->len = 0;
-+		do_insert_old_idx(c, old_idx);
-+	}
-+
-+	replace_znode(c, zn, znode, zbr);
- 
--	if (unlikely(err))
--		return ERR_PTR(err);
- 	return zn;
-+
-+out:
-+	kfree(zn);
-+	return ERR_PTR(err);
+ 	return err;
  }
- 
- /**
 
 
