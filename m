@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B766B6FAB68
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A2636FA83F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233808AbjEHLNI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53770 "EHLO
+        id S234828AbjEHKi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233900AbjEHLNB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA9435B12
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:53 -0700 (PDT)
+        with ESMTP id S234879AbjEHKil (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AEF29446
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB5A662BA3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5146C4339B;
-        Mon,  8 May 2023 11:12:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6F2361D57
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45E4C433D2;
+        Mon,  8 May 2023 10:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544372;
-        bh=xVWEwo7p5kVaKev6Tr3b2FO0fOqVI04SPm/moheSsMk=;
+        s=korg; t=1683542319;
+        bh=dXgEGa6BFCGhBUfTgbDhuBvUxQVevaVdPPhVVcsOdBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VjiaiU4RjcpJg5hceLFfsgWcpkDhiAt1KRwy8EX+xEXYeWut6oEel0tZ3/PjVe7Rb
-         i3lpVI/s9hV2sggjcj+83z+y6L8XyztSygHZ4b3Mp3TYr9TxOJTeZgajy74poH13Hb
-         LxUj/RCicFhiezqrCBuoPOe1y0I6BYaDVD3k3a/Y=
+        b=UB6Pf71f8zZX/JS6E5rVvn2VXqR6S1QBmddf5jUqPgaPj/6ef52uo11EPLSILTiAn
+         5L1oWZj6b6tvAAZyWzkr6HL3c8GupPMncm9ZjWijjwV+rbQmQn5IkBjH+rdg1dPMBA
+         zkHpC/MVjAHmZ+DXEBl0E4YsTk9fv8UQhOo5Zq5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@linux.dev>,
-        Stanislav Fomichev <sdf@google.com>,
-        YiFei Zhu <zhuyifei@google.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Quan Zhou <quan.zhou@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 389/694] selftests/bpf: Wait for receive in cg_storage_multi test
+Subject: [PATCH 6.2 398/663] wifi: mt76: mt7921e: fix probe timeout after reboot
 Date:   Mon,  8 May 2023 11:43:44 +0200
-Message-Id: <20230508094445.649822141@linuxfoundation.org>
+Message-Id: <20230508094441.003788560@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,66 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit 5af607a861d43ffff830fc1890033e579ec44799 ]
+[ Upstream commit c397fc1e6365a2a9e5540a85b2c1d4ea412aa0e2 ]
 
-In some cases the loopback latency might be large enough, causing
-the assertion on invocations to be run before ingress prog getting
-executed. The assertion would fail and the test would flake.
+In system warm reboot scene, due to the polling timeout(now 1000us)
+is too short to wait dma idle in time, it may make driver probe fail
+with error code -ETIMEDOUT. Meanwhile, we also found the dma may take
+around 70ms to enter idle state. Change the polling idle timeout to
+100ms to avoid the probabilistic probe fail.
 
-This can be reliably reproduced by arbitrarily increasing the
-loopback latency (thanks to [1]):
-  tc qdisc add dev lo root handle 1: htb default 12
-  tc class add dev lo parent 1:1 classid 1:12 htb rate 20kbps ceil 20kbps
-  tc qdisc add dev lo parent 1:12 netem delay 100ms
+Tested pass with 5000 times warm reboot on x86 platform.
 
-Fix this by waiting on the receive end, instead of instantly
-returning to the assert. The call to read() will wait for the
-default SO_RCVTIMEO timeout of 3 seconds provided by
-start_server().
+[4.477496] pci 0000:01:00.0: attach allowed to drvr mt7921e [internal device]
+[4.478306] mt7921e 0000:01:00.0: ASIC revision: 79610010
+[4.480063] mt7921e: probe of 0000:01:00.0 failed with error -110
 
-[1] https://gist.github.com/kstevens715/4598301
-
-Reported-by: Martin KaFai Lau <martin.lau@linux.dev>
-Link: https://lore.kernel.org/bpf/9c5c8b7e-1d89-a3af-5400-14fde81f4429@linux.dev/
-Fixes: 3573f384014f ("selftests/bpf: Test CGROUP_STORAGE behavior on shared egress + ingress")
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Link: https://lore.kernel.org/r/20230405193354.1956209-1-zhuyifei@google.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/dma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c b/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-index 621c572221918..63ee892bc7573 100644
---- a/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cg_storage_multi.c
-@@ -56,8 +56,9 @@ static bool assert_storage_noexist(struct bpf_map *map, const void *key)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+index d1f10f6d9adc3..dc4ccfef4b048 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+@@ -90,9 +90,9 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
+ 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
+ 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
  
- static bool connect_send(const char *cgroup_path)
- {
--	bool res = true;
- 	int server_fd = -1, client_fd = -1;
-+	char message[] = "message";
-+	bool res = true;
+-	if (!mt76_poll(dev, MT_WFDMA0_GLO_CFG,
+-		       MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
+-		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
++	if (!mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
++				 MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
++				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
+ 		return -ETIMEDOUT;
  
- 	if (join_cgroup(cgroup_path))
- 		goto out_clean;
-@@ -70,7 +71,10 @@ static bool connect_send(const char *cgroup_path)
- 	if (client_fd < 0)
- 		goto out_clean;
- 
--	if (send(client_fd, "message", strlen("message"), 0) < 0)
-+	if (send(client_fd, &message, sizeof(message), 0) < 0)
-+		goto out_clean;
-+
-+	if (read(server_fd, &message, sizeof(message)) < 0)
- 		goto out_clean;
- 
- 	res = false;
+ 	return 0;
 -- 
 2.39.2
 
