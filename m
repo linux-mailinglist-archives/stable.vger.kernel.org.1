@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1F76FA55A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B50B06FAB76
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234113AbjEHKId (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36856 "EHLO
+        id S233891AbjEHLNf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234112AbjEHKId (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:33 -0400
+        with ESMTP id S233884AbjEHLNe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3363332929
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74AC035B0A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9073F62386
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1816C433EF;
-        Mon,  8 May 2023 10:08:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D48862BAF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820B4C433D2;
+        Mon,  8 May 2023 11:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540511;
-        bh=HZbOggi+UOx+XC9gbCjnC4ZeG3/wFDzNw3GlUReWJ9c=;
+        s=korg; t=1683544412;
+        bh=gNrtc+XhzCCjjFI9r4JGYySjN8hN6xfvcEvs1ukL+9I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PnAjsBmy5p/3Az1ZxdEi39V2rKPrh13/tjDI8o8WI2eSCN7JRdvAaFb4mFaxgezco
-         FhCqy+ehtbmByOAlVRdsw350fDcN3kWLmoXJ7rizbf9bmPtLFlrFeivY9L6W4r+88o
-         OULgaI7MU+oYnXcyJKk/08nISfus+GYHru6pzI3s=
+        b=b5HbD/g0VYzHnrOnYm6NwiVRsFWheiEZ6MoMmMwNiLeeDNtdEN2M/tNwQvxGzlbpN
+         jf29VxgnmCw9EXgkbrnI5nxFeHfspcLhHm+qM8dYv2CPvrpi5QyeSPuO7KLFsSSREB
+         txWZBRvSj2ZVn7hOqc8zaziKuqgH+LvIrTw4PKCA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 393/611] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
-Date:   Mon,  8 May 2023 11:43:55 +0200
-Message-Id: <20230508094435.058451971@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 401/694] nvmet: fix error handling in nvmet_execute_identify_cns_cs_ns()
+Date:   Mon,  8 May 2023 11:43:56 +0200
+Message-Id: <20230508094446.162678112@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,35 +57,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liu Jian <liujian56@huawei.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
+[ Upstream commit ab76e7206b672b2e8818cb121a04506956d6b223 ]
 
-This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
+Nvme specifications state that:
 
-This patch introduces a possible null-ptr-def problem. Revert it. And the
-fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
-btsdio: fix use after free bug in btsdio_remove due to race condition").
+If the I/O Command Set associated with the namespace identified by the
+NSID field does not support the Identify Namespace data structure
+specified by the CSI field, the controller shall abort the command with
+a status code of Invalid Field in Command.
 
-Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+In other words, if nvmet_execute_identify_cns_cs_ns() is called for a
+target with a block device that is not zoned, we should not return any
+data and set the status to NVME_SC_INVALID_FIELD.
+
+While at it, it is also better to revalidate the ns block devie *before*
+checking if the block device is zoned, to ensure that
+nvmet_execute_identify_cns_cs_ns() operates against updated device
+characteristics.
+
+Fixes: aaf2e048af27 ("nvmet: add ZBD over ZNS backend support")
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btsdio.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/nvme/target/zns.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
-index 02893600db390..795be33f2892d 100644
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -354,7 +354,6 @@ static void btsdio_remove(struct sdio_func *func)
+diff --git a/drivers/nvme/target/zns.c b/drivers/nvme/target/zns.c
+index 7e4292d88016c..77ef0a86ff61f 100644
+--- a/drivers/nvme/target/zns.c
++++ b/drivers/nvme/target/zns.c
+@@ -97,7 +97,7 @@ void nvmet_execute_identify_cns_cs_ctrl(struct nvmet_req *req)
  
- 	BT_DBG("func %p", func);
+ void nvmet_execute_identify_cns_cs_ns(struct nvmet_req *req)
+ {
+-	struct nvme_id_ns_zns *id_zns;
++	struct nvme_id_ns_zns *id_zns = NULL;
+ 	u64 zsze;
+ 	u16 status;
+ 	u32 mar, mor;
+@@ -118,16 +118,18 @@ void nvmet_execute_identify_cns_cs_ns(struct nvmet_req *req)
+ 	if (status)
+ 		goto done;
  
--	cancel_work_sync(&data->work);
- 	if (!data)
- 		return;
+-	if (!bdev_is_zoned(req->ns->bdev)) {
+-		req->error_loc = offsetof(struct nvme_identify, nsid);
+-		goto done;
+-	}
+-
+ 	if (nvmet_ns_revalidate(req->ns)) {
+ 		mutex_lock(&req->ns->subsys->lock);
+ 		nvmet_ns_changed(req->ns->subsys, req->ns->nsid);
+ 		mutex_unlock(&req->ns->subsys->lock);
+ 	}
++
++	if (!bdev_is_zoned(req->ns->bdev)) {
++		status = NVME_SC_INVALID_FIELD | NVME_SC_DNR;
++		req->error_loc = offsetof(struct nvme_identify, nsid);
++		goto out;
++	}
++
+ 	zsze = (bdev_zone_sectors(req->ns->bdev) << 9) >>
+ 					req->ns->blksize_shift;
+ 	id_zns->lbafe[0].zsze = cpu_to_le64(zsze);
+@@ -148,8 +150,8 @@ void nvmet_execute_identify_cns_cs_ns(struct nvmet_req *req)
+ 
+ done:
+ 	status = nvmet_copy_to_sgl(req, 0, id_zns, sizeof(*id_zns));
+-	kfree(id_zns);
+ out:
++	kfree(id_zns);
+ 	nvmet_req_complete(req, status);
+ }
  
 -- 
 2.39.2
