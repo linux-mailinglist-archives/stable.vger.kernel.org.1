@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D076FAB89
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96BFA6FA870
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233930AbjEHLO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
+        id S234897AbjEHKk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjEHLO0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:26 -0400
+        with ESMTP id S234999AbjEHKkC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E25436552
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94A1226E90
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE2A16296C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C63C433D2;
-        Mon,  8 May 2023 11:14:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29D0F62835
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3C9C433EF;
+        Mon,  8 May 2023 10:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544464;
-        bh=WEAmJZGfFKqctGT2vUqWC3klLrFDB7+B8pLgO0w/uAk=;
+        s=korg; t=1683542398;
+        bh=FuW/M5a7AsMve6csqm1BrtLWEIvsziSbEwbhp+BivZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=whqXfxlvXKu+sNAalRcYOlU5w0eKtSVDmKuv1R0Vh+7TD2Dpga06JNm1+Jnu7Id52
-         NnGH3jZK9ahBGYKHamJVZ+XWlq47vcPh5EUsACYp3JcLi2/sxtcMyYRqFIpLWTSXod
-         0z2E3iAi4RDVFcivb/vKguEvXmtRU6qk+bWHu1WA=
+        b=nhAiqUSuSkjHpT2D6+IOTwHrGrv2d7FBDqXMUTCesrbRjEqi0iVrCv2H2/34RMU0V
+         JcsEe0JfzxKF3SP9Cq99z8qm6WyvU9sOMIkeqEMQNEQ31n3okNKd0giiI/LQ0NZ+jn
+         LGtBfUj71B5xefbIo6udv4e11DwofAS0HkOmfOTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 379/694] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_reg()
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 388/663] wifi: mt76: mt7915: unlock on error in mt7915_thermal_temp_store()
 Date:   Mon,  8 May 2023 11:43:34 +0200
-Message-Id: <20230508094445.207732968@linuxfoundation.org>
+Message-Id: <20230508094440.697603261@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit 5dbe1f8eb8c5ac69394400a5b86fd81775e96c43 ]
+[ Upstream commit cdc215c2c8d74b3c8886650e979b47f16c1f7f92 ]
 
-If there is a failure during copy_from_user or user-provided data buffer is
-invalid, rtl_debugfs_set_write_reg should return negative error code instead
-of a positive value count.
+Drop the lock before returning -EINVAL.
 
-Fix this bug by returning correct error code. Moreover, the check of buffer
-against null is removed since it will be handled by copy_from_user.
-
-Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230326054217.93492-1-harperchen1110@gmail.com
+Fixes: ecaccdae7a7e ("wifi: mt76: mt7915: rework mt7915_thermal_temp_store()")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
-index 602717928887d..9eb26dfe4ca92 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
-@@ -278,8 +278,8 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index a80ae31e7abff..916d6c7c569d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -90,6 +90,7 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
+ 	     val < phy->throttle_temp[MT7915_CRIT_TEMP_IDX])) {
+ 		dev_err(phy->dev->mt76.dev,
+ 			"temp1_max shall be greater than temp1_crit.");
++		mutex_unlock(&phy->dev->mt76.mutex);
+ 		return -EINVAL;
+ 	}
  
- 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
- 
--	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
--		return count;
-+	if (copy_from_user(tmp, buffer, tmp_len))
-+		return -EFAULT;
- 
- 	tmp[tmp_len] = '\0';
- 
-@@ -287,7 +287,7 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
- 	num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
- 
- 	if (num !=  3)
--		return count;
-+		return -EINVAL;
- 
- 	switch (len) {
- 	case 1:
 -- 
 2.39.2
 
