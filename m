@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E25EF6FA915
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 034916FA5FC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235077AbjEHKrg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48290 "EHLO
+        id S234269AbjEHKO6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235114AbjEHKq4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:56 -0400
+        with ESMTP id S234282AbjEHKO4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00C349F2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074893A281
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B3B628AB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538C0C433EF;
-        Mon,  8 May 2023 10:46:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 534116246C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67927C433D2;
+        Mon,  8 May 2023 10:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542808;
-        bh=jRNIkVtKvGrZssZSHSeZNmvKqaR2UN3O51TcKqNOvSg=;
+        s=korg; t=1683540894;
+        bh=W6g7CcI1yiXyv6PNZfAwXoOZTkEOHflC6u0oITvDJnY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ALkI119/pGJ0sk0Jfo7RsM7kHfMnRBlabfQ9C6mxNvIVKmi7CdQvOBjcaUa7tov9s
-         gIiUeIeW5cfHt5jMNOOfTYtKKBvzg2t6+jD9g0npwWzoYf7/ljqYBDeffUBpkszMz5
-         bVZmODvTYGsyti6jzWUHpCknWT0Vp1mmoDIf/4JY=
+        b=rLXklbXiRG+MX1x+H8YTa2q0sUjffhkivhzt70gcFXYDmoSWS7hmLna5pzd4TRyoJ
+         aFcrqF17H3sX3OF2z4BADdfK9bcJ6VkyfprE9VHpJ0pIVP1ai1CjvjHzMEIJW4W0y4
+         JLekLhWYxI3h0iZe5drGg5qSIXRxo8b3mZhQGCkU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vasant Hegde <vasant.hegde@amd.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 554/663] iommu/amd: Set page size bitmap during V2 domain allocation
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 538/611] phy: tegra: xusb: Add missing tegra_xusb_port_unregister for usb2_port and ulpi_port
 Date:   Mon,  8 May 2023 11:46:20 +0200
-Message-Id: <20230508094447.071168326@linuxfoundation.org>
+Message-Id: <20230508094439.496012580@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,81 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jerry Snitselaar <jsnitsel@redhat.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 8f880d19e6ad645a4b8066d5ff091c980b3231e7 ]
+[ Upstream commit e024854048e733391b31fe5a398704b31b9af803 ]
 
-With the addition of the V2 page table support, the domain page size
-bitmap needs to be set prior to iommu core setting up direct mappings
-for reserved regions. When reserved regions are mapped, if this is not
-done, it will be looking at the V1 page size bitmap when determining
-the page size to use in iommu_pgsize(). When it gets into the actual
-amd mapping code, a check of see if the page size is supported can
-fail, because at that point it is checking it against the V2 page size
-bitmap which only supports 4K, 2M, and 1G.
+The tegra_xusb_port_unregister should be called when usb2_port
+and ulpi_port map fails in tegra_xusb_add_usb2_port() or in
+tegra_xusb_add_ulpi_port(), fix it.
 
-Add a check to __iommu_domain_alloc() to not override the
-bitmap if it was already set by the iommu ops domain_alloc() code path.
-
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Joerg Roedel <joro@8bytes.org>
-Fixes: 4db6c41f0946 ("iommu/amd: Add support for using AMD IOMMU v2 page table for DMA-API")
-Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20230404072742.1895252-1-jsnitsel@redhat.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20221129111634.1547747-1-cuigaosheng1@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 6 ++----
- drivers/iommu/iommu.c     | 9 +++++++--
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/phy/tegra/xusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index ff4f3d4da3402..e108280fdaa0e 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1656,10 +1656,6 @@ static void do_attach(struct iommu_dev_data *dev_data,
- 	domain->dev_iommu[iommu->index] += 1;
- 	domain->dev_cnt                 += 1;
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index dce45fbbd699c..ce14645a86ecb 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -782,6 +782,7 @@ static int tegra_xusb_add_usb2_port(struct tegra_xusb_padctl *padctl,
+ 	usb2->base.lane = usb2->base.ops->map(&usb2->base);
+ 	if (IS_ERR(usb2->base.lane)) {
+ 		err = PTR_ERR(usb2->base.lane);
++		tegra_xusb_port_unregister(&usb2->base);
+ 		goto out;
+ 	}
  
--	/* Override supported page sizes */
--	if (domain->flags & PD_GIOV_MASK)
--		domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
--
- 	/* Update device table */
- 	set_dte_entry(iommu, dev_data->devid, domain,
- 		      ats, dev_data->iommu_v2);
-@@ -2038,6 +2034,8 @@ static int protection_domain_init_v2(struct protection_domain *domain)
- 
- 	domain->flags |= PD_GIOV_MASK;
- 
-+	domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+
- 	if (domain_enable_v2(domain, 1)) {
- 		domain_id_free(domain->id);
- 		return -ENOMEM;
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index f8100067502fb..e6f2a0bc9f0be 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1940,8 +1940,13 @@ static struct iommu_domain *__iommu_domain_alloc(struct bus_type *bus,
- 		return NULL;
- 
- 	domain->type = type;
--	/* Assume all sizes by default; the driver may override this later */
--	domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
-+	/*
-+	 * If not already set, assume all sizes by default; the driver
-+	 * may override this later
-+	 */
-+	if (!domain->pgsize_bitmap)
-+		domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
-+
- 	if (!domain->ops)
- 		domain->ops = bus->iommu_ops->default_domain_ops;
+@@ -848,6 +849,7 @@ static int tegra_xusb_add_ulpi_port(struct tegra_xusb_padctl *padctl,
+ 	ulpi->base.lane = ulpi->base.ops->map(&ulpi->base);
+ 	if (IS_ERR(ulpi->base.lane)) {
+ 		err = PTR_ERR(ulpi->base.lane);
++		tegra_xusb_port_unregister(&ulpi->base);
+ 		goto out;
+ 	}
  
 -- 
 2.39.2
