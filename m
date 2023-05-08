@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA40E6FACA2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBCB6FA650
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbjEHL0i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42488 "EHLO
+        id S234398AbjEHKSY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235720AbjEHL0b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:31 -0400
+        with ESMTP id S234427AbjEHKSK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 361283B7AB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE4653512D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A38DC62D38
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FB0C433EF;
-        Mon,  8 May 2023 11:26:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DA8A61037
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF0EC4339B;
+        Mon,  8 May 2023 10:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545171;
-        bh=8E8uH+tayCkP/JNoEemaa8uU+tXfPd3bERWLmW8TZIU=;
+        s=korg; t=1683541086;
+        bh=CjKytRevELX7kf3IJ2TCy9akXHAjAiVJumBW8p7gxpE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ljCc/GgP7m9AqHw5rLuqYYqKB2PvIGhzm52QUQD5JFXDyeayMu7HxJoiUmnIhXsYn
-         TU7awQGFmCWIQpdBcqRGlcBzXAlmm9R4K+pmA7jWNjSOKPLFJ2cgg6WaODkVhexZxN
-         fMdb3oKddEj/0idwWGAP7ELKhyaE7IWL6i/qtZKA=
+        b=PzbhXn68X3UGMOwvy1hK8sVgw/pU31vfo9d2PaA5VfU0U1mjvA5MXSkCsFZIrN2Dl
+         6e6NjTbIAWxstQYbQ2x7k4UHfDSdiIeFc82Dh6oSG9Z5vXZPrPpIWoq4gAXKqDMwht
+         nLOIngfTBUpZvnSEv1dqmGlyL4Ro1W5wnV6rwT04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
-        Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 617/694] Input: raspberrypi-ts - fix refcount leak in rpi_ts_probe
+        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 610/611] debugobject: Ensure pool refill (again)
 Date:   Mon,  8 May 2023 11:47:32 +0200
-Message-Id: <20230508094455.512023576@linuxfoundation.org>
+Message-Id: <20230508094441.727356463@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 5bca3688bdbc3b58a2894b8671a8e2378efe28bd ]
+commit 0af462f19e635ad522f28981238334620881badc upstream.
 
-rpi_firmware_get() take reference, we need to release it in error paths
-as well. Use devm_rpi_firmware_get() helper to handling the resources.
-Also remove the existing rpi_firmware_put().
+The recent fix to ensure atomicity of lookup and allocation inadvertently
+broke the pool refill mechanism.
 
-Fixes: 0b9f28fed3f7 ("Input: add official Raspberry Pi's touchscreen driver")
-Fixes: 3b8ddff780b7 ("input: raspberrypi-ts: Release firmware handle when not needed")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Link: https://lore.kernel.org/r/20221223074657.810346-1-linmq006@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prior to that change debug_objects_activate() and debug_objecs_assert_init()
+invoked debug_objecs_init() to set up the tracking object for statically
+initialized objects. That's not longer the case and debug_objecs_init() is
+now the only place which does pool refills.
+
+Depending on the number of statically initialized objects this can be
+enough to actually deplete the pool, which was observed by Ido via a
+debugobjects OOM warning.
+
+Restore the old behaviour by adding explicit refill opportunities to
+debug_objects_activate() and debug_objecs_assert_init().
+
+Fixes: 63a759694eed ("debugobject: Prevent init race with static objects")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/871qk05a9d.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/raspberrypi-ts.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ lib/debugobjects.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/input/touchscreen/raspberrypi-ts.c b/drivers/input/touchscreen/raspberrypi-ts.c
-index 5000f5fd9ec38..45c575df994e0 100644
---- a/drivers/input/touchscreen/raspberrypi-ts.c
-+++ b/drivers/input/touchscreen/raspberrypi-ts.c
-@@ -134,7 +134,7 @@ static int rpi_ts_probe(struct platform_device *pdev)
- 		return -ENOENT;
- 	}
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -587,6 +587,16 @@ static struct debug_obj *lookup_object_o
+ 	return NULL;
+ }
  
--	fw = rpi_firmware_get(fw_node);
-+	fw = devm_rpi_firmware_get(&pdev->dev, fw_node);
- 	of_node_put(fw_node);
- 	if (!fw)
- 		return -EPROBE_DEFER;
-@@ -160,7 +160,6 @@ static int rpi_ts_probe(struct platform_device *pdev)
- 	touchbuf = (u32)ts->fw_regs_phys;
- 	error = rpi_firmware_property(fw, RPI_FIRMWARE_FRAMEBUFFER_SET_TOUCHBUF,
- 				      &touchbuf, sizeof(touchbuf));
--	rpi_firmware_put(fw);
- 	if (error || touchbuf != 0) {
- 		dev_warn(dev, "Failed to set touchbuf, %d\n", error);
- 		return error;
--- 
-2.39.2
-
++static void debug_objects_fill_pool(void)
++{
++	/*
++	 * On RT enabled kernels the pool refill must happen in preemptible
++	 * context:
++	 */
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
++		fill_pool();
++}
++
+ static void
+ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack)
+ {
+@@ -595,12 +605,7 @@ __debug_object_init(void *addr, const st
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+ 
+-	/*
+-	 * On RT enabled kernels the pool refill must happen in preemptible
+-	 * context:
+-	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
+-		fill_pool();
++	debug_objects_fill_pool();
+ 
+ 	db = get_bucket((unsigned long) addr);
+ 
+@@ -685,6 +690,8 @@ int debug_object_activate(void *addr, co
+ 	if (!debug_objects_enabled)
+ 		return 0;
+ 
++	debug_objects_fill_pool();
++
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+@@ -894,6 +901,8 @@ void debug_object_assert_init(void *addr
+ 	if (!debug_objects_enabled)
+ 		return;
+ 
++	debug_objects_fill_pool();
++
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
 
 
