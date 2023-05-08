@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D8756FACB6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9116FAE79
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235766AbjEHL10 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:27:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
+        id S236318AbjEHLpF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235780AbjEHL1J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C85937879
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:57 -0700 (PDT)
+        with ESMTP id S236316AbjEHLol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645F010E5A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8971F62DAD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF78C4339B;
-        Mon,  8 May 2023 11:26:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37158635A6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29227C433EF;
+        Mon,  8 May 2023 11:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545216;
-        bh=2tp9ftnmiVd39AtJGUhDVZj/4N1Rr2e1i9ciwy4XU5U=;
+        s=korg; t=1683546217;
+        bh=8FKQOqs3o8lmTULLybBmUTLAuZ4LZGYR+71A50+bPEY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U4HdKK8uB21w2cFloNh05w3G81igWXYYj3pJCm1nF3buhUGEpXfDFnbO6KZa95I8j
-         3M+INU+YGbfFxMIPCoXEC12NKWj3EbGaYnV2p4mY7yvHE5GOnCFocQZX7UuBlrpL+S
-         RbPneapNeWEQFLKp2hAe7P6pPCTMryow/XJcYnp8=
+        b=GD/XWf0nuwK0dhloQnwHy/ALV7Xz0QBIyMxKm/c/XH1PxzX3cEuSyaJiiedDaBGn1
+         CFDlojOqnPYYpmq53uiV9sBuFqdm+AMCfPOm5ePOrCS3azMHzLOiXxtrfTA2D311FT
+         Lqn8379vfTPBU7NgG4HLr5ekExSFI/8VxN3ZTMVc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 662/694] mfd: ocelot-spi: Fix unsupported bulk read
+        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 296/371] workqueue: Fix hung time report of worker pools
 Date:   Mon,  8 May 2023 11:48:17 +0200
-Message-Id: <20230508094457.512192340@linuxfoundation.org>
+Message-Id: <20230508094823.785044537@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,81 +53,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Foster <colin.foster@in-advantage.com>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit f0484d2f80a72022b7fac72bcb406392900ef1eb ]
+[ Upstream commit 335a42ebb0ca8ee9997a1731aaaae6dcd704c113 ]
 
-Ocelot chips (VSC7511, VSC7512, VSC7513, VSC7514) don't support bulk read
-operations over SPI.
+The workqueue watchdog prints a warning when there is no progress in
+a worker pool. Where the progress means that the pool started processing
+a pending work item.
 
-Many SPI buses have hardware that can optimize consecutive reads.
-Essentially an address is written to the chip, and if the SPI controller
-continues to toggle the clock, subsequent register values are reported.
-This can lead to significant optimizations, because the time between
-"address is written to the chip" and "chip starts to report data" can often
-take a fixed amount of time.
+Note that it is perfectly fine to process work items much longer.
+The progress should be guaranteed by waking up or creating idle
+workers.
 
-When support for Ocelot chips were added in commit f3e893626abe ("mfd:
-ocelot: Add support for the vsc7512 chip via spi") it was believed that
-this optimization was supported. However it is not.
+show_one_worker_pool() prints state of non-idle worker pool. It shows
+a delay since the last pool->watchdog_ts.
 
-Most register transactions with the Ocelot chips are not done in bulk, so
-this bug could go unnoticed. The one scenario where bulk register
-operations _are_ performed is when polling port statistics counters, which
-was added in commit d87b1c08f38a ("net: mscc: ocelot: use bulk reads for
-stats").
+The timestamp is updated when a first pending work is queued in
+__queue_work(). Also it is updated when a work is dequeued for
+processing in worker_thread() and rescuer_thread().
 
-Things get slightly more complicated here...
+The delay is misleading when there is no pending work item. In this
+case it shows how long the last work item is being proceed. Show
+zero instead. There is no stall if there is no pending work.
 
-A bug was introduced in commit d4c367650704 ("net: mscc: ocelot: keep
-ocelot_stat_layout by reg address, not offset") that broke the optimization
-of bulk reads. This means that when Ethernet support for the VSC7512 chip
-was added in commit 3d7316ac81ac ("net: dsa: ocelot: add external ocelot
-switch control") things were actually working "as expected".
-
-The bulk read opmtimization was discovered, and fixed in commit
-6acc72a43eac ("net: mscc: ocelot: fix stats region batching") and the
-timing optimizations for SPI were noticed. A bulk read went from ~14ms to
-~2ms. But this timing improvement came at the cost of every register
-reading zero due the fact that bulk reads don't work.
-
-The read timings increase back to 13-14ms, but that's a price worth paying
-in order to receive valid data. This is verified in a DSA setup (cpsw-new
-switch tied to port 0 on the VSC7512, after having been running overnight)
-
-     Rx Octets: 16222055 # Counters from CPSW switch
-     Tx Octets: 12034702
-     Net Octets: 28256757
-     p00_rx_octets: 12034702 # Counters from Ocelot switch
-     p00_rx_frames_below_65_octets: 0
-     p00_rx_frames_65_to_127_octets: 88188
-     p00_rx_frames_128_to_255_octets: 13
-     p00_rx_frames_256_to_511_octets: 0
-     p00_rx_frames_512_to_1023_octets: 0
-     p00_rx_frames_over_1526_octets: 3306
-     p00_tx_octets: 16222055
-
-Fixes: f3e893626abe ("mfd: ocelot: Add support for the vsc7512 chip via spi")
-Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230322141130.2531256-1-colin.foster@in-advantage.com
+Fixes: 82607adcf9cdf40fb7b ("workqueue: implement lockup detector")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/ocelot-spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/workqueue.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mfd/ocelot-spi.c b/drivers/mfd/ocelot-spi.c
-index 2ecd271de2fb9..85021f94e5874 100644
---- a/drivers/mfd/ocelot-spi.c
-+++ b/drivers/mfd/ocelot-spi.c
-@@ -130,6 +130,7 @@ static const struct regmap_config ocelot_spi_regmap_config = {
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index de6463b931762..2d27bed9881dd 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -4857,10 +4857,16 @@ static void show_one_worker_pool(struct worker_pool *pool)
+ 	struct worker *worker;
+ 	bool first = true;
+ 	unsigned long flags;
++	unsigned long hung = 0;
  
- 	.write_flag_mask = 0x80,
- 
-+	.use_single_read = true,
- 	.use_single_write = true,
- 	.can_multi_write = false,
- 
+ 	raw_spin_lock_irqsave(&pool->lock, flags);
+ 	if (pool->nr_workers == pool->nr_idle)
+ 		goto next_pool;
++
++	/* How long the first pending work is waiting for a worker. */
++	if (!list_empty(&pool->worklist))
++		hung = jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000;
++
+ 	/*
+ 	 * Defer printing to avoid deadlocks in console drivers that
+ 	 * queue work while holding locks also taken in their write
+@@ -4869,9 +4875,7 @@ static void show_one_worker_pool(struct worker_pool *pool)
+ 	printk_deferred_enter();
+ 	pr_info("pool %d:", pool->id);
+ 	pr_cont_pool_info(pool);
+-	pr_cont(" hung=%us workers=%d",
+-		jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000,
+-		pool->nr_workers);
++	pr_cont(" hung=%lus workers=%d", hung, pool->nr_workers);
+ 	if (pool->manager)
+ 		pr_cont(" manager: %d",
+ 			task_pid_nr(pool->manager->task));
 -- 
 2.39.2
 
