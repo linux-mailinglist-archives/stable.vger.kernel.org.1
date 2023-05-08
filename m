@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20E476FA727
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3A96FAA77
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:03:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234431AbjEHK20 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55106 "EHLO
+        id S233877AbjEHLDM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:03:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234492AbjEHK16 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:27:58 -0400
+        with ESMTP id S235538AbjEHLCm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64E28E708
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:27:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AB434884
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:01:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F04AB6261D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4BEC4339B;
-        Mon,  8 May 2023 10:27:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53A6562A49
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:01:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580E0C433EF;
+        Mon,  8 May 2023 11:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541644;
-        bh=TvUAxuWbao7k+bB6sKnmccFmKkfMmiDkF6W9Fq77OFU=;
+        s=korg; t=1683543701;
+        bh=6oXXMw4I2SU38rSDkbt672ZgxnV/Clps40hIg4opPIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aUtQB72Z5ktUeqvB8SkxZtoPoUdVj4icYKaFG6JN9fKOLvBY7gfJhIEc/qky2gqE8
-         hEsL94fG2e+gwPK4FMoGjmKG/FtCOVSSTjLVW5fElypZJvAMo7T2sv3+5zUpDRshrk
-         orqulcO/iX656yNT4o2JzFUBgRc64gy+8IhQuxvM=
+        b=Ds6R0VbDY+lbEEyatekbAEYtwFB0sju6DLadtENSR0+5iGIYsaEbnJyZMQG65VMYa
+         hm5l+ZgJtE4gQrgn86+nUYaXdJDyiEESGbLfOILv/AaCBQyr9OQm13UItw0IrJ4ccP
+         xSYlvVz/b4BzSYlUQ5RQLsxB1f1M2xhkKIpqs2dM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Foss <rfoss@kernel.org>,
-        Adam Ford <aford173@gmail.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 181/663] drm/bridge: adv7533: Fix adv7533_mode_valid for adv7533 and adv7535
+        patches@lists.linux.dev, Devarsh Thakkar <devarsht@ti.com>,
+        Nishanth Menon <nm@ti.com>, Bryan Brattlof <bb@ti.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 172/694] arm64: dts: ti: k3-am62a7-sk: Fix DDR size to full 4GB
 Date:   Mon,  8 May 2023 11:40:07 +0200
-Message-Id: <20230508094434.319677369@linuxfoundation.org>
+Message-Id: <20230508094437.993476792@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,68 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Ford <aford173@gmail.com>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-[ Upstream commit ee0285e13455fdbce5de315bdbe91b5f198a2a06 ]
+[ Upstream commit a1bc0d6084dba8a31831c65318a8a8e46f00906f ]
 
-When dynamically switching lanes was removed, the intent of the code
-was to check to make sure that higher speed items used 4 lanes, but
-it had the unintended consequence of removing the slower speeds for
-4-lane users.
+All revisions of AM62A7-SK board have 4GB LPDDR4 Micron
+MT53E2G32D4DE-046 AUT:B memory. Commit 38c4a08c820c ("arm64: dts: ti:
+Add support for AM62A7-SK") enabled just 2GB due to a schematics error
+in early revision of the board. Fix it by enabling full 4GB available on
+the platform.
 
-This attempts to remedy this by doing a check to see that the
-max frequency doesn't exceed the chip limit, and a second
-check to make sure that the max bit-rate doesn't exceed the
-number of lanes * max bit rate / lane.
+Design docs: https://www.ti.com/lit/zip/sprr459
 
-Fixes: 9a0cdcd6649b ("drm/bridge: adv7533: remove dynamic lane switching from adv7533 bridge")
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230319125524.58803-1-aford173@gmail.com
+Fixes: 38c4a08c820c ("arm64: dts: ti: Add support for AM62A7-SK")
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20230314094645.3411599-1-devarsht@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7533.c | 25 +++++++++++-------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-index fdfeadcefe805..7e3e56441aedc 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -103,22 +103,19 @@ void adv7533_dsi_power_off(struct adv7511 *adv)
- enum drm_mode_status adv7533_mode_valid(struct adv7511 *adv,
- 					const struct drm_display_mode *mode)
- {
--	int lanes;
-+	unsigned long max_lane_freq;
- 	struct mipi_dsi_device *dsi = adv->dsi;
-+	u8 bpp = mipi_dsi_pixel_format_to_bpp(dsi->format);
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+index 5c9012141ee23..f6a67f072dca6 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -27,8 +27,9 @@
  
--	if (mode->clock > 80000)
--		lanes = 4;
--	else
--		lanes = 3;
--
--	/*
--	 * TODO: add support for dynamic switching of lanes
--	 * by using the bridge pre_enable() op . Till then filter
--	 * out the modes which shall need different number of lanes
--	 * than what was configured in the device tree.
--	 */
--	if (lanes != dsi->lanes)
--		return MODE_BAD;
-+	/* Check max clock for either 7533 or 7535 */
-+	if (mode->clock > (adv->type == ADV7533 ? 80000 : 148500))
-+		return MODE_CLOCK_HIGH;
-+
-+	/* Check max clock for each lane */
-+	max_lane_freq = (adv->type == ADV7533 ? 800000 : 891000);
-+
-+	if (mode->clock * bpp > max_lane_freq * adv->num_dsi_lanes)
-+		return MODE_CLOCK_HIGH;
+ 	memory@80000000 {
+ 		device_type = "memory";
+-		/* 2G RAM */
+-		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
++		/* 4G RAM */
++		reg = <0x00000000 0x80000000 0x00000000 0x80000000>,
++		      <0x00000008 0x80000000 0x00000000 0x80000000>;
+ 	};
  
- 	return MODE_OK;
- }
+ 	reserved-memory {
 -- 
 2.39.2
 
