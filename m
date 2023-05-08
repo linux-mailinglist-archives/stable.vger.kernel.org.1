@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF01D6FA845
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0D7D6FAB6C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234840AbjEHKjG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:39:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40276 "EHLO
+        id S233852AbjEHLNQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:13:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234749AbjEHKi4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:56 -0400
+        with ESMTP id S233868AbjEHLNL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 905942891A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED1C35B00
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09F8162818
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B4FC4339E;
-        Mon,  8 May 2023 10:38:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA5E862B89
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C134BC433D2;
+        Mon,  8 May 2023 11:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542333;
-        bh=Vyc4bcYllsPnAOPFMkvB+XeaZrIBXof52yS/eVIo7OY=;
+        s=korg; t=1683544384;
+        bh=FVABn5f25HUJh9U67nAaOefoQMgYz+isnmo0axEU4eQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oKB6Kxz+9PSJsby4Cwiktpj8kglZZnsldjgR9yH2Ddvmvwe6jyv8DKiu/ck2C0lBD
-         ezmbAms6mZ6xGyEra2L+kSyYIssBmACsO8eq7Gify+RxxsMcRBuwQie71g6pZ9PE4+
-         SYStDBQWrttzMuTMTD4KbPGQgwHNjXJwWAs0GTHU=
+        b=tNDJCK5wrRd/IEdNgLI72+95fhYVj4DCzF0r31ZVWe8jXtC81BkiZd7tHuSTf6aa8
+         00Fgt5eWidxf7RNTVSTGg7fLbwu1hqj9c84pA6MZDmH7szrZ1lS0j5mcbBo+2kMxo9
+         Y0nex/B9smNYPz5QRBTq5yXPIlnwJaCgWpele1xQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Wang Zhao <wang.zhao@mediatek.com>,
-        Quan Zhou <quan.zhou@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 402/663] wifi: mt76: mt7921e: improve reliability of dma reset
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 393/694] f2fs: fix to avoid use-after-free for cached IPU bio
 Date:   Mon,  8 May 2023 11:43:48 +0200
-Message-Id: <20230508094441.131669251@linuxfoundation.org>
+Message-Id: <20230508094445.813626926@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,105 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 87714bf6ed1589813e473db5471e6e9857755764 ]
+[ Upstream commit 5cdb422c839134273866208dad5360835ddb9794 ]
 
-The hardware team has advised the driver that it is necessary to first put
-WFDMA into an idle state before resetting the WFDMA. Otherwise, the WFDMA
-may enter an unknown state where it cannot be polled with the right state
-successfully. To ensure that the DMA can work properly while a stressful
-cold reboot test was being made, we have reordered the programming sequence
-in the driver based on the hardware team's guidance.
+xfstest generic/019 reports a bug:
 
-The patch would modify the WFDMA disabling flow from
+kernel BUG at mm/filemap.c:1619!
+RIP: 0010:folio_end_writeback+0x8a/0x90
+Call Trace:
+ end_page_writeback+0x1c/0x60
+ f2fs_write_end_io+0x199/0x420
+ bio_endio+0x104/0x180
+ submit_bio_noacct+0xa5/0x510
+ submit_bio+0x48/0x80
+ f2fs_submit_write_bio+0x35/0x300
+ f2fs_submit_merged_ipu_write+0x2a0/0x2b0
+ f2fs_write_single_data_page+0x838/0x8b0
+ f2fs_write_cache_pages+0x379/0xa30
+ f2fs_write_data_pages+0x30c/0x340
+ do_writepages+0xd8/0x1b0
+ __writeback_single_inode+0x44/0x370
+ writeback_sb_inodes+0x233/0x4d0
+ __writeback_inodes_wb+0x56/0xf0
+ wb_writeback+0x1dd/0x2d0
+ wb_workfn+0x367/0x4a0
+ process_one_work+0x21d/0x430
+ worker_thread+0x4e/0x3c0
+ kthread+0x103/0x130
+ ret_from_fork+0x2c/0x50
 
-"DMA reset -> disabling DMASHDL -> disabling WFDMA -> polling and waiting
-until DMA idle" to "disabling WFDMA -> polling and waiting for DMA idle ->
-disabling DMASHDL -> DMA reset.
+The root cause is: after cp_error is set, f2fs_submit_merged_ipu_write()
+in f2fs_write_single_data_page() tries to flush IPU bio in cache, however
+f2fs_submit_merged_ipu_write() missed to check validity of @bio parameter,
+result in submitting random cached bio which belong to other IO context,
+then it will cause use-after-free issue, fix it by adding additional
+validity check.
 
-Where he polling and waiting until WFDMA is idle is coordinated with the
-operation of disabling WFDMA. Even while WFDMA is being disabled, it can
-still handle Tx/Rx requests. The additional polling allows sufficient time
-for WFDMA to process the last T/Rx request. When the idle state of WFDMA is
-reached, it is a reliable indication that DMASHDL is also idle to ensure it
-is safe to disable it and perform the DMA reset.
-
-Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Co-developed-by: Wang Zhao <wang.zhao@mediatek.com>
-Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 0b20fcec8651 ("f2fs: cache global IPU bio")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/dma.c   | 36 ++++++++++---------
- 1 file changed, 20 insertions(+), 16 deletions(-)
+ fs/f2fs/data.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index dc4ccfef4b048..fd57c87a29ae3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -66,22 +66,6 @@ static void mt7921_dma_prefetch(struct mt7921_dev *dev)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 06b552a0aba23..1034912a61b30 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -874,6 +874,8 @@ void f2fs_submit_merged_ipu_write(struct f2fs_sb_info *sbi,
+ 	bool found = false;
+ 	struct bio *target = bio ? *bio : NULL;
  
- static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- {
--	if (force) {
--		/* reset */
--		mt76_clear(dev, MT_WFDMA0_RST,
--			   MT_WFDMA0_RST_DMASHDL_ALL_RST |
--			   MT_WFDMA0_RST_LOGIC_RST);
--
--		mt76_set(dev, MT_WFDMA0_RST,
--			 MT_WFDMA0_RST_DMASHDL_ALL_RST |
--			 MT_WFDMA0_RST_LOGIC_RST);
--	}
--
--	/* disable dmashdl */
--	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
--		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
--	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
--
- 	/* disable WFDMA0 */
- 	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
- 		   MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN |
-@@ -95,6 +79,22 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- 				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
- 		return -ETIMEDOUT;
++	f2fs_bug_on(sbi, !target && !page);
++
+ 	for (temp = HOT; temp < NR_TEMP_TYPE && !found; temp++) {
+ 		struct f2fs_bio_info *io = sbi->write_io[DATA] + temp;
+ 		struct list_head *head = &io->bio_list;
+@@ -2898,7 +2900,8 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
  
-+	/* disable dmashdl */
-+	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
-+		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
-+	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
-+
-+	if (force) {
-+		/* reset */
-+		mt76_clear(dev, MT_WFDMA0_RST,
-+			   MT_WFDMA0_RST_DMASHDL_ALL_RST |
-+			   MT_WFDMA0_RST_LOGIC_RST);
-+
-+		mt76_set(dev, MT_WFDMA0_RST,
-+			 MT_WFDMA0_RST_DMASHDL_ALL_RST |
-+			 MT_WFDMA0_RST_LOGIC_RST);
-+	}
-+
- 	return 0;
- }
+ 	if (unlikely(f2fs_cp_error(sbi))) {
+ 		f2fs_submit_merged_write(sbi, DATA);
+-		f2fs_submit_merged_ipu_write(sbi, bio, NULL);
++		if (bio && *bio)
++			f2fs_submit_merged_ipu_write(sbi, bio, NULL);
+ 		submitted = NULL;
+ 	}
  
-@@ -301,6 +301,10 @@ void mt7921_dma_cleanup(struct mt7921_dev *dev)
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
- 
-+	mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+			    MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+			    MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1);
-+
- 	/* reset */
- 	mt76_clear(dev, MT_WFDMA0_RST,
- 		   MT_WFDMA0_RST_DMASHDL_ALL_RST |
 -- 
 2.39.2
 
