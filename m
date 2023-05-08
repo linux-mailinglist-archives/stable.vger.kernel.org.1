@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 211316FA598
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00F86FAB92
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234176AbjEHKLM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:11:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
+        id S234022AbjEHLOz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234181AbjEHKLK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:10 -0400
+        with ESMTP id S234508AbjEHLOx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97844398AC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DE53656A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CD78623D1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F26DC433D2;
-        Mon,  8 May 2023 10:11:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EBFE62BAE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307C1C433EF;
+        Mon,  8 May 2023 11:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540668;
-        bh=gkfnnr1qoSbUOYReg2jWrFx1R+8WYHwcmUOKvnwDoOQ=;
+        s=korg; t=1683544491;
+        bh=515YoEgZZ/ABmXF/5cW49bGIDlpvMojKx5q1APCPmy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xWC8kgQpwVbvn0eESi8YA4Ewuwn7SzLzkuNBcYd44Rn9FXxqttpcesVnzv7pagUtH
-         EHuYNec4HjPMLt8O1+4GW2HdYECMkL1f4vEjQ5udt7zvEkxjMRG9h6wUm4zHbuVLTD
-         FGm6lPQxugUGL/k2F0p1dy62GtUJ7NcIBTLjTnTc=
+        b=Nto1ZeMXe1gCDfsebSsulRhi2/iqX/kbCjkTq4KK85QZGfnBg4Ub45WeuUMACVn6U
+         Gs57BpB3HqW4Whvwk7hoQMJWD2l9gbL2Bl8Txqof8yYAeEDyelhFsOUU8OucGFvPvV
+         zTF2UCt5wlEir0Sn1MJQip9dgAIui5zbt6DZO2GE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tsaur Erwin <erwin.tsaur@intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 421/611] PCI/EDR: Clear Device Status after EDR error recovery
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 428/694] jdb2: Dont refuse invalidation of already invalidated buffers
 Date:   Mon,  8 May 2023 11:44:23 +0200
-Message-Id: <20230508094435.890977573@linuxfoundation.org>
+Message-Id: <20230508094447.237940761@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,54 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit c441b1e03da6c680a3e12da59c554f454f2ccf5e ]
+[ Upstream commit bd159398a2d2234de07d310132865706964aaaa7 ]
 
-During EDR recovery, the OS must clear error status of the port that
-triggered DPC even if firmware retains control of DPC and AER (see the
-implementation note in the PCI Firmware spec r3.3, sec 4.6.12).
+When invalidating buffers under the partial tail page,
+jbd2_journal_invalidate_folio() returns -EBUSY if the buffer is part of
+the committing transaction as we cannot safely modify buffer state.
+However if the buffer is already invalidated (due to previous
+invalidation attempts from ext4_wait_for_tail_page_commit()), there's
+nothing to do and there's no point in returning -EBUSY. This fixes
+occasional warnings from ext4_journalled_invalidate_folio() triggered by
+generic/051 fstest when blocksize < pagesize.
 
-Prior to 068c29a248b6 ("PCI/ERR: Clear PCIe Device Status errors only if
-OS owns AER"), the port Device Status was cleared in this path:
-
-  edr_handle_event
-    dpc_process_error(dev)                 # "dev" triggered DPC
-    pcie_do_recovery(dev, dpc_reset_link)
-      dpc_reset_link                       # exit DPC
-      pcie_clear_device_status(dev)        # clear Device Status
-
-After 068c29a248b6, pcie_do_recovery() no longer clears Device Status when
-firmware controls AER, so the error bit remains set even after recovery.
-
-Per the "Downstream Port Containment configuration control" bit in the
-returned _OSC Control Field (sec 4.5.1), the OS is allowed to clear error
-status until it evaluates _OST, so clear Device Status in
-edr_handle_event() if the error recovery was successful.
-
-[bhelgaas: commit log]
-Fixes: 068c29a248b6 ("PCI/ERR: Clear PCIe Device Status errors only if OS owns AER")
-Link: https://lore.kernel.org/r/20230315235449.1279209-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Reported-by: Tsaur Erwin <erwin.tsaur@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 53e872681fed ("ext4: fix deadlock in journal_unmap_buffer()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230329154950.19720-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/edr.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jbd2/transaction.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-index a6b9b479b97ad..87734e4c3c204 100644
---- a/drivers/pci/pcie/edr.c
-+++ b/drivers/pci/pcie/edr.c
-@@ -193,6 +193,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
- 	 */
- 	if (estate == PCI_ERS_RESULT_RECOVERED) {
- 		pci_dbg(edev, "DPC port successfully recovered\n");
-+		pcie_clear_device_status(edev);
- 		acpi_send_edr_status(pdev, edev, EDR_OST_SUCCESS);
- 	} else {
- 		pci_dbg(edev, "DPC port recovery failed\n");
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 15de1385012eb..18611241f4513 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -2387,6 +2387,9 @@ static int journal_unmap_buffer(journal_t *journal, struct buffer_head *bh,
+ 			spin_unlock(&jh->b_state_lock);
+ 			write_unlock(&journal->j_state_lock);
+ 			jbd2_journal_put_journal_head(jh);
++			/* Already zapped buffer? Nothing to do... */
++			if (!bh->b_bdev)
++				return 0;
+ 			return -EBUSY;
+ 		}
+ 		/*
 -- 
 2.39.2
 
