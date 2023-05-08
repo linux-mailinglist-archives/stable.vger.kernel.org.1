@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 867FE6FA531
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA2056FAB4B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234061AbjEHKGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35178 "EHLO
+        id S233726AbjEHLLa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:11:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234063AbjEHKGx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20911989
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:51 -0700 (PDT)
+        with ESMTP id S233712AbjEHLL3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4658134E1A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68EC662350
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1CEC433D2;
-        Mon,  8 May 2023 10:06:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEF2862B79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D60C433EF;
+        Mon,  8 May 2023 11:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540410;
-        bh=rYiCoB+DKt+7REm0/FM7ikuKnN3Sy5KsDk4tv4VrQ/4=;
+        s=korg; t=1683544286;
+        bh=jhaS2KqOfxRTPe4+M5q9wdH/42iAqlxw2qnQXJCgFXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yivo1bPS3xJdv6ak6E+gsIWYa1N8CTGVfDPxTQRrCFaKvQoyMWlclDe6XbmsSijf1
-         7N6i35ZNZv6oYawahbS9WYQ+2NbENfyks/9brg15mOnAPka16Ak2AHcH3QV7wj7fc+
-         Uq3ER56bhUzn0BHo2Q3q7E8dveVDC9AEcMqswms8=
+        b=bZbtfooaC103gsP8nz2TBTz+89kLgzvPzazXpSMEWEJSrTdZMbUhAxw/SylUj/cwR
+         HmQ1PHtscNDMuxuZrRRVERPoeavxkuhm0PnOa1BivuVLn8y4n7pp38UCcvE24nfcoB
+         pWQhvskSw4iPaqd0KSY67iZetURB7pAmNPM1b86g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Gabay <daniel.gabay@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 355/611] wifi: iwlwifi: yoyo: Fix possible division by zero
+Subject: [PATCH 6.3 362/694] scsi: target: Move cmd counter allocation
 Date:   Mon,  8 May 2023 11:43:17 +0200
-Message-Id: <20230508094433.936113178@linuxfoundation.org>
+Message-Id: <20230508094444.450711751@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +55,265 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit ba30415118eee374a08b39a0460a1d1e52c24a25 ]
+[ Upstream commit 4edba7e4a8f39112398d3cda94128a8e13a7d527 ]
 
-Don't allow buffer allocation TLV with zero req_size since it
-leads later to division by zero in iwl_dbg_tlv_alloc_fragments().
-Also, NPK/SRAM locations are allowed to have zero buffer req_size,
-don't discard them.
+iSCSI needs to allocate its cmd counter per connection for MCS support
+where we need to stop and wait on commands running on a connection instead
+of per session. This moves the cmd counter allocation to
+target_setup_session() which is used by drivers that need the stop+wait
+behavior per session.
 
-Fixes: a9248de42464 ("iwlwifi: dbg_ini: add TLV allocation new API support")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230413213309.5d6688ed74d8.I5c2f3a882b50698b708d54f4524dc5bdf11e3d32@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+xcopy doesn't need stop+wait at all, so we will be OK moving the cmd
+counter allocation outside of transport_init_session().
+
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-3-michael.christie@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 395cee83d02d ("scsi: target: iscsit: Stop/wait on cmds during conn close")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/target/iscsi/iscsi_target_login.c | 10 +++++
+ drivers/target/target_core_internal.h     |  1 -
+ drivers/target/target_core_transport.c    | 55 +++++++++++------------
+ drivers/target/target_core_xcopy.c        | 15 +------
+ include/target/target_core_fabric.h       |  4 +-
+ 5 files changed, 42 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 3237d4b528b5d..a1d34f3e7a9f4 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -138,6 +138,12 @@ static int iwl_dbg_tlv_alloc_buf_alloc(struct iwl_trans *trans,
- 	    alloc_id != IWL_FW_INI_ALLOCATION_ID_DBGC1)
- 		goto err;
+diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
+index 27e448c2d066c..8ab6c0107d89c 100644
+--- a/drivers/target/iscsi/iscsi_target_login.c
++++ b/drivers/target/iscsi/iscsi_target_login.c
+@@ -324,8 +324,18 @@ static int iscsi_login_zero_tsih_s1(
+ 		goto free_ops;
+ 	}
  
-+	if (buf_location == IWL_FW_INI_LOCATION_DRAM_PATH &&
-+	    alloc->req_size == 0) {
-+		IWL_ERR(trans, "WRT: Invalid DRAM buffer allocation requested size (0)\n");
-+		return -EINVAL;
-+	}
++	/*
++	 * This is temp for iser. It will be moved to per conn in later
++	 * patches for iscsi.
++	 */
++	sess->se_sess->cmd_cnt = target_alloc_cmd_counter();
++	if (!sess->se_sess->cmd_cnt)
++		goto free_se_sess;
 +
- 	trans->dbg.fw_mon_cfg[alloc_id] = *alloc;
+ 	return 0;
+ 
++free_se_sess:
++	transport_free_session(sess->se_sess);
+ free_ops:
+ 	kfree(sess->sess_ops);
+ free_id:
+diff --git a/drivers/target/target_core_internal.h b/drivers/target/target_core_internal.h
+index 38a6d08f75b34..85e35cf582e50 100644
+--- a/drivers/target/target_core_internal.h
++++ b/drivers/target/target_core_internal.h
+@@ -138,7 +138,6 @@ int	init_se_kmem_caches(void);
+ void	release_se_kmem_caches(void);
+ u32	scsi_get_new_index(scsi_index_t);
+ void	transport_subsystem_check_init(void);
+-void	transport_uninit_session(struct se_session *);
+ unsigned char *transport_dump_cmd_direction(struct se_cmd *);
+ void	transport_dump_dev_state(struct se_device *, char *, int *);
+ void	transport_dump_dev_info(struct se_device *, struct se_lun *,
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 3d6034f00dcd8..60647a49a1d31 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -228,7 +228,7 @@ static void target_release_cmd_refcnt(struct percpu_ref *ref)
+ 	wake_up(&cmd_cnt->refcnt_wq);
+ }
+ 
+-static struct target_cmd_counter *target_alloc_cmd_counter(void)
++struct target_cmd_counter *target_alloc_cmd_counter(void)
+ {
+ 	struct target_cmd_counter *cmd_cnt;
+ 	int rc;
+@@ -252,6 +252,7 @@ static struct target_cmd_counter *target_alloc_cmd_counter(void)
+ 	kfree(cmd_cnt);
+ 	return NULL;
+ }
++EXPORT_SYMBOL_GPL(target_alloc_cmd_counter);
+ 
+ static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
+ {
+@@ -271,24 +272,14 @@ static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
+  *
+  * The caller must have zero-initialized @se_sess before calling this function.
+  */
+-int transport_init_session(struct se_session *se_sess)
++void transport_init_session(struct se_session *se_sess)
+ {
+ 	INIT_LIST_HEAD(&se_sess->sess_list);
+ 	INIT_LIST_HEAD(&se_sess->sess_acl_list);
+ 	spin_lock_init(&se_sess->sess_cmd_lock);
+-	se_sess->cmd_cnt = target_alloc_cmd_counter();
+-	if (!se_sess->cmd_cnt)
+-		return -ENOMEM;
+-
+-	return  0;
+ }
+ EXPORT_SYMBOL(transport_init_session);
+ 
+-void transport_uninit_session(struct se_session *se_sess)
+-{
+-	target_free_cmd_counter(se_sess->cmd_cnt);
+-}
+-
+ /**
+  * transport_alloc_session - allocate a session object and initialize it
+  * @sup_prot_ops: bitmask that defines which T10-PI modes are supported.
+@@ -296,7 +287,6 @@ void transport_uninit_session(struct se_session *se_sess)
+ struct se_session *transport_alloc_session(enum target_prot_op sup_prot_ops)
+ {
+ 	struct se_session *se_sess;
+-	int ret;
+ 
+ 	se_sess = kmem_cache_zalloc(se_sess_cache, GFP_KERNEL);
+ 	if (!se_sess) {
+@@ -304,11 +294,7 @@ struct se_session *transport_alloc_session(enum target_prot_op sup_prot_ops)
+ 				" se_sess_cache\n");
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+-	ret = transport_init_session(se_sess);
+-	if (ret < 0) {
+-		kmem_cache_free(se_sess_cache, se_sess);
+-		return ERR_PTR(ret);
+-	}
++	transport_init_session(se_sess);
+ 	se_sess->sup_prot_ops = sup_prot_ops;
+ 
+ 	return se_sess;
+@@ -474,8 +460,13 @@ target_setup_session(struct se_portal_group *tpg,
+ 		     int (*callback)(struct se_portal_group *,
+ 				     struct se_session *, void *))
+ {
++	struct target_cmd_counter *cmd_cnt;
+ 	struct se_session *sess;
++	int rc;
+ 
++	cmd_cnt = target_alloc_cmd_counter();
++	if (!cmd_cnt)
++		return ERR_PTR(-ENOMEM);
+ 	/*
+ 	 * If the fabric driver is using percpu-ida based pre allocation
+ 	 * of I/O descriptor tags, go ahead and perform that setup now..
+@@ -485,29 +476,36 @@ target_setup_session(struct se_portal_group *tpg,
+ 	else
+ 		sess = transport_alloc_session(prot_op);
+ 
+-	if (IS_ERR(sess))
+-		return sess;
++	if (IS_ERR(sess)) {
++		rc = PTR_ERR(sess);
++		goto free_cnt;
++	}
++	sess->cmd_cnt = cmd_cnt;
+ 
+ 	sess->se_node_acl = core_tpg_check_initiator_node_acl(tpg,
+ 					(unsigned char *)initiatorname);
+ 	if (!sess->se_node_acl) {
+-		transport_free_session(sess);
+-		return ERR_PTR(-EACCES);
++		rc = -EACCES;
++		goto free_sess;
+ 	}
+ 	/*
+ 	 * Go ahead and perform any remaining fabric setup that is
+ 	 * required before transport_register_session().
+ 	 */
+ 	if (callback != NULL) {
+-		int rc = callback(tpg, sess, private);
+-		if (rc) {
+-			transport_free_session(sess);
+-			return ERR_PTR(rc);
+-		}
++		rc = callback(tpg, sess, private);
++		if (rc)
++			goto free_sess;
+ 	}
+ 
+ 	transport_register_session(tpg, sess->se_node_acl, sess, private);
+ 	return sess;
++
++free_sess:
++	transport_free_session(sess);
++free_cnt:
++	target_free_cmd_counter(cmd_cnt);
++	return ERR_PTR(rc);
+ }
+ EXPORT_SYMBOL(target_setup_session);
+ 
+@@ -632,7 +630,8 @@ void transport_free_session(struct se_session *se_sess)
+ 		sbitmap_queue_free(&se_sess->sess_tag_pool);
+ 		kvfree(se_sess->sess_cmd_map);
+ 	}
+-	transport_uninit_session(se_sess);
++	if (se_sess->cmd_cnt)
++		target_free_cmd_counter(se_sess->cmd_cnt);
+ 	kmem_cache_free(se_sess_cache, se_sess);
+ }
+ EXPORT_SYMBOL(transport_free_session);
+diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
+index 49eaee022ef1d..49a83500c8b75 100644
+--- a/drivers/target/target_core_xcopy.c
++++ b/drivers/target/target_core_xcopy.c
+@@ -461,8 +461,6 @@ static const struct target_core_fabric_ops xcopy_pt_tfo = {
+ 
+ int target_xcopy_setup_pt(void)
+ {
+-	int ret;
+-
+ 	xcopy_wq = alloc_workqueue("xcopy_wq", WQ_MEM_RECLAIM, 0);
+ 	if (!xcopy_wq) {
+ 		pr_err("Unable to allocate xcopy_wq\n");
+@@ -479,9 +477,7 @@ int target_xcopy_setup_pt(void)
+ 	INIT_LIST_HEAD(&xcopy_pt_nacl.acl_list);
+ 	INIT_LIST_HEAD(&xcopy_pt_nacl.acl_sess_list);
+ 	memset(&xcopy_pt_sess, 0, sizeof(struct se_session));
+-	ret = transport_init_session(&xcopy_pt_sess);
+-	if (ret < 0)
+-		goto destroy_wq;
++	transport_init_session(&xcopy_pt_sess);
+ 
+ 	xcopy_pt_nacl.se_tpg = &xcopy_pt_tpg;
+ 	xcopy_pt_nacl.nacl_sess = &xcopy_pt_sess;
+@@ -490,19 +486,12 @@ int target_xcopy_setup_pt(void)
+ 	xcopy_pt_sess.se_node_acl = &xcopy_pt_nacl;
  
  	return 0;
+-
+-destroy_wq:
+-	destroy_workqueue(xcopy_wq);
+-	xcopy_wq = NULL;
+-	return ret;
+ }
+ 
+ void target_xcopy_release_pt(void)
+ {
+-	if (xcopy_wq) {
++	if (xcopy_wq)
+ 		destroy_workqueue(xcopy_wq);
+-		transport_uninit_session(&xcopy_pt_sess);
+-	}
+ }
+ 
+ /*
+diff --git a/include/target/target_core_fabric.h b/include/target/target_core_fabric.h
+index 38f0662476d14..65527174b8bc6 100644
+--- a/include/target/target_core_fabric.h
++++ b/include/target/target_core_fabric.h
+@@ -133,7 +133,9 @@ struct se_session *target_setup_session(struct se_portal_group *,
+ 				struct se_session *, void *));
+ void target_remove_session(struct se_session *);
+ 
+-int transport_init_session(struct se_session *se_sess);
++struct target_cmd_counter *target_alloc_cmd_counter(void);
++
++void transport_init_session(struct se_session *se_sess);
+ struct se_session *transport_alloc_session(enum target_prot_op);
+ int transport_alloc_session_tags(struct se_session *, unsigned int,
+ 		unsigned int);
 -- 
 2.39.2
 
