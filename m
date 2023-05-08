@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE75E6FA55D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C46A06FA855
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234111AbjEHKIm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
+        id S234913AbjEHKji (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234115AbjEHKIl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E6832929
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:39 -0700 (PDT)
+        with ESMTP id S234895AbjEHKjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A779E15695
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78DE562295
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89577C433D2;
-        Mon,  8 May 2023 10:08:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CDE56282B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472C5C433D2;
+        Mon,  8 May 2023 10:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540518;
-        bh=uvr5XAA+iinynhXRHK3YC4noD4pbs8SEnJdyHUtY7ds=;
+        s=korg; t=1683542370;
+        bh=0PcHXLp9bDHjsHHPNsX83q5ZvsKF1ez8kbkO7ipjVJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i9Rpz+lagzCyoPQS2p+Gg+VDGz9/5xBGwmxhIeXKvEUzvJ246+9d/ef34H0cHlKJt
-         QvNdXn1IIsTrsAW9dDrNAXaOWlFNMe+kWjWdXq9DDr0f5Dl/AgnnjAKLOPkXkr3DOH
-         NoJoCpXZq0Zc4fVL9u/RlDauFzBZ8O+XG0g8/7JA=
+        b=pC5W37RqVeyYk0pRo04rfEqN9e2SH/3f66J0S75A9FFemSQbFYaZ31atRwGQFXslm
+         ZCSSL6CqCDu+a4n0NIfI6wn04c2teGVj1zhNdNvYGppkcjLTWrIvPgWnrsemVYRSUi
+         bLGNZjOUel/CSyU5ilVyLCaZ4Ss9WmP3k4NE13/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 396/611] tcp/udp: Fix memleaks of sk and zerocopy skbs with TX timestamp.
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.2 412/663] ixgbe: Enable setting RSS table to default values
 Date:   Mon,  8 May 2023 11:43:58 +0200
-Message-Id: <20230508094435.146434634@linuxfoundation.org>
+Message-Id: <20230508094441.442425988@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,123 +56,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 50749f2dd6854a41830996ad302aef2ffaf011d8 ]
+[ Upstream commit e85d3d55875f7a1079edfbc4e4e98d6f8aea9ac7 ]
 
-syzkaller reported [0] memory leaks of an UDP socket and ZEROCOPY
-skbs.  We can reproduce the problem with these sequences:
+ethtool uses `ETHTOOL_GRXRINGS` to compute how many queues are supported
+by RSS. The driver should return the smaller of either:
+  - The maximum number of RSS queues the device supports, OR
+  - The number of RX queues configured
 
-  sk = socket(AF_INET, SOCK_DGRAM, 0)
-  sk.setsockopt(SOL_SOCKET, SO_TIMESTAMPING, SOF_TIMESTAMPING_TX_SOFTWARE)
-  sk.setsockopt(SOL_SOCKET, SO_ZEROCOPY, 1)
-  sk.sendto(b'', MSG_ZEROCOPY, ('127.0.0.1', 53))
-  sk.close()
+Prior to this change, running `ethtool -X $iface default` fails if the
+number of queues configured is larger than the number supported by RSS,
+even though changing the queue count correctly resets the flowhash to
+use all supported queues.
 
-sendmsg() calls msg_zerocopy_alloc(), which allocates a skb, sets
-skb->cb->ubuf.refcnt to 1, and calls sock_hold().  Here, struct
-ubuf_info_msgzc indirectly holds a refcnt of the socket.  When the
-skb is sent, __skb_tstamp_tx() clones it and puts the clone into
-the socket's error queue with the TX timestamp.
+Other drivers (for example, i40e) will succeed but the flow hash will
+reset to support the maximum number of queues supported by RSS, even if
+that amount is smaller than the configured amount.
 
-When the original skb is received locally, skb_copy_ubufs() calls
-skb_unclone(), and pskb_expand_head() increments skb->cb->ubuf.refcnt.
-This additional count is decremented while freeing the skb, but struct
-ubuf_info_msgzc still has a refcnt, so __msg_zerocopy_callback() is
-not called.
+Prior to this change:
 
-The last refcnt is not released unless we retrieve the TX timestamped
-skb by recvmsg().  Since we clear the error queue in inet_sock_destruct()
-after the socket's refcnt reaches 0, there is a circular dependency.
-If we close() the socket holding such skbs, we never call sock_put()
-and leak the count, sk, and skb.
+$ sudo ethtool -L eth1 combined 20
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 20 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+   24:      8     9    10    11    12    13    14    15
+   32:      0     1     2     3     4     5     6     7
+...
 
-TCP has the same problem, and commit e0c8bccd40fc ("net: stream:
-purge sk_error_queue in sk_stream_kill_queues()") tried to fix it
-by calling skb_queue_purge() during close().  However, there is a
-small chance that skb queued in a qdisc or device could be put
-into the error queue after the skb_queue_purge() call.
+You can see that the flowhash was correctly set to use the maximum
+number of queues supported by the driver (16).
 
-In __skb_tstamp_tx(), the cloned skb should not have a reference
-to the ubuf to remove the circular dependency, but skb_clone() does
-not call skb_copy_ubufs() for zerocopy skb.  So, we need to call
-skb_orphan_frags_rx() for the cloned skb to call skb_copy_ubufs().
+However, asking the NIC to reset to "default" fails:
 
-[0]:
-BUG: memory leak
-unreferenced object 0xffff88800c6d2d00 (size 1152):
-  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 cd af e8 81 00 00 00 00  ................
-    02 00 07 40 00 00 00 00 00 00 00 00 00 00 00 00  ...@............
-  backtrace:
-    [<0000000055636812>] sk_prot_alloc+0x64/0x2a0 net/core/sock.c:2024
-    [<0000000054d77b7a>] sk_alloc+0x3b/0x800 net/core/sock.c:2083
-    [<0000000066f3c7e0>] inet_create net/ipv4/af_inet.c:319 [inline]
-    [<0000000066f3c7e0>] inet_create+0x31e/0xe40 net/ipv4/af_inet.c:245
-    [<000000009b83af97>] __sock_create+0x2ab/0x550 net/socket.c:1515
-    [<00000000b9b11231>] sock_create net/socket.c:1566 [inline]
-    [<00000000b9b11231>] __sys_socket_create net/socket.c:1603 [inline]
-    [<00000000b9b11231>] __sys_socket_create net/socket.c:1588 [inline]
-    [<00000000b9b11231>] __sys_socket+0x138/0x250 net/socket.c:1636
-    [<000000004fb45142>] __do_sys_socket net/socket.c:1649 [inline]
-    [<000000004fb45142>] __se_sys_socket net/socket.c:1647 [inline]
-    [<000000004fb45142>] __x64_sys_socket+0x73/0xb0 net/socket.c:1647
-    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
-    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+$ sudo ethtool -X eth1 default
+Cannot set RX flow hash configuration: Invalid argument
 
-BUG: memory leak
-unreferenced object 0xffff888017633a00 (size 240):
-  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 2d 6d 0c 80 88 ff ff  .........-m.....
-  backtrace:
-    [<000000002b1c4368>] __alloc_skb+0x229/0x320 net/core/skbuff.c:497
-    [<00000000143579a6>] alloc_skb include/linux/skbuff.h:1265 [inline]
-    [<00000000143579a6>] sock_omalloc+0xaa/0x190 net/core/sock.c:2596
-    [<00000000be626478>] msg_zerocopy_alloc net/core/skbuff.c:1294 [inline]
-    [<00000000be626478>] msg_zerocopy_realloc+0x1ce/0x7f0 net/core/skbuff.c:1370
-    [<00000000cbfc9870>] __ip_append_data+0x2adf/0x3b30 net/ipv4/ip_output.c:1037
-    [<0000000089869146>] ip_make_skb+0x26c/0x2e0 net/ipv4/ip_output.c:1652
-    [<00000000098015c2>] udp_sendmsg+0x1bac/0x2390 net/ipv4/udp.c:1253
-    [<0000000045e0e95e>] inet_sendmsg+0x10a/0x150 net/ipv4/af_inet.c:819
-    [<000000008d31bfde>] sock_sendmsg_nosec net/socket.c:714 [inline]
-    [<000000008d31bfde>] sock_sendmsg+0x141/0x190 net/socket.c:734
-    [<0000000021e21aa4>] __sys_sendto+0x243/0x360 net/socket.c:2117
-    [<00000000ac0af00c>] __do_sys_sendto net/socket.c:2129 [inline]
-    [<00000000ac0af00c>] __se_sys_sendto net/socket.c:2125 [inline]
-    [<00000000ac0af00c>] __x64_sys_sendto+0xe1/0x1c0 net/socket.c:2125
-    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
-    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+After this change, the flowhash can be reset to default which will use
+all of the available RSS queues (16) or the configured queue count,
+whichever is smaller.
 
-Fixes: f214f915e7db ("tcp: enable MSG_ZEROCOPY")
-Fixes: b5947e5d1e71 ("udp: msg_zerocopy")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Starting with eth1 which has 10 queues and a flowhash distributing to
+all 10 queues:
+
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 10 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9     0     1     2     3     4     5
+   16:      6     7     8     9     0     1     2     3
+...
+
+Increasing the queue count to 48 resets the flowhash to distribute to 16
+queues, as it did before this patch:
+
+$ sudo ethtool -L eth1 combined 48
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Due to the other bugfix in this series, the flowhash can be set to use
+queues 0-5:
+
+$ sudo ethtool -X eth1 equal 5
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     0     1     2
+    8:      3     4     0     1     2     3     4     0
+   16:      1     2     3     4     0     1     2     3
+...
+
+Due to this bugfix, the flowhash can be reset to default and use 16
+queues:
+
+$ sudo ethtool -X eth1 default
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Fixes: 91cd94bfe4f0 ("ixgbe: add basic support for setting and getting nfc controls")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index cd4b3a610961f..597c1f17d3889 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4972,6 +4972,9 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
- 			skb = alloc_skb(0, GFP_ATOMIC);
- 	} else {
- 		skb = skb_clone(orig_skb, GFP_ATOMIC);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index 821dfd323fa9a..0bbad4a5cc2f5 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -2665,6 +2665,14 @@ static int ixgbe_get_rss_hash_opts(struct ixgbe_adapter *adapter,
+ 	return 0;
+ }
+ 
++static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
++{
++	if (adapter->hw.mac.type < ixgbe_mac_X550)
++		return 16;
++	else
++		return 64;
++}
 +
-+		if (skb_orphan_frags_rx(skb, GFP_ATOMIC))
-+			return;
- 	}
- 	if (!skb)
- 		return;
+ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 			   u32 *rule_locs)
+ {
+@@ -2673,7 +2681,8 @@ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 
+ 	switch (cmd->cmd) {
+ 	case ETHTOOL_GRXRINGS:
+-		cmd->data = adapter->num_rx_queues;
++		cmd->data = min_t(int, adapter->num_rx_queues,
++				  ixgbe_rss_indir_tbl_max(adapter));
+ 		ret = 0;
+ 		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+@@ -3075,14 +3084,6 @@ static int ixgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
+ 	return ret;
+ }
+ 
+-static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
+-{
+-	if (adapter->hw.mac.type < ixgbe_mac_X550)
+-		return 16;
+-	else
+-		return 64;
+-}
+-
+ static u32 ixgbe_get_rxfh_key_size(struct net_device *netdev)
+ {
+ 	return IXGBE_RSS_KEY_SIZE;
 -- 
 2.39.2
 
