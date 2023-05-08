@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF616FA5A2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A303D6FADA1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234181AbjEHKL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:11:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39308 "EHLO
+        id S234020AbjEHLga (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:36:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234195AbjEHKL0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3233A398BA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:25 -0700 (PDT)
+        with ESMTP id S236039AbjEHLgE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:36:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E263F54E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:35:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6F3D623D7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD149C433EF;
-        Mon,  8 May 2023 10:11:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5848B632DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A59EC4339B;
+        Mon,  8 May 2023 11:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540684;
-        bh=vNOmNtAn3cq21wXC0/F3vb0CHXvm+wABlSecA9RM07g=;
+        s=korg; t=1683545716;
+        bh=o9jYW+j3DxMaQOSQTG5S8ILw6Ru1uIHKkL9QzBvnldY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZUGP1C1Ghi/3enbZS3jctaVA8bVqT4h7bB8MPi86Eiy8MeJnt7Y8qcPtFdOdsmbNy
-         K9wpRpjRx4qJ/w8TuoFswNNUhl03RnAf5PlvG3JTWrIXBIUy9EPhn8jSTPcBlK0jdH
-         53PBEmh1iKpTt8TrADxFEkKVBuxVj1ksATJaNsms=
+        b=g+nTiN5w0Dy4KvurpLCtDB1j6VKFJPYv0wXRUWrLRk/KqEjTKoVd8HfZa5UqTnAEQ
+         QnDOZhr25W97+n4J1/YPpyviLJHnThkWWk69pi3PZda54Vb6yHAj2rgNFgtQUxEww8
+         D8va61BsI9OXMLPuNplN3JmWAO5xiHhVRfyGiJ9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 459/611] powerpc/perf: Properly detect mpc7450 family
-Date:   Mon,  8 May 2023 11:45:01 +0200
-Message-Id: <20230508094437.068001792@linuxfoundation.org>
+Subject: [PATCH 5.15 101/371] arm64: dts: qcom: sm8250: Fix the PCI I/O port range
+Date:   Mon,  8 May 2023 11:45:02 +0200
+Message-Id: <20230508094816.042714243@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,69 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit e7299f961fe5e4496db0bfaa9e819f5e97f3846b ]
+[ Upstream commit e115a4495db687898b8d91d4f16c2cf55bbf167c ]
 
-Unlike PVR_POWER8, etc ...., PVR_7450 represents a full PVR
-value and not a family value.
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
+(0x60200000, 0x40200000, 0x64200000) specified in the ranges property for
+I/O region.
 
-To avoid confusion, do like E500 family and define the relevant
-PVR_VER_xxxx values for the 7450 family:
-  0x8000 ==> 7450
-  0x8001 ==> 7455
-  0x8002 ==> 7447
-  0x8003 ==> 7447A
-  0x8004 ==> 7448
+While at it, let's use the missing 0x prefix for the addresses.
 
-And use them to detect 7450 family for perf events.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/202302260657.7dM9Uwev-lkp@intel.com/
-Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field to determine CPU version")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/99ca1da2e5a6cf82a8abf4bc034918e500e31781.1677513277.git.christophe.leroy@csgroup.eu
+Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-9-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/reg.h  | 5 +++++
- arch/powerpc/perf/mpc7450-pmu.c | 6 +++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 1e8b2e04e626a..8fda87af2fa5e 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1310,6 +1310,11 @@
- #define PVR_VER_E500MC	0x8023
- #define PVR_VER_E5500	0x8024
- #define PVR_VER_E6500	0x8040
-+#define PVR_VER_7450	0x8000
-+#define PVR_VER_7455	0x8001
-+#define PVR_VER_7447	0x8002
-+#define PVR_VER_7447A	0x8003
-+#define PVR_VER_7448	0x8004
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 4e3b772a8bded..181e32b8a2728 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -1393,8 +1393,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- /*
-  * For the 8xx processors, all of them report the same PVR family for
-diff --git a/arch/powerpc/perf/mpc7450-pmu.c b/arch/powerpc/perf/mpc7450-pmu.c
-index 552d51a925d37..db451b9aac35e 100644
---- a/arch/powerpc/perf/mpc7450-pmu.c
-+++ b/arch/powerpc/perf/mpc7450-pmu.c
-@@ -417,9 +417,9 @@ struct power_pmu mpc7450_pmu = {
+-			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
+-				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
++				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
  
- static int __init init_mpc7450_pmu(void)
- {
--	unsigned int pvr = mfspr(SPRN_PVR);
--
--	if (PVR_VER(pvr) != PVR_7450)
-+	if (!pvr_version_is(PVR_VER_7450) && !pvr_version_is(PVR_VER_7455) &&
-+	    !pvr_version_is(PVR_VER_7447) && !pvr_version_is(PVR_VER_7447A) &&
-+	    !pvr_version_is(PVR_VER_7448))
- 		return -ENODEV;
+ 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -1494,7 +1494,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	return register_power_pmu(&mpc7450_pmu);
+-			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
+ 
+ 			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
+@@ -1602,7 +1602,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+-			ranges = <0x01000000 0x0 0x64200000 0x0 0x64200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x64200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x64300000 0x0 0x64300000 0x0 0x3d00000>;
+ 
+ 			interrupts = <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.39.2
 
