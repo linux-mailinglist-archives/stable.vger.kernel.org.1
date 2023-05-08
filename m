@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87AC86FAD02
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D4F6FA560
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235765AbjEHLaK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45782 "EHLO
+        id S234119AbjEHKIu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:08:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235713AbjEHL36 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:58 -0400
+        with ESMTP id S234117AbjEHKIt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6AE23DE87
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC4C3292D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2BDC62DDB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6122C433D2;
-        Mon,  8 May 2023 11:29:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FDA462396
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0CCC433D2;
+        Mon,  8 May 2023 10:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545383;
-        bh=cdQDKMx3xzAvZDRBdIgPeQRwjsXvpW8TqrCESkJ8bv0=;
+        s=korg; t=1683540526;
+        bh=kgVrrUI7cAOg6GpMxbXeY3qLoY4n5BwMWRIW6E6LTRQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j4ESLaxFol1+v0WFJYz3iiq8ieQHvnpsFFk6m1l6RQVFQKn5SSrwSlO3VdzMdqsDC
-         9dmhmYHQRCmyHbcfALMzb3sGDOhT0DVJcYI2Q8J+fL1I25Bau/xUOwbbYm5c2XgVdx
-         8fVckKwQfo9keWPLYCsbd5F3k7OqtE9+7uuMTEYI=
+        b=PER31T5YZMwB1YoFVrGtZV34ojYKzpH+5HZNetj9KOEOy/2dbETetN5XiVNG6wLEL
+         EICqW0jcIH7GLMHSbkE/2RiWjGh7ajSmLaWNEWv8gziW59n4xye+DpjlIGtqXZEBcw
+         U598gT6D3afdt4ZbSCaZBiKuydZEWqK8iVaZ4vME=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Huckleberry <nhuck@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Eric Biggers <ebiggers@google.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 021/371] blk-mq: release crypto keyslot before reporting I/O complete
-Date:   Mon,  8 May 2023 11:43:42 +0200
-Message-Id: <20230508094812.960332066@linuxfoundation.org>
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+        Moshe Shemesh <moshe@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 381/611] net/mlx5: Remove "recovery" arg from mlx5_load_one() function
+Date:   Mon,  8 May 2023 11:43:43 +0200
+Message-Id: <20230508094434.709441205@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,183 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-commit 9cd1e566676bbcb8a126acd921e4e194e6339603 upstream.
+[ Upstream commit 5977ac3910f1cbaf44dca48179118b25c206ac29 ]
 
-Once all I/O using a blk_crypto_key has completed, filesystems can call
-blk_crypto_evict_key().  However, the block layer currently doesn't call
-blk_crypto_put_keyslot() until the request is being freed, which happens
-after upper layers have been told (via bio_endio()) the I/O has
-completed.  This causes a race condition where blk_crypto_evict_key()
-can see 'slot_refs != 0' without there being an actual bug.
+mlx5_load_one() is always called with recovery==false, so remove the
+unneeded function arg.
 
-This makes __blk_crypto_evict_key() hit the
-'WARN_ON_ONCE(atomic_read(&slot->slot_refs) != 0)' and return without
-doing anything, eventually causing a use-after-free in
-blk_crypto_reprogram_all_keys().  (This is a very rare bug and has only
-been seen when per-file keys are being used with fscrypt.)
-
-There are two options to fix this: either release the keyslot before
-bio_endio() is called on the request's last bio, or make
-__blk_crypto_evict_key() ignore slot_refs.  Let's go with the first
-solution, since it preserves the ability to report bugs (via
-WARN_ON_ONCE) where a key is evicted while still in-use.
-
-Fixes: a892c8d52c02 ("block: Inline encryption support for blk-mq")
-Cc: stable@vger.kernel.org
-Reviewed-by: Nathan Huckleberry <nhuck@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: dfad99750c0f ("net/mlx5: Use recovery timeout on sync reset flow")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c            |    7 +++++++
- block/blk-crypto-internal.h |   25 +++++++++++++++++++++----
- block/blk-crypto.c          |   24 ++++++++++++------------
- block/blk-merge.c           |    2 ++
- block/blk-mq.c              |    2 +-
- 5 files changed, 43 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/main.c      | 9 ++++-----
+ drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h | 2 +-
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1421,6 +1421,13 @@ bool blk_update_request(struct request *
- 		req->q->integrity.profile->complete_fn(req, nr_bytes);
- #endif
- 
-+	/*
-+	 * Upper layers may call blk_crypto_evict_key() anytime after the last
-+	 * bio_endio().  Therefore, the keyslot must be released before that.
-+	 */
-+	if (blk_crypto_rq_has_keyslot(req) && nr_bytes >= blk_rq_bytes(req))
-+		__blk_crypto_rq_put_keyslot(req);
-+
- 	if (unlikely(error && !blk_rq_is_passthrough(req) &&
- 		     !(req->rq_flags & RQF_QUIET)))
- 		print_req_error(req, error, __func__);
---- a/block/blk-crypto-internal.h
-+++ b/block/blk-crypto-internal.h
-@@ -60,6 +60,11 @@ static inline bool blk_crypto_rq_is_encr
- 	return rq->crypt_ctx;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 1e46f9afa40e0..a1f460c9d3cde 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -154,7 +154,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
+ 		if (mlx5_health_wait_pci_up(dev))
+ 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
+ 		else
+-			mlx5_load_one(dev, false);
++			mlx5_load_one(dev);
+ 		devlink_remote_reload_actions_performed(priv_to_devlink(dev), 0,
+ 							BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
+ 							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 59914f66857da..31841f4307fee 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1484,13 +1484,13 @@ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery)
+ 	return err;
  }
  
-+static inline bool blk_crypto_rq_has_keyslot(struct request *rq)
-+{
-+	return rq->crypt_keyslot;
-+}
-+
- #else /* CONFIG_BLK_INLINE_ENCRYPTION */
- 
- static inline bool bio_crypt_rq_ctx_compatible(struct request *rq,
-@@ -93,6 +98,11 @@ static inline bool blk_crypto_rq_is_encr
- 	return false;
- }
- 
-+static inline bool blk_crypto_rq_has_keyslot(struct request *rq)
-+{
-+	return false;
-+}
-+
- #endif /* CONFIG_BLK_INLINE_ENCRYPTION */
- 
- void __bio_crypt_advance(struct bio *bio, unsigned int bytes);
-@@ -127,14 +137,21 @@ static inline bool blk_crypto_bio_prep(s
- 	return true;
- }
- 
--blk_status_t __blk_crypto_init_request(struct request *rq);
--static inline blk_status_t blk_crypto_init_request(struct request *rq)
-+blk_status_t __blk_crypto_rq_get_keyslot(struct request *rq);
-+static inline blk_status_t blk_crypto_rq_get_keyslot(struct request *rq)
+-int mlx5_load_one(struct mlx5_core_dev *dev, bool recovery)
++int mlx5_load_one(struct mlx5_core_dev *dev)
  {
- 	if (blk_crypto_rq_is_encrypted(rq))
--		return __blk_crypto_init_request(rq);
-+		return __blk_crypto_rq_get_keyslot(rq);
- 	return BLK_STS_OK;
- }
+ 	struct devlink *devlink = priv_to_devlink(dev);
+ 	int ret;
  
-+void __blk_crypto_rq_put_keyslot(struct request *rq);
-+static inline void blk_crypto_rq_put_keyslot(struct request *rq)
-+{
-+	if (blk_crypto_rq_has_keyslot(rq))
-+		__blk_crypto_rq_put_keyslot(rq);
-+}
-+
- void __blk_crypto_free_request(struct request *rq);
- static inline void blk_crypto_free_request(struct request *rq)
+ 	devl_lock(devlink);
+-	ret = mlx5_load_one_devl_locked(dev, recovery);
++	ret = mlx5_load_one_devl_locked(dev, false);
+ 	devl_unlock(devlink);
+ 	return ret;
+ }
+@@ -1875,8 +1875,7 @@ static void mlx5_pci_resume(struct pci_dev *pdev)
+ 
+ 	mlx5_pci_trace(dev, "Enter, loading driver..\n");
+ 
+-	err = mlx5_load_one(dev, false);
+-
++	err = mlx5_load_one(dev);
+ 	if (!err)
+ 		devlink_health_reporter_state_update(dev->priv.health.fw_fatal_reporter,
+ 						     DEVLINK_HEALTH_REPORTER_STATE_HEALTHY);
+@@ -1967,7 +1966,7 @@ static int mlx5_resume(struct pci_dev *pdev)
  {
-@@ -173,7 +190,7 @@ static inline blk_status_t blk_crypto_in
- {
+ 	struct mlx5_core_dev *dev = pci_get_drvdata(pdev);
  
- 	if (blk_crypto_rq_is_encrypted(rq))
--		return blk_crypto_init_request(rq);
-+		return blk_crypto_rq_get_keyslot(rq);
- 	return BLK_STS_OK;
+-	return mlx5_load_one(dev, false);
++	return mlx5_load_one(dev);
  }
  
---- a/block/blk-crypto.c
-+++ b/block/blk-crypto.c
-@@ -216,26 +216,26 @@ static bool bio_crypt_check_alignment(st
- 	return true;
- }
+ static const struct pci_device_id mlx5_core_pci_table[] = {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index a806e3de7b7c3..c57e0fc4bab1f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -321,7 +321,7 @@ int mlx5_init_one(struct mlx5_core_dev *dev);
+ void mlx5_uninit_one(struct mlx5_core_dev *dev);
+ void mlx5_unload_one(struct mlx5_core_dev *dev);
+ void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev);
+-int mlx5_load_one(struct mlx5_core_dev *dev, bool recovery);
++int mlx5_load_one(struct mlx5_core_dev *dev);
+ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery);
  
--blk_status_t __blk_crypto_init_request(struct request *rq)
-+blk_status_t __blk_crypto_rq_get_keyslot(struct request *rq)
- {
- 	return blk_ksm_get_slot_for_key(rq->q->ksm, rq->crypt_ctx->bc_key,
- 					&rq->crypt_keyslot);
- }
- 
--/**
-- * __blk_crypto_free_request - Uninitialize the crypto fields of a request.
-- *
-- * @rq: The request whose crypto fields to uninitialize.
-- *
-- * Completely uninitializes the crypto fields of a request. If a keyslot has
-- * been programmed into some inline encryption hardware, that keyslot is
-- * released. The rq->crypt_ctx is also freed.
-- */
--void __blk_crypto_free_request(struct request *rq)
-+void __blk_crypto_rq_put_keyslot(struct request *rq)
- {
- 	blk_ksm_put_slot(rq->crypt_keyslot);
-+	rq->crypt_keyslot = NULL;
-+}
-+
-+void __blk_crypto_free_request(struct request *rq)
-+{
-+	/* The keyslot, if one was needed, should have been released earlier. */
-+	if (WARN_ON_ONCE(rq->crypt_keyslot))
-+		__blk_crypto_rq_put_keyslot(rq);
-+
- 	mempool_free(rq->crypt_ctx, bio_crypt_ctx_pool);
--	blk_crypto_rq_set_defaults(rq);
-+	rq->crypt_ctx = NULL;
- }
- 
- /**
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -818,6 +818,8 @@ static struct request *attempt_merge(str
- 	if (!blk_discard_mergable(req))
- 		elv_merge_requests(q, req, next);
- 
-+	blk_crypto_rq_put_keyslot(next);
-+
- 	/*
- 	 * 'next' is going away, so update stats accordingly
- 	 */
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2228,7 +2228,7 @@ blk_qc_t blk_mq_submit_bio(struct bio *b
- 
- 	blk_mq_bio_to_request(rq, bio, nr_segs);
- 
--	ret = blk_crypto_init_request(rq);
-+	ret = blk_crypto_rq_get_keyslot(rq);
- 	if (ret != BLK_STS_OK) {
- 		bio->bi_status = ret;
- 		bio_endio(bio);
+ int mlx5_vport_get_other_func_cap(struct mlx5_core_dev *dev, u16 function_id, void *out);
+-- 
+2.39.2
+
 
 
