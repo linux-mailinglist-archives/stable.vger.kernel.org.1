@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F90C6FA567
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23D1E6FA88F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234133AbjEHKJM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37346 "EHLO
+        id S234985AbjEHKmf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:42:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234127AbjEHKJJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:09 -0400
+        with ESMTP id S234989AbjEHKl6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EEE235112
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31FD02A854
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0562262295
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20280C433EF;
-        Mon,  8 May 2023 10:09:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E6E16285C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DF0C433D2;
+        Mon,  8 May 2023 10:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540542;
-        bh=cYpxlruCw5TxwQTzSu5SsQasyUVN2bXKsNKy8efNBLI=;
+        s=korg; t=1683542475;
+        bh=qeTKYEy/OFUOzfP0FZswqpALSJeI/wIIvOJIBTq3Ll8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t9n+7/JUSYURqz10M8EyXmL3Prd3l0Kb15xGl76wD4xU0QB/uLARz6V8OZ8+xi9fx
-         sv3KvzUrfT9OOv23e1cuWZjtHnzBfIG7WJ1c/Qg/6Kc84HR1L6w7nvmDVoomZdEQqg
-         PO7eHfoosbUBdxv2Py+i6mDd37zN2NwJ/KUm3eWE=
+        b=WMBaojXsu1PmL8/swTuD8p2tNTfIVP+BPIH4XkEnvgsVnK18XXlqReMug/MYbHn6d
+         8cjOXpITZM2NYxzrZ88xRM8qxRk4ZUwocUMzPDyg0meQ7MJtWw4zUcrzBwfYKKvwfS
+         z4pW4aosXpIhB/Lc2iLVWl0FhsgdZGCc4tNxB2uQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
+        Maher Sanalla <msanalla@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 404/611] serial: stm32: Re-assert RTS/DE GPIO in RS485 mode only if more data are transmitted
+Subject: [PATCH 6.2 420/663] net/mlx5: Use recovery timeout on sync reset flow
 Date:   Mon,  8 May 2023 11:44:06 +0200
-Message-Id: <20230508094435.400191519@linuxfoundation.org>
+Message-Id: <20230508094441.710679366@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,48 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit c47527cbcc3c50800f34b8c684f29721f75de246 ]
+[ Upstream commit dfad99750c0f83b0242572a573afa2c055f85b36 ]
 
-The stm32_usart_transmit_chars() may be called with empty or stopped
-transmit queue, and no XON/OFF character pending. This can happen at
-the end of transmission, where this last call is used to either handle
-the XON/XOFF x_char, or disable TX interrupt if queue is empty or
-stopped.
+Use the same timeout for sync reset flow and health recovery flow, since
+the former involves driver's recovery from firmware reset, which is
+similar to health recovery. Otherwise, in some cases, such as a firmware
+upgrade on the DPU, the firmware pre-init bit may not be ready within
+current timeout and the driver will abort loading back after reset.
 
-If that occurs, do not assert the RS485 RTS/DE GPIO anymore, as the
-GPIO would remain asserted past the end of transmission and that would
-block the RS485 bus after the transmission.
-
-Only assert the RS485 RTS/DE GPIO if there is either pending XON/XOFF
-x_char, or at least one character in running transmit queue.
-
-Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20230223042252.95480-2-marex@denx.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Fixes: 37ca95e62ee2 ("net/mlx5: Increase FW pre-init timeout for health recovery")
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/stm32-usart.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c  | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 0e6ef24419c8e..28edbaf7bb329 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -690,8 +690,9 @@ static void stm32_usart_transmit_chars(struct uart_port *port)
- 	int ret;
- 
- 	if (!stm32_port->hw_flow_control &&
--	    port->rs485.flags & SER_RS485_ENABLED) {
--		stm32_port->txdone = false;
-+	    port->rs485.flags & SER_RS485_ENABLED &&
-+	    (port->x_char ||
-+	     !(uart_circ_empty(xmit) || uart_tx_stopped(port)))) {
- 		stm32_usart_tc_interrupt_disable(port);
- 		stm32_usart_rs485_rts_enable(port);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 31ce591f527fa..2370e9ad52ea9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -196,7 +196,7 @@ static int mlx5_devlink_reload_up(struct devlink *devlink, enum devlink_reload_a
+ 			break;
+ 		/* On fw_activate action, also driver is reloaded and reinit performed */
+ 		*actions_performed |= BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT);
+-		ret = mlx5_load_one_devl_locked(dev, false);
++		ret = mlx5_load_one_devl_locked(dev, true);
+ 		break;
+ 	default:
+ 		/* Unsupported action should not get to this function */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 2b74729180394..d219f8417d93a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -154,7 +154,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
+ 		if (mlx5_health_wait_pci_up(dev))
+ 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
+ 		else
+-			mlx5_load_one(dev, false);
++			mlx5_load_one(dev, true);
+ 		devlink_remote_reload_actions_performed(priv_to_devlink(dev), 0,
+ 							BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
+ 							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
+@@ -485,7 +485,7 @@ int mlx5_fw_reset_wait_reset_done(struct mlx5_core_dev *dev)
+ 	err = fw_reset->ret;
+ 	if (test_and_clear_bit(MLX5_FW_RESET_FLAGS_RELOAD_REQUIRED, &fw_reset->reset_flags)) {
+ 		mlx5_unload_one_devl_locked(dev, false);
+-		mlx5_load_one_devl_locked(dev, false);
++		mlx5_load_one_devl_locked(dev, true);
  	}
+ out:
+ 	clear_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP, &fw_reset->reset_flags);
 -- 
 2.39.2
 
