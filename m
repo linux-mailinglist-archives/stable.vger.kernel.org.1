@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C076C6FA558
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88DAB6FAD37
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234110AbjEHKI2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36790 "EHLO
+        id S235789AbjEHLcc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234099AbjEHKI2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBEB43291A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:26 -0700 (PDT)
+        with ESMTP id S235784AbjEHLb6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:31:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FC03D235
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:31:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ADF762383
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B77BC433D2;
-        Mon,  8 May 2023 10:08:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D39D63063
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:31:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BDAC433EF;
+        Mon,  8 May 2023 11:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540505;
-        bh=emNMdWt3FAv3Z0+lFpCvz7Ly2tt9NTbxZP+6Hybqlfc=;
+        s=korg; t=1683545469;
+        bh=ovHfEM0fyjLv6XsaWbJU/Bs5Arfg6u26HFvANVF/FWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XgV0m/7CjlSDVwa0tqOAwzBw3l8RN1tMDYFkKPXBNVOFKFQwfrIq+gSUevKwbHDJ4
-         rt6qLkt9xoo41hcvNYLo+8dLjeVT6sqg+8sAcsHP3NIA//elkoaAUEiETUcBixFkKN
-         iOzdk205C7DlvHENqrRA5K6ksaqhJYvV4Nwbf5qM=
+        b=D+8RAE3NLe2vckAdOXfBS9UpDxhf2uPwtDwJE78Rv/QC2sZvqAYzjyIzzgskdqyfo
+         uI7gB+Vf7k5bR1gYBCEKPTDobaNLHtbqNMBP7fB5SQ2y13RBlCAsul5fnMr9opNNzQ
+         5ZLOF8NeY5fJRWva9RvBSDC7sWm3tpmuQWwqLbQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Davide Caratti <dcaratti@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 391/611] net/sched: sch_fq: fix integer overflow of "credit"
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.15 032/371] kheaders: Use array declaration instead of char
 Date:   Mon,  8 May 2023 11:43:53 +0200
-Message-Id: <20230508094434.995778541@linuxfoundation.org>
+Message-Id: <20230508094813.383869397@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,92 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 7041101ff6c3073fd8f2e99920f535b111c929cb ]
+commit b69edab47f1da8edd8e7bfdf8c70f51a2a5d89fb upstream.
 
-if sch_fq is configured with "initial quantum" having values greater than
-INT_MAX, the first assignment of "credit" does signed integer overflow to
-a very negative value.
-In this situation, the syzkaller script provided by Cristoph triggers the
-CPU soft-lockup warning even with few sockets. It's not an infinite loop,
-but "credit" wasn't probably meant to be minus 2Gb for each new flow.
-Capping "initial quantum" to INT_MAX proved to fix the issue.
+Under CONFIG_FORTIFY_SOURCE, memcpy() will check the size of destination
+and source buffers. Defining kernel_headers_data as "char" would trip
+this check. Since these addresses are treated as byte arrays, define
+them as arrays (as done everywhere else).
 
-v2: validation of "initial quantum" is done in fq_policy, instead of open
-    coding in fq_change() _ suggested by Jakub Kicinski
+This was seen with:
 
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/377
-Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://lore.kernel.org/r/7b3a3c7e36d03068707a021760a194a8eb5ad41a.1682002300.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  $ cat /sys/kernel/kheaders.tar.xz >> /dev/null
+
+  detected buffer overflow in memcpy
+  kernel BUG at lib/string_helpers.c:1027!
+  ...
+  RIP: 0010:fortify_panic+0xf/0x20
+  [...]
+  Call Trace:
+   <TASK>
+   ikheaders_read+0x45/0x50 [kheaders]
+   kernfs_fop_read_iter+0x1a4/0x2f0
+  ...
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/bpf/20230302112130.6e402a98@kernel.org/
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 43d8ce9d65a5 ("Provide in-kernel headers to make extending kernel easier")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230302224946.never.243-kees@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_fq.c                            |  6 ++++-
- .../tc-testing/tc-tests/qdiscs/fq.json        | 22 +++++++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ kernel/kheaders.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 48d14fb90ba02..f59a2cb2c803d 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -779,13 +779,17 @@ static int fq_resize(struct Qdisc *sch, u32 log)
- 	return 0;
+--- a/kernel/kheaders.c
++++ b/kernel/kheaders.c
+@@ -26,15 +26,15 @@ asm (
+ "	.popsection				\n"
+ );
+ 
+-extern char kernel_headers_data;
+-extern char kernel_headers_data_end;
++extern char kernel_headers_data[];
++extern char kernel_headers_data_end[];
+ 
+ static ssize_t
+ ikheaders_read(struct file *file,  struct kobject *kobj,
+ 	       struct bin_attribute *bin_attr,
+ 	       char *buf, loff_t off, size_t len)
+ {
+-	memcpy(buf, &kernel_headers_data + off, len);
++	memcpy(buf, &kernel_headers_data[off], len);
+ 	return len;
  }
  
-+static struct netlink_range_validation iq_range = {
-+	.max = INT_MAX,
-+};
-+
- static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
- 	[TCA_FQ_UNSPEC]			= { .strict_start_type = TCA_FQ_TIMER_SLACK },
+@@ -48,8 +48,8 @@ static struct bin_attribute kheaders_att
  
- 	[TCA_FQ_PLIMIT]			= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_PLIMIT]		= { .type = NLA_U32 },
- 	[TCA_FQ_QUANTUM]		= { .type = NLA_U32 },
--	[TCA_FQ_INITIAL_QUANTUM]	= { .type = NLA_U32 },
-+	[TCA_FQ_INITIAL_QUANTUM]	= NLA_POLICY_FULL_RANGE(NLA_U32, &iq_range),
- 	[TCA_FQ_RATE_ENABLE]		= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_DEFAULT_RATE]	= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_MAX_RATE]		= { .type = NLA_U32 },
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-index 8acb904d14193..3593fb8f79ad3 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-@@ -114,6 +114,28 @@
-             "$IP link del dev $DUMMY type dummy"
-         ]
-     },
-+    {
-+        "id": "10f7",
-+        "name": "Create FQ with invalid initial_quantum setting",
-+        "category": [
-+            "qdisc",
-+            "fq"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$IP link add dev $DUMMY type dummy || /bin/true"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq initial_quantum 0x80000000",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc fq 1: root.*initial_quantum 2048Mb",
-+        "matchCount": "0",
-+        "teardown": [
-+            "$IP link del dev $DUMMY type dummy"
-+        ]
-+    },
-     {
-         "id": "9398",
-         "name": "Create FQ with maxrate setting",
--- 
-2.39.2
-
+ static int __init ikheaders_init(void)
+ {
+-	kheaders_attr.size = (&kernel_headers_data_end -
+-			      &kernel_headers_data);
++	kheaders_attr.size = (kernel_headers_data_end -
++			      kernel_headers_data);
+ 	return sysfs_create_bin_file(kernel_kobj, &kheaders_attr);
+ }
+ 
 
 
