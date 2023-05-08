@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A97256FA86A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9514A6FAB5C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234974AbjEHKkY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42444 "EHLO
+        id S233797AbjEHLMZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234976AbjEHKj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:57 -0400
+        with ESMTP id S233852AbjEHLMW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E67226EA0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1BBC3611B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C992362836
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EBAC433D2;
-        Mon,  8 May 2023 10:39:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CB7962B77
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA02C433EF;
+        Mon,  8 May 2023 11:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542392;
-        bh=EsVrH5BxzEcLj+iQ8nVxglINIowhKorUFAm17R01TT4=;
+        s=korg; t=1683544340;
+        bh=QA79zaj9/KIbS996uAbrURXLXgRybr6BcGmlw4jTVLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ShJRq6MepFf47U0vBmWnBUOZdaq8y6fS5gW5y4NTdp15V+lrL59BIZRziqewp5+wI
-         NXbclp/rH/nGh5klb9ejadJcPOfwKGHakoNM5B8azRy6VJbSZ99qDQYlD9LXI6Qs3l
-         BQYkEy1EC6gC9WlYNPNAGn8KYGGKjUCadD2tNEy0=
+        b=nyYE99UkBQo5vgj8iqZR5glkHTUNR1eX8UM2fFCIDQaJzKqFUhPWpFOSV5M+LWNC/
+         elmbB2xGtbd7d2NKmrHmpKAGkOf6WCrvctnA9xPQM8px9IKNTSYXqzR0RGlBd+VeUg
+         A2Y/co6B3Q7zDssyjXPIdIGPuGnbZjQO0dBZ9BZ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 386/663] wifi: mt76: mt7921: fix wrong command to set STA channel
+        patches@lists.linux.dev, Suman Anna <s-anna@ti.com>,
+        Jayesh Choudhary <j-choudhary@ti.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 377/694] crypto: sa2ul - Select CRYPTO_DES
 Date:   Mon,  8 May 2023 11:43:32 +0200
-Message-Id: <20230508094440.629422671@linuxfoundation.org>
+Message-Id: <20230508094445.114209556@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,40 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Suman Anna <s-anna@ti.com>
 
-[ Upstream commit fcc51acfebb85dbc3ab1bea3ce4997d7c0a3a38d ]
+[ Upstream commit 8832023efd20966e29944dac92118dfbf1fa1bc0 ]
 
-Should not use AND operator to check vif type NL80211_IFTYPE_MONITOR, and
-that will cause we go into sniffer command for both STA and MONITOR
-mode. However, the sniffer command would set channel properly (with some
-extra options), the STA mode still works even if using the wrong
-command.
+The SA2UL Crypto driver provides support for couple of
+DES3 algos "cbc(des3_ede)" and "ecb(des3_ede)", and enabling
+the crypto selftest throws the following errors (as seen on
+K3 J721E SoCs):
+  saul-crypto 4e00000.crypto: Error allocating fallback algo cbc(des3_ede)
+  alg: skcipher: failed to allocate transform for cbc-des3-sa2ul: -2
+  saul-crypto 4e00000.crypto: Error allocating fallback algo ecb(des3_ede)
+  alg: skcipher: failed to allocate transform for ecb-des3-sa2ul: -2
 
-Fix vif type check to make sure we using the right command to update
-channel.
+Fix this by selecting CRYPTO_DES which was missed while
+adding base driver support.
 
-Fixes: 914189af23b8 ("wifi: mt76: mt7921: fix channel switch fail in monitor mode")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 7694b6ca649f ("crypto: sa2ul - Add crypto driver")
+Signed-off-by: Suman Anna <s-anna@ti.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 744382be36f8b..b2366efd74ea5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1705,7 +1705,7 @@ static void mt7921_ctx_iter(void *priv, u8 *mac,
- 	if (ctx != mvif->ctx)
- 		return;
- 
--	if (vif->type & NL80211_IFTYPE_MONITOR)
-+	if (vif->type == NL80211_IFTYPE_MONITOR)
- 		mt7921_mcu_config_sniffer(mvif, ctx);
- 	else
- 		mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->mt76, ctx);
+diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+index 3b2516d1433f7..20222e321a436 100644
+--- a/drivers/crypto/Kconfig
++++ b/drivers/crypto/Kconfig
+@@ -810,6 +810,7 @@ config CRYPTO_DEV_SA2UL
+ 	select CRYPTO_AES
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_AUTHENC
++	select CRYPTO_DES
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_SHA256
+ 	select CRYPTO_SHA512
 -- 
 2.39.2
 
