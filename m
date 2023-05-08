@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 881196FA5E3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D03B6FA8CE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234292AbjEHKOM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42636 "EHLO
+        id S235047AbjEHKpe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234298AbjEHKN5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:57 -0400
+        with ESMTP id S235046AbjEHKpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9E53ACEF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F682A84E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52AFC6242B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632E4C433EF;
-        Mon,  8 May 2023 10:13:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9224B62870
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8551BC433EF;
+        Mon,  8 May 2023 10:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540831;
-        bh=ncgCHf0XIjs14Hqnabp2mTU6YZYpVjvUsIXcB1qRjcg=;
+        s=korg; t=1683542647;
+        bh=GquejjVO4TcE5RGb3GeRW4EzYw4l3+lJ7utfDzWfzPc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rB/jgPAZNagGVsZcEMx7ShjDhOfwGqW/kd3X2Z5r8/zgD6KCXC8RzcvjmYPL/yJ1U
-         mRTYFinupc51YRCTTDPxzsGwh3uqIF0oNuNL1yRfHNL/lHOh9E4lVA/utTMUQnR+GY
-         qye09ozDC2bAFkPzMN0WVWsyJkkNK0LGstsS5Xfs=
+        b=Up8ABdIif0RCBvmpP2aUu/1aHmLQF7W2KVErSPfeuKSXwAP9R+rbSm5hL9T7OszZe
+         H0D9DCuV8lw6aM6Odh3wvP2qKuO72YkPTz02UbDN9YZHmvH7Px5PtgZ8A+VmErJACV
+         05RsqE1n/L2+JPGEeArYTNb0M/Eq/2ugICsd6Yz0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Liang He <windhl@126.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 487/611] fs/ntfs3: Add check for kmemdup
+Subject: [PATCH 6.2 503/663] macintosh/windfarm_smu_sat: Add missing of_node_put()
 Date:   Mon,  8 May 2023 11:45:29 +0200
-Message-Id: <20230508094437.900976061@linuxfoundation.org>
+Message-Id: <20230508094444.905302832@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Liang He <windhl@126.com>
 
-[ Upstream commit e6c3cef24cb0d045f99d5cb039b344874e3cfd74 ]
+[ Upstream commit 631cf002826007ab7415258ee647dcaf8845ad5a ]
 
-Since the kmemdup may return NULL pointer,
-it should be better to add check for the return value
-in order to avoid NULL pointer dereference.
+We call of_node_get() in wf_sat_probe() after sat is created,
+so we need the of_node_put() before *kfree(sat)*.
 
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: ac171c46667c ("[PATCH] powerpc: Thermal control for dual core G5s")
+Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230330033558.2562778-1-windhl@126.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/macintosh/windfarm_smu_sat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index c662d2a519072..422057df8691f 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -4258,6 +4258,10 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	rec_len -= t32;
+diff --git a/drivers/macintosh/windfarm_smu_sat.c b/drivers/macintosh/windfarm_smu_sat.c
+index ebc4256a9e4a0..089f2743a070d 100644
+--- a/drivers/macintosh/windfarm_smu_sat.c
++++ b/drivers/macintosh/windfarm_smu_sat.c
+@@ -171,6 +171,7 @@ static void wf_sat_release(struct kref *ref)
  
- 	attr_names = kmemdup(Add2Ptr(lrh, t32), rec_len, GFP_NOFS);
-+	if (!attr_names) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
+ 	if (sat->nr >= 0)
+ 		sats[sat->nr] = NULL;
++	of_node_put(sat->node);
+ 	kfree(sat);
+ }
  
- 	lcb_put(lcb);
- 	lcb = NULL;
 -- 
 2.39.2
 
