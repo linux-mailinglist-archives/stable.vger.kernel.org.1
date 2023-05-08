@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B006E6FAAEC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BCBD6FA4C6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232525AbjEHLH6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:07:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45916 "EHLO
+        id S233957AbjEHKDJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:03:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233462AbjEHLHn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:43 -0400
+        with ESMTP id S233965AbjEHKDG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C992156F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A4A1BD5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E79A62AB4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545FFC433D2;
-        Mon,  8 May 2023 11:06:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 935E86230A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31DAC4339B;
+        Mon,  8 May 2023 10:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544011;
-        bh=gUzbTRmh/hdvIxFEop95lgP8rXOvYzPuzE2r3ceH+L0=;
+        s=korg; t=1683540179;
+        bh=ojc58rMjtvQJnZH5ift4m2BaI2Ddu85cIVhMmcACl14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nzNjBKuQPJdHu9rwDnHW5H56T5z1EpzhgQZJGE7xdMJFCPMjG26WRdSjgBeLDz9ru
-         GV/A6hdsuX3/TmuuGRIqfwUPzXHUi0QKavUYzcyrJVqNgsQSio8lisNCd6y5GvVyOd
-         Kp2ZKr26tM47CxHIONkHwDfP8QvmDvaF52DRlI1Q=
+        b=HfZQ/6AC8dFLUdX4N0w7pT/uDAs+nW6uGvVqGug8Tkpp4jMj6x5UmWvU2A7TJHdHV
+         xDa8B4CnBwmymtQJksFJwPX4k01Hl4wGzn1KMnF3GK3KEbw/3fExIjg/OAR6OKugwA
+         5euqrmi98FdvcyJdyV89CK9nwBuVPB7W9kJ6i2ik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kyrie wu <kyrie.wu@mediatek.com>,
-        irui wang <irui.wang@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        "Alexey V. Vissarionov" <gremlin@altlinux.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 273/694] media: mtk-jpeg: Fixes jpeghw multi-core judgement
+Subject: [PATCH 6.1 266/611] wifi: ath6kl: minor fix for allocation size
 Date:   Mon,  8 May 2023 11:41:48 +0200
-Message-Id: <20230508094441.108822629@linuxfoundation.org>
+Message-Id: <20230508094431.044277590@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,82 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: kyrie wu <kyrie.wu@mediatek.com>
+From: Alexey V. Vissarionov <gremlin@altlinux.org>
 
-[ Upstream commit 75c38caf66a10983acc5a59069bfc9492c43d682 ]
+[ Upstream commit 778f83f889e7fca37780d9640fcbd0229ae38eaa ]
 
-some chips have multi-hw, but others have only one,
-modify the condition of multi-hw judgement
+Although the "param" pointer occupies more or equal space compared
+to "*param", the allocation size should use the size of variable
+itself.
 
-Fixes: 934e8bccac95 ("mtk-jpegenc: support jpegenc multi-hardware")
-Signed-off-by: kyrie wu <kyrie.wu@mediatek.com>
-Signed-off-by: irui wang <irui.wang@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: bdcd81707973cf8a ("Add ath6kl cleaned up driver")
+Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230117110414.GC12547@altlinux.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 5 ++++-
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h | 2 ++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath6kl/bmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index 969516a940ba7..6d052747a15e8 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1692,7 +1692,7 @@ static int mtk_jpeg_probe(struct platform_device *pdev)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
+index bde5a10d470c8..af98e871199d3 100644
+--- a/drivers/net/wireless/ath/ath6kl/bmi.c
++++ b/drivers/net/wireless/ath/ath6kl/bmi.c
+@@ -246,7 +246,7 @@ int ath6kl_bmi_execute(struct ath6kl *ar, u32 addr, u32 *param)
+ 		return -EACCES;
  	}
  
--	if (list_empty(&pdev->dev.devres_head)) {
-+	if (!jpeg->variant->multi_core) {
- 		INIT_DELAYED_WORK(&jpeg->job_timeout_work,
- 				  mtk_jpeg_job_timeout_work);
- 
-@@ -1874,6 +1874,7 @@ static const struct mtk_jpeg_variant mtk_jpeg_drvdata = {
- 	.ioctl_ops = &mtk_jpeg_enc_ioctl_ops,
- 	.out_q_default_fourcc = V4L2_PIX_FMT_YUYV,
- 	.cap_q_default_fourcc = V4L2_PIX_FMT_JPEG,
-+	.multi_core = false,
- };
- 
- static struct mtk_jpeg_variant mtk8195_jpegenc_drvdata = {
-@@ -1885,6 +1886,7 @@ static struct mtk_jpeg_variant mtk8195_jpegenc_drvdata = {
- 	.ioctl_ops = &mtk_jpeg_enc_ioctl_ops,
- 	.out_q_default_fourcc = V4L2_PIX_FMT_YUYV,
- 	.cap_q_default_fourcc = V4L2_PIX_FMT_JPEG,
-+	.multi_core = true,
- };
- 
- static const struct mtk_jpeg_variant mtk8195_jpegdec_drvdata = {
-@@ -1896,6 +1898,7 @@ static const struct mtk_jpeg_variant mtk8195_jpegdec_drvdata = {
- 	.ioctl_ops = &mtk_jpeg_dec_ioctl_ops,
- 	.out_q_default_fourcc = V4L2_PIX_FMT_JPEG,
- 	.cap_q_default_fourcc = V4L2_PIX_FMT_YUV420M,
-+	.multi_core = true,
- };
- 
- #if defined(CONFIG_OF)
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
-index b9126476be8fa..f87358cc9f47f 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.h
-@@ -60,6 +60,7 @@ enum mtk_jpeg_ctx_state {
-  * @ioctl_ops:			the callback of jpeg v4l2_ioctl_ops
-  * @out_q_default_fourcc:	output queue default fourcc
-  * @cap_q_default_fourcc:	capture queue default fourcc
-+ * @multi_core:		mark jpeg hw is multi_core or not
-  */
- struct mtk_jpeg_variant {
- 	struct clk_bulk_data *clks;
-@@ -74,6 +75,7 @@ struct mtk_jpeg_variant {
- 	const struct v4l2_ioctl_ops *ioctl_ops;
- 	u32 out_q_default_fourcc;
- 	u32 cap_q_default_fourcc;
-+	bool multi_core;
- };
- 
- struct mtk_jpeg_src_buf {
+-	size = sizeof(cid) + sizeof(addr) + sizeof(param);
++	size = sizeof(cid) + sizeof(addr) + sizeof(*param);
+ 	if (size > ar->bmi.max_cmd_size) {
+ 		WARN_ON(1);
+ 		return -EINVAL;
 -- 
 2.39.2
 
