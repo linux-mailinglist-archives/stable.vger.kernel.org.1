@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C080C6FAB4F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D03F6FAB5A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233704AbjEHLLv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:11:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51550 "EHLO
+        id S233802AbjEHLMW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbjEHLLp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:45 -0400
+        with ESMTP id S233823AbjEHLMR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45544360C4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E0034E1A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1E6362B7A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75CDC433D2;
-        Mon,  8 May 2023 11:11:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E19562B8E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE19C433D2;
+        Mon,  8 May 2023 11:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544300;
-        bh=J0AVg/uf7HvKLSP5qA0FqS+lOcbwpYbKePc9gVTodQE=;
+        s=korg; t=1683544334;
+        bh=ee2Tf2PlDpqy3JmwMMzh4sGSIFeCaaBC7Nsyb0MvsTw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iAERC81CoNmkj8zubd2mnSk7XbXWwfrJcD9edEoGQhgeyEODaQK5B9TW5WyCFju3Q
-         vyxJ95/UyBRjCtCwAX00qqWdDbJBKtmJbNOHd/UNbeWnFp8T0yuDKow73e7pv5Hhoq
-         9CofedVvRqtEuEvprX5o8kK4QDH0htP2aAwWjQdc=
+        b=z6rnQu7a3aEG9I3bTaumSRDnYKjfsx4f4o6q517rq3/mVl6tlFwVqgodq1LFyuQCd
+         ofQQS0SWdVFdxxrOvBXX8HRmmxHHqfSJzWLIFy8CjGujRMBzLj9EhXMmVJXM1WJ8xl
+         Mrk4D6vs9yg1b9+2jpRt+6XL9U9av0L3chmOkuRA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
-        Jiri Olsa <jolsa@kernel.org>,
+        patches@lists.linux.dev, David Vernet <void@manifault.com>,
         Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 348/694] bpf: Only allocate one bpf_mem_cache for bpf_cpumask_ma
-Date:   Mon,  8 May 2023 11:43:03 +0200
-Message-Id: <20230508094443.868579289@linuxfoundation.org>
+Subject: [PATCH 6.3 349/694] bpf: Free struct bpf_cpumask in call_rcu handler
+Date:   Mon,  8 May 2023 11:43:04 +0200
+Message-Id: <20230508094443.914625781@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -55,75 +54,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hou Tao <houtao1@huawei.com>
+From: David Vernet <void@manifault.com>
 
-[ Upstream commit 5d5de3a431d87ac51d43da8d796891d014975ab7 ]
+[ Upstream commit 77473d1a962f3d4f7ba48324502b6d27b8ef2591 ]
 
-The size of bpf_cpumask is fixed, so there is no need to allocate many
-bpf_mem_caches for bpf_cpumask_ma, just one bpf_mem_cache is enough.
-Also add comments for bpf_mem_alloc_init() in bpf_mem_alloc.h to prevent
-future miuse.
+The struct bpf_cpumask type uses the bpf_mem_cache_{alloc,free}() APIs
+to allocate and free its cpumasks. The bpf_mem allocator may currently
+immediately reuse some memory when its freed, without waiting for an RCU
+read cycle to elapse. We want to be able to treat struct bpf_cpumask
+objects as completely RCU safe.
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230216024821.2202916-1-houtao@huaweicloud.com
+This is necessary for two reasons:
+
+1. bpf_cpumask_kptr_get() currently does an RCU-protected
+   refcnt_inc_not_zero(). This of course assumes that the underlying
+   memory is not reused, and is therefore unsafe in its current form.
+
+2. We want to be able to get rid of bpf_cpumask_kptr_get() entirely, and
+   intead use the superior kptr RCU semantics now afforded by the
+   verifier.
+
+This patch fixes (1), and enables (2), by making struct bpf_cpumask RCU
+safe. A subsequent patch will update the verifier to allow struct
+bpf_cpumask * pointers to be passed to KF_RCU kfuncs, and then a latter
+patch will remove bpf_cpumask_kptr_get().
+
+Fixes: 516f4d3397c9 ("bpf: Enable cpumasks to be queried and used as kptrs")
+Signed-off-by: David Vernet <void@manifault.com>
+Link: https://lore.kernel.org/r/20230316054028.88924-2-void@manifault.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 77473d1a962f ("bpf: Free struct bpf_cpumask in call_rcu handler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_mem_alloc.h | 7 +++++++
- kernel/bpf/cpumask.c          | 6 +++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ kernel/bpf/cpumask.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/bpf_mem_alloc.h b/include/linux/bpf_mem_alloc.h
-index 3e164b8efaa92..a7104af61ab4d 100644
---- a/include/linux/bpf_mem_alloc.h
-+++ b/include/linux/bpf_mem_alloc.h
-@@ -14,6 +14,13 @@ struct bpf_mem_alloc {
- 	struct work_struct work;
- };
- 
-+/* 'size != 0' is for bpf_mem_alloc which manages fixed-size objects.
-+ * Alloc and free are done with bpf_mem_cache_{alloc,free}().
-+ *
-+ * 'size = 0' is for bpf_mem_alloc which manages many fixed-size objects.
-+ * Alloc and free are done with bpf_mem_{alloc,free}() and the size of
-+ * the returned object is given by the size argument of bpf_mem_alloc().
-+ */
- int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu);
- void bpf_mem_alloc_destroy(struct bpf_mem_alloc *ma);
- 
 diff --git a/kernel/bpf/cpumask.c b/kernel/bpf/cpumask.c
-index 52b981512a351..2b3fbbfebdc5f 100644
+index 2b3fbbfebdc5f..c08132caca33d 100644
 --- a/kernel/bpf/cpumask.c
 +++ b/kernel/bpf/cpumask.c
-@@ -55,7 +55,7 @@ __bpf_kfunc struct bpf_cpumask *bpf_cpumask_create(void)
- 	/* cpumask must be the first element so struct bpf_cpumask be cast to struct cpumask. */
- 	BUILD_BUG_ON(offsetof(struct bpf_cpumask, cpumask) != 0);
+@@ -9,6 +9,7 @@
+ /**
+  * struct bpf_cpumask - refcounted BPF cpumask wrapper structure
+  * @cpumask:	The actual cpumask embedded in the struct.
++ * @rcu:	The RCU head used to free the cpumask with RCU safety.
+  * @usage:	Object reference counter. When the refcount goes to 0, the
+  *		memory is released back to the BPF allocator, which provides
+  *		RCU safety.
+@@ -24,6 +25,7 @@
+  */
+ struct bpf_cpumask {
+ 	cpumask_t cpumask;
++	struct rcu_head rcu;
+ 	refcount_t usage;
+ };
  
--	cpumask = bpf_mem_alloc(&bpf_cpumask_ma, sizeof(*cpumask));
-+	cpumask = bpf_mem_cache_alloc(&bpf_cpumask_ma);
- 	if (!cpumask)
- 		return NULL;
- 
-@@ -123,7 +123,7 @@ __bpf_kfunc void bpf_cpumask_release(struct bpf_cpumask *cpumask)
- 
- 	if (refcount_dec_and_test(&cpumask->usage)) {
- 		migrate_disable();
--		bpf_mem_free(&bpf_cpumask_ma, cpumask);
-+		bpf_mem_cache_free(&bpf_cpumask_ma, cpumask);
- 		migrate_enable();
- 	}
+@@ -108,6 +110,16 @@ __bpf_kfunc struct bpf_cpumask *bpf_cpumask_kptr_get(struct bpf_cpumask **cpumas
+ 	return cpumask;
  }
-@@ -468,7 +468,7 @@ static int __init cpumask_kfunc_init(void)
- 		},
- 	};
  
--	ret = bpf_mem_alloc_init(&bpf_cpumask_ma, 0, false);
-+	ret = bpf_mem_alloc_init(&bpf_cpumask_ma, sizeof(struct bpf_cpumask), false);
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &cpumask_kfunc_set);
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &cpumask_kfunc_set);
- 	return  ret ?: register_btf_id_dtor_kfuncs(cpumask_dtors,
++static void cpumask_free_cb(struct rcu_head *head)
++{
++	struct bpf_cpumask *cpumask;
++
++	cpumask = container_of(head, struct bpf_cpumask, rcu);
++	migrate_disable();
++	bpf_mem_cache_free(&bpf_cpumask_ma, cpumask);
++	migrate_enable();
++}
++
+ /**
+  * bpf_cpumask_release() - Release a previously acquired BPF cpumask.
+  * @cpumask: The cpumask being released.
+@@ -121,11 +133,8 @@ __bpf_kfunc void bpf_cpumask_release(struct bpf_cpumask *cpumask)
+ 	if (!cpumask)
+ 		return;
+ 
+-	if (refcount_dec_and_test(&cpumask->usage)) {
+-		migrate_disable();
+-		bpf_mem_cache_free(&bpf_cpumask_ma, cpumask);
+-		migrate_enable();
+-	}
++	if (refcount_dec_and_test(&cpumask->usage))
++		call_rcu(&cpumask->rcu, cpumask_free_cb);
+ }
+ 
+ /**
 -- 
 2.39.2
 
