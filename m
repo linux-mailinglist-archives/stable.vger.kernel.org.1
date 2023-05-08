@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B020D6F9F09
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 07:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B5406F9F0A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 07:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbjEHF3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 01:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48684 "EHLO
+        id S232643AbjEHF32 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 01:29:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232643AbjEHF3W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 01:29:22 -0400
+        with ESMTP id S232648AbjEHF31 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 01:29:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA3B15EFD
-        for <stable@vger.kernel.org>; Sun,  7 May 2023 22:29:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193EF15EC9
+        for <stable@vger.kernel.org>; Sun,  7 May 2023 22:29:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 639AE61E84
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 05:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA6CC433D2;
-        Mon,  8 May 2023 05:29:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F68B61E84
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 05:29:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C82C4339B;
+        Mon,  8 May 2023 05:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683523755;
-        bh=sYHZNBLJfkw2evc+MAb5eUFI29drdDnd8OsriEY0fjI=;
+        s=korg; t=1683523765;
+        bh=UnQSAuheeGvc76ugQ0MlsBe3h8BXZDOElAr3yHjQZug=;
         h=Subject:To:Cc:From:Date:From;
-        b=102Jf4PdxXwdE9IyzyHEa5oa43JzS0Y//UTW9iBNaNLTExWozrOj4Z6BddtoI/YN4
-         09wc54QjVeVWD/FxkNLcPY4Cfv1sPLvC9WsOfXfe6gnPo86PZCXUeOvMbUcu8NM6gd
-         gsyHEI+dan2PC6sYf1Bf9cZGzie8M4mTr/Ua0yLw=
-Subject: FAILED: patch "[PATCH] perf intel-pt: Fix CYC timestamps after standalone CBR" failed to apply to 4.19-stable tree
+        b=xo2eTGJFgUH7MrzNo6KRVw0kpO3pfW8D04onsgFurV6Lf+ccuEMmbiuBPvYcNlVl/
+         EnwvdS9Lt/Iu81VKmp4qoByFytKeu39MQrWY/ES+DIhUCfRNca4SBSEv1NND6D9QL1
+         IodYY2ZYMehHVf/IeP9ZDrDcWRq2ZlBqOu4OwiZk=
+Subject: FAILED: patch "[PATCH] perf intel-pt: Fix CYC timestamps after standalone CBR" failed to apply to 4.14-stable tree
 To:     adrian.hunter@intel.com, acme@redhat.com, irogers@google.com,
         jolsa@kernel.org, namhyung@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 08 May 2023 07:29:12 +0200
-Message-ID: <2023050812-swaddling-stardust-e90d@gregkh>
+Date:   Mon, 08 May 2023 07:29:13 +0200
+Message-ID: <2023050813-twiddling-olive-0fd5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 430635a0ef1ce958b7b4311f172694ece2c692b8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050812-swaddling-stardust-e90d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050813-twiddling-olive-0fd5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
