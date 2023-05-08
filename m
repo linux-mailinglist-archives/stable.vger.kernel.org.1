@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E58286FA9EB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1EA16FA6C3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235348AbjEHK5C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33616 "EHLO
+        id S234464AbjEHKX5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235356AbjEHK4i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC3B733869
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:37 -0700 (PDT)
+        with ESMTP id S234494AbjEHKXS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA46DDC79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:23:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53A5A629AA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B09C433EF;
-        Mon,  8 May 2023 10:55:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 494A260F91
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:23:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E803C4339B;
+        Mon,  8 May 2023 10:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543336;
-        bh=/7GCR3MGmvw3t8wOdZzBFzteGKmnZ5zeqW1qVIXCXIk=;
+        s=korg; t=1683541380;
+        bh=pyxRkPcyzXW4E7iLpCoYr89mfSh15sgb4Gw6JsyyhNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jWk4yLM0v+Ag8lqB31ff4qn/vszLEEBPxBsVHG22Hz+6JQNFZH0J+WHTk8SZEgs3L
-         9xAITjIxkGdsOGHEcsS5wrB8ZVGrwIJZnRf1JdQPraa6h/W5zQdHx2xG+2Chqt/IIJ
-         DcjbAm9JWK1/oFEW1/vK6rdDog2GVuzRJ8Kkin4w=
+        b=nco7ZmZ4fk0/cSiqO82QuQI6D1vz60C8h9+Ulqneo3RwWPjzUc4W9eOeDPRHQ9bOg
+         XCiSVqZJyaAQmJh+k+fsI+FpuuWu2ot22K2xHY1GtCFqeQf0WhOi6zPdh+OAXc1TQ3
+         /CAa4TtzqA/YdOfD67F03UZzu9yojsJA0b02Kk/o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Linton <jeremy.linton@arm.com>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.3 058/694] KVM: arm64: Avoid vcpu->mutex v. kvm->lock inversion in CPU_ON
+        patches@lists.linux.dev, mhiramat@kernel.org, npiggin@gmail.com,
+        Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+        Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.2 067/663] ring-buffer: Ensure proper resetting of atomic variables in ring_buffer_reset_online_cpus
 Date:   Mon,  8 May 2023 11:38:13 +0200
-Message-Id: <20230508094434.467972580@linuxfoundation.org>
+Message-Id: <20230508094430.645973037@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,268 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-commit 0acc7239c20a8401b8968c2adace8f7c9b0295ae upstream.
+commit 7c339fb4d8577792378136c15fde773cfb863cb8 upstream.
 
-KVM/arm64 had the lock ordering backwards on vcpu->mutex and kvm->lock
-from the very beginning. One such example is the way vCPU resets are
-handled: the kvm->lock is acquired while handling a guest CPU_ON PSCI
-call.
+In ring_buffer_reset_online_cpus, the buffer_size_kb write operation
+may permanently fail if the cpu_online_mask changes between two
+for_each_online_buffer_cpu loops. The number of increases and decreases
+on both cpu_buffer->resize_disabled and cpu_buffer->record_disabled may be
+inconsistent, causing some CPUs to have non-zero values for these atomic
+variables after the function returns.
 
-Add a dedicated lock to serialize writes to kvm_vcpu_arch::{mp_state,
-reset_state}. Promote all accessors of mp_state to {READ,WRITE}_ONCE()
-as readers do not acquire the mp_state_lock. While at it, plug yet
-another race by taking the mp_state_lock in the KVM_SET_MP_STATE ioctl
-handler.
+This issue can be reproduced by "echo 0 > trace" while hotplugging cpu.
+After reproducing success, we can find out buffer_size_kb will not be
+functional anymore.
 
-As changes to MP state are now guarded with a dedicated lock, drop the
-kvm->lock acquisition from the PSCI CPU_ON path. Similarly, move the
-reader of reset_state outside of the kvm->lock and instead protect it
-with the mp_state_lock. Note that writes to reset_state::reset have been
-demoted to regular stores as both readers and writers acquire the
-mp_state_lock.
+To prevent leaving 'resize_disabled' and 'record_disabled' non-zero after
+ring_buffer_reset_online_cpus returns, we ensure that each atomic variable
+has been set up before atomic_sub() to it.
 
-While the kvm->lock inversion still exists in kvm_reset_vcpu(), at least
-now PSCI CPU_ON no longer depends on it for serializing vCPU reset.
+Link: https://lore.kernel.org/linux-trace-kernel/20230426062027.17451-1-Tze-nan.Wu@mediatek.com
 
 Cc: stable@vger.kernel.org
-Tested-by: Jeremy Linton <jeremy.linton@arm.com>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230327164747.2466958-2-oliver.upton@linux.dev
+Cc: <mhiramat@kernel.org>
+Cc: npiggin@gmail.com
+Fixes: b23d7a5f4a07 ("ring-buffer: speed up buffer resets by avoiding synchronize_rcu for each CPU")
+Reviewed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h |    1 +
- arch/arm64/kvm/arm.c              |   31 ++++++++++++++++++++++---------
- arch/arm64/kvm/psci.c             |   28 ++++++++++++++++------------
- arch/arm64/kvm/reset.c            |    9 +++++----
- 4 files changed, 44 insertions(+), 25 deletions(-)
+ kernel/trace/ring_buffer.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -522,6 +522,7 @@ struct kvm_vcpu_arch {
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5349,6 +5349,9 @@ void ring_buffer_reset_cpu(struct trace_
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_reset_cpu);
  
- 	/* vcpu power state */
- 	struct kvm_mp_state mp_state;
-+	spinlock_t mp_state_lock;
- 
- 	/* Cache some mmu pages needed inside spinlock regions */
- 	struct kvm_mmu_memory_cache mmu_page_cache;
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -327,6 +327,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
- {
- 	int err;
- 
-+	spin_lock_init(&vcpu->arch.mp_state_lock);
++/* Flag to ensure proper resetting of atomic variables */
++#define RESET_BIT	(1 << 30)
 +
- 	/* Force users to call KVM_ARM_VCPU_INIT */
- 	vcpu->arch.target = -1;
- 	bitmap_zero(vcpu->arch.features, KVM_VCPU_MAX_FEATURES);
-@@ -444,34 +446,41 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *
- 	vcpu->cpu = -1;
- }
+ /**
+  * ring_buffer_reset_online_cpus - reset a ring buffer per CPU buffer
+  * @buffer: The ring buffer to reset a per cpu buffer of
+@@ -5365,20 +5368,27 @@ void ring_buffer_reset_online_cpus(struc
+ 	for_each_online_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
  
--void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
-+static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
- {
--	vcpu->arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
-+	WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_STOPPED);
- 	kvm_make_request(KVM_REQ_SLEEP, vcpu);
- 	kvm_vcpu_kick(vcpu);
- }
- 
-+void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
-+{
-+	spin_lock(&vcpu->arch.mp_state_lock);
-+	__kvm_arm_vcpu_power_off(vcpu);
-+	spin_unlock(&vcpu->arch.mp_state_lock);
-+}
-+
- bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu)
- {
--	return vcpu->arch.mp_state.mp_state == KVM_MP_STATE_STOPPED;
-+	return READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_STOPPED;
- }
- 
- static void kvm_arm_vcpu_suspend(struct kvm_vcpu *vcpu)
- {
--	vcpu->arch.mp_state.mp_state = KVM_MP_STATE_SUSPENDED;
-+	WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_SUSPENDED);
- 	kvm_make_request(KVM_REQ_SUSPEND, vcpu);
- 	kvm_vcpu_kick(vcpu);
- }
- 
- static bool kvm_arm_vcpu_suspended(struct kvm_vcpu *vcpu)
- {
--	return vcpu->arch.mp_state.mp_state == KVM_MP_STATE_SUSPENDED;
-+	return READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_SUSPENDED;
- }
- 
- int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
- 				    struct kvm_mp_state *mp_state)
- {
--	*mp_state = vcpu->arch.mp_state;
-+	*mp_state = READ_ONCE(vcpu->arch.mp_state);
- 
- 	return 0;
- }
-@@ -481,12 +490,14 @@ int kvm_arch_vcpu_ioctl_set_mpstate(stru
- {
- 	int ret = 0;
- 
-+	spin_lock(&vcpu->arch.mp_state_lock);
-+
- 	switch (mp_state->mp_state) {
- 	case KVM_MP_STATE_RUNNABLE:
--		vcpu->arch.mp_state = *mp_state;
-+		WRITE_ONCE(vcpu->arch.mp_state, *mp_state);
- 		break;
- 	case KVM_MP_STATE_STOPPED:
--		kvm_arm_vcpu_power_off(vcpu);
-+		__kvm_arm_vcpu_power_off(vcpu);
- 		break;
- 	case KVM_MP_STATE_SUSPENDED:
- 		kvm_arm_vcpu_suspend(vcpu);
-@@ -495,6 +506,8 @@ int kvm_arch_vcpu_ioctl_set_mpstate(stru
- 		ret = -EINVAL;
+-		atomic_inc(&cpu_buffer->resize_disabled);
++		atomic_add(RESET_BIT, &cpu_buffer->resize_disabled);
+ 		atomic_inc(&cpu_buffer->record_disabled);
  	}
  
-+	spin_unlock(&vcpu->arch.mp_state_lock);
-+
- 	return ret;
- }
+ 	/* Make sure all commits have finished */
+ 	synchronize_rcu();
  
-@@ -1214,7 +1227,7 @@ static int kvm_arch_vcpu_ioctl_vcpu_init
- 	if (test_bit(KVM_ARM_VCPU_POWER_OFF, vcpu->arch.features))
- 		kvm_arm_vcpu_power_off(vcpu);
- 	else
--		vcpu->arch.mp_state.mp_state = KVM_MP_STATE_RUNNABLE;
-+		WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_RUNNABLE);
+-	for_each_online_buffer_cpu(buffer, cpu) {
++	for_each_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
  
- 	return 0;
- }
---- a/arch/arm64/kvm/psci.c
-+++ b/arch/arm64/kvm/psci.c
-@@ -62,6 +62,7 @@ static unsigned long kvm_psci_vcpu_on(st
- 	struct vcpu_reset_state *reset_state;
- 	struct kvm *kvm = source_vcpu->kvm;
- 	struct kvm_vcpu *vcpu = NULL;
-+	int ret = PSCI_RET_SUCCESS;
- 	unsigned long cpu_id;
++		/*
++		 * If a CPU came online during the synchronize_rcu(), then
++		 * ignore it.
++		 */
++		if (!(atomic_read(&cpu_buffer->resize_disabled) & RESET_BIT))
++			continue;
++
+ 		reset_disabled_cpu_buffer(cpu_buffer);
  
- 	cpu_id = smccc_get_arg1(source_vcpu);
-@@ -76,11 +77,15 @@ static unsigned long kvm_psci_vcpu_on(st
- 	 */
- 	if (!vcpu)
- 		return PSCI_RET_INVALID_PARAMS;
-+
-+	spin_lock(&vcpu->arch.mp_state_lock);
- 	if (!kvm_arm_vcpu_stopped(vcpu)) {
- 		if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
--			return PSCI_RET_ALREADY_ON;
-+			ret = PSCI_RET_ALREADY_ON;
- 		else
--			return PSCI_RET_INVALID_PARAMS;
-+			ret = PSCI_RET_INVALID_PARAMS;
-+
-+		goto out_unlock;
+ 		atomic_dec(&cpu_buffer->record_disabled);
+-		atomic_dec(&cpu_buffer->resize_disabled);
++		atomic_sub(RESET_BIT, &cpu_buffer->resize_disabled);
  	}
  
- 	reset_state = &vcpu->arch.reset_state;
-@@ -96,7 +101,7 @@ static unsigned long kvm_psci_vcpu_on(st
- 	 */
- 	reset_state->r0 = smccc_get_arg3(source_vcpu);
- 
--	WRITE_ONCE(reset_state->reset, true);
-+	reset_state->reset = true;
- 	kvm_make_request(KVM_REQ_VCPU_RESET, vcpu);
- 
- 	/*
-@@ -108,7 +113,9 @@ static unsigned long kvm_psci_vcpu_on(st
- 	vcpu->arch.mp_state.mp_state = KVM_MP_STATE_RUNNABLE;
- 	kvm_vcpu_wake_up(vcpu);
- 
--	return PSCI_RET_SUCCESS;
-+out_unlock:
-+	spin_unlock(&vcpu->arch.mp_state_lock);
-+	return ret;
- }
- 
- static unsigned long kvm_psci_vcpu_affinity_info(struct kvm_vcpu *vcpu)
-@@ -168,8 +175,11 @@ static void kvm_prepare_system_event(str
- 	 * after this call is handled and before the VCPUs have been
- 	 * re-initialized.
- 	 */
--	kvm_for_each_vcpu(i, tmp, vcpu->kvm)
--		tmp->arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
-+	kvm_for_each_vcpu(i, tmp, vcpu->kvm) {
-+		spin_lock(&tmp->arch.mp_state_lock);
-+		WRITE_ONCE(tmp->arch.mp_state.mp_state, KVM_MP_STATE_STOPPED);
-+		spin_unlock(&tmp->arch.mp_state_lock);
-+	}
- 	kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_SLEEP);
- 
- 	memset(&vcpu->run->system_event, 0, sizeof(vcpu->run->system_event));
-@@ -229,7 +239,6 @@ static unsigned long kvm_psci_check_allo
- 
- static int kvm_psci_0_2_call(struct kvm_vcpu *vcpu)
- {
--	struct kvm *kvm = vcpu->kvm;
- 	u32 psci_fn = smccc_get_function(vcpu);
- 	unsigned long val;
- 	int ret = 1;
-@@ -254,9 +263,7 @@ static int kvm_psci_0_2_call(struct kvm_
- 		kvm_psci_narrow_to_32bit(vcpu);
- 		fallthrough;
- 	case PSCI_0_2_FN64_CPU_ON:
--		mutex_lock(&kvm->lock);
- 		val = kvm_psci_vcpu_on(vcpu);
--		mutex_unlock(&kvm->lock);
- 		break;
- 	case PSCI_0_2_FN_AFFINITY_INFO:
- 		kvm_psci_narrow_to_32bit(vcpu);
-@@ -395,7 +402,6 @@ static int kvm_psci_1_x_call(struct kvm_
- 
- static int kvm_psci_0_1_call(struct kvm_vcpu *vcpu)
- {
--	struct kvm *kvm = vcpu->kvm;
- 	u32 psci_fn = smccc_get_function(vcpu);
- 	unsigned long val;
- 
-@@ -405,9 +411,7 @@ static int kvm_psci_0_1_call(struct kvm_
- 		val = PSCI_RET_SUCCESS;
- 		break;
- 	case KVM_PSCI_FN_CPU_ON:
--		mutex_lock(&kvm->lock);
- 		val = kvm_psci_vcpu_on(vcpu);
--		mutex_unlock(&kvm->lock);
- 		break;
- 	default:
- 		val = PSCI_RET_NOT_SUPPORTED;
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -264,15 +264,16 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu
- 
- 	mutex_lock(&vcpu->kvm->lock);
- 	ret = kvm_set_vm_width(vcpu);
--	if (!ret) {
--		reset_state = vcpu->arch.reset_state;
--		WRITE_ONCE(vcpu->arch.reset_state.reset, false);
--	}
- 	mutex_unlock(&vcpu->kvm->lock);
- 
- 	if (ret)
- 		return ret;
- 
-+	spin_lock(&vcpu->arch.mp_state_lock);
-+	reset_state = vcpu->arch.reset_state;
-+	vcpu->arch.reset_state.reset = false;
-+	spin_unlock(&vcpu->arch.mp_state_lock);
-+
- 	/* Reset PMU outside of the non-preemptible section */
- 	kvm_pmu_vcpu_reset(vcpu);
- 
+ 	mutex_unlock(&buffer->mutex);
 
 
