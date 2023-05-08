@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4EF6FA579
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E106FA848
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234146AbjEHKJx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37840 "EHLO
+        id S234838AbjEHKjK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234153AbjEHKJt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:49 -0400
+        with ESMTP id S234886AbjEHKjC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB6F3292B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E1A22F75
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EFE4623A8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BC7C433D2;
-        Mon,  8 May 2023 10:09:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B04562801
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F4AC433EF;
+        Mon,  8 May 2023 10:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540586;
-        bh=LMIRdMaa3fH7lGEg6C1PbLcnWMZuqYKIUZ5Rmn4b2hc=;
+        s=korg; t=1683542339;
+        bh=6wUdlpnIMKZU5hG6/kNkQTPUb8b+kgE0SJl8R2fc9M8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KxM+QEk1yGUhTvuRrzGNCrOLZSOaWGnFNnkou6FsmRIUtuRMSR2vq/Cn9xjaP80dr
-         ulkhIhflpuE9Zv33oh+xJH+Wn40f3nniiHuxFq5vkkV6zlnVR3jJumdrfPHISXoQ8S
-         OrIRxXYnWlIzcI65qYYd78jILSMXnjFZye4dY+hw=
+        b=kWtWhRN0RZcNw2PCGvi5RStEj7NVdUcJoZONTtvsS0TnhHuuKpIKSW2re6Z2KlTyi
+         9Damx17CLtdKaM9Ksq5pDU7TZxsV0fH3iUK1dR3vDrL7O7PFBQySkSh0nCo6YdGAqK
+         g8buNJfecsp8y4dpD5slp+hK5yn0cLKZIKhnmF9Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 388/611] bpf: Dont EFAULT for getsockopt with optval=NULL
+        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 404/663] wifi: mt76: connac: fix txd multicast rate setting
 Date:   Mon,  8 May 2023 11:43:50 +0200
-Message-Id: <20230508094434.909838193@linuxfoundation.org>
+Message-Id: <20230508094441.190316190@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 00e74ae0863827d944e36e56a4ce1e77e50edb91 ]
+[ Upstream commit 3d2892e05086d09aecf14ea64b2debbf495e313c ]
 
-Some socket options do getsockopt with optval=NULL to estimate the size
-of the final buffer (which is returned via optlen). This breaks BPF
-getsockopt assumptions about permitted optval buffer size. Let's enforce
-these assumptions only when non-NULL optval is provided.
+The vif->bss_conf.mcast_rate should be applied to multicast data frame
+only.
 
-Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
-Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/ZD7Js4fj5YyI2oLd@google.com/T/#mb68daf700f87a9244a15d01d00c3f0e5b08f49f7
-Link: https://lore.kernel.org/bpf/20230418225343.553806-2-sdf@google.com
+Fixes: 182071cdd594 ("mt76: connac: move connac2_mac_write_txwi in mt76_connac module")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cgroup.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index bf2fdb33fb313..819f011f0a9cd 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1921,14 +1921,17 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
- 	if (ret < 0)
- 		goto out;
- 
--	if (ctx.optlen > max_optlen || ctx.optlen < 0) {
-+	if (optval && (ctx.optlen > max_optlen || ctx.optlen < 0)) {
- 		ret = -EFAULT;
- 		goto out;
- 	}
- 
- 	if (ctx.optlen != 0) {
--		if (copy_to_user(optval, ctx.optval, ctx.optlen) ||
--		    put_user(ctx.optlen, optlen)) {
-+		if (optval && copy_to_user(optval, ctx.optval, ctx.optlen)) {
-+			ret = -EFAULT;
-+			goto out;
-+		}
-+		if (put_user(ctx.optlen, optlen)) {
- 			ret = -EFAULT;
- 			goto out;
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index aed4ee95fb2ec..82aac0a04655f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -537,7 +537,8 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
+ 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
+ 		/* Fixed rata is available just for 802.11 txd */
+ 		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+-		bool multicast = is_multicast_ether_addr(hdr->addr1);
++		bool multicast = ieee80211_is_data(hdr->frame_control) &&
++				 is_multicast_ether_addr(hdr->addr1);
+ 		u16 rate = mt76_connac2_mac_tx_rate_val(mphy, vif, beacon,
+ 							multicast);
+ 		u32 val = MT_TXD6_FIXED_BW;
 -- 
 2.39.2
 
