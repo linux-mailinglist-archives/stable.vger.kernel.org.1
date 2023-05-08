@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7A176FA468
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5536F6FA469
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232935AbjEHJ7A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
+        id S233864AbjEHJ7D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233859AbjEHJ67 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:58:59 -0400
+        with ESMTP id S233859AbjEHJ7B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:59:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A740E2B173
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:58:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71952CD08
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:59:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F32C6228C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:58:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49868C433D2;
-        Mon,  8 May 2023 09:58:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69F3562295
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:59:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C360C433EF;
+        Mon,  8 May 2023 09:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539936;
-        bh=fsgnQW29Sua7XgDfJDoRB7DI1uoIcKTCPe4PTA1IFuc=;
+        s=korg; t=1683539939;
+        bh=qaaGFzkd5C1WurAly2ZQcDF49OS1ckNg1aMmD1BRaxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=htvojL1KM6kaMaN+JS3j2pAgw7OL4kHCnn4EOzIhmQYkDzIHVHLvvir+b/c5zI0yw
-         bukTNOLK1oQjru6SF0Rx1mMsY/qVPeNZym8gDXqSh5lVzF+8q/YALXvkPNsx3XjdUh
-         58A8fk6x8fF3dbSZlsIlZE/XoCR++cp6o3opXMoM=
+        b=vSOU6ki7icP4sOKWZvQa14HmI6ZAPGua/u/JcOa6ufZ9fm185gI8GrVbacCZx9CwD
+         twjRtXeP3lDBV3KFbmeYhiIlsZ+wG5FaZM3jqBuPhPi0H5n4x2UDwgB54vSDCYDAcF
+         eoXxNvZU5FWVG3WdM8rUjOQNEQQm1cxPZeZM8O6Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Georgii Kruglov <georgy.kruglov@yandex.ru>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/611] mmc: sdhci-of-esdhc: fix quirk to ignore command inhibit for data
-Date:   Mon,  8 May 2023 11:40:28 +0200
-Message-Id: <20230508094428.412353983@linuxfoundation.org>
+Subject: [PATCH 6.1 187/611] arm64: dts: qcom: sm8450: fix pcie1 gpios properties name
+Date:   Mon,  8 May 2023 11:40:29 +0200
+Message-Id: <20230508094428.446079225@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -56,80 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georgii Kruglov <georgy.kruglov@yandex.ru>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 0dd8316037a2a6d85b2be208bef9991de7b42170 ]
+[ Upstream commit e57430d2483506f046e39bf8c61159dde88aede2 ]
 
-If spec_reg is equal to 'SDHCI_PRESENT_STATE', esdhc_readl_fixup()
-fixes up register value and returns it immediately. As a result, the
-further block
-(spec_reg == SDHCI_PRESENT_STATE)
-    &&(esdhc->quirk_ignore_data_inhibit == true),
-is never executed.
+Add the final "s" to the pgio properties and fix the invalid "enable"
+name to the correct "wake", checked against the HDK8450 schematics.
 
-The patch merges the second block into the first one.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1f1929f3f2fa ("mmc: sdhci-of-esdhc: add quirk to ignore command inhibit for data")
-Signed-off-by: Georgii Kruglov <georgy.kruglov@yandex.ru>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230321203715.3975-1-georgy.kruglov@yandex.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: bc6588bc25fb ("arm64: dts: qcom: sm8450: add PCIe1 root device")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230323-topic-sm8450-upstream-dt-bindings-fixes-v2-4-0ca1bea1a843@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-esdhc.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-index e0266638381d0..6ae68e379f7e3 100644
---- a/drivers/mmc/host/sdhci-of-esdhc.c
-+++ b/drivers/mmc/host/sdhci-of-esdhc.c
-@@ -126,6 +126,7 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
- 			return ret;
- 		}
- 	}
-+
- 	/*
- 	 * The DAT[3:0] line signal levels and the CMD line signal level are
- 	 * not compatible with standard SDHC register. The line signal levels
-@@ -137,6 +138,16 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
- 		ret = value & 0x000fffff;
- 		ret |= (value >> 4) & SDHCI_DATA_LVL_MASK;
- 		ret |= (value << 1) & SDHCI_CMD_LVL;
-+
-+		/*
-+		 * Some controllers have unreliable Data Line Active
-+		 * bit for commands with busy signal. This affects
-+		 * Command Inhibit (data) bit. Just ignore it since
-+		 * MMC core driver has already polled card status
-+		 * with CMD13 after any command with busy siganl.
-+		 */
-+		if (esdhc->quirk_ignore_data_inhibit)
-+			ret &= ~SDHCI_DATA_INHIBIT;
- 		return ret;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index acaa674a5fcce..128542582b3d8 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -1879,8 +1879,8 @@
+ 			phys = <&pcie1_lane>;
+ 			phy-names = "pciephy";
  
-@@ -151,19 +162,6 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
- 		return ret;
- 	}
+-			perst-gpio = <&tlmm 97 GPIO_ACTIVE_LOW>;
+-			enable-gpio = <&tlmm 99 GPIO_ACTIVE_HIGH>;
++			perst-gpios = <&tlmm 97 GPIO_ACTIVE_LOW>;
++			wake-gpios = <&tlmm 99 GPIO_ACTIVE_HIGH>;
  
--	/*
--	 * Some controllers have unreliable Data Line Active
--	 * bit for commands with busy signal. This affects
--	 * Command Inhibit (data) bit. Just ignore it since
--	 * MMC core driver has already polled card status
--	 * with CMD13 after any command with busy siganl.
--	 */
--	if ((spec_reg == SDHCI_PRESENT_STATE) &&
--	(esdhc->quirk_ignore_data_inhibit == true)) {
--		ret = value & ~SDHCI_DATA_INHIBIT;
--		return ret;
--	}
--
- 	ret = value;
- 	return ret;
- }
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pcie1_default_state>;
 -- 
 2.39.2
 
