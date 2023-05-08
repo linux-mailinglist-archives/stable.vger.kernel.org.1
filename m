@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C726FA510
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD146FAB2D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234028AbjEHKFf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:05:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33618 "EHLO
+        id S233398AbjEHLK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234021AbjEHKFe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:05:34 -0400
+        with ESMTP id S233744AbjEHLKB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DB7630445
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401C631EEF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10F016233C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2429FC433D2;
-        Mon,  8 May 2023 10:05:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC83362B14
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC327C433D2;
+        Mon,  8 May 2023 11:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540332;
-        bh=oC8/QsNoyKVfJ8I1WKXuwfGA8uk6LMoz7H2eIFCfyjo=;
+        s=korg; t=1683544197;
+        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nGocS6SP4Jb4QH+SYUhNT0GRoYaULRdDp/VHwvPxqfuyPrbFiJlDCJkIHwD87KJ8N
-         nP8C1bc7PRcZ6rz8ibkezryhdQpsgPxE2hTmYlZg0ZZsOAlsvF+VAGoADjfvK0IhLi
-         KiRrjjmL2EsdLg0dzDYNW5dngd2cK8TRZXNG9IpA=
+        b=P3CQPGn5+N1fefDiNjdvJ0KJDiA7z0Ra9y5/Af+veCxBAhNlKu0chwcUTLch2CkyP
+         y1ZBC1jfn+8Fpz3vefgBvyFD+YN2KPy6uDt614VUT/a/9tc3d3vNovMmFnLKHe7Jz2
+         JC++UqGul/eywsQmHA9jgbJGPXI+oZzvjvDQY2c4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 325/611] wifi: iwlwifi: fix duplicate entry in iwl_dev_info_table
+        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Subject: [PATCH 6.3 332/694] wifi: ath6kl: reduce WARN to dev_dbg() in callback
 Date:   Mon,  8 May 2023 11:42:47 +0200
-Message-Id: <20230508094432.997750974@linuxfoundation.org>
+Message-Id: <20230508094443.188446027@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit fc3c2f0ed86b65dff4b6844c59c597b977cae533 ]
+[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
 
-There're two identical entries for ax1650 device in
-iwl_dev_info_table. Remove one of the duplicate entries.
+The warn is triggered on a known race condition, documented in the code above
+the test, that is correctly handled.  Using WARN() hinders automated testing.
+Reducing severity.
 
-Fixes: 953e66a7238b ("iwlwifi: add new ax1650 killer device")
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230410140721.897683-2-gregory.greenman@intel.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
+Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 4f699862e7f73..85fadd1ef1ff3 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -565,7 +565,6 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x43F0, 0x1652, killer1650i_2ax_cfg_qu_b0_hr_b0, iwl_ax201_killer_1650i_name),
- 	IWL_DEV_INFO(0x43F0, 0x2074, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0x43F0, 0x4070, iwl_ax201_cfg_qu_hr, NULL),
--	IWL_DEV_INFO(0x43F0, 0x1651, killer1650s_2ax_cfg_qu_b0_hr_b0, iwl_ax201_killer_1650s_name),
- 	IWL_DEV_INFO(0xA0F0, 0x0070, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0xA0F0, 0x0074, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0xA0F0, 0x0078, iwl_ax201_cfg_qu_hr, NULL),
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index c68848819a52d..9b88d96bfe96c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
+ 	 */
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
+ 	}
 -- 
 2.39.2
 
