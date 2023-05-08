@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E4D6FA625
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F706FAC4F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbjEHKQt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45644 "EHLO
+        id S235613AbjEHLXL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234326AbjEHKQs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:48 -0400
+        with ESMTP id S235627AbjEHLXI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AB410D8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13C4C39492
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87D75624A8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AED4C433EF;
-        Mon,  8 May 2023 10:16:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E813562CCB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E412BC433D2;
+        Mon,  8 May 2023 11:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541006;
-        bh=Nc7/rF0qmGOIiM6jbR0MSmN3TyFrX6fefb5rCTZzh5k=;
+        s=korg; t=1683544983;
+        bh=mtk1jRQLs5sLc7mjQpW/vR5jAzlhjbDn5pGZ7T+l0dE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZfEtKtzP3iFF0oMeGCgWWn+4HVlTm2JfQSjBKNyblx98+h7E7JS0VPyHvMFzWFNT6
-         jXmzKL+4cPk9X9cIWJSqILVltlP5dTiRV62kDhlHCL/kp/Rflurz0uZowPRYNoK4nJ
-         DYl073AERN9I94aQ1DABz+nSDIu2vqdc2zTvh1VM=
+        b=v59aPBlDAE2Dlp3iBHuRjWJ9MnyHfGq0ACJwVs+BaDwQlspmxCpTS4DEoyhCI/1gP
+         XQ7ZdN0pXBWLGIV70wJduMnzKvm57p9kTOPzWoch4UklsY+iiGGz75X5BqfyW3n1XS
+         0npgfCjQy4DkIrIPg3rCZsjgP5Z+r2l5Z6hCBnAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Jes Sorensen <jes@trained-monkey.org>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 580/611] wifi: rtl8xxxu: RTL8192EU always needs full init
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 587/694] rtc: meson-vrtc: Use ktime_get_real_ts64() to get the current time
 Date:   Mon,  8 May 2023 11:47:02 +0200
-Message-Id: <20230508094440.783531289@linuxfoundation.org>
+Message-Id: <20230508094454.094979837@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-commit d46e04ccd40457a0119b76e11ab64a2ad403e138 upstream.
+[ Upstream commit 0e6255fa3f649170da6bd1a544680589cfae1131 ]
 
-Always run the entire init sequence (rtl8xxxu_init_device()) for
-RTL8192EU. It's what the vendor driver does too.
+The VRTC alarm register can be programmed with an amount of seconds
+after which the SoC will be woken up by the VRTC timer again. We are
+already converting the alarm time from meson_vrtc_set_alarm() to
+"seconds since 1970". This means we also need to use "seconds since
+1970" for the current time.
 
-This fixes a bug where the device is unable to connect after
-rebooting:
+This fixes a problem where setting the alarm to one minute in the future
+results in the firmware (which handles wakeup) to output (on the serial
+console) that the system will be woken up in billions of seconds.
+ktime_get_raw_ts64() returns the time since boot, not since 1970. Switch
+to ktime_get_real_ts64() to fix the calculation of the alarm time and to
+make the SoC wake up at the specified date/time. Also the firmware
+(which manages suspend) now prints either 59 or 60 seconds until wakeup
+(depending on how long it takes for the system to enter suspend).
 
-wlp3s0f3u2: send auth to ... (try 1/3)
-wlp3s0f3u2: send auth to ... (try 2/3)
-wlp3s0f3u2: send auth to ... (try 3/3)
-wlp3s0f3u2: authentication with ... timed out
-
-Rebooting leaves the device powered on (partially? at least the
-firmware is still running), but not really in a working state.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Jes Sorensen <jes@trained-monkey.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ef35398e827 ("rtc: Add Amlogic Virtual Wake RTC")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20230320212142.2355062-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-meson-vrtc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -1700,6 +1700,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops =
- 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
- 	.has_s0s1 = 0,
- 	.gen2_thermal_meter = 1,
-+	.needs_full_init = 1,
- 	.adda_1t_init = 0x0fc01616,
- 	.adda_1t_path_on = 0x0fc01616,
- 	.adda_2t_path_on_a = 0x0fc01616,
+diff --git a/drivers/rtc/rtc-meson-vrtc.c b/drivers/rtc/rtc-meson-vrtc.c
+index 1463c86215615..648fa362ec447 100644
+--- a/drivers/rtc/rtc-meson-vrtc.c
++++ b/drivers/rtc/rtc-meson-vrtc.c
+@@ -23,7 +23,7 @@ static int meson_vrtc_read_time(struct device *dev, struct rtc_time *tm)
+ 	struct timespec64 time;
+ 
+ 	dev_dbg(dev, "%s\n", __func__);
+-	ktime_get_raw_ts64(&time);
++	ktime_get_real_ts64(&time);
+ 	rtc_time64_to_tm(time.tv_sec, tm);
+ 
+ 	return 0;
+@@ -96,7 +96,7 @@ static int __maybe_unused meson_vrtc_suspend(struct device *dev)
+ 		long alarm_secs;
+ 		struct timespec64 time;
+ 
+-		ktime_get_raw_ts64(&time);
++		ktime_get_real_ts64(&time);
+ 		local_time = time.tv_sec;
+ 
+ 		dev_dbg(dev, "alarm_time = %lus, local_time=%lus\n",
+-- 
+2.39.2
+
 
 
