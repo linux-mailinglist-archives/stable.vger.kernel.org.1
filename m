@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CB56FA977
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E21D86FA62A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235175AbjEHKvl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:51:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
+        id S234332AbjEHKQ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:16:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235262AbjEHKvW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5EEE27F08
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:41 -0700 (PDT)
+        with ESMTP id S234333AbjEHKQ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 644AB32917
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A44236292B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0712C433D2;
-        Mon,  8 May 2023 10:50:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0B1F624B7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3D2C433EF;
+        Mon,  8 May 2023 10:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543041;
-        bh=TYVftzPFH3d122fStT/BFsArYteAjmvF3SwKnaQBLn0=;
+        s=korg; t=1683541016;
+        bh=Jhab4T1IZVUorMxITNTHoSKD2GLUOVE9BUlEJWAVXhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E1Vd/aGbvv3s8rJjItTXKlAcoY4oTPD6nFXS6YdNn0vUwiB6zbtliNbERc+dsLDal
-         btaXIXs2JktZKIXykRu4BCMVwNwmyuUYDCo483W7mE2DRleevBc4CNNYgq2irFuQpu
-         /Ar2WuE6GuHRGZaQ4jHBpQ5k738DLp4b/qS9s4G0=
+        b=DqdrwldxpwYEybcClkF64am2uE995uERTIsPgs+0UIy3w7NNblqItRXX8yTCVMq0B
+         euMCACx0qse2tOk913QDmlnlWbtZxb+s/SRal9kWc6KRGeaI4S/wrGFXRzY4Bj1BsX
+         MVQ3rxHau/pmOf2w00JvFDEPnnJlxGZRlonGD+0Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 599/663] mfd: tqmx86: Specify IO port register range more precisely
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+        Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 583/611] clk: rockchip: rk3399: allow clk_cifout to force clk_cifout_src to reparent
 Date:   Mon,  8 May 2023 11:47:05 +0200
-Message-Id: <20230508094448.954777076@linuxfoundation.org>
+Message-Id: <20230508094440.869636877@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,64 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-[ Upstream commit 051c69ff4f607aa114c7bbdd7c41ed881367aeee ]
+commit 933bf364e152cd60902cf9585c2ba310d593e69f upstream.
 
-Registers 0x160..0x17f are unassigned. Use 0x180 as base register and
-update offets accordingly.
+clk_cifout is derived from clk_cifout_src through an integer divider
+limited to 32. clk_cifout_src is a child of either cpll, gpll or npll
+without any possibility of a divider of any sort. The default clock
+parent is cpll.
 
-Also change the size of the range to include 0x19f. While 0x19f is
-currently reserved for future extensions, so are several of the previous
-registers up to 0x19e, and it is weird to leave out just the last one.
+Let's allow clk_cifout to ask its parent clk_cifout_src to reparent in
+order to find the real closest possible rate for clk_cifout and not one
+derived from cpll only.
 
-Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/db4677ac318b1283c8956f637f409995a30a31c3.1676892223.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 4.10+
+Fixes: fd8bc829336a ("clk: rockchip: fix the rk3399 cifout clock")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20221117-rk3399-cifout-set-rate-parent-v1-0-432548d04081@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/tqmx86.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clk/rockchip/clk-rk3399.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
-index 31d0efb5aacf8..958334f14eb00 100644
---- a/drivers/mfd/tqmx86.c
-+++ b/drivers/mfd/tqmx86.c
-@@ -16,8 +16,8 @@
- #include <linux/platform_data/i2c-ocores.h>
- #include <linux/platform_device.h>
+--- a/drivers/clk/rockchip/clk-rk3399.c
++++ b/drivers/clk/rockchip/clk-rk3399.c
+@@ -1263,7 +1263,7 @@ static struct rockchip_clk_branch rk3399
+ 			RK3399_CLKSEL_CON(56), 6, 2, MFLAGS,
+ 			RK3399_CLKGATE_CON(10), 7, GFLAGS),
  
--#define TQMX86_IOBASE	0x160
--#define TQMX86_IOSIZE	0x3f
-+#define TQMX86_IOBASE	0x180
-+#define TQMX86_IOSIZE	0x20
- #define TQMX86_IOBASE_I2C	0x1a0
- #define TQMX86_IOSIZE_I2C	0xa
- #define TQMX86_IOBASE_WATCHDOG	0x18b
-@@ -25,7 +25,7 @@
- #define TQMX86_IOBASE_GPIO	0x18d
- #define TQMX86_IOSIZE_GPIO	0x4
+-	COMPOSITE_NOGATE(SCLK_CIF_OUT, "clk_cifout", mux_clk_cif_p, 0,
++	COMPOSITE_NOGATE(SCLK_CIF_OUT, "clk_cifout", mux_clk_cif_p, CLK_SET_RATE_PARENT,
+ 			 RK3399_CLKSEL_CON(56), 5, 1, MFLAGS, 0, 5, DFLAGS),
  
--#define TQMX86_REG_BOARD_ID	0x20
-+#define TQMX86_REG_BOARD_ID	0x00
- #define TQMX86_REG_BOARD_ID_E38M	1
- #define TQMX86_REG_BOARD_ID_50UC	2
- #define TQMX86_REG_BOARD_ID_E38C	3
-@@ -40,8 +40,8 @@
- #define TQMX86_REG_BOARD_ID_E40S	13
- #define TQMX86_REG_BOARD_ID_E40C1	14
- #define TQMX86_REG_BOARD_ID_E40C2	15
--#define TQMX86_REG_BOARD_REV	0x21
--#define TQMX86_REG_IO_EXT_INT	0x26
-+#define TQMX86_REG_BOARD_REV	0x01
-+#define TQMX86_REG_IO_EXT_INT	0x06
- #define TQMX86_REG_IO_EXT_INT_NONE		0
- #define TQMX86_REG_IO_EXT_INT_7			1
- #define TQMX86_REG_IO_EXT_INT_9			2
--- 
-2.39.2
-
+ 	/* gic */
 
 
