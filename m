@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 893BF6FA5BB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4CB6FA8C9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234209AbjEHKMx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41230 "EHLO
+        id S235000AbjEHKp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234250AbjEHKMk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:40 -0400
+        with ESMTP id S235004AbjEHKpC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D2B3AA34
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7683926EA4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FDFC623F9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A5FC4339B;
-        Mon,  8 May 2023 10:12:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0641162869
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8C1C433D2;
+        Mon,  8 May 2023 10:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540750;
-        bh=0y5fik3iuohyoHYC0Yzunl6vS+d3MfQ0KCVN9cPo5dE=;
+        s=korg; t=1683542631;
+        bh=i3y76EWp5NGs1WkLc1DvpsMEnYO7+/5ydEuK5KyTw/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oMHDwcT0w5Yi96hpkakn1wGHV0/9uFFlwV0ejSHKVS8iuckU9AR/mQTjBoXHxVbo1
-         cPNqP8VgUtOpLU9eJo1XUbiGoQPmBA9mkKNR5zV+GyIrJq/KTuJLm1vivpKLwxjPiz
-         GC+wnym/ctcdPNEEUgh47N3LCzebi0NL5D/yXogA=
+        b=UZvOx0V0LD0jetRUTz9jYM9ymYo8EZjpc0vgk0HnPkB4jswVEwv2QmfZeakeu5HFz
+         jyNr19UT1ANJB+1jJxS98vs5QG7zlYILJqLNPRpnbPT8xay5kbCvHvBv/qqjI3Q0Du
+         Xy7bbUvqZ7NFR976AqZ+P+7PLQe+Pqf8uPJyeAFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev,
+        Jishnu Prakash <quic_jprakash@quicinc.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 482/611] RDMA/mlx4: Prevent shift wrapping in set_user_sq_size()
+Subject: [PATCH 6.2 498/663] spmi: Add a check for remove callback when removing a SPMI driver
 Date:   Mon,  8 May 2023 11:45:24 +0200
-Message-Id: <20230508094437.747231921@linuxfoundation.org>
+Message-Id: <20230508094444.669520453@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,44 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <error27@gmail.com>
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
 
-[ Upstream commit d50b3c73f1ac20dabc53dc6e9d64ce9c79a331eb ]
+[ Upstream commit b56eef3e16d888883fefab47425036de80dd38fc ]
 
-The ucmd->log_sq_bb_count variable is controlled by the user so this
-shift can wrap.  Fix it by using check_shl_overflow() in the same way
-that it was done in commit 515f60004ed9 ("RDMA/hns: Prevent undefined
-behavior in hns_roce_set_user_sq_size()").
+When removing a SPMI driver, there can be a crash due to NULL pointer
+dereference if it does not have a remove callback defined. This is
+one such call trace observed when removing the QCOM SPMI PMIC driver:
 
-Fixes: 839041329fd3 ("IB/mlx4: Sanity check userspace send queue sizes")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/a8dfbd1d-c019-4556-930b-bab1ded73b10@kili.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+ dump_backtrace.cfi_jt+0x0/0x8
+ dump_stack_lvl+0xd8/0x16c
+ panic+0x188/0x498
+ __cfi_slowpath+0x0/0x214
+ __cfi_slowpath+0x1dc/0x214
+ spmi_drv_remove+0x16c/0x1e0
+ device_release_driver_internal+0x468/0x79c
+ driver_detach+0x11c/0x1a0
+ bus_remove_driver+0xc4/0x124
+ driver_unregister+0x58/0x84
+ cleanup_module+0x1c/0xc24 [qcom_spmi_pmic]
+ __do_sys_delete_module+0x3ec/0x53c
+ __arm64_sys_delete_module+0x18/0x28
+ el0_svc_common+0xdc/0x294
+ el0_svc+0x38/0x9c
+ el0_sync_handler+0x8c/0xf0
+ el0_sync+0x1b4/0x1c0
+
+If a driver has all its resources allocated through devm_() APIs and
+does not need any other explicit cleanup, it would not require a
+remove callback to be defined. Hence, add a check for remove callback
+presence before calling it when removing a SPMI driver.
+
+Link: https://lore.kernel.org/r/1671601032-18397-2-git-send-email-quic_jprakash@quicinc.com
+Fixes: 6f00f8c8635f ("mfd: qcom-spmi-pmic: Use devm_of_platform_populate()")
+Fixes: 5a86bf343976 ("spmi: Linux driver framework for SPMI")
+Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20230413223834.4084793-7-sboyd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/qp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spmi/spmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index b17d6ebc5b705..488c906c0432c 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -412,9 +412,13 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
- 			    struct mlx4_ib_qp *qp,
- 			    struct mlx4_ib_create_qp *ucmd)
- {
-+	u32 cnt;
-+
- 	/* Sanity check SQ size before proceeding */
--	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
--	    ucmd->log_sq_stride >
-+	if (check_shl_overflow(1, ucmd->log_sq_bb_count, &cnt) ||
-+	    cnt > dev->dev->caps.max_wqes)
-+		return -EINVAL;
-+	if (ucmd->log_sq_stride >
- 		ilog2(roundup_pow_of_two(dev->dev->caps.max_sq_desc_sz)) ||
- 	    ucmd->log_sq_stride < MLX4_IB_MIN_SQ_STRIDE)
- 		return -EINVAL;
+diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
+index 55381592bb5a6..e73d3017863cb 100644
+--- a/drivers/spmi/spmi.c
++++ b/drivers/spmi/spmi.c
+@@ -350,7 +350,8 @@ static void spmi_drv_remove(struct device *dev)
+ 	const struct spmi_driver *sdrv = to_spmi_driver(dev->driver);
+ 
+ 	pm_runtime_get_sync(dev);
+-	sdrv->remove(to_spmi_device(dev));
++	if (sdrv->remove)
++		sdrv->remove(to_spmi_device(dev));
+ 	pm_runtime_put_noidle(dev);
+ 
+ 	pm_runtime_disable(dev);
 -- 
 2.39.2
 
