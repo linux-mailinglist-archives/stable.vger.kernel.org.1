@@ -2,78 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1592D6FA1AD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 09:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463CA6FA219
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 10:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232273AbjEHH5d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 03:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33064 "EHLO
+        id S233061AbjEHIYV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 04:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232011AbjEHH5c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 03:57:32 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4902E62
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 00:57:30 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pvvkN-0007zm-8s; Mon, 08 May 2023 09:57:27 +0200
-Message-ID: <f8852e43-fcc2-7f5f-d1cd-4d99ebc37372@leemhuis.info>
-Date:   Mon, 8 May 2023 09:57:26 +0200
+        with ESMTP id S233678AbjEHIYI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 04:24:08 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0AC1A10A;
+        Mon,  8 May 2023 01:24:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=ypZSIxmdSA8iF2yRhvmEJb0SvA/i+Bsfp62do6qBrxw=; b=VPvIQNx+z5YLvzawxyYzGAQtCH
+        2J9yjl/4Q4nWJ96EMrzB9/QoWY8RUjsHEcym+xZTmnSdQa/KybMMAjA/E5U/VlNinuQEpdJwVkY7e
+        hXnYIQY+GxO8M8DYU6qdSOqoI5Yp0fYM1xwBpucfIe6OlfMHJqMA3l5SJRb7+4J3wEJiPBUTKXfia
+        uRfTb9tcX+IpH7QOoy2ntWpmZwUYGi0V+ux5fNUaSPY2TXDpsoYKEa3WRlBCzr/dEDIp9ztLb2kxo
+        S6w6b7wvubdW7Vbe/YRGdxXLUl4CShF6k1w237T9BycZXcodfLTCQeR7rZD5qUhBP8CXx+EPvqBZd
+        8czoxKJg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pvwA1-00DyCr-O1; Mon, 08 May 2023 08:23:58 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C08D030026A;
+        Mon,  8 May 2023 10:23:56 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 9E74D23937D84; Mon,  8 May 2023 10:23:56 +0200 (CEST)
+Date:   Mon, 8 May 2023 10:23:56 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     John Stultz <jstultz@google.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Minchan Kim <minchan@kernel.org>,
+        Tim Murray <timmurray@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Boqun Feng <boqun.feng@gmail.com>, kernel-team@android.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] locking/rwsem: Add __always_inline annotation to
+ __down_read_common() and inlined callers
+Message-ID: <20230508082356.GS83892@hirez.programming.kicks-ass.net>
+References: <20230503023351.2832796-1-jstultz@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Regression Issue
-Content-Language: en-US, de-DE
-To:     "Rai, Anjali" <anjali.rai@intel.com>
-Cc:     "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Gandhi, Jinen" <jinen.gandhi@intel.com>,
-        "Qin, Kailun" <kailun.qin@intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-References: <DM4PR11MB55183E4B87078E0F496386029A719@DM4PR11MB5518.namprd11.prod.outlook.com>
- <2023050851-trapper-preshow-2e4c@gregkh>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2023050851-trapper-preshow-2e4c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1683532650;3969a6c8;
-X-HE-SMSGID: 1pvvkN-0007zm-8s
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230503023351.2832796-1-jstultz@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 08.05.23 09:40, Greg KH wrote:
-> On Mon, May 08, 2023 at 07:33:58AM +0000, Rai, Anjali wrote:
->>
->> We have one test which test the functionality of "using the same loopback address and port for both IPV6 and IPV4", The test should result in EADDRINUSE for binding IPv4 to same port, but it was successful
->>
->> Test Description:
->> The test creates sockets for both IPv4 and IPv6, and forces IPV6 to listen for both IPV4 and IPV6 connections; this in turn makes binding another (IPV4) socket on the same port meaningless and results in -EADDRINUSE
->>
->> Our systems had Kernel v6.0.9 and the test was successfully executing, we recently upgraded our systems to v6.2, and we saw this as a failure. The systems which are not upgraded, there it is still passing.
->>
->> We don't exactly at which point this test broke, but our assumption is https://github.com/torvalds/linux/commit/28044fc1d4953b07acec0da4d2fc4784c57ea6fb
+On Wed, May 03, 2023 at 02:33:51AM +0000, John Stultz wrote:
+> Apparently despite it being marked inline, the compiler
+> may not inline __down_read_common() which makes it difficult
+> to identify the cause of lock contention, as the blocked
+> function in traceevents will always be listed as
+> __down_read_common().
 > 
-> Is there a specific reason you did not add cc: for the authors of that
-> commit?
+> So this patch adds __always_inline annotation to the common
+> function (as well as the inlined helper callers) to force it to
+> be inlined so the blocking function will be listed (via Wchan)
+> in traceevents.
 > 
->> Can you please check on your end whether this is an actual regression of a feature request.
-> 
-> If you revert that commit, does it resolve the issue?  Have you worked
-> with the Intel networking developers to help debug this further?
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Tim Murray <timmurray@google.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
+> Cc: Boqun Feng <boqun.feng@gmail.com>
+> Cc: kernel-team@android.com
+> Cc: stable@vger.kernel.org
+> Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
+> Reviewed-by: Waiman Long <longman@redhat.com>
+> Reported-by: Tim Murray <timmurray@google.com>
+> Signed-off-by: John Stultz <jstultz@google.com>
 
-FWIW: that commit you mentioned above indeed caused a regression in a
-test, but the issue was fixed before 6.2 was released -- or at least it
-is supposed to. For details see:
-
-https://lore.kernel.org/all/6b971a4e-c7d8-411e-1f92-fda29b5b2fb9@kernel.org/
-
-
-Ciao, Thorsten
+Thanks!
