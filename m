@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E9146FAE97
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E986FACAF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236355AbjEHLqM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:46:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45296 "EHLO
+        id S233981AbjEHL1C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235912AbjEHLpv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:45:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2895629FE8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:45:28 -0700 (PDT)
+        with ESMTP id S235772AbjEHL0s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0EA3B7AB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C5D263636
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:45:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41D0C433D2;
-        Mon,  8 May 2023 11:44:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2F4E62D22
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5582C433D2;
+        Mon,  8 May 2023 11:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546300;
-        bh=HpIR1NVYib/iXzFR4Xo2Lqf1vAQpfvKrvs576Kn8Hbs=;
+        s=korg; t=1683545198;
+        bh=osggGEj4JKsmz6/Dvz6kPG2mchpBugrtqzbtUMynS+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=alDb0xfGGStb/O/MoA+kfB7KrgB+AWjYCRTwgAlFs7YjT/QqQJLc/xqrTMMNlOJNq
-         IAH6FRAKbtxONNpdTbsEx40HF25Ot1ZHchBhH17A7qnvZSnoZXRBforWt5MJY/Wg7k
-         8mwyfFpI+25G/OL51wj96Y8bRwGkFyIGHQFMAd4M=
+        b=NiFB0mJLasstvRw5LyIFEN/iHMKAWNtPF58ZyZRo+ZiK7Sa6HGNOql7QTPC9gqGeZ
+         h+zFg5q/kkJ8wRMogOtPcjHyK9ZqRm+BXBXnkWARolLQnmd9kpvcD37eq0/mFOhCkr
+         DSPKdX0nzoOU8xchnlSCuNQUrCYZGyZvcwavbu5A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Schspa Shi <schspa@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Dwaine Gonyier <dgonyier@redhat.com>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 291/371] sched/rt: Fix bad task migration for rt tasks
+Subject: [PATCH 6.3 657/694] pinctrl-bcm2835.c: fix race condition when setting gpio dir
 Date:   Mon,  8 May 2023 11:48:12 +0200
-Message-Id: <20230508094823.576866468@linuxfoundation.org>
+Message-Id: <20230508094457.297080441@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,83 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Schspa Shi <schspa@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit feffe5bb274dd3442080ef0e4053746091878799 ]
+[ Upstream commit b7badd752de05312fdb1aeb388480f706d0c087f ]
 
-Commit 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
-allows find_lock_lowest_rq() to pick a task with migration disabled.
-The purpose of the commit is to push the current running task on the
-CPU that has the migrate_disable() task away.
+In the past setting the pin direction called pinctrl_gpio_direction()
+which uses a mutex to serialize this. That was changed to set the
+direction directly in the pin controller driver, but that lost the
+serialization mechanism. Since the direction of multiple pins are in
+the same register you can have a race condition, something that was
+in fact observed with the cec-gpio driver.
 
-However, there is a race which allows a migrate_disable() task to be
-migrated. Consider:
+Add a new spinlock to serialize writing to the FSEL registers.
 
-  CPU0                                    CPU1
-  push_rt_task
-    check is_migration_disabled(next_task)
-
-                                          task not running and
-                                          migration_disabled == 0
-
-    find_lock_lowest_rq(next_task, rq);
-      _double_lock_balance(this_rq, busiest);
-        raw_spin_rq_unlock(this_rq);
-        double_rq_lock(this_rq, busiest);
-          <<wait for busiest rq>>
-                                              <wakeup>
-                                          task become running
-                                          migrate_disable();
-                                            <context out>
-    deactivate_task(rq, next_task, 0);
-    set_task_cpu(next_task, lowest_rq->cpu);
-      WARN_ON_ONCE(is_migration_disabled(p));
-
-Fixes: 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
-Signed-off-by: Schspa Shi <schspa@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Tested-by: Dwaine Gonyier <dgonyier@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 1a4541b68e25 ("pinctrl-bcm2835: don't call pinctrl_gpio_direction()")
+Link: https://lore.kernel.org/r/4302b66b-ca20-0f19-d2aa-ee8661118863@xs4all.nl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 1 +
- kernel/sched/rt.c       | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/pinctrl/bcm/pinctrl-bcm2835.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 3aad381f42ed4..b3e2064983952 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2084,6 +2084,7 @@ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
- 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
- 				     task_running(rq, task) ||
- 				     !dl_task(task) ||
-+				     is_migration_disabled(task) ||
- 				     !task_on_rq_queued(task))) {
- 				double_unlock_balance(rq, later_rq);
- 				later_rq = NULL;
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 8d170b5bdae92..4b9281e6b1ccd 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1842,11 +1842,15 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
- 			 * the mean time, task could have
- 			 * migrated already or had its affinity changed.
- 			 * Also make sure that it wasn't scheduled on its rq.
-+			 * It is possible the task was scheduled, set
-+			 * "migrate_disabled" and then got preempted, so we must
-+			 * check the task migration disable flag here too.
- 			 */
- 			if (unlikely(task_rq(task) != rq ||
- 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
- 				     task_running(rq, task) ||
- 				     !rt_task(task) ||
-+				     is_migration_disabled(task) ||
- 				     !task_on_rq_queued(task))) {
+diff --git a/drivers/pinctrl/bcm/pinctrl-bcm2835.c b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+index 8e2551a08c372..7435173e10f43 100644
+--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+@@ -90,6 +90,8 @@ struct bcm2835_pinctrl {
+ 	struct pinctrl_gpio_range gpio_range;
  
- 				double_unlock_balance(rq, lowest_rq);
+ 	raw_spinlock_t irq_lock[BCM2835_NUM_BANKS];
++	/* Protect FSEL registers */
++	spinlock_t fsel_lock;
+ };
+ 
+ /* pins are just named GPIO0..GPIO53 */
+@@ -284,14 +286,19 @@ static inline void bcm2835_pinctrl_fsel_set(
+ 		struct bcm2835_pinctrl *pc, unsigned pin,
+ 		enum bcm2835_fsel fsel)
+ {
+-	u32 val = bcm2835_gpio_rd(pc, FSEL_REG(pin));
+-	enum bcm2835_fsel cur = (val >> FSEL_SHIFT(pin)) & BCM2835_FSEL_MASK;
++	u32 val;
++	enum bcm2835_fsel cur;
++	unsigned long flags;
++
++	spin_lock_irqsave(&pc->fsel_lock, flags);
++	val = bcm2835_gpio_rd(pc, FSEL_REG(pin));
++	cur = (val >> FSEL_SHIFT(pin)) & BCM2835_FSEL_MASK;
+ 
+ 	dev_dbg(pc->dev, "read %08x (%u => %s)\n", val, pin,
+-			bcm2835_functions[cur]);
++		bcm2835_functions[cur]);
+ 
+ 	if (cur == fsel)
+-		return;
++		goto unlock;
+ 
+ 	if (cur != BCM2835_FSEL_GPIO_IN && fsel != BCM2835_FSEL_GPIO_IN) {
+ 		/* always transition through GPIO_IN */
+@@ -309,6 +316,9 @@ static inline void bcm2835_pinctrl_fsel_set(
+ 	dev_dbg(pc->dev, "write %08x (%u <= %s)\n", val, pin,
+ 			bcm2835_functions[fsel]);
+ 	bcm2835_gpio_wr(pc, FSEL_REG(pin), val);
++
++unlock:
++	spin_unlock_irqrestore(&pc->fsel_lock, flags);
+ }
+ 
+ static int bcm2835_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
+@@ -1248,6 +1258,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
+ 	pc->gpio_chip = *pdata->gpio_chip;
+ 	pc->gpio_chip.parent = dev;
+ 
++	spin_lock_init(&pc->fsel_lock);
+ 	for (i = 0; i < BCM2835_NUM_BANKS; i++) {
+ 		unsigned long events;
+ 		unsigned offset;
 -- 
 2.39.2
 
