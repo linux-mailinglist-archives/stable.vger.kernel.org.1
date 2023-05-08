@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0210B6FA9FC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EEA6FA6B0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235376AbjEHK5k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:57:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33354 "EHLO
+        id S234275AbjEHKXW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235416AbjEHK5L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:57:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464D133FE6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:56:15 -0700 (PDT)
+        with ESMTP id S234431AbjEHKWm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108702E6B4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D075E629AE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:56:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFFAC433D2;
-        Mon,  8 May 2023 10:56:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86FD56255B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7924EC4339B;
+        Mon,  8 May 2023 10:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543374;
-        bh=vK4A3y81Tr8OSsacmMmkW+QGcYmmuSZEv8eIUrYi1oY=;
+        s=korg; t=1683541325;
+        bh=X5jNEBYBe81yA+0iQb0bkyx+ceMdKOH33ZS35tsklFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=arwi8duZETlSRV/lHsUjegZEy9RSq6jWFr2Ep2F/eTjgjlLd8yMm2quyE2jq5OW/w
-         BBnPdCyg1x0npj5N9pR81ktbtoh/Bi5EJ0LiypLCMSBRt3Mid8fd7U+WAs9PG/CLwo
-         jlAuxAzhkYo/Mrg50Fxq78fGfdg9vO0DBx0Fo69Y=
+        b=xbXBrXvJuWMy5gq7IMxeYWR/5Qnba2FkUsRlnTEFA+5p2umFoIkUHyQsGFnUUW2Xf
+         u1gChW8WSzYYdIxBbwh6yqeYcPOa/lpIf3Wzj0QvvbiOPHCls+Fraa4xCd3VSZcw37
+         h8uyI93WtLEv1ywlbPkp0uWNkPuXAf/4bcBu8n6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.3 069/694] ksmbd: fix memleak in session setup
-Date:   Mon,  8 May 2023 11:38:24 +0200
-Message-Id: <20230508094434.796926052@linuxfoundation.org>
+        patches@lists.linux.dev, Jeremy Linton <jeremy.linton@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.2 079/663] KVM: arm64: Avoid vcpu->mutex v. kvm->lock inversion in CPU_ON
+Date:   Mon,  8 May 2023 11:38:25 +0200
+Message-Id: <20230508094431.020496965@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +54,268 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-commit 6d7cb549c2ca20e1f07593f15e936fd54b763028 upstream.
+commit 0acc7239c20a8401b8968c2adace8f7c9b0295ae upstream.
 
-If client send session setup request with unknown NTLMSSP message type,
-session that does not included channel can be created. It will cause
-session memleak. because ksmbd_sessions_deregister() does not destroy
-session if channel is not included. This patch return error response if
-client send the request unknown NTLMSSP message type.
+KVM/arm64 had the lock ordering backwards on vcpu->mutex and kvm->lock
+from the very beginning. One such example is the way vCPU resets are
+handled: the kvm->lock is acquired while handling a guest CPU_ON PSCI
+call.
+
+Add a dedicated lock to serialize writes to kvm_vcpu_arch::{mp_state,
+reset_state}. Promote all accessors of mp_state to {READ,WRITE}_ONCE()
+as readers do not acquire the mp_state_lock. While at it, plug yet
+another race by taking the mp_state_lock in the KVM_SET_MP_STATE ioctl
+handler.
+
+As changes to MP state are now guarded with a dedicated lock, drop the
+kvm->lock acquisition from the PSCI CPU_ON path. Similarly, move the
+reader of reset_state outside of the kvm->lock and instead protect it
+with the mp_state_lock. Note that writes to reset_state::reset have been
+demoted to regular stores as both readers and writers acquire the
+mp_state_lock.
+
+While the kvm->lock inversion still exists in kvm_reset_vcpu(), at least
+now PSCI CPU_ON no longer depends on it for serializing vCPU reset.
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20593
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Tested-by: Jeremy Linton <jeremy.linton@arm.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230327164747.2466958-2-oliver.upton@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/include/asm/kvm_host.h |    1 +
+ arch/arm64/kvm/arm.c              |   31 ++++++++++++++++++++++---------
+ arch/arm64/kvm/psci.c             |   28 ++++++++++++++++------------
+ arch/arm64/kvm/reset.c            |    9 +++++----
+ 4 files changed, 44 insertions(+), 25 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1794,6 +1794,10 @@ int smb2_sess_setup(struct ksmbd_work *w
- 				}
- 				kfree(sess->Preauth_HashValue);
- 				sess->Preauth_HashValue = NULL;
-+			} else {
-+				pr_info_ratelimited("Unknown NTLMSSP message type : 0x%x\n",
-+						le32_to_cpu(negblob->MessageType));
-+				rc = -EINVAL;
- 			}
- 		} else {
- 			/* TODO: need one more negotiation */
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -482,6 +482,7 @@ struct kvm_vcpu_arch {
+ 
+ 	/* vcpu power state */
+ 	struct kvm_mp_state mp_state;
++	spinlock_t mp_state_lock;
+ 
+ 	/* Cache some mmu pages needed inside spinlock regions */
+ 	struct kvm_mmu_memory_cache mmu_page_cache;
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -336,6 +336,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
+ {
+ 	int err;
+ 
++	spin_lock_init(&vcpu->arch.mp_state_lock);
++
+ 	/* Force users to call KVM_ARM_VCPU_INIT */
+ 	vcpu->arch.target = -1;
+ 	bitmap_zero(vcpu->arch.features, KVM_VCPU_MAX_FEATURES);
+@@ -453,34 +455,41 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *
+ 	vcpu->cpu = -1;
+ }
+ 
+-void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
++static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+ {
+-	vcpu->arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
++	WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_STOPPED);
+ 	kvm_make_request(KVM_REQ_SLEEP, vcpu);
+ 	kvm_vcpu_kick(vcpu);
+ }
+ 
++void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
++{
++	spin_lock(&vcpu->arch.mp_state_lock);
++	__kvm_arm_vcpu_power_off(vcpu);
++	spin_unlock(&vcpu->arch.mp_state_lock);
++}
++
+ bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu)
+ {
+-	return vcpu->arch.mp_state.mp_state == KVM_MP_STATE_STOPPED;
++	return READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_STOPPED;
+ }
+ 
+ static void kvm_arm_vcpu_suspend(struct kvm_vcpu *vcpu)
+ {
+-	vcpu->arch.mp_state.mp_state = KVM_MP_STATE_SUSPENDED;
++	WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_SUSPENDED);
+ 	kvm_make_request(KVM_REQ_SUSPEND, vcpu);
+ 	kvm_vcpu_kick(vcpu);
+ }
+ 
+ static bool kvm_arm_vcpu_suspended(struct kvm_vcpu *vcpu)
+ {
+-	return vcpu->arch.mp_state.mp_state == KVM_MP_STATE_SUSPENDED;
++	return READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_SUSPENDED;
+ }
+ 
+ int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
+ 				    struct kvm_mp_state *mp_state)
+ {
+-	*mp_state = vcpu->arch.mp_state;
++	*mp_state = READ_ONCE(vcpu->arch.mp_state);
+ 
+ 	return 0;
+ }
+@@ -490,12 +499,14 @@ int kvm_arch_vcpu_ioctl_set_mpstate(stru
+ {
+ 	int ret = 0;
+ 
++	spin_lock(&vcpu->arch.mp_state_lock);
++
+ 	switch (mp_state->mp_state) {
+ 	case KVM_MP_STATE_RUNNABLE:
+-		vcpu->arch.mp_state = *mp_state;
++		WRITE_ONCE(vcpu->arch.mp_state, *mp_state);
+ 		break;
+ 	case KVM_MP_STATE_STOPPED:
+-		kvm_arm_vcpu_power_off(vcpu);
++		__kvm_arm_vcpu_power_off(vcpu);
+ 		break;
+ 	case KVM_MP_STATE_SUSPENDED:
+ 		kvm_arm_vcpu_suspend(vcpu);
+@@ -504,6 +515,8 @@ int kvm_arch_vcpu_ioctl_set_mpstate(stru
+ 		ret = -EINVAL;
+ 	}
+ 
++	spin_unlock(&vcpu->arch.mp_state_lock);
++
+ 	return ret;
+ }
+ 
+@@ -1223,7 +1236,7 @@ static int kvm_arch_vcpu_ioctl_vcpu_init
+ 	if (test_bit(KVM_ARM_VCPU_POWER_OFF, vcpu->arch.features))
+ 		kvm_arm_vcpu_power_off(vcpu);
+ 	else
+-		vcpu->arch.mp_state.mp_state = KVM_MP_STATE_RUNNABLE;
++		WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_RUNNABLE);
+ 
+ 	return 0;
+ }
+--- a/arch/arm64/kvm/psci.c
++++ b/arch/arm64/kvm/psci.c
+@@ -62,6 +62,7 @@ static unsigned long kvm_psci_vcpu_on(st
+ 	struct vcpu_reset_state *reset_state;
+ 	struct kvm *kvm = source_vcpu->kvm;
+ 	struct kvm_vcpu *vcpu = NULL;
++	int ret = PSCI_RET_SUCCESS;
+ 	unsigned long cpu_id;
+ 
+ 	cpu_id = smccc_get_arg1(source_vcpu);
+@@ -76,11 +77,15 @@ static unsigned long kvm_psci_vcpu_on(st
+ 	 */
+ 	if (!vcpu)
+ 		return PSCI_RET_INVALID_PARAMS;
++
++	spin_lock(&vcpu->arch.mp_state_lock);
+ 	if (!kvm_arm_vcpu_stopped(vcpu)) {
+ 		if (kvm_psci_version(source_vcpu) != KVM_ARM_PSCI_0_1)
+-			return PSCI_RET_ALREADY_ON;
++			ret = PSCI_RET_ALREADY_ON;
+ 		else
+-			return PSCI_RET_INVALID_PARAMS;
++			ret = PSCI_RET_INVALID_PARAMS;
++
++		goto out_unlock;
+ 	}
+ 
+ 	reset_state = &vcpu->arch.reset_state;
+@@ -96,7 +101,7 @@ static unsigned long kvm_psci_vcpu_on(st
+ 	 */
+ 	reset_state->r0 = smccc_get_arg3(source_vcpu);
+ 
+-	WRITE_ONCE(reset_state->reset, true);
++	reset_state->reset = true;
+ 	kvm_make_request(KVM_REQ_VCPU_RESET, vcpu);
+ 
+ 	/*
+@@ -108,7 +113,9 @@ static unsigned long kvm_psci_vcpu_on(st
+ 	vcpu->arch.mp_state.mp_state = KVM_MP_STATE_RUNNABLE;
+ 	kvm_vcpu_wake_up(vcpu);
+ 
+-	return PSCI_RET_SUCCESS;
++out_unlock:
++	spin_unlock(&vcpu->arch.mp_state_lock);
++	return ret;
+ }
+ 
+ static unsigned long kvm_psci_vcpu_affinity_info(struct kvm_vcpu *vcpu)
+@@ -168,8 +175,11 @@ static void kvm_prepare_system_event(str
+ 	 * after this call is handled and before the VCPUs have been
+ 	 * re-initialized.
+ 	 */
+-	kvm_for_each_vcpu(i, tmp, vcpu->kvm)
+-		tmp->arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
++	kvm_for_each_vcpu(i, tmp, vcpu->kvm) {
++		spin_lock(&tmp->arch.mp_state_lock);
++		WRITE_ONCE(tmp->arch.mp_state.mp_state, KVM_MP_STATE_STOPPED);
++		spin_unlock(&tmp->arch.mp_state_lock);
++	}
+ 	kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_SLEEP);
+ 
+ 	memset(&vcpu->run->system_event, 0, sizeof(vcpu->run->system_event));
+@@ -229,7 +239,6 @@ static unsigned long kvm_psci_check_allo
+ 
+ static int kvm_psci_0_2_call(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm *kvm = vcpu->kvm;
+ 	u32 psci_fn = smccc_get_function(vcpu);
+ 	unsigned long val;
+ 	int ret = 1;
+@@ -254,9 +263,7 @@ static int kvm_psci_0_2_call(struct kvm_
+ 		kvm_psci_narrow_to_32bit(vcpu);
+ 		fallthrough;
+ 	case PSCI_0_2_FN64_CPU_ON:
+-		mutex_lock(&kvm->lock);
+ 		val = kvm_psci_vcpu_on(vcpu);
+-		mutex_unlock(&kvm->lock);
+ 		break;
+ 	case PSCI_0_2_FN_AFFINITY_INFO:
+ 		kvm_psci_narrow_to_32bit(vcpu);
+@@ -395,7 +402,6 @@ static int kvm_psci_1_x_call(struct kvm_
+ 
+ static int kvm_psci_0_1_call(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm *kvm = vcpu->kvm;
+ 	u32 psci_fn = smccc_get_function(vcpu);
+ 	unsigned long val;
+ 
+@@ -405,9 +411,7 @@ static int kvm_psci_0_1_call(struct kvm_
+ 		val = PSCI_RET_SUCCESS;
+ 		break;
+ 	case KVM_PSCI_FN_CPU_ON:
+-		mutex_lock(&kvm->lock);
+ 		val = kvm_psci_vcpu_on(vcpu);
+-		mutex_unlock(&kvm->lock);
+ 		break;
+ 	default:
+ 		val = PSCI_RET_NOT_SUPPORTED;
+--- a/arch/arm64/kvm/reset.c
++++ b/arch/arm64/kvm/reset.c
+@@ -255,15 +255,16 @@ int kvm_reset_vcpu(struct kvm_vcpu *vcpu
+ 
+ 	mutex_lock(&vcpu->kvm->lock);
+ 	ret = kvm_set_vm_width(vcpu);
+-	if (!ret) {
+-		reset_state = vcpu->arch.reset_state;
+-		WRITE_ONCE(vcpu->arch.reset_state.reset, false);
+-	}
+ 	mutex_unlock(&vcpu->kvm->lock);
+ 
+ 	if (ret)
+ 		return ret;
+ 
++	spin_lock(&vcpu->arch.mp_state_lock);
++	reset_state = vcpu->arch.reset_state;
++	vcpu->arch.reset_state.reset = false;
++	spin_unlock(&vcpu->arch.mp_state_lock);
++
+ 	/* Reset PMU outside of the non-preemptible section */
+ 	kvm_pmu_vcpu_reset(vcpu);
+ 
 
 
