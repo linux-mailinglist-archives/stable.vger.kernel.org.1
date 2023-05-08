@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52DED6FACFD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C03FD6FA832
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235842AbjEHLaF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
+        id S234882AbjEHKin (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235856AbjEHL3v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:51 -0400
+        with ESMTP id S234884AbjEHKiT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F9A43C4A5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EF828930
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7EBF62EE2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F64C433D2;
-        Mon,  8 May 2023 11:29:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2C9661D23
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E7EC4339B;
+        Mon,  8 May 2023 10:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545361;
-        bh=8r1z6+zlLX5kZZjRsnVMbks8vuLgQJO5hKGKMtuVvsk=;
+        s=korg; t=1683542295;
+        bh=DQ4AHIURjp05gqZfjRGsnRd4L6R1i7csRpCpCbEfDKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pq13mowXFJ9X3mDVx2+HW6n9sL9GfqRAqrGqvSYN7ObRYfqTNFTwAVsJCMmyiEd4E
-         1e7TCnkcA4SReBu/PNY+i9/fbomMhoYRXbEFfyAv1iKFbl8Nb8K6xzZU50j5xGxpHE
-         /boAoh5jZ8aHV4JQjZW67uPOSvj6zj8Qke/M+WjE=
+        b=DCIksJeVxAG0baoz53izAH9ktTDEOtKbThpwYLOOr4K3yn2Sl0lLj/Iio8Y1Ebz2I
+         3ZO/7Twc2EJQoo4Wh4IJZtOdDko9q9UUs9rNd2EzsVVTOWH0TmPNuXN3FIx3yCvl/Z
+         tYOO1OOLSS9YVJJ8vXvivwb82/8zs32qX208rdWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 5.15 015/371] IMA: allow/fix UML builds
+        patches@lists.linux.dev, Lorenz Brun <lorenz@brun.one>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 390/663] wifi: mt76: mt7915: expose device tree match table
 Date:   Mon,  8 May 2023 11:43:36 +0200
-Message-Id: <20230508094812.675651517@linuxfoundation.org>
+Message-Id: <20230508094440.760778146@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,51 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Lorenz Brun <lorenz@brun.one>
 
-commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
+[ Upstream commit 90fb69212c60e26ef70ed0e8532b116c7649ac88 ]
 
-UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
-NO_IOMEM).
+On MT7986 the WiFi driver currently does not get automatically loaded,
+requiring manual modprobing because the device tree compatibles are not
+exported into metadata.
 
-Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
+Add the missing MODULE_DEVICE_TABLE macro to fix this.
 
-ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
-ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
-ld: security/integrity/ima/ima_init.o: in function `ima_init':
-ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
-ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
-ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
-ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
-
-Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
-is set, regardless of the UML Kconfig setting.
-This updates TCG_TPM from =m to =y and fixes the linker errors.
-
-Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
-Cc: Stable <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99ad32a4ca3a2 ("mt76: mt7915: add support for MT7986")
+Signed-off-by: Lorenz Brun <lorenz@brun.one>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/soc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -8,7 +8,7 @@ config IMA
- 	select CRYPTO_HMAC
- 	select CRYPTO_SHA1
- 	select CRYPTO_HASH_INFO
--	select TCG_TPM if HAS_IOMEM && !UML
-+	select TCG_TPM if HAS_IOMEM
- 	select TCG_TIS if TCG_TPM && X86
- 	select TCG_CRB if TCG_TPM && ACPI
- 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+index 686c9bbd59293..7303b690a64dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+@@ -1237,6 +1237,8 @@ static const struct of_device_id mt7986_wmac_of_match[] = {
+ 	{},
+ };
+ 
++MODULE_DEVICE_TABLE(of, mt7986_wmac_of_match);
++
+ struct platform_driver mt7986_wmac_driver = {
+ 	.driver = {
+ 		.name = "mt7986-wmac",
+-- 
+2.39.2
+
 
 
