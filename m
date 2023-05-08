@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F796FA5BC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 165186FA8CA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234218AbjEHKMy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:12:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41264 "EHLO
+        id S235027AbjEHKp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234252AbjEHKMl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E87E3AA2F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:34 -0700 (PDT)
+        with ESMTP id S235018AbjEHKpJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC2929FF6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8690623DE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E4CC433D2;
-        Mon,  8 May 2023 10:12:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 346A962870
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362BBC433D2;
+        Mon,  8 May 2023 10:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540753;
-        bh=mtk1jRQLs5sLc7mjQpW/vR5jAzlhjbDn5pGZ7T+l0dE=;
+        s=korg; t=1683542634;
+        bh=Bu8HIkeBAP1y0xNYvXvXkiL3VISZosrzS2gNSAYHDeM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6E707GC66/yf9E4Ebyht5VrkjitP9u1KuoPoQWzhmZLvyu3pkfs9CwMj4y6BdHro
-         Y4/S8E47s4U1IcbVs0sWHy2yL0HJf/ZeasQj4YtGrQZ0VyRsSdp4AzEn38T7L1Igqp
-         K43YXbcSpEn1Ni7UWau5Nf+PENjoRpi2QP5ZrvaE=
+        b=AQmcfNia0Qu2DkGHQaklcpaLE1fBmgfboW9h+YBfNIiDJNV/3d8qk9PWpBUKLQnb7
+         AejRI5NEdj1tpxekInN2YcdcCfOJVntdMzcAV7+o0RCMifCwsJf9Xkt2ZU7EYoCzn8
+         pp0hAOGa8T+0qHyptDqrulQ71NEFaztdzqV2yGdE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Albert Huang <huangjie.albert@bytedance.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 483/611] rtc: meson-vrtc: Use ktime_get_real_ts64() to get the current time
+Subject: [PATCH 6.2 499/663] virtio_ring: dont update event idx on get_buf
 Date:   Mon,  8 May 2023 11:45:25 +0200
-Message-Id: <20230508094437.779013867@linuxfoundation.org>
+Message-Id: <20230508094444.711789573@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,58 +56,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Albert Huang <huangjie.albert@bytedance.com>
 
-[ Upstream commit 0e6255fa3f649170da6bd1a544680589cfae1131 ]
+[ Upstream commit 6c0b057cec5eade4c3afec3908821176931a9997 ]
 
-The VRTC alarm register can be programmed with an amount of seconds
-after which the SoC will be woken up by the VRTC timer again. We are
-already converting the alarm time from meson_vrtc_set_alarm() to
-"seconds since 1970". This means we also need to use "seconds since
-1970" for the current time.
+In virtio_net, if we disable napi_tx, when we trigger a tx interrupt,
+the vq->event_triggered will be set to true. It is then never reset
+until we explicitly call virtqueue_enable_cb_delayed or
+virtqueue_enable_cb_prepare.
 
-This fixes a problem where setting the alarm to one minute in the future
-results in the firmware (which handles wakeup) to output (on the serial
-console) that the system will be woken up in billions of seconds.
-ktime_get_raw_ts64() returns the time since boot, not since 1970. Switch
-to ktime_get_real_ts64() to fix the calculation of the alarm time and to
-make the SoC wake up at the specified date/time. Also the firmware
-(which manages suspend) now prints either 59 or 60 seconds until wakeup
-(depending on how long it takes for the system to enter suspend).
+If we disable the napi_tx, virtqueue_enable_cb* will only be called when
+the tx ring is getting relatively empty.
 
-Fixes: 6ef35398e827 ("rtc: Add Amlogic Virtual Wake RTC")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://lore.kernel.org/r/20230320212142.2355062-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Since event_triggered is true, VRING_AVAIL_F_NO_INTERRUPT or
+VRING_PACKED_EVENT_FLAG_DISABLE will not be set. As a result we update
+vring_used_event(&vq->split.vring) or vq->packed.vring.driver->off_wrap
+every time we call virtqueue_get_buf_ctx. This causes more interrupts.
+
+To summarize:
+1) event_triggered was set to true in vring_interrupt()
+2) after this nothing will happen in virtqueue_disable_cb() so
+   VRING_AVAIL_F_NO_INTERRUPT is not set in avail_flags_shadow
+3) virtqueue_get_buf_ctx_split() will still think the cb is enabled
+   and then it will publish a new event index
+
+To fix:
+update VRING_AVAIL_F_NO_INTERRUPT or VRING_PACKED_EVENT_FLAG_DISABLE in
+the vq when we call virtqueue_disable_cb even when event_triggered is
+true.
+
+Tested with iperf:
+iperf3 tcp stream:
+vm1 -----------------> vm2
+vm2 just receives tcp data stream from vm1, and sends acks to vm1,
+there are many tx interrupts in vm2.
+with the patch applied there are just a few tx interrupts.
+
+v2->v3:
+-update the interrupt disable flag even with the event_triggered is set,
+-instead of checking whether event_triggered is set in
+-virtqueue_get_buf_ctx_{packed/split}, will cause the drivers  which have
+-not called virtqueue_{enable/disable}_cb to miss notifications.
+
+v3->v4:
+-remove change for
+-"if (vq->packed.event_flags_shadow != VRING_PACKED_EVENT_FLAG_DISABLE)"
+-in virtqueue_disable_cb_packed
+
+Fixes: 8d622d21d248 ("virtio: fix up virtio_disable_cb")
+Signed-off-by: Albert Huang <huangjie.albert@bytedance.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20230329102300.61000-1-huangjie.albert@bytedance.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-meson-vrtc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/virtio/virtio_ring.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/rtc/rtc-meson-vrtc.c b/drivers/rtc/rtc-meson-vrtc.c
-index 1463c86215615..648fa362ec447 100644
---- a/drivers/rtc/rtc-meson-vrtc.c
-+++ b/drivers/rtc/rtc-meson-vrtc.c
-@@ -23,7 +23,7 @@ static int meson_vrtc_read_time(struct device *dev, struct rtc_time *tm)
- 	struct timespec64 time;
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index 723c4e29e1d3b..5bee2ab62111b 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -848,6 +848,14 @@ static void virtqueue_disable_cb_split(struct virtqueue *_vq)
  
- 	dev_dbg(dev, "%s\n", __func__);
--	ktime_get_raw_ts64(&time);
-+	ktime_get_real_ts64(&time);
- 	rtc_time64_to_tm(time.tv_sec, tm);
+ 	if (!(vq->split.avail_flags_shadow & VRING_AVAIL_F_NO_INTERRUPT)) {
+ 		vq->split.avail_flags_shadow |= VRING_AVAIL_F_NO_INTERRUPT;
++
++		/*
++		 * If device triggered an event already it won't trigger one again:
++		 * no need to disable.
++		 */
++		if (vq->event_triggered)
++			return;
++
+ 		if (vq->event)
+ 			/* TODO: this is a hack. Figure out a cleaner value to write. */
+ 			vring_used_event(&vq->split.vring) = 0x0;
+@@ -1687,6 +1695,14 @@ static void virtqueue_disable_cb_packed(struct virtqueue *_vq)
  
- 	return 0;
-@@ -96,7 +96,7 @@ static int __maybe_unused meson_vrtc_suspend(struct device *dev)
- 		long alarm_secs;
- 		struct timespec64 time;
+ 	if (vq->packed.event_flags_shadow != VRING_PACKED_EVENT_FLAG_DISABLE) {
+ 		vq->packed.event_flags_shadow = VRING_PACKED_EVENT_FLAG_DISABLE;
++
++		/*
++		 * If device triggered an event already it won't trigger one again:
++		 * no need to disable.
++		 */
++		if (vq->event_triggered)
++			return;
++
+ 		vq->packed.vring.driver->flags =
+ 			cpu_to_le16(vq->packed.event_flags_shadow);
+ 	}
+@@ -2309,12 +2325,6 @@ void virtqueue_disable_cb(struct virtqueue *_vq)
+ {
+ 	struct vring_virtqueue *vq = to_vvq(_vq);
  
--		ktime_get_raw_ts64(&time);
-+		ktime_get_real_ts64(&time);
- 		local_time = time.tv_sec;
- 
- 		dev_dbg(dev, "alarm_time = %lus, local_time=%lus\n",
+-	/* If device triggered an event already it won't trigger one again:
+-	 * no need to disable.
+-	 */
+-	if (vq->event_triggered)
+-		return;
+-
+ 	if (vq->packed_ring)
+ 		virtqueue_disable_cb_packed(_vq);
+ 	else
 -- 
 2.39.2
 
