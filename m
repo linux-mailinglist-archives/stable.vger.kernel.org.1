@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 918566FA596
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 417546FA87F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234178AbjEHKLH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
+        id S234936AbjEHKls (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234181AbjEHKLF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:05 -0400
+        with ESMTP id S234946AbjEHKlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C1D37E72
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99D227F12
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0102A623A7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BACC433EF;
-        Mon,  8 May 2023 10:11:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D37962834
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CFDC433D2;
+        Mon,  8 May 2023 10:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540663;
-        bh=9LJbx+ELuwApZUsSfMPBiPMGyel/4ljM8YpTP5ivLhg=;
+        s=korg; t=1683542436;
+        bh=1h26vtrqqvt1mMc7lYTDMTUtoxN7XkOe1MxYzEbqMa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cnhwWKBj9/7sVhf0C5Dtsro46i/odA3f+KHgsEQ9stri0/WToe0UIdLKITYDB+g/r
-         nJA4Rqv0SG4IrHyGQOG9ggH4lOt8giXX6ueMpO+Qr0rMrPVpv4uPf3ryroZ3Mz2GSo
-         aUSZU2oRyQ1AxxiEt5Kvqo0HU5H7MV1Lc9ktFayQ=
+        b=JHuARMyZ8ey2NJwkwn0o0On7imM8ABTq6tOeZ+LkXiRme6xAHhD1AaMKYG/cFbPlf
+         27iFHMhseYkjFFSbeZq8Kn+iDY2nVe8Rl6fUOsKg/TnZquylUzke5uiKy1OFrQrVJt
+         Jxy4BSZHkeubGHFxWPjnyMNZaqKqKOBJ7wYqWZrM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Dae R. Jeong" <threeearcat@gmail.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Corey Minyard <minyard@acm.org>,
+        openipmi-developer@lists.sourceforge.net,
+        Arnd Bergmann <arnd@arndb.de>,
+        Corey Minyard <cminyard@mvista.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 419/611] vmci_host: fix a race condition in vmci_host_poll() causing GPF
+Subject: [PATCH 6.2 435/663] ipmi: ASPEED_BT_IPMI_BMC: select REGMAP_MMIO instead of depending on it
 Date:   Mon,  8 May 2023 11:44:21 +0200
-Message-Id: <20230508094435.832759760@linuxfoundation.org>
+Message-Id: <20230508094442.180185406@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,93 +58,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dae R. Jeong <threeearcat@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit ae13381da5ff0e8e084c0323c3cc0a945e43e9c7 ]
+[ Upstream commit 2a587b9ad052e7e92e508aea90c1e2ae433c1908 ]
 
-During fuzzing, a general protection fault is observed in
-vmci_host_poll().
+REGMAP is a hidden (not user visible) symbol. Users cannot set it
+directly thru "make *config", so drivers should select it instead of
+depending on it if they need it.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
-RIP: 0010:__lock_acquire+0xf3/0x5e00 kernel/locking/lockdep.c:4926
-<- omitting registers ->
-Call Trace:
- <TASK>
- lock_acquire+0x1a4/0x4a0 kernel/locking/lockdep.c:5672
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0xb3/0x100 kernel/locking/spinlock.c:162
- add_wait_queue+0x3d/0x260 kernel/sched/wait.c:22
- poll_wait include/linux/poll.h:49 [inline]
- vmci_host_poll+0xf8/0x2b0 drivers/misc/vmw_vmci/vmci_host.c:174
- vfs_poll include/linux/poll.h:88 [inline]
- do_pollfd fs/select.c:873 [inline]
- do_poll fs/select.c:921 [inline]
- do_sys_poll+0xc7c/0x1aa0 fs/select.c:1015
- __do_sys_ppoll fs/select.c:1121 [inline]
- __se_sys_ppoll+0x2cc/0x330 fs/select.c:1101
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x4e/0xa0 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
+Consistently using "select" or "depends on" can also help reduce
+Kconfig circular dependency issues.
 
-Example thread interleaving that causes the general protection fault
-is as follows:
+Therefore, change the use of "depends on REGMAP_MMIO" to
+"select REGMAP_MMIO", which will also set REGMAP.
 
-CPU1 (vmci_host_poll)               CPU2 (vmci_host_do_init_context)
------                               -----
-// Read uninitialized context
-context = vmci_host_dev->context;
-                                    // Initialize context
-                                    vmci_host_dev->context = vmci_ctx_create();
-                                    vmci_host_dev->ct_type = VMCIOBJ_CONTEXT;
-
-if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-    // Dereferencing the wrong pointer
-    poll_wait(..., &context->host_context);
-}
-
-In this scenario, vmci_host_poll() reads vmci_host_dev->context first,
-and then reads vmci_host_dev->ct_type to check that
-vmci_host_dev->context is initialized. However, since these two reads
-are not atomically executed, there is a chance of a race condition as
-described above.
-
-To fix this race condition, read vmci_host_dev->context after checking
-the value of vmci_host_dev->ct_type so that vmci_host_poll() always
-reads an initialized context.
-
-Reported-by: Dae R. Jeong <threeearcat@gmail.com>
-Fixes: 8bf503991f87 ("VMCI: host side driver implementation.")
-Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
-Link: https://lore.kernel.org/r/ZCGFsdBAU4cYww5l@dragonet
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eb994594bc22 ("ipmi: bt-bmc: Use a regmap for register access")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Andrew Jeffery <andrew@aj.id.au>
+Cc: Corey Minyard <minyard@acm.org>
+Cc: openipmi-developer@lists.sourceforge.net
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-Id: <20230226053953.4681-2-rdunlap@infradead.org>
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/char/ipmi/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
-index 857b9851402a6..abe79f6fd2a79 100644
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -165,10 +165,16 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
- static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
- {
- 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
--	struct vmci_ctx *context = vmci_host_dev->context;
-+	struct vmci_ctx *context;
- 	__poll_t mask = 0;
+diff --git a/drivers/char/ipmi/Kconfig b/drivers/char/ipmi/Kconfig
+index b6c0d35fc1a5f..f4adc6feb3b22 100644
+--- a/drivers/char/ipmi/Kconfig
++++ b/drivers/char/ipmi/Kconfig
+@@ -162,7 +162,8 @@ config IPMI_KCS_BMC_SERIO
  
- 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-+		/*
-+		 * Read context only if ct_type == VMCIOBJ_CONTEXT to make
-+		 * sure that context is initialized
-+		 */
-+		context = vmci_host_dev->context;
-+
- 		/* Check for VMCI calls to this VM context. */
- 		if (wait)
- 			poll_wait(filp, &context->host_context.wait_queue,
+ config ASPEED_BT_IPMI_BMC
+ 	depends on ARCH_ASPEED || COMPILE_TEST
+-	depends on REGMAP && REGMAP_MMIO && MFD_SYSCON
++	depends on MFD_SYSCON
++	select REGMAP_MMIO
+ 	tristate "BT IPMI bmc driver"
+ 	help
+ 	  Provides a driver for the BT (Block Transfer) IPMI interface
 -- 
 2.39.2
 
