@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1466FA925
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C50476FAC2E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235094AbjEHKsj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47624 "EHLO
+        id S235588AbjEHLVs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:21:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235157AbjEHKsS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5DD5595
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:33 -0700 (PDT)
+        with ESMTP id S235593AbjEHLVq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48FF1391A6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E0B4628E7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081BBC433D2;
-        Mon,  8 May 2023 10:47:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D278062C9E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BC2C433D2;
+        Mon,  8 May 2023 11:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542845;
-        bh=hPTzWMg8WGGT0tCP3WoFhtXbJMU9lO28CeqlKwa69PE=;
+        s=korg; t=1683544896;
+        bh=vNOmNtAn3cq21wXC0/F3vb0CHXvm+wABlSecA9RM07g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EzZlbvOIe7o3/TiYAyVu2UnEZxOIzYlI5qZrDaAIjT8e0CCkwDdUkw8swP5WcWTK5
-         nw6vzQvDgBD4IZ2ZJa21pmfVPGQ0fttDH8CaIH21v31Guf5Rl4V+GQYyDs+BGHZB6G
-         WbVYCgSDpSSLen9hJsdMSMYQbw4zK4tX33C+QsIc=
+        b=nPbRwAYGOIdpTYm7t8UWpqs7HaX6NTDNjdx4p9ceRzmD+CwojPlG1itK/BfQUvjN/
+         xwXtgGJQ3V3anWmhXZlcNXE7pt/acy7+6ewqvH3O5IOOw1Py4Gea8fY+5iFAz8StV6
+         Rc44mMx5CXj+SjRRY0byrtGIOsjLblGTB7LmTEQQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 568/663] RDMA/mlx5: Fix flow counter query via DEVX
+Subject: [PATCH 6.3 559/694] powerpc/perf: Properly detect mpc7450 family
 Date:   Mon,  8 May 2023 11:46:34 +0200
-Message-Id: <20230508094447.639062944@linuxfoundation.org>
+Message-Id: <20230508094452.795283577@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,91 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 3e358ea8614ddfbc59ca7a3f5dff5dde2b350b2c ]
+[ Upstream commit e7299f961fe5e4496db0bfaa9e819f5e97f3846b ]
 
-Commit cited in "fixes" tag added bulk support for flow counters but it
-didn't account that's also possible to query a counter using a non-base id
-if the counter was allocated as bulk.
+Unlike PVR_POWER8, etc ...., PVR_7450 represents a full PVR
+value and not a family value.
 
-When a user performs a query, validate the flow counter id given in the
-mailbox is inside the valid range taking bulk value into account.
+To avoid confusion, do like E500 family and define the relevant
+PVR_VER_xxxx values for the 7450 family:
+  0x8000 ==> 7450
+  0x8001 ==> 7455
+  0x8002 ==> 7447
+  0x8003 ==> 7447A
+  0x8004 ==> 7448
 
-Fixes: 208d70f562e5 ("IB/mlx5: Support flow counters offset for bulk counters")
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Link: https://lore.kernel.org/r/79d7fbe291690128e44672418934256254d93115.1681377114.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+And use them to detect 7450 family for perf events.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/202302260657.7dM9Uwev-lkp@intel.com/
+Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field to determine CPU version")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/99ca1da2e5a6cf82a8abf4bc034918e500e31781.1677513277.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/devx.c | 31 ++++++++++++++++++++++++++-----
- include/linux/mlx5/mlx5_ifc.h     |  3 ++-
- 2 files changed, 28 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/reg.h  | 5 +++++
+ arch/powerpc/perf/mpc7450-pmu.c | 6 +++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
-index 2211a0be16f36..f8e2baed27a5c 100644
---- a/drivers/infiniband/hw/mlx5/devx.c
-+++ b/drivers/infiniband/hw/mlx5/devx.c
-@@ -666,7 +666,21 @@ static bool devx_is_valid_obj_id(struct uverbs_attr_bundle *attrs,
- 				      obj_id;
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 1e8b2e04e626a..8fda87af2fa5e 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1310,6 +1310,11 @@
+ #define PVR_VER_E500MC	0x8023
+ #define PVR_VER_E5500	0x8024
+ #define PVR_VER_E6500	0x8040
++#define PVR_VER_7450	0x8000
++#define PVR_VER_7455	0x8001
++#define PVR_VER_7447	0x8002
++#define PVR_VER_7447A	0x8003
++#define PVR_VER_7448	0x8004
  
- 	case MLX5_IB_OBJECT_DEVX_OBJ:
--		return ((struct devx_obj *)uobj->object)->obj_id == obj_id;
-+	{
-+		u16 opcode = MLX5_GET(general_obj_in_cmd_hdr, in, opcode);
-+		struct devx_obj *devx_uobj = uobj->object;
-+
-+		if (opcode == MLX5_CMD_OP_QUERY_FLOW_COUNTER &&
-+		    devx_uobj->flow_counter_bulk_size) {
-+			u64 end;
-+
-+			end = devx_uobj->obj_id +
-+				devx_uobj->flow_counter_bulk_size;
-+			return devx_uobj->obj_id <= obj_id && end > obj_id;
-+		}
-+
-+		return devx_uobj->obj_id == obj_id;
-+	}
+ /*
+  * For the 8xx processors, all of them report the same PVR family for
+diff --git a/arch/powerpc/perf/mpc7450-pmu.c b/arch/powerpc/perf/mpc7450-pmu.c
+index 552d51a925d37..db451b9aac35e 100644
+--- a/arch/powerpc/perf/mpc7450-pmu.c
++++ b/arch/powerpc/perf/mpc7450-pmu.c
+@@ -417,9 +417,9 @@ struct power_pmu mpc7450_pmu = {
  
- 	default:
- 		return false;
-@@ -1517,10 +1531,17 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_DEVX_OBJ_CREATE)(
- 		goto obj_free;
+ static int __init init_mpc7450_pmu(void)
+ {
+-	unsigned int pvr = mfspr(SPRN_PVR);
+-
+-	if (PVR_VER(pvr) != PVR_7450)
++	if (!pvr_version_is(PVR_VER_7450) && !pvr_version_is(PVR_VER_7455) &&
++	    !pvr_version_is(PVR_VER_7447) && !pvr_version_is(PVR_VER_7447A) &&
++	    !pvr_version_is(PVR_VER_7448))
+ 		return -ENODEV;
  
- 	if (opcode == MLX5_CMD_OP_ALLOC_FLOW_COUNTER) {
--		u8 bulk = MLX5_GET(alloc_flow_counter_in,
--				   cmd_in,
--				   flow_counter_bulk);
--		obj->flow_counter_bulk_size = 128UL * bulk;
-+		u32 bulk = MLX5_GET(alloc_flow_counter_in,
-+				    cmd_in,
-+				    flow_counter_bulk_log_size);
-+
-+		if (bulk)
-+			bulk = 1 << bulk;
-+		else
-+			bulk = 128UL * MLX5_GET(alloc_flow_counter_in,
-+						cmd_in,
-+						flow_counter_bulk);
-+		obj->flow_counter_bulk_size = bulk;
- 	}
- 
- 	uobj->object = obj;
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index a9ee7bc59c901..90ab0e31ecf46 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -9144,7 +9144,8 @@ struct mlx5_ifc_alloc_flow_counter_in_bits {
- 	u8         reserved_at_20[0x10];
- 	u8         op_mod[0x10];
- 
--	u8         reserved_at_40[0x38];
-+	u8         reserved_at_40[0x33];
-+	u8         flow_counter_bulk_log_size[0x5];
- 	u8         flow_counter_bulk[0x8];
- };
- 
+ 	return register_power_pmu(&mpc7450_pmu);
 -- 
 2.39.2
 
