@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BBC06FA8C7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D9B6FA5B9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234896AbjEHKp0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47488 "EHLO
+        id S234202AbjEHKMu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234994AbjEHKpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:01 -0400
+        with ESMTP id S234227AbjEHKMi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C691529FCC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8539C3AA11
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E52F62872
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF01C433EF;
-        Mon,  8 May 2023 10:43:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15695623F6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BC9C433EF;
+        Mon,  8 May 2023 10:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542624;
-        bh=baCLdY3v6uniqADx5spvLPx2IKU20A5HLYYyhjsQsms=;
+        s=korg; t=1683540745;
+        bh=1aCqTmC8AzgvUZM9jV79B5YQ7w/R7Uk+mcK99iJAvto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=flLW4x62LzBIKnAvmR1rNw+RhZEKkA1MJ/avozvbA8YynMZ2bdxt+AIzC1i1vff03
-         0OuiHdtLZsA5ewBE70W6wASIChI6q8hlo/DKWuATLqnQ0hQTvAYvODZHuCV87mh+64
-         BF0uXOdAHvyJjZvT3o+lOsx2i6ZEBBqEw3N4dIAQ=
+        b=f9SO8q945+Ii+AAFMA4JURjiDy2VwMDxdn5eER9A9XDaw/oziKT/stqZbUhGAvRuD
+         EgLQAWbbwpUXcm07E8R9oftPHRPlwhoc7fgU83CclfAKXFZogWZ92ep9o4cMFA9pyN
+         TwjOw8PLjABZxweKlpOREqcB1wKgj/TOasmh9TAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dhruva Gole <d-gole@ti.com>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 496/663] spi: cadence-quadspi: use macro DEFINE_SIMPLE_DEV_PM_OPS
+        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 480/611] workqueue: Fix hung time report of worker pools
 Date:   Mon,  8 May 2023 11:45:22 +0200
-Message-Id: <20230508094444.573135442@linuxfoundation.org>
+Message-Id: <20230508094437.689793744@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,74 +53,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit be3206e8906e7a93df673ab2e96d69304a008edc ]
+[ Upstream commit 335a42ebb0ca8ee9997a1731aaaae6dcd704c113 ]
 
-Using this macro makes the code more readable.
-It also inits the members of dev_pm_ops in the following manner
-without us explicitly needing to:
+The workqueue watchdog prints a warning when there is no progress in
+a worker pool. Where the progress means that the pool started processing
+a pending work item.
 
-.suspend = cqspi_suspend, \
-.resume = cqspi_resume, \
-.freeze = cqspi_suspend, \
-.thaw = cqspi_resume, \
-.poweroff = cqspi_suspend, \
-.restore = cqspi_resume
+Note that it is perfectly fine to process work items much longer.
+The progress should be guaranteed by waking up or creating idle
+workers.
 
-Also get rid of conditional compilation based on CONFIG_PM_SLEEP because
-it introduces build issues with certain configs when CQSPI_DEV_PM_OPS is
-just NULL.
+show_one_worker_pool() prints state of non-idle worker pool. It shows
+a delay since the last pool->watchdog_ts.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202304191900.2fARFQW9-lkp@intel.com/
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230420054257.925092-1-d-gole@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The timestamp is updated when a first pending work is queued in
+__queue_work(). Also it is updated when a work is dequeued for
+processing in worker_thread() and rescuer_thread().
+
+The delay is misleading when there is no pending work item. In this
+case it shows how long the last work item is being proceed. Show
+zero instead. There is no stall if there is no pending work.
+
+Fixes: 82607adcf9cdf40fb7b ("workqueue: implement lockup detector")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ kernel/workqueue.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 5dc0090fbeb5b..fa11610ab40b0 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1768,7 +1768,6 @@ static int cqspi_remove(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 8e21c352c1558..4dd494f786bcd 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -4850,10 +4850,16 @@ static void show_one_worker_pool(struct worker_pool *pool)
+ 	struct worker *worker;
+ 	bool first = true;
+ 	unsigned long flags;
++	unsigned long hung = 0;
  
--#ifdef CONFIG_PM_SLEEP
- static int cqspi_suspend(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
-@@ -1798,15 +1797,7 @@ static int cqspi_resume(struct device *dev)
- 	return spi_master_resume(master);
- }
- 
--static const struct dev_pm_ops cqspi__dev_pm_ops = {
--	.suspend = cqspi_suspend,
--	.resume = cqspi_resume,
--};
--
--#define CQSPI_DEV_PM_OPS	(&cqspi__dev_pm_ops)
--#else
--#define CQSPI_DEV_PM_OPS	NULL
--#endif
-+static DEFINE_SIMPLE_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend, cqspi_resume);
- 
- static const struct cqspi_driver_platdata cdns_qspi = {
- 	.quirks = CQSPI_DISABLE_DAC_MODE,
-@@ -1873,7 +1864,7 @@ static struct platform_driver cqspi_platform_driver = {
- 	.remove = cqspi_remove,
- 	.driver = {
- 		.name = CQSPI_NAME,
--		.pm = CQSPI_DEV_PM_OPS,
-+		.pm = &cqspi_dev_pm_ops,
- 		.of_match_table = cqspi_dt_ids,
- 	},
- };
+ 	raw_spin_lock_irqsave(&pool->lock, flags);
+ 	if (pool->nr_workers == pool->nr_idle)
+ 		goto next_pool;
++
++	/* How long the first pending work is waiting for a worker. */
++	if (!list_empty(&pool->worklist))
++		hung = jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000;
++
+ 	/*
+ 	 * Defer printing to avoid deadlocks in console drivers that
+ 	 * queue work while holding locks also taken in their write
+@@ -4862,9 +4868,7 @@ static void show_one_worker_pool(struct worker_pool *pool)
+ 	printk_deferred_enter();
+ 	pr_info("pool %d:", pool->id);
+ 	pr_cont_pool_info(pool);
+-	pr_cont(" hung=%us workers=%d",
+-		jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000,
+-		pool->nr_workers);
++	pr_cont(" hung=%lus workers=%d", hung, pool->nr_workers);
+ 	if (pool->manager)
+ 		pr_cont(" manager: %d",
+ 			task_pid_nr(pool->manager->task));
 -- 
 2.39.2
 
