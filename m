@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7CE6FA5A5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 352F66FAD71
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234194AbjEHKLg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39462 "EHLO
+        id S235980AbjEHLfD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234188AbjEHKLe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:34 -0400
+        with ESMTP id S235994AbjEHLer (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD62398B9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA71B2FA14
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97B91623DC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9401C433D2;
-        Mon,  8 May 2023 10:11:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FB76327D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98105C433D2;
+        Mon,  8 May 2023 11:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540692;
-        bh=SxUftKJw/GKVYCHQuGZfbtFRx+0YwclD867MgIK+Cfs=;
+        s=korg; t=1683545633;
+        bh=DWdFmQAIkzMTZqPBfg0VfNZGOqJuHvo6n/49LOufFVQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wg6Wz6vOqowx05NyqOIBnbTEwv1hrZtoIEId2q+IBB4Z2sYz5oPmhYYbAPW8BTlnK
-         Ess2VZRm9BX8IrL3a/LBn0NTHPe1Y2xvXwabK9XNpE/Mwasd/cSDxR4iwVxD5pwXFJ
-         GP5cszR8VkqFzHAWZ0re0jd5F18nCZbIsXKIhuuo=
+        b=VDPqwkz/8WoVlQ7r6MkmSNve7aNXQC0R33oxr5Hzw+y+HDi/gMJC4oKsWWRNGux8p
+         z21nkWAmXbYowr0hIf4atZZhvvQNFHzNy26TsSzL3DunyRUpktavLea7yyhy19+irO
+         glb9x4vyaJ7yRzhCwnS+BDPHMGUoPkIc8Wcn7aH4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 462/611] powerpc/sysdev/tsi108: fix resource printk format warnings
-Date:   Mon,  8 May 2023 11:45:04 +0200
-Message-Id: <20230508094437.160462944@linuxfoundation.org>
+Subject: [PATCH 5.15 104/371] ARM: dts: qcom: ipq8064: Fix the PCI I/O port range
+Date:   Mon,  8 May 2023 11:45:05 +0200
+Message-Id: <20230508094816.153857674@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 55d8bd02cc1b9f1063993b5c42c9cabf4af67dea ]
+[ Upstream commit 0b16b34e491629016109e56747ad64588074194b ]
 
-Use "%pa" format specifier for resource_size_t to avoid a compiler
-printk format warning.
+For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI addresses
+(0x0fe00000, 0x31e00000, 0x35e00000) specified in the ranges property for
+I/O region.
 
-  arch/powerpc/sysdev/tsi108_pci.c: In function 'tsi108_setup_pci':
-  include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t'
+While at it, let's use the missing 0x prefix for the addresses.
 
-Fixes: c4342ff92bed ("[POWERPC] Update mpc7448hpc2 board irq support using device tree")
-Fixes: 2b9d7467a6db ("[POWERPC] Add tsi108 pci and platform device data register function")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-[mpe: Use pr_info() and unsplit string]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-5-rdunlap@infradead.org
+Fixes: 93241840b664 ("ARM: dts: qcom: Add pcie nodes for ipq8064")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-17-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/tsi108_pci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/qcom-ipq8064.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/tsi108_pci.c b/arch/powerpc/sysdev/tsi108_pci.c
-index 5af4c35ff5842..0e42f7bad7db1 100644
---- a/arch/powerpc/sysdev/tsi108_pci.c
-+++ b/arch/powerpc/sysdev/tsi108_pci.c
-@@ -217,9 +217,8 @@ int __init tsi108_setup_pci(struct device_node *dev, u32 cfg_phys, int primary)
+diff --git a/arch/arm/boot/dts/qcom-ipq8064.dtsi b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+index 8ec927f044c38..f4139411c41ed 100644
+--- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+@@ -808,8 +808,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	(hose)->ops = &tsi108_direct_pci_ops;
+-			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00010000   /* downstream I/O */
+-				  0x82000000 0 0x08000000 0x08000000 0 0x07e00000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x0fe00000 0x0 0x00010000   /* I/O */
++				  0x82000000 0x0 0x08000000 0x08000000 0x0 0x07e00000>; /* MEM */
  
--	printk(KERN_INFO "Found tsi108 PCI host bridge at 0x%08x. "
--	       "Firmware bus number: %d->%d\n",
--	       rsrc.start, hose->first_busno, hose->last_busno);
-+	pr_info("Found tsi108 PCI host bridge at 0x%pa. Firmware bus number: %d->%d\n",
-+		&rsrc.start, hose->first_busno, hose->last_busno);
+ 			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -859,8 +859,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	/* Interpret the "ranges" property */
- 	/* This also maps the I/O region and sets isa_io/mem_base */
+-			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00010000   /* downstream I/O */
+-				  0x82000000 0 0x2e000000 0x2e000000 0 0x03e00000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x31e00000 0x0 0x00010000   /* I/O */
++				  0x82000000 0x0 0x2e000000 0x2e000000 0x0 0x03e00000>; /* MEM */
+ 
+ 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -910,8 +910,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+-			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00010000   /* downstream I/O */
+-				  0x82000000 0 0x32000000 0x32000000 0 0x03e00000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x35e00000 0x0 0x00010000   /* I/O */
++				  0x82000000 0x0 0x32000000 0x32000000 0x0 0x03e00000>; /* MEM */
+ 
+ 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
 -- 
 2.39.2
 
