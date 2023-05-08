@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4146FAC68
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39D776FAE1D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235654AbjEHLYU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39914 "EHLO
+        id S236214AbjEHLlf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjEHLYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:10 -0400
+        with ESMTP id S235873AbjEHLlO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:41:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB113A5E1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73964032F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42F9261BD5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D52C433D2;
-        Mon,  8 May 2023 11:23:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCC2A63572
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6D2C4339B;
+        Mon,  8 May 2023 11:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545038;
-        bh=AvlC6jby9WcWnwHi4pEkn4vCyN6TtCGY9T9q7n61Wvc=;
+        s=korg; t=1683546042;
+        bh=vf3+MhxK/DkrC9glH6gyN6Qnbfbiel3nOPoAe15lMd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aWiVhgcr7pT62Vq/11Ch5iV2FvUVwEnxJCQsfLzI4qKSacRWfWTeCXryXRFvl7lWx
-         3Wn9eLdro9I7/BszuIxaRYP5xaJ6LmBivE9GqLRVH+qs1LTseNRyEj/HwteMTXEnDZ
-         rrkBkKnc/P3BHyz2dE68mjkwKPI9X4S6+glsJMvA=
+        b=L8PAJf8qDJ51sDrgbzgsOQQ1wqNOvXyyrkEijW1a+znG+WG1DgDUXQ2zJPxuOYPVO
+         m1P1URhvjSm4KSmazKHPhVYv39WuhQ4O36yx0C0cPDHUnhq5erhIhSuZy+YJ9VGLiA
+         4U9CydA1wWepjRBzms8CqtWbLMhYe+icHJ5iLHNM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 604/694] RDMA/srpt: Add a check for valid mad_agent pointer
+Subject: [PATCH 5.15 238/371] drivers: staging: rtl8723bs: Fix locking in rtw_scan_timeout_handler()
 Date:   Mon,  8 May 2023 11:47:19 +0200
-Message-Id: <20230508094454.888359568@linuxfoundation.org>
+Message-Id: <20230508094821.514323191@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,110 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit eca5cd9474cd26d62f9756f536e2e656d3f62f3a ]
+[ Upstream commit 3f467036093fedd7e231924327455fc609b5ef02 ]
 
-When unregistering MAD agent, srpt module has a non-null check
-for 'mad_agent' pointer before invoking ib_unregister_mad_agent().
-This check can pass if 'mad_agent' variable holds an error value.
-The 'mad_agent' can have an error value for a short window when
-srpt_add_one() and srpt_remove_one() is executed simultaneously.
+Commit cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in
+rtw_surveydone_event_callback()") besides fixing the deadlock also
+modified rtw_scan_timeout_handler() to use spin_[un]lock_irq()
+instead of spin_[un]lock_bh().
 
-In srpt module, added a valid pointer check for 'sport->mad_agent'
-before unregistering MAD agent.
+Disabling the IRQs is not necessary since all code taking this lock
+runs from either user contexts or from softirqs
 
-This issue can hit when RoCE driver unregisters ib_device
+rtw_scan_timeout_handler() is the only function taking pmlmepriv->lock
+which uses spin_[un]lock_irq() for this. Switch back to
+spin_[un]lock_bh() to make it consistent with the rest of the code.
 
-Stack Trace:
-------------
-BUG: kernel NULL pointer dereference, address: 000000000000004d
-PGD 145003067 P4D 145003067 PUD 2324fe067 PMD 0
-Oops: 0002 [#1] PREEMPT SMP NOPTI
-CPU: 10 PID: 4459 Comm: kworker/u80:0 Kdump: loaded Tainted: P
-Hardware name: Dell Inc. PowerEdge R640/06NR82, BIOS 2.5.4 01/13/2020
-Workqueue: bnxt_re bnxt_re_task [bnxt_re]
-RIP: 0010:_raw_spin_lock_irqsave+0x19/0x40
-Call Trace:
-  ib_unregister_mad_agent+0x46/0x2f0 [ib_core]
-  IPv6: ADDRCONF(NETDEV_CHANGE): bond0: link becomes ready
-  ? __schedule+0x20b/0x560
-  srpt_unregister_mad_agent+0x93/0xd0 [ib_srpt]
-  srpt_remove_one+0x20/0x150 [ib_srpt]
-  remove_client_context+0x88/0xd0 [ib_core]
-  bond0: (slave p2p1): link status definitely up, 100000 Mbps full duplex
-  disable_device+0x8a/0x160 [ib_core]
-  bond0: active interface up!
-  ? kernfs_name_hash+0x12/0x80
- (NULL device *): Bonding Info Received: rdev: 000000006c0b8247
-  __ib_unregister_device+0x42/0xb0 [ib_core]
- (NULL device *):         Master: mode: 4 num_slaves:2
-  ib_unregister_device+0x22/0x30 [ib_core]
- (NULL device *):         Slave: id: 105069936 name:p2p1 link:0 state:0
-  bnxt_re_stopqps_and_ib_uninit+0x83/0x90 [bnxt_re]
-  bnxt_re_alloc_lag+0x12e/0x4e0 [bnxt_re]
-
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230406042549.507328-1-saravanan.vajravel@broadcom.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in rtw_surveydone_event_callback()")
+Cc: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230221145326.7808-2-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 3c3fae738c3ed..25e799dba999e 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -549,6 +549,7 @@ static int srpt_format_guid(char *buf, unsigned int size, const __be64 *guid)
-  */
- static int srpt_refresh_port(struct srpt_port *sport)
- {
-+	struct ib_mad_agent *mad_agent;
- 	struct ib_mad_reg_req reg_req;
- 	struct ib_port_modify port_modify;
- 	struct ib_port_attr port_attr;
-@@ -593,24 +594,26 @@ static int srpt_refresh_port(struct srpt_port *sport)
- 		set_bit(IB_MGMT_METHOD_GET, reg_req.method_mask);
- 		set_bit(IB_MGMT_METHOD_SET, reg_req.method_mask);
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index f85ef7dd61b24..5b64980e8522f 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -1588,11 +1588,11 @@ void rtw_scan_timeout_handler(struct timer_list *t)
+ 						  mlmepriv.scan_to_timer);
+ 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
  
--		sport->mad_agent = ib_register_mad_agent(sport->sdev->device,
--							 sport->port,
--							 IB_QPT_GSI,
--							 &reg_req, 0,
--							 srpt_mad_send_handler,
--							 srpt_mad_recv_handler,
--							 sport, 0);
--		if (IS_ERR(sport->mad_agent)) {
-+		mad_agent = ib_register_mad_agent(sport->sdev->device,
-+						  sport->port,
-+						  IB_QPT_GSI,
-+						  &reg_req, 0,
-+						  srpt_mad_send_handler,
-+						  srpt_mad_recv_handler,
-+						  sport, 0);
-+		if (IS_ERR(mad_agent)) {
- 			pr_err("%s-%d: MAD agent registration failed (%ld). Note: this is expected if SR-IOV is enabled.\n",
- 			       dev_name(&sport->sdev->device->dev), sport->port,
--			       PTR_ERR(sport->mad_agent));
-+			       PTR_ERR(mad_agent));
- 			sport->mad_agent = NULL;
- 			memset(&port_modify, 0, sizeof(port_modify));
- 			port_modify.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP;
- 			ib_modify_port(sport->sdev->device, sport->port, 0,
- 				       &port_modify);
--
-+			return 0;
- 		}
-+
-+		sport->mad_agent = mad_agent;
- 	}
+-	spin_lock_irq(&pmlmepriv->lock);
++	spin_lock_bh(&pmlmepriv->lock);
  
- 	return 0;
+ 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
+ 
+-	spin_unlock_irq(&pmlmepriv->lock);
++	spin_unlock_bh(&pmlmepriv->lock);
+ 
+ 	rtw_indicate_scan_done(adapter, true);
+ }
 -- 
 2.39.2
 
