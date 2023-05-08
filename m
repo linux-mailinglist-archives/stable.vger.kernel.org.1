@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2566FAD04
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C38606FAB88
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235831AbjEHLaP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
+        id S233938AbjEHLOY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235778AbjEHLaA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:00 -0400
+        with ESMTP id S232941AbjEHLOX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A30C3DEBA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED6B36132
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A68962C3B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A089C433EF;
-        Mon,  8 May 2023 11:29:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 062D66296C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1270C433D2;
+        Mon,  8 May 2023 11:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545385;
-        bh=l378MXetJiWgLdBsW/kLT5wiMh1ZMwu3VmD8NWPd4Tc=;
+        s=korg; t=1683544461;
+        bh=AXPSzDBj0414A/tKiQ3LRBf6i+Gs7dhtv4ADb3Ig66I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NKXo998x9lCPYsfc38nGCzfKut1kUqyAKjn4QOOJHxkOxo7f/RIUrzHHCM0sWlhOm
-         ArXVFuwUgE/ZKsIeUkkIt1mA2nnP5vw8xlnp+fL3jRoYzwBcn+bkGk/OfVLWS/u+7A
-         13BH97PSQGA8F+j+ykgVhQRecrJSIDbCDkDTwWhY=
+        b=QvixXW99zKW8WPSycoEgDBwlcii/RbNuOYiTcFeLVt5P4KMQkz6fk0Vp6N+rlDVv+
+         DMQtZ03AlUYHnmjRTROLsGI0fo7aEFexJ8Zp8B+FBftMwEsGoU++Ppvd5xj6VFE9QO
+         5vWVOJSJGtxA2B1ZSWeozythZ1725nFgjiH4sbPE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 022/371] blk-crypto: make blk_crypto_evict_key() return void
+        patches@lists.linux.dev, Kal Conley <kal.conley@dectris.com>,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 388/694] selftests: xsk: Deflakify STATS_RX_DROPPED test
 Date:   Mon,  8 May 2023 11:43:43 +0200
-Message-Id: <20230508094813.008804921@linuxfoundation.org>
+Message-Id: <20230508094445.604718602@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,129 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Kal Conley <kal.conley@dectris.com>
 
-commit 70493a63ba04f754f7a7dd53a4fcc82700181490 upstream.
+[ Upstream commit 68e7322142f5e731af222892d384d311835db0f1 ]
 
-blk_crypto_evict_key() is only called in contexts such as inode eviction
-where failure is not an option.  So there is nothing the caller can do
-with errors except log them.  (dm-table.c does "use" the error code, but
-only to pass on to upper layers, so it doesn't really count.)
+Fix flaky STATS_RX_DROPPED test. The receiver calls getsockopt after
+receiving the last (valid) packet which is not the final packet sent in
+the test (valid and invalid packets are sent in alternating fashion with
+the final packet being invalid). Since the last packet may or may not
+have been dropped already, both outcomes must be allowed.
 
-Just make blk_crypto_evict_key() return void and log errors itself.
+This issue could also be fixed by making sure the last packet sent is
+valid. This alternative is left as an exercise to the reader (or the
+benevolent maintainers of this file).
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This problem was quite visible on certain setups. On one machine this
+failure was observed 50% of the time.
+
+Also, remove a redundant assignment of pkt_stream->nb_pkts. This field
+is already initialized by __pkt_stream_alloc.
+
+Fixes: 27e934bec35b ("selftests: xsk: make stat tests not spin on getsockopt")
+Signed-off-by: Kal Conley <kal.conley@dectris.com>
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://lore.kernel.org/r/20230403120400.31018-1-kal.conley@dectris.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto.c         |   22 ++++++++++------------
- drivers/md/dm-table.c      |   19 +++++--------------
- include/linux/blk-crypto.h |    4 ++--
- 3 files changed, 17 insertions(+), 28 deletions(-)
+ tools/testing/selftests/bpf/xskxceiver.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/block/blk-crypto.c
-+++ b/block/blk-crypto.c
-@@ -13,6 +13,7 @@
- #include <linux/blkdev.h>
- #include <linux/keyslot-manager.h>
- #include <linux/module.h>
-+#include <linux/ratelimit.h>
- #include <linux/slab.h>
+diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
+index 5f1471f84d4bb..b6910df710d1e 100644
+--- a/tools/testing/selftests/bpf/xskxceiver.c
++++ b/tools/testing/selftests/bpf/xskxceiver.c
+@@ -631,7 +631,6 @@ static struct pkt_stream *pkt_stream_generate(struct xsk_umem_info *umem, u32 nb
+ 	if (!pkt_stream)
+ 		exit_with_error(ENOMEM);
  
- #include "blk-crypto-internal.h"
-@@ -393,20 +394,17 @@ int blk_crypto_start_using_key(const str
-  * Upper layers (filesystems) must call this function to ensure that a key is
-  * evicted from any hardware that it might have been programmed into.  The key
-  * must not be in use by any in-flight IO when this function is called.
-- *
-- * Return: 0 on success or if key is not present in the q's ksm, -err on error.
-  */
--int blk_crypto_evict_key(struct request_queue *q,
--			 const struct blk_crypto_key *key)
-+void blk_crypto_evict_key(struct request_queue *q,
-+			  const struct blk_crypto_key *key)
- {
--	if (blk_ksm_crypto_cfg_supported(q->ksm, &key->crypto_cfg))
--		return blk_ksm_evict_key(q->ksm, key);
-+	int err;
+-	pkt_stream->nb_pkts = nb_pkts;
+ 	for (i = 0; i < nb_pkts; i++) {
+ 		pkt_set(umem, &pkt_stream->pkts[i], (i % umem->num_frames) * umem->frame_size,
+ 			pkt_len);
+@@ -1124,7 +1123,14 @@ static int validate_rx_dropped(struct ifobject *ifobject)
+ 	if (err)
+ 		return TEST_FAILURE;
  
--	/*
--	 * If the request queue's associated inline encryption hardware didn't
--	 * have support for the key, then the key might have been programmed
--	 * into the fallback keyslot manager, so try to evict from there.
--	 */
--	return blk_crypto_fallback_evict_key(key);
-+	if (blk_ksm_crypto_cfg_supported(q->ksm, &key->crypto_cfg))
-+		err = blk_ksm_evict_key(q->ksm, key);
-+	else
-+		err = blk_crypto_fallback_evict_key(key);
-+	if (err)
-+		pr_warn_ratelimited("error %d evicting key\n", err);
- }
- EXPORT_SYMBOL_GPL(blk_crypto_evict_key);
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -1191,21 +1191,12 @@ struct dm_keyslot_manager {
- 	struct mapped_device *md;
- };
+-	if (stats.rx_dropped == ifobject->pkt_stream->nb_pkts / 2)
++	/* The receiver calls getsockopt after receiving the last (valid)
++	 * packet which is not the final packet sent in this test (valid and
++	 * invalid packets are sent in alternating fashion with the final
++	 * packet being invalid). Since the last packet may or may not have
++	 * been dropped already, both outcomes must be allowed.
++	 */
++	if (stats.rx_dropped == ifobject->pkt_stream->nb_pkts / 2 ||
++	    stats.rx_dropped == ifobject->pkt_stream->nb_pkts / 2 - 1)
+ 		return TEST_PASS;
  
--struct dm_keyslot_evict_args {
--	const struct blk_crypto_key *key;
--	int err;
--};
--
- static int dm_keyslot_evict_callback(struct dm_target *ti, struct dm_dev *dev,
- 				     sector_t start, sector_t len, void *data)
- {
--	struct dm_keyslot_evict_args *args = data;
--	int err;
-+	const struct blk_crypto_key *key = data;
- 
--	err = blk_crypto_evict_key(bdev_get_queue(dev->bdev), args->key);
--	if (!args->err)
--		args->err = err;
--	/* Always try to evict the key from all devices. */
-+	blk_crypto_evict_key(bdev_get_queue(dev->bdev), key);
- 	return 0;
- }
- 
-@@ -1220,7 +1211,6 @@ static int dm_keyslot_evict(struct blk_k
- 						       struct dm_keyslot_manager,
- 						       ksm);
- 	struct mapped_device *md = dksm->md;
--	struct dm_keyslot_evict_args args = { key };
- 	struct dm_table *t;
- 	int srcu_idx;
- 	int i;
-@@ -1233,10 +1223,11 @@ static int dm_keyslot_evict(struct blk_k
- 		ti = dm_table_get_target(t, i);
- 		if (!ti->type->iterate_devices)
- 			continue;
--		ti->type->iterate_devices(ti, dm_keyslot_evict_callback, &args);
-+		ti->type->iterate_devices(ti, dm_keyslot_evict_callback,
-+					  (void *)key);
- 	}
- 	dm_put_live_table(md, srcu_idx);
--	return args.err;
-+	return 0;
- }
- 
- static const struct blk_ksm_ll_ops dm_ksm_ll_ops = {
---- a/include/linux/blk-crypto.h
-+++ b/include/linux/blk-crypto.h
-@@ -97,8 +97,8 @@ int blk_crypto_init_key(struct blk_crypt
- int blk_crypto_start_using_key(const struct blk_crypto_key *key,
- 			       struct request_queue *q);
- 
--int blk_crypto_evict_key(struct request_queue *q,
--			 const struct blk_crypto_key *key);
-+void blk_crypto_evict_key(struct request_queue *q,
-+			  const struct blk_crypto_key *key);
- 
- bool blk_crypto_config_supported(struct request_queue *q,
- 				 const struct blk_crypto_config *cfg);
+ 	return TEST_FAILURE;
+-- 
+2.39.2
+
 
 
