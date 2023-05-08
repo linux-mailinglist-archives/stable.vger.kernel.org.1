@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7438E6FA940
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FF06FAC70
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235217AbjEHKtj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48336 "EHLO
+        id S235660AbjEHLYf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:24:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235184AbjEHKtS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74D827F37
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:38 -0700 (PDT)
+        with ESMTP id S235659AbjEHLYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C518039B98
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9650E61DA2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932E3C433D2;
-        Mon,  8 May 2023 10:48:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CF0A62D37
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F6CC4339B;
+        Mon,  8 May 2023 11:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542918;
-        bh=A9vllGUu3kXWYI47sBMngSVjcFVzLoYQHACbBQ9Zo00=;
+        s=korg; t=1683545060;
+        bh=662a+hvJE//CO7HoujKSuJ39qhzOwLPrsJ2lgpb74q8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xbRsGxg8tQvbsHFeIuq/OaybvgipiwcB9HJMoWjKkkRmC7+1XWXoty7wAXi9npNXU
-         BJn6w8CsLCBmgmE8dPxwwnneyDnbfrQ9U243vGTW1EQinAWHPGJQDMrRUOCrTj0u2z
-         ti7Q3z2x5ePdDaGVGvXVPvQa17MWzhQ9sy6KAFTQ=
+        b=m2QatsxoatEz5HCZeNzLadlEG6fq0y5WmClydb4McOB5L+MKFmE8ThxiQeZ3eHRRW
+         55f3pduQqUuT9KKA2CY1818JpLyo0rKluRotTfnP1HAIuIJ7xQYmI+CcvX7OW6ueWt
+         vWRaRCi4wHoGL2sVtaEv5NxGSseIfDKQI2/Dhq+4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 589/663] soundwire: intel: dont save hw_params for use in prepare
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 580/694] clk: mediatek: mt8135: Properly use CLK_IS_CRITICAL flag
 Date:   Mon,  8 May 2023 11:46:55 +0200
-Message-Id: <20230508094448.529130024@linuxfoundation.org>
+Message-Id: <20230508094453.767067396@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,123 +57,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 0a0d1740bd8fd7dafb81fcb102fb5d0b83b1ce73 ]
+[ Upstream commit f4f9a9c003b52ea3cffda186753bfb3e37b970f8 ]
 
-The existing code copies the hw_params pointer and reuses it later in
-.prepare, specifically to re-initialize the ALH DMA channel
-information that's lost in suspend-resume cycles.
+Instead of calling clk_prepare_enable() for clocks that shall stay
+enabled, use the CLK_IS_CRITICAL flag, which purpose is exactly that.
 
-This is not needed, we can directly access the information from the
-substream/rtd - as done for the HDAudio DAIs in
-sound/soc/sof/intel/hda-dai.c
-
-In addition, using the saved pointer causes the suspend-resume test
-cases to fail on specific platforms, depending on which version of GCC
-is used. Péter Ujfalusi and I have spent long hours to root-cause this
-problem that was reported by the Intel CI first with 6.2-rc1 and again
-v6.3-rc1. In the latter case we were lucky that the problem was 100%
-reproducible on local test devices, and found out that adding a
-dev_dbg() or adding a call to usleep_range() just before accessing the
-saved pointer "fixed" the issue. With errors appearing just by
-changing the compiler version or minor changes in the code generated,
-clearly we have a memory management Heisenbug.
-
-The root-cause seems to be that the hw_params pointer is not
-persistent. The soc-pcm code allocates the hw_params structure on the
-stack, and passes it to the BE dailink hw_params and DAIs
-hw_params. Saving such a pointer and reusing it later during the
-.prepare stage cannot possibly work reliably, it's broken-by-design
-since v5.10. It's astonishing that the problem was not seen earlier.
-
-This simple fix will have to be back-ported to -stable, due to changes
-to avoid the use of the get/set_dmadata routines this patch will only
-apply on kernels older than v6.1.
-
-Fixes: a5a0239c27fe ("soundwire: intel: reinitialize IP+DSP in .prepare(), but only when resuming")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20230321022642.1426611-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: a8aede794843 ("clk: mediatek: Add basic clocks for Mediatek MT8135.")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230306140543.1813621-52-angelogioacchino.delregno@collabora.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.h |  2 --
- drivers/soundwire/intel.c          | 11 +++++++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/clk/mediatek/clk-mt8135.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.h b/drivers/soundwire/cadence_master.h
-index e0a64b28c6b9c..4393607c7e4ad 100644
---- a/drivers/soundwire/cadence_master.h
-+++ b/drivers/soundwire/cadence_master.h
-@@ -84,7 +84,6 @@ struct sdw_cdns_stream_config {
-  * @bus: Bus handle
-  * @stream_type: Stream type
-  * @link_id: Master link id
-- * @hw_params: hw_params to be applied in .prepare step
-  * @suspended: status set when suspended, to be used in .prepare
-  * @paused: status set in .trigger, to be used in suspend
-  * @direction: stream direction
-@@ -96,7 +95,6 @@ struct sdw_cdns_dai_runtime {
- 	struct sdw_bus *bus;
- 	enum sdw_stream_type stream_type;
- 	int link_id;
--	struct snd_pcm_hw_params *hw_params;
- 	bool suspended;
- 	bool paused;
- 	int direction;
-diff --git a/drivers/soundwire/intel.c b/drivers/soundwire/intel.c
-index bc9c50bacc494..c852745989167 100644
---- a/drivers/soundwire/intel.c
-+++ b/drivers/soundwire/intel.c
-@@ -833,7 +833,6 @@ static int intel_hw_params(struct snd_pcm_substream *substream,
- 	dai_runtime->paused = false;
- 	dai_runtime->suspended = false;
- 	dai_runtime->pdi = pdi;
--	dai_runtime->hw_params = params;
+diff --git a/drivers/clk/mediatek/clk-mt8135.c b/drivers/clk/mediatek/clk-mt8135.c
+index 97a115d2c3daa..a39ad58e27418 100644
+--- a/drivers/clk/mediatek/clk-mt8135.c
++++ b/drivers/clk/mediatek/clk-mt8135.c
+@@ -2,6 +2,8 @@
+ /*
+  * Copyright (c) 2014 MediaTek Inc.
+  * Author: James Liao <jamesjj.liao@mediatek.com>
++ * Copyright (c) 2023 Collabora, Ltd.
++ *               AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+  */
  
- 	/* Inform DSP about PDI stream number */
- 	ret = intel_params_stream(sdw, substream->stream, dai, params,
-@@ -886,6 +885,11 @@ static int intel_prepare(struct snd_pcm_substream *substream,
- 	}
+ #include <linux/clk.h>
+@@ -390,7 +392,7 @@ static const struct mtk_composite top_muxes[] __initconst = {
+ 	MUX_GATE(CLK_TOP_GCPU_SEL, "gcpu_sel", gcpu_parents, 0x0164, 24, 3, 31),
+ 	/* CLK_CFG_9 */
+ 	MUX_GATE(CLK_TOP_DPI1_SEL, "dpi1_sel", dpi1_parents, 0x0168, 0, 2, 7),
+-	MUX_GATE(CLK_TOP_CCI_SEL, "cci_sel", cci_parents, 0x0168, 8, 3, 15),
++	MUX_GATE_FLAGS(CLK_TOP_CCI_SEL, "cci_sel", cci_parents, 0x0168, 8, 3, 15, CLK_IS_CRITICAL),
+ 	MUX_GATE(CLK_TOP_APLL_SEL, "apll_sel", apll_parents, 0x0168, 16, 3, 23),
+ 	MUX_GATE(CLK_TOP_HDMIPLL_SEL, "hdmipll_sel", hdmipll_parents, 0x0168, 24, 2, 31),
+ };
+@@ -404,6 +406,10 @@ static const struct mtk_gate_regs infra_cg_regs = {
+ #define GATE_ICG(_id, _name, _parent, _shift)	\
+ 	GATE_MTK(_id, _name, _parent, &infra_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
  
- 	if (dai_runtime->suspended) {
-+		struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+		struct snd_pcm_hw_params *hw_params;
++#define GATE_ICG_AO(_id, _name, _parent, _shift)	\
++	GATE_MTK_FLAGS(_id, _name, _parent, &infra_cg_regs, _shift,	\
++		       &mtk_clk_gate_ops_setclr, CLK_IS_CRITICAL)
 +
-+		hw_params = &rtd->dpcm[substream->stream].hw_params;
-+
- 		dai_runtime->suspended = false;
+ static const struct mtk_gate infra_clks[] __initconst = {
+ 	GATE_ICG(CLK_INFRA_PMIC_WRAP, "pmic_wrap_ck", "axi_sel", 23),
+ 	GATE_ICG(CLK_INFRA_PMICSPI, "pmicspi_ck", "pmicspi_sel", 22),
+@@ -411,7 +417,7 @@ static const struct mtk_gate infra_clks[] __initconst = {
+ 	GATE_ICG(CLK_INFRA_CCIF0_AP_CTRL, "ccif0_ap_ctrl", "axi_sel", 20),
+ 	GATE_ICG(CLK_INFRA_KP, "kp_ck", "axi_sel", 16),
+ 	GATE_ICG(CLK_INFRA_CPUM, "cpum_ck", "cpum_tck_in", 15),
+-	GATE_ICG(CLK_INFRA_M4U, "m4u_ck", "mem_sel", 8),
++	GATE_ICG_AO(CLK_INFRA_M4U, "m4u_ck", "mem_sel", 8),
+ 	GATE_ICG(CLK_INFRA_MFGAXI, "mfgaxi_ck", "axi_sel", 7),
+ 	GATE_ICG(CLK_INFRA_DEVAPC, "devapc_ck", "axi_sel", 6),
+ 	GATE_ICG(CLK_INFRA_AUDIO, "audio_ck", "aud_intbus_sel", 5),
+@@ -534,8 +540,6 @@ static void __init mtk_topckgen_init(struct device_node *node)
+ 				    ARRAY_SIZE(top_muxes), base,
+ 				    &mt8135_clk_lock, clk_data);
  
- 		/*
-@@ -897,7 +901,7 @@ static int intel_prepare(struct snd_pcm_substream *substream,
- 		 */
+-	clk_prepare_enable(clk_data->hws[CLK_TOP_CCI_SEL]->clk);
+-
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ 	if (r)
+ 		pr_err("%s(): could not register clock provider: %d\n",
+@@ -553,8 +557,6 @@ static void __init mtk_infrasys_init(struct device_node *node)
+ 	mtk_clk_register_gates(NULL, node, infra_clks,
+ 			       ARRAY_SIZE(infra_clks), clk_data);
  
- 		/* configure stream */
--		ch = params_channels(dai_runtime->hw_params);
-+		ch = params_channels(hw_params);
- 		if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
- 			dir = SDW_DATA_DIR_RX;
- 		else
-@@ -909,7 +913,7 @@ static int intel_prepare(struct snd_pcm_substream *substream,
- 
- 		/* Inform DSP about PDI stream number */
- 		ret = intel_params_stream(sdw, substream->stream, dai,
--					  dai_runtime->hw_params,
-+					  hw_params,
- 					  sdw->instance,
- 					  dai_runtime->pdi->intel_alh_id);
- 	}
-@@ -948,7 +952,6 @@ intel_hw_free(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
- 		return ret;
- 	}
- 
--	dai_runtime->hw_params = NULL;
- 	dai_runtime->pdi = NULL;
- 
- 	return 0;
+-	clk_prepare_enable(clk_data->hws[CLK_INFRA_M4U]->clk);
+-
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ 	if (r)
+ 		pr_err("%s(): could not register clock provider: %d\n",
 -- 
 2.39.2
 
