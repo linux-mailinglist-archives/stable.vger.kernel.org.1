@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 469D16FA9C0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71E636FA6A2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:22:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235118AbjEHKzT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:55:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
+        id S234414AbjEHKW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235131AbjEHKym (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:42 -0400
+        with ESMTP id S234465AbjEHKWM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040EC30AD0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01368D84F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:21:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AD8C6297D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849E7C433D2;
-        Mon,  8 May 2023 10:53:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E5566255A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:21:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A51FC433D2;
+        Mon,  8 May 2023 10:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543235;
-        bh=FCO+mQ7M3QwYjQeEpbF4qYkU0s0b3eMBg1HLdPwqYy4=;
+        s=korg; t=1683541281;
+        bh=14g6RtD0KxOX3KHOluWS2UKuCckqC8s7BhGzLvOXnSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=voRMgSoksqKr0Kd7VgEjf6JcoNHI2HdOKXsUQVW6Tria9hyXjt+q3YE4W+Ib7mZND
-         8MTR4fQB9DVEoLNIaHkQuIqQI8Nw+dEYSxJbKhqqpN5/A31663GIqBnIp5YN31HPPR
-         aa4/S14PUgWia5GhkjviX02DmNheJntrBxTh5s4U=
+        b=sBOBP3eBeWlZi3OtRTNgzYkkge68ef8/iP/RFrwpq6bkrgNUSPtpfYrtu1XPl595a
+         1QECrtByy5Oxct7SjDfaQq+5MM+aHCirwqxw9wcEgA2OWJb39tPW67PI0orIV8noia
+         FUykhp9accbx/u3VnDZ9IZ9zT+fzgKqfo4u+kiTg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-Subject: [PATCH 6.3 026/694] staging: iio: resolver: ads1210: fix config mode
+        patches@lists.linux.dev, Roger Quadros <rogerq@ti.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.2 035/663] USB: dwc3: fix runtime pm imbalance on probe errors
 Date:   Mon,  8 May 2023 11:37:41 +0200
-Message-Id: <20230508094433.485196542@linuxfoundation.org>
+Message-Id: <20230508094429.602383737@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,34 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 16313403d873ff17a587818b61f84c8cb4971cef upstream.
+commit 9a8ad10c9f2e0925ff26308ec6756b93fc2f4977 upstream.
 
-As stated in the device datasheet [1], bits a0 and a1 have to be set to
-1 for the configuration mode.
+Make sure not to suspend the device when probe fails to avoid disabling
+clocks and phys multiple times.
 
-[1]: https://www.analog.com/media/en/technical-documentation/data-sheets/ad2s1210.pdf
-
-Fixes: b19e9ad5e2cb9 ("staging:iio:resolver:ad2s1210 general driver cleanup")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230327145414.1505537-1-nuno.sa@analog.com
+Fixes: 328082376aea ("usb: dwc3: fix runtime PM in error path")
+Cc: stable@vger.kernel.org      # 4.8
+Cc: Roger Quadros <rogerq@ti.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20230404072524.19014-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/resolver/ad2s1210.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/drivers/staging/iio/resolver/ad2s1210.c
-+++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -101,7 +101,7 @@ struct ad2s1210_state {
- static const int ad2s1210_mode_vals[4][2] = {
- 	[MOD_POS] = { 0, 0 },
- 	[MOD_VEL] = { 0, 1 },
--	[MOD_CONFIG] = { 1, 0 },
-+	[MOD_CONFIG] = { 1, 1 },
- };
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1883,13 +1883,11 @@ static int dwc3_probe(struct platform_de
+ 	spin_lock_init(&dwc->lock);
+ 	mutex_init(&dwc->mutex);
  
- static inline void ad2s1210_set_mode(enum ad2s1210_mode mode,
++	pm_runtime_get_noresume(dev);
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_set_autosuspend_delay(dev, DWC3_DEFAULT_AUTOSUSPEND_DELAY);
+ 	pm_runtime_enable(dev);
+-	ret = pm_runtime_get_sync(dev);
+-	if (ret < 0)
+-		goto err1;
+ 
+ 	pm_runtime_forbid(dev);
+ 
+@@ -1954,12 +1952,10 @@ err3:
+ 	dwc3_free_event_buffers(dwc);
+ 
+ err2:
+-	pm_runtime_allow(&pdev->dev);
+-
+-err1:
+-	pm_runtime_put_sync(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+-
++	pm_runtime_allow(dev);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
++	pm_runtime_put_noidle(dev);
+ disable_clks:
+ 	dwc3_clk_disable(dwc);
+ assert_reset:
 
 
