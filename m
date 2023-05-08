@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBCD26FA4EB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8EB96FA7FD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234010AbjEHKEd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
+        id S234024AbjEHKgx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234015AbjEHKEb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7502E30141
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:27 -0700 (PDT)
+        with ESMTP id S234783AbjEHKga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8BC2242C0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09B1362316
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F360C433EF;
-        Mon,  8 May 2023 10:04:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E89F62798
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73880C433EF;
+        Mon,  8 May 2023 10:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540266;
-        bh=ydXztnG3vRbMMp95z5JAVJf+a7S4IYRJskl/IVChKG0=;
+        s=korg; t=1683542165;
+        bh=o1QqK/1hVeCP5ino5z2TFM2sRjZ97XnycTGzsTaU678=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N0MZWsj1/r5sox+Cs7jTFTRnpzYxu+xL1OKP5yx9I9FsIq288TrjifSeXcX8bW291
-         iI7OucMrvlEEf93MQpPWEwhXFoC5oETaYSpVKKeIbzF0sRh4QnT0OjVnaamOEdLjwr
-         UVcrmuIZybk9S5J5JQQYd4H/NXpBaT+GPqtPFX9c=
+        b=zE/Xj6av09M2Pqw2Y1GwBTayuyvhKiuryA60ZhV1Azxpe7QUSkmbToIZyP0WBfJHR
+         lGm7Nbn2NABE8WYswhFm0wh11wvg10RWKX/fuxN05rvwrU4hggU+NqAUmkB2z1MGKY
+         PPpa6+Erpz7ijBU4Qhp+WWQoh6pkcQlOiQ67XZ0M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
+        patches@lists.linux.dev, Danila Chernetsov <listdansp@mail.ru>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 299/611] scsi: target: Fix multiple LUN_RESET handling
-Date:   Mon,  8 May 2023 11:42:21 +0200
-Message-Id: <20230508094432.122039990@linuxfoundation.org>
+Subject: [PATCH 6.2 316/663] scsi: megaraid: Fix mega_cmd_done() CMDID_INT_CMDS
+Date:   Mon,  8 May 2023 11:42:22 +0200
+Message-Id: <20230508094438.447268997@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,140 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Danila Chernetsov <listdansp@mail.ru>
 
-[ Upstream commit 673db054d7a2b5a470d7a25baf65956d005ad729 ]
+[ Upstream commit 75cb113cd43f06aaf4f1bda0069cfd5b98e909eb ]
 
-This fixes a bug where an initiator thinks a LUN_RESET has cleaned up
-running commands when it hasn't. The bug was added in commit 51ec502a3266
-("target: Delete tmr from list before processing").
+When cmdid == CMDID_INT_CMDS, the 'cmds' pointer is NULL but is
+dereferenced below.
 
-The problem occurs when:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
- 1. We have N I/O cmds running in the target layer spread over 2 sessions.
-
- 2. The initiator sends a LUN_RESET for each session.
-
- 3. session1's LUN_RESET loops over all the running commands from both
-    sessions and moves them to its local drain_task_list.
-
- 4. session2's LUN_RESET does not see the LUN_RESET from session1 because
-    the commit above has it remove itself. session2 also does not see any
-    commands since the other reset moved them off the state lists.
-
- 5. sessions2's LUN_RESET will then complete with a successful response.
-
- 6. sessions2's inititor believes the running commands on its session are
-    now cleaned up due to the successful response and cleans up the running
-    commands from its side. It then restarts them.
-
- 7. The commands do eventually complete on the backend and the target
-    starts to return aborted task statuses for them. The initiator will
-    either throw a invalid ITT error or might accidentally lookup a new
-    task if the ITT has been reallocated already.
-
-Fix the bug by reverting the patch, and serialize the execution of
-LUN_RESETs and Preempt and Aborts.
-
-Also prevent us from waiting on LUN_RESETs in core_tmr_drain_tmr_list,
-because it turns out the original patch fixed a bug that was not
-mentioned. For LUN_RESET1 core_tmr_drain_tmr_list can see a second
-LUN_RESET and wait on it. Then the second reset will run
-core_tmr_drain_tmr_list and see the first reset and wait on it resulting in
-a deadlock.
-
-Fixes: 51ec502a3266 ("target: Delete tmr from list before processing")
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-8-michael.christie@oracle.com
+Fixes: 0f2bb84d2a68 ("[SCSI] megaraid: simplify internal command handling")
+Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+Link: https://lore.kernel.org/r/20230317175109.18585-1-listdansp@mail.ru
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c |  1 +
- drivers/target/target_core_tmr.c    | 26 +++++++++++++++++++++++---
- include/target/target_core_base.h   |  1 +
- 3 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/scsi/megaraid.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index cb4f7cc02f8fa..d21f88de197c7 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -782,6 +782,7 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
- 	spin_lock_init(&dev->t10_alua.lba_map_lock);
+diff --git a/drivers/scsi/megaraid.c b/drivers/scsi/megaraid.c
+index bf491af9f0d65..16e2cf848c6ef 100644
+--- a/drivers/scsi/megaraid.c
++++ b/drivers/scsi/megaraid.c
+@@ -1441,6 +1441,7 @@ mega_cmd_done(adapter_t *adapter, u8 completed[], int nstatus, int status)
+ 		 */
+ 		if (cmdid == CMDID_INT_CMDS) {
+ 			scb = &adapter->int_scb;
++			cmd = scb->cmd;
  
- 	INIT_WORK(&dev->delayed_cmd_work, target_do_delayed_work);
-+	mutex_init(&dev->lun_reset_mutex);
- 
- 	dev->t10_wwn.t10_dev = dev;
- 	/*
-diff --git a/drivers/target/target_core_tmr.c b/drivers/target/target_core_tmr.c
-index 2b95b4550a637..4718db628222b 100644
---- a/drivers/target/target_core_tmr.c
-+++ b/drivers/target/target_core_tmr.c
-@@ -188,14 +188,23 @@ static void core_tmr_drain_tmr_list(
- 	 * LUN_RESET tmr..
- 	 */
- 	spin_lock_irqsave(&dev->se_tmr_lock, flags);
--	if (tmr)
--		list_del_init(&tmr->tmr_list);
- 	list_for_each_entry_safe(tmr_p, tmr_pp, &dev->dev_tmr_list, tmr_list) {
-+		if (tmr_p == tmr)
-+			continue;
-+
- 		cmd = tmr_p->task_cmd;
- 		if (!cmd) {
- 			pr_err("Unable to locate struct se_cmd for TMR\n");
- 			continue;
- 		}
-+
-+		/*
-+		 * We only execute one LUN_RESET at a time so we can't wait
-+		 * on them below.
-+		 */
-+		if (tmr_p->function == TMR_LUN_RESET)
-+			continue;
-+
- 		/*
- 		 * If this function was called with a valid pr_res_key
- 		 * parameter (eg: for PROUT PREEMPT_AND_ABORT service action
-@@ -379,14 +388,25 @@ int core_tmr_lun_reset(
- 				tmr_nacl->initiatorname);
- 		}
- 	}
-+
-+
-+	/*
-+	 * We only allow one reset or preempt and abort to execute at a time
-+	 * to prevent one call from claiming all the cmds causing a second
-+	 * call from returning while cmds it should have waited on are still
-+	 * running.
-+	 */
-+	mutex_lock(&dev->lun_reset_mutex);
-+
- 	pr_debug("LUN_RESET: %s starting for [%s], tas: %d\n",
- 		(preempt_and_abort_list) ? "Preempt" : "TMR",
- 		dev->transport->name, tas);
--
- 	core_tmr_drain_tmr_list(dev, tmr, preempt_and_abort_list);
- 	core_tmr_drain_state_list(dev, prout_cmd, tmr_sess, tas,
- 				preempt_and_abort_list);
- 
-+	mutex_unlock(&dev->lun_reset_mutex);
-+
- 	/*
- 	 * Clear any legacy SPC-2 reservation when called during
- 	 * LOGICAL UNIT RESET
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index 076bf352e17db..010e966aee0a5 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -870,6 +870,7 @@ struct se_device {
- 	struct rcu_head		rcu_head;
- 	int			queue_cnt;
- 	struct se_device_queue	*queues;
-+	struct mutex		lun_reset_mutex;
- };
- 
- struct se_hba {
+ 			list_del_init(&scb->list);
+ 			scb->state = SCB_FREE;
 -- 
 2.39.2
 
