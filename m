@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCCB6FAC31
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5596FADD4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235602AbjEHLVy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:21:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36450 "EHLO
+        id S236091AbjEHLiq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235600AbjEHLVv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:51 -0400
+        with ESMTP id S234003AbjEHLiP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF74B2109
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D42411B8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCFF262CA1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB622C433EF;
-        Mon,  8 May 2023 11:21:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 033CC63327
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE9EC433EF;
+        Mon,  8 May 2023 11:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544905;
-        bh=fquWWUTh7y+Gdg76M90XUq7d3ZEihN4eT4T7TfhaCoc=;
+        s=korg; t=1683545863;
+        bh=WEAmJZGfFKqctGT2vUqWC3klLrFDB7+B8pLgO0w/uAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jZX+1qkiyU0FFwpI0K80DVgk3tVfGD9ZVNm5jtCNQuevP/wQHyCAcMUEj1BM0GKK0
-         EH4Edl9xelo108SRLIV90GOrXDqvy1qxJhMLQCZFgkn0FezLiqMhYn4WE72VDLp051
-         9c43hMHXIzmK45CZwym/LpfKiRF+7rXfcsZIN/Vk=
+        b=z/oU1+lHKVjd1oPFJAoNcwWL6135C2/1wT9o7aiYbZHtJtZANPoSAPIHOz7EfRiIj
+         1UNry3Hoz/6TClrGevhMzeEZBlfmxHfkj3Ilt/Fymlue+iEnV9NjVJNvVmeEwQ2dAi
+         AnX3E/ewE+HgcGR427Py+Y7nlopvZWU4m+FgCjr4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 544/694] usb: gadget: tegra-xudc: Fix crash in vbus_draw
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 178/371] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_reg()
 Date:   Mon,  8 May 2023 11:46:19 +0200
-Message-Id: <20230508094452.137579119@linuxfoundation.org>
+Message-Id: <20230508094819.189305989@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 5629d31955297ca47b9283c64fff70f2f34aa528 ]
+[ Upstream commit 5dbe1f8eb8c5ac69394400a5b86fd81775e96c43 ]
 
-Commit ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
-populated the vbus_draw callback for the Tegra XUDC driver. The function
-tegra_xudc_gadget_vbus_draw(), that was added by this commit, assumes
-that the pointer 'curr_usbphy' has been initialised, which is not always
-the case because this is only initialised when the USB role is updated.
-Fix this crash, by checking that the 'curr_usbphy' is valid before
-dereferencing.
+If there is a failure during copy_from_user or user-provided data buffer is
+invalid, rtl_debugfs_set_write_reg should return negative error code instead
+of a positive value count.
 
-Fixes: ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
-Reviewed-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20230405181854.42355-1-jonathanh@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this bug by returning correct error code. Moreover, the check of buffer
+against null is removed since it will be handled by copy_from_user.
+
+Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230326054217.93492-1-harperchen1110@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 2b71b33725f17..5bccd64847ff7 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -2167,7 +2167,7 @@ static int tegra_xudc_gadget_vbus_draw(struct usb_gadget *gadget,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index 602717928887d..9eb26dfe4ca92 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -278,8 +278,8 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
  
- 	dev_dbg(xudc->dev, "%s: %u mA\n", __func__, m_a);
+ 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
  
--	if (xudc->curr_usbphy->chg_type == SDP_TYPE)
-+	if (xudc->curr_usbphy && xudc->curr_usbphy->chg_type == SDP_TYPE)
- 		ret = usb_phy_set_power(xudc->curr_usbphy, m_a);
+-	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+-		return count;
++	if (copy_from_user(tmp, buffer, tmp_len))
++		return -EFAULT;
  
- 	return ret;
+ 	tmp[tmp_len] = '\0';
+ 
+@@ -287,7 +287,7 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
+ 	num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
+ 
+ 	if (num !=  3)
+-		return count;
++		return -EINVAL;
+ 
+ 	switch (len) {
+ 	case 1:
 -- 
 2.39.2
 
