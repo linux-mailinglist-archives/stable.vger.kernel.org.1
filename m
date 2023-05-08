@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F556FAB18
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C0EC6FA7E0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233368AbjEHLJt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46050 "EHLO
+        id S234780AbjEHKff (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233462AbjEHLI6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57587348B3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:57 -0700 (PDT)
+        with ESMTP id S234767AbjEHKfJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:35:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BFC72676C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4CE562B12
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF36C433EF;
-        Mon,  8 May 2023 11:08:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7F9C62733
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CD0C433D2;
+        Mon,  8 May 2023 10:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544136;
-        bh=kt4SL8s8/N0gTflDgFFe3rKG/F8ZNMjBOvhF1xQjP3Y=;
+        s=korg; t=1683542082;
+        bh=v+gPqJXz7nD+iBnw8IVg7uKYNl0EayRXNijMClHUO9w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bsx6yIExbyM/hQKmdpEsOmcQXeyrNrpvYM2QjP19cuZ0/ySNniuC4ShbyXNCZy218
-         gSirNbqpBqXY3d5+7t95ktC2jbBO2GGUC0ugIH8SzOG6VMC7Wd5kpDkBvB0V62Riv3
-         V5U2/jxCzWoiUJpQogbCEXCxxaCVEhKuEygCVjfM=
+        b=BveJ4Ig5gcaRgjDgQhMFqHuzZvBmheBH5bx9ublUr0Qyz7+3DxvcaUzJ1BZPhQiJr
+         BaTRUMzfHdRiUPJ8cK4FmMBN36JBPBWaOt5aEjNz8zWVfFUYOLrGR7QRUP255UeatK
+         4oEeCPRgv6cOkyoaKgAgJysEZLwq8k0QOVB6/qiw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Qi Han <hanqi@vivo.com>, Yangtao Li <frank.li@vivo.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 311/694] media: mediatek: vcodec: add remove function for decoder platform driver
-Date:   Mon,  8 May 2023 11:42:26 +0200
-Message-Id: <20230508094442.383777280@linuxfoundation.org>
+Subject: [PATCH 6.2 321/663] f2fs: compress: fix to call f2fs_wait_on_page_writeback() in f2fs_write_raw_pages()
+Date:   Mon,  8 May 2023 11:42:27 +0200
+Message-Id: <20230508094438.599829986@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,43 +55,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit e2a10b3801061d05d3e3415b9b824251451cfd6c ]
+[ Upstream commit babedcbac164cec970872b8097401ca913a80e61 ]
 
-Need to disable decoder power when remove decoder hardware driver, adding
-remove callback function in the definition of platform driver.
+BUG_ON() will be triggered when writing files concurrently,
+because the same page is writtenback multiple times.
 
-Fixes: c05bada35f01 ("media: mtk-vcodec: Add to support multi hardware decode")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+1597 void folio_end_writeback(struct folio *folio)
+1598 {
+		......
+1618     if (!__folio_end_writeback(folio))
+1619         BUG();
+		......
+1625 }
+
+kernel BUG at mm/filemap.c:1619!
+Call Trace:
+ <TASK>
+ f2fs_write_end_io+0x1a0/0x370
+ blk_update_request+0x6c/0x410
+ blk_mq_end_request+0x15/0x130
+ blk_complete_reqs+0x3c/0x50
+ __do_softirq+0xb8/0x29b
+ ? sort_range+0x20/0x20
+ run_ksoftirqd+0x19/0x20
+ smpboot_thread_fn+0x10b/0x1d0
+ kthread+0xde/0x110
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x22/0x30
+ </TASK>
+
+Below is the concurrency scenario:
+
+[Process A]		[Process B]		[Process C]
+f2fs_write_raw_pages()
+  - redirty_page_for_writepage()
+  - unlock page()
+			f2fs_do_write_data_page()
+			  - lock_page()
+			  - clear_page_dirty_for_io()
+			  - set_page_writeback() [1st writeback]
+			    .....
+			    - unlock page()
+
+						generic_perform_write()
+						  - f2fs_write_begin()
+						    - wait_for_stable_page()
+
+						  - f2fs_write_end()
+						    - set_page_dirty()
+
+  - lock_page()
+    - f2fs_do_write_data_page()
+      - set_page_writeback() [2st writeback]
+
+This problem was introduced by the previous commit 7377e853967b ("f2fs:
+compress: fix potential deadlock of compress file"). All pagelocks were
+released in f2fs_write_raw_pages(), but whether the page was
+in the writeback state was ignored in the subsequent writing process.
+Let's fix it by waiting for the page to writeback before writing.
+
+Cc: Christoph Hellwig <hch@lst.de>
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Fixes: 7377e853967b ("f2fs: compress: fix potential deadlock of compress file")
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/mediatek/vcodec/mtk_vcodec_dec_hw.c    | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/f2fs/compress.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_hw.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_hw.c
-index 376db0e433d75..b753bf54ebd90 100644
---- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_hw.c
-+++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_hw.c
-@@ -193,8 +193,16 @@ static int mtk_vdec_hw_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 2532f369cb10f..2628c347f44fd 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1459,6 +1459,12 @@ static int f2fs_write_raw_pages(struct compress_ctx *cc,
+ 		if (!PageDirty(cc->rpages[i]))
+ 			goto continue_unlock;
  
-+static int mtk_vdec_hw_remove(struct platform_device *pdev)
-+{
-+	pm_runtime_disable(&pdev->dev);
++		if (PageWriteback(cc->rpages[i])) {
++			if (wbc->sync_mode == WB_SYNC_NONE)
++				goto continue_unlock;
++			f2fs_wait_on_page_writeback(cc->rpages[i], DATA, true, true);
++		}
 +
-+	return 0;
-+}
-+
- static struct platform_driver mtk_vdec_driver = {
- 	.probe	= mtk_vdec_hw_probe,
-+	.remove = mtk_vdec_hw_remove,
- 	.driver	= {
- 		.name	= "mtk-vdec-comp",
- 		.of_match_table = mtk_vdec_hw_match,
+ 		if (!clear_page_dirty_for_io(cc->rpages[i]))
+ 			goto continue_unlock;
+ 
 -- 
 2.39.2
 
