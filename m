@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02EBA6FACC2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48EC06FAE74
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235791AbjEHL2E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
+        id S236304AbjEHLpB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:45:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235793AbjEHL1j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:39 -0400
+        with ESMTP id S236255AbjEHLoi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2042E30AEB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935B610A0F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA16562D14
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBFBC433EF;
-        Mon,  8 May 2023 11:27:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 652EB6216E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B14BC433EF;
+        Mon,  8 May 2023 11:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545243;
-        bh=mG7MorSJYrplD1lXuqZTVjBU4ZbXsIYrvjD+JABBHRc=;
+        s=korg; t=1683546247;
+        bh=HcVHmsYf0WHbDYdxMfdo34ht14fDlnotCj2cU3dTJdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MoOdO5vJ+tMq0ddZiL1zpCp1+o1dgFcUxba6i8urgCQDXca7t/aWeS2j72CNOvAYK
-         raG94jhr0nElxDaCVNZI/oJw83dZIbhhBc19Z6n7sFnSYlFXfCcXSEFu4sOaUYaJR2
-         IFLs7JS4Y7aYQbnQ5zqsg8lAGUaTBAt72OOuUqU8=
+        b=xn6/zZOb+rJ6Dm6z+iJrYNm2wfhgBimmT8eQvsIU8gvyCap4dnUethWGmu+AclGhY
+         NxvpjfSkAIavhvYcxDvcJ9ZqZHzXZcsWWr4h/HDZt9IuTDi9Bo/lcphXd9C5Uplj+G
+         5j6CU0r44goNsCupm/YNDA9h5ufNpXtKVnwGOdic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
-        David Howells <dhowells@redhat.com>,
-        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 671/694] afs: Avoid endless loop if file is larger than expected
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 305/371] power: supply: generic-adc-battery: fix unit scaling
 Date:   Mon,  8 May 2023 11:48:26 +0200
-Message-Id: <20230508094457.927978645@linuxfoundation.org>
+Message-Id: <20230508094824.155775237@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Sebastian Reichel <sre@kernel.org>
 
-[ Upstream commit 9ea4eff4b6f4f36546d537a74da44fd3f30903ab ]
+[ Upstream commit 44263f50065969f2344808388bd589740f026167 ]
 
-afs_read_dir fetches an amount of data that's based on what the inode
-size is thought to be.  If the file on the server is larger than what
-was fetched, the code rechecks i_size and retries.  If the local i_size
-was not properly updated, this can lead to an endless loop of fetching
-i_size from the server and noticing each time that the size is larger on
-the server.
+power-supply properties are reported in µV, µA and µW.
+The IIO API provides mV, mA, mW, so the values need to
+be multiplied by 1000.
 
-If it is known that the remote size is larger than i_size, bump up the
-fetch size to that size.
-
-Fixes: f3ddee8dc4e2 ("afs: Fix directory handling")
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-afs@lists.infradead.org
+Fixes: e60fea794e6e ("power: battery: Generic battery driver using IIO")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Signed-off-by: Sebastian Reichel <sre@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/generic-adc-battery.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 82690d1dd49a0..a97499fd747b6 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -275,6 +275,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
- 	loff_t i_size;
- 	int nr_pages, i;
- 	int ret;
-+	loff_t remote_size = 0;
- 
- 	_enter("");
- 
-@@ -289,6 +290,8 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
- 
- expand:
- 	i_size = i_size_read(&dvnode->netfs.inode);
-+	if (i_size < remote_size)
-+	    i_size = remote_size;
- 	if (i_size < 2048) {
- 		ret = afs_bad(dvnode, afs_file_error_dir_small);
- 		goto error;
-@@ -364,6 +367,7 @@ static struct afs_read *afs_read_dir(struct afs_vnode *dvnode, struct key *key)
- 			 * buffer.
- 			 */
- 			up_write(&dvnode->validate_lock);
-+			remote_size = req->file_size;
- 			goto expand;
- 		}
+diff --git a/drivers/power/supply/generic-adc-battery.c b/drivers/power/supply/generic-adc-battery.c
+index 66039c665dd1e..0af536f4932f1 100644
+--- a/drivers/power/supply/generic-adc-battery.c
++++ b/drivers/power/supply/generic-adc-battery.c
+@@ -135,6 +135,9 @@ static int read_channel(struct gab *adc_bat, enum power_supply_property psp,
+ 			result);
+ 	if (ret < 0)
+ 		pr_err("read channel error\n");
++	else
++		*result *= 1000;
++
+ 	return ret;
+ }
  
 -- 
 2.39.2
