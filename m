@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA9116FAE79
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C926FAE69
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236318AbjEHLpF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
+        id S234042AbjEHLok (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236316AbjEHLol (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645F010E5A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:14 -0700 (PDT)
+        with ESMTP id S236224AbjEHLoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D103F1A1C8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37158635A6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29227C433EF;
-        Mon,  8 May 2023 11:43:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CD856337B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A285C433D2;
+        Mon,  8 May 2023 11:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546217;
-        bh=8FKQOqs3o8lmTULLybBmUTLAuZ4LZGYR+71A50+bPEY=;
+        s=korg; t=1683546220;
+        bh=Ujp7sJYO/bkxMZFfkks7QOcNEvmGv4RrON7hhJJRUaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GD/XWf0nuwK0dhloQnwHy/ALV7Xz0QBIyMxKm/c/XH1PxzX3cEuSyaJiiedDaBGn1
-         CFDlojOqnPYYpmq53uiV9sBuFqdm+AMCfPOm5ePOrCS3azMHzLOiXxtrfTA2D311FT
-         Lqn8379vfTPBU7NgG4HLr5ekExSFI/8VxN3ZTMVc=
+        b=i9c8q5bx2qt7qfQ/d36cr7LmndAZ637CAFMi8rZJeyHMk8VIbgXU6zPKpfx+GpFEd
+         ECHbI5QkvNKPdZWT6fG3FELmSZG7MKQafRVZMi8dinTLwHORBbTyKxnpFZIsBwBCHF
+         62pexS1edhsAoLzwBy3GBjhLlksnNEatXma5huHc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
-        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 296/371] workqueue: Fix hung time report of worker pools
-Date:   Mon,  8 May 2023 11:48:17 +0200
-Message-Id: <20230508094823.785044537@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 297/371] rtc: omap: include header for omap_rtc_power_off_program prototype
+Date:   Mon,  8 May 2023 11:48:18 +0200
+Message-Id: <20230508094823.818687282@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
 References: <20230508094811.912279944@linuxfoundation.org>
@@ -43,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,69 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Mladek <pmladek@suse.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 335a42ebb0ca8ee9997a1731aaaae6dcd704c113 ]
+[ Upstream commit f69c2b5420497b7a54181ce170d682cbeb1f119f ]
 
-The workqueue watchdog prints a warning when there is no progress in
-a worker pool. Where the progress means that the pool started processing
-a pending work item.
+Non-static functions should have a prototype:
 
-Note that it is perfectly fine to process work items much longer.
-The progress should be guaranteed by waking up or creating idle
-workers.
+  drivers/rtc/rtc-omap.c:410:5: error: no previous prototype for ‘omap_rtc_power_off_program’ [-Werror=missing-prototypes]
 
-show_one_worker_pool() prints state of non-idle worker pool. It shows
-a delay since the last pool->watchdog_ts.
-
-The timestamp is updated when a first pending work is queued in
-__queue_work(). Also it is updated when a work is dequeued for
-processing in worker_thread() and rescuer_thread().
-
-The delay is misleading when there is no pending work item. In this
-case it shows how long the last work item is being proceed. Show
-zero instead. There is no stall if there is no pending work.
-
-Fixes: 82607adcf9cdf40fb7b ("workqueue: implement lockup detector")
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 6256f7f7f217 ("rtc: OMAP: Add support for rtc-only mode")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230311094021.79730-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-omap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index de6463b931762..2d27bed9881dd 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -4857,10 +4857,16 @@ static void show_one_worker_pool(struct worker_pool *pool)
- 	struct worker *worker;
- 	bool first = true;
- 	unsigned long flags;
-+	unsigned long hung = 0;
+diff --git a/drivers/rtc/rtc-omap.c b/drivers/rtc/rtc-omap.c
+index d46e0f0cc5020..3ff832a5af37c 100644
+--- a/drivers/rtc/rtc-omap.c
++++ b/drivers/rtc/rtc-omap.c
+@@ -25,6 +25,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/rtc.h>
++#include <linux/rtc/rtc-omap.h>
  
- 	raw_spin_lock_irqsave(&pool->lock, flags);
- 	if (pool->nr_workers == pool->nr_idle)
- 		goto next_pool;
-+
-+	/* How long the first pending work is waiting for a worker. */
-+	if (!list_empty(&pool->worklist))
-+		hung = jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000;
-+
- 	/*
- 	 * Defer printing to avoid deadlocks in console drivers that
- 	 * queue work while holding locks also taken in their write
-@@ -4869,9 +4875,7 @@ static void show_one_worker_pool(struct worker_pool *pool)
- 	printk_deferred_enter();
- 	pr_info("pool %d:", pool->id);
- 	pr_cont_pool_info(pool);
--	pr_cont(" hung=%us workers=%d",
--		jiffies_to_msecs(jiffies - pool->watchdog_ts) / 1000,
--		pool->nr_workers);
-+	pr_cont(" hung=%lus workers=%d", hung, pool->nr_workers);
- 	if (pool->manager)
- 		pr_cont(" manager: %d",
- 			task_pid_nr(pool->manager->task));
+ /*
+  * The OMAP RTC is a year/month/day/hours/minutes/seconds BCD clock
 -- 
 2.39.2
 
