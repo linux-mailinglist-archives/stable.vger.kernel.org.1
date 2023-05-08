@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB4F6FAB85
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E0B56FA838
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233914AbjEHLOP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:14:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        id S234708AbjEHKiw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjEHLOO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:14 -0400
+        with ESMTP id S234720AbjEHKi3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8815235B0A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A78226760
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E17862BAA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BDCC433D2;
-        Mon,  8 May 2023 11:14:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A59C660F9B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB88EC4339E;
+        Mon,  8 May 2023 10:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544452;
-        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
+        s=korg; t=1683542307;
+        bh=1mLyHeASdB4L6W3qhb7YTJH6BEjeDBdUL0/BnVdGLr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tjRjvhoyCSFBpnLNLJCvycUgAogo9CaUyekF1EpLS4NSsgHgux3slb6KsIuXXjbiz
-         2ty/ioAH8NnvHC53GzufaFlyrM289QrdwD+bXp+fQs+KHP5iFFWo5jpdbLCC18M+Xx
-         b9v6qYnKNzG/YIMzCPx2NVQCCIHbMSvHN7AZsFSI=
+        b=qSUcpeLSJThJ83SZ1w4vwPMOQs2VRZWyRuaG0oY4jnUZgY+tX4HXaGEbA9ucPOS0/
+         XJ0Eg1LwBfGvzb05eFQvqJdbkLVEec8m55zG3d/NTAemXeuWV1DzmVRrHAF8YIF0/L
+         mOll3cAJrUCj2dx5BD3B16MmppkFZG+3OGSHJjGY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 385/694] net: qrtr: correct types of trace event parameters
+        patches@lists.linux.dev, Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 394/663] wifi: mt76: mt7996: let non-bufferable MMPDUs use correct hw queue
 Date:   Mon,  8 May 2023 11:43:40 +0200
-Message-Id: <20230508094445.471811678@linuxfoundation.org>
+Message-Id: <20230508094440.879996070@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,106 +53,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Horman <horms@kernel.org>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
+[ Upstream commit d0b6f86fdbefa62fd4ad2acd1aea6c45f9b518ba ]
 
-The arguments passed to the trace events are of type unsigned int,
-however the signature of the events used __le32 parameters.
+Pass qid into mt7996_mac_write_txwi() to let the tx descriptor of
+non-bufferable MMPDUs be filled with correct hw queue index.
 
-I may be missing the point here, but sparse flagged this and it
-does seem incorrect to me.
-
-  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
-  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ... (a lot more similar warnings)
-  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
-  net/qrtr/ns.c:115:47:    got unsigned int service
-  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
-  ... (a lot more similar warnings)
-
-Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 11 ++++++-----
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    |  6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  5 +++--
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
-index b1de14c3bb934..441132c67133f 100644
---- a/include/trace/events/qrtr.h
-+++ b/include/trace/events/qrtr.h
-@@ -10,15 +10,16 @@
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index c4567641210b1..17f0b287507d7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -962,8 +962,9 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ }
  
- TRACE_EVENT(qrtr_ns_service_announce_new,
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+-			   struct sk_buff *skb, struct mt76_wcid *wcid, int pid,
+-			   struct ieee80211_key_conf *key, u32 changed)
++			   struct sk_buff *skb, struct mt76_wcid *wcid,
++			   struct ieee80211_key_conf *key, int pid,
++			   enum mt76_txq_id qid, u32 changed)
+ {
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_vif *vif = info->control.vif;
+@@ -994,7 +995,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	} else if (beacon) {
+ 		p_fmt = MT_TX_TYPE_FW;
+ 		q_idx = MT_LMAC_BCN0;
+-	} else if (skb_get_queue_mapping(skb) >= MT_TXQ_PSD) {
++	} else if (qid >= MT_TXQ_PSD) {
+ 		p_fmt = MT_TX_TYPE_CT;
+ 		q_idx = MT_LMAC_ALTX0;
+ 	} else {
+@@ -1103,8 +1104,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	memset(txwi_ptr, 0, MT_TXD_SIZE);
+ 	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
+ 	if (!is_8023 || pid >= MT_PACKET_ID_FIRST)
+-		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, pid,
+-				      key, 0);
++		mt7996_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, key,
++				      pid, qid, 0);
  
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
+ 	txp = (struct mt7996_txp *)(txwi + MT_TXD_SIZE);
+ 	for (i = 0; i < nbuf; i++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index d593ed9e3f73c..18c4e7bc4370d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1804,8 +1804,9 @@ mt7996_mcu_beacon_cont(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 	}
  
- 	TP_ARGS(service, instance, node, port),
+ 	buf = (u8 *)bcn + sizeof(*bcn) - MAX_BEACON_SIZE;
+-	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, 0, NULL,
++	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0,
+ 			      BSS_CHANGED_BEACON);
++
+ 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
+ }
  
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
+@@ -1995,8 +1996,7 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
  
- 	TP_fast_assign(
-@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
+ 	buf = (u8 *)tlv + sizeof(*discov) - MAX_INBAND_FRAME_SIZE;
  
- TRACE_EVENT(qrtr_ns_service_announce_del,
+-	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, 0, NULL,
+-			      changed);
++	mt7996_mac_write_txwi(dev, (__le32 *)buf, skb, wcid, NULL, 0, 0, changed);
  
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
+ 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
  
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
-@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
- 
- TRACE_EVENT(qrtr_ns_server_add,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 725344791b4cd..e8eedae78479f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -472,8 +472,9 @@ void mt7996_mac_enable_nf(struct mt7996_dev *dev, u8 band);
+ void mt7996_mac_enable_rtscts(struct mt7996_dev *dev,
+ 			      struct ieee80211_vif *vif, bool enable);
+ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+-			   struct sk_buff *skb, struct mt76_wcid *wcid, int pid,
+-			   struct ieee80211_key_conf *key, u32 changed);
++			   struct sk_buff *skb, struct mt76_wcid *wcid,
++			   struct ieee80211_key_conf *key, int pid,
++			   enum mt76_txq_id qid, u32 changed);
+ void mt7996_mac_set_timing(struct mt7996_phy *phy);
+ int mt7996_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 		       struct ieee80211_sta *sta);
 -- 
 2.39.2
 
