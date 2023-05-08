@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C60BF6FA8EA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E64996FAC02
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235119AbjEHKqT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47634 "EHLO
+        id S235562AbjEHLTs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234944AbjEHKpz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:55 -0400
+        with ESMTP id S235553AbjEHLTo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D5A29FC2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:45:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7728A37C79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99B40628A7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:45:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A273AC433EF;
-        Mon,  8 May 2023 10:45:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A67562C64
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED524C433D2;
+        Mon,  8 May 2023 11:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542733;
-        bh=Z1nXqxFNUKRWTLICumPnwlkqPjsoIMIj2M1bXdCYmBU=;
+        s=korg; t=1683544780;
+        bh=hmdACvyceHtfwG6iZa0TlefPkqSpVkF36kkn55rWHqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N0naUFdQqLXstfxUpkW3IxceKYgbT+4XazreIGDNB/3IPnkTelSP8hNPgdZyCPiOK
-         O+xTPjMP9tkZe9V9lco4Cp0YjgTbzIyJeRZYR70t/3TqhtZkgeu4CzJAJqnSE7J+fp
-         fpP7g9dJ14qw/ri/tmQ8EwBwaSep9Nly+avSZhqg=
+        b=OdOkiAHUD9QquvWOqmKHix9Cc332AIPg/mXAQm2ObPKP1VEl9GyVyR+EE5DigJYi3
+         S7dAghArEOkn9ZmfgGg6V6tjRwevK1wNHMTC/C1H2BMTOFNveDhntn17p/F3vyYjjP
+         Rt3l+dOtD7P56VwURfyEuyiAQPRd4Z85JxAi7gBM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Leonard Crestez <leonard.crestez@nxp.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 531/663] rtc: k3: handle errors while enabling wake irq
+Subject: [PATCH 6.3 522/694] scripts/gdb: bail early if there are no generic PD
 Date:   Mon,  8 May 2023 11:45:57 +0200
-Message-Id: <20230508094446.113881321@linuxfoundation.org>
+Message-Id: <20230508094451.207429244@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +58,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit d31d7300ebc0c43021ec48c0e6a3a427386f4617 ]
+[ Upstream commit f19c3c2959e465209ade1a7a699e6cbf4359ce78 ]
 
-Due to the potential failure of enable_irq_wake(), it would be better to
-return error if it fails.
+Avoid generating an exception if there are no generic power domain(s)
+registered:
 
-Fixes: b09d633575e5 ("rtc: Introduce ti-k3-rtc")
-Cc: Nishanth Menon <nm@ti.com>
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230323085904.957999-1-d-gole@ti.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+(gdb) lx-genpd-summary
+domain                          status          children
+    /device                                             runtime status
+----------------------------------------------------------------------
+Python Exception <class 'gdb.error'>: No symbol "gpd_list" in current context.
+Error occurred in Python: No symbol "gpd_list" in current context.
+(gdb) quit
+
+[f.fainelli@gmail.com: correctly invoke gdb_eval_or_none]
+  Link: https://lkml.kernel.org/r/20230327185746.3856407-1-f.fainelli@gmail.com
+Link: https://lkml.kernel.org/r/20230323231659.3319941-1-f.fainelli@gmail.com
+Fixes: 8207d4a88e1e ("scripts/gdb: add lx-genpd-summary command")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Leonard Crestez <leonard.crestez@nxp.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ti-k3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/gdb/linux/genpd.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-ti-k3.c b/drivers/rtc/rtc-ti-k3.c
-index ba23163cc0428..0d90fe9233550 100644
---- a/drivers/rtc/rtc-ti-k3.c
-+++ b/drivers/rtc/rtc-ti-k3.c
-@@ -632,7 +632,8 @@ static int __maybe_unused ti_k3_rtc_suspend(struct device *dev)
- 	struct ti_k3_rtc *priv = dev_get_drvdata(dev);
+diff --git a/scripts/gdb/linux/genpd.py b/scripts/gdb/linux/genpd.py
+index 39cd1abd85590..b53649c0a77a6 100644
+--- a/scripts/gdb/linux/genpd.py
++++ b/scripts/gdb/linux/genpd.py
+@@ -5,7 +5,7 @@
+ import gdb
+ import sys
  
- 	if (device_may_wakeup(dev))
--		enable_irq_wake(priv->irq);
-+		return enable_irq_wake(priv->irq);
-+
- 	return 0;
- }
+-from linux.utils import CachedType
++from linux.utils import CachedType, gdb_eval_or_none
+ from linux.lists import list_for_each_entry
  
+ generic_pm_domain_type = CachedType('struct generic_pm_domain')
+@@ -70,6 +70,8 @@ Output is similar to /sys/kernel/debug/pm_genpd/pm_genpd_summary'''
+             gdb.write('    %-50s  %s\n' % (kobj_path, rtpm_status_str(dev)))
+ 
+     def invoke(self, arg, from_tty):
++        if gdb_eval_or_none("&gpd_list") is None:
++            raise gdb.GdbError("No power domain(s) registered")
+         gdb.write('domain                          status          children\n');
+         gdb.write('    /device                                             runtime status\n');
+         gdb.write('----------------------------------------------------------------------\n');
 -- 
 2.39.2
 
