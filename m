@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4E736FABD1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D966FA594
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234513AbjEHLRt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
+        id S234179AbjEHKLB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235496AbjEHLRs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A563762E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:42 -0700 (PDT)
+        with ESMTP id S234170AbjEHKLA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B6A039883
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E08E62C2A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734CAC4339C;
-        Mon,  8 May 2023 11:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8809623A7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A05C433EF;
+        Mon,  8 May 2023 10:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544660;
-        bh=LYlmOfJhulus+iBnWCJYT90K8x0aOUuWjfXyng6SEUU=;
+        s=korg; t=1683540658;
+        bh=96xJQ/2uB8QceE5ijnDHeqsXxx2vhniFS4ziP/WEReg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tNm+sT5QM4Ih9HUWMymUq+6QX8l7s3H6HgvxrN3EX6ZlDLAX2czAx6QQJeHS6tnr7
-         aw/BQetmwMa7Pmj92vwInGAbMbnb5QAr2gA3qJKW99BEi7pl1Bp0lFhBLdwIVEow8M
-         JOlQs4KbjTQReGFqli/gHVqwmrEoFX43rgSbVBGU=
+        b=e9DAvtJfs0yDJRxdgl+3R643sXru0x1SLhDTtikb/oA1dyoZO8fS+CkkEJPo03PAN
+         kpKHlZkwknjsztbaSCasCJQyjAi9UTTTx8fdUOmAqs8g8DaM0dPtOaIL1VXP+k7qr7
+         5R9+U9F73JORQYjW/+en9jWqtwzsGj4T40JmcRJs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Chunfeng Yun <chunfeng.yun@mediatek.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 453/694] netfilter: conntrack: fix wrong ct->timeout value
-Date:   Mon,  8 May 2023 11:44:48 +0200
-Message-Id: <20230508094448.296956379@linuxfoundation.org>
+Subject: [PATCH 6.1 447/611] usb: mtu3: fix kernel panic at qmu transfer done irq handler
+Date:   Mon,  8 May 2023 11:44:49 +0200
+Message-Id: <20230508094436.684213653@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,114 +53,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Chunfeng Yun <chunfeng.yun@mediatek.com>
 
-[ Upstream commit 73db1b8f2bb6725b7391e85aab41fdf592b3c0c1 ]
+[ Upstream commit d28f4091ea7ec3510fd6a3c6d433234e7a2bef14 ]
 
-(struct nf_conn)->timeout is an interval before the conntrack
-confirmed.  After confirmed, it becomes a timestamp.
+When handle qmu transfer irq, it will unlock @mtu->lock before give back
+request, if another thread handle disconnect event at the same time, and
+try to disable ep, it may lock @mtu->lock and free qmu ring, then qmu
+irq hanlder may get a NULL gpd, avoid the KE by checking gpd's value before
+handling it.
 
-It is observed that timeout of an unconfirmed conntrack:
-- Set by calling ctnetlink_change_timeout(). As a result,
-  `nfct_time_stamp` was wrongly added to `ct->timeout` twice.
-- Get by calling ctnetlink_dump_timeout(). As a result,
-  `nfct_time_stamp` was wrongly subtracted.
+e.g.
+qmu done irq on cpu0                 thread running on cpu1
 
-Call Trace:
- <TASK>
- dump_stack_lvl
- ctnetlink_dump_timeout
- __ctnetlink_glue_build
- ctnetlink_glue_build
- __nfqnl_enqueue_packet
- nf_queue
- nf_hook_slow
- ip_mc_output
- ? __pfx_ip_finish_output
- ip_send_skb
- ? __pfx_dst_output
- udp_send_skb
- udp_sendmsg
- ? __pfx_ip_generic_getfrag
- sock_sendmsg
+qmu_done_tx()
+  handle gpd [0]
+    mtu3_requ_complete()        mtu3_gadget_ep_disable()
+      unlock @mtu->lock
+        give back request         lock @mtu->lock
+                                    mtu3_ep_disable()
+                                      mtu3_gpd_ring_free()
+                                   unlock @mtu->lock
+      lock @mtu->lock
+    get next gpd [1]
 
-Separate the 2 cases in:
-- Setting `ct->timeout` in __nf_ct_set_timeout().
-- Getting `ct->timeout` in ctnetlink_dump_timeout().
+[1]: goto [0] to handle next gpd, and next gpd may be NULL.
 
-Pablo appends:
-
-Update ctnetlink to set up the timeout _after_ the IPS_CONFIRMED flag is
-set on, otherwise conntrack creation via ctnetlink breaks.
-
-Note that the problem described in this patch occurs since the
-introduction of the nfnetlink_queue conntrack support, select a
-sufficiently old Fixes: tag for -stable kernel to pick up this fix.
-
-Fixes: a4b4766c3ceb ("netfilter: nfnetlink_queue: rename related to nfqueue attaching conntrack info")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 48e0d3735aa5 ("usb: mtu3: supports new QMU format")
+Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
+Link: https://lore.kernel.org/r/20230417025203.18097-3-chunfeng.yun@mediatek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_core.h |  6 +++++-
- net/netfilter/nf_conntrack_netlink.c      | 13 +++++++++----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/usb/mtu3/mtu3_qmu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
-index 71d1269fe4d4f..3384859a89210 100644
---- a/include/net/netfilter/nf_conntrack_core.h
-+++ b/include/net/netfilter/nf_conntrack_core.h
-@@ -89,7 +89,11 @@ static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
- {
- 	if (timeout > INT_MAX)
- 		timeout = INT_MAX;
--	WRITE_ONCE(ct->timeout, nfct_time_stamp + (u32)timeout);
-+
-+	if (nf_ct_is_confirmed(ct))
-+		WRITE_ONCE(ct->timeout, nfct_time_stamp + (u32)timeout);
-+	else
-+		ct->timeout = (u32)timeout;
+diff --git a/drivers/usb/mtu3/mtu3_qmu.c b/drivers/usb/mtu3/mtu3_qmu.c
+index 2ea3157ddb6e2..e65586147965d 100644
+--- a/drivers/usb/mtu3/mtu3_qmu.c
++++ b/drivers/usb/mtu3/mtu3_qmu.c
+@@ -210,6 +210,7 @@ static struct qmu_gpd *advance_enq_gpd(struct mtu3_gpd_ring *ring)
+ 	return ring->enqueue;
  }
  
- int __nf_ct_change_timeout(struct nf_conn *ct, u64 cta_timeout);
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index d3ee188546982..6f3b23a6653cc 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -176,7 +176,12 @@ static int ctnetlink_dump_status(struct sk_buff *skb, const struct nf_conn *ct)
- static int ctnetlink_dump_timeout(struct sk_buff *skb, const struct nf_conn *ct,
- 				  bool skip_zero)
++/* @dequeue may be NULL if ring is unallocated or freed */
+ static struct qmu_gpd *advance_deq_gpd(struct mtu3_gpd_ring *ring)
  {
--	long timeout = nf_ct_expires(ct) / HZ;
-+	long timeout;
-+
-+	if (nf_ct_is_confirmed(ct))
-+		timeout = nf_ct_expires(ct) / HZ;
-+	else
-+		timeout = ct->timeout / HZ;
+ 	if (ring->dequeue < ring->end)
+@@ -484,7 +485,7 @@ static void qmu_done_tx(struct mtu3 *mtu, u8 epnum)
+ 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
+ 		__func__, epnum, gpd, gpd_current, ring->enqueue);
  
- 	if (skip_zero && timeout == 0)
- 		return 0;
-@@ -2253,9 +2258,6 @@ ctnetlink_create_conntrack(struct net *net,
- 	if (!cda[CTA_TIMEOUT])
- 		goto err1;
+-	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
++	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
  
--	timeout = (u64)ntohl(nla_get_be32(cda[CTA_TIMEOUT])) * HZ;
--	__nf_ct_set_timeout(ct, timeout);
--
- 	rcu_read_lock();
-  	if (cda[CTA_HELP]) {
- 		char *helpname = NULL;
-@@ -2319,6 +2321,9 @@ ctnetlink_create_conntrack(struct net *net,
- 	/* we must add conntrack extensions before confirmation. */
- 	ct->status |= IPS_CONFIRMED;
+ 		mreq = next_request(mep);
  
-+	timeout = (u64)ntohl(nla_get_be32(cda[CTA_TIMEOUT])) * HZ;
-+	__nf_ct_set_timeout(ct, timeout);
-+
- 	if (cda[CTA_STATUS]) {
- 		err = ctnetlink_change_status(ct, cda);
- 		if (err < 0)
+@@ -523,7 +524,7 @@ static void qmu_done_rx(struct mtu3 *mtu, u8 epnum)
+ 	dev_dbg(mtu->dev, "%s EP%d, last=%p, current=%p, enq=%p\n",
+ 		__func__, epnum, gpd, gpd_current, ring->enqueue);
+ 
+-	while (gpd != gpd_current && !GET_GPD_HWO(gpd)) {
++	while (gpd && gpd != gpd_current && !GET_GPD_HWO(gpd)) {
+ 
+ 		mreq = next_request(mep);
+ 
 -- 
 2.39.2
 
