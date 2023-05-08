@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F6E6FA867
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67236FA542
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234940AbjEHKkL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42134 "EHLO
+        id S234085AbjEHKHc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234954AbjEHKjw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:52 -0400
+        with ESMTP id S234086AbjEHKHa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F184B26EA1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE0031B02
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EF5D62831
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F7DC433D2;
-        Mon,  8 May 2023 10:39:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02CF46236E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F6BC433D2;
+        Mon,  8 May 2023 10:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542386;
-        bh=x3eg2N19eGRJdwsY/2D7GaWpwl7igUeDKDrtO7znVbg=;
+        s=korg; t=1683540448;
+        bh=Vyc4bcYllsPnAOPFMkvB+XeaZrIBXof52yS/eVIo7OY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e4NCjTOCt7TDV24hj+GaCWmR6mvPww8285VFHSEhZD8iLioEhP2NYH90GSfNtfyYk
-         qRVhzhfi058ealjc6VylJaMKl933BhgU0HIIMX9V2/4n3OUlAomwljTbxSbEGjeCwr
-         rIaCYX0h0EkNY6AD6V3V8kw1GoKIFchhpM66SEoU=
+        b=ABflIZ1tH2wvIsWrSj/jmB0GUdpKRf4KFBPUxmekXb9Fd3y4DJ3qFEgiCsATBh6zh
+         /M/jiwfb9xFfipB14IUWu+sh/VKNp0pLpMnY8kxsOSdokKFod8DEcl4+K50RmbGE47
+         4T1TBa9+pPMbCIBBHxaJd3JQ4TWY4h1mCJHTGaW8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Lorenzo Zolfanelli <lorenzo@zolfa.nl>
-Subject: [PATCH 6.2 384/663] wifi: iwlwifi: make the loop for card preparation effective
+        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Wang Zhao <wang.zhao@mediatek.com>,
+        Quan Zhou <quan.zhou@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 368/611] wifi: mt76: mt7921e: improve reliability of dma reset
 Date:   Mon,  8 May 2023 11:43:30 +0200
-Message-Id: <20230508094440.562224745@linuxfoundation.org>
+Message-Id: <20230508094434.331328385@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,48 +56,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit 28965ec0b5d9112585f725660e2ff13218505ace ]
+[ Upstream commit 87714bf6ed1589813e473db5471e6e9857755764 ]
 
-Since we didn't reset t to 0, only the first iteration of the loop
-did checked the ready bit several times.
->From the second iteration and on, we just tested the bit once and
-continued to the next iteration.
+The hardware team has advised the driver that it is necessary to first put
+WFDMA into an idle state before resetting the WFDMA. Otherwise, the WFDMA
+may enter an unknown state where it cannot be polled with the right state
+successfully. To ensure that the DMA can work properly while a stressful
+cold reboot test was being made, we have reordered the programming sequence
+in the driver based on the hardware team's guidance.
 
-Reported-and-tested-by: Lorenzo Zolfanelli <lorenzo@zolfa.nl>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216452
-Fixes: 289e5501c314 ("iwlwifi: fix the preparation of the card")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230416154301.615b683ab9c8.Ic52c3229d3345b0064fa34263293db095d88daf8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The patch would modify the WFDMA disabling flow from
+
+"DMA reset -> disabling DMASHDL -> disabling WFDMA -> polling and waiting
+until DMA idle" to "disabling WFDMA -> polling and waiting for DMA idle ->
+disabling DMASHDL -> DMA reset.
+
+Where he polling and waiting until WFDMA is idle is coordinated with the
+operation of disabling WFDMA. Even while WFDMA is being disabled, it can
+still handle Tx/Rx requests. The additional polling allows sufficient time
+for WFDMA to process the last T/Rx request. When the idle state of WFDMA is
+reached, it is a reliable indication that DMASHDL is also idle to ensure it
+is safe to disable it and perform the DMA reset.
+
+Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Co-developed-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 36 ++++++++++---------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 40283fe622daa..171b6bf4a65a0 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -599,7 +599,6 @@ static int iwl_pcie_set_hw_ready(struct iwl_trans *trans)
- int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+index dc4ccfef4b048..fd57c87a29ae3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+@@ -66,22 +66,6 @@ static void mt7921_dma_prefetch(struct mt7921_dev *dev)
+ 
+ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
  {
- 	int ret;
--	int t = 0;
- 	int iter;
+-	if (force) {
+-		/* reset */
+-		mt76_clear(dev, MT_WFDMA0_RST,
+-			   MT_WFDMA0_RST_DMASHDL_ALL_RST |
+-			   MT_WFDMA0_RST_LOGIC_RST);
+-
+-		mt76_set(dev, MT_WFDMA0_RST,
+-			 MT_WFDMA0_RST_DMASHDL_ALL_RST |
+-			 MT_WFDMA0_RST_LOGIC_RST);
+-	}
+-
+-	/* disable dmashdl */
+-	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
+-		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
+-	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
+-
+ 	/* disable WFDMA0 */
+ 	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
+ 		   MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN |
+@@ -95,6 +79,22 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
+ 				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
+ 		return -ETIMEDOUT;
  
- 	IWL_DEBUG_INFO(trans, "iwl_trans_prepare_card_hw enter\n");
-@@ -616,6 +615,8 @@ int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
- 	usleep_range(1000, 2000);
- 
- 	for (iter = 0; iter < 10; iter++) {
-+		int t = 0;
++	/* disable dmashdl */
++	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
++		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
++	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
 +
- 		/* If HW is not ready, prepare the conditions to check again */
- 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
- 			    CSR_HW_IF_CONFIG_REG_PREPARE);
++	if (force) {
++		/* reset */
++		mt76_clear(dev, MT_WFDMA0_RST,
++			   MT_WFDMA0_RST_DMASHDL_ALL_RST |
++			   MT_WFDMA0_RST_LOGIC_RST);
++
++		mt76_set(dev, MT_WFDMA0_RST,
++			 MT_WFDMA0_RST_DMASHDL_ALL_RST |
++			 MT_WFDMA0_RST_LOGIC_RST);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -301,6 +301,10 @@ void mt7921_dma_cleanup(struct mt7921_dev *dev)
+ 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
+ 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
+ 
++	mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
++			    MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
++			    MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1);
++
+ 	/* reset */
+ 	mt76_clear(dev, MT_WFDMA0_RST,
+ 		   MT_WFDMA0_RST_DMASHDL_ALL_RST |
 -- 
 2.39.2
 
