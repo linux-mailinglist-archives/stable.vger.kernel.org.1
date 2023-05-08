@@ -2,151 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 355986FB1E5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 15:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD6766FB158
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 15:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234031AbjEHNny (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 09:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60098 "EHLO
+        id S233889AbjEHNVW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 09:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234124AbjEHNnx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 09:43:53 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831F334E20
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 06:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683553429; x=1715089429;
-  h=content-transfer-encoding:in-reply-to:references:subject:
-   from:cc:to:date:message-id:mime-version;
-  bh=kvt9TtkCWooshZAZna0bdCJNRIHGqltda7DiCOQFHbA=;
-  b=n7YC9IwPbQ+mFMbsgvb40J9waGxEuyATNqHX/rkRPlIXgrQppSNjXrmE
-   Sf2A0cusH1sctojUZCZ9iEZxlVTjhFGsmhk4gJxm7AXUQmGlh7k/ylEwI
-   LBdDMII53EDrkSZNdIXrkECKnyHzuaNm00rq3VTU7pk+RzuoByPrvod+D
-   071TNXbS0aKJobbMT1nJ1pcc2w2xSxMw+Ha2gFDpbt5PBwXUm6C3pYwOI
-   tmNOa/jw7ANGefqaStz4h+RjafpnyQR+Ka4WKXf1azSgCFamNCgPaJS+H
-   f22r5OqkGIldShJuFLOnVgPRXT5BkNQSobF4D2kDBgLRrxnVDRxcvT8g1
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="412905867"
-X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
-   d="scan'208";a="412905867"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 06:43:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="729089386"
-X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
-   d="scan'208";a="729089386"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga008.jf.intel.com with ESMTP; 08 May 2023 06:43:44 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 8 May 2023 06:43:44 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Mon, 8 May 2023 06:43:44 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 8 May 2023 06:43:44 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XuZytrjHBt10tw201jhBa+fVU2nDHyqBY/x+BQlqFbg+ppZ78E2eiDzesiUHUvq0l5K1ULz9+mGRDLw3NHrrP2dIFZzpzG+P/RNlUCR3/1WMWTRbQBEcNvS3ZtSflghPo0BUfZneUbDmcjvKPtWg76ze5NuOInCXEVdkKc/CwOVBmpnCTib87DZVx9UPCX/0/iQXS4RYJoAZVg68HwSg47rbLiwSBkNQB5DfSXn9EgjCQes1cW3PLnmDvwWhy09gqRNnPfF3e3JfkfFS7PANUVISet//o43rt+OyGfQPQOPUy5shiSegqaksK/gNiQcyJoOvyJHGxmkZSkH4pD3Grw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S/lUOO1/qrI3Qn5NFfrw3HuyaUd7q2xRmxPjFplHwNo=;
- b=X5n4CJyCbZIrEarvNySX+AFLyKsHUbFa0tq9fOXxUdmPJ2b4BP8wxE8jP1RfKNKxVYLm/uiFHm5xGV4bY561mOWu5/2PlK6Fcn2HgBQ5Kb+3KtWW3Q0TPZxMerYBKPn0EAwIdAB1x4Ly9jJypSTyiR43jco3stCLAM3G8HyLVVq+mS8FddECLju7LnvnI1iReeKf8Wa3k9/MHeZxGyYCAsqE6C6JihscospBvShUG5kAJO905L7hGB/mTpiUwDbUERshJW86TISPDwTn2psHbaaw9Am/67hhhBxj+puCjPIQj6AKxN8cMRnp4Q8Gk8usDs5o8tBB6M7L4OJAZhZT/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN8PR11MB3556.namprd11.prod.outlook.com (2603:10b6:408:8d::31)
- by SJ2PR11MB8297.namprd11.prod.outlook.com (2603:10b6:a03:539::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Mon, 8 May
- 2023 13:43:42 +0000
-Received: from BN8PR11MB3556.namprd11.prod.outlook.com
- ([fe80::28c6:f268:89bd:e45a]) by BN8PR11MB3556.namprd11.prod.outlook.com
- ([fe80::28c6:f268:89bd:e45a%7]) with mapi id 15.20.6363.032; Mon, 8 May 2023
- 13:43:42 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230505110917.1918957-1-ankit.k.nautiyal@intel.com>
-References: <20230505110917.1918957-1-ankit.k.nautiyal@intel.com>
-Subject: Re: [Intel-gfx] [PATCH] drm/i915/display: Update the DDI_BUF_CTL active timeout for ADL-P
-From:   Gustavo Sousa <gustavo.sousa@intel.com>
-CC:     <lucas.demarchi@intel.com>, <stable@vger.kernel.org>
-To:     Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-        <intel-gfx@lists.freedesktop.org>
-Date:   Mon, 8 May 2023 10:43:37 -0300
-Message-ID: <168355341751.27719.16836386570199975237@gjsousa-mobl2>
-User-Agent: alot/0.10
-X-ClientProxiedBy: SJ0PR05CA0185.namprd05.prod.outlook.com
- (2603:10b6:a03:330::10) To BN8PR11MB3556.namprd11.prod.outlook.com
- (2603:10b6:408:8d::31)
+        with ESMTP id S232166AbjEHNVQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 09:21:16 -0400
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A34E3C1E7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 06:21:03 -0700 (PDT)
+X-ASG-Debug-ID: 1683552059-086e237e536e4c0002-OJig3u
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx1.zhaoxin.com with ESMTP id 9h1FKH5Gja8TH081 (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 08 May 2023 21:20:59 +0800 (CST)
+X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 8 May
+ 2023 21:20:59 +0800
+Received: from L440.zhaoxin.com (10.29.8.21) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 8 May
+ 2023 21:20:58 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+From:   Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
+To:     <gregkh@linuxfoundation.org>, <mathias.nyman@intel.com>,
+        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
+Subject: [PATCH v4 1/4] xhci: Fix resume issue of some ZHAOXIN hosts
+Date:   Tue, 9 May 2023 05:20:55 +0800
+X-ASG-Orig-Subj: [PATCH v4 1/4] xhci: Fix resume issue of some ZHAOXIN hosts
+Message-ID: <20230508212058.6307-2-WeitaoWang-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20230508212058.6307-1-WeitaoWang-oc@zhaoxin.com>
+References: <20230508212058.6307-1-WeitaoWang-oc@zhaoxin.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR11MB3556:EE_|SJ2PR11MB8297:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1e0c792-e204-449d-17e4-08db4fca3c85
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HeBaoX/+dchGPsAp8xxsqRWEy47Fm/laTqgMsJ9n41CKCBe22RvDad1eGYHfmHPo+UgZYetZ+5Cvlhv8S6v1s1TBjZfzcBhiZABBmdm5g62USOONfm/hoJowpDpn1rka8oOXPVIlmhGx8vtUtbNhNgRH/jEBu84+t9NcFTRsxdtLqjFBbzu7MK1E3D6EpcG0vM8xNq4VDf5UDEDrOiFgnr3GhEB0DVjBdbgdBrNaD7fP39ldMNfJDq6TL1Qrxox3NaCdc76eqW0xwCwbXG83Mn34oUovobktx1RiafDkFexQg4vGQyR51fMwpiFabNoeilKluUquDr5yLudhbUCWY6hGsUdrDE2b5yTMyL7uN5kWpMto9BITlbnNKPpNNE4MWNXh6Yno/ItAKEbjbeA8NBhdk3Xk6c0tNqAku+QS5yMvmpV0IHzQmW0fim3ZkDtOu9/7oC6oXb4/VCbDWd9wBS1DASw1vd6adt/cxJ/Vs/wmpDTVu1jA3W4pBuHrkBo3F/s+5XRey0RFVqDRzm/+HHkz6O3F3aSkOol4T/hiGb8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR11MB3556.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(39860400002)(366004)(136003)(396003)(346002)(376002)(451199021)(66476007)(86362001)(4326008)(66946007)(66556008)(6486002)(316002)(478600001)(33716001)(5660300002)(44832011)(41300700001)(15650500001)(8676002)(2906002)(8936002)(38100700002)(82960400001)(186003)(26005)(6506007)(9686003)(6512007)(83380400001)(6666004);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NzVsNHZldExucDdsb1RGOXdGWGxVSlVPN2t3U2pRWGJwa3RSc05WRnJyQ3c4?=
- =?utf-8?B?cFI2QlVrNEE2V1ltN0lBWVlQVXRXWEhIRHp0TDlwUjZsbVJDT1pvcHJMUlE3?=
- =?utf-8?B?bUUrTnhJNjdNTlgrOEJuMGYybWxBNThaU0ZnUzZhRGM4emlHdjFxNkpwWmZ5?=
- =?utf-8?B?QVdmSWlLaXFVc2pFS3IrSXZ5OVkxMWlJMEZKZHJVVi84dSs3Y3V3cHZ1MFFI?=
- =?utf-8?B?MFJsWnZXZEt6Z0lYWDFnUjVLZk85bHFwYkgrSDFPWGdBQmQ0clFLVEIzRFBI?=
- =?utf-8?B?M0pnL2tFOFpnaGI5SVNvZ2Y2ZjlZNVhod2lWYUxqOXFiZUsvOUx2OGdOWXZ3?=
- =?utf-8?B?bkE2TUJoVmRYK0lxaTMvcTRLU3I0RDJ6WTFlWlZIVEt5MVZra2g4K04xNHc5?=
- =?utf-8?B?bS9aUUQzek9qd2hqU1l1YnM4NFJFaE8wcnRnV3RaUGhieHhGbFdURGFNZDhy?=
- =?utf-8?B?N0ZkcGJ6NU9CUVZzTmM0Znp2ZER0TXJxS0pqVkFCR3hNcHFYaWF6NWZKYnlC?=
- =?utf-8?B?Um03Y3dBTld5Qm1mNlVuZlFVUVYwQUVncE1uRlE2TUdwTjRDZ3R3dlhjNmpJ?=
- =?utf-8?B?akthcDVSenQ1VU03ZWt1eTAyWWl3QWx6VjhSeHBvTjc2c1NITHBJdC9XVlRl?=
- =?utf-8?B?Ym1JcWRFWnZsZFU1S3cxMG9zeGkvNlp2RUg0RHhLUTdrK1FSSEtPVERNcThZ?=
- =?utf-8?B?U2dpUWlDOUNwYzdIUTRVbVFxYXQzdHNHeVdEaDZmeHZOb1VjTW1qdmNjN3dS?=
- =?utf-8?B?NzlCVVYyT3ExSVk1bmlaVXI4Q0MrVHVHSTZmaGZBaGVFa0JjVFRySTdTSWF2?=
- =?utf-8?B?bHFMTTdyV2dlV0xuRkJQNVoxSUpGcUh0dlROZWZpL2U5ZFc5N3I2djg2Ympn?=
- =?utf-8?B?NjFkUGdaZ1VBYTZIZWhrQ3RQeFlMais1bCtBT2dJb0Z6ZzBtbWhzNTVtMzhU?=
- =?utf-8?B?bVZtSDZnTHZLcjhoT3dZR0ppMUl1R0RVdzFITUZOQ3RaeXFUdkdGNEdZc0NJ?=
- =?utf-8?B?bngveEQveWpiamNadWRPZ3BUY0FJdERueUdNN2pHTHc4Q2pORnQ1UGcyQ0FD?=
- =?utf-8?B?OS92NDkvWlRhV3FPQmZTV0pGTEU4RG1Kck4yd2FaZlo5TVdCaVZZeU0ySUlr?=
- =?utf-8?B?MnRvcWtIK1REMHFuUlZWZXdrenVEMWhBWFczQlh3WTBtUEtUSkc4WHRIV1pa?=
- =?utf-8?B?cVptamFDTUJVbEcwR0x3dzR4OUFJVkR0Y2ZIaEozbCsvYXNvNExwTHpJQTYr?=
- =?utf-8?B?Qy9sS0xwWlNpTVNyRkFvSXVlNmlaSjZkakU0QytwOVZxQmxmUDZoWGR1Ykk4?=
- =?utf-8?B?SENVVnVvWEY5Y3h1UmljaXgzbXNzN0JSdGZmK0hrZWhoWnpwSzBUanpjVGNS?=
- =?utf-8?B?UWpxYytGcjFtbzlUbjZIVGVjdWJoUFM4bjE3akNyYkdHOWtYVERrSHF5VU05?=
- =?utf-8?B?dnYxVmtCZmFNc0Rwb1BqWVhJMjE2Z29mVGRWMVkwOGoyV1UvMGdVbmJuMC9r?=
- =?utf-8?B?a1JwYjlENzJERnpmUjZwTndrcTdmMS9FRFJ0VFJpVDFhbXgyR2hHQi9ycXBk?=
- =?utf-8?B?ckxHeWZQSm1Bd2hXTXA4VFBqWXpVeDdwM3Y0bzQwUkQvY0VxSFVzM0Q1c25Z?=
- =?utf-8?B?ZmtjbzdMTW1zTEhLUGovNCtrM3o3SS9ReXZ0NlpONVRVNFVKRjBwRmt1SW0v?=
- =?utf-8?B?RnJWRmkxQ0V1ZFRCUHFjQTdyZkUwbWJ6M3gyQTRnUnVPSFJRYW1GYVpUdUor?=
- =?utf-8?B?Tzc2SGpJbXRBWkl4NC8rQzc5V2ZrdjNOQmxVcERRczVBdEp5K2I5VC9Tc0JS?=
- =?utf-8?B?WWRzN0Rxdy9rKzZuV1NKeSswYnNsMWczY3YrZHZMV1phTldLeW8wQ0p1MExv?=
- =?utf-8?B?WmV6TERwZzc4a2NEaU9MUHBRdmtWbStCSTZvczJSVjFhbSs1bmFmeXpHZExt?=
- =?utf-8?B?S3RXWk9ETWtLZzF5ODZQSzhaWXVoVnQ1L21CQWIwK0h4ZzgxeVhSR1VocEJx?=
- =?utf-8?B?Y3VaM3VUa2RPT0pINmw1R0lJWU96dDVSc2F0eWpjWEpSWitwZTZuYXVSZ3Ft?=
- =?utf-8?B?NnFMNlJ1N2s4QXZTZGYxTFJ3azBCdmZPRkZIaG9OaERtdzNWa0xUVG8yRCt3?=
- =?utf-8?B?QSt1Wlg3VkJzaGMwL3RkYmt0YkhPeFJPT0tmc0pGSUxiR2JqOUlQRUREQzZC?=
- =?utf-8?B?ZVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1e0c792-e204-449d-17e4-08db4fca3c85
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR11MB3556.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 13:43:42.3489
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tU2mI1q9m0HUXD/6u5PSdfZALdRNDkAba4jlzpMx31QnEHQUrVG4UQ84y9ikqKJYj449bxq18HXvYaqoy1DFpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8297
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.29.8.21]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1683552059
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1239
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0001 1.0000 -2.0205
+X-Barracuda-Spam-Score: 1.09
+X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.108487
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+        0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
+        3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
+X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -154,47 +70,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Quoting Ankit Nautiyal (2023-05-05 08:09:17)
->For ADL-P the timeout for DDI_BUF_CTL active is 500usec.
->Update the same as per Bspec:55424.
+On ZHAOXIN ZX-100 project, xHCI can't work normally after resume
+from system Sx state. To fix this issue, when resume from system
+Sx state, reinitialize xHCI instead of restore.
+So, Add XHCI_RESET_ON_RESUME quirk for ZX-100 to fix issue of
+resuming from system Sx state.
 
-I think the Bspec number could go as a trailer. We could also add BSpec 491=
-91
-here.
+Cc: stable@vger.kernel.org
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+---
+v3->v4
+ - Add xHCI quirks for ZHAOXIN to every independent patch.
+ - Modify some description of this patch series.
 
-Acked-by: Gustavo Sousa <gustavo.sousa@intel.com>
+ drivers/usb/host/xhci-pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->
->Fixes: 5add4575c298 ("drm/i915/ddi: Align timeout for DDI_BUF_CTL active w=
-ith Bspec")
->Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->Cc: Imre Deak <imre.deak@intel.com>
->Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->Cc: <stable@vger.kernel.org> # v6.3+
->
->Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->---
-> drivers/gpu/drm/i915/display/intel_ddi.c | 3 +++
-> 1 file changed, 3 insertions(+)
->
->diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i9=
-15/display/intel_ddi.c
->index 55f36d9d509c..6d8e4d7a784e 100644
->--- a/drivers/gpu/drm/i915/display/intel_ddi.c
->+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
->@@ -216,8 +216,11 @@ static void intel_wait_ddi_buf_active(struct drm_i915=
-_private *dev_priv,
->        } else if (DISPLAY_VER(dev_priv) >=3D 12) {
->                if (intel_phy_is_tc(dev_priv, phy))
->                        timeout_us =3D 3000;
->+          else if (IS_ALDERLAKE_P(dev_priv))
->+                  timeout_us =3D 500;
->                else
->                        timeout_us =3D 1000;
->+
->        } else {
->                timeout_us =3D 500;
->        }
->--=20
->2.25.1
->
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index ddb79f23fb3b..46d4d642c9bd 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -527,6 +527,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	     pdev->device == PCI_DEVICE_ID_AMD_PROMONTORYA_4))
+ 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+ 
++	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
++		if (pdev->device == 0x9202)
++			xhci->quirks |= XHCI_RESET_ON_RESUME;
++	}
++
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+ 	if (xhci->hci_version >= 0x120)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+-- 
+2.32.0
+
