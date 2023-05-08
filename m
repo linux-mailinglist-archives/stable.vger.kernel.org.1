@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FDD76FA71D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0DB6FAA44
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234624AbjEHK2B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54396 "EHLO
+        id S235475AbjEHLBI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234652AbjEHK1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:27:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8100E24027
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:26:58 -0700 (PDT)
+        with ESMTP id S235144AbjEHLAi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5062DD50
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA465625FC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C122C433EF;
-        Mon,  8 May 2023 10:26:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F84762A06
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907D1C433EF;
+        Mon,  8 May 2023 10:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541617;
-        bh=MAB3dtPYftmQz3ahY//MiHajMhjIR/dm2BqKGdUiJ/o=;
+        s=korg; t=1683543570;
+        bh=tABDN212CA76MVrgvoONGmEu4F/MywUwtIQNv3n17ak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NRfniRbKtGwigdFh47N8NPMi5DcSDEddlTRytqUIbguOo0NsM/YwVDrJescBhhfd+
-         xdGxITpO4a5T8zZbB+tFOnqDxgNCLGdHgo+0Cfk3jiQII3GSwqz8oXUDtng/yxbVs0
-         MZltBhfyfdNXE8Eyw+gePTR/3X328PMYU2pRwa5s=
+        b=lM3va7/93GjM4/Q1L6Et0kf8wbbC5n3f/mOIG1nyhpWwMZFVpRf1rIZnURmy+gPZ4
+         t+1yK6rx968b/RbES6I9/suRUQrLL6BT/VUq/FXzK4hDjaVuTjAue+l+MU0ZUi7hxo
+         QAJqSSs6urkqcvQMG5YUAaeZaenG+qE/aOVUTF7g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
-        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 140/663] soc: ti: pm33xx: Fix refcount leak in am33xx_pm_probe
-Date:   Mon,  8 May 2023 11:39:26 +0200
-Message-Id: <20230508094433.066170231@linuxfoundation.org>
+        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 132/694] selftests/resctrl: Return NULL if malloc_and_init_memory() did not alloc mem
+Date:   Mon,  8 May 2023 11:39:27 +0200
+Message-Id: <20230508094436.758533157@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,51 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 8f3c307b580a4a6425896007325bddefc36e8d91 ]
+[ Upstream commit 22a8be280383812235131dda18a8212a59fadd2d ]
 
-wkup_m3_ipc_get() takes refcount, which should be freed by
-wkup_m3_ipc_put(). Add missing refcount release in the error paths.
+malloc_and_init_memory() in fill_buf isn't checking if memalign()
+successfully allocated memory or not before accessing the memory.
 
-Fixes: 5a99ae0092fe ("soc: ti: pm33xx: AM437X: Add rtc_only with ddr in self-refresh support")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20230106054022.947529-1-linmq006@gmail.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Check the return value of memalign() and return NULL if allocating
+aligned memory fails.
+
+Fixes: a2561b12fe39 ("selftests/resctrl: Add built in benchmark")
+Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/pm33xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/resctrl/fill_buf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
-index ce09c42eaed25..f04c21157904b 100644
---- a/drivers/soc/ti/pm33xx.c
-+++ b/drivers/soc/ti/pm33xx.c
-@@ -527,7 +527,7 @@ static int am33xx_pm_probe(struct platform_device *pdev)
+diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
+index 56ccbeae0638d..c20d0a7ecbe63 100644
+--- a/tools/testing/selftests/resctrl/fill_buf.c
++++ b/tools/testing/selftests/resctrl/fill_buf.c
+@@ -68,6 +68,8 @@ static void *malloc_and_init_memory(size_t s)
+ 	size_t s64;
  
- 	ret = am33xx_pm_alloc_sram();
- 	if (ret)
--		return ret;
-+		goto err_wkup_m3_ipc_put;
+ 	void *p = memalign(PAGE_SIZE, s);
++	if (!p)
++		return NULL;
  
- 	ret = am33xx_pm_rtc_setup();
- 	if (ret)
-@@ -572,13 +572,14 @@ static int am33xx_pm_probe(struct platform_device *pdev)
- 	pm_runtime_put_sync(dev);
- err_pm_runtime_disable:
- 	pm_runtime_disable(dev);
--	wkup_m3_ipc_put(m3_ipc);
- err_unsetup_rtc:
- 	iounmap(rtc_base_virt);
- 	clk_put(rtc_fck);
- err_free_sram:
- 	am33xx_pm_free_sram();
- 	pm33xx_dev = NULL;
-+err_wkup_m3_ipc_put:
-+	wkup_m3_ipc_put(m3_ipc);
- 	return ret;
- }
- 
+ 	p64 = (uint64_t *)p;
+ 	s64 = s / sizeof(uint64_t);
 -- 
 2.39.2
 
