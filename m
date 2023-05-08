@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F956FAE15
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8256FAC61
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236173AbjEHLkw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:40:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
+        id S235662AbjEHLXw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbjEHLk1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA20844515
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:25 -0700 (PDT)
+        with ESMTP id S235661AbjEHLXt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 973043948F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46ACE634D0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57175C433EF;
-        Mon,  8 May 2023 11:40:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7A1661086
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD67C433A0;
+        Mon,  8 May 2023 11:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546024;
-        bh=QLwEUQ8r5I1I2kHhKLZebL/h2n+2wf1rb1yeKN38Q7A=;
+        s=korg; t=1683545020;
+        bh=HcVHmsYf0WHbDYdxMfdo34ht14fDlnotCj2cU3dTJdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vv9VXI8V/uNnnnisLcLGW3kEsDuQKK7iFTB8hAKa5CQeWzsLuTKiT1Z6B+jrSs+bl
-         TkrbL+3QArKoFwARWHfDWEe66swersc95QK/ZLZbWPX6xilYvBneinv55+Yv8zVnzo
-         kzs+vYLQZ1KuaZjEj/lrNQHf1kdj3qIdYIZfBkao=
+        b=yD83udAI5kUc0nciJ1pdndyi5VAx9bEjOGGWuaX6FbgVbZsRQ8lqtW1ae7Oz7G+Pd
+         Y3wDI1+yqKkwIyjxLbYuIA37yjZim6U+q60rFTwO26DXPbRda+tDYq8+wIlnoi4Q09
+         lub56fb6E2PTfsMoOxOQrxslhU0AOo4rWZherd5w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/371] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
+Subject: [PATCH 6.3 598/694] power: supply: generic-adc-battery: fix unit scaling
 Date:   Mon,  8 May 2023 11:47:13 +0200
-Message-Id: <20230508094821.276949044@linuxfoundation.org>
+Message-Id: <20230508094454.601413716@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,35 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liu Jian <liujian56@huawei.com>
+From: Sebastian Reichel <sre@kernel.org>
 
-[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
+[ Upstream commit 44263f50065969f2344808388bd589740f026167 ]
 
-This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
+power-supply properties are reported in µV, µA and µW.
+The IIO API provides mV, mA, mW, so the values need to
+be multiplied by 1000.
 
-This patch introduces a possible null-ptr-def problem. Revert it. And the
-fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
-btsdio: fix use after free bug in btsdio_remove due to race condition").
-
-Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e60fea794e6e ("power: battery: Generic battery driver using IIO")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Signed-off-by: Sebastian Reichel <sre@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btsdio.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/power/supply/generic-adc-battery.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
-index 7050a16e7efeb..199e8f7d426d9 100644
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -352,7 +352,6 @@ static void btsdio_remove(struct sdio_func *func)
- 
- 	BT_DBG("func %p", func);
- 
--	cancel_work_sync(&data->work);
- 	if (!data)
- 		return;
+diff --git a/drivers/power/supply/generic-adc-battery.c b/drivers/power/supply/generic-adc-battery.c
+index 66039c665dd1e..0af536f4932f1 100644
+--- a/drivers/power/supply/generic-adc-battery.c
++++ b/drivers/power/supply/generic-adc-battery.c
+@@ -135,6 +135,9 @@ static int read_channel(struct gab *adc_bat, enum power_supply_property psp,
+ 			result);
+ 	if (ret < 0)
+ 		pr_err("read channel error\n");
++	else
++		*result *= 1000;
++
+ 	return ret;
+ }
  
 -- 
 2.39.2
