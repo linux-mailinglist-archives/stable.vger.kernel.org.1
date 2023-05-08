@@ -2,100 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F446FABE3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 082966FADB8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235510AbjEHLSb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
+        id S236018AbjEHLha (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:37:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235494AbjEHLSa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:30 -0400
+        with ESMTP id S236118AbjEHLhO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40CC53784E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C657225536
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD23E62C2E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9FEC4339B;
-        Mon,  8 May 2023 11:18:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D5896335D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95869C433D2;
+        Mon,  8 May 2023 11:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544708;
-        bh=PkAFS26IckiG+N7LtjU4dEnHOLPcJjweGya5lWBk5hg=;
+        s=korg; t=1683545810;
+        bh=45TUghb7z81EybmeblL2XNVdvREe9kqYDNJ67uuIYuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HR51VFqMtTRwKA4CMxRmNaUPPdMXB/TXabMtNOYMyUA8JBMFg5lmx7SpI2yvZxNKe
-         bBEhrUisdRxz387ocMMEmPGgwwFGW7apOBtNL/8sq6ey0Upeb8a9NwdAhLOCkXxhsx
-         umjLQHHYG2+mwuU7iny9mawFNQPObb+04PFOMOi0=
+        b=ItFg6B2ScIEQGNh5gjs59F++4ysjKRif7yKE0Hnb0RMHwQSA6TBR3Y3A4bbFKYBDw
+         68wuZBMKZJxNgX2V1WJAfAIgKNW5yaX73kmO6HATu7TuYEokKZQZgDe2LNbSfFMcbn
+         BSNJrBOs+bdgva2jR7+PznQ03apPVlR1tuofMW9Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 498/694] spi: imx: Dont skip cleanup in removes error path
+Subject: [PATCH 5.15 132/371] media: dm1105: Fix use after free bug in dm1105_remove due to race condition
 Date:   Mon,  8 May 2023 11:45:33 +0200
-Message-Id: <20230508094450.194451937@linuxfoundation.org>
+Message-Id: <20230508094817.269796475@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_PDS_OTHER_BAD_TLD,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 11951c9e3f364d7ae3b568a0e52c8335d43066b5 ]
+[ Upstream commit 5abda7a16698d4d1f47af1168d8fa2c640116b4a ]
 
-Returning early in a platform driver's remove callback is wrong. In this
-case the dma resources are not released in the error path. this is never
-retried later and so this is a permanent leak. To fix this, only skip
-hardware disabling if waking the device fails.
+In dm1105_probe, it called dm1105_ir_init and bound
+&dm1105->ir.work with dm1105_emit_key.
+When it handles IRQ request with dm1105_irq,
+it may call schedule_work to start the work.
 
-Fixes: d593574aff0a ("spi: imx: do not access registers while clocks disabled")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230306065733.2170662-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When we call dm1105_remove to remove the driver, there
+may be a sequence as follows:
+
+Fix it by finishing the work before cleanup in dm1105_remove
+
+CPU0                  CPU1
+
+                    |dm1105_emit_key
+dm1105_remove      |
+  dm1105_ir_exit       |
+    rc_unregister_device |
+    rc_free_device  |
+    rc_dev_release  |
+    kfree(dev);     |
+                    |
+                    | rc_keydown
+                    |   //use
+
+Fixes: 34d2f9bf189c ("V4L/DVB: dm1105: use dm1105_dev & dev instead of dm1105dvb")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/media/pci/dm1105/dm1105.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e4ccd0c329d06..6c9c87cd14cae 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1856,13 +1856,11 @@ static int spi_imx_remove(struct platform_device *pdev)
+diff --git a/drivers/media/pci/dm1105/dm1105.c b/drivers/media/pci/dm1105/dm1105.c
+index 4ac645a56c14e..9e9c7c071accc 100644
+--- a/drivers/media/pci/dm1105/dm1105.c
++++ b/drivers/media/pci/dm1105/dm1105.c
+@@ -1176,6 +1176,7 @@ static void dm1105_remove(struct pci_dev *pdev)
+ 	struct dvb_demux *dvbdemux = &dev->demux;
+ 	struct dmx_demux *dmx = &dvbdemux->dmx;
  
- 	spi_unregister_controller(controller);
- 
--	ret = pm_runtime_resume_and_get(spi_imx->dev);
--	if (ret < 0) {
--		dev_err(spi_imx->dev, "failed to enable clock\n");
--		return ret;
--	}
--
--	writel(0, spi_imx->base + MXC_CSPICTRL);
-+	ret = pm_runtime_get_sync(spi_imx->dev);
-+	if (ret >= 0)
-+		writel(0, spi_imx->base + MXC_CSPICTRL);
-+	else
-+		dev_warn(spi_imx->dev, "failed to enable clock, skip hw disable\n");
- 
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
- 	pm_runtime_put_sync(spi_imx->dev);
++	cancel_work_sync(&dev->ir.work);
+ 	dm1105_ir_exit(dev);
+ 	dmx->close(dmx);
+ 	dvb_net_release(&dev->dvbnet);
 -- 
 2.39.2
 
