@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8ECF6FAAF2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7416C6FA78B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233089AbjEHLIJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46116 "EHLO
+        id S234751AbjEHKcA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233120AbjEHLHv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 308F031ED9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:12 -0700 (PDT)
+        with ESMTP id S234755AbjEHKbd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAB8327853
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8968F62ADA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA87C433EF;
-        Mon,  8 May 2023 11:07:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1EE1626D5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:31:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58B2C433EF;
+        Mon,  8 May 2023 10:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544031;
-        bh=Jn4Z7KfAYoBmFbntV2fWVuQg4ZH22SKdHfEZ4gNtVXQ=;
+        s=korg; t=1683541880;
+        bh=iSQ0QSC3DzGnIMRRTKfOccPI+S6/B1s3mC+ZJFBhaKo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=17W19+wrJUqHJlUe6UhrXiWy35CHHEqRCzTqW2k7wbxOa8RGGtryoxqG8TOn2Zqpn
-         Vr0rYShnpXhkyl8c6FgHKmG9HkoG4fHx7I4OL+syXSMseUZRcbi5pHNEjBLvRxPJgj
-         YWs8tKXGLe7OOw6cdVu2ZWQZSswmAGaP2mkzlh3I=
+        b=qMyDVqtuYxnZ+coJXVddzIFSNiKNfwQh/kd0hg1or9Cc+YuPhsFnXRv3kRzq2tc55
+         u68Hv/s9bngYIPRYqueeCuU61tfi8HOVT319VfbeGQURJ1t/viEQnFmiL8Ap6RxpcA
+         iq8G1fj1AOAJXZ7UuSw3t5Ga5llKQos+SM1MQaFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 248/694] arm64: dts: qcom: sc7280-herobrine-villager: correct trackpad supply
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 257/663] platform: Provide a remove callback that returns no value
 Date:   Mon,  8 May 2023 11:41:23 +0200
-Message-Id: <20230508094440.352369018@linuxfoundation.org>
+Message-Id: <20230508094436.595003518@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,40 +54,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit de88b1759b35086d5e63736fb604ea2d06486b1a ]
+[ Upstream commit 5c5a7680e67ba6fbbb5f4d79fa41485450c1985c ]
 
-The hid-over-i2c takes VDD, not VCC supply.  Fix copy-pasta from other
-Herobrine boards which use elan,ekth3000 with valid VCC:
+struct platform_driver::remove returning an integer made driver authors
+expect that returning an error code was proper error handling. However
+the driver core ignores the error and continues to remove the device
+because there is nothing the core could do anyhow and reentering the
+remove callback again is only calling for trouble.
 
-  sc7280-herobrine-villager-r1-lte.dtb: trackpad@2c: 'vcc-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
+So this is an source for errors typically yielding resource leaks in the
+error path.
 
-Fixes: ee2a62116015 ("arm64: dts: qcom: sc7280: Add device tree for herobrine villager")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230312183622.460488-2-krzysztof.kozlowski@linaro.org
+As there are too many platform drivers to neatly convert them all to
+return void in a single go, do it in several steps after this patch:
+
+ a) Convert all drivers to implement .remove_new() returning void instead
+    of .remove() returning int;
+ b) Change struct platform_driver::remove() to return void and so make
+    it identical to .remove_new();
+ c) Change all drivers back to .remove() now with the better prototype;
+ d) drop struct platform_driver::remove_new().
+
+While this touches all drivers eventually twice, steps a) and c) can be
+done one driver after another and so reduces coordination efforts
+immensely and simplifies review.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20221209150914.3557650-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/platform.c         |  4 +++-
+ include/linux/platform_device.h | 11 +++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi
-index 818d4046d2c7f..38c8a3679fcb3 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-villager.dtsi
-@@ -33,7 +33,7 @@ ap_tp_i2c: &i2c0 {
- 		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 968f3d71eeab2..a4938d1c8fe1d 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -1416,7 +1416,9 @@ static void platform_remove(struct device *_dev)
+ 	struct platform_driver *drv = to_platform_driver(_dev->driver);
+ 	struct platform_device *dev = to_platform_device(_dev);
  
- 		hid-descr-addr = <0x20>;
--		vcc-supply = <&pp3300_z1>;
-+		vdd-supply = <&pp3300_z1>;
+-	if (drv->remove) {
++	if (drv->remove_new) {
++		drv->remove_new(dev);
++	} else if (drv->remove) {
+ 		int ret = drv->remove(dev);
  
- 		wakeup-source;
- 	};
+ 		if (ret)
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index b0d5a253156ec..b845fd83f429b 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -207,7 +207,18 @@ extern void platform_device_put(struct platform_device *pdev);
+ 
+ struct platform_driver {
+ 	int (*probe)(struct platform_device *);
++
++	/*
++	 * Traditionally the remove callback returned an int which however is
++	 * ignored by the driver core. This led to wrong expectations by driver
++	 * authors who thought returning an error code was a valid error
++	 * handling strategy. To convert to a callback returning void, new
++	 * drivers should implement .remove_new() until the conversion it done
++	 * that eventually makes .remove() return void.
++	 */
+ 	int (*remove)(struct platform_device *);
++	void (*remove_new)(struct platform_device *);
++
+ 	void (*shutdown)(struct platform_device *);
+ 	int (*suspend)(struct platform_device *, pm_message_t state);
+ 	int (*resume)(struct platform_device *);
 -- 
 2.39.2
 
