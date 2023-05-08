@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFF86FAC59
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FA146FAE37
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235643AbjEHLX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39200 "EHLO
+        id S236116AbjEHLmi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:42:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235631AbjEHLXY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BFF39B93
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:22 -0700 (PDT)
+        with ESMTP id S236247AbjEHLmX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:42:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206C4411A4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FB8462CDE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E904C433EF;
-        Mon,  8 May 2023 11:23:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE6C963593
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0544CC433EF;
+        Mon,  8 May 2023 11:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545001;
-        bh=bK+xXjBqhZ1eCi1oCseU172wydz8THEOa/mgUWICduY=;
+        s=korg; t=1683546100;
+        bh=4EJDyu8LfVkNwGe+5qrF8t6ALOw4vfB1sr6a92KXtzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fn3Eb5eXZ3F8Yz7nc2P3sc7b4Bi1Lk4g+rOe+fJz49Z5XNWGT54r/lI6WTR81O5O9
-         5anEtTVW7Soz0HtHaGp+BXa4IPKJ6BI+QlZHeLRR6W5GLTGFhlR68amo4TUrakOSLu
-         gTLFnTY1bgFfuGttPhV8QP/Ie6ZAyRXrBbA9U6CI=
+        b=Czdx2pEkvYv0GYrYAd3RpYfpvyUMciUVOc/GPNx/zFflTCUNe3EnHe5wJuAeDzHjs
+         I1mcKmnJffxim2EnqrONXmAXRIO6KC6UHu3UTOqpSVq3e796p0y5qWtv+Zcc3ZIScp
+         AhDvbwKPyw0LEfXu9W3DmztzW0g+x/dleNR/S4e4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com,
-        ZhangPeng <zhangpeng362@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
+        Yan Wang <rk.code@outlook.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 593/694] fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
+Subject: [PATCH 5.15 227/371] net: stmmac:fix system hang when setting up tag_8021q VLAN for DSA ports
 Date:   Mon,  8 May 2023 11:47:08 +0200
-Message-Id: <20230508094454.354924457@linuxfoundation.org>
+Message-Id: <20230508094821.079693764@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,78 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ZhangPeng <zhangpeng362@huawei.com>
+From: Yan Wang <rk.code@outlook.com>
 
-[ Upstream commit 254e69f284d7270e0abdc023ee53b71401c3ba0c ]
+[ Upstream commit 35226750f7ab9d49140d95bc7d38a2a9b0f4fdfc ]
 
-Syzbot reported a null-ptr-deref bug:
+The system hang because of dsa_tag_8021q_port_setup()->
+				stmmac_vlan_rx_add_vid().
 
-ntfs3: loop0: Different NTFS' sector size (1024) and media sector size
-(512)
-ntfs3: loop0: Mark volume as dirty due to NTFS errors
-general protection fault, probably for non-canonical address
-0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-RIP: 0010:d_flags_for_inode fs/dcache.c:1980 [inline]
-RIP: 0010:__d_add+0x5ce/0x800 fs/dcache.c:2796
-Call Trace:
- <TASK>
- d_splice_alias+0x122/0x3b0 fs/dcache.c:3191
- lookup_open fs/namei.c:3391 [inline]
- open_last_lookups fs/namei.c:3481 [inline]
- path_openat+0x10e6/0x2df0 fs/namei.c:3688
- do_filp_open+0x264/0x4f0 fs/namei.c:3718
- do_sys_openat2+0x124/0x4e0 fs/open.c:1310
- do_sys_open fs/open.c:1326 [inline]
- __do_sys_open fs/open.c:1334 [inline]
- __se_sys_open fs/open.c:1330 [inline]
- __x64_sys_open+0x221/0x270 fs/open.c:1330
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+I found in stmmac_drv_probe() that cailing pm_runtime_put()
+disabled the clock.
 
-If the MFT record of ntfs inode is not a base record, inode->i_op can be
-NULL. And a null-ptr-deref may happen:
+First, when the kernel is compiled with CONFIG_PM=y,The stmmac's
+resume/suspend is active.
 
-ntfs_lookup()
-    dir_search_u() # inode->i_op is set to NULL
-    d_splice_alias()
-        __d_add()
-            d_flags_for_inode() # inode->i_op->get_link null-ptr-deref
+Secondly,stmmac as DSA master,the dsa_tag_8021q_port_setup() function
+will callback stmmac_vlan_rx_add_vid when DSA dirver starts. However,
+The system is hanged for the stmmac_vlan_rx_add_vid() accesses its
+registers after stmmac's clock is closed.
 
-Fix this by adding a Check on inode->i_op before calling the
-d_splice_alias() function.
+I would suggest adding the pm_runtime_resume_and_get() to the
+stmmac_vlan_rx_add_vid().This guarantees that resuming clock output
+while in use.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Reported-by: syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com
-Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: b3dcb3127786 ("net: stmmac: correct clocks enabled in stmmac_vlan_rx_kill_vid()")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Yan Wang <rk.code@outlook.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/namei.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index 407fe92394e22..8d206770d8c6d 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -88,6 +88,16 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
- 		__putname(uni);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index a3bd5396c2f87..179f8d196c890 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6283,6 +6283,10 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	bool is_double = false;
+ 	int ret;
+ 
++	ret = pm_runtime_resume_and_get(priv->device);
++	if (ret < 0)
++		return ret;
++
+ 	if (be16_to_cpu(proto) == ETH_P_8021AD)
+ 		is_double = true;
+ 
+@@ -6290,16 +6294,18 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	ret = stmmac_vlan_update(priv, is_double);
+ 	if (ret) {
+ 		clear_bit(vid, priv->active_vlans);
+-		return ret;
++		goto err_pm_put;
  	}
  
-+	/*
-+	 * Check for a null pointer
-+	 * If the MFT record of ntfs inode is not a base record, inode->i_op can be NULL.
-+	 * This causes null pointer dereference in d_splice_alias().
-+	 */
-+	if (!IS_ERR(inode) && inode->i_op == NULL) {
-+		iput(inode);
-+		inode = ERR_PTR(-EINVAL);
-+	}
-+
- 	return d_splice_alias(inode, dentry);
+ 	if (priv->hw->num_vlan) {
+ 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
+ 		if (ret)
+-			return ret;
++			goto err_pm_put;
+ 	}
++err_pm_put:
++	pm_runtime_put(priv->device);
+ 
+-	return 0;
++	return ret;
  }
  
+ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
 -- 
 2.39.2
 
