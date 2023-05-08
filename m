@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 188586FAC35
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B633A6FAE0E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235607AbjEHLWG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36446 "EHLO
+        id S236216AbjEHLkj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235598AbjEHLWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:03 -0400
+        with ESMTP id S234033AbjEHLkP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 323B52C91B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6CF3FCD4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D8A862CA0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7110CC433EF;
-        Mon,  8 May 2023 11:21:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47C35634C8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59311C433D2;
+        Mon,  8 May 2023 11:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544917;
-        bh=D0dVM0JgN5QjoyEAvVxIgpO2OFtjotW5Z0NgnqhTwN4=;
+        s=korg; t=1683546012;
+        bh=qznDBF0JfbDQfbY9KNh07heROaI+kw1480fE08ZH6iY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qoqxiE2ixHthhobcjGbX1SGCnNeyQfRA7OJa6JW4j1TNdhKeeGu6ZVxjmtz+IuzAM
-         UCjFisC1nk4VE8Hr83qqdIkJYozb8CLBugdk8AE8sxh+B+TuDtXTZ0s4LssxR0UtgU
-         /84bmw0QzpOlDJZpjG/n1CQKVlzxdIctDxbUPSu4=
+        b=kdYHvQg3nKt2684mKify5F8C8WQMKQ73zStkUU2G6uoJIQimMfBcli3PgsZX0j6CT
+         44nHeDoM3o/AVupx9KlTm87dQqOH9hhUePmGxapJP3MiwbuU/Ko48ZsGVRHEsJQEyU
+         X4QKYHN8x9JFMbtL/G4es20R2/XL0rMwmKfjcEk0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Jordan <daniel.m.jordan@oracle.com>,
-        Libo Chen <libo.chen@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 565/694] sched/fair: Fix inaccurate tally of ttwu_move_affine
+        patches@lists.linux.dev, Nate Thornton <nate.thornton@samsung.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Minwoo Im <minwoo.im@samsung.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 199/371] nvme: fix async event trace event
 Date:   Mon,  8 May 2023 11:46:40 +0200
-Message-Id: <20230508094453.090936474@linuxfoundation.org>
+Message-Id: <20230508094820.004252474@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,44 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Libo Chen <libo.chen@oracle.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 39afe5d6fc59237ff7738bf3ede5a8856822d59d ]
+[ Upstream commit 6622b76fe922b94189499a90ccdb714a4a8d0773 ]
 
-There are scenarios where non-affine wakeups are incorrectly counted as
-affine wakeups by schedstats.
+Mixing AER Event Type and Event Info has masking clashes. Just print the
+event type, but also include the event info of the AER result in the
+trace.
 
-When wake_affine_idle() returns prev_cpu which doesn't equal to
-nr_cpumask_bits, it will slip through the check: target == nr_cpumask_bits
-in wake_affine() and be counted as if target == this_cpu in schedstats.
-
-Replace target == nr_cpumask_bits with target != this_cpu to make sure
-affine wakeups are accurately tallied.
-
-Fixes: 806486c377e33 (sched/fair: Do not migrate if the prev_cpu is idle)
-Suggested-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Libo Chen <libo.chen@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://lore.kernel.org/r/20220810223313.386614-1-libo.chen@oracle.com
+Fixes: 09bd1ff4b15143b ("nvme-core: add async event trace helper")
+Reported-by: Nate Thornton <nate.thornton@samsung.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c  |  5 +----
+ drivers/nvme/host/trace.h | 15 ++++++---------
+ 2 files changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 5f6587d94c1dd..ed89be0aa6503 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6614,7 +6614,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
- 		target = wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 2ad1e4acc0d6b..e5318b38c6624 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4374,8 +4374,6 @@ static void nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+ {
+ 	u32 aer_notice_type = nvme_aer_subtype(result);
  
- 	schedstat_inc(p->stats.nr_wakeups_affine_attempts);
--	if (target == nr_cpumask_bits)
-+	if (target != this_cpu)
- 		return prev_cpu;
+-	trace_nvme_async_event(ctrl, aer_notice_type);
+-
+ 	switch (aer_notice_type) {
+ 	case NVME_AER_NOTICE_NS_CHANGED:
+ 		set_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events);
+@@ -4407,7 +4405,6 @@ static void nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
  
- 	schedstat_inc(sd->ttwu_move_affine);
+ static void nvme_handle_aer_persistent_error(struct nvme_ctrl *ctrl)
+ {
+-	trace_nvme_async_event(ctrl, NVME_AER_ERROR);
+ 	dev_warn(ctrl->device, "resetting controller due to AER\n");
+ 	nvme_reset_ctrl(ctrl);
+ }
+@@ -4422,6 +4419,7 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
+ 	if (le16_to_cpu(status) >> 1 != NVME_SC_SUCCESS)
+ 		return;
+ 
++	trace_nvme_async_event(ctrl, result);
+ 	switch (aer_type) {
+ 	case NVME_AER_NOTICE:
+ 		nvme_handle_aen_notice(ctrl, result);
+@@ -4439,7 +4437,6 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
+ 	case NVME_AER_SMART:
+ 	case NVME_AER_CSS:
+ 	case NVME_AER_VS:
+-		trace_nvme_async_event(ctrl, aer_type);
+ 		ctrl->aen_result = result;
+ 		break;
+ 	default:
+diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
+index aa8b0f86b2be1..b258f7b8788e1 100644
+--- a/drivers/nvme/host/trace.h
++++ b/drivers/nvme/host/trace.h
+@@ -127,15 +127,12 @@ TRACE_EVENT(nvme_async_event,
+ 	),
+ 	TP_printk("nvme%d: NVME_AEN=%#08x [%s]",
+ 		__entry->ctrl_id, __entry->result,
+-		__print_symbolic(__entry->result,
+-		aer_name(NVME_AER_NOTICE_NS_CHANGED),
+-		aer_name(NVME_AER_NOTICE_ANA),
+-		aer_name(NVME_AER_NOTICE_FW_ACT_STARTING),
+-		aer_name(NVME_AER_NOTICE_DISC_CHANGED),
+-		aer_name(NVME_AER_ERROR),
+-		aer_name(NVME_AER_SMART),
+-		aer_name(NVME_AER_CSS),
+-		aer_name(NVME_AER_VS))
++		__print_symbolic(__entry->result & 0x7,
++			aer_name(NVME_AER_ERROR),
++			aer_name(NVME_AER_SMART),
++			aer_name(NVME_AER_NOTICE),
++			aer_name(NVME_AER_CSS),
++			aer_name(NVME_AER_VS))
+ 	)
+ );
+ 
 -- 
 2.39.2
 
