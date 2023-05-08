@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB63F6FA6B4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0E46FA6BF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234557AbjEHKX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49132 "EHLO
+        id S234566AbjEHKXl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234444AbjEHKWw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8BAF24032
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:18 -0700 (PDT)
+        with ESMTP id S234442AbjEHKXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 698A526456
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6388162558
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554F7C433EF;
-        Mon,  8 May 2023 10:22:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2A5362558
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52C7C433D2;
+        Mon,  8 May 2023 10:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541337;
-        bh=0VbnlVJjOo638DvmnajlggrGbUsglIz0Kltuz/fFdL0=;
+        s=korg; t=1683541371;
+        bh=fnuaofywZ2/5O8yqHUDcIPxOi6LGC8EzXuTSfrxlI0w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RLBSrPGzNzkBOPyW2j3RfBxrm6U8Hv/FEhA4NArYzQ6B1N/OKzA14tDjXUrSohmxM
-         SSeUmb9QsBu0u3XeXu71QoGxDUDCH5ga3cmniriPzOQvqL9uwtO/Lu6u/pCOttTiDY
-         TtKLcBNKe5sBo6AbuyrAD0ldWVBX38aA2g9rUprk=
+        b=KB9rrpQ2Cui5GoR/NSckXUg096Tce64VdAzjV9fFgt+TSmvazS1Qjglyr8BDLOowa
+         YT/Tx0FgHdwR1HyxIwnUJ2oS+4l8u8CewNohjtJoa32u7B17FMzDtU7BShh4IszmFt
+         Cr9CIFmKG/WEtq9685Enpaw0VuJVceRLuhPDXDOM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.2 065/663] soundwire: qcom: correct setting ignore bit on v1.5.1
-Date:   Mon,  8 May 2023 11:38:11 +0200
-Message-Id: <20230508094430.586951932@linuxfoundation.org>
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.2 066/663] pinctrl: qcom: lpass-lpi: set output value before enabling output
+Date:   Mon,  8 May 2023 11:38:12 +0200
+Message-Id: <20230508094430.617100750@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,33 +57,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit bd934f77eeac377e81ddac8673803e7334b82d3d upstream.
+commit 163bfb0cb1f6fbf961cf912cbde57399ea1ae0e8 upstream.
 
-According to the comment and to downstream sources, the
-SWRM_CONTINUE_EXEC_ON_CMD_IGNORE in SWRM_CMD_FIFO_CFG_ADDR register
-should be set for v1.5.1 and newer, so fix the >= operator.
+As per Hardware Programming Guide, when configuring pin as output,
+set the pin value before setting output-enable (OE).  Similar approach
+is in main SoC TLMM pin controller.
 
-Fixes: 542d3491cdd7 ("soundwire: qcom: set continue execution flag for ignored commands")
 Cc: <stable@vger.kernel.org>
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230222140343.188691-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20230309154949.658380-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/qcom.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/soundwire/qcom.c
-+++ b/drivers/soundwire/qcom.c
-@@ -704,7 +704,7 @@ static int qcom_swrm_init(struct qcom_sw
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -221,6 +221,15 @@ static int lpi_config_set(struct pinctrl
+ 		}
  	}
  
- 	/* Configure number of retries of a read/write cmd */
--	if (ctrl->version > 0x01050001) {
-+	if (ctrl->version >= 0x01050001) {
- 		/* Only for versions >= 1.5.1 */
- 		ctrl->reg_write(ctrl, SWRM_CMD_FIFO_CFG_ADDR,
- 				SWRM_RD_WR_CMD_RETRIES |
++	/*
++	 * As per Hardware Programming Guide, when configuring pin as output,
++	 * set the pin value before setting output-enable (OE).
++	 */
++	if (output_enabled) {
++		val = u32_encode_bits(value ? 1 : 0, LPI_GPIO_VALUE_OUT_MASK);
++		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
++	}
++
+ 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
+ 
+ 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
+@@ -230,11 +239,6 @@ static int lpi_config_set(struct pinctrl
+ 
+ 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
+ 
+-	if (output_enabled) {
+-		val = u32_encode_bits(value ? 1 : 0, LPI_GPIO_VALUE_OUT_MASK);
+-		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
+-	}
+-
+ 	return 0;
+ }
+ 
 
 
