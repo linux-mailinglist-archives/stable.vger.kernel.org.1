@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8FDE6FAABA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741A66FA771
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233842AbjEHLGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39490 "EHLO
+        id S234561AbjEHKal (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbjEHLFg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:05:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F16192FA02
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:04:40 -0700 (PDT)
+        with ESMTP id S234695AbjEHKaZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:30:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47DDA24AA9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:30:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3879E62A6A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38935C433D2;
-        Mon,  8 May 2023 11:04:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D171662699
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5212C433EF;
+        Mon,  8 May 2023 10:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543865;
-        bh=xcXUJfwMrQMQ7fqEy/OekkIlPnQl6iJpjJyys8ASBGQ=;
+        s=korg; t=1683541822;
+        bh=4kSVwRMWSeZudJI9wCrpqLtJBze2gZkJ3I8sCofRyEY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f9ytFG9tWB84PyT0CWZ7H/6JKacCHN9UK6uBsbEaOAb4m/HH4gymmDu2SUPXmXDE0
-         1zohQCuLylXQwYewyZNDYErrJPSEPHxLPMJNuE7KnSH3uNYQZHRR1eYhnBDznOaBxt
-         CcvFsgbasHhSuJanwIqCeZOA0zWo82vpBvLzZzgc=
+        b=2WLRDVkZYne/CbpNvckVgjXxaqzu/NRpN4+4nIeYCSduoG+QL9K8d57TkXOfgCUFM
+         BHPe/z99zws3TSS0U75SYAKFB1S1wFW/XjPJ+ocR8l9PTWQQ4qhPO2usZ2RlXm8Vlu
+         GN/tHQwttmuGPLPZl8e142o9GrPML8PMP09eaO2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        "Nicolas F. R. A. Prado" <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 227/694] ARM: dts: gta04: fix excess dma channel usage
+Subject: [PATCH 6.2 236/663] media: mediatek: vcodec: Force capture queue format to MM21
 Date:   Mon,  8 May 2023 11:41:02 +0200
-Message-Id: <20230508094439.726129830@linuxfoundation.org>
+Message-Id: <20230508094435.939106178@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,71 +58,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit a622310f7f0185da02e42cdb06475f533efaae60 ]
+[ Upstream commit 68c7df527657a9e962da7b5b9c0308557357d8dc ]
 
-OMAP processors support 32 channels but there is no check or
-inspect this except booting a device and looking at dmesg reports
-of not available channels.
+While the decoder can produce frames in both MM21 and MT21C formats, only
+MM21 is currently supported by userspace tools (like gstreamer and libyuv).
+In order to ensure userspace keeps working after the SCP firmware is
+updated to support both MM21 and MT21C formats, force the MM21 format for
+the capture queue.
 
-Recently some more subsystems with DMA (aes1+2) were added filling
-the list of dma channels beyond the limit of 32 (even if other
-parameters indicate 96 or 128 channels). This leads to random
-subsystem failures i(e.g. mcbsp for audio) after boot or boot
-messages that DMA can not be initialized.
+This is meant as a stopgap solution while dynamic format switching between
+MM21 and MT21C isn't implemented in the driver.
 
-Another symptom is that
-
-/sys/kernel/debug/dmaengine/summary
-
-has 32 entries and does not show all required channels.
-
-Fix by disabling unused (on the GTA04 hardware) mcspi1...4.
-Each SPI channel allocates 4 DMA channels rapidly filling
-the available ones.
-
-Disabling unused SPI modules on the OMAP3 SoC may also save
-some energy (has not been checked).
-
-Fixes: c312f066314e ("ARM: dts: omap3: Migrate AES from hwmods to sysc-omap2")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-[re-enabled aes2, improved commit subject line]
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Message-Id: <20230113211151.2314874-1-andreas@kemnade.info>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 7501edef6b1f ("media: mediatek: vcodec: Different codec using different capture format")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: Nicolas F. R. A. Prado <nfraprado@collabora.com>
+Tested-by: Nicolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap3-gta04.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../platform/mediatek/vcodec/mtk_vcodec_dec.c | 24 +++----------------
+ 1 file changed, 3 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
-index 87e0ab1bbe957..e0be0fb23f80f 100644
---- a/arch/arm/boot/dts/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/omap3-gta04.dtsi
-@@ -612,6 +612,22 @@
- 	clock-frequency = <100000>;
- };
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c
+index 641f533c417fd..c99705681a03e 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec.c
+@@ -39,10 +39,9 @@ static bool mtk_vdec_get_cap_fmt(struct mtk_vcodec_ctx *ctx, int format_index)
+ {
+ 	const struct mtk_vcodec_dec_pdata *dec_pdata = ctx->dev->vdec_pdata;
+ 	const struct mtk_video_fmt *fmt;
+-	struct mtk_q_data *q_data;
+ 	int num_frame_count = 0, i;
+-	bool ret = true;
  
-+&mcspi1 {
-+	status = "disabled";
-+};
-+
-+&mcspi2 {
-+	status = "disabled";
-+};
-+
-+&mcspi3 {
-+	status = "disabled";
-+};
-+
-+&mcspi4 {
-+	status = "disabled";
-+};
-+
- &usb_otg_hs {
- 	interface-type = <0>;
- 	usb-phy = <&usb2_phy>;
++	fmt = &dec_pdata->vdec_formats[format_index];
+ 	for (i = 0; i < *dec_pdata->num_formats; i++) {
+ 		if (dec_pdata->vdec_formats[i].type != MTK_FMT_FRAME)
+ 			continue;
+@@ -50,27 +49,10 @@ static bool mtk_vdec_get_cap_fmt(struct mtk_vcodec_ctx *ctx, int format_index)
+ 		num_frame_count++;
+ 	}
+ 
+-	if (num_frame_count == 1)
++	if (num_frame_count == 1 || fmt->fourcc == V4L2_PIX_FMT_MM21)
+ 		return true;
+ 
+-	fmt = &dec_pdata->vdec_formats[format_index];
+-	q_data = &ctx->q_data[MTK_Q_DATA_SRC];
+-	switch (q_data->fmt->fourcc) {
+-	case V4L2_PIX_FMT_VP8_FRAME:
+-		if (fmt->fourcc == V4L2_PIX_FMT_MM21)
+-			ret = true;
+-		break;
+-	case V4L2_PIX_FMT_H264_SLICE:
+-	case V4L2_PIX_FMT_VP9_FRAME:
+-		if (fmt->fourcc == V4L2_PIX_FMT_MM21)
+-			ret = false;
+-		break;
+-	default:
+-		ret = true;
+-		break;
+-	}
+-
+-	return ret;
++	return false;
+ }
+ 
+ static struct mtk_q_data *mtk_vdec_get_q_data(struct mtk_vcodec_ctx *ctx,
 -- 
 2.39.2
 
