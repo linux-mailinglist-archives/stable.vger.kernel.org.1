@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC67E6FAC0D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A50166FA8F4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235559AbjEHLUQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:20:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34066 "EHLO
+        id S235129AbjEHKqk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235558AbjEHLUP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8CB387E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:12 -0700 (PDT)
+        with ESMTP id S235118AbjEHKqT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC85D2C3E4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0868662C73
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4208C433EF;
-        Mon,  8 May 2023 11:20:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16555628BC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210CAC433EF;
+        Mon,  8 May 2023 10:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544811;
-        bh=S+r0qtguRFC3MYOnUV0u/jp5wGKz2OatD/jYEOi+MDM=;
+        s=korg; t=1683542763;
+        bh=KpO+IDd/OPHpmqeOmoDl93qwT8X3jb/4UFN1KSvzEhc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kBrYA2OEeVx7YpxIEq1+odoWoZNlFSFw3J0qnOtHl0CnQNd1vOEr3FmkL1goABxdF
-         SOl5K0K83W6WIhULcyosBk/wm4WRpRmuPCEnlXkWIc58buiYFH6TBgf8F17blkxhEt
-         DzHjnKUJegdtaa9Insilc5R5x0oXea2XzcjKoB4M=
+        b=svrX8hZT2kMBO3kflgZCOWXNYdjCUXhzfvqhI0h3E6Pw/gF276QIvdnAUHqZLxeOD
+         nT7PBPlZAPck3pM1LQgmzKBI8bEd1PPXEl/vgoIq/vTe/hgnb4OfjDzuM3PGDUYite
+         eBmsy8SZYIyhKI9Z6I+GbPME7G+cKSb4RplNCHYI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 530/694] HID: amd_sfh: Handle "no sensors" enabled for SFH1.1
-Date:   Mon,  8 May 2023 11:46:05 +0200
-Message-Id: <20230508094451.537609067@linuxfoundation.org>
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Zhu Yanjun <zyjzyj2000@gmail.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 540/663] RDMA/rxe: Remove tasklet call from rxe_cq.c
+Date:   Mon,  8 May 2023 11:46:06 +0200
+Message-Id: <20230508094446.510970543@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,67 +55,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit 8455cbb25927013b3417ab619dced1c0e87708af ]
+[ Upstream commit 78b26a335310a097d6b22581b706050db42f196c ]
 
-Based on num_hid_devices, each sensor device is initialized. If
-"no sensors" is initialized, amd_sfh work initialization and scheduling
-doesn’t make sense and returns EOPNOTSUPP to stop driver probe. Hence,
-add a check for "no sensors" enabled to handle the special case.
+Remove the tasklet call in rxe_cq.c and also the is_dying in the
+cq struct. There is no reason for the rxe driver to defer the call
+to the cq completion handler by scheduling a tasklet. rxe_cq_post()
+is not called in a hard irq context.
 
-Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+The rxe driver currently is incorrect because the tasklet call is
+made without protecting the cq pointer with a reference from having
+the underlying memory freed before the deferred routine is called.
+Executing the comp_handler inline fixes this problem.
+
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Link: https://lore.kernel.org/r/20230327215643.10410-1-rpearsonhpe@gmail.com
+Acked-by: Zhu Yanjun <zyjzyj2000@gmail.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_cq.c    |   32 +++-----------------------------
+ drivers/infiniband/sw/rxe/rxe_verbs.c |    2 --
+ drivers/infiniband/sw/rxe/rxe_verbs.h |    2 --
+ 3 files changed, 3 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-index a1d6e08fab7d4..bb8bd7892b674 100644
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-@@ -112,6 +112,7 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
- 	cl_data->num_hid_devices = amd_sfh_get_sensor_num(privdata, &cl_data->sensor_idx[0]);
- 	if (cl_data->num_hid_devices == 0)
- 		return -ENODEV;
-+	cl_data->is_any_sensor_enabled = false;
+--- a/drivers/infiniband/sw/rxe/rxe_cq.c
++++ b/drivers/infiniband/sw/rxe/rxe_cq.c
+@@ -39,21 +39,6 @@ err1:
+ 	return -EINVAL;
+ }
  
- 	INIT_DELAYED_WORK(&cl_data->work, amd_sfh_work);
- 	INIT_DELAYED_WORK(&cl_data->work_buffer, amd_sfh_work_buffer);
-@@ -170,6 +171,7 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
- 		status = (status == 0) ? SENSOR_ENABLED : SENSOR_DISABLED;
+-static void rxe_send_complete(struct tasklet_struct *t)
+-{
+-	struct rxe_cq *cq = from_tasklet(cq, t, comp_task);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&cq->cq_lock, flags);
+-	if (cq->is_dying) {
+-		spin_unlock_irqrestore(&cq->cq_lock, flags);
+-		return;
+-	}
+-	spin_unlock_irqrestore(&cq->cq_lock, flags);
+-
+-	cq->ibcq.comp_handler(&cq->ibcq, cq->ibcq.cq_context);
+-}
+-
+ int rxe_cq_from_init(struct rxe_dev *rxe, struct rxe_cq *cq, int cqe,
+ 		     int comp_vector, struct ib_udata *udata,
+ 		     struct rxe_create_cq_resp __user *uresp)
+@@ -79,10 +64,6 @@ int rxe_cq_from_init(struct rxe_dev *rxe
  
- 		if (status == SENSOR_ENABLED) {
-+			cl_data->is_any_sensor_enabled = true;
- 			cl_data->sensor_sts[i] = SENSOR_ENABLED;
- 			rc = amdtp_hid_probe(i, cl_data);
- 			if (rc) {
-@@ -186,12 +188,21 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
- 					cl_data->sensor_sts[i]);
- 				goto cleanup;
- 			}
-+		} else {
-+			cl_data->sensor_sts[i] = SENSOR_DISABLED;
- 		}
- 		dev_dbg(dev, "sid 0x%x (%s) status 0x%x\n",
- 			cl_data->sensor_idx[i], get_sensor_name(cl_data->sensor_idx[i]),
- 			cl_data->sensor_sts[i]);
+ 	cq->is_user = uresp;
+ 
+-	cq->is_dying = false;
+-
+-	tasklet_setup(&cq->comp_task, rxe_send_complete);
+-
+ 	spin_lock_init(&cq->cq_lock);
+ 	cq->ibcq.cqe = cqe;
+ 	return 0;
+@@ -103,6 +84,7 @@ int rxe_cq_resize_queue(struct rxe_cq *c
+ 	return err;
+ }
+ 
++/* caller holds reference to cq */
+ int rxe_cq_post(struct rxe_cq *cq, struct rxe_cqe *cqe, int solicited)
+ {
+ 	struct ib_event ev;
+@@ -135,21 +117,13 @@ int rxe_cq_post(struct rxe_cq *cq, struc
+ 	if ((cq->notify == IB_CQ_NEXT_COMP) ||
+ 	    (cq->notify == IB_CQ_SOLICITED && solicited)) {
+ 		cq->notify = 0;
+-		tasklet_schedule(&cq->comp_task);
++
++		cq->ibcq.comp_handler(&cq->ibcq, cq->ibcq.cq_context);
  	}
  
-+	if (!cl_data->is_any_sensor_enabled) {
-+		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n",
-+			 cl_data->is_any_sensor_enabled);
-+		rc = -EOPNOTSUPP;
-+		goto cleanup;
-+	}
-+
- 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
  	return 0;
+ }
  
--- 
-2.39.2
-
+-void rxe_cq_disable(struct rxe_cq *cq)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&cq->cq_lock, flags);
+-	cq->is_dying = true;
+-	spin_unlock_irqrestore(&cq->cq_lock, flags);
+-}
+-
+ void rxe_cq_cleanup(struct rxe_pool_elem *elem)
+ {
+ 	struct rxe_cq *cq = container_of(elem, typeof(*cq), elem);
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -786,8 +786,6 @@ static int rxe_destroy_cq(struct ib_cq *
+ 	if (atomic_read(&cq->num_wq))
+ 		return -EINVAL;
+ 
+-	rxe_cq_disable(cq);
+-
+ 	rxe_cleanup(cq);
+ 	return 0;
+ }
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.h
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.h
+@@ -63,9 +63,7 @@ struct rxe_cq {
+ 	struct rxe_queue	*queue;
+ 	spinlock_t		cq_lock;
+ 	u8			notify;
+-	bool			is_dying;
+ 	bool			is_user;
+-	struct tasklet_struct	comp_task;
+ 	atomic_t		num_wq;
+ };
+ 
 
 
