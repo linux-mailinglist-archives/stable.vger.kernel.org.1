@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4405E6FA57A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8806FA83A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234149AbjEHKJx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37950 "EHLO
+        id S234728AbjEHKix (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:38:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234169AbjEHKJv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A3E35124
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:50 -0700 (PDT)
+        with ESMTP id S234875AbjEHKic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044D128A92
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17205623A8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2976DC433D2;
-        Mon,  8 May 2023 10:09:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90B2761D23
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8BDC433EF;
+        Mon,  8 May 2023 10:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540589;
-        bh=tsHhjcFbu9WAW/ZJUbSYH19Wck+0RYJMh7cXfyZcc6k=;
+        s=korg; t=1683542310;
+        bh=lpfKI2YHJdz7GAda496iuHUKRZV56TVYaMGEB9AZ0uQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JIl7bAC0knkky0SIrGwUoS0rCSDgL5ydRrzpLwesKFLGrdox4RryDoqj54zhd54nT
-         kQ36RKs6y/sH9vcMXGfmF6TZjew6Woq/cNwkeq9FImuYPBtKdKA9K/hH9W0Oeak/1b
-         YfFcyK0z2EdwkHgwhSLMfQOmxJSnSs7t9vBClku0=
+        b=aan/HsT9Z/7blebOPADInUac3mNsWk5HbzdAhd9XCwWUSPfPzV+7JiSfpvgJiE3lq
+         uZKuxw0+Q9NlZzvRgfN85JBju3IQrxfa6+F0HZs5SXjan30iDqbInmZCY2hq3SR4WK
+         5zyvDCxouxKBNcRS4XKGA7BN4Sbhf/E9lRA92j4Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Mi <cmi@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Maor Dickman <maord@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 379/611] net/mlx5: E-switch, Dont destroy indirect table in split rule
+        patches@lists.linux.dev, Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 395/663] wifi: mt76: mt7996: fix pointer calculation in ie countdown event
 Date:   Mon,  8 May 2023 11:43:41 +0200
-Message-Id: <20230508094434.652353865@linuxfoundation.org>
+Message-Id: <20230508094440.913622683@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,49 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Mi <cmi@nvidia.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 4c8189302567f75099a336b0efcff8291ec86ff4 ]
+[ Upstream commit 8b14ce24a0297175bc4ebdf26d45a22b5a33847f ]
 
-Source port rewrite (forward to ovs internal port or statck device) isn't
-supported in the rule of split action. So there is no indirect table in
-split rule. The cited commit destroyes indirect table in split rule. The
-indirect table for other rules will be destroyed wrongly. It will cause
-traffic loss.
+Fix the tail and data pointers. The rxd->len in mt7996_mcu_rxd does not
+include the length of general rxd. It only includes the length of
+firmware event rxd. Use skb->length to get the correct length.
 
-Fix it by removing the destroy function in split rule. And also remove
-the destroy function in error flow.
-
-Fixes: 10742efc20a4 ("net/mlx5e: VF tunnel TX traffic offloading")
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Maor Dickman <maord@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index ac8cf1b93e46a..519526a4810ef 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -733,7 +733,6 @@ mlx5_eswitch_add_fwd_rule(struct mlx5_eswitch *esw,
- 	kfree(dest);
- 	return rule;
- err_chain_src_rewrite:
--	esw_put_dest_tables_loop(esw, attr, 0, i);
- 	mlx5_esw_vporttbl_put(esw, &fwd_attr);
- err_get_fwd:
- 	mlx5_chains_put_table(chains, attr->chain, attr->prio, 0);
-@@ -776,7 +775,6 @@ __mlx5_eswitch_del_rule(struct mlx5_eswitch *esw,
- 	if (fwd_rule)  {
- 		mlx5_esw_vporttbl_put(esw, &fwd_attr);
- 		mlx5_chains_put_table(chains, attr->chain, attr->prio, 0);
--		esw_put_dest_tables_loop(esw, attr, 0, esw_attr->split_count);
- 	} else {
- 		if (split)
- 			mlx5_esw_vporttbl_put(esw, &fwd_attr);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 18c4e7bc4370d..c8c332ed8a402 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -421,7 +421,8 @@ mt7996_mcu_ie_countdown(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	if (hdr->band && dev->mt76.phys[hdr->band])
+ 		mphy = dev->mt76.phys[hdr->band];
+ 
+-	tail = skb->data + le16_to_cpu(rxd->len);
++	tail = skb->data + skb->len;
++	data += sizeof(struct header);
+ 	while (data + sizeof(struct tlv) < tail && le16_to_cpu(tlv->len)) {
+ 		switch (le16_to_cpu(tlv->tag)) {
+ 		case UNI_EVENT_IE_COUNTDOWN_CSA:
 -- 
 2.39.2
 
