@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D276FA5CB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4A56FADC0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbjEHKNM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41410 "EHLO
+        id S235984AbjEHLh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234246AbjEHKM7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:59 -0400
+        with ESMTP id S236098AbjEHLh2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8773AA0B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47CC3B7BA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F43D60FF4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D13C433D2;
-        Mon,  8 May 2023 10:12:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 433DA63391
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A33DC433D2;
+        Mon,  8 May 2023 11:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540776;
-        bh=7c+sAgUfN/5JZYIY0VaxJPBToDzf8v7aOnNiLAp6oPg=;
+        s=korg; t=1683545818;
+        bh=aShgEN+Z/e0WduSx0qgk/4HPGe2iRFOSvvmM5JzY0L0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e6F0FOQJPlGr6SHbqf9WotOWK/8pvh7TbZAhJr29nXA+M7+GJY0t7s4pV0Y4PHN6G
-         Y5FrZTNFK47R8znjAdSU/IGGfJWC8A1meT5JNZ794AbXf8fsMYxhhM5RfjtFrZj+qe
-         fhemHFdiVpGQMc7Z5RpPbn8HBTtriKHlFzFc8aD4=
+        b=GrA6TGl/fWvpUJH4Ks6r0Xjy13jOk5onNpsJIuNwrgityF50H9fLZtkb4wPMMJgIf
+         AffOlSqIGLkZnm7TX/LMJg/R0VxEBsv/9Ujr8tSN/yHBH1bqEuVw26oi04q5vSXMM9
+         VJ6CG7UgAkGTjAEvM9jXnGM5LPS+rRkMeu8hU+bQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
+        patches@lists.linux.dev, Tang Bin <tangbin@cmss.chinamobile.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 494/611] RDMA/siw: Remove namespace check from siw_netdev_event()
+Subject: [PATCH 5.15 135/371] media: rcar_fdp1: Fix the correct variable assignments
 Date:   Mon,  8 May 2023 11:45:36 +0200
-Message-Id: <20230508094438.116382399@linuxfoundation.org>
+Message-Id: <20230508094817.404743166@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,42 +57,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Tang Bin <tangbin@cmss.chinamobile.com>
 
-[ Upstream commit 266e9b3475ba82212062771fdbc40be0e3c06ec8 ]
+[ Upstream commit af88c2adbb72a09ab1bb5c37ba388c98fecca69b ]
 
-syzbot is reporting that siw_netdev_event(NETDEV_UNREGISTER) cannot destroy
-siw_device created after unshare(CLONE_NEWNET) due to net namespace check.
-It seems that this check was by error there and should be removed.
+In the function fdp1_probe(), when get irq failed, the
+function platform_get_irq() log an error message, so
+remove redundant message here. And the variable type
+of "ret" is int, the "fdp1->irq" is unsigned int, when
+irq failed, this place maybe wrong, thus fix it.
 
-Reported-by: syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=5e70d01ee8985ae62a3b
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Suggested-by: Leon Romanovsky <leon@kernel.org>
-Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/a44e9ac5-44e2-d575-9e30-02483cc7ffd1@I-love.SAKURA.ne.jp
-Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_main.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/media/platform/rcar_fdp1.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
-index dacc174604bf2..65b5cda5457ba 100644
---- a/drivers/infiniband/sw/siw/siw_main.c
-+++ b/drivers/infiniband/sw/siw/siw_main.c
-@@ -437,9 +437,6 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
+diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
+index 19de3c19bcca2..37ecf489d112e 100644
+--- a/drivers/media/platform/rcar_fdp1.c
++++ b/drivers/media/platform/rcar_fdp1.c
+@@ -2287,11 +2287,10 @@ static int fdp1_probe(struct platform_device *pdev)
+ 		return PTR_ERR(fdp1->regs);
  
- 	dev_dbg(&netdev->dev, "siw: event %lu\n", event);
+ 	/* Interrupt service routine registration */
+-	fdp1->irq = ret = platform_get_irq(pdev, 0);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "cannot find IRQ\n");
++	ret = platform_get_irq(pdev, 0);
++	if (ret < 0)
+ 		return ret;
+-	}
++	fdp1->irq = ret;
  
--	if (dev_net(netdev) != &init_net)
--		return NOTIFY_OK;
--
- 	base_dev = ib_device_get_by_netdev(netdev, RDMA_DRIVER_SIW);
- 	if (!base_dev)
- 		return NOTIFY_OK;
+ 	ret = devm_request_irq(&pdev->dev, fdp1->irq, fdp1_irq_handler, 0,
+ 			       dev_name(&pdev->dev), fdp1);
 -- 
 2.39.2
 
