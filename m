@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E68636FADE3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 882F16FAC0A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235941AbjEHLjW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58954 "EHLO
+        id S235561AbjEHLUI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236116AbjEHLjH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:07 -0400
+        with ESMTP id S235558AbjEHLUG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:20:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A713F2F7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E3E387FB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:20:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B62363371
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5143EC433EF;
-        Mon,  8 May 2023 11:38:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCE7862C51
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:20:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19C6C433EF;
+        Mon,  8 May 2023 11:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545905;
-        bh=xDwD/HAP9vmBYmKPB7zkMNawKRfhZhGhQHP2dia9/A8=;
+        s=korg; t=1683544801;
+        bh=W29Abkm0TWikFEtq8/EsxEVpSoYVm4vLwO0LW4PF61k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c7REFQCe17en6g/6nZQLHcwge4Pb9bHyfc7KUsXLK98uLdVnx8ilo7pr+aGXsUEXi
-         LdexXLygrpWk+7mMW3+pwbQllY0gkg4uh9e+E2H6JZD3JRBekGKIir4aOjpHkGH2u+
-         L0HBssO5MZmoA1lxwwYQCnp9RWzGJAuG08OXvsK0=
+        b=adrr+ZAecWe9fA9o65/8d1RFU9EpZMKctQWMMNZZnpctbqva67tZzuJOWLk0EqJHv
+         C5uw28buXdjJ0ZYvc2B+aS7P7LRKSztmmFEcrgTUPa11H8vRkGfcz7UivR2KBz+H2j
+         khgnLDWBBAsaumaiUO7VIclYpCTnRix6Rg6a40EA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luis Gerhorst <gerhorst@cs.fau.de>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/371] bpf: Remove misleading spec_v1 check on var-offset stack read
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 528/694] HID: amd_sfh: Correct the stop all command
 Date:   Mon,  8 May 2023 11:46:03 +0200
-Message-Id: <20230508094818.538679472@linuxfoundation.org>
+Message-Id: <20230508094451.456787422@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,91 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Gerhorst <gerhorst@cs.fau.de>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 082cdc69a4651dd2a77539d69416a359ed1214f5 ]
+[ Upstream commit 82c2a0d137794f5ef47982231593a00aee26ce3b ]
 
-For every BPF_ADD/SUB involving a pointer, adjust_ptr_min_max_vals()
-ensures that the resulting pointer has a constant offset if
-bypass_spec_v1 is false. This is ensured by calling sanitize_check_bounds()
-which in turn calls check_stack_access_for_ptr_arithmetic(). There,
--EACCESS is returned if the register's offset is not constant, thereby
-rejecting the program.
+Misinterpreted the stop all command in SHF1.1 firmware. Therefore, it is
+necessary to update the stop all command accordingly to disable all
+sensors.
 
-In summary, an unprivileged user must never be able to create stack
-pointers with a variable offset. That is also the case, because a
-respective check in check_stack_write() is missing. If they were able
-to create a variable-offset pointer, users could still use it in a
-stack-write operation to trigger unsafe speculative behavior [1].
-
-Because unprivileged users must already be prevented from creating
-variable-offset stack pointers, viable options are to either remove
-this check (replacing it with a clarifying comment), or to turn it
-into a "verifier BUG"-message, also adding a similar check in
-check_stack_write() (for consistency, as a second-level defense).
-This patch implements the first option to reduce verifier bloat.
-
-This check was introduced by commit 01f810ace9ed ("bpf: Allow
-variable-offset stack access") which correctly notes that
-"variable-offset reads and writes are disallowed (they were already
-disallowed for the indirect access case) because the speculative
-execution checking code doesn't support them". However, it does not
-further discuss why the check in check_stack_read() is necessary.
-The code which made this check obsolete was also introduced in this
-commit.
-
-I have compiled ~650 programs from the Linux selftests, Linux samples,
-Cilium, and libbpf/examples projects and confirmed that none of these
-trigger the check in check_stack_read() [2]. Instead, all of these
-programs are, as expected, already rejected when constructing the
-variable-offset pointers. Note that the check in
-check_stack_access_for_ptr_arithmetic() also prints "off=%d" while the
-code removed by this patch does not (the error removed does not appear
-in the "verification_error" values). For reproducibility, the
-repository linked includes the raw data and scripts used to create
-the plot.
-
-  [1] https://arxiv.org/pdf/1807.03757.pdf
-  [2] https://gitlab.cs.fau.de/un65esoq/bpf-spectre/-/raw/53dc19fcf459c186613b1156a81504b39c8d49db/data/plots/23-02-26_23-56_bpftool/bpftool/0004-errors.pdf?inline=false
-
-Fixes: 01f810ace9ed ("bpf: Allow variable-offset stack access")
-Signed-off-by: Luis Gerhorst <gerhorst@cs.fau.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230315165358.23701-1-gerhorst@cs.fau.de
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 41601299f8b4a..261c2ed3adb17 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3114,17 +3114,13 @@ static int check_stack_read(struct bpf_verifier_env *env,
- 	}
- 	/* Variable offset is prohibited for unprivileged mode for simplicity
- 	 * since it requires corresponding support in Spectre masking for stack
--	 * ALU. See also retrieve_ptr_limit().
-+	 * ALU. See also retrieve_ptr_limit(). The check in
-+	 * check_stack_access_for_ptr_arithmetic() called by
-+	 * adjust_ptr_min_max_vals() prevents users from creating stack pointers
-+	 * with variable offsets, therefore no check is required here. Further,
-+	 * just checking it here would be insufficient as speculative stack
-+	 * writes could still lead to unsafe speculative behaviour.
- 	 */
--	if (!env->bypass_spec_v1 && var_off) {
--		char tn_buf[48];
--
--		tnum_strn(tn_buf, sizeof(tn_buf), reg->var_off);
--		verbose(env, "R%d variable offset stack access prohibited for !root, var_off=%s\n",
--				ptr_regno, tn_buf);
--		return -EACCES;
--	}
--
- 	if (!var_off) {
- 		off += reg->var_off.value;
- 		err = check_stack_read_fixed_off(env, state, off, size,
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
+index 6e19ccc124508..6f6047f7f12e9 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
+@@ -58,8 +58,10 @@ static void amd_stop_all_sensor(struct amd_mp2_dev *privdata)
+ 	struct sfh_cmd_base cmd_base;
+ 
+ 	cmd_base.ul = 0;
+-	cmd_base.cmd.cmd_id = STOP_ALL_SENSORS;
++	cmd_base.cmd.cmd_id = DISABLE_SENSOR;
+ 	cmd_base.cmd.intr_disable = 0;
++	/* 0xf indicates all sensors */
++	cmd_base.cmd.sensor_id = 0xf;
+ 
+ 	writel(cmd_base.ul, privdata->mmio + AMD_C2P_MSG(0));
+ }
 -- 
 2.39.2
 
