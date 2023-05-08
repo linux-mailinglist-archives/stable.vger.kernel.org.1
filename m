@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B94946FACF3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A97256FA86A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235863AbjEHL3u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:29:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41796 "EHLO
+        id S234974AbjEHKkY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235825AbjEHL3f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:35 -0400
+        with ESMTP id S234976AbjEHKj5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566F73D557
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E67226EA0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 369A562672
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A402C433EF;
-        Mon,  8 May 2023 11:29:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C992362836
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EBAC433D2;
+        Mon,  8 May 2023 10:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545348;
-        bh=w7sULu6r8WNx77TfKSMLmhRoEJA7Kn+M7Gg7/lBdzJY=;
+        s=korg; t=1683542392;
+        bh=EsVrH5BxzEcLj+iQ8nVxglINIowhKorUFAm17R01TT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j4baiPNm/N8L5UwyUj2fU6O6ZDXGcnjT5xotecS0HcqbVXR+zR4LG0Kt6kMvu00n7
-         cWofuWHraRVHSylzEX4BGzX/8rDdCpYYF6Gr0qdKuXE/GY7hW+hWUB7UqjpfpilSs3
-         OTu10FJ8XfNwE6gtLAKhfWJEVzQ4YraUZz5BUnZI=
+        b=ShJRq6MepFf47U0vBmWnBUOZdaq8y6fS5gW5y4NTdp15V+lrL59BIZRziqewp5+wI
+         NXbclp/rH/nGh5klb9ejadJcPOfwKGHakoNM5B8azRy6VJbSZ99qDQYlD9LXI6Qs3l
+         BQYkEy1EC6gC9WlYNPNAGn8KYGGKjUCadD2tNEy0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 011/371] arm64: Always load shadow stack pointer directly from the task struct
+        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 386/663] wifi: mt76: mt7921: fix wrong command to set STA channel
 Date:   Mon,  8 May 2023 11:43:32 +0200
-Message-Id: <20230508094812.479557519@linuxfoundation.org>
+Message-Id: <20230508094440.629422671@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,82 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Deren Wu <deren.wu@mediatek.com>
 
-commit 2198d07c509f1db4a1185d1f65aaada794c6ea59 upstream.
+[ Upstream commit fcc51acfebb85dbc3ab1bea3ce4997d7c0a3a38d ]
 
-All occurrences of the scs_load macro load the value of the shadow call
-stack pointer from the task which is current at that point. So instead
-of taking a task struct register argument in the scs_load macro to
-specify the task struct to load from, let's always reference the current
-task directly. This should make it much harder to exploit any
-instruction sequences reloading the shadow call stack pointer register
-from memory.
+Should not use AND operator to check vif type NL80211_IFTYPE_MONITOR, and
+that will cause we go into sniffer command for both STA and MONITOR
+mode. However, the sniffer command would set channel properly (with some
+extra options), the STA mode still works even if using the wrong
+command.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230109174800.3286265-2-ardb@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix vif type check to make sure we using the right command to update
+channel.
+
+Fixes: 914189af23b8 ("wifi: mt76: mt7921: fix channel switch fail in monitor mode")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/scs.h |    7 ++++---
- arch/arm64/kernel/entry.S    |    4 ++--
- arch/arm64/kernel/head.S     |    2 +-
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/scs.h
-+++ b/arch/arm64/include/asm/scs.h
-@@ -9,15 +9,16 @@
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	scs_sp	.req	x18
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 744382be36f8b..b2366efd74ea5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1705,7 +1705,7 @@ static void mt7921_ctx_iter(void *priv, u8 *mac,
+ 	if (ctx != mvif->ctx)
+ 		return;
  
--	.macro scs_load tsk
--	ldr	scs_sp, [\tsk, #TSK_TI_SCS_SP]
-+	.macro scs_load_current
-+	get_current_task scs_sp
-+	ldr	scs_sp, [scs_sp, #TSK_TI_SCS_SP]
- 	.endm
- 
- 	.macro scs_save tsk
- 	str	scs_sp, [\tsk, #TSK_TI_SCS_SP]
- 	.endm
- #else
--	.macro scs_load tsk
-+	.macro scs_load_current
- 	.endm
- 
- 	.macro scs_save tsk
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -272,7 +272,7 @@ alternative_if ARM64_HAS_ADDRESS_AUTH
- alternative_else_nop_endif
- 1:
- 
--	scs_load tsk
-+	scs_load_current
- 	.else
- 	add	x21, sp, #PT_REGS_SIZE
- 	get_current_task tsk
-@@ -855,7 +855,7 @@ SYM_FUNC_START(cpu_switch_to)
- 	msr	sp_el0, x1
- 	ptrauth_keys_install_kernel x1, x8, x9, x10
- 	scs_save x0
--	scs_load x1
-+	scs_load_current
- 	ret
- SYM_FUNC_END(cpu_switch_to)
- NOKPROBE(cpu_switch_to)
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -409,7 +409,7 @@ SYM_FUNC_END(__create_page_tables)
- 	stp	xzr, xzr, [sp, #S_STACKFRAME]
- 	add	x29, sp, #S_STACKFRAME
- 
--	scs_load \tsk
-+	scs_load_current
- 
- 	adr_l	\tmp1, __per_cpu_offset
- 	ldr	w\tmp2, [\tsk, #TSK_CPU]
+-	if (vif->type & NL80211_IFTYPE_MONITOR)
++	if (vif->type == NL80211_IFTYPE_MONITOR)
+ 		mt7921_mcu_config_sniffer(mvif, ctx);
+ 	else
+ 		mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->mt76, ctx);
+-- 
+2.39.2
+
 
 
