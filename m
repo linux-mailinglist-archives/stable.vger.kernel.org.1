@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E980D6FAEA4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A457C6FAEA5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236119AbjEHLqc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:46:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
+        id S236342AbjEHLqe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236311AbjEHLqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:46:15 -0400
+        with ESMTP id S236247AbjEHLqS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:46:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7CB935A1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:45:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1066E106D4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:46:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9763636CC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:45:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE10EC433EF;
-        Mon,  8 May 2023 11:45:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C28C2636C6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:46:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B319EC433EF;
+        Mon,  8 May 2023 11:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546358;
-        bh=J5/+2UX8HyoUYOSVQRQbMUBhzE5hFQvdkMsz6RtOOKs=;
+        s=korg; t=1683546361;
+        bh=TYVftzPFH3d122fStT/BFsArYteAjmvF3SwKnaQBLn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M9xYG9MrY8ud/eXPAc8IqYYCm3vThy2DH1Z3QhFDtD5oPi6Vv8K58sLDk7VcmkIBP
-         dfnNL88NO5O/3LmABhkCm4SgvJ2avzmgoeybNumM98AgvdDx587YwVWVHwipOip1HH
-         CQI3/DhUbg/zVuAGLokAv0jiW7UsiPAJ7xYzJ3pk=
+        b=Uzv2K6kFZORUjjauqaDLO+itdMlKnY1qokW4ntLpbSTNNEmtDm9Pxn/oXMlG3Iojk
+         TmWg63xM69QcnujMAMa0UX72Tep8dtjZ4yqBAN/JFSbQeV9JLga7ijYaA5JNtBA8Uq
+         Sg/DFRd3J/Vo8VwJiJ+JrSr3Claq+ALq/+hH/140=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,9 +35,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
         Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 341/371] mfd: tqmx86: Do not access I2C_DETECT register through io_base
-Date:   Mon,  8 May 2023 11:49:02 +0200
-Message-Id: <20230508094825.665280711@linuxfoundation.org>
+Subject: [PATCH 5.15 342/371] mfd: tqmx86: Specify IO port register range more precisely
+Date:   Mon,  8 May 2023 11:49:03 +0200
+Message-Id: <20230508094825.711546662@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
 References: <20230508094811.912279944@linuxfoundation.org>
@@ -57,57 +57,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-[ Upstream commit 1be1b23696b3d4b0231c694f5e0767b4471d33a9 ]
+[ Upstream commit 051c69ff4f607aa114c7bbdd7c41ed881367aeee ]
 
-The I2C_DETECT register is at IO port 0x1a7, which is outside the range
-passed to devm_ioport_map() for io_base, and was only working because
-there aren't actually any bounds checks for IO port accesses.
+Registers 0x160..0x17f are unassigned. Use 0x180 as base register and
+update offets accordingly.
 
-Extending the range does not seem like a good solution here, as it would
-then conflict with the IO resource assigned to the I2C controller. As
-this is just a one-off access during probe, use a simple inb() instead.
-
-While we're at it, drop the unused define TQMX86_REG_I2C_INT_EN.
+Also change the size of the range to include 0x19f. While 0x19f is
+currently reserved for future extensions, so are several of the previous
+registers up to 0x19e, and it is weird to leave out just the last one.
 
 Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
 Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/e8300a30f0791afb67d79db8089fb6004855f378.1676892223.git.matthias.schiffer@ew.tq-group.com
+Link: https://lore.kernel.org/r/db4677ac318b1283c8956f637f409995a30a31c3.1676892223.git.matthias.schiffer@ew.tq-group.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/tqmx86.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/mfd/tqmx86.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
-index 7ae906ff8e353..31d0efb5aacf8 100644
+index 31d0efb5aacf8..958334f14eb00 100644
 --- a/drivers/mfd/tqmx86.c
 +++ b/drivers/mfd/tqmx86.c
-@@ -49,9 +49,8 @@
- #define TQMX86_REG_IO_EXT_INT_MASK		0x3
- #define TQMX86_REG_IO_EXT_INT_GPIO_SHIFT	4
+@@ -16,8 +16,8 @@
+ #include <linux/platform_data/i2c-ocores.h>
+ #include <linux/platform_device.h>
  
--#define TQMX86_REG_I2C_DETECT	0x47
-+#define TQMX86_REG_I2C_DETECT	0x1a7
- #define TQMX86_REG_I2C_DETECT_SOFT		0xa5
--#define TQMX86_REG_I2C_INT_EN	0x49
+-#define TQMX86_IOBASE	0x160
+-#define TQMX86_IOSIZE	0x3f
++#define TQMX86_IOBASE	0x180
++#define TQMX86_IOSIZE	0x20
+ #define TQMX86_IOBASE_I2C	0x1a0
+ #define TQMX86_IOSIZE_I2C	0xa
+ #define TQMX86_IOBASE_WATCHDOG	0x18b
+@@ -25,7 +25,7 @@
+ #define TQMX86_IOBASE_GPIO	0x18d
+ #define TQMX86_IOSIZE_GPIO	0x4
  
- static uint gpio_irq;
- module_param(gpio_irq, uint, 0);
-@@ -213,7 +212,12 @@ static int tqmx86_probe(struct platform_device *pdev)
- 		 "Found %s - Board ID %d, PCB Revision %d, PLD Revision %d\n",
- 		 board_name, board_id, rev >> 4, rev & 0xf);
- 
--	i2c_det = ioread8(io_base + TQMX86_REG_I2C_DETECT);
-+	/*
-+	 * The I2C_DETECT register is in the range assigned to the I2C driver
-+	 * later, so we don't extend TQMX86_IOSIZE. Use inb() for this one-off
-+	 * access instead of ioport_map + unmap.
-+	 */
-+	i2c_det = inb(TQMX86_REG_I2C_DETECT);
- 
- 	if (gpio_irq_cfg) {
- 		io_ext_int_val =
+-#define TQMX86_REG_BOARD_ID	0x20
++#define TQMX86_REG_BOARD_ID	0x00
+ #define TQMX86_REG_BOARD_ID_E38M	1
+ #define TQMX86_REG_BOARD_ID_50UC	2
+ #define TQMX86_REG_BOARD_ID_E38C	3
+@@ -40,8 +40,8 @@
+ #define TQMX86_REG_BOARD_ID_E40S	13
+ #define TQMX86_REG_BOARD_ID_E40C1	14
+ #define TQMX86_REG_BOARD_ID_E40C2	15
+-#define TQMX86_REG_BOARD_REV	0x21
+-#define TQMX86_REG_IO_EXT_INT	0x26
++#define TQMX86_REG_BOARD_REV	0x01
++#define TQMX86_REG_IO_EXT_INT	0x06
+ #define TQMX86_REG_IO_EXT_INT_NONE		0
+ #define TQMX86_REG_IO_EXT_INT_7			1
+ #define TQMX86_REG_IO_EXT_INT_9			2
 -- 
 2.39.2
 
