@@ -2,52 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71F226FAD88
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B17C6FABF2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234012AbjEHLfT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56764 "EHLO
+        id S235525AbjEHLTH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:19:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236013AbjEHLfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:05 -0400
+        with ESMTP id S235523AbjEHLTG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38923ED9D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5607837C4E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B5A863293
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:34:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEC9C4339E;
-        Mon,  8 May 2023 11:34:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCD8862C50
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6C9C433EF;
+        Mon,  8 May 2023 11:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545668;
-        bh=U3AASTqeuFKaMjf51fir0o9dcPQyM3LFthotgOzvu8Y=;
+        s=korg; t=1683544744;
+        bh=X03Rbd9RzcOVnBQR2LydghUbe0FLsVh92cs+CIcAzZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DhRk6G+iMuWY0VKHW/AMJSzcI5/ZSXkheLWhue/ZLYfwvuT6GTylhfQl8id9b12V1
-         i0VQ9Esgv/4IL7WtUqziB9ZoA7Xn8cgEDRX6V7PazuVCIye+a0aaNBWxYXp0sCWfEM
-         GWAKEu0gyN1iBxnsLIobxDOjgNMwQ24BRn7ARM4M=
+        b=rwZkEyCgR0gxczLmMbLUm145nButUaFVZjXnVGpG1kXkr28rnUiZG95FwOoABsTZK
+         RLhq46+vi9NrZKzRDTPrr0hpc1+gehzfc+pYU05gAh4wniIkwRaWlmI6oQpSnO13XG
+         ZAkzY+iIF9khJxN0uqmeOw6O7GhkwYzvyWl0PIiQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mauro Rossi <issor.oruam@gmail.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/371] drm/amd/display/dc/dce60/Makefile: Fix previous attempt to silence known override-init warnings
+        patches@lists.linux.dev, Brad Spencer <bspencer@blackberry.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 480/694] netlink: Use copy_to_user() for optval in netlink_getsockopt().
 Date:   Mon,  8 May 2023 11:45:15 +0200
-Message-Id: <20230508094816.555754628@linuxfoundation.org>
+Message-Id: <20230508094449.436295937@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -62,57 +56,169 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 4082b9f5ead4966797dddcfef0905d59e5a83873 ]
+[ Upstream commit d913d32cc2707e9cd24fe6fa6d7d470e9c728980 ]
 
-Fixes the following W=1 kernel build warning(s):
+Brad Spencer provided a detailed report [0] that when calling getsockopt()
+for AF_NETLINK, some SOL_NETLINK options set only 1 byte even though such
+options require at least sizeof(int) as length.
 
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:157:21: note: in expansion of macro ‘mmCRTC1_DCFE_MEM_LIGHT_SLEEP_CNTL’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_transform.h:170:9: note: in expansion of macro ‘SRI’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:183:17: note: in expansion of macro ‘XFM_COMMON_REG_LIST_DCE60’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:188:17: note: in expansion of macro ‘transform_regs’
- drivers/gpu/drm/amd/amdgpu/../include/asic_reg/dce/dce_6_0_d.h:722:43: warning: initialized field overwritten [-Woverride-init]
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:157:21: note: in expansion of macro ‘mmCRTC2_DCFE_MEM_LIGHT_SLEEP_CNTL’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_transform.h:170:9: note: in expansion of macro ‘SRI’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:183:17: note: in expansion of macro ‘XFM_COMMON_REG_LIST_DCE60’
- drivers/gpu/drm/amd/amdgpu/../display/dc/dce60/dce60_resource.c:189:17: note: in expansion of macro ‘transform_regs’
- drivers/gpu/drm/amd/amdgpu/../include/asic_reg/dce/dce_6_0_d.h:722:43: note: (near initialization for ‘xfm_regs[2].DCFE_MEM_LIGHT_SLEEP_CN
+The options return a flag value that fits into 1 byte, but such behaviour
+confuses users who do not initialise the variable before calling
+getsockopt() and do not strictly check the returned value as char.
 
-[100 lines snipped for brevity]
+Currently, netlink_getsockopt() uses put_user() to copy data to optlen and
+optval, but put_user() casts the data based on the pointer, char *optval.
+As a result, only 1 byte is set to optval.
 
-Fixes: ceb3cf476a441 ("drm/amd/display/dc/dce60/Makefile: Ignore -Woverride-init warning")
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Mauro Rossi <issor.oruam@gmail.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+To avoid this behaviour, we need to use copy_to_user() or cast optval for
+put_user().
+
+Note that this changes the behaviour on big-endian systems, but we document
+that the size of optval is int in the man page.
+
+  $ man 7 netlink
+  ...
+  Socket options
+       To set or get a netlink socket option, call getsockopt(2) to read
+       or setsockopt(2) to write the option with the option level argument
+       set to SOL_NETLINK.  Unless otherwise noted, optval is a pointer to
+       an int.
+
+Fixes: 9a4595bc7e67 ("[NETLINK]: Add set/getsockopt options to support more than 32 groups")
+Fixes: be0c22a46cfb ("netlink: add NETLINK_BROADCAST_ERROR socket option")
+Fixes: 38938bfe3489 ("netlink: add NETLINK_NO_ENOBUFS socket flag")
+Fixes: 0a6a3a23ea6e ("netlink: add NETLINK_CAP_ACK socket option")
+Fixes: 2d4bc93368f5 ("netlink: extended ACK reporting")
+Fixes: 89d35528d17d ("netlink: Add new socket option to enable strict checking on dumps")
+Reported-by: Brad Spencer <bspencer@blackberry.com>
+Link: https://lore.kernel.org/netdev/ZD7VkNWFfp22kTDt@datsun.rim.net/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Link: https://lore.kernel.org/r/20230421185255.94606-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce60/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netlink/af_netlink.c | 75 ++++++++++++----------------------------
+ 1 file changed, 23 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce60/Makefile b/drivers/gpu/drm/amd/display/dc/dce60/Makefile
-index dda596fa1cd76..fee331accc0e7 100644
---- a/drivers/gpu/drm/amd/display/dc/dce60/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dce60/Makefile
-@@ -23,7 +23,7 @@
- # Makefile for the 'controller' sub-component of DAL.
- # It provides the control and status of HW CRTC block.
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index f365dfdd672d7..9b6eb28e6e94f 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1742,7 +1742,8 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+-	int len, val, err;
++	unsigned int flag;
++	int len, val;
  
--CFLAGS_AMDDALPATH)/dc/dce60/dce60_resource.o = $(call cc-disable-warning, override-init)
-+CFLAGS_$(AMDDALPATH)/dc/dce60/dce60_resource.o = $(call cc-disable-warning, override-init)
+ 	if (level != SOL_NETLINK)
+ 		return -ENOPROTOOPT;
+@@ -1754,39 +1755,17 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
  
- DCE60 = dce60_timing_generator.o dce60_hw_sequencer.o \
- 	dce60_resource.o
+ 	switch (optname) {
+ 	case NETLINK_PKTINFO:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_RECV_PKTINFO ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_RECV_PKTINFO;
+ 		break;
+ 	case NETLINK_BROADCAST_ERROR:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_BROADCAST_SEND_ERROR ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_BROADCAST_SEND_ERROR;
+ 		break;
+ 	case NETLINK_NO_ENOBUFS:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_RECV_NO_ENOBUFS ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_RECV_NO_ENOBUFS;
+ 		break;
+ 	case NETLINK_LIST_MEMBERSHIPS: {
+-		int pos, idx, shift;
++		int pos, idx, shift, err = 0;
+ 
+-		err = 0;
+ 		netlink_lock_table();
+ 		for (pos = 0; pos * 8 < nlk->ngroups; pos += sizeof(u32)) {
+ 			if (len - pos < sizeof(u32))
+@@ -1803,40 +1782,32 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
+ 		if (put_user(ALIGN(nlk->ngroups / 8, sizeof(u32)), optlen))
+ 			err = -EFAULT;
+ 		netlink_unlock_table();
+-		break;
++		return err;
+ 	}
+ 	case NETLINK_CAP_ACK:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_CAP_ACK ? 1 : 0;
+-		if (put_user(len, optlen) ||
+-		    put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_CAP_ACK;
+ 		break;
+ 	case NETLINK_EXT_ACK:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_EXT_ACK ? 1 : 0;
+-		if (put_user(len, optlen) || put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_EXT_ACK;
+ 		break;
+ 	case NETLINK_GET_STRICT_CHK:
+-		if (len < sizeof(int))
+-			return -EINVAL;
+-		len = sizeof(int);
+-		val = nlk->flags & NETLINK_F_STRICT_CHK ? 1 : 0;
+-		if (put_user(len, optlen) || put_user(val, optval))
+-			return -EFAULT;
+-		err = 0;
++		flag = NETLINK_F_STRICT_CHK;
+ 		break;
+ 	default:
+-		err = -ENOPROTOOPT;
++		return -ENOPROTOOPT;
+ 	}
+-	return err;
++
++	if (len < sizeof(int))
++		return -EINVAL;
++
++	len = sizeof(int);
++	val = nlk->flags & flag ? 1 : 0;
++
++	if (put_user(len, optlen) ||
++	    copy_to_user(optval, &val, len))
++		return -EFAULT;
++
++	return 0;
+ }
+ 
+ static void netlink_cmsg_recv_pktinfo(struct msghdr *msg, struct sk_buff *skb)
 -- 
 2.39.2
 
