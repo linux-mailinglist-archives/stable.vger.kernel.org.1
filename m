@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7BE76FA765
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAF86FAAD5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234638AbjEHK37 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59222 "EHLO
+        id S233355AbjEHLG4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234602AbjEHK35 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:57 -0400
+        with ESMTP id S233672AbjEHLGj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A8925276
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:29:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B0652FA3F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F95B62699
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4D3C433D2;
-        Mon,  8 May 2023 10:29:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B02462A84
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:05:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA0AC433EF;
+        Mon,  8 May 2023 11:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541794;
-        bh=/udD4aTSZTEpOkzkEGL8WCi98hBZUSpxZmWWW8RqDec=;
+        s=korg; t=1683543940;
+        bh=deALM/LeI2/1e0uypqYqUuOeZENR5t6MAL43V+qFw0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LgZ9Cqtlmzg+4tQ26I6VOZkMVYv9wN2kOpilEQ3xByoUT4MMdYxLN17pLLjl7nyw2
-         NJJROEZzpTHop3C6eKIVTIjsDIDUSHoKXUBrcxsAwMzv10gfrTAJ98ei5LVTyxk2Zp
-         x7JCEbmfPXoitzoI3v0cUgbB25pjpqfdDnjoHaNY=
+        b=veddfO+82M103JZwNetzc3eEWDEaGPkUSQd5i8MqysxbUxzCf92/KMGMfbQBY2hMV
+         Zg/91ExQazyU2pAFKMHRWFs+sg/pWigiCBhUvgQISIir7zUKqRzrnHjL1fIOwt9oFG
+         daVAh6FkBADl3bMSe1FVYNWoTk7g5ByzXJCD7+8s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Vorel <pvorel@suse.cz>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 228/663] arm64: dts: qcom: msm8994-angler: removed clash with smem_region
+Subject: [PATCH 6.3 219/694] virt/coco/sev-guest: Double-buffer messages
 Date:   Mon,  8 May 2023 11:40:54 +0200
-Message-Id: <20230508094435.703208562@linuxfoundation.org>
+Message-Id: <20230508094439.467281252@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,79 +54,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Vorel <pvorel@suse.cz>
+From: Dionna Glaze <dionnaglaze@google.com>
 
-[ Upstream commit c85c8a992794dfcd7cea7a41871710c27c5592a6 ]
+[ Upstream commit 965006103a14703cc42043bbf9b5e0cdf7a468ad ]
 
-This fixes memory overlap error:
-[    0.000000] reserved@6300000 (0x0000000006300000--0x0000000007000000) overlaps with smem_region@6a00000 (0x0000000006a00000--0x0000000006c00000)
+The encryption algorithms read and write directly to shared unencrypted
+memory, which may leak information as well as permit the host to tamper
+with the message integrity. Instead, copy whole messages in or out as
+needed before doing any computation on them.
 
-smem_region is the same as in downstream (qcom,smem) [1], therefore
-split reserved memory into two sections on either side of smem_region.
-
-Not adding labels as it's not expected to be used.
-
-[1] https://android.googlesource.com/kernel/msm/+/refs/heads/android-msm-angler-3.10-marshmallow-mr1/arch/arm/boot/dts/qcom/msm8994.dtsi#948
-
-Fixes: 380cd3a34b7f ("arm64: dts: msm8994-angler: fix the memory map")
-
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230131200414.24373-3-pvorel@suse.cz
+Fixes: d5af44dde546 ("x86/sev: Provide support for SNP guest request NAEs")
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230214164638.1189804-3-dionnaglaze@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi          | 5 -----
- arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts | 4 ++--
- arch/arm64/boot/dts/qcom/msm8994.dtsi                      | 5 +++++
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 27 +++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-index cd77dcb558722..b8f2a01bcb96c 100644
---- a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-@@ -60,11 +60,6 @@
- 			reg = <0x0 0x05000000 0x0 0x1a00000>;
- 			no-map;
- 		};
--
--		reserved@6c00000 {
--			reg = <0x0 0x06c00000 0x0 0x400000>;
--			no-map;
--		};
- 	};
- };
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 46f1a8d558b0b..0c7b47acba2a8 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -46,7 +46,15 @@ struct snp_guest_dev {
  
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
-index 59b9ed78cf0cb..29e79ae0849d8 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
-@@ -41,8 +41,8 @@
- 			no-map;
- 		};
- 
--		removed_region: reserved@6300000 {
--			reg = <0 0x06300000 0 0xD00000>;
-+		reserved@6300000 {
-+			reg = <0 0x06300000 0 0x700000>;
- 			no-map;
- 		};
- 	};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-index 9ff9d35496d21..24c3fced8df71 100644
---- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-@@ -228,6 +228,11 @@
- 			reg = <0 0xc9400000 0 0x3f00000>;
- 			no-map;
- 		};
+ 	void *certs_data;
+ 	struct snp_guest_crypto *crypto;
++	/* request and response are in unencrypted memory */
+ 	struct snp_guest_msg *request, *response;
 +
-+		reserved@6c00000 {
-+			reg = <0 0x06c00000 0 0x400000>;
-+			no-map;
-+		};
- 	};
++	/*
++	 * Avoid information leakage by double-buffering shared messages
++	 * in fields that are in regular encrypted memory.
++	 */
++	struct snp_guest_msg secret_request, secret_response;
++
+ 	struct snp_secrets_page_layout *layout;
+ 	struct snp_req_data input;
+ 	u32 *os_area_msg_seqno;
+@@ -266,14 +274,17 @@ static int dec_payload(struct snp_guest_dev *snp_dev, struct snp_guest_msg *msg,
+ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload, u32 sz)
+ {
+ 	struct snp_guest_crypto *crypto = snp_dev->crypto;
+-	struct snp_guest_msg *resp = snp_dev->response;
+-	struct snp_guest_msg *req = snp_dev->request;
++	struct snp_guest_msg *resp = &snp_dev->secret_response;
++	struct snp_guest_msg *req = &snp_dev->secret_request;
+ 	struct snp_guest_msg_hdr *req_hdr = &req->hdr;
+ 	struct snp_guest_msg_hdr *resp_hdr = &resp->hdr;
  
- 	smd {
+ 	dev_dbg(snp_dev->dev, "response [seqno %lld type %d version %d sz %d]\n",
+ 		resp_hdr->msg_seqno, resp_hdr->msg_type, resp_hdr->msg_version, resp_hdr->msg_sz);
+ 
++	/* Copy response from shared memory to encrypted memory. */
++	memcpy(resp, snp_dev->response, sizeof(*resp));
++
+ 	/* Verify that the sequence counter is incremented by 1 */
+ 	if (unlikely(resp_hdr->msg_seqno != (req_hdr->msg_seqno + 1)))
+ 		return -EBADMSG;
+@@ -297,7 +308,7 @@ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload,
+ static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, int version, u8 type,
+ 			void *payload, size_t sz)
+ {
+-	struct snp_guest_msg *req = snp_dev->request;
++	struct snp_guest_msg *req = &snp_dev->secret_request;
+ 	struct snp_guest_msg_hdr *hdr = &req->hdr;
+ 
+ 	memset(req, 0, sizeof(*req));
+@@ -417,13 +428,21 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 	if (!seqno)
+ 		return -EIO;
+ 
++	/* Clear shared memory's response for the host to populate. */
+ 	memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
+ 
+-	/* Encrypt the userspace provided payload */
++	/* Encrypt the userspace provided payload in snp_dev->secret_request. */
+ 	rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
+ 	if (rc)
+ 		return rc;
+ 
++	/*
++	 * Write the fully encrypted request to the shared unencrypted
++	 * request page.
++	 */
++	memcpy(snp_dev->request, &snp_dev->secret_request,
++	       sizeof(snp_dev->secret_request));
++
+ 	rc = __handle_guest_request(snp_dev, exit_code, fw_err);
+ 	if (rc) {
+ 		if (rc == -EIO && *fw_err == SNP_GUEST_REQ_INVALID_LEN)
 -- 
 2.39.2
 
