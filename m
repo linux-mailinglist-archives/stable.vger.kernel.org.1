@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CBD26FA82E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4EF06FAB3A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234871AbjEHKia (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41012 "EHLO
+        id S233062AbjEHLKl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234910AbjEHKiG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:38:06 -0400
+        with ESMTP id S233620AbjEHLKj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A3A29444
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:38:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B713237D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5840661712
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B78DC433EF;
-        Mon,  8 May 2023 10:38:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB70D62B48
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF713C433D2;
+        Mon,  8 May 2023 11:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542282;
-        bh=9yy/HZY/C+K3AJl6G24hXErnAHqKSnZo1FpKBWuJSsU=;
+        s=korg; t=1683544237;
+        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z3ledHCuJKCSodBjhMZqTD2H80lgGVaG5/guU4QvS/H6JLlYjv9Wx/Gbhw/lo2TNr
-         A0OTb3f5+h54NCzZhgoYT7ToQGLL7zp3vd7gALVyQtdS/mFgbYFj4icnYTsvf8UG8f
-         x5F5N/uWtlABFWx57jcsByvBUAqW15fK1290qw8s=
+        b=Yd+94F0yq81xeh/Mc6hu1DGu1Shn8y/Ly/Pt//w6zoj8L+WAC5P2Kqvae9FRR74Ys
+         x9PMeCbvTO5sHuoThp/UD3oT1/EAl45TdyRshLqoyJpBTOZHApi87n6QGtoA6m63Sn
+         yveHg+UKz912ni3XDW4TDZWBxh07kY8XxNXvoNKE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, P Praneesh <quic_ppranees@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+        Paul Moore <paul@paul-moore.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 353/663] wifi: ath11k: fix writing to unintended memory region
+Subject: [PATCH 6.3 344/694] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
 Date:   Mon,  8 May 2023 11:42:59 +0200
-Message-Id: <20230508094439.598554327@linuxfoundation.org>
+Message-Id: <20230508094443.694089191@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +59,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 
-[ Upstream commit 756a7f90878f0866fd2fe167ef37e90b47326b96 ]
+[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
 
-While initializing spectral, the magic value is getting written to the
-invalid memory address leading to random boot-up crash. This occurs
-due to the incorrect index increment in ath11k_dbring_fill_magic_value
-function. Fix it by replacing the existing logic with memset32 to ensure
-there is no invalid memory access.
+Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
+wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01838-QCAHKSWPL_SILICONZ-1
+For some reason we have no corresponding check for SO_PASSSEC.
 
-Fixes: d3d358efc553 ("ath11k: add spectral/CFR buffer validation support")
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230321052900.16895-1-quic_ppranees@quicinc.com
+In the recvmsg(2) doc we have:
+       MSG_CTRUNC
+              indicates that some control data was discarded due to lack
+              of space in the buffer for ancillary data.
+
+So, we need to set MSG_CTRUNC flag for all types of SCM.
+
+This change can break applications those don't check MSG_CTRUNC flag.
+
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+
+v2:
+- commit message was rewritten according to Eric's suggestion
+Acked-by: Paul Moore <paul@paul-moore.com>
+
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dbring.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/net/scm.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dbring.c b/drivers/net/wireless/ath/ath11k/dbring.c
-index 2107ec05d14fd..5536e86423312 100644
---- a/drivers/net/wireless/ath/ath11k/dbring.c
-+++ b/drivers/net/wireless/ath/ath11k/dbring.c
-@@ -26,13 +26,13 @@ int ath11k_dbring_validate_buffer(struct ath11k *ar, void *buffer, u32 size)
- static void ath11k_dbring_fill_magic_value(struct ath11k *ar,
- 					   void *buffer, u32 size)
- {
--	u32 *temp;
--	int idx;
--
--	size = size >> 2;
-+	/* memset32 function fills buffer payload with the ATH11K_DB_MAGIC_VALUE
-+	 * and the variable size is expected to be the number of u32 values
-+	 * to be stored, not the number of bytes.
-+	 */
-+	size = size / sizeof(u32);
- 
--	for (idx = 0, temp = buffer; idx < size; idx++, temp++)
--		*temp++ = ATH11K_DB_MAGIC_VALUE;
-+	memset32(buffer, ATH11K_DB_MAGIC_VALUE, size);
+diff --git a/include/net/scm.h b/include/net/scm.h
+index 1ce365f4c2560..585adc1346bd0 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
+ 		}
+ 	}
  }
++
++static inline bool scm_has_secdata(struct socket *sock)
++{
++	return test_bit(SOCK_PASSSEC, &sock->flags);
++}
+ #else
+ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
+ { }
++
++static inline bool scm_has_secdata(struct socket *sock)
++{
++	return false;
++}
+ #endif /* CONFIG_SECURITY_NETWORK */
  
- static int ath11k_dbring_bufs_replenish(struct ath11k *ar,
+ static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
+ 				struct scm_cookie *scm, int flags)
+ {
+ 	if (!msg->msg_control) {
+-		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
++		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
++		    scm_has_secdata(sock))
+ 			msg->msg_flags |= MSG_CTRUNC;
+ 		scm_destroy(scm);
+ 		return;
 -- 
 2.39.2
 
