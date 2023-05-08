@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A5326FA931
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02EE06FA929
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235168AbjEHKtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:49:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47582 "EHLO
+        id S235173AbjEHKs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:48:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235147AbjEHKs6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D792C3F0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:16 -0700 (PDT)
+        with ESMTP id S235150AbjEHKsh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D82A278
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F128628FD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A8DC433EF;
-        Mon,  8 May 2023 10:47:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14BF8628F3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECFEC433EF;
+        Mon,  8 May 2023 10:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542870;
-        bh=N7LKGteunCULXdsapzmXF+r7V2rn0cyLKYEhbCrEXBo=;
+        s=korg; t=1683542873;
+        bh=s8Xmz8VdBjcI34aoBM3Iu6ndDRRe9lhqstXwP+IWaPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PQijG47ZqmnfoNOAssncCg01l58RtSxSlwXiJXE0mPnc3B4jyVb04Ntv100Y7wTFI
-         ZsahSmKcRmcdTpvx1ON9kpheonfXjpCH/pK6gC0I7qwLgKkiDv+FO6G78QXy0ar6Pb
-         byExsJlc2Vpk88orcY5L6IG2adlir+djaVSuXs64=
+        b=Tlx9cff4oANThkiGerCF03wxtZdiYIhxhwYLpxEwlMgPSawplTjE48s4t1BtMcjbf
+         MOlkQG9bEwmEeYVoq0xwShglkCyuBcNaRspEE+Z7n9c6R68i+ccO3VbqJKiNz4K2yh
+         ZOKhcB0QOO5OiPejRDUkCDzI766FSmCBYpQ1GwMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 575/663] SMB3: Close deferred file handles in case of handle lease break
-Date:   Mon,  8 May 2023 11:46:41 +0200
-Message-Id: <20230508094447.935336967@linuxfoundation.org>
+Subject: [PATCH 6.2 576/663] ext4: fix i_disksize exceeding i_size problem in paritally written case
+Date:   Mon,  8 May 2023 11:46:42 +0200
+Message-Id: <20230508094447.967939067@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -44,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,70 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit d906be3fa571f6fc9381911304a0eca99f1b6951 ]
+[ Upstream commit 1dedde690303c05ef732b7c5c8356fdf60a4ade3 ]
 
-We should not cache deferred file handles if we dont have
-handle lease on a file. And we should immediately close all
-deferred handles in case of handle lease break.
+It is possible for i_disksize can exceed i_size, triggering a warning.
 
-Fixes: 9e31678fb403 ("SMB3: fix lease break timeout when multiple deferred close handles for the same file.")
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+generic_perform_write
+ copied = iov_iter_copy_from_user_atomic(len) // copied < len
+ ext4_da_write_end
+ | ext4_update_i_disksize
+ |  new_i_size = pos + copied;
+ |  WRITE_ONCE(EXT4_I(inode)->i_disksize, newsize) // update i_disksize
+ | generic_write_end
+ |  copied = block_write_end(copied, len) // copied = 0
+ |   if (unlikely(copied < len))
+ |    if (!PageUptodate(page))
+ |     copied = 0;
+ |  if (pos + copied > inode->i_size) // return false
+ if (unlikely(copied == 0))
+  goto again;
+ if (unlikely(iov_iter_fault_in_readable(i, bytes))) {
+  status = -EFAULT;
+  break;
+ }
+
+We get i_disksize greater than i_size here, which could trigger WARNING
+check 'i_size_read(inode) < EXT4_I(inode)->i_disksize' while doing dio:
+
+ext4_dio_write_iter
+ iomap_dio_rw
+  __iomap_dio_rw // return err, length is not aligned to 512
+ ext4_handle_inode_extension
+  WARN_ON_ONCE(i_size_read(inode) < EXT4_I(inode)->i_disksize) // Oops
+
+ WARNING: CPU: 2 PID: 2609 at fs/ext4/file.c:319
+ CPU: 2 PID: 2609 Comm: aa Not tainted 6.3.0-rc2
+ RIP: 0010:ext4_file_write_iter+0xbc7
+ Call Trace:
+  vfs_write+0x3b1
+  ksys_write+0x77
+  do_syscall_64+0x39
+
+Fix it by updating 'copied' value before updating i_disksize just like
+ext4_write_inline_data_end() does.
+
+A reproducer can be found in the buganizer link below.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217209
+Fixes: 64769240bd07 ("ext4: Add delayed allocation support in data=writeback mode")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230321013721.89818-1-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/file.c | 16 ++++++++++++++++
- fs/cifs/misc.c |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ fs/ext4/inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/cifs/file.c b/fs/cifs/file.c
-index a53ddc81b698c..bef7c335ccc6e 100644
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -5096,6 +5096,8 @@ void cifs_oplock_break(struct work_struct *work)
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	int rc = 0;
- 	bool purge_cache = false;
-+	struct cifs_deferred_close *dclose;
-+	bool is_deferred = false;
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 96517785a9f89..0b87665aaff13 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3149,6 +3149,9 @@ static int ext4_da_write_end(struct file *file,
+ 	    ext4_has_inline_data(inode))
+ 		return ext4_write_inline_data_end(inode, pos, len, copied, page);
  
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
-@@ -5131,6 +5133,20 @@ void cifs_oplock_break(struct work_struct *work)
- 		cifs_dbg(VFS, "Push locks rc = %d\n", rc);
- 
- oplock_break_ack:
-+	/*
-+	 * When oplock break is received and there are no active
-+	 * file handles but cached, then schedule deferred close immediately.
-+	 * So, new open will not use cached handle.
-+	 */
-+	spin_lock(&CIFS_I(inode)->deferred_lock);
-+	is_deferred = cifs_is_deferred_close(cfile, &dclose);
-+	spin_unlock(&CIFS_I(inode)->deferred_lock);
++	if (unlikely(copied < len) && !PageUptodate(page))
++		copied = 0;
 +
-+	if (!CIFS_CACHE_HANDLE(cinode) && is_deferred &&
-+			cfile->deferred_close_scheduled && delayed_work_pending(&cfile->deferred)) {
-+		cifs_close_deferred_file(cinode);
-+	}
-+
- 	/*
- 	 * releasing stale oplock after recent reconnect of smb session using
- 	 * a now incorrect file handle is not a data integrity issue but do
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index dc97013469748..ee0a3c3f6b1d6 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -764,7 +764,7 @@ cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode)
- 	spin_unlock(&cifs_inode->open_file_lock);
+ 	start = pos & (PAGE_SIZE - 1);
+ 	end = start + copied - 1;
  
- 	list_for_each_entry_safe(tmp_list, tmp_next_list, &file_head, list) {
--		_cifsFileInfo_put(tmp_list->cfile, true, false);
-+		_cifsFileInfo_put(tmp_list->cfile, false, false);
- 		list_del(&tmp_list->list);
- 		kfree(tmp_list);
- 	}
 -- 
 2.39.2
 
