@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E576FA554
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C5BE6FA80A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234105AbjEHKIT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
+        id S234695AbjEHKhL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234100AbjEHKIS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:18 -0400
+        with ESMTP id S234708AbjEHKgs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFCB32926
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC121BF7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05B9A6236E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7E4C433EF;
-        Mon,  8 May 2023 10:08:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07713627C7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A39C4339B;
+        Mon,  8 May 2023 10:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540495;
-        bh=hDe++XOS1xnfE2Ty7geFW3kAx3JIFleArPvdkBMyqfo=;
+        s=korg; t=1683542205;
+        bh=ynJjKYwqy3erZ80zvU8qzgrhA8o/yYdGFmvnvkqwDpM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QrtQglyzID+gbYE3GWVVKX6uknL2TnvgK8zmDTBsdLQZ9q2tar5qCJp19hV3XmE8J
-         uhzjsB94cwfnYZ8wCMrfcmR3ABfQAuRioq5vDkc0HIRLHtnmuvSLNAEeGpDP1TCEHc
-         ueB3bZTdncAosZokGfefrKQHpuDSWRYsRuQyAeFQ=
+        b=nDrdgdPhhpHH2cXZ5zXVn7zu9IWtbWQRnVtVzR8UNKs+RFl7aNQo3hB6youUZtg/2
+         sY0U4WQol/FbWdiTB/bdik76IDamIq/hciniZExDlDE1yAqoyy7aAUrtqEsHED7inP
+         mezQ9671UMmNVchWRMvzkLrhbVyv/+W93pG+Qp3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+49f6cef45247ff249498@syzkaller.appspotmail.com,
-        Hsin-Wei Hung <hsinweih@uci.edu>,
-        Xin Liu <liuxin350@huawei.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 345/611] bpf, sockmap: Revert buggy deadlock fix in the sockhash and sockmap
+        patches@lists.linux.dev, Yi Zhang <yi.zhang@redhat.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        "Ewan D. Milne" <emilne@redhat.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 361/663] nvme-fcloop: fix "inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage"
 Date:   Mon,  8 May 2023 11:43:07 +0200
-Message-Id: <20230508094433.626365535@linuxfoundation.org>
+Message-Id: <20230508094439.871025784@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,99 +55,203 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 8c5c2a4898e3d6bad86e29d471e023c8a19ba799 ]
+[ Upstream commit 4f86a6ff6fbd891232dda3ca97fd1b9630b59809 ]
 
-syzbot reported a splat and bisected it to recent commit ed17aa92dc56 ("bpf,
-sockmap: fix deadlocks in the sockhash and sockmap"):
+fcloop_fcp_op() could be called from flush request's ->end_io(flush_end_io) in
+which the spinlock of fq->mq_flush_lock is grabbed with irq saved/disabled.
 
-  [...]
-  WARNING: CPU: 1 PID: 9280 at kernel/softirq.c:376 __local_bh_enable_ip+0xbe/0x130 kernel/softirq.c:376
-  Modules linked in:
-  CPU: 1 PID: 9280 Comm: syz-executor.1 Not tainted 6.2.0-syzkaller-13249-gd319f344561d #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
-  RIP: 0010:__local_bh_enable_ip+0xbe/0x130 kernel/softirq.c:376
-  [...]
-  Call Trace:
-  <TASK>
-  spin_unlock_bh include/linux/spinlock.h:395 [inline]
-  sock_map_del_link+0x2ea/0x510 net/core/sock_map.c:165
-  sock_map_unref+0xb0/0x1d0 net/core/sock_map.c:184
-  sock_hash_delete_elem+0x1ec/0x2a0 net/core/sock_map.c:945
-  map_delete_elem kernel/bpf/syscall.c:1536 [inline]
-  __sys_bpf+0x2edc/0x53e0 kernel/bpf/syscall.c:5053
-  __do_sys_bpf kernel/bpf/syscall.c:5166 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:5164 [inline]
-  __x64_sys_bpf+0x79/0xc0 kernel/bpf/syscall.c:5164
-  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-  do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  RIP: 0033:0x7fe8f7c8c169
-  </TASK>
-  [...]
+So fcloop_fcp_op() can't call spin_unlock_irq(&tfcp_req->reqlock) simply
+which enables irq unconditionally.
 
-Revert for now until we have a proper solution.
+Fixes the warning by switching to spin_lock_irqsave()/spin_unlock_irqrestore()
 
-Fixes: ed17aa92dc56 ("bpf, sockmap: fix deadlocks in the sockhash and sockmap")
-Reported-by: syzbot+49f6cef45247ff249498@syzkaller.appspotmail.com
-Cc: Hsin-Wei Hung <hsinweih@uci.edu>
-Cc: Xin Liu <liuxin350@huawei.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/000000000000f1db9605f939720e@google.com/
+Fixes: c38dbbfab1bc ("nvme-fcloop: fix inconsistent lock state warnings")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/nvme/target/fcloop.c | 48 ++++++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 21 deletions(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 2408965e5c7b6..a68a7290a3b2b 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -414,9 +414,8 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- {
- 	struct sock *sk;
- 	int err = 0;
--	unsigned long flags;
+diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
+index 5c16372f3b533..c780af36c1d4a 100644
+--- a/drivers/nvme/target/fcloop.c
++++ b/drivers/nvme/target/fcloop.c
+@@ -614,10 +614,11 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
+ 	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
++	unsigned long flags;
+ 	int ret = 0;
+ 	bool aborted = false;
  
--	raw_spin_lock_irqsave(&stab->lock, flags);
-+	raw_spin_lock_bh(&stab->lock);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
- 		sk = xchg(psk, NULL);
-@@ -426,7 +425,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- 	else
- 		err = -EINVAL;
- 
--	raw_spin_unlock_irqrestore(&stab->lock, flags);
-+	raw_spin_unlock_bh(&stab->lock);
- 	return err;
- }
- 
-@@ -924,12 +923,11 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
- 	struct bpf_shtab_bucket *bucket;
- 	struct bpf_shtab_elem *elem;
- 	int ret = -ENOENT;
--	unsigned long flags;
- 
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
--	raw_spin_lock_irqsave(&bucket->lock, flags);
-+	raw_spin_lock_bh(&bucket->lock);
- 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
- 	if (elem) {
- 		hlist_del_rcu(&elem->node);
-@@ -937,7 +935,7 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
- 		sock_hash_free_elem(htab, elem);
- 		ret = 0;
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 		tfcp_req->inistate = INI_IO_ACTIVE;
+@@ -626,11 +627,11 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 		aborted = true;
+ 		break;
+ 	default:
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		WARN_ON(1);
+ 		return;
  	}
--	raw_spin_unlock_irqrestore(&bucket->lock, flags);
-+	raw_spin_unlock_bh(&bucket->lock);
- 	return ret;
- }
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
  
+ 	if (unlikely(aborted))
+ 		ret = -ECANCELED;
+@@ -655,8 +656,9 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		container_of(work, struct fcloop_fcpreq, abort_rcv_work);
+ 	struct nvmefc_fcp_req *fcpreq;
+ 	bool completed = false;
++	unsigned long flags;
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_ABORTED:
+@@ -665,11 +667,11 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		completed = true;
+ 		break;
+ 	default:
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		WARN_ON(1);
+ 		return;
+ 	}
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (unlikely(completed)) {
+ 		/* remove reference taken in original abort downcall */
+@@ -681,9 +683,9 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
+ 					&tfcp_req->tgt_fcp_req);
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	tfcp_req->fcpreq = NULL;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
+ 	/* call_host_done releases reference for abort downcall */
+@@ -699,11 +701,12 @@ fcloop_tgt_fcprqst_done_work(struct work_struct *work)
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, tio_done_work);
+ 	struct nvmefc_fcp_req *fcpreq;
++	unsigned long flags;
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	fcpreq = tfcp_req->fcpreq;
+ 	tfcp_req->inistate = INI_IO_COMPLETED;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	fcloop_call_host_done(fcpreq, tfcp_req, tfcp_req->status);
+ }
+@@ -807,13 +810,14 @@ fcloop_fcp_op(struct nvmet_fc_target_port *tgtport,
+ 	u32 rsplen = 0, xfrlen = 0;
+ 	int fcp_err = 0, active, aborted;
+ 	u8 op = tgt_fcpreq->op;
++	unsigned long flags;
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	fcpreq = tfcp_req->fcpreq;
+ 	active = tfcp_req->active;
+ 	aborted = tfcp_req->aborted;
+ 	tfcp_req->active = true;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (unlikely(active))
+ 		/* illegal - call while i/o active */
+@@ -821,9 +825,9 @@ fcloop_fcp_op(struct nvmet_fc_target_port *tgtport,
+ 
+ 	if (unlikely(aborted)) {
+ 		/* target transport has aborted i/o prior */
+-		spin_lock_irq(&tfcp_req->reqlock);
++		spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 		tfcp_req->active = false;
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		tgt_fcpreq->transferred_length = 0;
+ 		tgt_fcpreq->fcp_error = -ECANCELED;
+ 		tgt_fcpreq->done(tgt_fcpreq);
+@@ -880,9 +884,9 @@ fcloop_fcp_op(struct nvmet_fc_target_port *tgtport,
+ 		break;
+ 	}
+ 
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	tfcp_req->active = false;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	tgt_fcpreq->transferred_length = xfrlen;
+ 	tgt_fcpreq->fcp_error = fcp_err;
+@@ -896,15 +900,16 @@ fcloop_tgt_fcp_abort(struct nvmet_fc_target_port *tgtport,
+ 			struct nvmefc_tgt_fcp_req *tgt_fcpreq)
+ {
+ 	struct fcloop_fcpreq *tfcp_req = tgt_fcp_req_to_fcpreq(tgt_fcpreq);
++	unsigned long flags;
+ 
+ 	/*
+ 	 * mark aborted only in case there were 2 threads in transport
+ 	 * (one doing io, other doing abort) and only kills ops posted
+ 	 * after the abort request
+ 	 */
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	tfcp_req->aborted = true;
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	tfcp_req->status = NVME_SC_INTERNAL;
+ 
+@@ -946,6 +951,7 @@ fcloop_fcp_abort(struct nvme_fc_local_port *localport,
+ 	struct fcloop_ini_fcpreq *inireq = fcpreq->private;
+ 	struct fcloop_fcpreq *tfcp_req;
+ 	bool abortio = true;
++	unsigned long flags;
+ 
+ 	spin_lock(&inireq->inilock);
+ 	tfcp_req = inireq->tfcp_req;
+@@ -958,7 +964,7 @@ fcloop_fcp_abort(struct nvme_fc_local_port *localport,
+ 		return;
+ 
+ 	/* break initiator/target relationship for io */
+-	spin_lock_irq(&tfcp_req->reqlock);
++	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 	case INI_IO_ACTIVE:
+@@ -968,11 +974,11 @@ fcloop_fcp_abort(struct nvme_fc_local_port *localport,
+ 		abortio = false;
+ 		break;
+ 	default:
+-		spin_unlock_irq(&tfcp_req->reqlock);
++		spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 		WARN_ON(1);
+ 		return;
+ 	}
+-	spin_unlock_irq(&tfcp_req->reqlock);
++	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+ 	if (abortio)
+ 		/* leave the reference while the work item is scheduled */
 -- 
 2.39.2
 
