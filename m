@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 003356FABE5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66D2E6FA5ED
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235494AbjEHLSh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60292 "EHLO
+        id S232287AbjEHKO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233924AbjEHLSg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:36 -0400
+        with ESMTP id S234248AbjEHKOQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A3C37614
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047E122F4C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C018462AA1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B18C4339B;
-        Mon,  8 May 2023 11:18:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EBC56243D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F461C433EF;
+        Mon,  8 May 2023 10:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544714;
-        bh=J96scCUgcFwW/WgU8ia+/0lU8QJhNiFPQo295skVAcc=;
+        s=korg; t=1683540855;
+        bh=G0tGC8k0SBDCDGJ6Iv4A5FGuN2gQNmpMbtGLNVHDqD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JXwPzIwDZ2yvIBrd5JC+AhzKJk/4uGeqKtPkE4F2d/2cxqmeWjvR4vOehvEm8cEgR
-         QLvBnXEAjHTWUZKflMm7abCxlWszkeCwHcxdRPO3cGowcLgdIjBvTUxnDA1jC4vRKM
-         Dq5vJbuji4ez3BPqsXAO5r9uWdWzyCbhc9NLnudM=
+        b=MAhl02t7sXOgkVJYqz9EVryBx/Sy4jwD7CMboe6xSejPdBgDPJoDTsClOWDzT5AA2
+         JYOlPG2DGo1p8DOruqrJNrS95pb+HJTYCv996kDcyueZsFSoBq5J2pYX91rly4eH/i
+         rlS40y7kKMLRuuR1SutfF1qPSzVuwlOWCXURD1nY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 500/694] interconnect: qcom: osm-l3: drop unuserd header inclusion
+Subject: [PATCH 6.1 493/611] clk: add missing of_node_put() in "assigned-clocks" property parsing
 Date:   Mon,  8 May 2023 11:45:35 +0200
-Message-Id: <20230508094450.276075308@linuxfoundation.org>
+Message-Id: <20230508094438.086304640@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Clément Léger <clement.leger@bootlin.com>
 
-[ Upstream commit f730038fe6a6de170268fd779b2c029aa70a928b ]
+[ Upstream commit 27a6e1b09a782517fddac91259970ac466a3f7b6 ]
 
-The commit 4529992c9474 ("interconnect: qcom: osm-l3: Use
-platform-independent node ids") made osm-l3 driver use
-platform-independent IDs, removing the need to include platform headers.
+When returning from of_parse_phandle_with_args(), the np member of the
+of_phandle_args structure should be put after usage. Add missing
+of_node_put() calls in both __set_clk_parents() and __set_clk_rates().
 
-Fixes: 4529992c9474 ("interconnect: qcom: osm-l3: Use platform-independent node ids")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230103031159.1060075-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fixes: 86be408bfbd8 ("clk: Support for clock parents and rates assigned from device tree")
+Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+Link: https://lore.kernel.org/r/20230131083227.10990-1-clement.leger@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/osm-l3.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/clk/clk-conf.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/osm-l3.c b/drivers/interconnect/qcom/osm-l3.c
-index 1bafb54f14329..a1f4f918b9116 100644
---- a/drivers/interconnect/qcom/osm-l3.c
-+++ b/drivers/interconnect/qcom/osm-l3.c
-@@ -14,13 +14,6 @@
+diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
+index 2ef819606c417..1a4e6340f95ce 100644
+--- a/drivers/clk/clk-conf.c
++++ b/drivers/clk/clk-conf.c
+@@ -33,9 +33,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
+ 			else
+ 				return rc;
+ 		}
+-		if (clkspec.np == node && !clk_supplier)
++		if (clkspec.np == node && !clk_supplier) {
++			of_node_put(clkspec.np);
+ 			return 0;
++		}
+ 		pclk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(pclk)) {
+ 			if (PTR_ERR(pclk) != -EPROBE_DEFER)
+ 				pr_warn("clk: couldn't get parent clock %d for %pOF\n",
+@@ -48,10 +51,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
+ 		if (rc < 0)
+ 			goto err;
+ 		if (clkspec.np == node && !clk_supplier) {
++			of_node_put(clkspec.np);
+ 			rc = 0;
+ 			goto err;
+ 		}
+ 		clk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
+ 		if (IS_ERR(clk)) {
+ 			if (PTR_ERR(clk) != -EPROBE_DEFER)
+ 				pr_warn("clk: couldn't get assigned clock %d for %pOF\n",
+@@ -93,10 +98,13 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
+ 				else
+ 					return rc;
+ 			}
+-			if (clkspec.np == node && !clk_supplier)
++			if (clkspec.np == node && !clk_supplier) {
++				of_node_put(clkspec.np);
+ 				return 0;
++			}
  
- #include <dt-bindings/interconnect/qcom,osm-l3.h>
- 
--#include "sc7180.h"
--#include "sc7280.h"
--#include "sc8180x.h"
--#include "sdm845.h"
--#include "sm8150.h"
--#include "sm8250.h"
--
- #define LUT_MAX_ENTRIES			40U
- #define LUT_SRC				GENMASK(31, 30)
- #define LUT_L_VAL			GENMASK(7, 0)
+ 			clk = of_clk_get_from_provider(&clkspec);
++			of_node_put(clkspec.np);
+ 			if (IS_ERR(clk)) {
+ 				if (PTR_ERR(clk) != -EPROBE_DEFER)
+ 					pr_warn("clk: couldn't get clock %d for %pOF\n",
 -- 
 2.39.2
 
