@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE9116FAA4D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ABE26FA704
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235483AbjEHLBU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33486 "EHLO
+        id S234538AbjEHK0U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:26:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235497AbjEHLBE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:01:04 -0400
+        with ESMTP id S234429AbjEHKZu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:25:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D65F348B3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19E72645D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:25:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1428C62A06
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09490C433D2;
-        Mon,  8 May 2023 10:59:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21554625ED
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:25:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA55C433D2;
+        Mon,  8 May 2023 10:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543597;
-        bh=ljGUanVlqx0yS+M5XoWqywrvHJc5WXwblkPLxdONJOM=;
+        s=korg; t=1683541543;
+        bh=vw7pUMcuOnjNzUsyswCVxy1RctXSPIksujjPlIxQ/NE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fwk+sVs9zh1KbZvkdVgyCM1QNrE3PnF710v/0o237G/iFo6joBdXBG7tm+1Qdjc3n
-         NTB/J09eBJkkpqFyYCqW0GEnsyY44/yUdDBiyEVZrHpPo6JuepUmAgajW4BtI+Xtaz
-         IapB+Zce71hgtbWavQxibFmGJIF35sVVZS+sukWk=
+        b=g/lb228SpwbNo0grB5l2NZwHajloZIfm6vc9odsRUnRWMczSZR9An7SERPKBxIbHb
+         uuYC12dKX+9LT+Kdi1yeKK3PpbVXse+IVmyVPnOaUD9e/iMEMqKbjr0tDNjRWCXMrN
+         ZUzojzRmAJzaechMZZfM+15151PQX0G89fPi1fDU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        David Heidelberg <david@ixit.cz>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 140/694] tpm, tpm_tis: Do not skip reset of original interrupt vector
+Subject: [PATCH 6.2 149/663] ARM: dts: qcom-apq8064: Fix opp table child name
 Date:   Mon,  8 May 2023 11:39:35 +0200
-Message-Id: <20230508094437.000510819@linuxfoundation.org>
+Message-Id: <20230508094433.331099844@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,111 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit ed9be0e6c892a783800d77a41ca4c7255c6af8c5 ]
+[ Upstream commit b9745c275246a7e43c34d1b3be5ff9a9f3cf9305 ]
 
-If in tpm_tis_probe_irq_single() an error occurs after the original
-interrupt vector has been read, restore the interrupts before the error is
-returned.
+The opp-320000000 name is rather misleading with the opp-hz value
+of 450 MHz. Fix it!
 
-Since the caller does not check the error value, return -1 in any case that
-the TPM_CHIP_FLAG_IRQ flag is not set. Since the return value of function
-tpm_tis_gen_interrupt() is not longer used, make it a void function.
-
-Fixes: 1107d065fdf1 ("tpm_tis: Introduce intermediate layer for TPM access")
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 8db0b6c7b636 ("ARM: dts: qcom: apq8064: Convert adreno from legacy gpu-pwrlevels to opp-v2")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230220120831.1591820-1-konrad.dybcio@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 29 +++++++++++------------------
- 1 file changed, 11 insertions(+), 18 deletions(-)
+ arch/arm/boot/dts/qcom-apq8064.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 3f98e587b3e84..33d98f3e0f7a6 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -732,7 +732,7 @@ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
- 	return IRQ_HANDLED;
- }
+diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
+index 0da9623ea0849..4133321edad88 100644
+--- a/arch/arm/boot/dts/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
+@@ -1261,7 +1261,7 @@
+ 			gpu_opp_table: opp-table {
+ 				compatible = "operating-points-v2";
  
--static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
-+static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
- {
- 	const char *desc = "attempting to generate an interrupt";
- 	u32 cap2;
-@@ -741,7 +741,7 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
+-				opp-320000000 {
++				opp-450000000 {
+ 					opp-hz = /bits/ 64 <450000000>;
+ 				};
  
- 	ret = request_locality(chip, 0);
- 	if (ret < 0)
--		return ret;
-+		return;
- 
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
-@@ -749,8 +749,6 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
- 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
- 
- 	release_locality(chip, 0);
--
--	return ret;
- }
- 
- /* Register the IRQ and issue a command that will cause an interrupt. If an
-@@ -780,42 +778,37 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
- 	if (rc < 0)
--		return rc;
-+		goto restore_irqs;
- 
- 	rc = tpm_tis_read32(priv, TPM_INT_STATUS(priv->locality), &int_status);
- 	if (rc < 0)
--		return rc;
-+		goto restore_irqs;
- 
- 	/* Clear all existing */
- 	rc = tpm_tis_write32(priv, TPM_INT_STATUS(priv->locality), int_status);
- 	if (rc < 0)
--		return rc;
--
-+		goto restore_irqs;
- 	/* Turn on */
- 	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality),
- 			     intmask | TPM_GLOBAL_INT_ENABLE);
- 	if (rc < 0)
--		return rc;
-+		goto restore_irqs;
- 
- 	priv->irq_tested = false;
- 
- 	/* Generate an interrupt by having the core call through to
- 	 * tpm_tis_send
- 	 */
--	rc = tpm_tis_gen_interrupt(chip);
--	if (rc < 0)
--		return rc;
-+	tpm_tis_gen_interrupt(chip);
- 
-+restore_irqs:
- 	/* tpm_tis_send will either confirm the interrupt is working or it
- 	 * will call disable_irq which undoes all of the above.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
--		rc = tpm_tis_write8(priv, original_int_vec,
--				TPM_INT_VECTOR(priv->locality));
--		if (rc < 0)
--			return rc;
--
--		return 1;
-+		tpm_tis_write8(priv, original_int_vec,
-+			       TPM_INT_VECTOR(priv->locality));
-+		return -1;
- 	}
- 
- 	return 0;
 -- 
 2.39.2
 
