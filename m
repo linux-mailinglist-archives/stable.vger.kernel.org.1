@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF5466FA6BC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3446FAA2C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234450AbjEHKXh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50182 "EHLO
+        id S235484AbjEHLA0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:00:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234523AbjEHKW7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CAFC26453
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:43 -0700 (PDT)
+        with ESMTP id S235355AbjEHK7l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:59:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860F92BCED
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:58:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9238F62558
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F5C433D2;
-        Mon,  8 May 2023 10:22:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62D0162A05
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FADDC433EF;
+        Mon,  8 May 2023 10:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541362;
-        bh=wsRoZLZQ+L9SkIuoYcGvqLlBQgJq35mpVdb5l1RjQGw=;
+        s=korg; t=1683543495;
+        bh=i6hwX11FH4O84Q+vdT5kVWOBAbcTXMl+z8vkTWxiA8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DC1zW6dbjEUxh9HlrFY0fpUfYy6eHsaXYLr1lYuVDanUzFWkT3yTFULXQ/4KEjH6X
-         ZvnMQQjyog1lrOrqNqmMd9dRQUwlvZTx/ljuafYEkSdNbQUKqLJqUvd74pFexnR3LD
-         tocW/WYfcktZpKo8XZdGf3Ksmj18gBKQ1WkBOv3o=
+        b=1cYyQnL+PR0ZzZ8P1jy1l0RN4oetxcNzPrtGtR1KMgkXNglO58J9kUW3wReEafRwD
+         L1RJT7Ah6b2UrIbvZQkGcLI0PS9FHHJ5vlX1gVAczPI1cDFKhjUWpPboOFZTXkguq7
+         dLuPHZgShiFk6PIRBTH4V7RWfFFVgFUOSiemm3WE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.2 090/663] ksmbd: fix racy issue under cocurrent smb2 tree disconnect
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.3 081/694] tracing: Fix permissions for the buffer_percent file
 Date:   Mon,  8 May 2023 11:38:36 +0200
-Message-Id: <20230508094431.382742833@linuxfoundation.org>
+Message-Id: <20230508094435.162180838@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,78 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit 30210947a343b6b3ca13adc9bfc88e1543e16dd5 upstream.
+commit 4f94559f40ad06d627c0fdfc3319cec778a2845b upstream.
 
-There is UAF issue under cocurrent smb2 tree disconnect.
-This patch introduce TREE_CONN_EXPIRE flags for tcon to avoid cocurrent
-access.
+This file defines both read and write operations, yet it is being
+created as read-only. This means that it can't be written to without the
+CAP_DAC_OVERRIDE capability. Fix the permissions to allow root to write
+to it without the need to override DAC perms.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230503140114.3280002-1-omosnace@redhat.com
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20592
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 03329f993978 ("tracing: Add tracefs file buffer_percentage")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/mgmt/tree_connect.c |   10 +++++++++-
- fs/ksmbd/mgmt/tree_connect.h |    3 +++
- fs/ksmbd/smb2pdu.c           |    3 ++-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ kernel/trace/trace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ksmbd/mgmt/tree_connect.c
-+++ b/fs/ksmbd/mgmt/tree_connect.c
-@@ -109,7 +109,15 @@ int ksmbd_tree_conn_disconnect(struct ks
- struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
- 						  unsigned int id)
- {
--	return xa_load(&sess->tree_conns, id);
-+	struct ksmbd_tree_connect *tcon;
-+
-+	tcon = xa_load(&sess->tree_conns, id);
-+	if (tcon) {
-+		if (test_bit(TREE_CONN_EXPIRE, &tcon->status))
-+			tcon = NULL;
-+	}
-+
-+	return tcon;
- }
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -9658,7 +9658,7 @@ init_tracer_tracefs(struct trace_array *
  
- struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
---- a/fs/ksmbd/mgmt/tree_connect.h
-+++ b/fs/ksmbd/mgmt/tree_connect.h
-@@ -14,6 +14,8 @@ struct ksmbd_share_config;
- struct ksmbd_user;
- struct ksmbd_conn;
+ 	tr->buffer_percent = 50;
  
-+#define TREE_CONN_EXPIRE		1
-+
- struct ksmbd_tree_connect {
- 	int				id;
+-	trace_create_file("buffer_percent", TRACE_MODE_READ, d_tracer,
++	trace_create_file("buffer_percent", TRACE_MODE_WRITE, d_tracer,
+ 			tr, &buffer_percent_fops);
  
-@@ -25,6 +27,7 @@ struct ksmbd_tree_connect {
- 
- 	int				maximal_access;
- 	bool				posix_extensions;
-+	unsigned long			status;
- };
- 
- struct ksmbd_tree_conn_status {
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -2055,11 +2055,12 @@ int smb2_tree_disconnect(struct ksmbd_wo
- 
- 	ksmbd_debug(SMB, "request\n");
- 
--	if (!tcon) {
-+	if (!tcon || test_and_set_bit(TREE_CONN_EXPIRE, &tcon->status)) {
- 		struct smb2_tree_disconnect_req *req =
- 			smb2_get_msg(work->request_buf);
- 
- 		ksmbd_debug(SMB, "Invalid tid %d\n", req->hdr.Id.SyncId.TreeId);
-+
- 		rsp->hdr.Status = STATUS_NETWORK_NAME_DELETED;
- 		smb2_set_err_rsp(work);
- 		return 0;
+ 	create_trace_options_dir(tr);
 
 
