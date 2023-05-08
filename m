@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C286FACBA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAFB56FAE6D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235710AbjEHL1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45140 "EHLO
+        id S236208AbjEHLon (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235772AbjEHL1Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:16 -0400
+        with ESMTP id S236281AbjEHLo1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681AF3C9B9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253AF423A6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4837F62D14
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3C7C433D2;
-        Mon,  8 May 2023 11:27:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B3663626
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB43C433D2;
+        Mon,  8 May 2023 11:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545227;
-        bh=kjsn8EC8znD3UmGWKTTvGFe8CixJgsskO6DqxniylZs=;
+        s=korg; t=1683546229;
+        bh=EqagkdeRNuNe4SklnDsc3XOd2KWiWQmNAHWLKGvDmHM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mf8L1HKMrfOAf0pyyerkbbxvR5GKkqJO7VDPTRCTXYR247s8poRVgOAxWTbic35/+
-         maCyY40ocypxp0kuycaY74jwt/mNTkqWz68NAM4lQwv0GChHtXpiGCjG+Ln9PCs5Eh
-         BU5dA1otwn5XKjwzcC0MoOM7kSk78eaof3MRb3BU=
+        b=A9x0hsKuvGwRvJ+3jhD9rgN1kkqFBQTD7ZFTw9tQtQCEhN5CaWNWsOCngMqwo1Fdu
+         45/y6WKVFp18NQBEYtRWwr6nrTtZzdC7IM6kG7TeA9Er4wBt8u2EJIucEj95PRNptM
+         QXzzo9KPeTrkd6VnUO39PCzmXe+NS/5kTlTc2PPY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?G=C3=A9=20Koerkamp?= <ge.koerkamp@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Chen Zhongjin <chenzhongjin@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 666/694] ACPI: PM: Do not turn of unused power resources on the Toshiba Click Mini
+Subject: [PATCH 5.15 300/371] fs/ntfs3: Fix memory leak if ntfs_read_mft failed
 Date:   Mon,  8 May 2023 11:48:21 +0200
-Message-Id: <20230508094457.690318901@linuxfoundation.org>
+Message-Id: <20230508094823.966016981@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,85 +54,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Chen Zhongjin <chenzhongjin@huawei.com>
 
-[ Upstream commit 9b04d99788cf475cbd277f30ec66230ccb7e99f4 ]
+[ Upstream commit bfa434c60157c9793e9b12c9b68ade02aff9f803 ]
 
-The CPR3 power resource on the Toshiba Click Mini toggles a GPIO
-which is called SISP (for SIS touchscreen power?) on/off.
+Label ATTR_ROOT in ntfs_read_mft() sets is_root = true and
+ni->ni_flags |= NI_FLAG_DIR, then next attr will goto label ATTR_ALLOC
+and alloc ni->dir.alloc_run. However two states are not always
+consistent and can make memory leak.
 
-This CPR3 power resource is not listed in any _PR? lists, let alone
-in a _PR0 list for the SIS0817 touchscreen ACPI device which needs it.
+ 1) attr_name in ATTR_ROOT does not fit the condition it will set
+ is_root = true but NI_FLAG_DIR is not set.
+ 2) next attr_name in ATTR_ALLOC fits the condition and alloc
+ ni->dir.alloc_run
+ 3) in cleanup function ni_clear(), when NI_FLAG_DIR is set, it frees
+ ni->dir.alloc_run, otherwise it frees ni->file.run
+ 4) because NI_FLAG_DIR is not set in this case, ni->dir.alloc_run is
+ leaked as kmemleak reported:
 
-Before commit a1224f34d72a ("ACPI: PM: Check states of power resources
-during initialization") this was not an issue because since nothing
-referenced the CPR3 power resource its state was always
-ACPI_POWER_RESOURCE_STATE_UNKNOWN and power resources with this state
-get ignored by acpi_turn_off_unused_power_resources().
+unreferenced object 0xffff888003bc5480 (size 64):
+  backtrace:
+    [<000000003d42e6b0>] __kmalloc_node+0x4e/0x1c0
+    [<00000000d8e19b8a>] kvmalloc_node+0x39/0x1f0
+    [<00000000fc3eb5b8>] run_add_entry+0x18a/0xa40 [ntfs3]
+    [<0000000011c9f978>] run_unpack+0x75d/0x8e0 [ntfs3]
+    [<00000000e7cf1819>] run_unpack_ex+0xbc/0x500 [ntfs3]
+    [<00000000bbf0a43d>] ntfs_iget5+0xb25/0x2dd0 [ntfs3]
+    [<00000000a6e50693>] ntfs_fill_super+0x218d/0x3580 [ntfs3]
+    [<00000000b9170608>] get_tree_bdev+0x3fb/0x710
+    [<000000004833798a>] vfs_get_tree+0x8e/0x280
+    [<000000006e20b8e6>] path_mount+0xf3c/0x1930
+    [<000000007bf15a5f>] do_mount+0xf3/0x110
+    ...
 
-This clearly is a bug in the DSDT of this device. Add a DMI quirk
-to make acpi_turn_off_unused_power_resources() a no-op on this
-model to fix the touchscreen no longer working since kernel 5.16 .
+Fix this by always setting is_root and NI_FLAG_DIR together.
 
-This quirk also causes 2 other power resources to not get turned
-off, but the _OFF method on these already was a no-op, so this makes
-no difference for the other 2 power resources.
-
-Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
-Reported-by: Gé Koerkamp <ge.koerkamp@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216946
-Link: https://lore.kernel.org/regressions/32a14a8a-9795-4c8c-7e00-da9012f548f8@leemhuis.info/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/power.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ fs/ntfs3/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
-index 23507d29f0006..c2c70139c4f1d 100644
---- a/drivers/acpi/power.c
-+++ b/drivers/acpi/power.c
-@@ -23,6 +23,7 @@
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 136236a25da60..359eff346910e 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -257,7 +257,6 @@ static struct inode *ntfs_read_mft(struct inode *inode,
+ 			goto out;
  
- #define pr_fmt(fmt) "ACPI: PM: " fmt
+ 		root = Add2Ptr(attr, roff);
+-		is_root = true;
  
-+#include <linux/dmi.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -1022,6 +1023,21 @@ void acpi_resume_power_resources(void)
- }
- #endif
+ 		if (attr->name_len != ARRAY_SIZE(I30_NAME) ||
+ 		    memcmp(attr_name(attr), I30_NAME, sizeof(I30_NAME)))
+@@ -270,6 +269,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
+ 		if (!is_dir)
+ 			goto next_attr;
  
-+static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
-+	{
-+		/*
-+		 * The Toshiba Click Mini has a CPR3 power-resource which must
-+		 * be on for the touchscreen to work, but which is not in any
-+		 * _PR? lists. The other 2 affected power-resources are no-ops.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
-+		},
-+	},
-+	{}
-+};
-+
- /**
-  * acpi_turn_off_unused_power_resources - Turn off power resources not in use.
-  */
-@@ -1029,6 +1045,9 @@ void acpi_turn_off_unused_power_resources(void)
- {
- 	struct acpi_power_resource *resource;
++		is_root = true;
+ 		ni->ni_flags |= NI_FLAG_DIR;
  
-+	if (dmi_check_system(dmi_leave_unused_power_resources_on))
-+		return;
-+
- 	mutex_lock(&power_resource_list_lock);
- 
- 	list_for_each_entry_reverse(resource, &acpi_power_resource_list, list_node) {
+ 		err = indx_init(&ni->dir, sbi, attr, INDEX_MUTEX_I30);
 -- 
 2.39.2
 
