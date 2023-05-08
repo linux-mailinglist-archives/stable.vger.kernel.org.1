@@ -2,87 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E5B6FA2A9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 10:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8D16FA2A6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 10:55:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjEHI4M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 04:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38904 "EHLO
+        id S232967AbjEHIzL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 04:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229999AbjEHI4K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 04:56:10 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1718C100D0;
-        Mon,  8 May 2023 01:56:08 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3488tg4L3031857, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3488tg4L3031857
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 8 May 2023 16:55:43 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 8 May 2023 16:55:48 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 8 May 2023
- 16:55:48 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>, <tony0620emma@gmail.com>
-CC:     <s.hauer@pengutronix.de>, <stable@vger.kernel.org>,
-        <dan.carpenter@linaro.org>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw88: correct qsel_to_ep[] type as int
-Date:   Mon, 8 May 2023 16:55:39 +0800
-Message-ID: <20230508085539.46795-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229491AbjEHIzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 04:55:10 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 577E44ED7;
+        Mon,  8 May 2023 01:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683536109; x=1715072109;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=AWmWl70RzQ8bynQO/SBe1KoPGhvlrfJclFBw3z2YPoI=;
+  b=OYDb/uzkTuOjm1WM9MTV4CVPGKgeVZGcXqLZ5XCRtgcG7vG+Tjfh/BHM
+   gj3VG+hOvDmbYOeNJHtnkbc844MwmJNdSZvKt/ScGJD/KAVLoQ1rEiaUv
+   M6LSR2R42JdJoYErpN/1WSq7j6ahbUzR1EPlzi7VFK/Q8PtesVfHt/Nq6
+   FU0AdUd+uqfBN3yiip7hkq60yqCNi98fOni9vXAYkLVcaC1C3ihZdiJUc
+   zk9g5qjEZksLQuKuzgvQhJ6iThYkaGwZ/s0Au7c/MrfVi0DyC2sDUVceq
+   5xxHw0RsZ1ur9Rf80BtFqZW6fFCEdS42KbG47hZAHUlhsN64+Bk3443Ev
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="377685270"
+X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
+   d="scan'208";a="377685270"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:55:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="872723153"
+X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
+   d="scan'208";a="872723153"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by orsmga005.jf.intel.com with ESMTP; 08 May 2023 01:55:02 -0700
+Message-ID: <06a03d3b-f1a1-8058-3b8c-c9786d66d3de@linux.intel.com>
+Date:   Mon, 8 May 2023 11:56:35 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.7.1
+Content-Language: en-US
+To:     Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
+        gregkh@linuxfoundation.org, mathias.nyman@intel.com,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     tonywwang@zhaoxin.com, weitaowang@zhaoxin.com,
+        stable@vger.kernel.org
+References: <20230421203853.387210-1-WeitaoWang-oc@zhaoxin.com>
+ <20230421203853.387210-2-WeitaoWang-oc@zhaoxin.com>
+From:   Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: Re: [PATCH v2 1/4] xhci: Add some quirks for zhaoxin xhci to fix
+ issues
+In-Reply-To: <20230421203853.387210-2-WeitaoWang-oc@zhaoxin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-qsel_to_ep[] can be assigned negative value, so change type from 'u8' to
-'int'. Otherwise, Smatch static checker warns:
-  drivers/net/wireless/realtek/rtw88/usb.c:219 rtw_usb_parse() warn:
-  assigning (-22) to unsigned variable 'rtwusb->qsel_to_ep[8]'
+On 21.4.2023 23.38, Weitao Wang wrote:
+> Add a quirk XHCI_ZHAOXIN_HOST for zhaoxin xhci to fix issues,
+> there are two cases will be used.
+> - add u1/u2 support.
+> - fix xHCI root hub speed show issue in zhaoxin platform.
+> 
+> Add a quirk XHCI_ZHAOXIN_TRB_FETCH to fix TRB prefetch issue.
+> 
+> On Zhaoxin ZX-100 project, xHCI can't work normally after resume
+> from system Sx state. To fix this issue, when resume from system
+> sx state, reinitialize xHCI instead of restore.
+> So, Add XHCI_RESET_ON_RESUME quirk for zx-100 to fix issue of
+> resuming from system sx state.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+> ---
 
-Cc: stable@vger.kernel.org
-Fixes: a6f187f92bcc ("wifi: rtw88: usb: fix priority queue to endpoint mapping")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/linux-wireless/c3f70197-829d-48ed-ae15-66a9de80fa90@kili.mountain/
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/usb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'd split this series into different logical parts:
 
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.h b/drivers/net/wireless/realtek/rtw88/usb.h
-index 30647f0dd61c6..ad1d7955c6a51 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.h
-+++ b/drivers/net/wireless/realtek/rtw88/usb.h
-@@ -78,7 +78,7 @@ struct rtw_usb {
- 	u8 pipe_interrupt;
- 	u8 pipe_in;
- 	u8 out_ep[RTW_USB_EP_MAX];
--	u8 qsel_to_ep[TX_DESC_QSEL_MAX];
-+	int qsel_to_ep[TX_DESC_QSEL_MAX];
- 	u8 usb_txagg_num;
- 
- 	struct workqueue_struct *txwq, *rxwq;
--- 
-2.25.1
+patch 1/4
+   Set XHCI_RESET_ON_RESUME quirk to ZHAOXIN host to fix resume issue.
+   cc: stable
+
+patch 2/4
+   Add XHCI_ZHAOXIN_TRB_FETCH quirk flag together with code that allocates double pages
+   cc: stable
+
+patch 3/4
+   Add XHCI_ZHAOXIN_HOST quirk flag together with code that corrects USB3 roothub minor version
+   cc: stable
+
+patch 4/4
+   Set XHCI_LPM_SUPPORT quirk together with code that sets tier policy and u1/u2 timeouts,
+   Don't add stable as this is about adding feature support.
+
+Thanks
+-Mathias
 
