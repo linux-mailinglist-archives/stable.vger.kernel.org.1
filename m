@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A0D6FAE05
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224B26FAC4D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236115AbjEHLkT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        id S235636AbjEHLXJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236222AbjEHLj6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:58 -0400
+        with ESMTP id S235633AbjEHLXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBED31B09
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B16C2B432
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9833963448
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92876C433EF;
-        Mon,  8 May 2023 11:39:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA84D6153E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9DCC433D2;
+        Mon,  8 May 2023 11:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545988;
-        bh=NP0tHKauuSJ7vPHJSC80ABWWNN0Xn171wVVzh7jSyPA=;
+        s=korg; t=1683544977;
+        bh=7EUzsX8JrcFemhdwca7bezGO5URyHPSzWt/iPLv0KYk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QccW35Qq4xJbNdx2F4KpPiypnLJMSyjyDljKpP8YrKv6Vh/RWP/ax/2oIQO8mLrUn
-         XeAHmb/dkeJmKliAdJb6VRmCYFobZ/hmlcq9wkiiLY4YgpQvjvh+8P+aark4+kdJ28
-         9gNlHdBcX3b8BCrwu3Idun2qZvbVGxX4mHXmNUak=
+        b=BUtb08F/KhTzYPWNwiQHfMxpi1mdZFN9U+p+XruZJmNS7IdMa+8FbjZpcr+Jv0Sq9
+         lsgCioyJ/uALiv6QmEAqQ0xM3iSE5i410qnKhz6gE1IkIguZtMBWY7qhWpa61j1IDY
+         edkQxud9i7wl1Dh4LBMXOjrerYj4s5G5vIRtHIf8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quan Zhou <quan.zhou@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/371] wifi: mt76: mt7921e: fix probe timeout after reboot
+Subject: [PATCH 6.3 585/694] rtc: omap: include header for omap_rtc_power_off_program prototype
 Date:   Mon,  8 May 2023 11:47:00 +0200
-Message-Id: <20230508094820.755393182@linuxfoundation.org>
+Message-Id: <20230508094454.011085804@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c397fc1e6365a2a9e5540a85b2c1d4ea412aa0e2 ]
+[ Upstream commit f69c2b5420497b7a54181ce170d682cbeb1f119f ]
 
-In system warm reboot scene, due to the polling timeout(now 1000us)
-is too short to wait dma idle in time, it may make driver probe fail
-with error code -ETIMEDOUT. Meanwhile, we also found the dma may take
-around 70ms to enter idle state. Change the polling idle timeout to
-100ms to avoid the probabilistic probe fail.
+Non-static functions should have a prototype:
 
-Tested pass with 5000 times warm reboot on x86 platform.
+  drivers/rtc/rtc-omap.c:410:5: error: no previous prototype for ‘omap_rtc_power_off_program’ [-Werror=missing-prototypes]
 
-[4.477496] pci 0000:01:00.0: attach allowed to drvr mt7921e [internal device]
-[4.478306] mt7921e 0000:01:00.0: ASIC revision: 79610010
-[4.480063] mt7921e: probe of 0000:01:00.0 failed with error -110
-
-Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 6256f7f7f217 ("rtc: OMAP: Add support for rtc-only mode")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230311094021.79730-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-omap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index 93d0cc1827d26..7e39bcfdb0b7a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -144,9 +144,9 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
+diff --git a/drivers/rtc/rtc-omap.c b/drivers/rtc/rtc-omap.c
+index 4d4f3b1a73093..73634a3ccfd3b 100644
+--- a/drivers/rtc/rtc-omap.c
++++ b/drivers/rtc/rtc-omap.c
+@@ -25,6 +25,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/rtc.h>
++#include <linux/rtc/rtc-omap.h>
  
--	if (!mt76_poll(dev, MT_WFDMA0_GLO_CFG,
--		       MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
--		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
-+	if (!mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+				 MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
- 		return -ETIMEDOUT;
- 
- 	return 0;
+ /*
+  * The OMAP RTC is a year/month/day/hours/minutes/seconds BCD clock
 -- 
 2.39.2
 
