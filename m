@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C17B6FA60E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F099E6FA8F5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234304AbjEHKPp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
+        id S235012AbjEHKql (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234301AbjEHKPo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA28D3ACC1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:43 -0700 (PDT)
+        with ESMTP id S235032AbjEHKqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8526A2A9D8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8194962486
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C59C433EF;
-        Mon,  8 May 2023 10:15:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F4179628C0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FD7C433EF;
+        Mon,  8 May 2023 10:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540942;
-        bh=jFohSHbQ90/0FsrPv3Uz84Ua7EONv3eJb+p8ynrSSB4=;
+        s=korg; t=1683542766;
+        bh=HcVHmsYf0WHbDYdxMfdo34ht14fDlnotCj2cU3dTJdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=frVlY4/ZkPcBcymYGnC92uz4QK9va3hEXoyPVdsXLLuhBSqLuLYwZfpUlAsHyv9t3
-         Q/WW7hgyN7zK8vxeOV3BO6Y7KanMhOVvF+7yhxLI/VQfBvURD5hqZMdnKELPGqUwuZ
-         wbDpw/7z/QwURqb4+HYVicdiGRlMpptkSJmxEcD0=
+        b=IwUGSb5nmIYkqVxTJ5v/Cvr7lopCrkyfxmIobSjcfHkCyysPKLtns8esazZ5y6xUA
+         I77Hi26qod1bsLL9PMX0giRG9nAUQn5YrZYFyN+46QIgDSRqTiCkOB7D2sOoH33zgw
+         KAvvjGk3qVSFHd3eQroXxnR284p5hUOBinV6C9fk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hai Pham <hai.pham.ud@renesas.com>,
-        LUU HOAI <hoai.luu.ub@renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 525/611] pinctrl: renesas: r8a779a0: Remove incorrect AVB[01] pinmux configuration
+Subject: [PATCH 6.2 541/663] power: supply: generic-adc-battery: fix unit scaling
 Date:   Mon,  8 May 2023 11:46:07 +0200
-Message-Id: <20230508094439.074458958@linuxfoundation.org>
+Message-Id: <20230508094446.556951265@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,47 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hai Pham <hai.pham.ud@renesas.com>
+From: Sebastian Reichel <sre@kernel.org>
 
-[ Upstream commit a145c9a8674ac8fbfa1595276e1b6cbfc5139038 ]
+[ Upstream commit 44263f50065969f2344808388bd589740f026167 ]
 
-AVB[01]_{MAGIC,MDC,MDIO,TXCREFCLK} are registered as both
-PINMUX_SINGLE(fn) and PINMUX_IPSR_GPSR(fn) in the pinmux_data array.
+power-supply properties are reported in µV, µA and µW.
+The IIO API provides mV, mA, mW, so the values need to
+be multiplied by 1000.
 
-The latter are correct, hence remove the former.
-Without this fix, the Ethernet PHY is not operational on the MDIO bus.
-
-Signed-off-by: Hai Pham <hai.pham.ud@renesas.com>
-Signed-off-by: LUU HOAI <hoai.luu.ub@renesas.com>
-Fixes: 741a7370fc3b8b54 ("pinctrl: renesas: Initial R8A779A0 (V3U) PFC support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/6fd217b71e83ba9a8157513ed671a1fa218b23b6.1674824958.git.geert+renesas@glider.be
+Fixes: e60fea794e6e ("power: battery: Generic battery driver using IIO")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Signed-off-by: Sebastian Reichel <sre@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779a0.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/power/supply/generic-adc-battery.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779a0.c b/drivers/pinctrl/renesas/pfc-r8a779a0.c
-index 760c83a8740bd..6069869353bb4 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779a0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779a0.c
-@@ -696,16 +696,8 @@ static const u16 pinmux_data[] = {
- 	PINMUX_SINGLE(PCIE0_CLKREQ_N),
+diff --git a/drivers/power/supply/generic-adc-battery.c b/drivers/power/supply/generic-adc-battery.c
+index 66039c665dd1e..0af536f4932f1 100644
+--- a/drivers/power/supply/generic-adc-battery.c
++++ b/drivers/power/supply/generic-adc-battery.c
+@@ -135,6 +135,9 @@ static int read_channel(struct gab *adc_bat, enum power_supply_property psp,
+ 			result);
+ 	if (ret < 0)
+ 		pr_err("read channel error\n");
++	else
++		*result *= 1000;
++
+ 	return ret;
+ }
  
- 	PINMUX_SINGLE(AVB0_PHY_INT),
--	PINMUX_SINGLE(AVB0_MAGIC),
--	PINMUX_SINGLE(AVB0_MDC),
--	PINMUX_SINGLE(AVB0_MDIO),
--	PINMUX_SINGLE(AVB0_TXCREFCLK),
- 
- 	PINMUX_SINGLE(AVB1_PHY_INT),
--	PINMUX_SINGLE(AVB1_MAGIC),
--	PINMUX_SINGLE(AVB1_MDC),
--	PINMUX_SINGLE(AVB1_MDIO),
--	PINMUX_SINGLE(AVB1_TXCREFCLK),
- 
- 	PINMUX_SINGLE(AVB2_AVTP_PPS),
- 	PINMUX_SINGLE(AVB2_AVTP_CAPTURE),
 -- 
 2.39.2
 
