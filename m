@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 634A36FA74D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D4D66FAA60
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234604AbjEHK3N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
+        id S235459AbjEHLCj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234441AbjEHK3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A66410D7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:59 -0700 (PDT)
+        with ESMTP id S235510AbjEHLCQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:02:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274B830AF0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:00:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11BD56266D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DB3C433EF;
-        Mon,  8 May 2023 10:28:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CE9662A29
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:00:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91748C433EF;
+        Mon,  8 May 2023 11:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541738;
-        bh=bWG60vcmr5IYQG7Ez/8WmtR1Wg8VcUmec2xnkiqGSeg=;
+        s=korg; t=1683543655;
+        bh=MAB3dtPYftmQz3ahY//MiHajMhjIR/dm2BqKGdUiJ/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X/i7f4JJ2unkbsCVti2+7CkJYrk5n+EsRj8FtUa6QsPhDdrwD7MbBkFcvQtSdMWV3
-         wJs05TuXtU4vZd1az3KFutGQ8j6nSZlmJ/jdAVb40TnpxcUdGynNZCQaP7mJ4azyOM
-         +q9JNWYbXfyjdVAqrRzdf+xZOSWrI0FSt1zZvNZM=
+        b=g3nbm4qzizRq4Jmp5PX6MJT/FMgdNLAIz6tjXpUS8gpiomkD4IA/+SXk8k+9c0gSs
+         pbslExffBWa6TUVKGeqxzZsfjfYKKoMLHtsItCtKB4A5i8z0nI29yM4wrcrulvY4xS
+         NhNBIp8uN2T0KYHYrjcOE+FLa3anTalBx2Aslvvw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 167/663] arm64: dts: qcom: sm8250: Fix the PCI I/O port range
-Date:   Mon,  8 May 2023 11:39:53 +0200
-Message-Id: <20230508094433.902451305@linuxfoundation.org>
+        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
+        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 159/694] soc: ti: pm33xx: Fix refcount leak in am33xx_pm_probe
+Date:   Mon,  8 May 2023 11:39:54 +0200
+Message-Id: <20230508094437.585987736@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,62 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit e115a4495db687898b8d91d4f16c2cf55bbf167c ]
+[ Upstream commit 8f3c307b580a4a6425896007325bddefc36e8d91 ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
-(0x60200000, 0x40200000, 0x64200000) specified in the ranges property for
-I/O region.
+wkup_m3_ipc_get() takes refcount, which should be freed by
+wkup_m3_ipc_put(). Add missing refcount release in the error paths.
 
-While at it, let's use the missing 0x prefix for the addresses.
-
-Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-9-manivannan.sadhasivam@linaro.org
+Fixes: 5a99ae0092fe ("soc: ti: pm33xx: AM437X: Add rtc_only with ddr in self-refresh support")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20230106054022.947529-1-linmq006@gmail.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/soc/ti/pm33xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 927032863e2f1..d3f2f617047f1 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -1807,8 +1807,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
+index ce09c42eaed25..f04c21157904b 100644
+--- a/drivers/soc/ti/pm33xx.c
++++ b/drivers/soc/ti/pm33xx.c
+@@ -527,7 +527,7 @@ static int am33xx_pm_probe(struct platform_device *pdev)
  
--			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
--				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
+ 	ret = am33xx_pm_alloc_sram();
+ 	if (ret)
+-		return ret;
++		goto err_wkup_m3_ipc_put;
  
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
-@@ -1916,7 +1916,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+ 	ret = am33xx_pm_rtc_setup();
+ 	if (ret)
+@@ -572,13 +572,14 @@ static int am33xx_pm_probe(struct platform_device *pdev)
+ 	pm_runtime_put_sync(dev);
+ err_pm_runtime_disable:
+ 	pm_runtime_disable(dev);
+-	wkup_m3_ipc_put(m3_ipc);
+ err_unsetup_rtc:
+ 	iounmap(rtc_base_virt);
+ 	clk_put(rtc_fck);
+ err_free_sram:
+ 	am33xx_pm_free_sram();
+ 	pm33xx_dev = NULL;
++err_wkup_m3_ipc_put:
++	wkup_m3_ipc_put(m3_ipc);
+ 	return ret;
+ }
  
--			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
- 
- 			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2024,7 +2024,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x01000000 0x0 0x64200000 0x0 0x64200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x64200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x64300000 0x0 0x64300000 0x0 0x3d00000>;
- 
- 			interrupts = <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.39.2
 
