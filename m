@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB1A6FAE46
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 090AE6FA98E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236234AbjEHLnX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:43:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
+        id S235262AbjEHKwu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234041AbjEHLnE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8E801FAB9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:22 -0700 (PDT)
+        with ESMTP id S235202AbjEHKwe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:52:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 446EC2CFD7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96C7163572
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C90C433D2;
-        Mon,  8 May 2023 11:42:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09E136294F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB19C433EF;
+        Mon,  8 May 2023 10:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546142;
-        bh=ijF6p5LLEfeDfSZ9Eae5JBV2HB94J2Uo8w0u4qWJG8s=;
+        s=korg; t=1683543088;
+        bh=twQBlo0z1/wngMaLnICujCMwfJjvC6WMoe/YUvdsOSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yc1jbPYM32fQgyFB6QZrRrWTtBcmzEp2bU5ffWQjBHvPGgjxo3L2F+2zzCn76THme
-         k02sdWlUNBdnWb11JqP8zFbVj5GFxJPYd2/VYysG3dYofYJO/1hJN+gr60xo7QEc2k
-         I3Z/ms3HRp/ynlUkpMJUDe6ObBZ03IsTbTpXoraM=
+        b=H4LBqeeT7VC+i/V4X8xk5x3m+qzU7UY5P5nmuOjM2csuQBuzFG0K1jWmTtgQuVasM
+         8XX8Mlv2kteke8+QFLN72B1jS2d10qjbr19UES/zS32+W+5UCh2/0dI70k1gSuPYPO
+         js7HB8MsERdcXjml350iOxn5RUS5n2E1VTCGjTGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Peter Chen <peter.chen@kernel.org>,
-        Yinhao Hu <dddddd@hust.edu.cn>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/371] usb: chipidea: fix missing goto in `ci_hdrc_probe`
+        patches@lists.linux.dev, Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.2 646/663] dm clone: call kmem_cache_destroy() in dm_clone_init() error path
 Date:   Mon,  8 May 2023 11:47:52 +0200
-Message-Id: <20230508094822.789796531@linuxfoundation.org>
+Message-Id: <20230508094451.021028773@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +52,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yinhao Hu <dddddd@hust.edu.cn>
+From: Mike Snitzer <snitzer@kernel.org>
 
-[ Upstream commit d6f712f53b79f5017cdcefafb7a5aea9ec52da5d ]
+commit 6827af4a9a9f5bb664c42abf7c11af4978d72201 upstream.
 
->From the comment of ci_usb_phy_init, it returns an error code if
-usb_phy_init has failed, and it should do some clean up, not just
-return directly.
+Otherwise the _hydration_cache will leak if dm_register_target() fails.
 
-Fix this by goto the error handling.
-
-Fixes: 74475ede784d ("usb: chipidea: move PHY operation to core")
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Yinhao Hu <dddddd@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230412055852.971991-1-dddddd@hust.edu.cn
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-clone-target.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index a9869975ce32f..0e8f4aa031f81 100644
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -1098,7 +1098,7 @@ static int ci_hdrc_probe(struct platform_device *pdev)
- 	ret = ci_usb_phy_init(ci);
- 	if (ret) {
- 		dev_err(dev, "unable to init phy: %d\n", ret);
--		return ret;
-+		goto ulpi_exit;
+--- a/drivers/md/dm-clone-target.c
++++ b/drivers/md/dm-clone-target.c
+@@ -2205,6 +2205,7 @@ static int __init dm_clone_init(void)
+ 	r = dm_register_target(&clone_target);
+ 	if (r < 0) {
+ 		DMERR("Failed to register clone target");
++		kmem_cache_destroy(_hydration_cache);
+ 		return r;
  	}
  
- 	ci->hw_bank.phys = res->start;
--- 
-2.39.2
-
 
 
