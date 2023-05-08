@@ -2,65 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A046B6FAC7B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F9E26FAD80
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235650AbjEHLZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40126 "EHLO
+        id S235969AbjEHLfO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235682AbjEHLYo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5233A5F7;
-        Mon,  8 May 2023 04:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1683545077; i=rwarsow@gmx.de;
-        bh=eGpu6T41uKBUAdNXsHogIHMc7zYQpmcAcSh7prC0PSY=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=flRPGvrmaYeIH9fEFtIqZ+h8e0jXx/vokZEsXdHRzulUuV7qeXuP+w3YlpYZ/RWPg
-         IszukVFATi2ZIewDdF69lyEAoTLPR9wUTyuyaNm7yJ0JGbkH/DtsN8HGgudwr6A4PI
-         OcbVjkqBgxZS+g4q8CN5u7zdJ0I8SUTIbs9eEaBDWREDcIJEpMJln3bXc7aRh02tGZ
-         bdZ1b9wcH+z9QYPBVJPhvVObbb0mTGT5yUKXapFbHr2henJAjajzMWlyDmi3NDxD6z
-         jTc7ZIiz7H0aGgtWQKUDEqJGWVk2RuqN4OdOm8TwFP4UJ2oxUgvi2aRG3db0MOwLD6
-         RBaLS8Gcl3LyA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.34.11]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPokD-1paifP3U83-00Mr3X; Mon, 08
- May 2023 13:24:36 +0200
-Message-ID: <18fbcc92-cf4a-d8cf-633d-2cfaf1572391@gmx.de>
-Date:   Mon, 8 May 2023 13:24:36 +0200
+        with ESMTP id S235948AbjEHLfB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933253DCB2;
+        Mon,  8 May 2023 04:34:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 148B363223;
+        Mon,  8 May 2023 11:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F37C4339B;
+        Mon,  8 May 2023 11:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683545646;
+        bh=ZILwEctvAK18Hu7PlI1bveD9toRdgnBJ+HsGTT+MR2o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MnYZ8L4k2KG1HX52v5lWPCh69Y33RV3dEYpmXEuQ4LnfDqEayU0bhanLQ8PpxUGCD
+         q/Br9plvVRcCRjfZwXCM9Cpm/keXJf2w/gMpQXz9x//hxkur6ZDU+g1s4f849rQNhB
+         iRSalTnIxeWRZVbulB3xm/ueWXWqH6MryB3cKiuT3211/XS6gyGOUr+Kr0HBsEAlry
+         w4Gejl3Oea3kzYNwxOufZgyDo3PXtguZyYPCJdB5v+etjdvAgjJe9dhspQ811lmFoK
+         XFgbjLC0jEpGSQhhCqGkntcgCOCCKz8fNhlxZGcnzYxmHQiHglU2uYT4v3SGihXVk1
+         ZkxzYctQHHbnQ==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1pvz8I-0002MF-La; Mon, 08 May 2023 13:34:23 +0200
+Date:   Mon, 8 May 2023 13:34:22 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Udipto Goswami <quic_ugoswami@quicinc.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pratham Pratap <quic_ppratap@quicinc.com>,
+        Jack Pham <quic_jackp@quicinc.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Oliver Neukum <oneukum@suse.com>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v9] usb: dwc3: debugfs: Prevent any register access when
+ devices is runtime suspended
+Message-ID: <ZFjePu8Wb6NUwCav@hovoldconsulting.com>
+References: <20230505155103.30098-1-quic_ugoswami@quicinc.com>
+ <20230506013036.j533xncixkky5uf6@synopsys.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:Ej8BuxwKPHlcfg5gL7MaH857ao09IgNI6m1Wq1Tac6/zVDNZeWk
- YxBsxElPhk3Jp2rnpBTlO8ZbtNg472WO4mRPQp1i1QZigPBmywVgQ56SsCtwDBbMh8jcLnE
- wLHvlNAuFKYZhmZB9FJ8wbiiiGazNF3nc7EhtUycEZ+urx86BIfRgy+jBZILMuh873Tkh1M
- VYbrtDSGwfBuYAQY3lZNg==
-UI-OutboundReport: notjunk:1;M01:P0:QrU2GusboR8=;ld7vvQX2d9xQRytE7BzscE2woIt
- NvrCmySg6+uZycUpZTALIwD2hEqcEOWHkyQp13B8MSt8ulnPQY1zOM6rYvJFBlwgfSMZUObSi
- M+c6CxVOY7IHFytipjGBtMlxkq+iwNeoyXmbyDEpL4xklzB+Sm98vmA/R2Bn6Z5RTe/Gzc6Az
- ZMPkPnai9AVDKve2biMHddiOemIUps5cE7m+NVThGK4T55PRNF9+I+9MHehf81FS3MqtD/QIu
- lxHpPI38TLDh5uHU9oNKoHTjbaTYNtpNm0sNp/7SK2SUryYlwzmwwOokgoBDFg7imFJqjiRZi
- IVtO76hNBkToNFAsDyKdmppENwxNt8m1xGH+wcsaXQWFgYnfcsxpPpaTT8YdC43yZjRF4GcDI
- iwdqhCdb8Xfun80+JLyqa3G+HIulhO4XE+Dm6SpEWrO1RZhCjn6rv/ueS8f+/p91s+HAX6DEV
- 3lQSMHGWWTH+vaS1MnzDaAzitvkhhoqEejHYzaVcRqN3rhfpgOu5nwJZAFD2YPCUe0Zg0Nbfq
- /CXyHhKMnH3KbIe1zAjRzn7aRqzbxJJi1OumMZ2CLF8T6WkfWovzHAsqPiP+8Kb172B5PiIdP
- SOr52PspCzmXXbXp7ek4+3uGb1laIE7xPavsrTDOX/aH4eXh0xMD+ZZde2U4QpZ1Er8pW51tV
- kpfOzSF6LLYFnLpFAwoZN9/6PlVfvAISigcY2FMx3/nGqHzxWK1cpsPsQAXti+jaKnNRB7WZE
- JTS3MiE1US0bNLfk8NWQmPnOOZfGLHOjnF7T/VaNZfa8mgUgp/Uw/jh+BrrLtpp9+Dibwz5NU
- 7ut24oOvIqGfoTEuca/r8GRc+jDHDU8fgjNq9rQ+cYtWbjyyIrwSO+EoM/YHXi+ogceXnrpf6
- Wak0MjQvOfjeCmbs1A0Jzat86ctjfM/G2aeO7y4v7ndzBhrc2+iPDMyoFPR5KNukqm8LM5kzt
- 72WuRLjYmcFKHrGgbJqndtByj4o=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230506013036.j533xncixkky5uf6@synopsys.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,14 +64,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Sat, May 06, 2023 at 01:30:52AM +0000, Thinh Nguyen wrote:
 
-6.3.2-rc1
+Udipto, looks like you just ignored my comment about fixing up the patch
+Subject.
 
-compiles, boots and runs here on x86_64
-(Intel i5-11400, Fedora 38)
+> On Fri, May 05, 2023, Udipto Goswami wrote:
+> > When the dwc3 device is runtime suspended, various required clocks would
+> > get disabled and it is not guaranteed that access to any registers would
+> > work. Depending on the SoC glue, a register read could be as benign as
+> > returning 0 or be fatal enough to hang the system.
+> > 
+> > In order to prevent such scenarios of fatal errors, make sure to resume
+> > dwc3 then allow the function to proceed.
+> > 
+> > Fixes: 62ba09d6bb63 ("usb: dwc3: debugfs: Dump internal LSP and ep registers")
+> 
+> This fix goes before the above change.
 
-Thanks
+Yes, this clearly is not the commit that first introduced this issue.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Either add a Fixes tag for the oldest one or add one for each commit
+that introduced debugfs attributes with this issues.
 
+> This also touches on many places and is more than 100 lines. While this
+> is a fix, I'm not sure if Cc stable is needed. Perhaps others can
+> comment.
+
+I believe this should be backported as it fixes a crash/hang.
+
+The stable rules are flexible, but it may also be possible to break the
+patch up in pieces and add a corresponding Fixes tag.
+
+Johan
