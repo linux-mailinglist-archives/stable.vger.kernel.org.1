@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6712E6FA55C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C689F6FA852
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234112AbjEHKIj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
+        id S234880AbjEHKjg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234111AbjEHKIi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:38 -0400
+        with ESMTP id S234836AbjEHKja (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D41932927
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D05A26E8B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6D2462295
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB29AC4339B;
-        Mon,  8 May 2023 10:08:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 190DC62829
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9854C433EF;
+        Mon,  8 May 2023 10:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540516;
-        bh=gtUW9l+48R1oDojnpHWZ8L2hQvMS9oEzPvrb9H+YPcE=;
+        s=korg; t=1683542367;
+        bh=WxENUDu9XKD4KrfOb2w89Rm4uQPwqtCXpkL0Ma9kfPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N+JrB9idMr9jaRB4nIpESwHmm+l13dTnxzaLx1hGrLKtlcWPB+noJsBIMIJfxsk/x
-         Qkb84TkDM7ZFa3U0OchZICkkhCPi8WeTFAsARLOrvUJ8NjKV+8VelOY9ySUKHf1WAy
-         OvxIi0We1tVUVqdb5xgfPtoEFAX4m4yAyudmNVog=
+        b=etDef9qx13GOgqdtXdiHwV/mk56r/+FGLBnQJPsV3b7zWKtxpQYagVWrgTFrDdcN5
+         uV732ppeoHFjUd8RLiOXVNS3SYCGKCzB/h5jIpQiECNxnhtAstn17fpOIU9F4EzVDW
+         U+cbcwGquM/yYTwgtgXwxcafUR9uOqZUwUEdR2gI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gan Gecen <gangecen@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 395/611] net: amd: Fix link leak when verifying config failed
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.2 411/663] ixgbe: Allow flow hash to be set via ethtool
 Date:   Mon,  8 May 2023 11:43:57 +0200
-Message-Id: <20230508094435.116563863@linuxfoundation.org>
+Message-Id: <20230508094441.407445084@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gencen Gan <gangecen@hust.edu.cn>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit d325c34d9e7e38d371c0a299d415e9b07f66a1fb ]
+[ Upstream commit 4f3ed1293feb9502dc254b05802faf1ad3317ac6 ]
 
-After failing to verify configuration, it returns directly without
-releasing link, which may cause memory leak.
+ixgbe currently returns `EINVAL` whenever the flowhash it set by ethtool
+because the ethtool code in the kernel passes a non-zero value for hfunc
+that ixgbe should allow.
 
-Paolo Abeni thinks that the whole code of this driver is quite
-"suboptimal" and looks unmainatained since at least ~15y, so he
-suggests that we could simply remove the whole driver, please
-take it into consideration.
+When ethtool is called with `ETHTOOL_SRXFHINDIR`,
+`ethtool_set_rxfh_indir` will call ixgbe's set_rxfh function
+with `ETH_RSS_HASH_NO_CHANGE`. This value should be accepted.
 
-Simon Horman suggests that the fix label should be set to
-"Linux-2.6.12-rc2" considering that the problem has existed
-since the driver was introduced and the commit above doesn't
-seem to exist in net/net-next.
+When ethtool is called with `ETHTOOL_SRSSH`, `ethtool_set_rxfh` will
+call ixgbe's set_rxfh function with `rxfh.hfunc`, which appears to be
+hardcoded in ixgbe to always be `ETH_RSS_HASH_TOP`. This value should
+also be accepted.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Gan Gecen <gangecen@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Before this patch:
+
+$ sudo ethtool -L eth1 combined 10
+$ sudo ethtool -X eth1 default
+Cannot set RX flow hash configuration: Invalid argument
+
+After this patch:
+
+$ sudo ethtool -L eth1 combined 10
+$ sudo ethtool -X eth1 default
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 10 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9     0     1     2     3     4     5
+   16:      6     7     8     9     0     1     2     3
+   24:      4     5     6     7     8     9     0     1
+   ...
+
+Fixes: 1c7cf0784e4d ("ixgbe: support for ethtool set_rxfh")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/nmclan_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/nmclan_cs.c b/drivers/net/ethernet/amd/nmclan_cs.c
-index 823a329a921f4..0dd391c84c138 100644
---- a/drivers/net/ethernet/amd/nmclan_cs.c
-+++ b/drivers/net/ethernet/amd/nmclan_cs.c
-@@ -651,7 +651,7 @@ static int nmclan_config(struct pcmcia_device *link)
-     } else {
-       pr_notice("mace id not found: %x %x should be 0x40 0x?9\n",
- 		sig[0], sig[1]);
--      return -ENODEV;
-+      goto failed;
-     }
-   }
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index 6cfc9dc165378..821dfd323fa9a 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -3131,8 +3131,8 @@ static int ixgbe_set_rxfh(struct net_device *netdev, const u32 *indir,
+ 	int i;
+ 	u32 reta_entries = ixgbe_rss_indir_tbl_entries(adapter);
  
+-	if (hfunc)
+-		return -EINVAL;
++	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
++		return -EOPNOTSUPP;
+ 
+ 	/* Fill out the redirection table */
+ 	if (indir) {
 -- 
 2.39.2
 
