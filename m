@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9EEE6FAC5D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C8C6FA95D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233970AbjEHLXj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:23:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
+        id S235125AbjEHKuU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235638AbjEHLXi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:38 -0400
+        with ESMTP id S235238AbjEHKtw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E2239194
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1D82A9F5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE1B362D0A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EA2C433EF;
-        Mon,  8 May 2023 11:23:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D72846290D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0BFC433D2;
+        Mon,  8 May 2023 10:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545014;
-        bh=pZVt+N6axvmewFN3GR7/rsEHSCtBpr4N01uaJxT+KeA=;
+        s=korg; t=1683542960;
+        bh=kjsn8EC8znD3UmGWKTTvGFe8CixJgsskO6DqxniylZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cAmHvMcUd4l0jIxPiTmahV+CRHMPqJu5jbhxPW/LoZ0nx6BGaRFAoVZ/xv7JSJv1z
-         /UQVwE4y0zr3XAiKcu/JXPY6BSJKzIt5Owpoaw+l6wsg+j6BsjFx0U1f4aTiwqeN23
-         ++0KlqqGNlhii9c1vIrxjOGkpGEQLJ2hH4qxlkIc=
+        b=wm7QgxBNMZOGRCnUtLwnxVQRU9Izay2bd+X4Um1E2VAF5TbCQWbTSmUwkb5KUSJZI
+         Fq0oA9sgpPEIWlzaKGvyrkdm+gWBiA8pLZdmxxBvEn6R+HNj+GA64JkdBDK2B0Xv/R
+         pY+dVNFwcE3eoX2o+bTPY9imAvO01FosPmYG2k+A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Chengci.Xu" <chengci.xu@mediatek.com>,
-        Yong Wu <yong.wu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 596/694] iommu/mediatek: Set dma_mask for PGTABLE_PA_35_EN
+        patches@lists.linux.dev,
+        =?UTF-8?q?G=C3=A9=20Koerkamp?= <ge.koerkamp@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 605/663] ACPI: PM: Do not turn of unused power resources on the Toshiba Click Mini
 Date:   Mon,  8 May 2023 11:47:11 +0200
-Message-Id: <20230508094454.501499511@linuxfoundation.org>
+Message-Id: <20230508094449.229722375@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +56,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yong Wu <yong.wu@mediatek.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit f045e9df6537175d02565f21616ac1a9dd59b61c ]
+[ Upstream commit 9b04d99788cf475cbd277f30ec66230ccb7e99f4 ]
 
-When we enable PGTABLE_PA_35_EN, the PA for pgtable may be 35bits.
-Thus add dma_mask for it.
+The CPR3 power resource on the Toshiba Click Mini toggles a GPIO
+which is called SISP (for SIS touchscreen power?) on/off.
 
-Fixes: 301c3ca12576 ("iommu/mediatek: Allow page table PA up to 35bit")
-Signed-off-by: Chengci.Xu <chengci.xu@mediatek.com>
-Signed-off-by: Yong Wu <yong.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230316101445.12443-1-yong.wu@mediatek.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+This CPR3 power resource is not listed in any _PR? lists, let alone
+in a _PR0 list for the SIS0817 touchscreen ACPI device which needs it.
+
+Before commit a1224f34d72a ("ACPI: PM: Check states of power resources
+during initialization") this was not an issue because since nothing
+referenced the CPR3 power resource its state was always
+ACPI_POWER_RESOURCE_STATE_UNKNOWN and power resources with this state
+get ignored by acpi_turn_off_unused_power_resources().
+
+This clearly is a bug in the DSDT of this device. Add a DMI quirk
+to make acpi_turn_off_unused_power_resources() a no-op on this
+model to fix the touchscreen no longer working since kernel 5.16 .
+
+This quirk also causes 2 other power resources to not get turned
+off, but the _OFF method on these already was a no-op, so this makes
+no difference for the other 2 power resources.
+
+Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
+Reported-by: Gé Koerkamp <ge.koerkamp@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216946
+Link: https://lore.kernel.org/regressions/32a14a8a-9795-4c8c-7e00-da9012f548f8@leemhuis.info/
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/power.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index d5a4955910ff5..6a00ce208dc2b 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -1258,6 +1258,14 @@ static int mtk_iommu_probe(struct platform_device *pdev)
- 			return PTR_ERR(data->bclk);
- 	}
+diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+index 23507d29f0006..c2c70139c4f1d 100644
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -23,6 +23,7 @@
  
-+	if (MTK_IOMMU_HAS_FLAG(data->plat_data, PGTABLE_PA_35_EN)) {
-+		ret = dma_set_mask(dev, DMA_BIT_MASK(35));
-+		if (ret) {
-+			dev_err(dev, "Failed to set dma_mask 35.\n");
-+			return ret;
-+		}
-+	}
+ #define pr_fmt(fmt) "ACPI: PM: " fmt
+ 
++#include <linux/dmi.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -1022,6 +1023,21 @@ void acpi_resume_power_resources(void)
+ }
+ #endif
+ 
++static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
++	{
++		/*
++		 * The Toshiba Click Mini has a CPR3 power-resource which must
++		 * be on for the touchscreen to work, but which is not in any
++		 * _PR? lists. The other 2 affected power-resources are no-ops.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
++		},
++	},
++	{}
++};
 +
- 	pm_runtime_enable(dev);
+ /**
+  * acpi_turn_off_unused_power_resources - Turn off power resources not in use.
+  */
+@@ -1029,6 +1045,9 @@ void acpi_turn_off_unused_power_resources(void)
+ {
+ 	struct acpi_power_resource *resource;
  
- 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
++	if (dmi_check_system(dmi_leave_unused_power_resources_on))
++		return;
++
+ 	mutex_lock(&power_resource_list_lock);
+ 
+ 	list_for_each_entry_reverse(resource, &acpi_power_resource_list, list_node) {
 -- 
 2.39.2
 
