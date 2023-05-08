@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A71A26FAA99
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 358B86FAA9A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235455AbjEHLEL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38488 "EHLO
+        id S233715AbjEHLEO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:04:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235593AbjEHLDr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC04331ED1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:02 -0700 (PDT)
+        with ESMTP id S235610AbjEHLDu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7147348BF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6611760C4B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574D4C433EF;
-        Mon,  8 May 2023 11:03:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 79C8262A6A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A5FC433D2;
+        Mon,  8 May 2023 11:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543781;
-        bh=myaKavXsFhWhcPEO+mv5cgtE5dQxWTc7cml3RyKUmqA=;
+        s=korg; t=1683543784;
+        bh=9MAsqeaazGuNiXMMAm5m2ptonWtBpnOK+mSH9waaEkE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jbmEpWlR9PUSBKIaVNZUGsX14OmNlcrJ7t50jAM3lQMImsKs0ZcTGN0Zim62hOlUg
-         RfoQae5GGSKP2jigZQIQsRrdfkq36oDUnB1dLh5MaYHbX40bjv57x7h3vq4Qz/yVAH
-         cocF4L3OEHAUqCZ+lmGaUJ48w3TQ6HV/e/bvOjpY=
+        b=FewynaTnHu9RTJzJqcdmlvqJ0+QgUuaqkeobSQDfzuZjkUSZqkJLHulB+kzRo3Nib
+         iTwhQpgOF4YzcF/T5oPySuW/yAnGZlopI6VUOMPRb5st9CfnUBtfX0cRX47Uyv0vBV
+         P3uk5XltYtlHwagoTuR5dhRGlmIAtap6aPAnfVWo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        patches@lists.linux.dev,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 199/694] ARM: dts: qcom: sdx55: Fix the unit address of PCIe EP node
-Date:   Mon,  8 May 2023 11:40:34 +0200
-Message-Id: <20230508094438.862023589@linuxfoundation.org>
+Subject: [PATCH 6.3 200/694] arm64: dts: qcom: sm8550: fix qup_spi0_cs node
+Date:   Mon,  8 May 2023 11:40:35 +0200
+Message-Id: <20230508094438.890991816@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -45,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,121 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 3b76b736cd9933ff88764ffec01cbd859c1475e7 ]
+[ Upstream commit 7629c7a525d163f2a3a08e260a69ff25163ab357 ]
 
-Unit address of PCIe EP node should be 0x1c00000 as it has to match the
-first address specified in the reg property.
+The node is incomplete and doesn't need a subnode, add the missing
+properties and move everything to the root of qup-spi0-cs-state node.
 
-This also requires sorting the node in the ascending order.
-
-Fixes: e6b69813283f ("ARM: dts: qcom: sdx55: Add support for PCIe EP")
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230308082424.140224-6-manivannan.sadhasivam@linaro.org
+Link: https://lore.kernel.org/r/20230308-topic-sm8550-upstream-dt-fixups-v1-2-595b02067672@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-sdx55.dtsi | 78 +++++++++++++++----------------
- 1 file changed, 39 insertions(+), 39 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom-sdx55.dtsi
-index df7303c5c843a..7fa542249f1af 100644
---- a/arch/arm/boot/dts/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom-sdx55.dtsi
-@@ -304,6 +304,45 @@
- 			status = "disabled";
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index ad42c451891d1..7da28b36470e8 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2792,10 +2792,10 @@
+ 			};
  
-+		pcie_ep: pcie-ep@1c00000 {
-+			compatible = "qcom,sdx55-pcie-ep";
-+			reg = <0x01c00000 0x3000>,
-+			      <0x40000000 0xf1d>,
-+			      <0x40000f20 0xc8>,
-+			      <0x40001000 0x1000>,
-+			      <0x40200000 0x100000>,
-+			      <0x01c03000 0x3000>;
-+			reg-names = "parf", "dbi", "elbi", "atu", "addr_space",
-+				    "mmio";
-+
-+			qcom,perst-regs = <&tcsr 0xb258 0xb270>;
-+
-+			clocks = <&gcc GCC_PCIE_AUX_CLK>,
-+				 <&gcc GCC_PCIE_CFG_AHB_CLK>,
-+				 <&gcc GCC_PCIE_MSTR_AXI_CLK>,
-+				 <&gcc GCC_PCIE_SLV_AXI_CLK>,
-+				 <&gcc GCC_PCIE_SLV_Q2A_AXI_CLK>,
-+				 <&gcc GCC_PCIE_SLEEP_CLK>,
-+				 <&gcc GCC_PCIE_0_CLKREF_CLK>;
-+			clock-names = "aux", "cfg", "bus_master", "bus_slave",
-+				      "slave_q2a", "sleep", "ref";
-+
-+			interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "global", "doorbell";
-+			reset-gpios = <&tlmm 57 GPIO_ACTIVE_LOW>;
-+			wake-gpios = <&tlmm 53 GPIO_ACTIVE_LOW>;
-+			resets = <&gcc GCC_PCIE_BCR>;
-+			reset-names = "core";
-+			power-domains = <&gcc PCIE_GDSC>;
-+			phys = <&pcie0_lane>;
-+			phy-names = "pciephy";
-+			max-link-speed = <3>;
-+			num-lanes = <2>;
-+
-+			status = "disabled";
-+		};
-+
- 		pcie0_phy: phy@1c07000 {
- 			compatible = "qcom,sdx55-qmp-pcie-phy";
- 			reg = <0x01c07000 0x1c4>;
-@@ -401,45 +440,6 @@
- 			status = "disabled";
- 		};
+ 			qup_spi0_cs: qup-spi0-cs-state {
+-				cs-pins {
+-					pins = "gpio31";
+-					function = "qup1_se0";
+-				};
++				pins = "gpio31";
++				function = "qup1_se0";
++				drive-strength = <6>;
++				bias-disable;
+ 			};
  
--		pcie_ep: pcie-ep@40000000 {
--			compatible = "qcom,sdx55-pcie-ep";
--			reg = <0x01c00000 0x3000>,
--			      <0x40000000 0xf1d>,
--			      <0x40000f20 0xc8>,
--			      <0x40001000 0x1000>,
--			      <0x40200000 0x100000>,
--			      <0x01c03000 0x3000>;
--			reg-names = "parf", "dbi", "elbi", "atu", "addr_space",
--				    "mmio";
--
--			qcom,perst-regs = <&tcsr 0xb258 0xb270>;
--
--			clocks = <&gcc GCC_PCIE_AUX_CLK>,
--				 <&gcc GCC_PCIE_CFG_AHB_CLK>,
--				 <&gcc GCC_PCIE_MSTR_AXI_CLK>,
--				 <&gcc GCC_PCIE_SLV_AXI_CLK>,
--				 <&gcc GCC_PCIE_SLV_Q2A_AXI_CLK>,
--				 <&gcc GCC_PCIE_SLEEP_CLK>,
--				 <&gcc GCC_PCIE_0_CLKREF_CLK>;
--			clock-names = "aux", "cfg", "bus_master", "bus_slave",
--				      "slave_q2a", "sleep", "ref";
--
--			interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "global", "doorbell";
--			reset-gpios = <&tlmm 57 GPIO_ACTIVE_LOW>;
--			wake-gpios = <&tlmm 53 GPIO_ACTIVE_LOW>;
--			resets = <&gcc GCC_PCIE_BCR>;
--			reset-names = "core";
--			power-domains = <&gcc PCIE_GDSC>;
--			phys = <&pcie0_lane>;
--			phy-names = "pciephy";
--			max-link-speed = <3>;
--			num-lanes = <2>;
--
--			status = "disabled";
--		};
--
- 		remoteproc_mpss: remoteproc@4080000 {
- 			compatible = "qcom,sdx55-mpss-pas";
- 			reg = <0x04080000 0x4040>;
+ 			qup_spi0_data_clk: qup-spi0-data-clk-state {
 -- 
 2.39.2
 
