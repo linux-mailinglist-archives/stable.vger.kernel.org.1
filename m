@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1916D6FA3C3
+	by mail.lfdr.de (Postfix) with ESMTP id 63ED66FA3C4
 	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbjEHJve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47708 "EHLO
+        id S233133AbjEHJvf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233813AbjEHJv3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:51:29 -0400
+        with ESMTP id S233619AbjEHJvc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:51:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33DE1FABA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:51:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B7818FF6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:51:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 378A6621CB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:51:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F68C433EF;
-        Mon,  8 May 2023 09:51:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6DBA621B7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:51:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08E1C433EF;
+        Mon,  8 May 2023 09:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539487;
-        bh=14g6RtD0KxOX3KHOluWS2UKuCckqC8s7BhGzLvOXnSA=;
+        s=korg; t=1683539490;
+        bh=u2ifpftMhKqpEYDiTOHYOLI0gumrbaP0Xx5/Ggt+uT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a1B7Ad/05X9VA9FGVauocB0q3XJDhhRYEb7y+9H35Q29hxuVgQY8sq52e3U3AR3Gl
-         4vHRHWvFaEU5oAH4W6qofy+rAASiMHjoY5tMWr41CJ68oA/REX++obYMXoCUre8YGM
-         S490jlvCZ/fOw9U4eOCt74T/LKc51JGL4LDgACM8=
+        b=dAXvBjs8hjr7qvqqJF/KOCg8yfTCr2dT2g56qnffuCFPF4yA7fEiDVorN4GFsBgfp
+         rAStPov/JKwclQL1j4+xzkIQoSoasryjfjdc+eSvmZVYd2JGythSXXNpx4BjgujCSc
+         DjvUx+eFOiue8iqHWvoNWurkBK0X8fSOeXg/Rzfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roger Quadros <rogerq@ti.com>,
+        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
         Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
         Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.1 033/611] USB: dwc3: fix runtime pm imbalance on probe errors
-Date:   Mon,  8 May 2023 11:37:55 +0200
-Message-Id: <20230508094422.859584383@linuxfoundation.org>
+Subject: [PATCH 6.1 034/611] USB: dwc3: fix runtime pm imbalance on unbind
+Date:   Mon,  8 May 2023 11:37:56 +0200
+Message-Id: <20230508094422.899196591@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -56,55 +56,32 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 9a8ad10c9f2e0925ff26308ec6756b93fc2f4977 upstream.
+commit 44d257e9012ee8040e41d224d0e5bfb5ef5427ea upstream.
 
-Make sure not to suspend the device when probe fails to avoid disabling
-clocks and phys multiple times.
+Make sure to balance the runtime PM usage count on driver unbind by
+adding back the pm_runtime_allow() call that had been erroneously
+removed.
 
-Fixes: 328082376aea ("usb: dwc3: fix runtime PM in error path")
-Cc: stable@vger.kernel.org      # 4.8
-Cc: Roger Quadros <rogerq@ti.com>
+Fixes: 266d0493900a ("usb: dwc3: core: don't trigger runtime pm when remove driver")
+Cc: stable@vger.kernel.org	# 5.9
+Cc: Li Jun <jun.li@nxp.com>
 Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-2-johan+linaro@kernel.org
+Link: https://lore.kernel.org/r/20230404072524.19014-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/usb/dwc3/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/drivers/usb/dwc3/core.c
 +++ b/drivers/usb/dwc3/core.c
-@@ -1883,13 +1883,11 @@ static int dwc3_probe(struct platform_de
- 	spin_lock_init(&dwc->lock);
- 	mutex_init(&dwc->mutex);
+@@ -1979,6 +1979,7 @@ static int dwc3_remove(struct platform_d
+ 	dwc3_core_exit(dwc);
+ 	dwc3_ulpi_exit(dwc);
  
-+	pm_runtime_get_noresume(dev);
- 	pm_runtime_set_active(dev);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_set_autosuspend_delay(dev, DWC3_DEFAULT_AUTOSUSPEND_DELAY);
- 	pm_runtime_enable(dev);
--	ret = pm_runtime_get_sync(dev);
--	if (ret < 0)
--		goto err1;
- 
- 	pm_runtime_forbid(dev);
- 
-@@ -1954,12 +1952,10 @@ err3:
- 	dwc3_free_event_buffers(dwc);
- 
- err2:
--	pm_runtime_allow(&pdev->dev);
--
--err1:
--	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
--
-+	pm_runtime_allow(dev);
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_put_noidle(dev);
- disable_clks:
- 	dwc3_clk_disable(dwc);
- assert_reset:
++	pm_runtime_allow(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 
 
