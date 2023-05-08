@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4E16FA8A3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5306FA595
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235049AbjEHKny (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42760 "EHLO
+        id S234170AbjEHKLF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235040AbjEHKnR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 840FA29FEF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:03 -0700 (PDT)
+        with ESMTP id S234180AbjEHKLD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE54437E72
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DB5D62864
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C56C433EF;
-        Mon,  8 May 2023 10:42:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63D65623CF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7641AC433EF;
+        Mon,  8 May 2023 10:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542522;
-        bh=zoGMQGMFbglB5lHLXBTmhwsFqMp41yfqN9xHd9r/pYE=;
+        s=korg; t=1683540660;
+        bh=Rk/rBQbw1VEk0om1RQnQ2alpgvZHjuq3vxNerV11n1E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DOLGmRup4rHWaty0U77WuzLBHNXgcmD+C9f9Uww1zs7Nn/PeQkQ5hboZ0FGMcjnWy
-         9AolSYpVHtt58YK4zsmpHO/LH0+3YY4KTRN1xYGW5MIw/dQcWpyn2+0t7FhRY+di/W
-         3O51l3bIXs9SKfqdaG8EEA6xZCD5qAc4ngurGovI=
+        b=QrHVX7OFnVNEyU5OLVxlSGfcN7hviY18gGEVEWeCgCYPL5JhUPdUZVWmoj6PR9vLa
+         V8SHdsyr0xK6Wzide+V80WbxJdFL9ZGqmWI77jQCXI901xWKYWTbwSv9TT/vhEqnsV
+         w7EmHJt9vyXifhCnOiMiNET/A3ozpo3l8kY/AxZ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 463/663] spi: fsl-spi: Fix CPM/QE mode Litte Endian
-Date:   Mon,  8 May 2023 11:44:49 +0200
-Message-Id: <20230508094443.190199204@linuxfoundation.org>
+Subject: [PATCH 6.1 448/611] firmware: stratix10-svc: Fix an NULL vs IS_ERR() bug in probe
+Date:   Mon,  8 May 2023 11:44:50 +0200
+Message-Id: <20230508094436.713428288@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,69 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c20c57d9868d7f9fd1b2904c7801b07e128f6322 ]
+[ Upstream commit e1d6ca042e62c2a69513235f8629eb6e62ca79c5 ]
 
-CPM has the same problem as QE so for CPM also use the fix added
-by commit 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian"):
+The svc_create_memory_pool() function returns error pointers.  It never
+returns NULL.  Fix the check.
 
-  CPM mode uses Little Endian so words > 8 bits are byte swapped.
-  Workaround this by always enforcing wordsize 8 for 16 and 32 bits
-  words. Unfortunately this will not work for LSB transfers
-  where wordsize is > 8 bits so disable these for now.
-
-Also limit the workaround to 16 and 32 bits words because it can
-only work for multiples of 8-bits.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Fixes: 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian")
-Link: https://lore.kernel.org/r/1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5f9a8cb4-5a4f-460b-9cdc-2fae6c5b7922@kili.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/firmware/stratix10-svc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 93152144fd2ec..5602f052b2b50 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -181,8 +181,8 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 				struct spi_device *spi,
- 				int bits_per_word)
- {
--	/* QE uses Little Endian for words > 8
--	 * so transform all words > 8 into 8 bits
-+	/* CPM/QE uses Little Endian for words > 8
-+	 * so transform 16 and 32 bits words into 8 bits
- 	 * Unfortnatly that doesn't work for LSB so
- 	 * reject these for now */
- 	/* Note: 32 bits word, LSB works iff
-@@ -190,9 +190,11 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 	if (spi->mode & SPI_LSB_FIRST &&
- 	    bits_per_word > 8)
- 		return -EINVAL;
--	if (bits_per_word > 8)
-+	if (bits_per_word <= 8)
-+		return bits_per_word;
-+	if (bits_per_word == 16 || bits_per_word == 32)
- 		return 8; /* pretend its 8 bits */
--	return bits_per_word;
-+	return -EINVAL;
- }
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index bde1f543f5298..80f4e2d14e046 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1133,8 +1133,8 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
+ 		return ret;
  
- static int fsl_spi_setup_transfer(struct spi_device *spi,
-@@ -222,7 +224,7 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
- 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
- 							   mpc8xxx_spi,
- 							   bits_per_word);
--	else if (mpc8xxx_spi->flags & SPI_QE)
-+	else
- 		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
- 							  bits_per_word);
+ 	genpool = svc_create_memory_pool(pdev, sh_memory);
+-	if (!genpool)
+-		return -ENOMEM;
++	if (IS_ERR(genpool))
++		return PTR_ERR(genpool);
  
+ 	/* allocate service controller and supporting channel */
+ 	controller = devm_kzalloc(dev, sizeof(*controller), GFP_KERNEL);
 -- 
 2.39.2
 
