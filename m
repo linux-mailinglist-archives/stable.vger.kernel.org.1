@@ -2,97 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 566856FBAFF
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 00:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8E36FBB02
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 00:25:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233912AbjEHWYf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 18:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54184 "EHLO
+        id S229832AbjEHWZU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 18:25:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjEHWYc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 18:24:32 -0400
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36205B92
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 15:24:29 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-38e975c853cso1562524b6e.2
-        for <stable@vger.kernel.org>; Mon, 08 May 2023 15:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1683584669; x=1686176669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oh4cYdpA3zHXGiDsi1iCqMmPF0iLCUhn6fPa0sIu8Zo=;
-        b=U8XflA4Ds1uBfVg3LgIiAcij7LJm2QUNFOuwudW7z8kRPYj08VO00fJq6FHWN/GX+g
-         xTNe8UK/UfssfW+36rNaZAFPHbtZ/KL4qxhXgcbL71EftF411Z7BwB5pQvGSc9MEPTjV
-         niwHqGSfPmgAKfRD7RkooV25see+Bll9ZPIQM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683584669; x=1686176669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oh4cYdpA3zHXGiDsi1iCqMmPF0iLCUhn6fPa0sIu8Zo=;
-        b=Haf7bUaJughEcdVmyGSQC83jBz2aru9tjp7plum1OYAo5iG1t4v2+7Zyv26O/+JyFY
-         yEfVCsW73y3hwj07tT3RMtpsDrQU7NFLZBZ5efrCexic0yzDckNN5HqWc4VAdEIpZ9uz
-         LV7nFk55XN1yu3q1tnqetvIQJs5hmN9eNbQ3qJapK2Rqd70/JR8Ufbf7T+D+t4tnjEWM
-         749qi1psKsM7NN8ACWw0hiwzMAXnqXjKEmjoUFNe9caB1uGO1gp9f/Y3iwVmLe4XNbz6
-         W0u8QIEvpOJDvDwZVlJegC88ucR5V4ZbckwmSpPCX7cKu26JFOLGNRa4/QN1qo0ra3qg
-         7F5g==
-X-Gm-Message-State: AC+VfDzPX3sg460zTjKQAsoo0AfNEnVtEcYeO7t/2WvXBqVOHX1HS79T
-        coluKx+7+46A2NkrAKf6GoQYwg==
-X-Google-Smtp-Source: ACHHUZ6fh4mln5pueUK+qoRPhTaeDwiikEpVkQqwS0rtLgF0Zfs3eVhYT2bLEsjbijyGYAUEYQjE4w==
-X-Received: by 2002:a54:4187:0:b0:38d:ea6c:66a1 with SMTP id 7-20020a544187000000b0038dea6c66a1mr283720oiy.35.1683584668998;
-        Mon, 08 May 2023 15:24:28 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id p186-20020acabfc3000000b0039235300211sm516948oif.24.2023.05.08.15.24.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 15:24:28 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Mon, 8 May 2023 17:24:26 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
+        with ESMTP id S229491AbjEHWZT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 18:25:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC8C5B94
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 15:25:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 319C7642EF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 22:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2911CC433D2;
+        Mon,  8 May 2023 22:25:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683584717;
+        bh=+24NZK20euhTIHhF/hFlIInj5mJDirTWkqTzuBG0cro=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PtzITS83aKZOICG17cF2dp9g4OaOHtCw/d1VH/SFuvBfBNXK6zasqq13M1uHp/sdI
+         MwNeZ+QZZ59v9fgSlhu4RWu9R6nnN4hvFfui/18zZAkaVABkblbfq2Je5/qwxdKF/3
+         /c5RC3ZreWA2RZuEDFW2gTbJH9ZI4K/ufVshhLw1L/CzBoCrSp2hQRMXVSlWRnALKm
+         VJ+YmQ0nltmweepBb2dt0NY5C5oSzlyDxhMUdIwHItGcv58Qyy/PJTw10EfTQpOBLG
+         vyIEIhKhjEJj/koMp4/pZDlzFz7Vm6cW3MAzNewFiKWIvdJ7cu/rkwnAm218pzXUy1
+         3SQlwIc5ldptQ==
+Date:   Mon, 8 May 2023 23:25:13 +0100
+From:   Conor Dooley <conor@kernel.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc1 review
-Message-ID: <ZFl2mkJPTOoz3TgU@fedora64.linuxtx.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+        Dhruva Gole <d-gole@ti.com>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.2 500/663] spi: bcm63xx: remove PM_SLEEP based
+ conditional compilation
+Message-ID: <20230508-curtsy-vision-018e07a7ff85@spud>
+References: <20230508094428.384831245@linuxfoundation.org>
+ <20230508094444.763317964@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="m7Iv6Pxl+cADR/P0"
 Content-Disposition: inline
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230508094444.763317964@linuxfoundation.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 08, 2023 at 11:37:15AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.2 release.
-> There are 694 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 10 May 2023 09:42:40 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+--m7Iv6Pxl+cADR/P0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+On Mon, May 08, 2023 at 11:45:26AM +0200, Greg Kroah-Hartman wrote:
+> From: Dhruva Gole <d-gole@ti.com>
+>=20
+> [ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
+>=20
+> Get rid of conditional compilation based on CONFIG_PM_SLEEP because
+> it may introduce build issues with certain configs where it maybe disabled
+> This is because if above config is not enabled the suspend-resume
+> functions are never part of the code but the bcm63xx_spi_pm_ops struct
+> still inits them to non-existent suspend-resume functions.
+>=20
+> Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
+>=20
+> Signed-off-by: Dhruva Gole <d-gole@ti.com>
+> Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This breaks the build on RISC-V.
+
+Seems to be messing around happening on the same patch in 6.1 w/ a fixup
+patch, but sounds like the fixup didn't apply properly either:
+https://lore.kernel.org/stable/2023050845-pancreas-postage-5769@gregkh/
+
+The fixup would be needed here too, provided it (:
+
+Cheers,
+Conor.
+
+--m7Iv6Pxl+cADR/P0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFl2yQAKCRB4tDGHoIJi
+0iRxAP4+76OESclqrkXfCO+k50AQw3eCWrgsEhREaS+Py4Qu5QEA50MfiV050J3s
+hJplDV8qC1ZzhkvOwtuAFc34euXZkw4=
+=gs3I
+-----END PGP SIGNATURE-----
+
+--m7Iv6Pxl+cADR/P0--
