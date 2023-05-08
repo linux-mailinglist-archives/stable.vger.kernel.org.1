@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC3806FAE32
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B2F6FA974
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236112AbjEHLmW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:42:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36772 "EHLO
+        id S235227AbjEHKvb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:51:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236245AbjEHLlx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:41:53 -0400
+        with ESMTP id S235238AbjEHKvJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0405C3A8C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE7BC2E3C4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88A016355D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F83CC433D2;
-        Mon,  8 May 2023 11:41:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8473262938
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A578C433D2;
+        Mon,  8 May 2023 10:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546082;
-        bh=hBy+kXqsr/BD3HYsJvD/K1V3BjTYwHWYK9CghkQfEa0=;
+        s=korg; t=1683543027;
+        bh=TEaVhIydNQnLKiXJhWZpgFVvnkilYZ6X5krCV07KMXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Fg7I+flzV5qZBCtb4+lm9zcBuW3PKyWmvXgX+3+i1Cd4UMvo23C/+80J1VG0Lb96
-         9aiJlqNaMp8sTEseINKtZJaj6GONForqTM3dPw0Eey4Nax70SNgxD9FkhUxCzRH2F3
-         MUiJ78k9KKeYtrg7jI2lcOHe5JQstrvYMKeMf6fI=
+        b=xSrP9Gyqc82fpjbv5Np4GoEPHhc9TMotYaGHrvyt7eglrIrTjr2poP66ZoeZZ9QFk
+         /PejUuoTddvNKDBzboyvzWsqNXUEkMBevT44GMitNCd2re5DSDAOhztLaFMucYw5rq
+         L5XHWA3OzK7E1CosJV4wBG8img7rrAxzQSNm01hA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 250/371] PCI: imx6: Install the fault handler only on compatible match
+        patches@lists.linux.dev, Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.2 625/663] mtd: core: provide unique name for nvmem device, take two
 Date:   Mon,  8 May 2023 11:47:31 +0200
-Message-Id: <20230508094821.990880523@linuxfoundation.org>
+Message-Id: <20230508094450.093686157@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,78 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Michael Walle <michael@walle.cc>
 
-[ Upstream commit 5f5ac460dfe7f4e11f99de9870f240e39189cf72 ]
+commit 1cd9ceaa5282ff10ea20a7fbadde5a476a1cc99e upstream.
 
-commit bb38919ec56e ("PCI: imx6: Add support for i.MX6 PCIe controller")
-added a fault hook to this driver in the probe function. So it was only
-installed if needed.
+Commit c048b60d39e1 ("mtd: core: provide unique name for nvmem device")
+tries to give the nvmem device a unique name, but fails badly if the mtd
+device doesn't have a "struct device" associated with it, i.e. if
+CONFIG_MTD_PARTITIONED_MASTER is not set. This will result in the name
+"(null)-user-otp", which is not unique. It seems the best we can do is
+to use the compatible name together with a unique identifier added by
+the nvmem subsystem by using NVMEM_DEVID_AUTO.
 
-commit bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
-moved it from probe to driver init which installs the hook unconditionally
-as soon as the driver is compiled into a kernel.
-
-When this driver is compiled as a module, the hook is not registered
-until after the driver has been matched with a .compatible and
-loaded.
-
-commit 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
-extended the fault handling code.
-
-commit 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-added some protection for non-ARM architectures, but this does not
-protect non-i.MX ARM architectures.
-
-Since fault handlers can be triggered on any architecture for different
-reasons, there is no guarantee that they will be triggered only for the
-assumed situation, leading to improper error handling (i.MX6-specific
-imx6q_pcie_abort_handler) on foreign systems.
-
-I had seen strange L3 imprecise external abort messages several times on
-OMAP4 and OMAP5 devices and couldn't make sense of them until I realized
-they were related to this unused imx6q driver because I had
-CONFIG_PCI_IMX6=y.
-
-Note that CONFIG_PCI_IMX6=y is useful for kernel binaries that are designed
-to run on different ARM SoC and be differentiated only by device tree
-binaries. So turning off CONFIG_PCI_IMX6 is not a solution.
-
-Therefore we check the compatible in the init function before registering
-the fault handler.
-
-Link: https://lore.kernel.org/r/e1bcfc3078c82b53aa9b78077a89955abe4ea009.1678380991.git.hns@goldelico.com
-Fixes: bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
-Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c048b60d39e1 ("mtd: core: provide unique name for nvmem device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230308082021.870459-1-michael@walle.cc
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/mtdcore.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 67dbf9d88d222..6a3336f2105b8 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1258,6 +1258,13 @@ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_SYNOPSYS, 0xabcd,
- static int __init imx6_pcie_init(void)
- {
- #ifdef CONFIG_ARM
-+	struct device_node *np;
-+
-+	np = of_find_matching_node(NULL, imx6_pcie_of_match);
-+	if (!np)
-+		return -ENODEV;
-+	of_node_put(np);
-+
- 	/*
- 	 * Since probe() can be deferred we need to make sure that
- 	 * hook_fault_code is not called after __init memory is freed
--- 
-2.39.2
-
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -888,8 +888,8 @@ static struct nvmem_device *mtd_otp_nvme
+ 
+ 	/* OTP nvmem will be registered on the physical device */
+ 	config.dev = mtd->dev.parent;
+-	config.name = kasprintf(GFP_KERNEL, "%s-%s", dev_name(&mtd->dev), compatible);
+-	config.id = NVMEM_DEVID_NONE;
++	config.name = compatible;
++	config.id = NVMEM_DEVID_AUTO;
+ 	config.owner = THIS_MODULE;
+ 	config.type = NVMEM_TYPE_OTP;
+ 	config.root_only = true;
+@@ -905,7 +905,6 @@ static struct nvmem_device *mtd_otp_nvme
+ 		nvmem = NULL;
+ 
+ 	of_node_put(np);
+-	kfree(config.name);
+ 
+ 	return nvmem;
+ }
 
 
