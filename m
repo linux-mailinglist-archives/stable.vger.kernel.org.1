@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CCB66FA5A4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B496FA8B4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234195AbjEHKLd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39398 "EHLO
+        id S235017AbjEHKoo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:44:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234196AbjEHKLb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:31 -0400
+        with ESMTP id S234914AbjEHKoC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 944A8398B9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A2A2A9DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDC4A623D5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E26CC4339C;
-        Mon,  8 May 2023 10:11:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A131862857
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D642C433D2;
+        Mon,  8 May 2023 10:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540689;
-        bh=xdAFWYR/RXqH8ok1Y1aPIX+9ysIpKlGcch10JaOzDf4=;
+        s=korg; t=1683542569;
+        bh=S+r0qtguRFC3MYOnUV0u/jp5wGKz2OatD/jYEOi+MDM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kemYTu6MznZMUFmh8RUA/ByLOczoTmfcXA3SxPBbvN6tbfUZfKbgCC+Z3p+AtVhMH
-         gVIuQFv/l2aYr6iSmwzsVCitA+/pu032W4XbeSCytzgKSUfqOGcr0q9Vs5CjR3nBFb
-         a1sbV8jJSaysQ9LUbp5v3JxURdMb7SHYLItYOrCQ=
+        b=jyyLJjv8xIrtwADvfyrWGOLWRxiPVF6hTklEuYqNqmxeoPvAzhW07LFMIMGlfYrUJ
+         X+SnEAdm1NLDyziVsX5MO3cSWxSo5BQqzqRATA/IOGHrWYxD3VG3IMBlR23JKlbu/Z
+         K7M6xH0hLTzQlhl6eXCIt4YxEXJuDNICOGq3TJPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 461/611] powerpc/wii: fix resource printk format warnings
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 477/663] HID: amd_sfh: Handle "no sensors" enabled for SFH1.1
 Date:   Mon,  8 May 2023 11:45:03 +0200
-Message-Id: <20230508094437.131393006@linuxfoundation.org>
+Message-Id: <20230508094443.771264894@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,85 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 7b69600d4da0049244e9be2f5ef5a2f8e04fcd9a ]
+[ Upstream commit 8455cbb25927013b3417ab619dced1c0e87708af ]
 
-Use "%pa" format specifier for resource_size_t to avoid compiler
-printk format warnings.
+Based on num_hid_devices, each sensor device is initialized. If
+"no sensors" is initialized, amd_sfh work initialization and scheduling
+doesn’t make sense and returns EOPNOTSUPP to stop driver probe. Hence,
+add a check for "no sensors" enabled to handle the special case.
 
-../arch/powerpc/platforms/embedded6xx/flipper-pic.c: In function 'flipper_pic_init':
-../include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-../arch/powerpc/platforms/embedded6xx/flipper-pic.c:148:9: note: in expansion of macro 'pr_info'
-  148 |         pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-      |         ^~~~~~~
-
-../arch/powerpc/platforms/embedded6xx/hlwd-pic.c: In function 'hlwd_pic_init':
-../include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-../arch/powerpc/platforms/embedded6xx/hlwd-pic.c:174:9: note: in expansion of macro 'pr_info'
-  174 |         pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-      |         ^~~~~~~
-
-../arch/powerpc/platforms/embedded6xx/wii.c: In function 'wii_ioremap_hw_regs':
-../include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]
-../arch/powerpc/platforms/embedded6xx/wii.c:77:17: note: in expansion of macro 'pr_info'
-   77 |                 pr_info("%s at 0x%08x mapped to 0x%p\n", name,
-      |                 ^~~~~~~
-
-Fixes: 028ee972f032 ("powerpc: gamecube/wii: flipper interrupt controller support")
-Fixes: 9c21025c7845 ("powerpc: wii: hollywood interrupt controller support")
-Fixes: 5a7ee3198dfa ("powerpc: wii: platform support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-3-rdunlap@infradead.org
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/embedded6xx/flipper-pic.c | 2 +-
- arch/powerpc/platforms/embedded6xx/hlwd-pic.c    | 2 +-
- arch/powerpc/platforms/embedded6xx/wii.c         | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/powerpc/platforms/embedded6xx/flipper-pic.c b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-index 609bda2ad5dd2..4d9200bdba78c 100644
---- a/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-+++ b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
-@@ -145,7 +145,7 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
- 	}
- 	io_base = ioremap(res.start, resource_size(&res));
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+index a1d6e08fab7d4..bb8bd7892b674 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -112,6 +112,7 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 	cl_data->num_hid_devices = amd_sfh_get_sensor_num(privdata, &cl_data->sensor_idx[0]);
+ 	if (cl_data->num_hid_devices == 0)
+ 		return -ENODEV;
++	cl_data->is_any_sensor_enabled = false;
  
--	pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-+	pr_info("controller at 0x%pa mapped to 0x%p\n", &res.start, io_base);
+ 	INIT_DELAYED_WORK(&cl_data->work, amd_sfh_work);
+ 	INIT_DELAYED_WORK(&cl_data->work_buffer, amd_sfh_work_buffer);
+@@ -170,6 +171,7 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 		status = (status == 0) ? SENSOR_ENABLED : SENSOR_DISABLED;
  
- 	__flipper_quiesce(io_base);
- 
-diff --git a/arch/powerpc/platforms/embedded6xx/hlwd-pic.c b/arch/powerpc/platforms/embedded6xx/hlwd-pic.c
-index 380b4285cce47..4d2d92de30afd 100644
---- a/arch/powerpc/platforms/embedded6xx/hlwd-pic.c
-+++ b/arch/powerpc/platforms/embedded6xx/hlwd-pic.c
-@@ -171,7 +171,7 @@ static struct irq_domain *__init hlwd_pic_init(struct device_node *np)
- 		return NULL;
- 	}
- 
--	pr_info("controller at 0x%08x mapped to 0x%p\n", res.start, io_base);
-+	pr_info("controller at 0x%pa mapped to 0x%p\n", &res.start, io_base);
- 
- 	__hlwd_quiesce(io_base);
- 
-diff --git a/arch/powerpc/platforms/embedded6xx/wii.c b/arch/powerpc/platforms/embedded6xx/wii.c
-index f4e654a9d4ff6..219659f2ede06 100644
---- a/arch/powerpc/platforms/embedded6xx/wii.c
-+++ b/arch/powerpc/platforms/embedded6xx/wii.c
-@@ -74,8 +74,8 @@ static void __iomem *__init wii_ioremap_hw_regs(char *name, char *compatible)
- 
- 	hw_regs = ioremap(res.start, resource_size(&res));
- 	if (hw_regs) {
--		pr_info("%s at 0x%08x mapped to 0x%p\n", name,
--			res.start, hw_regs);
-+		pr_info("%s at 0x%pa mapped to 0x%p\n", name,
-+			&res.start, hw_regs);
+ 		if (status == SENSOR_ENABLED) {
++			cl_data->is_any_sensor_enabled = true;
+ 			cl_data->sensor_sts[i] = SENSOR_ENABLED;
+ 			rc = amdtp_hid_probe(i, cl_data);
+ 			if (rc) {
+@@ -186,12 +188,21 @@ static int amd_sfh1_1_hid_client_init(struct amd_mp2_dev *privdata)
+ 					cl_data->sensor_sts[i]);
+ 				goto cleanup;
+ 			}
++		} else {
++			cl_data->sensor_sts[i] = SENSOR_DISABLED;
+ 		}
+ 		dev_dbg(dev, "sid 0x%x (%s) status 0x%x\n",
+ 			cl_data->sensor_idx[i], get_sensor_name(cl_data->sensor_idx[i]),
+ 			cl_data->sensor_sts[i]);
  	}
  
- out_put:
++	if (!cl_data->is_any_sensor_enabled) {
++		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n",
++			 cl_data->is_any_sensor_enabled);
++		rc = -EOPNOTSUPP;
++		goto cleanup;
++	}
++
+ 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
+ 	return 0;
+ 
 -- 
 2.39.2
 
