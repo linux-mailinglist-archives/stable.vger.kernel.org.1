@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 007366FA89B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6F016FA56B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235041AbjEHKnT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42078 "EHLO
+        id S234126AbjEHKJP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:09:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235029AbjEHKmg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:36 -0400
+        with ESMTP id S234125AbjEHKJO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A9727F1E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA1D93292F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10F2962838
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB9BC433D2;
-        Mon,  8 May 2023 10:41:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 805966239A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA17C4339B;
+        Mon,  8 May 2023 10:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542500;
-        bh=Ls0YfoSIC5VvAKYjpAxnqO0N91OYrBWs3dMUpPz+L48=;
+        s=korg; t=1683540552;
+        bh=GpG8hSh5jrqMumWvj/AK/UdBrWxwNmAJiBHpYRTBAQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dc6GG0qAEfIVHFPK6e5LrO9XJISQqV8urXnDXosFdkVUo1upbvS24daLYegXjk+MG
-         PjA23idgmD2tzx5w3WsaeHiQMhXkwCNRLbbLIQxWGfs4Qk/RwA+3UbHuj0KMeVAMDV
-         FGDuyqGemD3iUxF13QxBqeXBf9LYuXbSrJPRWn4o=
+        b=Kw9Fn6/d66uxhCeGN1NfWwR7Ri/+RbkWUGn8SZiAkPc161UdIDrn17MJMzsRFxVcQ
+         Rtel0reZMkIV2qNIpyQT9D9/INOo3C3SzMcWrr8zr8taPZQwDXcZd+PpVeHh57HKCV
+         YC1BFTHy2iVCoruQtE0MNoVU7VeTQNx2TrYkVN0Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 424/663] bpf: Fix race between btf_put and btf_idr walk.
+Subject: [PATCH 6.1 408/611] spi: atmel-quadspi: Dont leak clk enable count in pm resume
 Date:   Mon,  8 May 2023 11:44:10 +0200
-Message-Id: <20230508094441.835681498@linuxfoundation.org>
+Message-Id: <20230508094435.516087827@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,63 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit acf1c3d68e9a31f10d92bc67ad4673cdae5e8d92 ]
+[ Upstream commit c18bbac353ffed50be134b0a2a059a2bd540c503 ]
 
-Florian and Eduard reported hard dead lock:
-[   58.433327]  _raw_spin_lock_irqsave+0x40/0x50
-[   58.433334]  btf_put+0x43/0x90
-[   58.433338]  bpf_find_btf_id+0x157/0x240
-[   58.433353]  btf_parse_fields+0x921/0x11c0
+The pm resume call is supposed to enable two clocks. If the second enable
+fails the callback reports failure but doesn't undo the first enable.
 
-This happens since btf->refcount can be 1 at the time of btf_put() and
-btf_put() will call btf_free_id() which will try to grab btf_idr_lock
-and will dead lock.
-Avoid the issue by doing btf_put() without locking.
+So call clk_disable() for the first clock when clk_enable() for the second
+one fails.
 
-Fixes: 3d78417b60fb ("bpf: Add bpf_btf_find_by_name_kind() helper.")
-Fixes: 1e89106da253 ("bpf: Add bpf_core_add_cands() and wire it into bpf_core_apply_relo_insn().")
-Reported-by: Florian Westphal <fw@strlen.de>
-Reported-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20230421014901.70908-1-alexei.starovoitov@gmail.com
+Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20230317084232.142257-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/spi/atmel-quadspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 7f18d48c4a15b..6f3326417f27e 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -566,8 +566,8 @@ static s32 bpf_find_btf_id(const char *name, u32 kind, struct btf **btf_p)
- 			*btf_p = btf;
- 			return ret;
- 		}
--		spin_lock_bh(&btf_idr_lock);
- 		btf_put(btf);
-+		spin_lock_bh(&btf_idr_lock);
- 	}
- 	spin_unlock_bh(&btf_idr_lock);
- 	return ret;
-@@ -8185,12 +8185,10 @@ bpf_core_find_cands(struct bpf_core_ctx *ctx, u32 local_type_id)
- 		btf_get(mod_btf);
- 		spin_unlock_bh(&btf_idr_lock);
- 		cands = bpf_core_add_cands(cands, mod_btf, btf_nr_types(main_btf));
--		if (IS_ERR(cands)) {
--			btf_put(mod_btf);
-+		btf_put(mod_btf);
-+		if (IS_ERR(cands))
- 			return ERR_CAST(cands);
--		}
- 		spin_lock_bh(&btf_idr_lock);
--		btf_put(mod_btf);
- 	}
- 	spin_unlock_bh(&btf_idr_lock);
- 	/* cands is a pointer to kmalloced memory here if cands->cnt > 0
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 976a217e356d5..f480c7ae93fab 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -752,7 +752,11 @@ static int __maybe_unused atmel_qspi_runtime_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	return clk_enable(aq->qspick);
++	ret = clk_enable(aq->qspick);
++	if (ret)
++		clk_disable(aq->pclk);
++
++	return ret;
+ }
+ 
+ static const struct dev_pm_ops __maybe_unused atmel_qspi_pm_ops = {
 -- 
 2.39.2
 
