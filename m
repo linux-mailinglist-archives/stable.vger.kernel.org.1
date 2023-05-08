@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D62376FA8AC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A476FA589
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234948AbjEHKoR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43286 "EHLO
+        id S234164AbjEHKKb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234947AbjEHKnf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:35 -0400
+        with ESMTP id S234153AbjEHKKa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFCB26E80
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22EB35124
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DF2B6285E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932A2C433EF;
-        Mon,  8 May 2023 10:42:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7914B623AC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9CCC433EF;
+        Mon,  8 May 2023 10:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542547;
-        bh=W5dXkr+r5xUyDXHbAK4x4mXIDeWryIxamq/GQNcZtTg=;
+        s=korg; t=1683540628;
+        bh=Ec3INi9tzN8PK5EEiLrwzWnnI++tHTy0UMphsl0DaMI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=opEI45gS3hfW89bHA8LmNxsp1SrlYdBWXd7F0Gd2/TlsdNpp4euKqDKkr6y4POXsL
-         RX8U3h+vtSzMngPR53e82utYftv5JW3mRdOiZh6iSebEMRRat0sCwEefyo7tv22fjl
-         jTXvvBZZbN1q90yAaL6DsFU4UBT8DZA9UvuiBlYg=
+        b=QjTfyrcSKhgIhMEFgNkC3OJzIBXQeuftMMlM5tV9SsI9ZXapm8+qR/rD3NMtiCjNl
+         a1XsUsrZz5pFVV3yNEKVseDnMIdt37f1HqcvFVEmAKuLKYcfOaDFgIu4NVWPqxeot1
+         yO3X6WUEOztI2ONw1iYp1zCGt2JiZVSQ432N/ZxY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Piotr Gorski <piotrgorski@cachyos.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        patches@lists.linux.dev, Zhiyi Guo <zhguo@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Tarun Gupta <targupta@nvidia.com>,
+        Abhishek Sahu <abhsahu@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 453/663] module/decompress: Never use kunmap() for local un-mappings
+Subject: [PATCH 6.1 437/611] PCI/PM: Extend D3hot delay for NVIDIA HDA controllers
 Date:   Mon,  8 May 2023 11:44:39 +0200
-Message-Id: <20230508094442.807921943@linuxfoundation.org>
+Message-Id: <20230508094436.372439254@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,48 +57,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 3c17655ab13704582fe25e8ea3200a9b2f8bf20a ]
+[ Upstream commit a5a6dd2624698b6e3045c3a1450874d8c790d5d9 ]
 
-Use kunmap_local() to unmap pages locally mapped with kmap_local_page().
+Assignment of NVIDIA Ampere-based GPUs have seen a regression since the
+below referenced commit, where the reduced D3hot transition delay appears
+to introduce a small window where a D3hot->D0 transition followed by a bus
+reset can wedge the device.  The entire device is subsequently unavailable,
+returning -1 on config space read and is unrecoverable without a host
+reset.
 
-kunmap_local() must be called on the kernel virtual address returned by
-kmap_local_page(), differently from how we use kunmap() which instead
-expects the mapped page as its argument.
+This has been observed with RTX A2000 and A5000 GPU and audio functions
+assigned to a Windows VM, where shutdown of the VM places the devices in
+D3hot prior to vfio-pci performing a bus reset when userspace releases the
+devices.  The issue has roughly a 2-3% chance of occurring per shutdown.
 
-In module_zstd_decompress() we currently map with kmap_local_page() and
-unmap with kunmap(). This breaks the code and so it should be fixed.
+Restoring the HDA controller d3hot_delay to the effective value before the
+below commit has been shown to resolve the issue.  NVIDIA confirms this
+change should be safe for all of their HDA controllers.
 
-Cc: Piotr Gorski <piotrgorski@cachyos.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Stephen Boyd <swboyd@chromium.org>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Fixes: 169a58ad824d ("module/decompress: Support zstd in-kernel decompression")
-Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Piotr Gorski <piotrgorski@cachyos.org>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Fixes: 3e347969a577 ("PCI/PM: Reduce D3hot delay with usleep_range()")
+Link: https://lore.kernel.org/r/20230413194042.605768-1-alex.williamson@redhat.com
+Reported-by: Zhiyi Guo <zhguo@redhat.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Tarun Gupta <targupta@nvidia.com>
+Cc: Abhishek Sahu <abhsahu@nvidia.com>
+Cc: Tarun Gupta <targupta@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/decompress.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
-index bb79ac1a6d8f7..7ddc87bee2741 100644
---- a/kernel/module/decompress.c
-+++ b/kernel/module/decompress.c
-@@ -267,7 +267,7 @@ static ssize_t module_zstd_decompress(struct load_info *info,
- 		zstd_dec.size = PAGE_SIZE;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 494fa46f57671..8d32a3834688f 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -1939,6 +1939,19 @@ static void quirk_radeon_pm(struct pci_dev *dev)
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6741, quirk_radeon_pm);
  
- 		ret = zstd_decompress_stream(dstream, &zstd_dec, &zstd_buf);
--		kunmap(page);
-+		kunmap_local(zstd_dec.dst);
- 		retval = zstd_get_error_code(ret);
- 		if (retval)
- 			break;
++/*
++ * NVIDIA Ampere-based HDA controllers can wedge the whole device if a bus
++ * reset is performed too soon after transition to D0, extend d3hot_delay
++ * to previous effective default for all NVIDIA HDA controllers.
++ */
++static void quirk_nvidia_hda_pm(struct pci_dev *dev)
++{
++	quirk_d3hot_delay(dev, 20);
++}
++DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
++			      PCI_CLASS_MULTIMEDIA_HD_AUDIO, 8,
++			      quirk_nvidia_hda_pm);
++
+ /*
+  * Ryzen5/7 XHCI controllers fail upon resume from runtime suspend or s2idle.
+  * https://bugzilla.kernel.org/show_bug.cgi?id=205587
 -- 
 2.39.2
 
