@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0565F6FA7C7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D416D6FAAF7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234841AbjEHKex (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
+        id S233270AbjEHLIN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234741AbjEHKeT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:19 -0400
+        with ESMTP id S232505AbjEHLHz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DA6D25277
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54C334102
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:07:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF84D6272B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7ACC433D2;
-        Mon,  8 May 2023 10:33:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AB4862ADE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41639C433D2;
+        Mon,  8 May 2023 11:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542011;
-        bh=lV3azTj5gRT/0cTKWI7UKGQvjWJwyzPg+ofBmObNIzk=;
+        s=korg; t=1683544055;
+        bh=U3GQrR3uJLaucEjmkIUed2quljwFDiOi/otQYZ8DQnY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ueHpu7WEfUlfB1nIs+zlVSu7y0ftymjZSQn3jp9lD5KXgu3EvDdmkC6oot7hdw+xj
-         yds7hoW26hJ3ZiwWp4WzxtCoylqL/ucNlEjnN8BxXYwirxXUpY3higmgNDS0svqgPu
-         50Fjtfs14X3n+9nPL/HEuuYSYgIxH3aoQ6pCHjaA=
+        b=iriwRI/1K4Ndb0HlvS2GIplg354D7qGXiCyAw3pfhszgXImvzM1hX5AU2WP/Jv9mo
+         ltcqWyv39ExwnRNf1V9YHOB05J2V94O2Q3fpdhIrBwPih07wg3fISSf32IqZBN+odi
+         aIdW9aSdg3AghAxdBDuLIIELVYNa9U5iJe6HKhkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 297/663] selftests/bpf: Fix a fd leak in an error path in network_helpers.c
+Subject: [PATCH 6.3 288/694] platform/x86/amd: pmc: Dont try to read SMU version on Picasso
 Date:   Mon,  8 May 2023 11:42:03 +0200
-Message-Id: <20230508094437.820946879@linuxfoundation.org>
+Message-Id: <20230508094441.637905681@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,38 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 226efec2b0efad60d4a6c4b2c3a8710dafc4dc21 ]
+[ Upstream commit b845772677ea19b8e4c032bc07393ef32de4ee39 ]
 
-In __start_server, it leaks a fd when setsockopt(SO_REUSEPORT) fails.
-This patch fixes it.
+Picasso doesn't support the command in the uPEP mailbox to try to
+read the SMU version.
 
-Fixes: eed92afdd14c ("bpf: selftest: Test batching and bpf_(get|set)sockopt in bpf tcp iter")
-Reported-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yhs@fb.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20230316000726.1016773-2-martin.lau@linux.dev
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2449
+Fixes: f6045de1f532 ("platform/x86: amd-pmc: Export Idlemask values based on the APU")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230409185348.556161-2-Shyam-sundar.S-k@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/network_helpers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
-index 01de33191226b..596caa1765820 100644
---- a/tools/testing/selftests/bpf/network_helpers.c
-+++ b/tools/testing/selftests/bpf/network_helpers.c
-@@ -95,7 +95,7 @@ static int __start_server(int type, int protocol, const struct sockaddr *addr,
- 	if (reuseport &&
- 	    setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &on, sizeof(on))) {
- 		log_err("Failed to set SO_REUSEPORT");
--		return -1;
-+		goto error_close;
- 	}
+diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
+index 2edaae04a6912..4ffb08d2b01bc 100644
+--- a/drivers/platform/x86/amd/pmc.c
++++ b/drivers/platform/x86/amd/pmc.c
+@@ -403,6 +403,9 @@ static int amd_pmc_get_smu_version(struct amd_pmc_dev *dev)
+ 	int rc;
+ 	u32 val;
  
- 	if (bind(fd, addr, addrlen) < 0) {
++	if (dev->cpu_id == AMD_CPU_ID_PCO)
++		return -ENODEV;
++
+ 	rc = amd_pmc_send_cmd(dev, 0, &val, SMU_MSG_GETSMUVERSION, 1);
+ 	if (rc)
+ 		return rc;
 -- 
 2.39.2
 
