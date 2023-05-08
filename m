@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4B86FA56C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B756FAD05
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234134AbjEHKJT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:09:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37464 "EHLO
+        id S235778AbjEHLaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:30:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234130AbjEHKJS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B723292B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:16 -0700 (PDT)
+        with ESMTP id S235845AbjEHLaC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928B33CD93
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BA6B623A3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B832C4339B;
-        Mon,  8 May 2023 10:09:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D9EE62EC9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61884C4339C;
+        Mon,  8 May 2023 11:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540555;
-        bh=anjo1FWnJEc0Ivk2Jg1ow0y644fL/3UfMVYP6lROKsk=;
+        s=korg; t=1683545388;
+        bh=VIg0apvo3/zKaEGKRPJivM+yYxIQFQY+YujUxwr/cpQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FXtmce3ULdRLEeXJsmn0TRxZOTJqSkjrWJ+/unV9SRmP6bBsjGZkWJXvgLpYyO29V
-         YVmLGuFIP+MFmhGGli6/2895Q+tumZgEzf8xxXgMrXuvFNWl8NePBpI/XIfyOZs04g
-         WImY7LIh0pE0cAv+bKlb8rzWuNJnmGG1KOuzIDpo=
+        b=ThcinzanbG7Va1d5pdo4k16EUNBQ0Gm9a82AMdOVftWsobQ3BNQhLUtfLVR0GgQKx
+         9Msy4UGqN9itodQ7KVPAww1QeNFh/zbw+jZ7o9KlSdql/X313YsRgs9zrK3/KMOaKA
+         kwFyKMQfWUG/d3atCO1DGp6cdNI1MI9ZLYh+Ub20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 382/611] net/mlx5: Suspend auxiliary devices only in case of PCI device suspend
+        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 023/371] blk-crypto: make blk_crypto_evict_key() more robust
 Date:   Mon,  8 May 2023 11:43:44 +0200
-Message-Id: <20230508094434.737523299@linuxfoundation.org>
+Message-Id: <20230508094813.055102891@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,221 +53,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 72ed5d5624af384eaf74d84915810d54486a75e2 ]
+commit 5c7cb94452901a93e90c2230632e2c12a681bc92 upstream.
 
-The original behavior introduced by commit c6acd629eec7 ("net/mlx5e: Add
-support for devlink-port in non-representors mode") correctly
-re-instantiated uplink devlink port and related netdevice during devlink
-reload. However with migration to auxiliary devices, this behaviour
-changed.
+If blk_crypto_evict_key() sees that the key is still in-use (due to a
+bug) or that ->keyslot_evict failed, it currently just returns while
+leaving the key linked into the keyslot management structures.
 
-Restore the original behaviour and tear down auxiliary devices
-completely during devlink reload.
+However, blk_crypto_evict_key() is only called in contexts such as inode
+eviction where failure is not an option.  So actually the caller
+proceeds with freeing the blk_crypto_key regardless of the return value
+of blk_crypto_evict_key().
 
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: dfad99750c0f ("net/mlx5: Use recovery timeout on sync reset flow")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These two assumptions don't match, and the result is that there can be a
+use-after-free in blk_crypto_reprogram_all_keys() after one of these
+errors occurs.  (Note, these errors *shouldn't* happen; we're just
+talking about what happens if they do anyway.)
+
+Fix this by making blk_crypto_evict_key() unlink the key from the
+keyslot management structures even on failure.
+
+Also improve some comments.
+
+Fixes: 1b2628397058 ("block: Keyslot Manager for Inline Encryption")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/dev.c    |  4 ++--
- .../net/ethernet/mellanox/mlx5/core/devlink.c    |  4 ++--
- .../net/ethernet/mellanox/mlx5/core/fw_reset.c   |  4 ++--
- drivers/net/ethernet/mellanox/mlx5/core/health.c |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/main.c   | 16 ++++++++--------
- .../net/ethernet/mellanox/mlx5/core/mlx5_core.h  |  6 +++---
- .../ethernet/mellanox/mlx5/core/sf/dev/driver.c  |  2 +-
- 7 files changed, 19 insertions(+), 19 deletions(-)
+ block/blk-crypto.c      |   29 +++++++++++++++++++++--------
+ block/keyslot-manager.c |   43 +++++++++++++++++++++----------------------
+ 2 files changed, 42 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/dev.c b/drivers/net/ethernet/mellanox/mlx5/core/dev.c
-index 0571e40c6ee5f..02bb9d43ff9c4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/dev.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/dev.c
-@@ -396,7 +396,7 @@ int mlx5_attach_device(struct mlx5_core_dev *dev)
- 	return ret;
+--- a/block/blk-crypto.c
++++ b/block/blk-crypto.c
+@@ -385,15 +385,20 @@ int blk_crypto_start_using_key(const str
  }
  
--void mlx5_detach_device(struct mlx5_core_dev *dev)
-+void mlx5_detach_device(struct mlx5_core_dev *dev, bool suspend)
- {
- 	struct mlx5_priv *priv = &dev->priv;
- 	struct auxiliary_device *adev;
-@@ -426,7 +426,7 @@ void mlx5_detach_device(struct mlx5_core_dev *dev)
- 
- 		adrv = to_auxiliary_drv(adev->dev.driver);
- 
--		if (adrv->suspend) {
-+		if (adrv->suspend && suspend) {
- 			adrv->suspend(adev, pm);
- 			continue;
- 		}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index 97e9ec44a759b..7f1f813b2f2d9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -108,7 +108,7 @@ static int mlx5_devlink_reload_fw_activate(struct devlink *devlink, struct netli
+ /**
+- * blk_crypto_evict_key() - Evict a key from any inline encryption hardware
+- *			    it may have been programmed into
+- * @q: The request queue who's associated inline encryption hardware this key
+- *     might have been programmed into
+- * @key: The key to evict
++ * blk_crypto_evict_key() - Evict a blk_crypto_key from a request_queue
++ * @q: a request_queue on which I/O using the key may have been done
++ * @key: the key to evict
+  *
+- * Upper layers (filesystems) must call this function to ensure that a key is
+- * evicted from any hardware that it might have been programmed into.  The key
+- * must not be in use by any in-flight IO when this function is called.
++ * For a given request_queue, this function removes the given blk_crypto_key
++ * from the keyslot management structures and evicts it from any underlying
++ * hardware keyslot(s) or blk-crypto-fallback keyslot it may have been
++ * programmed into.
++ *
++ * Upper layers must call this before freeing the blk_crypto_key.  It must be
++ * called for every request_queue the key may have been used on.  The key must
++ * no longer be in use by any I/O when this function is called.
++ *
++ * Context: May sleep.
+  */
+ void blk_crypto_evict_key(struct request_queue *q,
+ 			  const struct blk_crypto_key *key)
+@@ -404,6 +409,14 @@ void blk_crypto_evict_key(struct request
+ 		err = blk_ksm_evict_key(q->ksm, key);
+ 	else
+ 		err = blk_crypto_fallback_evict_key(key);
++	/*
++	 * An error can only occur here if the key failed to be evicted from a
++	 * keyslot (due to a hardware or driver issue) or is allegedly still in
++	 * use by I/O (due to a kernel bug).  Even in these cases, the key is
++	 * still unlinked from the keyslot management structures, and the caller
++	 * is allowed and expected to free it right away.  There's nothing
++	 * callers can do to handle errors, so just log them and return void.
++	 */
  	if (err)
- 		return err;
+ 		pr_warn_ratelimited("error %d evicting key\n", err);
+ }
+--- a/block/keyslot-manager.c
++++ b/block/keyslot-manager.c
+@@ -343,25 +343,16 @@ bool blk_ksm_crypto_cfg_supported(struct
+ 	return true;
+ }
  
--	mlx5_unload_one_devl_locked(dev);
-+	mlx5_unload_one_devl_locked(dev, true);
- 	err = mlx5_health_wait_pci_up(dev);
- 	if (err)
- 		NL_SET_ERR_MSG_MOD(extack, "FW activate aborted, PCI reads fail after reset");
-@@ -166,7 +166,7 @@ static int mlx5_devlink_reload_down(struct devlink *devlink, bool netns_change,
+-/**
+- * blk_ksm_evict_key() - Evict a key from the lower layer device.
+- * @ksm: The keyslot manager to evict from
+- * @key: The key to evict
+- *
+- * Find the keyslot that the specified key was programmed into, and evict that
+- * slot from the lower layer device. The slot must not be in use by any
+- * in-flight IO when this function is called.
+- *
+- * Context: Process context. Takes and releases ksm->lock.
+- * Return: 0 on success or if there's no keyslot with the specified key, -EBUSY
+- *	   if the keyslot is still in use, or another -errno value on other
+- *	   error.
++/*
++ * This is an internal function that evicts a key from an inline encryption
++ * device that can be either a real device or the blk-crypto-fallback "device".
++ * It is used only by blk_crypto_evict_key(); see that function for details.
+  */
+ int blk_ksm_evict_key(struct blk_keyslot_manager *ksm,
+ 		      const struct blk_crypto_key *key)
+ {
+ 	struct blk_ksm_keyslot *slot;
+-	int err = 0;
++	int err;
  
- 	switch (action) {
- 	case DEVLINK_RELOAD_ACTION_DRIVER_REINIT:
--		mlx5_unload_one_devl_locked(dev);
-+		mlx5_unload_one_devl_locked(dev, false);
- 		break;
- 	case DEVLINK_RELOAD_ACTION_FW_ACTIVATE:
- 		if (limit == DEVLINK_RELOAD_LIMIT_NO_RESET)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-index a1f460c9d3cde..2ef42d76ac6a3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-@@ -150,7 +150,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
- 	if (test_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP, &fw_reset->reset_flags)) {
- 		complete(&fw_reset->done);
- 	} else {
--		mlx5_unload_one(dev);
-+		mlx5_unload_one(dev, false);
- 		if (mlx5_health_wait_pci_up(dev))
- 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
- 		else
-@@ -484,7 +484,7 @@ int mlx5_fw_reset_wait_reset_done(struct mlx5_core_dev *dev)
+ 	if (blk_ksm_is_passthrough(ksm)) {
+ 		if (ksm->ksm_ll_ops.keyslot_evict) {
+@@ -375,22 +366,30 @@ int blk_ksm_evict_key(struct blk_keyslot
+ 
+ 	blk_ksm_hw_enter(ksm);
+ 	slot = blk_ksm_find_keyslot(ksm, key);
+-	if (!slot)
+-		goto out_unlock;
++	if (!slot) {
++		/*
++		 * Not an error, since a key not in use by I/O is not guaranteed
++		 * to be in a keyslot.  There can be more keys than keyslots.
++		 */
++		err = 0;
++		goto out;
++	}
+ 
+ 	if (WARN_ON_ONCE(atomic_read(&slot->slot_refs) != 0)) {
++		/* BUG: key is still in use by I/O */
+ 		err = -EBUSY;
+-		goto out_unlock;
++		goto out_remove;
  	}
- 	err = fw_reset->ret;
- 	if (test_and_clear_bit(MLX5_FW_RESET_FLAGS_RELOAD_REQUIRED, &fw_reset->reset_flags)) {
--		mlx5_unload_one_devl_locked(dev);
-+		mlx5_unload_one_devl_locked(dev, false);
- 		mlx5_load_one_devl_locked(dev, false);
- 	}
- out:
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index 879555ba847dd..e42e4ac231c64 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -699,7 +699,7 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
- 		 * requests from the kernel.
- 		 */
- 		mlx5_core_err(dev, "Driver is in error state. Unloading\n");
--		mlx5_unload_one(dev);
-+		mlx5_unload_one(dev, false);
- 	}
+ 	err = ksm->ksm_ll_ops.keyslot_evict(ksm, key,
+ 					    blk_ksm_get_slot_idx(slot));
+-	if (err)
+-		goto out_unlock;
+-
++out_remove:
++	/*
++	 * Callers free the key even on error, so unlink the key from the hash
++	 * table and clear slot->key even on error.
++	 */
+ 	hlist_del(&slot->hash_node);
+ 	slot->key = NULL;
+-	err = 0;
+-out_unlock:
++out:
+ 	blk_ksm_hw_exit(ksm);
+ 	return err;
  }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 31841f4307fee..4c72cb3ac30cd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1495,12 +1495,12 @@ int mlx5_load_one(struct mlx5_core_dev *dev)
- 	return ret;
- }
- 
--void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev)
-+void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev, bool suspend)
- {
- 	devl_assert_locked(priv_to_devlink(dev));
- 	mutex_lock(&dev->intf_state_mutex);
- 
--	mlx5_detach_device(dev);
-+	mlx5_detach_device(dev, suspend);
- 
- 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
- 		mlx5_core_warn(dev, "%s: interface is down, NOP\n",
-@@ -1515,12 +1515,12 @@ void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev)
- 	mutex_unlock(&dev->intf_state_mutex);
- }
- 
--void mlx5_unload_one(struct mlx5_core_dev *dev)
-+void mlx5_unload_one(struct mlx5_core_dev *dev, bool suspend)
- {
- 	struct devlink *devlink = priv_to_devlink(dev);
- 
- 	devl_lock(devlink);
--	mlx5_unload_one_devl_locked(dev);
-+	mlx5_unload_one_devl_locked(dev, suspend);
- 	devl_unlock(devlink);
- }
- 
-@@ -1793,7 +1793,7 @@ static pci_ers_result_t mlx5_pci_err_detected(struct pci_dev *pdev,
- 
- 	mlx5_enter_error_state(dev, false);
- 	mlx5_error_sw_reset(dev);
--	mlx5_unload_one(dev);
-+	mlx5_unload_one(dev, true);
- 	mlx5_drain_health_wq(dev);
- 	mlx5_pci_disable_device(dev);
- 
-@@ -1949,7 +1949,7 @@ static void shutdown(struct pci_dev *pdev)
- 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
- 	err = mlx5_try_fast_unload(dev);
- 	if (err)
--		mlx5_unload_one(dev);
-+		mlx5_unload_one(dev, false);
- 	mlx5_pci_disable_device(dev);
- }
- 
-@@ -1957,7 +1957,7 @@ static int mlx5_suspend(struct pci_dev *pdev, pm_message_t state)
- {
- 	struct mlx5_core_dev *dev = pci_get_drvdata(pdev);
- 
--	mlx5_unload_one(dev);
-+	mlx5_unload_one(dev, true);
- 
- 	return 0;
- }
-@@ -2000,7 +2000,7 @@ MODULE_DEVICE_TABLE(pci, mlx5_core_pci_table);
- void mlx5_disable_device(struct mlx5_core_dev *dev)
- {
- 	mlx5_error_sw_reset(dev);
--	mlx5_unload_one_devl_locked(dev);
-+	mlx5_unload_one_devl_locked(dev, false);
- }
- 
- int mlx5_recover_device(struct mlx5_core_dev *dev)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index c57e0fc4bab1f..02fef8b2d268a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -236,7 +236,7 @@ void mlx5_adev_cleanup(struct mlx5_core_dev *dev);
- int mlx5_adev_init(struct mlx5_core_dev *dev);
- 
- int mlx5_attach_device(struct mlx5_core_dev *dev);
--void mlx5_detach_device(struct mlx5_core_dev *dev);
-+void mlx5_detach_device(struct mlx5_core_dev *dev, bool suspend);
- int mlx5_register_device(struct mlx5_core_dev *dev);
- void mlx5_unregister_device(struct mlx5_core_dev *dev);
- struct mlx5_core_dev *mlx5_get_next_phys_dev_lag(struct mlx5_core_dev *dev);
-@@ -319,8 +319,8 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx);
- void mlx5_mdev_uninit(struct mlx5_core_dev *dev);
- int mlx5_init_one(struct mlx5_core_dev *dev);
- void mlx5_uninit_one(struct mlx5_core_dev *dev);
--void mlx5_unload_one(struct mlx5_core_dev *dev);
--void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev);
-+void mlx5_unload_one(struct mlx5_core_dev *dev, bool suspend);
-+void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev, bool suspend);
- int mlx5_load_one(struct mlx5_core_dev *dev);
- int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery);
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-index 7b4783ce213e2..a7377619ba6f2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-@@ -74,7 +74,7 @@ static void mlx5_sf_dev_shutdown(struct auxiliary_device *adev)
- {
- 	struct mlx5_sf_dev *sf_dev = container_of(adev, struct mlx5_sf_dev, adev);
- 
--	mlx5_unload_one(sf_dev->mdev);
-+	mlx5_unload_one(sf_dev->mdev, false);
- }
- 
- static const struct auxiliary_device_id mlx5_sf_dev_id_table[] = {
--- 
-2.39.2
-
 
 
