@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C601D6FA4D6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3512D6FAAED
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233974AbjEHKDr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59820 "EHLO
+        id S232632AbjEHLIA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233975AbjEHKDp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BABFF2EB21
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:42 -0700 (PDT)
+        with ESMTP id S232746AbjEHLHp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02E029C84
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F29361EF7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A40C433EF;
-        Mon,  8 May 2023 10:03:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 736D262AB4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E09C4339C;
+        Mon,  8 May 2023 11:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540221;
-        bh=9bnz+Vq1Lxg90s6NpnkIMPrGy0eVwjlgYdDFZ6YKs0k=;
+        s=korg; t=1683544014;
+        bh=fFyPfRN7SKtNCXDgYca5B2esR3kaPFlmqjZcsAxYCuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g1ZXNcs2Uppn2i/yZgI4OOMtk4ocROKjbu2i0WI8A9ik+1StLabSZEeuO5FlpfBQE
-         vqE+t6dNVpr9bdXKeUyXJxOMxEy9VnegKNFDEx4TksyKXyL95gw+BTFCBHT7LI9c3k
-         wf4KtuUn2+rTMJXVIxzqwQHY0o7VbzlDpM3dPcJo=
+        b=zxdf4raH4ArD3jUght5PXZHRQWi7v9RmC4PMB7s36QNuhRnn4Yrr5sCPmzbgK6QYz
+         rzGylyMklwe73qjnUzwd84bJNqhfTI3QrUPrsxUkuN+KfFo+XwSXltKnt3HqjmTB1+
+         RsYmMifcPRjhDB42vZlaSnWSiYCo5AzN6U8VO4qU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sanket Goswami <Sanket.Goswami@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/611] platform/x86/amd: pmc: Utilize SMN index 0 for driver probe
+Subject: [PATCH 6.3 247/694] gpu: host1x: Fix memory leak of device names
 Date:   Mon,  8 May 2023 11:41:22 +0200
-Message-Id: <20230508094430.202499347@linuxfoundation.org>
+Message-Id: <20230508094440.323386860@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,100 +55,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 310e782a99c7f16fb533a45d8f9c16defefa5aab ]
+[ Upstream commit 55879dad0f3ae8468444b42f785ad79eac05fe5b ]
 
-The current SMN index used for the driver probe seems to be meant
-for the BIOS pair and there are potential concurrency problems that can
-occur with an inopportune SMI.
+The device names allocated by dev_set_name() need be freed
+before module unloading, but they can not be freed because
+the kobject's refcount which was set in device_initialize()
+has not be decreased to 0.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
-what amd_nb.c provides and this function has protections to ensure that
-only one caller can use it at a time.
+As comment of device_add() says, if it fails, use only
+put_device() drop the refcount, then the name will be
+freed in kobejct_cleanup().
 
-Fixes: 156ec4731cb2 ("platform/x86: amd-pmc: Add AMD platform support for S2Idle")
-Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230409185348.556161-6-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+device_del() and put_device() can be replaced with
+device_unregister(), so call it to unregister the added
+successfully devices, and just call put_device() to the
+not added device.
+
+Add a release() function to device to avoid null release()
+function WARNING in device_release(), it's empty, because
+the context devices are freed together in
+host1x_memory_context_list_free().
+
+Fixes: 8aa5bcb61612 ("gpu: host1x: Add context device management code")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/Kconfig |  2 +-
- drivers/platform/x86/amd/pmc.c   | 23 +++++------------------
- 2 files changed, 6 insertions(+), 19 deletions(-)
+ drivers/gpu/host1x/context.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/Kconfig b/drivers/platform/x86/amd/Kconfig
-index 2ce8cb2170dfc..d9685aef0887d 100644
---- a/drivers/platform/x86/amd/Kconfig
-+++ b/drivers/platform/x86/amd/Kconfig
-@@ -7,7 +7,7 @@ source "drivers/platform/x86/amd/pmf/Kconfig"
+diff --git a/drivers/gpu/host1x/context.c b/drivers/gpu/host1x/context.c
+index 5ec18315ff9fe..9ad89d22c0ca7 100644
+--- a/drivers/gpu/host1x/context.c
++++ b/drivers/gpu/host1x/context.c
+@@ -13,6 +13,11 @@
+ #include "context.h"
+ #include "dev.h"
  
- config AMD_PMC
- 	tristate "AMD SoC PMC driver"
--	depends on ACPI && PCI && RTC_CLASS
-+	depends on ACPI && PCI && RTC_CLASS && AMD_NB
- 	select SERIO
- 	help
- 	  The driver provides support for AMD Power Management Controller
-diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index 752015ca507f9..2ecee810c960a 100644
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -10,6 +10,7 @@
++static void host1x_memory_context_release(struct device *dev)
++{
++	/* context device is freed in host1x_memory_context_list_free() */
++}
++
+ int host1x_memory_context_list_init(struct host1x *host1x)
+ {
+ 	struct host1x_memory_context_list *cdl = &host1x->context_list;
+@@ -51,36 +56,38 @@ int host1x_memory_context_list_init(struct host1x *host1x)
+ 		dev_set_name(&ctx->dev, "host1x-ctx.%d", i);
+ 		ctx->dev.bus = &host1x_context_device_bus_type;
+ 		ctx->dev.parent = host1x->dev;
++		ctx->dev.release = host1x_memory_context_release;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 		dma_set_max_seg_size(&ctx->dev, UINT_MAX);
  
-+#include <asm/amd_nb.h>
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-@@ -55,8 +56,6 @@
- #define S2D_TELEMETRY_DRAMBYTES_MAX	0x1000000
+ 		err = device_add(&ctx->dev);
+ 		if (err) {
+ 			dev_err(host1x->dev, "could not add context device %d: %d\n", i, err);
+-			goto del_devices;
++			put_device(&ctx->dev);
++			goto unreg_devices;
+ 		}
  
- /* Base address of SMU for mapping physical address to virtual address */
--#define AMD_PMC_SMU_INDEX_ADDRESS	0xB8
--#define AMD_PMC_SMU_INDEX_DATA		0xBC
- #define AMD_PMC_MAPPING_SIZE		0x01000
- #define AMD_PMC_BASE_ADDR_OFFSET	0x10000
- #define AMD_PMC_BASE_ADDR_LO		0x13B102E8
-@@ -958,30 +957,18 @@ static int amd_pmc_probe(struct platform_device *pdev)
+ 		err = of_dma_configure_id(&ctx->dev, node, true, &i);
+ 		if (err) {
+ 			dev_err(host1x->dev, "IOMMU configuration failed for context device %d: %d\n",
+ 				i, err);
+-			device_del(&ctx->dev);
+-			goto del_devices;
++			device_unregister(&ctx->dev);
++			goto unreg_devices;
+ 		}
  
- 	dev->cpu_id = rdev->device;
- 	dev->rdev = rdev;
--	err = pci_write_config_dword(rdev, AMD_PMC_SMU_INDEX_ADDRESS, AMD_PMC_BASE_ADDR_LO);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMC_SMU_INDEX_ADDRESS);
--		err = pcibios_err_to_errno(err);
--		goto err_pci_dev_put;
--	}
--
--	err = pci_read_config_dword(rdev, AMD_PMC_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMC_BASE_ADDR_LO, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error reading 0x%x\n", AMD_PMC_BASE_ADDR_LO);
- 		err = pcibios_err_to_errno(err);
- 		goto err_pci_dev_put;
+ 		if (!tegra_dev_iommu_get_stream_id(&ctx->dev, &ctx->stream_id) ||
+ 		    !device_iommu_mapped(&ctx->dev)) {
+ 			dev_err(host1x->dev, "Context device %d has no IOMMU!\n", i);
+-			device_del(&ctx->dev);
+-			goto del_devices;
++			device_unregister(&ctx->dev);
++			goto unreg_devices;
+ 		}
  	}
  
- 	base_addr_lo = val & AMD_PMC_BASE_ADDR_HI_MASK;
+ 	return 0;
  
--	err = pci_write_config_dword(rdev, AMD_PMC_SMU_INDEX_ADDRESS, AMD_PMC_BASE_ADDR_HI);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMC_SMU_INDEX_ADDRESS);
--		err = pcibios_err_to_errno(err);
--		goto err_pci_dev_put;
--	}
--
--	err = pci_read_config_dword(rdev, AMD_PMC_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMC_BASE_ADDR_HI, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error reading 0x%x\n", AMD_PMC_BASE_ADDR_HI);
- 		err = pcibios_err_to_errno(err);
- 		goto err_pci_dev_put;
- 	}
+-del_devices:
++unreg_devices:
+ 	while (i--)
+-		device_del(&cdl->devs[i].dev);
++		device_unregister(&cdl->devs[i].dev);
+ 
+ 	kfree(cdl->devs);
+ 	cdl->devs = NULL;
+@@ -94,7 +101,7 @@ void host1x_memory_context_list_free(struct host1x_memory_context_list *cdl)
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < cdl->len; i++)
+-		device_del(&cdl->devs[i].dev);
++		device_unregister(&cdl->devs[i].dev);
+ 
+ 	kfree(cdl->devs);
+ 	cdl->len = 0;
 -- 
 2.39.2
 
