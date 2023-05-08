@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1B56FAC06
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A7F6FADD2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235553AbjEHLUB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:20:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33766 "EHLO
+        id S234023AbjEHLip (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235608AbjEHLTz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:55 -0400
+        with ESMTP id S235959AbjEHLiO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB6637C74
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B3B1FAB9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AB3E62C63
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D0EC433EF;
-        Mon,  8 May 2023 11:19:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 122B363372
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185B2C433D2;
+        Mon,  8 May 2023 11:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544791;
-        bh=2HE7cBAkhH1rYywG8/ZuDvlgZIOaAeoVhwQc1IRCbak=;
+        s=korg; t=1683545857;
+        bh=fxESuXsWI4JgjvhVrvIBLgzYsTpDgkLn1r7eHq+2yLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QS50uRmJyoRtQZpzcFh1onQRBGJR6IKY2Q0ZmEQyZgjyPRFJSOSxeELZjZkHYiTn4
-         zbF7zGSjk1a5aCmvTpnR/rtD7MrHa6zYgbKOGdgTBRECsqobgGbOMg/sEWBD8dS3bH
-         XFIu4ir4qdPC0UmKCu9OLQYFH3z21qZebSyS6F+k=
+        b=nCIF34A1k7ZV10n/e9dZQ083z48mq0YSH4ownX1ujt85dgqYn9aTWS8bi/UslmGSn
+         C+CACXk45EzxM836vkcz3u6+G+M/Mm12Tl7t+Tv4S/tIRd+DYxi3afuoPk/WePdOpF
+         L9rqblEXS1HDzMgR7dYCb4HC/HPNU0mF4gcyTsFE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 525/694] HID: amd_sfh: Correct the sensor enable and disable command
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 159/371] bpf: fix precision propagation verbose logging
 Date:   Mon,  8 May 2023 11:46:00 +0200
-Message-Id: <20230508094451.338337002@linuxfoundation.org>
+Message-Id: <20230508094818.400977753@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 0b9255bf11baa61cd526e6bd24d6c8e6d1eabf8d ]
+[ Upstream commit 34f0677e7afd3a292bc1aadda7ce8e35faedb204 ]
 
-In order to start or stop sensors, the firmware command needs to be
-changed to add an additional default subcommand value. For this reason,
-add a subcommand value to enable or disable sensors accordingly.
+Fix wrong order of frame index vs register/slot index in precision
+propagation verbose (level 2) output. It's wrong and very confusing as is.
 
-Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 529409ea92d5 ("bpf: propagate precision across all frames, not just the last one")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20230313184017.4083374-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/verifier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
-index c6df959ec7252..6e19ccc124508 100644
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
-@@ -33,6 +33,7 @@ static void amd_start_sensor(struct amd_mp2_dev *privdata, struct amd_mp2_sensor
- 	cmd_base.ul = 0;
- 	cmd_base.cmd.cmd_id = ENABLE_SENSOR;
- 	cmd_base.cmd.intr_disable = 0;
-+	cmd_base.cmd.sub_cmd_value = 1;
- 	cmd_base.cmd.sensor_id = info.sensor_idx;
- 
- 	writel(cmd_base.ul, privdata->mmio + AMD_C2P_MSG(0));
-@@ -45,6 +46,7 @@ static void amd_stop_sensor(struct amd_mp2_dev *privdata, u16 sensor_idx)
- 	cmd_base.ul = 0;
- 	cmd_base.cmd.cmd_id = DISABLE_SENSOR;
- 	cmd_base.cmd.intr_disable = 0;
-+	cmd_base.cmd.sub_cmd_value = 1;
- 	cmd_base.cmd.sensor_id = sensor_idx;
- 
- 	writeq(0x0, privdata->mmio + AMD_C2P_MSG(1));
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 8e6f868d6cb9b..41601299f8b4a 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10620,7 +10620,7 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+-				verbose(env, "frame %d: propagating r%d\n", i, fr);
++				verbose(env, "frame %d: propagating r%d\n", fr, i);
+ 			err = mark_chain_precision_frame(env, fr, i);
+ 			if (err < 0)
+ 				return err;
+@@ -10636,7 +10636,7 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating fp%d\n",
+-					(-i - 1) * BPF_REG_SIZE, fr);
++					fr, (-i - 1) * BPF_REG_SIZE);
+ 			err = mark_chain_precision_stack_frame(env, fr, i);
+ 			if (err < 0)
+ 				return err;
 -- 
 2.39.2
 
