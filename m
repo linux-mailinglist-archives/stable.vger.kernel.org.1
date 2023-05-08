@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C74D06FAD89
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5782E6FA8E1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236013AbjEHLfT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
+        id S235093AbjEHKqH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234003AbjEHLfH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:07 -0400
+        with ESMTP id S235074AbjEHKpj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3460340208
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156A82A9F4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:45:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4014632D0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A7FC433EF;
-        Mon,  8 May 2023 11:34:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9053B62886
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:45:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68369C433EF;
+        Mon,  8 May 2023 10:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545671;
-        bh=wDaNiTmRHD9BLu+xUrlLKNRijVELQCA4075hxw/AU68=;
+        s=korg; t=1683542706;
+        bh=SRRVU7pNpi8dfrzAzAUHUGIFDuGGW7paUqDYtN6Yv7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OnLJlw+uY6CbTtay4nIPP/zdGrN9+kIck9uXWSOkeyHUpMO6K+mpnrM7WUrNkHnPv
-         j1hSgg+2UkGDMcHI0YF8sGAqF1cHoJcZ3h9873uCAvIpoyMibVypWy2HZJ0xQFHtO3
-         aqvsDiLXFgrZbuZuNnIi90mYAvBjNsMfQxcxXjRk=
+        b=AZ3U256YxxTGrX9Yex7dqA/D+f1MESGPtNpC1PCuqdCXlnU9sGciwaUUDsHcRWXO4
+         ViJMZzuL7I1PJqJaErcBbBHASEHP2Rls6lqtRmxvAjLmub1tkKk5drtvvwsZSQImcu
+         slfngR5p8onME+8eL9dSiGR71foIxo6Dt8lB+jzY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-        Juergen Gross <jgross@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/371] ACPI: processor: Fix evaluating _PDC method when running as Xen dom0
+Subject: [PATCH 6.2 490/663] usb: gadget: tegra-xudc: Fix crash in vbus_draw
 Date:   Mon,  8 May 2023 11:45:16 +0200
-Message-Id: <20230508094816.587330149@linuxfoundation.org>
+Message-Id: <20230508094444.314048116@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,141 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 073828e954459b883f23e53999d31e4c55ab9654 ]
+[ Upstream commit 5629d31955297ca47b9283c64fff70f2f34aa528 ]
 
-In ACPI systems, the OS can direct power management, as opposed to the
-firmware.  This OS-directed Power Management is called OSPM.  Part of
-telling the firmware that the OS going to direct power management is
-making ACPI "_PDC" (Processor Driver Capabilities) calls.  These _PDC
-methods must be evaluated for every processor object.  If these _PDC
-calls are not completed for every processor it can lead to
-inconsistency and later failures in things like the CPU frequency
-driver.
+Commit ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+populated the vbus_draw callback for the Tegra XUDC driver. The function
+tegra_xudc_gadget_vbus_draw(), that was added by this commit, assumes
+that the pointer 'curr_usbphy' has been initialised, which is not always
+the case because this is only initialised when the USB role is updated.
+Fix this crash, by checking that the 'curr_usbphy' is valid before
+dereferencing.
 
-In a Xen system, the dom0 kernel is responsible for system-wide power
-management.  The dom0 kernel is in charge of OSPM.  However, the
-number of CPUs available to dom0 can be different than the number of
-CPUs physically present on the system.
-
-This leads to a problem: the dom0 kernel needs to evaluate _PDC for
-all the processors, but it can't always see them.
-
-In dom0 kernels, ignore the existing ACPI method for determining if a
-processor is physically present because it might not be accurate.
-Instead, ask the hypervisor for this information.
-
-Fix this by introducing a custom function to use when running as Xen
-dom0 in order to check whether a processor object matches a CPU that's
-online.  Such checking is done using the existing information fetched
-by the Xen pCPU subsystem, extending it to also store the ACPI ID.
-
-This ensures that _PDC method gets evaluated for all physically online
-CPUs, regardless of the number of CPUs made available to dom0.
-
-Fixes: 5d554a7bb064 ("ACPI: processor: add internal processor_physically_present()")
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: ac82b56bda5f ("usb: gadget: tegra-xudc: Add vbus_draw support")
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20230405181854.42355-1-jonathanh@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_pdc.c | 11 +++++++++++
- drivers/xen/pcpu.c           | 20 ++++++++++++++++++++
- include/xen/xen.h            | 11 +++++++++++
- 3 files changed, 42 insertions(+)
+ drivers/usb/gadget/udc/tegra-xudc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
-index 8c3f82c9fff35..18fb04523f93b 100644
---- a/drivers/acpi/processor_pdc.c
-+++ b/drivers/acpi/processor_pdc.c
-@@ -14,6 +14,8 @@
- #include <linux/acpi.h>
- #include <acpi/processor.h>
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index 76919d7570d23..3c7ffb35c35cd 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -2160,7 +2160,7 @@ static int tegra_xudc_gadget_vbus_draw(struct usb_gadget *gadget,
  
-+#include <xen/xen.h>
-+
- #include "internal.h"
+ 	dev_dbg(xudc->dev, "%s: %u mA\n", __func__, m_a);
  
- static bool __init processor_physically_present(acpi_handle handle)
-@@ -47,6 +49,15 @@ static bool __init processor_physically_present(acpi_handle handle)
- 		return false;
- 	}
+-	if (xudc->curr_usbphy->chg_type == SDP_TYPE)
++	if (xudc->curr_usbphy && xudc->curr_usbphy->chg_type == SDP_TYPE)
+ 		ret = usb_phy_set_power(xudc->curr_usbphy, m_a);
  
-+	if (xen_initial_domain())
-+		/*
-+		 * When running as a Xen dom0 the number of processors Linux
-+		 * sees can be different from the real number of processors on
-+		 * the system, and we still need to execute _PDC for all of
-+		 * them.
-+		 */
-+		return xen_processor_present(acpi_id);
-+
- 	type = (acpi_type == ACPI_TYPE_DEVICE) ? 1 : 0;
- 	cpuid = acpi_get_cpuid(handle, type, acpi_id);
- 
-diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
-index fd3a644b08559..b3e3d1bb37f3e 100644
---- a/drivers/xen/pcpu.c
-+++ b/drivers/xen/pcpu.c
-@@ -58,6 +58,7 @@ struct pcpu {
- 	struct list_head list;
- 	struct device dev;
- 	uint32_t cpu_id;
-+	uint32_t acpi_id;
- 	uint32_t flags;
- };
- 
-@@ -249,6 +250,7 @@ static struct pcpu *create_and_register_pcpu(struct xenpf_pcpuinfo *info)
- 
- 	INIT_LIST_HEAD(&pcpu->list);
- 	pcpu->cpu_id = info->xen_cpuid;
-+	pcpu->acpi_id = info->acpi_id;
- 	pcpu->flags = info->flags;
- 
- 	/* Need hold on xen_pcpu_lock before pcpu list manipulations */
-@@ -381,3 +383,21 @@ static int __init xen_pcpu_init(void)
  	return ret;
- }
- arch_initcall(xen_pcpu_init);
-+
-+#ifdef CONFIG_ACPI
-+bool __init xen_processor_present(uint32_t acpi_id)
-+{
-+	const struct pcpu *pcpu;
-+	bool online = false;
-+
-+	mutex_lock(&xen_pcpu_lock);
-+	list_for_each_entry(pcpu, &xen_pcpus, list)
-+		if (pcpu->acpi_id == acpi_id) {
-+			online = pcpu->flags & XEN_PCPU_FLAGS_ONLINE;
-+			break;
-+		}
-+	mutex_unlock(&xen_pcpu_lock);
-+
-+	return online;
-+}
-+#endif
-diff --git a/include/xen/xen.h b/include/xen/xen.h
-index 43efba045acc7..5a6a2ab675bed 100644
---- a/include/xen/xen.h
-+++ b/include/xen/xen.h
-@@ -61,4 +61,15 @@ void xen_free_unpopulated_pages(unsigned int nr_pages, struct page **pages);
- #include <xen/balloon.h>
- #endif
- 
-+#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI) && defined(CONFIG_X86)
-+bool __init xen_processor_present(uint32_t acpi_id);
-+#else
-+#include <linux/bug.h>
-+static inline bool xen_processor_present(uint32_t acpi_id)
-+{
-+	BUG();
-+	return false;
-+}
-+#endif
-+
- #endif	/* _XEN_XEN_H */
 -- 
 2.39.2
 
