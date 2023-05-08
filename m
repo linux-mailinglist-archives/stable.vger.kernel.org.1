@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E56E76FABC7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC7946FA8BB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235347AbjEHLRW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58882 "EHLO
+        id S234938AbjEHKo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233955AbjEHLRW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B6437614
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:21 -0700 (PDT)
+        with ESMTP id S235040AbjEHKoh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F3E2C3D1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B26BD62C07
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64D0C433D2;
-        Mon,  8 May 2023 11:17:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B8F6616FB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842C7C433EF;
+        Mon,  8 May 2023 10:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544640;
-        bh=iBQ2AIKwdWgzI+9WWtgwn2oqfxhdlTiE1npyAcAZv68=;
+        s=korg; t=1683542591;
+        bh=4TEmajR8fIFI1ReSA48F4F7ESgwf1iVTFHwUC1OI8ZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=inQvZf06gN4+OkDIuJqY0haBFFsbA8kzkT2Xa33aDKFRY15bU/hDvwn1xIywehWOn
-         1w+pe/vXvuuSIuWIMATrJO59HvdMcsL4DCkjLPhKVib0uORvqzHEwHt8at2uSvNwq2
-         uRrSRgkJBLeGf9805JmuEckAfjELiddAflz4sqGw=
+        b=MdMwYJtxpF/mGAFfk19y4moci4OjQDTmNUAE4imNq9Ov9TmUFdRUay+XMUH0j9KAC
+         m325+bkXGtSH0HG1TqP6gwhZiw7swRKHsMnaltbl8RP+cuwlUk4LvLHeHzYDSvHdLo
+         T5C/ZmMkDHlrXi7idYn0m5xh49DtbmFyO5/tdsAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Madalin Bucur <madalin.bucur@oss.nxp.com>,
-        Sean Anderson <sean.anderson@seco.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 474/694] net: dpaa: Fix uninitialized variable in dpaa_stop()
+Subject: [PATCH 6.2 483/663] drm/panel: novatek-nt35950: Only unregister DSI1 if it exists
 Date:   Mon,  8 May 2023 11:45:09 +0200
-Message-Id: <20230508094449.192807597@linuxfoundation.org>
+Message-Id: <20230508094444.031463672@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +57,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 461bb5b97049a149278f2c27a3aa12af16da6a2e ]
+[ Upstream commit a50be876f4fe2349dc8b056a49d87f69c944570f ]
 
-The return value is not initialized on the success path.
+Commit 5dd45b66742a ("drm/panel: novatek-nt35950: Improve error handling")
+introduced logic to unregister DSI1 on any sort of probe failure, as
+that's not done automatically by kernel APIs.
 
-Fixes: 901bdff2f529 ("net: fman: Change return type of disable to void")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Link: https://lore.kernel.org/r/8c9dc377-8495-495f-a4e5-4d2d0ee12f0c@kili.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It did not however account for cases where only one DSI host is used.
+Fix that.
+
+Fixes: 5dd45b66742a ("drm/panel: novatek-nt35950: Improve error handling")
+Reported-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230417-topic-maple_panel_fixup-v1-1-07c8db606f5e@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-novatek-nt35950.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index 9318a2554056d..f961966171210 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -299,7 +299,8 @@ static int dpaa_stop(struct net_device *net_dev)
- {
- 	struct mac_device *mac_dev;
- 	struct dpaa_priv *priv;
--	int i, err, error;
-+	int i, error;
-+	int err = 0;
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
+index 4359b02754aac..5d04957b1144f 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
+@@ -594,7 +594,8 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
  
- 	priv = netdev_priv(net_dev);
- 	mac_dev = priv->mac_dev;
+ 	ret = drm_panel_of_backlight(&nt->panel);
+ 	if (ret) {
+-		mipi_dsi_device_unregister(nt->dsi[1]);
++		if (num_dsis == 2)
++			mipi_dsi_device_unregister(nt->dsi[1]);
+ 
+ 		return dev_err_probe(dev, ret, "Failed to get backlight\n");
+ 	}
+@@ -614,7 +615,8 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
+ 		ret = mipi_dsi_attach(nt->dsi[i]);
+ 		if (ret < 0) {
+ 			/* If we fail to attach to either host, we're done */
+-			mipi_dsi_device_unregister(nt->dsi[1]);
++			if (num_dsis == 2)
++				mipi_dsi_device_unregister(nt->dsi[1]);
+ 
+ 			return dev_err_probe(dev, ret,
+ 					     "Cannot attach to DSI%d host.\n", i);
 -- 
 2.39.2
 
