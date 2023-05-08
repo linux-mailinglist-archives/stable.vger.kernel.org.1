@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E986FACAF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A1E6FACB1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233981AbjEHL1C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:27:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44378 "EHLO
+        id S235755AbjEHL1G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235772AbjEHL0s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0EA3B7AB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:38 -0700 (PDT)
+        with ESMTP id S235751AbjEHL0x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B30B3C9A4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2F4E62D22
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5582C433D2;
-        Mon,  8 May 2023 11:26:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E04862DB4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E34C433EF;
+        Mon,  8 May 2023 11:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545198;
-        bh=osggGEj4JKsmz6/Dvz6kPG2mchpBugrtqzbtUMynS+w=;
+        s=korg; t=1683545200;
+        bh=J4497q3g48UXVm4LnYW/eDGFcHphydBw9WUgNTCHFuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NiFB0mJLasstvRw5LyIFEN/iHMKAWNtPF58ZyZRo+ZiK7Sa6HGNOql7QTPC9gqGeZ
-         h+zFg5q/kkJ8wRMogOtPcjHyK9ZqRm+BXBXnkWARolLQnmd9kpvcD37eq0/mFOhCkr
-         DSPKdX0nzoOU8xchnlSCuNQUrCYZGyZvcwavbu5A=
+        b=KUJOroRRmHxphS+yMztgdFiGdjxjTedeYJxq7roSPOP+M+O61lk/olOn9h96uQ2nS
+         DW8hWxCGWN0sfUm1mwtEvJ7lx8OPRjwFIF7NOqB0clCV22k/FEWAC/eZdjqEtQpDSv
+         vTaDNTPETAIvHt2lHki5nGgMGmp7ouSaHcSjepTc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Kang Chen <void0red@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 657/694] pinctrl-bcm2835.c: fix race condition when setting gpio dir
-Date:   Mon,  8 May 2023 11:48:12 +0200
-Message-Id: <20230508094457.297080441@linuxfoundation.org>
+Subject: [PATCH 6.3 658/694] thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe
+Date:   Mon,  8 May 2023 11:48:13 +0200
+Message-Id: <20230508094457.336183703@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -44,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,83 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Kang Chen <void0red@hust.edu.cn>
 
-[ Upstream commit b7badd752de05312fdb1aeb388480f706d0c087f ]
+[ Upstream commit f05c7b7d9ea9477fcc388476c6f4ade8c66d2d26 ]
 
-In the past setting the pin direction called pinctrl_gpio_direction()
-which uses a mutex to serialize this. That was changed to set the
-direction directly in the pin controller driver, but that lost the
-serialization mechanism. Since the direction of multiple pins are in
-the same register you can have a race condition, something that was
-in fact observed with the cec-gpio driver.
+Smatch reports:
+1. mtk_thermal_probe() warn: 'apmixed_base' from of_iomap() not released.
+2. mtk_thermal_probe() warn: 'auxadc_base' from of_iomap() not released.
 
-Add a new spinlock to serialize writing to the FSEL registers.
+The original code forgets to release iomap resource when handling errors,
+fix it by switch to devm_of_iomap.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 1a4541b68e25 ("pinctrl-bcm2835: don't call pinctrl_gpio_direction()")
-Link: https://lore.kernel.org/r/4302b66b-ca20-0f19-d2aa-ee8661118863@xs4all.nl
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 89945047b166 ("thermal: mediatek: Add tsensor support for V2 thermal system")
+Signed-off-by: Kang Chen <void0red@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230419020749.621257-1-void0red@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/bcm/pinctrl-bcm2835.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/thermal/mediatek/auxadc_thermal.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm2835.c b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-index 8e2551a08c372..7435173e10f43 100644
---- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
-@@ -90,6 +90,8 @@ struct bcm2835_pinctrl {
- 	struct pinctrl_gpio_range gpio_range;
+diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
+index ab730f9552d0e..3372f7c29626c 100644
+--- a/drivers/thermal/mediatek/auxadc_thermal.c
++++ b/drivers/thermal/mediatek/auxadc_thermal.c
+@@ -1142,7 +1142,12 @@ static int mtk_thermal_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
- 	raw_spinlock_t irq_lock[BCM2835_NUM_BANKS];
-+	/* Protect FSEL registers */
-+	spinlock_t fsel_lock;
- };
- 
- /* pins are just named GPIO0..GPIO53 */
-@@ -284,14 +286,19 @@ static inline void bcm2835_pinctrl_fsel_set(
- 		struct bcm2835_pinctrl *pc, unsigned pin,
- 		enum bcm2835_fsel fsel)
- {
--	u32 val = bcm2835_gpio_rd(pc, FSEL_REG(pin));
--	enum bcm2835_fsel cur = (val >> FSEL_SHIFT(pin)) & BCM2835_FSEL_MASK;
-+	u32 val;
-+	enum bcm2835_fsel cur;
-+	unsigned long flags;
+-	auxadc_base = of_iomap(auxadc, 0);
++	auxadc_base = devm_of_iomap(&pdev->dev, auxadc, 0, NULL);
++	if (IS_ERR(auxadc_base)) {
++		of_node_put(auxadc);
++		return PTR_ERR(auxadc_base);
++	}
 +
-+	spin_lock_irqsave(&pc->fsel_lock, flags);
-+	val = bcm2835_gpio_rd(pc, FSEL_REG(pin));
-+	cur = (val >> FSEL_SHIFT(pin)) & BCM2835_FSEL_MASK;
+ 	auxadc_phys_base = of_get_phys_base(auxadc);
  
- 	dev_dbg(pc->dev, "read %08x (%u => %s)\n", val, pin,
--			bcm2835_functions[cur]);
-+		bcm2835_functions[cur]);
+ 	of_node_put(auxadc);
+@@ -1158,7 +1163,12 @@ static int mtk_thermal_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
- 	if (cur == fsel)
--		return;
-+		goto unlock;
- 
- 	if (cur != BCM2835_FSEL_GPIO_IN && fsel != BCM2835_FSEL_GPIO_IN) {
- 		/* always transition through GPIO_IN */
-@@ -309,6 +316,9 @@ static inline void bcm2835_pinctrl_fsel_set(
- 	dev_dbg(pc->dev, "write %08x (%u <= %s)\n", val, pin,
- 			bcm2835_functions[fsel]);
- 	bcm2835_gpio_wr(pc, FSEL_REG(pin), val);
+-	apmixed_base = of_iomap(apmixedsys, 0);
++	apmixed_base = devm_of_iomap(&pdev->dev, apmixedsys, 0, NULL);
++	if (IS_ERR(apmixed_base)) {
++		of_node_put(apmixedsys);
++		return PTR_ERR(apmixed_base);
++	}
 +
-+unlock:
-+	spin_unlock_irqrestore(&pc->fsel_lock, flags);
- }
+ 	apmixed_phys_base = of_get_phys_base(apmixedsys);
  
- static int bcm2835_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
-@@ -1248,6 +1258,7 @@ static int bcm2835_pinctrl_probe(struct platform_device *pdev)
- 	pc->gpio_chip = *pdata->gpio_chip;
- 	pc->gpio_chip.parent = dev;
- 
-+	spin_lock_init(&pc->fsel_lock);
- 	for (i = 0; i < BCM2835_NUM_BANKS; i++) {
- 		unsigned long events;
- 		unsigned offset;
+ 	of_node_put(apmixedsys);
 -- 
 2.39.2
 
