@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA696FA3D9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 625686FA3DB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233581AbjEHJwV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:52:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49190 "EHLO
+        id S233726AbjEHJw0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:52:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233496AbjEHJwT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:52:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA0F23A27;
-        Mon,  8 May 2023 02:52:18 -0700 (PDT)
+        with ESMTP id S233496AbjEHJwZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:52:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBABC23A0B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:52:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 443E4621ED;
-        Mon,  8 May 2023 09:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E1CC433EF;
-        Mon,  8 May 2023 09:52:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81469621EC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:52:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C41C433EF;
+        Mon,  8 May 2023 09:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539537;
-        bh=1VLtWorznBeU1tpSMfDyMu736GfaHITHQgU5okOsPW0=;
+        s=korg; t=1683539543;
+        bh=8ezcZl5m/cEkzzWdEWK78JGEzBcRyHLWDItMhISB3kQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cmIktlEJEBz1SB31GAJWrRCb+S25cngqsl9rgW8EJ5PJRIJDMAQwDmLXAo2l7qoxd
-         ehUQme/LlwnXLc0D7MC4I1fo03md1SpEQMJhyOyKVG5lzmfjEedkO9WfzULLdIkQgJ
-         CcztbhHtXIp+7PTyKOISS/DAHkvJr0LadwQJVkUU=
+        b=Zf3Tqt8yNjLWkjSeiOmxA5mE96DX1oEX7D62RuzL5mlV4e3NCWGrz/virD7lg5DMF
+         B8qPJ8E+dbXFAgyVRJzC5NL9HU5ABqX8pb8Y6LRgmQxgO+ebtqTG1kXD94HDULB7BD
+         2zomRULBTQ3BEGZ3SBZlXpFCRmmA6aVA69vRWxdo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frederic Weisbecker <frederic@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Zhouyi Zhou <zhouzhouyi@gmail.com>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        rcu <rcu@vger.kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Subject: [PATCH 6.1 054/611] tick/nohz: Fix cpu_is_hotpluggable() by checking with nohz subsystem
-Date:   Mon,  8 May 2023 11:38:16 +0200
-Message-Id: <20230508094423.675181869@linuxfoundation.org>
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.1 055/611] fs: fix sysctls.c built
+Date:   Mon,  8 May 2023 11:38:17 +0200
+Message-Id: <20230508094423.717770236@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -47,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,97 +54,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-commit 58d7668242647e661a20efe065519abd6454287e upstream.
+commit e3184de9d46c2eebdb776face2e2662c6733331d upstream.
 
-For CONFIG_NO_HZ_FULL systems, the tick_do_timer_cpu cannot be offlined.
-However, cpu_is_hotpluggable() still returns true for those CPUs. This causes
-torture tests that do offlining to end up trying to offline this CPU causing
-test failures. Such failure happens on all architectures.
+'obj-$(CONFIG_SYSCTL) += sysctls.o' must be moved after "obj-y :=",
+or it won't be built as it is overwrited.
 
-Fix the repeated error messages thrown by this (even if the hotplug errors are
-harmless) by asking the opinion of the nohz subsystem on whether the CPU can be
-hotplugged.
+Note that there is nothing that is going to break by linking
+sysctl.o later, we were just being way to cautious and patches
+have been updated to reflect these considerations and sent for
+stable as well with the whole "base" stuff needing to be linked
+prior to child sysctl tables that use that directory. All of
+the kernel sysctl APIs always share the same directory, and races
+against using it should end up re-using the same single created
+directory.
 
-[ Apply Frederic Weisbecker feedback on refactoring tick_nohz_cpu_down(). ]
+And so something we can do eventually is do away with all the base stuff.
+For now it's fine, it's not creating an issue. It is just a bit pedantic
+and careful.
 
-For drivers/base/ portion:
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: rcu <rcu@vger.kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 2987557f52b9 ("driver-core/cpu: Expose hotpluggability to the rest of the kernel")
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Fixes: ab171b952c6e ("fs: move namespace sysctls and declare fs base directory")
+Cc: stable@vger.kernel.org # v5.17
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+[mcgrof: enhanced commit log for stable criteria and clarify base stuff ]
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/cpu.c       |    3 ++-
- include/linux/tick.h     |    2 ++
- kernel/time/tick-sched.c |   11 ++++++++---
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ fs/Makefile |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -487,7 +487,8 @@ static const struct attribute_group *cpu
- bool cpu_is_hotpluggable(unsigned int cpu)
- {
- 	struct device *dev = get_cpu_device(cpu);
--	return dev && container_of(dev, struct cpu, dev)->hotpluggable;
-+	return dev && container_of(dev, struct cpu, dev)->hotpluggable
-+		&& tick_nohz_cpu_hotpluggable(cpu);
- }
- EXPORT_SYMBOL_GPL(cpu_is_hotpluggable);
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -6,7 +6,6 @@
+ # Rewritten to use lists instead of if-statements.
+ # 
  
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -216,6 +216,7 @@ extern void tick_nohz_dep_set_signal(str
- 				     enum tick_dep_bits bit);
- extern void tick_nohz_dep_clear_signal(struct signal_struct *signal,
- 				       enum tick_dep_bits bit);
-+extern bool tick_nohz_cpu_hotpluggable(unsigned int cpu);
+-obj-$(CONFIG_SYSCTL)		+= sysctls.o
  
- /*
-  * The below are tick_nohz_[set,clear]_dep() wrappers that optimize off-cases
-@@ -280,6 +281,7 @@ static inline void tick_nohz_full_add_cp
+ obj-y :=	open.o read_write.o file_table.o super.o \
+ 		char_dev.o stat.o exec.o pipe.o namei.o fcntl.o \
+@@ -49,7 +48,7 @@ obj-$(CONFIG_FS_MBCACHE)	+= mbcache.o
+ obj-$(CONFIG_FS_POSIX_ACL)	+= posix_acl.o
+ obj-$(CONFIG_NFS_COMMON)	+= nfs_common/
+ obj-$(CONFIG_COREDUMP)		+= coredump.o
+-obj-$(CONFIG_SYSCTL)		+= drop_caches.o
++obj-$(CONFIG_SYSCTL)		+= drop_caches.o sysctls.o
  
- static inline void tick_nohz_dep_set_cpu(int cpu, enum tick_dep_bits bit) { }
- static inline void tick_nohz_dep_clear_cpu(int cpu, enum tick_dep_bits bit) { }
-+static inline bool tick_nohz_cpu_hotpluggable(unsigned int cpu) { return true; }
- 
- static inline void tick_dep_set(enum tick_dep_bits bit) { }
- static inline void tick_dep_clear(enum tick_dep_bits bit) { }
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -527,7 +527,7 @@ void __init tick_nohz_full_setup(cpumask
- 	tick_nohz_full_running = true;
- }
- 
--static int tick_nohz_cpu_down(unsigned int cpu)
-+bool tick_nohz_cpu_hotpluggable(unsigned int cpu)
- {
- 	/*
- 	 * The tick_do_timer_cpu CPU handles housekeeping duty (unbound
-@@ -535,8 +535,13 @@ static int tick_nohz_cpu_down(unsigned i
- 	 * CPUs. It must remain online when nohz full is enabled.
- 	 */
- 	if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
--		return -EBUSY;
--	return 0;
-+		return false;
-+	return true;
-+}
-+
-+static int tick_nohz_cpu_down(unsigned int cpu)
-+{
-+	return tick_nohz_cpu_hotpluggable(cpu) ? 0 : -EBUSY;
- }
- 
- void __init tick_nohz_init(void)
+ obj-$(CONFIG_FHANDLE)		+= fhandle.o
+ obj-y				+= iomap/
 
 
