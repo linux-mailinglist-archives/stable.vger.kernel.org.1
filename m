@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 532936FA544
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A210E6FACF5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:29:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234086AbjEHKHg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
+        id S233996AbjEHL35 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:29:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234088AbjEHKHf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:35 -0400
+        with ESMTP id S235836AbjEHL3h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3E131B29
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261403DE99
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 219126236E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3789DC4339B;
-        Mon,  8 May 2023 10:07:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 284AC62ED4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE5C433EF;
+        Mon,  8 May 2023 11:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540453;
-        bh=nd+7R1HnPhDhNn21mSKN+YCnOS7hvvaXL+Z+wWcHlEs=;
+        s=korg; t=1683545351;
+        bh=Ao2GF3mCN6Bqkq04G0YB88p2b+fQX/u1iRaS5n4X/Oo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NAk+qyJW8WEujtF/7ygvEQ11jwAOdc6nLpnwlxb6Zle45LIprQarA7iFgtpVOCHhg
-         GpuEuYkzViX4R4/UCNZixGYNVVFkzayVH1Ssl3ao0eNOthgo7BPL4pMQiZBZEwKAfM
-         v0hJyLNI6pgXmkOrQ5gFx8VvnP109cb1IzZExnpI=
+        b=OQS5ngCBZHlMjiD1958GaD5dNVE9GuVU0dxSlIEXOlT2K5A6siK45BnV/d+h0RXZt
+         RSdMMlE8mk4UgMuLJNv1NJJY66yZ7kX1o+RcZhIcXx4RJBlhSWHKTSpJWgsu+Nd51l
+         gJnKbMtwEby+3kYI5oDYM502CzptD9W4eiHJBvV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 370/611] wifi: mt76: connac: fix txd multicast rate setting
-Date:   Mon,  8 May 2023 11:43:32 +0200
-Message-Id: <20230508094434.389003930@linuxfoundation.org>
+        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 012/371] arm64: Stash shadow stack pointer in the task struct on interrupt
+Date:   Mon,  8 May 2023 11:43:33 +0200
+Message-Id: <20230508094812.527149779@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,37 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 3d2892e05086d09aecf14ea64b2debbf495e313c ]
+commit 59b37fe52f49955791a460752c37145f1afdcad1 upstream.
 
-The vif->bss_conf.mcast_rate should be applied to multicast data frame
-only.
+Instead of reloading the shadow call stack pointer from the ordinary
+stack, which may be vulnerable to the kind of gadget based attacks
+shadow call stacks were designed to prevent, let's store a task's shadow
+call stack pointer in the task struct when switching to the shadow IRQ
+stack.
 
-Fixes: 182071cdd594 ("mt76: connac: move connac2_mac_write_txwi in mt76_connac module")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Given that currently, the task_struct::scs_sp field is only used to
+preserve the shadow call stack pointer while a task is scheduled out or
+running in user space, reusing this field to preserve and restore it
+while running off the IRQ stack must be safe, as those occurrences are
+guaranteed to never overlap. (The stack switching logic only switches
+stacks when running from the task stack, and so the value being saved
+here always corresponds to the task mode shadow stack)
+
+While at it, fold a mov/add/mov sequence into a single add.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20230109174800.3286265-3-ardb@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/entry.S |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 46ede1b72bbee..19f02b632a204 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -539,7 +539,8 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
- 		/* Fixed rata is available just for 802.11 txd */
- 		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
--		bool multicast = is_multicast_ether_addr(hdr->addr1);
-+		bool multicast = ieee80211_is_data(hdr->frame_control) &&
-+				 is_multicast_ether_addr(hdr->addr1);
- 		u16 rate = mt76_connac2_mac_tx_rate_val(mphy, vif, beacon,
- 							multicast);
- 		u32 val = MT_TXD6_FIXED_BW;
--- 
-2.39.2
-
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -883,19 +883,19 @@ NOKPROBE(ret_from_fork)
+  */
+ SYM_FUNC_START(call_on_irq_stack)
+ #ifdef CONFIG_SHADOW_CALL_STACK
+-	stp	scs_sp, xzr, [sp, #-16]!
++	get_current_task x16
++	scs_save x16
+ 	ldr_this_cpu scs_sp, irq_shadow_call_stack_ptr, x17
+ #endif
++
+ 	/* Create a frame record to save our LR and SP (implicit in FP) */
+ 	stp	x29, x30, [sp, #-16]!
+ 	mov	x29, sp
+ 
+ 	ldr_this_cpu x16, irq_stack_ptr, x17
+-	mov	x15, #IRQ_STACK_SIZE
+-	add	x16, x16, x15
+ 
+ 	/* Move to the new stack and call the function there */
+-	mov	sp, x16
++	add	sp, x16, #IRQ_STACK_SIZE
+ 	blr	x1
+ 
+ 	/*
+@@ -904,9 +904,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	 */
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+-#ifdef CONFIG_SHADOW_CALL_STACK
+-	ldp	scs_sp, xzr, [sp], #16
+-#endif
++	scs_load_current
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 
 
