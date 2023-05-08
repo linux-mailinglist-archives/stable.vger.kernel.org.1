@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9F46FAADE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F7756FA7A4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233092AbjEHLHl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:07:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
+        id S234727AbjEHKdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232291AbjEHLG6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E2E2FA02
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:09 -0700 (PDT)
+        with ESMTP id S234791AbjEHKcz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:32:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9255F27852
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D73AC62A84
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB7BC433EF;
-        Mon,  8 May 2023 11:06:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5EC2626E0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5640C433EF;
+        Mon,  8 May 2023 10:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543968;
-        bh=8kqUxfzK8HhvW34/JzCdOrdS4s39HiYu249/IWnhSbI=;
+        s=korg; t=1683541920;
+        bh=rGopVJF+qyYKCeISEGi6nsfVzBy87J8aQ8JNWamY3jA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uz91HMk2Oizxd0AM/Ozj0YbBcLbSGAvBwR9bmwruh/ePu1SmnnHxErmg0308DgsVB
-         I2uXQTLqnNLgIFot03rpNh5vqiAgHig8mhIAfPpRJIKbWAocJgC9tXyxX7+sseQhIO
-         NMpXSbDurX9gubp1swgMTxY+uAmk/plWPytWXdBA=
+        b=sLeWBn51Pyd15/9T5vSjbMgORuqvKNrQ/k22bTrLAp0ILUM4ILR4cgAwZKIk1BtxM
+         goaogLRSUcYSUWXIBLZpGUNcGIxgffcrBb3diBexYoP9XLZxUm46PreAr+EiD+Qsnb
+         2rKdIpuPiAmyMfUqxVglXFf8SQwWN5vDV3dE5vfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 260/694] regulator: core: Consistently set mutex_owner when using ww_mutex_lock_slow()
+        patches@lists.linux.dev, Jing Zhang <renyu.zj@linux.alibaba.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 269/663] perf/arm-cmn: Fix port detection for CMN-700
 Date:   Mon,  8 May 2023 11:41:35 +0200
-Message-Id: <20230508094440.725333546@linuxfoundation.org>
+Message-Id: <20230508094436.975743411@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,51 +54,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit b83a1772be854f87602de14726737d3e5b06e1f4 ]
+[ Upstream commit 2ad91e44e6b0c7ef1ed151b3bb2242a2144e6085 ]
 
-When a codepath locks a rdev using ww_mutex_lock_slow() directly then
-that codepath is responsible for incrementing the "ref_cnt" and also
-setting the "mutex_owner" to "current".
+When the "extra device ports" configuration was first added, the
+additional mxp_device_port_connect_info registers were added around the
+existing mxp_mesh_port_connect_info registers. What I missed about
+CMN-700 is that it shuffled them around to remove this discontinuity.
+As such, tweak the definitions and factor out a helper for reading these
+registers so we can deal with this discrepancy easily, which does at
+least allow nicely tidying up the callsites. With this we can then also
+do the nice thing and skip accesses completely rather than relying on
+RES0 behaviour where we know the extra registers aren't defined.
 
-The regulator core consistently got that right for "ref_cnt" but
-didn't always get it right for "mutex_owner". Let's fix this.
-
-It's unlikely that this truly matters because the "mutex_owner" is
-only needed if we're going to do subsequent locking of the same
-rdev. However, even though it's not truly needed it seems less
-surprising if we consistently set "mutex_owner" properly.
-
-Fixes: f8702f9e4aa7 ("regulator: core: Use ww_mutex for regulators locking")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20230329143317.RFC.v2.1.I4e9d433ea26360c06dd1381d091c82bb1a4ce843@changeid
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Reported-by: Jing Zhang <renyu.zj@linux.alibaba.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/71d129241d4d7923cde72a0e5b4c8d2f6084525f.1681295193.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/perf/arm-cmn.c | 57 ++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 1490eb40c973a..9a13240f3084f 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -334,6 +334,7 @@ static void regulator_lock_dependent(struct regulator_dev *rdev,
- 			ww_mutex_lock_slow(&new_contended_rdev->mutex, ww_ctx);
- 			old_contended_rdev = new_contended_rdev;
- 			old_contended_rdev->ref_cnt++;
-+			old_contended_rdev->mutex_owner = current;
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index bc4b1d1ba8fa2..ff86075edca48 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -57,14 +57,12 @@
+ #define CMN_INFO_REQ_VC_NUM		GENMASK_ULL(1, 0)
+ 
+ /* XPs also have some local topology info which has uses too */
+-#define CMN_MXP__CONNECT_INFO_P0	0x0008
+-#define CMN_MXP__CONNECT_INFO_P1	0x0010
+-#define CMN_MXP__CONNECT_INFO_P2	0x0028
+-#define CMN_MXP__CONNECT_INFO_P3	0x0030
+-#define CMN_MXP__CONNECT_INFO_P4	0x0038
+-#define CMN_MXP__CONNECT_INFO_P5	0x0040
++#define CMN_MXP__CONNECT_INFO(p)	(0x0008 + 8 * (p))
+ #define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(4, 0)
+ 
++#define CMN_MAX_PORTS			6
++#define CI700_CONNECT_INFO_P2_5_OFFSET	0x10
++
+ /* PMU registers occupy the 3rd 4KB page of each node's region */
+ #define CMN_PMU_OFFSET			0x2000
+ 
+@@ -396,6 +394,25 @@ static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
+ 	return NULL;
+ }
+ 
++static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
++				       const struct arm_cmn_node *xp, int port)
++{
++	int offset = CMN_MXP__CONNECT_INFO(port);
++
++	if (port >= 2) {
++		if (cmn->model & (CMN600 | CMN650))
++			return 0;
++		/*
++		 * CI-700 may have extra ports, but still has the
++		 * mesh_port_connect_info registers in the way.
++		 */
++		if (cmn->model == CI700)
++			offset += CI700_CONNECT_INFO_P2_5_OFFSET;
++	}
++
++	return readl_relaxed(xp->pmu_base - CMN_PMU_OFFSET + offset);
++}
++
+ static struct dentry *arm_cmn_debugfs;
+ 
+ #ifdef CONFIG_DEBUG_FS
+@@ -469,7 +486,7 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 	y = cmn->mesh_y;
+ 	while (y--) {
+ 		int xp_base = cmn->mesh_x * y;
+-		u8 port[6][CMN_MAX_DIMENSION];
++		u8 port[CMN_MAX_PORTS][CMN_MAX_DIMENSION];
+ 
+ 		for (x = 0; x < cmn->mesh_x; x++)
+ 			seq_puts(s, "--------+");
+@@ -477,14 +494,9 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 		seq_printf(s, "\n%d    |", y);
+ 		for (x = 0; x < cmn->mesh_x; x++) {
+ 			struct arm_cmn_node *xp = cmn->xps + xp_base + x;
+-			void __iomem *base = xp->pmu_base - CMN_PMU_OFFSET;
+-
+-			port[0][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P0);
+-			port[1][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P1);
+-			port[2][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P2);
+-			port[3][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P3);
+-			port[4][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P4);
+-			port[5][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P5);
++
++			for (p = 0; p < CMN_MAX_PORTS; p++)
++				port[p][x] = arm_cmn_device_connect_info(cmn, xp, p);
+ 			seq_printf(s, " XP #%-2d |", xp_base + x);
  		}
  
- 		err = regulator_lock_recursive(rdev,
-@@ -6048,6 +6049,7 @@ static void regulator_summary_lock(struct ww_acquire_ctx *ww_ctx)
- 			ww_mutex_lock_slow(&new_contended_rdev->mutex, ww_ctx);
- 			old_contended_rdev = new_contended_rdev;
- 			old_contended_rdev->ref_cnt++;
-+			old_contended_rdev->mutex_owner = current;
- 		}
+@@ -2082,18 +2094,9 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		 * from this, since in that case we will see at least one XP
+ 		 * with port 2 connected, for the HN-D.
+ 		 */
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P0))
+-			xp_ports |= BIT(0);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P1))
+-			xp_ports |= BIT(1);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P2))
+-			xp_ports |= BIT(2);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P3))
+-			xp_ports |= BIT(3);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P4))
+-			xp_ports |= BIT(4);
+-		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P5))
+-			xp_ports |= BIT(5);
++		for (int p = 0; p < CMN_MAX_PORTS; p++)
++			if (arm_cmn_device_connect_info(cmn, xp, p))
++				xp_ports |= BIT(p);
  
- 		err = regulator_summary_lock_all(ww_ctx,
+ 		if (cmn->multi_dtm && (xp_ports & 0xc))
+ 			arm_cmn_init_dtm(dtm++, xp, 1);
 -- 
 2.39.2
 
