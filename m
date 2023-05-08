@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EFB6FA5FE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD376FA91E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234297AbjEHKPE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44062 "EHLO
+        id S235183AbjEHKsR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234265AbjEHKPC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC193AA2F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:00 -0700 (PDT)
+        with ESMTP id S235092AbjEHKr7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:47:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9182F2D787
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 822066245F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9097FC433EF;
-        Mon,  8 May 2023 10:14:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECBA3628F1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01DDC433EF;
+        Mon,  8 May 2023 10:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540899;
-        bh=unCZGmqAzJlAK8MB4tHDkgOcSq5PkLiBQGLN331w5pQ=;
+        s=korg; t=1683542833;
+        bh=/lAsQmWa93y1/iPWwyBwlZ1Uz4b/QRa/wBsOKLMC9Ro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SZ/ennnwdl2gwmPd9YYVTLwKcWa5phwz43AF8e1QQP2hUQ/B0Jl2gtHn2u0DrbMZH
-         oNZxSeOuOWr2sHQaBdRp6Cp8w7GyyIpMUlMlD24+FeFnqyq54Y4TmQqlsbg08RravD
-         d15Gr86EwlW1jU1FefGXJ/brivSzOxSe1R8a+FPQ=
+        b=uoGTw63j72vluAc5EW1SY5u37xE8mXt9v2vD6l9u/uQ3t5ntpPBLxAFTUqLXPuhtc
+         Nmy90cOX0K0150ahQP4jvVY0fFksrlyxnKM7ENkornFLNBcLWQ2R+wb2AP2kYkMlzJ
+         anhChdpxNrEn8LvF4KHf8GOnpV9colPpAgZLIyHA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 540/611] dma: gpi: remove spurious unlock in gpi_ch_init
+        Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
+        Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 556/663] clk: qcom: lpasscc-sc7280: Skip qdsp6ss clock registration
 Date:   Mon,  8 May 2023 11:46:22 +0200
-Message-Id: <20230508094439.554483161@linuxfoundation.org>
+Message-Id: <20230508094447.163628477@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,103 +57,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
 
-[ Upstream commit 91d6a468e335571f1e67e046050dea9af5fa4ebe ]
+[ Upstream commit 4fc1c2d9a2b7a394f3b873aae5e03bffd8b5cd31 ]
 
-gpi_ch_init() doesn't lock the ctrl_lock mutex, so there is no need to
-unlock it too. Instead the mutex is handled by the function
-gpi_alloc_chan_resources(), which properly locks and unlocks the mutex.
+The qdsp6ss memory region is being shared by ADSP remoteproc device and
+lpasscc clock device, hence causing memory conflict.
+To avoid this, when qdsp6ss clocks are being enabled in remoteproc driver,
+skip qdsp6ss clock registration if "qcom,adsp-pil-mode" is enabled and
+also assign max_register value.
 
-=====================================
-WARNING: bad unlock balance detected!
-6.3.0-rc5-00253-g99792582ded1-dirty #15 Not tainted
--------------------------------------
-kworker/u16:0/9 is trying to release lock (&gpii->ctrl_lock) at:
-[<ffffb99d04e1284c>] gpi_alloc_chan_resources+0x108/0x5bc
-but there are no more locks to release!
-
-other info that might help us debug this:
-6 locks held by kworker/u16:0/9:
- #0: ffff575740010938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x220/0x594
- #1: ffff80000809bdd0 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work+0x220/0x594
- #2: ffff575740f2a0f8 (&dev->mutex){....}-{3:3}, at: __device_attach+0x38/0x188
- #3: ffff57574b5570f8 (&dev->mutex){....}-{3:3}, at: __device_attach+0x38/0x188
- #4: ffffb99d06a2f180 (of_dma_lock){+.+.}-{3:3}, at: of_dma_request_slave_channel+0x138/0x280
- #5: ffffb99d06a2ee20 (dma_list_mutex){+.+.}-{3:3}, at: dma_get_slave_channel+0x28/0x10c
-
-stack backtrace:
-CPU: 7 PID: 9 Comm: kworker/u16:0 Not tainted 6.3.0-rc5-00253-g99792582ded1-dirty #15
-Hardware name: Google Pixel 3 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
- dump_backtrace+0xa0/0xfc
- show_stack+0x18/0x24
- dump_stack_lvl+0x60/0xac
- dump_stack+0x18/0x24
- print_unlock_imbalance_bug+0x130/0x148
- lock_release+0x270/0x300
- __mutex_unlock_slowpath+0x48/0x2cc
- mutex_unlock+0x20/0x2c
- gpi_alloc_chan_resources+0x108/0x5bc
- dma_chan_get+0x84/0x188
- dma_get_slave_channel+0x5c/0x10c
- gpi_of_dma_xlate+0x110/0x1a0
- of_dma_request_slave_channel+0x174/0x280
- dma_request_chan+0x3c/0x2d4
- geni_i2c_probe+0x544/0x63c
- platform_probe+0x68/0xc4
- really_probe+0x148/0x2ac
- __driver_probe_device+0x78/0xe0
- driver_probe_device+0x3c/0x160
- __device_attach_driver+0xb8/0x138
- bus_for_each_drv+0x84/0xe0
- __device_attach+0x9c/0x188
- device_initial_probe+0x14/0x20
- bus_probe_device+0xac/0xb0
- device_add+0x60c/0x7d8
- of_device_add+0x44/0x60
- of_platform_device_create_pdata+0x90/0x124
- of_platform_bus_create+0x15c/0x3c8
- of_platform_populate+0x58/0xf8
- devm_of_platform_populate+0x58/0xbc
- geni_se_probe+0xf0/0x164
- platform_probe+0x68/0xc4
- really_probe+0x148/0x2ac
- __driver_probe_device+0x78/0xe0
- driver_probe_device+0x3c/0x160
- __device_attach_driver+0xb8/0x138
- bus_for_each_drv+0x84/0xe0
- __device_attach+0x9c/0x188
- device_initial_probe+0x14/0x20
- bus_probe_device+0xac/0xb0
- deferred_probe_work_func+0x8c/0xc8
- process_one_work+0x2bc/0x594
- worker_thread+0x228/0x438
- kthread+0x108/0x10c
- ret_from_fork+0x10/0x20
-
-Fixes: 5d0c3533a19f ("dmaengine: qcom: Add GPI dma driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230409233355.453741-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
+Signed-off-by: Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>
+Signed-off-by: Mohammad Rafi Shaik <quic_mohs@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230407092255.119690-3-quic_mohs@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/qcom/gpi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/qcom/lpasscc-sc7280.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma/qcom/gpi.c b/drivers/dma/qcom/gpi.c
-index 98d45ee4b4e34..db6d0dc308d29 100644
---- a/drivers/dma/qcom/gpi.c
-+++ b/drivers/dma/qcom/gpi.c
-@@ -1966,7 +1966,6 @@ static int gpi_ch_init(struct gchan *gchan)
- error_config_int:
- 	gpi_free_ring(&gpii->ev_ring, gpii);
- exit_gpi_init:
--	mutex_unlock(&gpii->ctrl_lock);
- 	return ret;
- }
+diff --git a/drivers/clk/qcom/lpasscc-sc7280.c b/drivers/clk/qcom/lpasscc-sc7280.c
+index 5c1e17bd0d763..8486d7135ab10 100644
+--- a/drivers/clk/qcom/lpasscc-sc7280.c
++++ b/drivers/clk/qcom/lpasscc-sc7280.c
+@@ -118,14 +118,18 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
+ 		goto destroy_pm_clk;
+ 	}
  
+-	lpass_regmap_config.name = "qdsp6ss";
+-	desc = &lpass_qdsp6ss_sc7280_desc;
+-
+-	ret = qcom_cc_probe_by_index(pdev, 0, desc);
+-	if (ret)
+-		goto destroy_pm_clk;
++	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
++		lpass_regmap_config.name = "qdsp6ss";
++		lpass_regmap_config.max_register = 0x3f;
++		desc = &lpass_qdsp6ss_sc7280_desc;
++
++		ret = qcom_cc_probe_by_index(pdev, 0, desc);
++		if (ret)
++			goto destroy_pm_clk;
++	}
+ 
+ 	lpass_regmap_config.name = "top_cc";
++	lpass_regmap_config.max_register = 0x4;
+ 	desc = &lpass_cc_top_sc7280_desc;
+ 
+ 	ret = qcom_cc_probe_by_index(pdev, 1, desc);
 -- 
 2.39.2
 
