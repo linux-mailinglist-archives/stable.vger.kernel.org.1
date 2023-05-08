@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32C006FAD10
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7AF6FA53C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235790AbjEHLab (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50050 "EHLO
+        id S234072AbjEHKHQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235895AbjEHLaO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:14 -0400
+        with ESMTP id S234084AbjEHKHO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62823E753
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD1DF173B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54CD862F9D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622CBC4339B;
-        Mon,  8 May 2023 11:30:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BA6F62368
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5078BC433EF;
+        Mon,  8 May 2023 10:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545412;
-        bh=qhfSTW77Ij2nesFY/gKw6hsMkvyp2+Wd2BeZDFndKUY=;
+        s=korg; t=1683540432;
+        bh=+SPg38bGlIBb57QibYUbtlUgYHiaZoB6WhrLRjFV2OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VSWVv2P+7ZMAIeoyzPAgbwGopj7hptEexJnT5a0MIRSPiYlra7bxy34gdv8H25oDg
-         In0+wZhTYRiG75sppbX3aLCjmpv4Ci7Q8lnT+9bjnqf6Mf0DpMhG2w7TQwYttvowyj
-         +Eu9e9FUWGgl8Ey4iZobRS7Wy3mDb7gYY/yayR4U=
+        b=LP1NOWjRx5MUYTqi4gzyqyZRpmJHSa8IiA7+m/bMp8FLMbIoP62ydod8tXI4MQGUl
+         HnByXGwoIb77yx1pzyrnIZKG8+BtQ0Vqv3bm66S4GnJ+n1c3eo18iYVZV/BBr4P9EY
+         qCZ7yyIFeLzgZLmvIk6P89k0ZYJtBkB1H3DrX2MY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Lorenzo Bianconi <lorenzo@kernel.org>,
+        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/371] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+Subject: [PATCH 6.1 363/611] wifi: mt76: add flexible polling wait-interval support
 Date:   Mon,  8 May 2023 11:43:25 +0200
-Message-Id: <20230508094812.140315551@linuxfoundation.org>
+Message-Id: <20230508094434.186447279@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +54,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Patrik Dahlström <risca@dalakolonin.se>
+From: Deren Wu <deren.wu@mediatek.com>
 
-[ Upstream commit 49f76c499d38bf67803438eee88c8300d0f6ce09 ]
+[ Upstream commit 35effe6c0c24adcf0f732bb1c3d75573d4c88e63 ]
 
-Calling dev_to_iio_dev() on a platform device pointer is undefined and
-will make adc NULL.
+The default waiting unit is 10ms and the value is too much for
+data path related control. Provide a new API mt76_poll_msec_tick()
+to support different cases, such as 1ms polling waiting kick.
 
-Signed-off-by: Patrik Dahlström <risca@dalakolonin.se>
-Link: https://lore.kernel.org/r/20230313205029.1881745-1-risca@dalakolonin.se
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: c397fc1e6365 ("wifi: mt76: mt7921e: fix probe timeout after reboot")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/palmas_gpadc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h |  9 +++++----
+ drivers/net/wireless/mediatek/mt76/util.c | 10 +++++-----
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index f9c8385c72d3d..496aab94570a1 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -638,7 +638,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 7bcf7a6b67df3..9c753c6aabeff 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -904,10 +904,11 @@ bool __mt76_poll(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
  
- static int palmas_gpadc_remove(struct platform_device *pdev)
+ #define mt76_poll(dev, ...) __mt76_poll(&((dev)->mt76), __VA_ARGS__)
+ 
+-bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
+-		      int timeout);
+-
+-#define mt76_poll_msec(dev, ...) __mt76_poll_msec(&((dev)->mt76), __VA_ARGS__)
++bool ____mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
++			int timeout, int kick);
++#define __mt76_poll_msec(...)         ____mt76_poll_msec(__VA_ARGS__, 10)
++#define mt76_poll_msec(dev, ...)      ____mt76_poll_msec(&((dev)->mt76), __VA_ARGS__, 10)
++#define mt76_poll_msec_tick(dev, ...) ____mt76_poll_msec(&((dev)->mt76), __VA_ARGS__)
+ 
+ void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs);
+ void mt76_pci_disable_aspm(struct pci_dev *pdev);
+diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wireless/mediatek/mt76/util.c
+index 581964425468f..fc76c66ff1a5a 100644
+--- a/drivers/net/wireless/mediatek/mt76/util.c
++++ b/drivers/net/wireless/mediatek/mt76/util.c
+@@ -24,23 +24,23 @@ bool __mt76_poll(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
+ }
+ EXPORT_SYMBOL_GPL(__mt76_poll);
+ 
+-bool __mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
+-		      int timeout)
++bool ____mt76_poll_msec(struct mt76_dev *dev, u32 offset, u32 mask, u32 val,
++			int timeout, int tick)
  {
--	struct iio_dev *indio_dev = dev_to_iio_dev(&pdev->dev);
-+	struct iio_dev *indio_dev = dev_get_drvdata(&pdev->dev);
- 	struct palmas_gpadc *adc = iio_priv(indio_dev);
+ 	u32 cur;
  
- 	if (adc->wakeup1_enable || adc->wakeup2_enable)
+-	timeout /= 10;
++	timeout /= tick;
+ 	do {
+ 		cur = __mt76_rr(dev, offset) & mask;
+ 		if (cur == val)
+ 			return true;
+ 
+-		usleep_range(10000, 20000);
++		usleep_range(1000 * tick, 2000 * tick);
+ 	} while (timeout-- > 0);
+ 
+ 	return false;
+ }
+-EXPORT_SYMBOL_GPL(__mt76_poll_msec);
++EXPORT_SYMBOL_GPL(____mt76_poll_msec);
+ 
+ int mt76_wcid_alloc(u32 *mask, int size)
+ {
 -- 
 2.39.2
 
