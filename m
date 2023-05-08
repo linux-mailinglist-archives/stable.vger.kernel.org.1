@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 134CB6FA4E9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 587B96FAB10
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234009AbjEHKEa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:04:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60660 "EHLO
+        id S233818AbjEHLJB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233999AbjEHKEY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:24 -0400
+        with ESMTP id S232803AbjEHLIi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F7F33015E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD11F16358
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE81C62319
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E290FC433D2;
-        Mon,  8 May 2023 10:04:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6DB862B07
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5635C433D2;
+        Mon,  8 May 2023 11:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540261;
-        bh=ZxG5/YdcYkMB5CiRiBdRU2lbsteTpmMpsRTVCM/U104=;
+        s=korg; t=1683544109;
+        bh=dFo8+hQ+MPyxL2bFbcdotG2r2BdsFswtxkQEm50Bspw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VVeq4uMdqSLadrNKTzgCoGXyLs6gmwJTYHTJWzV8+/1jBdkMAwK5cDv2CwkqZcUsZ
-         v+S09KKyVgj+U/L0tZbwgYoU6B9QrkL07nExOmRxGCc6GeeaQFFuG4J5PGrX0tycJ2
-         jBFniYLgSsdpU2X085chwKlqM0xT4E2EX3r+EliY=
+        b=m3G09Ezx+JfC5CZ01oqxNvYqTP4eGrzu1Kx8P9OmldBq5cM29mrnDhRyvT+fnDNhL
+         gOGZjCnqRZc9YSLZJa7ITLFv3mRvHEzIlVPJDFXDMf0eEx3cS9tVHqv2qK4jPyV/EB
+         l0NISYkQzOR7B/GmFNBiU1le5WngU4xqhE40/THQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        =?UTF-8?q?Micha=C5=82=20Krawczyk?= <mk@semihalf.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 297/611] scsi: target: iscsit: isert: Alloc per conn cmd counter
+Subject: [PATCH 6.3 304/694] media: venus: dec: Fix handling of the start cmd
 Date:   Mon,  8 May 2023 11:42:19 +0200
-Message-Id: <20230508094432.062854515@linuxfoundation.org>
+Message-Id: <20230508094442.154654014@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,178 +56,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Michał Krawczyk <mk@semihalf.com>
 
-[ Upstream commit 6d256bee602b131bd4fbc92863b6a1210bcf6325 ]
+[ Upstream commit 50248ad9f190d527cbd578190ca769729518b703 ]
 
-This has iscsit allocate a per conn cmd counter and converts iscsit/isert
-to use it instead of the per session one.
+The decoder driver should clear the last_buffer_dequeued flag of the
+capture queue upon receiving V4L2_DEC_CMD_START.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20230319015620.96006-5-michael.christie@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 395cee83d02d ("scsi: target: iscsit: Stop/wait on cmds during conn close")
+The last_buffer_dequeued flag is set upon receiving EOS (which always
+happens upon receiving V4L2_DEC_CMD_STOP).
+
+Without this patch, after issuing the V4L2_DEC_CMD_STOP and
+V4L2_DEC_CMD_START, the vb2_dqbuf() function will always fail, even if
+the buffers are completed by the hardware.
+
+Fixes: beac82904a87 ("media: venus: make decoder compliant with stateful codec API")
+
+Signed-off-by: Michał Krawczyk <mk@semihalf.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c   |  4 ++--
- drivers/target/iscsi/iscsi_target.c       |  4 ++--
- drivers/target/iscsi/iscsi_target_login.c | 17 +++++++----------
- drivers/target/target_core_transport.c    |  9 ++++++---
- include/target/target_core_fabric.h       |  3 +++
- 5 files changed, 20 insertions(+), 17 deletions(-)
+ drivers/media/platform/qcom/venus/vdec.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index b360a1527cd10..7cca171478a22 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2507,8 +2507,8 @@ isert_wait4cmds(struct iscsit_conn *conn)
- 	isert_info("iscsit_conn %p\n", conn);
- 
- 	if (conn->sess) {
--		target_stop_session(conn->sess->se_sess);
--		target_wait_for_sess_cmds(conn->sess->se_sess);
-+		target_stop_cmd_counter(conn->cmd_cnt);
-+		target_wait_for_cmds(conn->cmd_cnt);
- 	}
- }
- 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 87927a36f90df..11115c2078446 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -1193,7 +1193,7 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 			  conn->sess->se_sess, be32_to_cpu(hdr->data_length),
- 			  cmd->data_direction, sam_task_attr,
- 			  cmd->sense_buffer + 2, scsilun_to_int(&hdr->lun),
--			  conn->sess->se_sess->cmd_cnt);
-+			  conn->cmd_cnt);
- 
- 	pr_debug("Got SCSI Command, ITT: 0x%08x, CmdSN: 0x%08x,"
- 		" ExpXferLen: %u, Length: %u, CID: %hu\n", hdr->itt,
-@@ -2057,7 +2057,7 @@ iscsit_handle_task_mgt_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 			  conn->sess->se_sess, 0, DMA_NONE,
- 			  TCM_SIMPLE_TAG, cmd->sense_buffer + 2,
- 			  scsilun_to_int(&hdr->lun),
--			  conn->sess->se_sess->cmd_cnt);
-+			  conn->cmd_cnt);
- 
- 	target_get_sess_cmd(&cmd->se_cmd, true);
- 
-diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
-index 8ab6c0107d89c..274bdd7845ca9 100644
---- a/drivers/target/iscsi/iscsi_target_login.c
-+++ b/drivers/target/iscsi/iscsi_target_login.c
-@@ -324,18 +324,8 @@ static int iscsi_login_zero_tsih_s1(
- 		goto free_ops;
- 	}
- 
--	/*
--	 * This is temp for iser. It will be moved to per conn in later
--	 * patches for iscsi.
--	 */
--	sess->se_sess->cmd_cnt = target_alloc_cmd_counter();
--	if (!sess->se_sess->cmd_cnt)
--		goto free_se_sess;
--
- 	return 0;
- 
--free_se_sess:
--	transport_free_session(sess->se_sess);
- free_ops:
- 	kfree(sess->sess_ops);
- free_id:
-@@ -1157,8 +1147,14 @@ static struct iscsit_conn *iscsit_alloc_conn(struct iscsi_np *np)
- 		goto free_conn_cpumask;
- 	}
- 
-+	conn->cmd_cnt = target_alloc_cmd_counter();
-+	if (!conn->cmd_cnt)
-+		goto free_conn_allowed_cpumask;
-+
- 	return conn;
- 
-+free_conn_allowed_cpumask:
-+	free_cpumask_var(conn->allowed_cpumask);
- free_conn_cpumask:
- 	free_cpumask_var(conn->conn_cpumask);
- free_conn_ops:
-@@ -1172,6 +1168,7 @@ static struct iscsit_conn *iscsit_alloc_conn(struct iscsi_np *np)
- 
- void iscsit_free_conn(struct iscsit_conn *conn)
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index 4ceaba37e2e57..9d26587716bf6 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -526,6 +526,7 @@ static int
+ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
  {
-+	target_free_cmd_counter(conn->cmd_cnt);
- 	free_cpumask_var(conn->allowed_cpumask);
- 	free_cpumask_var(conn->conn_cpumask);
- 	kfree(conn->conn_ops);
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index c395606ab1a9c..86adff2a86edd 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -254,7 +254,7 @@ struct target_cmd_counter *target_alloc_cmd_counter(void)
- }
- EXPORT_SYMBOL_GPL(target_alloc_cmd_counter);
- 
--static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
-+void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
- {
- 	/*
- 	 * Drivers like loop do not call target_stop_session during session
-@@ -265,6 +265,7 @@ static void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
- 
- 	percpu_ref_exit(&cmd_cnt->refcnt);
- }
-+EXPORT_SYMBOL_GPL(target_free_cmd_counter);
- 
- /**
-  * transport_init_session - initialize a session object
-@@ -3170,13 +3171,14 @@ static void target_stop_cmd_counter_confirm(struct percpu_ref *ref)
-  * target_stop_cmd_counter - Stop new IO from being added to the counter.
-  * @cmd_cnt: counter to stop
-  */
--static void target_stop_cmd_counter(struct target_cmd_counter *cmd_cnt)
-+void target_stop_cmd_counter(struct target_cmd_counter *cmd_cnt)
- {
- 	pr_debug("Stopping command counter.\n");
- 	if (!atomic_cmpxchg(&cmd_cnt->stopped, 0, 1))
- 		percpu_ref_kill_and_confirm(&cmd_cnt->refcnt,
- 					    target_stop_cmd_counter_confirm);
- }
-+EXPORT_SYMBOL_GPL(target_stop_cmd_counter);
- 
- /**
-  * target_stop_session - Stop new IO from being queued on the session.
-@@ -3192,7 +3194,7 @@ EXPORT_SYMBOL(target_stop_session);
-  * target_wait_for_cmds - Wait for outstanding cmds.
-  * @cmd_cnt: counter to wait for active I/O for.
-  */
--static void target_wait_for_cmds(struct target_cmd_counter *cmd_cnt)
-+void target_wait_for_cmds(struct target_cmd_counter *cmd_cnt)
- {
+ 	struct venus_inst *inst = to_inst(file);
++	struct vb2_queue *dst_vq;
+ 	struct hfi_frame_data fdata = {0};
  	int ret;
  
-@@ -3208,6 +3210,7 @@ static void target_wait_for_cmds(struct target_cmd_counter *cmd_cnt)
- 	wait_for_completion(&cmd_cnt->stop_done);
- 	pr_debug("Waiting for cmds done.\n");
- }
-+EXPORT_SYMBOL_GPL(target_wait_for_cmds);
+@@ -556,6 +557,13 @@ vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd *cmd)
+ 			inst->codec_state = VENUS_DEC_STATE_DRAIN;
+ 			inst->drain_active = true;
+ 		}
++	} else if (cmd->cmd == V4L2_DEC_CMD_START &&
++		   inst->codec_state == VENUS_DEC_STATE_STOPPED) {
++		dst_vq = v4l2_m2m_get_vq(inst->fh.m2m_ctx,
++					 V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
++		vb2_clear_last_buffer_dequeued(dst_vq);
++
++		inst->codec_state = VENUS_DEC_STATE_DECODING;
+ 	}
  
- /**
-  * target_wait_for_sess_cmds - Wait for outstanding commands
-diff --git a/include/target/target_core_fabric.h b/include/target/target_core_fabric.h
-index d507e7885f17f..b188b1e90e1ed 100644
---- a/include/target/target_core_fabric.h
-+++ b/include/target/target_core_fabric.h
-@@ -133,7 +133,10 @@ struct se_session *target_setup_session(struct se_portal_group *,
- 				struct se_session *, void *));
- void target_remove_session(struct se_session *);
- 
-+void target_stop_cmd_counter(struct target_cmd_counter *cmd_cnt);
-+void target_wait_for_cmds(struct target_cmd_counter *cmd_cnt);
- struct target_cmd_counter *target_alloc_cmd_counter(void);
-+void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt);
- 
- void transport_init_session(struct se_session *se_sess);
- struct se_session *transport_alloc_session(enum target_prot_op);
+ unlock:
 -- 
 2.39.2
 
