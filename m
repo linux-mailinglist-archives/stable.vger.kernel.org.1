@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F816FAE56
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691446FAC83
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236228AbjEHLn7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:43:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37260 "EHLO
+        id S235728AbjEHLZj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:25:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236111AbjEHLnl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797CD429F6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:02 -0700 (PDT)
+        with ESMTP id S235730AbjEHLZW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 167983B787
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A57261782
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F664C433D2;
-        Mon,  8 May 2023 11:43:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 691FC62D76
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B178C433EF;
+        Mon,  8 May 2023 11:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546181;
-        bh=BipXmCCCK3oHxhseUDoV7zDoZb30VyRzOuHYMsumzgU=;
+        s=korg; t=1683545091;
+        bh=Eo5Ddk8eYrpYSvgJ4EJtObMrpJytn1wQGTIewg2hinI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j1HkMFniHQNAqT5K10lKiojdDam3WvXint1/4L8u2RkVIJGVdlC7+zJAybN1iW6W0
-         +7+u4HgnmS0qQDJCiNFpLIcohsyrc35WeA3L8dKYUEhGYn2cpdRBk8I5BPJ1lw8ZOj
-         Pxv9nU7gcy2tSDXfTxbgE/rZVk27EgZhEuZ5WLaE=
+        b=rF5gbhJbzwRGjbywu5B7Niz3EtPGlIDKMmnilBo2/m6wIPtNimjGXE5As3ek0819g
+         4HrOZJviesFJE0iHDjw9JpS7UBykHahPo1efJ6VHfgG+gZO4MEXUE7R/j7khrzWxqf
+         uHZmmCytgn+UCNqza6M0Tj7E7BFd51raeeTyJHoY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
-        Peter Chen <peter.chen@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Rob Herring <robh@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        patches@lists.linux.dev,
+        syzbot+cfcc1a3c85be15a40cba@syzkaller.appspotmail.com,
+        Zhu Yanjun <yanjun.zhu@linux.dev>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 256/371] of: Fix modalias string generation
+Subject: [PATCH 6.3 622/694] RDMA/rxe: Fix the error "trying to register non-static key in rxe_cleanup_task"
 Date:   Mon,  8 May 2023 11:47:37 +0200
-Message-Id: <20230508094822.224255751@linuxfoundation.org>
+Message-Id: <20230508094455.745895717@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,78 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
+[ Upstream commit b2b1ddc457458fecd1c6f385baa9fbda5f0c63ad ]
 
-The helper generating an OF based modalias (of_device_get_modalias())
-works fine, but due to the use of snprintf() internally it needs a
-buffer one byte longer than what should be needed just for the entire
-string (excluding the '\0'). Most users of this helper are sysfs hooks
-providing the modalias string to users. They all provide a PAGE_SIZE
-buffer which is way above the number of bytes required to fit the
-modalias string and hence do not suffer from this issue.
+In the function rxe_create_qp(), rxe_qp_from_init() is called to
+initialize qp, internally things like rxe_init_task are not setup until
+rxe_qp_init_req().
 
-There is another user though, of_device_request_module(), which is only
-called by drivers/usb/common/ulpi.c. This request module function is
-faulty, but maybe because in most cases there is an alternative, ULPI
-driver users have not noticed it.
+If an error occurred before this point then the unwind will call
+rxe_cleanup() and eventually to rxe_qp_do_cleanup()/rxe_cleanup_task()
+which will oops when trying to access the uninitialized spinlock.
 
-In this function, of_device_get_modalias() is called twice. The first
-time without buffer just to get the number of bytes required by the
-modalias string (excluding the null byte), and a second time, after
-buffer allocation, to fill the buffer. The allocation asks for an
-additional byte, in order to store the trailing '\0'. However, the
-buffer *length* provided to of_device_get_modalias() excludes this extra
-byte. The internal use of snprintf() with a length that is exactly the
-number of bytes to be written has the effect of using the last available
-byte to store a '\0', which then smashes the last character of the
-modalias string.
+If rxe_init_task is not executed, rxe_cleanup_task will not be called.
 
-Provide the actual size of the buffer to of_device_get_modalias() to fix
-this issue.
-
-Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
-will anyway end the string with a null byte, but there is a possibility
-that this function might be called on a struct device_node without
-compatible, in this case snprintf() would not be executed. So we keep it
-just to avoid possible unbounded strings.
-
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Peter Chen <peter.chen@kernel.org>
-Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+cfcc1a3c85be15a40cba@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=fd85757b74b3eb59f904138486f755f71e090df8
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Fixes: 2d4b21e0a291 ("IB/rxe: Prevent from completer to operate on non valid QP")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20230413101115.1366068-1-yanjun.zhu@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/device.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 45335fe523f7d..19c42a9dcba91 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -290,12 +290,15 @@ int of_device_request_module(struct device *dev)
- 	if (size < 0)
- 		return size;
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 49891f8ed4e61..d5de5ba6940f1 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -761,9 +761,14 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+ 		del_timer_sync(&qp->rnr_nak_timer);
+ 	}
  
--	str = kmalloc(size + 1, GFP_KERNEL);
-+	/* Reserve an additional byte for the trailing '\0' */
-+	size++;
+-	rxe_cleanup_task(&qp->resp.task);
+-	rxe_cleanup_task(&qp->req.task);
+-	rxe_cleanup_task(&qp->comp.task);
++	if (qp->resp.task.func)
++		rxe_cleanup_task(&qp->resp.task);
 +
-+	str = kmalloc(size, GFP_KERNEL);
- 	if (!str)
- 		return -ENOMEM;
++	if (qp->req.task.func)
++		rxe_cleanup_task(&qp->req.task);
++
++	if (qp->comp.task.func)
++		rxe_cleanup_task(&qp->comp.task);
  
- 	of_device_get_modalias(dev, str, size);
--	str[size] = '\0';
-+	str[size - 1] = '\0';
- 	ret = request_module(str);
- 	kfree(str);
- 
+ 	/* flush out any receive wr's or pending requests */
+ 	rxe_requester(qp);
 -- 
 2.39.2
 
