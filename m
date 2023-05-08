@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ECFA6FA979
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6362A6FAC51
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235219AbjEHKvr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:51:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55128 "EHLO
+        id S235635AbjEHLXP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234994AbjEHKvW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:22 -0400
+        with ESMTP id S235572AbjEHLXL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61058203FC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC27394B8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4363662949
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 525DDC433D2;
-        Mon,  8 May 2023 10:50:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4008C61529
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42794C433EF;
+        Mon,  8 May 2023 11:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543035;
-        bh=PDufh/iI6PpeM985NOlyt2mzttbmZHePkjpWDnR1t3A=;
+        s=korg; t=1683544986;
+        bh=Z1nXqxFNUKRWTLICumPnwlkqPjsoIMIj2M1bXdCYmBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=btKCqNXpT5hl6I/MO6n8ntq79Y7v6VI+T72jE+3CmhBhsotxn55sr8AsRzDwsqI9J
-         PmWo11z7OkkROvbSW4AO2i5zJG/QgifG2v/twSEqfE6Fk4XpsrWZh7/CXyKxmIBEHi
-         cRCcnMc6mGimkgBMHKx8dBREw+U8pJP4rPpDX670=
+        b=BlbQb+/bDIV4EzThwIQUoRIhCbjTMXG2YKiY2MpQNURQXy1hSXIrxykMSUNw3d7WW
+         TDkXnP1GtJchs88rGiKCsuLvBcZODxWpbb/Z+eHPQAYxiSoTUbYgq+KSYlHhTwVbbL
+         bcx8ip6gcGw147XhHH8gJRSX4ol7hYBSh8Q2HweM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kang Chen <void0red@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Dhruva Gole <d-gole@ti.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 597/663] thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe
+Subject: [PATCH 6.3 588/694] rtc: k3: handle errors while enabling wake irq
 Date:   Mon,  8 May 2023 11:47:03 +0200
-Message-Id: <20230508094448.875790166@linuxfoundation.org>
+Message-Id: <20230508094454.142238770@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,60 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kang Chen <void0red@hust.edu.cn>
+From: Dhruva Gole <d-gole@ti.com>
 
-[ Upstream commit f05c7b7d9ea9477fcc388476c6f4ade8c66d2d26 ]
+[ Upstream commit d31d7300ebc0c43021ec48c0e6a3a427386f4617 ]
 
-Smatch reports:
-1. mtk_thermal_probe() warn: 'apmixed_base' from of_iomap() not released.
-2. mtk_thermal_probe() warn: 'auxadc_base' from of_iomap() not released.
+Due to the potential failure of enable_irq_wake(), it would be better to
+return error if it fails.
 
-The original code forgets to release iomap resource when handling errors,
-fix it by switch to devm_of_iomap.
-
-Fixes: 89945047b166 ("thermal: mediatek: Add tsensor support for V2 thermal system")
-Signed-off-by: Kang Chen <void0red@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230419020749.621257-1-void0red@hust.edu.cn
+Fixes: b09d633575e5 ("rtc: Introduce ti-k3-rtc")
+Cc: Nishanth Menon <nm@ti.com>
+Signed-off-by: Dhruva Gole <d-gole@ti.com>
+Link: https://lore.kernel.org/r/20230323085904.957999-1-d-gole@ti.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mtk_thermal.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-ti-k3.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/mtk_thermal.c b/drivers/thermal/mtk_thermal.c
-index 8440692e3890d..62f1e691659e3 100644
---- a/drivers/thermal/mtk_thermal.c
-+++ b/drivers/thermal/mtk_thermal.c
-@@ -1028,7 +1028,12 @@ static int mtk_thermal_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
+diff --git a/drivers/rtc/rtc-ti-k3.c b/drivers/rtc/rtc-ti-k3.c
+index ba23163cc0428..0d90fe9233550 100644
+--- a/drivers/rtc/rtc-ti-k3.c
++++ b/drivers/rtc/rtc-ti-k3.c
+@@ -632,7 +632,8 @@ static int __maybe_unused ti_k3_rtc_suspend(struct device *dev)
+ 	struct ti_k3_rtc *priv = dev_get_drvdata(dev);
  
--	auxadc_base = of_iomap(auxadc, 0);
-+	auxadc_base = devm_of_iomap(&pdev->dev, auxadc, 0, NULL);
-+	if (IS_ERR(auxadc_base)) {
-+		of_node_put(auxadc);
-+		return PTR_ERR(auxadc_base);
-+	}
+ 	if (device_may_wakeup(dev))
+-		enable_irq_wake(priv->irq);
++		return enable_irq_wake(priv->irq);
 +
- 	auxadc_phys_base = of_get_phys_base(auxadc);
+ 	return 0;
+ }
  
- 	of_node_put(auxadc);
-@@ -1044,7 +1049,12 @@ static int mtk_thermal_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	apmixed_base = of_iomap(apmixedsys, 0);
-+	apmixed_base = devm_of_iomap(&pdev->dev, apmixedsys, 0, NULL);
-+	if (IS_ERR(apmixed_base)) {
-+		of_node_put(apmixedsys);
-+		return PTR_ERR(apmixed_base);
-+	}
-+
- 	apmixed_phys_base = of_get_phys_base(apmixedsys);
- 
- 	of_node_put(apmixedsys);
 -- 
 2.39.2
 
