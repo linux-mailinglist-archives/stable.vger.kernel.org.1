@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3DFF6FA9FF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A6336FA6B2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235420AbjEHK5r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33528 "EHLO
+        id S234490AbjEHKX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235388AbjEHK5X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:57:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41C033FE9
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:56:24 -0700 (PDT)
+        with ESMTP id S234506AbjEHKWs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12252E6B3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E0C6629C4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:56:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFB3C433D2;
-        Mon,  8 May 2023 10:56:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 406BB62567
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D89C433EF;
+        Mon,  8 May 2023 10:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543383;
-        bh=BXP93rmd3Vln/zB9nCoGJr5OIkf0hrifVlrARtOX4tI=;
+        s=korg; t=1683541331;
+        bh=T6RskzTufzEL1FDjGWmAAmSSyuML4BXUEnJRtkOCoAg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N+TlqYhaEOLMKcyXRqEzroAZksfZCJ8GTe/coPvp0NNmr4/GpuD6MeyuIKrxlAuUY
-         AUL1Z/lw+B4tzfxO46G77eaR/5nzV4Iff9nBu5bxc55fWs4UMnRsiCMJ+0kGv78reF
-         7QMuRn/4afg7FkeaJnvfG61h0KaW1OIps5pW3iS0=
+        b=bxZ3mINuYMi/b4/cjaHRK7GhYXPxaw3d+3PyMZqYsmLuqYV6G6I98fIY7fdsQRwxg
+         qoPgmH7ODQgTYZKoz/PLUGBIzlSX7Fm+uf48pEI2SXhY1AKSbH7PaDYtND655ddkco
+         AWDZa9lJXIajp7a5IvusFlj6IZk2hp/txjU45fd8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.3 072/694] ksmbd: fix racy issue from session setup and logoff
+        patches@lists.linux.dev, Jeremy Linton <jeremy.linton@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.2 081/663] KVM: arm64: Use config_lock to protect data ordered against KVM_RUN
 Date:   Mon,  8 May 2023 11:38:27 +0200
-Message-Id: <20230508094434.885646140@linuxfoundation.org>
+Message-Id: <20230508094431.083544962@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,384 +54,162 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-commit f5c779b7ddbda30866cf2a27c63e34158f858c73 upstream.
+commit 4bba7f7def6f278266dadf845da472cfbfed784e upstream.
 
-This racy issue is triggered by sending concurrent session setup and
-logoff requests. This patch does not set connection status as
-KSMBD_SESS_GOOD if state is KSMBD_SESS_NEED_RECONNECT in session setup.
-And relookup session to validate if session is deleted in logoff.
+There are various bits of VM-scoped data that can only be configured
+before the first call to KVM_RUN, such as the hypercall bitmaps and
+the PMU. As these fields are protected by the kvm->lock and accessed
+while holding vcpu->mutex, this is yet another example of lock
+inversion.
+
+Change out the kvm->lock for kvm->arch.config_lock in all of these
+instances. Opportunistically simplify the locking mechanics of the
+PMU configuration by holding the config_lock for the entirety of
+kvm_arm_pmu_v3_set_attr().
+
+Note that this also addresses a couple of bugs. There is an unguarded
+read of the PMU version in KVM_ARM_VCPU_PMU_V3_FILTER which could race
+with KVM_ARM_VCPU_PMU_V3_SET_PMU. Additionally, until now writes to the
+per-vCPU vPMU irq were not serialized VM-wide, meaning concurrent calls
+to KVM_ARM_VCPU_PMU_V3_IRQ could lead to a false positive in
+pmu_irq_is_valid().
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20481, ZDI-CAN-20590, ZDI-CAN-20596
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Tested-by: Jeremy Linton <jeremy.linton@arm.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230327164747.2466958-4-oliver.upton@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/connection.c        |   14 ++++----
- fs/ksmbd/connection.h        |   39 ++++++++++++++-----------
- fs/ksmbd/mgmt/user_session.c |    1 
- fs/ksmbd/server.c            |    3 +
- fs/ksmbd/smb2pdu.c           |   67 +++++++++++++++++++++++++++----------------
- fs/ksmbd/transport_tcp.c     |    2 -
- 6 files changed, 77 insertions(+), 49 deletions(-)
+ arch/arm64/kvm/arm.c        |    4 ++--
+ arch/arm64/kvm/guest.c      |    2 ++
+ arch/arm64/kvm/hypercalls.c |    4 ++--
+ arch/arm64/kvm/pmu-emul.c   |   23 ++++++-----------------
+ 4 files changed, 12 insertions(+), 21 deletions(-)
 
---- a/fs/ksmbd/connection.c
-+++ b/fs/ksmbd/connection.c
-@@ -56,7 +56,7 @@ struct ksmbd_conn *ksmbd_conn_alloc(void
- 		return NULL;
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -634,9 +634,9 @@ int kvm_arch_vcpu_run_pid_change(struct
+ 	if (kvm_vm_is_protected(kvm))
+ 		kvm_call_hyp_nvhe(__pkvm_vcpu_init_traps, vcpu);
  
- 	conn->need_neg = true;
--	conn->status = KSMBD_SESS_NEW;
-+	ksmbd_conn_set_new(conn);
- 	conn->local_nls = load_nls("utf8");
- 	if (!conn->local_nls)
- 		conn->local_nls = load_nls_default();
-@@ -147,12 +147,12 @@ int ksmbd_conn_try_dequeue_request(struc
+-	mutex_lock(&kvm->lock);
++	mutex_lock(&kvm->arch.config_lock);
+ 	set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
+-	mutex_unlock(&kvm->lock);
++	mutex_unlock(&kvm->arch.config_lock);
+ 
+ 	return ret;
+ }
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -951,7 +951,9 @@ int kvm_arm_vcpu_arch_set_attr(struct kv
+ 
+ 	switch (attr->group) {
+ 	case KVM_ARM_VCPU_PMU_V3_CTRL:
++		mutex_lock(&vcpu->kvm->arch.config_lock);
+ 		ret = kvm_arm_pmu_v3_set_attr(vcpu, attr);
++		mutex_unlock(&vcpu->kvm->arch.config_lock);
+ 		break;
+ 	case KVM_ARM_VCPU_TIMER_CTRL:
+ 		ret = kvm_arm_timer_set_attr(vcpu, attr);
+--- a/arch/arm64/kvm/hypercalls.c
++++ b/arch/arm64/kvm/hypercalls.c
+@@ -377,7 +377,7 @@ static int kvm_arm_set_fw_reg_bmap(struc
+ 	if (val & ~fw_reg_features)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&kvm->lock);
++	mutex_lock(&kvm->arch.config_lock);
+ 
+ 	if (test_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags) &&
+ 	    val != *fw_reg_bmap) {
+@@ -387,7 +387,7 @@ static int kvm_arm_set_fw_reg_bmap(struc
+ 
+ 	WRITE_ONCE(*fw_reg_bmap, val);
+ out:
+-	mutex_unlock(&kvm->lock);
++	mutex_unlock(&kvm->arch.config_lock);
  	return ret;
  }
  
--static void ksmbd_conn_lock(struct ksmbd_conn *conn)
-+void ksmbd_conn_lock(struct ksmbd_conn *conn)
- {
- 	mutex_lock(&conn->srv_mutex);
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -876,7 +876,7 @@ static int kvm_arm_pmu_v3_set_pmu(struct
+ 	struct arm_pmu *arm_pmu;
+ 	int ret = -ENXIO;
+ 
+-	mutex_lock(&kvm->lock);
++	lockdep_assert_held(&kvm->arch.config_lock);
+ 	mutex_lock(&arm_pmus_lock);
+ 
+ 	list_for_each_entry(entry, &arm_pmus, entry) {
+@@ -896,7 +896,6 @@ static int kvm_arm_pmu_v3_set_pmu(struct
+ 	}
+ 
+ 	mutex_unlock(&arm_pmus_lock);
+-	mutex_unlock(&kvm->lock);
+ 	return ret;
  }
  
--static void ksmbd_conn_unlock(struct ksmbd_conn *conn)
-+void ksmbd_conn_unlock(struct ksmbd_conn *conn)
+@@ -904,22 +903,20 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_v
  {
- 	mutex_unlock(&conn->srv_mutex);
- }
-@@ -243,7 +243,7 @@ bool ksmbd_conn_alive(struct ksmbd_conn
- 	if (!ksmbd_server_running())
- 		return false;
+ 	struct kvm *kvm = vcpu->kvm;
  
--	if (conn->status == KSMBD_SESS_EXITING)
-+	if (ksmbd_conn_exiting(conn))
- 		return false;
++	lockdep_assert_held(&kvm->arch.config_lock);
++
+ 	if (!kvm_vcpu_has_pmu(vcpu))
+ 		return -ENODEV;
  
- 	if (kthread_should_stop())
-@@ -303,7 +303,7 @@ int ksmbd_conn_handler_loop(void *p)
- 		pdu_size = get_rfc1002_len(hdr_buf);
- 		ksmbd_debug(CONN, "RFC1002 header %u bytes\n", pdu_size);
+ 	if (vcpu->arch.pmu.created)
+ 		return -EBUSY;
  
--		if (conn->status == KSMBD_SESS_GOOD)
-+		if (ksmbd_conn_good(conn))
- 			max_allowed_pdu_size =
- 				SMB3_MAX_MSGSIZE + conn->vals->max_write_size;
+-	mutex_lock(&kvm->lock);
+ 	if (!kvm->arch.arm_pmu) {
+ 		/* No PMU set, get the default one */
+ 		kvm->arch.arm_pmu = kvm_pmu_probe_armpmu();
+-		if (!kvm->arch.arm_pmu) {
+-			mutex_unlock(&kvm->lock);
++		if (!kvm->arch.arm_pmu)
+ 			return -ENODEV;
+-		}
+ 	}
+-	mutex_unlock(&kvm->lock);
+ 
+ 	switch (attr->attr) {
+ 	case KVM_ARM_VCPU_PMU_V3_IRQ: {
+@@ -963,19 +960,13 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_v
+ 		     filter.action != KVM_PMU_EVENT_DENY))
+ 			return -EINVAL;
+ 
+-		mutex_lock(&kvm->lock);
+-
+-		if (test_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags)) {
+-			mutex_unlock(&kvm->lock);
++		if (test_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags))
+ 			return -EBUSY;
+-		}
+ 
+ 		if (!kvm->arch.pmu_filter) {
+ 			kvm->arch.pmu_filter = bitmap_alloc(nr_events, GFP_KERNEL_ACCOUNT);
+-			if (!kvm->arch.pmu_filter) {
+-				mutex_unlock(&kvm->lock);
++			if (!kvm->arch.pmu_filter)
+ 				return -ENOMEM;
+-			}
+ 
+ 			/*
+ 			 * The default depends on the first applied filter.
+@@ -994,8 +985,6 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_v
  		else
-@@ -312,7 +312,7 @@ int ksmbd_conn_handler_loop(void *p)
- 		if (pdu_size > max_allowed_pdu_size) {
- 			pr_err_ratelimited("PDU length(%u) exceeded maximum allowed pdu size(%u) on connection(%d)\n",
- 					pdu_size, max_allowed_pdu_size,
--					conn->status);
-+					READ_ONCE(conn->status));
- 			break;
- 		}
+ 			bitmap_clear(kvm->arch.pmu_filter, filter.base_event, filter.nevents);
  
-@@ -416,7 +416,7 @@ again:
- 		if (task)
- 			ksmbd_debug(CONN, "Stop session handler %s/%d\n",
- 				    task->comm, task_pid_nr(task));
--		conn->status = KSMBD_SESS_EXITING;
-+		ksmbd_conn_set_exiting(conn);
- 		if (t->ops->shutdown) {
- 			read_unlock(&conn_list_lock);
- 			t->ops->shutdown(t);
---- a/fs/ksmbd/connection.h
-+++ b/fs/ksmbd/connection.h
-@@ -162,6 +162,8 @@ void ksmbd_conn_init_server_callbacks(st
- int ksmbd_conn_handler_loop(void *p);
- int ksmbd_conn_transport_init(void);
- void ksmbd_conn_transport_destroy(void);
-+void ksmbd_conn_lock(struct ksmbd_conn *conn);
-+void ksmbd_conn_unlock(struct ksmbd_conn *conn);
- 
- /*
-  * WARNING
-@@ -169,43 +171,48 @@ void ksmbd_conn_transport_destroy(void);
-  * This is a hack. We will move status to a proper place once we land
-  * a multi-sessions support.
-  */
--static inline bool ksmbd_conn_good(struct ksmbd_work *work)
-+static inline bool ksmbd_conn_good(struct ksmbd_conn *conn)
- {
--	return work->conn->status == KSMBD_SESS_GOOD;
-+	return READ_ONCE(conn->status) == KSMBD_SESS_GOOD;
- }
- 
--static inline bool ksmbd_conn_need_negotiate(struct ksmbd_work *work)
-+static inline bool ksmbd_conn_need_negotiate(struct ksmbd_conn *conn)
- {
--	return work->conn->status == KSMBD_SESS_NEED_NEGOTIATE;
-+	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_NEGOTIATE;
- }
- 
--static inline bool ksmbd_conn_need_reconnect(struct ksmbd_work *work)
-+static inline bool ksmbd_conn_need_reconnect(struct ksmbd_conn *conn)
- {
--	return work->conn->status == KSMBD_SESS_NEED_RECONNECT;
-+	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_RECONNECT;
- }
- 
--static inline bool ksmbd_conn_exiting(struct ksmbd_work *work)
-+static inline bool ksmbd_conn_exiting(struct ksmbd_conn *conn)
- {
--	return work->conn->status == KSMBD_SESS_EXITING;
-+	return READ_ONCE(conn->status) == KSMBD_SESS_EXITING;
- }
- 
--static inline void ksmbd_conn_set_good(struct ksmbd_work *work)
-+static inline void ksmbd_conn_set_new(struct ksmbd_conn *conn)
- {
--	work->conn->status = KSMBD_SESS_GOOD;
-+	WRITE_ONCE(conn->status, KSMBD_SESS_NEW);
- }
- 
--static inline void ksmbd_conn_set_need_negotiate(struct ksmbd_work *work)
-+static inline void ksmbd_conn_set_good(struct ksmbd_conn *conn)
- {
--	work->conn->status = KSMBD_SESS_NEED_NEGOTIATE;
-+	WRITE_ONCE(conn->status, KSMBD_SESS_GOOD);
- }
- 
--static inline void ksmbd_conn_set_need_reconnect(struct ksmbd_work *work)
-+static inline void ksmbd_conn_set_need_negotiate(struct ksmbd_conn *conn)
- {
--	work->conn->status = KSMBD_SESS_NEED_RECONNECT;
-+	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_NEGOTIATE);
- }
- 
--static inline void ksmbd_conn_set_exiting(struct ksmbd_work *work)
-+static inline void ksmbd_conn_set_need_reconnect(struct ksmbd_conn *conn)
- {
--	work->conn->status = KSMBD_SESS_EXITING;
-+	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_RECONNECT);
-+}
-+
-+static inline void ksmbd_conn_set_exiting(struct ksmbd_conn *conn)
-+{
-+	WRITE_ONCE(conn->status, KSMBD_SESS_EXITING);
- }
- #endif /* __CONNECTION_H__ */
---- a/fs/ksmbd/mgmt/user_session.c
-+++ b/fs/ksmbd/mgmt/user_session.c
-@@ -315,6 +315,7 @@ static struct ksmbd_session *__session_c
- 	if (ksmbd_init_file_table(&sess->file_table))
- 		goto error;
- 
-+	sess->state = SMB2_SESSION_IN_PROGRESS;
- 	set_session_flag(sess, protocol);
- 	xa_init(&sess->tree_conns);
- 	xa_init(&sess->ksmbd_chann_list);
---- a/fs/ksmbd/server.c
-+++ b/fs/ksmbd/server.c
-@@ -93,7 +93,8 @@ static inline int check_conn_state(struc
- {
- 	struct smb_hdr *rsp_hdr;
- 
--	if (ksmbd_conn_exiting(work) || ksmbd_conn_need_reconnect(work)) {
-+	if (ksmbd_conn_exiting(work->conn) ||
-+	    ksmbd_conn_need_reconnect(work->conn)) {
- 		rsp_hdr = work->response_buf;
- 		rsp_hdr->Status.CifsError = STATUS_CONNECTION_DISCONNECTED;
- 		return 1;
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -248,7 +248,7 @@ int init_smb2_neg_rsp(struct ksmbd_work
- 
- 	rsp = smb2_get_msg(work->response_buf);
- 
--	WARN_ON(ksmbd_conn_good(work));
-+	WARN_ON(ksmbd_conn_good(conn));
- 
- 	rsp->StructureSize = cpu_to_le16(65);
- 	ksmbd_debug(SMB, "conn->dialect 0x%x\n", conn->dialect);
-@@ -277,7 +277,7 @@ int init_smb2_neg_rsp(struct ksmbd_work
- 		rsp->SecurityMode |= SMB2_NEGOTIATE_SIGNING_REQUIRED_LE;
- 	conn->use_spnego = true;
- 
--	ksmbd_conn_set_need_negotiate(work);
-+	ksmbd_conn_set_need_negotiate(conn);
- 	return 0;
- }
- 
-@@ -561,7 +561,7 @@ int smb2_check_user_session(struct ksmbd
- 	    cmd == SMB2_SESSION_SETUP_HE)
+-		mutex_unlock(&kvm->lock);
+-
  		return 0;
- 
--	if (!ksmbd_conn_good(work))
-+	if (!ksmbd_conn_good(conn))
- 		return -EINVAL;
- 
- 	sess_id = le64_to_cpu(req_hdr->SessionId);
-@@ -594,7 +594,7 @@ static void destroy_previous_session(str
- 
- 	prev_sess->state = SMB2_SESSION_EXPIRED;
- 	xa_for_each(&prev_sess->ksmbd_chann_list, index, chann)
--		chann->conn->status = KSMBD_SESS_EXITING;
-+		ksmbd_conn_set_exiting(chann->conn);
- }
- 
- /**
-@@ -1079,7 +1079,7 @@ int smb2_handle_negotiate(struct ksmbd_w
- 
- 	ksmbd_debug(SMB, "Received negotiate request\n");
- 	conn->need_neg = false;
--	if (ksmbd_conn_good(work)) {
-+	if (ksmbd_conn_good(conn)) {
- 		pr_err("conn->tcp_status is already in CifsGood State\n");
- 		work->send_no_response = 1;
- 		return rc;
-@@ -1233,7 +1233,7 @@ int smb2_handle_negotiate(struct ksmbd_w
  	}
- 
- 	conn->srv_sec_mode = le16_to_cpu(rsp->SecurityMode);
--	ksmbd_conn_set_need_negotiate(work);
-+	ksmbd_conn_set_need_negotiate(conn);
- 
- err_out:
- 	if (rc < 0)
-@@ -1656,6 +1656,7 @@ int smb2_sess_setup(struct ksmbd_work *w
- 	rsp->SecurityBufferLength = 0;
- 	inc_rfc1001_len(work->response_buf, 9);
- 
-+	ksmbd_conn_lock(conn);
- 	if (!req->hdr.SessionId) {
- 		sess = ksmbd_smb2_session_create();
- 		if (!sess) {
-@@ -1703,6 +1704,12 @@ int smb2_sess_setup(struct ksmbd_work *w
- 			goto out_err;
- 		}
- 
-+		if (ksmbd_conn_need_reconnect(conn)) {
-+			rc = -EFAULT;
-+			sess = NULL;
-+			goto out_err;
-+		}
-+
- 		if (ksmbd_session_lookup(conn, sess_id)) {
- 			rc = -EACCES;
- 			goto out_err;
-@@ -1727,12 +1734,20 @@ int smb2_sess_setup(struct ksmbd_work *w
- 			rc = -ENOENT;
- 			goto out_err;
- 		}
-+
-+		if (sess->state == SMB2_SESSION_EXPIRED) {
-+			rc = -EFAULT;
-+			goto out_err;
-+		}
-+
-+		if (ksmbd_conn_need_reconnect(conn)) {
-+			rc = -EFAULT;
-+			sess = NULL;
-+			goto out_err;
-+		}
- 	}
- 	work->sess = sess;
- 
--	if (sess->state == SMB2_SESSION_EXPIRED)
--		sess->state = SMB2_SESSION_IN_PROGRESS;
--
- 	negblob_off = le16_to_cpu(req->SecurityBufferOffset);
- 	negblob_len = le16_to_cpu(req->SecurityBufferLength);
- 	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer) ||
-@@ -1762,8 +1777,10 @@ int smb2_sess_setup(struct ksmbd_work *w
- 				goto out_err;
- 			}
- 
--			ksmbd_conn_set_good(work);
--			sess->state = SMB2_SESSION_VALID;
-+			if (!ksmbd_conn_need_reconnect(conn)) {
-+				ksmbd_conn_set_good(conn);
-+				sess->state = SMB2_SESSION_VALID;
-+			}
- 			kfree(sess->Preauth_HashValue);
- 			sess->Preauth_HashValue = NULL;
- 		} else if (conn->preferred_auth_mech == KSMBD_AUTH_NTLMSSP) {
-@@ -1785,8 +1802,10 @@ int smb2_sess_setup(struct ksmbd_work *w
- 				if (rc)
- 					goto out_err;
- 
--				ksmbd_conn_set_good(work);
--				sess->state = SMB2_SESSION_VALID;
-+				if (!ksmbd_conn_need_reconnect(conn)) {
-+					ksmbd_conn_set_good(conn);
-+					sess->state = SMB2_SESSION_VALID;
-+				}
- 				if (conn->binding) {
- 					struct preauth_session *preauth_sess;
- 
-@@ -1854,14 +1873,13 @@ out_err:
- 			if (sess->user && sess->user->flags & KSMBD_USER_FLAG_DELAY_SESSION)
- 				try_delay = true;
- 
--			xa_erase(&conn->sessions, sess->id);
--			ksmbd_session_destroy(sess);
--			work->sess = NULL;
-+			sess->state = SMB2_SESSION_EXPIRED;
- 			if (try_delay)
- 				ssleep(5);
- 		}
- 	}
- 
-+	ksmbd_conn_unlock(conn);
- 	return rc;
- }
- 
-@@ -2086,21 +2104,24 @@ int smb2_session_logoff(struct ksmbd_wor
- {
- 	struct ksmbd_conn *conn = work->conn;
- 	struct smb2_logoff_rsp *rsp = smb2_get_msg(work->response_buf);
--	struct ksmbd_session *sess = work->sess;
-+	struct ksmbd_session *sess;
-+	struct smb2_logoff_req *req = smb2_get_msg(work->request_buf);
- 
- 	rsp->StructureSize = cpu_to_le16(4);
- 	inc_rfc1001_len(work->response_buf, 4);
- 
- 	ksmbd_debug(SMB, "request\n");
- 
--	/* setting CifsExiting here may race with start_tcp_sess */
--	ksmbd_conn_set_need_reconnect(work);
-+	ksmbd_conn_set_need_reconnect(conn);
- 	ksmbd_close_session_fds(work);
- 	ksmbd_conn_wait_idle(conn);
- 
-+	/*
-+	 * Re-lookup session to validate if session is deleted
-+	 * while waiting request complete
-+	 */
-+	sess = ksmbd_session_lookup(conn, le64_to_cpu(req->hdr.SessionId));
- 	if (ksmbd_tree_conn_session_logoff(sess)) {
--		struct smb2_logoff_req *req = smb2_get_msg(work->request_buf);
--
- 		ksmbd_debug(SMB, "Invalid tid %d\n", req->hdr.Id.SyncId.TreeId);
- 		rsp->hdr.Status = STATUS_NETWORK_NAME_DELETED;
- 		smb2_set_err_rsp(work);
-@@ -2112,9 +2133,7 @@ int smb2_session_logoff(struct ksmbd_wor
- 
- 	ksmbd_free_user(sess->user);
- 	sess->user = NULL;
--
--	/* let start_tcp_sess free connection info now */
--	ksmbd_conn_set_need_negotiate(work);
-+	ksmbd_conn_set_need_negotiate(conn);
- 	return 0;
- }
- 
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -333,7 +333,7 @@ static int ksmbd_tcp_readv(struct tcp_tr
- 		if (length == -EINTR) {
- 			total_read = -ESHUTDOWN;
- 			break;
--		} else if (conn->status == KSMBD_SESS_NEED_RECONNECT) {
-+		} else if (ksmbd_conn_need_reconnect(conn)) {
- 			total_read = -EAGAIN;
- 			break;
- 		} else if (length == -ERESTARTSYS || length == -EAGAIN) {
+ 	case KVM_ARM_VCPU_PMU_V3_SET_PMU: {
 
 
