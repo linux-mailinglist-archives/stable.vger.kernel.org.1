@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB8D96FA876
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F389F6FABAA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234992AbjEHKlC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:41:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42660 "EHLO
+        id S234892AbjEHLQD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:16:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235018AbjEHKk1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:27 -0400
+        with ESMTP id S234951AbjEHLQC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:16:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979702A850
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B40F63700D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:16:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D16CC6283C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF81C433EF;
-        Mon,  8 May 2023 10:40:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4687362BF0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:16:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467AFC433D2;
+        Mon,  8 May 2023 11:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542415;
-        bh=emNMdWt3FAv3Z0+lFpCvz7Ly2tt9NTbxZP+6Hybqlfc=;
+        s=korg; t=1683544560;
+        bh=byixTph1G17/Orer4R4OqxBdjvcUT5I2UA8NzHIWazk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tAnQwu69tYrLsA42VKv1tGqhKfHu9OWawF21NcllAi6WmuM4qlNS/OXH0isbeLIhP
-         sBq/NvRP437aO0STI/ADX6fjXuF32YTFPtlNKdUhLbAUVi6ykr4f+iCTPSnz/xOySu
-         4lHjNSBiRprcb5jFVu4FWOA2Le3vCUR5ICOlVN88=
+        b=s3FlCgWTGflJQcTtXC48NLNGgXnN7OC/wpdj1f7aibS3TQMRTItsCgpi8A5p7u5op
+         KjI+xHAo7jjCfHgGoLX24nwoVn7ldnGiaXVRBBtDKh4lRErCniabNqHKb7yl6OlA4w
+         BVzQTp8zneEHfTl7NMxBnNcw+lSotqDJXllqlPs0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Davide Caratti <dcaratti@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 428/663] net/sched: sch_fq: fix integer overflow of "credit"
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 419/694] md/raid10: fix leak of r10bio->remaining for recovery
 Date:   Mon,  8 May 2023 11:44:14 +0200
-Message-Id: <20230508094441.952898796@linuxfoundation.org>
+Message-Id: <20230508094446.884703537@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,90 +53,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 7041101ff6c3073fd8f2e99920f535b111c929cb ]
+[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
 
-if sch_fq is configured with "initial quantum" having values greater than
-INT_MAX, the first assignment of "credit" does signed integer overflow to
-a very negative value.
-In this situation, the syzkaller script provided by Cristoph triggers the
-CPU soft-lockup warning even with few sockets. It's not an infinite loop,
-but "credit" wasn't probably meant to be minus 2Gb for each new flow.
-Capping "initial quantum" to INT_MAX proved to fix the issue.
+raid10_sync_request() will add 'r10bio->remaining' for both rdev and
+replacement rdev. However, if the read io fails, recovery_request_write()
+returns without issuing the write io, in this case, end_sync_request()
+is only called once and 'remaining' is leaked, cause an io hang.
 
-v2: validation of "initial quantum" is done in fq_policy, instead of open
-    coding in fq_change() _ suggested by Jakub Kicinski
+Fix the problem by decreasing 'remaining' according to if 'bio' and
+'repl_bio' is valid.
 
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/377
-Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://lore.kernel.org/r/7b3a3c7e36d03068707a021760a194a8eb5ad41a.1682002300.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq.c                            |  6 ++++-
- .../tc-testing/tc-tests/qdiscs/fq.json        | 22 +++++++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ drivers/md/raid10.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 48d14fb90ba02..f59a2cb2c803d 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -779,13 +779,17 @@ static int fq_resize(struct Qdisc *sch, u32 log)
- 	return 0;
- }
- 
-+static struct netlink_range_validation iq_range = {
-+	.max = INT_MAX,
-+};
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index db9ee3b637d6f..b1c575859218a 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2613,11 +2613,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ {
+ 	struct r10conf *conf = mddev->private;
+ 	int d;
+-	struct bio *wbio, *wbio2;
++	struct bio *wbio = r10_bio->devs[1].bio;
++	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
 +
- static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
- 	[TCA_FQ_UNSPEC]			= { .strict_start_type = TCA_FQ_TIMER_SLACK },
++	/* Need to test wbio2->bi_end_io before we call
++	 * submit_bio_noacct as if the former is NULL,
++	 * the latter is free to free wbio2.
++	 */
++	if (wbio2 && !wbio2->bi_end_io)
++		wbio2 = NULL;
  
- 	[TCA_FQ_PLIMIT]			= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_PLIMIT]		= { .type = NLA_U32 },
- 	[TCA_FQ_QUANTUM]		= { .type = NLA_U32 },
--	[TCA_FQ_INITIAL_QUANTUM]	= { .type = NLA_U32 },
-+	[TCA_FQ_INITIAL_QUANTUM]	= NLA_POLICY_FULL_RANGE(NLA_U32, &iq_range),
- 	[TCA_FQ_RATE_ENABLE]		= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_DEFAULT_RATE]	= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_MAX_RATE]		= { .type = NLA_U32 },
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-index 8acb904d14193..3593fb8f79ad3 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-@@ -114,6 +114,28 @@
-             "$IP link del dev $DUMMY type dummy"
-         ]
-     },
-+    {
-+        "id": "10f7",
-+        "name": "Create FQ with invalid initial_quantum setting",
-+        "category": [
-+            "qdisc",
-+            "fq"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$IP link add dev $DUMMY type dummy || /bin/true"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq initial_quantum 0x80000000",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc fq 1: root.*initial_quantum 2048Mb",
-+        "matchCount": "0",
-+        "teardown": [
-+            "$IP link del dev $DUMMY type dummy"
-+        ]
-+    },
-     {
-         "id": "9398",
-         "name": "Create FQ with maxrate setting",
+ 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
+ 		fix_recovery_read_error(r10_bio);
+-		end_sync_request(r10_bio);
++		if (wbio->bi_end_io)
++			end_sync_request(r10_bio);
++		if (wbio2)
++			end_sync_request(r10_bio);
+ 		return;
+ 	}
+ 
+@@ -2626,14 +2637,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ 	 * and submit the write request
+ 	 */
+ 	d = r10_bio->devs[1].devnum;
+-	wbio = r10_bio->devs[1].bio;
+-	wbio2 = r10_bio->devs[1].repl_bio;
+-	/* Need to test wbio2->bi_end_io before we call
+-	 * submit_bio_noacct as if the former is NULL,
+-	 * the latter is free to free wbio2.
+-	 */
+-	if (wbio2 && !wbio2->bi_end_io)
+-		wbio2 = NULL;
+ 	if (wbio->bi_end_io) {
+ 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
+ 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
 -- 
 2.39.2
 
