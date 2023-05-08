@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78E246FAB7D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276266FA561
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233909AbjEHLNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54718 "EHLO
+        id S234114AbjEHKIv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:08:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233906AbjEHLNy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:54 -0400
+        with ESMTP id S234117AbjEHKIv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA5836545
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591093292B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB76162BBB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0883C4339B;
-        Mon,  8 May 2023 11:13:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E390762385
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0590CC433EF;
+        Mon,  8 May 2023 10:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544428;
-        bh=qBp95ec1sKsD8Wd8A+/Qfh6pigJaUVjlnMzFzz30alw=;
+        s=korg; t=1683540529;
+        bh=rM7iOUOjL7wHzvU0ZkSjt72Y8tsGv96YPyomOXdROBs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jS2c+mxbvKOkohklZp9BLmPyKW3z1AoSj4QmaIdQzBqE7Tte0Fzq7GRqJbwUCbl6S
-         fuzSI6giVMflfebeR7khn9koS2I25c2k1L2pErQ0w8gmb6sE+ncNr3qMtLXz2wm9pG
-         Y71xzUKLlDd2WNq+kTcxcMRJfcctaNir6IFUaOfU=
+        b=ddIW45K8jqJ6Rrs7RLGgmamFGC5Oo95Lc4qYR77V3AhZkQCAEkn9YzIq91/RzYq9B
+         1YH4Updi2SVX5XEbfmH7oKfQtsQyM1sj0yxdz/LdZ4o5luy5Ad2YOco7I7F4hRjXmD
+         u/Fx8S/ySJRtp8bL9ofb/Z3D7gZZsDeLnSqmU+H4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nate Thornton <nate.thornton@samsung.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Minwoo Im <minwoo.im@samsung.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 406/694] nvme: fix async event trace event
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 399/611] drivers: staging: rtl8723bs: Fix locking in _rtw_join_timeout_handler()
 Date:   Mon,  8 May 2023 11:44:01 +0200
-Message-Id: <20230508094446.375893025@linuxfoundation.org>
+Message-Id: <20230508094435.244453134@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,90 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Keith Busch <kbusch@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6622b76fe922b94189499a90ccdb714a4a8d0773 ]
+[ Upstream commit 215792eda008f6a1e7ed9d77fa20d582d22bb114 ]
 
-Mixing AER Event Type and Event Info has masking clashes. Just print the
-event type, but also include the event info of the AER result in the
-trace.
+Commit 041879b12ddb ("drivers: staging: rtl8192bs: Fix deadlock in
+rtw_joinbss_event_prehandle()") besides fixing the deadlock also
+modified _rtw_join_timeout_handler() to use spin_[un]lock_irq()
+instead of spin_[un]lock_bh().
 
-Fixes: 09bd1ff4b15143b ("nvme-core: add async event trace helper")
-Reported-by: Nate Thornton <nate.thornton@samsung.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+_rtw_join_timeout_handler() calls rtw_do_join() which takes
+pmlmepriv->scanned_queue.lock using spin_[un]lock_bh(). This
+spin_unlock_bh() call re-enables softirqs which triggers an oops in
+kernel/softirq.c: __local_bh_enable_ip() when it calls
+lockdep_assert_irqs_enabled():
+
+[  244.506087] WARNING: CPU: 2 PID: 0 at kernel/softirq.c:376 __local_bh_enable_ip+0xa6/0x100
+...
+[  244.509022] Call Trace:
+[  244.509048]  <IRQ>
+[  244.509100]  _rtw_join_timeout_handler+0x134/0x170 [r8723bs]
+[  244.509468]  ? __pfx__rtw_join_timeout_handler+0x10/0x10 [r8723bs]
+[  244.509772]  ? __pfx__rtw_join_timeout_handler+0x10/0x10 [r8723bs]
+[  244.510076]  call_timer_fn+0x95/0x2a0
+[  244.510200]  __run_timers.part.0+0x1da/0x2d0
+
+This oops is causd by the switch to spin_[un]lock_irq() which disables
+the IRQs for the entire duration of _rtw_join_timeout_handler().
+
+Disabling the IRQs is not necessary since all code taking this lock
+runs from either user contexts or from softirqs, switch back to
+spin_[un]lock_bh() to fix this.
+
+Fixes: 041879b12ddb ("drivers: staging: rtl8192bs: Fix deadlock in rtw_joinbss_event_prehandle()")
+Cc: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230221145326.7808-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c  |  5 +----
- drivers/nvme/host/trace.h | 15 ++++++---------
- 2 files changed, 7 insertions(+), 13 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index d6a9bac91a4cd..bdf1601219fc4 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4819,8 +4819,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
- 	u32 aer_notice_type = nvme_aer_subtype(result);
- 	bool requeue = true;
- 
--	trace_nvme_async_event(ctrl, aer_notice_type);
--
- 	switch (aer_notice_type) {
- 	case NVME_AER_NOTICE_NS_CHANGED:
- 		set_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events);
-@@ -4856,7 +4854,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
- 
- static void nvme_handle_aer_persistent_error(struct nvme_ctrl *ctrl)
- {
--	trace_nvme_async_event(ctrl, NVME_AER_ERROR);
- 	dev_warn(ctrl->device, "resetting controller due to AER\n");
- 	nvme_reset_ctrl(ctrl);
- }
-@@ -4872,6 +4869,7 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
- 	if (le16_to_cpu(status) >> 1 != NVME_SC_SUCCESS)
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index 6498fd17e1d3e..9f4f032c22aec 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -1549,7 +1549,7 @@ void _rtw_join_timeout_handler(struct timer_list *t)
+ 	if (adapter->bDriverStopped || adapter->bSurpriseRemoved)
  		return;
  
-+	trace_nvme_async_event(ctrl, result);
- 	switch (aer_type) {
- 	case NVME_AER_NOTICE:
- 		requeue = nvme_handle_aen_notice(ctrl, result);
-@@ -4889,7 +4887,6 @@ void nvme_complete_async_event(struct nvme_ctrl *ctrl, __le16 status,
- 	case NVME_AER_SMART:
- 	case NVME_AER_CSS:
- 	case NVME_AER_VS:
--		trace_nvme_async_event(ctrl, aer_type);
- 		ctrl->aen_result = result;
- 		break;
- 	default:
-diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
-index 6f0eaf6a15282..4fb5922ffdac5 100644
---- a/drivers/nvme/host/trace.h
-+++ b/drivers/nvme/host/trace.h
-@@ -127,15 +127,12 @@ TRACE_EVENT(nvme_async_event,
- 	),
- 	TP_printk("nvme%d: NVME_AEN=%#08x [%s]",
- 		__entry->ctrl_id, __entry->result,
--		__print_symbolic(__entry->result,
--		aer_name(NVME_AER_NOTICE_NS_CHANGED),
--		aer_name(NVME_AER_NOTICE_ANA),
--		aer_name(NVME_AER_NOTICE_FW_ACT_STARTING),
--		aer_name(NVME_AER_NOTICE_DISC_CHANGED),
--		aer_name(NVME_AER_ERROR),
--		aer_name(NVME_AER_SMART),
--		aer_name(NVME_AER_CSS),
--		aer_name(NVME_AER_VS))
-+		__print_symbolic(__entry->result & 0x7,
-+			aer_name(NVME_AER_ERROR),
-+			aer_name(NVME_AER_SMART),
-+			aer_name(NVME_AER_NOTICE),
-+			aer_name(NVME_AER_CSS),
-+			aer_name(NVME_AER_VS))
- 	)
- );
+-	spin_lock_irq(&pmlmepriv->lock);
++	spin_lock_bh(&pmlmepriv->lock);
  
+ 	if (rtw_to_roam(adapter) > 0) { /* join timeout caused by roaming */
+ 		while (1) {
+@@ -1577,7 +1577,7 @@ void _rtw_join_timeout_handler(struct timer_list *t)
+ 
+ 	}
+ 
+-	spin_unlock_irq(&pmlmepriv->lock);
++	spin_unlock_bh(&pmlmepriv->lock);
+ }
+ 
+ /*
 -- 
 2.39.2
 
