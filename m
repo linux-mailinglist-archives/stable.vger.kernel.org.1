@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E47456FACA7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA9B6FAE50
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235708AbjEHL0t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
+        id S235720AbjEHLnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235712AbjEHL0l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:41 -0400
+        with ESMTP id S236117AbjEHLnX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49463B7BA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFEA3E775
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B19262DC5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54984C433D2;
-        Mon,  8 May 2023 11:26:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E98F1633EA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03575C4339B;
+        Mon,  8 May 2023 11:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545179;
-        bh=ylIFTGy/IhV5JExQEPmoZMDFARD2nejl612OaW74Qpc=;
+        s=korg; t=1683546163;
+        bh=bvr0RC5+eW010aGt+YhFcZIswC/CPBVwNqtxypLrm6Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l21xrrSg6nWAFkqPg3iQuMJIlm4+8y4+oA42gd5sLpEEfYsy5tyTdPvXswIzhANp0
-         JKhWZDQvS6jk93qIlZdP8TAodZLJ3NJDmx0R42V8UthIFEKk5AVhh7NAonerhyczyA
-         gXODJAgR8kqX/pdDXIzHp+DDEdhklSlflmxjgzSk=
+        b=vOz07o/v9z9t62k2WaLtuuBvJuZ8NWCQ/Uzp/hxNwxKhorZsU7CRhVRWLfaNA7rre
+         ua8YLH1EkOv2JciuoCAlFKvMTytyotnz0gSzTpEr4gcmp9E3iof+5MvGxyfOs2thsd
+         NwE6C0MBm2Vn7l1gs47XRNKnf5r0ch8BdwXfs6Y8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 643/694] leds: tca6507: Fix error handling of using fwnode_property_read_string
+        Jishnu Prakash <quic_jprakash@quicinc.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 277/371] spmi: Add a check for remove callback when removing a SPMI driver
 Date:   Mon,  8 May 2023 11:47:58 +0200
-Message-Id: <20230508094456.665701909@linuxfoundation.org>
+Message-Id: <20230508094823.005351823@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,56 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
 
-[ Upstream commit c1087c29e96a48e9080377e168d35dcb52fb068b ]
+[ Upstream commit b56eef3e16d888883fefab47425036de80dd38fc ]
 
-Commit 96f524105b9c ("leds: tca6507: use fwnode API instead of OF")
+When removing a SPMI driver, there can be a crash due to NULL pointer
+dereference if it does not have a remove callback defined. This is
+one such call trace observed when removing the QCOM SPMI PMIC driver:
 
-changed to fwnode API but did not take into account that a missing property
-"linux,default-trigger" now seems to return an error and as a side effect
-sets value to -1. This seems to be different from of_get_property() which
-always returned NULL in any case of error.
+ dump_backtrace.cfi_jt+0x0/0x8
+ dump_stack_lvl+0xd8/0x16c
+ panic+0x188/0x498
+ __cfi_slowpath+0x0/0x214
+ __cfi_slowpath+0x1dc/0x214
+ spmi_drv_remove+0x16c/0x1e0
+ device_release_driver_internal+0x468/0x79c
+ driver_detach+0x11c/0x1a0
+ bus_remove_driver+0xc4/0x124
+ driver_unregister+0x58/0x84
+ cleanup_module+0x1c/0xc24 [qcom_spmi_pmic]
+ __do_sys_delete_module+0x3ec/0x53c
+ __arm64_sys_delete_module+0x18/0x28
+ el0_svc_common+0xdc/0x294
+ el0_svc+0x38/0x9c
+ el0_sync_handler+0x8c/0xf0
+ el0_sync+0x1b4/0x1c0
 
-Neglecting this side-effect leads to
+If a driver has all its resources allocated through devm_() APIs and
+does not need any other explicit cleanup, it would not require a
+remove callback to be defined. Hence, add a check for remove callback
+presence before calling it when removing a SPMI driver.
 
-[   11.201965] Unable to handle kernel paging request at virtual address ffffffff when read
-
-in the strcmp() of led_trigger_set_default() if there is no led-trigger
-defined in the DTS.
-
-I don't know if this was recently introduced somewhere in the fwnode lib
-or if the effect was missed in initial testing. Anyways it seems to be a
-bug to ignore the error return value of an optional value here in the
-driver.
-
-Fixes: 96f524105b9c ("leds: tca6507: use fwnode API instead of OF")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/cbae7617db83113de726fcc423a805ebaa1bfca6.1680433978.git.hns@goldelico.com
+Link: https://lore.kernel.org/r/1671601032-18397-2-git-send-email-quic_jprakash@quicinc.com
+Fixes: 6f00f8c8635f ("mfd: qcom-spmi-pmic: Use devm_of_platform_populate()")
+Fixes: 5a86bf343976 ("spmi: Linux driver framework for SPMI")
+Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20230413223834.4084793-7-sboyd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-tca6507.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spmi/spmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-tca6507.c b/drivers/leds/leds-tca6507.c
-index 07dd12686a696..634cabd5bb796 100644
---- a/drivers/leds/leds-tca6507.c
-+++ b/drivers/leds/leds-tca6507.c
-@@ -691,8 +691,9 @@ tca6507_led_dt_init(struct device *dev)
- 		if (fwnode_property_read_string(child, "label", &led.name))
- 			led.name = fwnode_get_name(child);
+diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
+index b37ead9e2fade..38913c0f11158 100644
+--- a/drivers/spmi/spmi.c
++++ b/drivers/spmi/spmi.c
+@@ -350,7 +350,8 @@ static void spmi_drv_remove(struct device *dev)
+ 	const struct spmi_driver *sdrv = to_spmi_driver(dev->driver);
  
--		fwnode_property_read_string(child, "linux,default-trigger",
--					    &led.default_trigger);
-+		if (fwnode_property_read_string(child, "linux,default-trigger",
-+						&led.default_trigger))
-+			led.default_trigger = NULL;
+ 	pm_runtime_get_sync(dev);
+-	sdrv->remove(to_spmi_device(dev));
++	if (sdrv->remove)
++		sdrv->remove(to_spmi_device(dev));
+ 	pm_runtime_put_noidle(dev);
  
- 		led.flags = 0;
- 		if (fwnode_device_is_compatible(child, "gpio"))
+ 	pm_runtime_disable(dev);
 -- 
 2.39.2
 
