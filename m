@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7560B6FA4ED
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8C76FA7FF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233999AbjEHKEf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60790 "EHLO
+        id S234801AbjEHKg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234006AbjEHKEd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B3630153
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:32 -0700 (PDT)
+        with ESMTP id S234857AbjEHKgg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E185C10DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FF6C62316
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43895C433EF;
-        Mon,  8 May 2023 10:04:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7124B627A4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73591C4339B;
+        Mon,  8 May 2023 10:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540271;
-        bh=o1QqK/1hVeCP5ino5z2TFM2sRjZ97XnycTGzsTaU678=;
+        s=korg; t=1683542171;
+        bh=bP9/LWHicWkef/t8kdUkzUfdSduWMs/c5DrKVofoUE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fya1C+XOKeJqE1bBeJtpf+PqogBUHyBSsEIQjbQ4bpnBFG4v2UZ8xGifzSM981ATK
-         Gs3QBZho3zk79Mv1XekrUbvN8LiQVKDsTiPGhWyvcIE5+Rg2r/Yl5Kf5xjBIwxsAVt
-         2D0GLUm7tzTxLlhBKJBaKeBnlUbVJAbOb+XmaAxs=
+        b=LKva3Us+mrBMtaRwEnGXqE1p9MVfK2T9EuwS++cW3x8XmlhIE17gOfi7kF7XcIC8m
+         q0MdcklVwZOT8yHQwGIMroso6Rj+XixfLCqYTkRo42HnMp3ZULKC1oYuEggtKbw++B
+         Rf08yMxPDvtLI3i0oITQ3IC5/mpLrsoCJENcBjHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Danila Chernetsov <listdansp@mail.ru>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 301/611] scsi: megaraid: Fix mega_cmd_done() CMDID_INT_CMDS
-Date:   Mon,  8 May 2023 11:42:23 +0200
-Message-Id: <20230508094432.193451665@linuxfoundation.org>
+Subject: [PATCH 6.2 318/663] f2fs: handle dqget error in f2fs_transfer_project_quota()
+Date:   Mon,  8 May 2023 11:42:24 +0200
+Message-Id: <20230508094438.505162722@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Danila Chernetsov <listdansp@mail.ru>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 75cb113cd43f06aaf4f1bda0069cfd5b98e909eb ]
+[ Upstream commit 8051692f5f23260215bfe9a72e712d93606acc5f ]
 
-When cmdid == CMDID_INT_CMDS, the 'cmds' pointer is NULL but is
-dereferenced below.
+We should set the error code when dqget() failed.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 0f2bb84d2a68 ("[SCSI] megaraid: simplify internal command handling")
-Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
-Link: https://lore.kernel.org/r/20230317175109.18585-1-listdansp@mail.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2c1d03056991 ("f2fs: support F2FS_IOC_FS{GET,SET}XATTR")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/megaraid.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/file.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/megaraid.c b/drivers/scsi/megaraid.c
-index bf491af9f0d65..16e2cf848c6ef 100644
---- a/drivers/scsi/megaraid.c
-+++ b/drivers/scsi/megaraid.c
-@@ -1441,6 +1441,7 @@ mega_cmd_done(adapter_t *adapter, u8 completed[], int nstatus, int status)
- 		 */
- 		if (cmdid == CMDID_INT_CMDS) {
- 			scb = &adapter->int_scb;
-+			cmd = scb->cmd;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 05297427552ac..23fb9861dba40 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3013,15 +3013,16 @@ int f2fs_transfer_project_quota(struct inode *inode, kprojid_t kprojid)
+ 	struct dquot *transfer_to[MAXQUOTAS] = {};
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct super_block *sb = sbi->sb;
+-	int err = 0;
++	int err;
  
- 			list_del_init(&scb->list);
- 			scb->state = SCB_FREE;
+ 	transfer_to[PRJQUOTA] = dqget(sb, make_kqid_projid(kprojid));
+-	if (!IS_ERR(transfer_to[PRJQUOTA])) {
+-		err = __dquot_transfer(inode, transfer_to);
+-		if (err)
+-			set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
+-		dqput(transfer_to[PRJQUOTA]);
+-	}
++	if (IS_ERR(transfer_to[PRJQUOTA]))
++		return PTR_ERR(transfer_to[PRJQUOTA]);
++
++	err = __dquot_transfer(inode, transfer_to);
++	if (err)
++		set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
++	dqput(transfer_to[PRJQUOTA]);
+ 	return err;
+ }
+ 
 -- 
 2.39.2
 
