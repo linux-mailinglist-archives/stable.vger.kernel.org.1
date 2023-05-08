@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AF736FA593
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F856FA8A2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233987AbjEHKK5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38892 "EHLO
+        id S235038AbjEHKnt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234170AbjEHKK5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940A439884
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:56 -0700 (PDT)
+        with ESMTP id S234972AbjEHKnM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933242E6B4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 267F86222E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4F1C433D2;
-        Mon,  8 May 2023 10:10:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2A026283B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9402C4339B;
+        Mon,  8 May 2023 10:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540655;
-        bh=9n4jKf10Y/FkCI3sXlyrVqlIyqulhjmDrYqmY0qXMnE=;
+        s=korg; t=1683542519;
+        bh=hqR9NBU7VaQmbbTWi1w16gir0uIP3YlovBnJBhRyTQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lpg0xkRNYqSb20SeteN5I55l82RPI59+VoS3r1jKKUnQUdmbklyBR8oggt1zIse7n
-         wj22CrSNurIkn38R8C4f/whp3Rd17cJwIe7+//kAzWSnbqKj8252KVqwJYXDdRsQiE
-         nIzVZNrmxcL8pUn8+wPfAJ7aJFpD3XytZ8SUUaJE=
+        b=pKZiXqZwQM+Gk+wEeIXcaD1Ttb/5KeLn0g5J2uZTJ3yK0gxENJJXEKb+/wknomlmc
+         qTvznIgabxku6KMREKMCrghZ8VLr7RgRPpbXvgpSJDM6bF2ZTokS3JvCSkObNEEXkz
+         3rikLGBb3BQerJpawe+rHX3HQJHSCGwgU9WTWk/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        Peter Chen <peter.chen@kernel.org>,
-        Yinhao Hu <dddddd@hust.edu.cn>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 446/611] usb: chipidea: fix missing goto in `ci_hdrc_probe`
+        patches@lists.linux.dev,
+        Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 462/663] spi: mchp-pci1xxxx: Fix SPI transactions not working after suspend and resume
 Date:   Mon,  8 May 2023 11:44:48 +0200
-Message-Id: <20230508094436.648899062@linuxfoundation.org>
+Message-Id: <20230508094443.147203610@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,40 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yinhao Hu <dddddd@hust.edu.cn>
+From: Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>
 
-[ Upstream commit d6f712f53b79f5017cdcefafb7a5aea9ec52da5d ]
+[ Upstream commit 4266d21669de62cf3fb6774f7d404c1eb95a5ab3 ]
 
->From the comment of ci_usb_phy_init, it returns an error code if
-usb_phy_init has failed, and it should do some clean up, not just
-return directly.
+pci1xxxx_spi_resume API masks SPI interrupt bit which prohibits interrupt
+from coming to the host at the end of the transaction after suspend-resume.
+This patch unmasks this bit at resume.
 
-Fix this by goto the error handling.
-
-Fixes: 74475ede784d ("usb: chipidea: move PHY operation to core")
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Yinhao Hu <dddddd@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230412055852.971991-1-dddddd@hust.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1cc0cbea7167 ("spi: microchip: pci1xxxx: Add driver for SPI controller of PCI1XXXX PCIe switch")
+Signed-off-by: Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>
+Link: https://lore.kernel.org/r/20230404171613.1336093-3-tharunkumar.pasumarthi@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/core.c | 2 +-
+ drivers/spi/spi-pci1xxxx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index 5abdc2b0f506d..71f172ecfaabc 100644
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -1101,7 +1101,7 @@ static int ci_hdrc_probe(struct platform_device *pdev)
- 	ret = ci_usb_phy_init(ci);
- 	if (ret) {
- 		dev_err(dev, "unable to init phy: %d\n", ret);
--		return ret;
-+		goto ulpi_exit;
- 	}
+diff --git a/drivers/spi/spi-pci1xxxx.c b/drivers/spi/spi-pci1xxxx.c
+index 0805c441b4065..13efbfeff92ce 100644
+--- a/drivers/spi/spi-pci1xxxx.c
++++ b/drivers/spi/spi-pci1xxxx.c
+@@ -58,7 +58,7 @@
+ #define VENDOR_ID_MCHP 0x1055
  
- 	ci->hw_bank.phys = res->start;
+ #define SPI_SUSPEND_CONFIG 0x101
+-#define SPI_RESUME_CONFIG 0x303
++#define SPI_RESUME_CONFIG 0x203
+ 
+ struct pci1xxxx_spi_internal {
+ 	u8 hw_inst;
 -- 
 2.39.2
 
