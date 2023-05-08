@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C28EA6FA96B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 878BA6FAE34
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235230AbjEHKur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55236 "EHLO
+        id S236139AbjEHLm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235243AbjEHKuZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:50:25 -0400
+        with ESMTP id S236149AbjEHLmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:42:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3A42FCCA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF2D4268D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B36562926
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390A9C4339E;
-        Mon,  8 May 2023 10:50:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BA90634E2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF17C433D2;
+        Mon,  8 May 2023 11:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543004;
-        bh=sF7/9hSzn6I7He+vP/un3tn6wM1DRU3TVYvJjKahI4M=;
+        s=korg; t=1683546060;
+        bh=gfob5RVvO+8vSjUDiVXTpdkeqvV1sKG00uQz5ESath4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RCSrXAKhEe2HX1rZQVknjIzR4e187Z9PyDJXpz2B3nUESkQr1zf3ByNqSGeiAvfKF
-         Zwmog3eEA3r+JsILSKk5WeO4C3rZdu42e7q3ewpNmGqP+cG3wGniHnT75HUJ2YcT7B
-         r9pO0QhNr5+4SmRAke1gq8r3bTHQFpE1QFnQYhW0=
+        b=ZFKc3dWLFSUCYnPugVhy7WjDiqEZct/slNQKmcBoD2J1H3nSpsrNhCN51KpWjgVG9
+         4G6/Fso2VqGXOHqbgYK93ZsptJn5pvCLYTVZAILzDM2v/mUP8I8KxE3/NC8YBBhqYJ
+         x4EuLRvkTx6N4aKlz6XElw5O0kMQGEJ/B6biB8Jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.2 618/663] nilfs2: do not write dirty data after degenerating to read-only
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 243/371] serial: stm32: Re-assert RTS/DE GPIO in RS485 mode only if more data are transmitted
 Date:   Mon,  8 May 2023 11:47:24 +0200
-Message-Id: <20230508094449.783583386@linuxfoundation.org>
+Message-Id: <20230508094821.711066016@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,61 +53,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 28a65b49eb53e172d23567005465019658bfdb4d upstream.
+[ Upstream commit c47527cbcc3c50800f34b8c684f29721f75de246 ]
 
-According to syzbot's report, mark_buffer_dirty() called from
-nilfs_segctor_do_construct() outputs a warning with some patterns after
-nilfs2 detects metadata corruption and degrades to read-only mode.
+The stm32_usart_transmit_chars() may be called with empty or stopped
+transmit queue, and no XON/OFF character pending. This can happen at
+the end of transmission, where this last call is used to either handle
+the XON/XOFF x_char, or disable TX interrupt if queue is empty or
+stopped.
 
-After such read-only degeneration, page cache data may be cleared through
-nilfs_clear_dirty_page() which may also clear the uptodate flag for their
-buffer heads.  However, even after the degeneration, log writes are still
-performed by unmount processing etc., which causes mark_buffer_dirty() to
-be called for buffer heads without the "uptodate" flag and causes the
-warning.
+If that occurs, do not assert the RS485 RTS/DE GPIO anymore, as the
+GPIO would remain asserted past the end of transmission and that would
+block the RS485 bus after the transmission.
 
-Since any writes should not be done to a read-only file system in the
-first place, this fixes the warning in mark_buffer_dirty() by letting
-nilfs_segctor_do_construct() abort early if in read-only mode.
+Only assert the RS485 RTS/DE GPIO if there is either pending XON/XOFF
+x_char, or at least one character in running transmit queue.
 
-This also changes the retry check of nilfs_segctor_write_out() to avoid
-unnecessary log write retries if it detects -EROFS that
-nilfs_segctor_do_construct() returned.
-
-Link: https://lkml.kernel.org/r/20230427011526.13457-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+2af3bc9585be7f23f290@syzkaller.appspotmail.com
-  Link: https://syzkaller.appspot.com/bug?extid=2af3bc9585be7f23f290
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20230223042252.95480-2-marex@denx.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/tty/serial/stm32-usart.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2039,6 +2039,9 @@ static int nilfs_segctor_do_construct(st
- 	struct the_nilfs *nilfs = sci->sc_super->s_fs_info;
- 	int err;
+diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+index 0e8158cfaf0f9..3b7d4481edbea 100644
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -502,8 +502,9 @@ static void stm32_usart_transmit_chars(struct uart_port *port)
+ 	int ret;
  
-+	if (sb_rdonly(sci->sc_super))
-+		return -EROFS;
-+
- 	nilfs_sc_cstage_set(sci, NILFS_ST_INIT);
- 	sci->sc_cno = nilfs->ns_cno;
- 
-@@ -2722,7 +2725,7 @@ static void nilfs_segctor_write_out(stru
- 
- 		flush_work(&sci->sc_iput_work);
- 
--	} while (ret && retrycount-- > 0);
-+	} while (ret && ret != -EROFS && retrycount-- > 0);
- }
- 
- /**
+ 	if (!stm32_port->hw_flow_control &&
+-	    port->rs485.flags & SER_RS485_ENABLED) {
+-		stm32_port->txdone = false;
++	    port->rs485.flags & SER_RS485_ENABLED &&
++	    (port->x_char ||
++	     !(uart_circ_empty(xmit) || uart_tx_stopped(port)))) {
+ 		stm32_usart_tc_interrupt_disable(port);
+ 		stm32_usart_rs485_rts_enable(port);
+ 	}
+-- 
+2.39.2
+
 
 
