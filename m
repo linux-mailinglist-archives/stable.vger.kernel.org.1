@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F7756FA7A4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEEAC6FA4B9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:02:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234727AbjEHKdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
+        id S233945AbjEHKC5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:02:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234791AbjEHKcz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:32:55 -0400
+        with ESMTP id S232692AbjEHKC4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9255F27852
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 867A02E078
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5EC2626E0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5640C433EF;
-        Mon,  8 May 2023 10:31:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3C9B622D3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA68EC433EF;
+        Mon,  8 May 2023 10:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541920;
-        bh=rGopVJF+qyYKCeISEGi6nsfVzBy87J8aQ8JNWamY3jA=;
+        s=korg; t=1683540142;
+        bh=qTSQyqGLlpl1v/p6nVTx1q1OV3sQGvqQ/VwAYXf1X3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sLeWBn51Pyd15/9T5vSjbMgORuqvKNrQ/k22bTrLAp0ILUM4ILR4cgAwZKIk1BtxM
-         goaogLRSUcYSUWXIBLZpGUNcGIxgffcrBb3diBexYoP9XLZxUm46PreAr+EiD+Qsnb
-         2rKdIpuPiAmyMfUqxVglXFf8SQwWN5vDV3dE5vfE=
+        b=dj/irqBUrklP8ApKk4+umcOXHLARYrt80RJD06thh436uvE242wDCTL+BA3dVj/au
+         ReU11FHqITEZLJpazqhBdqvJBAJwMGtm+268n81wqXiREtAc6u5/250VvTuq8A8cuq
+         snO1KNHXQ9zjCO1eTpHdUm4Ij4K0ymmp5HfwDIq4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jing Zhang <renyu.zj@linux.alibaba.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 269/663] perf/arm-cmn: Fix port detection for CMN-700
+        patches@lists.linux.dev,
+        Saurabh Sengar <ssengar@linux.microsoft.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 253/611] x86/ioapic: Dont return 0 from arch_dynirq_lower_bound()
 Date:   Mon,  8 May 2023 11:41:35 +0200
-Message-Id: <20230508094436.975743411@linuxfoundation.org>
+Message-Id: <20230508094430.647236888@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,128 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit 2ad91e44e6b0c7ef1ed151b3bb2242a2144e6085 ]
+[ Upstream commit 5af507bef93c09a94fb8f058213b489178f4cbe5 ]
 
-When the "extra device ports" configuration was first added, the
-additional mxp_device_port_connect_info registers were added around the
-existing mxp_mesh_port_connect_info registers. What I missed about
-CMN-700 is that it shuffled them around to remove this discontinuity.
-As such, tweak the definitions and factor out a helper for reading these
-registers so we can deal with this discrepancy easily, which does at
-least allow nicely tidying up the callsites. With this we can then also
-do the nice thing and skip accesses completely rather than relying on
-RES0 behaviour where we know the extra registers aren't defined.
+arch_dynirq_lower_bound() is invoked by the core interrupt code to
+retrieve the lowest possible Linux interrupt number for dynamically
+allocated interrupts like MSI.
 
-Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
-Reported-by: Jing Zhang <renyu.zj@linux.alibaba.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/71d129241d4d7923cde72a0e5b4c8d2f6084525f.1681295193.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+The x86 implementation uses this to exclude the IO/APIC GSI space.
+This works correctly as long as there is an IO/APIC registered, but
+returns 0 if not. This has been observed in VMs where the BIOS does
+not advertise an IO/APIC.
+
+0 is an invalid interrupt number except for the legacy timer interrupt
+on x86. The return value is unchecked in the core code, so it ends up
+to allocate interrupt number 0 which is subsequently considered to be
+invalid by the caller, e.g. the MSI allocation code.
+
+The function has already a check for 0 in the case that an IO/APIC is
+registered, as ioapic_dynirq_base is 0 in case of device tree setups.
+
+Consolidate this and zero check for both ioapic_dynirq_base and gsi_top,
+which is used in the case that no IO/APIC is registered.
+
+Fixes: 3e5bedc2c258 ("x86/apic: Fix arch_dynirq_lower_bound() bug for DT enabled machines")
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/1679988604-20308-1-git-send-email-ssengar@linux.microsoft.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c | 57 ++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 27 deletions(-)
+ arch/x86/kernel/apic/io_apic.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index bc4b1d1ba8fa2..ff86075edca48 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -57,14 +57,12 @@
- #define CMN_INFO_REQ_VC_NUM		GENMASK_ULL(1, 0)
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index a868b76cd3d42..efa87b6bb1cde 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -2480,17 +2480,21 @@ static int io_apic_get_redir_entries(int ioapic)
  
- /* XPs also have some local topology info which has uses too */
--#define CMN_MXP__CONNECT_INFO_P0	0x0008
--#define CMN_MXP__CONNECT_INFO_P1	0x0010
--#define CMN_MXP__CONNECT_INFO_P2	0x0028
--#define CMN_MXP__CONNECT_INFO_P3	0x0030
--#define CMN_MXP__CONNECT_INFO_P4	0x0038
--#define CMN_MXP__CONNECT_INFO_P5	0x0040
-+#define CMN_MXP__CONNECT_INFO(p)	(0x0008 + 8 * (p))
- #define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(4, 0)
- 
-+#define CMN_MAX_PORTS			6
-+#define CI700_CONNECT_INFO_P2_5_OFFSET	0x10
+ unsigned int arch_dynirq_lower_bound(unsigned int from)
+ {
++	unsigned int ret;
 +
- /* PMU registers occupy the 3rd 4KB page of each node's region */
- #define CMN_PMU_OFFSET			0x2000
- 
-@@ -396,6 +394,25 @@ static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
- 	return NULL;
+ 	/*
+ 	 * dmar_alloc_hwirq() may be called before setup_IO_APIC(), so use
+ 	 * gsi_top if ioapic_dynirq_base hasn't been initialized yet.
+ 	 */
+-	if (!ioapic_initialized)
+-		return gsi_top;
++	ret = ioapic_dynirq_base ? : gsi_top;
++
+ 	/*
+-	 * For DT enabled machines ioapic_dynirq_base is irrelevant and not
+-	 * updated. So simply return @from if ioapic_dynirq_base == 0.
++	 * For DT enabled machines ioapic_dynirq_base is irrelevant and
++	 * always 0. gsi_top can be 0 if there is no IO/APIC registered.
++	 * 0 is an invalid interrupt number for dynamic allocations. Return
++	 * @from instead.
+ 	 */
+-	return ioapic_dynirq_base ? : from;
++	return ret ? : from;
  }
  
-+static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
-+				       const struct arm_cmn_node *xp, int port)
-+{
-+	int offset = CMN_MXP__CONNECT_INFO(port);
-+
-+	if (port >= 2) {
-+		if (cmn->model & (CMN600 | CMN650))
-+			return 0;
-+		/*
-+		 * CI-700 may have extra ports, but still has the
-+		 * mesh_port_connect_info registers in the way.
-+		 */
-+		if (cmn->model == CI700)
-+			offset += CI700_CONNECT_INFO_P2_5_OFFSET;
-+	}
-+
-+	return readl_relaxed(xp->pmu_base - CMN_PMU_OFFSET + offset);
-+}
-+
- static struct dentry *arm_cmn_debugfs;
- 
- #ifdef CONFIG_DEBUG_FS
-@@ -469,7 +486,7 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
- 	y = cmn->mesh_y;
- 	while (y--) {
- 		int xp_base = cmn->mesh_x * y;
--		u8 port[6][CMN_MAX_DIMENSION];
-+		u8 port[CMN_MAX_PORTS][CMN_MAX_DIMENSION];
- 
- 		for (x = 0; x < cmn->mesh_x; x++)
- 			seq_puts(s, "--------+");
-@@ -477,14 +494,9 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
- 		seq_printf(s, "\n%d    |", y);
- 		for (x = 0; x < cmn->mesh_x; x++) {
- 			struct arm_cmn_node *xp = cmn->xps + xp_base + x;
--			void __iomem *base = xp->pmu_base - CMN_PMU_OFFSET;
--
--			port[0][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P0);
--			port[1][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P1);
--			port[2][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P2);
--			port[3][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P3);
--			port[4][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P4);
--			port[5][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P5);
-+
-+			for (p = 0; p < CMN_MAX_PORTS; p++)
-+				port[p][x] = arm_cmn_device_connect_info(cmn, xp, p);
- 			seq_printf(s, " XP #%-2d |", xp_base + x);
- 		}
- 
-@@ -2082,18 +2094,9 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 		 * from this, since in that case we will see at least one XP
- 		 * with port 2 connected, for the HN-D.
- 		 */
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P0))
--			xp_ports |= BIT(0);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P1))
--			xp_ports |= BIT(1);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P2))
--			xp_ports |= BIT(2);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P3))
--			xp_ports |= BIT(3);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P4))
--			xp_ports |= BIT(4);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P5))
--			xp_ports |= BIT(5);
-+		for (int p = 0; p < CMN_MAX_PORTS; p++)
-+			if (arm_cmn_device_connect_info(cmn, xp, p))
-+				xp_ports |= BIT(p);
- 
- 		if (cmn->multi_dtm && (xp_ports & 0xc))
- 			arm_cmn_init_dtm(dtm++, xp, 1);
+ #ifdef CONFIG_X86_32
 -- 
 2.39.2
 
