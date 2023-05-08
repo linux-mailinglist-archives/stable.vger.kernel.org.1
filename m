@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276266FA561
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48DF6FAD1E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:31:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234114AbjEHKIv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37064 "EHLO
+        id S235887AbjEHLbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234117AbjEHKIv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591093292B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:50 -0700 (PDT)
+        with ESMTP id S235825AbjEHLan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30013DC9A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E390762385
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0590CC433EF;
-        Mon,  8 May 2023 10:08:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 317786303A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDF4C433D2;
+        Mon,  8 May 2023 11:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540529;
-        bh=rM7iOUOjL7wHzvU0ZkSjt72Y8tsGv96YPyomOXdROBs=;
+        s=korg; t=1683545440;
+        bh=vNx4jcZeKToja7eC1X8F3x5Jl6MMTLk21xDc/+ZF82A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ddIW45K8jqJ6Rrs7RLGgmamFGC5Oo95Lc4qYR77V3AhZkQCAEkn9YzIq91/RzYq9B
-         1YH4Updi2SVX5XEbfmH7oKfQtsQyM1sj0yxdz/LdZ4o5luy5Ad2YOco7I7F4hRjXmD
-         u/Fx8S/ySJRtp8bL9ofb/Z3D7gZZsDeLnSqmU+H4=
+        b=o3IwGdX6GyeeVDV/IHNO0HIWguTMlugzFPENRB5ZjbagJu87pndtxaOIi9tQ4Hd3P
+         ZvvIGpB50LPWyWKReuwwXt0Dnu7Z0wzq3TJq79SGoLfbm2plBPJVV4ngdi1+z3Ol/k
+         gnv6GlYjolW2GjJYKiRw5iwYq/7nVcWdaBddKwnI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 399/611] drivers: staging: rtl8723bs: Fix locking in _rtw_join_timeout_handler()
-Date:   Mon,  8 May 2023 11:44:01 +0200
-Message-Id: <20230508094435.244453134@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 5.15 041/371] rcu: Avoid stack overflow due to __rcu_irq_enter_check_tick() being kprobe-ed
+Date:   Mon,  8 May 2023 11:44:02 +0200
+Message-Id: <20230508094813.692831244@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,72 +55,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 215792eda008f6a1e7ed9d77fa20d582d22bb114 ]
+commit 7a29fb4a4771124bc61de397dbfc1554dbbcc19c upstream.
 
-Commit 041879b12ddb ("drivers: staging: rtl8192bs: Fix deadlock in
-rtw_joinbss_event_prehandle()") besides fixing the deadlock also
-modified _rtw_join_timeout_handler() to use spin_[un]lock_irq()
-instead of spin_[un]lock_bh().
+Registering a kprobe on __rcu_irq_enter_check_tick() can cause kernel
+stack overflow as shown below. This issue can be reproduced by enabling
+CONFIG_NO_HZ_FULL and booting the kernel with argument "nohz_full=",
+and then giving the following commands at the shell prompt:
 
-_rtw_join_timeout_handler() calls rtw_do_join() which takes
-pmlmepriv->scanned_queue.lock using spin_[un]lock_bh(). This
-spin_unlock_bh() call re-enables softirqs which triggers an oops in
-kernel/softirq.c: __local_bh_enable_ip() when it calls
-lockdep_assert_irqs_enabled():
+  # cd /sys/kernel/tracing/
+  # echo 'p:mp1 __rcu_irq_enter_check_tick' >> kprobe_events
+  # echo 1 > events/kprobes/enable
 
-[  244.506087] WARNING: CPU: 2 PID: 0 at kernel/softirq.c:376 __local_bh_enable_ip+0xa6/0x100
-...
-[  244.509022] Call Trace:
-[  244.509048]  <IRQ>
-[  244.509100]  _rtw_join_timeout_handler+0x134/0x170 [r8723bs]
-[  244.509468]  ? __pfx__rtw_join_timeout_handler+0x10/0x10 [r8723bs]
-[  244.509772]  ? __pfx__rtw_join_timeout_handler+0x10/0x10 [r8723bs]
-[  244.510076]  call_timer_fn+0x95/0x2a0
-[  244.510200]  __run_timers.part.0+0x1da/0x2d0
+This commit therefore adds __rcu_irq_enter_check_tick() to the kprobes
+blacklist using NOKPROBE_SYMBOL().
 
-This oops is causd by the switch to spin_[un]lock_irq() which disables
-the IRQs for the entire duration of _rtw_join_timeout_handler().
+Insufficient stack space to handle exception!
+ESR: 0x00000000f2000004 -- BRK (AArch64)
+FAR: 0x0000ffffccf3e510
+Task stack:     [0xffff80000ad30000..0xffff80000ad38000]
+IRQ stack:      [0xffff800008050000..0xffff800008058000]
+Overflow stack: [0xffff089c36f9f310..0xffff089c36fa0310]
+CPU: 5 PID: 190 Comm: bash Not tainted 6.2.0-rc2-00320-g1f5abbd77e2c #19
+Hardware name: linux,dummy-virt (DT)
+pstate: 400003c5 (nZcv DAIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __rcu_irq_enter_check_tick+0x0/0x1b8
+lr : ct_nmi_enter+0x11c/0x138
+sp : ffff80000ad30080
+x29: ffff80000ad30080 x28: ffff089c82e20000 x27: 0000000000000000
+x26: 0000000000000000 x25: ffff089c02a8d100 x24: 0000000000000000
+x23: 00000000400003c5 x22: 0000ffffccf3e510 x21: ffff089c36fae148
+x20: ffff80000ad30120 x19: ffffa8da8fcce148 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000000000000000 x15: ffffa8da8e44ea6c
+x14: ffffa8da8e44e968 x13: ffffa8da8e03136c x12: 1fffe113804d6809
+x11: ffff6113804d6809 x10: 0000000000000a60 x9 : dfff800000000000
+x8 : ffff089c026b404f x7 : 00009eec7fb297f7 x6 : 0000000000000001
+x5 : ffff80000ad30120 x4 : dfff800000000000 x3 : ffffa8da8e3016f4
+x2 : 0000000000000003 x1 : 0000000000000000 x0 : 0000000000000000
+Kernel panic - not syncing: kernel stack overflow
+CPU: 5 PID: 190 Comm: bash Not tainted 6.2.0-rc2-00320-g1f5abbd77e2c #19
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace+0xf8/0x108
+ show_stack+0x20/0x30
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x1c/0x38
+ panic+0x214/0x404
+ add_taint+0x0/0xf8
+ panic_bad_stack+0x144/0x160
+ handle_bad_stack+0x38/0x58
+ __bad_stack+0x78/0x7c
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ [...]
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ arm64_enter_el1_dbg.isra.0+0x14/0x20
+ el1_dbg+0x2c/0x90
+ el1h_64_sync_handler+0xcc/0xe8
+ el1h_64_sync+0x64/0x68
+ __rcu_irq_enter_check_tick+0x0/0x1b8
+ el1_interrupt+0x28/0x60
+ el1h_64_irq_handler+0x18/0x28
+ el1h_64_irq+0x64/0x68
+ __ftrace_set_clr_event_nolock+0x98/0x198
+ __ftrace_set_clr_event+0x58/0x80
+ system_enable_write+0x144/0x178
+ vfs_write+0x174/0x738
+ ksys_write+0xd0/0x188
+ __arm64_sys_write+0x4c/0x60
+ invoke_syscall+0x64/0x180
+ el0_svc_common.constprop.0+0x84/0x160
+ do_el0_svc+0x48/0xe8
+ el0_svc+0x34/0xd0
+ el0t_64_sync_handler+0xb8/0xc0
+ el0t_64_sync+0x190/0x194
+SMP: stopping secondary CPUs
+Kernel Offset: 0x28da86000000 from 0xffff800008000000
+PHYS_OFFSET: 0xfffff76600000000
+CPU features: 0x00000,01a00100,0000421b
+Memory Limit: none
 
-Disabling the IRQs is not necessary since all code taking this lock
-runs from either user contexts or from softirqs, switch back to
-spin_[un]lock_bh() to fix this.
-
-Fixes: 041879b12ddb ("drivers: staging: rtl8192bs: Fix deadlock in rtw_joinbss_event_prehandle()")
-Cc: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230221145326.7808-1-hdegoede@redhat.com
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Link: https://lore.kernel.org/all/20221119040049.795065-1-zhengyejian1@huawei.com/
+Fixes: aaf2bc50df1f ("rcu: Abstract out rcu_irq_enter_check_tick() from rcu_nmi_enter()")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/rcu/tree.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-index 6498fd17e1d3e..9f4f032c22aec 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -1549,7 +1549,7 @@ void _rtw_join_timeout_handler(struct timer_list *t)
- 	if (adapter->bDriverStopped || adapter->bSurpriseRemoved)
- 		return;
- 
--	spin_lock_irq(&pmlmepriv->lock);
-+	spin_lock_bh(&pmlmepriv->lock);
- 
- 	if (rtw_to_roam(adapter) > 0) { /* join timeout caused by roaming */
- 		while (1) {
-@@ -1577,7 +1577,7 @@ void _rtw_join_timeout_handler(struct timer_list *t)
- 
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -975,6 +975,7 @@ void __rcu_irq_enter_check_tick(void)
  	}
- 
--	spin_unlock_irq(&pmlmepriv->lock);
-+	spin_unlock_bh(&pmlmepriv->lock);
+ 	raw_spin_unlock_rcu_node(rdp->mynode);
  }
++NOKPROBE_SYMBOL(__rcu_irq_enter_check_tick);
+ #endif /* CONFIG_NO_HZ_FULL */
  
- /*
--- 
-2.39.2
-
+ /**
 
 
