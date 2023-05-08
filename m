@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FF576FA7B5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252686FAB1E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234770AbjEHKeI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
+        id S233137AbjEHLKL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbjEHKdo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E4940CD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:55 -0700 (PDT)
+        with ESMTP id S233866AbjEHLJt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBEB33166
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03897626F1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11490C433EF;
-        Mon,  8 May 2023 10:32:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3520062B1D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417BAC433D2;
+        Mon,  8 May 2023 11:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541974;
-        bh=ucVO4eYOtCgAXsZcK7amHoN6+16DS8x9veLfBhib2vc=;
+        s=korg; t=1683544157;
+        bh=V6c7x2Bkf/H7GdclbSjZoJir9+56LWuFk27QSP9RJfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mOyt/DOFhNgVSVpoSR/ud9fSl5AGLNjTFYZHy42HMDmF5wAn0UM/0wYWVNlVL7ryM
-         FZQ/FgjTRDjRi9ANQ65ihQpmpxvG6LuwG7nNcKl29pnf6RL/dIiFbsIy+0qoyUWjWv
-         DQ7l8vXH3iEzbsw7s0W03/AEbAjzA7KW2fmswdKQ=
+        b=ryV4nrMd1CRiYeHRDPzDFz1emv2D/uxz30KGCqFExBiFUyMm3P2f2l3lyrY8FJBRm
+         Ee0JTcU4WiyTDkBWanQJWTDbnlilFva70TGGorfBqh67vDmxegFEpd06fpZ9PA3DyO
+         LXVqy1tNsEdUbgbGqENN1eLeDvsvREgW5CpbIAJ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 286/663] wifi: rtl8xxxu: Remove always true condition in rtl8xxxu_print_chipinfo
-Date:   Mon,  8 May 2023 11:41:52 +0200
-Message-Id: <20230508094437.489386176@linuxfoundation.org>
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 278/694] media: mediatek: vcodec: add params to record lat and core lat_buf count
+Date:   Mon,  8 May 2023 11:41:53 +0200
+Message-Id: <20230508094441.283014908@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +57,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit b9b1e4fe2957f361c86e288ecf373dc7895cf7c7 ]
+[ Upstream commit 5bbb6e2ca67477ab41163b32e6b3444faea74a5e ]
 
-Fix a new smatch warning:
-drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:1580 rtl8xxxu_print_chipinfo() warn: always true condition '(priv->chip_cut <= 15) => (0-15 <= 15)'
+Using lat_buf to share decoder information between lat and core work
+queue, adding params to record the buf count.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202302140753.71IgU77A-lkp@intel.com/
-Fixes: 7b0ac469e331 ("wifi: rtl8xxxu: Recognise all possible chip cuts")
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/68eff98b-a022-5a00-f330-adf623a35772@gmail.com
+Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ .../platform/mediatek/vcodec/vdec_msg_queue.c | 23 ++++++++++++++++++-
+ .../platform/mediatek/vcodec/vdec_msg_queue.h |  6 +++++
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index d22990464dad6..846bd268ffd94 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1574,11 +1574,7 @@ rtl8xxxu_set_spec_sifs(struct rtl8xxxu_priv *priv, u16 cck, u16 ofdm)
- static void rtl8xxxu_print_chipinfo(struct rtl8xxxu_priv *priv)
- {
- 	struct device *dev = &priv->udev->dev;
--	char cut = '?';
--
--	/* Currently always true: chip_cut is 4 bits. */
--	if (priv->chip_cut <= 15)
--		cut = 'A' + priv->chip_cut;
-+	char cut = 'A' + priv->chip_cut;
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index dc2004790a472..3f016c87d722c 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -52,6 +52,22 @@ static struct list_head *vdec_get_buf_list(int hardware_index, struct vdec_lat_b
+ 	}
+ }
  
- 	dev_info(dev,
- 		 "RTL%s rev %c (%s) %iT%iR, TX queues %i, WiFi=%i, BT=%i, GPS=%i, HI PA=%i\n",
++static void vdec_msg_queue_inc(struct vdec_msg_queue *msg_queue, int hardware_index)
++{
++	if (hardware_index == MTK_VDEC_CORE)
++		atomic_inc(&msg_queue->core_list_cnt);
++	else
++		atomic_inc(&msg_queue->lat_list_cnt);
++}
++
++static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_index)
++{
++	if (hardware_index == MTK_VDEC_CORE)
++		atomic_dec(&msg_queue->core_list_cnt);
++	else
++		atomic_dec(&msg_queue->lat_list_cnt);
++}
++
+ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
+ {
+ 	struct list_head *head;
+@@ -66,6 +82,7 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
+ 	list_add_tail(head, &msg_ctx->ready_queue);
+ 	msg_ctx->ready_num++;
+ 
++	vdec_msg_queue_inc(&buf->ctx->msg_queue, msg_ctx->hardware_index);
+ 	if (msg_ctx->hardware_index != MTK_VDEC_CORE)
+ 		wake_up_all(&msg_ctx->ready_to_use);
+ 	else
+@@ -127,6 +144,7 @@ struct vdec_lat_buf *vdec_msg_queue_dqbuf(struct vdec_msg_queue_ctx *msg_ctx)
+ 		return NULL;
+ 	}
+ 	list_del(head);
++	vdec_msg_queue_dec(&buf->ctx->msg_queue, msg_ctx->hardware_index);
+ 
+ 	msg_ctx->ready_num--;
+ 	mtk_v4l2_debug(3, "dqueue buf type:%d addr: 0x%p num: %d",
+@@ -241,10 +259,13 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+ 
+ 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
+ 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
++
++	atomic_set(&msg_queue->lat_list_cnt, 0);
++	atomic_set(&msg_queue->core_list_cnt, 0);
++
+ 	msg_queue->wdma_addr.size =
+ 		vde_msg_queue_get_trans_size(ctx->picinfo.buf_w,
+ 					     ctx->picinfo.buf_h);
+-
+ 	err = mtk_vcodec_mem_alloc(ctx, &msg_queue->wdma_addr);
+ 	if (err) {
+ 		mtk_v4l2_err("failed to allocate wdma_addr buf");
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+index c43d427f5f544..b1aa5572ba49f 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+@@ -72,6 +72,9 @@ struct vdec_lat_buf {
+  * @wdma_wptr_addr: ube write point
+  * @core_work: core hardware work
+  * @lat_ctx: used to store lat buffer list
++ *
++ * @lat_list_cnt: used to record each instance lat list count
++ * @core_list_cnt: used to record each instance core list count
+  */
+ struct vdec_msg_queue {
+ 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
+@@ -82,6 +85,9 @@ struct vdec_msg_queue {
+ 
+ 	struct work_struct core_work;
+ 	struct vdec_msg_queue_ctx lat_ctx;
++
++	atomic_t lat_list_cnt;
++	atomic_t core_list_cnt;
+ };
+ 
+ /**
 -- 
 2.39.2
 
