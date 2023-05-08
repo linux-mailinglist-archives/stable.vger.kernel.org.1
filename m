@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2A76FAAC8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710C16FAAD0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233370AbjEHLGj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39660 "EHLO
+        id S232645AbjEHLGq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233490AbjEHLGN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0215033D4D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:10 -0700 (PDT)
+        with ESMTP id S234987AbjEHLGa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F2332E818
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B49E62AA6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:05:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1E1C4339B;
-        Mon,  8 May 2023 11:05:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE38362A80
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:05:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1471C4339E;
+        Mon,  8 May 2023 11:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543909;
-        bh=FB5zIdNKUsbBvvRi0nukRLj+XGzkU2XSMGo4o80cqr0=;
+        s=korg; t=1683543925;
+        bh=qspAeXVLg+1VVN3JN389j6lvXiwDsKO8Khmtp5J6xAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wZRH6Jltrx9w79NepjlXYPPs+UGt7HeX9JuTujsUoPFD3tl5a3fMzHpm4UN7ztnfA
-         RKD4lxewehUzrRSUs7mOUm3cXrfrdFNVSaxK3KCsbKpNxdITyhDpPT8Z5/HepPdXic
-         gXRjH5P3hbfq2K74gVHf0wcmrjiAie9mWg1Y12P8=
+        b=BbfEy/1hRsUYvLVYPTPb4RqlAL4hgSufj3z1uJ27g+aN3HX9f8QXxFQKcIWQtrmgT
+         REmG5MsBa1iysnRlNBcpIoIRdJaJqATHsEUowvz29Q85fwFORTbei/eQpaKoPLb3j8
+         yGblaYfwmqPG1aN7Ykn+ekegAzGPA8AauFFNjuqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bagas Sanjaya <bagasdotme@gmail.com>,
-        Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 213/694] accel: Link to compute accelerator subsystem intro
-Date:   Mon,  8 May 2023 11:40:48 +0200
-Message-Id: <20230508094439.278092401@linuxfoundation.org>
+        patches@lists.linux.dev, Vignesh Raghavendra <vigneshr@ti.com>,
+        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 214/694] arm64: dts: ti: k3-am625: Correct L2 cache size to 512KB
+Date:   Mon,  8 May 2023 11:40:49 +0200
+Message-Id: <20230508094439.308003522@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -45,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,41 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit 6d179f84f274a87da51f24ac3e9427221bbaed51 ]
+[ Upstream commit 6974371cab1c488a53960945cb139b20ebb5f16b ]
 
-Commit 2c204f3d53218d ("accel: add dedicated minor for accelerator
-devices") adds link to accelerator nodes section of DRM internals doc
-(Documentation/gpu/drm-internals.rst), but the target doesn't exist.
-Instead, there is only an introduction doc for computer accelerator
-subsytem.
+Per AM62x SoC datasheet[0] L2 cache is 512KB.
 
-Link to that doc until there is documentation of accelerator internals.
+[0] https://www.ti.com/lit/gpn/am625 Page 1.
 
-Fixes: 2c204f3d53218d ("accel: add dedicated minor for accelerator devices")
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lore.kernel.org/r/20230320044935.2512288-1-vigneshr@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_file.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am625.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
-index 0d1f853092ab8..ecffe24e2b1b0 100644
---- a/include/drm/drm_file.h
-+++ b/include/drm/drm_file.h
-@@ -408,7 +408,8 @@ static inline bool drm_is_render_client(const struct drm_file *file_priv)
-  * Returns true if this is an open file of the compute acceleration node, i.e.
-  * &drm_file.minor of @file_priv is a accel minor.
-  *
-- * See also the :ref:`section on accel nodes <drm_accel_node>`.
-+ * See also :doc:`Introduction to compute accelerators subsystem
-+ * </accel/introduction>`.
-  */
- static inline bool drm_is_accel_client(const struct drm_file *file_priv)
- {
+diff --git a/arch/arm64/boot/dts/ti/k3-am625.dtsi b/arch/arm64/boot/dts/ti/k3-am625.dtsi
+index acc7f8ab64261..4193c2b3eed60 100644
+--- a/arch/arm64/boot/dts/ti/k3-am625.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am625.dtsi
+@@ -148,7 +148,7 @@
+ 		compatible = "cache";
+ 		cache-unified;
+ 		cache-level = <2>;
+-		cache-size = <0x40000>;
++		cache-size = <0x80000>;
+ 		cache-line-size = <64>;
+ 		cache-sets = <512>;
+ 	};
 -- 
 2.39.2
 
