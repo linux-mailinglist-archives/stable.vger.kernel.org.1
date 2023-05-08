@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E4A26FA505
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215716FAB40
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234019AbjEHKFV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33482 "EHLO
+        id S233688AbjEHLLA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234016AbjEHKFU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:05:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28062EB3F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:19 -0700 (PDT)
+        with ESMTP id S233459AbjEHLKx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E1E348A4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:10:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FE5062330
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C93EC433D2;
-        Mon,  8 May 2023 10:05:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B034362B57
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC44C433EF;
+        Mon,  8 May 2023 11:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540318;
-        bh=OhNI5HEa+rGIUEheh2coeEnfiuQZ0gvqR6VgGIFhOtc=;
+        s=korg; t=1683544252;
+        bh=C3TNWy7E2eTHc/6V+meOjr38etecp82m9YMJVtbCKiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=csAuQ6dqe4PP+N8f1K3Mzl0f8bhdtVsYT0zNPMkV/ZHQZO62zlsT5yOc95Ddt7uR+
-         TknVRQqmQiT3z/t13QwZuDxtq4/Vsrg7lKO8nWMb6Z611/FlJ7IV4oVRLSA3F5QXkj
-         XfSckJj69omMV3O+sBU5MQtUKMa1qQiV+tS+33F0=
+        b=PLGrYOPnVf9OELrWaZIF8bUQaG8/3igvNxcfi9ZJNjab8O4t1GKCGad40X2pNAUIg
+         R3TEug0DOxxbmJigNFQYuvVqOE98caI1KwGFP+alPweWqmlUuBJgoEa8JlYny1GffH
+         7klxV6v3JyQmWEHgcxcux8wvdqMYhfv3Qc/VcIIs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        John Garry <john.garry@huawei.com>,
-        Jason Yan <yanaijie@huawei.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+        =?UTF-8?q?Tom=C3=A1=C5=A1=20Pecka?= <tomas.pecka@cesnet.cz>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 312/611] scsi: libsas: Add sas_ata_device_link_abort()
+Subject: [PATCH 6.3 319/694] hwmon: (pmbus/fsp-3y) Fix functionality bitmask in FSP-3Y YM-2151E
 Date:   Mon,  8 May 2023 11:42:34 +0200
-Message-Id: <20230508094432.575868945@linuxfoundation.org>
+Message-Id: <20230508094442.661805487@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,94 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Garry <john.garry@huawei.com>
+From: Tomáš Pecka <tomas.pecka@cesnet.cz>
 
-[ Upstream commit 44112922674b94a7d699dfff6307fc830018df7c ]
+[ Upstream commit 93822f5161a2dc57a60b95b35b3cb8589f53413e ]
 
-Similar to how AHCI handles NCQ errors in ahci_error_intr() ->
-ata_port_abort() -> ata_do_link_abort(), add an NCQ error handler for LLDDs
-to call to initiate a link abort.
+The bit flags in pmbus_driver_info functionality for YM-2151E chip were
+joined with a comma operator instead of a bitwise OR. This means that
+the last constant PMBUS_HAVE_IIN was not OR-ed with the other
+PM_BUS_HAVE_* constants for this page but it initialized the next element
+of the func array (which was not accessed from anywhere because of the
+number of pages).
 
-This will mark all outstanding QCs as failed and kick-off EH.
+However, there is no need for setting PMBUS_HAVE_IIN in the 5Vsb page
+because this command does not seem to be paged. Obviously, the device
+only has one IIN sensor, so it doesn't make sense to query it again from
+the second page.
 
-Note:
-
-A "force reset" argument is added for drivers which require the ATA error
-handling to always reset the device.
-
-A driver may require this feature for when SATA device per-SCSI cmnd
-resources are only released during reset for ATA EH. As such, we need an
-option to force reset to be done, regardless of what any EH autopsy
-decides.
-
-The SATA device FIS fields are set to indicate a device error from
-ata_eh_analyze_tf().
-
-Suggested-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Suggested-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: John Garry <john.garry@huawei.com>
-Link: https://lore.kernel.org/r/1665998435-199946-2-git-send-email-john.garry@huawei.com
-Tested-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Tested-by: Niklas Cassel <niklas.cassel@wdc.com> # pm80xx
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: bb544224da77 ("scsi: hisi_sas: Handle NCQ error when IPTT is valid")
+Fixes: 1734b4135a62 ("hwmon: Add driver for fsp-3y PSUs and PDUs")
+Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Signed-off-by: Tomáš Pecka <tomas.pecka@cesnet.cz>
+Link: https://lore.kernel.org/r/20230420171939.212040-1-tomas.pecka@cesnet.cz
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_ata.c | 15 +++++++++++++++
- include/scsi/sas_ata.h        |  6 ++++++
- 2 files changed, 21 insertions(+)
+ drivers/hwmon/pmbus/fsp-3y.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/libsas/sas_ata.c b/drivers/scsi/libsas/sas_ata.c
-index 2fd55ef9ffca5..a34d06fd47f06 100644
---- a/drivers/scsi/libsas/sas_ata.c
-+++ b/drivers/scsi/libsas/sas_ata.c
-@@ -886,6 +886,21 @@ void sas_ata_wait_eh(struct domain_device *dev)
- 	ata_port_wait_eh(ap);
- }
- 
-+void sas_ata_device_link_abort(struct domain_device *device, bool force_reset)
-+{
-+	struct ata_port *ap = device->sata_dev.ap;
-+	struct ata_link *link = &ap->link;
-+
-+	device->sata_dev.fis[2] = ATA_ERR | ATA_DRDY; /* tf status */
-+	device->sata_dev.fis[3] = ATA_ABORTED; /* tf error */
-+
-+	link->eh_info.err_mask |= AC_ERR_DEV;
-+	if (force_reset)
-+		link->eh_info.action |= ATA_EH_RESET;
-+	ata_link_abort(link);
-+}
-+EXPORT_SYMBOL_GPL(sas_ata_device_link_abort);
-+
- int sas_execute_ata_cmd(struct domain_device *device, u8 *fis, int force_phy_id)
- {
- 	struct sas_tmf_task tmf_task = {};
-diff --git a/include/scsi/sas_ata.h b/include/scsi/sas_ata.h
-index ec646217e7f6e..e7d466df81576 100644
---- a/include/scsi/sas_ata.h
-+++ b/include/scsi/sas_ata.h
-@@ -32,6 +32,7 @@ void sas_probe_sata(struct asd_sas_port *port);
- void sas_suspend_sata(struct asd_sas_port *port);
- void sas_resume_sata(struct asd_sas_port *port);
- void sas_ata_end_eh(struct ata_port *ap);
-+void sas_ata_device_link_abort(struct domain_device *dev, bool force_reset);
- int sas_execute_ata_cmd(struct domain_device *device, u8 *fis,
- 			int force_phy_id);
- int sas_ata_wait_after_reset(struct domain_device *dev, unsigned long deadline);
-@@ -88,6 +89,11 @@ static inline void sas_ata_end_eh(struct ata_port *ap)
- {
- }
- 
-+static inline void sas_ata_device_link_abort(struct domain_device *dev,
-+					     bool force_reset)
-+{
-+}
-+
- static inline int sas_execute_ata_cmd(struct domain_device *device, u8 *fis,
- 				      int force_phy_id)
- {
+diff --git a/drivers/hwmon/pmbus/fsp-3y.c b/drivers/hwmon/pmbus/fsp-3y.c
+index aec294cc72d1f..c7469d2cdedcf 100644
+--- a/drivers/hwmon/pmbus/fsp-3y.c
++++ b/drivers/hwmon/pmbus/fsp-3y.c
+@@ -180,7 +180,6 @@ static struct pmbus_driver_info fsp3y_info[] = {
+ 			PMBUS_HAVE_FAN12,
+ 		.func[YM2151_PAGE_5VSB_LOG] =
+ 			PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT,
+-			PMBUS_HAVE_IIN,
+ 		.read_word_data = fsp3y_read_word_data,
+ 		.read_byte_data = fsp3y_read_byte_data,
+ 	},
 -- 
 2.39.2
 
