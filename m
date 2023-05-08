@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40EDF6FAD67
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39DC26FA57E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236005AbjEHLer (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
+        id S234155AbjEHKKD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235773AbjEHLef (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8085F3DC80
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:33:50 -0700 (PDT)
+        with ESMTP id S234153AbjEHKKC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2305235133
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D8E86324F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E434C433D2;
-        Mon,  8 May 2023 11:33:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD7B2623AC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC42C4339B;
+        Mon,  8 May 2023 10:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545614;
-        bh=qHjuvjEqB5fyIMJEWbG0PLepN709uaQNUs+nd+US6ew=;
+        s=korg; t=1683540600;
+        bh=2HE7cBAkhH1rYywG8/ZuDvlgZIOaAeoVhwQc1IRCbak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JIK9zGMH8phUoMnMDN2bqJLvDN0e2V0ecvRkre/ZEMD4DgcyQCYlG00tEXq4u4m0c
-         3pocGYUqhI8oYibGMI7RuJBIT91LNQtKVT3ovKP4FovQ4ewz06DHyPRuv5TpbDXknW
-         /gPpuV0VKi9sWBZww12WzPmWm2Xb46g8lXEwQ2SM=
+        b=XWl/ZhRe6no0MOMbT6WDqYs/H2gxxmW+uVXTrUrticv7AyISlPPBqnLpS42t+/olD
+         CoYo1w+rYZv8cUqpyUc5kBxMA8e17OgrXcGZut6vSxX9WMuRXH3i6VfT5m5hTgLRCz
+         wnbjLeKOaia3R1rK02R8zm/z2DwaWMM14E6UMno8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        =?UTF-8?q?Michael=20Niew=C3=B6hner?= <linux@mniewoehner.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/371] tpm, tpm_tis: Claim locality before writing TPM_INT_ENABLE register
+        patches@lists.linux.dev,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 427/611] HID: amd_sfh: Correct the sensor enable and disable command
 Date:   Mon,  8 May 2023 11:44:29 +0200
-Message-Id: <20230508094814.812269507@linuxfoundation.org>
+Message-Id: <20230508094436.074550204@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 282657a8bd7fddcf511b834f43705001668b33a7 ]
+[ Upstream commit 0b9255bf11baa61cd526e6bd24d6c8e6d1eabf8d ]
 
-In disable_interrupts() the TPM_GLOBAL_INT_ENABLE bit is unset in the
-TPM_INT_ENABLE register to shut the interrupts off. However modifying the
-register is only possible with a held locality. So claim the locality
-before disable_interrupts() is called.
+In order to start or stop sensors, the firmware command needs to be
+changed to add an additional default subcommand value. For this reason,
+add a subcommand value to enable or disable sensors accordingly.
 
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Michael Niewöhner <linux@mniewoehner.de>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index ae0c773a6041a..274096fece3fa 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -1076,7 +1076,11 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 				dev_err(&chip->dev, FW_BUG
- 					"TPM interrupt not working, polling instead\n");
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
+index c6df959ec7252..6e19ccc124508 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.c
+@@ -33,6 +33,7 @@ static void amd_start_sensor(struct amd_mp2_dev *privdata, struct amd_mp2_sensor
+ 	cmd_base.ul = 0;
+ 	cmd_base.cmd.cmd_id = ENABLE_SENSOR;
+ 	cmd_base.cmd.intr_disable = 0;
++	cmd_base.cmd.sub_cmd_value = 1;
+ 	cmd_base.cmd.sensor_id = info.sensor_idx;
  
-+				rc = request_locality(chip, 0);
-+				if (rc < 0)
-+					goto out_err;
- 				disable_interrupts(chip);
-+				release_locality(chip, 0);
- 			}
- 		} else {
- 			tpm_tis_probe_irq(chip, intmask);
+ 	writel(cmd_base.ul, privdata->mmio + AMD_C2P_MSG(0));
+@@ -45,6 +46,7 @@ static void amd_stop_sensor(struct amd_mp2_dev *privdata, u16 sensor_idx)
+ 	cmd_base.ul = 0;
+ 	cmd_base.cmd.cmd_id = DISABLE_SENSOR;
+ 	cmd_base.cmd.intr_disable = 0;
++	cmd_base.cmd.sub_cmd_value = 1;
+ 	cmd_base.cmd.sensor_id = sensor_idx;
+ 
+ 	writeq(0x0, privdata->mmio + AMD_C2P_MSG(1));
 -- 
 2.39.2
 
