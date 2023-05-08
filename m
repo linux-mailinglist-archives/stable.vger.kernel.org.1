@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FA56FABCA
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D226FA5AB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235464AbjEHLR1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58922 "EHLO
+        id S234208AbjEHKMC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235427AbjEHLRZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E1437633
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:24 -0700 (PDT)
+        with ESMTP id S234196AbjEHKMA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B842268F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C850862C19
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B868FC433EF;
-        Mon,  8 May 2023 11:17:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C4EA623E1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D836C4339B;
+        Mon,  8 May 2023 10:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544643;
-        bh=emNMdWt3FAv3Z0+lFpCvz7Ly2tt9NTbxZP+6Hybqlfc=;
+        s=korg; t=1683540708;
+        bh=sDHuA3n+lwDTVbzl2HTgZN8+lkfUEnUIP6fATf7rfLQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iyk6+YQCWUIjKR3meg73yD3TRQI0bUvHFvBFcWzFC2rq+oTAfFxBQpsDkYvxRD5JK
-         4OTvNq1uW97nBpAlQp4/CiKqB3sD1aFYk/6YYJ8jI6gAkjti1r0ROfHdN9WluI7FoL
-         74peSDB2ID7R7C3yYinJgT4XvWubO0Y0dDcNN6cY=
+        b=jNo+C6kenwa37c6w8brBtvGjqfrfaX9HpLPj14m7kjt6Dj67ZmOYfoWFO635v9Jvl
+         Hy1g5qwBJyNEYwFlgmy1V/9Zv85dslMvT7zUDdp0oAavWZ9BXckoLktk3+db5WIJCg
+         ZxX3GIOa8juerX8TJILYywgeFHIg2q65Xd7Dw8Jc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Davide Caratti <dcaratti@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 475/694] net/sched: sch_fq: fix integer overflow of "credit"
+Subject: [PATCH 6.1 468/611] riscv: Fix ptdump when KASAN is enabled
 Date:   Mon,  8 May 2023 11:45:10 +0200
-Message-Id: <20230508094449.240869503@linuxfoundation.org>
+Message-Id: <20230508094437.334194657@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,90 +55,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 7041101ff6c3073fd8f2e99920f535b111c929cb ]
+[ Upstream commit ecd7ebaf0b5a094a6180b299a5635c0eea42be4b ]
 
-if sch_fq is configured with "initial quantum" having values greater than
-INT_MAX, the first assignment of "credit" does signed integer overflow to
-a very negative value.
-In this situation, the syzkaller script provided by Cristoph triggers the
-CPU soft-lockup warning even with few sockets. It's not an infinite loop,
-but "credit" wasn't probably meant to be minus 2Gb for each new flow.
-Capping "initial quantum" to INT_MAX proved to fix the issue.
+The KASAN shadow region was moved next to the kernel mapping but the
+ptdump code was not updated and it appears to break the dump of the kernel
+page table, so fix this by moving the KASAN shadow region in ptdump.
 
-v2: validation of "initial quantum" is done in fq_policy, instead of open
-    coding in fq_change() _ suggested by Jakub Kicinski
-
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/377
-Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://lore.kernel.org/r/7b3a3c7e36d03068707a021760a194a8eb5ad41a.1682002300.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f7ae02333d13 ("riscv: Move KASAN mapping next to the kernel mapping")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20230203075232.274282-6-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq.c                            |  6 ++++-
- .../tc-testing/tc-tests/qdiscs/fq.json        | 22 +++++++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ arch/riscv/mm/ptdump.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 48d14fb90ba02..f59a2cb2c803d 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -779,13 +779,17 @@ static int fq_resize(struct Qdisc *sch, u32 log)
- 	return 0;
- }
+diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
+index 830e7de65e3a3..20a9f991a6d74 100644
+--- a/arch/riscv/mm/ptdump.c
++++ b/arch/riscv/mm/ptdump.c
+@@ -59,10 +59,6 @@ struct ptd_mm_info {
+ };
  
-+static struct netlink_range_validation iq_range = {
-+	.max = INT_MAX,
-+};
-+
- static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
- 	[TCA_FQ_UNSPEC]			= { .strict_start_type = TCA_FQ_TIMER_SLACK },
+ enum address_markers_idx {
+-#ifdef CONFIG_KASAN
+-	KASAN_SHADOW_START_NR,
+-	KASAN_SHADOW_END_NR,
+-#endif
+ 	FIXMAP_START_NR,
+ 	FIXMAP_END_NR,
+ 	PCI_IO_START_NR,
+@@ -74,6 +70,10 @@ enum address_markers_idx {
+ 	VMALLOC_START_NR,
+ 	VMALLOC_END_NR,
+ 	PAGE_OFFSET_NR,
++#ifdef CONFIG_KASAN
++	KASAN_SHADOW_START_NR,
++	KASAN_SHADOW_END_NR,
++#endif
+ #ifdef CONFIG_64BIT
+ 	MODULES_MAPPING_NR,
+ 	KERNEL_MAPPING_NR,
+@@ -82,10 +82,6 @@ enum address_markers_idx {
+ };
  
- 	[TCA_FQ_PLIMIT]			= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_PLIMIT]		= { .type = NLA_U32 },
- 	[TCA_FQ_QUANTUM]		= { .type = NLA_U32 },
--	[TCA_FQ_INITIAL_QUANTUM]	= { .type = NLA_U32 },
-+	[TCA_FQ_INITIAL_QUANTUM]	= NLA_POLICY_FULL_RANGE(NLA_U32, &iq_range),
- 	[TCA_FQ_RATE_ENABLE]		= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_DEFAULT_RATE]	= { .type = NLA_U32 },
- 	[TCA_FQ_FLOW_MAX_RATE]		= { .type = NLA_U32 },
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-index 8acb904d14193..3593fb8f79ad3 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq.json
-@@ -114,6 +114,28 @@
-             "$IP link del dev $DUMMY type dummy"
-         ]
-     },
-+    {
-+        "id": "10f7",
-+        "name": "Create FQ with invalid initial_quantum setting",
-+        "category": [
-+            "qdisc",
-+            "fq"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$IP link add dev $DUMMY type dummy || /bin/true"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq initial_quantum 0x80000000",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc fq 1: root.*initial_quantum 2048Mb",
-+        "matchCount": "0",
-+        "teardown": [
-+            "$IP link del dev $DUMMY type dummy"
-+        ]
-+    },
-     {
-         "id": "9398",
-         "name": "Create FQ with maxrate setting",
+ static struct addr_marker address_markers[] = {
+-#ifdef CONFIG_KASAN
+-	{0, "Kasan shadow start"},
+-	{0, "Kasan shadow end"},
+-#endif
+ 	{0, "Fixmap start"},
+ 	{0, "Fixmap end"},
+ 	{0, "PCI I/O start"},
+@@ -97,6 +93,10 @@ static struct addr_marker address_markers[] = {
+ 	{0, "vmalloc() area"},
+ 	{0, "vmalloc() end"},
+ 	{0, "Linear mapping"},
++#ifdef CONFIG_KASAN
++	{0, "Kasan shadow start"},
++	{0, "Kasan shadow end"},
++#endif
+ #ifdef CONFIG_64BIT
+ 	{0, "Modules/BPF mapping"},
+ 	{0, "Kernel mapping"},
+@@ -362,10 +362,6 @@ static int __init ptdump_init(void)
+ {
+ 	unsigned int i, j;
+ 
+-#ifdef CONFIG_KASAN
+-	address_markers[KASAN_SHADOW_START_NR].start_address = KASAN_SHADOW_START;
+-	address_markers[KASAN_SHADOW_END_NR].start_address = KASAN_SHADOW_END;
+-#endif
+ 	address_markers[FIXMAP_START_NR].start_address = FIXADDR_START;
+ 	address_markers[FIXMAP_END_NR].start_address = FIXADDR_TOP;
+ 	address_markers[PCI_IO_START_NR].start_address = PCI_IO_START;
+@@ -377,6 +373,10 @@ static int __init ptdump_init(void)
+ 	address_markers[VMALLOC_START_NR].start_address = VMALLOC_START;
+ 	address_markers[VMALLOC_END_NR].start_address = VMALLOC_END;
+ 	address_markers[PAGE_OFFSET_NR].start_address = PAGE_OFFSET;
++#ifdef CONFIG_KASAN
++	address_markers[KASAN_SHADOW_START_NR].start_address = KASAN_SHADOW_START;
++	address_markers[KASAN_SHADOW_END_NR].start_address = KASAN_SHADOW_END;
++#endif
+ #ifdef CONFIG_64BIT
+ 	address_markers[MODULES_MAPPING_NR].start_address = MODULES_VADDR;
+ 	address_markers[KERNEL_MAPPING_NR].start_address = kernel_map.virt_addr;
 -- 
 2.39.2
 
