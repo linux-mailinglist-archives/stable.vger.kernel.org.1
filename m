@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1D566FA63D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547596FA967
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234344AbjEHKRz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:17:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46744 "EHLO
+        id S235271AbjEHKuc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234389AbjEHKRo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A653513E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:31 -0700 (PDT)
+        with ESMTP id S235108AbjEHKuM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:50:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E742FCE7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A5C9624A0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBB2C433D2;
-        Mon,  8 May 2023 10:17:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 653C16290B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509FAC433EF;
+        Mon,  8 May 2023 10:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541050;
-        bh=MV2/obIo1SmIrVNPfDMX+Putmo3myiKA/3YBD6AfvVE=;
+        s=korg; t=1683542991;
+        bh=W9NoJiVh+l92EWH2uvdP7TDt5ze0DbnrYZ9sc7V56Mo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tdQyOtpn4RK7D16ZK5KSjJNQHeWscSc7xd7Inx0cTmjDDFmWMHLZoC8VYIdsxEG4f
-         9KqRF74fXa41au0ID6ywBaLpxna+pmbydemUhD04oqHgAOf8qRQMoY/vfEnQoOl0ab
-         nhculx/MCm5ebGqS3dLBbQLiQyAQE5n/eJFmJtbM=
+        b=P7uhCxDB4accvIEx4BMBT4Fg1H9V29wIbS3KPNTAuboKFHcWyvjUqVKmFsc6YzzkG
+         qT00PzHUWc0FXF37PM1xCqEMe3Yim0OL4tSJV+V5ft3iqYXp1u16n2FvO6mtCH/bzk
+         RBPhFimjBZu8u0vmbrZlLPuPqdsstP41v2/ec0RE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 598/611] cifs: protect session status check in smb2_reconnect()
+        Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.2 614/663] ALSA: hda/realtek: Add quirk for ThinkPad P1 Gen 6
 Date:   Mon,  8 May 2023 11:47:20 +0200
-Message-Id: <20230508094441.339386285@linuxfoundation.org>
+Message-Id: <20230508094449.624637274@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,50 +54,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
 
-commit 5bff9f741af60b143a5ae73417a8ec47fd5ff2f4 upstream.
+commit 067eb084592819ad59d07afcb5de3e61cee2757c upstream.
 
-Use @ses->ses_lock to protect access of @ses->ses_status.
+Lenovo ThinkPad P1 Gen 6 laptop has 2 CS35L41 amplifies
+on I2C bus connected to Realtek codec.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230427110452.13787-1-vitalyr@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2pdu.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -175,8 +175,17 @@ smb2_reconnect(__le16 smb2_command, stru
- 		}
- 	}
- 	spin_unlock(&tcon->tc_lock);
--	if ((!tcon->ses) || (tcon->ses->ses_status == SES_EXITING) ||
--	    (!tcon->ses->server) || !server)
-+
-+	ses = tcon->ses;
-+	if (!ses)
-+		return -EIO;
-+	spin_lock(&ses->ses_lock);
-+	if (ses->ses_status == SES_EXITING) {
-+		spin_unlock(&ses->ses_lock);
-+		return -EIO;
-+	}
-+	spin_unlock(&ses->ses_lock);
-+	if (!ses->server || !server)
- 		return -EIO;
- 
- 	spin_lock(&server->srv_lock);
-@@ -204,8 +213,6 @@ again:
- 	if (rc)
- 		return rc;
- 
--	ses = tcon->ses;
--
- 	spin_lock(&ses->chan_lock);
- 	if (!cifs_chan_needs_reconnect(ses, server) && !tcon->need_reconnect) {
- 		spin_unlock(&ses->chan_lock);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9689,6 +9689,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x22f1, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x22f2, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x22f3, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x17aa, 0x2316, "Thinkpad P1 Gen 6", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x17aa, 0x2317, "Thinkpad P1 Gen 6", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x2318, "Thinkpad Z13 Gen2", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x2319, "Thinkpad Z16 Gen2", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_CS35L41_I2C_2),
 
 
