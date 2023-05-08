@@ -2,124 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 904AF6FA5F8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF64D6FAC4B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjEHKOy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43684 "EHLO
+        id S235634AbjEHLXF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:23:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234296AbjEHKOq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBC91FF1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:45 -0700 (PDT)
+        with ESMTP id S235614AbjEHLXD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421AA37031
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE43E6245D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63DCC433EF;
-        Mon,  8 May 2023 10:14:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE79B62CCA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1BFC433EF;
+        Mon,  8 May 2023 11:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540884;
-        bh=OA4b/0jb12WeWdYP3LvDJaMTvf/wovwjSeQtyUhE68Q=;
+        s=korg; t=1683544971;
+        bh=gbsgF0jUZQHzoprFJRgaCygFbigEFv3rZN2HwzN1HcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gUUzG2tnf8JG5lOnAh0EqcgPrgB0kZ9rIROY2766oxJmcmRkKppBhnWWICkHSf98+
-         0j9w5XDPB0t7uS9+0Stz3aJL7b68Sm9yE7OFyqW7e2dBxLGns79cbBr4T40V1L7AwM
-         v0TqDNT7DR8WyctW7d0HB2R76hJ9+cXxLsTUptXI=
+        b=jqQ/ui1/VSVET37jeWGTV7+CbtawXcM9N4dPI6fhrREQ/U5nRFk7Tx2m0WFuV9I3h
+         CyLNxY7DwLqbRYS52EhQG5Y6F/QrRSNsXdwtd/t/1rZhZvZZMi4e6PVH25mDsjU74v
+         QfGG7jLtkUf4FTYQW5IWPpNcvWc9N5VkXkZxx1NQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        patches@lists.linux.dev, Kevin Brodsky <kevin.brodsky@arm.com>,
+        Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>,
+        Petr Vorel <pvorel@suse.cz>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 535/611] pwm: mtk-disp: Configure double buffering before reading in .get_state()
+Subject: [PATCH 6.3 542/694] uapi/linux/const.h: prefer ISO-friendly __typeof__
 Date:   Mon,  8 May 2023 11:46:17 +0200
-Message-Id: <20230508094439.386165667@linuxfoundation.org>
+Message-Id: <20230508094452.056177387@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
 
-[ Upstream commit b16c310115f2084b8826a35b77ef42bab6786d9f ]
+[ Upstream commit 31088f6f7906253ef4577f6a9b84e2d42447dba0 ]
 
-The DISP_PWM controller's default behavior is to always use register
-double buffering: all reads/writes are then performed on shadow
-registers instead of working registers and this becomes an issue
-in case our chosen configuration in Linux is different from the
-default (or from the one that was pre-applied by the bootloader).
+typeof is (still) a GNU extension, which means that it cannot be used when
+building ISO C (e.g.  -std=c99).  It should therefore be avoided in uapi
+headers in favour of the ISO-friendly __typeof__.
 
-An example of broken behavior is when the controller is configured
-to use shadow registers, but this driver wants to configure it
-otherwise: what happens is that the .get_state() callback is called
-right after registering the pwmchip and checks whether the PWM is
-enabled by reading the DISP_PWM_EN register;
-At this point, if shadow registers are enabled but their content
-was not committed before booting Linux, we are *not* reading the
-current PWM enablement status, leading to the kernel knowing that
-the hardware is actually enabled when, in reality, it's not.
+Unfortunately this issue could not be detected by
+CONFIG_UAPI_HEADER_TEST=y as the __ALIGN_KERNEL() macro is not expanded in
+any uapi header.
 
-The aforementioned issue emerged since this driver was fixed with
-commit 0b5ef3429d8f ("pwm: mtk-disp: Fix the parameters calculated
-by the enabled flag of disp_pwm") making it to read the enablement
-status from the right register.
+This matters from a userspace perspective, not a kernel one. uapi
+headers and their contents are expected to be usable in a variety of
+situations, and in particular when building ISO C applications (with
+-std=c99 or similar).
 
-Configure the controller in the .get_state() callback to avoid
-this desync issue and get the backlight properly working again.
+This particular problem can be reproduced by trying to use the
+__ALIGN_KERNEL macro directly in application code, say:
 
-Fixes: 3f2b16734914 ("pwm: mtk-disp: Implement atomic API .get_state()")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Tested-by: Alexandre Mergnat <amergnat@baylibre.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+#include <linux/const.h>
+
+int align(int x, int a)
+{
+	return __KERNEL_ALIGN(x, a);
+}
+
+and trying to build that with -std=c99.
+
+Link: https://lkml.kernel.org/r/20230411092747.3759032-1-kevin.brodsky@arm.com
+Fixes: a79ff731a1b2 ("netfilter: xtables: make XT_ALIGN() usable in exported headers by exporting __ALIGN_KERNEL()")
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Reported-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
+Tested-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mtk-disp.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/uapi/linux/const.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
-index 7fea385a387a5..3811578fcff05 100644
---- a/drivers/pwm/pwm-mtk-disp.c
-+++ b/drivers/pwm/pwm-mtk-disp.c
-@@ -196,6 +196,16 @@ static int mtk_disp_pwm_get_state(struct pwm_chip *chip,
- 		return 0;
- 	}
+diff --git a/include/uapi/linux/const.h b/include/uapi/linux/const.h
+index af2a44c08683d..a429381e7ca50 100644
+--- a/include/uapi/linux/const.h
++++ b/include/uapi/linux/const.h
+@@ -28,7 +28,7 @@
+ #define _BITUL(x)	(_UL(1) << (x))
+ #define _BITULL(x)	(_ULL(1) << (x))
  
-+	/*
-+	 * Apply DISP_PWM_DEBUG settings to choose whether to enable or disable
-+	 * registers double buffer and manual commit to working register before
-+	 * performing any read/write operation
-+	 */
-+	if (mdp->data->bls_debug)
-+		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
-+					 mdp->data->bls_debug_mask,
-+					 mdp->data->bls_debug_mask);
-+
- 	rate = clk_get_rate(mdp->clk_main);
- 	con0 = readl(mdp->base + mdp->data->con0);
- 	con1 = readl(mdp->base + mdp->data->con1);
+-#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
++#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
+ #define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
+ 
+ #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 -- 
 2.39.2
 
