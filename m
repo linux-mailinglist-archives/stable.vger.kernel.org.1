@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2492E6FAD6F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B306FA886
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235966AbjEHLfC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56202 "EHLO
+        id S234984AbjEHKmA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:42:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235988AbjEHLeq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:46 -0400
+        with ESMTP id S234997AbjEHKlf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980D22D71
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50D727F02
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A8A36325E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338B0C433EF;
-        Mon,  8 May 2023 11:33:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1EFB62850
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85550C433D2;
+        Mon,  8 May 2023 10:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545626;
-        bh=id5MpoUwytcHW9sNnELAw8lRJjKZw4pOuKZi3J5POP8=;
+        s=korg; t=1683542446;
+        bh=GTcoM28+YmVEY1ibPIHCTMBozK+q8C1dPhkwsLNL7l4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xQmO7l+eDsQH+kkRCUK/SwQ3fLbTIswG6ac7+uY8X7K1LWQ+BBFGKHPfLkgcYg8Va
-         klFYkC7X1RFSMTv8RPxnF9UNEMEcrH1+8Tg1/QVF0I7TOGpGfQ9J/pAJcAleH15ImV
-         R/SZ8UJDgdRUnoyKhL1lP0CSxT1wwcFihDJBMUeU=
+        b=F0FIa9403y6fra76bFPsWLRKpy1RvzEkWxnDvG01hNiQCSY5TXMLQ3p99hmNCkY1o
+         MqW9yIqHfgVTgYMS7s5NBJydZg2hOBCbfrfLuVBL5Qh1euI3Pf5Pde7oeDbyxu2CJK
+         zXEm1SY+2DN0KHidQcEl0g1h89GhRlwXMrGB8Mh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/371] selftests/resctrl: Move ->setup() call outside of test specific branches
+Subject: [PATCH 6.2 437/663] drivers: staging: rtl8723bs: Fix locking in _rtw_join_timeout_handler()
 Date:   Mon,  8 May 2023 11:44:23 +0200
-Message-Id: <20230508094814.537663542@linuxfoundation.org>
+Message-Id: <20230508094442.256782843@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit c90b3b588e369c20087699316259fa5ebbb16f2d ]
+[ Upstream commit 215792eda008f6a1e7ed9d77fa20d582d22bb114 ]
 
-resctrl_val() function is called only by MBM, MBA, and CMT tests which
-means the else branch is never used.
+Commit 041879b12ddb ("drivers: staging: rtl8192bs: Fix deadlock in
+rtw_joinbss_event_prehandle()") besides fixing the deadlock also
+modified _rtw_join_timeout_handler() to use spin_[un]lock_irq()
+instead of spin_[un]lock_bh().
 
-Both test branches call param->setup().
+_rtw_join_timeout_handler() calls rtw_do_join() which takes
+pmlmepriv->scanned_queue.lock using spin_[un]lock_bh(). This
+spin_unlock_bh() call re-enables softirqs which triggers an oops in
+kernel/softirq.c: __local_bh_enable_ip() when it calls
+lockdep_assert_irqs_enabled():
 
-Remove the unused else branch and place the ->setup() call outside of
-the test specific branches reducing code duplication.
+[  244.506087] WARNING: CPU: 2 PID: 0 at kernel/softirq.c:376 __local_bh_enable_ip+0xa6/0x100
+...
+[  244.509022] Call Trace:
+[  244.509048]  <IRQ>
+[  244.509100]  _rtw_join_timeout_handler+0x134/0x170 [r8723bs]
+[  244.509468]  ? __pfx__rtw_join_timeout_handler+0x10/0x10 [r8723bs]
+[  244.509772]  ? __pfx__rtw_join_timeout_handler+0x10/0x10 [r8723bs]
+[  244.510076]  call_timer_fn+0x95/0x2a0
+[  244.510200]  __run_timers.part.0+0x1da/0x2d0
 
-Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: fa10366cc6f4 ("selftests/resctrl: Allow ->setup() to return errors")
+This oops is causd by the switch to spin_[un]lock_irq() which disables
+the IRQs for the entire duration of _rtw_join_timeout_handler().
+
+Disabling the IRQs is not necessary since all code taking this lock
+runs from either user contexts or from softirqs, switch back to
+spin_[un]lock_bh() to fix this.
+
+Fixes: 041879b12ddb ("drivers: staging: rtl8192bs: Fix deadlock in rtw_joinbss_event_prehandle()")
+Cc: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230221145326.7808-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrl_val.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
-index 95224345c78e7..dd907809d0b29 100644
---- a/tools/testing/selftests/resctrl/resctrl_val.c
-+++ b/tools/testing/selftests/resctrl/resctrl_val.c
-@@ -733,29 +733,22 @@ int resctrl_val(char **benchmark_cmd, struct resctrl_val_param *param)
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index c6fd6cf741ef6..ea2a6566e51bf 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -1549,7 +1549,7 @@ void _rtw_join_timeout_handler(struct timer_list *t)
+ 	if (adapter->bDriverStopped || adapter->bSurpriseRemoved)
+ 		return;
  
- 	/* Test runs until the callback setup() tells the test to stop. */
- 	while (1) {
-+		ret = param->setup(1, param);
-+		if (ret) {
-+			ret = 0;
-+			break;
-+		}
-+
- 		if (!strncmp(resctrl_val, MBM_STR, sizeof(MBM_STR)) ||
- 		    !strncmp(resctrl_val, MBA_STR, sizeof(MBA_STR))) {
--			ret = param->setup(1, param);
--			if (ret) {
--				ret = 0;
--				break;
--			}
--
- 			ret = measure_vals(param, &bw_resc_start);
- 			if (ret)
- 				break;
- 		} else if (!strncmp(resctrl_val, CMT_STR, sizeof(CMT_STR))) {
--			ret = param->setup(1, param);
--			if (ret) {
--				ret = 0;
--				break;
--			}
- 			sleep(1);
- 			ret = measure_cache_vals(param, bm_pid);
- 			if (ret)
- 				break;
--		} else {
--			break;
- 		}
+-	spin_lock_irq(&pmlmepriv->lock);
++	spin_lock_bh(&pmlmepriv->lock);
+ 
+ 	if (rtw_to_roam(adapter) > 0) { /* join timeout caused by roaming */
+ 		while (1) {
+@@ -1577,7 +1577,7 @@ void _rtw_join_timeout_handler(struct timer_list *t)
+ 
  	}
  
+-	spin_unlock_irq(&pmlmepriv->lock);
++	spin_unlock_bh(&pmlmepriv->lock);
+ }
+ 
+ /*
 -- 
 2.39.2
 
