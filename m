@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2452C6FAD78
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924126FABC4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235752AbjEHLfH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56238 "EHLO
+        id S235390AbjEHLRN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236063AbjEHLe5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B1C92E686
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:32 -0700 (PDT)
+        with ESMTP id S235347AbjEHLRM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C243702A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7197E63299
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB40C433D2;
-        Mon,  8 May 2023 11:33:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C1F462BDB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50025C433D2;
+        Mon,  8 May 2023 11:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545635;
-        bh=EogVsNTaEWeQoAvjCV2uoWcH6lS5U3mEIs3+bg0U/y8=;
+        s=korg; t=1683544630;
+        bh=LMIRdMaa3fH7lGEg6C1PbLcnWMZuqYKIUZ5Rmn4b2hc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WIWpIrHDv/0FZAJjCOUQni07MPZahK9HXn73ZdR6Kz2sLkKRrzwhd0m2LE/7bx61U
-         /5fMJuyIbVpsdUg+QGkBuviDmZDToiAzp+Cryo7s10mkcfxQVWPL9r99k6/b38ppgW
-         5DhbnCl3ukufKrrteVpVFSQlYknQszoL+lH/Qvhc=
+        b=fZ/KfHfBBGrEnlP8AyuH+2+Dk6gQ2xYhLX9qXdqr69+BGsqOV4qZJskDRK8GPtey7
+         FCGjA8TloZLgBom5mHItXhQjJZfrOOAq1SpwlKV0qLjz6LK9sHcbErNLdbuSFPycZH
+         TaC3+QDEycxJueVP1e+r1QXk8MBSIZW4tPRHCvlg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Muralidhara M K <muralimk@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/371] x86/MCE/AMD: Use an u64 for bank_map
-Date:   Mon,  8 May 2023 11:45:06 +0200
-Message-Id: <20230508094816.193634383@linuxfoundation.org>
+Subject: [PATCH 6.3 472/694] bpf: Dont EFAULT for getsockopt with optval=NULL
+Date:   Mon,  8 May 2023 11:45:07 +0200
+Message-Id: <20230508094449.125349813@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,97 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Muralidhara M K <muralimk@amd.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 4c1cdec319b9aadb65737c3eb1f5cb74bd6aa156 ]
+[ Upstream commit 00e74ae0863827d944e36e56a4ce1e77e50edb91 ]
 
-Thee maximum number of MCA banks is 64 (MAX_NR_BANKS), see
+Some socket options do getsockopt with optval=NULL to estimate the size
+of the final buffer (which is returned via optlen). This breaks BPF
+getsockopt assumptions about permitted optval buffer size. Let's enforce
+these assumptions only when non-NULL optval is provided.
 
-  a0bc32b3cacf ("x86/mce: Increase maximum number of banks to 64").
-
-However, the bank_map which contains a bitfield of which banks to
-initialize is of type unsigned int and that overflows when those bit
-numbers are >= 32, leading to UBSAN complaining correctly:
-
-  UBSAN: shift-out-of-bounds in arch/x86/kernel/cpu/mce/amd.c:1365:38
-  shift exponent 32 is too large for 32-bit type 'int'
-
-Change the bank_map to a u64 and use the proper BIT_ULL() macro when
-modifying bits in there.
-
-  [ bp: Rewrite commit message. ]
-
-Fixes: a0bc32b3cacf ("x86/mce: Increase maximum number of banks to 64")
-Signed-off-by: Muralidhara M K <muralimk@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230127151601.1068324-1-muralimk@amd.com
+Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
+Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/ZD7Js4fj5YyI2oLd@google.com/T/#mb68daf700f87a9244a15d01d00c3f0e5b08f49f7
+Link: https://lore.kernel.org/bpf/20230418225343.553806-2-sdf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ kernel/bpf/cgroup.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 6469d3135d268..d4e75be64a4c5 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -210,10 +210,10 @@ static DEFINE_PER_CPU(struct threshold_bank **, threshold_banks);
-  * A list of the banks enabled on each logical CPU. Controls which respective
-  * descriptors to initialize later in mce_threshold_create_device().
-  */
--static DEFINE_PER_CPU(unsigned int, bank_map);
-+static DEFINE_PER_CPU(u64, bank_map);
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index bf2fdb33fb313..819f011f0a9cd 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -1921,14 +1921,17 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
+ 	if (ret < 0)
+ 		goto out;
  
- /* Map of banks that have more than MCA_MISC0 available. */
--static DEFINE_PER_CPU(u32, smca_misc_banks_map);
-+static DEFINE_PER_CPU(u64, smca_misc_banks_map);
+-	if (ctx.optlen > max_optlen || ctx.optlen < 0) {
++	if (optval && (ctx.optlen > max_optlen || ctx.optlen < 0)) {
+ 		ret = -EFAULT;
+ 		goto out;
+ 	}
  
- static void amd_threshold_interrupt(void);
- static void amd_deferred_error_interrupt(void);
-@@ -242,7 +242,7 @@ static void smca_set_misc_banks_map(unsigned int bank, unsigned int cpu)
- 		return;
- 
- 	if (low & MASK_BLKPTR_LO)
--		per_cpu(smca_misc_banks_map, cpu) |= BIT(bank);
-+		per_cpu(smca_misc_banks_map, cpu) |= BIT_ULL(bank);
- 
- }
- 
-@@ -505,7 +505,7 @@ static u32 smca_get_block_address(unsigned int bank, unsigned int block,
- 	if (!block)
- 		return MSR_AMD64_SMCA_MCx_MISC(bank);
- 
--	if (!(per_cpu(smca_misc_banks_map, cpu) & BIT(bank)))
-+	if (!(per_cpu(smca_misc_banks_map, cpu) & BIT_ULL(bank)))
- 		return 0;
- 
- 	return MSR_AMD64_SMCA_MCx_MISCy(bank, block - 1);
-@@ -549,7 +549,7 @@ prepare_threshold_block(unsigned int bank, unsigned int block, u32 addr,
- 	int new;
- 
- 	if (!block)
--		per_cpu(bank_map, cpu) |= (1 << bank);
-+		per_cpu(bank_map, cpu) |= BIT_ULL(bank);
- 
- 	memset(&b, 0, sizeof(b));
- 	b.cpu			= cpu;
-@@ -1061,7 +1061,7 @@ static void amd_threshold_interrupt(void)
- 		return;
- 
- 	for (bank = 0; bank < this_cpu_read(mce_num_banks); ++bank) {
--		if (!(per_cpu(bank_map, cpu) & (1 << bank)))
-+		if (!(per_cpu(bank_map, cpu) & BIT_ULL(bank)))
- 			continue;
- 
- 		first_block = bp[bank]->blocks;
-@@ -1538,7 +1538,7 @@ int mce_threshold_create_device(unsigned int cpu)
- 		return -ENOMEM;
- 
- 	for (bank = 0; bank < numbanks; ++bank) {
--		if (!(this_cpu_read(bank_map) & (1 << bank)))
-+		if (!(this_cpu_read(bank_map) & BIT_ULL(bank)))
- 			continue;
- 		err = threshold_create_bank(bp, cpu, bank);
- 		if (err) {
+ 	if (ctx.optlen != 0) {
+-		if (copy_to_user(optval, ctx.optval, ctx.optlen) ||
+-		    put_user(ctx.optlen, optlen)) {
++		if (optval && copy_to_user(optval, ctx.optval, ctx.optlen)) {
++			ret = -EFAULT;
++			goto out;
++		}
++		if (put_user(ctx.optlen, optlen)) {
+ 			ret = -EFAULT;
+ 			goto out;
+ 		}
 -- 
 2.39.2
 
