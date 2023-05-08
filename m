@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDF96FAB94
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B6706FAB96
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234048AbjEHLPA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:15:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
+        id S234203AbjEHLPH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:15:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234203AbjEHLO7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:59 -0400
+        with ESMTP id S234368AbjEHLPG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073873656F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3E236574
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 921D662BB7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866A3C433D2;
-        Mon,  8 May 2023 11:14:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 728C862BBD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC02C433D2;
+        Mon,  8 May 2023 11:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544498;
-        bh=x3eg2N19eGRJdwsY/2D7GaWpwl7igUeDKDrtO7znVbg=;
+        s=korg; t=1683544503;
+        bh=HEJjA6ByPB3z7YcJMR6szPccgJQ9178/Rx2Z0VCIP90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zRTTuWwLKbFjSP1SmLLhWJNbelnz4c8E/32b6T8XkmRbFQpoiso4jFF341ADtDbXj
-         DxcO7yUKBs4LQAey7F6V1K8xTDTNXFZ5E0Yj+QFaV/FLxo2IO9ew6JeC9QpFtSAsYZ
-         tWxOX73dMil6b9pJbltsaj0tbo7pld4s5MFW883c=
+        b=QfZnkelEDL4q++xixvMjN3/DX5KRSsjxdiZLYOEQAPlVB8l1HO57YULOg+hM5BlAa
+         dbEyYAeH0yb1eFhZR2cvkdmDJcIsgFHxMMuuLP6IIktneC30ik5Th5u9lRZVp1sP4Z
+         5V5ZHWYFcXjAR/HSYVxPh1rtnwSutv6v1eaUNvYc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Lorenzo Zolfanelli <lorenzo@zolfa.nl>
-Subject: [PATCH 6.3 430/694] wifi: iwlwifi: make the loop for card preparation effective
-Date:   Mon,  8 May 2023 11:44:25 +0200
-Message-Id: <20230508094447.309135408@linuxfoundation.org>
+        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 431/694] wifi: mt76: remove redundent MCU_UNI_CMD_* definitions
+Date:   Mon,  8 May 2023 11:44:26 +0200
+Message-Id: <20230508094447.355466247@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -57,48 +53,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Deren Wu <deren.wu@mediatek.com>
 
-[ Upstream commit 28965ec0b5d9112585f725660e2ff13218505ace ]
+[ Upstream commit 532f0482fc577a78c0086893ab39acb406ac3e65 ]
 
-Since we didn't reset t to 0, only the first iteration of the loop
-did checked the ready bit several times.
->From the second iteration and on, we just tested the bit once and
-continued to the next iteration.
+clear redundent definitions only
 
-Reported-and-tested-by: Lorenzo Zolfanelli <lorenzo@zolfa.nl>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216452
-Fixes: 289e5501c314 ("iwlwifi: fix the preparation of the card")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230416154301.615b683ab9c8.Ic52c3229d3345b0064fa34263293db095d88daf8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 5b55b6da982c ("wifi: mt76: mt7921: add unified ROC cmd/event support")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 40283fe622daa..171b6bf4a65a0 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -599,7 +599,6 @@ static int iwl_pcie_set_hw_ready(struct iwl_trans *trans)
- int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
- {
- 	int ret;
--	int t = 0;
- 	int iter;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index a5e6ee4daf92e..40a99e0caded8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -967,9 +967,6 @@ enum {
+ 	DEV_INFO_MAX_NUM
+ };
  
- 	IWL_DEBUG_INFO(trans, "iwl_trans_prepare_card_hw enter\n");
-@@ -616,6 +615,8 @@ int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
- 	usleep_range(1000, 2000);
- 
- 	for (iter = 0; iter < 10; iter++) {
-+		int t = 0;
-+
- 		/* If HW is not ready, prepare the conditions to check again */
- 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
- 			    CSR_HW_IF_CONFIG_REG_PREPARE);
+-#define MCU_UNI_CMD_EVENT                       BIT(1)
+-#define MCU_UNI_CMD_UNSOLICITED_EVENT           BIT(2)
+-
+ /* event table */
+ enum {
+ 	MCU_EVENT_TARGET_ADDRESS_LEN = 0x01,
 -- 
 2.39.2
 
