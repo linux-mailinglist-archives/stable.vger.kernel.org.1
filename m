@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C15AE6FA86C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A1A06FAB5E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234891AbjEHKkY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42448 "EHLO
+        id S233845AbjEHLM2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234980AbjEHKj6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A17F26E94
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:56 -0700 (PDT)
+        with ESMTP id S233832AbjEHLM0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEFE31EF9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91BC662831
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D977C433EF;
-        Mon,  8 May 2023 10:39:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 218D362B85
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337D7C433D2;
+        Mon,  8 May 2023 11:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542395;
-        bh=AezFzS6WqfQd7JL/0wiv/83Q8OlHz6O+F7MIEe5+RO0=;
+        s=korg; t=1683544343;
+        bh=ht4eD109vJ3wW+ZjBtY5hoH5e2hvHJKXeQfGyZOYbrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lHt+Ffb9i0A7CeEaM6BakpV1y0+1GWno+Mwx3rl68Urn8yS/vc/dDBpjeIkpcAHj7
-         8gejCCM9qQKyEKc5b+IYES8XbZH11I1coiww2c1BSSP5ygN+lR9IWQRkOuIV9viJK7
-         wwUTf9uLH7FzkVZr5r6sz78MWmLAK5xVFAIV+mJQ=
+        b=GhaU4m7iloeHvkmk4eZbHtZaioLalVRYPwc46CCG6R0WSfY6b5qaJcRDhQHzNczTG
+         fbk7iPskm/B6Y/v0tN1GX87bx4d9q0r7l3ZZE4Hj1/9GgP7N223vQiun9MckOyaMcN
+         2rLuoD2+IOgm0buhYjM/Ed3B3rhsDG1U7bB0oEbo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 387/663] wifi: mt76: mt7921: fix PCI DMA hang after reboot
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 378/694] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
 Date:   Mon,  8 May 2023 11:43:33 +0200
-Message-Id: <20230508094440.659304681@linuxfoundation.org>
+Message-Id: <20230508094445.164706934@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,48 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 9270270d62191b7549296721e8d5f3dc0df01563 ]
+[ Upstream commit 905a9241e4e8c15d2c084fee916280514848fe35 ]
 
-mt7921 just stop some workers and clean up chip status before reboot.
-In stress test, there are working activities still running at the period
-of .shutdown callback and that would cause some hosts cannot recover
-DMA after reboot. To avoid the floating state in reboot, we use
-mt7921_pci_remove() to fully deinit all resources.
+If there is a failure during copy_from_user or user-provided data buffer
+is invalid, rtl_debugfs_set_write_rfreg should return negative error code
+instead of a positive value count.
 
-Fixes: f23a0cea8bd6 ("wifi: mt76: mt7921e: add pci .shutdown() support")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix this bug by returning correct error code. Moreover, the check of buffer
+against null is removed since it will be handled by copy_from_user.
+
+Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230326053138.91338-1-harperchen1110@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 41be108e1d5a1..bda92d8359692 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -515,17 +515,7 @@ static int mt7921_pci_resume(struct device *device)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index 0b1bc04cb6adb..602717928887d 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -375,8 +375,8 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
  
- static void mt7921_pci_shutdown(struct pci_dev *pdev)
- {
--	struct mt76_dev *mdev = pci_get_drvdata(pdev);
--	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
--	struct mt76_connac_pm *pm = &dev->pm;
--
--	cancel_delayed_work_sync(&pm->ps_work);
--	cancel_work_sync(&pm->wake_work);
--
--	/* chip cleanup before reboot */
--	mt7921_mcu_drv_pmctrl(dev);
--	mt7921_dma_cleanup(dev);
--	mt7921_wfsys_reset(dev);
-+	mt7921_pci_remove(pdev);
- }
+ 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
  
- static DEFINE_SIMPLE_DEV_PM_OPS(mt7921_pm_ops, mt7921_pci_suspend, mt7921_pci_resume);
+-	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+-		return count;
++	if (copy_from_user(tmp, buffer, tmp_len))
++		return -EFAULT;
+ 
+ 	tmp[tmp_len] = '\0';
+ 
+@@ -386,7 +386,7 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
+ 	if (num != 4) {
+ 		rtl_dbg(rtlpriv, COMP_ERR, DBG_DMESG,
+ 			"Format is <path> <addr> <mask> <data>\n");
+-		return count;
++		return -EINVAL;
+ 	}
+ 
+ 	rtl_set_rfreg(hw, path, addr, bitmask, data);
 -- 
 2.39.2
 
