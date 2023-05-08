@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 878BA6FAE34
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163436FACA6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236139AbjEHLm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38638 "EHLO
+        id S235742AbjEHL0r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236149AbjEHLmE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:42:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF2D4268D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:27 -0700 (PDT)
+        with ESMTP id S235738AbjEHL0h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E973B7B2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BA90634E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF17C433D2;
-        Mon,  8 May 2023 11:40:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FD1862DB3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D6BC433D2;
+        Mon,  8 May 2023 11:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546060;
-        bh=gfob5RVvO+8vSjUDiVXTpdkeqvV1sKG00uQz5ESath4=;
+        s=korg; t=1683545176;
+        bh=259hC/9eM3VsoqXYHi8efyk91ljlfqpymN71J1e8wBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZFKc3dWLFSUCYnPugVhy7WjDiqEZct/slNQKmcBoD2J1H3nSpsrNhCN51KpWjgVG9
-         4G6/Fso2VqGXOHqbgYK93ZsptJn5pvCLYTVZAILzDM2v/mUP8I8KxE3/NC8YBBhqYJ
-         x4EuLRvkTx6N4aKlz6XElw5O0kMQGEJ/B6biB8Jg=
+        b=KZhDbbniVJwM58aL5kBKIOuO8aumamen6/cuTCOT/vtRrMIsxT9Dg6jNoZ2P9WsGe
+         TDjWd6isHnHTQd3JYbyx1NZ7Gretj1ItDTlOJyJwj/XN9sdayOalEzOTCXfp8L6Ih6
+         SpUWNxmrud6JUmG/ITvDgpEwdspgIlqx9Ln+Fyio=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        patches@lists.linux.dev, Jacky Bai <ping.bai@nxp.com>,
+        Ye Li <ye.li@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 243/371] serial: stm32: Re-assert RTS/DE GPIO in RS485 mode only if more data are transmitted
+Subject: [PATCH 6.3 609/694] clk: imx: imx8ulp: Fix XBAR_DIVBUS and AD_SLOW clock parents
 Date:   Mon,  8 May 2023 11:47:24 +0200
-Message-Id: <20230508094821.711066016@linuxfoundation.org>
+Message-Id: <20230508094455.134857386@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,48 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit c47527cbcc3c50800f34b8c684f29721f75de246 ]
+[ Upstream commit d608c18018c897b88d66f1340fe274b7181817fa ]
 
-The stm32_usart_transmit_chars() may be called with empty or stopped
-transmit queue, and no XON/OFF character pending. This can happen at
-the end of transmission, where this last call is used to either handle
-the XON/XOFF x_char, or disable TX interrupt if queue is empty or
-stopped.
+XBAR_DIVBUS and AD_SLOW should set parent to XBAR_AD_DIVPLAT and
+XBAR_DIVBUS respectively, not the NIC_AD. otherwise we will get
+wrong clock rate.
 
-If that occurs, do not assert the RS485 RTS/DE GPIO anymore, as the
-GPIO would remain asserted past the end of transmission and that would
-block the RS485 bus after the transmission.
-
-Only assert the RS485 RTS/DE GPIO if there is either pending XON/XOFF
-x_char, or at least one character in running transmit queue.
-
-Fixes: d7c76716169d ("serial: stm32: Use TC interrupt to deassert GPIO RTS in RS485 mode")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20230223042252.95480-2-marex@denx.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c43a801a5789 ("clk: imx: Add clock driver for imx8ulp")
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Ye Li <ye.li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230331063814.2462059-2-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/stm32-usart.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imx8ulp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 0e8158cfaf0f9..3b7d4481edbea 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -502,8 +502,9 @@ static void stm32_usart_transmit_chars(struct uart_port *port)
- 	int ret;
+diff --git a/drivers/clk/imx/clk-imx8ulp.c b/drivers/clk/imx/clk-imx8ulp.c
+index a07df3b44703f..89121037a8f0e 100644
+--- a/drivers/clk/imx/clk-imx8ulp.c
++++ b/drivers/clk/imx/clk-imx8ulp.c
+@@ -200,8 +200,8 @@ static int imx8ulp_clk_cgc1_init(struct platform_device *pdev)
+ 	clks[IMX8ULP_CLK_NIC_AD_DIVPLAT] = imx_clk_hw_divider_flags("nic_ad_divplat", "nic_sel", base + 0x34, 21, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
+ 	clks[IMX8ULP_CLK_NIC_PER_DIVPLAT] = imx_clk_hw_divider_flags("nic_per_divplat", "nic_ad_divplat", base + 0x34, 14, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
+ 	clks[IMX8ULP_CLK_XBAR_AD_DIVPLAT] = imx_clk_hw_divider_flags("xbar_ad_divplat", "nic_ad_divplat", base + 0x38, 14, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
+-	clks[IMX8ULP_CLK_XBAR_DIVBUS] = imx_clk_hw_divider_flags("xbar_divbus", "nic_ad_divplat", base + 0x38, 7, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
+-	clks[IMX8ULP_CLK_XBAR_AD_SLOW] = imx_clk_hw_divider_flags("xbar_ad_slow", "nic_ad_divplat", base + 0x38, 0, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
++	clks[IMX8ULP_CLK_XBAR_DIVBUS] = imx_clk_hw_divider_flags("xbar_divbus", "xbar_ad_divplat", base + 0x38, 7, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
++	clks[IMX8ULP_CLK_XBAR_AD_SLOW] = imx_clk_hw_divider_flags("xbar_ad_slow", "xbar_divbus", base + 0x38, 0, 6, CLK_SET_RATE_PARENT | CLK_IS_CRITICAL);
  
- 	if (!stm32_port->hw_flow_control &&
--	    port->rs485.flags & SER_RS485_ENABLED) {
--		stm32_port->txdone = false;
-+	    port->rs485.flags & SER_RS485_ENABLED &&
-+	    (port->x_char ||
-+	     !(uart_circ_empty(xmit) || uart_tx_stopped(port)))) {
- 		stm32_usart_tc_interrupt_disable(port);
- 		stm32_usart_rs485_rts_enable(port);
- 	}
+ 	clks[IMX8ULP_CLK_SOSC_DIV1_GATE] = imx_clk_hw_gate_dis("sosc_div1_gate", "sosc", base + 0x108, 7);
+ 	clks[IMX8ULP_CLK_SOSC_DIV2_GATE] = imx_clk_hw_gate_dis("sosc_div2_gate", "sosc", base + 0x108, 15);
 -- 
 2.39.2
 
