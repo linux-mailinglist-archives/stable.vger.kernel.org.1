@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48C6D6FA53D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D159E6FAB56
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234080AbjEHKHS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35708 "EHLO
+        id S230032AbjEHLMI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234081AbjEHKHR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:17 -0400
+        with ESMTP id S233712AbjEHLMG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:12:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63BBB19AA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C802C919
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:12:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC6FC62349
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AE1C433D2;
-        Mon,  8 May 2023 10:07:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0EA062B77
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:12:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0184FC433D2;
+        Mon,  8 May 2023 11:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540435;
-        bh=dXgEGa6BFCGhBUfTgbDhuBvUxQVevaVdPPhVVcsOdBM=;
+        s=korg; t=1683544322;
+        bh=0P9e1jtMpQ3Ujbw281sB3FwnIy2z61RQdz65lK+ZBfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VHbmpSBzuGZnN5Qxk0E3bNWbdZZG9gnkO/W1ds/GKCd6+7v+UuOiHE0cWkQYzqOmo
-         92HX7fGXYY9kmnq9cPxnhLkrEU/hL+rvHSPCDfekzOYyLUroHSrcZ7wVYlZRvtDLTx
-         MW+B3ZFQu7Jn4PPvZTxmaU0Ukg8ryiLpEPRNJ3Dg=
+        b=vGAcJAI3CZlAWiU0Dl+r4nAfVnO7t+6BB3mofw3BJJOCiwL4F4wP6snzRIBgiIKaU
+         ZQEfDaCLqGyA/rMb495uhVPQYVvqk7t9xg3u+jPnJSAct09FHUCt/P7+JVyfYZDhyx
+         FR4ujgP2i91vv0dNW6k+dqh1Z+EgsPLMf1GVQ7ac=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quan Zhou <quan.zhou@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        patches@lists.linux.dev, Yonggil Song <yonggil.song@samsung.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 364/611] wifi: mt76: mt7921e: fix probe timeout after reboot
-Date:   Mon,  8 May 2023 11:43:26 +0200
-Message-Id: <20230508094434.215597134@linuxfoundation.org>
+Subject: [PATCH 6.3 372/694] f2fs: fix uninitialized skipped_gc_rwsem
+Date:   Mon,  8 May 2023 11:43:27 +0200
+Message-Id: <20230508094444.898599760@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Yonggil Song <yonggil.song@samsung.com>
 
-[ Upstream commit c397fc1e6365a2a9e5540a85b2c1d4ea412aa0e2 ]
+[ Upstream commit c17caf0ba3aa3411b96c71b4ce24be1040b8f3e8 ]
 
-In system warm reboot scene, due to the polling timeout(now 1000us)
-is too short to wait dma idle in time, it may make driver probe fail
-with error code -ETIMEDOUT. Meanwhile, we also found the dma may take
-around 70ms to enter idle state. Change the polling idle timeout to
-100ms to avoid the probabilistic probe fail.
+When f2fs skipped a gc round during victim migration, there was a bug which
+would skip all upcoming gc rounds unconditionally because skipped_gc_rwsem
+was not initialized. It fixes the bug by correctly initializing the
+skipped_gc_rwsem inside the gc loop.
 
-Tested pass with 5000 times warm reboot on x86 platform.
-
-[4.477496] pci 0000:01:00.0: attach allowed to drvr mt7921e [internal device]
-[4.478306] mt7921e 0000:01:00.0: ASIC revision: 79610010
-[4.480063] mt7921e: probe of 0000:01:00.0 failed with error -110
-
-Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 6f8d4455060d ("f2fs: avoid fi->i_gc_rwsem[WRITE] lock in f2fs_gc")
+Signed-off-by: Yonggil Song <yonggil.song@samsung.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/gc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index d1f10f6d9adc3..dc4ccfef4b048 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -90,9 +90,9 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 0a9dfa4598606..292a17d62f569 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1791,8 +1791,8 @@ int f2fs_gc(struct f2fs_sb_info *sbi, struct f2fs_gc_control *gc_control)
+ 				prefree_segments(sbi));
  
--	if (!mt76_poll(dev, MT_WFDMA0_GLO_CFG,
--		       MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
--		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
-+	if (!mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+				 MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
- 		return -ETIMEDOUT;
- 
- 	return 0;
+ 	cpc.reason = __get_cp_reason(sbi);
+-	sbi->skipped_gc_rwsem = 0;
+ gc_more:
++	sbi->skipped_gc_rwsem = 0;
+ 	if (unlikely(!(sbi->sb->s_flags & SB_ACTIVE))) {
+ 		ret = -EINVAL;
+ 		goto stop;
 -- 
 2.39.2
 
