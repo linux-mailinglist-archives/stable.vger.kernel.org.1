@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79CCC6FA89C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A4326FA56D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235002AbjEHKnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
+        id S234131AbjEHKJV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235016AbjEHKmk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:40 -0400
+        with ESMTP id S234130AbjEHKJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E4926EBE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604893293C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04F9862829
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B94AC433EF;
-        Mon,  8 May 2023 10:41:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C00716238F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67C5C433D2;
+        Mon,  8 May 2023 10:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542503;
-        bh=LMIRdMaa3fH7lGEg6C1PbLcnWMZuqYKIUZ5Rmn4b2hc=;
+        s=korg; t=1683540558;
+        bh=OtCNLc/mngL2CXfMA9VKZ6YNErKcZjp7hBoFcXf+/mI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n4CJ4usdgLOrOiD7bYJaKF+PfT6R1hYLUTl6MHq8ZdkD4N9blOGBLRtvunIxNKJH5
-         i+dlQxWJop8B5P5/LMD0xExJci26hBc31x7MtPNlz/kA/kUJvL3fTU7Mbl6VAcZDVE
-         /345zXUVSoBDV6Ld3/EaQ2yB/dDGW0aplfElDWsI=
+        b=Y3q/e4w7d0GMttXOzF2mb4O4oWmYtCmpDc3dAbVbGYpgC2eutbWRk5UGWbqbTsqkf
+         v9qdip0gabgzzoyrgsJ7whwiTMr2ImyNuQCud4a6x1h7I1oy+pSDTW6lYHk9gUg64K
+         3U5hiviC6HFKsEe6BN9VJe7Lgq7tTR2E0JKOULvM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 425/663] bpf: Dont EFAULT for getsockopt with optval=NULL
+Subject: [PATCH 6.1 409/611] spi: atmel-quadspi: Free resources even if runtime resume failed in .remove()
 Date:   Mon,  8 May 2023 11:44:11 +0200
-Message-Id: <20230508094441.865134581@linuxfoundation.org>
+Message-Id: <20230508094435.544529929@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +57,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 00e74ae0863827d944e36e56a4ce1e77e50edb91 ]
+[ Upstream commit 9448bc1dee65f86c0fe64d9dea8b410af0586886 ]
 
-Some socket options do getsockopt with optval=NULL to estimate the size
-of the final buffer (which is returned via optlen). This breaks BPF
-getsockopt assumptions about permitted optval buffer size. Let's enforce
-these assumptions only when non-NULL optval is provided.
+An early error exit in atmel_qspi_remove() doesn't prevent the device
+unbind. So this results in an spi controller with an unbound parent
+and unmapped register space (because devm_ioremap_resource() is undone).
+So using the remaining spi controller probably results in an oops.
 
-Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
-Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/ZD7Js4fj5YyI2oLd@google.com/T/#mb68daf700f87a9244a15d01d00c3f0e5b08f49f7
-Link: https://lore.kernel.org/bpf/20230418225343.553806-2-sdf@google.com
+Instead unregister the controller unconditionally and only skip hardware
+access and clk disable.
+
+Also add a warning about resume failing and return zero unconditionally.
+The latter has the only effect to suppress a less helpful error message by
+the spi core.
+
+Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20230317084232.142257-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cgroup.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/spi/atmel-quadspi.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index bf2fdb33fb313..819f011f0a9cd 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1921,14 +1921,17 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
- 	if (ret < 0)
- 		goto out;
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index f480c7ae93fab..7e05b48dbd71c 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -672,18 +672,28 @@ static int atmel_qspi_remove(struct platform_device *pdev)
+ 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 	int ret;
  
--	if (ctx.optlen > max_optlen || ctx.optlen < 0) {
-+	if (optval && (ctx.optlen > max_optlen || ctx.optlen < 0)) {
- 		ret = -EFAULT;
- 		goto out;
- 	}
+-	ret = pm_runtime_resume_and_get(&pdev->dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	spi_unregister_controller(ctrl);
+-	atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
++
++	ret = pm_runtime_get_sync(&pdev->dev);
++	if (ret >= 0) {
++		atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
++		clk_disable(aq->qspick);
++		clk_disable(aq->pclk);
++	} else {
++		/*
++		 * atmel_qspi_runtime_{suspend,resume} just disable and enable
++		 * the two clks respectively. So after resume failed these are
++		 * off, and we skip hardware access and disabling these clks again.
++		 */
++		dev_warn(&pdev->dev, "Failed to resume device on remove\n");
++	}
++
++	clk_unprepare(aq->qspick);
++	clk_unprepare(aq->pclk);
  
- 	if (ctx.optlen != 0) {
--		if (copy_to_user(optval, ctx.optval, ctx.optlen) ||
--		    put_user(ctx.optlen, optlen)) {
-+		if (optval && copy_to_user(optval, ctx.optval, ctx.optlen)) {
-+			ret = -EFAULT;
-+			goto out;
-+		}
-+		if (put_user(ctx.optlen, optlen)) {
- 			ret = -EFAULT;
- 			goto out;
- 		}
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 
+-	clk_disable_unprepare(aq->qspick);
+-	clk_disable_unprepare(aq->pclk);
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
