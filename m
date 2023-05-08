@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78AA76FA73B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F6466FAA8C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234439AbjEHK2j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54708 "EHLO
+        id S233253AbjEHLDx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234533AbjEHK2S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:18 -0400
+        with ESMTP id S235511AbjEHLDC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18EB2D2EC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1970A4C13
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D95261D79
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E910C433D2;
-        Mon,  8 May 2023 10:28:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A35B362A48
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D80C433EF;
+        Mon,  8 May 2023 11:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541693;
-        bh=MFU8yBvbA/7bEFFNgOb47Y5oJ2wX1QOvS35//bwn3ig=;
+        s=korg; t=1683543744;
+        bh=RYwn2FDu/hPflrlpPWCTINds9G4Ji7Sg9t2EgmZI/Qg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s2LcjoU/TEkwVE+XjocQFLaGKFsOwL2bdAO+LhHrum2KWnWiG64AOBvtenT7D665d
-         yaVJRwxc+DgCDqDQj7qGAZ9qG9TqHkZYD7UgKxFpXL0jzPO33Gqz+6jc/4tLAL528K
-         Zv26+ER666BV5J+N3GfwpI0YcPjbnodyR80p3tDU=
+        b=X1W31xy18KmEvYZwxyipZf5ZvvA0jIJcOcDg1kQkp+W+Qjo6wSa4EsT4VeSkcPnBQ
+         aY8nhLhZi+pqxXN/xR58nlfod1PsYBRXV4ZeuX7JY9/ao0iXK7C50mRKwvLt24qQG4
+         WtIFhJYgA2l4hAFHiejNWhgF5JGa80yQUcer7smM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 196/663] firmware: arm_scmi: Fix xfers allocation on Rx channel
-Date:   Mon,  8 May 2023 11:40:22 +0200
-Message-Id: <20230508094434.759191810@linuxfoundation.org>
+Subject: [PATCH 6.3 188/694] arm64: dts: qcom: ipq8074: Fix the PCI I/O port range
+Date:   Mon,  8 May 2023 11:40:23 +0200
+Message-Id: <20230508094438.527655016@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit b2ccba9e8cdc6fb3985cc227844e7c6af309ffb1 ]
+[ Upstream commit e49eafefe5ab325e38dd074f2005076ffc271e54 ]
 
-Two distinct pools of xfer descriptors are allocated at initialization
-time: one (Tx) used to provide xfers to track commands and their replies
-(or delayed replies) and another (Rx) to pick xfers from to be used for
-processing notifications.
+For 64KiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x10000. Hence, fix the bogus PCI addresses
+(0x10200000, 0x20200000) specified in the ranges property for I/O region.
 
-Such pools, though, are allocated globally to be used by the whole SCMI
-instance, they are not allocated per-channel and as such the allocation of
-notifications xfers cannot be simply skipped if no Rx channel was found for
-the base protocol common channel, because there could be defined more
-optional per-protocol dedicated channels that instead support Rx channels.
+While at it, let's use the missing 0x prefix for the addresses and align
+them in a single line.
 
-Change the conditional check to skip allocation for the notification pool
-only if no Rx channel has been detected on any per-channel protocol at all.
-
-Fixes: 4ebd8f6dea81 ("firmware: arm_scmi: Add receive buffer support for notifications")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20230326203449.3492948-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 33057e1672fe ("ARM: dts: ipq8074: Add pcie nodes")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-6-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index ffdad59ec81fc..fe06dc1936896 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1981,7 +1981,7 @@ static int scmi_xfer_info_init(struct scmi_info *sinfo)
- 		return ret;
+diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+index 62d05d740646b..e8dad3ff4fcc7 100644
+--- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+@@ -780,10 +780,8 @@
+ 			phys = <&pcie_phy1>;
+ 			phy-names = "pciephy";
  
- 	ret = __scmi_xfer_info_init(sinfo, &sinfo->tx_minfo);
--	if (!ret && idr_find(&sinfo->rx_idr, SCMI_PROTOCOL_BASE))
-+	if (!ret && !idr_is_empty(&sinfo->rx_idr))
- 		ret = __scmi_xfer_info_init(sinfo, &sinfo->rx_minfo);
+-			ranges = <0x81000000 0 0x10200000 0x10200000
+-				  0 0x10000>,   /* downstream I/O */
+-				 <0x82000000 0 0x10220000 0x10220000
+-				  0 0xfde0000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x10200000 0x0 0x10000>,   /* I/O */
++				 <0x82000000 0x0 0x10220000 0x10220000 0x0 0xfde0000>; /* MEM */
  
- 	return ret;
+ 			interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -844,10 +842,8 @@
+ 			phys = <&pcie_phy0>;
+ 			phy-names = "pciephy";
+ 
+-			ranges = <0x81000000 0 0x20200000 0x20200000
+-				  0 0x10000>, /* downstream I/O */
+-				 <0x82000000 0 0x20220000 0x20220000
+-				  0 0xfde0000>; /* non-prefetchable memory */
++			ranges = <0x81000000 0x0 0x00000000 0x20200000 0x0 0x10000>,   /* I/O */
++				 <0x82000000 0x0 0x20220000 0x20220000 0x0 0xfde0000>; /* MEM */
+ 
+ 			interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
 -- 
 2.39.2
 
