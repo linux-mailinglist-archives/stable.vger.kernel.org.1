@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D03B6FA8CE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 841A56FADA9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235047AbjEHKpe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
+        id S235951AbjEHLgs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235046AbjEHKpQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F682A84E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:08 -0700 (PDT)
+        with ESMTP id S236099AbjEHLga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:36:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC40E3F559
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9224B62870
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8551BC433EF;
-        Mon,  8 May 2023 10:44:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB99E6325E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C10C433D2;
+        Mon,  8 May 2023 11:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542647;
-        bh=GquejjVO4TcE5RGb3GeRW4EzYw4l3+lJ7utfDzWfzPc=;
+        s=korg; t=1683545764;
+        bh=uEjKJffeFMNY1bzbDWNRGIt6zyN1jem/6u6aM87EJ7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Up8ABdIif0RCBvmpP2aUu/1aHmLQF7W2KVErSPfeuKSXwAP9R+rbSm5hL9T7OszZe
-         H0D9DCuV8lw6aM6Odh3wvP2qKuO72YkPTz02UbDN9YZHmvH7Px5PtgZ8A+VmErJACV
-         05RsqE1n/L2+JPGEeArYTNb0M/Eq/2ugICsd6Yz0=
+        b=MUX5YN0uffMQblJ968h5mS7VzL7FWH2nc0MqvurEaOvZiOL2EUE5P0AGSlNPhimmK
+         gvAYaAf8y9PqLaWt+SDaJfAIu+/Cz3YOYhldIZD8ATDZu34CNrmvWu2qeD0J24kYlz
+         1u7L22EfQ9KvCqUiPcn5ti/ukQh25gTwofSCC6Eo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang He <windhl@126.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 503/663] macintosh/windfarm_smu_sat: Add missing of_node_put()
+Subject: [PATCH 5.15 128/371] regulator: core: Consistently set mutex_owner when using ww_mutex_lock_slow()
 Date:   Mon,  8 May 2023 11:45:29 +0200
-Message-Id: <20230508094444.905302832@linuxfoundation.org>
+Message-Id: <20230508094817.124318334@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liang He <windhl@126.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 631cf002826007ab7415258ee647dcaf8845ad5a ]
+[ Upstream commit b83a1772be854f87602de14726737d3e5b06e1f4 ]
 
-We call of_node_get() in wf_sat_probe() after sat is created,
-so we need the of_node_put() before *kfree(sat)*.
+When a codepath locks a rdev using ww_mutex_lock_slow() directly then
+that codepath is responsible for incrementing the "ref_cnt" and also
+setting the "mutex_owner" to "current".
 
-Fixes: ac171c46667c ("[PATCH] powerpc: Thermal control for dual core G5s")
-Signed-off-by: Liang He <windhl@126.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230330033558.2562778-1-windhl@126.com
+The regulator core consistently got that right for "ref_cnt" but
+didn't always get it right for "mutex_owner". Let's fix this.
+
+It's unlikely that this truly matters because the "mutex_owner" is
+only needed if we're going to do subsequent locking of the same
+rdev. However, even though it's not truly needed it seems less
+surprising if we consistently set "mutex_owner" properly.
+
+Fixes: f8702f9e4aa7 ("regulator: core: Use ww_mutex for regulators locking")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20230329143317.RFC.v2.1.I4e9d433ea26360c06dd1381d091c82bb1a4ce843@changeid
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/windfarm_smu_sat.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/regulator/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/macintosh/windfarm_smu_sat.c b/drivers/macintosh/windfarm_smu_sat.c
-index ebc4256a9e4a0..089f2743a070d 100644
---- a/drivers/macintosh/windfarm_smu_sat.c
-+++ b/drivers/macintosh/windfarm_smu_sat.c
-@@ -171,6 +171,7 @@ static void wf_sat_release(struct kref *ref)
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index e876702d6ef36..48db0735e3dba 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -333,6 +333,7 @@ static void regulator_lock_dependent(struct regulator_dev *rdev,
+ 			ww_mutex_lock_slow(&new_contended_rdev->mutex, ww_ctx);
+ 			old_contended_rdev = new_contended_rdev;
+ 			old_contended_rdev->ref_cnt++;
++			old_contended_rdev->mutex_owner = current;
+ 		}
  
- 	if (sat->nr >= 0)
- 		sats[sat->nr] = NULL;
-+	of_node_put(sat->node);
- 	kfree(sat);
- }
+ 		err = regulator_lock_recursive(rdev,
+@@ -5966,6 +5967,7 @@ static void regulator_summary_lock(struct ww_acquire_ctx *ww_ctx)
+ 			ww_mutex_lock_slow(&new_contended_rdev->mutex, ww_ctx);
+ 			old_contended_rdev = new_contended_rdev;
+ 			old_contended_rdev->ref_cnt++;
++			old_contended_rdev->mutex_owner = current;
+ 		}
  
+ 		err = regulator_summary_lock_all(ww_ctx,
 -- 
 2.39.2
 
