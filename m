@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE666FAD84
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF8986FA5B0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233995AbjEHLfR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
+        id S234210AbjEHKMW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236006AbjEHLfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B0493E33F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:46 -0700 (PDT)
+        with ESMTP id S234221AbjEHKMP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B2A119413
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BDAA63296
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1CEC433EF;
-        Mon,  8 May 2023 11:34:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21869623E8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD63C433EF;
+        Mon,  8 May 2023 10:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545659;
-        bh=o2sP2FvTlBNfPBIjt96CcSxigoA8+0TGU+aq5Py8swY=;
+        s=korg; t=1683540718;
+        bh=9FIRfJMOI1BrYqC6fBYWT/X7QF+6WNfrvww/JtPUqLM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SAfR/mgzo1+sGmNK71o1EwlsaVsR3U6odipDGJrouM0iWqIkHnukwSzdPwe+BN2IL
-         S0Ohp0McwS6NAwuM0I6XG3OR4BoGOO5N+CtnsyqAfFin/qWCa/Ub7MxNYxQoOCV/R6
-         AqfX2JpXanls3W03uqAcLt6LNME77uRDLPnZqiq8=
+        b=b9WcbBtF3qfsW/eA4C8/7Yrm5yiu/zTzsoUARNqpJ+b6nNm9Q7GswCmJLofncEZlD
+         Y3lb5hNmSPCiGVVACCwVcRGjcChtrdUUVmxYHw6vh0GZKBBJUSRQmQwYm+eJ0XlyfK
+         cryJSoFTNhxceF2s5bOpRTU9AwywnFXLNYjgNzRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/371] drm/msm/adreno: drop bogus pm_runtime_set_active()
+Subject: [PATCH 6.1 471/611] clk: at91: clk-sam9x60-pll: fix return value check
 Date:   Mon,  8 May 2023 11:45:13 +0200
-Message-Id: <20230508094816.467519454@linuxfoundation.org>
+Message-Id: <20230508094437.420914350@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,40 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit db7662d076c973072d788bd0e8130e04430307a1 ]
+[ Upstream commit 1bd8e27fd0db0fe7f489213836dcbab92934f8fa ]
 
-The runtime PM status can only be updated while runtime PM is disabled.
+sam9x60_frac_pll_compute_mul_frac() can't return zero. Remove the check
+against zero to reflect this.
 
-Drop the bogus pm_runtime_set_active() call that was made after enabling
-runtime PM and which (incidentally but correctly) left the runtime PM
-status set to 'suspended'.
-
-Fixes: 2c087a336676 ("drm/msm/adreno: Load the firmware before bringing up the hardware")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/524972/
-Link: https://lore.kernel.org/r/20230303164807.13124-4-johan+linaro@kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 43b1bb4a9b3e ("clk: at91: clk-sam9x60-pll: re-factor to support plls with multiple outputs")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230227105931.2812412-1-claudiu.beznea@microchip.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/clk/at91/clk-sam9x60-pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
-index 32207bc42b281..3eb9146653444 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -404,9 +404,6 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
- 	 */
- 	pm_runtime_enable(&pdev->dev);
+diff --git a/drivers/clk/at91/clk-sam9x60-pll.c b/drivers/clk/at91/clk-sam9x60-pll.c
+index d757003004cbb..0882ed01d5c27 100644
+--- a/drivers/clk/at91/clk-sam9x60-pll.c
++++ b/drivers/clk/at91/clk-sam9x60-pll.c
+@@ -668,7 +668,7 @@ sam9x60_clk_register_frac_pll(struct regmap *regmap, spinlock_t *lock,
  
--	/* Make sure pm runtime is active and reset any previous errors */
--	pm_runtime_set_active(&pdev->dev);
--
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
- 		pm_runtime_put_sync(&pdev->dev);
+ 		ret = sam9x60_frac_pll_compute_mul_frac(&frac->core, FCORE_MIN,
+ 							parent_rate, true);
+-		if (ret <= 0) {
++		if (ret < 0) {
+ 			hw = ERR_PTR(ret);
+ 			goto free;
+ 		}
 -- 
 2.39.2
 
