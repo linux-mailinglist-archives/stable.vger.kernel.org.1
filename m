@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A3BE6FAB05
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6566FA4E1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233787AbjEHLIo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
+        id S233981AbjEHKEI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:04:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232167AbjEHLIM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666F630E42
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:10 -0700 (PDT)
+        with ESMTP id S233992AbjEHKEG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09FF52EB21
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E008862AF8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4180C433D2;
-        Mon,  8 May 2023 11:08:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 912506230A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5739C433D2;
+        Mon,  8 May 2023 10:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544089;
-        bh=A/G/qIIkVXdZxnyHqJNtSfAfP5uBuVotfaZ4wm5O3TI=;
+        s=korg; t=1683540243;
+        bh=f+TNB1z6Z71G2y4UxNzTNiKWRkEO+JoaDGqMXlsfExY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LrKWkzjsWGIU0JWYYpW9Jn7xsmue8tp7b2W3SJD0Z0BaN7pGpfM/XUiP1rHSnUKfw
-         cyti6gfFhrDVYKOhPDvYmd4XDu2NOA5ozHFbDyQJ5jnQJ7hAf5AdawXmfYyTLQTH5I
-         LQ9EGr+Wr0S85fDbgBa19NO94e1Xup3iUEh1Kk+w=
+        b=Kp++5F/Oh0WhcB6oWjmnUdbGoFbpQ3EXzQ8LH+G2aDHfxLSaU0OrX9/cps2OUISLh
+         UXAy6f18q4dX5Fixo1ooB9Ag7irc4jBiFEmO1cMefmzbp4MXAxHjzbxvD+/6Se/YNa
+         eFNTiN0vZS0aDpHt5XW2rysqcAbUEjORFojaFnIw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Madhu Koriginja <madhu.koriginja@nxp.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 298/694] media: rcar_fdp1: Convert to platform remove callback returning void
+Subject: [PATCH 6.1 291/611] netfilter: keep conntrack reference until IPsecv6 policy checks are done
 Date:   Mon,  8 May 2023 11:42:13 +0200
-Message-Id: <20230508094441.948536388@linuxfoundation.org>
+Message-Id: <20230508094431.863511800@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,61 +54,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Madhu Koriginja <madhu.koriginja@nxp.com>
 
-[ Upstream commit 0e82d3715fd208de567b8e4307fbf91ae5e57db4 ]
+[ Upstream commit b0e214d212030fe497d4d150bb3474e50ad5d093 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+Keep the conntrack reference until policy checks have been performed for
+IPsec V6 NAT support, just like ipv4.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+The reference needs to be dropped before a packet is
+queued to avoid having the conntrack module unloadable.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
+Fixes: 58a317f1061c ("netfilter: ipv6: add IPv6 NAT support")
+Signed-off-by: Madhu Koriginja <madhu.koriginja@nxp.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar_fdp1.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/dccp/ipv6.c      |  1 +
+ net/ipv6/ip6_input.c | 14 ++++++--------
+ net/ipv6/raw.c       |  5 ++---
+ net/ipv6/tcp_ipv6.c  |  2 ++
+ net/ipv6/udp.c       |  2 ++
+ 5 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar_fdp1.c b/drivers/media/platform/renesas/rcar_fdp1.c
-index 37ecf489d112e..d80b3214dfae1 100644
---- a/drivers/media/platform/renesas/rcar_fdp1.c
-+++ b/drivers/media/platform/renesas/rcar_fdp1.c
-@@ -2396,7 +2396,7 @@ static int fdp1_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index b9d7c3dd1cb39..c0fd8f5f3b94e 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -783,6 +783,7 @@ static int dccp_v6_rcv(struct sk_buff *skb)
  
--static int fdp1_remove(struct platform_device *pdev)
-+static void fdp1_remove(struct platform_device *pdev)
- {
- 	struct fdp1_dev *fdp1 = platform_get_drvdata(pdev);
+ 	if (!xfrm6_policy_check(sk, XFRM_POLICY_IN, skb))
+ 		goto discard_and_relse;
++	nf_reset_ct(skb);
  
-@@ -2404,8 +2404,6 @@ static int fdp1_remove(struct platform_device *pdev)
- 	video_unregister_device(&fdp1->vfd);
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 	pm_runtime_disable(&pdev->dev);
--
--	return 0;
- }
+ 	return __sk_receive_skb(sk, skb, 1, dh->dccph_doff * 4,
+ 				refcounted) ? -1 : 0;
+diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
+index e1ebf5e42ebe9..d94041bb42872 100644
+--- a/net/ipv6/ip6_input.c
++++ b/net/ipv6/ip6_input.c
+@@ -404,10 +404,6 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
+ 			/* Only do this once for first final protocol */
+ 			have_final = true;
  
- static int __maybe_unused fdp1_pm_runtime_suspend(struct device *dev)
-@@ -2441,7 +2439,7 @@ MODULE_DEVICE_TABLE(of, fdp1_dt_ids);
+-			/* Free reference early: we don't need it any more,
+-			   and it may hold ip_conntrack module loaded
+-			   indefinitely. */
+-			nf_reset_ct(skb);
  
- static struct platform_driver fdp1_pdrv = {
- 	.probe		= fdp1_probe,
--	.remove		= fdp1_remove,
-+	.remove_new	= fdp1_remove,
- 	.driver		= {
- 		.name	= DRIVER_NAME,
- 		.of_match_table = fdp1_dt_ids,
+ 			skb_postpull_rcsum(skb, skb_network_header(skb),
+ 					   skb_network_header_len(skb));
+@@ -430,10 +426,12 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
+ 				goto discard;
+ 			}
+ 		}
+-		if (!(ipprot->flags & INET6_PROTO_NOPOLICY) &&
+-		    !xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
+-			SKB_DR_SET(reason, XFRM_POLICY);
+-			goto discard;
++		if (!(ipprot->flags & INET6_PROTO_NOPOLICY)) {
++			if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
++				SKB_DR_SET(reason, XFRM_POLICY);
++				goto discard;
++			}
++			nf_reset_ct(skb);
+ 		}
+ 
+ 		ret = INDIRECT_CALL_2(ipprot->handler, tcp_v6_rcv, udpv6_rcv,
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 4fc511bdf176c..f44b99f7ecdcc 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -193,10 +193,8 @@ static bool ipv6_raw_deliver(struct sk_buff *skb, int nexthdr)
+ 			struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
+ 
+ 			/* Not releasing hash table! */
+-			if (clone) {
+-				nf_reset_ct(clone);
++			if (clone)
+ 				rawv6_rcv(sk, clone);
+-			}
+ 		}
+ 	}
+ 	rcu_read_unlock();
+@@ -387,6 +385,7 @@ int rawv6_rcv(struct sock *sk, struct sk_buff *skb)
+ 		kfree_skb(skb);
+ 		return NET_RX_DROP;
+ 	}
++	nf_reset_ct(skb);
+ 
+ 	if (!rp->checksum)
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 81afb40bfc0bb..c563a84d67b46 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1722,6 +1722,8 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 	if (drop_reason)
+ 		goto discard_and_relse;
+ 
++	nf_reset_ct(skb);
++
+ 	if (tcp_filter(sk, skb)) {
+ 		drop_reason = SKB_DROP_REASON_SOCKET_FILTER;
+ 		goto discard_and_relse;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 0b8127988adb7..c029222ce46b0 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -701,6 +701,7 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		drop_reason = SKB_DROP_REASON_XFRM_POLICY;
+ 		goto drop;
+ 	}
++	nf_reset_ct(skb);
+ 
+ 	if (static_branch_unlikely(&udpv6_encap_needed_key) && up->encap_type) {
+ 		int (*encap_rcv)(struct sock *sk, struct sk_buff *skb);
+@@ -1024,6 +1025,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
+ 
+ 	if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb))
+ 		goto discard;
++	nf_reset_ct(skb);
+ 
+ 	if (udp_lib_checksum_complete(skb))
+ 		goto csum_error;
 -- 
 2.39.2
 
