@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03DA06FABFC
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B59E76FA8BD
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235533AbjEHLTb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33032 "EHLO
+        id S235013AbjEHKpI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235438AbjEHLTa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:30 -0400
+        with ESMTP id S235018AbjEHKoo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 766D937C61
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AE327F29
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00E1562C57
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1199DC433D2;
-        Mon,  8 May 2023 11:19:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 837206286F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C686C433EF;
+        Mon,  8 May 2023 10:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544765;
-        bh=vFyCSdljTu/Y0nlj6oYfKB7YFGtG6OIHEB/8OnmH2r4=;
+        s=korg; t=1683542596;
+        bh=JEd0ZZnjKCfDIhy7XkBmZbnnogHROlM5MI5AI+nzxBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xCOX+UujM1RnxoJRMZYuXWSA62JaqCl3M2ib9yAJZUspolC83HGvae4wVNKJIQ42x
-         /MkmxUeVfISFAvbx9S8tX+GBypwZD7b6b3wGjwkNBtBYMDpdbAoNT6LocxPXagOcbb
-         tY3yxLHGU3kaw8RRliydfB0zHeMy/NXbOIaGuiuY=
+        b=HO+hyiwJkDYdBJXjtjiV1/jVCrC1wGepS+98sWawlW0nH8n5NWIEafnjkskws4lBT
+         jt54P82r7KRfDK3ZCOvgkL5/DpSZhH4yrKlDnVCRH71MSf41s8m78jSgpV6IB8m0IU
+         sHBIGMLI8o9kqF4rxzRF4kLL1rVAjSOvmovgyaCk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 476/694] net/sched: cls_api: Initialize miss_cookie_node when action miss is not used
+        patches@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@amd.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 485/663] i2c: cadence: cdns_i2c_master_xfer(): Fix runtime PM leak on error path
 Date:   Mon,  8 May 2023 11:45:11 +0200
-Message-Id: <20230508094449.278615236@linuxfoundation.org>
+Message-Id: <20230508094444.116597157@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Lars-Peter Clausen <lars@metafoo.de>
 
-[ Upstream commit 2cc8a008d62f3c04eeb7ec6fe59e542802bb8df3 ]
+[ Upstream commit ae1664f04f504a998737f5bb563f16b44357bcca ]
 
-Function tcf_exts_init_ex() sets exts->miss_cookie_node ptr only
-when use_action_miss is true so it assumes in other case that
-the field is set to NULL by the caller. If not then the field
-contains garbage and subsequent tcf_exts_destroy() call results
-in a crash.
-Ensure that the field .miss_cookie_node pointer is NULL when
-use_action_miss parameter is false to avoid this potential scenario.
+The cdns_i2c_master_xfer() function gets a runtime PM reference when the
+function is entered. This reference is released when the function is
+exited. There is currently one error path where the function exits
+directly, which leads to a leak of the runtime PM reference.
 
-Fixes: 80cd22c35c90 ("net/sched: cls_api: Support hardware miss to tc action")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230420183634.1139391-1-ivecera@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Make sure that this error path also releases the runtime PM reference.
+
+Fixes: 1a351b10b967 ("i2c: cadence: Added slave support")
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-cadence.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 35785a36c8029..3c3629c9e7b65 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -3211,6 +3211,7 @@ int tcf_exts_init_ex(struct tcf_exts *exts, struct net *net, int action,
- #ifdef CONFIG_NET_CLS_ACT
- 	exts->type = 0;
- 	exts->nr_actions = 0;
-+	exts->miss_cookie_node = NULL;
- 	/* Note: we do not own yet a reference on net.
- 	 * This reference might be taken later from tcf_exts_get_net().
- 	 */
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
+index f58943cb13414..8a5fdb150c446 100644
+--- a/drivers/i2c/busses/i2c-cadence.c
++++ b/drivers/i2c/busses/i2c-cadence.c
+@@ -833,8 +833,10 @@ static int cdns_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
+ #if IS_ENABLED(CONFIG_I2C_SLAVE)
+ 	/* Check i2c operating mode and switch if possible */
+ 	if (id->dev_mode == CDNS_I2C_MODE_SLAVE) {
+-		if (id->slave_state != CDNS_I2C_SLAVE_STATE_IDLE)
+-			return -EAGAIN;
++		if (id->slave_state != CDNS_I2C_SLAVE_STATE_IDLE) {
++			ret = -EAGAIN;
++			goto out;
++		}
+ 
+ 		/* Set mode to master */
+ 		cdns_i2c_set_mode(CDNS_I2C_MODE_MASTER, id);
 -- 
 2.39.2
 
