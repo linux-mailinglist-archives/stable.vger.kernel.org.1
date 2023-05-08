@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 071C86FA99E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF0BD6FAE5D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235181AbjEHKxj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55716 "EHLO
+        id S236292AbjEHLoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235155AbjEHKxU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C878F83DE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:37 -0700 (PDT)
+        with ESMTP id S234040AbjEHLn4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45AA210A22
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E6C462949
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2D6C433D2;
-        Mon,  8 May 2023 10:52:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1850F62CDD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3ADC433EF;
+        Mon,  8 May 2023 11:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543156;
-        bh=rMEvcg+RThqv5mEPoepbFECD7ugCWRztXrUSbrFW79o=;
+        s=korg; t=1683546199;
+        bh=22/0GyGstKxSi5WyUg/SfzoRo+KeW+wvMb1rDRutY3g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItZvK3JObKK/6T1EfZKD0EbJqsqq/yjPHR5n0gh5rJ4lrXEr2jZXwnZEzqspsN8ep
-         Q5xhU4oU0yKgqFHetyQ0654COdUkp+1i5IXNvgo/uNehh8p2zG7F+nggk4Tv7H7Jmk
-         FMGTfFFNzlQ6xzlEcXHX/fufTvVeuS2X1GNMnuzM=
+        b=L0Dn9V6l4CawTDpPpjHLz5VossLf3buFkzREg0QuEROR6wx5xs5tlNX0lvYH3/ARv
+         7v1ma9zxxxRGbtjfP7aIz6n/jcNOZJPiQYNIyTXmjQxo7KswjxmbcG+doX6QXVe2Zc
+         jurE/YaSUHRlA70aBztg1S2o0hxu1sXM9T1XIeL8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Jes Sorensen <jes@trained-monkey.org>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.2 634/663] wifi: rtl8xxxu: RTL8192EU always needs full init
-Date:   Mon,  8 May 2023 11:47:40 +0200
-Message-Id: <20230508094450.475849689@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Leonard Crestez <leonard.crestez@nxp.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 260/371] scripts/gdb: bail early if there are no clocks
+Date:   Mon,  8 May 2023 11:47:41 +0200
+Message-Id: <20230508094822.391097711@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,43 +58,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-commit d46e04ccd40457a0119b76e11ab64a2ad403e138 upstream.
+[ Upstream commit 1d7adbc74c009057ed9dc3112f388e91a9c79acc ]
 
-Always run the entire init sequence (rtl8xxxu_init_device()) for
-RTL8192EU. It's what the vendor driver does too.
+Avoid generating an exception if there are no clocks registered:
 
-This fixes a bug where the device is unable to connect after
-rebooting:
+(gdb) lx-clk-summary
+                                 enable  prepare  protect
+   clock                          count    count    count        rate
+------------------------------------------------------------------------
+Python Exception <class 'gdb.error'>: No symbol "clk_root_list" in
+current context.
+Error occurred in Python: No symbol "clk_root_list" in current context.
 
-wlp3s0f3u2: send auth to ... (try 1/3)
-wlp3s0f3u2: send auth to ... (try 2/3)
-wlp3s0f3u2: send auth to ... (try 3/3)
-wlp3s0f3u2: authentication with ... timed out
-
-Rebooting leaves the device powered on (partially? at least the
-firmware is still running), but not really in a working state.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Jes Sorensen <jes@trained-monkey.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230323225246.3302977-1-f.fainelli@gmail.com
+Fixes: d1e9710b63d8 ("scripts/gdb: initial clk support: lx-clk-summary")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Leonard Crestez <leonard.crestez@nxp.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/gdb/linux/clk.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -1801,6 +1801,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops =
- 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
- 	.has_s0s1 = 0,
- 	.gen2_thermal_meter = 1,
-+	.needs_full_init = 1,
- 	.adda_1t_init = 0x0fc01616,
- 	.adda_1t_path_on = 0x0fc01616,
- 	.adda_2t_path_on_a = 0x0fc01616,
+diff --git a/scripts/gdb/linux/clk.py b/scripts/gdb/linux/clk.py
+index 061aecfa294e6..7a01fdc3e8446 100644
+--- a/scripts/gdb/linux/clk.py
++++ b/scripts/gdb/linux/clk.py
+@@ -41,6 +41,8 @@ are cached and potentially out of date"""
+             self.show_subtree(child, level + 1)
+ 
+     def invoke(self, arg, from_tty):
++        if utils.gdb_eval_or_none("clk_root_list") is None:
++            raise gdb.GdbError("No clocks registered")
+         gdb.write("                                 enable  prepare  protect               \n")
+         gdb.write("   clock                          count    count    count        rate   \n")
+         gdb.write("------------------------------------------------------------------------\n")
+-- 
+2.39.2
+
 
 
