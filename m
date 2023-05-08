@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 259886FA9B6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78C186FA66D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235055AbjEHKzI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55128 "EHLO
+        id S234409AbjEHKTc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:19:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235332AbjEHKyY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:24 -0400
+        with ESMTP id S234407AbjEHKTT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE3E6100F0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FF3D04D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48E166297D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEB1C4339C;
-        Mon,  8 May 2023 10:53:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C588624B7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:19:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7591C433D2;
+        Mon,  8 May 2023 10:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543222;
-        bh=14g6RtD0KxOX3KHOluWS2UKuCckqC8s7BhGzLvOXnSA=;
+        s=korg; t=1683541154;
+        bh=+kz6BekaqLGZBQh+Udy8F/NIPv2EBNyF4appcH4vfZ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jtxPG/Z9KwTLSEycXZXR77lP/cINYETfmrAqNmuj77oKDXd/fD5ll5NHzQGxwKe7y
-         N/ycOjRudKCFQpws5a4E1EI84N8fLJeY2CPOZ72I5Mmarqe+ngxqmbDBSdLkodLK27
-         H6BwJzNsy2BdyUcuYGnbKjZGAobVGi9hKHUUGm+E=
+        b=FsaLNpRVJOrQcZxdD8f5RI7R//RvziRMd8bb1F3tJztH0LgOsJh2/CU2KpmZV4/u9
+         qaKXBRWoPFQe/ufxjRknp+kUb9q5yaxJmKaeBsO95yVwYc46p6WbU1LCv694oAsp4Q
+         MJhVgcvpY6C44YJVPHR/T00DxPA92rGTrGvwo0VA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roger Quadros <rogerq@ti.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.3 014/694] USB: dwc3: fix runtime pm imbalance on probe errors
+        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.2 023/663] arm64: Stash shadow stack pointer in the task struct on interrupt
 Date:   Mon,  8 May 2023 11:37:29 +0200
-Message-Id: <20230508094433.089024814@linuxfoundation.org>
+Message-Id: <20230508094429.194391496@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 9a8ad10c9f2e0925ff26308ec6756b93fc2f4977 upstream.
+commit 59b37fe52f49955791a460752c37145f1afdcad1 upstream.
 
-Make sure not to suspend the device when probe fails to avoid disabling
-clocks and phys multiple times.
+Instead of reloading the shadow call stack pointer from the ordinary
+stack, which may be vulnerable to the kind of gadget based attacks
+shadow call stacks were designed to prevent, let's store a task's shadow
+call stack pointer in the task struct when switching to the shadow IRQ
+stack.
 
-Fixes: 328082376aea ("usb: dwc3: fix runtime PM in error path")
-Cc: stable@vger.kernel.org      # 4.8
-Cc: Roger Quadros <rogerq@ti.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-2-johan+linaro@kernel.org
+Given that currently, the task_struct::scs_sp field is only used to
+preserve the shadow call stack pointer while a task is scheduled out or
+running in user space, reusing this field to preserve and restore it
+while running off the IRQ stack must be safe, as those occurrences are
+guaranteed to never overlap. (The stack switching logic only switches
+stacks when running from the task stack, and so the value being saved
+here always corresponds to the task mode shadow stack)
+
+While at it, fold a mov/add/mov sequence into a single add.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20230109174800.3286265-3-ardb@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ arch/arm64/kernel/entry.S |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1883,13 +1883,11 @@ static int dwc3_probe(struct platform_de
- 	spin_lock_init(&dwc->lock);
- 	mutex_init(&dwc->mutex);
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -876,19 +876,19 @@ NOKPROBE(ret_from_fork)
+  */
+ SYM_FUNC_START(call_on_irq_stack)
+ #ifdef CONFIG_SHADOW_CALL_STACK
+-	stp	scs_sp, xzr, [sp, #-16]!
++	get_current_task x16
++	scs_save x16
+ 	ldr_this_cpu scs_sp, irq_shadow_call_stack_ptr, x17
+ #endif
++
+ 	/* Create a frame record to save our LR and SP (implicit in FP) */
+ 	stp	x29, x30, [sp, #-16]!
+ 	mov	x29, sp
  
-+	pm_runtime_get_noresume(dev);
- 	pm_runtime_set_active(dev);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_set_autosuspend_delay(dev, DWC3_DEFAULT_AUTOSUSPEND_DELAY);
- 	pm_runtime_enable(dev);
--	ret = pm_runtime_get_sync(dev);
--	if (ret < 0)
--		goto err1;
+ 	ldr_this_cpu x16, irq_stack_ptr, x17
+-	mov	x15, #IRQ_STACK_SIZE
+-	add	x16, x16, x15
  
- 	pm_runtime_forbid(dev);
+ 	/* Move to the new stack and call the function there */
+-	mov	sp, x16
++	add	sp, x16, #IRQ_STACK_SIZE
+ 	blr	x1
  
-@@ -1954,12 +1952,10 @@ err3:
- 	dwc3_free_event_buffers(dwc);
- 
- err2:
--	pm_runtime_allow(&pdev->dev);
--
--err1:
--	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
--
-+	pm_runtime_allow(dev);
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_put_noidle(dev);
- disable_clks:
- 	dwc3_clk_disable(dwc);
- assert_reset:
+ 	/*
+@@ -897,9 +897,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	 */
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
+-#ifdef CONFIG_SHADOW_CALL_STACK
+-	ldp	scs_sp, xzr, [sp], #16
+-#endif
++	scs_load_current
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 
 
