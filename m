@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF746FA9C9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4AE36FA9D6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235344AbjEHK4N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
+        id S235308AbjEHK40 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:56:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235385AbjEHKzC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:55:02 -0400
+        with ESMTP id S235311AbjEHK4E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6D12B437
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037862B405
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DF866297D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10086C433EF;
-        Mon,  8 May 2023 10:54:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 853576297F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A22AC433D2;
+        Mon,  8 May 2023 10:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543257;
-        bh=u2ifpftMhKqpEYDiTOHYOLI0gumrbaP0Xx5/Ggt+uT4=;
+        s=korg; t=1683543293;
+        bh=Z/VOo4C395BFOcK/X7kGuEpCBT6UF2P86VQTWrcHIbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lRi6Tdat+W9hB+Oy9obFHgEUtys0vs/LKxDevDAWgySMzOruwlxJociNqndn7uDFt
-         YnvYW2Qd8l4wZs+XOfhSeMtnhUaXt+ApRowDwvUWcfkis28DNHFvNX8fGJ+5BJACK4
-         kU4wdPfx5DX1vhJY7PvX7WnYXxs+pQ/SpkXjE6L0=
+        b=CBW+cLr3XjLig8DBZ94kIZqdLm4NApcrnrkp8XW0H51WQe4vWDqHUcI60U7yhUFym
+         mQnG0fMeqhmj7Pzn66GesoDrbkxkDtG/ViEEtu+CNru5Shl6s6wPBD3JaoevoAlAaB
+         bfIxiuDilwOIHZWTbBFpga1rUBtC5LzYrdDotR/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.3 015/694] USB: dwc3: fix runtime pm imbalance on unbind
-Date:   Mon,  8 May 2023 11:37:30 +0200
-Message-Id: <20230508094433.119004603@linuxfoundation.org>
+        patches@lists.linux.dev, Babu Moger <babu.moger@amd.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.3 016/694] hwmon: (k10temp) Check range scale when CUR_TEMP register is read-write
+Date:   Mon,  8 May 2023 11:37:31 +0200
+Message-Id: <20230508094433.157349602@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -54,34 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Babu Moger <Babu.Moger@amd.com>
 
-commit 44d257e9012ee8040e41d224d0e5bfb5ef5427ea upstream.
+commit 0c072385348e3ac5229145644055d3e2afb5b3db upstream.
 
-Make sure to balance the runtime PM usage count on driver unbind by
-adding back the pm_runtime_allow() call that had been erroneously
-removed.
+Spec says, when CUR_TEMP_TJ_SEL == 3 and CUR_TEMP_RANGE_SEL == 0,
+it should use RangeUnadjusted is 0, which is (CurTmp*0.125 -49) C. The
+CUR_TEMP register is read-write when CUR_TEMP_TJ_SEL == 3 (bit 17-16).
 
-Fixes: 266d0493900a ("usb: dwc3: core: don't trigger runtime pm when remove driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Li Jun <jun.li@nxp.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-3-johan+linaro@kernel.org
+Add the check to detect it.
+
+Sensors command's output before the patch.
+$sensors
+ k10temp-pci-00c3
+ Adapter: PCI adapter
+ Tctl:         +76.6°C <- Wrong value
+ Tccd1:        +26.5°C
+ Tccd2:        +27.5°C
+ Tccd3:        +27.2°C
+ Tccd4:        +27.5°C
+ Tccd5:        +26.0°C
+ Tccd6:        +26.2°C
+ Tccd7:        +25.0°C
+ Tccd8:        +26.5°C
+
+Sensors command's output after the patch.
+$sensors
+ k10temp-pci-00c3
+ Adapter: PCI adapter
+ Tctl:         +28.8°C <- corrected value
+ Tccd1:        +27.5°C
+ Tccd2:        +28.5°C
+ Tccd3:        +28.5°C
+ Tccd4:        +28.5°C
+ Tccd5:        +27.0°C
+ Tccd6:        +27.5°C
+ Tccd7:        +27.0°C
+ Tccd8:        +27.5°C
+
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Fixes: 1b59788979ac ("hwmon: (k10temp) Add temperature offset for Ryzen 2700X")
+Link: https://lore.kernel.org/r/20230413213958.847634-1-babu.moger@amd.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/k10temp.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1979,6 +1979,7 @@ static int dwc3_remove(struct platform_d
- 	dwc3_core_exit(dwc);
- 	dwc3_ulpi_exit(dwc);
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -75,6 +75,7 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
  
-+	pm_runtime_allow(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+ #define ZEN_CUR_TEMP_SHIFT			21
+ #define ZEN_CUR_TEMP_RANGE_SEL_MASK		BIT(19)
++#define ZEN_CUR_TEMP_TJ_SEL_MASK		GENMASK(17, 16)
+ 
+ struct k10temp_data {
+ 	struct pci_dev *pdev;
+@@ -155,7 +156,8 @@ static long get_raw_temp(struct k10temp_
+ 
+ 	data->read_tempreg(data->pdev, &regval);
+ 	temp = (regval >> ZEN_CUR_TEMP_SHIFT) * 125;
+-	if (regval & data->temp_adjust_mask)
++	if ((regval & data->temp_adjust_mask) ||
++	    (regval & ZEN_CUR_TEMP_TJ_SEL_MASK) == ZEN_CUR_TEMP_TJ_SEL_MASK)
+ 		temp -= 49000;
+ 	return temp;
+ }
 
 
