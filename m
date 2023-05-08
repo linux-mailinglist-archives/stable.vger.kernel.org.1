@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9121C6FA8DD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3666FADB3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234947AbjEHKp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47680 "EHLO
+        id S236101AbjEHLhT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234942AbjEHKpc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:32 -0400
+        with ESMTP id S236072AbjEHLhD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF31D26EAC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495CB3DEB6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:36:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46A066288E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54721C433EF;
-        Mon,  8 May 2023 10:44:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F22C16335B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013BDC4339B;
+        Mon,  8 May 2023 11:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542693;
-        bh=KAjYB6ti13f9wuDbnoHFG3N9xOQDs7WBjB0qrkRKfxw=;
+        s=korg; t=1683545751;
+        bh=E985gS0XTiQghzO+1q2fkBOFLD3foyHgpbS3V42cqYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tkIbnY9Xo0CaXn7ODZkmBplh5BUiLTauLIHvS1IT6x+z8UfEuoYG0viYuT01Opu8z
-         McNyTrl43+qlGUtpxSYYtz4v+P7btQz38fF3tpOlU84wS03Gxx1Ozq8MSu9uYXHMI1
-         JOqX0Y/yoVKaJmzmpXkxqtewEROGwDOlTU0nvLQA=
+        b=fEuRITyXbypOtTLeaFeyZ8e5f1v+CK/wyAqgrvO/8dctB6Ml5klW4a0WhcUrr/7SX
+         RPKmF4AccsJjrPfM62GZHLCKs5i5G5VQZM4WMojxvGCsCy2nxW0SPMpdcPoHGH1cyt
+         ZgborVAhm1Mn3rhltMLPe7CUzEdmjoZshiAqQFv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Doug Cook <dcook@linux.microsoft.com>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, YAN SHI <m202071378@hust.edu.cn>,
+        kernel test robot <lkp@intel.com>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 516/663] tracing/user_events: Ensure write index cannot be negative
-Date:   Mon,  8 May 2023 11:45:42 +0200
-Message-Id: <20230508094445.520316013@linuxfoundation.org>
+Subject: [PATCH 5.15 142/371] regulator: stm32-pwr: fix of_iomap leak
+Date:   Mon,  8 May 2023 11:45:43 +0200
+Message-Id: <20230508094817.697592144@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,59 +56,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Beau Belgrave <beaub@linux.microsoft.com>
+From: YAN SHI <m202071378@hust.edu.cn>
 
-[ Upstream commit cd98c93286a30cc4588dfd02453bec63c2f4acf4 ]
+[ Upstream commit c4a413e56d16a2ae84e6d8992f215c4dcc7fac20 ]
 
-The write index indicates which event the data is for and accesses a
-per-file array. The index is passed by user processes during write()
-calls as the first 4 bytes. Ensure that it cannot be negative by
-returning -EINVAL to prevent out of bounds accesses.
+Smatch reports:
+drivers/regulator/stm32-pwr.c:166 stm32_pwr_regulator_probe() warn:
+'base' from of_iomap() not released on lines: 151,166.
 
-Update ftrace self-test to ensure this occurs properly.
+In stm32_pwr_regulator_probe(), base is not released
+when devm_kzalloc() fails to allocate memory or
+devm_regulator_register() fails to register a new regulator device,
+which may cause a leak.
 
-Link: https://lkml.kernel.org/r/20230425225107.8525-2-beaub@linux.microsoft.com
+To fix this issue, replace of_iomap() with
+devm_platform_ioremap_resource(). devm_platform_ioremap_resource()
+is a specialized function for platform devices.
+It allows 'base' to be automatically released whether the probe
+function succeeds or fails.
 
-Fixes: 7f5a08c79df3 ("user_events: Add minimal support for trace_event into ftrace")
-Reported-by: Doug Cook <dcook@linux.microsoft.com>
-Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Besides, use IS_ERR(base) instead of !base
+as the return value of devm_platform_ioremap_resource()
+can either be a pointer to the remapped memory or
+an ERR_PTR() encoded error code if the operation fails.
+
+Fixes: dc62f951a6a8 ("regulator: stm32-pwr: Fix return value check in stm32_pwr_regulator_probe()")
+Signed-off-by: YAN SHI <m202071378@hust.edu.cn>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304111750.o2643eJN-lkp@intel.com/
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230412033529.18890-1-m202071378@hust.edu.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_user.c                  | 3 +++
- tools/testing/selftests/user_events/ftrace_test.c | 5 +++++
- 2 files changed, 8 insertions(+)
+ drivers/regulator/stm32-pwr.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
-index 908e8a13c675b..625cab4b9d945 100644
---- a/kernel/trace/trace_events_user.c
-+++ b/kernel/trace/trace_events_user.c
-@@ -1398,6 +1398,9 @@ static ssize_t user_events_write_core(struct file *file, struct iov_iter *i)
- 	if (unlikely(copy_from_iter(&idx, sizeof(idx), i) != sizeof(idx)))
- 		return -EFAULT;
+diff --git a/drivers/regulator/stm32-pwr.c b/drivers/regulator/stm32-pwr.c
+index 2a42acb7c24e9..e5dd4db6403b2 100644
+--- a/drivers/regulator/stm32-pwr.c
++++ b/drivers/regulator/stm32-pwr.c
+@@ -129,17 +129,16 @@ static const struct regulator_desc stm32_pwr_desc[] = {
  
-+	if (idx < 0)
-+		return -EINVAL;
-+
- 	rcu_read_lock_sched();
+ static int stm32_pwr_regulator_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = pdev->dev.of_node;
+ 	struct stm32_pwr_reg *priv;
+ 	void __iomem *base;
+ 	struct regulator_dev *rdev;
+ 	struct regulator_config config = { };
+ 	int i, ret = 0;
  
- 	refs = rcu_dereference_sched(info->refs);
-diff --git a/tools/testing/selftests/user_events/ftrace_test.c b/tools/testing/selftests/user_events/ftrace_test.c
-index 404a2713dcae8..1bc26e6476fc3 100644
---- a/tools/testing/selftests/user_events/ftrace_test.c
-+++ b/tools/testing/selftests/user_events/ftrace_test.c
-@@ -294,6 +294,11 @@ TEST_F(user, write_events) {
- 	ASSERT_NE(-1, writev(self->data_fd, (const struct iovec *)io, 3));
- 	after = trace_bytes();
- 	ASSERT_GT(after, before);
-+
-+	/* Negative index should fail with EINVAL */
-+	reg.write_index = -1;
-+	ASSERT_EQ(-1, writev(self->data_fd, (const struct iovec *)io, 3));
-+	ASSERT_EQ(EINVAL, errno);
- }
+-	base = of_iomap(np, 0);
+-	if (!base) {
++	base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(base)) {
+ 		dev_err(&pdev->dev, "Unable to map IO memory\n");
+-		return -ENOMEM;
++		return PTR_ERR(base);
+ 	}
  
- TEST_F(user, write_fault) {
+ 	config.dev = &pdev->dev;
 -- 
 2.39.2
 
