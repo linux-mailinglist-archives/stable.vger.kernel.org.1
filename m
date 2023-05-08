@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 882FE6FAE6B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BA7C6FAC86
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236301AbjEHLol (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:44:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37414 "EHLO
+        id S235750AbjEHLZs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236117AbjEHLoZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24403AA4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:48 -0700 (PDT)
+        with ESMTP id S235677AbjEHLZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A493C1CC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43FB66355D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35518C433D2;
-        Mon,  8 May 2023 11:43:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD89D62D83
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A68C433EF;
+        Mon,  8 May 2023 11:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546202;
-        bh=hmdACvyceHtfwG6iZa0TlefPkqSpVkF36kkn55rWHqs=;
+        s=korg; t=1683545107;
+        bh=V+PBmn6QvuLsy02UVxjONmKs9Drv8w0fXm+jVaYO6cY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HAa/eCP+U58CMxrY8wsFGu4WX6QFYj9ruK1nAvw0i/zCu6/vZw4CSrvpvGzilwFSg
-         xIvogHd+1t77btlxKQyX/AxPstiBCS9HJyMILxUYO2ZcOjiIJd648CkzYZhA4hg/IB
-         d8p64lBL0XKjcddWtRbkI09Edd4G14oIXFsDsQak=
+        b=D5emtZ/TB5OxgF3UpAM9rBSSW4ApiaxZE4+SajeidXr57VeYlim2qI221LOlGIuaw
+         S2mVvMDCo8HOlZt2plivTZG0SzpV/PrK/COZQo+O1lEYIEMJApHIThbOefmdj9HbE9
+         +aq4Ex+LCuU5XR8ma6lExluhBA3a7Idy046u/Tvc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Kieran Bingham <kbingham@kernel.org>,
-        Leonard Crestez <leonard.crestez@nxp.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Qinrun Dai <flno@hust.edu.cn>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 261/371] scripts/gdb: bail early if there are no generic PD
+Subject: [PATCH 6.3 627/694] clocksource/drivers/davinci: Fix memory leak in davinci_timer_register when init fails
 Date:   Mon,  8 May 2023 11:47:42 +0200
-Message-Id: <20230508094822.424221072@linuxfoundation.org>
+Message-Id: <20230508094455.937403060@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,58 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Qinrun Dai <flno@hust.edu.cn>
 
-[ Upstream commit f19c3c2959e465209ade1a7a699e6cbf4359ce78 ]
+[ Upstream commit fb73556386e074e9bee9fa2d253aeaefe4e063e0 ]
 
-Avoid generating an exception if there are no generic power domain(s)
-registered:
+Smatch reports:
+drivers/clocksource/timer-davinci.c:332 davinci_timer_register()
+warn: 'base' from ioremap() not released on lines: 274.
 
-(gdb) lx-genpd-summary
-domain                          status          children
-    /device                                             runtime status
-----------------------------------------------------------------------
-Python Exception <class 'gdb.error'>: No symbol "gpd_list" in current context.
-Error occurred in Python: No symbol "gpd_list" in current context.
-(gdb) quit
+Fix this and other potential memory leak problems
+by adding a set of corresponding exit lables.
 
-[f.fainelli@gmail.com: correctly invoke gdb_eval_or_none]
-  Link: https://lkml.kernel.org/r/20230327185746.3856407-1-f.fainelli@gmail.com
-Link: https://lkml.kernel.org/r/20230323231659.3319941-1-f.fainelli@gmail.com
-Fixes: 8207d4a88e1e ("scripts/gdb: add lx-genpd-summary command")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Leonard Crestez <leonard.crestez@nxp.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 721154f972aa ("clocksource/drivers/davinci: Add support for clockevents")
+Signed-off-by: Qinrun Dai <flno@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230413135037.1505799-1-flno@hust.edu.cn
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/genpd.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-davinci.c | 30 +++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/gdb/linux/genpd.py b/scripts/gdb/linux/genpd.py
-index 39cd1abd85590..b53649c0a77a6 100644
---- a/scripts/gdb/linux/genpd.py
-+++ b/scripts/gdb/linux/genpd.py
-@@ -5,7 +5,7 @@
- import gdb
- import sys
+diff --git a/drivers/clocksource/timer-davinci.c b/drivers/clocksource/timer-davinci.c
+index 9996c05425200..b1c248498be46 100644
+--- a/drivers/clocksource/timer-davinci.c
++++ b/drivers/clocksource/timer-davinci.c
+@@ -257,21 +257,25 @@ int __init davinci_timer_register(struct clk *clk,
+ 				resource_size(&timer_cfg->reg),
+ 				"davinci-timer")) {
+ 		pr_err("Unable to request memory region\n");
+-		return -EBUSY;
++		rv = -EBUSY;
++		goto exit_clk_disable;
+ 	}
  
--from linux.utils import CachedType
-+from linux.utils import CachedType, gdb_eval_or_none
- from linux.lists import list_for_each_entry
+ 	base = ioremap(timer_cfg->reg.start, resource_size(&timer_cfg->reg));
+ 	if (!base) {
+ 		pr_err("Unable to map the register range\n");
+-		return -ENOMEM;
++		rv = -ENOMEM;
++		goto exit_mem_region;
+ 	}
  
- generic_pm_domain_type = CachedType('struct generic_pm_domain')
-@@ -70,6 +70,8 @@ Output is similar to /sys/kernel/debug/pm_genpd/pm_genpd_summary'''
-             gdb.write('    %-50s  %s\n' % (kobj_path, rtpm_status_str(dev)))
+ 	davinci_timer_init(base);
+ 	tick_rate = clk_get_rate(clk);
  
-     def invoke(self, arg, from_tty):
-+        if gdb_eval_or_none("&gpd_list") is None:
-+            raise gdb.GdbError("No power domain(s) registered")
-         gdb.write('domain                          status          children\n');
-         gdb.write('    /device                                             runtime status\n');
-         gdb.write('----------------------------------------------------------------------\n');
+ 	clockevent = kzalloc(sizeof(*clockevent), GFP_KERNEL);
+-	if (!clockevent)
+-		return -ENOMEM;
++	if (!clockevent) {
++		rv = -ENOMEM;
++		goto exit_iounmap_base;
++	}
+ 
+ 	clockevent->dev.name = "tim12";
+ 	clockevent->dev.features = CLOCK_EVT_FEAT_ONESHOT;
+@@ -296,7 +300,7 @@ int __init davinci_timer_register(struct clk *clk,
+ 			 "clockevent/tim12", clockevent);
+ 	if (rv) {
+ 		pr_err("Unable to request the clockevent interrupt\n");
+-		return rv;
++		goto exit_free_clockevent;
+ 	}
+ 
+ 	davinci_clocksource.dev.rating = 300;
+@@ -323,13 +327,27 @@ int __init davinci_timer_register(struct clk *clk,
+ 	rv = clocksource_register_hz(&davinci_clocksource.dev, tick_rate);
+ 	if (rv) {
+ 		pr_err("Unable to register clocksource\n");
+-		return rv;
++		goto exit_free_irq;
+ 	}
+ 
+ 	sched_clock_register(davinci_timer_read_sched_clock,
+ 			     DAVINCI_TIMER_CLKSRC_BITS, tick_rate);
+ 
+ 	return 0;
++
++exit_free_irq:
++	free_irq(timer_cfg->irq[DAVINCI_TIMER_CLOCKEVENT_IRQ].start,
++			clockevent);
++exit_free_clockevent:
++	kfree(clockevent);
++exit_iounmap_base:
++	iounmap(base);
++exit_mem_region:
++	release_mem_region(timer_cfg->reg.start,
++			   resource_size(&timer_cfg->reg));
++exit_clk_disable:
++	clk_disable_unprepare(clk);
++	return rv;
+ }
+ 
+ static int __init of_davinci_timer_register(struct device_node *np)
 -- 
 2.39.2
 
