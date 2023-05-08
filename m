@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA256FAA57
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F0E6FA708
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235220AbjEHLC3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:02:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39766 "EHLO
+        id S234574AbjEHK0a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235497AbjEHLBZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:01:25 -0400
+        with ESMTP id S234629AbjEHKZ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:25:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C39F2BCCF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:00:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F9CDDB1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:25:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2151B62A0C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9B1C433EF;
-        Mon,  8 May 2023 11:00:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA173625EE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B646DC433EF;
+        Mon,  8 May 2023 10:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543629;
-        bh=E2cQKGIf0Sg7svGkr9tFQQGW4JGX17m45vZK3M2h3HQ=;
+        s=korg; t=1683541555;
+        bh=UVEioMCdxAv05b7rG6JC5IwSvwTQDblkk3VWrogHC5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YDyREkBhshmFs9nydw57mV7NjVoqNCeBjr+DB2axApdaULejyU3JGXMPnt/YXkomt
-         YPNQ+klEhLhJ+AKjVCgcQoXpImOyq6UZh62INdxkuh8nxlKdQFPQkFoAMtCQjnDXfO
-         QdfafZpVnUQPMmb+Xyjmier4vZEFj15mGYbUq8w4=
+        b=g+O69m6behKCxfAv69KGBl/SD+KVraYZq27HosCiiFRJmghufRDChuxFLMRNKE2pe
+         qMCyRWS5qUFZXBiRBX9WsmBr5XyQdH8O6FkgzhewLXayCbujnHLV15K4n27unvxTq7
+         H9wCnyK9u4rPTd3KLr5GtrBLcDYb2EAepSjI+w2w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        patches@lists.linux.dev, Devarsh Thakkar <devarsht@ti.com>,
+        Nishanth Menon <nm@ti.com>, Bryan Brattlof <bb@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 143/694] tpm, tpm_tis: Claim locality before writing interrupt registers
+Subject: [PATCH 6.2 152/663] arm64: dts: ti: k3-am62a7-sk: Fix DDR size to full 4GB
 Date:   Mon,  8 May 2023 11:39:38 +0200
-Message-Id: <20230508094437.101876604@linuxfoundation.org>
+Message-Id: <20230508094433.430039447@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,83 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-[ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
+[ Upstream commit a1bc0d6084dba8a31831c65318a8a8e46f00906f ]
 
-In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
-TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
-Currently these modifications are done without holding a locality thus they
-have no effect. Fix this by claiming the (default) locality before the
-registers are written.
+All revisions of AM62A7-SK board have 4GB LPDDR4 Micron
+MT53E2G32D4DE-046 AUT:B memory. Commit 38c4a08c820c ("arm64: dts: ti:
+Add support for AM62A7-SK") enabled just 2GB due to a schematics error
+in early revision of the board. Fix it by enabling full 4GB available on
+the platform.
 
-Since now tpm_tis_gen_interrupt() is called with the locality already
-claimed remove locality request and release from this function.
+Design docs: https://www.ti.com/lit/zip/sprr459
 
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
+Fixes: 38c4a08c820c ("arm64: dts: ti: Add support for AM62A7-SK")
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20230314094645.3411599-1-devarsht@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 4e6075d4e2643..39f27edb32879 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -739,16 +739,10 @@ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
- 	cap_t cap;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+index 576dbce80ad83..b08a083d722d4 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -26,8 +26,9 @@
  
--	ret = request_locality(chip, 0);
--	if (ret < 0)
--		return;
--
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
- 	else
- 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
--
--	release_locality(chip, 0);
- }
+ 	memory@80000000 {
+ 		device_type = "memory";
+-		/* 2G RAM */
+-		reg = <0x00000000 0x80000000 0x00000000 0x80000000>;
++		/* 4G RAM */
++		reg = <0x00000000 0x80000000 0x00000000 0x80000000>,
++		      <0x00000008 0x80000000 0x00000000 0x80000000>;
+ 	};
  
- /* Register the IRQ and issue a command that will cause an interrupt. If an
-@@ -771,10 +765,16 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	}
- 	priv->irq = irq;
- 
-+	rc = request_locality(chip, 0);
-+	if (rc < 0)
-+		return rc;
-+
- 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
- 			   &original_int_vec);
--	if (rc < 0)
-+	if (rc < 0) {
-+		release_locality(chip, priv->locality);
- 		return rc;
-+	}
- 
- 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
- 	if (rc < 0)
-@@ -808,10 +808,12 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
- 		tpm_tis_write8(priv, original_int_vec,
- 			       TPM_INT_VECTOR(priv->locality));
--		return -1;
-+		rc = -1;
- 	}
- 
--	return 0;
-+	release_locality(chip, priv->locality);
-+
-+	return rc;
- }
- 
- /* Try to find the IRQ the TPM is using. This is for legacy x86 systems that
+ 	reserved-memory {
 -- 
 2.39.2
 
