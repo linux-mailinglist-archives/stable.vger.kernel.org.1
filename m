@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C9B86FA57F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 561B66FAD6A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234148AbjEHKKF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38264 "EHLO
+        id S233895AbjEHLe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:34:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234154AbjEHKKE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD403292B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:03 -0700 (PDT)
+        with ESMTP id S235947AbjEHLek (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 432223EDA3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:33:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52B85623A7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F28C433EF;
-        Mon,  8 May 2023 10:10:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02C6663244
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC92AC433D2;
+        Mon,  8 May 2023 11:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540602;
-        bh=RSjOxyB5EPvG1Rqoq05Wv2cmDWnbUTTmS3+tHQm/tIw=;
+        s=korg; t=1683545620;
+        bh=zNLmtlvE92e+a6GUH7QTXZjn1URMTLYoWikuSwWheO8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UGGlAT7XtQAdCWBbFKhk6DKEVgJGIDxC+Ae8Kjud3sLsPRNJ2fVSSwJ8ElcGdhYX0
-         f3QIWl9/n8oEXe1WheWtLQizDPuU+8rpBD/xFhktLG3Qu8xGDYuzGkJILMqG4MVqnd
-         NS3TlsDgnIms96/Ro1MS4P7X+nMWfCnMK4CIUtk8=
+        b=nqXciFoW/IdiHLzQxKcnd5ZCj2M6UEEShqBnWoPnDmORC5saTBrQb7+G5Wq1M9FdV
+         EVzUS8/pGfaDHWqa2hzkP1Qe1Cpk7+yp7DfH5L7dxRKlrR0Cc/a64TRe/e2Ouxt8Se
+         hDnELTeZBi5iHQGAPP9fPu5UtsDoRuMwmMi10OWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 428/611] HID: amd_sfh: Fix illuminance value
-Date:   Mon,  8 May 2023 11:44:30 +0200
-Message-Id: <20230508094436.105688174@linuxfoundation.org>
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 070/371] tpm, tpm_tis: Claim locality before writing interrupt registers
+Date:   Mon,  8 May 2023 11:44:31 +0200
+Message-Id: <20230508094814.897191675@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit a33e5e393171ae8384d3381db5cd159ba877cfcb ]
+[ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
 
-Illuminance value is actually 32 bits, but is incorrectly trancated to
-16 bits. Hence convert to integer illuminace accordingly to reflect
-correct values.
+In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
+TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
+Currently these modifications are done without holding a locality thus they
+have no effect. Fix this by claiming the (default) locality before the
+registers are written.
 
-Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Since now tpm_tis_gen_interrupt() is called with the locality already
+claimed remove locality request and release from this function.
+
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c      | 2 +-
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
-index 0609fea581c96..6f0d332ccf51c 100644
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_desc.c
-@@ -218,7 +218,7 @@ static u8 get_input_rep(u8 current_index, int sensor_idx, int report_id,
- 			     OFFSET_SENSOR_DATA_DEFAULT;
- 		memcpy_fromio(&als_data, sensoraddr, sizeof(struct sfh_als_data));
- 		get_common_inputs(&als_input.common_property, report_id);
--		als_input.illuminance_value = als_data.lux;
-+		als_input.illuminance_value = float_to_int(als_data.lux);
- 		report_size = sizeof(als_input);
- 		memcpy(input_report, &als_input, sizeof(als_input));
- 		break;
-diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-index a3e0ec289e3f9..9d31d5b510eb4 100644
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-@@ -133,7 +133,7 @@ struct sfh_mag_data {
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 99cbf6fb062ce..52826a7edf800 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -721,16 +721,10 @@ static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 	cap_t cap;
+ 	int ret;
  
- struct sfh_als_data {
- 	struct sfh_common_data commondata;
--	u16 lux;
-+	u32 lux;
- };
+-	ret = request_locality(chip, 0);
+-	if (ret < 0)
+-		return;
+-
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
+ 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
+ 	else
+ 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
+-
+-	release_locality(chip, 0);
+ }
  
- struct hpd_status {
+ /* Register the IRQ and issue a command that will cause an interrupt. If an
+@@ -753,10 +747,16 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	}
+ 	priv->irq = irq;
+ 
++	rc = request_locality(chip, 0);
++	if (rc < 0)
++		return rc;
++
+ 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
+ 			   &original_int_vec);
+-	if (rc < 0)
++	if (rc < 0) {
++		release_locality(chip, priv->locality);
+ 		return rc;
++	}
+ 
+ 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
+ 	if (rc < 0)
+@@ -790,10 +790,12 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
+ 		tpm_tis_write8(priv, original_int_vec,
+ 			       TPM_INT_VECTOR(priv->locality));
+-		return -1;
++		rc = -1;
+ 	}
+ 
+-	return 0;
++	release_locality(chip, priv->locality);
++
++	return rc;
+ }
+ 
+ /* Try to find the IRQ the TPM is using. This is for legacy x86 systems that
 -- 
 2.39.2
 
