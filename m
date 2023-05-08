@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 307AB6FA8A4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1156FAD7D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235050AbjEHKnz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
+        id S235908AbjEHLfN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:35:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235000AbjEHKnS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:43:18 -0400
+        with ESMTP id S235932AbjEHLfA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:35:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A71BB27F3A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:42:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B75FB3D56E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EE2B6285D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BB6C433EF;
-        Mon,  8 May 2023 10:42:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3171063126
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CF9C433D2;
+        Mon,  8 May 2023 11:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542525;
-        bh=9LJbx+ELuwApZUsSfMPBiPMGyel/4ljM8YpTP5ivLhg=;
+        s=korg; t=1683545589;
+        bh=t/DIvJEjfQnrhoem8pyfzPnqPJwvif7i4iy+FOTBs3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kXWh4zFJg4dXJQgRszJ03UKH38vuJ3n7e6FkLDiPI4dFrIkCCyDAekjA09/U8A9DK
-         NAFEGrny1HS8kaxxExnMx4OHcLfZ8bT5spMp46kJcdfx1CAnMpoaWn1J+x7uR8o5ho
-         iG47y6oz7byXICVixq3HxzKwapu68jyO/rRaFhpA=
+        b=JCW/zGkwu/a6DTu447x3zypIijAYbeJtHp2fOkLtTG8yC7ypeMnJ1lkTEGEpKjbDO
+         IYhAvpQx6KAVMANPi5sfmsuho+f1F7ZEOXLrJ3z3j6SOMQfSbGq9zlYQMqNK1z5VI4
+         DpIVP9JT3PzR2jTjK+zHL6JyLPLT8ZsaCiw2UpGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Dae R. Jeong" <threeearcat@gmail.com>,
+        patches@lists.linux.dev, Anand Gore <anand.gore@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 464/663] vmci_host: fix a race condition in vmci_host_poll() causing GPF
+Subject: [PATCH 5.15 089/371] ARM64: dts: Add DTS files for bcmbca SoC BCM6858
 Date:   Mon,  8 May 2023 11:44:50 +0200
-Message-Id: <20230508094443.238307211@linuxfoundation.org>
+Message-Id: <20230508094815.608638951@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,93 +54,199 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dae R. Jeong <threeearcat@gmail.com>
+From: Anand Gore <anand.gore@broadcom.com>
 
-[ Upstream commit ae13381da5ff0e8e084c0323c3cc0a945e43e9c7 ]
+[ Upstream commit e663e06bd3f21e64bc2163910f626af68add6308 ]
 
-During fuzzing, a general protection fault is observed in
-vmci_host_poll().
+Add DTS for ARMv8 based broadband SoC BCM6858. bcm6858.dtsi is the SoC
+description DTS header and bcm96858.dts is a simple DTS file for
+Broadcom BCM96858 Reference board that only enables the UART port.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
-RIP: 0010:__lock_acquire+0xf3/0x5e00 kernel/locking/lockdep.c:4926
-<- omitting registers ->
-Call Trace:
- <TASK>
- lock_acquire+0x1a4/0x4a0 kernel/locking/lockdep.c:5672
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0xb3/0x100 kernel/locking/spinlock.c:162
- add_wait_queue+0x3d/0x260 kernel/sched/wait.c:22
- poll_wait include/linux/poll.h:49 [inline]
- vmci_host_poll+0xf8/0x2b0 drivers/misc/vmw_vmci/vmci_host.c:174
- vfs_poll include/linux/poll.h:88 [inline]
- do_pollfd fs/select.c:873 [inline]
- do_poll fs/select.c:921 [inline]
- do_sys_poll+0xc7c/0x1aa0 fs/select.c:1015
- __do_sys_ppoll fs/select.c:1121 [inline]
- __se_sys_ppoll+0x2cc/0x330 fs/select.c:1101
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x4e/0xa0 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-
-Example thread interleaving that causes the general protection fault
-is as follows:
-
-CPU1 (vmci_host_poll)               CPU2 (vmci_host_do_init_context)
------                               -----
-// Read uninitialized context
-context = vmci_host_dev->context;
-                                    // Initialize context
-                                    vmci_host_dev->context = vmci_ctx_create();
-                                    vmci_host_dev->ct_type = VMCIOBJ_CONTEXT;
-
-if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-    // Dereferencing the wrong pointer
-    poll_wait(..., &context->host_context);
-}
-
-In this scenario, vmci_host_poll() reads vmci_host_dev->context first,
-and then reads vmci_host_dev->ct_type to check that
-vmci_host_dev->context is initialized. However, since these two reads
-are not atomically executed, there is a chance of a race condition as
-described above.
-
-To fix this race condition, read vmci_host_dev->context after checking
-the value of vmci_host_dev->ct_type so that vmci_host_poll() always
-reads an initialized context.
-
-Reported-by: Dae R. Jeong <threeearcat@gmail.com>
-Fixes: 8bf503991f87 ("VMCI: host side driver implementation.")
-Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
-Link: https://lore.kernel.org/r/ZCGFsdBAU4cYww5l@dragonet
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Anand Gore <anand.gore@broadcom.com>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Stable-dep-of: 5cca02449490 ("arm64: dts: broadcom: bcmbca: bcm4908: fix NAND interrupt name")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/broadcom/bcmbca/Makefile  |   3 +-
+ .../boot/dts/broadcom/bcmbca/bcm6858.dtsi     | 121 ++++++++++++++++++
+ .../boot/dts/broadcom/bcmbca/bcm96858.dts     |  30 +++++
+ 3 files changed, 153 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/bcm6858.dtsi
+ create mode 100644 arch/arm64/boot/dts/broadcom/bcmbca/bcm96858.dts
 
-diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
-index 857b9851402a6..abe79f6fd2a79 100644
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -165,10 +165,16 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
- static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
- {
- 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
--	struct vmci_ctx *context = vmci_host_dev->context;
-+	struct vmci_ctx *context;
- 	__poll_t mask = 0;
- 
- 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-+		/*
-+		 * Read context only if ct_type == VMCIOBJ_CONTEXT to make
-+		 * sure that context is initialized
-+		 */
-+		context = vmci_host_dev->context;
+diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
+index b6e520e9f2f21..4161d557b1329 100644
+--- a/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
++++ b/arch/arm64/boot/dts/broadcom/bcmbca/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ dtb-$(CONFIG_ARCH_BCMBCA) += bcm94912.dtb \
+-				bcm963158.dtb
++				bcm963158.dtb \
++				bcm96858.dtb
+diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/bcm6858.dtsi b/arch/arm64/boot/dts/broadcom/bcmbca/bcm6858.dtsi
+new file mode 100644
+index 0000000000000..29a880c6c8588
+--- /dev/null
++++ b/arch/arm64/boot/dts/broadcom/bcmbca/bcm6858.dtsi
+@@ -0,0 +1,121 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022 Broadcom Ltd.
++ */
 +
- 		/* Check for VMCI calls to this VM context. */
- 		if (wait)
- 			poll_wait(filp, &context->host_context.wait_queue,
++#include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/interrupt-controller/arm-gic.h>
++
++/ {
++	compatible = "brcm,bcm6858", "brcm,bcmbca";
++	#address-cells = <2>;
++	#size-cells = <2>;
++
++	interrupt-parent = <&gic>;
++
++	cpus {
++		#address-cells = <2>;
++		#size-cells = <0>;
++
++		B53_0: cpu@0 {
++			compatible = "brcm,brahma-b53";
++			device_type = "cpu";
++			reg = <0x0 0x0>;
++			next-level-cache = <&L2_0>;
++			enable-method = "psci";
++		};
++
++		B53_1: cpu@1 {
++			compatible = "brcm,brahma-b53";
++			device_type = "cpu";
++			reg = <0x0 0x1>;
++			next-level-cache = <&L2_0>;
++			enable-method = "psci";
++		};
++
++		B53_2: cpu@2 {
++			compatible = "brcm,brahma-b53";
++			device_type = "cpu";
++			reg = <0x0 0x2>;
++			next-level-cache = <&L2_0>;
++			enable-method = "psci";
++		};
++
++		B53_3: cpu@3 {
++			compatible = "brcm,brahma-b53";
++			device_type = "cpu";
++			reg = <0x0 0x3>;
++			next-level-cache = <&L2_0>;
++			enable-method = "psci";
++		};
++		L2_0: l2-cache0 {
++			compatible = "cache";
++		};
++	};
++
++	timer {
++		compatible = "arm,armv8-timer";
++		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
++			<GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
++			<GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
++			<GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
++	};
++
++	pmu: pmu {
++		compatible = "arm,armv8-pmuv3";
++		interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
++			<GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>,
++			<GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
++			<GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-affinity = <&B53_0>, <&B53_1>,
++			<&B53_2>, <&B53_3>;
++	};
++
++	clocks: clocks {
++		periph_clk:periph-clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <200000000>;
++		};
++	};
++
++	psci {
++		compatible = "arm,psci-0.2";
++		method = "smc";
++	};
++
++	axi@81000000 {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges = <0x0 0x0 0x81000000 0x8000>;
++
++		gic: interrupt-controller@1000 {
++			compatible = "arm,gic-400";
++			#interrupt-cells = <3>;
++			interrupt-controller;
++			reg = <0x1000 0x1000>, /* GICD */
++				<0x2000 0x2000>, /* GICC */
++				<0x4000 0x2000>, /* GICH */
++				<0x6000 0x2000>; /* GICV */
++			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) |
++					IRQ_TYPE_LEVEL_HIGH)>;
++		};
++	};
++
++	bus@ff800000 {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges = <0x0 0x0 0xff800000 0x62000>;
++
++		uart0: serial@640 {
++			compatible = "brcm,bcm6345-uart";
++			reg = <0x640 0x18>;
++			interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&periph_clk>;
++			clock-names = "refclk";
++			status = "disabled";
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/broadcom/bcmbca/bcm96858.dts b/arch/arm64/boot/dts/broadcom/bcmbca/bcm96858.dts
+new file mode 100644
+index 0000000000000..0cbf582f5d545
+--- /dev/null
++++ b/arch/arm64/boot/dts/broadcom/bcmbca/bcm96858.dts
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright 2022 Broadcom Ltd.
++ */
++
++/dts-v1/;
++
++#include "bcm6858.dtsi"
++
++/ {
++	model = "Broadcom BCM96858 Reference Board";
++	compatible = "brcm,bcm96858", "brcm,bcm6858", "brcm,bcmbca";
++
++	aliases {
++		serial0 = &uart0;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0x0 0x0 0x0 0x08000000>;
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
 -- 
 2.39.2
 
