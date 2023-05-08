@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31FE66FAD1A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70ED66FA557
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235838AbjEHLax (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
+        id S234109AbjEHKI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235845AbjEHLah (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:37 -0400
+        with ESMTP id S234099AbjEHKIZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 875483DEB6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C823290F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:08:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 118306302C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D5FC4339B;
-        Mon,  8 May 2023 11:30:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D299D60F3A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F61C433EF;
+        Mon,  8 May 2023 10:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545434;
-        bh=zOMtrZwVaZkKZq0gweW1/PlI8MYXNXMIIBzhw41tmg8=;
+        s=korg; t=1683540503;
+        bh=4pi3Kl3JtxXjd+LQHSaOy8cyfcfjNs/hFBttoJ+VXdg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uTOJqzsGOQHn6BxLRil6/Q/t8aOljYktRSq1Jix8bcjrsWSyCw/2lHCrfVvl+DB5R
-         +B5qjrtonGwxb6NIU81C5VkVVDjYk7gdCP3/gQXQ844OvMnpX9jptx/MqdfrC4XCWL
-         cm4WERTZCqkQQhVuHPJb82rIaDYtCn5a/nmI8E0U=
+        b=g2utQmb1nxtJ28cYa9r1zFtuSyUq/CSFnQwybsk6NRz4QJ35/6DAVU8EeZJL6pUY7
+         APpqhkyOOIyegGkfjRg6H4PCgz7bJi6Tw1SToJ2ojMQqMMPTyKFyvgGicJ5kwGT6AV
+         UuEJYBt50qPzg+RqWraL+NW9hPSkLiDU7vEhM3mE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Zhang Yuchen <zhangyuchen.lcr@bytedance.com>,
-        Corey Minyard <minyard@acm.org>
-Subject: [PATCH 5.15 031/371] ipmi: fix SSIF not responding under certain cond.
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Madalin Bucur <madalin.bucur@oss.nxp.com>,
+        Sean Anderson <sean.anderson@seco.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 390/611] net: dpaa: Fix uninitialized variable in dpaa_stop()
 Date:   Mon,  8 May 2023 11:43:52 +0200
-Message-Id: <20230508094813.353457057@linuxfoundation.org>
+Message-Id: <20230508094434.966895033@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Yuchen <zhangyuchen.lcr@bytedance.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 6d2555cde2918409b0331560e66f84a0ad4849c6 upstream.
+[ Upstream commit 461bb5b97049a149278f2c27a3aa12af16da6a2e ]
 
-The ipmi communication is not restored after a specific version of BMC is
-upgraded on our server.
-The ipmi driver does not respond after printing the following log:
+The return value is not initialized on the success path.
 
-    ipmi_ssif: Invalid response getting flags: 1c 1
-
-I found that after entering this branch, ssif_info->ssif_state always
-holds SSIF_GETTING_FLAGS and never return to IDLE.
-
-As a result, the driver cannot be loaded, because the driver status is
-checked during the unload process and must be IDLE in shutdown_ssif():
-
-        while (ssif_info->ssif_state != SSIF_IDLE)
-                schedule_timeout(1);
-
-The process trigger this problem is:
-
-1. One msg timeout and next msg start send, and call
-ssif_set_need_watch().
-
-2. ssif_set_need_watch()->watch_timeout()->start_flag_fetch() change
-ssif_state to SSIF_GETTING_FLAGS.
-
-3. In msg_done_handler() ssif_state == SSIF_GETTING_FLAGS, if an error
-message is received, the second branch does not modify the ssif_state.
-
-4. All retry action need IS_SSIF_IDLE() == True. Include retry action in
-watch_timeout(), msg_done_handler(). Sending msg does not work either.
-SSIF_IDLE is also checked in start_next_msg().
-
-5. The only thing that can be triggered in the SSIF driver is
-watch_timeout(), after destory_user(), this timer will stop too.
-
-So, if enter this branch, the ssif_state will remain SSIF_GETTING_FLAGS
-and can't send msg, no timer started, can't unload.
-
-We did a comparative test before and after adding this patch, and the
-result is effective.
-
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yuchen <zhangyuchen.lcr@bytedance.com>
-Message-Id: <20230412074907.80046-1-zhangyuchen.lcr@bytedance.com>
-Signed-off-by: Corey Minyard <minyard@acm.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 901bdff2f529 ("net: fman: Change return type of disable to void")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/8c9dc377-8495-495f-a4e5-4d2d0ee12f0c@kili.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -794,9 +794,9 @@ static void msg_done_handler(struct ssif
- 		} else if (data[0] != (IPMI_NETFN_APP_REQUEST | 1) << 2
- 			   || data[1] != IPMI_GET_MSG_FLAGS_CMD) {
- 			/*
--			 * Don't abort here, maybe it was a queued
--			 * response to a previous command.
-+			 * Recv error response, give up.
- 			 */
-+			ssif_info->ssif_state = SSIF_IDLE;
- 			ipmi_ssif_unlock_cond(ssif_info, flags);
- 			dev_warn(&ssif_info->client->dev,
- 				 "Invalid response getting flags: %x %x\n",
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+index d8fb7d4ebd51e..981cc32480474 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -283,7 +283,8 @@ static int dpaa_stop(struct net_device *net_dev)
+ {
+ 	struct mac_device *mac_dev;
+ 	struct dpaa_priv *priv;
+-	int i, err, error;
++	int i, error;
++	int err = 0;
+ 
+ 	priv = netdev_priv(net_dev);
+ 	mac_dev = priv->mac_dev;
+-- 
+2.39.2
+
 
 
