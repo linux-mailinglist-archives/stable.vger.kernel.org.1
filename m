@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1D36FA7C6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 585836FAB23
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234809AbjEHKew (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33680 "EHLO
+        id S233530AbjEHLKT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:10:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234736AbjEHKeS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65AB25533
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:28 -0700 (PDT)
+        with ESMTP id S232953AbjEHLJs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFA833165
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3DDC614EA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A321CC433EF;
-        Mon,  8 May 2023 10:33:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E56A62B16
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E240C433EF;
+        Mon,  8 May 2023 11:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542008;
-        bh=YSy9V8mQdM4yFkF4v5ZvF2/EfD/DWjHoRcQO2CMxSao=;
+        s=korg; t=1683544154;
+        bh=NN+y6O8IajfjOcSalIZBOb2or+PXqa+pqr8O28XTn+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yiR1hkqEWW7AFXt5ZAqraes2I1hnpFI9dVaKz6YQQ0TcjtxKlHcsqYGrsCSLmPXId
-         wsymS6ABo/rrb9+q7jVC7vPPDOj2haNEF/2YvKqzpL/JsbLNlh5rjZAWTrg2k8JUv3
-         YasfsuSUN/4jer+3Z6ri8Kqu7PP8ECu4Q8VEquog=
+        b=HzS9RAPArWlCRAaaEw97EF0oDcTuwi/ZdZPTzlZl9JEpz7PYCKUK4lfrLOinH+qEy
+         LansGqnVHS4KT7iOaiy8ZdLvvadWWP3vtoqDcAu142f1KRS9r6iXSpIW2dcS4oeWdL
+         UcZakbwCkYR+GO8+l8kdjJOHvn/Ce5EBlW1cmcWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 296/663] wifi: ath11k: fix deinitialization of firmware resources
+Subject: [PATCH 6.3 287/694] platform/x86/amd/pmf: Move out of BIOS SMN pair for driver probe
 Date:   Mon,  8 May 2023 11:42:02 +0200
-Message-Id: <20230508094437.787259608@linuxfoundation.org>
+Message-Id: <20230508094441.608932424@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,87 +55,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 5a78ac33e3cb8822da64dd1af196e83664b332b0 ]
+[ Upstream commit aec8298c093f052fc8a86f9411b69b23953b0edb ]
 
-Currently, in ath11k_ahb_fw_resources_init(), iommu domain
-mapping is done only for the chipsets having fixed firmware
-memory. Also, for such chipsets, mapping is done only if it
-does not have TrustZone support.
+The current SMN index used for the driver probe seems to be meant
+for the BIOS pair and there are potential concurrency problems that can
+occur with an inopportune SMI.
 
-During deinitialization, only if TrustZone support is not there,
-iommu is unmapped back. However, for non fixed firmware memory
-chipsets, TrustZone support is not there and this makes the
-condition check to true and it tries to unmap the memory which
-was not mapped during initialization.
+It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
+what amd_nb.c provides and this function has protections to ensure that
+only one caller can use it at a time.
 
-This leads to the following trace -
-
-[   83.198790] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-[   83.259537] Modules linked in: ath11k_ahb ath11k qmi_helpers
-.. snip ..
-[   83.280286] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   83.287228] pc : __iommu_unmap+0x30/0x140
-[   83.293907] lr : iommu_unmap+0x5c/0xa4
-[   83.298072] sp : ffff80000b3abad0
-.. snip ..
-[   83.369175] Call trace:
-[   83.376282]  __iommu_unmap+0x30/0x140
-[   83.378541]  iommu_unmap+0x5c/0xa4
-[   83.382360]  ath11k_ahb_fw_resource_deinit.part.12+0x2c/0xac [ath11k_ahb]
-[   83.385666]  ath11k_ahb_free_resources+0x140/0x17c [ath11k_ahb]
-[   83.392521]  ath11k_ahb_shutdown+0x34/0x40 [ath11k_ahb]
-[   83.398248]  platform_shutdown+0x20/0x2c
-[   83.403455]  device_shutdown+0x16c/0x1c4
-[   83.407621]  kernel_restart_prepare+0x34/0x3c
-[   83.411529]  kernel_restart+0x14/0x74
-[   83.415781]  __do_sys_reboot+0x1c4/0x22c
-[   83.419427]  __arm64_sys_reboot+0x1c/0x24
-[   83.423420]  invoke_syscall+0x44/0xfc
-[   83.427326]  el0_svc_common.constprop.3+0xac/0xe8
-[   83.430974]  do_el0_svc+0xa0/0xa8
-[   83.435659]  el0_svc+0x1c/0x44
-[   83.438957]  el0t_64_sync_handler+0x60/0x144
-[   83.441910]  el0t_64_sync+0x15c/0x160
-[   83.446343] Code: aa0103f4 f9400001 f90027a1 d2800001 (f94006a0)
-[   83.449903] ---[ end trace 0000000000000000 ]---
-
-This can be reproduced by probing an AHB chipset which is not
-having a fixed memory region. During reboot (or rmmod) trace
-can be seen.
-
-Fix this issue by adding a condition check on firmware fixed memory
-hw_param as done in the counter initialization function.
-
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Fixes: f9eec4947add ("ath11k: Add support for targets without trustzone")
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230309095308.24937-1-quic_adisi@quicinc.com
+Fixes: da5ce22df5fe ("platform/x86/amd/pmf: Add support for PMF core layer")
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20230406164807.50969-4-Shyam-sundar.S-k@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/amd/pmf/Kconfig |  1 +
+ drivers/platform/x86/amd/pmf/core.c  | 22 +++++-----------------
+ 2 files changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index f70a119bb5c87..76f275ca53e9c 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -1063,6 +1063,12 @@ static int ath11k_ahb_fw_resource_deinit(struct ath11k_base *ab)
- 	struct iommu_domain *iommu;
- 	size_t unmapped_size;
+diff --git a/drivers/platform/x86/amd/pmf/Kconfig b/drivers/platform/x86/amd/pmf/Kconfig
+index 6d89528c31779..d87986adf91e1 100644
+--- a/drivers/platform/x86/amd/pmf/Kconfig
++++ b/drivers/platform/x86/amd/pmf/Kconfig
+@@ -7,6 +7,7 @@ config AMD_PMF
+ 	tristate "AMD Platform Management Framework"
+ 	depends on ACPI && PCI
+ 	depends on POWER_SUPPLY
++	depends on AMD_NB
+ 	select ACPI_PLATFORM_PROFILE
+ 	help
+ 	  This driver provides support for the AMD Platform Management Framework.
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index da23639071d79..0acc0b6221290 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -8,6 +8,7 @@
+  * Author: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+  */
  
-+	/* Chipsets not requiring MSA would have not initialized
-+	 * MSA resources, return success in such cases.
-+	 */
-+	if (!ab->hw_params.fixed_fw_mem)
-+		return 0;
-+
- 	if (ab_ahb->fw.use_tz)
- 		return 0;
++#include <asm/amd_nb.h>
+ #include <linux/debugfs.h>
+ #include <linux/iopoll.h>
+ #include <linux/module.h>
+@@ -22,8 +23,6 @@
+ #define AMD_PMF_REGISTER_ARGUMENT	0xA58
  
+ /* Base address of SMU for mapping physical address to virtual address */
+-#define AMD_PMF_SMU_INDEX_ADDRESS	0xB8
+-#define AMD_PMF_SMU_INDEX_DATA		0xBC
+ #define AMD_PMF_MAPPING_SIZE		0x01000
+ #define AMD_PMF_BASE_ADDR_OFFSET	0x10000
+ #define AMD_PMF_BASE_ADDR_LO		0x13B102E8
+@@ -348,30 +347,19 @@ static int amd_pmf_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	dev->cpu_id = rdev->device;
+-	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_LO);
+-	if (err) {
+-		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
+-		pci_dev_put(rdev);
+-		return pcibios_err_to_errno(err);
+-	}
+ 
+-	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
++	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_LO, &val);
+ 	if (err) {
++		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_LO);
+ 		pci_dev_put(rdev);
+ 		return pcibios_err_to_errno(err);
+ 	}
+ 
+ 	base_addr_lo = val & AMD_PMF_BASE_ADDR_HI_MASK;
+ 
+-	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_HI);
+-	if (err) {
+-		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
+-		pci_dev_put(rdev);
+-		return pcibios_err_to_errno(err);
+-	}
+-
+-	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
++	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_HI, &val);
+ 	if (err) {
++		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_HI);
+ 		pci_dev_put(rdev);
+ 		return pcibios_err_to_errno(err);
+ 	}
 -- 
 2.39.2
 
