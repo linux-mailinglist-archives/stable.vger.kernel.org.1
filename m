@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FDF36FA3B9
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE4B6FA3B8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233009AbjEHJvY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:51:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47694 "EHLO
+        id S233434AbjEHJvX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233802AbjEHJvL (ORCPT
+        with ESMTP id S233800AbjEHJvL (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:51:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E85C23A32
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:50:59 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C4723A35
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:51:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA2D8621B7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA17C4339B;
-        Mon,  8 May 2023 09:50:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A1946142A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:51:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E076C433EF;
+        Mon,  8 May 2023 09:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539458;
-        bh=vXT5zHw0jD8awhq1OZ+fdrHpwm15x1XkfNvwelBJ68s=;
+        s=korg; t=1683539460;
+        bh=W8lqNiXZSDiPJgwfLs3aykEqTVqtcqZXDhKB4Xg3YeI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tA2dvuVDWfIe1nmIKCajP7tGvZrUw5/S6MiwyFj9ckWpEz5NwNLGZmQNqVxsdJBSG
-         fewL7JNAZiUhH/e2iX7rPfkY3BR5ppzhdZTDCfiGUy1ssQk5GRVpFcF/PJ5dTMC3Cx
-         Z8Gg1jh01TMuQ6a3QnJg0J//SmtcmAtwsC7Selk8=
+        b=m1I3B6EqizF949KJnUkBqhNnIbo3fjrXVWporzvk8/EsLUKD57Qb/yq1J3eodFARl
+         DAG/6DKbZBTFuMNfpjy/ImOPKUqN/RWz3L66RKUV40mr/GY4QR4OeaR0NbTMtyRdgJ
+         ceg35wpbWffLgZSqpOMReFYMTY7jrcHi15r/wRsA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.1 023/611] arm64: Stash shadow stack pointer in the task struct on interrupt
-Date:   Mon,  8 May 2023 11:37:45 +0200
-Message-Id: <20230508094422.477717680@linuxfoundation.org>
+        patches@lists.linux.dev, Danny Tsen <dtsen@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 024/611] powerpc/boot: Fix boot wrapper code generation with CONFIG_POWER10_CPU
+Date:   Mon,  8 May 2023 11:37:46 +0200
+Message-Id: <20230508094422.508376304@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,72 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-commit 59b37fe52f49955791a460752c37145f1afdcad1 upstream.
+commit 648a1783fe2551f5a091c9a5f8f463cb2cbf8745 upstream.
 
-Instead of reloading the shadow call stack pointer from the ordinary
-stack, which may be vulnerable to the kind of gadget based attacks
-shadow call stacks were designed to prevent, let's store a task's shadow
-call stack pointer in the task struct when switching to the shadow IRQ
-stack.
+-mcpu=power10 will generate prefixed and pcrel code by default, which
+we do not support. The general kernel disables these with cflags, but
+those were missed for the boot wrapper.
 
-Given that currently, the task_struct::scs_sp field is only used to
-preserve the shadow call stack pointer while a task is scheduled out or
-running in user space, reusing this field to preserve and restore it
-while running off the IRQ stack must be safe, as those occurrences are
-guaranteed to never overlap. (The stack switching logic only switches
-stacks when running from the task stack, and so the value being saved
-here always corresponds to the task mode shadow stack)
-
-While at it, fold a mov/add/mov sequence into a single add.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20230109174800.3286265-3-ardb@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 4b2a9315f20d ("powerpc/64s: POWER10 CPU Kconfig build option")
+Cc: stable@vger.kernel.org # v6.1+
+Reported-by: Danny Tsen <dtsen@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230407040909.230998-1-npiggin@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/entry.S |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/powerpc/boot/Makefile |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -873,19 +873,19 @@ NOKPROBE(ret_from_fork)
-  */
- SYM_FUNC_START(call_on_irq_stack)
- #ifdef CONFIG_SHADOW_CALL_STACK
--	stp	scs_sp, xzr, [sp, #-16]!
-+	get_current_task x16
-+	scs_save x16
- 	ldr_this_cpu scs_sp, irq_shadow_call_stack_ptr, x17
- #endif
-+
- 	/* Create a frame record to save our LR and SP (implicit in FP) */
- 	stp	x29, x30, [sp, #-16]!
- 	mov	x29, sp
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -34,6 +34,8 @@ endif
  
- 	ldr_this_cpu x16, irq_stack_ptr, x17
--	mov	x15, #IRQ_STACK_SIZE
--	add	x16, x16, x15
- 
- 	/* Move to the new stack and call the function there */
--	mov	sp, x16
-+	add	sp, x16, #IRQ_STACK_SIZE
- 	blr	x1
- 
- 	/*
-@@ -894,9 +894,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	 */
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
--#ifdef CONFIG_SHADOW_CALL_STACK
--	ldp	scs_sp, xzr, [sp], #16
--#endif
-+	scs_load_current
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
+ BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
++		 $(call cc-option,-mno-prefixed) $(call cc-option,-mno-pcrel) \
++		 $(call cc-option,-mno-mma) \
+ 		 $(call cc-option,-mno-spe) $(call cc-option,-mspe=no) \
+ 		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
+ 		 $(LINUXINCLUDE)
 
 
