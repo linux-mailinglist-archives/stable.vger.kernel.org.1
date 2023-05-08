@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9C646FAB17
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA39F6FA800
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233815AbjEHLJs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:09:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48710 "EHLO
+        id S234733AbjEHKhA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:37:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233713AbjEHLIz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:55 -0400
+        with ESMTP id S234738AbjEHKgh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1093488A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDDE51BD7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:36:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D296162B16
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C266FC433EF;
-        Mon,  8 May 2023 11:08:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 691786279C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69347C433EF;
+        Mon,  8 May 2023 10:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544133;
-        bh=0Z6DdtMkGxTiNOX7sZiAy6z98nFMchSsQYeqYLcH8TY=;
+        s=korg; t=1683542174;
+        bh=Gl5Byci5qH/0fnraDLl/CWuxLnM+iUCqU9yqv1bYXv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZGk0Hxp1cl76Qzk/+oDNf6pSod/ucQdeyobx0iL7rf3EG9qg4c06PdX4offsIYz4d
-         OOT+kmPypOUTFymaSgyAwC4/uA1ge92O2Ztua8LwEHX5Svckv/OzzyKhRdaoGrGdh4
-         bmWL0vN/5ZgglWWxQTVu/qd0x4lGcxz9qD7cVZTY=
+        b=okhJkocay+kxoiBWafu91mB97VGCUvj5th3NZp6fGCLVqGLE3m4JOJkMQQxFcanEN
+         tMh95K5qM5lbP7HPIW9MtoSObrVrNlcJJDGvBWKsS9Xph94wNjKj355F9+sDj1k4cr
+         qvd9dJ4usGNcCm47xgELkHB7gnEuWCxsYvsLqI5Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Yonggil Song <yonggil.song@samsung.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 310/694] media: mediatek: vcodec: fix decoder disable pm crash
+Subject: [PATCH 6.2 319/663] f2fs: fix uninitialized skipped_gc_rwsem
 Date:   Mon,  8 May 2023 11:42:25 +0200
-Message-Id: <20230508094442.346639863@linuxfoundation.org>
+Message-Id: <20230508094438.541918702@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Yonggil Song <yonggil.song@samsung.com>
 
-[ Upstream commit 9d2f13fb47dcab6d094f34ecfd6a879a409722b3 ]
+[ Upstream commit c17caf0ba3aa3411b96c71b4ce24be1040b8f3e8 ]
 
-Can't call pm_runtime_disable when the architecture support sub device for
-'dev->pm.dev' is NUll, or will get below crash log.
+When f2fs skipped a gc round during victim migration, there was a bug which
+would skip all upcoming gc rounds unconditionally because skipped_gc_rwsem
+was not initialized. It fixes the bug by correctly initializing the
+skipped_gc_rwsem inside the gc loop.
 
-[   10.771551] pc : _raw_spin_lock_irq+0x4c/0xa0
-[   10.771556] lr : __pm_runtime_disable+0x30/0x130
-[   10.771558] sp : ffffffc01e4cb800
-[   10.771559] x29: ffffffc01e4cb800 x28: ffffffdf082108a8
-[   10.771563] x27: ffffffc01e4cbd70 x26: ffffff8605df55f0
-[   10.771567] x25: 0000000000000002 x24: 0000000000000002
-[   10.771570] x23: ffffff85c0dc9c00 x22: 0000000000000001
-[   10.771573] x21: 0000000000000001 x20: 0000000000000000
-[   10.771577] x19: 00000000000000f4 x18: ffffffdf2e9fbe18
-[   10.771580] x17: 0000000000000000 x16: ffffffdf2df13c74
-[   10.771583] x15: 00000000000002ea x14: 0000000000000058
-[   10.771587] x13: ffffffdf2de1b62c x12: ffffffdf2e9e30e4
-[   10.771590] x11: 0000000000000000 x10: 0000000000000001
-[   10.771593] x9 : 0000000000000000 x8 : 00000000000000f4
-[   10.771596] x7 : 6bff6264632c6264 x6 : 0000000000008000
-[   10.771600] x5 : 0080000000000000 x4 : 0000000000000001
-[   10.771603] x3 : 0000000000000008 x2 : 0000000000000001
-[   10.771608] x1 : 0000000000000000 x0 : 00000000000000f4
-[   10.771613] Call trace:
-[   10.771617]  _raw_spin_lock_irq+0x4c/0xa0
-[   10.771620]  __pm_runtime_disable+0x30/0x130
-[   10.771657]  mtk_vcodec_probe+0x69c/0x728 [mtk_vcodec_dec 800cc929d6631f79f9b273254c8db94d0d3500dc]
-[   10.771662]  platform_drv_probe+0x9c/0xbc
-[   10.771665]  really_probe+0x13c/0x3a0
-[   10.771668]  driver_probe_device+0x84/0xc0
-[   10.771671]  device_driver_attach+0x54/0x78
-
-Fixes: ba31a5b39400 ("media: mtk-vcodec: Remove mtk_vcodec_release_dec_pm")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 6f8d4455060d ("f2fs: avoid fi->i_gc_rwsem[WRITE] lock in f2fs_gc")
+Signed-off-by: Yonggil Song <yonggil.song@samsung.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/gc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
-index 174a6eec2f549..42df901e8beb4 100644
---- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_drv.c
-@@ -451,7 +451,8 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
- 	if (IS_VDEC_LAT_ARCH(dev->vdec_pdata->hw_arch))
- 		destroy_workqueue(dev->core_workqueue);
- err_res:
--	pm_runtime_disable(dev->pm.dev);
-+	if (!dev->vdec_pdata->is_subdev_supported)
-+		pm_runtime_disable(dev->pm.dev);
- err_dec_pm:
- 	mtk_vcodec_fw_release(dev->fw_handler);
- 	return ret;
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 6e2cae3d2e717..72cda2f9380f2 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1795,8 +1795,8 @@ int f2fs_gc(struct f2fs_sb_info *sbi, struct f2fs_gc_control *gc_control)
+ 				prefree_segments(sbi));
+ 
+ 	cpc.reason = __get_cp_reason(sbi);
+-	sbi->skipped_gc_rwsem = 0;
+ gc_more:
++	sbi->skipped_gc_rwsem = 0;
+ 	if (unlikely(!(sbi->sb->s_flags & SB_ACTIVE))) {
+ 		ret = -EINVAL;
+ 		goto stop;
 -- 
 2.39.2
 
