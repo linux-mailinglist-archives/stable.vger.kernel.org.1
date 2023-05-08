@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 585836FAB23
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84DF16FA4F9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:05:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233530AbjEHLKT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47668 "EHLO
+        id S234014AbjEHKFG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:05:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232953AbjEHLJs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFA833165
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:15 -0700 (PDT)
+        with ESMTP id S234015AbjEHKFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:05:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F236A30165
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:05:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E56A62B16
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E240C433EF;
-        Mon,  8 May 2023 11:09:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88A9E62327
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4C2C433D2;
+        Mon,  8 May 2023 10:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544154;
-        bh=NN+y6O8IajfjOcSalIZBOb2or+PXqa+pqr8O28XTn+w=;
+        s=korg; t=1683540303;
+        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HzS9RAPArWlCRAaaEw97EF0oDcTuwi/ZdZPTzlZl9JEpz7PYCKUK4lfrLOinH+qEy
-         LansGqnVHS4KT7iOaiy8ZdLvvadWWP3vtoqDcAu142f1KRS9r6iXSpIW2dcS4oeWdL
-         UcZakbwCkYR+GO8+l8kdjJOHvn/Ce5EBlW1cmcWU=
+        b=Bu6nk9WsAlUeFV1WfFWNLz0eFa3knvEMql0WFQdaaRvP/n8gTHNLGOxQpOQQibjXV
+         1OspH7h5HIdUGMYbtnAKfXL3lRAKoxbQ/9hGRdSNHGoSURkWya7Y3S/zRf04/4vMmv
+         Rgqz7afHrk9IL54cnLqnzsLs2JSYWHVXk4lRE8c0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patil Rajesh Reddy <Patil.Reddy@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+        Paul Moore <paul@paul-moore.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 287/694] platform/x86/amd/pmf: Move out of BIOS SMN pair for driver probe
+Subject: [PATCH 6.1 280/611] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
 Date:   Mon,  8 May 2023 11:42:02 +0200
-Message-Id: <20230508094441.608932424@linuxfoundation.org>
+Message-Id: <20230508094431.478923956@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,99 +59,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 
-[ Upstream commit aec8298c093f052fc8a86f9411b69b23953b0edb ]
+[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
 
-The current SMN index used for the driver probe seems to be meant
-for the BIOS pair and there are potential concurrency problems that can
-occur with an inopportune SMI.
+Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
+wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
 
-It is been advised to use SMN_INDEX_0 instead of SMN_INDEX_2, which is
-what amd_nb.c provides and this function has protections to ensure that
-only one caller can use it at a time.
+For some reason we have no corresponding check for SO_PASSSEC.
 
-Fixes: da5ce22df5fe ("platform/x86/amd/pmf: Add support for PMF core layer")
-Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230406164807.50969-4-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+In the recvmsg(2) doc we have:
+       MSG_CTRUNC
+              indicates that some control data was discarded due to lack
+              of space in the buffer for ancillary data.
+
+So, we need to set MSG_CTRUNC flag for all types of SCM.
+
+This change can break applications those don't check MSG_CTRUNC flag.
+
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+
+v2:
+- commit message was rewritten according to Eric's suggestion
+Acked-by: Paul Moore <paul@paul-moore.com>
+
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/Kconfig |  1 +
- drivers/platform/x86/amd/pmf/core.c  | 22 +++++-----------------
- 2 files changed, 6 insertions(+), 17 deletions(-)
+ include/net/scm.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/Kconfig b/drivers/platform/x86/amd/pmf/Kconfig
-index 6d89528c31779..d87986adf91e1 100644
---- a/drivers/platform/x86/amd/pmf/Kconfig
-+++ b/drivers/platform/x86/amd/pmf/Kconfig
-@@ -7,6 +7,7 @@ config AMD_PMF
- 	tristate "AMD Platform Management Framework"
- 	depends on ACPI && PCI
- 	depends on POWER_SUPPLY
-+	depends on AMD_NB
- 	select ACPI_PLATFORM_PROFILE
- 	help
- 	  This driver provides support for the AMD Platform Management Framework.
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index da23639071d79..0acc0b6221290 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -8,6 +8,7 @@
-  * Author: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-  */
- 
-+#include <asm/amd_nb.h>
- #include <linux/debugfs.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
-@@ -22,8 +23,6 @@
- #define AMD_PMF_REGISTER_ARGUMENT	0xA58
- 
- /* Base address of SMU for mapping physical address to virtual address */
--#define AMD_PMF_SMU_INDEX_ADDRESS	0xB8
--#define AMD_PMF_SMU_INDEX_DATA		0xBC
- #define AMD_PMF_MAPPING_SIZE		0x01000
- #define AMD_PMF_BASE_ADDR_OFFSET	0x10000
- #define AMD_PMF_BASE_ADDR_LO		0x13B102E8
-@@ -348,30 +347,19 @@ static int amd_pmf_probe(struct platform_device *pdev)
+diff --git a/include/net/scm.h b/include/net/scm.h
+index 1ce365f4c2560..585adc1346bd0 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
+ 		}
  	}
+ }
++
++static inline bool scm_has_secdata(struct socket *sock)
++{
++	return test_bit(SOCK_PASSSEC, &sock->flags);
++}
+ #else
+ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
+ { }
++
++static inline bool scm_has_secdata(struct socket *sock)
++{
++	return false;
++}
+ #endif /* CONFIG_SECURITY_NETWORK */
  
- 	dev->cpu_id = rdev->device;
--	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_LO);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
--		pci_dev_put(rdev);
--		return pcibios_err_to_errno(err);
--	}
- 
--	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_LO, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_LO);
- 		pci_dev_put(rdev);
- 		return pcibios_err_to_errno(err);
- 	}
- 
- 	base_addr_lo = val & AMD_PMF_BASE_ADDR_HI_MASK;
- 
--	err = pci_write_config_dword(rdev, AMD_PMF_SMU_INDEX_ADDRESS, AMD_PMF_BASE_ADDR_HI);
--	if (err) {
--		dev_err(dev->dev, "error writing to 0x%x\n", AMD_PMF_SMU_INDEX_ADDRESS);
--		pci_dev_put(rdev);
--		return pcibios_err_to_errno(err);
--	}
--
--	err = pci_read_config_dword(rdev, AMD_PMF_SMU_INDEX_DATA, &val);
-+	err = amd_smn_read(0, AMD_PMF_BASE_ADDR_HI, &val);
- 	if (err) {
-+		dev_err(dev->dev, "error in reading from 0x%x\n", AMD_PMF_BASE_ADDR_HI);
- 		pci_dev_put(rdev);
- 		return pcibios_err_to_errno(err);
- 	}
+ static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
+ 				struct scm_cookie *scm, int flags)
+ {
+ 	if (!msg->msg_control) {
+-		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
++		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
++		    scm_has_secdata(sock))
+ 			msg->msg_flags |= MSG_CTRUNC;
+ 		scm_destroy(scm);
+ 		return;
 -- 
 2.39.2
 
