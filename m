@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9BD06FA57D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3BC56FAD66
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234150AbjEHKKB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38158 "EHLO
+        id S235943AbjEHLek (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234155AbjEHKJ7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:09:59 -0400
+        with ESMTP id S235908AbjEHLec (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:34:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C9937E55
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:09:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BD23C3FE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:33:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AC6562392
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:09:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30531C433EF;
-        Mon,  8 May 2023 10:09:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F36861D1C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:33:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD18C4339B;
+        Mon,  8 May 2023 11:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540597;
-        bh=WsR8fgP0yl+3Z6wf2pmqPsUwLcGJv9euAvjGdsRm/No=;
+        s=korg; t=1683545611;
+        bh=06d8IPVI5eAL7/cmO7sqtDEdUvwYtc3z9r3AnNxkftk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0NqK1qLPS4nOKes90GMSRDQov7V4qed/aY7pmSORDXtLEG/Zzpi5SXRZmUX96/TFU
-         RSUeaxx37itwhjzoshwh14OFfqdkDhOEViJbeP11GnH/SLNE0H3viWqZOb16aNreAD
-         I4YqSqrz/4tBy/wy2gsAEATle7Y4VryLO5YeOgkI=
+        b=iXg2MS2e6KdQJ8IM9tMPT0+H2pVNgbW6m97y8qrP9Y/RiD8tIaWB8hDZBt4tFvh4a
+         fFS0ozZQtZYwvj6LChPKMVGJox1kjHSeHf+FhojeOC1fYpnHtpFgimdY0B/6f2EGY6
+         zAn5JAy49A6t1fpCrn7tRbxElJggLotdHwT5REnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 426/611] HID: amd_sfh: Correct the structure fields
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 067/371] tpm, tpm_tis: Do not skip reset of original interrupt vector
 Date:   Mon,  8 May 2023 11:44:28 +0200
-Message-Id: <20230508094436.045534776@linuxfoundation.org>
+Message-Id: <20230508094814.759758584@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,38 +54,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 7e7fdab79899f62de39c9280fb78f3d3b02ac207 ]
+[ Upstream commit ed9be0e6c892a783800d77a41ca4c7255c6af8c5 ]
 
-Misinterpreted sfh_cmd_base structure member fields. Therefore, adjust
-the structure member fields accordingly to reflect functionality.
+If in tpm_tis_probe_irq_single() an error occurs after the original
+interrupt vector has been read, restore the interrupts before the error is
+returned.
 
-Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Since the caller does not check the error value, return -1 in any case that
+the TPM_CHIP_FLAG_IRQ flag is not set. Since the return value of function
+tpm_tis_gen_interrupt() is not longer used, make it a void function.
+
+Fixes: 1107d065fdf1 ("tpm_tis: Introduce intermediate layer for TPM access")
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-index ae47a369dc05a..a3e0ec289e3f9 100644
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_interface.h
-@@ -33,9 +33,9 @@ struct sfh_cmd_base {
- 		struct {
- 			u32 sensor_id		: 4;
- 			u32 cmd_id		: 4;
--			u32 sub_cmd_id		: 6;
--			u32 length		: 12;
--			u32 rsvd		: 5;
-+			u32 sub_cmd_id		: 8;
-+			u32 sub_cmd_value	: 12;
-+			u32 rsvd		: 3;
- 			u32 intr_disable	: 1;
- 		} cmd;
- 	};
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index dc56b976d8162..ae0c773a6041a 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -714,7 +714,7 @@ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
++static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ {
+ 	const char *desc = "attempting to generate an interrupt";
+ 	u32 cap2;
+@@ -723,7 +723,7 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 
+ 	ret = request_locality(chip, 0);
+ 	if (ret < 0)
+-		return ret;
++		return;
+ 
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
+ 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
+@@ -731,8 +731,6 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
+ 
+ 	release_locality(chip, 0);
+-
+-	return ret;
+ }
+ 
+ /* Register the IRQ and issue a command that will cause an interrupt. If an
+@@ -762,42 +760,37 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 
+ 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
+ 	if (rc < 0)
+-		return rc;
++		goto restore_irqs;
+ 
+ 	rc = tpm_tis_read32(priv, TPM_INT_STATUS(priv->locality), &int_status);
+ 	if (rc < 0)
+-		return rc;
++		goto restore_irqs;
+ 
+ 	/* Clear all existing */
+ 	rc = tpm_tis_write32(priv, TPM_INT_STATUS(priv->locality), int_status);
+ 	if (rc < 0)
+-		return rc;
+-
++		goto restore_irqs;
+ 	/* Turn on */
+ 	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality),
+ 			     intmask | TPM_GLOBAL_INT_ENABLE);
+ 	if (rc < 0)
+-		return rc;
++		goto restore_irqs;
+ 
+ 	priv->irq_tested = false;
+ 
+ 	/* Generate an interrupt by having the core call through to
+ 	 * tpm_tis_send
+ 	 */
+-	rc = tpm_tis_gen_interrupt(chip);
+-	if (rc < 0)
+-		return rc;
++	tpm_tis_gen_interrupt(chip);
+ 
++restore_irqs:
+ 	/* tpm_tis_send will either confirm the interrupt is working or it
+ 	 * will call disable_irq which undoes all of the above.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
+-		rc = tpm_tis_write8(priv, original_int_vec,
+-				TPM_INT_VECTOR(priv->locality));
+-		if (rc < 0)
+-			return rc;
+-
+-		return 1;
++		tpm_tis_write8(priv, original_int_vec,
++			       TPM_INT_VECTOR(priv->locality));
++		return -1;
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.2
 
