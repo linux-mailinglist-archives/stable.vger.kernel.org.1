@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B29696FA60B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E28666FA8F1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234244AbjEHKPh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44578 "EHLO
+        id S234996AbjEHKqf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234299AbjEHKPg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520A83513D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:35 -0700 (PDT)
+        with ESMTP id S234910AbjEHKqM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870562A9DD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:45:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAA2162489
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CE5C433EF;
-        Mon,  8 May 2023 10:15:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E8D7628BC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:45:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11842C433EF;
+        Mon,  8 May 2023 10:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540934;
-        bh=QrgzR0LPnhZuu34GGP3af4KUiR39kYOrgkXWsUunC8A=;
+        s=korg; t=1683542754;
+        bh=ZQACLOYMlCkYhFaLLNxqfXDzxeue4MGdpNe9HooT+f0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sha3AQcVcXzA+caJXsUokDUqLzagkYf1r6s7EMQ06O8hlweWZvxJvxgloVWyjIs6b
-         YxcdumN9MV7dNiwOvYF5KQ8b9A13wgM0kl6dsVAMOCrx1QpogTA+8M+Vjr/72aapJf
-         tQPlhHzoLvXAf5XUmioOgyL/jMvdRbzXa91egSew=
+        b=D1nqy6DPOcX17rGRIkaeB4Da0Ll+c6o4YbYujMeST6Fa+lIKoRx3fHr/ii+CzKcFk
+         /Rb/TVrUcMCHcuNol7Km0YiCxXOY8oNuaXCBuXpQ35I/0Oi1MyrlHFjtnpGgBoHKNi
+         Fm1TJk9tXaTUkGilyPjsIYLk764dAZViqf4czSaE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev,
+        syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com,
+        Zeng Heng <zengheng4@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 522/611] SMB3: Close deferred file handles in case of handle lease break
+Subject: [PATCH 6.2 538/663] fs/ntfs3: Fix slab-out-of-bounds read in hdr_delete_de()
 Date:   Mon,  8 May 2023 11:46:04 +0200
-Message-Id: <20230508094438.987479437@linuxfoundation.org>
+Message-Id: <20230508094446.425209483@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,70 +56,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-[ Upstream commit d906be3fa571f6fc9381911304a0eca99f1b6951 ]
+[ Upstream commit ab84eee4c7ab929996602eda7832854c35a6dda2 ]
 
-We should not cache deferred file handles if we dont have
-handle lease on a file. And we should immediately close all
-deferred handles in case of handle lease break.
+Here is a BUG report from syzbot:
 
-Fixes: 9e31678fb403 ("SMB3: fix lease break timeout when multiple deferred close handles for the same file.")
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+BUG: KASAN: slab-out-of-bounds in hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
+Read of size 16842960 at addr ffff888079cc0600 by task syz-executor934/3631
+
+Call Trace:
+ memmove+0x25/0x60 mm/kasan/shadow.c:54
+ hdr_delete_de+0xe0/0x150 fs/ntfs3/index.c:806
+ indx_delete_entry+0x74f/0x3670 fs/ntfs3/index.c:2193
+ ni_remove_name+0x27a/0x980 fs/ntfs3/frecord.c:2910
+ ntfs_unlink_inode+0x3d4/0x720 fs/ntfs3/inode.c:1712
+ ntfs_rename+0x41a/0xcb0 fs/ntfs3/namei.c:276
+
+Before using the meta-data in struct INDEX_HDR, we need to
+check index header valid or not. Otherwise, the corruptedi
+(or malicious) fs image can cause out-of-bounds access which
+could make kernel panic.
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Reported-by: syzbot+9c2811fd56591639ff5f@syzkaller.appspotmail.com
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/file.c | 16 ++++++++++++++++
- fs/cifs/misc.c |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ fs/ntfs3/fslog.c   | 2 +-
+ fs/ntfs3/index.c   | 4 ++++
+ fs/ntfs3/ntfs_fs.h | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/cifs/file.c b/fs/cifs/file.c
-index 6f5fbbbebec33..158a0a5f40071 100644
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -5087,6 +5087,8 @@ void cifs_oplock_break(struct work_struct *work)
- 	struct TCP_Server_Info *server = tcon->ses->server;
- 	int rc = 0;
- 	bool purge_cache = false;
-+	struct cifs_deferred_close *dclose;
-+	bool is_deferred = false;
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index dc723f03d6bb2..bf73964472845 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2575,7 +2575,7 @@ static int read_next_log_rec(struct ntfs_log *log, struct lcb *lcb, u64 *lsn)
+ 	return find_log_rec(log, *lsn, lcb);
+ }
  
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
-@@ -5122,6 +5124,20 @@ void cifs_oplock_break(struct work_struct *work)
- 		cifs_dbg(VFS, "Push locks rc = %d\n", rc);
+-static inline bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
++bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes)
+ {
+ 	__le16 mask;
+ 	u32 min_de, de_off, used, total;
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index ae9616becec15..7a1e01a2ed9ae 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -848,6 +848,10 @@ static inline struct NTFS_DE *hdr_delete_de(struct INDEX_HDR *hdr,
+ 	u32 off = PtrOffset(hdr, re);
+ 	int bytes = used - (off + esize);
  
- oplock_break_ack:
-+	/*
-+	 * When oplock break is received and there are no active
-+	 * file handles but cached, then schedule deferred close immediately.
-+	 * So, new open will not use cached handle.
-+	 */
-+	spin_lock(&CIFS_I(inode)->deferred_lock);
-+	is_deferred = cifs_is_deferred_close(cfile, &dclose);
-+	spin_unlock(&CIFS_I(inode)->deferred_lock);
++	/* check INDEX_HDR valid before using INDEX_HDR */
++	if (!check_index_header(hdr, le32_to_cpu(hdr->total)))
++		return NULL;
 +
-+	if (!CIFS_CACHE_HANDLE(cinode) && is_deferred &&
-+			cfile->deferred_close_scheduled && delayed_work_pending(&cfile->deferred)) {
-+		cifs_close_deferred_file(cinode);
-+	}
-+
- 	/*
- 	 * releasing stale oplock after recent reconnect of smb session using
- 	 * a now incorrect file handle is not a data integrity issue but do
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index f3903ae0cc6b8..31e06133acc3d 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -757,7 +757,7 @@ cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode)
- 	spin_unlock(&cifs_inode->open_file_lock);
+ 	if (off >= used || esize < sizeof(struct NTFS_DE) ||
+ 	    bytes < sizeof(struct NTFS_DE))
+ 		return NULL;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 0e051c5595a21..2050eb3f6a5a6 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -579,6 +579,7 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
+ bool ni_is_dirty(struct inode *inode);
  
- 	list_for_each_entry_safe(tmp_list, tmp_next_list, &file_head, list) {
--		_cifsFileInfo_put(tmp_list->cfile, true, false);
-+		_cifsFileInfo_put(tmp_list->cfile, false, false);
- 		list_del(&tmp_list->list);
- 		kfree(tmp_list);
- 	}
+ /* Globals from fslog.c */
++bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
+ int log_replay(struct ntfs_inode *ni, bool *initialized);
+ 
+ /* Globals from fsntfs.c */
 -- 
 2.39.2
 
