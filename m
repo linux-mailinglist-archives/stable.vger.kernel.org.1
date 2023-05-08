@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6F746FA8CF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E37416FA5E7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234949AbjEHKpf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47708 "EHLO
+        id S234260AbjEHKOT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234952AbjEHKpR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:17 -0400
+        with ESMTP id S234273AbjEHKOE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3765A27F27
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273E63ACDA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEC8E6287D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06D9C433D2;
-        Mon,  8 May 2023 10:44:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B26B56242D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF037C433EF;
+        Mon,  8 May 2023 10:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542650;
-        bh=vNOmNtAn3cq21wXC0/F3vb0CHXvm+wABlSecA9RM07g=;
+        s=korg; t=1683540842;
+        bh=u3uetNtMJx3vMZfvf6xWbYWJdP02c3dOHouwG3q0SmU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f0cCYn9YrlfKjugZ2uXwwA4jlEfmKa3MClA/yFOLUOXw+AnqrOo2XRH0FKSFTYe0s
-         HTtLwBi5PwWe9EST4BobLOaG88m2FCCyr9A5/K3d7sJfeTQsDUaQ1Bj6d6++xT+Uym
-         OJuJR+eN2wuZb16Zdy/VKVxgou3Avf6jLH/H0LkQ=
+        b=AZJZQ37LhOCh+Zl0a0nFB94KggNQ3m9d+BDajf4KZUgRQ79F1uR9d1JLfKy/zHl6Z
+         0PY9x6agO924mGQsE4sgRJ1qjFvxYqnwcHhJuJTqOuVgUNEanAShtKSTvwK9MR58dP
+         1B4OLDGkA7StZ2bLQpRZ0UOfrgiPzvbVDeBaIY68=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com,
+        ZhangPeng <zhangpeng362@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 504/663] powerpc/perf: Properly detect mpc7450 family
+Subject: [PATCH 6.1 488/611] fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
 Date:   Mon,  8 May 2023 11:45:30 +0200
-Message-Id: <20230508094444.952164567@linuxfoundation.org>
+Message-Id: <20230508094437.935207090@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,69 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: ZhangPeng <zhangpeng362@huawei.com>
 
-[ Upstream commit e7299f961fe5e4496db0bfaa9e819f5e97f3846b ]
+[ Upstream commit 254e69f284d7270e0abdc023ee53b71401c3ba0c ]
 
-Unlike PVR_POWER8, etc ...., PVR_7450 represents a full PVR
-value and not a family value.
+Syzbot reported a null-ptr-deref bug:
 
-To avoid confusion, do like E500 family and define the relevant
-PVR_VER_xxxx values for the 7450 family:
-  0x8000 ==> 7450
-  0x8001 ==> 7455
-  0x8002 ==> 7447
-  0x8003 ==> 7447A
-  0x8004 ==> 7448
+ntfs3: loop0: Different NTFS' sector size (1024) and media sector size
+(512)
+ntfs3: loop0: Mark volume as dirty due to NTFS errors
+general protection fault, probably for non-canonical address
+0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+RIP: 0010:d_flags_for_inode fs/dcache.c:1980 [inline]
+RIP: 0010:__d_add+0x5ce/0x800 fs/dcache.c:2796
+Call Trace:
+ <TASK>
+ d_splice_alias+0x122/0x3b0 fs/dcache.c:3191
+ lookup_open fs/namei.c:3391 [inline]
+ open_last_lookups fs/namei.c:3481 [inline]
+ path_openat+0x10e6/0x2df0 fs/namei.c:3688
+ do_filp_open+0x264/0x4f0 fs/namei.c:3718
+ do_sys_openat2+0x124/0x4e0 fs/open.c:1310
+ do_sys_open fs/open.c:1326 [inline]
+ __do_sys_open fs/open.c:1334 [inline]
+ __se_sys_open fs/open.c:1330 [inline]
+ __x64_sys_open+0x221/0x270 fs/open.c:1330
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-And use them to detect 7450 family for perf events.
+If the MFT record of ntfs inode is not a base record, inode->i_op can be
+NULL. And a null-ptr-deref may happen:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/202302260657.7dM9Uwev-lkp@intel.com/
-Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field to determine CPU version")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/99ca1da2e5a6cf82a8abf4bc034918e500e31781.1677513277.git.christophe.leroy@csgroup.eu
+ntfs_lookup()
+    dir_search_u() # inode->i_op is set to NULL
+    d_splice_alias()
+        __d_add()
+            d_flags_for_inode() # inode->i_op->get_link null-ptr-deref
+
+Fix this by adding a Check on inode->i_op before calling the
+d_splice_alias() function.
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com
+Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/reg.h  | 5 +++++
- arch/powerpc/perf/mpc7450-pmu.c | 6 +++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ fs/ntfs3/namei.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 1e8b2e04e626a..8fda87af2fa5e 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1310,6 +1310,11 @@
- #define PVR_VER_E500MC	0x8023
- #define PVR_VER_E5500	0x8024
- #define PVR_VER_E6500	0x8040
-+#define PVR_VER_7450	0x8000
-+#define PVR_VER_7455	0x8001
-+#define PVR_VER_7447	0x8002
-+#define PVR_VER_7447A	0x8003
-+#define PVR_VER_7448	0x8004
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index bc22cc321a74b..7760aedc06728 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -86,6 +86,16 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
+ 		__putname(uni);
+ 	}
  
- /*
-  * For the 8xx processors, all of them report the same PVR family for
-diff --git a/arch/powerpc/perf/mpc7450-pmu.c b/arch/powerpc/perf/mpc7450-pmu.c
-index 552d51a925d37..db451b9aac35e 100644
---- a/arch/powerpc/perf/mpc7450-pmu.c
-+++ b/arch/powerpc/perf/mpc7450-pmu.c
-@@ -417,9 +417,9 @@ struct power_pmu mpc7450_pmu = {
++	/*
++	 * Check for a null pointer
++	 * If the MFT record of ntfs inode is not a base record, inode->i_op can be NULL.
++	 * This causes null pointer dereference in d_splice_alias().
++	 */
++	if (!IS_ERR(inode) && inode->i_op == NULL) {
++		iput(inode);
++		inode = ERR_PTR(-EINVAL);
++	}
++
+ 	return d_splice_alias(inode, dentry);
+ }
  
- static int __init init_mpc7450_pmu(void)
- {
--	unsigned int pvr = mfspr(SPRN_PVR);
--
--	if (PVR_VER(pvr) != PVR_7450)
-+	if (!pvr_version_is(PVR_VER_7450) && !pvr_version_is(PVR_VER_7455) &&
-+	    !pvr_version_is(PVR_VER_7447) && !pvr_version_is(PVR_VER_7447A) &&
-+	    !pvr_version_is(PVR_VER_7448))
- 		return -ENODEV;
- 
- 	return register_power_pmu(&mpc7450_pmu);
 -- 
 2.39.2
 
