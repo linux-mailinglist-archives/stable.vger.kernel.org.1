@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 180846FABC0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7CE6FA5A5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235397AbjEHLRE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:17:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
+        id S234194AbjEHKLg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235347AbjEHLRD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A7635DAF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:02 -0700 (PDT)
+        with ESMTP id S234188AbjEHKLe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:11:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD62398B9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3CB862C09
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40E1C4339B;
-        Mon,  8 May 2023 11:17:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97B91623DC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9401C433D2;
+        Mon,  8 May 2023 10:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544621;
-        bh=GOjHeHpnrSlsa9sf0U5NTqqdlI82C0iRun9451gzg64=;
+        s=korg; t=1683540692;
+        bh=SxUftKJw/GKVYCHQuGZfbtFRx+0YwclD867MgIK+Cfs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z6Z7W3whFkAiMV182sU7jN2rm6nN6r8qcIdTByLqb5bS7bImL5dS11FALWE7twxKM
-         Iztc3N0KKSWZTqCqUKMoS49QzQtizauhjYyYDQOqDJWodWLQw5ZiPhKKwa+9anpAP7
-         AFLjPZkoQS0BWGSJ15eRXohghdyy8aFgMRovLoZ0=
+        b=Wg6Wz6vOqowx05NyqOIBnbTEwv1hrZtoIEId2q+IBB4Z2sYz5oPmhYYbAPW8BTlnK
+         Ess2VZRm9BX8IrL3a/LBn0NTHPe1Y2xvXwabK9XNpE/Mwasd/cSDxR4iwVxD5pwXFJ
+         GP5cszR8VkqFzHAWZ0re0jd5F18nCZbIsXKIhuuo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Maor Dickman <maord@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 469/694] Revert "net/mlx5e: Dont use termination table when redundant"
+Subject: [PATCH 6.1 462/611] powerpc/sysdev/tsi108: fix resource printk format warnings
 Date:   Mon,  8 May 2023 11:45:04 +0200
-Message-Id: <20230508094448.984255959@linuxfoundation.org>
+Message-Id: <20230508094437.160462944@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,105 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 081abcacaf0a9505c0d4cc9780b12e6ce5d33630 ]
+[ Upstream commit 55d8bd02cc1b9f1063993b5c42c9cabf4af67dea ]
 
-This reverts commit 14624d7247fcd0f3114a6f5f17b3c8d1020fbbb7.
+Use "%pa" format specifier for resource_size_t to avoid a compiler
+printk format warning.
 
-The termination table usage is requires for DMFS steering mode as firmware
-doesn't support mixed table destinations list which causes following
-syndrome with hairpin rules:
+  arch/powerpc/sysdev/tsi108_pci.c: In function 'tsi108_setup_pci':
+  include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t'
 
-[81922.283225] mlx5_core 0000:08:00.0: mlx5_cmd_out_err:803:(pid 25977): SET_FLOW_TABLE_ENTRY(0x936) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0xaca205), err(-22)
-
-Fixes: 14624d7247fc ("net/mlx5e: Don't use termination table when redundant")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Maor Dickman <maord@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: c4342ff92bed ("[POWERPC] Update mpc7448hpc2 board irq support using device tree")
+Fixes: 2b9d7467a6db ("[POWERPC] Add tsi108 pci and platform device data register function")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+[mpe: Use pr_info() and unsplit string]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230223070116.660-5-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mlx5/core/eswitch_offloads_termtbl.c      | 32 +++----------------
- 1 file changed, 4 insertions(+), 28 deletions(-)
+ arch/powerpc/sysdev/tsi108_pci.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c
-index 3a9a6bb9158de..edd9102583144 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads_termtbl.c
-@@ -210,18 +210,6 @@ static bool mlx5_eswitch_offload_is_uplink_port(const struct mlx5_eswitch *esw,
- 	return (port_mask & port_value) == MLX5_VPORT_UPLINK;
- }
+diff --git a/arch/powerpc/sysdev/tsi108_pci.c b/arch/powerpc/sysdev/tsi108_pci.c
+index 5af4c35ff5842..0e42f7bad7db1 100644
+--- a/arch/powerpc/sysdev/tsi108_pci.c
++++ b/arch/powerpc/sysdev/tsi108_pci.c
+@@ -217,9 +217,8 @@ int __init tsi108_setup_pci(struct device_node *dev, u32 cfg_phys, int primary)
  
--static bool
--mlx5_eswitch_is_push_vlan_no_cap(struct mlx5_eswitch *esw,
--				 struct mlx5_flow_act *flow_act)
--{
--	if (flow_act->action & MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH &&
--	    !(mlx5_fs_get_capabilities(esw->dev, MLX5_FLOW_NAMESPACE_FDB) &
--	      MLX5_FLOW_STEERING_CAP_VLAN_PUSH_ON_RX))
--		return true;
--
--	return false;
--}
--
- bool
- mlx5_eswitch_termtbl_required(struct mlx5_eswitch *esw,
- 			      struct mlx5_flow_attr *attr,
-@@ -237,7 +225,10 @@ mlx5_eswitch_termtbl_required(struct mlx5_eswitch *esw,
- 	    (!mlx5_eswitch_offload_is_uplink_port(esw, spec) && !esw_attr->int_port))
- 		return false;
+ 	(hose)->ops = &tsi108_direct_pci_ops;
  
--	if (mlx5_eswitch_is_push_vlan_no_cap(esw, flow_act))
-+	/* push vlan on RX */
-+	if (flow_act->action & MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH &&
-+	    !(mlx5_fs_get_capabilities(esw->dev, MLX5_FLOW_NAMESPACE_FDB) &
-+	      MLX5_FLOW_STEERING_CAP_VLAN_PUSH_ON_RX))
- 		return true;
+-	printk(KERN_INFO "Found tsi108 PCI host bridge at 0x%08x. "
+-	       "Firmware bus number: %d->%d\n",
+-	       rsrc.start, hose->first_busno, hose->last_busno);
++	pr_info("Found tsi108 PCI host bridge at 0x%pa. Firmware bus number: %d->%d\n",
++		&rsrc.start, hose->first_busno, hose->last_busno);
  
- 	/* hairpin */
-@@ -261,31 +252,19 @@ mlx5_eswitch_add_termtbl_rule(struct mlx5_eswitch *esw,
- 	struct mlx5_flow_act term_tbl_act = {};
- 	struct mlx5_flow_handle *rule = NULL;
- 	bool term_table_created = false;
--	bool is_push_vlan_on_rx;
- 	int num_vport_dests = 0;
- 	int i, curr_dest;
- 
--	is_push_vlan_on_rx = mlx5_eswitch_is_push_vlan_no_cap(esw, flow_act);
- 	mlx5_eswitch_termtbl_actions_move(flow_act, &term_tbl_act);
- 	term_tbl_act.action |= MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
- 
- 	for (i = 0; i < num_dest; i++) {
- 		struct mlx5_termtbl_handle *tt;
--		bool hairpin = false;
- 
- 		/* only vport destinations can be terminated */
- 		if (dest[i].type != MLX5_FLOW_DESTINATION_TYPE_VPORT)
- 			continue;
- 
--		if (attr->dests[num_vport_dests].rep &&
--		    attr->dests[num_vport_dests].rep->vport == MLX5_VPORT_UPLINK)
--			hairpin = true;
--
--		if (!is_push_vlan_on_rx && !hairpin) {
--			num_vport_dests++;
--			continue;
--		}
--
- 		if (attr->dests[num_vport_dests].flags & MLX5_ESW_DEST_ENCAP) {
- 			term_tbl_act.action |= MLX5_FLOW_CONTEXT_ACTION_PACKET_REFORMAT;
- 			term_tbl_act.pkt_reformat = attr->dests[num_vport_dests].pkt_reformat;
-@@ -333,9 +312,6 @@ mlx5_eswitch_add_termtbl_rule(struct mlx5_eswitch *esw,
- 	for (curr_dest = 0; curr_dest < num_vport_dests; curr_dest++) {
- 		struct mlx5_termtbl_handle *tt = attr->dests[curr_dest].termtbl;
- 
--		if (!tt)
--			continue;
--
- 		attr->dests[curr_dest].termtbl = NULL;
- 
- 		/* search for the destination associated with the
+ 	/* Interpret the "ranges" property */
+ 	/* This also maps the I/O region and sets isa_io/mem_base */
 -- 
 2.39.2
 
