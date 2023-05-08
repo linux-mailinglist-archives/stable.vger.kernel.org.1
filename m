@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 281706FAC40
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3EEF6FADF0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233969AbjEHLWb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37666 "EHLO
+        id S236131AbjEHLjm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:39:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235622AbjEHLW1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:22:27 -0400
+        with ESMTP id S236107AbjEHLj0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C7637038
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:22:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6169E3AA3
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15D7262CBB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269F5C4339B;
-        Mon,  8 May 2023 11:22:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E6E736335B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0B7C433D2;
+        Mon,  8 May 2023 11:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544937;
-        bh=SbLh43z8CnugQdIRAkRO8lTSmxgzYthN6WN7To6vhc8=;
+        s=korg; t=1683545941;
+        bh=DqRIY7AlUMq82zJimec+NmPhiKIzNHVI3ZZ+SZAOrck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1HwU22VxyM+41e8s0FFlTxnPVdThm5MIZ8dP8TtGEo5Xgs6R/y37V+gstAhv+SPCM
-         P0MQZuqx5fwu3hc0/aixrUdYoGS4r1pQETrVwUiI2o5NuTw2Ce25GbnWu3uB4xiyo/
-         TsjPksp61mlI7gYkbAncNEzHq6WxGkqGR2YJqJ0o=
+        b=rif/lNZpiYMMjGfaNI2CF0f4YupYzrtyZ55WfiUVr1HtSeXPGr91JIVIIeviYBCyF
+         1b5j+T1EvYfB/2OS/y3ZcmeNHIk4tVS74MeUwkWR1jo8dwyOa0KWBJMr59fPCxnTSL
+         Fc78fw4Q4HlNuCYST2xfGl1QN7e992mHtx/tIKHY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 571/694] rv: Fix addition on an uninitialized variable run
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Guoqing Jiang <guoqing.jiang@linux.dev>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 205/371] md/raid10: factor out code from wait_barrier() to stop_waiting_barrier()
 Date:   Mon,  8 May 2023 11:46:46 +0200
-Message-Id: <20230508094453.375812141@linuxfoundation.org>
+Message-Id: <20230508094820.223956655@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 54a0dffa62de0c91b406ff32082a121ccfa0d7f1 ]
+[ Upstream commit ed2e063f92c44c891ccd883e289dde6ca870edcc ]
 
-The variable run is not initialized however it is being accumulated
-by the return value from the call to ikm_run_monitor.  Fix this by
-initializing run to zero at the start of the function.
+Currently the nasty condition in wait_barrier() is hard to read. This
+patch factors out the condition into a function.
 
-Link: https://lkml.kernel.org/r/20230424094730.105313-1-colin.i.king@gmail.com
+There are no functional changes.
 
-Fixes: 4bc4b131d44c ("rv: Add rv tool")
-
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Signed-off-by: Song Liu <song@kernel.org>
+Stable-dep-of: 72c215ed8731 ("md/raid10: fix task hung in raid10d")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/rv/src/rv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/raid10.c | 50 +++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
-diff --git a/tools/verification/rv/src/rv.c b/tools/verification/rv/src/rv.c
-index e601cd9c411e1..1ddb855328165 100644
---- a/tools/verification/rv/src/rv.c
-+++ b/tools/verification/rv/src/rv.c
-@@ -74,7 +74,7 @@ static void rv_list(int argc, char **argv)
- static void rv_mon(int argc, char **argv)
- {
- 	char *monitor_name;
--	int i, run;
-+	int i, run = 0;
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 287bebde2e546..31ecb080851ac 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -952,41 +952,47 @@ static void lower_barrier(struct r10conf *conf)
+ 	wake_up(&conf->wait_barrier);
+ }
  
- 	static const char *const usage[] = {
- 		"",
++static bool stop_waiting_barrier(struct r10conf *conf)
++{
++	struct bio_list *bio_list = current->bio_list;
++
++	/* barrier is dropped */
++	if (!conf->barrier)
++		return true;
++
++	/*
++	 * If there are already pending requests (preventing the barrier from
++	 * rising completely), and the pre-process bio queue isn't empty, then
++	 * don't wait, as we need to empty that queue to get the nr_pending
++	 * count down.
++	 */
++	if (atomic_read(&conf->nr_pending) && bio_list &&
++	    (!bio_list_empty(&bio_list[0]) || !bio_list_empty(&bio_list[1])))
++		return true;
++
++	/* move on if recovery thread is blocked by us */
++	if (conf->mddev->thread->tsk == current &&
++	    test_bit(MD_RECOVERY_RUNNING, &conf->mddev->recovery) &&
++	    conf->nr_queued > 0)
++		return true;
++
++	return false;
++}
++
+ static bool wait_barrier(struct r10conf *conf, bool nowait)
+ {
+ 	bool ret = true;
+ 
+ 	spin_lock_irq(&conf->resync_lock);
+ 	if (conf->barrier) {
+-		struct bio_list *bio_list = current->bio_list;
+ 		conf->nr_waiting++;
+-		/* Wait for the barrier to drop.
+-		 * However if there are already pending
+-		 * requests (preventing the barrier from
+-		 * rising completely), and the
+-		 * pre-process bio queue isn't empty,
+-		 * then don't wait, as we need to empty
+-		 * that queue to get the nr_pending
+-		 * count down.
+-		 */
+ 		/* Return false when nowait flag is set */
+ 		if (nowait) {
+ 			ret = false;
+ 		} else {
+ 			raid10_log(conf->mddev, "wait barrier");
+ 			wait_event_lock_irq(conf->wait_barrier,
+-					    !conf->barrier ||
+-					    (atomic_read(&conf->nr_pending) &&
+-					     bio_list &&
+-					     (!bio_list_empty(&bio_list[0]) ||
+-					      !bio_list_empty(&bio_list[1]))) ||
+-					     /* move on if recovery thread is
+-					      * blocked by us
+-					      */
+-					     (conf->mddev->thread->tsk == current &&
+-					      test_bit(MD_RECOVERY_RUNNING,
+-						       &conf->mddev->recovery) &&
+-					      conf->nr_queued > 0),
++					    stop_waiting_barrier(conf),
+ 					    conf->resync_lock);
+ 		}
+ 		conf->nr_waiting--;
 -- 
 2.39.2
 
