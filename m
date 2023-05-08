@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 933A26FA5DF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F296FAC21
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234215AbjEHKN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41858 "EHLO
+        id S235584AbjEHLVF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:21:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234272AbjEHKNn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:13:43 -0400
+        with ESMTP id S235583AbjEHLVE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2BB3ACCC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:13:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD1D838F1B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE0C662411
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:13:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFECC433D2;
-        Mon,  8 May 2023 10:13:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 695B262C8F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75897C433D2;
+        Mon,  8 May 2023 11:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540821;
-        bh=xghh3jpNNkWugck2oAidqLtKhwyzrLdC9xihcEx88bU=;
+        s=korg; t=1683544861;
+        bh=C4/scpdHOoeUzBRjgvuVflJovoehkOlLSXFv69AxRjg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l7lrn+vMQk0XbXiOfCmdwxc//oNKlA4fUUHVL5eZtCKnTcZUue7mgA+UWtd6CtCoX
-         Ue6wvYp7vPouBcceizYjSiNFEq1jt0UIvrtYB2LjWR9A+7SJPtjdBA00hqBtGyyVe3
-         3JNVsMGtJrz+2+HmYewQekjRLaPULLJxsY+k1EY0=
+        b=Bo+w21iBqxK3CTzXji8VI76W95UA9Wc41/qgX/XhtXXlh6cfh2MBdtvu5QC0+2u5o
+         Grrvy0ezJCw3HNu7GeRXx2OZDK3j8ZkpvcUoGxJiaCBn7T1/7mjn61IhPVw/CvGaFC
+         DtyMfrUxK2gFosQNJXySFN79Jgdl8ewZkS02RUa4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Rob Herring <robh@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 510/611] clk: qcom: dispcc-qcm2290: Remove inexistent DSI1PHY clk
+Subject: [PATCH 6.3 517/694] of: Fix modalias string generation
 Date:   Mon,  8 May 2023 11:45:52 +0200
-Message-Id: <20230508094438.626400551@linuxfoundation.org>
+Message-Id: <20230508094450.984833089@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +57,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 68d1151f03067533827fc50b770954ef33149533 ]
+[ Upstream commit b19a4266c52de78496fe40f0b37580a3b762e67d ]
 
-There's only one DSI PHY on this SoC. Remove the ghost entry for the
-clock produced by a secondary one.
+The helper generating an OF based modalias (of_device_get_modalias())
+works fine, but due to the use of snprintf() internally it needs a
+buffer one byte longer than what should be needed just for the entire
+string (excluding the '\0'). Most users of this helper are sysfs hooks
+providing the modalias string to users. They all provide a PAGE_SIZE
+buffer which is way above the number of bytes required to fit the
+modalias string and hence do not suffer from this issue.
 
-Fixes: cc517ea3333f ("clk: qcom: Add display clock controller driver for QCM2290")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230412-topic-qcm_dispcc-v1-2-bf2989a75ae4@linaro.org
+There is another user though, of_device_request_module(), which is only
+called by drivers/usb/common/ulpi.c. This request module function is
+faulty, but maybe because in most cases there is an alternative, ULPI
+driver users have not noticed it.
+
+In this function, of_device_get_modalias() is called twice. The first
+time without buffer just to get the number of bytes required by the
+modalias string (excluding the null byte), and a second time, after
+buffer allocation, to fill the buffer. The allocation asks for an
+additional byte, in order to store the trailing '\0'. However, the
+buffer *length* provided to of_device_get_modalias() excludes this extra
+byte. The internal use of snprintf() with a length that is exactly the
+number of bytes to be written has the effect of using the last available
+byte to store a '\0', which then smashes the last character of the
+modalias string.
+
+Provide the actual size of the buffer to of_device_get_modalias() to fix
+this issue.
+
+Note: the "str[size - 1] = '\0';" line is not really needed as snprintf
+will anyway end the string with a null byte, but there is a possibility
+that this function might be called on a struct device_node without
+compatible, in this case snprintf() would not be executed. So we keep it
+just to avoid possible unbounded strings.
+
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Fixes: 9c829c097f2f ("of: device: Support loading a module with OF based modalias")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230404172148.82422-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-qcm2290.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/of/device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-qcm2290.c b/drivers/clk/qcom/dispcc-qcm2290.c
-index 2ebd9a02b8950..24755dc841f9d 100644
---- a/drivers/clk/qcom/dispcc-qcm2290.c
-+++ b/drivers/clk/qcom/dispcc-qcm2290.c
-@@ -26,7 +26,6 @@ enum {
- 	P_DISP_CC_PLL0_OUT_MAIN,
- 	P_DSI0_PHY_PLL_OUT_BYTECLK,
- 	P_DSI0_PHY_PLL_OUT_DSICLK,
--	P_DSI1_PHY_PLL_OUT_DSICLK,
- 	P_GPLL0_OUT_MAIN,
- 	P_SLEEP_CLK,
- };
-@@ -106,13 +105,11 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
- static const struct parent_map disp_cc_parent_map_4[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_DSI0_PHY_PLL_OUT_DSICLK, 1 },
--	{ P_DSI1_PHY_PLL_OUT_DSICLK, 2 },
- };
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 955bfb3d1a834..c91bb58992567 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -297,12 +297,15 @@ int of_device_request_module(struct device *dev)
+ 	if (size < 0)
+ 		return size;
  
- static const struct clk_parent_data disp_cc_parent_data_4[] = {
- 	{ .fw_name = "bi_tcxo" },
- 	{ .fw_name = "dsi0_phy_pll_out_dsiclk" },
--	{ .fw_name = "dsi1_phy_pll_out_dsiclk" },
- };
+-	str = kmalloc(size + 1, GFP_KERNEL);
++	/* Reserve an additional byte for the trailing '\0' */
++	size++;
++
++	str = kmalloc(size, GFP_KERNEL);
+ 	if (!str)
+ 		return -ENOMEM;
  
- static const struct parent_map disp_cc_parent_map_5[] = {
+ 	of_device_get_modalias(dev, str, size);
+-	str[size] = '\0';
++	str[size - 1] = '\0';
+ 	ret = request_module(str);
+ 	kfree(str);
+ 
 -- 
 2.39.2
 
