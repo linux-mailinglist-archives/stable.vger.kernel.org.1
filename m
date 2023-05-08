@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 065FF6FACC4
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 647F76FAE78
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235829AbjEHL2H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:28:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
+        id S236329AbjEHLpE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235760AbjEHL1o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F155530E64
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:29 -0700 (PDT)
+        with ESMTP id S236117AbjEHLol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95CF3106F5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C69A962E55
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8121C433EF;
-        Mon,  8 May 2023 11:27:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6126355D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B1BC433EF;
+        Mon,  8 May 2023 11:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545249;
-        bh=3gPY6mgdbqwYvtS6J5cD9ALHeONzHHLbq2YO+VLUE7k=;
+        s=korg; t=1683546253;
+        bh=hsCGDivAhNZJD713BAgyZOnlEA+7nWWsp0H00NXpB4s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tRcpQJEMtT0rjNitsAj3ttDJfNuhM1gnxGWQRXot7ctCGNcvu4BKAM3svJPfUBgz3
-         kqtLTQxLr1XtCI/c8LQizbLFDt3peFAUhpHHCAiPoCMgV/vMsC1NolMVbyYwB+27NN
-         suX4T6yzHEDXJ8YiPgLo0MqHH8lAVThPHIUU0d3Q=
+        b=IAaojGX+HzvWqTl9LzcHylgODvi9OBdc9RlQ1EBQ1Cj4qslUmUuGxIQcHe/XQvg/k
+         Wff94jT3aw+2A88TYbnf3CaHQw0VlcUiAe6DQzuqgvqFlZxaYjU6e+D/0QgsJtDLKW
+         ufj8hJccOS/4xSyedLgKYf6PO05mJ7/sPbDsgTSo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Liu <liupeng17@lenovo.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Kieran Bingham <kbingham@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.3 672/694] scripts/gdb: fix lx-timerlist for Python3
-Date:   Mon,  8 May 2023 11:48:27 +0200
-Message-Id: <20230508094457.975811293@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 307/371] RDMA/siw: Remove namespace check from siw_netdev_event()
+Date:   Mon,  8 May 2023 11:48:28 +0200
+Message-Id: <20230508094824.228032592@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,67 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Liu <liupeng17@lenovo.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 7362042f3556528e9e9b1eb5ce8d7a3a6331476b upstream.
+[ Upstream commit 266e9b3475ba82212062771fdbc40be0e3c06ec8 ]
 
-Below incompatibilities between Python2 and Python3 made lx-timerlist fail
-to run under Python3.
+syzbot is reporting that siw_netdev_event(NETDEV_UNREGISTER) cannot destroy
+siw_device created after unshare(CLONE_NEWNET) due to net namespace check.
+It seems that this check was by error there and should be removed.
 
-o xrange() is replaced by range() in Python3
-o bytes and str are different types in Python3
-o the return value of Inferior.read_memory() is memoryview object in
-  Python3
-
-akpm: cc stable so that older kernels are properly debuggable under newer
-Python.
-
-Link: https://lkml.kernel.org/r/TYCP286MB2146EE1180A4D5176CBA8AB2C6819@TYCP286MB2146.JPNP286.PROD.OUTLOOK.COM
-Signed-off-by: Peng Liu <liupeng17@lenovo.com>
-Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=5e70d01ee8985ae62a3b
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Suggested-by: Leon Romanovsky <leon@kernel.org>
+Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/a44e9ac5-44e2-d575-9e30-02483cc7ffd1@I-love.SAKURA.ne.jp
+Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/timerlist.py |    4 +++-
- scripts/gdb/linux/utils.py     |    5 ++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_main.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/scripts/gdb/linux/timerlist.py
-+++ b/scripts/gdb/linux/timerlist.py
-@@ -73,7 +73,7 @@ def print_cpu(hrtimer_bases, cpu, max_cl
-     ts = cpus.per_cpu(tick_sched_ptr, cpu)
+diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
+index 9093e6a80b260..f853f3c23540a 100644
+--- a/drivers/infiniband/sw/siw/siw_main.c
++++ b/drivers/infiniband/sw/siw/siw_main.c
+@@ -437,9 +437,6 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
  
-     text = "cpu: {}\n".format(cpu)
--    for i in xrange(max_clock_bases):
-+    for i in range(max_clock_bases):
-         text += " clock {}:\n".format(i)
-         text += print_base(cpu_base['clock_base'][i])
+ 	dev_dbg(&netdev->dev, "siw: event %lu\n", event);
  
-@@ -158,6 +158,8 @@ def pr_cpumask(mask):
-     num_bytes = (nr_cpu_ids + 7) / 8
-     buf = utils.read_memoryview(inf, bits, num_bytes).tobytes()
-     buf = binascii.b2a_hex(buf)
-+    if type(buf) is not str:
-+        buf=buf.decode()
- 
-     chunks = []
-     i = num_bytes
---- a/scripts/gdb/linux/utils.py
-+++ b/scripts/gdb/linux/utils.py
-@@ -88,7 +88,10 @@ def get_target_endianness():
- 
- 
- def read_memoryview(inf, start, length):
--    return memoryview(inf.read_memory(start, length))
-+    m = inf.read_memory(start, length)
-+    if type(m) is memoryview:
-+        return m
-+    return memoryview(m)
- 
- 
- def read_u16(buffer, offset):
+-	if (dev_net(netdev) != &init_net)
+-		return NOTIFY_OK;
+-
+ 	base_dev = ib_device_get_by_netdev(netdev, RDMA_DRIVER_SIW);
+ 	if (!base_dev)
+ 		return NOTIFY_OK;
+-- 
+2.39.2
+
 
 
