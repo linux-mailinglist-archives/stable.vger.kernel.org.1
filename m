@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C24FF6FABDD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F746FA8CF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233944AbjEHLST (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59690 "EHLO
+        id S234949AbjEHKpf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233913AbjEHLSS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:18 -0400
+        with ESMTP id S234952AbjEHKpR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F39E37847
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3765A27F27
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B87C761BD5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3314C433D2;
-        Mon,  8 May 2023 11:18:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BEC8E6287D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06D9C433D2;
+        Mon,  8 May 2023 10:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544696;
-        bh=2Qu7lRMkpiCSdzL9Wn0xhzrbliIZ6NffpuHSJYKR8Vc=;
+        s=korg; t=1683542650;
+        bh=vNOmNtAn3cq21wXC0/F3vb0CHXvm+wABlSecA9RM07g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ufBaAOYFpVzI+czvaDLr4CBlig1gpKgpjGQPHFmJdc0tk8akWRljLFn3byoCeLfgR
-         HQu1s2riCUGnF5gHNW1mtt+tKrq3VXmFJMEhntR7/lSeanVMquOnbDIUkUfVFZyzab
-         YacUH/6hIeR0rvLwHIr3uDQj9n7J8IcXy5v9JK1E=
+        b=f0cCYn9YrlfKjugZ2uXwwA4jlEfmKa3MClA/yFOLUOXw+AnqrOo2XRH0FKSFTYe0s
+         HTtLwBi5PwWe9EST4BobLOaG88m2FCCyr9A5/K3d7sJfeTQsDUaQ1Bj6d6++xT+Uym
+         OJuJR+eN2wuZb16Zdy/VKVxgou3Avf6jLH/H0LkQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Doug Berger <opendmb@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 495/694] serial: 8250_bcm7271: Fix arbitration handling
+Subject: [PATCH 6.2 504/663] powerpc/perf: Properly detect mpc7450 family
 Date:   Mon,  8 May 2023 11:45:30 +0200
-Message-Id: <20230508094450.076316965@linuxfoundation.org>
+Message-Id: <20230508094444.952164567@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,91 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Doug Berger <opendmb@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 15ac1122fd6d4bf408a03e6f23c7ad4f60b22f9e ]
+[ Upstream commit e7299f961fe5e4496db0bfaa9e819f5e97f3846b ]
 
-The arbitration of the UART DMA is mishandled for a few
-exceptional cases when probing and releasing the driver.
+Unlike PVR_POWER8, etc ...., PVR_7450 represents a full PVR
+value and not a family value.
 
-It is possible that the DMA register spaces are not defined in
-device tree for an instance of the driver, so attempts to access
-the registers in brcmuart_arbitration() would use NULL pointers.
+To avoid confusion, do like E500 family and define the relevant
+PVR_VER_xxxx values for the 7450 family:
+  0x8000 ==> 7450
+  0x8001 ==> 7455
+  0x8002 ==> 7447
+  0x8003 ==> 7447A
+  0x8004 ==> 7448
 
-It is also possible for the probe function to return an error
-while still holding the UART DMA. This would prevent the UART
-DMA from being claimed by an instance that could use it.
+And use them to detect 7450 family for perf events.
 
-These errors are addressed by only releasing the UART DMA if it
-is held by this instance (i.e. priv->dma_enabled == 1) and
-directing early error paths in probe to this common release_dma
-handling.
-
-Fixes: 41a469482de2 ("serial: 8250: Add new 8250-core based Broadcom STB driver")
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/20230309190224.687380-1-opendmb@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/202302260657.7dM9Uwev-lkp@intel.com/
+Fixes: ec3eb9d941a9 ("powerpc/perf: Use PVR rather than oprofile field to determine CPU version")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/99ca1da2e5a6cf82a8abf4bc034918e500e31781.1677513277.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_bcm7271.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/reg.h  | 5 +++++
+ arch/powerpc/perf/mpc7450-pmu.c | 6 +++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_bcm7271.c b/drivers/tty/serial/8250/8250_bcm7271.c
-index ed5a947476920..f801b1f5b46c0 100644
---- a/drivers/tty/serial/8250/8250_bcm7271.c
-+++ b/drivers/tty/serial/8250/8250_bcm7271.c
-@@ -1014,14 +1014,16 @@ static int brcmuart_probe(struct platform_device *pdev)
- 	/* See if a Baud clock has been specified */
- 	baud_mux_clk = of_clk_get_by_name(np, "sw_baud");
- 	if (IS_ERR(baud_mux_clk)) {
--		if (PTR_ERR(baud_mux_clk) == -EPROBE_DEFER)
--			return -EPROBE_DEFER;
-+		if (PTR_ERR(baud_mux_clk) == -EPROBE_DEFER) {
-+			ret = -EPROBE_DEFER;
-+			goto release_dma;
-+		}
- 		dev_dbg(dev, "BAUD MUX clock not specified\n");
- 	} else {
- 		dev_dbg(dev, "BAUD MUX clock found\n");
- 		ret = clk_prepare_enable(baud_mux_clk);
- 		if (ret)
--			return ret;
-+			goto release_dma;
- 		priv->baud_mux_clk = baud_mux_clk;
- 		init_real_clk_rates(dev, priv);
- 		clk_rate = priv->default_mux_rate;
-@@ -1029,7 +1031,8 @@ static int brcmuart_probe(struct platform_device *pdev)
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 1e8b2e04e626a..8fda87af2fa5e 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1310,6 +1310,11 @@
+ #define PVR_VER_E500MC	0x8023
+ #define PVR_VER_E5500	0x8024
+ #define PVR_VER_E6500	0x8040
++#define PVR_VER_7450	0x8000
++#define PVR_VER_7455	0x8001
++#define PVR_VER_7447	0x8002
++#define PVR_VER_7447A	0x8003
++#define PVR_VER_7448	0x8004
  
- 	if (clk_rate == 0) {
- 		dev_err(dev, "clock-frequency or clk not defined\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto release_dma;
- 	}
+ /*
+  * For the 8xx processors, all of them report the same PVR family for
+diff --git a/arch/powerpc/perf/mpc7450-pmu.c b/arch/powerpc/perf/mpc7450-pmu.c
+index 552d51a925d37..db451b9aac35e 100644
+--- a/arch/powerpc/perf/mpc7450-pmu.c
++++ b/arch/powerpc/perf/mpc7450-pmu.c
+@@ -417,9 +417,9 @@ struct power_pmu mpc7450_pmu = {
  
- 	dev_dbg(dev, "DMA is %senabled\n", priv->dma_enabled ? "" : "not ");
-@@ -1116,7 +1119,9 @@ static int brcmuart_probe(struct platform_device *pdev)
- 	serial8250_unregister_port(priv->line);
- err:
- 	brcmuart_free_bufs(dev, priv);
--	brcmuart_arbitration(priv, 0);
-+release_dma:
-+	if (priv->dma_enabled)
-+		brcmuart_arbitration(priv, 0);
- 	return ret;
- }
+ static int __init init_mpc7450_pmu(void)
+ {
+-	unsigned int pvr = mfspr(SPRN_PVR);
+-
+-	if (PVR_VER(pvr) != PVR_7450)
++	if (!pvr_version_is(PVR_VER_7450) && !pvr_version_is(PVR_VER_7455) &&
++	    !pvr_version_is(PVR_VER_7447) && !pvr_version_is(PVR_VER_7447A) &&
++	    !pvr_version_is(PVR_VER_7448))
+ 		return -ENODEV;
  
-@@ -1128,7 +1133,8 @@ static int brcmuart_remove(struct platform_device *pdev)
- 	hrtimer_cancel(&priv->hrt);
- 	serial8250_unregister_port(priv->line);
- 	brcmuart_free_bufs(&pdev->dev, priv);
--	brcmuart_arbitration(priv, 0);
-+	if (priv->dma_enabled)
-+		brcmuart_arbitration(priv, 0);
- 	return 0;
- }
- 
+ 	return register_power_pmu(&mpc7450_pmu);
 -- 
 2.39.2
 
