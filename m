@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E6B6FAD46
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 005C96FAB74
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235999AbjEHLdI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53568 "EHLO
+        id S233881AbjEHLNb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:13:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236000AbjEHLcp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:32:45 -0400
+        with ESMTP id S232941AbjEHLNa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C5B2DD47
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:31:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF35035B2F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CF676306F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402ABC433D2;
-        Mon,  8 May 2023 11:31:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 770D262BAA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B26C433EF;
+        Mon,  8 May 2023 11:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545510;
-        bh=vA0zeCbEd66IIZ09tbi0zkeB5Meh+dk0ngEv/bIiDe0=;
+        s=korg; t=1683544408;
+        bh=YA8fMVyRQf4LDjVWfmZtuyBEellaq0Uw6trX5oHv7D8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M8+LNG7GaQ3+bX0Zao/bw+5bcjcj0YQC7pBZTyDTOJsc55r7wNxLrEktr+8InULc4
-         Z5qL7ly2qdXzCa+L0G1DcdKO0W3wq2jGxcj2SQbYo0LqdFksAGjuXC5/2kp3pv+jGT
-         9UipjhtvzUPh1lmer9jrkATC18VwCgmmNTFKDbgg=
+        b=m8U9bRp2OpLt83EJwnD8rCz/hgQDgIuEg5vK4LGCJ0Un0UsrsRZoezjEd2tWtcHoW
+         9t0/oCkvovSqEq85fQijJIVFYtZcy3WE0VxCX4uG8LrZGPz2UELyRmkrT2TUTC9ftf
+         FgyhTTGBkpS1PomXDnSvw4CRrBmW64vCf+FtnCyY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH 5.15 034/371] pwm: meson: Fix axg ao mux parents
+        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
+        Xin Liu <liuxin350@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 400/694] bpf, sockmap: fix deadlocks in the sockhash and sockmap
 Date:   Mon,  8 May 2023 11:43:55 +0200
-Message-Id: <20230508094813.454536884@linuxfoundation.org>
+Message-Id: <20230508094446.120271753@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,36 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Xin Liu <liuxin350@huawei.com>
 
-commit eb411c0cf59ae6344b34bc6f0d298a22b300627e upstream.
+[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
 
-This fix is basically the same as 9bce02ef0dfa ("pwm: meson: Fix the
-G12A AO clock parents order"). Vendor driver referenced there has
-xtal as first parent also for axg ao. In addition fix the name
-of the aoclk81 clock. Apparently name aoclk81 as used by the vendor
-driver was changed when mainlining the axg clock driver.
+When huang uses sched_switch tracepoint, the tracepoint
+does only one thing in the mounted ebpf program, which
+deletes the fixed elements in sockhash ([0])
 
-Fixes: bccaa3f917c9 ("pwm: meson: Add clock source configuration for Meson-AXG")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It seems that elements in sockhash are rarely actively
+deleted by users or ebpf program. Therefore, we do not
+pay much attention to their deletion. Compared with hash
+maps, sockhash only provides spin_lock_bh protection.
+This causes it to appear to have self-locking behavior
+in the interrupt context.
+
+  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
+
+Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Xin Liu <liuxin350@huawei.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-meson.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/sock_map.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -424,7 +424,7 @@ static const struct meson_pwm_data pwm_a
- };
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index a055139f410e2..dd5d7b1fa3580 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -414,8 +414,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ {
+ 	struct sock *sk;
+ 	int err = 0;
++	unsigned long flags;
  
- static const char * const pwm_axg_ao_parent_names[] = {
--	"aoclk81", "xtal", "fclk_div4", "fclk_div5"
-+	"xtal", "axg_ao_clk81", "fclk_div4", "fclk_div5"
- };
+-	raw_spin_lock_bh(&stab->lock);
++	raw_spin_lock_irqsave(&stab->lock, flags);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+ 		sk = xchg(psk, NULL);
+@@ -425,7 +426,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ 	else
+ 		err = -EINVAL;
  
- static const struct meson_pwm_data pwm_axg_ao_data = {
+-	raw_spin_unlock_bh(&stab->lock);
++	raw_spin_unlock_irqrestore(&stab->lock, flags);
+ 	return err;
+ }
+ 
+@@ -923,11 +924,12 @@ static long sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 	struct bpf_shtab_bucket *bucket;
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
++	unsigned long flags;
+ 
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
+-	raw_spin_lock_bh(&bucket->lock);
++	raw_spin_lock_irqsave(&bucket->lock, flags);
+ 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
+ 	if (elem) {
+ 		hlist_del_rcu(&elem->node);
+@@ -935,7 +937,7 @@ static long sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 		sock_hash_free_elem(htab, elem);
+ 		ret = 0;
+ 	}
+-	raw_spin_unlock_bh(&bucket->lock);
++	raw_spin_unlock_irqrestore(&bucket->lock, flags);
+ 	return ret;
+ }
+ 
+-- 
+2.39.2
+
 
 
