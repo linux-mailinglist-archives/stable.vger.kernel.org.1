@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BC56FA4BB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17AB26FAAE0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233954AbjEHKC7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:02:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
+        id S233710AbjEHLHo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233944AbjEHKC5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:02:57 -0400
+        with ESMTP id S233688AbjEHLHC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0073B2EB1B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:02:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9C02BCE1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2292F622DF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:02:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35297C4339B;
-        Mon,  8 May 2023 10:02:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1E9162ABC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AEDC433EF;
+        Mon,  8 May 2023 11:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540147;
-        bh=rGopVJF+qyYKCeISEGi6nsfVzBy87J8aQ8JNWamY3jA=;
+        s=korg; t=1683543974;
+        bh=xgFAfjcZyeVlfpxoVw0HA594Fixeh7xBnMIzRAK34VU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HovcfOKPSH3bOYFnT2ckH0ux3HRyHrYQRLiG8RXC1Hic/uNK9PzPx87Xp8Cu8e/zU
-         NsFixUzvi7dG/i86iNA45sacMd0jl2mZNob1CFoRqEBQHBLyh8g0G4gBmsShB9oGov
-         VEYUY3erpjvxQYbluj4G8EMXiTOOWH2Ar8SF5VSU=
+        b=IMj5r9zmqiV9UTEWeQ8bSwKYThK+zqBdEWcXIowULzOuy6QW0hQfikjY+TwbhBdMC
+         1uEI1dh7xALRwdClDDp0b4WhfN6wGvDltq9XD9SbRbiCyERXnrchFtb1LL7qUrhuIW
+         TQjqZXJlCPC1Y3HFMnPbAY9Bp/WOfqkHA1XkZGvw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jing Zhang <renyu.zj@linux.alibaba.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 255/611] perf/arm-cmn: Fix port detection for CMN-700
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 262/694] Revert "drm/msm: Add missing check and destroy for alloc_ordered_workqueue"
 Date:   Mon,  8 May 2023 11:41:37 +0200
-Message-Id: <20230508094430.717138275@linuxfoundation.org>
+Message-Id: <20230508094440.783508639@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,128 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 2ad91e44e6b0c7ef1ed151b3bb2242a2144e6085 ]
+[ Upstream commit dfa70344d1b5f5ff08525a8c872c8dd5e82fc5d9 ]
 
-When the "extra device ports" configuration was first added, the
-additional mxp_device_port_connect_info registers were added around the
-existing mxp_mesh_port_connect_info registers. What I missed about
-CMN-700 is that it shuffled them around to remove this discontinuity.
-As such, tweak the definitions and factor out a helper for reading these
-registers so we can deal with this discrepancy easily, which does at
-least allow nicely tidying up the callsites. With this we can then also
-do the nice thing and skip accesses completely rather than relying on
-RES0 behaviour where we know the extra registers aren't defined.
+This reverts commit 643b7d0869cc7f1f7a5ac7ca6bd25d88f54e31d0.
 
-Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
-Reported-by: Jing Zhang <renyu.zj@linux.alibaba.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/71d129241d4d7923cde72a0e5b4c8d2f6084525f.1681295193.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+A recent patch that tried to fix up the msm_drm_init() paths with
+respect to the workqueue but only ended up making things worse:
+
+First, the newly added calls to msm_drm_uninit() on early errors would
+trigger NULL-pointer dereferences, for example, as the kms pointer would
+not have been initialised. (Note that these paths were also modified by
+a second broken error handling patch which in effect cancelled out this
+part when merged.)
+
+Second, the newly added allocation sanity check would still leak the
+previously allocated drm device.
+
+Instead of trying to salvage what was badly broken (and clearly not
+tested), let's revert the bad commit so that clean and backportable
+fixes can be added in its place.
+
+Fixes: 643b7d0869cc ("drm/msm: Add missing check and destroy for alloc_ordered_workqueue")
+Cc: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/525107/
+Link: https://lore.kernel.org/r/20230306100722.28485-2-johan+linaro@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c | 57 ++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 27 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index bc4b1d1ba8fa2..ff86075edca48 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -57,14 +57,12 @@
- #define CMN_INFO_REQ_VC_NUM		GENMASK_ULL(1, 0)
+diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
+index aca48c868c14d..b7f5a78eadd4a 100644
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -420,8 +420,6 @@ static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
+ 	priv->dev = ddev;
  
- /* XPs also have some local topology info which has uses too */
--#define CMN_MXP__CONNECT_INFO_P0	0x0008
--#define CMN_MXP__CONNECT_INFO_P1	0x0010
--#define CMN_MXP__CONNECT_INFO_P2	0x0028
--#define CMN_MXP__CONNECT_INFO_P3	0x0030
--#define CMN_MXP__CONNECT_INFO_P4	0x0038
--#define CMN_MXP__CONNECT_INFO_P5	0x0040
-+#define CMN_MXP__CONNECT_INFO(p)	(0x0008 + 8 * (p))
- #define CMN__CONNECT_INFO_DEVICE_TYPE	GENMASK_ULL(4, 0)
+ 	priv->wq = alloc_ordered_workqueue("msm", 0);
+-	if (!priv->wq)
+-		return -ENOMEM;
  
-+#define CMN_MAX_PORTS			6
-+#define CI700_CONNECT_INFO_P2_5_OFFSET	0x10
-+
- /* PMU registers occupy the 3rd 4KB page of each node's region */
- #define CMN_PMU_OFFSET			0x2000
- 
-@@ -396,6 +394,25 @@ static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
- 	return NULL;
- }
- 
-+static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
-+				       const struct arm_cmn_node *xp, int port)
-+{
-+	int offset = CMN_MXP__CONNECT_INFO(port);
-+
-+	if (port >= 2) {
-+		if (cmn->model & (CMN600 | CMN650))
-+			return 0;
-+		/*
-+		 * CI-700 may have extra ports, but still has the
-+		 * mesh_port_connect_info registers in the way.
-+		 */
-+		if (cmn->model == CI700)
-+			offset += CI700_CONNECT_INFO_P2_5_OFFSET;
-+	}
-+
-+	return readl_relaxed(xp->pmu_base - CMN_PMU_OFFSET + offset);
-+}
-+
- static struct dentry *arm_cmn_debugfs;
- 
- #ifdef CONFIG_DEBUG_FS
-@@ -469,7 +486,7 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
- 	y = cmn->mesh_y;
- 	while (y--) {
- 		int xp_base = cmn->mesh_x * y;
--		u8 port[6][CMN_MAX_DIMENSION];
-+		u8 port[CMN_MAX_PORTS][CMN_MAX_DIMENSION];
- 
- 		for (x = 0; x < cmn->mesh_x; x++)
- 			seq_puts(s, "--------+");
-@@ -477,14 +494,9 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
- 		seq_printf(s, "\n%d    |", y);
- 		for (x = 0; x < cmn->mesh_x; x++) {
- 			struct arm_cmn_node *xp = cmn->xps + xp_base + x;
--			void __iomem *base = xp->pmu_base - CMN_PMU_OFFSET;
--
--			port[0][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P0);
--			port[1][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P1);
--			port[2][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P2);
--			port[3][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P3);
--			port[4][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P4);
--			port[5][x] = readl_relaxed(base + CMN_MXP__CONNECT_INFO_P5);
-+
-+			for (p = 0; p < CMN_MAX_PORTS; p++)
-+				port[p][x] = arm_cmn_device_connect_info(cmn, xp, p);
- 			seq_printf(s, " XP #%-2d |", xp_base + x);
- 		}
- 
-@@ -2082,18 +2094,9 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 		 * from this, since in that case we will see at least one XP
- 		 * with port 2 connected, for the HN-D.
- 		 */
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P0))
--			xp_ports |= BIT(0);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P1))
--			xp_ports |= BIT(1);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P2))
--			xp_ports |= BIT(2);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P3))
--			xp_ports |= BIT(3);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P4))
--			xp_ports |= BIT(4);
--		if (readq_relaxed(xp_region + CMN_MXP__CONNECT_INFO_P5))
--			xp_ports |= BIT(5);
-+		for (int p = 0; p < CMN_MAX_PORTS; p++)
-+			if (arm_cmn_device_connect_info(cmn, xp, p))
-+				xp_ports |= BIT(p);
- 
- 		if (cmn->multi_dtm && (xp_ports & 0xc))
- 			arm_cmn_init_dtm(dtm++, xp, 1);
+ 	INIT_LIST_HEAD(&priv->objects);
+ 	mutex_init(&priv->obj_lock);
 -- 
 2.39.2
 
