@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A37A76FA654
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F956FAE15
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234374AbjEHKSf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46744 "EHLO
+        id S236173AbjEHLkw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234352AbjEHKSS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:18 -0400
+        with ESMTP id S236177AbjEHLk1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BDCD04B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA20844515
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A617361037
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7561C433D2;
-        Mon,  8 May 2023 10:18:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46ACE634D0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57175C433EF;
+        Mon,  8 May 2023 11:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541097;
-        bh=LlewI8dkrNw3589kcc+UjHEp6UWMsze3NWoM4juGPmE=;
+        s=korg; t=1683546024;
+        bh=QLwEUQ8r5I1I2kHhKLZebL/h2n+2wf1rb1yeKN38Q7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YtopTinsAombs6IAey8oxMNWUXcM0LQTZO+gKndiprRX4lI5nCLTFOkg765z6HfbE
-         K6OvxDmEMhuHTwJWvV/Ys8tb7/Cg5aAOukSC6x5qK6DvIJHhEEFuNE8QKMh3353cXn
-         nclUiKsh4bUItp0XaZjHlJLmRe8OEexr/SzVmUh8=
+        b=Vv9VXI8V/uNnnnisLcLGW3kEsDuQKK7iFTB8hAKa5CQeWzsLuTKiT1Z6B+jrSs+bl
+         TkrbL+3QArKoFwARWHfDWEe66swersc95QK/ZLZbWPX6xilYvBneinv55+Yv8zVnzo
+         kzs+vYLQZ1KuaZjEj/lrNQHf1kdj3qIdYIZfBkao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sungjong Seo <sj1557.seo@samsung.com>,
-        Yeongjin Gil <youngjin.gil@samsung.com>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 590/611] dm verity: fix error handling for check_at_most_once on FEC
-Date:   Mon,  8 May 2023 11:47:12 +0200
-Message-Id: <20230508094441.083188587@linuxfoundation.org>
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 232/371] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
+Date:   Mon,  8 May 2023 11:47:13 +0200
+Message-Id: <20230508094821.276949044@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,44 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yeongjin Gil <youngjin.gil@samsung.com>
+From: Liu Jian <liujian56@huawei.com>
 
-commit e8c5d45f82ce0c238a4817739892fe8897a3dcc3 upstream.
+[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
 
-In verity_end_io(), if bi_status is not BLK_STS_OK, it can be return
-directly. But if FEC configured, it is desired to correct the data page
-through verity_verify_io. And the return value will be converted to
-blk_status and passed to verity_finish_io().
+This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
 
-BTW, when a bit is set in v->validated_blocks, verity_verify_io() skips
-verification regardless of I/O error for the corresponding bio. In this
-case, the I/O error could not be returned properly, and as a result,
-there is a problem that abnormal data could be read for the
-corresponding block.
+This patch introduces a possible null-ptr-def problem. Revert it. And the
+fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
+btsdio: fix use after free bug in btsdio_remove due to race condition").
 
-To fix this problem, when an I/O error occurs, do not skip verification
-even if the bit related is set in v->validated_blocks.
-
-Fixes: 843f38d382b1 ("dm verity: add 'check_at_most_once' option to only validate hashes once")
-Cc: stable@vger.kernel.org
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btsdio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -523,7 +523,7 @@ static int verity_verify_io(struct dm_ve
- 		sector_t cur_block = io->block + b;
- 		struct ahash_request *req = verity_io_hash_req(v, io);
+diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
+index 7050a16e7efeb..199e8f7d426d9 100644
+--- a/drivers/bluetooth/btsdio.c
++++ b/drivers/bluetooth/btsdio.c
+@@ -352,7 +352,6 @@ static void btsdio_remove(struct sdio_func *func)
  
--		if (v->validated_blocks &&
-+		if (v->validated_blocks && bio->bi_status == BLK_STS_OK &&
- 		    likely(test_bit(cur_block, v->validated_blocks))) {
- 			verity_bv_skip_block(v, io, iter);
- 			continue;
+ 	BT_DBG("func %p", func);
+ 
+-	cancel_work_sync(&data->work);
+ 	if (!data)
+ 		return;
+ 
+-- 
+2.39.2
+
 
 
