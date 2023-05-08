@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E966FADD8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137076FA956
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236099AbjEHLjD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:39:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57424 "EHLO
+        id S234934AbjEHKuC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235988AbjEHLis (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C35B3F564
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:02 -0700 (PDT)
+        with ESMTP id S235199AbjEHKt1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD1EC29FD5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09F1861EA8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:38:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB08C433D2;
-        Mon,  8 May 2023 11:38:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D7DD628FD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22CCC433D2;
+        Mon,  8 May 2023 10:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545881;
-        bh=NMYUbi9jjr4zmYoL0WvPj5HLGrlO1pCVfP9HqywaE4E=;
+        s=korg; t=1683542930;
+        bh=OxINo+q/tSjvY3Nxtj2ly40l4J7dXpR1eGk+vhx47Ck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZdEkKqQ67spPvdcwoLe92/fMVzNr4Cna86BS8BZw2yMM9wdCn08XHOrokF3dm96XE
-         Dhs/CjNQAo71pxQ0m9f7JamTO9VHbs92UIWWw2p2dyAXTOoktrAZ/5YeCZLotzbVv/
-         +H411POgCTvf6T43ika6+cipBZqvaGjzfRs0Mqw0=
+        b=mG15cofy5Otid34Kymf8G+L7i5cP+iO5QhJfJ1fcV/ax+JgjF+ADOm8ok8l6tcemV
+         DKHKgzlJRxClbeT+OHhquzuNESpdwnalsmcszjSznU//0yOOhUuWuAnpBHDzXGtcWL
+         KoHtcUkWyS3hZsVr7eZa7Qmsm1LgVSVAE0lnwzh0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicolai Stange <nstange@suse.de>,
-        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 184/371] crypto: drbg - make drbg_prepare_hrng() handle jent instantiation errors
+Subject: [PATCH 6.2 559/663] clk: qcom: dispcc-qcm2290: get rid of test clock
 Date:   Mon,  8 May 2023 11:46:25 +0200
-Message-Id: <20230508094819.443064052@linuxfoundation.org>
+Message-Id: <20230508094447.285176334@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,62 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolai Stange <nstange@suse.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 559edd47cce4cc407d606b4d7f376822816fd4b8 ]
+[ Upstream commit 62db82f9c8004f1226f5cec8a5441fb89eb984fa ]
 
-Now that drbg_prepare_hrng() doesn't do anything but to instantiate a
-jitterentropy crypto_rng instance, it looks a little odd to have the
-related error handling at its only caller, drbg_instantiate().
+The test clock apparently it's not used by anyone upstream. Remove it.
 
-Move the handling of jitterentropy allocation failures from
-drbg_instantiate() close to the allocation itself in drbg_prepare_hrng().
-
-There is no change in behaviour.
-
-Signed-off-by: Nicolai Stange <nstange@suse.de>
-Reviewed-by: Stephan Müller <smueller@chronox.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 686cd976b6dd ("crypto: drbg - Only fail when jent is unavailable in FIPS mode")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20221228185237.3111988-9-dmitry.baryshkov@linaro.org
+Stable-dep-of: 68d1151f0306 ("clk: qcom: dispcc-qcm2290: Remove inexistent DSI1PHY clk")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/drbg.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/clk/qcom/dispcc-qcm2290.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/crypto/drbg.c b/crypto/drbg.c
-index 761104e93d44a..c89e26e677404 100644
---- a/crypto/drbg.c
-+++ b/crypto/drbg.c
-@@ -1516,6 +1516,14 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
- 		return 0;
+diff --git a/drivers/clk/qcom/dispcc-qcm2290.c b/drivers/clk/qcom/dispcc-qcm2290.c
+index 96b149365912a..2ebd9a02b8950 100644
+--- a/drivers/clk/qcom/dispcc-qcm2290.c
++++ b/drivers/clk/qcom/dispcc-qcm2290.c
+@@ -71,7 +71,6 @@ static const struct parent_map disp_cc_parent_map_0[] = {
+ static const struct clk_parent_data disp_cc_parent_data_0[] = {
+ 	{ .fw_name = "bi_tcxo" },
+ 	{ .fw_name = "dsi0_phy_pll_out_byteclk" },
+-	{ .fw_name = "core_bi_pll_test_se" },
+ };
  
- 	drbg->jent = crypto_alloc_rng("jitterentropy_rng", 0, 0);
-+	if (IS_ERR(drbg->jent)) {
-+		const int err = PTR_ERR(drbg->jent);
-+
-+		drbg->jent = NULL;
-+		if (fips_enabled || err != -ENOENT)
-+			return err;
-+		pr_info("DRBG: Continuing without Jitter RNG\n");
-+	}
+ static const struct parent_map disp_cc_parent_map_1[] = {
+@@ -80,7 +79,6 @@ static const struct parent_map disp_cc_parent_map_1[] = {
  
- 	return 0;
- }
-@@ -1571,14 +1579,6 @@ static int drbg_instantiate(struct drbg_state *drbg, struct drbg_string *pers,
- 		if (ret)
- 			goto free_everything;
+ static const struct clk_parent_data disp_cc_parent_data_1[] = {
+ 	{ .fw_name = "bi_tcxo" },
+-	{ .fw_name = "core_bi_pll_test_se" },
+ };
  
--		if (IS_ERR(drbg->jent)) {
--			ret = PTR_ERR(drbg->jent);
--			drbg->jent = NULL;
--			if (fips_enabled || ret != -ENOENT)
--				goto free_everything;
--			pr_info("DRBG: Continuing without Jitter RNG\n");
--		}
--
- 		reseed = false;
- 	}
+ static const struct parent_map disp_cc_parent_map_2[] = {
+@@ -91,7 +89,6 @@ static const struct parent_map disp_cc_parent_map_2[] = {
+ static const struct clk_parent_data disp_cc_parent_data_2[] = {
+ 	{ .fw_name = "bi_tcxo_ao" },
+ 	{ .fw_name = "gcc_disp_gpll0_div_clk_src" },
+-	{ .fw_name = "core_bi_pll_test_se" },
+ };
  
+ static const struct parent_map disp_cc_parent_map_3[] = {
+@@ -104,7 +101,6 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
+ 	{ .fw_name = "bi_tcxo" },
+ 	{ .hw = &disp_cc_pll0.clkr.hw },
+ 	{ .fw_name = "gcc_disp_gpll0_clk_src" },
+-	{ .fw_name = "core_bi_pll_test_se" },
+ };
+ 
+ static const struct parent_map disp_cc_parent_map_4[] = {
+@@ -117,7 +113,6 @@ static const struct clk_parent_data disp_cc_parent_data_4[] = {
+ 	{ .fw_name = "bi_tcxo" },
+ 	{ .fw_name = "dsi0_phy_pll_out_dsiclk" },
+ 	{ .fw_name = "dsi1_phy_pll_out_dsiclk" },
+-	{ .fw_name = "core_bi_pll_test_se" },
+ };
+ 
+ static const struct parent_map disp_cc_parent_map_5[] = {
+@@ -126,7 +121,6 @@ static const struct parent_map disp_cc_parent_map_5[] = {
+ 
+ static const struct clk_parent_data disp_cc_parent_data_5[] = {
+ 	{ .fw_name = "sleep_clk" },
+-	{ .fw_name = "core_bi_pll_test_se" },
+ };
+ 
+ static struct clk_rcg2 disp_cc_mdss_byte0_clk_src = {
 -- 
 2.39.2
 
