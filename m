@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD146FAB2D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA0A6FA7F8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233398AbjEHLK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45982 "EHLO
+        id S234883AbjEHKgh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233744AbjEHLKB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:10:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401C631EEF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:58 -0700 (PDT)
+        with ESMTP id S234858AbjEHKgK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:36:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A462675C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC83362B14
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC327C433D2;
-        Mon,  8 May 2023 11:09:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DD0662789
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D45C433EF;
+        Mon,  8 May 2023 10:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544197;
-        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
+        s=korg; t=1683542151;
+        bh=gDTVm/JJ7hmNhnciOg2BWW2goZ3lZsZfHmMKMNckHog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P3CQPGn5+N1fefDiNjdvJ0KJDiA7z0Ra9y5/Af+veCxBAhNlKu0chwcUTLch2CkyP
-         y1ZBC1jfn+8Fpz3vefgBvyFD+YN2KPy6uDt614VUT/a/9tc3d3vNovMmFnLKHe7Jz2
-         JC++UqGul/eywsQmHA9jgbJGPXI+oZzvjvDQY2c4=
+        b=jzTQcaBu9itjgFnG3kehdtcmzdFgdQ1Agsb+ueFQS0MB/JFNBaltisradZ/IbZNhQ
+         B4kDXeCwo3l/HU9BqCCgPZuhXG3ENYu4HO2vodt6kXRA1OrUGPIeQgxD7mfYZESleZ
+         a7xkczLmTsYSOrwA2rzMNsvWTPbtexYOUP1BoWwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Subject: [PATCH 6.3 332/694] wifi: ath6kl: reduce WARN to dev_dbg() in callback
+        patches@lists.linux.dev, Kal Conley <kal.conley@dectris.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 341/663] selftests: xsk: Disable IPv6 on VETH1
 Date:   Mon,  8 May 2023 11:42:47 +0200
-Message-Id: <20230508094443.188446027@linuxfoundation.org>
+Message-Id: <20230508094439.217586706@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,41 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Kal Conley <kal.conley@dectris.com>
 
-[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
+[ Upstream commit f2b50f17268390567bc0e95642170d88f336c8f4 ]
 
-The warn is triggered on a known race condition, documented in the code above
-the test, that is correctly handled.  Using WARN() hinders automated testing.
-Reducing severity.
+This change fixes flakiness in the BIDIRECTIONAL test:
 
-Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
-Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
+    # [is_pkt_valid] expected length [60], got length [90]
+    not ok 1 FAIL: SKB BUSY-POLL BIDIRECTIONAL
+
+When IPv6 is enabled, the interface will periodically send MLDv1 and
+MLDv2 packets. These packets can cause the BIDIRECTIONAL test to fail
+since it uses VETH0 for RX.
+
+For other tests, this was not a problem since they only receive on VETH1
+and IPv6 was already disabled on VETH0.
+
+Fixes: a89052572ebb ("selftests/bpf: Xsk selftests framework")
+Signed-off-by: Kal Conley <kal.conley@dectris.com>
+Link: https://lore.kernel.org/r/20230405082905.6303-1-kal.conley@dectris.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_xsk.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-index c68848819a52d..9b88d96bfe96c 100644
---- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-+++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
- 	 * Thus the possibility of ar->htc_target being NULL
- 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
- 	 */
--	if (WARN_ON_ONCE(!target)) {
--		ath6kl_err("Target not yet initialized\n");
-+	if (!target) {
-+		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
- 		status = -EINVAL;
- 		goto free_skb;
- 	}
+diff --git a/tools/testing/selftests/bpf/test_xsk.sh b/tools/testing/selftests/bpf/test_xsk.sh
+index d821fd0985049..4e3ec38cbe68c 100755
+--- a/tools/testing/selftests/bpf/test_xsk.sh
++++ b/tools/testing/selftests/bpf/test_xsk.sh
+@@ -118,6 +118,7 @@ setup_vethPairs() {
+ 	ip link add ${VETH0} numtxqueues 4 numrxqueues 4 type veth peer name ${VETH1} numtxqueues 4 numrxqueues 4
+ 	if [ -f /proc/net/if_inet6 ]; then
+ 		echo 1 > /proc/sys/net/ipv6/conf/${VETH0}/disable_ipv6
++		echo 1 > /proc/sys/net/ipv6/conf/${VETH1}/disable_ipv6
+ 	fi
+ 	if [[ $verbose -eq 1 ]]; then
+ 	        echo "setting up ${VETH1}: namespace: ${NS1}"
 -- 
 2.39.2
 
