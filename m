@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0453F6FA608
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 999CB6FAC2A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234298AbjEHKPb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44460 "EHLO
+        id S235541AbjEHLVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234302AbjEHKP2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:28 -0400
+        with ESMTP id S235603AbjEHLVj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF033AA3C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 190153919E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D79F362475
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CF8C433EF;
-        Mon,  8 May 2023 10:15:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE4062CA8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E4FC433D2;
+        Mon,  8 May 2023 11:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540926;
-        bh=2tp9ftnmiVd39AtJGUhDVZj/4N1Rr2e1i9ciwy4XU5U=;
+        s=korg; t=1683544886;
+        bh=cJxbrZfrrGZx450lTtkk/L2AgLRoHvlx4qXGzT0h1CE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MC9cvm89pMvrcA5eJ/hS8cE6KZpccUkO6u/AtBuBPhYEbfE9HCrQdq+tf4f0TdA7d
-         Vwfcx7dg4cxtwUQz0w9ntv0y6tp7T4C9Lt3aPLzlCzCkulx9FFQ1zIF5fbVNDfKpki
-         WQBC2ldCk/Gy5LtoQ3wFYuQPoWAS9wFQFVGv6AWs=
+        b=YZt7ZgT7Sb0qb3OAIHSHyc4Bfuo9reDA7HHkXbsju9dnkRYPSVjWFH0eV5+Amaitz
+         BHprGElb0LyyRfkeaukKi5tFPvi+mPmDKiXMpHCqzi76tv1CXOuF56lHn8LLKiAtY9
+         Mmp2spt1AlE3/Z+yLrX2d1HtcFAhDCXU6bYTiBT8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 549/611] mfd: ocelot-spi: Fix unsupported bulk read
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 556/694] fbdev: mmp: Fix deferred clk handling in mmphw_probe()
 Date:   Mon,  8 May 2023 11:46:31 +0200
-Message-Id: <20230508094439.852237582@linuxfoundation.org>
+Message-Id: <20230508094452.649638097@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,81 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Foster <colin.foster@in-advantage.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f0484d2f80a72022b7fac72bcb406392900ef1eb ]
+[ Upstream commit b3a7a9ab65ae2f2626c7222fb79cdd433f8c5252 ]
 
-Ocelot chips (VSC7511, VSC7512, VSC7513, VSC7514) don't support bulk read
-operations over SPI.
+When dev_err_probe() is called, 'ret' holds the value of the previous
+successful devm_request_irq() call.
+'ret' should be assigned with a meaningful value before being used in
+dev_err_probe().
 
-Many SPI buses have hardware that can optimize consecutive reads.
-Essentially an address is written to the chip, and if the SPI controller
-continues to toggle the clock, subsequent register values are reported.
-This can lead to significant optimizations, because the time between
-"address is written to the chip" and "chip starts to report data" can often
-take a fixed amount of time.
+While at it, use and return "PTR_ERR(ctrl->clk)" instead of a hard-coded
+"-ENOENT" so that -EPROBE_DEFER is handled and propagated correctly.
 
-When support for Ocelot chips were added in commit f3e893626abe ("mfd:
-ocelot: Add support for the vsc7512 chip via spi") it was believed that
-this optimization was supported. However it is not.
-
-Most register transactions with the Ocelot chips are not done in bulk, so
-this bug could go unnoticed. The one scenario where bulk register
-operations _are_ performed is when polling port statistics counters, which
-was added in commit d87b1c08f38a ("net: mscc: ocelot: use bulk reads for
-stats").
-
-Things get slightly more complicated here...
-
-A bug was introduced in commit d4c367650704 ("net: mscc: ocelot: keep
-ocelot_stat_layout by reg address, not offset") that broke the optimization
-of bulk reads. This means that when Ethernet support for the VSC7512 chip
-was added in commit 3d7316ac81ac ("net: dsa: ocelot: add external ocelot
-switch control") things were actually working "as expected".
-
-The bulk read opmtimization was discovered, and fixed in commit
-6acc72a43eac ("net: mscc: ocelot: fix stats region batching") and the
-timing optimizations for SPI were noticed. A bulk read went from ~14ms to
-~2ms. But this timing improvement came at the cost of every register
-reading zero due the fact that bulk reads don't work.
-
-The read timings increase back to 13-14ms, but that's a price worth paying
-in order to receive valid data. This is verified in a DSA setup (cpsw-new
-switch tied to port 0 on the VSC7512, after having been running overnight)
-
-     Rx Octets: 16222055 # Counters from CPSW switch
-     Tx Octets: 12034702
-     Net Octets: 28256757
-     p00_rx_octets: 12034702 # Counters from Ocelot switch
-     p00_rx_frames_below_65_octets: 0
-     p00_rx_frames_65_to_127_octets: 88188
-     p00_rx_frames_128_to_255_octets: 13
-     p00_rx_frames_256_to_511_octets: 0
-     p00_rx_frames_512_to_1023_octets: 0
-     p00_rx_frames_over_1526_octets: 3306
-     p00_tx_octets: 16222055
-
-Fixes: f3e893626abe ("mfd: ocelot: Add support for the vsc7512 chip via spi")
-Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230322141130.2531256-1-colin.foster@in-advantage.com
+Fixes: 81b63420564d ("fbdev: mmp: Make use of the helper function dev_err_probe()")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/ocelot-spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/mmp/hw/mmp_ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/ocelot-spi.c b/drivers/mfd/ocelot-spi.c
-index 2ecd271de2fb9..85021f94e5874 100644
---- a/drivers/mfd/ocelot-spi.c
-+++ b/drivers/mfd/ocelot-spi.c
-@@ -130,6 +130,7 @@ static const struct regmap_config ocelot_spi_regmap_config = {
- 
- 	.write_flag_mask = 0x80,
- 
-+	.use_single_read = true,
- 	.use_single_write = true,
- 	.can_multi_write = false,
- 
+diff --git a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
+index a9df8ee798102..51fbf02a03430 100644
+--- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
++++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
+@@ -514,9 +514,9 @@ static int mmphw_probe(struct platform_device *pdev)
+ 	/* get clock */
+ 	ctrl->clk = devm_clk_get(ctrl->dev, mi->clk_name);
+ 	if (IS_ERR(ctrl->clk)) {
++		ret = PTR_ERR(ctrl->clk);
+ 		dev_err_probe(ctrl->dev, ret,
+ 			      "unable to get clk %s\n", mi->clk_name);
+-		ret = -ENOENT;
+ 		goto failed;
+ 	}
+ 	clk_prepare_enable(ctrl->clk);
 -- 
 2.39.2
 
