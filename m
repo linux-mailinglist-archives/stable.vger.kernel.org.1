@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD096FA6C7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 467906FA9EE
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234580AbjEHKYB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50042 "EHLO
+        id S235301AbjEHK5K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:57:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234472AbjEHKXV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:21 -0400
+        with ESMTP id S235302AbjEHK4n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C5603A286
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:23:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F4933853
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7510160F91
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:23:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2C4C433D2;
-        Mon,  8 May 2023 10:23:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BF49629B2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:55:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B03C433D2;
+        Mon,  8 May 2023 10:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541383;
-        bh=duRt4LgUNl++PHPCMA9gvR2w1QMev+j6ur1tOjUHma0=;
+        s=korg; t=1683543342;
+        bh=GS78Kwo1Pmcfx7vRMttqCzXhHSMzOBqtrq80ebbvM0o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zu1bvH/Wo1ysIhrreU5+QH97KEn8tU8uCHwpbbE/rfHfLDhZ02E32MI3OkF92VhCc
-         NRywG/S37wvKMQVM3GNTCxqN1BYsMmnnucXy58yNaqmslGdDB3LVRlIbfX8Yyv0Y6w
-         3Kl4adrXKlJ6qNv56L94/E3sus3H44vEY+GEbGvA=
+        b=E2TPvJmz5o9SBj0k3/9t8ZaKwFanltR1powVpHUSO/UEHsPotvp//VaHP157cO1Xs
+         tgHzbM/ng9LiMe7GwtK6eA0Zoqq6W6UYFvZgRZIZJhtLtj+5LKwfzyWkISutbwQXXD
+         14wLTsbPyeSCtF7KQE2tuJ8MLFrJjIXku2afNq5k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.2 068/663] ring-buffer: Sync IRQ works before buffer destruction
-Date:   Mon,  8 May 2023 11:38:14 +0200
-Message-Id: <20230508094430.675500001@linuxfoundation.org>
+        patches@lists.linux.dev, Jeremy Linton <jeremy.linton@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.3 060/694] KVM: arm64: Use config_lock to protect data ordered against KVM_RUN
+Date:   Mon,  8 May 2023 11:38:15 +0200
+Message-Id: <20230508094434.525476378@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,94 +54,162 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-commit 675751bb20634f981498c7d66161584080cc061e upstream.
+commit 4bba7f7def6f278266dadf845da472cfbfed784e upstream.
 
-If something was written to the buffer just before destruction,
-it may be possible (maybe not in a real system, but it did
-happen in ARCH=um with time-travel) to destroy the ringbuffer
-before the IRQ work ran, leading this KASAN report (or a crash
-without KASAN):
+There are various bits of VM-scoped data that can only be configured
+before the first call to KVM_RUN, such as the hypercall bitmaps and
+the PMU. As these fields are protected by the kvm->lock and accessed
+while holding vcpu->mutex, this is yet another example of lock
+inversion.
 
-    BUG: KASAN: slab-use-after-free in irq_work_run_list+0x11a/0x13a
-    Read of size 8 at addr 000000006d640a48 by task swapper/0
+Change out the kvm->lock for kvm->arch.config_lock in all of these
+instances. Opportunistically simplify the locking mechanics of the
+PMU configuration by holding the config_lock for the entirety of
+kvm_arm_pmu_v3_set_attr().
 
-    CPU: 0 PID: 0 Comm: swapper Tainted: G        W  O       6.3.0-rc1 #7
-    Stack:
-     60c4f20f 0c203d48 41b58ab3 60f224fc
-     600477fa 60f35687 60c4f20f 601273dd
-     00000008 6101eb00 6101eab0 615be548
-    Call Trace:
-     [<60047a58>] show_stack+0x25e/0x282
-     [<60c609e0>] dump_stack_lvl+0x96/0xfd
-     [<60c50d4c>] print_report+0x1a7/0x5a8
-     [<603078d3>] kasan_report+0xc1/0xe9
-     [<60308950>] __asan_report_load8_noabort+0x1b/0x1d
-     [<60232844>] irq_work_run_list+0x11a/0x13a
-     [<602328b4>] irq_work_tick+0x24/0x34
-     [<6017f9dc>] update_process_times+0x162/0x196
-     [<6019f335>] tick_sched_handle+0x1a4/0x1c3
-     [<6019fd9e>] tick_sched_timer+0x79/0x10c
-     [<601812b9>] __hrtimer_run_queues.constprop.0+0x425/0x695
-     [<60182913>] hrtimer_interrupt+0x16c/0x2c4
-     [<600486a3>] um_timer+0x164/0x183
-     [...]
-
-    Allocated by task 411:
-     save_stack_trace+0x99/0xb5
-     stack_trace_save+0x81/0x9b
-     kasan_save_stack+0x2d/0x54
-     kasan_set_track+0x34/0x3e
-     kasan_save_alloc_info+0x25/0x28
-     ____kasan_kmalloc+0x8b/0x97
-     __kasan_kmalloc+0x10/0x12
-     __kmalloc+0xb2/0xe8
-     load_elf_phdrs+0xee/0x182
-     [...]
-
-    The buggy address belongs to the object at 000000006d640800
-     which belongs to the cache kmalloc-1k of size 1024
-    The buggy address is located 584 bytes inside of
-     freed 1024-byte region [000000006d640800, 000000006d640c00)
-
-Add the appropriate irq_work_sync() so the work finishes before
-the buffers are destroyed.
-
-Prior to the commit in the Fixes tag below, there was only a
-single global IRQ work, so this issue didn't exist.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230427175920.a76159263122.I8295e405c44362a86c995e9c2c37e3e03810aa56@changeid
+Note that this also addresses a couple of bugs. There is an unguarded
+read of the PMU version in KVM_ARM_VCPU_PMU_V3_FILTER which could race
+with KVM_ARM_VCPU_PMU_V3_SET_PMU. Additionally, until now writes to the
+per-vCPU vPMU irq were not serialized VM-wide, meaning concurrent calls
+to KVM_ARM_VCPU_PMU_V3_IRQ could lead to a false positive in
+pmu_irq_is_valid().
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 15693458c4bc ("tracing/ring-buffer: Move poll wake ups into ring buffer code")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Tested-by: Jeremy Linton <jeremy.linton@arm.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230327164747.2466958-4-oliver.upton@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/kvm/arm.c        |    4 ++--
+ arch/arm64/kvm/guest.c      |    2 ++
+ arch/arm64/kvm/hypercalls.c |    4 ++--
+ arch/arm64/kvm/pmu-emul.c   |   23 ++++++-----------------
+ 4 files changed, 12 insertions(+), 21 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1778,6 +1778,8 @@ static void rb_free_cpu_buffer(struct ri
- 	struct list_head *head = cpu_buffer->pages;
- 	struct buffer_page *bpage, *tmp;
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -625,9 +625,9 @@ int kvm_arch_vcpu_run_pid_change(struct
+ 	if (kvm_vm_is_protected(kvm))
+ 		kvm_call_hyp_nvhe(__pkvm_vcpu_init_traps, vcpu);
  
-+	irq_work_sync(&cpu_buffer->irq_work.work);
+-	mutex_lock(&kvm->lock);
++	mutex_lock(&kvm->arch.config_lock);
+ 	set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
+-	mutex_unlock(&kvm->lock);
++	mutex_unlock(&kvm->arch.config_lock);
+ 
+ 	return ret;
+ }
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -957,7 +957,9 @@ int kvm_arm_vcpu_arch_set_attr(struct kv
+ 
+ 	switch (attr->group) {
+ 	case KVM_ARM_VCPU_PMU_V3_CTRL:
++		mutex_lock(&vcpu->kvm->arch.config_lock);
+ 		ret = kvm_arm_pmu_v3_set_attr(vcpu, attr);
++		mutex_unlock(&vcpu->kvm->arch.config_lock);
+ 		break;
+ 	case KVM_ARM_VCPU_TIMER_CTRL:
+ 		ret = kvm_arm_timer_set_attr(vcpu, attr);
+--- a/arch/arm64/kvm/hypercalls.c
++++ b/arch/arm64/kvm/hypercalls.c
+@@ -377,7 +377,7 @@ static int kvm_arm_set_fw_reg_bmap(struc
+ 	if (val & ~fw_reg_features)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&kvm->lock);
++	mutex_lock(&kvm->arch.config_lock);
+ 
+ 	if (test_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags) &&
+ 	    val != *fw_reg_bmap) {
+@@ -387,7 +387,7 @@ static int kvm_arm_set_fw_reg_bmap(struc
+ 
+ 	WRITE_ONCE(*fw_reg_bmap, val);
+ out:
+-	mutex_unlock(&kvm->lock);
++	mutex_unlock(&kvm->arch.config_lock);
+ 	return ret;
+ }
+ 
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -876,7 +876,7 @@ static int kvm_arm_pmu_v3_set_pmu(struct
+ 	struct arm_pmu *arm_pmu;
+ 	int ret = -ENXIO;
+ 
+-	mutex_lock(&kvm->lock);
++	lockdep_assert_held(&kvm->arch.config_lock);
+ 	mutex_lock(&arm_pmus_lock);
+ 
+ 	list_for_each_entry(entry, &arm_pmus, entry) {
+@@ -896,7 +896,6 @@ static int kvm_arm_pmu_v3_set_pmu(struct
+ 	}
+ 
+ 	mutex_unlock(&arm_pmus_lock);
+-	mutex_unlock(&kvm->lock);
+ 	return ret;
+ }
+ 
+@@ -904,22 +903,20 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_v
+ {
+ 	struct kvm *kvm = vcpu->kvm;
+ 
++	lockdep_assert_held(&kvm->arch.config_lock);
 +
- 	free_buffer_page(cpu_buffer->reader_page);
+ 	if (!kvm_vcpu_has_pmu(vcpu))
+ 		return -ENODEV;
  
- 	if (head) {
-@@ -1884,6 +1886,8 @@ ring_buffer_free(struct trace_buffer *bu
+ 	if (vcpu->arch.pmu.created)
+ 		return -EBUSY;
  
- 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
+-	mutex_lock(&kvm->lock);
+ 	if (!kvm->arch.arm_pmu) {
+ 		/* No PMU set, get the default one */
+ 		kvm->arch.arm_pmu = kvm_pmu_probe_armpmu();
+-		if (!kvm->arch.arm_pmu) {
+-			mutex_unlock(&kvm->lock);
++		if (!kvm->arch.arm_pmu)
+ 			return -ENODEV;
+-		}
+ 	}
+-	mutex_unlock(&kvm->lock);
  
-+	irq_work_sync(&buffer->irq_work.work);
-+
- 	for_each_buffer_cpu(buffer, cpu)
- 		rb_free_cpu_buffer(buffer->buffers[cpu]);
+ 	switch (attr->attr) {
+ 	case KVM_ARM_VCPU_PMU_V3_IRQ: {
+@@ -963,19 +960,13 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_v
+ 		     filter.action != KVM_PMU_EVENT_DENY))
+ 			return -EINVAL;
  
+-		mutex_lock(&kvm->lock);
+-
+-		if (test_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags)) {
+-			mutex_unlock(&kvm->lock);
++		if (test_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags))
+ 			return -EBUSY;
+-		}
+ 
+ 		if (!kvm->arch.pmu_filter) {
+ 			kvm->arch.pmu_filter = bitmap_alloc(nr_events, GFP_KERNEL_ACCOUNT);
+-			if (!kvm->arch.pmu_filter) {
+-				mutex_unlock(&kvm->lock);
++			if (!kvm->arch.pmu_filter)
+ 				return -ENOMEM;
+-			}
+ 
+ 			/*
+ 			 * The default depends on the first applied filter.
+@@ -994,8 +985,6 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_v
+ 		else
+ 			bitmap_clear(kvm->arch.pmu_filter, filter.base_event, filter.nevents);
+ 
+-		mutex_unlock(&kvm->lock);
+-
+ 		return 0;
+ 	}
+ 	case KVM_ARM_VCPU_PMU_V3_SET_PMU: {
 
 
