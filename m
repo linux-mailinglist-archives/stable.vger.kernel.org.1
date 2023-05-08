@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 218966FAA0F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D103C6FA6BA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235399AbjEHK6m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:58:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33566 "EHLO
+        id S234425AbjEHKXf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235435AbjEHK6E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:58:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3B62FCD4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:57:08 -0700 (PDT)
+        with ESMTP id S234427AbjEHKW4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB94126454
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 005CC62993
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B471C433EF;
-        Mon,  8 May 2023 10:57:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8195162563
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFF0C433EF;
+        Mon,  8 May 2023 10:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543427;
-        bh=Ua/MFmWesgy32z8E9MDOiD9RzCL39IRCi8eEaA907E0=;
+        s=korg; t=1683541355;
+        bh=hbYOJxL0OlPopIoojo5/bYeLMzT5dtV1digoXsNKerw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mdonb1Wxg5jAfqo6IxD7QrGoQZuYj603ypGhNZvnxOVQomXd/ji8A6Wd9hgGdZvpx
-         BFV6cXaeO8SB+ROT1Tx8RVfOQRSvBU5VhIP5kuBqQSs0Pqr/1l1QuNx6VYYNQ1zWLG
-         dshh8ztHHDYgp4BOcE3ZtRvcxGVeXZY9bP2TEi7E=
+        b=dxHVDNz1Nt8JzVT0UQ3cvhXoZqz8XeSgOES4VDJcA2XrjBXhA/MvpUuzxKwzD9neY
+         OXGcOU6NmzdDkyrOdvntaqCCXNiu9+/gxUOZnOlUD2xNq3bcwodH/vd6O5y539avxP
+         b52Bs0/bf8uXqHJ7/JDI2ukX6OgHlZvqLYc/ZlYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Song Shuai <suagrfillet@gmail.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.3 079/694] riscv: mm: remove redundant parameter of create_fdt_early_page_table
+        patches@lists.linux.dev,
+        Aurabindo Pillai <Aurabindo.Pillai@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Alex Hung <alex.hung@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 088/663] drm/amd/display: fix a divided-by-zero error
 Date:   Mon,  8 May 2023 11:38:34 +0200
-Message-Id: <20230508094435.102696366@linuxfoundation.org>
+Message-Id: <20230508094431.303703044@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,47 +58,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Shuai <suagrfillet@gmail.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit e4ef93edd4e0b022529303db1915766ff9de450e upstream.
+[ Upstream commit 0b5dfe12755f87ec014bb4cc1930485026167430 ]
 
-create_fdt_early_page_table() explicitly uses early_pg_dir for
-32-bit fdt mapping and the pgdir parameter is redundant here.
-So remove it and its caller.
+[Why & How]
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Fixes: ef69d2559fe9 ("riscv: Move early dtb mapping into the fixmap region")
+timing.dsc_cfg.num_slices_v can be zero and it is necessary to check
+before using it.
+
+This fixes the error "divide error: 0000 [#1] PREEMPT SMP NOPTI".
+
+Reviewed-by: Aurabindo Pillai <Aurabindo.Pillai@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230426100009.685435-1-suagrfillet@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -843,8 +843,7 @@ static void __init create_kernel_page_ta
-  * this means 2 PMD entries whereas for 32-bit kernel, this is only 1 PGDIR
-  * entry.
-  */
--static void __init create_fdt_early_page_table(pgd_t *pgdir,
--					       uintptr_t fix_fdt_va,
-+static void __init create_fdt_early_page_table(uintptr_t fix_fdt_va,
- 					       uintptr_t dtb_pa)
- {
- 	uintptr_t pa = dtb_pa & ~(PMD_SIZE - 1);
-@@ -1034,8 +1033,7 @@ asmlinkage void __init setup_vm(uintptr_
- 	create_kernel_page_table(early_pg_dir, true);
+diff --git a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+index cf4fa87c7db60..e75b443ee95dc 100644
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -933,6 +933,10 @@ bool psr_su_set_y_granularity(struct dc *dc, struct dc_link *link,
  
- 	/* Setup early mapping for FDT early scan */
--	create_fdt_early_page_table(early_pg_dir,
--				    __fix_to_virt(FIX_FDT), dtb_pa);
-+	create_fdt_early_page_table(__fix_to_virt(FIX_FDT), dtb_pa);
+ 	pic_height = stream->timing.v_addressable +
+ 		stream->timing.v_border_top + stream->timing.v_border_bottom;
++
++	if (stream->timing.dsc_cfg.num_slices_v == 0)
++		return false;
++
+ 	slice_height = pic_height / stream->timing.dsc_cfg.num_slices_v;
  
- 	/*
- 	 * Bootime fixmap only can handle PMD_SIZE mapping. Thus, boot-ioremap
+ 	if (slice_height) {
+-- 
+2.39.2
+
 
 
