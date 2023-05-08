@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFED96FABE6
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0706FA8D6
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235328AbjEHLSk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
+        id S234977AbjEHKpr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:45:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235516AbjEHLSi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:18:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2349837856
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:18:38 -0700 (PDT)
+        with ESMTP id S235082AbjEHKpY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:45:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D94826EBD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:44:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF6C462C45
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B964EC433EF;
-        Mon,  8 May 2023 11:18:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A803862881
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:44:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72239C433EF;
+        Mon,  8 May 2023 10:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544717;
-        bh=lTG+luMd77Qh27EKX3RVGrLrVXezVnKX5cn20xcRt4w=;
+        s=korg; t=1683542672;
+        bh=BB/x7sx8ESRYntH1lKbOq1SVp52HiynEVOxbR7ZeH2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rznEdBpQAakaSAa0nAnRiOq9bckjsw0Q9wDpTgGM2eEfCu9YgAx2ajkBxIBoKv389
-         lq0Yy9abWS2Ddlq6wsP5ncqZ2n4f/CvsMW0IdlHfeVW94ED4M5G7NKYJOH+ZeS/CQV
-         Wt+dUgsIfm9yKFuKNBWKfCT5dUFW7ColUtBvTBlo=
+        b=OjOLhni3/EcXLIFNCS4dZM5chjcG/V6xKbySWQy49mHhVaTNx5p93UpFUE3hUy07L
+         /34zWOIGGtr1Ts9b+nvv3AbKoRBsJKKuwi+RR8JoKyEHp5tWO1O9BO6vpG+pIvZSjA
+         V1WPTBfa91XVF39CMChjN1Aiv0ZbPqUHMmYPflQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Mark Brown <broonie@kernel.org>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Libo Chen <libo.chen@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 501/694] spi: f_ospi: Add missing spi_mem_default_supports_op() helper
+Subject: [PATCH 6.2 510/663] sched/fair: Fix inaccurate tally of ttwu_move_affine
 Date:   Mon,  8 May 2023 11:45:36 +0200
-Message-Id: <20230508094450.325689962@linuxfoundation.org>
+Message-Id: <20230508094445.244988165@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Libo Chen <libo.chen@oracle.com>
 
-[ Upstream commit bc43c5ec1a97772269785d19f62d32c91ac5fc36 ]
+[ Upstream commit 39afe5d6fc59237ff7738bf3ede5a8856822d59d ]
 
-The .supports_op() callback function returns true by default after
-performing driver-specific checks. Therefore the driver cannot apply
-the buswidth in devicetree.
+There are scenarios where non-affine wakeups are incorrectly counted as
+affine wakeups by schedstats.
 
-Call spi_mem_default_supports_op() helper to handle the buswidth
-in devicetree.
+When wake_affine_idle() returns prev_cpu which doesn't equal to
+nr_cpumask_bits, it will slip through the check: target == nr_cpumask_bits
+in wake_affine() and be counted as if target == this_cpu in schedstats.
 
-Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20230322023101.24490-1-hayashi.kunihiko@socionext.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Replace target == nr_cpumask_bits with target != this_cpu to make sure
+affine wakeups are accurately tallied.
+
+Fixes: 806486c377e33 (sched/fair: Do not migrate if the prev_cpu is idle)
+Suggested-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Libo Chen <libo.chen@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://lore.kernel.org/r/20220810223313.386614-1-libo.chen@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sn-f-ospi.c | 2 +-
+ kernel/sched/fair.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
-index 333b22dfd8dba..0aedade8908c4 100644
---- a/drivers/spi/spi-sn-f-ospi.c
-+++ b/drivers/spi/spi-sn-f-ospi.c
-@@ -561,7 +561,7 @@ static bool f_ospi_supports_op(struct spi_mem *mem,
- 	if (!f_ospi_supports_op_width(mem, op))
- 		return false;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 661226e38835d..6f1c7a8fa12ab 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6487,7 +6487,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
+ 		target = wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);
  
--	return true;
-+	return spi_mem_default_supports_op(mem, op);
- }
+ 	schedstat_inc(p->stats.nr_wakeups_affine_attempts);
+-	if (target == nr_cpumask_bits)
++	if (target != this_cpu)
+ 		return prev_cpu;
  
- static int f_ospi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ 	schedstat_inc(sd->ttwu_move_affine);
 -- 
 2.39.2
 
