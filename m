@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 044016FA6EE
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 299266FAA35
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234577AbjEHKZi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:25:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51042 "EHLO
+        id S235364AbjEHLAl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:00:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234587AbjEHKZP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:25:15 -0400
+        with ESMTP id S235432AbjEHLAS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97E43DD82
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:24:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D8330451
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:58:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22510625B3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:24:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1804BC433EF;
-        Mon,  8 May 2023 10:24:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BBD762A04
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC67CC433D2;
+        Mon,  8 May 2023 10:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541484;
-        bh=bPpjuJhKjHFDob9qP1LhmD7q8YeQbCIPhuGF1oi6CRs=;
+        s=korg; t=1683543526;
+        bh=Ys2zBhD7Wqow+QQ7ZBSq0/2bwRlGXtzRXFIZfd4Ojn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AbgCHeXJ3oClZ/fiF8Y0cTlQt4bieaoD9bhZXstAaqp0lcp0JWah/8ZduFLlIh82k
-         98tM+77oTI0l/mRyFQPe/nT9yZR8AzAPIKdVSJk9zqt14vDyOkG9R1EP3yXU3aHrT+
-         hmziotaIuz3+XMzKKZCW5JoFy9NvAw8s81n4yRPo=
+        b=gs9ZQNrHPpeRkelo8PIAhGkVtwFHwT4/+hzfPrjacHvzK/Kbuhl1hYEjUXL0LCmAh
+         wjj55mHCF0k9v8Lpu7lKE944rAX7ofgUdEjHGCK8bVwI88josoQ+rCd9aaspDWrFER
+         9xY8krijsEG1VGTCUuX1BRh4cj/mn4AkGl8p/nOQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        =?UTF-8?q?Michael=20Niew=C3=B6hner?= <linux@mniewoehner.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 128/663] tpm, tpm: Implement usage counter for locality
+        patches@lists.linux.dev, Tanmay Shah <tanmay.shah@amd.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.3 119/694] drivers: remoteproc: xilinx: Fix carveout names
 Date:   Mon,  8 May 2023 11:39:14 +0200
-Message-Id: <20230508094432.681263500@linuxfoundation.org>
+Message-Id: <20230508094436.338315855@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,232 +53,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Tanmay Shah <tanmay.shah@amd.com>
 
-[ Upstream commit 7a2f55d0be296c4e81fd782f3d6c43ed4ec7e265 ]
+commit 81c18e08a609706c5c2887f267135fa0dece4119 upstream.
 
-Implement a usage counter for the (default) locality used by the TPM TIS
-driver:
-Request the locality from the TPM if it has not been claimed yet, otherwise
-only increment the counter. Also release the locality if the counter is 0
-otherwise only decrement the counter. Since in case of SPI the register
-accesses are locked by means of the SPI bus mutex use a sleepable lock
-(i.e. also a mutex) to ensure thread-safety of the counter which may be
-accessed by both a userspace thread and the interrupt handler.
+If the unit address is appended to node name of memory-region,
+then adding rproc carveouts fails as node name and unit-address
+both are passed as carveout name (i.e. vdev0vring0@xxxxxxxx). However,
+only node name is expected by remoteproc framework. This patch moves
+memory-region node parsing from driver probe to prepare and
+only passes node-name and not unit-address
 
-By doing this refactor the names of the amended functions to use a more
-appropriate prefix.
-
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Michael Niewöhner <linux@mniewoehner.de>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Stable-dep-of: 955df4f87760 ("tpm, tpm_tis: Claim locality when interrupts are reenabled on resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6b291e8020a8 ("drivers: remoteproc: Add Xilinx r5 remoteproc driver")
+Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230311012407.1292118-5-tanmay.shah@amd.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 63 +++++++++++++++++++++++----------
- drivers/char/tpm/tpm_tis_core.h |  2 ++
- 2 files changed, 47 insertions(+), 18 deletions(-)
+ drivers/remoteproc/xlnx_r5_remoteproc.c |   90 +++++++-------------------------
+ 1 file changed, 20 insertions(+), 70 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 39f27edb32879..c5fef63c6179d 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -136,16 +136,27 @@ static bool check_locality(struct tpm_chip *chip, int l)
- 	return false;
- }
- 
--static int release_locality(struct tpm_chip *chip, int l)
-+static int __tpm_tis_relinquish_locality(struct tpm_tis_data *priv, int l)
-+{
-+	tpm_tis_write8(priv, TPM_ACCESS(l), TPM_ACCESS_ACTIVE_LOCALITY);
-+
-+	return 0;
-+}
-+
-+static int tpm_tis_relinquish_locality(struct tpm_chip *chip, int l)
- {
- 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
- 
--	tpm_tis_write8(priv, TPM_ACCESS(l), TPM_ACCESS_ACTIVE_LOCALITY);
-+	mutex_lock(&priv->locality_count_mutex);
-+	priv->locality_count--;
-+	if (priv->locality_count == 0)
-+		__tpm_tis_relinquish_locality(priv, l);
-+	mutex_unlock(&priv->locality_count_mutex);
- 
- 	return 0;
- }
- 
--static int request_locality(struct tpm_chip *chip, int l)
-+static int __tpm_tis_request_locality(struct tpm_chip *chip, int l)
- {
- 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
- 	unsigned long stop, timeout;
-@@ -186,6 +197,20 @@ static int request_locality(struct tpm_chip *chip, int l)
- 	return -1;
- }
- 
-+static int tpm_tis_request_locality(struct tpm_chip *chip, int l)
-+{
-+	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
-+	int ret = 0;
-+
-+	mutex_lock(&priv->locality_count_mutex);
-+	if (priv->locality_count == 0)
-+		ret = __tpm_tis_request_locality(chip, l);
-+	if (!ret)
-+		priv->locality_count++;
-+	mutex_unlock(&priv->locality_count_mutex);
-+	return ret;
-+}
-+
- static u8 tpm_tis_status(struct tpm_chip *chip)
- {
- 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
-@@ -652,7 +677,7 @@ static int probe_itpm(struct tpm_chip *chip)
- 	if (vendor != TPM_VID_INTEL)
- 		return 0;
- 
--	if (request_locality(chip, 0) != 0)
-+	if (tpm_tis_request_locality(chip, 0) != 0)
- 		return -EBUSY;
- 
- 	rc = tpm_tis_send_data(chip, cmd_getticks, len);
-@@ -673,7 +698,7 @@ static int probe_itpm(struct tpm_chip *chip)
- 
- out:
- 	tpm_tis_ready(chip);
--	release_locality(chip, priv->locality);
-+	tpm_tis_relinquish_locality(chip, priv->locality);
- 
- 	return rc;
- }
-@@ -765,14 +790,14 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	}
- 	priv->irq = irq;
- 
--	rc = request_locality(chip, 0);
-+	rc = tpm_tis_request_locality(chip, 0);
- 	if (rc < 0)
- 		return rc;
- 
- 	rc = tpm_tis_read8(priv, TPM_INT_VECTOR(priv->locality),
- 			   &original_int_vec);
- 	if (rc < 0) {
--		release_locality(chip, priv->locality);
-+		tpm_tis_relinquish_locality(chip, priv->locality);
- 		return rc;
- 	}
- 
-@@ -811,7 +836,7 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 		rc = -1;
- 	}
- 
--	release_locality(chip, priv->locality);
-+	tpm_tis_relinquish_locality(chip, priv->locality);
- 
- 	return rc;
- }
-@@ -927,8 +952,8 @@ static const struct tpm_class_ops tpm_tis = {
- 	.req_complete_mask = TPM_STS_DATA_AVAIL | TPM_STS_VALID,
- 	.req_complete_val = TPM_STS_DATA_AVAIL | TPM_STS_VALID,
- 	.req_canceled = tpm_tis_req_canceled,
--	.request_locality = request_locality,
--	.relinquish_locality = release_locality,
-+	.request_locality = tpm_tis_request_locality,
-+	.relinquish_locality = tpm_tis_relinquish_locality,
- 	.clk_enable = tpm_tis_clkrun_enable,
+--- a/drivers/remoteproc/xlnx_r5_remoteproc.c
++++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+@@ -61,8 +61,6 @@ static const struct mem_bank_data zynqmp
+  * @np: device node of RPU instance
+  * @tcm_bank_count: number TCM banks accessible to this RPU
+  * @tcm_banks: array of each TCM bank data
+- * @rmem_count: Number of reserved mem regions
+- * @rmem: reserved memory region nodes from device tree
+  * @rproc: rproc handle
+  * @pm_domain_id: RPU CPU power domain id
+  */
+@@ -71,8 +69,6 @@ struct zynqmp_r5_core {
+ 	struct device_node *np;
+ 	int tcm_bank_count;
+ 	struct mem_bank_data **tcm_banks;
+-	int rmem_count;
+-	struct reserved_mem **rmem;
+ 	struct rproc *rproc;
+ 	u32 pm_domain_id;
  };
+@@ -239,21 +235,29 @@ static int add_mem_regions_carveout(stru
+ {
+ 	struct rproc_mem_entry *rproc_mem;
+ 	struct zynqmp_r5_core *r5_core;
++	struct of_phandle_iterator it;
+ 	struct reserved_mem *rmem;
+-	int i, num_mem_regions;
++	int i = 0;
  
-@@ -962,6 +987,8 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 	priv->timeout_min = TPM_TIMEOUT_USECS_MIN;
- 	priv->timeout_max = TPM_TIMEOUT_USECS_MAX;
- 	priv->phy_ops = phy_ops;
-+	priv->locality_count = 0;
-+	mutex_init(&priv->locality_count_mutex);
+ 	r5_core = (struct zynqmp_r5_core *)rproc->priv;
+-	num_mem_regions = r5_core->rmem_count;
  
- 	dev_set_drvdata(&chip->dev, priv);
+-	for (i = 0; i < num_mem_regions; i++) {
+-		rmem = r5_core->rmem[i];
++	/* Register associated reserved memory regions */
++	of_phandle_iterator_init(&it, r5_core->np, "memory-region", NULL, 0);
  
-@@ -1008,14 +1035,14 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		   TPM_INTF_DATA_AVAIL_INT | TPM_INTF_STS_VALID_INT;
- 	intmask &= ~TPM_GLOBAL_INT_ENABLE;
- 
--	rc = request_locality(chip, 0);
-+	rc = tpm_tis_request_locality(chip, 0);
- 	if (rc < 0) {
- 		rc = -ENODEV;
- 		goto out_err;
- 	}
- 
- 	tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality), intmask);
--	release_locality(chip, 0);
-+	tpm_tis_relinquish_locality(chip, 0);
- 
- 	rc = tpm_chip_start(chip);
- 	if (rc)
-@@ -1075,13 +1102,13 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		 * proper timeouts for the driver.
- 		 */
- 
--		rc = request_locality(chip, 0);
-+		rc = tpm_tis_request_locality(chip, 0);
- 		if (rc < 0)
- 			goto out_err;
- 
- 		rc = tpm_get_timeouts(chip);
- 
--		release_locality(chip, 0);
-+		tpm_tis_relinquish_locality(chip, 0);
- 
- 		if (rc) {
- 			dev_err(dev, "Could not get TPM timeouts and durations\n");
-@@ -1099,11 +1126,11 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 			dev_err(&chip->dev, FW_BUG
- 					"TPM interrupt not working, polling instead\n");
- 
--			rc = request_locality(chip, 0);
-+			rc = tpm_tis_request_locality(chip, 0);
- 			if (rc < 0)
- 				goto out_err;
- 			disable_interrupts(chip);
--			release_locality(chip, 0);
-+			tpm_tis_relinquish_locality(chip, 0);
+-		if (!strncmp(rmem->name, "vdev0buffer", strlen("vdev0buffer"))) {
++	while (of_phandle_iterator_next(&it) == 0) {
++		rmem = of_reserved_mem_lookup(it.node);
++		if (!rmem) {
++			of_node_put(it.node);
++			dev_err(&rproc->dev, "unable to acquire memory-region\n");
++			return -EINVAL;
++		}
++
++		if (!strcmp(it.node->name, "vdev0buffer")) {
+ 			/* Init reserved memory for vdev buffer */
+ 			rproc_mem = rproc_of_resm_mem_entry_init(&rproc->dev, i,
+ 								 rmem->size,
+ 								 rmem->base,
+-								 rmem->name);
++								 it.node->name);
+ 		} else {
+ 			/* Register associated reserved memory regions */
+ 			rproc_mem = rproc_mem_entry_init(&rproc->dev, NULL,
+@@ -261,16 +265,19 @@ static int add_mem_regions_carveout(stru
+ 							 rmem->size, rmem->base,
+ 							 zynqmp_r5_mem_region_map,
+ 							 zynqmp_r5_mem_region_unmap,
+-							 rmem->name);
++							 it.node->name);
  		}
- 	}
  
-@@ -1176,13 +1203,13 @@ int tpm_tis_resume(struct device *dev)
- 	 * an error code but for unknown reason it isn't handled.
- 	 */
- 	if (!(chip->flags & TPM_CHIP_FLAG_TPM2)) {
--		ret = request_locality(chip, 0);
-+		ret = tpm_tis_request_locality(chip, 0);
- 		if (ret < 0)
- 			return ret;
+-		if (!rproc_mem)
++		if (!rproc_mem) {
++			of_node_put(it.node);
+ 			return -ENOMEM;
++		}
  
- 		tpm1_do_selftest(chip);
+ 		rproc_add_carveout(rproc, rproc_mem);
  
--		release_locality(chip, 0);
-+		tpm_tis_relinquish_locality(chip, 0);
+ 		dev_dbg(&rproc->dev, "reserved mem carveout %s addr=%llx, size=0x%llx",
+-			rmem->name, rmem->base, rmem->size);
++			it.node->name, rmem->base, rmem->size);
++		i++;
  	}
  
  	return 0;
-diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
-index b68479e0de10f..1d51d5168fb6e 100644
---- a/drivers/char/tpm/tpm_tis_core.h
-+++ b/drivers/char/tpm/tpm_tis_core.h
-@@ -91,6 +91,8 @@ enum tpm_tis_flags {
+@@ -726,59 +733,6 @@ static int zynqmp_r5_get_tcm_node(struct
+ 	return 0;
+ }
  
- struct tpm_tis_data {
- 	u16 manufacturer_id;
-+	struct mutex locality_count_mutex;
-+	unsigned int locality_count;
- 	int locality;
- 	int irq;
- 	bool irq_tested;
--- 
-2.39.2
-
+-/**
+- * zynqmp_r5_get_mem_region_node()
+- * parse memory-region property and get reserved mem regions
+- *
+- * @r5_core: pointer to zynqmp_r5_core type object
+- *
+- * Return: 0 for success and error code for failure.
+- */
+-static int zynqmp_r5_get_mem_region_node(struct zynqmp_r5_core *r5_core)
+-{
+-	struct device_node *np, *rmem_np;
+-	struct reserved_mem **rmem;
+-	int res_mem_count, i;
+-	struct device *dev;
+-
+-	dev = r5_core->dev;
+-	np = r5_core->np;
+-
+-	res_mem_count = of_property_count_elems_of_size(np, "memory-region",
+-							sizeof(phandle));
+-	if (res_mem_count <= 0) {
+-		dev_warn(dev, "failed to get memory-region property %d\n",
+-			 res_mem_count);
+-		return 0;
+-	}
+-
+-	rmem = devm_kcalloc(dev, res_mem_count,
+-			    sizeof(struct reserved_mem *), GFP_KERNEL);
+-	if (!rmem)
+-		return -ENOMEM;
+-
+-	for (i = 0; i < res_mem_count; i++) {
+-		rmem_np = of_parse_phandle(np, "memory-region", i);
+-		if (!rmem_np)
+-			goto release_rmem;
+-
+-		rmem[i] = of_reserved_mem_lookup(rmem_np);
+-		if (!rmem[i]) {
+-			of_node_put(rmem_np);
+-			goto release_rmem;
+-		}
+-
+-		of_node_put(rmem_np);
+-	}
+-
+-	r5_core->rmem_count = res_mem_count;
+-	r5_core->rmem = rmem;
+-	return 0;
+-
+-release_rmem:
+-	return -EINVAL;
+-}
+-
+ /*
+  * zynqmp_r5_core_init()
+  * Create and initialize zynqmp_r5_core type object
+@@ -806,10 +760,6 @@ static int zynqmp_r5_core_init(struct zy
+ 	for (i = 0; i < cluster->core_count; i++) {
+ 		r5_core = cluster->r5_cores[i];
+ 
+-		ret = zynqmp_r5_get_mem_region_node(r5_core);
+-		if (ret)
+-			dev_warn(dev, "memory-region prop failed %d\n", ret);
+-
+ 		/* Initialize r5 cores with power-domains parsed from dts */
+ 		ret = of_property_read_u32_index(r5_core->np, "power-domains",
+ 						 1, &r5_core->pm_domain_id);
 
 
