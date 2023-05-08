@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9F696FAAE3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D525F6FA7B3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233732AbjEHLHr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:07:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
+        id S234799AbjEHKdt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:33:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233738AbjEHLHE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:04 -0400
+        with ESMTP id S234798AbjEHKdY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E61C29CA1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB4B27878
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F09E62AB7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7100C433EF;
-        Mon,  8 May 2023 11:06:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45B6162402
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFCBC4339B;
+        Mon,  8 May 2023 10:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543983;
-        bh=sIFjfpXaToDJy9QADT95WCiqo6fG4/eLfzPBXd22IHo=;
+        s=korg; t=1683541938;
+        bh=f8O+nUPFTjUY30SfcybyhLUk9Rj7yK7Kk5rWpe5jRJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ywBgBrIXv0P0MunKsEN6DVmSPSBy25RUOj2n5/eAn3rUPIJXj1c0pe773DAihK4hc
-         SzwHXP91G41A1ideuw0oyr1ASj/XAiGblST5y58vrUYs7ngehFEQYhubNeYyGx9S1f
-         R4E4DcOZYZKxUwkShKg6fNX1nZWodN0fGjezg/zQ=
+        b=AQISDFgto+f4i/ahmGsJrTUFMyHK1Hp5616KpqzpdbD2b25Z40R3ASy9+TuGc5Kj1
+         sQeaitsBPVu5Ft47UDANydWzDFhxLz/7oRQiL215Ila2CNUev5hqvN4Kgi+TXum0U/
+         KyTp0lwfjgylZaWfqI54DOwWVH2mzzGlqHEQ9Xps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Gusenleitner Klaus <gus@keba.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 264/694] drm/msm/dpu: Fix bit-shifting UB in DPU_HW_VER() macro
-Date:   Mon,  8 May 2023 11:41:39 +0200
-Message-Id: <20230508094440.842297248@linuxfoundation.org>
+Subject: [PATCH 6.2 274/663] tick/common: Align tick period with the HZ tick.
+Date:   Mon,  8 May 2023 11:41:40 +0200
+Message-Id: <20230508094437.135379328@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 4760be481dc075cd13f95f4650f5d5b53b4b336d ]
+[ Upstream commit e9523a0d81899361214d118ad60ef76f0e92f71d ]
 
-With gcc-5 and CONFIG_UBSAN_SHIFT=y:
+With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
+expire the timer_list timers. This timer is programmed accurate in
+respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
+first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
+every 4 ms and so based on the current time the next tick can be
+computed.
 
-    drivers/gpu/drm/msm/msm_mdss.c: In function 'msm_mdss_enable':
-    drivers/gpu/drm/msm/msm_mdss.c:296:2: error: case label does not reduce to an integer constant
-      case DPU_HW_VER_800:
-      ^
-    drivers/gpu/drm/msm/msm_mdss.c:299:2: error: case label does not reduce to an integer constant
-      case DPU_HW_VER_810:
-      ^
-    drivers/gpu/drm/msm/msm_mdss.c:300:2: error: case label does not reduce to an integer constant
-      case DPU_HW_VER_900:
-      ^
+This accuracy broke since the commit mentioned below because the jiffy
+based clocksource is initialized with higher accuracy in
+read_persistent_wall_and_boot_offset(). This higher accuracy is
+inherited during the setup in tick_setup_device(). The timer still fires
+every 4ms with HZ=250 but timer is no longer aligned with
+CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
+of the timestamp. The offset differs with every boot and makes it
+impossible for user land to align with the tick.
 
-This happens because for major revisions 8 or greather, the non-sign bit
-of the major revision number is shifted into bit 31 of a signed integer,
-which is undefined behavior.
+Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
+multiple of 1000/CONFIG_HZ ms.
 
-Fix this by casting the major revision number to unsigned int.
-
-Fixes: efcd0107727c4f04 ("drm/msm/dpu: add support for SM8550")
-Fixes: 4a352c2fc15aec1e ("drm/msm/dpu: Introduce SC8280XP")
-Fixes: 100d7ef6995d1f86 ("drm/msm/dpu: add support for SM8450")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/525152/
-Link: https://lore.kernel.org/r/20230306090633.65918-1-geert+renesas@glider.be
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
+Reported-by: Gusenleitner Klaus <gus@keba.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
+Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/time/tick-common.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-index e6590302b3bfc..2c5bafacd609c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-@@ -19,8 +19,9 @@
-  */
- #define MAX_BLOCKS    12
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 46789356f856e..65b8658da829e 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -218,9 +218,19 @@ static void tick_setup_device(struct tick_device *td,
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
++			ktime_t next_p;
++			u32 rem;
++
+ 			tick_do_timer_cpu = cpu;
  
--#define DPU_HW_VER(MAJOR, MINOR, STEP) (((MAJOR & 0xF) << 28)    |\
--		((MINOR & 0xFFF) << 16)  |\
-+#define DPU_HW_VER(MAJOR, MINOR, STEP)			\
-+		((((unsigned int)MAJOR & 0xF) << 28) |	\
-+		((MINOR & 0xFFF) << 16) |		\
- 		(STEP & 0xFFFF))
- 
- #define DPU_HW_MAJOR(rev)		((rev) >> 28)
+-			tick_next_period = ktime_get();
++			next_p = ktime_get();
++			div_u64_rem(next_p, TICK_NSEC, &rem);
++			if (rem) {
++				next_p -= rem;
++				next_p += TICK_NSEC;
++			}
++
++			tick_next_period = next_p;
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
 -- 
 2.39.2
 
