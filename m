@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 481176FAE7A
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7246FACC1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236031AbjEHLpH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:45:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37584 "EHLO
+        id S235738AbjEHL2B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236209AbjEHLoo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:44 -0400
+        with ESMTP id S235748AbjEHL1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56DF910A22
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 110113CDA8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:27:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6553363622
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5833CC433EF;
-        Mon,  8 May 2023 11:43:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F94062E36
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:27:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBD4C433EF;
+        Mon,  8 May 2023 11:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546238;
-        bh=DdOqqnUx/BvWNoy7D/vGxErnAbpqNsxTSYCWTzMXBCk=;
+        s=korg; t=1683545239;
+        bh=ueAyorCaTacW+WXJczD/1Lu9/hZfyLWtwcWgzjj1ub0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hhF3F03Vy9FzVAztXwKAiwhFLSTxS3BqMUsSzMZcnrf2OYlqi62FZM3v1O95zm0h+
-         Yg8oIJYqJRRBvaHY/32DLrtkbcrLdpeDv983bV6p4wPtFfSiry1IX+HvvZy0PgYFbX
-         nKJncEPpipoMBg3VSVaD+P4ncJlQqEGl1pkfMMOg=
+        b=FV96m+6ataAlBi5I5aqqRpMWd02TJ/dvfAMyXf/SVJE9L3/rEY3MHNfrTm8nUQvE9
+         X2rbn7biAwtd0xobh5YiIzncZa0YJ7hAFxiKa3Q+p7J5b/Oeg5UAQbldzaBWjKnEn1
+         OpMubVlVOTXEo0saLPjaKPEEfe7ey0NoJyiyJem8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+d882d57193079e379309@syzkaller.appspotmail.com,
-        ZhangPeng <zhangpeng362@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 303/371] fs/ntfs3: Fix OOB read in indx_insert_into_buffer
-Date:   Mon,  8 May 2023 11:48:24 +0200
-Message-Id: <20230508094824.083540893@linuxfoundation.org>
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Marc Dionne <marc.dionne@auristor.com>,
+        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 670/694] afs: Fix getattr to report server i_size on dirs, not local size
+Date:   Mon,  8 May 2023 11:48:25 +0200
+Message-Id: <20230508094457.879320762@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,58 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ZhangPeng <zhangpeng362@huawei.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b8c44949044e5f7f864525fdffe8e95135ce9ce5 ]
+[ Upstream commit 45f66fa03ba9943cca5af88d691399332b8bde08 ]
 
-Syzbot reported a OOB read bug:
+Fix afs_getattr() to report the server's idea of the file size of a
+directory rather than the local size.  The local size may differ as we edit
+the local copy to avoid having to redownload it and we may end up with a
+differently structured blob of a different size.
 
-BUG: KASAN: slab-out-of-bounds in indx_insert_into_buffer+0xaa3/0x13b0
-fs/ntfs3/index.c:1755
-Read of size 17168 at addr ffff8880255e06c0 by task syz-executor308/3630
+However, if the directory is discarded from the pagecache we then download
+it again and the user may see the directory file size apparently change.
 
-Call Trace:
- <TASK>
- memmove+0x25/0x60 mm/kasan/shadow.c:54
- indx_insert_into_buffer+0xaa3/0x13b0 fs/ntfs3/index.c:1755
- indx_insert_entry+0x446/0x6b0 fs/ntfs3/index.c:1863
- ntfs_create_inode+0x1d3f/0x35c0 fs/ntfs3/inode.c:1548
- ntfs_create+0x3e/0x60 fs/ntfs3/namei.c:100
- lookup_open fs/namei.c:3413 [inline]
-
-If the member struct INDEX_BUFFER *index of struct indx_node is
-incorrect, that is, the value of __le32 used is greater than the value
-of __le32 total in struct INDEX_HDR. Therefore, OOB read occurs when
-memmove is called in indx_insert_into_buffer().
-Fix this by adding a check in hdr_find_e().
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Reported-by: syzbot+d882d57193079e379309@syzkaller.appspotmail.com
-Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 63a4681ff39c ("afs: Locally edit directory data for mkdir/create/unlink/...")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/afs/inode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 99f8a57e9f7a9..37688cf6e3d05 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -679,9 +679,13 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
- 	u32 e_size, e_key_len;
- 	u32 end = le32_to_cpu(hdr->used);
- 	u32 off = le32_to_cpu(hdr->de_off);
-+	u32 total = le32_to_cpu(hdr->total);
- 	u16 offs[128];
+diff --git a/fs/afs/inode.c b/fs/afs/inode.c
+index 790cca53c1453..c5098f70b53af 100644
+--- a/fs/afs/inode.c
++++ b/fs/afs/inode.c
+@@ -450,7 +450,7 @@ static void afs_get_inode_cache(struct afs_vnode *vnode)
+ 				    0 : FSCACHE_ADV_SINGLE_CHUNK,
+ 				    &key, sizeof(key),
+ 				    &aux, sizeof(aux),
+-				    vnode->status.size));
++				    i_size_read(&vnode->netfs.inode)));
+ #endif
+ }
  
- fill_table:
-+	if (end > total)
-+		return NULL;
+@@ -766,6 +766,13 @@ int afs_getattr(struct mnt_idmap *idmap, const struct path *path,
+ 		if (test_bit(AFS_VNODE_SILLY_DELETED, &vnode->flags) &&
+ 		    stat->nlink > 0)
+ 			stat->nlink -= 1;
 +
- 	if (off + sizeof(struct NTFS_DE) > end)
- 		return NULL;
++		/* Lie about the size of directories.  We maintain a locally
++		 * edited copy and may make different allocation decisions on
++		 * it, but we need to give userspace the server's size.
++		 */
++		if (S_ISDIR(inode->i_mode))
++			stat->size = vnode->netfs.remote_i_size;
+ 	} while (need_seqretry(&vnode->cb_lock, seq));
  
+ 	done_seqretry(&vnode->cb_lock, seq);
 -- 
 2.39.2
 
