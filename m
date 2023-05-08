@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F846FA89F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADCC86FA588
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235019AbjEHKnc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42582 "EHLO
+        id S234167AbjEHKK3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234931AbjEHKmz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:42:55 -0400
+        with ESMTP id S234164AbjEHKK2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F41313288
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6BC37E55
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02ACF62830
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2D3C4339B;
-        Mon,  8 May 2023 10:41:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB19F623AC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19D9C433EF;
+        Mon,  8 May 2023 10:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542513;
-        bh=lTG+luMd77Qh27EKX3RVGrLrVXezVnKX5cn20xcRt4w=;
+        s=korg; t=1683540626;
+        bh=v9afTyW3/It3xsLFqOYgFOVO16EMHGvQZU9rOkueRQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dUtCgMd20v8CW3zRI5S6CyGSoxNSgZkX70bvm+jwZcMjVzPnPMvvRAavcoidhwnqU
-         uWW/ubgQQcb7chceRtSOv9bLTMm58PmXQKOS4IDJ8a0oMopJf19FDuYThQX3iqJmUL
-         aPogr/AtL8FRElgR5QltWTkNzsxKbyZ7rYM34Zgw=
+        b=nh0k+azajnZ2tndPhKE2kEqWQK+WM1QReNqTmu7t3IoKQaCYAgKOERdgpwVV4QQ4B
+         0YvedLmk7ETlnhpP4t/n6beTuHa1GOOVceykqMSfrKueaMYM0WS93ru2qmGGWJpe46
+         XAF9vZctgaBNJSTBBOCV8cklv32ZwVKpVRFLxq50=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        patches@lists.linux.dev, Liliang Ye <yll@hust.edu.cn>,
+        Dan Carpenter <error27@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 452/663] spi: f_ospi: Add missing spi_mem_default_supports_op() helper
+Subject: [PATCH 6.1 436/611] ASoC: fsl_mqs: move of_node_put() to the correct location
 Date:   Mon,  8 May 2023 11:44:38 +0200
-Message-Id: <20230508094442.768962849@linuxfoundation.org>
+Message-Id: <20230508094436.343327009@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Liliang Ye <yll@hust.edu.cn>
 
-[ Upstream commit bc43c5ec1a97772269785d19f62d32c91ac5fc36 ]
+[ Upstream commit 1c34890273a020d61d6127ade3f68ed1cb21c16a ]
 
-The .supports_op() callback function returns true by default after
-performing driver-specific checks. Therefore the driver cannot apply
-the buswidth in devicetree.
+of_node_put() should have been done directly after
+mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
+otherwise it creates a reference leak on the success path.
 
-Call spi_mem_default_supports_op() helper to handle the buswidth
-in devicetree.
+To fix this, of_node_put() is moved to the correct location, and change
+all the gotos to direct returns.
 
-Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20230322023101.24490-1-hayashi.kunihiko@socionext.com
+Fixes: a9d273671440 ("ASoC: fsl_mqs: Fix error handling in probe")
+Signed-off-by: Liliang Ye <yll@hust.edu.cn>
+Reviewed-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/20230403152647.17638-1-yll@hust.edu.cn
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sn-f-ospi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_mqs.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
-index 333b22dfd8dba..0aedade8908c4 100644
---- a/drivers/spi/spi-sn-f-ospi.c
-+++ b/drivers/spi/spi-sn-f-ospi.c
-@@ -561,7 +561,7 @@ static bool f_ospi_supports_op(struct spi_mem *mem,
- 	if (!f_ospi_supports_op_width(mem, op))
- 		return false;
+diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
+index 4922e6795b73f..32d20d351bbf7 100644
+--- a/sound/soc/fsl/fsl_mqs.c
++++ b/sound/soc/fsl/fsl_mqs.c
+@@ -210,10 +210,10 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 		}
  
--	return true;
-+	return spi_mem_default_supports_op(mem, op);
+ 		mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
++		of_node_put(gpr_np);
+ 		if (IS_ERR(mqs_priv->regmap)) {
+ 			dev_err(&pdev->dev, "failed to get gpr regmap\n");
+-			ret = PTR_ERR(mqs_priv->regmap);
+-			goto err_free_gpr_np;
++			return PTR_ERR(mqs_priv->regmap);
+ 		}
+ 	} else {
+ 		regs = devm_platform_ioremap_resource(pdev, 0);
+@@ -242,8 +242,7 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mqs_priv->mclk)) {
+ 		dev_err(&pdev->dev, "failed to get the clock: %ld\n",
+ 			PTR_ERR(mqs_priv->mclk));
+-		ret = PTR_ERR(mqs_priv->mclk);
+-		goto err_free_gpr_np;
++		return PTR_ERR(mqs_priv->mclk);
+ 	}
+ 
+ 	dev_set_drvdata(&pdev->dev, mqs_priv);
+@@ -252,13 +251,9 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 	ret = devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
+ 			&fsl_mqs_dai, 1);
+ 	if (ret)
+-		goto err_free_gpr_np;
+-	return 0;
+-
+-err_free_gpr_np:
+-	of_node_put(gpr_np);
++		return ret;
+ 
+-	return ret;
++	return 0;
  }
  
- static int f_ospi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ static int fsl_mqs_remove(struct platform_device *pdev)
 -- 
 2.39.2
 
