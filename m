@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1FF6FABF3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD8B6FA5B2
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235527AbjEHLTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60874 "EHLO
+        id S234239AbjEHKMc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235523AbjEHLTJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:19:09 -0400
+        with ESMTP id S234224AbjEHKMX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D3E37C50
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:19:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E722F22714
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:12:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D19B962C4D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:19:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C126DC433D2;
-        Mon,  8 May 2023 11:19:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47AD5623EB
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:12:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58554C4339B;
+        Mon,  8 May 2023 10:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544747;
-        bh=gtUW9l+48R1oDojnpHWZ8L2hQvMS9oEzPvrb9H+YPcE=;
+        s=korg; t=1683540726;
+        bh=OLOYr65srJFH0QTw3uy8KZh3kxGIMBEdNNQZAZyLhDE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MsWlYKbY0+QGnB/ea9g5ar2aHiCOFaxpwbeTgXFZSsKMA5NLUwMzRy+aTW6ECyv4q
-         J3dB96NVjOHKf8n5k/R2MnmmnT2elj/2i+P2akfk7qLf4Nb4EYonGJMRJ8Zd0s2fXK
-         zSxdfa2uWca8yyXxipuZAUWNjvxlv2CdDG0bg5uw=
+        b=scihfTzYsvvawk+78aXCclLy43QkbMK5WbiDDqwV+BURFxLnjIW7S6tWPGZoMXjPA
+         0DBVmDbuA2NNpYKfSFp0AWamKOJZ8i7p3wt73+a3kdDT+u6tPj4TeEq5EVZ/+GrgV7
+         bd6/nVZAziP31uwftcRLuBmy6KU6wSXyvYK+pEIA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gan Gecen <gangecen@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 481/694] net: amd: Fix link leak when verifying config failed
+Subject: [PATCH 6.1 474/611] clk: mediatek: mt2712: Add error handling to clk_mt2712_apmixed_probe()
 Date:   Mon,  8 May 2023 11:45:16 +0200
-Message-Id: <20230508094449.481956352@linuxfoundation.org>
+Message-Id: <20230508094437.506406882@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,44 +57,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gencen Gan <gangecen@hust.edu.cn>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit d325c34d9e7e38d371c0a299d415e9b07f66a1fb ]
+[ Upstream commit 20cace1b9d7e33f68f0ee17196bf0df618dbacbe ]
 
-After failing to verify configuration, it returns directly without
-releasing link, which may cause memory leak.
+This function was completely missing error handling: add it.
 
-Paolo Abeni thinks that the whole code of this driver is quite
-"suboptimal" and looks unmainatained since at least ~15y, so he
-suggests that we could simply remove the whole driver, please
-take it into consideration.
-
-Simon Horman suggests that the fix label should be set to
-"Linux-2.6.12-rc2" considering that the problem has existed
-since the driver was introduced and the commit above doesn't
-seem to exist in net/net-next.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Gan Gecen <gangecen@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e2f744a82d72 ("clk: mediatek: Add MT2712 clock support")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230306140543.1813621-8-angelogioacchino.delregno@collabora.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/nmclan_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt2712.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/nmclan_cs.c b/drivers/net/ethernet/amd/nmclan_cs.c
-index 823a329a921f4..0dd391c84c138 100644
---- a/drivers/net/ethernet/amd/nmclan_cs.c
-+++ b/drivers/net/ethernet/amd/nmclan_cs.c
-@@ -651,7 +651,7 @@ static int nmclan_config(struct pcmcia_device *link)
-     } else {
-       pr_notice("mace id not found: %x %x should be 0x40 0x?9\n",
- 		sig[0], sig[1]);
--      return -ENODEV;
-+      goto failed;
-     }
-   }
+diff --git a/drivers/clk/mediatek/clk-mt2712.c b/drivers/clk/mediatek/clk-mt2712.c
+index 56980dd6c2eaf..7309b5813da96 100644
+--- a/drivers/clk/mediatek/clk-mt2712.c
++++ b/drivers/clk/mediatek/clk-mt2712.c
+@@ -1283,15 +1283,25 @@ static int clk_mt2712_apmixed_probe(struct platform_device *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
+ 
+ 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
++	if (!clk_data)
++		return -ENOMEM;
+ 
+-	mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
++	r = mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
++	if (r)
++		goto free_clk_data;
+ 
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
++	if (r) {
++		dev_err(&pdev->dev, "Cannot register clock provider: %d\n", r);
++		goto unregister_plls;
++	}
+ 
+-	if (r != 0)
+-		pr_err("%s(): could not register clock provider: %d\n",
+-			__func__, r);
++	return 0;
+ 
++unregister_plls:
++	mtk_clk_unregister_plls(plls, ARRAY_SIZE(plls), clk_data);
++free_clk_data:
++	mtk_free_clk_data(clk_data);
+ 	return r;
+ }
  
 -- 
 2.39.2
