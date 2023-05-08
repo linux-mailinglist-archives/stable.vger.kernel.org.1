@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A12CA6FA3FF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C56A46FA40A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233798AbjEHJyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50542 "EHLO
+        id S233811AbjEHJye (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:54:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233819AbjEHJyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:54:05 -0400
+        with ESMTP id S233725AbjEHJyb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:54:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 823BA2571C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:53:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3451B2572A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:54:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18D5062205
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF82C433D2;
-        Mon,  8 May 2023 09:53:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE8D062219
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:54:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1942C4339B;
+        Mon,  8 May 2023 09:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539635;
-        bh=mPkr//c79LSJHYWR7e9Y1r6ZiPKoPgbJhxbpkJZJhng=;
+        s=korg; t=1683539669;
+        bh=bKVfZbGQbbaMi1wWv8cFTLl9g6aqz5vdDPmG5B9/lzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KvPGw3b2viNriVMc0t8pBesau3fn0CPE5/tPa+QeNpVDjiaPiZWaDAOPPAvbqSw3+
-         KWs1QITLyMeTnXyPTKpKf8m9Xwt2UYwKir2F8Ovm7KJghlxY91tK9Df6C4bPsBxIIQ
-         lhChgcRhIp1U+S/Kl9nHxkLDVlTRSOqyYOBQmlK8=
+        b=oT3qaTBl3hyoU8/GyrVEM72x1jJSlFRo2pseKk+BAYKH0PPj1G5w12Gkwy5spQsE0
+         iTcMF1hkLmVkzyb3rr9BbE+GHFAu/4Jp8mvokZGwQi/rTu6OPpx1aWdl4VNklm0vX4
+         ZEXVChkgfJT1zEgOyR04tt4AWHdi3B3H3IfH16HI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 071/611] crypto: arm64/aes-neonbs - fix crash with CFI enabled
-Date:   Mon,  8 May 2023 11:38:33 +0200
-Message-Id: <20230508094424.316611845@linuxfoundation.org>
+Subject: [PATCH 6.1 072/611] crypto: ccp - Dont initialize CCP for PSP 0x1649
+Date:   Mon,  8 May 2023 11:38:34 +0200
+Message-Id: <20230508094424.364678291@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -54,70 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 47446d7cd42358ca7d7a544f2f7823db03f616ff upstream.
+commit c79a3169b9f3633c215b55857eba5921e5b49217 upstream.
 
-aesbs_ecb_encrypt(), aesbs_ecb_decrypt(), aesbs_xts_encrypt(), and
-aesbs_xts_decrypt() are called via indirect function calls.  Therefore
-they need to use SYM_TYPED_FUNC_START instead of SYM_FUNC_START to cause
-their type hashes to be emitted when the kernel is built with
-CONFIG_CFI_CLANG=y.  Otherwise, the code crashes with a CFI failure if
-the compiler doesn't happen to optimize out the indirect calls.
+A number of platforms are emitting the error:
+```ccp: unable to access the device: you might be running a broken BIOS.```
 
-Fixes: c50d32859e70 ("arm64: Add types to indirect called assembly functions")
+This is expected behavior as CCP is no longer accessible from the PSP's
+PCIe BAR so stop trying to probe CCP for 0x1649.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/crypto/aes-neonbs-core.S | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/crypto/ccp/sp-pci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/crypto/aes-neonbs-core.S b/arch/arm64/crypto/aes-neonbs-core.S
-index 7278a37c2d5c..baf450717b24 100644
---- a/arch/arm64/crypto/aes-neonbs-core.S
-+++ b/arch/arm64/crypto/aes-neonbs-core.S
-@@ -15,6 +15,7 @@
-  */
- 
- #include <linux/linkage.h>
-+#include <linux/cfi_types.h>
- #include <asm/assembler.h>
- 
- 	.text
-@@ -620,12 +621,12 @@ SYM_FUNC_END(aesbs_decrypt8)
- 	.endm
- 
- 	.align		4
--SYM_FUNC_START(aesbs_ecb_encrypt)
-+SYM_TYPED_FUNC_START(aesbs_ecb_encrypt)
- 	__ecb_crypt	aesbs_encrypt8, v0, v1, v4, v6, v3, v7, v2, v5
- SYM_FUNC_END(aesbs_ecb_encrypt)
- 
- 	.align		4
--SYM_FUNC_START(aesbs_ecb_decrypt)
-+SYM_TYPED_FUNC_START(aesbs_ecb_decrypt)
- 	__ecb_crypt	aesbs_decrypt8, v0, v1, v6, v4, v2, v7, v3, v5
- SYM_FUNC_END(aesbs_ecb_decrypt)
- 
-@@ -799,11 +800,11 @@ SYM_FUNC_END(__xts_crypt8)
- 	ret
- 	.endm
- 
--SYM_FUNC_START(aesbs_xts_encrypt)
-+SYM_TYPED_FUNC_START(aesbs_xts_encrypt)
- 	__xts_crypt	aesbs_encrypt8, v0, v1, v4, v6, v3, v7, v2, v5
- SYM_FUNC_END(aesbs_xts_encrypt)
- 
--SYM_FUNC_START(aesbs_xts_decrypt)
-+SYM_TYPED_FUNC_START(aesbs_xts_decrypt)
- 	__xts_crypt	aesbs_decrypt8, v0, v1, v6, v4, v2, v7, v3, v5
- SYM_FUNC_END(aesbs_xts_decrypt)
- 
--- 
-2.40.1
-
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -451,9 +451,9 @@ static const struct pci_device_id sp_pci
+ 	{ PCI_VDEVICE(AMD, 0x1468), (kernel_ulong_t)&dev_vdata[2] },
+ 	{ PCI_VDEVICE(AMD, 0x1486), (kernel_ulong_t)&dev_vdata[3] },
+ 	{ PCI_VDEVICE(AMD, 0x15DF), (kernel_ulong_t)&dev_vdata[4] },
+-	{ PCI_VDEVICE(AMD, 0x1649), (kernel_ulong_t)&dev_vdata[4] },
+ 	{ PCI_VDEVICE(AMD, 0x14CA), (kernel_ulong_t)&dev_vdata[5] },
+ 	{ PCI_VDEVICE(AMD, 0x15C7), (kernel_ulong_t)&dev_vdata[6] },
++	{ PCI_VDEVICE(AMD, 0x1649), (kernel_ulong_t)&dev_vdata[6] },
+ 	/* Last entry must be zero */
+ 	{ 0, }
+ };
 
 
