@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E416FA613
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 723D66FADEF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234309AbjEHKP6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44968 "EHLO
+        id S236126AbjEHLjl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234301AbjEHKP5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:57 -0400
+        with ESMTP id S236131AbjEHLjZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B364BBC5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BCC838F18
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A23362490
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA55C4339B;
-        Mon,  8 May 2023 10:15:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C12A63371
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7DEC433EF;
+        Mon,  8 May 2023 11:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540956;
-        bh=W9NoJiVh+l92EWH2uvdP7TDt5ze0DbnrYZ9sc7V56Mo=;
+        s=korg; t=1683545938;
+        bh=4V3xFZdIbV55er1cVBwZyz8UejTa6vkB3WWcebhvAjg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nKBEbPV0zudXs0RaxexByhNV5FltdNl57pDIeFxH9rIyLtbpW6zQji+H2E3rxMKXI
-         2WCTLTzf4eGUgbeu2POujfeKHnPZP8RDB76BtvnEvgkNO/qOhmFTAQBtQemvZVLahH
-         misaD9DQjOpvuBNEcQY6mUXZ2nzFgvmJjDoLfJ9k=
+        b=d4Lbx2M6LmxGC7yGg7XQfi9Bw72IkZArluF1nL6Ath6Tg9uP/o2ZUlBKFPxRmtJyb
+         yU92Ci6B3FdMfOHrgRD+HiILS7ep3Q/Gkfi6lK2HLNa01bUd+CoKpWYYBNHaxMAwYG
+         ELZ/nSZUJ8YfahU8i4MtMiiOtezYbbWk8WPQSj70=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 562/611] ALSA: hda/realtek: Add quirk for ThinkPad P1 Gen 6
-Date:   Mon,  8 May 2023 11:46:44 +0200
-Message-Id: <20230508094440.242083768@linuxfoundation.org>
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Vishal Verma <vverma@digitalocean.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 204/371] md: raid10 add nowait support
+Date:   Mon,  8 May 2023 11:46:45 +0200
+Message-Id: <20230508094820.188185905@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,32 +54,271 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+From: Vishal Verma <vverma@digitalocean.com>
 
-commit 067eb084592819ad59d07afcb5de3e61cee2757c upstream.
+[ Upstream commit c9aa889b035fca4598ae985a0f0c76ebbb547ad2 ]
 
-Lenovo ThinkPad P1 Gen 6 laptop has 2 CS35L41 amplifies
-on I2C bus connected to Realtek codec.
+This adds nowait support to the RAID10 driver. Very similar to
+raid1 driver changes. It makes RAID10 driver return with EAGAIN
+for situations where it could wait for eg:
 
-Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230427110452.13787-1-vitalyr@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  - Waiting for the barrier,
+  - Reshape operation,
+  - Discard operation.
+
+wait_barrier() and regular_request_wait() fn are modified to return bool
+to support error for wait barriers. They returns true in case of wait
+or if wait is not required and returns false if wait was required
+but not performed to support nowait.
+
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Vishal Verma <vverma@digitalocean.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Stable-dep-of: 72c215ed8731 ("md/raid10: fix task hung in raid10d")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/raid10.c | 100 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 67 insertions(+), 33 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9689,6 +9689,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x22f1, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x22f2, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x22f3, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x2316, "Thinkpad P1 Gen 6", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x2317, "Thinkpad P1 Gen 6", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x2318, "Thinkpad Z13 Gen2", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x2319, "Thinkpad Z16 Gen2", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 69708b455295b..287bebde2e546 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -952,8 +952,10 @@ static void lower_barrier(struct r10conf *conf)
+ 	wake_up(&conf->wait_barrier);
+ }
+ 
+-static void wait_barrier(struct r10conf *conf)
++static bool wait_barrier(struct r10conf *conf, bool nowait)
+ {
++	bool ret = true;
++
+ 	spin_lock_irq(&conf->resync_lock);
+ 	if (conf->barrier) {
+ 		struct bio_list *bio_list = current->bio_list;
+@@ -967,27 +969,35 @@ static void wait_barrier(struct r10conf *conf)
+ 		 * that queue to get the nr_pending
+ 		 * count down.
+ 		 */
+-		raid10_log(conf->mddev, "wait barrier");
+-		wait_event_lock_irq(conf->wait_barrier,
+-				    !conf->barrier ||
+-				    (atomic_read(&conf->nr_pending) &&
+-				     bio_list &&
+-				     (!bio_list_empty(&bio_list[0]) ||
+-				      !bio_list_empty(&bio_list[1]))) ||
+-				     /* move on if recovery thread is
+-				      * blocked by us
+-				      */
+-				     (conf->mddev->thread->tsk == current &&
+-				      test_bit(MD_RECOVERY_RUNNING,
+-					       &conf->mddev->recovery) &&
+-				      conf->nr_queued > 0),
+-				    conf->resync_lock);
++		/* Return false when nowait flag is set */
++		if (nowait) {
++			ret = false;
++		} else {
++			raid10_log(conf->mddev, "wait barrier");
++			wait_event_lock_irq(conf->wait_barrier,
++					    !conf->barrier ||
++					    (atomic_read(&conf->nr_pending) &&
++					     bio_list &&
++					     (!bio_list_empty(&bio_list[0]) ||
++					      !bio_list_empty(&bio_list[1]))) ||
++					     /* move on if recovery thread is
++					      * blocked by us
++					      */
++					     (conf->mddev->thread->tsk == current &&
++					      test_bit(MD_RECOVERY_RUNNING,
++						       &conf->mddev->recovery) &&
++					      conf->nr_queued > 0),
++					    conf->resync_lock);
++		}
+ 		conf->nr_waiting--;
+ 		if (!conf->nr_waiting)
+ 			wake_up(&conf->wait_barrier);
+ 	}
+-	atomic_inc(&conf->nr_pending);
++	/* Only increment nr_pending when we wait */
++	if (ret)
++		atomic_inc(&conf->nr_pending);
+ 	spin_unlock_irq(&conf->resync_lock);
++	return ret;
+ }
+ 
+ static void allow_barrier(struct r10conf *conf)
+@@ -1098,21 +1108,30 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
+  * currently.
+  * 2. If IO spans the reshape position.  Need to wait for reshape to pass.
+  */
+-static void regular_request_wait(struct mddev *mddev, struct r10conf *conf,
++static bool regular_request_wait(struct mddev *mddev, struct r10conf *conf,
+ 				 struct bio *bio, sector_t sectors)
+ {
+-	wait_barrier(conf);
++	/* Bail out if REQ_NOWAIT is set for the bio */
++	if (!wait_barrier(conf, bio->bi_opf & REQ_NOWAIT)) {
++		bio_wouldblock_error(bio);
++		return false;
++	}
+ 	while (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
+ 	    bio->bi_iter.bi_sector < conf->reshape_progress &&
+ 	    bio->bi_iter.bi_sector + sectors > conf->reshape_progress) {
+-		raid10_log(conf->mddev, "wait reshape");
+ 		allow_barrier(conf);
++		if (bio->bi_opf & REQ_NOWAIT) {
++			bio_wouldblock_error(bio);
++			return false;
++		}
++		raid10_log(conf->mddev, "wait reshape");
+ 		wait_event(conf->wait_barrier,
+ 			   conf->reshape_progress <= bio->bi_iter.bi_sector ||
+ 			   conf->reshape_progress >= bio->bi_iter.bi_sector +
+ 			   sectors);
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 	}
++	return true;
+ }
+ 
+ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+@@ -1157,7 +1176,8 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 		rcu_read_unlock();
+ 	}
+ 
+-	regular_request_wait(mddev, conf, bio, r10_bio->sectors);
++	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors))
++		return;
+ 	rdev = read_balance(conf, r10_bio, &max_sectors);
+ 	if (!rdev) {
+ 		if (err_rdev) {
+@@ -1179,7 +1199,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 		bio_chain(split, bio);
+ 		allow_barrier(conf);
+ 		submit_bio_noacct(bio);
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 		bio = split;
+ 		r10_bio->master_bio = bio;
+ 		r10_bio->sectors = max_sectors;
+@@ -1338,7 +1358,7 @@ static void wait_blocked_dev(struct mddev *mddev, struct r10bio *r10_bio)
+ 		raid10_log(conf->mddev, "%s wait rdev %d blocked",
+ 				__func__, blocked_rdev->raid_disk);
+ 		md_wait_for_blocked_rdev(blocked_rdev, mddev);
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 		goto retry_wait;
+ 	}
+ }
+@@ -1356,6 +1376,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 					    bio->bi_iter.bi_sector,
+ 					    bio_end_sector(bio)))) {
+ 		DEFINE_WAIT(w);
++		/* Bail out if REQ_NOWAIT is set for the bio */
++		if (bio->bi_opf & REQ_NOWAIT) {
++			bio_wouldblock_error(bio);
++			return;
++		}
+ 		for (;;) {
+ 			prepare_to_wait(&conf->wait_barrier,
+ 					&w, TASK_IDLE);
+@@ -1368,7 +1393,8 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 	}
+ 
+ 	sectors = r10_bio->sectors;
+-	regular_request_wait(mddev, conf, bio, sectors);
++	if (!regular_request_wait(mddev, conf, bio, sectors))
++		return;
+ 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery) &&
+ 	    (mddev->reshape_backwards
+ 	     ? (bio->bi_iter.bi_sector < conf->reshape_safe &&
+@@ -1380,6 +1406,11 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 		set_mask_bits(&mddev->sb_flags, 0,
+ 			      BIT(MD_SB_CHANGE_DEVS) | BIT(MD_SB_CHANGE_PENDING));
+ 		md_wakeup_thread(mddev->thread);
++		if (bio->bi_opf & REQ_NOWAIT) {
++			allow_barrier(conf);
++			bio_wouldblock_error(bio);
++			return;
++		}
+ 		raid10_log(conf->mddev, "wait reshape metadata");
+ 		wait_event(mddev->sb_wait,
+ 			   !test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags));
+@@ -1476,7 +1507,7 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 		bio_chain(split, bio);
+ 		allow_barrier(conf);
+ 		submit_bio_noacct(bio);
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 		bio = split;
+ 		r10_bio->master_bio = bio;
+ 	}
+@@ -1601,7 +1632,11 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
+ 		return -EAGAIN;
+ 
+-	wait_barrier(conf);
++	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT)) {
++		bio_wouldblock_error(bio);
++		return 0;
++	}
++	wait_barrier(conf, false);
+ 
+ 	/*
+ 	 * Check reshape again to avoid reshape happens after checking
+@@ -1643,7 +1678,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 		allow_barrier(conf);
+ 		/* Resend the fist split part */
+ 		submit_bio_noacct(split);
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 	}
+ 	div_u64_rem(bio_end, stripe_size, &remainder);
+ 	if (remainder) {
+@@ -1654,7 +1689,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 		/* Resend the second split part */
+ 		submit_bio_noacct(bio);
+ 		bio = split;
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 	}
+ 
+ 	bio_start = bio->bi_iter.bi_sector;
+@@ -1810,7 +1845,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 		end_disk_offset += geo->stride;
+ 		atomic_inc(&first_r10bio->remaining);
+ 		raid_end_discard_bio(r10_bio);
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 		goto retry_discard;
+ 	}
+ 
+@@ -2005,7 +2040,7 @@ static void print_conf(struct r10conf *conf)
+ 
+ static void close_sync(struct r10conf *conf)
+ {
+-	wait_barrier(conf);
++	wait_barrier(conf, false);
+ 	allow_barrier(conf);
+ 
+ 	mempool_exit(&conf->r10buf_pool);
+@@ -4816,7 +4851,7 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr,
+ 	if (need_flush ||
+ 	    time_after(jiffies, conf->reshape_checkpoint + 10*HZ)) {
+ 		/* Need to update reshape_position in metadata */
+-		wait_barrier(conf);
++		wait_barrier(conf, false);
+ 		mddev->reshape_position = conf->reshape_progress;
+ 		if (mddev->reshape_backwards)
+ 			mddev->curr_resync_completed = raid10_size(mddev, 0, 0)
+@@ -5239,4 +5274,3 @@ MODULE_DESCRIPTION("RAID10 (striped mirror) personality for MD");
+ MODULE_ALIAS("md-personality-9"); /* RAID10 */
+ MODULE_ALIAS("md-raid10");
+ MODULE_ALIAS("md-level-10");
+-
+-- 
+2.39.2
+
 
 
