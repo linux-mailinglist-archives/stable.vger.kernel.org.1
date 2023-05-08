@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D67816FACB7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C9A96FAE6A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235788AbjEHL13 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44876 "EHLO
+        id S236295AbjEHLok (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:44:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235787AbjEHL1L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:27:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0939031EDE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:59 -0700 (PDT)
+        with ESMTP id S236254AbjEHLoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5659F411A4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67D2162D47
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA30C433D2;
-        Mon,  8 May 2023 11:26:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3600F62CDD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E406C433EF;
+        Mon,  8 May 2023 11:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545218;
-        bh=+BA7750sAWzzM6mlvisM+T+VeoczYJX2DLbbt1kNYNs=;
+        s=korg; t=1683546223;
+        bh=qzuja4RTWp/nNtt44ehho/k1LGdi3s60UX0djw1BUSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TCxjxEBznS4jqR116JJx7qtF+ZwU8GfWaOetHKtb+7fT4dm0jTY2kgducBi865nVc
-         iFJiVZcD27xVcbBKUMDsy2Wq0Yqw2JAPE53vKIjykTIqlL1HUZerisYB54rbOr1sSO
-         OYOANwvgdaIkmBBbPD0OhM8WHnGD+MS7VsmvUZ68=
+        b=PLZ3BQgYq+AMT7GLJvLk7/O3UgMKUzyo6hFxWBx3U9SdxLppyt9wRoxNGfDyOFjXU
+         WgFhmPPv1JAnB/kML0PLqJYRFozlvmSWO0gj3/200L/07SHVwiCOU00D5u5CY0xCzn
+         P7AEbCaQxC96gCKHA7YuxNQ4vVrWdKQ0x4IRamlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 663/694] mfd: arizona-spi: Add missing MODULE_DEVICE_TABLE
-Date:   Mon,  8 May 2023 11:48:18 +0200
-Message-Id: <20230508094457.553666935@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 298/371] RDMA/mlx4: Prevent shift wrapping in set_user_sq_size()
+Date:   Mon,  8 May 2023 11:48:19 +0200
+Message-Id: <20230508094823.868066100@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,35 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit 972c91fd7beddc3f19c8c855f6e60e7dbd435cbd ]
+[ Upstream commit d50b3c73f1ac20dabc53dc6e9d64ce9c79a331eb ]
 
-This patch adds missing MODULE_DEVICE_TABLE definition
-which generates correct modalias for automatic loading
-of this driver when it is built as a module.
+The ucmd->log_sq_bb_count variable is controlled by the user so this
+shift can wrap.  Fix it by using check_shl_overflow() in the same way
+that it was done in commit 515f60004ed9 ("RDMA/hns: Prevent undefined
+behavior in hns_roce_set_user_sq_size()").
 
-Fixes: 3f65555c417c ("mfd: arizona: Split of_match table into I2C and SPI versions")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230323134138.834369-1-ckeepax@opensource.cirrus.com
+Fixes: 839041329fd3 ("IB/mlx4: Sanity check userspace send queue sizes")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/a8dfbd1d-c019-4556-930b-bab1ded73b10@kili.mountain
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/arizona-spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/mlx4/qp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/arizona-spi.c b/drivers/mfd/arizona-spi.c
-index da05b966d48c6..02cf4f3e91d76 100644
---- a/drivers/mfd/arizona-spi.c
-+++ b/drivers/mfd/arizona-spi.c
-@@ -277,6 +277,7 @@ static const struct of_device_id arizona_spi_of_match[] = {
- 	{ .compatible = "cirrus,cs47l24", .data = (void *)CS47L24 },
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, arizona_spi_of_match);
- #endif
- 
- static struct spi_driver arizona_spi_driver = {
+diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+index 3a1a4ac9dd33d..ec545b8858cc0 100644
+--- a/drivers/infiniband/hw/mlx4/qp.c
++++ b/drivers/infiniband/hw/mlx4/qp.c
+@@ -412,9 +412,13 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
+ 			    struct mlx4_ib_qp *qp,
+ 			    struct mlx4_ib_create_qp *ucmd)
+ {
++	u32 cnt;
++
+ 	/* Sanity check SQ size before proceeding */
+-	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
+-	    ucmd->log_sq_stride >
++	if (check_shl_overflow(1, ucmd->log_sq_bb_count, &cnt) ||
++	    cnt > dev->dev->caps.max_wqes)
++		return -EINVAL;
++	if (ucmd->log_sq_stride >
+ 		ilog2(roundup_pow_of_two(dev->dev->caps.max_sq_desc_sz)) ||
+ 	    ucmd->log_sq_stride < MLX4_IB_MIN_SQ_STRIDE)
+ 		return -EINVAL;
 -- 
 2.39.2
 
