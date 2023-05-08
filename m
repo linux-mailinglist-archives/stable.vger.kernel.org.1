@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A5C96FAA0E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26AF96FA699
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235309AbjEHK6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S234422AbjEHKWN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:22:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235316AbjEHK6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:58:01 -0400
+        with ESMTP id S234425AbjEHKVi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:21:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F2E30ADA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:57:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F3BA26443
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:20:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08EE661709
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9763C433EF;
-        Mon,  8 May 2023 10:57:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E49662537
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:20:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E156C4339B;
+        Mon,  8 May 2023 10:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543424;
-        bh=oWUxFGWUGp1tUky7lt2pEBZRL81RZORgAxCRAKAofUs=;
+        s=korg; t=1683541255;
+        bh=h/ZZrZjIbcp/u86Xg+7tLyYUAglheWMJobuIUAFJ/ow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0YaSIS2hAjV+VbpbIiCxq3Ce2I2qfamX5t/jPcQ3EtE8XOms7M1cff9RDYsGkaC9M
-         NpbIxs5vxe37ZqCqoXI8YO79ocOYN7UYtaDqgyy+o1yeYXwX/CB65gkxcQHJ2pxiAF
-         9l9az+nl9IYvfxARjWzhHcOkrzK0dvRlchMNSHpM=
+        b=L7e5GyUyXRxXU3FFc4ymwhI1FolhqTuoDhbD8o+hCUfTY8ZWW96lfj2q45W/hZCku
+         SyModxaBUA2lj9mEiDsnJsDUgyO4WWOdOW8XAOUzrlOjajwlA357sUffPO3U6egXtf
+         J1DGotdqmwctKflI90+rMTjL/qneAqrbrp6eIFLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org, npiggin@gmail.com,
-        Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
-        Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.3 046/694] ring-buffer: Ensure proper resetting of atomic variables in ring_buffer_reset_online_cpus
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.2 055/663] MIPS: fw: Allow firmware to pass a empty env
 Date:   Mon,  8 May 2023 11:38:01 +0200
-Message-Id: <20230508094434.114280579@linuxfoundation.org>
+Message-Id: <20230508094430.279397682@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,81 +53,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 7c339fb4d8577792378136c15fde773cfb863cb8 upstream.
+commit ee1809ed7bc456a72dc8410b475b73021a3a68d5 upstream.
 
-In ring_buffer_reset_online_cpus, the buffer_size_kb write operation
-may permanently fail if the cpu_online_mask changes between two
-for_each_online_buffer_cpu loops. The number of increases and decreases
-on both cpu_buffer->resize_disabled and cpu_buffer->record_disabled may be
-inconsistent, causing some CPUs to have non-zero values for these atomic
-variables after the function returns.
+fw_getenv will use env entry to determine style of env,
+however it is legal for firmware to just pass a empty list.
 
-This issue can be reproduced by "echo 0 > trace" while hotplugging cpu.
-After reproducing success, we can find out buffer_size_kb will not be
-functional anymore.
-
-To prevent leaving 'resize_disabled' and 'record_disabled' non-zero after
-ring_buffer_reset_online_cpus returns, we ensure that each atomic variable
-has been set up before atomic_sub() to it.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230426062027.17451-1-Tze-nan.Wu@mediatek.com
+Check if first entry exist before running strchr to avoid
+null pointer dereference.
 
 Cc: stable@vger.kernel.org
-Cc: <mhiramat@kernel.org>
-Cc: npiggin@gmail.com
-Fixes: b23d7a5f4a07 ("ring-buffer: speed up buffer resets by avoiding synchronize_rcu for each CPU")
-Reviewed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://github.com/clbr/n64bootloader/issues/5
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/mips/fw/lib/cmdline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -5345,6 +5345,9 @@ void ring_buffer_reset_cpu(struct trace_
- }
- EXPORT_SYMBOL_GPL(ring_buffer_reset_cpu);
+--- a/arch/mips/fw/lib/cmdline.c
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -53,7 +53,7 @@ char *fw_getenv(char *envname)
+ {
+ 	char *result = NULL;
  
-+/* Flag to ensure proper resetting of atomic variables */
-+#define RESET_BIT	(1 << 30)
-+
- /**
-  * ring_buffer_reset_online_cpus - reset a ring buffer per CPU buffer
-  * @buffer: The ring buffer to reset a per cpu buffer of
-@@ -5361,20 +5364,27 @@ void ring_buffer_reset_online_cpus(struc
- 	for_each_online_buffer_cpu(buffer, cpu) {
- 		cpu_buffer = buffer->buffers[cpu];
- 
--		atomic_inc(&cpu_buffer->resize_disabled);
-+		atomic_add(RESET_BIT, &cpu_buffer->resize_disabled);
- 		atomic_inc(&cpu_buffer->record_disabled);
- 	}
- 
- 	/* Make sure all commits have finished */
- 	synchronize_rcu();
- 
--	for_each_online_buffer_cpu(buffer, cpu) {
-+	for_each_buffer_cpu(buffer, cpu) {
- 		cpu_buffer = buffer->buffers[cpu];
- 
-+		/*
-+		 * If a CPU came online during the synchronize_rcu(), then
-+		 * ignore it.
-+		 */
-+		if (!(atomic_read(&cpu_buffer->resize_disabled) & RESET_BIT))
-+			continue;
-+
- 		reset_disabled_cpu_buffer(cpu_buffer);
- 
- 		atomic_dec(&cpu_buffer->record_disabled);
--		atomic_dec(&cpu_buffer->resize_disabled);
-+		atomic_sub(RESET_BIT, &cpu_buffer->resize_disabled);
- 	}
- 
- 	mutex_unlock(&buffer->mutex);
+-	if (_fw_envp != NULL) {
++	if (_fw_envp != NULL && fw_envp(0) != NULL) {
+ 		/*
+ 		 * Return a pointer to the given environment variable.
+ 		 * YAMON uses "name", "value" pairs, while U-Boot uses
 
 
