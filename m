@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BEF16FA601
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82E966FADD8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234286AbjEHKPL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44218 "EHLO
+        id S236099AbjEHLjD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234295AbjEHKPK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:10 -0400
+        with ESMTP id S235988AbjEHLis (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:38:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E71813ACD1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C35B3F564
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:38:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7688562474
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827E7C433D2;
-        Mon,  8 May 2023 10:15:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09F1861EA8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:38:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB08C433D2;
+        Mon,  8 May 2023 11:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540907;
-        bh=ZNuOw90LJSQxuyhBruIHHLPa4ffST6ByVRc7KDisjWA=;
+        s=korg; t=1683545881;
+        bh=NMYUbi9jjr4zmYoL0WvPj5HLGrlO1pCVfP9HqywaE4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TgbPaqZcWEp80QReuriWmty62qJKTEy7JVDuo7DLT1XYm5AIcMKrfwiv7QZNGBAdv
-         SzjAW855kpMq2tsozDewNArrpyL1GcBCaSJIi49LNDcGJsZM6iWt/YPbvpPbMBVuNs
-         boTNXicTUxZicu+ZQok6akis/CS6GS23R992Dwn8=
+        b=ZdEkKqQ67spPvdcwoLe92/fMVzNr4Cna86BS8BZw2yMM9wdCn08XHOrokF3dm96XE
+         Dhs/CjNQAo71pxQ0m9f7JamTO9VHbs92UIWWw2p2dyAXTOoktrAZ/5YeCZLotzbVv/
+         +H411POgCTvf6T43ika6+cipBZqvaGjzfRs0Mqw0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 543/611] dmaengine: at_xdmac: do not enable all cyclic channels
+        patches@lists.linux.dev, Nicolai Stange <nstange@suse.de>,
+        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 184/371] crypto: drbg - make drbg_prepare_hrng() handle jent instantiation errors
 Date:   Mon,  8 May 2023 11:46:25 +0200
-Message-Id: <20230508094439.642275666@linuxfoundation.org>
+Message-Id: <20230508094819.443064052@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Nicolai Stange <nstange@suse.de>
 
-[ Upstream commit f8435befd81dd85b7b610598551fadf675849bc1 ]
+[ Upstream commit 559edd47cce4cc407d606b4d7f376822816fd4b8 ]
 
-Do not global enable all the cyclic channels in at_xdmac_resume(). Instead
-save the global status in at_xdmac_suspend() and re-enable the cyclic
-channel only if it was active before suspend.
+Now that drbg_prepare_hrng() doesn't do anything but to instantiate a
+jitterentropy crypto_rng instance, it looks a little odd to have the
+related error handling at its only caller, drbg_instantiate().
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-6-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Move the handling of jitterentropy allocation failures from
+drbg_instantiate() close to the allocation itself in drbg_prepare_hrng().
+
+There is no change in behaviour.
+
+Signed-off-by: Nicolai Stange <nstange@suse.de>
+Reviewed-by: Stephan Müller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 686cd976b6dd ("crypto: drbg - Only fail when jent is unavailable in FIPS mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ crypto/drbg.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index d6c9781cd46af..bfc8ae2143957 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -243,6 +243,7 @@ struct at_xdmac {
- 	int			irq;
- 	struct clk		*clk;
- 	u32			save_gim;
-+	u32			save_gs;
- 	struct dma_pool		*at_xdmac_desc_pool;
- 	const struct at_xdmac_layout	*layout;
- 	struct at_xdmac_chan	chan[];
-@@ -1988,6 +1989,7 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
- 		}
- 	}
- 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
-+	atxdmac->save_gs = at_xdmac_read(atxdmac, AT_XDMAC_GS);
+diff --git a/crypto/drbg.c b/crypto/drbg.c
+index 761104e93d44a..c89e26e677404 100644
+--- a/crypto/drbg.c
++++ b/crypto/drbg.c
+@@ -1516,6 +1516,14 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
+ 		return 0;
  
- 	at_xdmac_off(atxdmac);
- 	clk_disable_unprepare(atxdmac->clk);
-@@ -2027,7 +2029,8 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
- 			wmb();
--			at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
-+			if (atxdmac->save_gs & atchan->mask)
-+				at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
- 		}
- 	}
+ 	drbg->jent = crypto_alloc_rng("jitterentropy_rng", 0, 0);
++	if (IS_ERR(drbg->jent)) {
++		const int err = PTR_ERR(drbg->jent);
++
++		drbg->jent = NULL;
++		if (fips_enabled || err != -ENOENT)
++			return err;
++		pr_info("DRBG: Continuing without Jitter RNG\n");
++	}
+ 
  	return 0;
+ }
+@@ -1571,14 +1579,6 @@ static int drbg_instantiate(struct drbg_state *drbg, struct drbg_string *pers,
+ 		if (ret)
+ 			goto free_everything;
+ 
+-		if (IS_ERR(drbg->jent)) {
+-			ret = PTR_ERR(drbg->jent);
+-			drbg->jent = NULL;
+-			if (fips_enabled || ret != -ENOENT)
+-				goto free_everything;
+-			pr_info("DRBG: Continuing without Jitter RNG\n");
+-		}
+-
+ 		reseed = false;
+ 	}
+ 
 -- 
 2.39.2
 
