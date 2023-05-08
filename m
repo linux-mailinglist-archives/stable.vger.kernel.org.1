@@ -2,65 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056E76FAFE8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 14:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB73D6FB086
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 14:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234005AbjEHM0L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 08:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55332 "EHLO
+        id S232408AbjEHMrA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 08:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233692AbjEHM0K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 08:26:10 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6814036108
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 05:26:08 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 348CPr2P072801;
-        Mon, 8 May 2023 07:25:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1683548753;
-        bh=RDz/QjzsouRcP6eQuX4xPWSD5h7MCVPLzBoVgB22EFc=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=pgVHqFu4ySWkdsll8EM2Zyw2y1B+0BiQ0evQe/leueGvO/Wc3D2zRGUEnOMhFuNjz
-         V9gwtJMUW6zoIbH9TdZE0z8bYWxF6RqCng3cV+rQhn9Kaf6kq390H/iQvJ9td9voX+
-         SBpFaALlXwxuUMzx0Oam1anoDNralc6CgXGkDVxg=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 348CPrrM012273
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 8 May 2023 07:25:53 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 8
- May 2023 07:25:52 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 8 May 2023 07:25:53 -0500
-Received: from [10.24.69.26] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 348CPo3L111525;
-        Mon, 8 May 2023 07:25:51 -0500
-Message-ID: <0138fb50-507d-bccf-40bb-07340f3cbb33@ti.com>
-Date:   Mon, 8 May 2023 17:55:50 +0530
+        with ESMTP id S232287AbjEHMrA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 08:47:00 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7810A19D4B;
+        Mon,  8 May 2023 05:46:55 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-965c3f9af2aso635235566b.0;
+        Mon, 08 May 2023 05:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683550014; x=1686142014;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4CtZd5VLc+pYXhj65DUnH/CQxgllwSSL9bOHAzJMo/o=;
+        b=SjX3A19GRrO9j5/6LE5Qtmrdtk4tg/wyhNIyB0kqHs332xn+GQHdto0goycqEJhq6C
+         co9HNZi/yVAg+1p7sBESmWx6Iqv/mVc+zlngEDNmH+VRhKOLWr6JhGUJhL/pOcPIRjpS
+         CA7STm5jH10upbpK+eFZabTsWLmqFxJVcAx2xmqVDIEpC7CIWFdpe3GJowyxDcAz9xPp
+         SF0ieNHsvbMPQeuVDGE10NZG8zvzgLWGggoXCRKL3LDQe6eYALEbEsLMUOtKSvAZ6Ebn
+         1VW1EEJ8u3FFM021LqV7AdzuFPqB0GMK1ciXrUdbD0ryGHgXbKEWVD6V6oDPUUENfNi+
+         36sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683550014; x=1686142014;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4CtZd5VLc+pYXhj65DUnH/CQxgllwSSL9bOHAzJMo/o=;
+        b=N785bkIHnP/8vO8qRazh9bAcOfxqL3++3q1n/8NBW8o4OxgoFCSNB+IPCd/y2ECPbm
+         qhMZixReA3M9IvjVpdxW8RSoWosSd87m3lPhviarmTCUlwgYR5R/ZVvjsgQGR/GCzNIB
+         e1jBzKFaJdDNvPuBeyEIPRSBxXpLkVjoJDM6QqO05VnWqns9aGcayQYehTvoqUFe2tnY
+         cM8gpFkQ9QSjjqLemFE8mkGKFTIRiPzLUjVKsri39gqRNeo0nRFjt42+ejuGjj6+iR3R
+         hm29LotpExlY+b3WrelO0uoLrWABc3IbS2ebKpy8FBjrRDeda95wG9RY21yfXcAtUIdo
+         XCEA==
+X-Gm-Message-State: AC+VfDx+b/ptNEy49oMMKxSqYn7Im/7oIoM14sI4EIf1Khq7PXA/tmQ+
+        tHbWjXCOGpz0gcO4b/YuODu7bZIf4HSKNk2NE48=
+X-Google-Smtp-Source: ACHHUZ6FiUyYBrM6IAk9jO1VkdY3O3ss5wrY66voF/dmm+uVMk3NNXNZmlzcE2gmjP2aTMVw1r1YhCTx5BYegtHJ78U=
+X-Received: by 2002:a17:907:980a:b0:968:8b67:4507 with SMTP id
+ ji10-20020a170907980a00b009688b674507mr1376171ejc.69.1683550013837; Mon, 08
+ May 2023 05:46:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 6.1 455/611] spi: bcm63xx: remove PM_SLEEP based
- conditional compilation
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <stable@vger.kernel.org>
-CC:     <patches@lists.linux.dev>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-References: <20230508094421.513073170@linuxfoundation.org>
- <20230508094436.944529030@linuxfoundation.org>
-From:   Dhruva Gole <d-gole@ti.com>
-In-Reply-To: <20230508094436.944529030@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+References: <20230504111100.417305-1-xiubli@redhat.com>
+In-Reply-To: <20230504111100.417305-1-xiubli@redhat.com>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Mon, 8 May 2023 14:46:41 +0200
+Message-ID: <CAOi1vP_8hUUZBHXLUJP3Xq74LONKq=weFQMV+Es45yV3wH-wTw@mail.gmail.com>
+Subject: Re: [PATCH v3] ceph: fix blindly expanding the readahead windows
+To:     xiubli@redhat.com
+Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, lhenriques@suse.de, mchangir@redhat.com,
+        stable@vger.kernel.org, Hu Weiwen <sehuww@mail.scut.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,66 +69,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
-
-On 08/05/23 15:14, Greg Kroah-Hartman wrote:
-> From: Dhruva Gole <d-gole@ti.com>
-> 
-> [ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
-> 
-> Get rid of conditional compilation based on CONFIG_PM_SLEEP because
-> it may introduce build issues with certain configs where it maybe disabled
-> This is because if above config is not enabled the suspend-resume
-> functions are never part of the code but the bcm63xx_spi_pm_ops struct
-> still inits them to non-existent suspend-resume functions.
-> 
-> Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
-> 
-> Signed-off-by: Dhruva Gole <d-gole@ti.com>
-> Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Thu, May 4, 2023 at 1:11=E2=80=AFPM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> Blindly expanding the readahead windows will cause unneccessary
+> pagecache thrashing and also will introdue the network workload.
+> We should disable expanding the windows if the readahead is disabled
+> and also shouldn't expand the windows too much.
+>
+> Expanding forward firstly instead of expanding backward for possible
+> sequential reads.
+>
+> Bound `rreq->len` to the actual file size to restore the previous page
+> cache usage.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
+> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.=
+scut.edu.cn
+> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
+> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
 > ---
->   drivers/spi/spi-bcm63xx.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index 80fa0ef8909ca..0324ab3ce1c84 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -630,7 +630,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
->   	return 0;
->   }
->   
-> -#ifdef CONFIG_PM_SLEEP
->   static int bcm63xx_spi_suspend(struct device *dev)
->   {
->   	struct spi_master *master = dev_get_drvdata(dev);
-> @@ -657,7 +656,6 @@ static int bcm63xx_spi_resume(struct device *dev)
->   
->   	return 0;
->   }
-> -#endif
+>
+> V3:
+> - Folded Hu Weiwen's fix and bound `rreq->len` to the actual file size.
 
-This patch may cause build failures with some of the configs that 
-disable CONFIG_PM I understand,
-So to fix that I had sent another patch:
-https://lore.kernel.org/all/CAOiHx==anPTqXNJNG7zap1XP2zKUp5SbaVJdyUsUvvitKRUHZw@mail.gmail.com/
+Hi Xiubo,
 
-However missed out adding the fixes tag.
+This looks much better!  Just a couple of nits:
 
-I humbly request you to add
-https://lore.kernel.org/all/20230424102546.1604484-1-d-gole@ti.com/
+>
+>
+>
+>  fs/ceph/addr.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+>
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index ca4dc6450887..357d9d28f202 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -188,16 +188,32 @@ static void ceph_netfs_expand_readahead(struct netf=
+s_io_request *rreq)
+>         struct inode *inode =3D rreq->inode;
+>         struct ceph_inode_info *ci =3D ceph_inode(inode);
+>         struct ceph_file_layout *lo =3D &ci->i_layout;
+> +       unsigned long max_pages =3D inode->i_sb->s_bdi->ra_pages;
+> +       unsigned long max_len =3D max_pages << PAGE_SHIFT;
+> +       loff_t end =3D rreq->start + rreq->len, new_end;
+>         u32 blockoff;
+>         u64 blockno;
+>
+> -       /* Expand the start downward */
+> -       blockno =3D div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+> -       rreq->start =3D blockno * lo->stripe_unit;
+> -       rreq->len +=3D blockoff;
+> +       /* Readahead is disabled */
+> +       if (!max_pages)
+> +               return;
+>
+> -       /* Now, round up the length to the next block */
+> -       rreq->len =3D roundup(rreq->len, lo->stripe_unit);
+> +       /*
+> +        * Try to expand the length forward by rounding  up it to the nex=
+t
+> +        * block, but do not exceed the file size, unless the original
+> +        * request already exceeds it.
+> +        */
+> +       new_end =3D round_up(end, lo->stripe_unit);
+> +       new_end =3D min(new_end, rreq->i_size);
 
-this patch to fix this patch throughout the stable fixes trees.
+This can be done on single line:
 
-It can also be found on Linus' master branch here:
+        new_end =3D min(round_up(end, lo->stripe_unit), rreq->i_size);
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-bcm63xx.c?id=cc5f6fa4f6590e3b9eb8d34302ea43af4a3cfed7
->   
->   static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
->   	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
+> +       if (new_end > end && new_end <=3D rreq->start + max_len)
+> +               rreq->len =3D new_end - rreq->start;
+> +
+> +       /* Try to expand the start downward */
+> +       blockno =3D div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+> +       if (rreq->len + blockoff <=3D max_len) {
+> +               rreq->start =3D blockno * lo->stripe_unit;
 
--- 
-Thanks and Regards,
-Dhruva Gole
+Can this be written as:
+
+                rreq->start -=3D blockoff;
+
+It seems like it would be easier to read and probably cheaper to
+compute too.
+
+Thanks,
+
+                Ilya
