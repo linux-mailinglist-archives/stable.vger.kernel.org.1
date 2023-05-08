@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95BD96FAB11
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641176FA4EA
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233680AbjEHLJH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S233997AbjEHKEc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:04:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233780AbjEHLIj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:08:39 -0400
+        with ESMTP id S234005AbjEHKE1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2682A1B7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:08:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECA63014A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF11B62B02
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BEBC433EF;
-        Mon,  8 May 2023 11:08:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74C3E6230C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C7AC4339B;
+        Mon,  8 May 2023 10:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544113;
-        bh=VXDgDRPaXFJnjVtytghjh/juy7EXzf6f2L6oSo/T/Kc=;
+        s=korg; t=1683540263;
+        bh=bv3cQEKRrqQvoSzswDMpHsDUglDuCdGu7wMDyGPuyf8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FaZw6JTJPpRJ8R6FlnJAT2PA7d6YtfhcEeFMt2jbRslomiJYKyYwsbOz7HhqItvjX
-         pLNID7SgPZPH1n26LWt10aYb4UIhE///z6PjNNyx93cHPlICjmiyIiEqGr3t9oRYfx
-         t+cvRxT28Wa/0Orb+UJL8yV5Ul98I83GH0UG5eIQ=
+        b=hcMwegqrENGOnlQ2C/mo1DTwfWn0/7Qq7HZcUz8GCDCVbeRHv8PEMksO+jMde5Fln
+         hSBrF0sC/0B6rT926DqGqqzQDV6tvLpph7ullVCAWAbtFcblgdjsCaGcmPtf2pAJqT
+         NKvpUOMLokZkOLIza40tTiqyDVd7H7auVu9BN0EQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mike Christie <michael.christie@oracle.com>,
+        Maurizio Lombardi <mlombard@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 305/694] media: venus: dec: Fix capture formats enumeration order
+Subject: [PATCH 6.1 298/611] scsi: target: iscsit: Stop/wait on cmds during conn close
 Date:   Mon,  8 May 2023 11:42:20 +0200
-Message-Id: <20230508094442.185479217@linuxfoundation.org>
+Message-Id: <20230508094432.093031884@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,75 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit a9d45ec74c8e68aaafe90191928eddbf79f4644f ]
+[ Upstream commit 395cee83d02de3073211b04fc85724f4abc663ad ]
 
-Commit 9593126dae3e ("media: venus: Add a handling of QC08C compressed
-format") and commit cef92b14e653 ("media: venus: Add a handling of QC10C
-compressed format") added support for the QC08C and QC10C compressed
-formats respectively.
+This fixes a bug added in commit f36199355c64 ("scsi: target: iscsi: Fix
+cmd abort fabric stop race").
 
-But these also caused a regression, because the new formats where added
-at the beginning of the vdec_formats[] array and the vdec_inst_init()
-function sets the default format output and capture using fixed indexes
-of that array:
+If we have multiple sessions to the same se_device we can hit a race where
+a LUN_RESET on one session cleans up the se_cmds from under another
+session which is being closed. This results in the closing session freeing
+its conn/session structs while they are still in use.
 
-static void vdec_inst_init(struct venus_inst *inst)
-{
-...
-	inst->fmt_out = &vdec_formats[8];
-	inst->fmt_cap = &vdec_formats[0];
-...
-}
+The bug is:
 
-Since now V4L2_PIX_FMT_NV12 is not the first entry in the array anymore,
-the default capture format is not set to that as it was done before.
+ 1. Session1 has IO se_cmd1.
 
-Both commits changed the first index to keep inst->fmt_out default format
-set to V4L2_PIX_FMT_H264, but did not update the latter to keep .fmt_out
-default format set to V4L2_PIX_FMT_NV12.
+ 2. Session2 can also have se_cmds for I/O and optionally TMRs for ABORTS
+    but then gets a LUN_RESET.
 
-Rather than updating the index to the current V4L2_PIX_FMT_NV12 position,
-let's reorder the entries so that this format is the first entry again.
+ 3. The LUN_RESET on session2 sees the se_cmds on session1 and during the
+    drain stages marks them all with CMD_T_ABORTED.
 
-This would also make VIDIOC_ENUM_FMT report the V4L2_PIX_FMT_NV12 format
-with an index 0 as it did before the QC08C and QC10C formats were added.
+ 4. session1 is now closed so iscsit_release_commands_from_conn() only sees
+    se_cmds with the CMD_T_ABORTED bit set and returns immediately even
+    though we have outstanding commands.
 
-Fixes: 9593126dae3e ("media: venus: Add a handling of QC08C compressed format")
-Fixes: cef92b14e653 ("media: venus: Add a handling of QC10C compressed format")
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+ 5. session1's connection and session are freed.
+
+ 6. The backend request for se_cmd1 completes and it accesses the freed
+    connection/session.
+
+This hooks the iscsit layer into the cmd counter code, so we can wait for
+all outstanding se_cmds before freeing the connection.
+
+Fixes: f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop race")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-6-michael.christie@oracle.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/target/iscsi/iscsi_target.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 9d26587716bf6..1a52c2ea2da5b 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -31,15 +31,15 @@
-  */
- static const struct venus_format vdec_formats[] = {
- 	{
--		.pixfmt = V4L2_PIX_FMT_QC08C,
-+		.pixfmt = V4L2_PIX_FMT_NV12,
- 		.num_planes = 1,
- 		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
- 	}, {
--		.pixfmt = V4L2_PIX_FMT_QC10C,
-+		.pixfmt = V4L2_PIX_FMT_QC08C,
- 		.num_planes = 1,
- 		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
--	},{
--		.pixfmt = V4L2_PIX_FMT_NV12,
-+	}, {
-+		.pixfmt = V4L2_PIX_FMT_QC10C,
- 		.num_planes = 1,
- 		.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
- 	}, {
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 11115c2078446..83b0071412294 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4245,6 +4245,16 @@ static void iscsit_release_commands_from_conn(struct iscsit_conn *conn)
+ 		iscsit_free_cmd(cmd, true);
+ 
+ 	}
++
++	/*
++	 * Wait on commands that were cleaned up via the aborted_task path.
++	 * LLDs that implement iscsit_wait_conn will already have waited for
++	 * commands.
++	 */
++	if (!conn->conn_transport->iscsit_wait_conn) {
++		target_stop_cmd_counter(conn->cmd_cnt);
++		target_wait_for_cmds(conn->cmd_cnt);
++	}
+ }
+ 
+ static void iscsit_stop_timers_for_cmds(
 -- 
 2.39.2
 
