@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A80956FA72F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9166FAAA1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234589AbjEHK2c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
+        id S233007AbjEHLEl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234592AbjEHK2D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A25DE723
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:27:46 -0700 (PDT)
+        with ESMTP id S232784AbjEHLEY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:04:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A93FA2FA0A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:03:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3DCA625DE
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D09C433D2;
-        Mon,  8 May 2023 10:27:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4EFB62A79
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B867EC433D2;
+        Mon,  8 May 2023 11:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541665;
-        bh=S00R2GvTOEyLcQPvlCwkBQkuaS3piATf0Dr9DeDfTfc=;
+        s=korg; t=1683543803;
+        bh=M+Tvs7CRZp08dicHcQz5Te3Kk8VPP5fiNq+T+qHMFUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cH8uP+A8bKUFlWaSVclbea7uJN6w1Uj5U5z3CGFn5Qc9Z4iUj2kyF8WTmlsWB/b4y
-         g0vQuw4ATa1J1+r/ddud0hNwA6nCk/cGHd34oKGYBCsTfcKXMqk8MjDa2BxFbX4IQV
-         e/KdIiBjtMDR61zaqCM2qupVKazgoVHwUMN82gK8=
+        b=2od/TVJprQeUK3yBxpjxc0Lp+3MeMA+0iloS3r9tMfUzDW3LJXXzT+gLULdjgQrp8
+         SOWWHL80ScwwzSat370C+mDS2yTtq2e42BN6gFAdtJqU5XK8ovyerSlkHthkVHs2ej
+         tWkFCH0/xlGEq/45D0LnZ4iDsNBE9HY5NpReQ7A4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Adam Skladowski <a39.skl@gmail.com>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 187/663] drm: msm: adreno: Disable preemption on Adreno 510
-Date:   Mon,  8 May 2023 11:40:13 +0200
-Message-Id: <20230508094434.491804885@linuxfoundation.org>
+Subject: [PATCH 6.3 179/694] arm64: dts: qcom: msm8998: Fix stm-stimulus-base reg name
+Date:   Mon,  8 May 2023 11:40:14 +0200
+Message-Id: <20230508094438.244132260@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,52 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Skladowski <a39.skl@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 010c8bbad2cb8c33c47963e29f051f1e917e45a5 ]
+[ Upstream commit b5d08f08377218b1d2ab4026e427a7788b271c8e ]
 
-Downstream driver appears to not support preemption on A510 target,
-trying to use one make device slow and fill log with rings related errors.
-Set num_rings to 1 to disable preemption.
+The name stm-data-base comes from ancient (msm-3.10 or older)
+downstream kernels. Upstream uses stm-stimulus-base instead. Fix it.
 
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: e20c9284c8f2 ("drm/msm/adreno: Add support for Adreno 510 GPU")
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/526898/
-Link: https://lore.kernel.org/r/20230314221757.13096-1-a39.skl@gmail.com
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 783abfa2249a ("arm64: dts: qcom: msm8998: Add Coresight support")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230213210331.2106877-1-konrad.dybcio@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 047c5e8c87ff4..f21f1bb7f886d 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -1743,6 +1743,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
- 	struct a5xx_gpu *a5xx_gpu = NULL;
- 	struct adreno_gpu *adreno_gpu;
- 	struct msm_gpu *gpu;
-+	unsigned int nr_rings;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 8bc1c59127e50..adf7258b32695 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -1524,7 +1524,7 @@
+ 			compatible = "arm,coresight-stm", "arm,primecell";
+ 			reg = <0x06002000 0x1000>,
+ 			      <0x16280000 0x180000>;
+-			reg-names = "stm-base", "stm-data-base";
++			reg-names = "stm-base", "stm-stimulus-base";
+ 			status = "disabled";
  
- 	if (!pdev) {
-@@ -1763,7 +1764,12 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
- 
- 	check_speed_bin(&pdev->dev);
- 
--	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 4);
-+	nr_rings = 4;
-+
-+	if (adreno_is_a510(adreno_gpu))
-+		nr_rings = 1;
-+
-+	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
- 	if (ret) {
- 		a5xx_destroy(&(a5xx_gpu->base.base));
- 		return ERR_PTR(ret);
+ 			clocks = <&rpmcc RPM_SMD_QDSS_CLK>, <&rpmcc RPM_SMD_QDSS_A_CLK>;
 -- 
 2.39.2
 
