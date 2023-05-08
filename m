@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C68E6FAE4D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640BE6FA980
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236274AbjEHLnj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36778 "EHLO
+        id S235222AbjEHKwJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236228AbjEHLnV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:43:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBAD1FEC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:42:43 -0700 (PDT)
+        with ESMTP id S235268AbjEHKvr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4EA22DD6E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:51:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82DD7635AB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75140C433EF;
-        Mon,  8 May 2023 11:42:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7788962917
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:51:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DCDC433D2;
+        Mon,  8 May 2023 10:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546132;
-        bh=gbsgF0jUZQHzoprFJRgaCygFbigEFv3rZN2HwzN1HcM=;
+        s=korg; t=1683543077;
+        bh=lGR6HAMTqbcAsG99GjOZGFXlX6sQYubRIqziW6Cw2p4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rlFh1f4s8V0QOohhWXyOM4BLrtcxOdTHbpO4rPP0E1vX9BgDjy1jZGoGfYCOgkJxs
-         l8E1qCOSDtUE8rknoqQnCJQhuZUcMdWWSRvGMDwdn4u4pC/i2lIAfzWsZFG54iAd5w
-         5hyL5rm4pVkqYeQ5Vnw4kTqy1nsqe3MHObGEU5ZU=
+        b=qnifV8F7iWqrm68v+1wZ/BgSa8IYHhpV1cGc/rjBgmuzraSwYME70mKri9vX/x6te
+         5SdsSiyvbPneZgdTOvVWTQ+gKvJEpirUfHhHfjueZVsiU72PfjVOZHKSAN2E58dgcI
+         k7YQo2LZxLCfkhOItsuBINZXjytMF1VwiKtcQEao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Brodsky <kevin.brodsky@arm.com>,
-        Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>,
-        Petr Vorel <pvorel@suse.cz>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 268/371] uapi/linux/const.h: prefer ISO-friendly __typeof__
+        patches@lists.linux.dev, Lorenzo Stoakes <lstoakes@gmail.com>,
+        kernel test robot <oliver.sang@intel.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.2 643/663] mm/mempolicy: correctly update prev when policy is equal on mbind
 Date:   Mon,  8 May 2023 11:47:49 +0200
-Message-Id: <20230508094822.689443028@linuxfoundation.org>
+Message-Id: <20230508094450.883703893@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,65 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 31088f6f7906253ef4577f6a9b84e2d42447dba0 ]
+commit 00ca0f2e86bf40b016a646e6323a8941a09cf106 upstream.
 
-typeof is (still) a GNU extension, which means that it cannot be used when
-building ISO C (e.g.  -std=c99).  It should therefore be avoided in uapi
-headers in favour of the ISO-friendly __typeof__.
+The refactoring in commit f4e9e0e69468 ("mm/mempolicy: fix use-after-free
+of VMA iterator") introduces a subtle bug which arises when attempting to
+apply a new NUMA policy across a range of VMAs in mbind_range().
 
-Unfortunately this issue could not be detected by
-CONFIG_UAPI_HEADER_TEST=y as the __ALIGN_KERNEL() macro is not expanded in
-any uapi header.
+The refactoring passes a **prev pointer to keep track of the previous VMA
+in order to reduce duplication, and in all but one case it keeps this
+correctly updated.
 
-This matters from a userspace perspective, not a kernel one. uapi
-headers and their contents are expected to be usable in a variety of
-situations, and in particular when building ISO C applications (with
--std=c99 or similar).
+The bug arises when a VMA within the specified range has an equivalent
+policy as determined by mpol_equal() - which unlike other cases, does not
+update prev.
 
-This particular problem can be reproduced by trying to use the
-__ALIGN_KERNEL macro directly in application code, say:
+This can result in a situation where, later in the iteration, a VMA is
+found whose policy does need to change.  At this point, vma_merge() is
+invoked with prev pointing to a VMA which is before the previous VMA.
 
-#include <linux/const.h>
+Since vma_merge() discovers the curr VMA by looking for the one
+immediately after prev, it will now be in a situation where this VMA is
+incorrect and the merge will not proceed correctly.
 
-int align(int x, int a)
-{
-	return __KERNEL_ALIGN(x, a);
-}
+This is checked in the VM_WARN_ON() invariant case with end >
+curr->vm_end, which, if a merge is possible, results in a warning (if
+CONFIG_DEBUG_VM is specified).
 
-and trying to build that with -std=c99.
+I note that vma_merge() performs these invariant checks only after
+merge_prev/merge_next are checked, which is debatable as it hides this
+issue if no merge is possible even though a buggy situation has arisen.
 
-Link: https://lkml.kernel.org/r/20230411092747.3759032-1-kevin.brodsky@arm.com
-Fixes: a79ff731a1b2 ("netfilter: xtables: make XT_ALIGN() usable in exported headers by exporting __ALIGN_KERNEL()")
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Reported-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
-Tested-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+The solution is simply to update the prev pointer even when policies are
+equal.
+
+This caused a bug to arise in the 6.2.y stable tree, and this patch
+resolves this bug.
+
+Link: https://lkml.kernel.org/r/83f1d612acb519d777bebf7f3359317c4e7f4265.1682866629.git.lstoakes@gmail.com
+Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+  Link: https://lore.kernel.org/oe-lkp/202304292203.44ddeff6-oliver.sang@intel.com
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/const.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/mempolicy.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/const.h b/include/uapi/linux/const.h
-index af2a44c08683d..a429381e7ca50 100644
---- a/include/uapi/linux/const.h
-+++ b/include/uapi/linux/const.h
-@@ -28,7 +28,7 @@
- #define _BITUL(x)	(_UL(1) << (x))
- #define _BITULL(x)	(_ULL(1) << (x))
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -802,8 +802,10 @@ static int mbind_range(struct vma_iterat
+ 		vmstart = vma->vm_start;
+ 	}
  
--#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-+#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
- #define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
+-	if (mpol_equal(vma_policy(vma), new_pol))
++	if (mpol_equal(vma_policy(vma), new_pol)) {
++		*prev = vma;
+ 		return 0;
++	}
  
- #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
--- 
-2.39.2
-
+ 	pgoff = vma->vm_pgoff + ((vmstart - vma->vm_start) >> PAGE_SHIFT);
+ 	merged = vma_merge(vma->vm_mm, *prev, vmstart, vmend, vma->vm_flags,
 
 
