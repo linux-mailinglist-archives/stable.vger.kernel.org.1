@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A176FAE88
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B211D6FACDB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236347AbjEHLpf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:45:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37404 "EHLO
+        id S235805AbjEHL2n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235912AbjEHLpP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:45:15 -0400
+        with ESMTP id S235806AbjEHL2S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:28:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CCE10A14
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7004F3C9BF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:28:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8159B636CC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785E5C433EF;
-        Mon,  8 May 2023 11:44:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FA8A62672
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:28:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6D1C433EF;
+        Mon,  8 May 2023 11:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546290;
-        bh=UR3mG0EgpGjr25oaXJdyIWz0H8+/2x2zNFR3ypS6JU8=;
+        s=korg; t=1683545283;
+        bh=fPoYiYVRHiBJfK3WV7SIC6/z8pQ16H6iThNUXQCjAgM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SWoK4Nm898+Xz7UKJsJzo9fJwCUn8NtgYS6RNgkPTD5H5ZN/pLi/edQ8dbSZUhQdh
-         y4Oj7QtK7j0Ep0CWW5Z81iDJoxR3BvG4n/t1Lzsw/bptK6T1uIAjBdpajCwCT3vKGs
-         VaQWuB0yfAaiaWab/6Fv+eV1/ditWs6wmvR5uXdk=
+        b=mxBW3maSdWxxTNGVp9RJyjrje5NjOn532ALRxuKEZCxidoJN0h8gDJNtASyQIiPAt
+         CaKhoDk+GPPhuHauuI/8ojEBZNFXtxoZk1Q4rFw3s0ORRVkeud6En0PWsaO9QW9OKb
+         Zz29N19MI5HodQty/54oMPDNN4JHcaAwAo0g6Xww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helen Chao <helen.chao@oracle.com>,
-        Dai Ngo <dai.ngo@oracle.com>, Jeff Layton <jlayton@kernel.org>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 318/371] SUNRPC: remove the maximum number of retries in call_bind_status
-Date:   Mon,  8 May 2023 11:48:39 +0200
-Message-Id: <20230508094824.713089820@linuxfoundation.org>
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.3 685/694] perf auxtrace: Fix address filter entire kernel size
+Date:   Mon,  8 May 2023 11:48:40 +0200
+Message-Id: <20230508094458.583933445@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,74 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 691d0b782066a6eeeecbfceb7910a8f6184e6105 ]
+commit 1f9f33ccf0320be21703d9195dd2b36a1c9a07cb upstream.
 
-Currently call_bind_status places a hard limit of 3 to the number of
-retries on EACCES error. This limit was done to prevent NLM unlock
-requests from being hang forever when the server keeps returning garbage.
-However this change causes problem for cases when NLM service takes
-longer than 9 seconds to register with the port mapper after a restart.
+kallsyms is not completely in address order.
 
-This patch removes this hard coded limit and let the RPC handles
-the retry based on the standard hard/soft task semantics.
+In find_entire_kern_cb(), calculate the kernel end from the maximum
+address not the last symbol.
 
-Fixes: 0b760113a3a1 ("NLM: Don't hang forever on NLM unlock requests")
-Reported-by: Helen Chao <helen.chao@oracle.com>
-Tested-by: Helen Chao <helen.chao@oracle.com>
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Example:
+
+ Before:
+
+    $ sudo cat /proc/kallsyms | grep ' [twTw] ' | tail -1
+    ffffffffc00b8bd0 t bpf_prog_6deef7357e7b4530    [bpf]
+    $ sudo cat /proc/kallsyms | grep ' [twTw] ' | sort | tail -1
+    ffffffffc15e0cc0 t iwl_mvm_exit [iwlmvm]
+    $ perf.d093603a05aa record -v --kcore -e intel_pt// --filter 'filter *' -- uname |& grep filter
+    Address filter: filter 0xffffffff93200000/0x2ceba000
+
+ After:
+
+    $ perf.8fb0f7a01f8e record -v --kcore -e intel_pt// --filter 'filter *' -- uname |& grep filter
+    Address filter: filter 0xffffffff93200000/0x2e3e2000
+
+Fixes: 1b36c03e356936d6 ("perf record: Add support for using symbols in address filters")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230403154831.8651-2-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sunrpc/sched.h | 3 +--
- net/sunrpc/clnt.c            | 3 ---
- net/sunrpc/sched.c           | 1 -
- 3 files changed, 1 insertion(+), 6 deletions(-)
+ tools/perf/util/auxtrace.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index a237b8dbf6086..ba047a145e092 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -90,8 +90,7 @@ struct rpc_task {
- #endif
- 	unsigned char		tk_priority : 2,/* Task priority */
- 				tk_garb_retry : 2,
--				tk_cred_retry : 2,
--				tk_rebind_retry : 2;
-+				tk_cred_retry : 2;
- };
+--- a/tools/perf/util/auxtrace.c
++++ b/tools/perf/util/auxtrace.c
+@@ -2449,6 +2449,7 @@ static int find_entire_kern_cb(void *arg
+ 			       char type, u64 start)
+ {
+ 	struct sym_args *args = arg;
++	u64 size;
  
- typedef void			(*rpc_action)(struct rpc_task *);
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index ad3e9a40b0610..b9c54c03c30a6 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -1981,9 +1981,6 @@ call_bind_status(struct rpc_task *task)
- 			status = -EOPNOTSUPP;
- 			break;
- 		}
--		if (task->tk_rebind_retry == 0)
--			break;
--		task->tk_rebind_retry--;
- 		rpc_delay(task, 3*HZ);
- 		goto retry_timeout;
- 	case -ENOBUFS:
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index f0f55fbd13752..a00890962e115 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -796,7 +796,6 @@ rpc_init_task_statistics(struct rpc_task *task)
- 	/* Initialize retry counters */
- 	task->tk_garb_retry = 2;
- 	task->tk_cred_retry = 2;
--	task->tk_rebind_retry = 2;
+ 	if (!kallsyms__is_function(type))
+ 		return 0;
+@@ -2458,7 +2459,9 @@ static int find_entire_kern_cb(void *arg
+ 		args->start = start;
+ 	}
+ 	/* Don't know exactly where the kernel ends, so we add a page */
+-	args->size = round_up(start, page_size) + page_size - args->start;
++	size = round_up(start, page_size) + page_size - args->start;
++	if (size > args->size)
++		args->size = size;
  
- 	/* starting timestamp */
- 	task->tk_start = ktime_get();
--- 
-2.39.2
-
+ 	return 0;
+ }
 
 
