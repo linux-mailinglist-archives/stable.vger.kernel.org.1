@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDDD86FA54D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB4F6FAB85
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234095AbjEHKIA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36414 "EHLO
+        id S233914AbjEHLOP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234100AbjEHKIA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:08:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70A24EEF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:58 -0700 (PDT)
+        with ESMTP id S232941AbjEHLOO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8815235B0A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6E9B60F3A
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CA4C433EF;
-        Mon,  8 May 2023 10:07:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E17862BAA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BDCC433D2;
+        Mon,  8 May 2023 11:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540477;
-        bh=LKtJ6YrfbYIHs8+PzmHcT+C3MymehKWSmJjKRTYHQFc=;
+        s=korg; t=1683544452;
+        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GKOfgtZmgRROQUWlfe2AD8boNJ2Xzc8OkTIx1cQy7QGF6CEvejEq+uv8aQqxGRcgC
-         qIEQWVsK44pczblrzhGIDWezH8qsl7j+ivbNcyYTYHoYBJ/1HglxJIIPKUkmMO1BGo
-         7O/A4XWKjZ0sLHjnJ+9F/aLLvd2g4n9uWbrTNM/k=
+        b=tjRjvhoyCSFBpnLNLJCvycUgAogo9CaUyekF1EpLS4NSsgHgux3slb6KsIuXXjbiz
+         2ty/ioAH8NnvHC53GzufaFlyrM289QrdwD+bXp+fQs+KHP5iFFWo5jpdbLCC18M+Xx
+         b9v6qYnKNzG/YIMzCPx2NVQCCIHbMSvHN7AZsFSI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Mi <cmi@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Maor Dickman <maord@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 378/611] net/mlx5: E-switch, Create per vport table based on devlink encap mode
+Subject: [PATCH 6.3 385/694] net: qrtr: correct types of trace event parameters
 Date:   Mon,  8 May 2023 11:43:40 +0200
-Message-Id: <20230508094434.623912474@linuxfoundation.org>
+Message-Id: <20230508094445.471811678@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,114 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Mi <cmi@nvidia.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit fd745f4c0abe41ebb09d11bf622b054a0f3e7b49 ]
+[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
 
-Currently when creating per vport table, create flags are hardcoded.
-Devlink encap mode is set based on user input and HW capability.
-Create per vport table based on devlink encap mode.
+The arguments passed to the trace events are of type unsigned int,
+however the signature of the events used __le32 parameters.
 
-Fixes: c796bb7cd230 ("net/mlx5: E-switch, Generalize per vport table API")
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Maor Dickman <maord@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+I may be missing the point here, but sparse flagged this and it
+does seem incorrect to me.
+
+  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
+  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
+  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
+  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
+  ... (a lot more similar warnings)
+  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
+  net/qrtr/ns.c:115:47:    got unsigned int service
+  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
+  ... (a lot more similar warnings)
+
+Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/tc/sample.c   |  4 ++--
- .../net/ethernet/mellanox/mlx5/core/esw/vporttbl.c   | 12 +++++++++++-
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.h    |  2 +-
- .../ethernet/mellanox/mlx5/core/eswitch_offloads.c   |  2 +-
- 4 files changed, 15 insertions(+), 5 deletions(-)
+ include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/sample.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/sample.c
-index f2c2c752bd1c3..c57b097275241 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc/sample.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc/sample.c
-@@ -14,10 +14,10 @@
+diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
+index b1de14c3bb934..441132c67133f 100644
+--- a/include/trace/events/qrtr.h
++++ b/include/trace/events/qrtr.h
+@@ -10,15 +10,16 @@
  
- #define MLX5_ESW_VPORT_TBL_SIZE_SAMPLE (64 * 1024)
+ TRACE_EVENT(qrtr_ns_service_announce_new,
  
--static const struct esw_vport_tbl_namespace mlx5_esw_vport_tbl_sample_ns = {
-+static struct esw_vport_tbl_namespace mlx5_esw_vport_tbl_sample_ns = {
- 	.max_fte = MLX5_ESW_VPORT_TBL_SIZE_SAMPLE,
- 	.max_num_groups = 0,    /* default num of groups */
--	.flags = MLX5_FLOW_TABLE_TUNNEL_EN_REFORMAT | MLX5_FLOW_TABLE_TUNNEL_EN_DECAP,
-+	.flags = 0,
- };
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
  
- struct mlx5e_tc_psample {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/vporttbl.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/vporttbl.c
-index 9e72118f2e4c0..749c3957a1280 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/vporttbl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/vporttbl.c
-@@ -11,7 +11,7 @@ struct mlx5_vport_key {
- 	u16 prio;
- 	u16 vport;
- 	u16 vhca_id;
--	const struct esw_vport_tbl_namespace *vport_ns;
-+	struct esw_vport_tbl_namespace *vport_ns;
- } __packed;
+ 	TP_ARGS(service, instance, node, port),
  
- struct mlx5_vport_table {
-@@ -21,6 +21,14 @@ struct mlx5_vport_table {
- 	struct mlx5_vport_key key;
- };
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
  
-+static void
-+esw_vport_tbl_init(struct mlx5_eswitch *esw, struct esw_vport_tbl_namespace *ns)
-+{
-+	if (esw->offloads.encap != DEVLINK_ESWITCH_ENCAP_MODE_NONE)
-+		ns->flags |= (MLX5_FLOW_TABLE_TUNNEL_EN_REFORMAT |
-+			      MLX5_FLOW_TABLE_TUNNEL_EN_DECAP);
-+}
-+
- static struct mlx5_flow_table *
- esw_vport_tbl_create(struct mlx5_eswitch *esw, struct mlx5_flow_namespace *ns,
- 		     const struct esw_vport_tbl_namespace *vport_ns)
-@@ -80,6 +88,7 @@ mlx5_esw_vporttbl_get(struct mlx5_eswitch *esw, struct mlx5_vport_tbl_attr *attr
- 	u32 hkey;
+ 	TP_fast_assign(
+@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
  
- 	mutex_lock(&esw->fdb_table.offloads.vports.lock);
-+	esw_vport_tbl_init(esw, attr->vport_ns);
- 	hkey = flow_attr_to_vport_key(esw, attr, &skey);
- 	e = esw_vport_tbl_lookup(esw, &skey, hkey);
- 	if (e) {
-@@ -127,6 +136,7 @@ mlx5_esw_vporttbl_put(struct mlx5_eswitch *esw, struct mlx5_vport_tbl_attr *attr
- 	u32 hkey;
+ TRACE_EVENT(qrtr_ns_service_announce_del,
  
- 	mutex_lock(&esw->fdb_table.offloads.vports.lock);
-+	esw_vport_tbl_init(esw, attr->vport_ns);
- 	hkey = flow_attr_to_vport_key(esw, attr, &key);
- 	e = esw_vport_tbl_lookup(esw, &key, hkey);
- 	if (!e || --e->num_rules)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 5db76af35d3f5..6e6e0864063f1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -668,7 +668,7 @@ struct mlx5_vport_tbl_attr {
- 	u32 chain;
- 	u16 prio;
- 	u16 vport;
--	const struct esw_vport_tbl_namespace *vport_ns;
-+	struct esw_vport_tbl_namespace *vport_ns;
- };
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
  
- struct mlx5_flow_table *
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 64e5b9f29206e..ac8cf1b93e46a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -72,7 +72,7 @@
+ 	TP_ARGS(service, instance, node, port),
  
- #define MLX5_ESW_FT_OFFLOADS_DROP_RULE (1)
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
  
--static const struct esw_vport_tbl_namespace mlx5_esw_vport_tbl_mirror_ns = {
-+static struct esw_vport_tbl_namespace mlx5_esw_vport_tbl_mirror_ns = {
- 	.max_fte = MLX5_ESW_VPORT_TBL_SIZE,
- 	.max_num_groups = MLX5_ESW_VPORT_TBL_NUM_GROUPS,
- 	.flags = 0,
+ 	TP_fast_assign(
+@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
+ 
+ TRACE_EVENT(qrtr_ns_server_add,
+ 
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
+ 
+ 	TP_ARGS(service, instance, node, port),
+ 
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
+ 
+ 	TP_fast_assign(
 -- 
 2.39.2
 
