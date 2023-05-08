@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6326FA7BB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 501946FAB19
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234679AbjEHKe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
+        id S229652AbjEHLJ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:09:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234758AbjEHKeA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B033A234B6
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:07 -0700 (PDT)
+        with ESMTP id S233744AbjEHLJC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E06E3489B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E62DD6272B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13E6C433D2;
-        Mon,  8 May 2023 10:33:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF95262B09
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:08:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047C4C433EF;
+        Mon,  8 May 2023 11:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541986;
-        bh=amE3sEHx8BpKsR+JzTDsT89/L/cImNqKhaQwmTY2Hp8=;
+        s=korg; t=1683544139;
+        bh=dmJd4OCemEENWpqqoGuc7IUh4bnBGElRLNYG/eRgy2Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pijrL2EGmzPeVJZw+ufL68qi5S0Xf8tMPskBDLe0usGptI/ryaS60MIBnsKqVr0NC
-         lQAAN+GeMff2E4FBqvUceEb3efMF37aK9dWEPa13AWy0L6Wdyv5YHTFpBAUVNpcSbW
-         1t0nj8vx6HWuod239NFkcisaO9/fnYHeAY7+cW8w=
+        b=HqIdDicZvv4qkOkYxbMjQv9YOHyeXB07tneUXfShnzjjy9/HTl2Hew3+AKYJnncm/
+         e31vwLMPyAdiIjQALsWZ2J7GSlhd0qGzcCH/J8g+qTspwBfRERZyXCpO1/dDdMMS4J
+         cVkn5EhMWvik/Uv7ceWPQHfmAojbMn5dFJIMJI50=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 290/663] wifi: rtw88: mac: Return the original error from rtw_pwr_seq_parser()
-Date:   Mon,  8 May 2023 11:41:56 +0200
-Message-Id: <20230508094437.613190687@linuxfoundation.org>
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 282/694] media: mediatek: vcodec: remove unused lat_buf
+Date:   Mon,  8 May 2023 11:41:57 +0200
+Message-Id: <20230508094441.433168606@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,37 +57,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit b7ed9fa2cb76ca7a3c3cd4a6d35748fe1fbda9f6 ]
+[ Upstream commit af50b13dd3d7d5dbc1f08add1c462398e926a053 ]
 
-rtw_pwr_seq_parser() calls rtw_sub_pwr_seq_parser() which can either
-return -EBUSY, -EINVAL or 0. Propagate the original error code instead
-of unconditionally returning -EBUSY in case of an error.
+Remove unused lat_buf from core list, or leading to core list access
+NULL point.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230226221004.138331-2-martin.blumenstingl@googlemail.com
+Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../platform/mediatek/vcodec/vdec_msg_queue.c  | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index aa7c5901ef260..a4afef14e18d6 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -233,7 +233,7 @@ static int rtw_pwr_seq_parser(struct rtw_dev *rtwdev,
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index ce7c82e38103a..cdc539a46cb95 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -177,7 +177,7 @@ bool vdec_msg_queue_wait_lat_buf_full(struct vdec_msg_queue *msg_queue)
+ 	struct vdec_lat_buf *buf, *tmp;
+ 	struct list_head *list_core[3];
+ 	struct vdec_msg_queue_ctx *core_ctx;
+-	int ret, i, in_core_count = 0;
++	int ret, i, in_core_count = 0, count = 0;
+ 	long timeout_jiff;
  
- 		ret = rtw_sub_pwr_seq_parser(rtwdev, intf_mask, cut_mask, cmd);
- 		if (ret)
--			return -EBUSY;
-+			return ret;
+ 	core_ctx = &msg_queue->ctx->dev->msg_queue_core_ctx;
+@@ -204,8 +204,20 @@ bool vdec_msg_queue_wait_lat_buf_full(struct vdec_msg_queue *msg_queue)
+ 			       msg_queue->lat_ctx.ready_num);
+ 		return true;
+ 	}
+-	mtk_v4l2_err("failed with lat buf isn't full: %d",
+-		     msg_queue->lat_ctx.ready_num);
++
++	spin_lock(&core_ctx->ready_lock);
++	list_for_each_entry_safe(buf, tmp, &core_ctx->ready_queue, core_list) {
++		if (buf && buf->ctx == msg_queue->ctx) {
++			count++;
++			list_del(&buf->core_list);
++		}
++	}
++	spin_unlock(&core_ctx->ready_lock);
++
++	mtk_v4l2_err("failed with lat buf isn't full: list(%d %d) count:%d",
++		     atomic_read(&msg_queue->lat_list_cnt),
++		     atomic_read(&msg_queue->core_list_cnt), count);
++
+ 	return false;
+ }
  
- 		idx++;
- 	} while (1);
 -- 
 2.39.2
 
