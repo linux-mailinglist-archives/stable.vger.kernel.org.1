@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E036FA7E2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 533C26FA4F4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234794AbjEHKfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33692 "EHLO
+        id S234003AbjEHKEy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:04:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234828AbjEHKfQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:35:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA57424A8E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:49 -0700 (PDT)
+        with ESMTP id S234007AbjEHKEx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECBB130168
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D11562747
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC16C433D2;
-        Mon,  8 May 2023 10:34:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FFED62322
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A21C433D2;
+        Mon,  8 May 2023 10:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542088;
-        bh=r+PfYF5hzajNL+Cb+Zs/8DoBMoPG8fQ6KkReIIijeLY=;
+        s=korg; t=1683540289;
+        bh=Iy1VQN3ow+LIWyknszZ6UnibW9+VMfxAZ/o/yMvvmnE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dfgMtTnDENHH9l6raaDJgX5hG6wHee8LiD5tdLIB0x66AhWM72EmYiHZbSIRxZ4tx
-         GITJaUxctcxYjR0Rv1VpKF3so7zaz8zeLcdjhyMs/HKheF/4lfPfz8Ma0E9QEiE7mj
-         4FEBxnA6eDM/OEGXVNZHfFixJpHrQHEYM7PbVz14=
+        b=YKyY5/rD9TBwHn1pGUT8avQCWYou4VfASI3piQOMB343XH7TxRxq9WwkreJYtjoXj
+         9H/u+5YcZYlAXPNKqyJ6AXZMTFXWAOEGRvZhFcy120lnjCdGUXK34weD0ZXwPisb0v
+         mNu1EsjPP3YxBHr1ThRiahnKfpPrAg742HqBHx1M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Gaurav Jain <gaurav.jain@nxp.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 323/663] crypto: caam - Clear some memory in instantiate_rng
+Subject: [PATCH 6.1 307/611] f2fs: fix scheduling while atomic in decompression path
 Date:   Mon,  8 May 2023 11:42:29 +0200
-Message-Id: <20230508094438.675398720@linuxfoundation.org>
+Message-Id: <20230508094432.403707820@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,50 +54,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 9c19fb86a8cb2ee82a832c95e139f29ea05c4d08 ]
+[ Upstream commit 1aa161e43106d46ca8e9a86f4aa28d420258134b ]
 
-According to the comment at the end of the 'for' loop just a few lines
-below, it looks needed to clear 'desc'.
+[   16.945668][    C0] Call trace:
+[   16.945678][    C0]  dump_backtrace+0x110/0x204
+[   16.945706][    C0]  dump_stack_lvl+0x84/0xbc
+[   16.945735][    C0]  __schedule_bug+0xb8/0x1ac
+[   16.945756][    C0]  __schedule+0x724/0xbdc
+[   16.945778][    C0]  schedule+0x154/0x258
+[   16.945793][    C0]  bit_wait_io+0x48/0xa4
+[   16.945808][    C0]  out_of_line_wait_on_bit+0x114/0x198
+[   16.945824][    C0]  __sync_dirty_buffer+0x1f8/0x2e8
+[   16.945853][    C0]  __f2fs_commit_super+0x140/0x1f4
+[   16.945881][    C0]  f2fs_commit_super+0x110/0x28c
+[   16.945898][    C0]  f2fs_handle_error+0x1f4/0x2f4
+[   16.945917][    C0]  f2fs_decompress_cluster+0xc4/0x450
+[   16.945942][    C0]  f2fs_end_read_compressed_page+0xc0/0xfc
+[   16.945959][    C0]  f2fs_handle_step_decompress+0x118/0x1cc
+[   16.945978][    C0]  f2fs_read_end_io+0x168/0x2b0
+[   16.945993][    C0]  bio_endio+0x25c/0x2c8
+[   16.946015][    C0]  dm_io_dec_pending+0x3e8/0x57c
+[   16.946052][    C0]  clone_endio+0x134/0x254
+[   16.946069][    C0]  bio_endio+0x25c/0x2c8
+[   16.946084][    C0]  blk_update_request+0x1d4/0x478
+[   16.946103][    C0]  scsi_end_request+0x38/0x4cc
+[   16.946129][    C0]  scsi_io_completion+0x94/0x184
+[   16.946147][    C0]  scsi_finish_command+0xe8/0x154
+[   16.946164][    C0]  scsi_complete+0x90/0x1d8
+[   16.946181][    C0]  blk_done_softirq+0xa4/0x11c
+[   16.946198][    C0]  _stext+0x184/0x614
+[   16.946214][    C0]  __irq_exit_rcu+0x78/0x144
+[   16.946234][    C0]  handle_domain_irq+0xd4/0x154
+[   16.946260][    C0]  gic_handle_irq.33881+0x5c/0x27c
+[   16.946281][    C0]  call_on_irq_stack+0x40/0x70
+[   16.946298][    C0]  do_interrupt_handler+0x48/0xa4
+[   16.946313][    C0]  el1_interrupt+0x38/0x68
+[   16.946346][    C0]  el1h_64_irq_handler+0x20/0x30
+[   16.946362][    C0]  el1h_64_irq+0x78/0x7c
+[   16.946377][    C0]  finish_task_switch+0xc8/0x3d8
+[   16.946394][    C0]  __schedule+0x600/0xbdc
+[   16.946408][    C0]  preempt_schedule_common+0x34/0x5c
+[   16.946423][    C0]  preempt_schedule+0x44/0x48
+[   16.946438][    C0]  process_one_work+0x30c/0x550
+[   16.946456][    C0]  worker_thread+0x414/0x8bc
+[   16.946472][    C0]  kthread+0x16c/0x1e0
+[   16.946486][    C0]  ret_from_fork+0x10/0x20
 
-So it should also be cleared for the first iteration.
-
-Move the memset() to the beginning of the loop to be safe.
-
-Fixes: 281922a1d4f5 ("crypto: caam - add support for SEC v5.x RNG4")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
+Fixes: 95fa90c9e5a7 ("f2fs: support recording errors into superblock")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/ctrl.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/compress.c | 7 ++++++-
+ fs/f2fs/f2fs.h     | 1 +
+ fs/f2fs/super.c    | 2 +-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
-index 32253a064d0fe..3b79e0d83d40a 100644
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -284,6 +284,10 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
- 		const u32 rdsta_if = RDSTA_IF0 << sh_idx;
- 		const u32 rdsta_pr = RDSTA_PR0 << sh_idx;
- 		const u32 rdsta_mask = rdsta_if | rdsta_pr;
-+
-+		/* Clear the contents before using the descriptor */
-+		memset(desc, 0x00, CAAM_CMD_SZ * 7);
-+
- 		/*
- 		 * If the corresponding bit is set, this state handle
- 		 * was initialized by somebody else, so it's left alone.
-@@ -327,8 +331,6 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
- 		}
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 9ee021e49bced..b160863eca141 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -762,7 +762,12 @@ void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
  
- 		dev_info(ctrldev, "Instantiated RNG4 SH%d\n", sh_idx);
--		/* Clear the contents before recreating the descriptor */
--		memset(desc, 0x00, CAAM_CMD_SZ * 7);
+ 	if (dic->clen > PAGE_SIZE * dic->nr_cpages - COMPRESS_HEADER_SIZE) {
+ 		ret = -EFSCORRUPTED;
+-		f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
++
++		/* Avoid f2fs_commit_super in irq context */
++		if (in_task)
++			f2fs_save_errors(sbi, ERROR_FAIL_DECOMPRESSION);
++		else
++			f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
+ 		goto out_release;
  	}
  
- 	kfree(desc);
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 87664c309b3c8..4b44ca1decdd3 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3569,6 +3569,7 @@ int f2fs_quota_sync(struct super_block *sb, int type);
+ loff_t max_file_blocks(struct inode *inode);
+ void f2fs_quota_off_umount(struct super_block *sb);
+ void f2fs_handle_stop(struct f2fs_sb_info *sbi, unsigned char reason);
++void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag);
+ void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error);
+ int f2fs_commit_super(struct f2fs_sb_info *sbi, bool recover);
+ int f2fs_sync_fs(struct super_block *sb, int sync);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 14c87399efea2..5af05411818a5 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3861,7 +3861,7 @@ void f2fs_handle_stop(struct f2fs_sb_info *sbi, unsigned char reason)
+ 	f2fs_up_write(&sbi->sb_lock);
+ }
+ 
+-static void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag)
++void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag)
+ {
+ 	spin_lock(&sbi->error_lock);
+ 	if (!test_bit(flag, (unsigned long *)sbi->errors)) {
 -- 
 2.39.2
 
