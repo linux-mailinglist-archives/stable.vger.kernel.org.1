@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C28B6FA610
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AA246FADC3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:38:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234305AbjEHKPv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44824 "EHLO
+        id S236125AbjEHLiD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234309AbjEHKPu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:15:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7013ACEB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:15:49 -0700 (PDT)
+        with ESMTP id S236134AbjEHLhu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:37:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C558B1FEA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:37:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD4766246C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:15:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF34C433D2;
-        Mon,  8 May 2023 10:15:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14E9763364
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25888C433D2;
+        Mon,  8 May 2023 11:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540948;
-        bh=vLCJuoym0/SzS2bi6LkyBfnhBr9rtA6CMRGTcY2L4Ts=;
+        s=korg; t=1683545824;
+        bh=S88wOIt2IOhnBEdUVCQyOQM2UOcf9UrLxZnhgA6RpnY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=POsWMNh2AMbwYGm6eWqXw5DAQ6iWMDkCE4SAar5DHgBpXyTbqNXT5cxw+o0HLVdw6
-         GAj6xCCBpVBaQ4BmMv3V8dz+JE2kpN67Oo6s/g4Zqs3ms8yewCR+8+R2xu1T0QkxyJ
-         8PtFG/TpRWoyZXpJTKL4B662NDmFTjHA5HRqP5os=
+        b=LsMRVdmq90Ay5kq5mTC4R035og9BpJOH2LgxOrKPHdhw/jzbsbQNjq6JxgTqjr73d
+         bj3I0ldU06e7PZaVQWdVF4GKqVopD6LAPsgPyZKGf3IeqhggnPFYOzjOEz3MtlVlPo
+         umLeBhLoGUuHi6Y9eGju8pC5tBw7r9u19ti9SXmE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 517/611] RDMA/mlx5: Use correct device num_ports when modify DC
+Subject: [PATCH 5.15 158/371] bpf: take into account liveness when propagating precision
 Date:   Mon,  8 May 2023 11:45:59 +0200
-Message-Id: <20230508094438.843244328@linuxfoundation.org>
+Message-Id: <20230508094818.364890114@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,37 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 746aa3c8cb1a650ff2583497ac646e505831b9b9 ]
+[ Upstream commit 52c2b005a3c18c565fc70cfd0ca49375f301e952 ]
 
-Just like other QP types, when modify DC, the port_num should be compared
-with dev->num_ports, instead of HCA_CAP.num_ports.  Otherwise Multi-port
-vHCA on DC may not work.
+When doing state comparison, if old state has register that is not
+marked as REG_LIVE_READ, then we just skip comparison, regardless what's
+the state of corresponing register in current state. This is because not
+REG_LIVE_READ register is irrelevant for further program execution and
+correctness. All good here.
 
-Fixes: 776a3906b692 ("IB/mlx5: Add support for DC target QP")
-Link: https://lore.kernel.org/r/20230420013906.1244185-1-markzhang@nvidia.com
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+But when we get to precision propagation, after two states were declared
+equivalent, we don't take into account old register's liveness, and thus
+attempt to propagate precision for register in current state even if
+that register in old state was not REG_LIVE_READ anymore. This is bad,
+because register in current state could be anything at all and this
+could cause -EFAULT due to internal logic bugs.
+
+Fix by taking into account REG_LIVE_READ liveness mark to keep the logic
+in state comparison in sync with precision propagation.
+
+Fixes: a3ce685dd01a ("bpf: fix precision tracking")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20230309224131.57449-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index cf953d23d18da..f7d3643b08f50 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -4408,7 +4408,7 @@ static int mlx5_ib_modify_dct(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 			return -EINVAL;
- 
- 		if (attr->port_num == 0 ||
--		    attr->port_num > MLX5_CAP_GEN(dev->mdev, num_ports)) {
-+		    attr->port_num > dev->num_ports) {
- 			mlx5_ib_dbg(dev, "invalid port number %d. number of ports is %d\n",
- 				    attr->port_num, dev->num_ports);
- 			return -EINVAL;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 37d4b5f5ec0c3..8e6f868d6cb9b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10616,7 +10616,8 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 		state_reg = state->regs;
+ 		for (i = 0; i < BPF_REG_FP; i++, state_reg++) {
+ 			if (state_reg->type != SCALAR_VALUE ||
+-			    !state_reg->precise)
++			    !state_reg->precise ||
++			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating r%d\n", i, fr);
+@@ -10630,7 +10631,8 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 				continue;
+ 			state_reg = &state->stack[i].spilled_ptr;
+ 			if (state_reg->type != SCALAR_VALUE ||
+-			    !state_reg->precise)
++			    !state_reg->precise ||
++			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating fp%d\n",
 -- 
 2.39.2
 
