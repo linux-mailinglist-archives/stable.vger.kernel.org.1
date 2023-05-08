@@ -2,105 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 696056FB625
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 20:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A1B06FB687
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 20:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjEHSBd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 14:01:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53102 "EHLO
+        id S232230AbjEHS6c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 14:58:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjEHSBd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 14:01:33 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E3035AA;
-        Mon,  8 May 2023 11:01:31 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-52caed90d17so2430868a12.0;
-        Mon, 08 May 2023 11:01:31 -0700 (PDT)
+        with ESMTP id S229452AbjEHS6b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 14:58:31 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE3855B6;
+        Mon,  8 May 2023 11:58:30 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1962e7284baso7122fac.3;
+        Mon, 08 May 2023 11:58:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683568891; x=1686160891;
+        d=gmail.com; s=20221208; t=1683572309; x=1686164309;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CxYhKZWcTM6D0zvItXjXfl3kEr6BBDEZH2De/KsXnU0=;
-        b=RjE9Zy5bFl7s5q/SOisMx8EM08G+BB800LBMmnQcnf1FZjwKN50ndFOsk9R1TgrV8g
-         Dmqzc+GfiroxjQ5hUQWqtifI0c4ccQfLTfTok398wwKSZGcHwYQx9WfudqNGJeBedwPf
-         6vI8A0qFgL0V/K8ICs7Wo9MlspJ/SRQh1yEcsByHY+R37+oS+44jhc8cfOcQ/zNCJmOl
-         bYoBXrch2J8kTWBecgEY/6NePkXV5Zc9mo8/IWlKqS1wW85Z51EbOJC2M3/HmJfQ/Moc
-         Cf9sRBJWXz1B5/GSWaGmNfRCF+U6nv9hVEJP7UxNMinhuZJfxz2gNubNBY93vT/WW2SE
-         /m5Q==
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=khJ7hj8pKzFr6tqyeboXwy6UfhzWTFVnsM5WxLOl67M=;
+        b=Zo84P87WI5Ps+SkkrQmvC+jCg+4VfseRp8HtoeRvasjynnkU0vS7bM96JKKunjJwGV
+         TrrFf892d1ur2PVpu4/o7OoR87P9BCNdk9HKLTk4kfaCvRN0oeWsFlrVabJQ47LhAlpu
+         h0HOKYIovqy9DfzVUzMaK4EJiAW30d0/8h8IQY5FnAEoitXgte4heA1ymkhOFZreQpqK
+         AvGUKxrtIn5yBILorWtEAIRSTUgdvtDSkOAKlqzZwZAd/p4HdVDZj2oI1+cjT78gQK6K
+         /qCCbeGgTWJf+KplquPJzl0pWwGDtp5o+1vQq2eXNyZikBNCLhx4MpBwx7pILAEn98Sz
+         gwFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683568891; x=1686160891;
+        d=1e100.net; s=20221208; t=1683572309; x=1686164309;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CxYhKZWcTM6D0zvItXjXfl3kEr6BBDEZH2De/KsXnU0=;
-        b=Gzf5LaSnXJ8V0to1mJFsX86zHN4B47FRD9P4HIQioxC80FjXRFpYPweqOyfu7ApwW2
-         0KycHEGR3kqXzJEKHAD9SFECio0/b5+HxmQKr9ndUHi8FB0Ypr/mYQtyolE73OXFHw9p
-         Bc5EwhYfJ7YqnV6OcGCynKxNoWbwOopG+7NWOhRuDgRgmJy+RFG5kVwLtG4Nqz7S5CqR
-         61E1w0QSZR2LV5KjfDtRVbdZPNVLQN55vUxrqlw8UhcDgVKN4siK0OIAYzFMixvAlz3O
-         whCmWl1MZHGB6L3UX31/hMrCpHGvPN7D6vIhPsoNM2m1NyCwWIJFpMReiEYRGAhAzji6
-         wjfA==
-X-Gm-Message-State: AC+VfDyeU3WyLVTcZ2hAm0fanYkHzGdTygOtWd5Mh2rW+qf7BO7stkcQ
-        HH/cAoKKHzPITtzaoY6Ro3o=
-X-Google-Smtp-Source: ACHHUZ4SQsmgQ9UWv9tiEpgxGofTIxrtbBNrMqUq9CdvGszWhGb6ZM87uyYI4/mets9p8H9kHSOdvA==
-X-Received: by 2002:a05:6a20:3d27:b0:100:99a:7f71 with SMTP id y39-20020a056a203d2700b00100099a7f71mr8042018pzi.2.1683568890882;
-        Mon, 08 May 2023 11:01:30 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id k11-20020a63ff0b000000b00528af015a8dsm6566447pgi.14.2023.05.08.11.01.28
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=khJ7hj8pKzFr6tqyeboXwy6UfhzWTFVnsM5WxLOl67M=;
+        b=eMGEdqqvy8hdNQQdPXG0oaS3mSIvFThOJiLkR7603Gi397LnODepdCzykR8JbPo2pB
+         WCHd4wQgUmUVBJEIHV2xlXJhKqbvlUhSVwhF+ux86bmdEP4xpPx2AMWb/jD4WK+Kvdan
+         yZYwXGNB1/zhkx5otvMS1O+TNriFSJwHV/bHe2eq4MrA8Xjq758o421KkvnkjpIMOxDG
+         THEkMNh0g0YaSBxm/zVcNkwHpB5z0fyWyhL9md/LcmhtNTFDYp5gN0Gl0wYzqX52O9y/
+         FlodPPMVfTkVFAjOzxxHfZQ69SG6+nWteFIv/hgMhwJMMccYRV/T+GGrBJdVCryHZEXT
+         59/A==
+X-Gm-Message-State: AC+VfDyu1DcpgmX/Fnfl8jxFTJmmsS+2MLTha3fHKrBhTRqSk0kO0qmX
+        Kdm8rsCWZxDWM4zISSdK+yA=
+X-Google-Smtp-Source: ACHHUZ6qrVcnbOYHKkYyusot+yOC9Ow29ttRwx7lPN1Jp+Xc9r0nKJgHT+eEVd0nRzF1YmOPUPc9QA==
+X-Received: by 2002:a05:6870:5141:b0:18e:8a68:fe41 with SMTP id z1-20020a056870514100b0018e8a68fe41mr5507010oak.56.1683572309668;
+        Mon, 08 May 2023 11:58:29 -0700 (PDT)
+Received: from [10.62.118.118] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id h3-20020a056870860300b0017fea9c156esm5248412oal.18.2023.05.08.11.58.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 11:01:29 -0700 (PDT)
-Message-ID: <b082ef46-a26d-db65-81cf-42f6f694de58@gmail.com>
-Date:   Mon, 8 May 2023 11:01:27 -0700
+        Mon, 08 May 2023 11:58:29 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <33aff1cc-37f9-88a5-9fd5-5d8db21dc42d@lwfinger.net>
+Date:   Mon, 8 May 2023 13:58:28 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 5.15 000/371] 5.15.111-rc1 review
+ Thunderbird/102.10.1
+Subject: Re: [PATCH] wifi: rtw88: use work to update rate to avoid RCU warning
 Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-References: <20230508094811.912279944@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org,
+        tony0620emma@gmail.com
+Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20230508085429.46653-1-pkshih@realtek.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20230508085429.46653-1-pkshih@realtek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/8/23 02:43, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.111 release.
-> There are 371 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 5/8/23 03:54, Ping-Ke Shih wrote:
+> The ieee80211_ops::sta_rc_update must be atomic, because
+> ieee80211_chan_bw_change() holds rcu_read lock while calling
+> drv_sta_rc_update(), so create a work to do original things.
 > 
-> Responses should be made by Wed, 10 May 2023 09:47:07 +0000.
-> Anything received after that time might be too late.
+>   Voluntary context switch within RCU read-side critical section!
+>   WARNING: CPU: 0 PID: 4621 at kernel/rcu/tree_plugin.h:318
+>   rcu_note_context_switch+0x571/0x5d0
+>   CPU: 0 PID: 4621 Comm: kworker/u16:2 Tainted: G        W  OE
+>   Workqueue: phy3 ieee80211_chswitch_work [mac80211]
+>   RIP: 0010:rcu_note_context_switch+0x571/0x5d0
+>   Call Trace:
+>    <TASK>
+>    __schedule+0xb0/0x1460
+>    ? __mod_timer+0x116/0x360
+>    schedule+0x5a/0xc0
+>    schedule_timeout+0x87/0x150
+>    ? trace_raw_output_tick_stop+0x60/0x60
+>    wait_for_completion_timeout+0x7b/0x140
+>    usb_start_wait_urb+0x82/0x160 [usbcore
+>    usb_control_msg+0xe3/0x140 [usbcore
+>    rtw_usb_read+0x88/0xe0 [rtw_usb
+>    rtw_usb_read8+0xf/0x10 [rtw_usb
+>    rtw_fw_send_h2c_command+0xa0/0x170 [rtw_core
+>    rtw_fw_send_ra_info+0xc9/0xf0 [rtw_core
+>    drv_sta_rc_update+0x7c/0x160 [mac80211
+>    ieee80211_chan_bw_change+0xfb/0x110 [mac80211
+>    ieee80211_change_chanctx+0x38/0x130 [mac80211
+>    ieee80211_vif_use_reserved_switch+0x34e/0x900 [mac80211
+>    ieee80211_link_use_reserved_context+0x88/0xe0 [mac80211
+>    ieee80211_chswitch_work+0x95/0x170 [mac80211
+>    process_one_work+0x201/0x410
+>    worker_thread+0x4a/0x3b0
+>    ? process_one_work+0x410/0x410
+>    kthread+0xe1/0x110
+>    ? kthread_complete_and_exit+0x20/0x20
+>    ret_from_fork+0x1f/0x30
+>    </TASK>
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.111-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Cc: stable@vger.kernel.org
+> Fixes: c1edc86472fc ("rtw88: add ieee80211:sta_rc_update ops")
+> Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Link: https://lore.kernel.org/linux-wireless/f1e31e8e-f84e-3791-50fb-663a83c5c6e9@lwfinger.net/T/#t
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>   drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
+>   drivers/net/wireless/realtek/rtw88/main.c     | 15 +++++++++++++++
+>   drivers/net/wireless/realtek/rtw88/main.h     |  3 +++
+>   3 files changed, 19 insertions(+), 1 deletion(-)
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Tested-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Thanks,
+
+Larry
 
