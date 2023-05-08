@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8A676FAA90
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2CFB6FA741
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233009AbjEHLD5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:03:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39418 "EHLO
+        id S234662AbjEHK2u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235491AbjEHLDP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96EBF2BCF8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:34 -0700 (PDT)
+        with ESMTP id S234596AbjEHK2b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B693DDB5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 136C162A55
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEF1C433EF;
-        Mon,  8 May 2023 11:02:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDE3461D7E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4C8C433D2;
+        Mon,  8 May 2023 10:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543753;
-        bh=6zdazQ1ZaY63AR85gKjZ6oCnLu6qif47Nu0S0OoHsnY=;
+        s=korg; t=1683541708;
+        bh=qTk6e8J0Fp2AA8ygN0geMH0ulaG/Oosu4RqKgMum6fM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6byMUAvPzrV9qRKxDg2psMQsy9gdUS19oyRgNCtsSX5NPdhBc/M35fAtlxuKtk1A
-         CGR5wlXHvy4ZV5QUJN8Afi5rk36BH7LZvzl1jaHsvaOd0o2yLEIVylJjoPQ+dPJ4kx
-         RzmCk1Cj6L2wwPZI1ZZUWOSnsCk33DLj2z21sgKU=
+        b=XhKeFOLUZHUMKH8aMQZBTfpOIpPQl5weZO+ZKUvvv3H+omjNwqKGX/3snfHXVblBL
+         iweuRhlXnfLP/Bz0ENE8mwHDUFhyPcSF4iaBFEsRlgK1LGPJ3YHrkErYoXL6R0NMBM
+         xdgKJ0Vrsl7rQpupEMHBYGv+y2bsGkwvN+tinCOw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
+        Sven Peter <sven@svenpeter.dev>,
+        Hector Martin <marcan@marcan.st>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 191/694] arm64: dts: qcom: sm8250: Fix the PCI I/O port range
+Subject: [PATCH 6.2 200/663] arm64: dts: apple: t8103: Disable unused PCIe ports
 Date:   Mon,  8 May 2023 11:40:26 +0200
-Message-Id: <20230508094438.619003305@linuxfoundation.org>
+Message-Id: <20230508094434.875274597@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,62 +55,199 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit e115a4495db687898b8d91d4f16c2cf55bbf167c ]
+[ Upstream commit a0189fdfb73dac856b8fa9b9f9581e5099c9391f ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
-(0x60200000, 0x40200000, 0x64200000) specified in the ranges property for
-I/O region.
+The PCIe ports are unused (without devices) so disable them instead of
+removing them.
 
-While at it, let's use the missing 0x prefix for the addresses.
-
-Fixes: e53bdfc00977 ("arm64: dts: qcom: sm8250: Add PCIe support")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-9-manivannan.sadhasivam@linaro.org
+Fixes: 7c77ab91b33d ("arm64: dts: apple: Add missing M1 (t8103) devices")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/apple/t8103-j274.dts | 10 ++++++++++
+ arch/arm64/boot/dts/apple/t8103-j293.dts | 15 ---------------
+ arch/arm64/boot/dts/apple/t8103-j313.dts | 15 ---------------
+ arch/arm64/boot/dts/apple/t8103-j456.dts | 10 ++++++++++
+ arch/arm64/boot/dts/apple/t8103-j457.dts | 11 +++--------
+ arch/arm64/boot/dts/apple/t8103.dtsi     |  4 ++++
+ 6 files changed, 27 insertions(+), 38 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 2f0e460acccdc..e592ddcc0f075 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -1834,8 +1834,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/arch/arm64/boot/dts/apple/t8103-j274.dts b/arch/arm64/boot/dts/apple/t8103-j274.dts
+index b52ddc4098939..1c3e37f86d46d 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j274.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j274.dts
+@@ -37,10 +37,12 @@
  
--			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
--				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
+ &port01 {
+ 	bus-range = <2 2>;
++	status = "okay";
+ };
  
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
-@@ -1943,7 +1943,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+ &port02 {
+ 	bus-range = <3 3>;
++	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+ 		reg = <0x30000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+@@ -48,6 +50,14 @@
+ 	};
+ };
  
--			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
++&pcie0_dart_1 {
++	status = "okay";
++};
++
++&pcie0_dart_2 {
++	status = "okay";
++};
++
+ &i2c2 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/apple/t8103-j293.dts b/arch/arm64/boot/dts/apple/t8103-j293.dts
+index 151074109a114..c363dfef80709 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j293.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j293.dts
+@@ -25,21 +25,6 @@
+ 	brcm,board-type = "apple,honshu";
+ };
  
- 			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2051,7 +2051,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+-/*
+- * Remove unused PCIe ports and disable the associated DARTs.
+- */
+-
+-&pcie0_dart_1 {
+-	status = "disabled";
+-};
+-
+-&pcie0_dart_2 {
+-	status = "disabled";
+-};
+-
+-/delete-node/ &port01;
+-/delete-node/ &port02;
+-
+ &i2c2 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/apple/t8103-j313.dts b/arch/arm64/boot/dts/apple/t8103-j313.dts
+index bc1f865aa7909..08409be1cf357 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j313.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j313.dts
+@@ -24,18 +24,3 @@
+ &wifi0 {
+ 	brcm,board-type = "apple,shikoku";
+ };
+-
+-/*
+- * Remove unused PCIe ports and disable the associated DARTs.
+- */
+-
+-&pcie0_dart_1 {
+-	status = "disabled";
+-};
+-
+-&pcie0_dart_2 {
+-	status = "disabled";
+-};
+-
+-/delete-node/ &port01;
+-/delete-node/ &port02;
+diff --git a/arch/arm64/boot/dts/apple/t8103-j456.dts b/arch/arm64/boot/dts/apple/t8103-j456.dts
+index 2db425ceb30f6..58c8e43789b48 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j456.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j456.dts
+@@ -55,13 +55,23 @@
  
--			ranges = <0x01000000 0x0 0x64200000 0x0 0x64200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x64200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x64300000 0x0 0x64300000 0x0 0x3d00000>;
+ &port01 {
+ 	bus-range = <2 2>;
++	status = "okay";
+ };
  
- 			interrupts = <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
+ &port02 {
+ 	bus-range = <3 3>;
++	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+ 		reg = <0x30000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+ 		local-mac-address = [00 10 18 00 00 00];
+ 	};
+ };
++
++&pcie0_dart_1 {
++	status = "okay";
++};
++
++&pcie0_dart_2 {
++	status = "okay";
++};
+diff --git a/arch/arm64/boot/dts/apple/t8103-j457.dts b/arch/arm64/boot/dts/apple/t8103-j457.dts
+index 3821ff146c56b..152f95fd49a21 100644
+--- a/arch/arm64/boot/dts/apple/t8103-j457.dts
++++ b/arch/arm64/boot/dts/apple/t8103-j457.dts
+@@ -37,6 +37,7 @@
+ 
+ &port02 {
+ 	bus-range = <3 3>;
++	status = "okay";
+ 	ethernet0: ethernet@0,0 {
+ 		reg = <0x30000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+@@ -44,12 +45,6 @@
+ 	};
+ };
+ 
+-/*
+- * Remove unused PCIe port and disable the associated DART.
+- */
+-
+-&pcie0_dart_1 {
+-	status = "disabled";
++&pcie0_dart_2 {
++	status = "okay";
+ };
+-
+-/delete-node/ &port01;
+diff --git a/arch/arm64/boot/dts/apple/t8103.dtsi b/arch/arm64/boot/dts/apple/t8103.dtsi
+index 9859219699f45..87a9c1ba6d0f4 100644
+--- a/arch/arm64/boot/dts/apple/t8103.dtsi
++++ b/arch/arm64/boot/dts/apple/t8103.dtsi
+@@ -724,6 +724,7 @@
+ 			interrupt-parent = <&aic>;
+ 			interrupts = <AIC_IRQ 699 IRQ_TYPE_LEVEL_HIGH>;
+ 			power-domains = <&ps_apcie_gp>;
++			status = "disabled";
+ 		};
+ 
+ 		pcie0_dart_2: iommu@683008000 {
+@@ -733,6 +734,7 @@
+ 			interrupt-parent = <&aic>;
+ 			interrupts = <AIC_IRQ 702 IRQ_TYPE_LEVEL_HIGH>;
+ 			power-domains = <&ps_apcie_gp>;
++			status = "disabled";
+ 		};
+ 
+ 		pcie0: pcie@690000000 {
+@@ -807,6 +809,7 @@
+ 						<0 0 0 2 &port01 0 0 0 1>,
+ 						<0 0 0 3 &port01 0 0 0 2>,
+ 						<0 0 0 4 &port01 0 0 0 3>;
++				status = "disabled";
+ 			};
+ 
+ 			port02: pci@2,0 {
+@@ -826,6 +829,7 @@
+ 						<0 0 0 2 &port02 0 0 0 1>,
+ 						<0 0 0 3 &port02 0 0 0 2>,
+ 						<0 0 0 4 &port02 0 0 0 3>;
++				status = "disabled";
+ 			};
+ 		};
+ 	};
 -- 
 2.39.2
 
