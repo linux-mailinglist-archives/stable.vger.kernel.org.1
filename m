@@ -2,164 +2,350 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2396FADF1
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 488C26FA930
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235939AbjEHLjn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
+        id S235062AbjEHKtO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236152AbjEHLj0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D30A31B04
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:05 -0700 (PDT)
+        with ESMTP id S235138AbjEHKsw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6733B29FD0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:48:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C811763012
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B903BC433D2;
-        Mon,  8 May 2023 11:39:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 496DE62909
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:48:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539ACC4339B;
+        Mon,  8 May 2023 10:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545944;
-        bh=KJ0IC0PncwL+PAkObK0Z38OkBdsCIxLXCcd4aSjOX2s=;
+        s=korg; t=1683542889;
+        bh=jKJl9w9XQtZuyayNb4fpMYo6zqSEsoO94cMGwx3uAds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KY82o0V5wF+W6GBpOUDwfzZgpiOrTrAp5jJY0Y4PNg3/Mx33Od9Qe2tssQc5uf3Ut
-         ZNf+86J7lhKpZuVcUVjQx41MsbAhNLugcKLAQ1+NE9J5GNz6FY2d3v5SrDFGw8Ktrx
-         xWUSW/tx3cT4sNLzAzqT4+giJyCNnDwd/bPh8QEM=
+        b=jPQSqFJvMDdkOnX4j6oTOcYWKqTXXg3wWFXewD8jrTsZq0TwB/gALzcvdR8ptishZ
+         +HWCGS2uoZLbwPn4Sw92BwnowTmfZluOVxeU6f4T9O+E4sBcfM58omlTGmALFv1kZb
+         EkKIk5UmzS7fBzTmtA+6zEUccEsX5Uq3pxXtBHKk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 206/371] md/raid10: fix task hung in raid10d
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 581/663] pinctrl: renesas: r8a779g0: Fix Group 6/7 pin functions
 Date:   Mon,  8 May 2023 11:46:47 +0200
-Message-Id: <20230508094820.255592567@linuxfoundation.org>
+Message-Id: <20230508094448.176969611@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Nan <linan122@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 72c215ed8731c88b2d7e09afc51fffc207ae47b8 ]
+[ Upstream commit 203734a0419cade9c76016f66e2c7ba354c249b4 ]
 
-commit fe630de009d0 ("md/raid10: avoid deadlock on recovery.") allowed
-normal io and sync io to exist at the same time. Task hung will occur as
-below:
+According to R-Car V4H Series User’s Manual: Hardware Rev. 0.54, pin
+groups 6 and 7 do not use Module Select Registers to configure pin
+functions.
 
-T1                      T2		T3		T4
-raid10d
- handle_read_error
-  allow_barrier
-   conf->nr_pending--
-    -> 0
-                        //submit sync io
-                        raid10_sync_request
-                         raise_barrier
-			  ->will not be blocked
-			  ...
-			//submit to drivers
-  raid10_read_request
-   wait_barrier
-    conf->nr_pending++
-     -> 1
-					//retry read fail
-					raid10_end_read_request
-					 reschedule_retry
-					  add to retry_list
-					  conf->nr_queued++
-					   -> 1
-							//sync io fail
-							end_sync_read
-							 __end_sync_read
-							  reschedule_retry
-							   add to retry_list
-					                    conf->nr_queued++
-							     -> 2
- ...
- handle_read_error
- get form retry_list
- conf->nr_queued--
-  freeze_array
-   wait nr_pending == nr_queued+1
-        ->1	      ->2
-   //task hung
+Hence:
+  - Remove the non-existent Module Select Registers (MODSEL[67]),
+  - Correct the affected PINMUX definitions.
 
-retry read and sync io will be added to retry_list(nr_queued->2) if they
-fails. raid10d() called handle_read_error() and hung in freeze_array().
-nr_queued will not decrease because raid10d is blocked, nr_pending will
-not increase because conf->barrier is not released.
-
-Fix it by moving allow_barrier() after raid10_read_request().
-raise_barrier() will wait for nr_waiting to become 0. Therefore, sync io
-and regular io will not be issued at the same time.
-
-Also remove the check of nr_queued in stop_waiting_barrier. It can be 0
-but don't need to be blocking. Remove the check for MD_RECOVERY_RUNNING as
-the check is redundent.
-
-Fixes: fe630de009d0 ("md/raid10: avoid deadlock on recovery.")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230222041000.3341651-2-linan666@huaweicloud.com
+Fixes: 36611d28f5130d8b ("pinctrl: renesas: r8a779g0: Add missing MODSELx for AVBx")
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/06972cafd0efa4cfb395cfa76000a1bdae5e9e73.1669036423.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 171 +++++++------------------
+ 1 file changed, 49 insertions(+), 122 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 31ecb080851ac..4bf09ecedec14 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -970,11 +970,15 @@ static bool stop_waiting_barrier(struct r10conf *conf)
- 	    (!bio_list_empty(&bio_list[0]) || !bio_list_empty(&bio_list[1])))
- 		return true;
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index 9545adc84355e..af7cfe32b1ecc 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -649,30 +649,6 @@ FM(IP0SR8_23_20)	IP0SR8_23_20	FM(IP1SR8_23_20)	IP1SR8_23_20	\
+ FM(IP0SR8_27_24)	IP0SR8_27_24	\
+ FM(IP0SR8_31_28)	IP0SR8_31_28
  
--	/* move on if recovery thread is blocked by us */
--	if (conf->mddev->thread->tsk == current &&
--	    test_bit(MD_RECOVERY_RUNNING, &conf->mddev->recovery) &&
--	    conf->nr_queued > 0)
-+	/*
-+	 * move on if io is issued from raid10d(), nr_pending is not released
-+	 * from original io(see handle_read_error()). All raise barrier is
-+	 * blocked until this io is done.
-+	 */
-+	if (conf->mddev->thread->tsk == current) {
-+		WARN_ON_ONCE(atomic_read(&conf->nr_pending) == 0);
- 		return true;
-+	}
+-/* MOD_SEL6 */			/* 0 */				/* 1 */
+-#define MOD_SEL6_18		FM(SEL_AVB1_TD3_0)		FM(SEL_AVB1_TD3_1)
+-#define MOD_SEL6_16		FM(SEL_AVB1_TD2_0)		FM(SEL_AVB1_TD2_1)
+-#define MOD_SEL6_13		FM(SEL_AVB1_TD0_0)		FM(SEL_AVB1_TD0_1)
+-#define MOD_SEL6_12		FM(SEL_AVB1_TD1_0)		FM(SEL_AVB1_TD1_1)
+-#define MOD_SEL6_10		FM(SEL_AVB1_AVTP_PPS_0)		FM(SEL_AVB1_AVTP_PPS_1)
+-#define MOD_SEL6_7		FM(SEL_AVB1_TX_CTL_0)		FM(SEL_AVB1_TX_CTL_1)
+-#define MOD_SEL6_6		FM(SEL_AVB1_TXC_0)		FM(SEL_AVB1_TXC_1)
+-#define MOD_SEL6_5		FM(SEL_AVB1_AVTP_MATCH_0)	FM(SEL_AVB1_AVTP_MATCH_1)
+-#define MOD_SEL6_2		FM(SEL_AVB1_MDC_0)		FM(SEL_AVB1_MDC_1)
+-#define MOD_SEL6_1		FM(SEL_AVB1_MAGIC_0)		FM(SEL_AVB1_MAGIC_1)
+-
+-/* MOD_SEL7 */			/* 0 */				/* 1 */
+-#define MOD_SEL7_16		FM(SEL_AVB0_TX_CTL_0)		FM(SEL_AVB0_TX_CTL_1)
+-#define MOD_SEL7_15		FM(SEL_AVB0_TXC_0)		FM(SEL_AVB0_TXC_1)
+-#define MOD_SEL7_13		FM(SEL_AVB0_MDC_0)		FM(SEL_AVB0_MDC_1)
+-#define MOD_SEL7_11		FM(SEL_AVB0_TD0_0)		FM(SEL_AVB0_TD0_1)
+-#define MOD_SEL7_10		FM(SEL_AVB0_MAGIC_0)		FM(SEL_AVB0_MAGIC_1)
+-#define MOD_SEL7_7		FM(SEL_AVB0_TD1_0)		FM(SEL_AVB0_TD1_1)
+-#define MOD_SEL7_6		FM(SEL_AVB0_TD2_0)		FM(SEL_AVB0_TD2_1)
+-#define MOD_SEL7_3		FM(SEL_AVB0_TD3_0)		FM(SEL_AVB0_TD3_1)
+-#define MOD_SEL7_2		FM(SEL_AVB0_AVTP_MATCH_0)	FM(SEL_AVB0_AVTP_MATCH_1)
+-#define MOD_SEL7_0		FM(SEL_AVB0_AVTP_PPS_0)		FM(SEL_AVB0_AVTP_PPS_1)
+-
+ /* MOD_SEL8 */			/* 0 */				/* 1 */
+ #define MOD_SEL8_11		FM(SEL_SDA5_0)			FM(SEL_SDA5_1)
+ #define MOD_SEL8_10		FM(SEL_SCL5_0)			FM(SEL_SCL5_1)
+@@ -689,23 +665,18 @@ FM(IP0SR8_31_28)	IP0SR8_31_28
  
- 	return false;
- }
-@@ -2954,9 +2958,13 @@ static void handle_read_error(struct mddev *mddev, struct r10bio *r10_bio)
- 		md_error(mddev, rdev);
+ #define PINMUX_MOD_SELS \
+ \
+-MOD_SEL6_18							\
+-MOD_SEL6_16		MOD_SEL7_16				\
+-			MOD_SEL7_15				\
+-MOD_SEL6_13		MOD_SEL7_13				\
+-MOD_SEL6_12							\
+-			MOD_SEL7_11		MOD_SEL8_11	\
+-MOD_SEL6_10		MOD_SEL7_10		MOD_SEL8_10	\
+-						MOD_SEL8_9	\
+-						MOD_SEL8_8	\
+-MOD_SEL6_7		MOD_SEL7_7		MOD_SEL8_7	\
+-MOD_SEL6_6		MOD_SEL7_6		MOD_SEL8_6	\
+-MOD_SEL6_5					MOD_SEL8_5	\
+-						MOD_SEL8_4	\
+-			MOD_SEL7_3		MOD_SEL8_3	\
+-MOD_SEL6_2		MOD_SEL7_2		MOD_SEL8_2	\
+-MOD_SEL6_1					MOD_SEL8_1	\
+-			MOD_SEL7_0		MOD_SEL8_0
++MOD_SEL8_11	\
++MOD_SEL8_10	\
++MOD_SEL8_9	\
++MOD_SEL8_8	\
++MOD_SEL8_7	\
++MOD_SEL8_6	\
++MOD_SEL8_5	\
++MOD_SEL8_4	\
++MOD_SEL8_3	\
++MOD_SEL8_2	\
++MOD_SEL8_1	\
++MOD_SEL8_0
  
- 	rdev_dec_pending(rdev, mddev);
--	allow_barrier(conf);
- 	r10_bio->state = 0;
- 	raid10_read_request(mddev, r10_bio->master_bio, r10_bio);
-+	/*
-+	 * allow_barrier after re-submit to ensure no sync io
-+	 * can be issued while regular io pending.
-+	 */
-+	allow_barrier(conf);
- }
+ enum {
+ 	PINMUX_RESERVED = 0,
+@@ -1092,23 +1063,23 @@ static const u16 pinmux_data[] = {
+ 	/* IP0SR6 */
+ 	PINMUX_IPSR_GPSR(IP0SR6_3_0,	AVB1_MDIO),
  
- static void handle_write_completed(struct r10conf *conf, struct r10bio *r10_bio)
+-	PINMUX_IPSR_MSEL(IP0SR6_7_4,	AVB1_MAGIC,		SEL_AVB1_MAGIC_1),
++	PINMUX_IPSR_GPSR(IP0SR6_7_4,	AVB1_MAGIC),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR6_11_8,	AVB1_MDC,		SEL_AVB1_MDC_1),
++	PINMUX_IPSR_GPSR(IP0SR6_11_8,	AVB1_MDC),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR6_15_12,	AVB1_PHY_INT),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR6_19_16,	AVB1_LINK),
+ 	PINMUX_IPSR_GPSR(IP0SR6_19_16,	AVB1_MII_TX_ER),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR6_23_20,	AVB1_AVTP_MATCH,	SEL_AVB1_AVTP_MATCH_1),
+-	PINMUX_IPSR_MSEL(IP0SR6_23_20,	AVB1_MII_RX_ER,		SEL_AVB1_AVTP_MATCH_0),
++	PINMUX_IPSR_GPSR(IP0SR6_23_20,	AVB1_AVTP_MATCH),
++	PINMUX_IPSR_GPSR(IP0SR6_23_20,	AVB1_MII_RX_ER),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR6_27_24,	AVB1_TXC,		SEL_AVB1_TXC_1),
+-	PINMUX_IPSR_MSEL(IP0SR6_27_24,	AVB1_MII_TXC,		SEL_AVB1_TXC_0),
++	PINMUX_IPSR_GPSR(IP0SR6_27_24,	AVB1_TXC),
++	PINMUX_IPSR_GPSR(IP0SR6_27_24,	AVB1_MII_TXC),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR6_31_28,	AVB1_TX_CTL,		SEL_AVB1_TX_CTL_1),
+-	PINMUX_IPSR_MSEL(IP0SR6_31_28,	AVB1_MII_TX_EN,		SEL_AVB1_TX_CTL_0),
++	PINMUX_IPSR_GPSR(IP0SR6_31_28,	AVB1_TX_CTL),
++	PINMUX_IPSR_GPSR(IP0SR6_31_28,	AVB1_MII_TX_EN),
+ 
+ 	/* IP1SR6 */
+ 	PINMUX_IPSR_GPSR(IP1SR6_3_0,	AVB1_RXC),
+@@ -1117,17 +1088,17 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP1SR6_7_4,	AVB1_RX_CTL),
+ 	PINMUX_IPSR_GPSR(IP1SR6_7_4,	AVB1_MII_RX_DV),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR6_11_8,	AVB1_AVTP_PPS,		SEL_AVB1_AVTP_PPS_1),
+-	PINMUX_IPSR_MSEL(IP1SR6_11_8,	AVB1_MII_COL,		SEL_AVB1_AVTP_PPS_0),
++	PINMUX_IPSR_GPSR(IP1SR6_11_8,	AVB1_AVTP_PPS),
++	PINMUX_IPSR_GPSR(IP1SR6_11_8,	AVB1_MII_COL),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR6_15_12,	AVB1_AVTP_CAPTURE),
+ 	PINMUX_IPSR_GPSR(IP1SR6_15_12,	AVB1_MII_CRS),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR6_19_16,	AVB1_TD1,		SEL_AVB1_TD1_1),
+-	PINMUX_IPSR_MSEL(IP1SR6_19_16,	AVB1_MII_TD1,		SEL_AVB1_TD1_0),
++	PINMUX_IPSR_GPSR(IP1SR6_19_16,	AVB1_TD1),
++	PINMUX_IPSR_GPSR(IP1SR6_19_16,	AVB1_MII_TD1),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR6_23_20,	AVB1_TD0,		SEL_AVB1_TD0_1),
+-	PINMUX_IPSR_MSEL(IP1SR6_23_20,	AVB1_MII_TD0,		SEL_AVB1_TD0_0),
++	PINMUX_IPSR_GPSR(IP1SR6_23_20,	AVB1_TD0),
++	PINMUX_IPSR_GPSR(IP1SR6_23_20,	AVB1_MII_TD0),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR6_27_24,	AVB1_RD1),
+ 	PINMUX_IPSR_GPSR(IP1SR6_27_24,	AVB1_MII_RD1),
+@@ -1136,14 +1107,14 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP1SR6_31_28,	AVB1_MII_RD0),
+ 
+ 	/* IP2SR6 */
+-	PINMUX_IPSR_MSEL(IP2SR6_3_0,	AVB1_TD2,		SEL_AVB1_TD2_1),
+-	PINMUX_IPSR_MSEL(IP2SR6_3_0,	AVB1_MII_TD2,		SEL_AVB1_TD2_0),
++	PINMUX_IPSR_GPSR(IP2SR6_3_0,	AVB1_TD2),
++	PINMUX_IPSR_GPSR(IP2SR6_3_0,	AVB1_MII_TD2),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR6_7_4,	AVB1_RD2),
+ 	PINMUX_IPSR_GPSR(IP2SR6_7_4,	AVB1_MII_RD2),
+ 
+-	PINMUX_IPSR_MSEL(IP2SR6_11_8,	AVB1_TD3,		SEL_AVB1_TD3_1),
+-	PINMUX_IPSR_MSEL(IP2SR6_11_8,	AVB1_MII_TD3,		SEL_AVB1_TD3_0),
++	PINMUX_IPSR_GPSR(IP2SR6_11_8,	AVB1_TD3),
++	PINMUX_IPSR_GPSR(IP2SR6_11_8,	AVB1_MII_TD3),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR6_15_12,	AVB1_RD3),
+ 	PINMUX_IPSR_GPSR(IP2SR6_15_12,	AVB1_MII_RD3),
+@@ -1151,29 +1122,29 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR6_19_16,	AVB1_TXCREFCLK),
+ 
+ 	/* IP0SR7 */
+-	PINMUX_IPSR_MSEL(IP0SR7_3_0,	AVB0_AVTP_PPS,		SEL_AVB0_AVTP_PPS_1),
+-	PINMUX_IPSR_MSEL(IP0SR7_3_0,	AVB0_MII_COL,		SEL_AVB0_AVTP_PPS_0),
++	PINMUX_IPSR_GPSR(IP0SR7_3_0,	AVB0_AVTP_PPS),
++	PINMUX_IPSR_GPSR(IP0SR7_3_0,	AVB0_MII_COL),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR7_7_4,	AVB0_AVTP_CAPTURE),
+ 	PINMUX_IPSR_GPSR(IP0SR7_7_4,	AVB0_MII_CRS),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR7_11_8,	AVB0_AVTP_MATCH,	SEL_AVB0_AVTP_MATCH_1),
+-	PINMUX_IPSR_MSEL(IP0SR7_11_8,	AVB0_MII_RX_ER,		SEL_AVB0_AVTP_MATCH_0),
+-	PINMUX_IPSR_MSEL(IP0SR7_11_8,	CC5_OSCOUT,		SEL_AVB0_AVTP_MATCH_0),
++	PINMUX_IPSR_GPSR(IP0SR7_11_8,	AVB0_AVTP_MATCH),
++	PINMUX_IPSR_GPSR(IP0SR7_11_8,	AVB0_MII_RX_ER),
++	PINMUX_IPSR_GPSR(IP0SR7_11_8,	CC5_OSCOUT),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR7_15_12,	AVB0_TD3,		SEL_AVB0_TD3_1),
+-	PINMUX_IPSR_MSEL(IP0SR7_15_12,	AVB0_MII_TD3,		SEL_AVB0_TD3_0),
++	PINMUX_IPSR_GPSR(IP0SR7_15_12,	AVB0_TD3),
++	PINMUX_IPSR_GPSR(IP0SR7_15_12,	AVB0_MII_TD3),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR7_19_16,	AVB0_LINK),
+ 	PINMUX_IPSR_GPSR(IP0SR7_19_16,	AVB0_MII_TX_ER),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR7_23_20,	AVB0_PHY_INT),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR7_27_24,	AVB0_TD2,		SEL_AVB0_TD2_1),
+-	PINMUX_IPSR_MSEL(IP0SR7_27_24,	AVB0_MII_TD2,		SEL_AVB0_TD2_0),
++	PINMUX_IPSR_GPSR(IP0SR7_27_24,	AVB0_TD2),
++	PINMUX_IPSR_GPSR(IP0SR7_27_24,	AVB0_MII_TD2),
+ 
+-	PINMUX_IPSR_MSEL(IP0SR7_31_28,	AVB0_TD1,		SEL_AVB0_TD1_1),
+-	PINMUX_IPSR_MSEL(IP0SR7_31_28,	AVB0_MII_TD1,		SEL_AVB0_TD1_0),
++	PINMUX_IPSR_GPSR(IP0SR7_31_28,	AVB0_TD1),
++	PINMUX_IPSR_GPSR(IP0SR7_31_28,	AVB0_MII_TD1),
+ 
+ 	/* IP1SR7 */
+ 	PINMUX_IPSR_GPSR(IP1SR7_3_0,	AVB0_RD3),
+@@ -1181,24 +1152,24 @@ static const u16 pinmux_data[] = {
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR7_7_4,	AVB0_TXCREFCLK),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR7_11_8,	AVB0_MAGIC,		SEL_AVB0_MAGIC_1),
++	PINMUX_IPSR_GPSR(IP1SR7_11_8,	AVB0_MAGIC),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR7_15_12,	AVB0_TD0,		SEL_AVB0_TD0_1),
+-	PINMUX_IPSR_MSEL(IP1SR7_15_12,	AVB0_MII_TD0,		SEL_AVB0_TD0_0),
++	PINMUX_IPSR_GPSR(IP1SR7_15_12,	AVB0_TD0),
++	PINMUX_IPSR_GPSR(IP1SR7_15_12,	AVB0_MII_TD0),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR7_19_16,	AVB0_RD2),
+ 	PINMUX_IPSR_GPSR(IP1SR7_19_16,	AVB0_MII_RD2),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR7_23_20,	AVB0_MDC,		SEL_AVB0_MDC_1),
++	PINMUX_IPSR_GPSR(IP1SR7_23_20,	AVB0_MDC),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR7_27_24,	AVB0_MDIO),
+ 
+-	PINMUX_IPSR_MSEL(IP1SR7_31_28,	AVB0_TXC,		SEL_AVB0_TXC_1),
+-	PINMUX_IPSR_MSEL(IP1SR7_31_28,	AVB0_MII_TXC,		SEL_AVB0_TXC_0),
++	PINMUX_IPSR_GPSR(IP1SR7_31_28,	AVB0_TXC),
++	PINMUX_IPSR_GPSR(IP1SR7_31_28,	AVB0_MII_TXC),
+ 
+ 	/* IP2SR7 */
+-	PINMUX_IPSR_MSEL(IP2SR7_3_0,	AVB0_TX_CTL,		SEL_AVB0_TX_CTL_1),
+-	PINMUX_IPSR_MSEL(IP2SR7_3_0,	AVB0_MII_TX_EN,		SEL_AVB0_TX_CTL_0),
++	PINMUX_IPSR_GPSR(IP2SR7_3_0,	AVB0_TX_CTL),
++	PINMUX_IPSR_GPSR(IP2SR7_3_0,	AVB0_MII_TX_EN),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR7_7_4,	AVB0_RD1),
+ 	PINMUX_IPSR_GPSR(IP2SR7_7_4,	AVB0_MII_RD1),
+@@ -3641,50 +3612,6 @@ static const struct pinmux_cfg_reg pinmux_config_regs[] = {
+ 
+ #define F_(x, y)	x,
+ #define FM(x)		FN_##x,
+-	{ PINMUX_CFG_REG_VAR("MOD_SEL6", 0xE6061100, 32,
+-			     GROUP(-13, 1, -1, 1, -2, 1, 1,
+-				   -1, 1, -2, 1, 1, 1, -2, 1, 1, -1),
+-			     GROUP(
+-		/* RESERVED 31-19 */
+-		MOD_SEL6_18
+-		/* RESERVED 17 */
+-		MOD_SEL6_16
+-		/* RESERVED 15-14 */
+-		MOD_SEL6_13
+-		MOD_SEL6_12
+-		/* RESERVED 11 */
+-		MOD_SEL6_10
+-		/* RESERVED 9-8 */
+-		MOD_SEL6_7
+-		MOD_SEL6_6
+-		MOD_SEL6_5
+-		/* RESERVED 4-3 */
+-		MOD_SEL6_2
+-		MOD_SEL6_1
+-		/* RESERVED 0 */
+-		))
+-	},
+-	{ PINMUX_CFG_REG_VAR("MOD_SEL7", 0xE6061900, 32,
+-			     GROUP(-15, 1, 1, -1, 1, -1, 1, 1, -2, 1, 1,
+-				   -2, 1, 1, -1, 1),
+-			     GROUP(
+-		/* RESERVED 31-17 */
+-		MOD_SEL7_16
+-		MOD_SEL7_15
+-		/* RESERVED 14 */
+-		MOD_SEL7_13
+-		/* RESERVED 12 */
+-		MOD_SEL7_11
+-		MOD_SEL7_10
+-		/* RESERVED 9-8 */
+-		MOD_SEL7_7
+-		MOD_SEL7_6
+-		/* RESERVED 5-4 */
+-		MOD_SEL7_3
+-		MOD_SEL7_2
+-		/* RESERVED 1 */
+-		MOD_SEL7_0))
+-	},
+ 	{ PINMUX_CFG_REG_VAR("MOD_SEL8", 0xE6068100, 32,
+ 			     GROUP(-20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+ 			     GROUP(
 -- 
 2.39.2
 
