@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2786FAE70
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EB66FAC94
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236168AbjEHLoz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36332 "EHLO
+        id S235747AbjEHL0L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236161AbjEHLoc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:44:32 -0400
+        with ESMTP id S235722AbjEHLZ5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7F1429C3
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:43:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7B83A5D4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 01D2F6153E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:43:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F2BC433A4;
-        Mon,  8 May 2023 11:43:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EABEB62D84
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF17C433D2;
+        Mon,  8 May 2023 11:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546205;
-        bh=k4AN3KzYgRmYY0mmsAwEA6dQroTIOnFgjuf0g8VCZKs=;
+        s=korg; t=1683545110;
+        bh=Jc8Mdawx3aHNq1LRGryHP7p+OBu3CO0SNO7/bQfcUPg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QOVDEmQqO+VmhJ6YFnEP+uxNBAuow0758rMlwGhV/FHmguifaocTJnUXF548bo4Ht
-         8rwohIWGUj9wKRFfhjOcGdFw3Mx1Ox98vuEIJlUKPX6hPFYUoMiyJlwYUEhIPE2zgu
-         resXKFnD2rK4d9NsjbrYAfQnNxRO+p+cJAssNhCI=
+        b=YiiY26XMZg+m23mYtEKPP6caBG8nskflvKhrMnAGY//0OPSOHQzOhEAVXZELcj4W2
+         rJd2q0Zuvo6qqMTn3Y0eZkb9UM8XGG2Foq77oZ/SRZQsO7LV8ysQDD0bhUtJgVlSRm
+         5sicG7lixizeLqe/1XElUHPUMm+XFlIWaYta0oV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 262/371] HID: amd_sfh: Add support for shutdown operation
+        patches@lists.linux.dev, Stafford Horne <shorne@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 628/694] openrisc: Properly store r31 to pt_regs on unhandled exceptions
 Date:   Mon,  8 May 2023 11:47:43 +0200
-Message-Id: <20230508094822.466359363@linuxfoundation.org>
+Message-Id: <20230508094455.975725269@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Stafford Horne <shorne@gmail.com>
 
-[ Upstream commit 1353ecaf1830d6d1b74f3225378a9498b4e14fdd ]
+[ Upstream commit 812489ac4dd91144a74ce65ecf232252a2e406fb ]
 
-As soon as the system is booted after shutdown, the sensors may remain in
-a weird state and fail to initialize. Therefore, all sensors should be
-turned off during shutdown.
+In commit 91993c8c2ed5 ("openrisc: use shadow registers to save regs on
+exception") the unhandled exception path was changed to do an early
+store of r30 instead of r31.  The entry code was not updated and r31 is
+not getting stored to pt_regs.
 
-Fixes: 4f567b9f8141 ("SFH: PCIe driver to add support of AMD sensor fusion hub")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+This patch updates the entry handler to store r31 instead of r30.  We
+also remove some misleading commented out store r30 and r31
+instructrions.
+
+I noticed this while working on adding floating point exception
+handling,  This issue probably would never impact anything since we kill
+the process or Oops right away on unhandled exceptions.
+
+Fixes: 91993c8c2ed5 ("openrisc: use shadow registers to save regs on exception")
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/amd-sfh-hid/amd_sfh_pcie.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/openrisc/kernel/entry.S | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
-index f17f061aeb792..6ff8f254dc840 100644
---- a/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
-+++ b/drivers/hid/amd-sfh-hid/amd_sfh_pcie.c
-@@ -351,6 +351,14 @@ static int amd_mp2_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
- 	return devm_add_action_or_reset(&pdev->dev, amd_mp2_pci_remove, privdata);
- }
- 
-+static void amd_sfh_shutdown(struct pci_dev *pdev)
-+{
-+	struct amd_mp2_dev *mp2 = pci_get_drvdata(pdev);
-+
-+	if (mp2 && mp2->mp2_ops)
-+		mp2->mp2_ops->stop_all(mp2);
-+}
-+
- static int __maybe_unused amd_mp2_pci_resume(struct device *dev)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
-@@ -420,6 +428,7 @@ static struct pci_driver amd_mp2_pci_driver = {
- 	.id_table	= amd_mp2_pci_tbl,
- 	.probe		= amd_mp2_pci_probe,
- 	.driver.pm	= &amd_mp2_pm_ops,
-+	.shutdown	= amd_sfh_shutdown,
- };
- module_pci_driver(amd_mp2_pci_driver);
- 
+diff --git a/arch/openrisc/kernel/entry.S b/arch/openrisc/kernel/entry.S
+index 54a87bba35caa..a130c4dac48d3 100644
+--- a/arch/openrisc/kernel/entry.S
++++ b/arch/openrisc/kernel/entry.S
+@@ -173,7 +173,6 @@ handler:							;\
+ 	l.sw    PT_GPR28(r1),r28					;\
+ 	l.sw    PT_GPR29(r1),r29					;\
+ 	/* r30 already save */					;\
+-/*        l.sw    PT_GPR30(r1),r30*/					;\
+ 	l.sw    PT_GPR31(r1),r31					;\
+ 	TRACE_IRQS_OFF_ENTRY						;\
+ 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
+@@ -211,9 +210,8 @@ handler:							;\
+ 	l.sw    PT_GPR27(r1),r27					;\
+ 	l.sw    PT_GPR28(r1),r28					;\
+ 	l.sw    PT_GPR29(r1),r29					;\
+-	/* r31 already saved */					;\
+-	l.sw    PT_GPR30(r1),r30					;\
+-/*        l.sw    PT_GPR31(r1),r31	*/				;\
++	/* r30 already saved */						;\
++	l.sw    PT_GPR31(r1),r31					;\
+ 	/* Store -1 in orig_gpr11 for non-syscall exceptions */	;\
+ 	l.addi	r30,r0,-1					;\
+ 	l.sw	PT_ORIG_GPR11(r1),r30				;\
 -- 
 2.39.2
 
