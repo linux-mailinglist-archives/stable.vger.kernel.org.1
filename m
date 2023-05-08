@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75F8E6FAB83
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F27846FA54B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233916AbjEHLOM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55034 "EHLO
+        id S234094AbjEHKHz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233938AbjEHLOI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:08 -0400
+        with ESMTP id S234092AbjEHKHy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A0D36106
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178BC32912
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 01E6B62BC4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5832C433EF;
-        Mon,  8 May 2023 11:14:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 987BD6237A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4F2C433EF;
+        Mon,  8 May 2023 10:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544446;
-        bh=B+2fWWRfzEoFhTWOo/H8qb1sQiMNHL0cVJGHSM4C7To=;
+        s=korg; t=1683540472;
+        bh=vkuX1ScVu2bmXNz+9Z3u1rHv6Ttit1B1zZ6EzoJLLWo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BQB2LzcjJIPEpeysowua4iBAEdT+OPUOQ6U/iBHL57dNHG5VAjFFeWChHzLtwvRBR
-         T2hsS0LDBbB/DwDZ2qVmHvyh4nL8GsptkWGacqKYp4NRqclMyNIH1A+JvMKu9HGH/8
-         Y9IHgfwCuAt4y83izzs5sUtgoq5N+MSwxhN28LX4=
+        b=jAvdIQZCBDLhTXUomYaYTEQ7bJ8QCutryahTgQL1zrwduCFOD1nHjVnpcg00jRVb+
+         xg9bsnYkACQ+85FATZMlS+UBURdlrWrBK1Tnn2imGdHn21f/LuXdDj031iGLxcHO87
+         nu+CspFkStZWHtA7jGZTmJy38PBbnWBbJVcFSWIE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Dave Marchevsky <davemarchevsky@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 383/694] bpf: Fix struct_meta lookup for bpf_obj_free_fields kfunc call
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 376/611] ixgbe: Enable setting RSS table to default values
 Date:   Mon,  8 May 2023 11:43:38 +0200
-Message-Id: <20230508094445.382172897@linuxfoundation.org>
+Message-Id: <20230508094434.565959160@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,67 +56,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Marchevsky <davemarchevsky@fb.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit f6a6a5a976288e4d0d94eb1c6c9e983e8e5cdb31 ]
+[ Upstream commit e85d3d55875f7a1079edfbc4e4e98d6f8aea9ac7 ]
 
-bpf_obj_drop_impl has a void return type. In check_kfunc_call, the "else
-if" which sets insn_aux->kptr_struct_meta for bpf_obj_drop_impl is
-surrounded by a larger if statement which checks btf_type_is_ptr. As a
-result:
+ethtool uses `ETHTOOL_GRXRINGS` to compute how many queues are supported
+by RSS. The driver should return the smaller of either:
+  - The maximum number of RSS queues the device supports, OR
+  - The number of RX queues configured
 
-  * The bpf_obj_drop_impl-specific code will never execute
-  * The btf_struct_meta input to bpf_obj_drop is always NULL
-  * __bpf_obj_drop_impl will always see a NULL btf_record when called
-    from BPF program, and won't call bpf_obj_free_fields
-  * program-allocated kptrs which have fields that should be cleaned up
-    by bpf_obj_free_fields may instead leak resources
+Prior to this change, running `ethtool -X $iface default` fails if the
+number of queues configured is larger than the number supported by RSS,
+even though changing the queue count correctly resets the flowhash to
+use all supported queues.
 
-This patch adds a btf_type_is_void branch to the larger if and moves
-special handling for bpf_obj_drop_impl there, fixing the issue.
+Other drivers (for example, i40e) will succeed but the flow hash will
+reset to support the maximum number of queues supported by RSS, even if
+that amount is smaller than the configured amount.
 
-Fixes: ac9f06050a35 ("bpf: Introduce bpf_obj_drop")
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Signed-off-by: Dave Marchevsky <davemarchevsky@fb.com>
-Link: https://lore.kernel.org/r/20230403200027.2271029-1-davemarchevsky@fb.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Prior to this change:
+
+$ sudo ethtool -L eth1 combined 20
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 20 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+   24:      8     9    10    11    12    13    14    15
+   32:      0     1     2     3     4     5     6     7
+...
+
+You can see that the flowhash was correctly set to use the maximum
+number of queues supported by the driver (16).
+
+However, asking the NIC to reset to "default" fails:
+
+$ sudo ethtool -X eth1 default
+Cannot set RX flow hash configuration: Invalid argument
+
+After this change, the flowhash can be reset to default which will use
+all of the available RSS queues (16) or the configured queue count,
+whichever is smaller.
+
+Starting with eth1 which has 10 queues and a flowhash distributing to
+all 10 queues:
+
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 10 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9     0     1     2     3     4     5
+   16:      6     7     8     9     0     1     2     3
+...
+
+Increasing the queue count to 48 resets the flowhash to distribute to 16
+queues, as it did before this patch:
+
+$ sudo ethtool -L eth1 combined 48
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Due to the other bugfix in this series, the flowhash can be set to use
+queues 0-5:
+
+$ sudo ethtool -X eth1 equal 5
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     0     1     2
+    8:      3     4     0     1     2     3     4     0
+   16:      1     2     3     4     0     1     2     3
+...
+
+Due to this bugfix, the flowhash can be reset to default and use 16
+queues:
+
+$ sudo ethtool -X eth1 default
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Fixes: 91cd94bfe4f0 ("ixgbe: add basic support for setting and getting nfc controls")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 559c9137f834d..64600acbb4e76 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10002,10 +10002,6 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
- 				insn_aux->obj_new_size = ret_t->size;
- 				insn_aux->kptr_struct_meta =
- 					btf_find_struct_meta(ret_btf, ret_btf_id);
--			} else if (meta.func_id == special_kfunc_list[KF_bpf_obj_drop_impl]) {
--				insn_aux->kptr_struct_meta =
--					btf_find_struct_meta(meta.arg_obj_drop.btf,
--							     meta.arg_obj_drop.btf_id);
- 			} else if (meta.func_id == special_kfunc_list[KF_bpf_list_pop_front] ||
- 				   meta.func_id == special_kfunc_list[KF_bpf_list_pop_back]) {
- 				struct btf_field *field = meta.arg_list_head.field;
-@@ -10090,7 +10086,15 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index 3c64d1419f4bf..0051aa676e19e 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -2634,6 +2634,14 @@ static int ixgbe_get_rss_hash_opts(struct ixgbe_adapter *adapter,
+ 	return 0;
+ }
  
- 		if (reg_may_point_to_spin_lock(&regs[BPF_REG_0]) && !regs[BPF_REG_0].id)
- 			regs[BPF_REG_0].id = ++env->id_gen;
--	} /* else { add_kfunc_call() ensures it is btf_type_is_void(t) } */
-+	} else if (btf_type_is_void(t)) {
-+		if (meta.btf == btf_vmlinux && btf_id_set_contains(&special_kfunc_set, meta.func_id)) {
-+			if (meta.func_id == special_kfunc_list[KF_bpf_obj_drop_impl]) {
-+				insn_aux->kptr_struct_meta =
-+					btf_find_struct_meta(meta.arg_obj_drop.btf,
-+							     meta.arg_obj_drop.btf_id);
-+			}
-+		}
-+	}
++static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
++{
++	if (adapter->hw.mac.type < ixgbe_mac_X550)
++		return 16;
++	else
++		return 64;
++}
++
+ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 			   u32 *rule_locs)
+ {
+@@ -2642,7 +2650,8 @@ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
  
- 	nargs = btf_type_vlen(meta.func_proto);
- 	args = (const struct btf_param *)(meta.func_proto + 1);
+ 	switch (cmd->cmd) {
+ 	case ETHTOOL_GRXRINGS:
+-		cmd->data = adapter->num_rx_queues;
++		cmd->data = min_t(int, adapter->num_rx_queues,
++				  ixgbe_rss_indir_tbl_max(adapter));
+ 		ret = 0;
+ 		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+@@ -3044,14 +3053,6 @@ static int ixgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
+ 	return ret;
+ }
+ 
+-static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
+-{
+-	if (adapter->hw.mac.type < ixgbe_mac_X550)
+-		return 16;
+-	else
+-		return 64;
+-}
+-
+ static u32 ixgbe_get_rxfh_key_size(struct net_device *netdev)
+ {
+ 	return IXGBE_RSS_KEY_SIZE;
 -- 
 2.39.2
 
