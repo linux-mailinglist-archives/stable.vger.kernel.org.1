@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE396FAC9F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1917D6FA975
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235653AbjEHL0c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:26:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41796 "EHLO
+        id S235247AbjEHKve (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjEHL01 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EA63948F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:05 -0700 (PDT)
+        with ESMTP id S235251AbjEHKvM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A66F2A84D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C377662DB4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B962DC433D2;
-        Mon,  8 May 2023 11:26:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F25846292F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC49C433D2;
+        Mon,  8 May 2023 10:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545164;
-        bh=F5x3q8P7WXEJ9NfYJwClYwIKwxJgrc4obxA0V6tcjdc=;
+        s=korg; t=1683543024;
+        bh=zaHrjvIfajg1C9u6R+XnrJzvxK5n5Z84Q3fEvkz0N6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xmqIWy/UyO3bADMHQxu3IHPnNGYcBwGtsa8U0MpJnA+FH1rsWRAdPqcjCEcrffnMl
-         fcOjY3/6TkxGQxVPJrDI9QxVooqrB4TGeo4zseqmfW0ySgOyG4rGG2LGEVITgWp3F0
-         Ocyv8gEIKYj+f2qYoz+NrhvVffD5NiayfmjL43a8=
+        b=0bKX57H/Cj0xsGzxT+vMgzo8joAlJ1KqqMTbLat3w1KIIzmdLolGha4cM9RkZObWB
+         ODzlysTGgcsQf8AdO9HDDhToAGXVg4OMPAEhZNSeibBBcfZMwxAgNVEJR9EPin2QIr
+         EAHQiSecigMulJHv6x1g3EIDDjGGIHsoDKwk2QLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 615/694] clk: qcom: gcc-sm8350: fix PCIe PIPE clocks handling
+        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Marco Elver <elver@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.2 624/663] kasan: hw_tags: avoid invalid virt_to_page()
 Date:   Mon,  8 May 2023 11:47:30 +0200
-Message-Id: <20230508094455.413117523@linuxfoundation.org>
+Message-Id: <20230508094450.045374912@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,111 +58,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 1a500e0bc97b6cb3c0d9859e81973b8dd07d1b7b ]
+commit 29083fd84da576bfb3563d044f98d38e6b338f00 upstream.
 
-On SM8350 platform the PCIe PIPE clocks require additional handling to
-function correctly. They are to be switched to the tcxo source before
-turning PCIe GDSCs off and should be switched to PHY PIPE source once
-they are working. Switch PCIe PHY clocks to use clk_regmap_phy_mux_ops,
-which provide support for this dance.
+When booting with 'kasan.vmalloc=off', a kernel configured with support
+for KASAN_HW_TAGS will explode at boot time due to bogus use of
+virt_to_page() on a vmalloc adddress.  With CONFIG_DEBUG_VIRTUAL selected
+this will be reported explicitly, and with or without CONFIG_DEBUG_VIRTUAL
+the kernel will dereference a bogus address:
 
-Fixes: 44c20c9ed37f ("clk: qcom: gcc: Add clock driver for SM8350")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230412134829.3686467-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+| ------------[ cut here ]------------
+| virt_to_phys used for non-linear address: (____ptrval____) (0xffff800008000000)
+| WARNING: CPU: 0 PID: 0 at arch/arm64/mm/physaddr.c:15 __virt_to_phys+0x78/0x80
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0-rc3-00073-g83865133300d-dirty #4
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __virt_to_phys+0x78/0x80
+| lr : __virt_to_phys+0x78/0x80
+| sp : ffffcd076afd3c80
+| x29: ffffcd076afd3c80 x28: 0068000000000f07 x27: ffff800008000000
+| x26: fffffbfff0000000 x25: fffffbffff000000 x24: ff00000000000000
+| x23: ffffcd076ad3c000 x22: fffffc0000000000 x21: ffff800008000000
+| x20: ffff800008004000 x19: ffff800008000000 x18: ffff800008004000
+| x17: 666678302820295f x16: ffffffffffffffff x15: 0000000000000004
+| x14: ffffcd076b009e88 x13: 0000000000000fff x12: 0000000000000003
+| x11: 00000000ffffefff x10: c0000000ffffefff x9 : 0000000000000000
+| x8 : 0000000000000000 x7 : 205d303030303030 x6 : 302e30202020205b
+| x5 : ffffcd076b41d63f x4 : ffffcd076afd3827 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : ffffcd076afd3a30 x0 : 000000000000004f
+| Call trace:
+|  __virt_to_phys+0x78/0x80
+|  __kasan_unpoison_vmalloc+0xd4/0x478
+|  __vmalloc_node_range+0x77c/0x7b8
+|  __vmalloc_node+0x54/0x64
+|  init_IRQ+0x94/0xc8
+|  start_kernel+0x194/0x420
+|  __primary_switched+0xbc/0xc4
+| ---[ end trace 0000000000000000 ]---
+| Unable to handle kernel paging request at virtual address 03fffacbe27b8000
+| Mem abort info:
+|   ESR = 0x0000000096000004
+|   EC = 0x25: DABT (current EL), IL = 32 bits
+|   SET = 0, FnV = 0
+|   EA = 0, S1PTW = 0
+|   FSC = 0x04: level 0 translation fault
+| Data abort info:
+|   ISV = 0, ISS = 0x00000004
+|   CM = 0, WnR = 0
+| swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000041bc5000
+| [03fffacbe27b8000] pgd=0000000000000000, p4d=0000000000000000
+| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W          6.3.0-rc3-00073-g83865133300d-dirty #4
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __kasan_unpoison_vmalloc+0xe4/0x478
+| lr : __kasan_unpoison_vmalloc+0xd4/0x478
+| sp : ffffcd076afd3ca0
+| x29: ffffcd076afd3ca0 x28: 0068000000000f07 x27: ffff800008000000
+| x26: 0000000000000000 x25: 03fffacbe27b8000 x24: ff00000000000000
+| x23: ffffcd076ad3c000 x22: fffffc0000000000 x21: ffff800008000000
+| x20: ffff800008004000 x19: ffff800008000000 x18: ffff800008004000
+| x17: 666678302820295f x16: ffffffffffffffff x15: 0000000000000004
+| x14: ffffcd076b009e88 x13: 0000000000000fff x12: 0000000000000001
+| x11: 0000800008000000 x10: ffff800008000000 x9 : ffffb2f8dee00000
+| x8 : 000ffffb2f8dee00 x7 : 205d303030303030 x6 : 302e30202020205b
+| x5 : ffffcd076b41d63f x4 : ffffcd076afd3827 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : ffffcd076afd3a30 x0 : ffffb2f8dee00000
+| Call trace:
+|  __kasan_unpoison_vmalloc+0xe4/0x478
+|  __vmalloc_node_range+0x77c/0x7b8
+|  __vmalloc_node+0x54/0x64
+|  init_IRQ+0x94/0xc8
+|  start_kernel+0x194/0x420
+|  __primary_switched+0xbc/0xc4
+| Code: d34cfc08 aa1f03fa 8b081b39 d503201f (f9400328)
+| ---[ end trace 0000000000000000 ]---
+| Kernel panic - not syncing: Attempted to kill the idle task!
+
+This is because init_vmalloc_pages() erroneously calls virt_to_page() on
+a vmalloc address, while virt_to_page() is only valid for addresses in
+the linear/direct map. Since init_vmalloc_pages() expects virtual
+addresses in the vmalloc range, it must use vmalloc_to_page() rather
+than virt_to_page().
+
+We call init_vmalloc_pages() from __kasan_unpoison_vmalloc(), where we
+check !is_vmalloc_or_module_addr(), suggesting that we might encounter a
+non-vmalloc address. Luckily, this never happens. By design, we only
+call __kasan_unpoison_vmalloc() on pointers in the vmalloc area, and I
+have verified that we don't violate that expectation. Given that,
+is_vmalloc_or_module_addr() must always be true for any legitimate
+argument to __kasan_unpoison_vmalloc().
+
+Correct init_vmalloc_pages() to use vmalloc_to_page(), and remove the
+redundant and misleading use of is_vmalloc_or_module_addr() in
+__kasan_unpoison_vmalloc().
+
+Link: https://lkml.kernel.org/r/20230418164212.1775741-1-mark.rutland@arm.com
+Fixes: 6c2f761dad7851d8 ("kasan: fix zeroing vmalloc memory with HW_TAGS")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm8350.c | 47 ++++++++++-------------------------
- 1 file changed, 13 insertions(+), 34 deletions(-)
+ mm/kasan/hw_tags.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8350.c b/drivers/clk/qcom/gcc-sm8350.c
-index af4a1ea284215..1385a98eb3bbe 100644
---- a/drivers/clk/qcom/gcc-sm8350.c
-+++ b/drivers/clk/qcom/gcc-sm8350.c
-@@ -17,6 +17,7 @@
- #include "clk-regmap.h"
- #include "clk-regmap-divider.h"
- #include "clk-regmap-mux.h"
-+#include "clk-regmap-phy-mux.h"
- #include "gdsc.h"
- #include "reset.h"
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -225,7 +225,7 @@ static void init_vmalloc_pages(const voi
+ 	const void *addr;
  
-@@ -158,26 +159,6 @@ static const struct clk_parent_data gcc_parent_data_3[] = {
- 	{ .fw_name = "bi_tcxo" },
- };
+ 	for (addr = start; addr < start + size; addr += PAGE_SIZE) {
+-		struct page *page = virt_to_page(addr);
++		struct page *page = vmalloc_to_page(addr);
  
--static const struct parent_map gcc_parent_map_4[] = {
--	{ P_PCIE_0_PIPE_CLK, 0 },
--	{ P_BI_TCXO, 2 },
--};
--
--static const struct clk_parent_data gcc_parent_data_4[] = {
--	{ .fw_name = "pcie_0_pipe_clk", },
--	{ .fw_name = "bi_tcxo" },
--};
--
--static const struct parent_map gcc_parent_map_5[] = {
--	{ P_PCIE_1_PIPE_CLK, 0 },
--	{ P_BI_TCXO, 2 },
--};
--
--static const struct clk_parent_data gcc_parent_data_5[] = {
--	{ .fw_name = "pcie_1_pipe_clk" },
--	{ .fw_name = "bi_tcxo" },
--};
--
- static const struct parent_map gcc_parent_map_6[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GCC_GPLL0_OUT_MAIN, 1 },
-@@ -274,32 +255,30 @@ static const struct clk_parent_data gcc_parent_data_14[] = {
- 	{ .fw_name = "bi_tcxo" },
- };
+ 		clear_highpage_kasan_tagged(page);
+ 	}
+@@ -237,7 +237,7 @@ void *__kasan_unpoison_vmalloc(const voi
+ 	u8 tag;
+ 	unsigned long redzone_start, redzone_size;
  
--static struct clk_regmap_mux gcc_pcie_0_pipe_clk_src = {
-+static struct clk_regmap_phy_mux gcc_pcie_0_pipe_clk_src = {
- 	.reg = 0x6b054,
--	.shift = 0,
--	.width = 2,
--	.parent_map = gcc_parent_map_4,
- 	.clkr = {
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_0_pipe_clk_src",
--			.parent_data = gcc_parent_data_4,
--			.num_parents = ARRAY_SIZE(gcc_parent_data_4),
--			.ops = &clk_regmap_mux_closest_ops,
-+			.parent_data = &(const struct clk_parent_data){
-+				.fw_name = "pcie_0_pipe_clk",
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_regmap_phy_mux_ops,
- 		},
- 	},
- };
- 
--static struct clk_regmap_mux gcc_pcie_1_pipe_clk_src = {
-+static struct clk_regmap_phy_mux gcc_pcie_1_pipe_clk_src = {
- 	.reg = 0x8d054,
--	.shift = 0,
--	.width = 2,
--	.parent_map = gcc_parent_map_5,
- 	.clkr = {
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_1_pipe_clk_src",
--			.parent_data = gcc_parent_data_5,
--			.num_parents = ARRAY_SIZE(gcc_parent_data_5),
--			.ops = &clk_regmap_mux_closest_ops,
-+			.parent_data = &(const struct clk_parent_data){
-+				.fw_name = "pcie_1_pipe_clk",
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_regmap_phy_mux_ops,
- 		},
- 	},
- };
--- 
-2.39.2
-
+-	if (!kasan_vmalloc_enabled() || !is_vmalloc_or_module_addr(start)) {
++	if (!kasan_vmalloc_enabled()) {
+ 		if (flags & KASAN_VMALLOC_INIT)
+ 			init_vmalloc_pages(start, size);
+ 		return (void *)start;
 
 
