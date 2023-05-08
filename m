@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D525F6FA7B3
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 293316FAAE4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234799AbjEHKdt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33558 "EHLO
+        id S232854AbjEHLHs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:07:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234798AbjEHKdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB4B27878
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:32:42 -0700 (PDT)
+        with ESMTP id S233704AbjEHLHF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C6C29FDF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45B6162402
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFCBC4339B;
-        Mon,  8 May 2023 10:32:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B30562ABC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFD5C4339B;
+        Mon,  8 May 2023 11:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541938;
-        bh=f8O+nUPFTjUY30SfcybyhLUk9Rj7yK7Kk5rWpe5jRJI=;
+        s=korg; t=1683543986;
+        bh=nCUAa3ziECeLudj1NwD9cNLBzJacjIIwNbBljvDRqI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AQISDFgto+f4i/ahmGsJrTUFMyHK1Hp5616KpqzpdbD2b25Z40R3ASy9+TuGc5Kj1
-         sQeaitsBPVu5Ft47UDANydWzDFhxLz/7oRQiL215Ila2CNUev5hqvN4Kgi+TXum0U/
-         KyTp0lwfjgylZaWfqI54DOwWVH2mzzGlqHEQ9Xps=
+        b=bn97hO0VUVt2QH/XqoQPpnnHzkbWTxOLaMaFbMzhoQW8Jbv9vrpw/1MaUIZ2vD91x
+         HcaVmX5ET8qxOwz7ooyirhjOpm6Ro4CYxxfIhq81j1wyTxN+he3HxwTPJ1S40EK9Gt
+         svdnaQzrFp9S6YtZxZRYQ/YTko1vT4/nbCdlpPTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gusenleitner Klaus <gus@keba.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 274/663] tick/common: Align tick period with the HZ tick.
+Subject: [PATCH 6.3 265/694] thermal/drivers/mediatek/lvts_thermal: Fix sensor 1 interrupt status bitmask
 Date:   Mon,  8 May 2023 11:41:40 +0200
-Message-Id: <20230508094437.135379328@linuxfoundation.org>
+Message-Id: <20230508094440.871368484@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,65 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit e9523a0d81899361214d118ad60ef76f0e92f71d ]
+[ Upstream commit 13f03bcd02e4b0498c8ccb066b4eddf61dee6681 ]
 
-With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
-expire the timer_list timers. This timer is programmed accurate in
-respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
-first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
-every 4 ms and so based on the current time the next tick can be
-computed.
+The binary representation for sensor 1 interrupt status was incorrectly
+assembled, when compared to the full table given in the same comment
+section. The conversion into hex was also incorrect, leading to
+incorrect interrupt status bitmask for sensor 1. This would cause the
+driver to incorrectly identify changes for sensor 1, when in fact it
+was sensor 0, or a sensor access time out.
 
-This accuracy broke since the commit mentioned below because the jiffy
-based clocksource is initialized with higher accuracy in
-read_persistent_wall_and_boot_offset(). This higher accuracy is
-inherited during the setup in tick_setup_device(). The timer still fires
-every 4ms with HZ=250 but timer is no longer aligned with
-CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
-of the timestamp. The offset differs with every boot and makes it
-impossible for user land to align with the tick.
+Fix the binary and hex representations in the comments, and the actual
+bitmask macro.
 
-Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
-multiple of 1000/CONFIG_HZ ms.
-
-Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
-Reported-by: Gusenleitner Klaus <gus@keba.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
-Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230328031017.1360976-1-wenst@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-common.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 46789356f856e..65b8658da829e 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -218,9 +218,19 @@ static void tick_setup_device(struct tick_device *td,
- 		 * this cpu:
- 		 */
- 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
-+			ktime_t next_p;
-+			u32 rem;
-+
- 			tick_do_timer_cpu = cpu;
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 84ba65a27acf7..acce1321a1a23 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -66,7 +66,7 @@
+ #define LVTS_MONINT_CONF			0x9FBF7BDE
  
--			tick_next_period = ktime_get();
-+			next_p = ktime_get();
-+			div_u64_rem(next_p, TICK_NSEC, &rem);
-+			if (rem) {
-+				next_p -= rem;
-+				next_p += TICK_NSEC;
-+			}
-+
-+			tick_next_period = next_p;
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
+ #define LVTS_INT_SENSOR0			0x0009001F
+-#define LVTS_INT_SENSOR1			0X000881F0
++#define LVTS_INT_SENSOR1			0x001203E0
+ #define LVTS_INT_SENSOR2			0x00247C00
+ #define LVTS_INT_SENSOR3			0x1FC00000
+ 
+@@ -393,8 +393,8 @@ static irqreturn_t lvts_ctrl_irq_handler(struct lvts_ctrl *lvts_ctrl)
+ 	 *                  => 0x1FC00000
+ 	 * sensor 2 interrupt: 0000 0000 0010 0100 0111 1100 0000 0000
+ 	 *                  => 0x00247C00
+-	 * sensor 1 interrupt: 0000 0000 0001 0001 0000 0011 1110 0000
+-	 *                  => 0X000881F0
++	 * sensor 1 interrupt: 0000 0000 0001 0010 0000 0011 1110 0000
++	 *                  => 0X001203E0
+ 	 * sensor 0 interrupt: 0000 0000 0000 1001 0000 0000 0001 1111
+ 	 *                  => 0x0009001F
+ 	 */
 -- 
 2.39.2
 
