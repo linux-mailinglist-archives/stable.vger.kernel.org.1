@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6A06FA7D0
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 225356FA4DF
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234806AbjEHKfG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:35:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33468 "EHLO
+        id S233991AbjEHKEB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbjEHKek (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:40 -0400
+        with ESMTP id S233985AbjEHKEA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C323124A84
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA6BD2EB3B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D1AC62733
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359FAC433EF;
-        Mon,  8 May 2023 10:33:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 587BA622E1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:03:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8CFC433D2;
+        Mon,  8 May 2023 10:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542035;
-        bh=tBEsfSGHhI9epTkF+rTI6LdLgXaVZP+rMsYaJA8G0Po=;
+        s=korg; t=1683540237;
+        bh=QNvySg/455ZPe+JjSomXiDEzlDkxlTK3w57SdW4oILs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mzt8XcV8KEKJxn0yNb+Fhv47YShzJjhmLoD5smlaOWnjYXr+z4Fwen0MLd2T5tRPN
-         NEZceJAetoGDRjCyCs+QIpmFGduVaKnNvBCrwjPl7mSUoq5LzU5Tfn6+JqmaGKvELv
-         3PUcfwpuyg/hS0x7nkzvUdCfiGxOLX2LVe/H0Uwg=
+        b=QtX78b8DwNJDA5g5clD9eu6DLANWiYZkpHwR0BYZRwWcC9r38AQ+mE0hai/9dbVXu
+         Jtl3M/nEXd5FdDuKppWzzYvvKbAvNncvPueQsraX9IJEBTCfaT4B975Dr1fBlYBfI2
+         VbQJJNzEqLPX9isM+ryhJVQJe9ClBnOxNlXIL8C8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 305/663] net: dsa: qca8k: remove assignment of an_enabled in pcs_get_state()
+Subject: [PATCH 6.1 289/611] libbpf: Fix ld_imm64 copy logic for ksym in light skeleton.
 Date:   Mon,  8 May 2023 11:42:11 +0200
-Message-Id: <20230508094438.081772843@linuxfoundation.org>
+Message-Id: <20230508094431.787505518@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit 9ef70d0130f282638b28cfce24222f71ada00c9c ]
+[ Upstream commit a506d6ce1dd184051037dc9d26c3eb187c9fe625 ]
 
-pcs_get_state() implementations are not supposed to alter an_enabled.
-Remove this assignment.
+Unlike normal libbpf the light skeleton 'loader' program is doing
+btf_find_by_name_kind() call at run-time to find ksym in the kernel and
+populate its {btf_id, btf_obj_fd} pair in ld_imm64 insn. To avoid doing the
+search multiple times for the same ksym it remembers the first patched ld_imm64
+insn and copies {btf_id, btf_obj_fd} from it into subsequent ld_imm64 insn.
+Fix a bug in copying logic, since it may incorrectly clear BPF_PSEUDO_BTF_ID flag.
 
-Fixes: b3591c2a3661 ("net: dsa: qca8k: Switch to PHYLINK instead of PHYLIB")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/E1pdsE5-00Dl2l-8F@rmk-PC.armlinux.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also replace always true if (btf_obj_fd >= 0) check with unconditional JMP_JA
+to clarify the code.
+
+Fixes: d995816b77eb ("libbpf: Avoid reload of imm for weak, unresolved, repeating ksym")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230319203014.55866-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/qca/qca8k-8xxx.c | 1 -
- 1 file changed, 1 deletion(-)
+ tools/lib/bpf/gen_loader.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-index 2f224b166bbb3..f7944fe2e0ba7 100644
---- a/drivers/net/dsa/qca/qca8k-8xxx.c
-+++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-@@ -1427,7 +1427,6 @@ static void qca8k_pcs_get_state(struct phylink_pcs *pcs,
- 
- 	state->link = !!(reg & QCA8K_PORT_STATUS_LINK_UP);
- 	state->an_complete = state->link;
--	state->an_enabled = !!(reg & QCA8K_PORT_STATUS_LINK_AUTO);
- 	state->duplex = (reg & QCA8K_PORT_STATUS_DUPLEX) ? DUPLEX_FULL :
- 							   DUPLEX_HALF;
- 
+diff --git a/tools/lib/bpf/gen_loader.c b/tools/lib/bpf/gen_loader.c
+index 23f5c46708f8f..b74c82bb831e6 100644
+--- a/tools/lib/bpf/gen_loader.c
++++ b/tools/lib/bpf/gen_loader.c
+@@ -804,11 +804,13 @@ static void emit_relo_ksym_btf(struct bpf_gen *gen, struct ksym_relo_desc *relo,
+ 		return;
+ 	/* try to copy from existing ldimm64 insn */
+ 	if (kdesc->ref > 1) {
+-		move_blob2blob(gen, insn + offsetof(struct bpf_insn, imm), 4,
+-			       kdesc->insn + offsetof(struct bpf_insn, imm));
+ 		move_blob2blob(gen, insn + sizeof(struct bpf_insn) + offsetof(struct bpf_insn, imm), 4,
+ 			       kdesc->insn + sizeof(struct bpf_insn) + offsetof(struct bpf_insn, imm));
+-		/* jump over src_reg adjustment if imm is not 0, reuse BPF_REG_0 from move_blob2blob */
++		move_blob2blob(gen, insn + offsetof(struct bpf_insn, imm), 4,
++			       kdesc->insn + offsetof(struct bpf_insn, imm));
++		/* jump over src_reg adjustment if imm (btf_id) is not 0, reuse BPF_REG_0 from move_blob2blob
++		 * If btf_id is zero, clear BPF_PSEUDO_BTF_ID flag in src_reg of ld_imm64 insn
++		 */
+ 		emit(gen, BPF_JMP_IMM(BPF_JNE, BPF_REG_0, 0, 3));
+ 		goto clear_src_reg;
+ 	}
+@@ -831,7 +833,7 @@ static void emit_relo_ksym_btf(struct bpf_gen *gen, struct ksym_relo_desc *relo,
+ 	emit(gen, BPF_STX_MEM(BPF_W, BPF_REG_8, BPF_REG_7,
+ 			      sizeof(struct bpf_insn) + offsetof(struct bpf_insn, imm)));
+ 	/* skip src_reg adjustment */
+-	emit(gen, BPF_JMP_IMM(BPF_JSGE, BPF_REG_7, 0, 3));
++	emit(gen, BPF_JMP_IMM(BPF_JA, 0, 0, 3));
+ clear_src_reg:
+ 	/* clear bpf_object__relocate_data's src_reg assignment, otherwise we get a verifier failure */
+ 	reg_mask = src_reg_mask();
 -- 
 2.39.2
 
