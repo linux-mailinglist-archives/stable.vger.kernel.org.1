@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C08D6FABAD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EAD06FA8B7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235156AbjEHLQP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:16:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56888 "EHLO
+        id S235070AbjEHKov (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235081AbjEHLQM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:16:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5023701B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:16:11 -0700 (PDT)
+        with ESMTP id S234950AbjEHKoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C668E2A9FA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C86362BF0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:16:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D4BC433D2;
-        Mon,  8 May 2023 11:16:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 38DC5617D4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DA9C4339B;
+        Mon,  8 May 2023 10:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544570;
-        bh=xxLEEmPWvRP3QyRVaapV7Ra5vGsixS6jxLWx8rGGRL4=;
+        s=korg; t=1683542581;
+        bh=m2MAVz1sFRRcDP0NOl/MARcnCO2Q+y+I1t5a6wLEScU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Qdw6dDdxHYdbsWLYFsO/TadqFiQJ5FjYo+osJyxKMkCdlkL+tgBxNJXOTMnTrVrw
-         hyHnsUGPNCOR4KAAH94AgaGjryU1Qf7OwBgOqFz3odSORPI5iQRb5qI7EMw8myMa4W
-         J2jm/AYr7Islz2vhoqEMCbKia8q4mdtnhAID+ics=
+        b=KTjLfUo3OvTFdv9Sqb8NKg8/YfEjz5rigsuxoXznPBMYrzPULWOl2Jbb03nkUKzXq
+         TMvR5LI0Kem0DIoMQYygRmqZqbasxKVPshD+Zdbh4LMznYuzyJSKOh+wP+jYhLDVsY
+         /QUXPUMzDCPHOL8L+E/dvDiFG77+REDEfyHDqPsk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 445/694] mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 454/663] usb: gadget: udc: renesas_usb3: Fix use after free bug in renesas_usb3_remove due to race condition
 Date:   Mon,  8 May 2023 11:44:40 +0200
-Message-Id: <20230508094447.963406250@linuxfoundation.org>
+Message-Id: <20230508094442.841711004@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,93 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 12db28c3ef31f719bd18fa186a40bb152e6a527c ]
+[ Upstream commit 2b947f8769be8b8181dc795fd292d3e7120f5204 ]
 
-The MT7921 driver no longer uses eeprom.data, but the relevant code has not
-been removed completely since
-commit 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability").
-This could result in potential invalid memory access.
+In renesas_usb3_probe, role_work is bound with renesas_usb3_role_work.
+renesas_usb3_start will be called to start the work.
 
-To fix the kernel panic issue in mt7921, it is necessary to avoid accessing
-unallocated eeprom.data which can lead to invalid memory access.
+If we remove the driver which will call usbhs_remove, there may be
+an unfinished work. The possible sequence is as follows:
 
-Furthermore, it is possible to entirely eliminate the
-mt7921_mcu_parse_eeprom function and solely depend on
-mt7921_mcu_parse_response to divide the RxD header.
+CPU0                  			CPU1
 
-[2.702735] BUG: kernel NULL pointer dereference, address: 0000000000000550
-[2.702740] #PF: supervisor write access in kernel mode
-[2.702741] #PF: error_code(0x0002) - not-present page
-[2.702743] PGD 0 P4D 0
-[2.702747] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[2.702755] RIP: 0010:mt7921_mcu_parse_response+0x147/0x170 [mt7921_common]
-[2.702758] RSP: 0018:ffffae7c00fef828 EFLAGS: 00010286
-[2.702760] RAX: ffffa367f57be024 RBX: ffffa367cc7bf500 RCX: 0000000000000000
-[2.702762] RDX: 0000000000000550 RSI: 0000000000000000 RDI: ffffa367cc7bf500
-[2.702763] RBP: ffffae7c00fef840 R08: ffffa367cb167000 R09: 0000000000000005
-[2.702764] R10: 0000000000000000 R11: ffffffffc04702e4 R12: ffffa367e8329f40
-[2.702766] R13: 0000000000000000 R14: 0000000000000001 R15: ffffa367e8329f40
-[2.702768] FS:  000079ee6cf20c40(0000) GS:ffffa36b2f940000(0000) knlGS:0000000000000000
-[2.702769] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2.702775] CR2: 0000000000000550 CR3: 00000001233c6004 CR4: 0000000000770ee0
-[2.702776] PKRU: 55555554
-[2.702777] Call Trace:
-[2.702782]  mt76_mcu_skb_send_and_get_msg+0xc3/0x11e [mt76 <HASH:1bc4 5>]
-[2.702785]  mt7921_run_firmware+0x241/0x853 [mt7921_common <HASH:6a2f 6>]
-[2.702789]  mt7921e_mcu_init+0x2b/0x56 [mt7921e <HASH:d290 7>]
-[2.702792]  mt7921_register_device+0x2eb/0x5a5 [mt7921_common <HASH:6a2f 6>]
-[2.702795]  ? mt7921_irq_tasklet+0x1d4/0x1d4 [mt7921e <HASH:d290 7>]
-[2.702797]  mt7921_pci_probe+0x2d6/0x319 [mt7921e <HASH:d290 7>]
-[2.702799]  pci_device_probe+0x9f/0x12a
+                    			 renesas_usb3_role_work
+renesas_usb3_remove
+usb_role_switch_unregister
+device_unregister
+kfree(sw)
+//free usb3->role_sw
+                    			 usb_role_switch_set_role
+                    			 //use usb3->role_sw
 
-Fixes: 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The usb3->role_sw could be freed under such circumstance and then
+used in usb_role_switch_set_role.
+
+This bug was found by static analysis. And note that removing a
+driver is a root-only operation, and should never happen in normal
+case. But the root user may directly remove the device which
+will also trigger the remove function.
+
+Fix it by canceling the work before cleanup in the renesas_usb3_remove.
+
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20230320062931.505170-1-zyytlz.wz@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 20 -------------------
- 1 file changed, 20 deletions(-)
+ drivers/usb/gadget/udc/renesas_usb3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index c5e7ad06f8777..48f38dbbb91da 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -16,24 +16,6 @@ static bool mt7921_disable_clc;
- module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
- MODULE_PARM_DESC(disable_clc, "disable CLC support");
+diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
+index 615ba0a6fbee1..32c9e369216c9 100644
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2596,6 +2596,7 @@ static int renesas_usb3_remove(struct platform_device *pdev)
+ 	debugfs_remove_recursive(usb3->dentry);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
--static int
--mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
--{
--	struct mt7921_mcu_eeprom_info *res;
--	u8 *buf;
--
--	if (!skb)
--		return -EINVAL;
--
--	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
--
--	res = (struct mt7921_mcu_eeprom_info *)skb->data;
--	buf = dev->eeprom.data + le32_to_cpu(res->addr);
--	memcpy(buf, res->data, 16);
--
--	return 0;
--}
--
- int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 			      struct sk_buff *skb, int seq)
- {
-@@ -60,8 +42,6 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	} else if (cmd == MCU_EXT_CMD(THERMAL_CTRL)) {
- 		skb_pull(skb, sizeof(*rxd) + 4);
- 		ret = le32_to_cpu(*(__le32 *)skb->data);
--	} else if (cmd == MCU_EXT_CMD(EFUSE_ACCESS)) {
--		ret = mt7921_mcu_parse_eeprom(mdev, skb);
- 	} else if (cmd == MCU_UNI_CMD(DEV_INFO_UPDATE) ||
- 		   cmd == MCU_UNI_CMD(BSS_INFO_UPDATE) ||
- 		   cmd == MCU_UNI_CMD(STA_REC_UPDATE) ||
++	cancel_work_sync(&usb3->role_work);
+ 	usb_role_switch_unregister(usb3->role_sw);
+ 
+ 	usb_del_gadget_udc(&usb3->gadget);
 -- 
 2.39.2
 
