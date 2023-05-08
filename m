@@ -2,193 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4EEF6FB15F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 15:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC6386FB22E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 16:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234241AbjEHNVm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 09:21:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40344 "EHLO
+        id S234387AbjEHOFO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 10:05:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234245AbjEHNVb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 09:21:31 -0400
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32B030148
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 06:21:16 -0700 (PDT)
-X-ASG-Debug-ID: 1683552059-086e237e536e4c0004-OJig3u
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx1.zhaoxin.com with ESMTP id EFJRcdrH2v7v4A03 (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 08 May 2023 21:21:01 +0800 (CST)
-X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 8 May
- 2023 21:20:59 +0800
-Received: from L440.zhaoxin.com (10.29.8.21) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 8 May
- 2023 21:20:58 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-From:   Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
-To:     <gregkh@linuxfoundation.org>, <mathias.nyman@intel.com>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <WeitaoWang@zhaoxin.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v4 3/4] xhci: Show ZHAOXIN xHCI root hub speed correctly
-Date:   Tue, 9 May 2023 05:20:57 +0800
-X-ASG-Orig-Subj: [PATCH v4 3/4] xhci: Show ZHAOXIN xHCI root hub speed correctly
-Message-ID: <20230508212058.6307-4-WeitaoWang-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20230508212058.6307-1-WeitaoWang-oc@zhaoxin.com>
-References: <20230508212058.6307-1-WeitaoWang-oc@zhaoxin.com>
+        with ESMTP id S234391AbjEHOFM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 10:05:12 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C943F37614;
+        Mon,  8 May 2023 07:05:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683554708; x=1715090708;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qlDZfq7uid8IZb7yp4+EwtFKj9HOPvC6s9A1HOrf+9U=;
+  b=ffXIdpk1Zsk3MxarVE6DSmW1Dlk3foNTsXq6AU4ThnAJmh4oW+n5U9s8
+   osyaBokICcmfjLUbAKw/VQzdcqrUvAmt6jsIbPfyWnzcpWFLlEP2UfVX+
+   5CfHZeZLdbQK2hvW2pFSRMgJnTO/PfIoJmR7jHE95a9H1SQMNOXq7ft3l
+   cDqr/JFXRc2th+xEOe/MMPE8TsGCow36lFwH2mzAUTShJZ5hmQV3iRPhG
+   et07PqQXauq/bkZl7SSZ81zBI9uvgSrKnm1FhuJKelUjsa2AS3gye5McF
+   XKC53Jg0woia/vCkygeNKmQd5hQinuTmqYq4BBJdDmb1fHfHKMGqdGmvE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="338877301"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="338877301"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 07:02:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="763407449"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="763407449"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmsmga008.fm.intel.com with ESMTP; 08 May 2023 07:02:55 -0700
+From:   kan.liang@linux.intel.com
+To:     peterz@infradead.org, mingo@redhat.com,
+        linux-kernel@vger.kernel.org
+Cc:     ak@linux.intel.com, Kan Liang <kan.liang@linux.intel.com>,
+        Stephane Eranian <eranian@google.com>, stable@vger.kernel.org
+Subject: [PATCH] perf/x86/uncore: Correct the number of CHAs on SPR
+Date:   Mon,  8 May 2023 07:02:06 -0700
+Message-Id: <20230508140206.283708-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.29.8.21]
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1683552060
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 4438
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: 1.09
-X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.108487
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------------------------
-        0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
-        3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Some ZHAOXIN xHCI controllers follow usb3.1 spec,
-but only support gen1 speed 5Gbps. While in Linux kernel,
-if xHCI suspport usb3.1, root hub speed will show on 10Gbps.
-To fix this issue of ZHAOXIN xHCI platforms, read usb speed ID
-supported by xHCI to determine root hub speed. And add a quirk
-XHCI_ZHAOXIN_HOST for this issue.
+From: Kan Liang <kan.liang@linux.intel.com>
 
-Suggested-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+The number of CHAs from the discovery table on some SPR variants is
+incorrect, because of a firmware issue. An accurate number can be read
+from the MSR UNC_CBO_CONFIG.
+
+Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
+Reported-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
 ---
- drivers/usb/host/xhci-mem.c | 30 +++++++++++++++++++++++-------
- drivers/usb/host/xhci-pci.c |  2 ++
- drivers/usb/host/xhci.h     |  1 +
- 3 files changed, 26 insertions(+), 7 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 1532414c8c40..0634fba01ac8 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1968,7 +1968,7 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 7d1199554fe3..54abd93828bf 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6138,6 +6138,7 @@ static struct intel_uncore_type spr_uncore_mdf = {
+ };
+ 
+ #define UNCORE_SPR_NUM_UNCORE_TYPES		12
++#define UNCORE_SPR_CHA				0
+ #define UNCORE_SPR_IIO				1
+ #define UNCORE_SPR_IMC				6
+ #define UNCORE_SPR_UPI				8
+@@ -6448,12 +6449,22 @@ static int uncore_type_max_boxes(struct intel_uncore_type **types,
+ 	return max + 1;
+ }
+ 
++#define SPR_MSR_UNC_CBO_CONFIG		0x2FFE
++
+ void spr_uncore_cpu_init(void)
  {
- 	u32 temp, port_offset, port_count;
- 	int i;
--	u8 major_revision, minor_revision;
-+	u8 major_revision, minor_revision, tmp_minor_revision;
- 	struct xhci_hub *rhub;
- 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	struct xhci_port_cap *port_cap;
-@@ -1988,6 +1988,15 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 		 */
- 		if (minor_revision > 0x00 && minor_revision < 0x10)
- 			minor_revision <<= 4;
-+		/*
-+		 * Some zhaoxin's xHCI controller that follow usb3.1 spec
-+		 * but only support Gen1.
-+		 */
-+		if (xhci->quirks & XHCI_ZHAOXIN_HOST) {
-+			tmp_minor_revision = minor_revision;
-+			minor_revision = 0;
-+		}
++	struct intel_uncore_type *type;
++	u64 num_cbo;
 +
- 	} else if (major_revision <= 0x02) {
- 		rhub = &xhci->usb2_rhub;
- 	} else {
-@@ -1996,10 +2005,6 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 		/* Ignoring port protocol we can't understand. FIXME */
- 		return;
- 	}
--	rhub->maj_rev = XHCI_EXT_PORT_MAJOR(temp);
--
--	if (rhub->min_rev < minor_revision)
--		rhub->min_rev = minor_revision;
+ 	uncore_msr_uncores = uncore_get_uncores(UNCORE_ACCESS_MSR,
+ 						UNCORE_SPR_MSR_EXTRA_UNCORES,
+ 						spr_msr_uncores);
  
- 	/* Port offset and count in the third dword, see section 7.2 */
- 	temp = readl(addr + 2);
-@@ -2017,8 +2022,6 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 	if (xhci->num_port_caps > max_caps)
- 		return;
++	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
++	if (type) {
++		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
++		type->num_boxes = num_cbo;
++	}
+ 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
+ }
  
--	port_cap->maj_rev = major_revision;
--	port_cap->min_rev = minor_revision;
- 	port_cap->psi_count = XHCI_EXT_PORT_PSIC(temp);
- 
- 	if (port_cap->psi_count) {
-@@ -2039,6 +2042,10 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i - 1])))
- 				port_cap->psi_uid_count++;
- 
-+			if (xhci->quirks & XHCI_ZHAOXIN_HOST &&
-+					XHCI_EXT_PORT_PSIV(port_cap->psi[i]) >= 5)
-+				minor_revision = tmp_minor_revision;
-+
- 			xhci_dbg(xhci, "PSIV:%d PSIE:%d PLT:%d PFD:%d LP:%d PSIM:%d\n",
- 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i]),
- 				  XHCI_EXT_PORT_PSIE(port_cap->psi[i]),
-@@ -2048,6 +2055,15 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 				  XHCI_EXT_PORT_PSIM(port_cap->psi[i]));
- 		}
- 	}
-+
-+	rhub->maj_rev = major_revision;
-+
-+	if (rhub->min_rev < minor_revision)
-+		rhub->min_rev = minor_revision;
-+
-+	port_cap->maj_rev = major_revision;
-+	port_cap->min_rev = minor_revision;
-+
- 	/* cache usb2 port capabilities */
- 	if (major_revision < 0x03 && xhci->num_ext_caps < max_caps)
- 		xhci->ext_caps[xhci->num_ext_caps++] = temp;
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 3dfb3e0c910b..4a025ed50686 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -528,6 +528,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
-+		xhci->quirks |= XHCI_ZHAOXIN_HOST;
-+
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
- 			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 41c38bfd7348..3737510b5981 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1906,6 +1906,7 @@ struct xhci_hcd {
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
- #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
 -- 
-2.32.0
+2.35.1
 
