@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B36536FAC63
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 084366FAE18
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:41:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235685AbjEHLYF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:24:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39986 "EHLO
+        id S236135AbjEHLlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235668AbjEHLXv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:23:51 -0400
+        with ESMTP id S236130AbjEHLkq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F1E3A5C1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:23:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F66234B0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEEB161086
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:23:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5846C433D2;
-        Mon,  8 May 2023 11:23:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EFFB634D9
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40992C433D2;
+        Mon,  8 May 2023 11:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545026;
-        bh=7c+sAgUfN/5JZYIY0VaxJPBToDzf8v7aOnNiLAp6oPg=;
+        s=korg; t=1683546030;
+        bh=LW3oDFnDpKAGuffZBUZVqDiPStSu5Rkb0eh12fdlw4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GK8Zlo7PEtnec/jLmYSIeSyLOQw+M90+RKbAPoKI0/717At4hpgGVgAfFZX3EmMPF
-         dxNQ16x0VDwVnwC1UkSTFHE6jNKSvR9JvpplWcJo818cYUtpRms8KCQ9XDaOKfk93F
-         XQx8tJO2xb+Ug9tiKFDfp5vqeHoyBO6Jh9eKyGFo=
+        b=J6uf+8QCofutG4ptLjb2qc9rAjLT6EL8otcUwfHpB5GiXmyQKSwosV8oSm+XGtp93
+         C7q39ZAzxSliGwQo94FpKupOxWyeTPyLdBGle1T7rVR/wwSt802cH6rlcd2gWFgRM/
+         S22flGXjWAOAK1HQJ/fJse86SfMKacrlQGY4f6TE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
+        patches@lists.linux.dev, Gan Gecen <gangecen@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 600/694] RDMA/siw: Remove namespace check from siw_netdev_event()
+Subject: [PATCH 5.15 234/371] net: amd: Fix link leak when verifying config failed
 Date:   Mon,  8 May 2023 11:47:15 +0200
-Message-Id: <20230508094454.705974928@linuxfoundation.org>
+Message-Id: <20230508094821.350081362@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,42 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Gencen Gan <gangecen@hust.edu.cn>
 
-[ Upstream commit 266e9b3475ba82212062771fdbc40be0e3c06ec8 ]
+[ Upstream commit d325c34d9e7e38d371c0a299d415e9b07f66a1fb ]
 
-syzbot is reporting that siw_netdev_event(NETDEV_UNREGISTER) cannot destroy
-siw_device created after unshare(CLONE_NEWNET) due to net namespace check.
-It seems that this check was by error there and should be removed.
+After failing to verify configuration, it returns directly without
+releasing link, which may cause memory leak.
 
-Reported-by: syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=5e70d01ee8985ae62a3b
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Suggested-by: Leon Romanovsky <leon@kernel.org>
-Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/a44e9ac5-44e2-d575-9e30-02483cc7ffd1@I-love.SAKURA.ne.jp
-Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Paolo Abeni thinks that the whole code of this driver is quite
+"suboptimal" and looks unmainatained since at least ~15y, so he
+suggests that we could simply remove the whole driver, please
+take it into consideration.
+
+Simon Horman suggests that the fix label should be set to
+"Linux-2.6.12-rc2" considering that the problem has existed
+since the driver was introduced and the commit above doesn't
+seem to exist in net/net-next.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Gan Gecen <gangecen@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_main.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/amd/nmclan_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
-index dacc174604bf2..65b5cda5457ba 100644
---- a/drivers/infiniband/sw/siw/siw_main.c
-+++ b/drivers/infiniband/sw/siw/siw_main.c
-@@ -437,9 +437,6 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
+diff --git a/drivers/net/ethernet/amd/nmclan_cs.c b/drivers/net/ethernet/amd/nmclan_cs.c
+index 4019cab875051..8bd063e54ac38 100644
+--- a/drivers/net/ethernet/amd/nmclan_cs.c
++++ b/drivers/net/ethernet/amd/nmclan_cs.c
+@@ -650,7 +650,7 @@ static int nmclan_config(struct pcmcia_device *link)
+     } else {
+       pr_notice("mace id not found: %x %x should be 0x40 0x?9\n",
+ 		sig[0], sig[1]);
+-      return -ENODEV;
++      goto failed;
+     }
+   }
  
- 	dev_dbg(&netdev->dev, "siw: event %lu\n", event);
- 
--	if (dev_net(netdev) != &init_net)
--		return NOTIFY_OK;
--
- 	base_dev = ib_device_get_by_netdev(netdev, RDMA_DRIVER_SIW);
- 	if (!base_dev)
- 		return NOTIFY_OK;
 -- 
 2.39.2
 
