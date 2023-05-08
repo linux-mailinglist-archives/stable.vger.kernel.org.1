@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D3886FA4CF
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6326FA7BB
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233964AbjEHKDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59630 "EHLO
+        id S234679AbjEHKe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233962AbjEHKDY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:03:24 -0400
+        with ESMTP id S234758AbjEHKeA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862C82ABF4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:03:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B033A234B6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18F0F622D8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:03:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D04C433D2;
-        Mon,  8 May 2023 10:03:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E62DD6272B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13E6C433D2;
+        Mon,  8 May 2023 10:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540202;
-        bh=OnMBrPOhbqSEDZrnyCAbKG7AEJDlktUCMvf7n3EpDlo=;
+        s=korg; t=1683541986;
+        bh=amE3sEHx8BpKsR+JzTDsT89/L/cImNqKhaQwmTY2Hp8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JQ+ctwhMlWMwSoCqweYuPbStd5A0FEVnN4zOutouciFvODtfNAJFP2R/ao4tBfNel
-         KXdJSsX32ZgWv+m54mYcT5rpY0z45g5Colf07DdvND3OyjVAm1pZVMxkjDSffVgLk7
-         DULgKhmnL1SMmba/gZGZnZUmkWbcIOEA3WeetFXY=
+        b=pijrL2EGmzPeVJZw+ufL68qi5S0Xf8tMPskBDLe0usGptI/ryaS60MIBnsKqVr0NC
+         lQAAN+GeMff2E4FBqvUceEb3efMF37aK9dWEPa13AWy0L6Wdyv5YHTFpBAUVNpcSbW
+         1t0nj8vx6HWuod239NFkcisaO9/fnYHeAY7+cW8w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luis Gerhorst <gerhorst@cs.fau.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Quentin Monnet <quentin@isovalent.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 274/611] tools: bpftool: Remove invalid \ json escape
+        patches@lists.linux.dev,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 290/663] wifi: rtw88: mac: Return the original error from rtw_pwr_seq_parser()
 Date:   Mon,  8 May 2023 11:41:56 +0200
-Message-Id: <20230508094431.285838085@linuxfoundation.org>
+Message-Id: <20230508094437.613190687@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Gerhorst <gerhorst@cs.fau.de>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit c679bbd611c08b0559ffae079330bc4e5574696a ]
+[ Upstream commit b7ed9fa2cb76ca7a3c3cd4a6d35748fe1fbda9f6 ]
 
-RFC8259 ("The JavaScript Object Notation (JSON) Data Interchange
-Format") only specifies \", \\, \/, \b, \f, \n, \r, and \r as valid
-two-character escape sequences. This does not include \', which is not
-required in JSON because it exclusively uses double quotes as string
-separators.
+rtw_pwr_seq_parser() calls rtw_sub_pwr_seq_parser() which can either
+return -EBUSY, -EINVAL or 0. Propagate the original error code instead
+of unconditionally returning -EBUSY in case of an error.
 
-Solidus (/) may be escaped, but does not have to. Only reverse
-solidus (\), double quotes ("), and the control characters have to be
-escaped. Therefore, with this fix, bpftool correctly supports all valid
-two-character escape sequences (but still does not support characters
-that require multi-character escape sequences).
-
-Witout this fix, attempting to load a JSON file generated by bpftool
-using Python 3.10.6's default json.load() may fail with the error
-"Invalid \escape" if the file contains the invalid escaped single
-quote (\').
-
-Fixes: b66e907cfee2 ("tools: bpftool: copy JSON writer from iproute2 repository")
-Signed-off-by: Luis Gerhorst <gerhorst@cs.fau.de>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <quentin@isovalent.com>
-Link: https://lore.kernel.org/bpf/20230227150853.16863-1-gerhorst@cs.fau.de
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230226221004.138331-2-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/json_writer.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/json_writer.c b/tools/bpf/bpftool/json_writer.c
-index 7fea83bedf488..bca5dd0a59e34 100644
---- a/tools/bpf/bpftool/json_writer.c
-+++ b/tools/bpf/bpftool/json_writer.c
-@@ -80,9 +80,6 @@ static void jsonw_puts(json_writer_t *self, const char *str)
- 		case '"':
- 			fputs("\\\"", self->out);
- 			break;
--		case '\'':
--			fputs("\\\'", self->out);
--			break;
- 		default:
- 			putc(*str, self->out);
- 		}
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index aa7c5901ef260..a4afef14e18d6 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -233,7 +233,7 @@ static int rtw_pwr_seq_parser(struct rtw_dev *rtwdev,
+ 
+ 		ret = rtw_sub_pwr_seq_parser(rtwdev, intf_mask, cut_mask, cmd);
+ 		if (ret)
+-			return -EBUSY;
++			return ret;
+ 
+ 		idx++;
+ 	} while (1);
 -- 
 2.39.2
 
