@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3C66FAD00
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0536FAB53
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235870AbjEHLaI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:30:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
+        id S233816AbjEHLL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235909AbjEHL3x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:53 -0400
+        with ESMTP id S233833AbjEHLL4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED8619D4B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F96426EA6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 947E062F41
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88354C433D2;
-        Mon,  8 May 2023 11:29:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B533662B77
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C867FC433D2;
+        Mon,  8 May 2023 11:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545377;
-        bh=BsW4UVCmpcs4lRQ4Ur0+Dxgel0Decd0kkOGtglaHXHE=;
+        s=korg; t=1683544313;
+        bh=gW+lWQ9tIJYeA/+8RpQLqbcV0FQy3caS1Caec1cjZ3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0STf2WyphAGlpsb68tvIYD8M8ks8Gwl7Q4oB31H6BBK7XADj6gWnXdj+hxrCsVEq2
-         i+ysx5jXJk23AryAROndp22WhXG2gy3uOjza6QV6UcPFOBX2/bWYv/bHHufz0tV4VM
-         MmJ50zc98/Jsi7yHSkp0nPX2lmNXKO66DnajXffg=
+        b=R3naTM7MK864SdcvDO3atlIThQBI2IloQWPC943mvd7yW/uOpL+RZJASderSEv2Tn
+         xRtpMRwP/PCLaINVa8I7HcmyKXech9Rc6cnb3pPvXj89POCR7tWm92EHmGJu4UFZu9
+         an40gL3sJht2so7QQkLCm6Ul+1hfZp24LVC8fcsM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Sean Anderson <seanga2@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/371] ASoC: soc-pcm: fix hw->formats cleared by soc_pcm_hw_init() for dpcm
-Date:   Mon,  8 May 2023 11:43:23 +0200
-Message-Id: <20230508094812.038963097@linuxfoundation.org>
+Subject: [PATCH 6.3 369/694] net: sunhme: Fix uninitialized return code
+Date:   Mon,  8 May 2023 11:43:24 +0200
+Message-Id: <20230508094444.754660668@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,45 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Sean Anderson <seanga2@gmail.com>
 
-[ Upstream commit 083a25b18d6ad9f1f540e629909aa3eaaaf01823 ]
+[ Upstream commit d61157414d0a591d10d27d0ce5873916614e5e31 ]
 
-The hw->formats may be set by snd_dmaengine_pcm_refine_runtime_hwparams()
-in component's startup()/open(), but soc_pcm_hw_init() will init
-hw->formats in dpcm_runtime_setup_fe() after component's startup()/open(),
-which causes the valuable hw->formats to be cleared.
+Fix an uninitialized return code if we never found a qfe slot. It would be
+a bug if we ever got into this situation, but it's good to return something
+tracable.
 
-So need to store the hw->formats before initialization, then restore
-it after initialization.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1678346017-3660-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: acb3f35f920b ("sunhme: forward the error code from pci_enable_device()")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Sean Anderson <seanga2@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-pcm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/sun/sunhme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 3b673477f6215..6f616ac4490f0 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -1554,10 +1554,14 @@ static void dpcm_runtime_setup_fe(struct snd_pcm_substream *substream)
- 	struct snd_pcm_hardware *hw = &runtime->hw;
- 	struct snd_soc_dai *dai;
- 	int stream = substream->stream;
-+	u64 formats = hw->formats;
- 	int i;
+diff --git a/drivers/net/ethernet/sun/sunhme.c b/drivers/net/ethernet/sun/sunhme.c
+index b0c7ab74a82ed..7cf8210ebbec3 100644
+--- a/drivers/net/ethernet/sun/sunhme.c
++++ b/drivers/net/ethernet/sun/sunhme.c
+@@ -2834,7 +2834,7 @@ static int happy_meal_pci_probe(struct pci_dev *pdev,
+ 	int i, qfe_slot = -1;
+ 	char prom_name[64];
+ 	u8 addr[ETH_ALEN];
+-	int err;
++	int err = -ENODEV;
  
- 	soc_pcm_hw_init(hw);
- 
-+	if (formats)
-+		hw->formats &= formats;
-+
- 	for_each_rtd_cpu_dais(fe, i, dai) {
- 		struct snd_soc_pcm_stream *cpu_stream;
- 
+ 	/* Now make sure pci_dev cookie is there. */
+ #ifdef CONFIG_SPARC
 -- 
 2.39.2
 
