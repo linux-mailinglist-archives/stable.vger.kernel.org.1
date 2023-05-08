@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 240226FA745
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3066FAA96
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232541AbjEHK2y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:28:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54650 "EHLO
+        id S233191AbjEHLEA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbjEHK2g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:36 -0400
+        with ESMTP id S233375AbjEHLDW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC43E70E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF94433FDF
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B614061D7E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15A5C433D2;
-        Mon,  8 May 2023 10:28:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5652F62A58
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AAFC433D2;
+        Mon,  8 May 2023 11:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541714;
-        bh=MkBSir096ixF+SGKwT4r3tz493K1/jDeIupkG2T4ODk=;
+        s=korg; t=1683543759;
+        bh=cR4IHeEjipOenzBYZO2LEx1W1GsjyfePMT7OP9SAGDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lpyaliBYpQHdo0dc+riajnXjhqW4uSYCsuMNwomnUtnU+FPZbXeNG9CrXN461gRbc
-         r3JXY+w06/Whh4SP9CGA2MCV0HmcYsDwhIdxHgTIGaNw5byviw99KXpBQaTSm1P/Vi
-         y3L4jMAa8uX/hVllXf6yvx4kKAms++RKZv6+SVTM=
+        b=lXzvhZLokQ62mzhu9e7gVEwgW6DIVFRvS+Sh/BOI11WqaX8UrXQPV3Q54w1/OEXpw
+         TaBYUEZLLCGotBzUlAVPEDsJlg8+R2R3YzWab99IPC2/6hQdtPZNRW1B6s5XCHMhhV
+         Fh6I6ovoic6CMJ6IHWX7zpo0CV6LTcrOMSlnW0Gs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 202/663] cpufreq: mediatek: fix KP caused by handler usage after regulator_put/clk_put
+Subject: [PATCH 6.3 193/694] arm64: dts: qcom: sm8150: Fix the PCI I/O port range
 Date:   Mon,  8 May 2023 11:40:28 +0200
-Message-Id: <20230508094434.933057852@linuxfoundation.org>
+Message-Id: <20230508094438.677471095@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,156 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit d51e106240bc755cbe59634b70d567c192b045b2 ]
+[ Upstream commit 422b110b9b0af0afd4a4b19e8fc3ceab9e71d842 ]
 
-Any kind of failure in mtk_cpu_dvfs_info_init() will lead to calling
-regulator_put() or clk_put() and the KP will occur since the regulator/clk
-handlers are used after released in mtk_cpu_dvfs_info_release().
+For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
+located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
+(0x60200000, 0x40200000) specified in the ranges property for I/O region.
 
-To prevent the usage after regulator_put()/clk_put(), the regulator/clk
-handlers are addressed in a way of "Free the Last Thing Style".
+While at it, let's use the missing 0x prefix for the addresses.
 
-Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
-Fixes: 4b9ceb757bbb ("cpufreq: mediatek: Enable clocks and regulators")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: a1c86c680533 ("arm64: dts: qcom: sm8150: Add PCIe nodes")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230228164752.55682-12-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/mediatek-cpufreq.c | 62 +++++++++++++++---------------
- 1 file changed, 30 insertions(+), 32 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index 01d949707c373..6dc225546a8d6 100644
---- a/drivers/cpufreq/mediatek-cpufreq.c
-+++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -420,7 +420,7 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 		ret = PTR_ERR(info->inter_clk);
- 		dev_err_probe(cpu_dev, ret,
- 			      "cpu%d: failed to get intermediate clk\n", cpu);
--		goto out_free_resources;
-+		goto out_free_mux_clock;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+index 13e0ce8286061..733c896918c83 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -1799,8 +1799,8 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	info->proc_reg = regulator_get_optional(cpu_dev, "proc");
-@@ -428,13 +428,13 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 		ret = PTR_ERR(info->proc_reg);
- 		dev_err_probe(cpu_dev, ret,
- 			      "cpu%d: failed to get proc regulator\n", cpu);
--		goto out_free_resources;
-+		goto out_free_inter_clock;
- 	}
+-			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
+-				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
++				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
  
- 	ret = regulator_enable(info->proc_reg);
- 	if (ret) {
- 		dev_warn(cpu_dev, "cpu%d: failed to enable vproc\n", cpu);
--		goto out_free_resources;
-+		goto out_free_proc_reg;
- 	}
+ 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi";
+@@ -1895,7 +1895,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	/* Both presence and absence of sram regulator are valid cases. */
-@@ -442,14 +442,14 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 	if (IS_ERR(info->sram_reg)) {
- 		ret = PTR_ERR(info->sram_reg);
- 		if (ret == -EPROBE_DEFER)
--			goto out_free_resources;
-+			goto out_disable_proc_reg;
+-			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
  
- 		info->sram_reg = NULL;
- 	} else {
- 		ret = regulator_enable(info->sram_reg);
- 		if (ret) {
- 			dev_warn(cpu_dev, "cpu%d: failed to enable vsram\n", cpu);
--			goto out_free_resources;
-+			goto out_free_sram_reg;
- 		}
- 	}
- 
-@@ -458,13 +458,13 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- 	if (ret) {
- 		dev_err(cpu_dev,
- 			"cpu%d: failed to get OPP-sharing information\n", cpu);
--		goto out_free_resources;
-+		goto out_disable_sram_reg;
- 	}
- 
- 	ret = dev_pm_opp_of_cpumask_add_table(&info->cpus);
- 	if (ret) {
- 		dev_warn(cpu_dev, "cpu%d: no OPP table\n", cpu);
--		goto out_free_resources;
-+		goto out_disable_sram_reg;
- 	}
- 
- 	ret = clk_prepare_enable(info->cpu_clk);
-@@ -533,43 +533,41 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
- out_free_opp_table:
- 	dev_pm_opp_of_cpumask_remove_table(&info->cpus);
- 
--out_free_resources:
--	if (regulator_is_enabled(info->proc_reg))
--		regulator_disable(info->proc_reg);
--	if (info->sram_reg && regulator_is_enabled(info->sram_reg))
-+out_disable_sram_reg:
-+	if (info->sram_reg)
- 		regulator_disable(info->sram_reg);
- 
--	if (!IS_ERR(info->proc_reg))
--		regulator_put(info->proc_reg);
--	if (!IS_ERR(info->sram_reg))
-+out_free_sram_reg:
-+	if (info->sram_reg)
- 		regulator_put(info->sram_reg);
--	if (!IS_ERR(info->cpu_clk))
--		clk_put(info->cpu_clk);
--	if (!IS_ERR(info->inter_clk))
--		clk_put(info->inter_clk);
-+
-+out_disable_proc_reg:
-+	regulator_disable(info->proc_reg);
-+
-+out_free_proc_reg:
-+	regulator_put(info->proc_reg);
-+
-+out_free_inter_clock:
-+	clk_put(info->inter_clk);
-+
-+out_free_mux_clock:
-+	clk_put(info->cpu_clk);
- 
- 	return ret;
- }
- 
- static void mtk_cpu_dvfs_info_release(struct mtk_cpu_dvfs_info *info)
- {
--	if (!IS_ERR(info->proc_reg)) {
--		regulator_disable(info->proc_reg);
--		regulator_put(info->proc_reg);
--	}
--	if (!IS_ERR(info->sram_reg)) {
-+	regulator_disable(info->proc_reg);
-+	regulator_put(info->proc_reg);
-+	if (info->sram_reg) {
- 		regulator_disable(info->sram_reg);
- 		regulator_put(info->sram_reg);
- 	}
--	if (!IS_ERR(info->cpu_clk)) {
--		clk_disable_unprepare(info->cpu_clk);
--		clk_put(info->cpu_clk);
--	}
--	if (!IS_ERR(info->inter_clk)) {
--		clk_disable_unprepare(info->inter_clk);
--		clk_put(info->inter_clk);
--	}
--
-+	clk_disable_unprepare(info->cpu_clk);
-+	clk_put(info->cpu_clk);
-+	clk_disable_unprepare(info->inter_clk);
-+	clk_put(info->inter_clk);
- 	dev_pm_opp_of_cpumask_remove_table(&info->cpus);
- 	dev_pm_opp_unregister_notifier(info->cpu_dev, &info->opp_nb);
- }
+ 			interrupts = <GIC_SPI 307 IRQ_TYPE_EDGE_RISING>;
 -- 
 2.39.2
 
