@@ -2,52 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA036FB167
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 15:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 355986FB1E5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 15:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjEHNZR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 09:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43636 "EHLO
+        id S234031AbjEHNny (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 09:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjEHNZQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 09:25:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D59383
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 06:25:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12F80639DC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 13:25:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92E6C433D2;
-        Mon,  8 May 2023 13:25:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683552314;
-        bh=xNoSJkBze9zmRIp6cBsfukeWzToDTAhsz0GIxBWHwDE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e9NF0L0+jG+zuf8GMwiCnTpL925Y6PByTdhs4795j50bxKw+uWi/uuDMJw2btmWsQ
-         LFkaE9AI/4Kl45idyexQ/unE7KOUHeoizMTLogU1fecDMFCxVFxepb3DWygSVir/xL
-         EcnskRR59pGcw0IgERFul0X/2iaftvsTaryBq+IY=
-Date:   Mon, 8 May 2023 15:25:11 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Dhruva Gole <d-gole@ti.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 455/611] spi: bcm63xx: remove PM_SLEEP based
- conditional compilation
-Message-ID: <2023050845-pancreas-postage-5769@gregkh>
-References: <20230508094421.513073170@linuxfoundation.org>
- <20230508094436.944529030@linuxfoundation.org>
- <0138fb50-507d-bccf-40bb-07340f3cbb33@ti.com>
- <2023050808-overbite-dancing-53c5@gregkh>
+        with ESMTP id S234124AbjEHNnx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 09:43:53 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831F334E20
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 06:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683553429; x=1715089429;
+  h=content-transfer-encoding:in-reply-to:references:subject:
+   from:cc:to:date:message-id:mime-version;
+  bh=kvt9TtkCWooshZAZna0bdCJNRIHGqltda7DiCOQFHbA=;
+  b=n7YC9IwPbQ+mFMbsgvb40J9waGxEuyATNqHX/rkRPlIXgrQppSNjXrmE
+   Sf2A0cusH1sctojUZCZ9iEZxlVTjhFGsmhk4gJxm7AXUQmGlh7k/ylEwI
+   LBdDMII53EDrkSZNdIXrkECKnyHzuaNm00rq3VTU7pk+RzuoByPrvod+D
+   071TNXbS0aKJobbMT1nJ1pcc2w2xSxMw+Ha2gFDpbt5PBwXUm6C3pYwOI
+   tmNOa/jw7ANGefqaStz4h+RjafpnyQR+Ka4WKXf1azSgCFamNCgPaJS+H
+   f22r5OqkGIldShJuFLOnVgPRXT5BkNQSobF4D2kDBgLRrxnVDRxcvT8g1
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="412905867"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="412905867"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 06:43:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="729089386"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="729089386"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orsmga008.jf.intel.com with ESMTP; 08 May 2023 06:43:44 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 8 May 2023 06:43:44 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Mon, 8 May 2023 06:43:44 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Mon, 8 May 2023 06:43:44 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XuZytrjHBt10tw201jhBa+fVU2nDHyqBY/x+BQlqFbg+ppZ78E2eiDzesiUHUvq0l5K1ULz9+mGRDLw3NHrrP2dIFZzpzG+P/RNlUCR3/1WMWTRbQBEcNvS3ZtSflghPo0BUfZneUbDmcjvKPtWg76ze5NuOInCXEVdkKc/CwOVBmpnCTib87DZVx9UPCX/0/iQXS4RYJoAZVg68HwSg47rbLiwSBkNQB5DfSXn9EgjCQes1cW3PLnmDvwWhy09gqRNnPfF3e3JfkfFS7PANUVISet//o43rt+OyGfQPQOPUy5shiSegqaksK/gNiQcyJoOvyJHGxmkZSkH4pD3Grw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S/lUOO1/qrI3Qn5NFfrw3HuyaUd7q2xRmxPjFplHwNo=;
+ b=X5n4CJyCbZIrEarvNySX+AFLyKsHUbFa0tq9fOXxUdmPJ2b4BP8wxE8jP1RfKNKxVYLm/uiFHm5xGV4bY561mOWu5/2PlK6Fcn2HgBQ5Kb+3KtWW3Q0TPZxMerYBKPn0EAwIdAB1x4Ly9jJypSTyiR43jco3stCLAM3G8HyLVVq+mS8FddECLju7LnvnI1iReeKf8Wa3k9/MHeZxGyYCAsqE6C6JihscospBvShUG5kAJO905L7hGB/mTpiUwDbUERshJW86TISPDwTn2psHbaaw9Am/67hhhBxj+puCjPIQj6AKxN8cMRnp4Q8Gk8usDs5o8tBB6M7L4OJAZhZT/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN8PR11MB3556.namprd11.prod.outlook.com (2603:10b6:408:8d::31)
+ by SJ2PR11MB8297.namprd11.prod.outlook.com (2603:10b6:a03:539::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Mon, 8 May
+ 2023 13:43:42 +0000
+Received: from BN8PR11MB3556.namprd11.prod.outlook.com
+ ([fe80::28c6:f268:89bd:e45a]) by BN8PR11MB3556.namprd11.prod.outlook.com
+ ([fe80::28c6:f268:89bd:e45a%7]) with mapi id 15.20.6363.032; Mon, 8 May 2023
+ 13:43:42 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230505110917.1918957-1-ankit.k.nautiyal@intel.com>
+References: <20230505110917.1918957-1-ankit.k.nautiyal@intel.com>
+Subject: Re: [Intel-gfx] [PATCH] drm/i915/display: Update the DDI_BUF_CTL active timeout for ADL-P
+From:   Gustavo Sousa <gustavo.sousa@intel.com>
+CC:     <lucas.demarchi@intel.com>, <stable@vger.kernel.org>
+To:     Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+        <intel-gfx@lists.freedesktop.org>
+Date:   Mon, 8 May 2023 10:43:37 -0300
+Message-ID: <168355341751.27719.16836386570199975237@gjsousa-mobl2>
+User-Agent: alot/0.10
+X-ClientProxiedBy: SJ0PR05CA0185.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::10) To BN8PR11MB3556.namprd11.prod.outlook.com
+ (2603:10b6:408:8d::31)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023050808-overbite-dancing-53c5@gregkh>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8PR11MB3556:EE_|SJ2PR11MB8297:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1e0c792-e204-449d-17e4-08db4fca3c85
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HeBaoX/+dchGPsAp8xxsqRWEy47Fm/laTqgMsJ9n41CKCBe22RvDad1eGYHfmHPo+UgZYetZ+5Cvlhv8S6v1s1TBjZfzcBhiZABBmdm5g62USOONfm/hoJowpDpn1rka8oOXPVIlmhGx8vtUtbNhNgRH/jEBu84+t9NcFTRsxdtLqjFBbzu7MK1E3D6EpcG0vM8xNq4VDf5UDEDrOiFgnr3GhEB0DVjBdbgdBrNaD7fP39ldMNfJDq6TL1Qrxox3NaCdc76eqW0xwCwbXG83Mn34oUovobktx1RiafDkFexQg4vGQyR51fMwpiFabNoeilKluUquDr5yLudhbUCWY6hGsUdrDE2b5yTMyL7uN5kWpMto9BITlbnNKPpNNE4MWNXh6Yno/ItAKEbjbeA8NBhdk3Xk6c0tNqAku+QS5yMvmpV0IHzQmW0fim3ZkDtOu9/7oC6oXb4/VCbDWd9wBS1DASw1vd6adt/cxJ/Vs/wmpDTVu1jA3W4pBuHrkBo3F/s+5XRey0RFVqDRzm/+HHkz6O3F3aSkOol4T/hiGb8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR11MB3556.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(39860400002)(366004)(136003)(396003)(346002)(376002)(451199021)(66476007)(86362001)(4326008)(66946007)(66556008)(6486002)(316002)(478600001)(33716001)(5660300002)(44832011)(41300700001)(15650500001)(8676002)(2906002)(8936002)(38100700002)(82960400001)(186003)(26005)(6506007)(9686003)(6512007)(83380400001)(6666004);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NzVsNHZldExucDdsb1RGOXdGWGxVSlVPN2t3U2pRWGJwa3RSc05WRnJyQ3c4?=
+ =?utf-8?B?cFI2QlVrNEE2V1ltN0lBWVlQVXRXWEhIRHp0TDlwUjZsbVJDT1pvcHJMUlE3?=
+ =?utf-8?B?bUUrTnhJNjdNTlgrOEJuMGYybWxBNThaU0ZnUzZhRGM4emlHdjFxNkpwWmZ5?=
+ =?utf-8?B?QVdmSWlLaXFVc2pFS3IrSXZ5OVkxMWlJMEZKZHJVVi84dSs3Y3V3cHZ1MFFI?=
+ =?utf-8?B?MFJsWnZXZEt6Z0lYWDFnUjVLZk85bHFwYkgrSDFPWGdBQmQ0clFLVEIzRFBI?=
+ =?utf-8?B?M0pnL2tFOFpnaGI5SVNvZ2Y2ZjlZNVhod2lWYUxqOXFiZUsvOUx2OGdOWXZ3?=
+ =?utf-8?B?bkE2TUJoVmRYK0lxaTMvcTRLU3I0RDJ6WTFlWlZIVEt5MVZra2g4K04xNHc5?=
+ =?utf-8?B?bS9aUUQzek9qd2hqU1l1YnM4NFJFaE8wcnRnV3RaUGhieHhGbFdURGFNZDhy?=
+ =?utf-8?B?N0ZkcGJ6NU9CUVZzTmM0Znp2ZER0TXJxS0pqVkFCR3hNcHFYaWF6NWZKYnlC?=
+ =?utf-8?B?Um03Y3dBTld5Qm1mNlVuZlFVUVYwQUVncE1uRlE2TUdwTjRDZ3R3dlhjNmpJ?=
+ =?utf-8?B?akthcDVSenQ1VU03ZWt1eTAyWWl3QWx6VjhSeHBvTjc2c1NITHBJdC9XVlRl?=
+ =?utf-8?B?Ym1JcWRFWnZsZFU1S3cxMG9zeGkvNlp2RUg0RHhLUTdrK1FSSEtPVERNcThZ?=
+ =?utf-8?B?U2dpUWlDOUNwYzdIUTRVbVFxYXQzdHNHeVdEaDZmeHZOb1VjTW1qdmNjN3dS?=
+ =?utf-8?B?NzlCVVYyT3ExSVk1bmlaVXI4Q0MrVHVHSTZmaGZBaGVFa0JjVFRySTdTSWF2?=
+ =?utf-8?B?bHFMTTdyV2dlV0xuRkJQNVoxSUpGcUh0dlROZWZpL2U5ZFc5N3I2djg2Ympn?=
+ =?utf-8?B?NjFkUGdaZ1VBYTZIZWhrQ3RQeFlMais1bCtBT2dJb0Z6ZzBtbWhzNTVtMzhU?=
+ =?utf-8?B?bVZtSDZnTHZLcjhoT3dZR0ppMUl1R0RVdzFITUZOQ3RaeXFUdkdGNEdZc0NJ?=
+ =?utf-8?B?bngveEQveWpiamNadWRPZ3BUY0FJdERueUdNN2pHTHc4Q2pORnQ1UGcyQ0FD?=
+ =?utf-8?B?OS92NDkvWlRhV3FPQmZTV0pGTEU4RG1Kck4yd2FaZlo5TVdCaVZZeU0ySUlr?=
+ =?utf-8?B?MnRvcWtIK1REMHFuUlZWZXdrenVEMWhBWFczQlh3WTBtUEtUSkc4WHRIV1pa?=
+ =?utf-8?B?cVptamFDTUJVbEcwR0x3dzR4OUFJVkR0Y2ZIaEozbCsvYXNvNExwTHpJQTYr?=
+ =?utf-8?B?Qy9sS0xwWlNpTVNyRkFvSXVlNmlaSjZkakU0QytwOVZxQmxmUDZoWGR1Ykk4?=
+ =?utf-8?B?SENVVnVvWEY5Y3h1UmljaXgzbXNzN0JSdGZmK0hrZWhoWnpwSzBUanpjVGNS?=
+ =?utf-8?B?UWpxYytGcjFtbzlUbjZIVGVjdWJoUFM4bjE3akNyYkdHOWtYVERrSHF5VU05?=
+ =?utf-8?B?dnYxVmtCZmFNc0Rwb1BqWVhJMjE2Z29mVGRWMVkwOGoyV1UvMGdVbmJuMC9r?=
+ =?utf-8?B?a1JwYjlENzJERnpmUjZwTndrcTdmMS9FRFJ0VFJpVDFhbXgyR2hHQi9ycXBk?=
+ =?utf-8?B?ckxHeWZQSm1Bd2hXTXA4VFBqWXpVeDdwM3Y0bzQwUkQvY0VxSFVzM0Q1c25Z?=
+ =?utf-8?B?ZmtjbzdMTW1zTEhLUGovNCtrM3o3SS9ReXZ0NlpONVRVNFVKRjBwRmt1SW0v?=
+ =?utf-8?B?RnJWRmkxQ0V1ZFRCUHFjQTdyZkUwbWJ6M3gyQTRnUnVPSFJRYW1GYVpUdUor?=
+ =?utf-8?B?Tzc2SGpJbXRBWkl4NC8rQzc5V2ZrdjNOQmxVcERRczVBdEp5K2I5VC9Tc0JS?=
+ =?utf-8?B?WWRzN0Rxdy9rKzZuV1NKeSswYnNsMWczY3YrZHZMV1phTldLeW8wQ0p1MExv?=
+ =?utf-8?B?WmV6TERwZzc4a2NEaU9MUHBRdmtWbStCSTZvczJSVjFhbSs1bmFmeXpHZExt?=
+ =?utf-8?B?S3RXWk9ETWtLZzF5ODZQSzhaWXVoVnQ1L21CQWIwK0h4ZzgxeVhSR1VocEJx?=
+ =?utf-8?B?Y3VaM3VUa2RPT0pINmw1R0lJWU96dDVSc2F0eWpjWEpSWitwZTZuYXVSZ3Ft?=
+ =?utf-8?B?NnFMNlJ1N2s4QXZTZGYxTFJ3azBCdmZPRkZIaG9OaERtdzNWa0xUVG8yRCt3?=
+ =?utf-8?B?QSt1Wlg3VkJzaGMwL3RkYmt0YkhPeFJPT0tmc0pGSUxiR2JqOUlQRUREQzZC?=
+ =?utf-8?B?ZVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1e0c792-e204-449d-17e4-08db4fca3c85
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR11MB3556.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 13:43:42.3489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tU2mI1q9m0HUXD/6u5PSdfZALdRNDkAba4jlzpMx31QnEHQUrVG4UQ84y9ikqKJYj449bxq18HXvYaqoy1DFpg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8297
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,71 +154,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 08, 2023 at 03:15:15PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, May 08, 2023 at 05:55:50PM +0530, Dhruva Gole wrote:
-> > Hi Greg,
-> > 
-> > On 08/05/23 15:14, Greg Kroah-Hartman wrote:
-> > > From: Dhruva Gole <d-gole@ti.com>
-> > > 
-> > > [ Upstream commit 25f0617109496e1aff49594fbae5644286447a0f ]
-> > > 
-> > > Get rid of conditional compilation based on CONFIG_PM_SLEEP because
-> > > it may introduce build issues with certain configs where it maybe disabled
-> > > This is because if above config is not enabled the suspend-resume
-> > > functions are never part of the code but the bcm63xx_spi_pm_ops struct
-> > > still inits them to non-existent suspend-resume functions.
-> > > 
-> > > Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
-> > > 
-> > > Signed-off-by: Dhruva Gole <d-gole@ti.com>
-> > > Link: https://lore.kernel.org/r/20230420121615.967487-1-d-gole@ti.com
-> > > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > ---
-> > >   drivers/spi/spi-bcm63xx.c | 2 --
-> > >   1 file changed, 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> > > index 80fa0ef8909ca..0324ab3ce1c84 100644
-> > > --- a/drivers/spi/spi-bcm63xx.c
-> > > +++ b/drivers/spi/spi-bcm63xx.c
-> > > @@ -630,7 +630,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
-> > >   	return 0;
-> > >   }
-> > > -#ifdef CONFIG_PM_SLEEP
-> > >   static int bcm63xx_spi_suspend(struct device *dev)
-> > >   {
-> > >   	struct spi_master *master = dev_get_drvdata(dev);
-> > > @@ -657,7 +656,6 @@ static int bcm63xx_spi_resume(struct device *dev)
-> > >   	return 0;
-> > >   }
-> > > -#endif
-> > 
-> > This patch may cause build failures with some of the configs that disable
-> > CONFIG_PM I understand,
-> > So to fix that I had sent another patch:
-> > https://lore.kernel.org/all/CAOiHx==anPTqXNJNG7zap1XP2zKUp5SbaVJdyUsUvvitKRUHZw@mail.gmail.com/
-> > 
-> > However missed out adding the fixes tag.
-> > 
-> > I humbly request you to add
-> > https://lore.kernel.org/all/20230424102546.1604484-1-d-gole@ti.com/
-> > 
-> > this patch to fix this patch throughout the stable fixes trees.
-> > 
-> > It can also be found on Linus' master branch here:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-bcm63xx.c?id=cc5f6fa4f6590e3b9eb8d34302ea43af4a3cfed7
-> > >   static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
-> > >   	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
-> 
-> Sure, now queued up, thanks!
+Quoting Ankit Nautiyal (2023-05-05 08:09:17)
+>For ADL-P the timeout for DDI_BUF_CTL active is 500usec.
+>Update the same as per Bspec:55424.
 
+I think the Bspec number could go as a trailer. We could also add BSpec 491=
+91
+here.
 
-Nope, sorry, that broke the build in many places, so I've dropped it now
-from kernels 5.15.y and older.
+Acked-by: Gustavo Sousa <gustavo.sousa@intel.com>
 
-thanks,
-
-greg k-h
+>
+>Fixes: 5add4575c298 ("drm/i915/ddi: Align timeout for DDI_BUF_CTL active w=
+ith Bspec")
+>Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>Cc: Imre Deak <imre.deak@intel.com>
+>Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+>Cc: <stable@vger.kernel.org> # v6.3+
+>
+>Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>---
+> drivers/gpu/drm/i915/display/intel_ddi.c | 3 +++
+> 1 file changed, 3 insertions(+)
+>
+>diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i9=
+15/display/intel_ddi.c
+>index 55f36d9d509c..6d8e4d7a784e 100644
+>--- a/drivers/gpu/drm/i915/display/intel_ddi.c
+>+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+>@@ -216,8 +216,11 @@ static void intel_wait_ddi_buf_active(struct drm_i915=
+_private *dev_priv,
+>        } else if (DISPLAY_VER(dev_priv) >=3D 12) {
+>                if (intel_phy_is_tc(dev_priv, phy))
+>                        timeout_us =3D 3000;
+>+          else if (IS_ALDERLAKE_P(dev_priv))
+>+                  timeout_us =3D 500;
+>                else
+>                        timeout_us =3D 1000;
+>+
+>        } else {
+>                timeout_us =3D 500;
+>        }
+>--=20
+>2.25.1
+>
