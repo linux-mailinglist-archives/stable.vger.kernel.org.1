@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DEFF6FA661
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F37A6FA9B4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234358AbjEHKSy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:18:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48696 "EHLO
+        id S235207AbjEHKyu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:54:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234352AbjEHKSx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:18:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B67D8D2DF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:18:51 -0700 (PDT)
+        with ESMTP id S235308AbjEHKyT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:54:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68BC2B409
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E8E162509
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EC5C4339C;
-        Mon,  8 May 2023 10:18:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D60761821
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337F0C433EF;
+        Mon,  8 May 2023 10:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541130;
-        bh=FGAll/LomuNzjHZoRmGPenTV7BFTpGFr4ZGudxmlivI=;
+        s=korg; t=1683543212;
+        bh=jeuc4JoFCPqwXiJad/GWe37t5buoUxk7bGN9lF/fzn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dJPPgX4b75/xCIhm8q13uF35IOshFNPeax838QEZd8bgwYshiJ7wcdyHPIGhIdkwz
-         X6RxpZwuQ1MnVtO/Nvw2gzbEDV/RQrnJQYfpiQcjy4ZWHhKXJMWxcrLoaYA220/1IP
-         xfrGupchr5wvIGf4h+T32/BIRLgztpwg32f2gWuo=
+        b=ZQBgYl08X96Ji5r+2De7tXimP33styTLNPV40jTcspcnPcfbDL6qqP0b+iOE6BGJt
+         D0CHbxdqk3t3l704Su0IrY+p8seht8d+xN6BU6rPlCVtqIYKb5miK61EawfFKYu5DZ
+         aU3oEvmp4RBbPrjNQZkQD3CduuJl7x01MQARPFzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Douglas RAILLARD <douglas.raillard@arm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 016/663] tracing: Error if a trace event has an array for a __field()
-Date:   Mon,  8 May 2023 11:37:22 +0200
-Message-Id: <20230508094428.953862813@linuxfoundation.org>
+        patches@lists.linux.dev, Vinod Koul <vkoul@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.3 008/694] phy: qcom-qmp-pcie: sc8180x PCIe PHY has 2 lanes
+Date:   Mon,  8 May 2023 11:37:23 +0200
+Message-Id: <20230508094432.906917602@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,83 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit f82e7ca019dfad3b006fd3b772f7ac569672db55 ]
+commit 1db6b0a4246ce708b89f5136571130b9987741d1 upstream.
 
-A __field() in the TRACE_EVENT() macro is used to set up the fields of the
-trace event data. It is for single storage units (word, char, int,
-pointer, etc) and not for complex structures or arrays. Unfortunately,
-there's nothing preventing the build from accepting:
+All PCIe PHYs on sc8180x platform have 2 lanes, so change the number of
+lanes to 2.
 
-    __field(int, arr[5]);
-
-from building. It will turn into a array value. This use to work fine, as
-the offset and size use to be determined by the macro using the field name,
-but things have changed and the offset and size are now determined by the
-type. So the above would only be size 4, and the next field will be
-located 4 bytes from it (instead of 20).
-
-The proper way to declare static arrays is to use the __array() macro.
-
-Instead of __field(int, arr[5]) it should be __array(int, arr, 5).
-
-Add some macro tricks to the building of a trace event from the
-TRACE_EVENT() macro such that __field(int, arr[5]) will fail to build. A
-comment by the failure will explain why the build failed.
-
-Link: https://lore.kernel.org/lkml/20230306122549.236561-1-douglas.raillard@arm.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20230309221302.642e82d9@gandalf.local.home
-
-Reported-by: Douglas RAILLARD <douglas.raillard@arm.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f839f14e24f2 ("phy: qcom-qmp: Add sc8180x PCIe support")
+Cc: stable@vger.kernel.org # 5.15
+Sgned-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230331151250.4049-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/stages/stage5_get_offsets.h | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-pcie.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/trace/stages/stage5_get_offsets.h b/include/trace/stages/stage5_get_offsets.h
-index ac5c24d3beeb2..e30a13be46ba5 100644
---- a/include/trace/stages/stage5_get_offsets.h
-+++ b/include/trace/stages/stage5_get_offsets.h
-@@ -9,17 +9,30 @@
- #undef __entry
- #define __entry entry
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
+@@ -2152,7 +2152,7 @@ static const struct qmp_phy_cfg msm8998_
+ };
  
-+/*
-+ * Fields should never declare an array: i.e. __field(int, arr[5])
-+ * If they do, it will cause issues in parsing and possibly corrupt the
-+ * events. To prevent that from happening, test the sizeof() a fictitious
-+ * type called "struct _test_no_array_##item" which will fail if "item"
-+ * contains array elements (like "arr[5]").
-+ *
-+ * If you hit this, use __array(int, arr, 5) instead.
-+ */
- #undef __field
--#define __field(type, item)
-+#define __field(type, item)					\
-+	{ (void)sizeof(struct _test_no_array_##item *); }
+ static const struct qmp_phy_cfg sc8180x_pciephy_cfg = {
+-	.lanes			= 1,
++	.lanes			= 2,
  
- #undef __field_ext
--#define __field_ext(type, item, filter_type)
-+#define __field_ext(type, item, filter_type)			\
-+	{ (void)sizeof(struct _test_no_array_##item *); }
- 
- #undef __field_struct
--#define __field_struct(type, item)
-+#define __field_struct(type, item)				\
-+	{ (void)sizeof(struct _test_no_array_##item *); }
- 
- #undef __field_struct_ext
--#define __field_struct_ext(type, item, filter_type)
-+#define __field_struct_ext(type, item, filter_type)		\
-+	{ (void)sizeof(struct _test_no_array_##item *); }
- 
- #undef __array
- #define __array(type, item, len)
--- 
-2.39.2
-
+ 	.tbls = {
+ 		.serdes		= sc8180x_qmp_pcie_serdes_tbl,
 
 
