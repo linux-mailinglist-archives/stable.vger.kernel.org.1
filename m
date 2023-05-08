@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32CB56FA433
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C352C6FA435
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 11:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233848AbjEHJ4m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 05:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52762 "EHLO
+        id S229457AbjEHJ4n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 05:56:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbjEHJ4f (ORCPT
+        with ESMTP id S233850AbjEHJ4f (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 05:56:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F662ABE1
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:56:24 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FD72ABFE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 02:56:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DDE762253
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:56:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91532C433EF;
-        Mon,  8 May 2023 09:56:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67C1B62254
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 09:56:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBA9C433EF;
+        Mon,  8 May 2023 09:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683539783;
-        bh=aKv70BPDBnEqjeJtzk5NvHIUsw2Kg8+tzHAL8QL2NvQ=;
+        s=korg; t=1683539786;
+        bh=7WdwPKP2ajb40UYQ6VCpsCcIORTnkiIEZtDtJGKOAAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IDTXpA67wSKStbeTg736Qjx+cKcDLxNWNLeK3XJyskGw/Foxl00DblRDbPHqgxea6
-         itVx0GfXnR2XWsYSUzKhHds2oUcK0u1+d67heXyBMT5sTRlbwP1X1UepEjr0kCe5v4
-         5u+Yt4FjwEF2SEWssky2QGK8qxB6ZdwddwzdV2R4=
+        b=mjv3IR8Cze/wRKX2B0fvO3cNMLnR9qX9HEaP4I5jsdqpsdNCtBDhpio/ke3O5efw/
+         WMsW6Vrzb4aO0ZU85nyRteiDmYKjgLA20Ek6P2y5YCXTJNt9aV1eDRduyuhn+yG2h8
+         7THuic6AxfCxsLRtBtjHw1wj611isc7urJoL7HIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>,
-        Dom Cobley <popcornmix@gmail.com>,
-        Maxime Ripard <maxime@cerno.tech>,
+        patches@lists.linux.dev,
+        Orlando Chamberlain <orlandoch.dev@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/611] drm/probe-helper: Cancel previous job before starting new one
-Date:   Mon,  8 May 2023 11:39:36 +0200
-Message-Id: <20230508094426.608904467@linuxfoundation.org>
+Subject: [PATCH 6.1 135/611] drm/amdgpu: register a vga_switcheroo client for MacBooks with apple-gmux
+Date:   Mon,  8 May 2023 11:39:37 +0200
+Message-Id: <20230508094426.638403210@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 References: <20230508094421.513073170@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,50 +55,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dom Cobley <popcornmix@gmail.com>
+From: Orlando Chamberlain <orlandoch.dev@gmail.com>
 
-[ Upstream commit a8e47884f1906cd7440fafa056adc8817568e73e ]
+[ Upstream commit d37a3929ca0363ed1dce02b2772cd5bc547ca66d ]
 
-Currently we schedule a call to output_poll_execute from
-drm_kms_helper_poll_enable for 10s in future. Later we try to replace
-that in drm_helper_probe_single_connector_modes with a 0s schedule with
-delayed_event set.
+Commit 3840c5bcc245 ("drm/amdgpu: disentangle runtime pm and
+vga_switcheroo") made amdgpu only register a vga_switcheroo client for
+GPU's with PX, however AMD GPUs in dual gpu Apple Macbooks do need to
+register, but don't have PX. Instead of AMD's PX, they use apple-gmux.
 
-But as there is already a job in the queue this fails, and the immediate
-job we wanted with delayed_event set doesn't occur until 10s later.
+Use apple_gmux_detect() to identify these gpus, and
+pci_is_thunderbolt_attached() to ensure eGPUs connected to Dual GPU
+Macbooks don't register with vga_switcheroo.
 
-And that call acts as if connector state has changed, reprobing modes.
-This has a side effect of waking up a display that has been blanked.
-
-Make sure we cancel the old job before submitting the immediate one.
-
-Fixes: 162b6a57ac50 ("drm/probe-helper: don't lose hotplug event")
-Acked-by: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Dom Cobley <popcornmix@gmail.com>
-[Maxime: Switched to mod_delayed_work]
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230127154052.452524-1-maxime@cerno.tech
+Fixes: 3840c5bcc245 ("drm/amdgpu: disentangle runtime pm and vga_switcheroo")
+Link: https://lore.kernel.org/amd-gfx/20230210044826.9834-10-orlandoch.dev@gmail.com/
+Signed-off-by: Orlando Chamberlain <orlandoch.dev@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_probe_helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 69b0b2b9cc1c5..3b968ad187cf3 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -557,8 +557,9 @@ int drm_helper_probe_single_connector_modes(struct drm_connector *connector,
- 		 */
- 		dev->mode_config.delayed_event = true;
- 		if (dev->mode_config.poll_enabled)
--			schedule_delayed_work(&dev->mode_config.output_poll_work,
--					      0);
-+			mod_delayed_work(system_wq,
-+					 &dev->mode_config.output_poll_work,
-+					 0);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 9df5dcedaf3e2..9776e0b488cf6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -35,6 +35,7 @@
+ #include <linux/devcoredump.h>
+ #include <generated/utsrelease.h>
+ #include <linux/pci-p2pdma.h>
++#include <linux/apple-gmux.h>
  
- 	/* Re-enable polling in case the global poll config changed. */
+ #include <drm/drm_aperture.h>
+ #include <drm/drm_atomic_helper.h>
+@@ -3942,12 +3943,15 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
+ 		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
+ 
+-	if (amdgpu_device_supports_px(ddev)) {
+-		px = true;
++	px = amdgpu_device_supports_px(ddev);
++
++	if (px || (!pci_is_thunderbolt_attached(adev->pdev) &&
++				apple_gmux_detect(NULL, NULL)))
+ 		vga_switcheroo_register_client(adev->pdev,
+ 					       &amdgpu_switcheroo_ops, px);
++
++	if (px)
+ 		vga_switcheroo_init_domain_pm_ops(adev->dev, &adev->vga_pm_domain);
+-	}
+ 
+ 	if (adev->gmc.xgmi.pending_reset)
+ 		queue_delayed_work(system_wq, &mgpu_info.delayed_reset_work,
+@@ -4053,6 +4057,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ void amdgpu_device_fini_sw(struct amdgpu_device *adev)
+ {
+ 	int idx;
++	bool px;
+ 
+ 	amdgpu_fence_driver_sw_fini(adev);
+ 	amdgpu_device_ip_fini(adev);
+@@ -4072,10 +4077,16 @@ void amdgpu_device_fini_sw(struct amdgpu_device *adev)
+ 
+ 	kfree(adev->bios);
+ 	adev->bios = NULL;
+-	if (amdgpu_device_supports_px(adev_to_drm(adev))) {
++
++	px = amdgpu_device_supports_px(adev_to_drm(adev));
++
++	if (px || (!pci_is_thunderbolt_attached(adev->pdev) &&
++				apple_gmux_detect(NULL, NULL)))
+ 		vga_switcheroo_unregister_client(adev->pdev);
++
++	if (px)
+ 		vga_switcheroo_fini_domain_pm_ops(adev->dev);
+-	}
++
+ 	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
+ 		vga_client_unregister(adev->pdev);
+ 
 -- 
 2.39.2
 
