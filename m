@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A210E6FACF5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A126FA545
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233996AbjEHL35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
+        id S234088AbjEHKHj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235836AbjEHL3h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:29:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261403DE99
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:29:14 -0700 (PDT)
+        with ESMTP id S234087AbjEHKHi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311AE30472
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 284AC62ED4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:29:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE5C433EF;
-        Mon,  8 May 2023 11:29:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9FF56236E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB39EC433EF;
+        Mon,  8 May 2023 10:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545351;
-        bh=Ao2GF3mCN6Bqkq04G0YB88p2b+fQX/u1iRaS5n4X/Oo=;
+        s=korg; t=1683540456;
+        bh=ulhzTMVYkn/KyX9psdhd4gL0psk4mc1dWcbvGv1CfZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OQS5ngCBZHlMjiD1958GaD5dNVE9GuVU0dxSlIEXOlT2K5A6siK45BnV/d+h0RXZt
-         RSdMMlE8mk4UgMuLJNv1NJJY66yZ7kX1o+RcZhIcXx4RJBlhSWHKTSpJWgsu+Nd51l
-         gJnKbMtwEby+3kYI5oDYM502CzptD9W4eiHJBvV8=
+        b=2BOYfo2XhGA3mGbHKB0PFKb9FO5/OYnNBcjBGa0X0GaT531haEC3JQnXPv4S9FYtQ
+         Rawis1NQdTxF2tURYKCn+96ib2DJ/EIZkx1aoM/pl+DPipgJ33HdgKGGL92hYR277e
+         jHChFFGkwnaRIpTrVEbsvr4lMTvudwxBd3uBvTRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 012/371] arm64: Stash shadow stack pointer in the task struct on interrupt
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 371/611] wifi: iwlwifi: mvm: check firmware response size
 Date:   Mon,  8 May 2023 11:43:33 +0200
-Message-Id: <20230508094812.527149779@linuxfoundation.org>
+Message-Id: <20230508094434.417253392@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,72 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 59b37fe52f49955791a460752c37145f1afdcad1 upstream.
+[ Upstream commit 13513cec93ac9902d0b896976d8bab3758a9881c ]
 
-Instead of reloading the shadow call stack pointer from the ordinary
-stack, which may be vulnerable to the kind of gadget based attacks
-shadow call stacks were designed to prevent, let's store a task's shadow
-call stack pointer in the task struct when switching to the shadow IRQ
-stack.
+Check the firmware response size for responses to the
+memory read/write command in debugfs before using it.
 
-Given that currently, the task_struct::scs_sp field is only used to
-preserve the shadow call stack pointer while a task is scheduled out or
-running in user space, reusing this field to preserve and restore it
-while running off the IRQ stack must be safe, as those occurrences are
-guaranteed to never overlap. (The stack switching logic only switches
-stacks when running from the task stack, and so the value being saved
-here always corresponds to the task mode shadow stack)
-
-While at it, fold a mov/add/mov sequence into a single add.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20230109174800.3286265-3-ardb@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b55f43f8e47 ("iwlwifi: mvm: Add mem debugfs entry")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230417113648.0d56fcaf68ee.I70e9571f3ed7263929b04f8fabad23c9b999e4ea@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/entry.S |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -883,19 +883,19 @@ NOKPROBE(ret_from_fork)
-  */
- SYM_FUNC_START(call_on_irq_stack)
- #ifdef CONFIG_SHADOW_CALL_STACK
--	stp	scs_sp, xzr, [sp, #-16]!
-+	get_current_task x16
-+	scs_save x16
- 	ldr_this_cpu scs_sp, irq_shadow_call_stack_ptr, x17
- #endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 1e8123140973e..022ec7ec0a2f1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1745,6 +1745,11 @@ static ssize_t iwl_dbgfs_mem_read(struct file *file, char __user *user_buf,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
++		ret = -EIO;
++		goto out;
++	}
 +
- 	/* Create a frame record to save our LR and SP (implicit in FP) */
- 	stp	x29, x30, [sp, #-16]!
- 	mov	x29, sp
+ 	rsp = (void *)hcmd.resp_pkt->data;
+ 	if (le32_to_cpu(rsp->status) != DEBUG_MEM_STATUS_SUCCESS) {
+ 		ret = -ENXIO;
+@@ -1821,6 +1826,11 @@ static ssize_t iwl_dbgfs_mem_write(struct file *file,
+ 	if (ret < 0)
+ 		return ret;
  
- 	ldr_this_cpu x16, irq_stack_ptr, x17
--	mov	x15, #IRQ_STACK_SIZE
--	add	x16, x16, x15
- 
- 	/* Move to the new stack and call the function there */
--	mov	sp, x16
-+	add	sp, x16, #IRQ_STACK_SIZE
- 	blr	x1
- 
- 	/*
-@@ -904,9 +904,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	 */
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
--#ifdef CONFIG_SHADOW_CALL_STACK
--	ldp	scs_sp, xzr, [sp], #16
--#endif
-+	scs_load_current
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
++	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
++		ret = -EIO;
++		goto out;
++	}
++
+ 	rsp = (void *)hcmd.resp_pkt->data;
+ 	if (rsp->status != DEBUG_MEM_STATUS_SUCCESS) {
+ 		ret = -ENXIO;
+-- 
+2.39.2
+
 
 
