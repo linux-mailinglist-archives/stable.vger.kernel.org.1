@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E877C6FAA1B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1D836FA6D0
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235447AbjEHK7c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:59:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33522 "EHLO
+        id S234565AbjEHKYZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:24:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235454AbjEHK6z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:58:55 -0400
+        with ESMTP id S234468AbjEHKXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0404B2DD73
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:57:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C48830451
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:23:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E12E629CF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:57:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A49C433EF;
-        Mon,  8 May 2023 10:57:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFDD66257B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CA9C433EF;
+        Mon,  8 May 2023 10:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543455;
-        bh=c4s/d7N9CygnHM5HXhDB3gqOhdRQiA9yT9344RTsDz8=;
+        s=korg; t=1683541408;
+        bh=iqzJxMCoDWFS2cMLhNtb4ZYORu0PCokX+vciUYk5c4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HQG3ssqe5ZDZNdrlv/TxERG07FksToE/Tjcphd4n+r+SL2bc+inlmJYanLJGjems9
-         QF4BCLcDnVnk8gV76k4rAIsbgMi9dJIuCVh11wYnkuK7e26ZSIritNH53yXdeIyUJA
-         w2lfakKMvTmKZFnsacoZIRL1eu9WZwuizhfJHxR0=
+        b=VfnRZhHLbo6hscW7hQpFaNyQnlmDFzFHKYZNHR/XGEzAeW9T/h8AVbVOhJiK18/Am
+         iQDbBkpCDw+mNyMA9a/umGG9FULXHByv5WNvOhKJgc8+jap+DugYxzo0vtCy4wkkv0
+         4jo5Xd+FzDcrpPlDINcpXD0R5OyJvcf9u9WxspGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Carl Vanderlip <quic_carlv@quicinc.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.3 096/694] bus: mhi: host: Remove duplicate ee check for syserr
-Date:   Mon,  8 May 2023 11:38:51 +0200
-Message-Id: <20230508094435.629573814@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.2 106/663] ubifs: Free memory for tmpfile name
+Date:   Mon,  8 May 2023 11:38:52 +0200
+Message-Id: <20230508094431.924265063@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Mårten Lindahl <marten.lindahl@axis.com>
 
-commit d469d9448a0f1a33c175d3280b1542fa0158ad7a upstream.
+commit 1fb815b38bb31d6af9bd0540b8652a0d6fe6cfd3 upstream.
 
-If we detect a system error via intvec, we only process the syserr if the
-current ee is different than the last observed ee.  The reason for this
-check is to prevent bhie from running multiple times, but with the single
-queue handling syserr, that is not possible.
+When opening a ubifs tmpfile on an encrypted directory, function
+fscrypt_setup_filename allocates memory for the name that is to be
+stored in the directory entry, but after the name has been copied to the
+directory entry inode, the memory is not freed.
 
-The check can cause an issue with device recovery.  If PBL loads a bad SBL
-via BHI, but that SBL hangs before notifying the host of an ee change,
-then issuing soc_reset to crash the device and retry (after supplying a
-fixed SBL) will not recover the device as the host will observe a PBL->PBL
-transition and not process the syserr.  The device will be stuck until
-either the driver is reloaded, or the host is rebooted.  Instead, remove
-the check so that we can attempt to recover the device.
+When running kmemleak on it we see that it is registered as a leak. The
+report below is triggered by a simple program 'tmpfile' just opening a
+tmpfile:
 
-Fixes: ef2126c4e2ea ("bus: mhi: core: Process execution environment changes serially")
+  unreferenced object 0xffff88810178f380 (size 32):
+    comm "tmpfile", pid 509, jiffies 4294934744 (age 1524.742s)
+    backtrace:
+      __kmem_cache_alloc_node
+      __kmalloc
+      fscrypt_setup_filename
+      ubifs_tmpfile
+      vfs_tmpfile
+      path_openat
+
+Free this memory after it has been copied to the inode.
+
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/1681142292-27571-2-git-send-email-quic_jhugo@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ubifs/dir.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -503,7 +503,7 @@ irqreturn_t mhi_intvec_threaded_handler(
- 	}
- 	write_unlock_irq(&mhi_cntrl->pm_lock);
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -492,6 +492,7 @@ static int ubifs_tmpfile(struct user_nam
+ 	unlock_2_inodes(dir, inode);
  
--	if (pm_state != MHI_PM_SYS_ERR_DETECT || ee == mhi_cntrl->ee)
-+	if (pm_state != MHI_PM_SYS_ERR_DETECT)
- 		goto exit_intvec;
+ 	ubifs_release_budget(c, &req);
++	fscrypt_free_filename(&nm);
  
- 	switch (ee) {
+ 	return finish_open_simple(file, 0);
+ 
 
 
