@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B59E76FA8BD
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A719C6FA5AC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235013AbjEHKpI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42580 "EHLO
+        id S234229AbjEHKMJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235018AbjEHKoo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:44:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AE327F29
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:43:18 -0700 (PDT)
+        with ESMTP id S234196AbjEHKME (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:12:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9233988D
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:11:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 837206286F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:43:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C686C433EF;
-        Mon,  8 May 2023 10:43:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA808623E5
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:11:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8C8C433EF;
+        Mon,  8 May 2023 10:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542596;
-        bh=JEd0ZZnjKCfDIhy7XkBmZbnnogHROlM5MI5AI+nzxBk=;
+        s=korg; t=1683540713;
+        bh=nMIuX5qXAZvnjgpRFaxRWDzDh8dI/nReh4lkHazb79k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HO+hyiwJkDYdBJXjtjiV1/jVCrC1wGepS+98sWawlW0nH8n5NWIEafnjkskws4lBT
-         jt54P82r7KRfDK3ZCOvgkL5/DpSZhH4yrKlDnVCRH71MSf41s8m78jSgpV6IB8m0IU
-         sHBIGMLI8o9kqF4rxzRF4kLL1rVAjSOvmovgyaCk=
+        b=WqVqNGuyE0u3fyWFio7DH/gVvkrWASNSx9I5RygN0HDc9mM78FWsSjTA7S25p7fvj
+         IWhqTrR+iqyF30gl7NoSI5vtc3q08bRNUfbqAy4K8v6ZYUAJ+/odM93X1hZryGBXbs
+         AzJcghu4FOiTCwG/YroWiYzLi2S8oI8KIIFuQNMY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@amd.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 485/663] i2c: cadence: cdns_i2c_master_xfer(): Fix runtime PM leak on error path
+        patches@lists.linux.dev, Schspa Shi <schspa@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Dwaine Gonyier <dgonyier@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 469/611] sched/rt: Fix bad task migration for rt tasks
 Date:   Mon,  8 May 2023 11:45:11 +0200
-Message-Id: <20230508094444.116597157@linuxfoundation.org>
+Message-Id: <20230508094437.363428452@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,43 +58,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+From: Schspa Shi <schspa@gmail.com>
 
-[ Upstream commit ae1664f04f504a998737f5bb563f16b44357bcca ]
+[ Upstream commit feffe5bb274dd3442080ef0e4053746091878799 ]
 
-The cdns_i2c_master_xfer() function gets a runtime PM reference when the
-function is entered. This reference is released when the function is
-exited. There is currently one error path where the function exits
-directly, which leads to a leak of the runtime PM reference.
+Commit 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
+allows find_lock_lowest_rq() to pick a task with migration disabled.
+The purpose of the commit is to push the current running task on the
+CPU that has the migrate_disable() task away.
 
-Make sure that this error path also releases the runtime PM reference.
+However, there is a race which allows a migrate_disable() task to be
+migrated. Consider:
 
-Fixes: 1a351b10b967 ("i2c: cadence: Added slave support")
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+  CPU0                                    CPU1
+  push_rt_task
+    check is_migration_disabled(next_task)
+
+                                          task not running and
+                                          migration_disabled == 0
+
+    find_lock_lowest_rq(next_task, rq);
+      _double_lock_balance(this_rq, busiest);
+        raw_spin_rq_unlock(this_rq);
+        double_rq_lock(this_rq, busiest);
+          <<wait for busiest rq>>
+                                              <wakeup>
+                                          task become running
+                                          migrate_disable();
+                                            <context out>
+    deactivate_task(rq, next_task, 0);
+    set_task_cpu(next_task, lowest_rq->cpu);
+      WARN_ON_ONCE(is_migration_disabled(p));
+
+Fixes: 95158a89dd50 ("sched,rt: Use the full cpumask for balancing")
+Signed-off-by: Schspa Shi <schspa@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Tested-by: Dwaine Gonyier <dgonyier@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-cadence.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/sched/deadline.c | 1 +
+ kernel/sched/rt.c       | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
-index f58943cb13414..8a5fdb150c446 100644
---- a/drivers/i2c/busses/i2c-cadence.c
-+++ b/drivers/i2c/busses/i2c-cadence.c
-@@ -833,8 +833,10 @@ static int cdns_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
- #if IS_ENABLED(CONFIG_I2C_SLAVE)
- 	/* Check i2c operating mode and switch if possible */
- 	if (id->dev_mode == CDNS_I2C_MODE_SLAVE) {
--		if (id->slave_state != CDNS_I2C_SLAVE_STATE_IDLE)
--			return -EAGAIN;
-+		if (id->slave_state != CDNS_I2C_SLAVE_STATE_IDLE) {
-+			ret = -EAGAIN;
-+			goto out;
-+		}
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 9ae8f41e3372f..f7d381b6c3133 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2246,6 +2246,7 @@ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
+ 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
+ 				     task_on_cpu(rq, task) ||
+ 				     !dl_task(task) ||
++				     is_migration_disabled(task) ||
+ 				     !task_on_rq_queued(task))) {
+ 				double_unlock_balance(rq, later_rq);
+ 				later_rq = NULL;
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 0a11f44adee57..4f5796dd26a56 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2000,11 +2000,15 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ 			 * the mean time, task could have
+ 			 * migrated already or had its affinity changed.
+ 			 * Also make sure that it wasn't scheduled on its rq.
++			 * It is possible the task was scheduled, set
++			 * "migrate_disabled" and then got preempted, so we must
++			 * check the task migration disable flag here too.
+ 			 */
+ 			if (unlikely(task_rq(task) != rq ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+ 				     task_on_cpu(rq, task) ||
+ 				     !rt_task(task) ||
++				     is_migration_disabled(task) ||
+ 				     !task_on_rq_queued(task))) {
  
- 		/* Set mode to master */
- 		cdns_i2c_set_mode(CDNS_I2C_MODE_MASTER, id);
+ 				double_unlock_balance(rq, lowest_rq);
 -- 
 2.39.2
 
