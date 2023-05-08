@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 252686FAB1E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D54F6FA7B7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233137AbjEHLKL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:10:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46052 "EHLO
+        id S234813AbjEHKeR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233866AbjEHLJt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:09:49 -0400
+        with ESMTP id S234735AbjEHKdv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:33:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBEB33166
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:09:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8CC4242F6
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3520062B1D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:09:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417BAC433D2;
-        Mon,  8 May 2023 11:09:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9D73616A1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:32:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9F0C433EF;
+        Mon,  8 May 2023 10:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544157;
-        bh=V6c7x2Bkf/H7GdclbSjZoJir9+56LWuFk27QSP9RJfU=;
+        s=korg; t=1683541977;
+        bh=IYZmfJeCMlc1+aGeb8ZTQac3SndB7d8Aqed+x0PqdsM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ryV4nrMd1CRiYeHRDPzDFz1emv2D/uxz30KGCqFExBiFUyMm3P2f2l3lyrY8FJBRm
-         Ee0JTcU4WiyTDkBWanQJWTDbnlilFva70TGGorfBqh67vDmxegFEpd06fpZ9PA3DyO
-         LXVqy1tNsEdUbgbGqENN1eLeDvsvREgW5CpbIAJ8=
+        b=Zghd/H3yvXlxkTwP0gQkPgcbVAnQBEV1L96bp+Flox0Xi+3XkzyP3+zMyTskvy5S6
+         Gh8fJcAfPPj5NWD3GU0PPMjDSPSV4IT+yu0ILXlPzmR0q681ZboL8WlKqAtm3o0C+I
+         puhMMQVdY/494qZpAPbeUa16+J/fiGLBELqJE7XA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 278/694] media: mediatek: vcodec: add params to record lat and core lat_buf count
+        patches@lists.linux.dev, John Keeping <john@metanate.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 287/663] wifi: brcmfmac: support CQM RSSI notification with older firmware
 Date:   Mon,  8 May 2023 11:41:53 +0200
-Message-Id: <20230508094441.283014908@linuxfoundation.org>
+Message-Id: <20230508094437.527872534@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,106 +53,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: John Keeping <john@metanate.com>
 
-[ Upstream commit 5bbb6e2ca67477ab41163b32e6b3444faea74a5e ]
+[ Upstream commit ec52d77d077529f198fd874c550a26b9cc86a331 ]
 
-Using lat_buf to share decoder information between lat and core work
-queue, adding params to record the buf count.
+Using the BCM4339 firmware from linux-firmware (version "BCM4339/2 wl0:
+Sep  5 2019 11:05:52 version 6.37.39.113 (r722271 CY)" from
+cypress/cyfmac4339-sdio.bin) the RSSI respose is only 4 bytes, which
+results in an error being logged.
 
-Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+It seems that older devices send only the RSSI field and neither SNR nor
+noise is included.  Handle this by accepting a 4 byte message and
+reading only the RSSI from it.
+
+Fixes: 7dd56ea45a66 ("brcmfmac: add support for CQM RSSI notifications")
+Signed-off-by: John Keeping <john@metanate.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230124104248.2917465-1-john@metanate.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/vdec_msg_queue.c | 23 ++++++++++++++++++-
- .../platform/mediatek/vcodec/vdec_msg_queue.h |  6 +++++
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index dc2004790a472..3f016c87d722c 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -52,6 +52,22 @@ static struct list_head *vdec_get_buf_list(int hardware_index, struct vdec_lat_b
- 	}
- }
- 
-+static void vdec_msg_queue_inc(struct vdec_msg_queue *msg_queue, int hardware_index)
-+{
-+	if (hardware_index == MTK_VDEC_CORE)
-+		atomic_inc(&msg_queue->core_list_cnt);
-+	else
-+		atomic_inc(&msg_queue->lat_list_cnt);
-+}
-+
-+static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_index)
-+{
-+	if (hardware_index == MTK_VDEC_CORE)
-+		atomic_dec(&msg_queue->core_list_cnt);
-+	else
-+		atomic_dec(&msg_queue->lat_list_cnt);
-+}
-+
- int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b8c99bfce963a..d17bb22422f48 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -6494,18 +6494,20 @@ static s32 brcmf_notify_rssi(struct brcmf_if *ifp,
  {
- 	struct list_head *head;
-@@ -66,6 +82,7 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
- 	list_add_tail(head, &msg_ctx->ready_queue);
- 	msg_ctx->ready_num++;
+ 	struct brcmf_cfg80211_vif *vif = ifp->vif;
+ 	struct brcmf_rssi_be *info = data;
+-	s32 rssi, snr, noise;
++	s32 rssi, snr = 0, noise = 0;
+ 	s32 low, high, last;
  
-+	vdec_msg_queue_inc(&buf->ctx->msg_queue, msg_ctx->hardware_index);
- 	if (msg_ctx->hardware_index != MTK_VDEC_CORE)
- 		wake_up_all(&msg_ctx->ready_to_use);
- 	else
-@@ -127,6 +144,7 @@ struct vdec_lat_buf *vdec_msg_queue_dqbuf(struct vdec_msg_queue_ctx *msg_ctx)
- 		return NULL;
+-	if (e->datalen < sizeof(*info)) {
++	if (e->datalen >= sizeof(*info)) {
++		rssi = be32_to_cpu(info->rssi);
++		snr = be32_to_cpu(info->snr);
++		noise = be32_to_cpu(info->noise);
++	} else if (e->datalen >= sizeof(rssi)) {
++		rssi = be32_to_cpu(*(__be32 *)data);
++	} else {
+ 		brcmf_err("insufficient RSSI event data\n");
+ 		return 0;
  	}
- 	list_del(head);
-+	vdec_msg_queue_dec(&buf->ctx->msg_queue, msg_ctx->hardware_index);
  
- 	msg_ctx->ready_num--;
- 	mtk_v4l2_debug(3, "dqueue buf type:%d addr: 0x%p num: %d",
-@@ -241,10 +259,13 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
- 
- 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
- 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
-+
-+	atomic_set(&msg_queue->lat_list_cnt, 0);
-+	atomic_set(&msg_queue->core_list_cnt, 0);
-+
- 	msg_queue->wdma_addr.size =
- 		vde_msg_queue_get_trans_size(ctx->picinfo.buf_w,
- 					     ctx->picinfo.buf_h);
+-	rssi = be32_to_cpu(info->rssi);
+-	snr = be32_to_cpu(info->snr);
+-	noise = be32_to_cpu(info->noise);
 -
- 	err = mtk_vcodec_mem_alloc(ctx, &msg_queue->wdma_addr);
- 	if (err) {
- 		mtk_v4l2_err("failed to allocate wdma_addr buf");
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-index c43d427f5f544..b1aa5572ba49f 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-@@ -72,6 +72,9 @@ struct vdec_lat_buf {
-  * @wdma_wptr_addr: ube write point
-  * @core_work: core hardware work
-  * @lat_ctx: used to store lat buffer list
-+ *
-+ * @lat_list_cnt: used to record each instance lat list count
-+ * @core_list_cnt: used to record each instance core list count
-  */
- struct vdec_msg_queue {
- 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
-@@ -82,6 +85,9 @@ struct vdec_msg_queue {
- 
- 	struct work_struct core_work;
- 	struct vdec_msg_queue_ctx lat_ctx;
-+
-+	atomic_t lat_list_cnt;
-+	atomic_t core_list_cnt;
- };
- 
- /**
+ 	low = vif->cqm_rssi_low;
+ 	high = vif->cqm_rssi_high;
+ 	last = vif->cqm_rssi_last;
 -- 
 2.39.2
 
