@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A2F6FABA5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0896A6FAD4D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234418AbjEHLPv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56498 "EHLO
+        id S235813AbjEHLd3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235044AbjEHLPs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:48 -0400
+        with ESMTP id S235817AbjEHLdO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:33:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6755936CD2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81443D21C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:32:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F09B762BEC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E4BC433D2;
-        Mon,  8 May 2023 11:15:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 879806306F
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8953DC433A0;
+        Mon,  8 May 2023 11:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544545;
-        bh=dXgEGa6BFCGhBUfTgbDhuBvUxQVevaVdPPhVVcsOdBM=;
+        s=korg; t=1683545550;
+        bh=Ghswl5VUyXLv21FPzdb9zPY90iZSiqYB0udo7FglS6Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pbwiigmf/ItkQzAwx+1VNvpW1xDoZF8gDHyj73UUWfVbu9/ub5RP3GIb6v7UIt6fm
-         DqafJ3ycusoPwFPGxnmgHv4AwDjcamhq/GSmq1ZuucNZywnIRDdEvSpuUs49+FoyKO
-         7wA3C5swhS0Oz0zuzyjv2mckcw2UfFw657uBNbvU=
+        b=kTW5TiniZItAnv8yhCh9YICD+Z8p6fJmYaHxuO5kHY4uZGf6F2ywbTQb6qBCcogc5
+         JnKIb6X38ddxG4FiqGXpu0EG/HvVcFoNK87Xp+bHvjK09USTACNg8z+nvNZcyT/nDx
+         Nlk8OOFXlEv38aZ+aU5htHwM0HZtspuIe/AVcM+U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quan Zhou <quan.zhou@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        patches@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>,
+        Dom Cobley <popcornmix@gmail.com>,
+        Maxime Ripard <maxime@cerno.tech>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 443/694] wifi: mt76: mt7921e: fix probe timeout after reboot
+Subject: [PATCH 5.15 077/371] drm/probe-helper: Cancel previous job before starting new one
 Date:   Mon,  8 May 2023 11:44:38 +0200
-Message-Id: <20230508094447.865864227@linuxfoundation.org>
+Message-Id: <20230508094815.164290628@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Dom Cobley <popcornmix@gmail.com>
 
-[ Upstream commit c397fc1e6365a2a9e5540a85b2c1d4ea412aa0e2 ]
+[ Upstream commit a8e47884f1906cd7440fafa056adc8817568e73e ]
 
-In system warm reboot scene, due to the polling timeout(now 1000us)
-is too short to wait dma idle in time, it may make driver probe fail
-with error code -ETIMEDOUT. Meanwhile, we also found the dma may take
-around 70ms to enter idle state. Change the polling idle timeout to
-100ms to avoid the probabilistic probe fail.
+Currently we schedule a call to output_poll_execute from
+drm_kms_helper_poll_enable for 10s in future. Later we try to replace
+that in drm_helper_probe_single_connector_modes with a 0s schedule with
+delayed_event set.
 
-Tested pass with 5000 times warm reboot on x86 platform.
+But as there is already a job in the queue this fails, and the immediate
+job we wanted with delayed_event set doesn't occur until 10s later.
 
-[4.477496] pci 0000:01:00.0: attach allowed to drvr mt7921e [internal device]
-[4.478306] mt7921e 0000:01:00.0: ASIC revision: 79610010
-[4.480063] mt7921e: probe of 0000:01:00.0 failed with error -110
+And that call acts as if connector state has changed, reprobing modes.
+This has a side effect of waking up a display that has been blanked.
 
-Fixes: 0a1059d0f060 ("mt76: mt7921: move mt7921_dma_reset in dma.c")
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Make sure we cancel the old job before submitting the immediate one.
+
+Fixes: 162b6a57ac50 ("drm/probe-helper: don't lose hotplug event")
+Acked-by: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+[Maxime: Switched to mod_delayed_work]
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230127154052.452524-1-maxime@cerno.tech
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_probe_helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index d1f10f6d9adc3..dc4ccfef4b048 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -90,9 +90,9 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
- 		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
+diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
+index 5606bca3caa83..f6b72e03688d4 100644
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -488,8 +488,9 @@ int drm_helper_probe_single_connector_modes(struct drm_connector *connector,
+ 		 */
+ 		dev->mode_config.delayed_event = true;
+ 		if (dev->mode_config.poll_enabled)
+-			schedule_delayed_work(&dev->mode_config.output_poll_work,
+-					      0);
++			mod_delayed_work(system_wq,
++					 &dev->mode_config.output_poll_work,
++					 0);
+ 	}
  
--	if (!mt76_poll(dev, MT_WFDMA0_GLO_CFG,
--		       MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
--		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
-+	if (!mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+				 MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+				 MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 100, 1))
- 		return -ETIMEDOUT;
- 
- 	return 0;
+ 	/* Re-enable polling in case the global poll config changed. */
 -- 
 2.39.2
 
