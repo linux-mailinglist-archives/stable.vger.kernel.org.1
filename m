@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6329C6FAC89
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3C76FAC98
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235757AbjEHLZw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:25:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41866 "EHLO
+        id S235680AbjEHL0R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235758AbjEHLZi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:25:38 -0400
+        with ESMTP id S235739AbjEHL0H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D333A5E0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4373C1DD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:25:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4E7E62D7B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B07C433D2;
-        Mon,  8 May 2023 11:25:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E18762D38
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF90C4339B;
+        Mon,  8 May 2023 11:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545113;
-        bh=RJcsUH7EJfCiCDFYFLKZheoO2dnPBrhukHJwEr72oQw=;
+        s=korg; t=1683545146;
+        bh=VS6wU4A9hmfwwQFR6HvSLTXL2MbNWEQiJ0sff1ftbk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DaZLsGDHZkBSkKiCYca8TBdDYrN/wjJ1T5P0DmoiS6bWdWKaQKbVWyDgJRwAJOou2
-         nDhBTJeV4TnG8V00/a+giESESVc20L3yqkWPt5JBEDt8QgQ4avF0FQgw7/YoURQe0j
-         fBkJp/LGsdk4Uig63RTFmh8oK24IMsemz/+KxInU=
+        b=dnRCNnegbwQvJNJoJqN1bheZ4cKQlDqC9a/fsvtCIQE2g02Ao9yRNcl5b7mq85eJC
+         vF3pfcpriHRmNC8QUaqmCUQ1wP0nNX5NVoErMIMYixdBiVg4bItBPwV7e5aJGKAs2a
+         vficnsRyW2PTZa35VuUlyZdixB2HVsPXyQWNIGqI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vasant Hegde <vasant.hegde@amd.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 611/694] iommu/amd: Set page size bitmap during V2 domain allocation
-Date:   Mon,  8 May 2023 11:47:26 +0200
-Message-Id: <20230508094455.224338799@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Alexander Egorenkov <egorenar@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 612/694] s390/checksum: always use cksm instruction
+Date:   Mon,  8 May 2023 11:47:27 +0200
+Message-Id: <20230508094455.274480780@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -57,82 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jerry Snitselaar <jsnitsel@redhat.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 8f880d19e6ad645a4b8066d5ff091c980b3231e7 ]
+[ Upstream commit e42ac7789df64120d7d3d57433dfc9f37ec0cb99 ]
 
-With the addition of the V2 page table support, the domain page size
-bitmap needs to be set prior to iommu core setting up direct mappings
-for reserved regions. When reserved regions are mapped, if this is not
-done, it will be looking at the V1 page size bitmap when determining
-the page size to use in iommu_pgsize(). When it gets into the actual
-amd mapping code, a check of see if the page size is supported can
-fail, because at that point it is checking it against the V2 page size
-bitmap which only supports 4K, 2M, and 1G.
+Commit dfe843dce775 ("s390/checksum: support GENERIC_CSUM, enable it for
+KASAN") switched s390 to use the generic checksum functions, so that KASAN
+instrumentation also works checksum functions by avoiding architecture
+specific inline assemblies.
 
-Add a check to __iommu_domain_alloc() to not override the
-bitmap if it was already set by the iommu ops domain_alloc() code path.
+There is however the problem that the generic csum_partial() function
+returns a 32 bit value with a 16 bit folded checksum, while the original
+s390 variant does not fold to 16 bit. This in turn causes that the
+ipib_checksum in lowcore contains different values depending on kernel
+config options.
 
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Joerg Roedel <joro@8bytes.org>
-Fixes: 4db6c41f0946 ("iommu/amd: Add support for using AMD IOMMU v2 page table for DMA-API")
-Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20230404072742.1895252-1-jsnitsel@redhat.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+The ipib_checksum is used by system dumpers to verify if pointers in
+lowcore point to valid data. Verification is done by comparing checksum
+values. The system dumpers still use 32 bit checksum values which are not
+folded, and therefore the checksum verification fails (incorrectly).
+
+Symptom is that reboot after dump does not work anymore when a KASAN
+instrumented kernel is dumped.
+
+Fix this by not using the generic checksum implementation. Instead add an
+explicit kasan_check_read() so that KASAN knows about the read access from
+within the inline assembly.
+
+Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Fixes: dfe843dce775 ("s390/checksum: support GENERIC_CSUM, enable it for KASAN")
+Tested-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 6 ++----
- drivers/iommu/iommu.c     | 9 +++++++--
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ arch/s390/Kconfig                | 4 ----
+ arch/s390/include/asm/checksum.h | 9 ++-------
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 5a505ba5467e1..167da5b1a5e31 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1666,10 +1666,6 @@ static void do_attach(struct iommu_dev_data *dev_data,
- 	domain->dev_iommu[iommu->index] += 1;
- 	domain->dev_cnt                 += 1;
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 9809c74e12406..35f15c23c4913 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -26,10 +26,6 @@ config GENERIC_BUG
+ config GENERIC_BUG_RELATIVE_POINTERS
+ 	def_bool y
  
--	/* Override supported page sizes */
--	if (domain->flags & PD_GIOV_MASK)
--		domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
+-config GENERIC_CSUM
+-	bool
+-	default y if KASAN
 -
- 	/* Update device table */
- 	set_dte_entry(iommu, dev_data->devid, domain,
- 		      ats, dev_data->iommu_v2);
-@@ -2048,6 +2044,8 @@ static int protection_domain_init_v2(struct protection_domain *domain)
+ config GENERIC_LOCKBREAK
+ 	def_bool y if PREEMPTION
  
- 	domain->flags |= PD_GIOV_MASK;
+diff --git a/arch/s390/include/asm/checksum.h b/arch/s390/include/asm/checksum.h
+index d977a3a2f6190..1b6b992cf18ed 100644
+--- a/arch/s390/include/asm/checksum.h
++++ b/arch/s390/include/asm/checksum.h
+@@ -12,12 +12,7 @@
+ #ifndef _S390_CHECKSUM_H
+ #define _S390_CHECKSUM_H
  
-+	domain->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+
- 	if (domain_enable_v2(domain, 1)) {
- 		domain_id_free(domain->id);
- 		return -ENOMEM;
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 10db680acaed5..256a38371120e 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1964,8 +1964,13 @@ static struct iommu_domain *__iommu_domain_alloc(struct bus_type *bus,
- 		return NULL;
+-#ifdef CONFIG_GENERIC_CSUM
+-
+-#include <asm-generic/checksum.h>
+-
+-#else /* CONFIG_GENERIC_CSUM */
+-
++#include <linux/kasan-checks.h>
+ #include <linux/uaccess.h>
+ #include <linux/in6.h>
  
- 	domain->type = type;
--	/* Assume all sizes by default; the driver may override this later */
--	domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
-+	/*
-+	 * If not already set, assume all sizes by default; the driver
-+	 * may override this later
-+	 */
-+	if (!domain->pgsize_bitmap)
-+		domain->pgsize_bitmap = bus->iommu_ops->pgsize_bitmap;
-+
- 	if (!domain->ops)
- 		domain->ops = bus->iommu_ops->default_domain_ops;
+@@ -40,6 +35,7 @@ static inline __wsum csum_partial(const void *buff, int len, __wsum sum)
+ 		.odd = (unsigned long) len,
+ 	};
  
++	kasan_check_read(buff, len);
+ 	asm volatile(
+ 		"0:	cksm	%[sum],%[rp]\n"
+ 		"	jo	0b\n"
+@@ -135,5 +131,4 @@ static inline __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	return csum_fold((__force __wsum)(sum >> 32));
+ }
+ 
+-#endif /* CONFIG_GENERIC_CSUM */
+ #endif /* _S390_CHECKSUM_H */
 -- 
 2.39.2
 
