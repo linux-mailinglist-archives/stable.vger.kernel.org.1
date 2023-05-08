@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED8536FA4F5
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E10D6FA7E3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234011AbjEHKEz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:04:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33050 "EHLO
+        id S234834AbjEHKfp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:35:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233995AbjEHKEy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:54 -0400
+        with ESMTP id S234835AbjEHKfX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:35:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D773014C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD53928A8C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:34:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D6B362310
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E70C433D2;
-        Mon,  8 May 2023 10:04:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48B746274B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491BDC433EF;
+        Mon,  8 May 2023 10:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540292;
-        bh=r+PfYF5hzajNL+Cb+Zs/8DoBMoPG8fQ6KkReIIijeLY=;
+        s=korg; t=1683542091;
+        bh=XmpxggohnG/FVmLqMQ41/HnESUYbUt1npoRGx4Nmrk0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AkNJzNx7J1210mXfF79FIWlh9UXch+dJsBs2YoiYOG9m9zDaR+gqt20/9aRAYNE5d
-         +v5QujZHFP4HlE3Z9JxklHtJxaliaKDnfVyDw7xR11LL+aq80tb6/Kszo7f8BciNqD
-         nvA77U61mbb0SzpNKvL8td1MXJzgPYYE57Iya4Aw=
+        b=rdYHED6h7mXVXQMrD/F9CMecN3v6M9uoEJvHGCCadWgfo65AVE21FsDITJW2yXh3q
+         y59LU30DKa6QNW6skqfmH1xi8X0g8cgYlV+ZXb/+vY7T5jdySvWIdTbXJC7ml2/Tju
+         Pgk7QsEgL9/8rqCVPLwKsEyy8rseKmAwnijf58HQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Gaurav Jain <gaurav.jain@nxp.com>,
+        patches@lists.linux.dev, Suman Anna <s-anna@ti.com>,
+        Jayesh Choudhary <j-choudhary@ti.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 308/611] crypto: caam - Clear some memory in instantiate_rng
+Subject: [PATCH 6.2 324/663] crypto: sa2ul - Select CRYPTO_DES
 Date:   Mon,  8 May 2023 11:42:30 +0200
-Message-Id: <20230508094432.443458948@linuxfoundation.org>
+Message-Id: <20230508094438.704286759@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Suman Anna <s-anna@ti.com>
 
-[ Upstream commit 9c19fb86a8cb2ee82a832c95e139f29ea05c4d08 ]
+[ Upstream commit 8832023efd20966e29944dac92118dfbf1fa1bc0 ]
 
-According to the comment at the end of the 'for' loop just a few lines
-below, it looks needed to clear 'desc'.
+The SA2UL Crypto driver provides support for couple of
+DES3 algos "cbc(des3_ede)" and "ecb(des3_ede)", and enabling
+the crypto selftest throws the following errors (as seen on
+K3 J721E SoCs):
+  saul-crypto 4e00000.crypto: Error allocating fallback algo cbc(des3_ede)
+  alg: skcipher: failed to allocate transform for cbc-des3-sa2ul: -2
+  saul-crypto 4e00000.crypto: Error allocating fallback algo ecb(des3_ede)
+  alg: skcipher: failed to allocate transform for ecb-des3-sa2ul: -2
 
-So it should also be cleared for the first iteration.
+Fix this by selecting CRYPTO_DES which was missed while
+adding base driver support.
 
-Move the memset() to the beginning of the loop to be safe.
-
-Fixes: 281922a1d4f5 ("crypto: caam - add support for SEC v5.x RNG4")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Fixes: 7694b6ca649f ("crypto: sa2ul - Add crypto driver")
+Signed-off-by: Suman Anna <s-anna@ti.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/ctrl.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
-index 32253a064d0fe..3b79e0d83d40a 100644
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -284,6 +284,10 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
- 		const u32 rdsta_if = RDSTA_IF0 << sh_idx;
- 		const u32 rdsta_pr = RDSTA_PR0 << sh_idx;
- 		const u32 rdsta_mask = rdsta_if | rdsta_pr;
-+
-+		/* Clear the contents before using the descriptor */
-+		memset(desc, 0x00, CAAM_CMD_SZ * 7);
-+
- 		/*
- 		 * If the corresponding bit is set, this state handle
- 		 * was initialized by somebody else, so it's left alone.
-@@ -327,8 +331,6 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
- 		}
- 
- 		dev_info(ctrldev, "Instantiated RNG4 SH%d\n", sh_idx);
--		/* Clear the contents before recreating the descriptor */
--		memset(desc, 0x00, CAAM_CMD_SZ * 7);
- 	}
- 
- 	kfree(desc);
+diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+index dfb103f81a64b..8d06bc30eadeb 100644
+--- a/drivers/crypto/Kconfig
++++ b/drivers/crypto/Kconfig
+@@ -820,6 +820,7 @@ config CRYPTO_DEV_SA2UL
+ 	select CRYPTO_AES
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_AUTHENC
++	select CRYPTO_DES
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_SHA256
+ 	select CRYPTO_SHA512
 -- 
 2.39.2
 
