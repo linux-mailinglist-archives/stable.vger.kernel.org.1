@@ -2,42 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0A06FA6DD
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD276FA6DE
 	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:25:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234564AbjEHKZA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:25:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
+        id S234461AbjEHKZB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbjEHKYY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:24:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC11DDBC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:24:04 -0700 (PDT)
+        with ESMTP id S234455AbjEHKYZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:24:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E7226465
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:24:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 163E0625AD
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F5EC433EF;
-        Mon,  8 May 2023 10:24:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26AE8625B0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04531C433EF;
+        Mon,  8 May 2023 10:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541443;
-        bh=wRUmYrh+5642LiXeUTFoC1lTm9F4gINmW8eEJfyGgIs=;
+        s=korg; t=1683541446;
+        bh=fWRoKHGdmRoiWljH8r09kaU4EyvJt97EAsRiSgj5pcY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JKnYKraKyJ4rHYHgpL5VkyGrhxuNI0AhC93NwqIW0A8HM6vhRdKkgAP+G61Go/zjO
-         b+bKBYXcJomLH/oKLhi2vbU0u05yczQ0LW0IjxJY8l00anwjtphCXuEubZ2lJCLGAH
-         haxdrtpIyLwQnAQPBvZCQ1xYYqLbqIFYEQ8YQOwI=
+        b=cjGE5iW5zZU+HtPpJHTIQ1/cuNhHk3tG7Xc37opLJGXJA2fTualt2KS3W8iLR/5vy
+         ZufhdYsVRPujiTL4jijuvBX50IwH/CoD8zP2ToV78dV+kyCtho9QJH+ZAwMAe1xVIc
+         N0FdxAnlFnKzG0vuk9mgsZ87PBMjgXPY/8Lp5ero=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rae Moar <rmoar@google.com>,
-        David Gow <davidgow@google.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Zqiang <qiang1.zhang@intel.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 116/663] kunit: fix bug in the order of lines in debugfs logs
-Date:   Mon,  8 May 2023 11:39:02 +0200
-Message-Id: <20230508094432.263463221@linuxfoundation.org>
+Subject: [PATCH 6.2 117/663] rcu: Fix missing TICK_DEP_MASK_RCU_EXP dependency check
+Date:   Mon,  8 May 2023 11:39:03 +0200
+Message-Id: <20230508094432.304226241@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -45,8 +52,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,127 +62,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rae Moar <rmoar@google.com>
+From: Zqiang <qiang1.zhang@intel.com>
 
-[ Upstream commit f9a301c3317daa921375da0aec82462ddf019928 ]
+[ Upstream commit db7b464df9d820186e98a65aa6a10f0d51fbf8ce ]
 
-Fix bug in debugfs logs that causes an incorrect order of lines in the
-debugfs log.
+This commit adds checks for the TICK_DEP_MASK_RCU_EXP bit, thus enabling
+RCU expedited grace periods to actually force-enable scheduling-clock
+interrupts on holdout CPUs.
 
-Currently, the test counts lines that show the number of tests passed,
-failed, and skipped, as well as any suite diagnostic lines,
-appear prior to the individual results, which is a bug.
-
-Ensure the order of printing for the debugfs log is correct. Additionally,
-add a KTAP header to so the debugfs logs can be valid KTAP.
-
-This is an example of a log prior to these fixes:
-
-     KTAP version 1
-
-     # Subtest: kunit_status
-     1..2
- # kunit_status: pass:2 fail:0 skip:0 total:2
- # Totals: pass:2 fail:0 skip:0 total:2
-     ok 1 kunit_status_set_failure_test
-     ok 2 kunit_status_mark_skipped_test
- ok 1 kunit_status
-
-Note the two lines with stats are out of order. This is the same debugfs
-log after the fixes (in combination with the third patch to remove the
-extra line):
-
- KTAP version 1
- 1..1
-     KTAP version 1
-     # Subtest: kunit_status
-     1..2
-     ok 1 kunit_status_set_failure_test
-     ok 2 kunit_status_mark_skipped_test
- # kunit_status: pass:2 fail:0 skip:0 total:2
- # Totals: pass:2 fail:0 skip:0 total:2
- ok 1 kunit_status
-
-Signed-off-by: Rae Moar <rmoar@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: df1e849ae455 ("rcu: Enable tick for nohz_full CPUs slow to provide expedited QS")
+Signed-off-by: Zqiang <qiang1.zhang@intel.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/debugfs.c | 14 ++++++++++++--
- lib/kunit/test.c    | 21 ++++++++++++++-------
- 2 files changed, 26 insertions(+), 9 deletions(-)
+ include/trace/events/timer.h | 3 ++-
+ kernel/time/tick-sched.c     | 5 +++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
-index de0ee2e03ed60..b08bb1fba106d 100644
---- a/lib/kunit/debugfs.c
-+++ b/lib/kunit/debugfs.c
-@@ -55,14 +55,24 @@ static int debugfs_print_results(struct seq_file *seq, void *v)
- 	enum kunit_status success = kunit_suite_has_succeeded(suite);
- 	struct kunit_case *test_case;
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index 2e713a7d9aa3a..3e8619c72f774 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -371,7 +371,8 @@ TRACE_EVENT(itimer_expire,
+ 		tick_dep_name(PERF_EVENTS)		\
+ 		tick_dep_name(SCHED)			\
+ 		tick_dep_name(CLOCK_UNSTABLE)		\
+-		tick_dep_name_end(RCU)
++		tick_dep_name(RCU)			\
++		tick_dep_name_end(RCU_EXP)
  
--	if (!suite || !suite->log)
-+	if (!suite)
- 		return 0;
+ #undef tick_dep_name
+ #undef tick_dep_mask_name
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 68d81a4283c89..a46506f7ec6d0 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -281,6 +281,11 @@ static bool check_tick_dependency(atomic_t *dep)
+ 		return true;
+ 	}
  
--	seq_printf(seq, "%s", suite->log);
-+	/* Print KTAP header so the debugfs log can be parsed as valid KTAP. */
-+	seq_puts(seq, "KTAP version 1\n");
-+	seq_puts(seq, "1..1\n");
++	if (val & TICK_DEP_MASK_RCU_EXP) {
++		trace_tick_stop(0, TICK_DEP_MASK_RCU_EXP);
++		return true;
++	}
 +
-+	/* Print suite header because it is not stored in the test logs. */
-+	seq_puts(seq, KUNIT_SUBTEST_INDENT "KTAP version 1\n");
-+	seq_printf(seq, KUNIT_SUBTEST_INDENT "# Subtest: %s\n", suite->name);
-+	seq_printf(seq, KUNIT_SUBTEST_INDENT "1..%zd\n", kunit_suite_num_test_cases(suite));
- 
- 	kunit_suite_for_each_test_case(suite, test_case)
- 		debugfs_print_result(seq, suite, test_case);
- 
-+	if (suite->log)
-+		seq_printf(seq, "%s", suite->log);
-+
- 	seq_printf(seq, "%s %d %s\n",
- 		   kunit_status_to_ok_not_ok(success), 1, suite->name);
- 	return 0;
-diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 890ba5b3a9819..820f867e35f40 100644
---- a/lib/kunit/test.c
-+++ b/lib/kunit/test.c
-@@ -152,10 +152,18 @@ EXPORT_SYMBOL_GPL(kunit_suite_num_test_cases);
- 
- static void kunit_print_suite_start(struct kunit_suite *suite)
- {
--	kunit_log(KERN_INFO, suite, KUNIT_SUBTEST_INDENT "KTAP version 1\n");
--	kunit_log(KERN_INFO, suite, KUNIT_SUBTEST_INDENT "# Subtest: %s",
-+	/*
-+	 * We do not log the test suite header as doing so would
-+	 * mean debugfs display would consist of the test suite
-+	 * header prior to individual test results.
-+	 * Hence directly printk the suite status, and we will
-+	 * separately seq_printf() the suite header for the debugfs
-+	 * representation.
-+	 */
-+	pr_info(KUNIT_SUBTEST_INDENT "KTAP version 1\n");
-+	pr_info(KUNIT_SUBTEST_INDENT "# Subtest: %s\n",
- 		  suite->name);
--	kunit_log(KERN_INFO, suite, KUNIT_SUBTEST_INDENT "1..%zd",
-+	pr_info(KUNIT_SUBTEST_INDENT "1..%zd\n",
- 		  kunit_suite_num_test_cases(suite));
+ 	return false;
  }
  
-@@ -172,10 +180,9 @@ static void kunit_print_ok_not_ok(void *test_or_suite,
- 
- 	/*
- 	 * We do not log the test suite results as doing so would
--	 * mean debugfs display would consist of the test suite
--	 * description and status prior to individual test results.
--	 * Hence directly printk the suite status, and we will
--	 * separately seq_printf() the suite status for the debugfs
-+	 * mean debugfs display would consist of an incorrect test
-+	 * number. Hence directly printk the suite result, and we will
-+	 * separately seq_printf() the suite results for the debugfs
- 	 * representation.
- 	 */
- 	if (suite)
 -- 
 2.39.2
 
