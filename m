@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3066FAA96
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A497F6FA746
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233191AbjEHLEA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
+        id S233050AbjEHK2z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233375AbjEHLDW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:03:22 -0400
+        with ESMTP id S234600AbjEHK2j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:28:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF94433FDF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:02:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5281225509
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:28:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5652F62A58
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AAFC433D2;
-        Mon,  8 May 2023 11:02:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6A9F62673
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:28:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8816DC433A1;
+        Mon,  8 May 2023 10:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543759;
-        bh=cR4IHeEjipOenzBYZO2LEx1W1GsjyfePMT7OP9SAGDc=;
+        s=korg; t=1683541717;
+        bh=7yAbatqgq7LIvEWfrKnftoaGmhpPFDRJmzZFO4NpaqQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lXzvhZLokQ62mzhu9e7gVEwgW6DIVFRvS+Sh/BOI11WqaX8UrXQPV3Q54w1/OEXpw
-         TaBYUEZLLCGotBzUlAVPEDsJlg8+R2R3YzWab99IPC2/6hQdtPZNRW1B6s5XCHMhhV
-         Fh6I6ovoic6CMJ6IHWX7zpo0CV6LTcrOMSlnW0Gs=
+        b=fccpckBKh9A6Uy1GVsNak8hoAziL+XMl7ICsXsZz3tK2yGOw87tF/DdS+derLZPn5
+         CjBLV7qEytb7BajVPMXaMw6pPR7ukCQQFuQICGEYMABTnT8kzUSRqqKHMCrJ/YH61T
+         +K5dPZiZxDtKQlSUh8XKMgnyRXmfR2x3+pYlUM5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
+        Nick Hainke <vincent@systemli.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 193/694] arm64: dts: qcom: sm8150: Fix the PCI I/O port range
-Date:   Mon,  8 May 2023 11:40:28 +0200
-Message-Id: <20230508094438.677471095@linuxfoundation.org>
+Subject: [PATCH 6.2 203/663] cpufreq: mediatek: raise proc/sram max voltage for MT8516
+Date:   Mon,  8 May 2023 11:40:29 +0200
+Message-Id: <20230508094434.961707372@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +58,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Jia-Wei Chang <jia-wei.chang@mediatek.com>
 
-[ Upstream commit 422b110b9b0af0afd4a4b19e8fc3ceab9e71d842 ]
+[ Upstream commit d3296bb4cafd4bad4a5cf2eeab9d19cc94f9e30e ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI addresses
-(0x60200000, 0x40200000) specified in the ranges property for I/O region.
+Since the upper boundary of proc/sram voltage of MT8516 is 1300 mV,
+which is greater than the value of MT2701 1150 mV, we fix it by adding
+the corresponding platform data and specify proc/sram_max_volt to
+support MT8516.
 
-While at it, let's use the missing 0x prefix for the addresses.
-
-Fixes: a1c86c680533 ("arm64: dts: qcom: sm8150: Add PCIe nodes")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-12-manivannan.sadhasivam@linaro.org
+Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+Fixes: ead858bd128d ("cpufreq: mediatek: Move voltage limits to platform data")
+Fixes: 6a17b3876bc8 ("cpufreq: mediatek: Refine mtk_cpufreq_voltage_tracking()")
+Reported-by: Nick Hainke <vincent@systemli.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/cpufreq/mediatek-cpufreq.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index 13e0ce8286061..733c896918c83 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -1799,8 +1799,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
+index 6dc225546a8d6..764e4fbdd536c 100644
+--- a/drivers/cpufreq/mediatek-cpufreq.c
++++ b/drivers/cpufreq/mediatek-cpufreq.c
+@@ -711,20 +711,29 @@ static const struct mtk_cpufreq_platform_data mt8186_platform_data = {
+ 	.ccifreq_supported = true,
+ };
  
--			ranges = <0x01000000 0x0 0x60200000 0 0x60200000 0x0 0x100000>,
--				 <0x02000000 0x0 0x60300000 0 0x60300000 0x0 0x3d00000>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x60200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x60300000 0x0 0x60300000 0x0 0x3d00000>;
- 
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
-@@ -1895,7 +1895,7 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x01000000 0x0 0x40200000 0x0 0x40200000 0x0 0x100000>,
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
- 
- 			interrupts = <GIC_SPI 307 IRQ_TYPE_EDGE_RISING>;
++static const struct mtk_cpufreq_platform_data mt8516_platform_data = {
++	.min_volt_shift = 100000,
++	.max_volt_shift = 200000,
++	.proc_max_volt = 1310000,
++	.sram_min_volt = 0,
++	.sram_max_volt = 1310000,
++	.ccifreq_supported = false,
++};
++
+ /* List of machines supported by this driver */
+ static const struct of_device_id mtk_cpufreq_machines[] __initconst = {
+ 	{ .compatible = "mediatek,mt2701", .data = &mt2701_platform_data },
+ 	{ .compatible = "mediatek,mt2712", .data = &mt2701_platform_data },
+ 	{ .compatible = "mediatek,mt7622", .data = &mt2701_platform_data },
+ 	{ .compatible = "mediatek,mt7623", .data = &mt2701_platform_data },
+-	{ .compatible = "mediatek,mt8167", .data = &mt2701_platform_data },
++	{ .compatible = "mediatek,mt8167", .data = &mt8516_platform_data },
+ 	{ .compatible = "mediatek,mt817x", .data = &mt2701_platform_data },
+ 	{ .compatible = "mediatek,mt8173", .data = &mt2701_platform_data },
+ 	{ .compatible = "mediatek,mt8176", .data = &mt2701_platform_data },
+ 	{ .compatible = "mediatek,mt8183", .data = &mt8183_platform_data },
+ 	{ .compatible = "mediatek,mt8186", .data = &mt8186_platform_data },
+ 	{ .compatible = "mediatek,mt8365", .data = &mt2701_platform_data },
+-	{ .compatible = "mediatek,mt8516", .data = &mt2701_platform_data },
++	{ .compatible = "mediatek,mt8516", .data = &mt8516_platform_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, mtk_cpufreq_machines);
 -- 
 2.39.2
 
