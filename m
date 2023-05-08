@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6016FAB9B
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C136FA88A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234438AbjEHLPU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56180 "EHLO
+        id S235021AbjEHKmR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234418AbjEHLPT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:15:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67A236568
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:15:17 -0700 (PDT)
+        with ESMTP id S235023AbjEHKlo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:41:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B812A84E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:41:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A60C62BB7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:15:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E9FC433D2;
-        Mon,  8 May 2023 11:15:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27AC061909
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:41:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B07C433EF;
+        Mon,  8 May 2023 10:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544516;
-        bh=nKwz5+aWAFZC2ksA+lHFMjIh9RYoI71TG9qvUfMWdrQ=;
+        s=korg; t=1683542466;
+        bh=nDEMnWd+EuASQpGCscuzQoO4JYuhzm2i1ixt+YU41VU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FvpeAXGfh3x4nPSlVAE8FlkKGrXmRyCVbCgAV9UC2LUccp3uRb9BXxOBdmji35yhp
-         kGb9mDgfIlwZ8ajHVb3X773ltahpCGUWqORUrdhxJVsd+g2ZSh2TX0cJ4rrfKbZkdf
-         0O87PQo+Pj6Pve4qMOewe0Y0kOtM2et5ZYy6HDDM=
+        b=CwuJQQr0AvJNpKYNN480TZHoIpZNMxVDtt4DdCeE2wi1JHUJeetJtP57O6J8bZGcW
+         0N2W/D7QMzdIvTWaehn9TZpBk7f64/0+GxaW+niwnjOyw79EVjGpHSjrMZ3EBzEdrd
+         13IJxf2Q9OZs1Y9bQIqOReHVLAkAN0W68Gu6IKQs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 435/694] wifi: mt76: mt7996: fix radiotap bitfield
+        patches@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
+        Pengfei Xu <pengfei.xu@intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 444/663] iommufd/selftest: Catch overflow of uptr and length
 Date:   Mon,  8 May 2023 11:44:30 +0200
-Message-Id: <20230508094447.523781930@linuxfoundation.org>
+Message-Id: <20230508094442.482028778@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,211 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 63a3724632464559d1e98d90d2c63d43ec6ef6f5 ]
+[ Upstream commit fd8c1a4aee973e87d890a5861e106625a33b2c4e ]
 
-The 11be generation's radiotap bitfields were wrongly copy-and-pasted
-from 11ax driver, so fix them accordingly.
+syzkaller hits a WARN_ON when trying to have a uptr close to UINTPTR_MAX:
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  WARNING: CPU: 1 PID: 393 at drivers/iommu/iommufd/selftest.c:403 iommufd_test+0xb19/0x16f0
+  Modules linked in:
+  CPU: 1 PID: 393 Comm: repro Not tainted 6.2.0-c9c3395d5e3d #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:iommufd_test+0xb19/0x16f0
+  Code: 94 c4 31 ff 44 89 e6 e8 a5 54 17 ff 45 84 e4 0f 85 bb 0b 00 00 41 be fb ff ff ff e8 31 53 17 ff e9 a0 f7 ff ff e8 27 53 17 ff <0f> 0b 41 be 8
+  RSP: 0018:ffffc90000eabdc0 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8214c487
+  RDX: 0000000000000000 RSI: ffff88800f5c8000 RDI: 0000000000000002
+  RBP: ffffc90000eabe48 R08: 0000000000000000 R09: 0000000000000001
+  R10: 0000000000000001 R11: 0000000000000000 R12: 00000000cd2b0000
+  R13: 00000000cd2af000 R14: 0000000000000000 R15: ffffc90000eabe68
+  FS:  00007f94d76d5740(0000) GS:ffff88807dd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000020000043 CR3: 0000000006880006 CR4: 0000000000770ee0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? write_comp_data+0x2f/0x90
+   iommufd_fops_ioctl+0x1ef/0x310
+   __x64_sys_ioctl+0x10e/0x160
+   ? __pfx_iommufd_fops_ioctl+0x10/0x10
+   do_syscall_64+0x3b/0x90
+   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Check that the user memory range doesn't overflow.
+
+Fixes: f4b20bb34c83 ("iommufd: Add kernel support for testing iommufd")
+Link: https://lore.kernel.org/r/0-v1-95390ed1df8d+8f-iommufd_mock_overflow_jgg@nvidia.com
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Link: https://lore.kernel.org/r/Y/hOiilV1wJvu/Hv@xpf.sh.intel.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 54 ++++++++++---------
- .../net/wireless/mediatek/mt76/mt7996/mac.h   | 41 +++++++-------
- 2 files changed, 47 insertions(+), 48 deletions(-)
+ drivers/iommu/iommufd/selftest.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c9a9f0e317716..3c3506c7c87af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -260,12 +260,9 @@ mt7996_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
- 				 struct ieee80211_radiotap_he *he,
- 				 __le32 *rxv)
+diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
+index cfb5fe9a5e0ee..76c46847dc494 100644
+--- a/drivers/iommu/iommufd/selftest.c
++++ b/drivers/iommu/iommufd/selftest.c
+@@ -339,10 +339,12 @@ static int iommufd_test_md_check_pa(struct iommufd_ucmd *ucmd,
  {
--	u32 ru_h, ru_l;
--	u8 ru, offs = 0;
-+	u32 ru, offs = 0;
+ 	struct iommufd_hw_pagetable *hwpt;
+ 	struct mock_iommu_domain *mock;
++	uintptr_t end;
+ 	int rc;
  
--	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
--	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
--	ru = (u8)(ru_l | ru_h << 4);
-+	ru = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC);
+ 	if (iova % MOCK_IO_PAGE_SIZE || length % MOCK_IO_PAGE_SIZE ||
+-	    (uintptr_t)uptr % MOCK_IO_PAGE_SIZE)
++	    (uintptr_t)uptr % MOCK_IO_PAGE_SIZE ||
++	    check_add_overflow((uintptr_t)uptr, (uintptr_t)length, &end))
+ 		return -EINVAL;
  
- 	status->bw = RATE_INFO_BW_HE_RU;
- 
-@@ -330,18 +327,23 @@ mt7996_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
- 
- 	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
- 			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
--				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
-+				 le32_get_bits(rxv[4], MT_CRXV_HE_NUM_USER));
- 
--	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
-+	he_mu->ru_ch1[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU0) & 0xff;
- 
- 	if (status->bw >= RATE_INFO_BW_40) {
- 		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
-+		he_mu->ru_ch2[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU1) & 0xff;
- 	}
- 
- 	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
--		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
-+		u32 ru_h, ru_l;
+ 	hwpt = get_md_pagetable(ucmd, mockpt_id, &mock);
+@@ -390,7 +392,10 @@ static int iommufd_test_md_check_refs(struct iommufd_ucmd *ucmd,
+ 				      void __user *uptr, size_t length,
+ 				      unsigned int refs)
+ {
+-	if (length % PAGE_SIZE || (uintptr_t)uptr % PAGE_SIZE)
++	uintptr_t end;
 +
-+		he_mu->ru_ch1[1] = le32_get_bits(rxv[16], MT_CRXV_HE_RU2) & 0xff;
-+
-+		ru_l = le32_get_bits(rxv[16], MT_CRXV_HE_RU3_L);
-+		ru_h = le32_get_bits(rxv[17], MT_CRXV_HE_RU3_H) & 0x7;
-+		he_mu->ru_ch2[1] = (u8)(ru_l | ru_h << 4);
- 	}
- }
++	if (length % PAGE_SIZE || (uintptr_t)uptr % PAGE_SIZE ||
++	    check_add_overflow((uintptr_t)uptr, (uintptr_t)length, &end))
+ 		return -EINVAL;
  
-@@ -364,23 +366,23 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			 HE_BITS(DATA2_TXOP_KNOWN),
- 	};
- 	struct ieee80211_radiotap_he *he = NULL;
--	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
-+	u32 ltf_size = le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
- 
- 	status->flag |= RX_FLAG_RADIOTAP_HE;
- 
- 	he = skb_push(skb, sizeof(known));
- 	memcpy(he, &known, sizeof(known));
- 
--	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
--		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
--	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
--	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
-+	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[9]) |
-+		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[4]);
-+	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[13]);
-+	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[5]) |
- 		    le16_encode_bits(ltf_size,
- 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
- 	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
- 		he->data5 |= HE_BITS(DATA5_TXBF);
--	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
--		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
-+	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[9]) |
-+		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[9]);
- 
- 	switch (mode) {
- 	case MT_PHY_TYPE_HE_SU:
-@@ -389,22 +391,22 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
- 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
--			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[8]) |
-+			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
- 		break;
- 	case MT_PHY_TYPE_HE_EXT_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
- 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
- 		break;
- 	case MT_PHY_TYPE_HE_MU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
-+		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[8]);
- 
- 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
- 		mt7996_mac_decode_he_mu_radiotap(skb, rxv);
-@@ -415,10 +417,10 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
- 			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
- 
--		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
-+		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[13]);
- 
- 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-index 27184cbac619b..2cc218f735d88 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-@@ -102,8 +102,7 @@ enum rx_pkt_type {
- #define MT_PRXV_NSTS			GENMASK(10, 7)
- #define MT_PRXV_TXBF			BIT(11)
- #define MT_PRXV_HT_AD_CODE		BIT(12)
--#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
--#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
-+#define MT_PRXV_HE_RU_ALLOC		GENMASK(30, 22)
- #define MT_PRXV_RCPI3			GENMASK(31, 24)
- #define MT_PRXV_RCPI2			GENMASK(23, 16)
- #define MT_PRXV_RCPI1			GENMASK(15, 8)
-@@ -113,34 +112,32 @@ enum rx_pkt_type {
- #define MT_PRXV_TX_MODE			GENMASK(14, 11)
- #define MT_PRXV_FRAME_MODE		GENMASK(2, 0)
- #define MT_PRXV_DCM			BIT(5)
--#define MT_PRXV_NUM_RX			BIT(8, 6)
- 
- /* C-RXV */
--#define MT_CRXV_HT_STBC			GENMASK(1, 0)
--#define MT_CRXV_TX_MODE			GENMASK(7, 4)
--#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
--#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
--#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
--#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
--#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
--#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
--#define MT_CRXV_HE_UPLINK		BIT(31)
--#define MT_CRXV_HE_RU0			GENMASK(7, 0)
--#define MT_CRXV_HE_RU1			GENMASK(15, 8)
--#define MT_CRXV_HE_RU2			GENMASK(23, 16)
--#define MT_CRXV_HE_RU3			GENMASK(31, 24)
--
--#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
-+#define MT_CRXV_HE_NUM_USER		GENMASK(26, 20)
-+#define MT_CRXV_HE_LTF_SIZE		GENMASK(28, 27)
-+#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(30)
-+
-+#define MT_CRXV_HE_PE_DISAMBIG		BIT(1)
-+#define MT_CRXV_HE_UPLINK		BIT(2)
-+
-+#define MT_CRXV_HE_MU_AID		GENMASK(27, 17)
-+#define MT_CRXV_HE_BEAM_CHNG		BIT(29)
-+
-+#define MT_CRXV_HE_DOPPLER		BIT(0)
-+#define MT_CRXV_HE_BSS_COLOR		GENMASK(15, 10)
-+#define MT_CRXV_HE_TXOP_DUR		GENMASK(19, 17)
- 
- #define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
- #define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
- #define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
- #define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
- 
--#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
--#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
--#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
--#define MT_CRXV_HE_DOPPLER		BIT(16)
-+#define MT_CRXV_HE_RU0			GENMASK(8, 0)
-+#define MT_CRXV_HE_RU1			GENMASK(17, 9)
-+#define MT_CRXV_HE_RU2			GENMASK(26, 18)
-+#define MT_CRXV_HE_RU3_L		GENMASK(31, 27)
-+#define MT_CRXV_HE_RU3_H		GENMASK(3, 0)
- 
- enum tx_header_format {
- 	MT_HDR_FORMAT_802_3,
+ 	for (; length; length -= PAGE_SIZE) {
 -- 
 2.39.2
 
