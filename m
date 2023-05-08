@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B5906FA629
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45CB56FA977
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:51:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234327AbjEHKQ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:16:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
+        id S235175AbjEHKvl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:51:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234332AbjEHKQ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:16:56 -0400
+        with ESMTP id S235262AbjEHKvW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:51:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE6B1BCB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:16:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5EEE27F08
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:50:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63A9B624C2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F45C433EF;
-        Mon,  8 May 2023 10:16:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A44236292B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:50:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0712C433D2;
+        Mon,  8 May 2023 10:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541013;
-        bh=igBr8KG5u2kXdscMaY5PQYK+1u2WVLWqe8jKSxfCcuw=;
+        s=korg; t=1683543041;
+        bh=TYVftzPFH3d122fStT/BFsArYteAjmvF3SwKnaQBLn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2DyFvV7lvPx1Cz03dkvoDmMwLgRqnf7SSLSwwL/lE/gq9WxkMwy9lhM7kYpWk9Kx
-         KqJ4J5tWW2bVFwkJl4l9vewdg/EZHZ4wwQhTSQG1hKLsvlyBU5vj16XY+VQ84fX4e0
-         5L/fikf9ynFSMOmxwHgnf+Ono9nUzgWWXvvlLkHg=
+        b=E1Vd/aGbvv3s8rJjItTXKlAcoY4oTPD6nFXS6YdNn0vUwiB6zbtliNbERc+dsLDal
+         btaXIXs2JktZKIXykRu4BCMVwNwmyuUYDCo483W7mE2DRleevBc4CNNYgq2irFuQpu
+         /Ar2WuE6GuHRGZaQ4jHBpQ5k738DLp4b/qS9s4G0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.1 582/611] clk: microchip: fix potential UAF in auxdev release callback
-Date:   Mon,  8 May 2023 11:47:04 +0200
-Message-Id: <20230508094440.841082597@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 599/663] mfd: tqmx86: Specify IO port register range more precisely
+Date:   Mon,  8 May 2023 11:47:05 +0200
+Message-Id: <20230508094448.954777076@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,52 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-commit 7455b7007b9e93bcc2bc9c1c6c73a228e3152069 upstream.
+[ Upstream commit 051c69ff4f607aa114c7bbdd7c41ed881367aeee ]
 
-Similar to commit 1c11289b34ab ("peci: cpu: Fix use-after-free in
-adev_release()"), the auxiliary device is not torn down in the correct
-order. If auxiliary_device_add() fails, the release callback will be
-called twice, resulting in a UAF. Due to timing, the auxdev code in this
-driver "took inspiration" from the aforementioned commit, and thus its
-bugs too!
+Registers 0x160..0x17f are unassigned. Use 0x180 as base register and
+update offets accordingly.
 
-Moving auxiliary_device_uninit() to the unregister callback instead
-avoids the issue.
+Also change the size of the range to include 0x19f. While 0x19f is
+currently reserved for future extensions, so are several of the previous
+registers up to 0x19e, and it is weird to leave out just the last one.
 
-CC: stable@vger.kernel.org
-Fixes: b56bae2dd6fd ("clk: microchip: mpfs: add reset controller")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20230413-critter-synopsis-dac070a86cb4@spud
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/db4677ac318b1283c8956f637f409995a30a31c3.1676892223.git.matthias.schiffer@ew.tq-group.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/microchip/clk-mpfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mfd/tqmx86.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/microchip/clk-mpfs.c b/drivers/clk/microchip/clk-mpfs.c
-index 4f0a19db7ed7..cc5d7dee59f0 100644
---- a/drivers/clk/microchip/clk-mpfs.c
-+++ b/drivers/clk/microchip/clk-mpfs.c
-@@ -374,14 +374,13 @@ static void mpfs_reset_unregister_adev(void *_adev)
- 	struct auxiliary_device *adev = _adev;
+diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
+index 31d0efb5aacf8..958334f14eb00 100644
+--- a/drivers/mfd/tqmx86.c
++++ b/drivers/mfd/tqmx86.c
+@@ -16,8 +16,8 @@
+ #include <linux/platform_data/i2c-ocores.h>
+ #include <linux/platform_device.h>
  
- 	auxiliary_device_delete(adev);
-+	auxiliary_device_uninit(adev);
- }
+-#define TQMX86_IOBASE	0x160
+-#define TQMX86_IOSIZE	0x3f
++#define TQMX86_IOBASE	0x180
++#define TQMX86_IOSIZE	0x20
+ #define TQMX86_IOBASE_I2C	0x1a0
+ #define TQMX86_IOSIZE_I2C	0xa
+ #define TQMX86_IOBASE_WATCHDOG	0x18b
+@@ -25,7 +25,7 @@
+ #define TQMX86_IOBASE_GPIO	0x18d
+ #define TQMX86_IOSIZE_GPIO	0x4
  
- static void mpfs_reset_adev_release(struct device *dev)
- {
- 	struct auxiliary_device *adev = to_auxiliary_dev(dev);
- 
--	auxiliary_device_uninit(adev);
--
- 	kfree(adev);
- }
- 
+-#define TQMX86_REG_BOARD_ID	0x20
++#define TQMX86_REG_BOARD_ID	0x00
+ #define TQMX86_REG_BOARD_ID_E38M	1
+ #define TQMX86_REG_BOARD_ID_50UC	2
+ #define TQMX86_REG_BOARD_ID_E38C	3
+@@ -40,8 +40,8 @@
+ #define TQMX86_REG_BOARD_ID_E40S	13
+ #define TQMX86_REG_BOARD_ID_E40C1	14
+ #define TQMX86_REG_BOARD_ID_E40C2	15
+-#define TQMX86_REG_BOARD_REV	0x21
+-#define TQMX86_REG_IO_EXT_INT	0x26
++#define TQMX86_REG_BOARD_REV	0x01
++#define TQMX86_REG_IO_EXT_INT	0x06
+ #define TQMX86_REG_IO_EXT_INT_NONE		0
+ #define TQMX86_REG_IO_EXT_INT_7			1
+ #define TQMX86_REG_IO_EXT_INT_9			2
 -- 
-2.40.1
+2.39.2
 
 
 
