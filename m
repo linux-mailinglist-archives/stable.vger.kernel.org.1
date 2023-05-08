@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB386FA534
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CC66FAB4E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234067AbjEHKHA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:07:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        id S233827AbjEHLLs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234068AbjEHKG7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:06:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199E91986
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:06:58 -0700 (PDT)
+        with ESMTP id S233828AbjEHLLo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48F3135D9E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F50962349
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:06:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B68C433EF;
-        Mon,  8 May 2023 10:06:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C46B162B77
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15F6C433EF;
+        Mon,  8 May 2023 11:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540417;
-        bh=nLdePqh2bTqCnlpaPt1P2wcp/nv/2C4fsrBJyidy/Ms=;
+        s=korg; t=1683544297;
+        bh=bv3cQEKRrqQvoSzswDMpHsDUglDuCdGu7wMDyGPuyf8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KfigRGNvQP9yZrlWGOLubJupkzytnt9iWSHKoorEpWtZzSBzOvZ1t20Su4Rk8FFBq
-         30oZdRnEEs9QvhCF/HpafBZwl+yNGhPfCcCB1/kOdQDL9bxJw0QkSTC1kYuW6fLQem
-         F2erwaWFkbbLf99RkIdLtTYn1LxQ3cZOs1KxiShQ=
+        b=H5w24gazrnV4kOsBBMWMUPdTAFPZvp9lrhr37gAbRvLxo3hN/hUGFC5fiHaCDOaef
+         NGDToXVhjaGT5KJQPUgXJ8qK5Szju4LUcHjM+lMDAP4h4qa4/7vbS3nWPIdqDuJI0a
+         NrpIdKoyBJF82TrwBQiigq/oK0xTDJ60iVR+N7Ak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Mike Christie <michael.christie@oracle.com>,
+        Maurizio Lombardi <mlombard@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 357/611] wifi: iwlwifi: fw: move memset before early return
-Date:   Mon,  8 May 2023 11:43:19 +0200
-Message-Id: <20230508094434.004232988@linuxfoundation.org>
+Subject: [PATCH 6.3 365/694] scsi: target: iscsit: Stop/wait on cmds during conn close
+Date:   Mon,  8 May 2023 11:43:20 +0200
+Message-Id: <20230508094444.563711671@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,51 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 8ce437dd5b2e4adef13aa4ecce07392f9966b1ab ]
+[ Upstream commit 395cee83d02de3073211b04fc85724f4abc663ad ]
 
-Clang static analysis reports this representative issue
-dbg.c:1455:6: warning: Branch condition evaluates to
-a garbage value
-  if (!rxf_data.size)
-       ^~~~~~~~~~~~~~
+This fixes a bug added in commit f36199355c64 ("scsi: target: iscsi: Fix
+cmd abort fabric stop race").
 
-This check depends on iwl_ini_get_rxf_data() to clear
-rxf_data but the function can return early without
-doing the clear.  So move the memset before the early
-return.
+If we have multiple sessions to the same se_device we can hit a race where
+a LUN_RESET on one session cleans up the se_cmds from under another
+session which is being closed. This results in the closing session freeing
+its conn/session structs while they are still in use.
 
-Fixes: cc9b6012d34b ("iwlwifi: yoyo: use hweight_long instead of bit manipulating")
-Signed-off-by: Tom Rix <trix@redhat.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230414130637.872a7175f1ff.I33802a77a91998276992b088fbe25f61c87c33ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The bug is:
+
+ 1. Session1 has IO se_cmd1.
+
+ 2. Session2 can also have se_cmds for I/O and optionally TMRs for ABORTS
+    but then gets a LUN_RESET.
+
+ 3. The LUN_RESET on session2 sees the se_cmds on session1 and during the
+    drain stages marks them all with CMD_T_ABORTED.
+
+ 4. session1 is now closed so iscsit_release_commands_from_conn() only sees
+    se_cmds with the CMD_T_ABORTED bit set and returns immediately even
+    though we have outstanding commands.
+
+ 5. session1's connection and session are freed.
+
+ 6. The backend request for se_cmd1 completes and it accesses the freed
+    connection/session.
+
+This hooks the iscsit layer into the cmd counter code, so we can wait for
+all outstanding se_cmds before freeing the connection.
+
+Fixes: f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop race")
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-6-michael.christie@oracle.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/target/iscsi/iscsi_target.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index bde6f0764a538..027360e63b926 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1388,13 +1388,13 @@ static void iwl_ini_get_rxf_data(struct iwl_fw_runtime *fwrt,
- 	if (!data)
- 		return;
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 11115c2078446..83b0071412294 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4245,6 +4245,16 @@ static void iscsit_release_commands_from_conn(struct iscsit_conn *conn)
+ 		iscsit_free_cmd(cmd, true);
  
-+	memset(data, 0, sizeof(*data));
+ 	}
 +
- 	/* make sure only one bit is set in only one fid */
- 	if (WARN_ONCE(hweight_long(fid1) + hweight_long(fid2) != 1,
- 		      "fid1=%x, fid2=%x\n", fid1, fid2))
- 		return;
++	/*
++	 * Wait on commands that were cleaned up via the aborted_task path.
++	 * LLDs that implement iscsit_wait_conn will already have waited for
++	 * commands.
++	 */
++	if (!conn->conn_transport->iscsit_wait_conn) {
++		target_stop_cmd_counter(conn->cmd_cnt);
++		target_wait_for_cmds(conn->cmd_cnt);
++	}
+ }
  
--	memset(data, 0, sizeof(*data));
--
- 	if (fid1) {
- 		fifo_idx = ffs(fid1) - 1;
- 		if (WARN_ONCE(fifo_idx >= MAX_NUM_LMAC, "fifo_idx=%d\n",
+ static void iscsit_stop_timers_for_cmds(
 -- 
 2.39.2
 
