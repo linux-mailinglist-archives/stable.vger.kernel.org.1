@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 294FC6FAB7C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB616FA863
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233923AbjEHLNv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:13:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
+        id S234803AbjEHKkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjEHLNu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:13:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374A035B36
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:13:46 -0700 (PDT)
+        with ESMTP id S234911AbjEHKjs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:39:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0703AA24
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:39:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC33F62BA8
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:13:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF10C433D2;
-        Mon,  8 May 2023 11:13:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89DE962832
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:39:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85072C4339C;
+        Mon,  8 May 2023 10:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544425;
-        bh=zPlBGA54tOLkW/Hbg2cuRz974v7+Jr7UhpvUuTtJFxU=;
+        s=korg; t=1683542381;
+        bh=W+uoQh5MBaGgyzZ+ylu/T9DBX06wwOF/F9h82e2ZnAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cr0kznyaRpEM+bkD8EuwWo6eUcMHHgGDURiJ8no1AsM6WNlhjIdaiUbzlwSOsxmPv
-         La0Wh8ghMFHTTqSW+vmAyaeFYJ0xV9QBLwOPWdHgc2e+9v9bVPkhQF5AwE9kA1r/n7
-         e/NsW5SrRb/qw98mm5AxA7eHvbM4dqD0syKUObF4=
+        b=tD3nHLKPXEVAARmKKX/PF3m1KGTiURL3a23tLJ0y7zqvTBmciCOgr+sgZzvePRVeH
+         /CiG9fYmAmgkbNekpIzXusf980VUMX/qkHUL+KiW0ogfIiT4NIBqeniegDEzZv8pij
+         tNqj92wSCn4c0nkS7Av0KZGfETXvK4ySGxQaSCu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 405/694] nvmet: fix I/O Command Set specific Identify Controller
-Date:   Mon,  8 May 2023 11:44:00 +0200
-Message-Id: <20230508094446.334368750@linuxfoundation.org>
+        patches@lists.linux.dev, Chris Mi <cmi@nvidia.com>,
+        Roi Dayan <roid@nvidia.com>, Maor Dickman <maord@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 415/663] net/mlx5: E-switch, Dont destroy indirect table in split rule
+Date:   Mon,  8 May 2023 11:44:01 +0200
+Message-Id: <20230508094441.554918650@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,113 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+From: Chris Mi <cmi@nvidia.com>
 
-[ Upstream commit a5a6ab0950b46ab1ef4a5c83c80234018b81b38a ]
+[ Upstream commit 4c8189302567f75099a336b0efcff8291ec86ff4 ]
 
-For an identify command with cns set to NVME_ID_CNS_CS_CTRL, the NVMe
-2.0 specification states that:
+Source port rewrite (forward to ovs internal port or statck device) isn't
+supported in the rule of split action. So there is no indirect table in
+split rule. The cited commit destroyes indirect table in split rule. The
+indirect table for other rules will be destroyed wrongly. It will cause
+traffic loss.
 
-If the I/O Command Set specified by the CSI field does not have an
-Identify Controller data structure, then the controller shall return
-a zero filled data structure. If the host requests a data structure for
-an I/O Command Set that the controller does not support, the controller
-shall abort the command with a status code of Invalid Field in Command.
+Fix it by removing the destroy function in split rule. And also remove
+the destroy function in error flow.
 
-However, the current implementation of this identify command in
-nvmet_execute_identify() only handles the ZNS command set, returning an
-error for the NVM command set, which is not compliant with the
-specifications as we do support this command set.
-
-Fix this by:
-1) Renaming nvmet_execute_identify_cns_cs_ctrl() to
-   nvmet_execute_identify_ctrl_zns() to continue handling the
-   ZNS command set as is.
-2) Introduce a nvmet_execute_identify_ctrl_ns() helper to handle the
-   NVM command set, returning a zero filled nvme_id_ctrl_nvm data
-   structure.
-3) Modify nvmet_execute_identify() to call these helpers based on
-   the csi specified, returning an error for unsupported command sets.
-
-Fixes: aaf2e048af27 ("nvmet: add ZBD over ZNS backend support")
-Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Tested-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 10742efc20a4 ("net/mlx5e: VF tunnel TX traffic offloading")
+Signed-off-by: Chris Mi <cmi@nvidia.com>
+Reviewed-by: Roi Dayan <roid@nvidia.com>
+Reviewed-by: Maor Dickman <maord@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/admin-cmd.c | 22 ++++++++++++++++------
- drivers/nvme/target/nvmet.h     |  2 +-
- drivers/nvme/target/zns.c       |  2 +-
- 3 files changed, 18 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/nvme/target/admin-cmd.c b/drivers/nvme/target/admin-cmd.c
-index 93c441ab9f090..5bfbf5c651db0 100644
---- a/drivers/nvme/target/admin-cmd.c
-+++ b/drivers/nvme/target/admin-cmd.c
-@@ -685,6 +685,13 @@ static bool nvmet_handle_identify_desclist(struct nvmet_req *req)
- 	}
- }
- 
-+static void nvmet_execute_identify_ctrl_nvm(struct nvmet_req *req)
-+{
-+	/* Not supported: return zeroes */
-+	nvmet_req_complete(req,
-+		   nvmet_zero_sgl(req, 0, sizeof(struct nvme_id_ctrl_nvm)));
-+}
-+
- static void nvmet_execute_identify(struct nvmet_req *req)
- {
- 	if (!nvmet_check_transfer_len(req, NVME_IDENTIFY_DATA_SIZE))
-@@ -708,13 +715,16 @@ static void nvmet_execute_identify(struct nvmet_req *req)
- 		nvmet_execute_identify_ctrl(req);
- 		return;
- 	case NVME_ID_CNS_CS_CTRL:
--		if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
--			switch (req->cmd->identify.csi) {
--			case NVME_CSI_ZNS:
--				return nvmet_execute_identify_cns_cs_ctrl(req);
--			default:
--				break;
-+		switch (req->cmd->identify.csi) {
-+		case NVME_CSI_NVM:
-+			nvmet_execute_identify_ctrl_nvm(req);
-+			return;
-+		case NVME_CSI_ZNS:
-+			if (IS_ENABLED(CONFIG_BLK_DEV_ZONED)) {
-+				nvmet_execute_identify_ctrl_zns(req);
-+				return;
- 			}
-+			break;
- 		}
- 		break;
- 	case NVME_ID_CNS_NS_ACTIVE_LIST:
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 89bedfcd974c4..ed3786140965f 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -581,7 +581,7 @@ bool nvmet_ns_revalidate(struct nvmet_ns *ns);
- u16 blk_to_nvme_status(struct nvmet_req *req, blk_status_t blk_sts);
- 
- bool nvmet_bdev_zns_enable(struct nvmet_ns *ns);
--void nvmet_execute_identify_cns_cs_ctrl(struct nvmet_req *req);
-+void nvmet_execute_identify_ctrl_zns(struct nvmet_req *req);
- void nvmet_execute_identify_cns_cs_ns(struct nvmet_req *req);
- void nvmet_bdev_execute_zone_mgmt_recv(struct nvmet_req *req);
- void nvmet_bdev_execute_zone_mgmt_send(struct nvmet_req *req);
-diff --git a/drivers/nvme/target/zns.c b/drivers/nvme/target/zns.c
-index 77ef0a86ff61f..ae4d9d35e46ae 100644
---- a/drivers/nvme/target/zns.c
-+++ b/drivers/nvme/target/zns.c
-@@ -70,7 +70,7 @@ bool nvmet_bdev_zns_enable(struct nvmet_ns *ns)
- 	return true;
- }
- 
--void nvmet_execute_identify_cns_cs_ctrl(struct nvmet_req *req)
-+void nvmet_execute_identify_ctrl_zns(struct nvmet_req *req)
- {
- 	u8 zasl = req->sq->ctrl->subsys->zasl;
- 	struct nvmet_ctrl *ctrl = req->sq->ctrl;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index f9dfd9f3f9512..6561b6b505568 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -763,7 +763,6 @@ mlx5_eswitch_add_fwd_rule(struct mlx5_eswitch *esw,
+ 	kfree(dest);
+ 	return rule;
+ err_chain_src_rewrite:
+-	esw_put_dest_tables_loop(esw, attr, 0, i);
+ 	mlx5_esw_vporttbl_put(esw, &fwd_attr);
+ err_get_fwd:
+ 	mlx5_chains_put_table(chains, attr->chain, attr->prio, 0);
+@@ -806,7 +805,6 @@ __mlx5_eswitch_del_rule(struct mlx5_eswitch *esw,
+ 	if (fwd_rule)  {
+ 		mlx5_esw_vporttbl_put(esw, &fwd_attr);
+ 		mlx5_chains_put_table(chains, attr->chain, attr->prio, 0);
+-		esw_put_dest_tables_loop(esw, attr, 0, esw_attr->split_count);
+ 	} else {
+ 		if (split)
+ 			mlx5_esw_vporttbl_put(esw, &fwd_attr);
 -- 
 2.39.2
 
