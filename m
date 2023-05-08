@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE09E6FA9AB
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D20F6FA667
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235215AbjEHKyU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:54:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54880 "EHLO
+        id S234402AbjEHKTP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235151AbjEHKxo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34412B43C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:53:03 -0700 (PDT)
+        with ESMTP id S234383AbjEHKTM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:19:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735BE3ACC1
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:19:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D28361861
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:53:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325A1C433EF;
-        Mon,  8 May 2023 10:53:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4E4F62509
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:18:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD79C433EF;
+        Mon,  8 May 2023 10:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543182;
-        bh=cw3OnQkRRzLSZofw1h00fHi3CqqZKFvyxjHDHAz3LDU=;
+        s=korg; t=1683541139;
+        bh=VdKTzBskTyx38+rU4JVMnYU3o7mMWRuEms1LFfHxQco=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TSw4WqHSxBrfLO37CdqXb1OGBcr/RrwWug8tMsjqowbysmhhv2imbzoFntXEopUct
-         4haDG+FfU/bUhCNAJGGIgfOP6/CqMC4srbn847Fe5orM1F4SKDFwPByiLqWk7jepyh
-         rjm7aRyjUZ5dGIyf8rv7MwssqaRioIZxK7ZgyVpY=
+        b=Ox13BGGc0zlZS6TH5FHxVXgI4A/Nu69heZmyEOeHpCw02yLiRTr7/8XbAazV/7Yo2
+         Kv2vm4sJkFMBixp2Cu9e0ogNMAVIWv1LH9QMW6eIrg3Ltr9eTEASvRC8E2pfb6852l
+         aUrLwiiWB6ib6eIjOcDHkFO5xH9UbOk6wXuXdwGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
-        ValdikSS <iam@valdikss.org.ru>,
-        Alexandru gagniuc <mr.nuke.me@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.3 010/694] wifi: rtw88: usb: fix priority queue to endpoint mapping
+        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 019/663] x86/cpu: Add model number for Intel Arrow Lake processor
 Date:   Mon,  8 May 2023 11:37:25 +0200
-Message-Id: <20230508094432.969367923@linuxfoundation.org>
+Message-Id: <20230508094429.054879801@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,144 +54,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Tony Luck <tony.luck@intel.com>
 
-commit a6f187f92bcc2b17821538b4a11d61764e68b091 upstream.
+[ Upstream commit 81515ecf155a38f3532bf5ddef88d651898df6be ]
 
-The RTW88 chipsets have four different priority queues in hardware. For
-the USB type chipsets the packets destined for a specific priority queue
-must be sent through the endpoint corresponding to the queue. This was
-not fully understood when porting from the RTW88 USB out of tree driver
-and thus violated.
+Successor to Lunar Lake.
 
-This patch implements the qsel to endpoint mapping as in
-get_usb_bulkout_id_88xx() in the downstream driver.
-
-Without this the driver often issues "timed out to flush queue 3"
-warnings and often TX stalls completely.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Tested-by: ValdikSS <iam@valdikss.org.ru>
-Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230417140358.2240429-2-s.hauer@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230404174641.426593-1-tony.luck@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c |   70 ++++++++++++++++++++-----------
- 1 file changed, 47 insertions(+), 23 deletions(-)
+ arch/x86/include/asm/intel-family.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -118,6 +118,22 @@ static void rtw_usb_write32(struct rtw_d
- 	rtw_usb_write(rtwdev, addr, val, 4);
- }
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -125,6 +125,8 @@
  
-+static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
-+{
-+	switch (dma_mapping) {
-+	case RTW_DMA_MAPPING_HIGH:
-+		return 0;
-+	case RTW_DMA_MAPPING_NORMAL:
-+		return 1;
-+	case RTW_DMA_MAPPING_LOW:
-+		return 2;
-+	case RTW_DMA_MAPPING_EXTRA:
-+		return 3;
-+	default:
-+		return -EINVAL;
-+	}
-+}
+ #define INTEL_FAM6_LUNARLAKE_M		0xBD
+ 
++#define INTEL_FAM6_ARROWLAKE		0xC6
 +
- static int rtw_usb_parse(struct rtw_dev *rtwdev,
- 			 struct usb_interface *interface)
- {
-@@ -129,6 +145,8 @@ static int rtw_usb_parse(struct rtw_dev
- 	int num_out_pipes = 0;
- 	int i;
- 	u8 num;
-+	const struct rtw_chip_info *chip = rtwdev->chip;
-+	const struct rtw_rqpn *rqpn;
+ /* "Small Core" Processors (Atom/E-Core) */
  
- 	for (i = 0; i < interface_desc->bNumEndpoints; i++) {
- 		endpoint = &host_interface->endpoint[i].desc;
-@@ -183,31 +201,34 @@ static int rtw_usb_parse(struct rtw_dev
- 
- 	rtwdev->hci.bulkout_num = num_out_pipes;
- 
--	switch (num_out_pipes) {
--	case 4:
--	case 3:
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 2;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 2;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 2;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 2;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = 1;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = 1;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = 0;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = 0;
--		break;
--	case 2:
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 1;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 1;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 1;
--		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 1;
--		break;
--	case 1:
--		break;
--	default:
--		rtw_err(rtwdev, "failed to get out_pipes(%d)\n", num_out_pipes);
-+	if (num_out_pipes < 1 || num_out_pipes > 4) {
-+		rtw_err(rtwdev, "invalid number of endpoints %d\n", num_out_pipes);
- 		return -EINVAL;
- 	}
- 
-+	rqpn = &chip->rqpn_table[num_out_pipes];
-+
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = dma_mapping_to_ep(rqpn->dma_map_be);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = dma_mapping_to_ep(rqpn->dma_map_bk);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = dma_mapping_to_ep(rqpn->dma_map_bk);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = dma_mapping_to_ep(rqpn->dma_map_be);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = dma_mapping_to_ep(rqpn->dma_map_vi);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = dma_mapping_to_ep(rqpn->dma_map_vi);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = dma_mapping_to_ep(rqpn->dma_map_vo);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = dma_mapping_to_ep(rqpn->dma_map_vo);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID8] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID9] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID10] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID11] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID12] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID13] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID14] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID15] = -EINVAL;
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_BEACON] = dma_mapping_to_ep(rqpn->dma_map_hi);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_HIGH] = dma_mapping_to_ep(rqpn->dma_map_hi);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_MGMT] = dma_mapping_to_ep(rqpn->dma_map_mg);
-+	rtwusb->qsel_to_ep[TX_DESC_QSEL_H2C] = dma_mapping_to_ep(rqpn->dma_map_hi);
-+
- 	return 0;
- }
- 
-@@ -250,7 +271,7 @@ static void rtw_usb_write_port_tx_comple
- static int qsel_to_ep(struct rtw_usb *rtwusb, unsigned int qsel)
- {
- 	if (qsel >= ARRAY_SIZE(rtwusb->qsel_to_ep))
--		return 0;
-+		return -EINVAL;
- 
- 	return rtwusb->qsel_to_ep[qsel];
- }
-@@ -265,6 +286,9 @@ static int rtw_usb_write_port(struct rtw
- 	int ret;
- 	int ep = qsel_to_ep(rtwusb, qsel);
- 
-+	if (ep < 0)
-+		return ep;
-+
- 	pipe = usb_sndbulkpipe(usbd, rtwusb->out_ep[ep]);
- 	urb = usb_alloc_urb(0, GFP_ATOMIC);
- 	if (!urb)
+ #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
 
 
