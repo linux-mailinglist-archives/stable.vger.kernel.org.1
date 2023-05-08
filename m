@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95D756FA540
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79BC86FAD15
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234084AbjEHKH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
+        id S235827AbjEHLan (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:30:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234081AbjEHKHZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:07:25 -0400
+        with ESMTP id S235909AbjEHLaZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:30:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 353411989
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:07:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118013E75B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:30:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD86B6235F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F95C433EF;
-        Mon,  8 May 2023 10:07:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91A6863017
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF75C433D2;
+        Mon,  8 May 2023 11:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540443;
-        bh=w5C8CBf8JYLki40zmMz8vriq2OtJZT9NS7ySBj04M6Q=;
+        s=korg; t=1683545422;
+        bh=zh5XKJ/UyuqyrJ5hCrGW6axciS0TL/7B2vgoKiTKf2s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vnf5UeNNKGuZnRax0tB+cgali+/qlPfY9u2AJXapBzBfyuH1vF6/Og3QePVYSMWve
-         ouU1+7h5i0EY4dKreragqKejou/e9J3BtWJg/xPP9A+9DfaC/Y14whmhiLASkX8us1
-         U5LyJ3Vfd6TiQUrwUdoHZ3vrURqNufQw34IGku/E=
+        b=CYPUzG+LQjqwFVSYspN5GVti3TK2DWFEq8cLupTrs/ugpKguVdl4PVVC6+B9L7hW8
+         OugrrGHum/OsZ9WxsNruqKFMQ0neocExG3M66RvH9WXY1Bvekh4UmxJ3IEy1Qtni4d
+         Qqxu4A9hktxdUp3tmzT3ahJPRK5w69jKI1fvTjh4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 366/611] mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 007/371] asm-generic/io.h: suppress endianness warnings for readq() and writeq()
 Date:   Mon,  8 May 2023 11:43:28 +0200
-Message-Id: <20230508094434.273148792@linuxfoundation.org>
+Message-Id: <20230508094812.293252616@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,93 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 12db28c3ef31f719bd18fa186a40bb152e6a527c ]
+[ Upstream commit d564fa1ff19e893e2971d66e5c8f49dc1cdc8ffc ]
 
-The MT7921 driver no longer uses eeprom.data, but the relevant code has not
-been removed completely since
-commit 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability").
-This could result in potential invalid memory access.
+Commit c1d55d50139b ("asm-generic/io.h: Fix sparse warnings on
+big-endian architectures") missed fixing the 64-bit accessors.
 
-To fix the kernel panic issue in mt7921, it is necessary to avoid accessing
-unallocated eeprom.data which can lead to invalid memory access.
+Arnd explains in the attached link why the casts are necessary, even if
+__raw_readq() and __raw_writeq() do not take endian-specific types.
 
-Furthermore, it is possible to entirely eliminate the
-mt7921_mcu_parse_eeprom function and solely depend on
-mt7921_mcu_parse_response to divide the RxD header.
-
-[2.702735] BUG: kernel NULL pointer dereference, address: 0000000000000550
-[2.702740] #PF: supervisor write access in kernel mode
-[2.702741] #PF: error_code(0x0002) - not-present page
-[2.702743] PGD 0 P4D 0
-[2.702747] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[2.702755] RIP: 0010:mt7921_mcu_parse_response+0x147/0x170 [mt7921_common]
-[2.702758] RSP: 0018:ffffae7c00fef828 EFLAGS: 00010286
-[2.702760] RAX: ffffa367f57be024 RBX: ffffa367cc7bf500 RCX: 0000000000000000
-[2.702762] RDX: 0000000000000550 RSI: 0000000000000000 RDI: ffffa367cc7bf500
-[2.702763] RBP: ffffae7c00fef840 R08: ffffa367cb167000 R09: 0000000000000005
-[2.702764] R10: 0000000000000000 R11: ffffffffc04702e4 R12: ffffa367e8329f40
-[2.702766] R13: 0000000000000000 R14: 0000000000000001 R15: ffffa367e8329f40
-[2.702768] FS:  000079ee6cf20c40(0000) GS:ffffa36b2f940000(0000) knlGS:0000000000000000
-[2.702769] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2.702775] CR2: 0000000000000550 CR3: 00000001233c6004 CR4: 0000000000770ee0
-[2.702776] PKRU: 55555554
-[2.702777] Call Trace:
-[2.702782]  mt76_mcu_skb_send_and_get_msg+0xc3/0x11e [mt76 <HASH:1bc4 5>]
-[2.702785]  mt7921_run_firmware+0x241/0x853 [mt7921_common <HASH:6a2f 6>]
-[2.702789]  mt7921e_mcu_init+0x2b/0x56 [mt7921e <HASH:d290 7>]
-[2.702792]  mt7921_register_device+0x2eb/0x5a5 [mt7921_common <HASH:6a2f 6>]
-[2.702795]  ? mt7921_irq_tasklet+0x1d4/0x1d4 [mt7921e <HASH:d290 7>]
-[2.702797]  mt7921_pci_probe+0x2d6/0x319 [mt7921e <HASH:d290 7>]
-[2.702799]  pci_device_probe+0x9f/0x12a
-
-Fixes: 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/lkml/9105d6fc-880b-4734-857d-e3d30b87ccf6@app.fastmail.com/
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 20 -------------------
- 1 file changed, 20 deletions(-)
+ include/asm-generic/io.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 67bf92969a7b7..d3507e86e9cf5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -16,24 +16,6 @@ static bool mt7921_disable_clc;
- module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
- MODULE_PARM_DESC(disable_clc, "disable CLC support");
+diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+index 98954dda57344..82f2c01accbb9 100644
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -190,7 +190,7 @@ static inline u64 readq(const volatile void __iomem *addr)
+ 	u64 val;
  
--static int
--mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
--{
--	struct mt7921_mcu_eeprom_info *res;
--	u8 *buf;
--
--	if (!skb)
--		return -EINVAL;
--
--	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
--
--	res = (struct mt7921_mcu_eeprom_info *)skb->data;
--	buf = dev->eeprom.data + le32_to_cpu(res->addr);
--	memcpy(buf, res->data, 16);
--
--	return 0;
--}
--
- int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 			      struct sk_buff *skb, int seq)
+ 	__io_br();
+-	val = __le64_to_cpu(__raw_readq(addr));
++	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
+ 	__io_ar(val);
+ 	return val;
+ }
+@@ -233,7 +233,7 @@ static inline void writel(u32 value, volatile void __iomem *addr)
+ static inline void writeq(u64 value, volatile void __iomem *addr)
  {
-@@ -60,8 +42,6 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	} else if (cmd == MCU_EXT_CMD(THERMAL_CTRL)) {
- 		skb_pull(skb, sizeof(*rxd) + 4);
- 		ret = le32_to_cpu(*(__le32 *)skb->data);
--	} else if (cmd == MCU_EXT_CMD(EFUSE_ACCESS)) {
--		ret = mt7921_mcu_parse_eeprom(mdev, skb);
- 	} else if (cmd == MCU_UNI_CMD(DEV_INFO_UPDATE) ||
- 		   cmd == MCU_UNI_CMD(BSS_INFO_UPDATE) ||
- 		   cmd == MCU_UNI_CMD(STA_REC_UPDATE) ||
+ 	__io_bw();
+-	__raw_writeq(__cpu_to_le64(value), addr);
++	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
+ 	__io_aw();
+ }
+ #endif
 -- 
 2.39.2
 
