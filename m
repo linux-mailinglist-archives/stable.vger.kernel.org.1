@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FEF46FA4F2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E7526FAB43
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234002AbjEHKEs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32888 "EHLO
+        id S233701AbjEHLLG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:11:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234004AbjEHKEr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:04:47 -0400
+        with ESMTP id S233419AbjEHLLF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:11:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66B430152
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:04:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A916F32371
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:11:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42D3262324
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:04:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C80C433EF;
-        Mon,  8 May 2023 10:04:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3082562B57
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:11:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF49C433D2;
+        Mon,  8 May 2023 11:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540284;
-        bh=yJ2zIC1+N3dj/S5NaxzoQly1HdlNFD+pTh8ALE05Buo=;
+        s=korg; t=1683544262;
+        bh=k6NRRMB/6raXJI9fPnb/0RTBsIx9ta3GCAPmj7b9gzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jhbU1d+VBr7Ip1cJAYBcw2HcGvxmUyu0fHREPcknXVm5mVwASO9pAn15H2aK+OQ12
-         Jbym/GxdYCbejD4SyuzP/sOf+ituaLhLJFf3t2nZCpHUUBi391U9eVJxScLky8JLXE
-         pXosgrNxly+fsnlgdu9Z433u8C9vOhD7j7RmV/C4=
+        b=VPUlRdVXBoEor1wpbUGayJ5HVE9c+4cNazGQwubFlfU/rpvQ2tHjTxN363E+MLmNi
+         7i+2LrtZG6UNfy8YWAJY4ac6lNNL3HSz6HOSoKv/sSeqqdutQd6UfAUhKqzQQNzW1Z
+         2JKrGKW7Fw4UTplXFlzmxcz9IS1R/mPu3aaXmU5E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 305/611] f2fs: apply zone capacity to all zone type
+        patches@lists.linux.dev,
+        syzbot+5093ba19745994288b53@syzkaller.appspotmail.com,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Sasha Levin <sashal@kernel.org>, Schspa Shi <schspa@gmail.com>
+Subject: [PATCH 6.3 312/694] debugobject: Prevent init race with static objects
 Date:   Mon,  8 May 2023 11:42:27 +0200
-Message-Id: <20230508094432.345915444@linuxfoundation.org>
+Message-Id: <20230508094442.423679347@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,138 +56,281 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 0b37ed21e3367539b79284e0b0af2246ffcf0dca ]
+[ Upstream commit 63a759694eed61025713b3e14dd827c8548daadc ]
 
-If we manage the zone capacity per zone type, it'll break the GC assumption.
-And, the current logic complains valid block count mismatch.
-Let's apply zone capacity to all zone type, if specified.
+Statically initialized objects are usually not initialized via the init()
+function of the subsystem. They are special cased and the subsystem
+provides a function to validate whether an object which is not yet tracked
+by debugobjects is statically initialized. This means the object is started
+to be tracked on first use, e.g. activation.
 
-Fixes: de881df97768 ("f2fs: support zone capacity less than zone size")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+This works perfectly fine, unless there are two concurrent operations on
+that object. Schspa decoded the problem:
+
+T0 	          	    	    T1
+
+debug_object_assert_init(addr)
+  lock_hash_bucket()
+  obj = lookup_object(addr);
+  if (!obj) {
+  	unlock_hash_bucket();
+	- > preemption
+			            lock_subsytem_object(addr);
+				      activate_object(addr)
+				      lock_hash_bucket();
+				      obj = lookup_object(addr);
+				      if (!obj) {
+				    	unlock_hash_bucket();
+					if (is_static_object(addr))
+					   init_and_track(addr);
+				      lock_hash_bucket();
+				      obj = lookup_object(addr);
+				      obj->state = ACTIVATED;
+				      unlock_hash_bucket();
+
+				    subsys function modifies content of addr,
+				    so static object detection does
+				    not longer work.
+
+				    unlock_subsytem_object(addr);
+
+        if (is_static_object(addr)) <- Fails
+
+	  debugobject emits a warning and invokes the fixup function which
+	  reinitializes the already active object in the worst case.
+
+This race exists forever, but was never observed until mod_timer() got a
+debug_object_assert_init() added which is outside of the timer base lock
+held section right at the beginning of the function to cover the lockless
+early exit points too.
+
+Rework the code so that the lookup, the static object check and the
+tracking object association happens atomically under the hash bucket
+lock. This prevents the issue completely as all callers are serialized on
+the hash bucket lock and therefore cannot observe inconsistent state.
+
+Fixes: 3ac7fe5a4aab ("infrastructure to debug (dynamic) objects")
+Reported-by: syzbot+5093ba19745994288b53@syzkaller.appspotmail.com
+Debugged-by: Schspa Shi <schspa@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://syzkaller.appspot.com/bug?id=22c8a5938eab640d1c6bcc0e3dc7be519d878462
+Link: https://lore.kernel.org/lkml/20230303161906.831686-1-schspa@gmail.com
+Link: https://lore.kernel.org/r/87zg7dzgao.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 65 +++--------------------------------------------
- fs/f2fs/segment.h |  3 +++
- 2 files changed, 7 insertions(+), 61 deletions(-)
+ lib/debugobjects.c | 125 ++++++++++++++++++++++++---------------------
+ 1 file changed, 66 insertions(+), 59 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 8d1e8c537daf0..c926479485775 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -4916,48 +4916,6 @@ int f2fs_check_write_pointer(struct f2fs_sb_info *sbi)
- 	return 0;
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index df86e649d8be0..b796799fadb20 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -216,10 +216,6 @@ static struct debug_obj *__alloc_object(struct hlist_head *list)
+ 	return obj;
  }
  
--static bool is_conv_zone(struct f2fs_sb_info *sbi, unsigned int zone_idx,
--						unsigned int dev_idx)
--{
--	if (!bdev_is_zoned(FDEV(dev_idx).bdev))
--		return true;
--	return !test_bit(zone_idx, FDEV(dev_idx).blkz_seq);
--}
--
--/* Return the zone index in the given device */
--static unsigned int get_zone_idx(struct f2fs_sb_info *sbi, unsigned int secno,
--					int dev_idx)
--{
--	block_t sec_start_blkaddr = START_BLOCK(sbi, GET_SEG_FROM_SEC(sbi, secno));
--
--	return (sec_start_blkaddr - FDEV(dev_idx).start_blk) >>
--						sbi->log_blocks_per_blkz;
--}
--
 -/*
-- * Return the usable segments in a section based on the zone's
-- * corresponding zone capacity. Zone is equal to a section.
+- * Allocate a new object. If the pool is empty, switch off the debugger.
+- * Must be called with interrupts disabled.
 - */
--static inline unsigned int f2fs_usable_zone_segs_in_sec(
--		struct f2fs_sb_info *sbi, unsigned int segno)
--{
--	unsigned int dev_idx, zone_idx;
--
--	dev_idx = f2fs_target_device_index(sbi, START_BLOCK(sbi, segno));
--	zone_idx = get_zone_idx(sbi, GET_SEC_FROM_SEG(sbi, segno), dev_idx);
--
--	/* Conventional zone's capacity is always equal to zone size */
--	if (is_conv_zone(sbi, zone_idx, dev_idx))
--		return sbi->segs_per_sec;
--
--	if (!sbi->unusable_blocks_per_sec)
--		return sbi->segs_per_sec;
--
--	/* Get the segment count beyond zone capacity block */
--	return sbi->segs_per_sec - (sbi->unusable_blocks_per_sec >>
--						sbi->log_blocks_per_seg);
--}
--
- /*
-  * Return the number of usable blocks in a segment. The number of blocks
-  * returned is always equal to the number of blocks in a segment for
-@@ -4970,23 +4928,13 @@ static inline unsigned int f2fs_usable_zone_blks_in_seg(
- 			struct f2fs_sb_info *sbi, unsigned int segno)
+ static struct debug_obj *
+ alloc_object(void *addr, struct debug_bucket *b, const struct debug_obj_descr *descr)
  {
- 	block_t seg_start, sec_start_blkaddr, sec_cap_blkaddr;
--	unsigned int zone_idx, dev_idx, secno;
--
--	secno = GET_SEC_FROM_SEG(sbi, segno);
--	seg_start = START_BLOCK(sbi, segno);
--	dev_idx = f2fs_target_device_index(sbi, seg_start);
--	zone_idx = get_zone_idx(sbi, secno, dev_idx);
--
+@@ -552,11 +548,49 @@ static void debug_object_is_on_stack(void *addr, int onstack)
+ 	WARN_ON(1);
+ }
+ 
++static struct debug_obj *lookup_object_or_alloc(void *addr, struct debug_bucket *b,
++						const struct debug_obj_descr *descr,
++						bool onstack, bool alloc_ifstatic)
++{
++	struct debug_obj *obj = lookup_object(addr, b);
++	enum debug_obj_state state = ODEBUG_STATE_NONE;
++
++	if (likely(obj))
++		return obj;
++
++	/*
++	 * debug_object_init() unconditionally allocates untracked
++	 * objects. It does not matter whether it is a static object or
++	 * not.
++	 *
++	 * debug_object_assert_init() and debug_object_activate() allow
++	 * allocation only if the descriptor callback confirms that the
++	 * object is static and considered initialized. For non-static
++	 * objects the allocation needs to be done from the fixup callback.
++	 */
++	if (unlikely(alloc_ifstatic)) {
++		if (!descr->is_static_object || !descr->is_static_object(addr))
++			return ERR_PTR(-ENOENT);
++		/* Statically allocated objects are considered initialized */
++		state = ODEBUG_STATE_INIT;
++	}
++
++	obj = alloc_object(addr, b, descr);
++	if (likely(obj)) {
++		obj->state = state;
++		debug_object_is_on_stack(addr, onstack);
++		return obj;
++	}
++
++	/* Out of memory. Do the cleanup outside of the locked region */
++	debug_objects_enabled = 0;
++	return NULL;
++}
++
+ static void
+ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack)
+ {
+ 	enum debug_obj_state state;
+-	bool check_stack = false;
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+@@ -572,16 +606,11 @@ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+ 
+-	obj = lookup_object(addr, db);
+-	if (!obj) {
+-		obj = alloc_object(addr, db, descr);
+-		if (!obj) {
+-			debug_objects_enabled = 0;
+-			raw_spin_unlock_irqrestore(&db->lock, flags);
+-			debug_objects_oom();
+-			return;
+-		}
+-		check_stack = true;
++	obj = lookup_object_or_alloc(addr, db, descr, onstack, false);
++	if (unlikely(!obj)) {
++		raw_spin_unlock_irqrestore(&db->lock, flags);
++		debug_objects_oom();
++		return;
+ 	}
+ 
+ 	switch (obj->state) {
+@@ -607,8 +636,6 @@ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
+-	if (check_stack)
+-		debug_object_is_on_stack(addr, onstack);
+ }
+ 
+ /**
+@@ -648,14 +675,12 @@ EXPORT_SYMBOL_GPL(debug_object_init_on_stack);
+  */
+ int debug_object_activate(void *addr, const struct debug_obj_descr *descr)
+ {
++	struct debug_obj o = { .object = addr, .state = ODEBUG_STATE_NOTAVAILABLE, .descr = descr };
+ 	enum debug_obj_state state;
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+ 	int ret;
+-	struct debug_obj o = { .object = addr,
+-			       .state = ODEBUG_STATE_NOTAVAILABLE,
+-			       .descr = descr };
+ 
+ 	if (!debug_objects_enabled)
+ 		return 0;
+@@ -664,8 +689,8 @@ int debug_object_activate(void *addr, const struct debug_obj_descr *descr)
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+ 
+-	obj = lookup_object(addr, db);
+-	if (obj) {
++	obj = lookup_object_or_alloc(addr, db, descr, false, true);
++	if (likely(!IS_ERR_OR_NULL(obj))) {
+ 		bool print_object = false;
+ 
+ 		switch (obj->state) {
+@@ -698,24 +723,16 @@ int debug_object_activate(void *addr, const struct debug_obj_descr *descr)
+ 
+ 	raw_spin_unlock_irqrestore(&db->lock, flags);
+ 
 -	/*
--	 * Conventional zone's capacity is always equal to zone size,
--	 * so, blocks per segment is unchanged.
+-	 * We are here when a static object is activated. We
+-	 * let the type specific code confirm whether this is
+-	 * true or not. if true, we just make sure that the
+-	 * static object is tracked in the object tracker. If
+-	 * not, this must be a bug, so we try to fix it up.
 -	 */
--	if (is_conv_zone(sbi, zone_idx, dev_idx))
--		return sbi->blocks_per_seg;
-+	unsigned int secno;
- 
- 	if (!sbi->unusable_blocks_per_sec)
- 		return sbi->blocks_per_seg;
- 
-+	secno = GET_SEC_FROM_SEG(sbi, segno);
-+	seg_start = START_BLOCK(sbi, segno);
- 	sec_start_blkaddr = START_BLOCK(sbi, GET_SEG_FROM_SEC(sbi, secno));
- 	sec_cap_blkaddr = sec_start_blkaddr + CAP_BLKS_PER_SEC(sbi);
- 
-@@ -5020,11 +4968,6 @@ static inline unsigned int f2fs_usable_zone_blks_in_seg(struct f2fs_sb_info *sbi
- 	return 0;
- }
- 
--static inline unsigned int f2fs_usable_zone_segs_in_sec(struct f2fs_sb_info *sbi,
--							unsigned int segno)
--{
+-	if (descr->is_static_object && descr->is_static_object(addr)) {
+-		/* track this static object */
+-		debug_object_init(addr, descr);
+-		debug_object_activate(addr, descr);
+-	} else {
+-		debug_print_object(&o, "activate");
+-		ret = debug_object_fixup(descr->fixup_activate, addr,
+-					ODEBUG_STATE_NOTAVAILABLE);
+-		return ret ? 0 : -EINVAL;
++	/* If NULL the allocation has hit OOM */
++	if (!obj) {
++		debug_objects_oom();
++		return 0;
+ 	}
 -	return 0;
--}
- #endif
- unsigned int f2fs_usable_blks_in_seg(struct f2fs_sb_info *sbi,
- 					unsigned int segno)
-@@ -5039,7 +4982,7 @@ unsigned int f2fs_usable_segs_in_sec(struct f2fs_sb_info *sbi,
- 					unsigned int segno)
- {
- 	if (f2fs_sb_has_blkzoned(sbi))
--		return f2fs_usable_zone_segs_in_sec(sbi, segno);
-+		return CAP_SEGS_PER_SEC(sbi);
- 
- 	return sbi->segs_per_sec;
++
++	/* Object is neither static nor tracked. It's not initialized */
++	debug_print_object(&o, "activate");
++	ret = debug_object_fixup(descr->fixup_activate, addr, ODEBUG_STATE_NOTAVAILABLE);
++	return ret ? 0 : -EINVAL;
  }
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index be8f2d7d007b9..cd65778fc9822 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -104,6 +104,9 @@ static inline void sanity_check_seg_type(struct f2fs_sb_info *sbi,
- #define CAP_BLKS_PER_SEC(sbi)					\
- 	((sbi)->segs_per_sec * (sbi)->blocks_per_seg -		\
- 	 (sbi)->unusable_blocks_per_sec)
-+#define CAP_SEGS_PER_SEC(sbi)					\
-+	((sbi)->segs_per_sec - ((sbi)->unusable_blocks_per_sec >>\
-+	(sbi)->log_blocks_per_seg))
- #define GET_SEC_FROM_SEG(sbi, segno)				\
- 	(((segno) == -1) ? -1: (segno) / (sbi)->segs_per_sec)
- #define GET_SEG_FROM_SEC(sbi, secno)				\
+ EXPORT_SYMBOL_GPL(debug_object_activate);
+ 
+@@ -869,6 +886,7 @@ EXPORT_SYMBOL_GPL(debug_object_free);
+  */
+ void debug_object_assert_init(void *addr, const struct debug_obj_descr *descr)
+ {
++	struct debug_obj o = { .object = addr, .state = ODEBUG_STATE_NOTAVAILABLE, .descr = descr };
+ 	struct debug_bucket *db;
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
+@@ -879,31 +897,20 @@ void debug_object_assert_init(void *addr, const struct debug_obj_descr *descr)
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
++	obj = lookup_object_or_alloc(addr, db, descr, false, true);
++	raw_spin_unlock_irqrestore(&db->lock, flags);
++	if (likely(!IS_ERR_OR_NULL(obj)))
++		return;
+ 
+-	obj = lookup_object(addr, db);
++	/* If NULL the allocation has hit OOM */
+ 	if (!obj) {
+-		struct debug_obj o = { .object = addr,
+-				       .state = ODEBUG_STATE_NOTAVAILABLE,
+-				       .descr = descr };
+-
+-		raw_spin_unlock_irqrestore(&db->lock, flags);
+-		/*
+-		 * Maybe the object is static, and we let the type specific
+-		 * code confirm. Track this static object if true, else invoke
+-		 * fixup.
+-		 */
+-		if (descr->is_static_object && descr->is_static_object(addr)) {
+-			/* Track this static object */
+-			debug_object_init(addr, descr);
+-		} else {
+-			debug_print_object(&o, "assert_init");
+-			debug_object_fixup(descr->fixup_assert_init, addr,
+-					   ODEBUG_STATE_NOTAVAILABLE);
+-		}
++		debug_objects_oom();
+ 		return;
+ 	}
+ 
+-	raw_spin_unlock_irqrestore(&db->lock, flags);
++	/* Object is neither tracked nor static. It's not initialized. */
++	debug_print_object(&o, "assert_init");
++	debug_object_fixup(descr->fixup_assert_init, addr, ODEBUG_STATE_NOTAVAILABLE);
+ }
+ EXPORT_SYMBOL_GPL(debug_object_assert_init);
+ 
 -- 
 2.39.2
 
