@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 559BE6FAA20
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8420E6FA6D4
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235388AbjEHK7l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:59:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32968 "EHLO
+        id S234483AbjEHKYh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235358AbjEHK7B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:59:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C6A29C80
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:57:55 -0700 (PDT)
+        with ESMTP id S234484AbjEHKXv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:23:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3A14BBD7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:23:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E98E629E2
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51929C433D2;
-        Mon,  8 May 2023 10:57:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87A34625A4
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:23:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB43C433D2;
+        Mon,  8 May 2023 10:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543473;
-        bh=Xdq6WHE3RMmxZGTNIrc9fX9lJQcBS0AbCx8tF2rpevg=;
+        s=korg; t=1683541421;
+        bh=gZ+bRMauUXwl5no0RP9+NqdPeV2jwAvkv3NtuIAfj0I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VUAYJUgk1pPeg7tFnYLUkFd7coajxqaQNfifLCBOHScuhG2Tr9TC6uYZg3DpJ7Cjz
-         Gyj73hkktspvIjAgcEAOJNZpOhvITnO3jc1b+COLUf4hg0KcqErknJZwTts+2M+NRY
-         dC5LA3YSdcJI87pNuZiBJ2KtlQx9jzRP/XHtuTxM=
+        b=ZbB8CYUaGQZmbxnTGbHs2cNjAwNfatHQO6SNCItqwJ/CKpdJC0y6AUbIDc38YBnZm
+         BvS4IMKmDMAT1HmGvOoYUXgaQPRUZQjnm/pHXabtaXBiiUQ/287R1kGexNGwGdyQtM
+         XJCW6RT5J0Df4H2oK4Jl0t0hZxFFDUlBU1TUY/iY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.3 101/694] parisc: Ensure page alignment in flush functions
+        patches@lists.linux.dev, Dave Chinner <dchinner@redhat.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Dave Chinner <david@fromorbit.com>
+Subject: [PATCH 6.2 110/663] xfs: dont consider future format versions valid
 Date:   Mon,  8 May 2023 11:38:56 +0200
-Message-Id: <20230508094435.773581995@linuxfoundation.org>
+Message-Id: <20230508094432.065087528@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,43 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit d755bd2caeb47fd806e12399fe8b56798fa5d2cc upstream.
+commit aa88019851a85df80cb77f143758b13aee09e3d9 upstream.
 
-Matthew Wilcox noticed, that if ARCH_HAS_FLUSH_ON_KUNMAP is defined
-(which is the case for PA-RISC), __kunmap_local() calls
-kunmap_flush_on_unmap(), which may call the parisc flush functions with
-a non-page-aligned address and thus the page might not be fully flushed.
+In commit fe08cc504448 we reworked the valid superblock version
+checks. If it is a V5 filesystem, it is always valid, then we
+checked if the version was less than V4 (reject) and then checked
+feature fields in the V4 flags to determine if it was valid.
 
-This patch ensures that flush_kernel_dcache_page_asm() and
-flush_kernel_dcache_page_asm() will always operate on page-aligned
-addresses.
+What we missed was that if the version is not V4 at this point,
+we shoudl reject the fs. i.e. the check current treats V6+
+filesystems as if it was a v4 filesystem. Fix this.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+cc: stable@vger.kernel.org
+Fixes: fe08cc504448 ("xfs: open code sb verifier feature checks")
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Dave Chinner <david@fromorbit.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/pacache.S |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/xfs/libxfs/xfs_sb.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/arch/parisc/kernel/pacache.S
-+++ b/arch/parisc/kernel/pacache.S
-@@ -889,6 +889,7 @@ ENDPROC_CFI(flush_icache_page_asm)
- ENTRY_CFI(flush_kernel_dcache_page_asm)
- 88:	ldil		L%dcache_stride, %r1
- 	ldw		R%dcache_stride(%r1), %r23
-+	depi_safe	0, 31,PAGE_SHIFT, %r26	/* Clear any offset bits */
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -72,7 +72,8 @@ xfs_sb_validate_v5_features(
+ }
  
- #ifdef CONFIG_64BIT
- 	depdi,z		1, 63-PAGE_SHIFT,1, %r25
-@@ -925,6 +926,7 @@ ENDPROC_CFI(flush_kernel_dcache_page_asm
- ENTRY_CFI(purge_kernel_dcache_page_asm)
- 88:	ldil		L%dcache_stride, %r1
- 	ldw		R%dcache_stride(%r1), %r23
-+	depi_safe	0, 31,PAGE_SHIFT, %r26	/* Clear any offset bits */
+ /*
+- * We support all XFS versions newer than a v4 superblock with V2 directories.
++ * We current support XFS v5 formats with known features and v4 superblocks with
++ * at least V2 directories.
+  */
+ bool
+ xfs_sb_good_version(
+@@ -86,16 +87,16 @@ xfs_sb_good_version(
+ 	if (xfs_sb_is_v5(sbp))
+ 		return xfs_sb_validate_v5_features(sbp);
  
- #ifdef CONFIG_64BIT
- 	depdi,z		1, 63-PAGE_SHIFT,1, %r25
++	/* versions prior to v4 are not supported */
++	if (XFS_SB_VERSION_NUM(sbp) != XFS_SB_VERSION_4)
++		return false;
++
+ 	/* We must not have any unknown v4 feature bits set */
+ 	if ((sbp->sb_versionnum & ~XFS_SB_VERSION_OKBITS) ||
+ 	    ((sbp->sb_versionnum & XFS_SB_VERSION_MOREBITSBIT) &&
+ 	     (sbp->sb_features2 & ~XFS_SB_VERSION2_OKBITS)))
+ 		return false;
+ 
+-	/* versions prior to v4 are not supported */
+-	if (XFS_SB_VERSION_NUM(sbp) < XFS_SB_VERSION_4)
+-		return false;
+-
+ 	/* V4 filesystems need v2 directories and unwritten extents */
+ 	if (!(sbp->sb_versionnum & XFS_SB_VERSION_DIRV2BIT))
+ 		return false;
 
 
