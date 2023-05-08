@@ -2,110 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD546FA90F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F7B6FA5F7
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235171AbjEHKr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47810 "EHLO
+        id S234249AbjEHKOx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235147AbjEHKqt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:46:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6120727F38
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:46:37 -0700 (PDT)
+        with ESMTP id S234269AbjEHKOn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:14:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA822E073
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:14:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62C31628D4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:46:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57721C433D2;
-        Mon,  8 May 2023 10:46:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20BC362457
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3766DC433D2;
+        Mon,  8 May 2023 10:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542796;
-        bh=ValpUyJUKPfsegPY6Oujiv451qbJAiZbIHoKjMhQVh8=;
+        s=korg; t=1683540881;
+        bh=A4ZVFFG01MGE9Xd+Zr+BmKZeKctPfcp6kujiNxlNzRU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IAeclDRFsamQ9jVWi/3Cw58Z+PNePVhqG0g2BRmh+Xpmk6b6YWin5mJU7yFCOdncm
-         +Ayg623QupSuFDtNnjq5reyKQWnU/uwC9wxBTBCDqtg2EUBLSzaUZKb98x34kC0pln
-         pA9ki7PaweeyQT/GFSDvot/yivphLtn37dR2P5DM=
+        b=xo2tWpeC9e9P8RE95kOmOnYGAmYmLDqpG7WHkilRg/V+VkABGQ80kjqVEl1BiNqdg
+         OZ3fnS+CRXZ5JC/TzmF037pcTI9zEhoZtuSKsBbswMCvWuaa1uOXuOUAZjU2y2VvBb
+         yN1ZX1661lB5dS+ttqE2D6JdtfZ2Yq0sF/8XlmTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacky Bai <ping.bai@nxp.com>,
-        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 550/663] clk: imx: fracn-gppll: fix the rate table
+Subject: [PATCH 6.1 534/611] pwm: mtk-disp: Disable shadow registers before setting backlight values
 Date:   Mon,  8 May 2023 11:46:16 +0200
-Message-Id: <20230508094446.906755264@linuxfoundation.org>
+Message-Id: <20230508094439.356205458@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Fan <peng.fan@nxp.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit cf8dccfedce848f67eaa42e8839305d028319161 ]
+[ Upstream commit 36dd7f530ae7d9ce9e853ffb8aa337de65c6600b ]
 
-The Fvco should be range 2.4GHz to 5GHz, the original table voilate the
-spec, so update the table to fix it.
+If shadow registers usage is not desired, disable that before performing
+any write to CON0/1 registers in the .apply() callback, otherwise we may
+lose clkdiv or period/width updates.
 
-Fixes: c196175acdd3 ("clk: imx: clk-fracn-gppll: Add more freq config for video pll")
-Fixes: 044034efbeea ("clk: imx: clk-fracn-gppll: fix mfd value")
-Fixes: 1b26cb8a77a4 ("clk: imx: support fracn gppll")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230403095300.3386988-2-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: cd4b45ac449a ("pwm: Add MediaTek MT2701 display PWM driver support")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Tested-by: Alexandre Mergnat <amergnat@baylibre.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-fracn-gppll.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/pwm/pwm-mtk-disp.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
-index a2aaa14fc1aef..ec50c41e2a4c9 100644
---- a/drivers/clk/imx/clk-fracn-gppll.c
-+++ b/drivers/clk/imx/clk-fracn-gppll.c
-@@ -60,18 +60,20 @@ struct clk_fracn_gppll {
- };
+diff --git a/drivers/pwm/pwm-mtk-disp.c b/drivers/pwm/pwm-mtk-disp.c
+index ccf0ccdef29df..7fea385a387a5 100644
+--- a/drivers/pwm/pwm-mtk-disp.c
++++ b/drivers/pwm/pwm-mtk-disp.c
+@@ -138,6 +138,19 @@ static int mtk_disp_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	high_width = mul_u64_u64_div_u64(state->duty_cycle, rate, div);
+ 	value = period | (high_width << PWM_HIGH_WIDTH_SHIFT);
  
- /*
-- * Fvco = Fref * (MFI + MFN / MFD)
-- * Fout = Fvco / (rdiv * odiv)
-+ * Fvco = (Fref / rdiv) * (MFI + MFN / MFD)
-+ * Fout = Fvco / odiv
-+ * The (Fref / rdiv) should be in range 20MHz to 40MHz
-+ * The Fvco should be in range 2.5Ghz to 5Ghz
-  */
- static const struct imx_fracn_gppll_rate_table fracn_tbl[] = {
--	PLL_FRACN_GP(650000000U, 81, 0, 1, 0, 3),
-+	PLL_FRACN_GP(650000000U, 162, 50, 100, 0, 6),
- 	PLL_FRACN_GP(594000000U, 198, 0, 1, 0, 8),
--	PLL_FRACN_GP(560000000U, 70, 0, 1, 0, 3),
--	PLL_FRACN_GP(498000000U, 83, 0, 1, 0, 4),
-+	PLL_FRACN_GP(560000000U, 140, 0, 1, 0, 6),
-+	PLL_FRACN_GP(498000000U, 166, 0, 1, 0, 8),
- 	PLL_FRACN_GP(484000000U, 121, 0, 1, 0, 6),
- 	PLL_FRACN_GP(445333333U, 167, 0, 1, 0, 9),
--	PLL_FRACN_GP(400000000U, 50, 0, 1, 0, 3),
--	PLL_FRACN_GP(393216000U, 81, 92, 100, 0, 5)
-+	PLL_FRACN_GP(400000000U, 200, 0, 1, 0, 12),
-+	PLL_FRACN_GP(393216000U, 163, 84, 100, 0, 10)
- };
++	if (mdp->data->bls_debug && !mdp->data->has_commit) {
++		/*
++		 * For MT2701, disable double buffer before writing register
++		 * and select manual mode and use PWM_PERIOD/PWM_HIGH_WIDTH.
++		 */
++		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
++					 mdp->data->bls_debug_mask,
++					 mdp->data->bls_debug_mask);
++		mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
++					 mdp->data->con0_sel,
++					 mdp->data->con0_sel);
++	}
++
+ 	mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
+ 				 PWM_CLKDIV_MASK,
+ 				 clk_div << PWM_CLKDIV_SHIFT);
+@@ -152,17 +165,6 @@ static int mtk_disp_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 		mtk_disp_pwm_update_bits(mdp, mdp->data->commit,
+ 					 mdp->data->commit_mask,
+ 					 0x0);
+-	} else {
+-		/*
+-		 * For MT2701, disable double buffer before writing register
+-		 * and select manual mode and use PWM_PERIOD/PWM_HIGH_WIDTH.
+-		 */
+-		mtk_disp_pwm_update_bits(mdp, mdp->data->bls_debug,
+-					 mdp->data->bls_debug_mask,
+-					 mdp->data->bls_debug_mask);
+-		mtk_disp_pwm_update_bits(mdp, mdp->data->con0,
+-					 mdp->data->con0_sel,
+-					 mdp->data->con0_sel);
+ 	}
  
- struct imx_fracn_gppll_clk imx_fracn_gppll = {
+ 	mtk_disp_pwm_update_bits(mdp, DISP_PWM_EN, mdp->data->enable_mask,
 -- 
 2.39.2
 
