@@ -2,55 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B112A6FAA05
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B7996FA6B8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235384AbjEHK6C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:58:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33494 "EHLO
+        id S234541AbjEHKXd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:23:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235382AbjEHK5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:57:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D412DD46
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:56:42 -0700 (PDT)
+        with ESMTP id S234412AbjEHKWz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:22:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58D8DC7E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:22:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5946629CF
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:56:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27F9C433EF;
-        Mon,  8 May 2023 10:56:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C56862560
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617AAC433EF;
+        Mon,  8 May 2023 10:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543402;
-        bh=4imctYczb9p249Q8WRjxClCsUt2v++otxE90BbSoSHo=;
+        s=korg; t=1683541349;
+        bh=2rSVD32M6YkyiT4CTDT1uf5wATV3jM1JsbS0zW1tn3A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Jv5Atk2FxpdLX9GCJm2HRzpn23B7CYHutLl+0AMR9upniizY3eaNOqjSO3yI5VAa
-         7XfEf7TAOS5rFkWqcdS25eHBVsXk0xIWFPZaqarPI9k8XNEQmYRdN7JBEK9cfAtz5t
-         cw9smh0ADSpY4qq0TG0HmfErjsRVa5YSB+/VJLuM=
+        b=FWUKnESgcafJC7nzmNVX77T+yMhn24J3L4JZfVJyliJPii4vY5hn7IUVnSNj8aji/
+         Dl5VgF2fChFrq1aRQT0vqCPXsuCz9fH0HN4lxeHokAkuhOdoRJ+ttNWk1TFhnJa8dV
+         USYT7Fi7ZqbtJC/AQfYN+KQUXW5+Gxt5SwSPSUKI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Song Yoong Siang <yoong.siang.song@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jesper Dangaard Brouer <brouer@redhat.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.3 077/694] igc: read before write to SRRCTL register
+        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Daniel Miess <Daniel.Miess@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 086/663] drm/amd/display: limit timing for single dimm memory
 Date:   Mon,  8 May 2023 11:38:32 +0200
-Message-Id: <20230508094435.034375287@linuxfoundation.org>
+Message-Id: <20230508094431.244630388@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,89 +58,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Yoong Siang <yoong.siang.song@intel.com>
+From: Daniel Miess <Daniel.Miess@amd.com>
 
-commit 3ce29c17dc847bf4245e16aad78a7617afa96297 upstream.
+[ Upstream commit 1e994cc0956b8dabd1b1fef315bbd722733b8aa8 ]
 
-igc_configure_rx_ring() function will be called as part of XDP program
-setup. If Rx hardware timestamp is enabled prio to XDP program setup,
-this timestamp enablement will be overwritten when buffer size is
-written into SRRCTL register.
+[Why]
+1. It could hit bandwidth limitdation under single dimm
+memory when connecting 8K external monitor.
+2. IsSupportedVidPn got validation failed with
+2K240Hz eDP + 8K24Hz external monitor.
+3. It's better to filter out such combination in
+EnumVidPnCofuncModality
+4. For short term, filter out in dc bandwidth validation.
 
-Thus, this commit read the register value before write to SRRCTL
-register. This commit is tested by using xdp_hw_metadata bpf selftest
-tool. The tool enables Rx hardware timestamp and then attach XDP program
-to igc driver. It will display hardware timestamp of UDP packet with
-port number 9092. Below are detail of test steps and results.
+[How]
+Force 2K@240Hz+8K@24Hz timing validation false in dc.
 
-Command on DUT:
-  sudo ./xdp_hw_metadata <interface name>
-
-Command on Link Partner:
-  echo -n skb | nc -u -q1 <destination IPv4 addr> 9092
-
-Result before this patch:
-  skb hwtstamp is not found!
-
-Result after this patch:
-  found skb hwtstamp = 1677800973.642836757
-
-Optionally, read PHC to confirm the values obtained are almost the same:
-Command:
-  sudo ./testptp -d /dev/ptp0 -g
-Result:
-  clock time: 1677800973.913598978 or Fri Mar  3 07:49:33 2023
-
-Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
-Cc: <stable@vger.kernel.org> # 5.14+
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jesper Dangaard Brouer <brouer@redhat.com>
-Tested-by: Jesper Dangaard Brouer <brouer@redhat.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Daniel Miess <Daniel.Miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_base.h |   11 ++++++++---
- drivers/net/ethernet/intel/igc/igc_main.c |    7 +++++--
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ .../amd/display/dc/dcn314/dcn314_resource.c   | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/net/ethernet/intel/igc/igc_base.h
-+++ b/drivers/net/ethernet/intel/igc/igc_base.h
-@@ -87,8 +87,13 @@ union igc_adv_rx_desc {
- #define IGC_RXDCTL_SWFLUSH		0x04000000 /* Receive Software Flush */
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+index 54ed3de869d3b..9ffba4c6fe550 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+@@ -1697,6 +1697,23 @@ static void dcn314_get_panel_config_defaults(struct dc_panel_config *panel_confi
+ 	*panel_config = panel_config_defaults;
+ }
  
- /* SRRCTL bit definitions */
--#define IGC_SRRCTL_BSIZEPKT_SHIFT		10 /* Shift _right_ */
--#define IGC_SRRCTL_BSIZEHDRSIZE_SHIFT		2  /* Shift _left_ */
--#define IGC_SRRCTL_DESCTYPE_ADV_ONEBUF	0x02000000
-+#define IGC_SRRCTL_BSIZEPKT_MASK	GENMASK(6, 0)
-+#define IGC_SRRCTL_BSIZEPKT(x)		FIELD_PREP(IGC_SRRCTL_BSIZEPKT_MASK, \
-+					(x) / 1024) /* in 1 KB resolution */
-+#define IGC_SRRCTL_BSIZEHDR_MASK	GENMASK(13, 8)
-+#define IGC_SRRCTL_BSIZEHDR(x)		FIELD_PREP(IGC_SRRCTL_BSIZEHDR_MASK, \
-+					(x) / 64) /* in 64 bytes resolution */
-+#define IGC_SRRCTL_DESCTYPE_MASK	GENMASK(27, 25)
-+#define IGC_SRRCTL_DESCTYPE_ADV_ONEBUF	FIELD_PREP(IGC_SRRCTL_DESCTYPE_MASK, 1)
++static bool filter_modes_for_single_channel_workaround(struct dc *dc,
++		struct dc_state *context)
++{
++	// Filter 2K@240Hz+8K@24fps above combination timing if memory only has single dimm LPDDR
++	if (dc->clk_mgr->bw_params->vram_type == 34 && dc->clk_mgr->bw_params->num_channels < 2) {
++		int total_phy_pix_clk = 0;
++
++		for (int i = 0; i < context->stream_count; i++)
++			if (context->res_ctx.pipe_ctx[i].stream)
++				total_phy_pix_clk += context->res_ctx.pipe_ctx[i].stream->phy_pix_clk;
++
++		if (total_phy_pix_clk >= (1148928+826260)) //2K@240Hz+8K@24fps
++			return true;
++	}
++	return false;
++}
++
+ bool dcn314_validate_bandwidth(struct dc *dc,
+ 		struct dc_state *context,
+ 		bool fast_validate)
+@@ -1712,6 +1729,9 @@ bool dcn314_validate_bandwidth(struct dc *dc,
  
- #endif /* _IGC_BASE_H */
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -641,8 +641,11 @@ static void igc_configure_rx_ring(struct
- 	else
- 		buf_size = IGC_RXBUFFER_2048;
+ 	BW_VAL_TRACE_COUNT();
  
--	srrctl = IGC_RX_HDR_LEN << IGC_SRRCTL_BSIZEHDRSIZE_SHIFT;
--	srrctl |= buf_size >> IGC_SRRCTL_BSIZEPKT_SHIFT;
-+	srrctl = rd32(IGC_SRRCTL(reg_idx));
-+	srrctl &= ~(IGC_SRRCTL_BSIZEPKT_MASK | IGC_SRRCTL_BSIZEHDR_MASK |
-+		    IGC_SRRCTL_DESCTYPE_MASK);
-+	srrctl |= IGC_SRRCTL_BSIZEHDR(IGC_RX_HDR_LEN);
-+	srrctl |= IGC_SRRCTL_BSIZEPKT(buf_size);
- 	srrctl |= IGC_SRRCTL_DESCTYPE_ADV_ONEBUF;
- 
- 	wr32(IGC_SRRCTL(reg_idx), srrctl);
++	if (filter_modes_for_single_channel_workaround(dc, context))
++		goto validate_fail;
++
+ 	DC_FP_START();
+ 	// do not support self refresh only
+ 	out = dcn30_internal_validate_bw(dc, context, pipes, &pipe_cnt, &vlevel, fast_validate, false);
+-- 
+2.39.2
+
 
 
