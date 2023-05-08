@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E296FA58D
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B6C06FABCC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234169AbjEHKKm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:10:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38678 "EHLO
+        id S235479AbjEHLR3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233987AbjEHKKl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:10:41 -0400
+        with ESMTP id S233955AbjEHLR2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:17:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1AD037E77
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:10:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBE737614
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:17:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47BEE623A7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:10:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED24C433D2;
-        Mon,  8 May 2023 10:10:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8D7362C19
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:17:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1DAC433D2;
+        Mon,  8 May 2023 11:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683540639;
-        bh=9k9sO2ffo4576VgbHQ7oTj3ToIJXxhPHpcna6sO8uao=;
+        s=korg; t=1683544646;
+        bh=skFFywk52dAcgXA3YocwB7KdKfo0s77CUk/BIdMXGgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FKJ0wnh/GbgF3G6gOK6p4aA6Iar8vCyrrj642U+NHh61u+5zN5cKfNsTsI7V/yN6q
-         pOnl89tWqSXJRyPfWNGAa7fJQyQRr0MCwr9avAOorEVEMdSe5g9H3WDnk44KTEYbKk
-         qPtdxZlXVowH86DX0TU2EtNbpj8TLA2S/Ldc8Sl4=
+        b=raLwV2oAC1MMBSmMPYh7MPeI1STx9pI4z2SQE0D3ze+CO2EE8a3BaImxqeHJPq82R
+         np74E/ShUvBotCt7uUaz91foLl9X/2Uf/NE57BTlAywKfmt4Pj3w0JJtBzV2Dodr6a
+         RcQzDos1SJeDaIuQcthSqLDDsSD+N9MfHAAOPyqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@amd.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 441/611] i2c: xiic: xiic_xfer(): Fix runtime PM leak on error path
+        patches@lists.linux.dev, Sean Wang <sean.wang@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Wang Zhao <wang.zhao@mediatek.com>,
+        Quan Zhou <quan.zhou@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 448/694] wifi: mt76: mt7921e: stop chip reset worker in unregister hook
 Date:   Mon,  8 May 2023 11:44:43 +0200
-Message-Id: <20230508094436.493825933@linuxfoundation.org>
+Message-Id: <20230508094448.086142929@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lars-Peter Clausen <lars@metafoo.de>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit d663d93bb47e7ab45602b227701022d8aa16040a ]
+[ Upstream commit 3d78c46423c6567ed25ca033e086865b1b4d5ae1 ]
 
-The xiic_xfer() function gets a runtime PM reference when the function is
-entered. This reference is released when the function is exited. There is
-currently one error path where the function exits directly, which leads to
-a leak of the runtime PM reference.
+If the chip reset worker is triggered during the remove process, the chip
+DMA may not be properly pushed back to the idle state. This can lead to
+corruption of the DMA flow due to the chip reset. Therefore, it is
+necessary to stop the chip reset before the DMA is finalized.
 
-Make sure that this error path also releases the runtime PM reference.
+To avoid resetting the chip after the reset worker is cancelled, use
+__mt7921_mcu_drv_pmctrl() instead of mt7921_mcu_drv_pmctrl(). It is safe to
+ignore the pm mutex because the pm worker and wake worker have already been
+cancelled.
 
-Fixes: fdacc3c7405d ("i2c: xiic: Switch from waitqueue to completion")
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 033ae79b3830 ("mt76: mt7921: refactor init.c to be bus independent")
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Co-developed-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index 277a02455cddd..effae4d467291 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -704,7 +704,7 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- 	err = xiic_start_xfer(i2c, msgs, num);
- 	if (err < 0) {
- 		dev_err(adap->dev.parent, "Error xiic_start_xfer\n");
--		return err;
-+		goto out;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index bda92d8359692..aa4ecf008a3c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -115,9 +115,10 @@ static void mt7921e_unregister_device(struct mt7921_dev *dev)
+ 		napi_disable(&dev->mt76.napi[i]);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
++	cancel_work_sync(&dev->reset_work);
  
- 	err = wait_for_completion_timeout(&i2c->completion, XIIC_XFER_TIMEOUT);
-@@ -722,6 +722,8 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- 		err = (i2c->state == STATE_DONE) ? num : -EIO;
- 	}
- 	mutex_unlock(&i2c->lock);
-+
-+out:
- 	pm_runtime_mark_last_busy(i2c->dev);
- 	pm_runtime_put_autosuspend(i2c->dev);
- 	return err;
+ 	mt7921_tx_token_put(dev);
+-	mt7921_mcu_drv_pmctrl(dev);
++	__mt7921_mcu_drv_pmctrl(dev);
+ 	mt7921_dma_cleanup(dev);
+ 	mt7921_wfsys_reset(dev);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
 -- 
 2.39.2
 
