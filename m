@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 717FB6FAC28
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197056FA96C
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235605AbjEHLVe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35694 "EHLO
+        id S235004AbjEHKux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235594AbjEHLV3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:21:29 -0400
+        with ESMTP id S235138AbjEHKtf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F753918C
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:21:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C803E203E2
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EDC962C91
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:21:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914FCC4339B;
-        Mon,  8 May 2023 11:21:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BC636290A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34D3C433D2;
+        Mon,  8 May 2023 10:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544880;
-        bh=KWFmhQ6BFnnnIQL8o3pFbn83ENnwOw/YvBSjFJ5s1Oo=;
+        s=korg; t=1683542942;
+        bh=m6hWB4ZdwqCUjX/JEb+H73QfA1xko8i3kGsZiDlrHak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lxcM4az0ioK0BqERhvdyhAgg/2jcitSLBkBhJN72mR0PFyJ07X32sNqTxHTKIuznl
-         yoNzBvWpBrEtIfY1VjAuQsa3An0/u3Pb70CL6EeywtC/wNkUomqn2zMvuDd0bJE+u3
-         +j6nEvb9C+x9wtHR8rCi0WKQ2w196kMfkohiUXh4=
+        b=kDmFrJHc4FIin1rhS0h42Rbh5i7f8UgH4BQ8cfmmiwpfQf2XMNLUjDFqCjDnR8qWh
+         KkBjqWaEdgZqhjj/7GvZ5qndc+Fv06DdMDu6zHgF+igrpCfZEqcS9dDAYp977QJJA5
+         ClD4ossH45muanoMdsoXRtKzCpwyGsquIYTb0iTI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Albert Huang <huangjie.albert@bytedance.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 554/694] virtio_ring: dont update event idx on get_buf
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 563/663] swiotlb: fix debugfs reporting of reserved memory pools
 Date:   Mon,  8 May 2023 11:46:29 +0200
-Message-Id: <20230508094452.566342899@linuxfoundation.org>
+Message-Id: <20230508094447.442237720@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,111 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Albert Huang <huangjie.albert@bytedance.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-[ Upstream commit 6c0b057cec5eade4c3afec3908821176931a9997 ]
+[ Upstream commit 5499d01c029069044a3b3e50501c77b474c96178 ]
 
-In virtio_net, if we disable napi_tx, when we trigger a tx interrupt,
-the vq->event_triggered will be set to true. It is then never reset
-until we explicitly call virtqueue_enable_cb_delayed or
-virtqueue_enable_cb_prepare.
+For io_tlb_nslabs, the debugfs code reports the correct value for a
+specific reserved memory pool.  But for io_tlb_used, the value reported
+is always for the default pool, not the specific reserved pool. Fix this.
 
-If we disable the napi_tx, virtqueue_enable_cb* will only be called when
-the tx ring is getting relatively empty.
-
-Since event_triggered is true, VRING_AVAIL_F_NO_INTERRUPT or
-VRING_PACKED_EVENT_FLAG_DISABLE will not be set. As a result we update
-vring_used_event(&vq->split.vring) or vq->packed.vring.driver->off_wrap
-every time we call virtqueue_get_buf_ctx. This causes more interrupts.
-
-To summarize:
-1) event_triggered was set to true in vring_interrupt()
-2) after this nothing will happen in virtqueue_disable_cb() so
-   VRING_AVAIL_F_NO_INTERRUPT is not set in avail_flags_shadow
-3) virtqueue_get_buf_ctx_split() will still think the cb is enabled
-   and then it will publish a new event index
-
-To fix:
-update VRING_AVAIL_F_NO_INTERRUPT or VRING_PACKED_EVENT_FLAG_DISABLE in
-the vq when we call virtqueue_disable_cb even when event_triggered is
-true.
-
-Tested with iperf:
-iperf3 tcp stream:
-vm1 -----------------> vm2
-vm2 just receives tcp data stream from vm1, and sends acks to vm1,
-there are many tx interrupts in vm2.
-with the patch applied there are just a few tx interrupts.
-
-v2->v3:
--update the interrupt disable flag even with the event_triggered is set,
--instead of checking whether event_triggered is set in
--virtqueue_get_buf_ctx_{packed/split}, will cause the drivers  which have
--not called virtqueue_{enable/disable}_cb to miss notifications.
-
-v3->v4:
--remove change for
--"if (vq->packed.event_flags_shadow != VRING_PACKED_EVENT_FLAG_DISABLE)"
--in virtqueue_disable_cb_packed
-
-Fixes: 8d622d21d248 ("virtio: fix up virtio_disable_cb")
-Signed-off-by: Albert Huang <huangjie.albert@bytedance.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20230329102300.61000-1-huangjie.albert@bytedance.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 5c850d31880e ("swiotlb: fix passing local variable to debugfs_create_ulong()")
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_ring.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ kernel/dma/swiotlb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index 41144b5246a8a..7a78ff05998ad 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -854,6 +854,14 @@ static void virtqueue_disable_cb_split(struct virtqueue *_vq)
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 465cd2b5481f1..81f40821084ec 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -935,7 +935,9 @@ EXPORT_SYMBOL_GPL(is_swiotlb_active);
  
- 	if (!(vq->split.avail_flags_shadow & VRING_AVAIL_F_NO_INTERRUPT)) {
- 		vq->split.avail_flags_shadow |= VRING_AVAIL_F_NO_INTERRUPT;
-+
-+		/*
-+		 * If device triggered an event already it won't trigger one again:
-+		 * no need to disable.
-+		 */
-+		if (vq->event_triggered)
-+			return;
-+
- 		if (vq->event)
- 			/* TODO: this is a hack. Figure out a cleaner value to write. */
- 			vring_used_event(&vq->split.vring) = 0x0;
-@@ -1699,6 +1707,14 @@ static void virtqueue_disable_cb_packed(struct virtqueue *_vq)
- 
- 	if (vq->packed.event_flags_shadow != VRING_PACKED_EVENT_FLAG_DISABLE) {
- 		vq->packed.event_flags_shadow = VRING_PACKED_EVENT_FLAG_DISABLE;
-+
-+		/*
-+		 * If device triggered an event already it won't trigger one again:
-+		 * no need to disable.
-+		 */
-+		if (vq->event_triggered)
-+			return;
-+
- 		vq->packed.vring.driver->flags =
- 			cpu_to_le16(vq->packed.event_flags_shadow);
- 	}
-@@ -2330,12 +2346,6 @@ void virtqueue_disable_cb(struct virtqueue *_vq)
+ static int io_tlb_used_get(void *data, u64 *val)
  {
- 	struct vring_virtqueue *vq = to_vvq(_vq);
+-	*val = mem_used(&io_tlb_default_mem);
++	struct io_tlb_mem *mem = data;
++
++	*val = mem_used(mem);
+ 	return 0;
+ }
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_io_tlb_used, io_tlb_used_get, NULL, "%llu\n");
+@@ -948,7 +950,7 @@ static void swiotlb_create_debugfs_files(struct io_tlb_mem *mem,
+ 		return;
  
--	/* If device triggered an event already it won't trigger one again:
--	 * no need to disable.
--	 */
--	if (vq->event_triggered)
--		return;
--
- 	if (vq->packed_ring)
- 		virtqueue_disable_cb_packed(_vq);
- 	else
+ 	debugfs_create_ulong("io_tlb_nslabs", 0400, mem->debugfs, &mem->nslabs);
+-	debugfs_create_file("io_tlb_used", 0400, mem->debugfs, NULL,
++	debugfs_create_file("io_tlb_used", 0400, mem->debugfs, mem,
+ 			&fops_io_tlb_used);
+ }
+ 
 -- 
 2.39.2
 
