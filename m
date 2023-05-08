@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 168AC6FAE0F
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19DF86FA91F
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:48:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234033AbjEHLkj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:40:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58988 "EHLO
+        id S235102AbjEHKsX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236100AbjEHLkS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:18 -0400
+        with ESMTP id S235128AbjEHKsE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:48:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4F0B3FCD0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A682C3DC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:47:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A6D1634D0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583CCC433EF;
-        Mon,  8 May 2023 11:40:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D093D628DE
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87A6C433D2;
+        Mon,  8 May 2023 10:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546015;
-        bh=Q4hhfPp9/kHefkrurnp71vJhxL/wq4aRG0tApmDqY2U=;
+        s=korg; t=1683542836;
+        bh=gfDGFjV+QykAu/JAuYchGotcnq6yqjwTBcPEGgoNltU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W8bN9VQMTFFcZsP0s7UmFjK7YdrJ/kwZZc3pRu228/D1l4rt6In88a6yB4TEsld/0
-         qvyw5xfnS/cq5lXxFT78BmAGMuxP876fXq/nzNJlO2wzJmqaUnof5fX33aPH0+2DvA
-         uonj2MUWaieXq/hhkDAJkKsk8D4UpN8o+5tjD9ac=
+        b=Gg4ZBfS9PCJ6zIxpMYGAHKPZAEnUkmt6J/2TRds+TfsN6kX2Oatvio73sC1SQg3Ur
+         5vtO+QaJPJRWpESLWm5KHIXQgwyyrtkkD/JH+4D7JApPEyG1mIEZcWDYmi5jjOVOdu
+         0z9pF192l0SQ5909dBMPg7NQ8rl256DAOaKshY9g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        Xin Liu <liuxin350@huawei.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Ian Ziemba <ian.ziemba@hpe.com>,
+        Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 190/371] bpf, sockmap: fix deadlocks in the sockhash and sockmap
+Subject: [PATCH 6.2 565/663] RDMA/rxe: Remove __rxe_do_task()
 Date:   Mon,  8 May 2023 11:46:31 +0200
-Message-Id: <20230508094819.663169070@linuxfoundation.org>
+Message-Id: <20230508094447.519276774@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,81 +55,190 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Liu <liuxin350@huawei.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
+[ Upstream commit 960ebe97e5238565d15063c8f4d1b2108efe2e65 ]
 
-When huang uses sched_switch tracepoint, the tracepoint
-does only one thing in the mounted ebpf program, which
-deletes the fixed elements in sockhash ([0])
+The subroutine __rxe_do_task is not thread safe and it has no way to
+guarantee that the tasks, which are designed with the assumption that they
+are non-reentrant, are not reentered. All of its uses are non-performance
+critical.
 
-It seems that elements in sockhash are rarely actively
-deleted by users or ebpf program. Therefore, we do not
-pay much attention to their deletion. Compared with hash
-maps, sockhash only provides spin_lock_bh protection.
-This causes it to appear to have self-locking behavior
-in the interrupt context.
+This patch replaces calls to __rxe_do_task with calls to
+rxe_sched_task. It also removes irrelevant or unneeded if tests.
 
-  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
+Instead of calling the task machinery a single call to the tasklet
+function (rxe_requester, etc.) is sufficient to draing the queues if task
+execution has been disabled or stopped.
 
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Xin Liu <liuxin350@huawei.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Together these changes allow the removal of __rxe_do_task.
+
+Link: https://lore.kernel.org/r/20230304174533.11296-7-rpearsonhpe@gmail.com
+Signed-off-by: Ian Ziemba <ian.ziemba@hpe.com>
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: b2b1ddc45745 ("RDMA/rxe: Fix the error "trying to register non-static key in rxe_cleanup_task"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c   | 56 +++++++++-------------------
+ drivers/infiniband/sw/rxe/rxe_task.c | 13 -------
+ drivers/infiniband/sw/rxe/rxe_task.h |  6 ---
+ 3 files changed, 17 insertions(+), 58 deletions(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 86b4e8909ad1e..36afe39dd2df9 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -414,8 +414,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index c954dd9394baf..49891f8ed4e61 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -473,29 +473,23 @@ static void rxe_qp_reset(struct rxe_qp *qp)
  {
- 	struct sock *sk;
- 	int err = 0;
-+	unsigned long flags;
+ 	/* stop tasks from running */
+ 	rxe_disable_task(&qp->resp.task);
+-
+-	/* stop request/comp */
+-	if (qp->sq.queue) {
+-		if (qp_type(qp) == IB_QPT_RC)
+-			rxe_disable_task(&qp->comp.task);
+-		rxe_disable_task(&qp->req.task);
+-	}
++	rxe_disable_task(&qp->comp.task);
++	rxe_disable_task(&qp->req.task);
  
--	raw_spin_lock_bh(&stab->lock);
-+	raw_spin_lock_irqsave(&stab->lock, flags);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
- 		sk = xchg(psk, NULL);
-@@ -425,7 +426,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- 	else
- 		err = -EINVAL;
+ 	/* move qp to the reset state */
+ 	qp->req.state = QP_STATE_RESET;
+ 	qp->comp.state = QP_STATE_RESET;
+ 	qp->resp.state = QP_STATE_RESET;
  
--	raw_spin_unlock_bh(&stab->lock);
-+	raw_spin_unlock_irqrestore(&stab->lock, flags);
- 	return err;
+-	/* let state machines reset themselves drain work and packet queues
+-	 * etc.
+-	 */
+-	__rxe_do_task(&qp->resp.task);
++	/* drain work and packet queuesc */
++	rxe_requester(qp);
++	rxe_completer(qp);
++	rxe_responder(qp);
+ 
+-	if (qp->sq.queue) {
+-		__rxe_do_task(&qp->comp.task);
+-		__rxe_do_task(&qp->req.task);
++	if (qp->rq.queue)
++		rxe_queue_reset(qp->rq.queue);
++	if (qp->sq.queue)
+ 		rxe_queue_reset(qp->sq.queue);
+-	}
+ 
+ 	/* cleanup attributes */
+ 	atomic_set(&qp->ssn, 0);
+@@ -518,13 +512,8 @@ static void rxe_qp_reset(struct rxe_qp *qp)
+ 
+ 	/* reenable tasks */
+ 	rxe_enable_task(&qp->resp.task);
+-
+-	if (qp->sq.queue) {
+-		if (qp_type(qp) == IB_QPT_RC)
+-			rxe_enable_task(&qp->comp.task);
+-
+-		rxe_enable_task(&qp->req.task);
+-	}
++	rxe_enable_task(&qp->comp.task);
++	rxe_enable_task(&qp->req.task);
  }
  
-@@ -930,11 +931,12 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
- 	struct bpf_shtab_bucket *bucket;
- 	struct bpf_shtab_elem *elem;
- 	int ret = -ENOENT;
-+	unsigned long flags;
- 
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
--	raw_spin_lock_bh(&bucket->lock);
-+	raw_spin_lock_irqsave(&bucket->lock, flags);
- 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
- 	if (elem) {
- 		hlist_del_rcu(&elem->node);
-@@ -942,7 +944,7 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
- 		sock_hash_free_elem(htab, elem);
- 		ret = 0;
+ /* drain the send queue */
+@@ -533,10 +522,7 @@ static void rxe_qp_drain(struct rxe_qp *qp)
+ 	if (qp->sq.queue) {
+ 		if (qp->req.state != QP_STATE_DRAINED) {
+ 			qp->req.state = QP_STATE_DRAIN;
+-			if (qp_type(qp) == IB_QPT_RC)
+-				rxe_sched_task(&qp->comp.task);
+-			else
+-				__rxe_do_task(&qp->comp.task);
++			rxe_sched_task(&qp->comp.task);
+ 			rxe_sched_task(&qp->req.task);
+ 		}
  	}
--	raw_spin_unlock_bh(&bucket->lock);
-+	raw_spin_unlock_irqrestore(&bucket->lock, flags);
- 	return ret;
+@@ -552,11 +538,7 @@ void rxe_qp_error(struct rxe_qp *qp)
+ 
+ 	/* drain work and packet queues */
+ 	rxe_sched_task(&qp->resp.task);
+-
+-	if (qp_type(qp) == IB_QPT_RC)
+-		rxe_sched_task(&qp->comp.task);
+-	else
+-		__rxe_do_task(&qp->comp.task);
++	rxe_sched_task(&qp->comp.task);
+ 	rxe_sched_task(&qp->req.task);
  }
  
+@@ -773,24 +755,20 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+ 
+ 	qp->valid = 0;
+ 	qp->qp_timeout_jiffies = 0;
+-	rxe_cleanup_task(&qp->resp.task);
+ 
+ 	if (qp_type(qp) == IB_QPT_RC) {
+ 		del_timer_sync(&qp->retrans_timer);
+ 		del_timer_sync(&qp->rnr_nak_timer);
+ 	}
+ 
++	rxe_cleanup_task(&qp->resp.task);
+ 	rxe_cleanup_task(&qp->req.task);
+ 	rxe_cleanup_task(&qp->comp.task);
+ 
+ 	/* flush out any receive wr's or pending requests */
+-	if (qp->req.task.func)
+-		__rxe_do_task(&qp->req.task);
+-
+-	if (qp->sq.queue) {
+-		__rxe_do_task(&qp->comp.task);
+-		__rxe_do_task(&qp->req.task);
+-	}
++	rxe_requester(qp);
++	rxe_completer(qp);
++	rxe_responder(qp);
+ 
+ 	if (qp->sq.queue)
+ 		rxe_queue_cleanup(qp->sq.queue);
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 959cc6229a34e..a67f485454436 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -6,19 +6,6 @@
+ 
+ #include "rxe.h"
+ 
+-int __rxe_do_task(struct rxe_task *task)
+-
+-{
+-	int ret;
+-
+-	while ((ret = task->func(task->qp)) == 0)
+-		;
+-
+-	task->ret = ret;
+-
+-	return ret;
+-}
+-
+ /*
+  * this locking is due to a potential race where
+  * a second caller finds the task already running
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
+index 41efd5fd49b03..99585e40cef92 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.h
++++ b/drivers/infiniband/sw/rxe/rxe_task.h
+@@ -39,12 +39,6 @@ int rxe_init_task(struct rxe_task *task, struct rxe_qp *qp,
+ /* cleanup task */
+ void rxe_cleanup_task(struct rxe_task *task);
+ 
+-/*
+- * raw call to func in loop without any checking
+- * can call when tasklets are disabled
+- */
+-int __rxe_do_task(struct rxe_task *task);
+-
+ void rxe_run_task(struct rxe_task *task);
+ 
+ void rxe_sched_task(struct rxe_task *task);
 -- 
 2.39.2
 
