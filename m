@@ -2,137 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A81616FB458
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 17:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249CB6FB45A
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 17:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234629AbjEHPtl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 11:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59578 "EHLO
+        id S234589AbjEHPvM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 11:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234607AbjEHPt3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 11:49:29 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63FA2AD34;
-        Mon,  8 May 2023 08:49:04 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 348EN0vI016491;
-        Mon, 8 May 2023 15:48:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=pMDOnRPQL7YmdQOJS97Sctst8OApqW7yTB6sPnQWfkc=;
- b=gq2UQSInXUSwKHIoqiizGiMr8DFBbELKfVb85BJtUY8+0pUGaEyvEyJGwjSL972gOra0
- qNQZW6/nfzpjMaFvKvtr4mPaiBZkmpoCDUeijTd5nWqojOsXBPwtmk4yyVjXQa8CVkpF
- dVwkGGiHy5kGUl0UPa5PUXZ+nsEyazjKMHbdFFMntmx+6uCQ/M+PmjpcTzowCFqyV+Y9
- IALfYnSjiWs617SUteNB9U1qcCCCL2HTTqO1n9dsHa17o8xvHpm/jzrRxyQzEX2f200q
- QCHEEarr7kWCI1tgRLAlCphGvt5wZnDumEsDVzYnlYxl6ACDeeMkdzO68EIqyplCsXV9 ag== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qey390qk6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 08 May 2023 15:48:26 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 348FmP0N031336
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 8 May 2023 15:48:25 GMT
-Received: from [10.216.34.27] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 8 May 2023
- 08:48:21 -0700
-Message-ID: <34a33b09-20aa-13e3-e4bd-c8b5854450a4@quicinc.com>
-Date:   Mon, 8 May 2023 21:18:17 +0530
+        with ESMTP id S234723AbjEHPvC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 11:51:02 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5457BD04B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 08:50:33 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-50b9ef67f35so8604279a12.2
+        for <stable@vger.kernel.org>; Mon, 08 May 2023 08:50:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=grsecurity.net; s=grsec; t=1683560988; x=1686152988;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B5xrVSFXNONHQZv+ctxWTjLEE37nX+KRXheeqpmsl7U=;
+        b=gP596nGFow60lpa0U3YEEbE+uiiolKA5POlsfxokFBvwXMFnt1qMQ4Y98hJX0Za1d9
+         E5LrzjWHoF740qmOgWjm2V26pwgF7YH4ENL+W6clXvalNW2s7yQVvyvoZIa4SlRqpSAv
+         wr7EpsaVSMKs3eDtH2OGVCQHpjNQoHmQJova0ckp3wvTnp4GE4UKYgKzP6HspXKNb2V9
+         j+UMjrYFtz2Zq5GEurLfNbxXAerFf8urXPZvkpZy6mkG45+E/+viEl79iwpZ2qbhSat2
+         hS5K+KnGYnbszuAEWjOREXsy1na19UG0NCxanv/tz3phPlepXe4Ky+CEAZ7qcii6Zsoi
+         7Swg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683560988; x=1686152988;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B5xrVSFXNONHQZv+ctxWTjLEE37nX+KRXheeqpmsl7U=;
+        b=ait+Q/dtzInViz55Mhv3ghBfK/tXNjOepU+dh7BwgfZPZcOcJLvgFmtQiqnUZ9tY7z
+         AQhD/hoH28NQ3InbF387tHu1qfoJjUC/NLAUTSCbxUR8oDxQicjJwmmWg3TdKd66SNRz
+         Eb8DJ042RZ6/AUMr9u7h04qN30/EgHZDNwvjpv9dYhzECQB1IkuW8W6jacfFq88hyuaS
+         WQBavhG/JsfMCeFxmfYIRHexsjF9vLZxuzT9z3Cgi4Mng5Fkg6wRy+IuDCUzJ2M5VhgC
+         qoWjrRrsJr5HytwKlYVCXu52mWa4kHA0OBi7C8ub7eH9OJzVyrrYU4jzPP6XoB0waI1u
+         IFkg==
+X-Gm-Message-State: AC+VfDxvKgZeOwbtbYfT2C/U3wc/IayN1+KxiaHpmuO0KTjUsehK1ajB
+        JnH1yiCwg/RwacPev8wejFCZts2jk8ipPFO6fwsQWQ==
+X-Google-Smtp-Source: ACHHUZ43w9I+bqUWoxWMqbJykwCy4dFwdbDQtEjB1PUOLTSNT7cXrVUfyIftOWzYvI1YtzQLi3xvKw==
+X-Received: by 2002:a17:907:7284:b0:961:b589:d075 with SMTP id dt4-20020a170907728400b00961b589d075mr10850427ejc.25.1683560987824;
+        Mon, 08 May 2023 08:49:47 -0700 (PDT)
+Received: from localhost.localdomain (p549211c7.dip0.t-ipconnect.de. [84.146.17.199])
+        by smtp.gmail.com with ESMTPSA id bu2-20020a170906a14200b0096654fdbe34sm117550ejb.142.2023.05.08.08.49.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 May 2023 08:49:47 -0700 (PDT)
+From:   Mathias Krause <minipli@grsecurity.net>
+To:     stable@vger.kernel.org
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
+        Mathias Krause <minipli@grsecurity.net>
+Subject: [PATCH 5.4 0/3] KVM CR0.WP series backport
+Date:   Mon,  8 May 2023 17:49:40 +0200
+Message-Id: <20230508154943.30113-1-minipli@grsecurity.net>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v9] usb: dwc3: debugfs: Prevent any register access when
- devices is runtime suspended
-Content-Language: en-US
-To:     Johan Hovold <johan@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pratham Pratap <quic_ppratap@quicinc.com>,
-        Jack Pham <quic_jackp@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230505155103.30098-1-quic_ugoswami@quicinc.com>
- <20230506013036.j533xncixkky5uf6@synopsys.com>
- <ZFjePu8Wb6NUwCav@hovoldconsulting.com>
-From:   Udipto Goswami <quic_ugoswami@quicinc.com>
-In-Reply-To: <ZFjePu8Wb6NUwCav@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: XIcO1z0pVEs39B5M9kqNrmCB3PaSElvF
-X-Proofpoint-GUID: XIcO1z0pVEs39B5M9kqNrmCB3PaSElvF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-08_11,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0 adultscore=0
- mlxscore=0 mlxlogscore=787 lowpriorityscore=0 priorityscore=1501
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305080103
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This is a partial backport of the CR0.WP KVM series[1] to Linux v5.4. It
+limits itself to avoid TDP MMU unloading as making CR0.WP a guest owned
+bit turned out to be too much of an effort and the partial backport
+already being quite effective.
+
+I used 'ssdd 10 50000' from rt-tests[2] as a micro-benchmark, running on
+a grsecurity L1 VM. Below table shows the results (runtime in seconds,
+lower is better):
+
+                          TDP    shadow
+    Linux v5.4.240       8.87s    56.8s
+    + patches            5.84s    55.4s
 
 
-On 5/8/23 5:04 PM, Johan Hovold wrote:
-> On Sat, May 06, 2023 at 01:30:52AM +0000, Thinh Nguyen wrote:
-> 
-> Udipto, looks like you just ignored my comment about fixing up the patch
-> Subject.
+This kernel version had no module parameter to control the TDP MMU
+setting, it's always enabled when EPT / NPT is. Therefore its meaning is
+likely what became "legacy" in newer kernels.
 
-Hi Johan,
-
-Apologies for this, i missed the comment on the Subject will rectify it.
-
-> 
->> On Fri, May 05, 2023, Udipto Goswami wrote:
->>> When the dwc3 device is runtime suspended, various required clocks would
->>> get disabled and it is not guaranteed that access to any registers would
->>> work. Depending on the SoC glue, a register read could be as benign as
->>> returning 0 or be fatal enough to hang the system.
->>>
->>> In order to prevent such scenarios of fatal errors, make sure to resume
->>> dwc3 then allow the function to proceed.
->>>
->>> Fixes: 62ba09d6bb63 ("usb: dwc3: debugfs: Dump internal LSP and ep registers")
->>
->> This fix goes before the above change.
-> 
-> Yes, this clearly is not the commit that first introduced this issue.
-> 
-> Either add a Fixes tag for the oldest one or add one for each commit
-> that introduced debugfs attributes with this issues.
-> 
->> This also touches on many places and is more than 100 lines. While this
->> is a fix, I'm not sure if Cc stable is needed. Perhaps others can
->> comment.
-> 
-> I believe this should be backported as it fixes a crash/hang.
-> 
-> The stable rules are flexible, but it may also be possible to break the
-> patch up in pieces and add a corresponding Fixes tag.
-
-Agree, I will add a fixes tag for the oldest change that introduced the 
-debugfs attributes instead of breaking it to multiple patches and adding 
-fixes for each one. (I think the present code changes can stay in one 
-patch as we are fixing the same issue in all the functions).
-
-Let me know if you think otherwise?
+Please consider applying.
 
 Thanks,
--Udipto
+Mathias
+
+[1] https://lore.kernel.org/kvm/20230322013731.102955-1-minipli@grsecurity.net/
+[2] https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
+
+
+Mathias Krause (2):
+  KVM: x86: Do not unload MMU roots when only toggling CR0.WP with TDP
+    enabled
+  KVM: x86: Make use of kvm_read_cr*_bits() when testing bits
+
+Paolo Bonzini (1):
+  KVM: x86/mmu: Avoid indirect call for get_cr3
+
+ arch/x86/kvm/mmu.c         | 14 +++++++-------
+ arch/x86/kvm/mmu.h         | 11 +++++++++++
+ arch/x86/kvm/paging_tmpl.h |  2 +-
+ arch/x86/kvm/vmx/vmx.c     |  4 ++--
+ arch/x86/kvm/x86.c         | 14 +++++++++++++-
+ 5 files changed, 34 insertions(+), 11 deletions(-)
+
+-- 
+2.39.2
+
