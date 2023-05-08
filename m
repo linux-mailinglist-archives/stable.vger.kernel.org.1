@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF7FA6FA6E2
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C1E6FAA4B
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234597AbjEHKZQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:25:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
+        id S235355AbjEHLBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234611AbjEHKYv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:24:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0594425256
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:24:20 -0700 (PDT)
+        with ESMTP id S235486AbjEHLBA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:01:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754AE348B8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 881F7625AC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:24:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788E9C433EF;
-        Mon,  8 May 2023 10:24:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E951F62A06
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8597C433EF;
+        Mon,  8 May 2023 10:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541459;
-        bh=oRZYP3fl9VvAQMvBV6hIb/dLpZUR47uxCxsZ5EQ20/g=;
+        s=korg; t=1683543591;
+        bh=QYno0vz/d8QgxohmFQF8mBOmRPWQqQD1GBoA/5/kgDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0pS/eCiiNCundx5kW5aU/F+6F+gATFL+8VLkOD3yaemACIKmBL94fMPCmoOWbmJpV
-         9iFjMuyXW15KImlkjEQn9T3qjW5c0q2knrT+lAYfuOxkTohJJ7a+xeefB5SDpV1Rf1
-         LdZheIJL1DcTQ2McYWTFbbomYtljw68iqwiwuDSo=
+        b=KPfHWFgrKv+jnaiQ0z2wHsea6f+BRFFcPuEXnDrIBUs1AQzw46O42523j0UTDGZXZ
+         hXcO6yYR1iQINUjnuXLI9JI9edZi9FSiE6h5K7qpkNUq+x7lI4YLIezHvppRByE3xv
+         /SnoMvyhDCEUlrfRQpriaJcfM35gowKIxx1nmFjs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 121/663] selftests/resctrl: Check for return value after write_schemata()
+        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
+        Song Liu <song@kernel.org>
+Subject: [PATCH 6.3 112/694] md/raid10: fix null-ptr-deref in raid10_sync_request
 Date:   Mon,  8 May 2023 11:39:07 +0200
-Message-Id: <20230508094432.440176222@linuxfoundation.org>
+Message-Id: <20230508094436.108046947@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,53 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 0d45c83b95da414e98ad333e723141a94f6e2c64 ]
+commit a405c6f0229526160aa3f177f65e20c86fce84c5 upstream.
 
-MBA test case writes schemata but it does not check if the write is
-successful or not.
+init_resync() inits mempool and sets conf->have_replacemnt at the beginning
+of sync, close_sync() frees the mempool when sync is completed.
 
-Add the error check and return error properly.
+After [1] recovery might be skipped and init_resync() is called but
+close_sync() is not. null-ptr-deref occurs with r10bio->dev[i].repl_bio.
 
-Fixes: 01fee6b4d1f9 ("selftests/resctrl: Add MBA test")
-Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The following is one way to reproduce the issue.
+
+  1) create a array, wait for resync to complete, mddev->recovery_cp is set
+     to MaxSector.
+  2) recovery is woken and it is skipped. conf->have_replacement is set to
+     0 in init_resync(). close_sync() not called.
+  3) some io errors and rdev A is set to WantReplacement.
+  4) a new device is added and set to A's replacement.
+  5) recovery is woken, A have replacement, but conf->have_replacemnt is
+     0. r10bio->dev[i].repl_bio will not be alloced and null-ptr-deref
+     occurs.
+
+Fix it by not calling init_resync() if recovery skipped.
+
+[1] commit 7e83ccbecd60 ("md/raid10: Allow skipping recovery when clean arrays are assembled")
+Fixes: 7e83ccbecd60 ("md/raid10: Allow skipping recovery when clean arrays are assembled")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230222041000.3341651-3-linan666@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/resctrl/mba_test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/md/raid10.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/mba_test.c b/tools/testing/selftests/resctrl/mba_test.c
-index f32289ae17aeb..97dc98c0c9497 100644
---- a/tools/testing/selftests/resctrl/mba_test.c
-+++ b/tools/testing/selftests/resctrl/mba_test.c
-@@ -28,6 +28,7 @@ static int mba_setup(int num, ...)
- 	struct resctrl_val_param *p;
- 	char allocation_str[64];
- 	va_list param;
-+	int ret;
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -3289,10 +3289,6 @@ static sector_t raid10_sync_request(stru
+ 	sector_t chunk_mask = conf->geo.chunk_mask;
+ 	int page_idx = 0;
  
- 	va_start(param, num);
- 	p = va_arg(param, struct resctrl_val_param *);
-@@ -45,7 +46,11 @@ static int mba_setup(int num, ...)
+-	if (!mempool_initialized(&conf->r10buf_pool))
+-		if (init_resync(conf))
+-			return 0;
+-
+ 	/*
+ 	 * Allow skipping a full rebuild for incremental assembly
+ 	 * of a clean array, like RAID1 does.
+@@ -3308,6 +3304,10 @@ static sector_t raid10_sync_request(stru
+ 		return mddev->dev_sectors - sector_nr;
+ 	}
  
- 	sprintf(allocation_str, "%d", allocation);
- 
--	write_schemata(p->ctrlgrp, allocation_str, p->cpu_no, p->resctrl_val);
-+	ret = write_schemata(p->ctrlgrp, allocation_str, p->cpu_no,
-+			     p->resctrl_val);
-+	if (ret < 0)
-+		return ret;
++	if (!mempool_initialized(&conf->r10buf_pool))
++		if (init_resync(conf))
++			return 0;
 +
- 	allocation -= ALLOCATION_STEP;
- 
- 	return 0;
--- 
-2.39.2
-
+  skipped:
+ 	max_sector = mddev->dev_sectors;
+ 	if (test_bit(MD_RECOVERY_SYNC, &mddev->recovery) ||
 
 
