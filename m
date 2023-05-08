@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F35446FA63E
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E80776FA968
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234346AbjEHKR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47416 "EHLO
+        id S235132AbjEHKuf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234390AbjEHKRq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 639CED058
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:34 -0700 (PDT)
+        with ESMTP id S235131AbjEHKuQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:50:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF95203E0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEABE624E4
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F319C433D2;
-        Mon,  8 May 2023 10:17:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7347E62921
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622C8C433EF;
+        Mon,  8 May 2023 10:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541053;
-        bh=pGb6w6HtaXDEx24a+2DlEuJmROdO44tRP8LP0Vi4lNI=;
+        s=korg; t=1683542994;
+        bh=5rgFYt5rQfHMzQmBNPOJUTeaF/OHTedFDXZoJjCXzJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PdxsesZgcEYeJWN0AmX+ISp9kHA+zvQ/qpM2Dbg666M6D+79lYuYlXz1Bhm3r2YoP
-         hzo/GG9XUc7MEEvpft3nI7Y4BiaYau5RGO01munQI/UxltzYG1tOhR5gusC4aCZl+4
-         e8a5rw1a4Nq1ox61G3wJxOhErXW+e5uM4Kzr7V7U=
+        b=H/RRkIRzQ++lUn6QzH+aG2vfFF1DKn2cMjDCM95e3VusNDOlMaP+SnqiAe/sbSLqz
+         IJ3hB8pmtEFQT3Vzb0hO+BqPsguATOeshA0UlWPUqcQIUmEwIwvKKY9w7R2WzJ7+9y
+         AeSsijcnA0M+Q/mVaIfcudzRveOhVBZoLII4NjqQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 599/611] thunderbolt: Use correct type in tb_port_is_clx_enabled() prototype
+        patches@lists.linux.dev, Mark Asselstine <asselsm@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.2 615/663] ALSA: hda/realtek: Add quirk for ASUS UM3402YAR using CS35L41
 Date:   Mon,  8 May 2023 11:47:21 +0200
-Message-Id: <20230508094441.373592693@linuxfoundation.org>
+Message-Id: <20230508094449.666087979@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +53,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Mark Asselstine <asselsm@gmail.com>
 
-commit d31137619776f9c173a46a79bc7733a2b106061f upstream.
+commit 7e2d06628aab6324e1ac885910a52f4c038d4043 upstream.
 
-tb_port_is_clx_enabled() generates a valid warning with gcc-13:
-  drivers/thunderbolt/switch.c:1286:6: error: conflicting types for 'tb_port_is_clx_enabled' due to enum/integer mismatch; have 'bool(struct tb_port *, unsigned int)' ...
-  drivers/thunderbolt/tb.h:1050:6: note: previous declaration of 'tb_port_is_clx_enabled' with type 'bool(struct tb_port *, enum tb_clx)' ...
+This Asus Zenbook laptop uses Realtek HDA codec combined with
+2xCS35L41 Amplifiers using I2C with External Boost.
 
-I.e. the type of the 2nd parameter of tb_port_is_clx_enabled() in the
-declaration is unsigned int, while the definition spells enum tb_clx.
-Synchronize them to the former as the parameter is in fact a mask of the
-enum values.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Mark Asselstine <asselsm@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230501231346.54979-1-asselsm@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/tb.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -1058,7 +1058,7 @@ void tb_port_lane_bonding_disable(struct
- int tb_port_wait_for_link_width(struct tb_port *port, int width,
- 				int timeout_msec);
- int tb_port_update_credits(struct tb_port *port);
--bool tb_port_is_clx_enabled(struct tb_port *port, enum tb_clx clx);
-+bool tb_port_is_clx_enabled(struct tb_port *port, unsigned int clx);
- 
- int tb_switch_find_vse_cap(struct tb_switch *sw, enum tb_switch_vse_cap vsec);
- int tb_switch_find_cap(struct tb_switch *sw, enum tb_switch_cap cap);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9500,6 +9500,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
+ 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
+ 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
++	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x16b2, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x16e3, "ASUS UX50", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1740, "ASUS UX430UA", ALC295_FIXUP_ASUS_DACS),
 
 
