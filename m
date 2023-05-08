@@ -2,163 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB73D6FB086
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 14:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F956FB09D
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 14:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232408AbjEHMrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 08:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47950 "EHLO
+        id S234065AbjEHMwA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 08:52:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232287AbjEHMrA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 08:47:00 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7810A19D4B;
-        Mon,  8 May 2023 05:46:55 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-965c3f9af2aso635235566b.0;
-        Mon, 08 May 2023 05:46:55 -0700 (PDT)
+        with ESMTP id S233708AbjEHMv5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 08:51:57 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 608104689
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 05:51:56 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-50bc075d6b2so8572749a12.0
+        for <stable@vger.kernel.org>; Mon, 08 May 2023 05:51:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683550014; x=1686142014;
+        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1683550315; x=1686142315;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4CtZd5VLc+pYXhj65DUnH/CQxgllwSSL9bOHAzJMo/o=;
-        b=SjX3A19GRrO9j5/6LE5Qtmrdtk4tg/wyhNIyB0kqHs332xn+GQHdto0goycqEJhq6C
-         co9HNZi/yVAg+1p7sBESmWx6Iqv/mVc+zlngEDNmH+VRhKOLWr6JhGUJhL/pOcPIRjpS
-         CA7STm5jH10upbpK+eFZabTsWLmqFxJVcAx2xmqVDIEpC7CIWFdpe3GJowyxDcAz9xPp
-         SF0ieNHsvbMPQeuVDGE10NZG8zvzgLWGggoXCRKL3LDQe6eYALEbEsLMUOtKSvAZ6Ebn
-         1VW1EEJ8u3FFM021LqV7AdzuFPqB0GMK1ciXrUdbD0ryGHgXbKEWVD6V6oDPUUENfNi+
-         36sw==
+        bh=yFivrtig9OalB2jQkNmqkqk5bNHkWlvaRKlvji8EAhM=;
+        b=jUNUAuQ8lqy2X4B5qryu0zGlFNNkgTQeSpmvwVdIc1290XSGbsy8n1Rbx0um+wwkap
+         V6vnQLrqEKql8a+cZKN50aEMj5Vh8+UhKjtCfRFvFRVsGUc8eg+Dh/zZWROt1XzE26Gd
+         qydb1wJrN6ohz1bA4iAZLJXFg6UCSU3Do4Ya+gaDCRS3E35/eteRxO5rWCpyKvKxDWJR
+         6Fq3gno/8DSlqoiZALVWS3oWEthH0THlAx5OfYLoNzNHoTh/vwUewyelLMooTq8TlLk1
+         0aKufMCb33d2URm9b8dykcStXthn2DV3Kl4ZQ3/9yeifD3DP5UGthO0qX3Qz5DMx9qKL
+         taPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683550014; x=1686142014;
+        d=1e100.net; s=20221208; t=1683550315; x=1686142315;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4CtZd5VLc+pYXhj65DUnH/CQxgllwSSL9bOHAzJMo/o=;
-        b=N785bkIHnP/8vO8qRazh9bAcOfxqL3++3q1n/8NBW8o4OxgoFCSNB+IPCd/y2ECPbm
-         qhMZixReA3M9IvjVpdxW8RSoWosSd87m3lPhviarmTCUlwgYR5R/ZVvjsgQGR/GCzNIB
-         e1jBzKFaJdDNvPuBeyEIPRSBxXpLkVjoJDM6QqO05VnWqns9aGcayQYehTvoqUFe2tnY
-         cM8gpFkQ9QSjjqLemFE8mkGKFTIRiPzLUjVKsri39gqRNeo0nRFjt42+ejuGjj6+iR3R
-         hm29LotpExlY+b3WrelO0uoLrWABc3IbS2ebKpy8FBjrRDeda95wG9RY21yfXcAtUIdo
-         XCEA==
-X-Gm-Message-State: AC+VfDx+b/ptNEy49oMMKxSqYn7Im/7oIoM14sI4EIf1Khq7PXA/tmQ+
-        tHbWjXCOGpz0gcO4b/YuODu7bZIf4HSKNk2NE48=
-X-Google-Smtp-Source: ACHHUZ6FiUyYBrM6IAk9jO1VkdY3O3ss5wrY66voF/dmm+uVMk3NNXNZmlzcE2gmjP2aTMVw1r1YhCTx5BYegtHJ78U=
-X-Received: by 2002:a17:907:980a:b0:968:8b67:4507 with SMTP id
- ji10-20020a170907980a00b009688b674507mr1376171ejc.69.1683550013837; Mon, 08
- May 2023 05:46:53 -0700 (PDT)
+        bh=yFivrtig9OalB2jQkNmqkqk5bNHkWlvaRKlvji8EAhM=;
+        b=gnTaj5waaijEhdBKBQnaAfzOqB1fZfTz9JoqrjV33HN+XhHKd0wtneT9oItEmavYOn
+         vfIdfuv/3Ktf+9bXMgAx4Cx85ZHIvvOn9iercDtYcoGMcZqYgBX09Rzt6QIPDQj7vbju
+         HZbIY8dUSuU78tLm1+nWtf3rxUQd95jH9WygeCUgkfGHIy/m3VPh67LM+NTGw9sACV1E
+         JmxogAbanN71Prkz2sqQUrnBJZiCees3PnJ9mPH4O/Z7PyKY+BBAmqHu/JxYz7PMRbGK
+         kVuOc7RWt0hJCbrxI4TNmVxuXZeIzaod2BgnYK/NzsX1t25IK1kA8g/tado0rbLkZzv/
+         79bg==
+X-Gm-Message-State: AC+VfDzhkt24hpgvqmchFahzZaHWXpcimHM7e1ZwRaEbfAwNfQoN26Cx
+        1vonOpgh2I/svMOxtnk6r+xfwpMww4G/fYouBDLIGQ==
+X-Google-Smtp-Source: ACHHUZ7U/+wY/Vx6PFEt6WoITv7yJSSsKVa65gZ1L/PI1Bk8WFvhVMO5mg+66YWV8epPOITeYa8yUpVlYT6WyahnmLc=
+X-Received: by 2002:a17:906:58d5:b0:969:9fd0:7cee with SMTP id
+ e21-20020a17090658d500b009699fd07ceemr234143ejs.10.1683550314783; Mon, 08 May
+ 2023 05:51:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230504111100.417305-1-xiubli@redhat.com>
-In-Reply-To: <20230504111100.417305-1-xiubli@redhat.com>
-From:   Ilya Dryomov <idryomov@gmail.com>
-Date:   Mon, 8 May 2023 14:46:41 +0200
-Message-ID: <CAOi1vP_8hUUZBHXLUJP3Xq74LONKq=weFQMV+Es45yV3wH-wTw@mail.gmail.com>
-Subject: Re: [PATCH v3] ceph: fix blindly expanding the readahead windows
-To:     xiubli@redhat.com
-Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, lhenriques@suse.de, mchangir@redhat.com,
-        stable@vger.kernel.org, Hu Weiwen <sehuww@mail.scut.edu.cn>
+References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
+Date:   Mon, 8 May 2023 21:51:43 +0900
+Message-ID: <CAKL4bV6QaUA-Psd3dpdBL7QKxg+QwCF3LwYdYVfM-qDKqZFYPw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/611] 6.1.28-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 4, 2023 at 1:11=E2=80=AFPM <xiubli@redhat.com> wrote:
->
-> From: Xiubo Li <xiubli@redhat.com>
->
-> Blindly expanding the readahead windows will cause unneccessary
-> pagecache thrashing and also will introdue the network workload.
-> We should disable expanding the windows if the readahead is disabled
-> and also shouldn't expand the windows too much.
->
-> Expanding forward firstly instead of expanding backward for possible
-> sequential reads.
->
-> Bound `rreq->len` to the actual file size to restore the previous page
-> cache usage.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
-> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.=
-scut.edu.cn
-> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
-> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->
-> V3:
-> - Folded Hu Weiwen's fix and bound `rreq->len` to the actual file size.
+Hi Greg
 
-Hi Xiubo,
-
-This looks much better!  Just a couple of nits:
-
+On Mon, May 8, 2023 at 6:50=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
+> This is the start of the stable review cycle for the 6.1.28 release.
+> There are 611 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
+> Responses should be made by Wed, 10 May 2023 09:42:40 +0000.
+> Anything received after that time might be too late.
 >
->  fs/ceph/addr.c | 28 ++++++++++++++++++++++------
->  1 file changed, 22 insertions(+), 6 deletions(-)
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.28-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
 >
-> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> index ca4dc6450887..357d9d28f202 100644
-> --- a/fs/ceph/addr.c
-> +++ b/fs/ceph/addr.c
-> @@ -188,16 +188,32 @@ static void ceph_netfs_expand_readahead(struct netf=
-s_io_request *rreq)
->         struct inode *inode =3D rreq->inode;
->         struct ceph_inode_info *ci =3D ceph_inode(inode);
->         struct ceph_file_layout *lo =3D &ci->i_layout;
-> +       unsigned long max_pages =3D inode->i_sb->s_bdi->ra_pages;
-> +       unsigned long max_len =3D max_pages << PAGE_SHIFT;
-> +       loff_t end =3D rreq->start + rreq->len, new_end;
->         u32 blockoff;
->         u64 blockno;
+> thanks,
 >
-> -       /* Expand the start downward */
-> -       blockno =3D div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
-> -       rreq->start =3D blockno * lo->stripe_unit;
-> -       rreq->len +=3D blockoff;
-> +       /* Readahead is disabled */
-> +       if (!max_pages)
-> +               return;
->
-> -       /* Now, round up the length to the next block */
-> -       rreq->len =3D roundup(rreq->len, lo->stripe_unit);
-> +       /*
-> +        * Try to expand the length forward by rounding  up it to the nex=
-t
-> +        * block, but do not exceed the file size, unless the original
-> +        * request already exceeds it.
-> +        */
-> +       new_end =3D round_up(end, lo->stripe_unit);
-> +       new_end =3D min(new_end, rreq->i_size);
+> greg k-h
 
-This can be done on single line:
+6.1.28-rc1 tested.
 
-        new_end =3D min(round_up(end, lo->stripe_unit), rreq->i_size);
+x86_64
 
-> +       if (new_end > end && new_end <=3D rreq->start + max_len)
-> +               rreq->len =3D new_end - rreq->start;
-> +
-> +       /* Try to expand the start downward */
-> +       blockno =3D div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
-> +       if (rreq->len + blockoff <=3D max_len) {
-> +               rreq->start =3D blockno * lo->stripe_unit;
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Can this be written as:
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P, arch linux)
 
-                rreq->start -=3D blockoff;
+Thanks
 
-It seems like it would be easier to read and probably cheaper to
-compute too.
-
-Thanks,
-
-                Ilya
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
