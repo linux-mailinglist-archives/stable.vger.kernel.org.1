@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 672BD6FAE81
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D8EC6FA9A3
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:53:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236307AbjEHLpY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:45:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38858 "EHLO
+        id S235259AbjEHKxy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236330AbjEHLpJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:45:09 -0400
+        with ESMTP id S235055AbjEHKxd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:53:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3C53F2DB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:44:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B582B427
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:52:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C669635BC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3026AC433D2;
-        Mon,  8 May 2023 11:44:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E06C62951
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2505C4339B;
+        Mon,  8 May 2023 10:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546278;
-        bh=hRkAaEkv3lVaggNkPQLPbjCh9tEkRbA16XgV7adRIR4=;
+        s=korg; t=1683543173;
+        bh=CjKytRevELX7kf3IJ2TCy9akXHAjAiVJumBW8p7gxpE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rBfB7sCcOL7kJkqmaocsGiNNmOQshfRKhYIpaaU2IPsB+8YRwobXPu/s240zlz/ZA
-         4Zx30QJr4PhhyTDJbQiyp33QtT060YLFQE89r29pI9vi6HuE//GcsoXiPYgG5wP6AD
-         P/aVJdCq5u+uhIkOiJf4QkiucrQIlW6sPnwSbq3o=
+        b=G/Em9jlEYMTGdlGWI9O9icNoGkbDkvn/kEMiHZtjXu8TNKLEFeyF5iexkcXt9rOul
+         jTJi5njoxS5/f+Hzh/mY6E9gOYRbRgeykxqkY6IbnJG3hNT+Y9e6F0SG34/wSHmrON
+         ss+oeXrKoUN5oWESboeimQk6dvrii5Mwe1AC8k0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Jordan <daniel.m.jordan@oracle.com>,
-        Libo Chen <libo.chen@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 288/371] sched/fair: Fix inaccurate tally of ttwu_move_affine
+        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.2 663/663] debugobject: Ensure pool refill (again)
 Date:   Mon,  8 May 2023 11:48:09 +0200
-Message-Id: <20230508094823.455039458@linuxfoundation.org>
+Message-Id: <20230508094451.747616835@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,46 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Libo Chen <libo.chen@oracle.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 39afe5d6fc59237ff7738bf3ede5a8856822d59d ]
+commit 0af462f19e635ad522f28981238334620881badc upstream.
 
-There are scenarios where non-affine wakeups are incorrectly counted as
-affine wakeups by schedstats.
+The recent fix to ensure atomicity of lookup and allocation inadvertently
+broke the pool refill mechanism.
 
-When wake_affine_idle() returns prev_cpu which doesn't equal to
-nr_cpumask_bits, it will slip through the check: target == nr_cpumask_bits
-in wake_affine() and be counted as if target == this_cpu in schedstats.
+Prior to that change debug_objects_activate() and debug_objecs_assert_init()
+invoked debug_objecs_init() to set up the tracking object for statically
+initialized objects. That's not longer the case and debug_objecs_init() is
+now the only place which does pool refills.
 
-Replace target == nr_cpumask_bits with target != this_cpu to make sure
-affine wakeups are accurately tallied.
+Depending on the number of statically initialized objects this can be
+enough to actually deplete the pool, which was observed by Ido via a
+debugobjects OOM warning.
 
-Fixes: 806486c377e33 (sched/fair: Do not migrate if the prev_cpu is idle)
-Suggested-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Libo Chen <libo.chen@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://lore.kernel.org/r/20220810223313.386614-1-libo.chen@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Restore the old behaviour by adding explicit refill opportunities to
+debug_objects_activate() and debug_objecs_assert_init().
+
+Fixes: 63a759694eed ("debugobject: Prevent init race with static objects")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/871qk05a9d.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/debugobjects.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 2dd67e212f0ac..646a6ae4b2509 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6207,7 +6207,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p,
- 		target = wake_affine_weight(sd, p, this_cpu, prev_cpu, sync);
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -587,6 +587,16 @@ static struct debug_obj *lookup_object_o
+ 	return NULL;
+ }
  
- 	schedstat_inc(p->stats.nr_wakeups_affine_attempts);
--	if (target == nr_cpumask_bits)
-+	if (target != this_cpu)
- 		return prev_cpu;
++static void debug_objects_fill_pool(void)
++{
++	/*
++	 * On RT enabled kernels the pool refill must happen in preemptible
++	 * context:
++	 */
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
++		fill_pool();
++}
++
+ static void
+ __debug_object_init(void *addr, const struct debug_obj_descr *descr, int onstack)
+ {
+@@ -595,12 +605,7 @@ __debug_object_init(void *addr, const st
+ 	struct debug_obj *obj;
+ 	unsigned long flags;
  
- 	schedstat_inc(sd->ttwu_move_affine);
--- 
-2.39.2
-
+-	/*
+-	 * On RT enabled kernels the pool refill must happen in preemptible
+-	 * context:
+-	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
+-		fill_pool();
++	debug_objects_fill_pool();
+ 
+ 	db = get_bucket((unsigned long) addr);
+ 
+@@ -685,6 +690,8 @@ int debug_object_activate(void *addr, co
+ 	if (!debug_objects_enabled)
+ 		return 0;
+ 
++	debug_objects_fill_pool();
++
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
+@@ -894,6 +901,8 @@ void debug_object_assert_init(void *addr
+ 	if (!debug_objects_enabled)
+ 		return;
+ 
++	debug_objects_fill_pool();
++
+ 	db = get_bucket((unsigned long) addr);
+ 
+ 	raw_spin_lock_irqsave(&db->lock, flags);
 
 
