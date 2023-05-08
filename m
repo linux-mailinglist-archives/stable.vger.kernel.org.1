@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BDAC6FA761
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB416FA762
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:30:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234441AbjEHK3y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:29:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        id S234595AbjEHK34 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:29:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234506AbjEHK3r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E37DD95
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:29:46 -0700 (PDT)
+        with ESMTP id S234640AbjEHK3u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:29:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 994E8171C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:29:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3C38626B0
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:29:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7886C4339B;
-        Mon,  8 May 2023 10:29:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B59F626A7
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:29:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36704C433EF;
+        Mon,  8 May 2023 10:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541785;
-        bh=FQ4RXhpkFVs41CfM9/NcWSkQv64XAOnCsjEuvHUgI2Q=;
+        s=korg; t=1683541788;
+        bh=azGbbQEulxIH67EX9WHACidebc1MNeevVtf+OG9YJdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GT2jGj7uT1PHtaUe61dfYUvff58tbWNmIxS1slPGxWJ6SSFmYMOdFoamuQYQd4Jxi
-         YWRJqwRbVbSDJzgv3ItdTAEinbUE7ulgRv/2fcdcBfXnhIcbtIYLbg9mrx4nDgXa/9
-         DMYLY15ccra4rLa7wn1DEtb6l2Z6qHrEcsIf34I8=
+        b=ICSXmNCNCa3sOqzVgdvSHuthZqsZ/wFklVEsoE7gnAvoiCnJUkX2SpzEd1GgX9Wv/
+         kHmPhGel/TZDOK4AAnU8O/x3/gqOb/sMChTVcJSOPWjG7Tqs5jr7DauAdYp/HuJjPR
+         xzgJ/QOX3ab5qK+QKj8XSnbXzKo2IjIyOQtHFVAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Uros Bizjak <ubizjak@gmail.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, Tushar Nimkar <quic_tnimkar@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 225/663] x86/apic: Fix atomic update of offset in reserve_eilvt_offset()
-Date:   Mon,  8 May 2023 11:40:51 +0200
-Message-Id: <20230508094435.617113165@linuxfoundation.org>
+Subject: [PATCH 6.2 226/663] soc: qcom: rpmh-rsc: Support RSC v3 minor versions
+Date:   Mon,  8 May 2023 11:40:52 +0200
+Message-Id: <20230508094435.646169162@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
 References: <20230508094428.384831245@linuxfoundation.org>
@@ -44,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,47 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Tushar Nimkar <quic_tnimkar@quicinc.com>
 
-[ Upstream commit f96fb2df3eb31ede1b34b0521560967310267750 ]
+[ Upstream commit 88704a0cd71909c3107561261412a5d5beb23358 ]
 
-The detection of atomic update failure in reserve_eilvt_offset() is
-not correct. The value returned by atomic_cmpxchg() should be compared
-to the old value from the location to be updated.
+RSC v3 register offsets are same for all minor versions of v3. Fix a
+minor version check to pick correct offsets for all v3 minor versions.
 
-If these two are the same, then atomic update succeeded and
-"eilvt_offsets[offset]" location is updated to "new" in an atomic way.
-
-Otherwise, the atomic update failed and it should be retried with the
-value from "eilvt_offsets[offset]" - exactly what atomic_try_cmpxchg()
-does in a correct and more optimal way.
-
-Fixes: a68c439b1966c ("apic, x86: Check if EILVT APIC registers are available (AMD only)")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230227160917.107820-1-ubizjak@gmail.com
+Fixes: 40482e4f7364 ("soc: qcom: rpmh-rsc: Add support for RSC v3 register offsets")
+Signed-off-by: Tushar Nimkar <quic_tnimkar@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230406115732.9293-1-quic_tnimkar@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/rpmh-rsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 20d9a604da7c4..7705571100518 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -422,10 +422,9 @@ static unsigned int reserve_eilvt_offset(int offset, unsigned int new)
- 		if (vector && !eilvt_entry_is_changeable(vector, new))
- 			/* may not change if vectors are different */
- 			return rsvd;
--		rsvd = atomic_cmpxchg(&eilvt_offsets[offset], rsvd, new);
--	} while (rsvd != new);
-+	} while (!atomic_try_cmpxchg(&eilvt_offsets[offset], &rsvd, new));
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index 0f8b2249f8894..f93544f6d7961 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -1073,7 +1073,7 @@ static int rpmh_rsc_probe(struct platform_device *pdev)
+ 	drv->ver.minor = rsc_id & (MINOR_VER_MASK << MINOR_VER_SHIFT);
+ 	drv->ver.minor >>= MINOR_VER_SHIFT;
  
--	rsvd &= ~APIC_EILVT_MASKED;
-+	rsvd = new & ~APIC_EILVT_MASKED;
- 	if (rsvd && rsvd != vector)
- 		pr_info("LVT offset %d assigned for vector 0x%02x\n",
- 			offset, rsvd);
+-	if (drv->ver.major == 3 && drv->ver.minor == 0)
++	if (drv->ver.major == 3 && drv->ver.minor >= 0)
+ 		drv->regs = rpmh_rsc_reg_offset_ver_3_0;
+ 	else
+ 		drv->regs = rpmh_rsc_reg_offset_ver_2_7;
 -- 
 2.39.2
 
