@@ -2,44 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A9F6FA63C
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72BC96FAE1E
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234380AbjEHKRv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:17:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46428 "EHLO
+        id S236156AbjEHLlh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234366AbjEHKRk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:17:40 -0400
+        with ESMTP id S236166AbjEHLlR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:41:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E35730178
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:17:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85D2D423B0
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7014624CB
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:17:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6D1C4339B;
-        Mon,  8 May 2023 10:17:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5AE263518
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25D3C4339B;
+        Mon,  8 May 2023 11:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541048;
-        bh=6owTq9+rWudQQ39IqnOgECybviiKRASU1/AdJDbAKIw=;
+        s=korg; t=1683546045;
+        bh=aOzlE+ANOfR7mTJy+fxUnHQ1jqdFhdAPuhJ7O6Q5pnI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xWK49dD2ze3kfvJ4SXWaAwT+MDmmWpw5QI95X7/l87H7yMLwpW28Qy5RLb6jKSfLl
-         KCz+0rmA253+P6VDeEjCoQk5ntxUqYRVQX1tbG14V3pkCKpir8ifATQFMq55u50V2E
-         bt9bmcs9t6APtBleN2RxwXItO4Hf1JDwym47k4GE=
+        b=n1Zd7w/FNAgJbjmV5uRkca4iA/YWBNDUvn4/MR6qGahL5HuChHbKh/y2XXeF98h1n
+         Foinbs4rPv7hY89/UHxTM3VSYzouVtwTHccF+AEl4mzA0KBAlgaV5IExlibn7mTtMn
+         g1DE5kU2qZyPr1bhIw3nxkhpvnlhElDV5Ehq5DsM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 597/611] cifs: fix potential use-after-free bugs in TCP_Server_Info::hostname
-Date:   Mon,  8 May 2023 11:47:19 +0200
-Message-Id: <20230508094441.306414727@linuxfoundation.org>
+        patches@lists.linux.dev, Wei Wang <wvw@google.com>,
+        Midas Chien <midaschieh@google.com>,
+        =?UTF-8?q?Chunhui=20Li=20 ?= <chunhui.li@mediatek.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Tony Luck <tony.luck@intel.com>, kernel-team@android.com,
+        John Stultz <jstultz@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 239/371] pstore: Revert pmsg_lock back to a normal mutex
+Date:   Mon,  8 May 2023 11:47:20 +0200
+Message-Id: <20230508094821.555988807@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
-References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,153 +61,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: John Stultz <jstultz@google.com>
 
-commit 90c49fce1c43e1cc152695e20363ff5087897c09 upstream.
+[ Upstream commit 5239a89b06d6b199f133bf0ffea421683187f257 ]
 
-TCP_Server_Info::hostname may be updated once or many times during
-reconnect, so protect its access outside reconnect path as well and
-then prevent any potential use-after-free bugs.
+This reverts commit 76d62f24db07f22ccf9bc18ca793c27d4ebef721.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So while priority inversion on the pmsg_lock is an occasional
+problem that an rt_mutex would help with, in uses where logging
+is writing to pmsg heavily from multiple threads, the pmsg_lock
+can be heavily contended.
+
+After this change landed, it was reported that cases where the
+mutex locking overhead was commonly adding on the order of 10s
+of usecs delay had suddenly jumped to ~msec delay with rtmutex.
+
+It seems the slight differences in the locks under this level
+of contention causes the normal mutexes to utilize the spinning
+optimizations, while the rtmutexes end up in the sleeping
+slowpath (which allows additional threads to pile on trying
+to take the lock).
+
+In this case, it devolves to a worse case senerio where the lock
+acquisition and scheduling overhead dominates, and each thread
+is waiting on the order of ~ms to do ~us of work.
+
+Obviously, having tons of threads all contending on a single
+lock for logging is non-optimal, so the proper fix is probably
+reworking pstore pmsg to have per-cpu buffers so we don't have
+contention.
+
+Additionally, Steven Rostedt has provided some furhter
+optimizations for rtmutexes that improves the rtmutex spinning
+path, but at least in my testing, I still see the test tripping
+into the sleeping path on rtmutexes while utilizing the spinning
+path with mutexes.
+
+But in the short term, lets revert the change to the rt_mutex
+and go back to normal mutexes to avoid a potentially major
+performance regression. And we can work on optimizations to both
+rtmutexes and finer-grained locking for pstore pmsg in the
+future.
+
+Cc: Wei Wang <wvw@google.com>
+Cc: Midas Chien<midaschieh@google.com>
+Cc: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Anton Vorontsov <anton@enomsg.org>
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: kernel-team@android.com
+Fixes: 76d62f24db07 ("pstore: Switch pmsg_lock to an rt_mutex to avoid priority inversion")
+Reported-by: "Chunhui Li (李春辉)" <chunhui.li@mediatek.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230308204043.2061631-1-jstultz@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_debug.c |    7 ++++++-
- fs/cifs/cifs_debug.h |   12 ++++++------
- fs/cifs/connect.c    |   10 +++++++---
- fs/cifs/sess.c       |    7 ++++---
- 4 files changed, 23 insertions(+), 13 deletions(-)
+ fs/pstore/pmsg.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -279,8 +279,10 @@ static int cifs_debug_data_proc_show(str
- 		seq_printf(m, "\n%d) ConnectionId: 0x%llx ",
- 			c, server->conn_id);
+diff --git a/fs/pstore/pmsg.c b/fs/pstore/pmsg.c
+index 18cf94b597e05..d8542ec2f38c6 100644
+--- a/fs/pstore/pmsg.c
++++ b/fs/pstore/pmsg.c
+@@ -7,10 +7,9 @@
+ #include <linux/device.h>
+ #include <linux/fs.h>
+ #include <linux/uaccess.h>
+-#include <linux/rtmutex.h>
+ #include "internal.h"
  
-+		spin_lock(&server->srv_lock);
- 		if (server->hostname)
- 			seq_printf(m, "Hostname: %s ", server->hostname);
-+		spin_unlock(&server->srv_lock);
- #ifdef CONFIG_CIFS_SMB_DIRECT
- 		if (!server->rdma)
- 			goto skip_rdma;
-@@ -607,10 +609,13 @@ static int cifs_stats_proc_show(struct s
- 				server->fastest_cmd[j],
- 				server->slowest_cmd[j]);
- 		for (j = 0; j < NUMBER_OF_SMB2_COMMANDS; j++)
--			if (atomic_read(&server->smb2slowcmd[j]))
-+			if (atomic_read(&server->smb2slowcmd[j])) {
-+				spin_lock(&server->srv_lock);
- 				seq_printf(m, "  %d slow responses from %s for command %d\n",
- 					atomic_read(&server->smb2slowcmd[j]),
- 					server->hostname, j);
-+				spin_unlock(&server->srv_lock);
-+			}
- #endif /* STATS2 */
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
- 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
---- a/fs/cifs/cifs_debug.h
-+++ b/fs/cifs/cifs_debug.h
-@@ -81,19 +81,19 @@ do {									\
+-static DEFINE_RT_MUTEX(pmsg_lock);
++static DEFINE_MUTEX(pmsg_lock);
  
- #define cifs_server_dbg_func(ratefunc, type, fmt, ...)			\
- do {									\
--	const char *sn = "";						\
--	if (server && server->hostname)					\
--		sn = server->hostname;					\
-+	spin_lock(&server->srv_lock);					\
- 	if ((type) & FYI && cifsFYI & CIFS_INFO) {			\
- 		pr_debug_ ## ratefunc("%s: \\\\%s " fmt,		\
--				      __FILE__, sn, ##__VA_ARGS__);	\
-+				      __FILE__, server->hostname,	\
-+				      ##__VA_ARGS__);			\
- 	} else if ((type) & VFS) {					\
- 		pr_err_ ## ratefunc("VFS: \\\\%s " fmt,			\
--				    sn, ##__VA_ARGS__);			\
-+				    server->hostname, ##__VA_ARGS__);	\
- 	} else if ((type) & NOISY && (NOISY != 0)) {			\
- 		pr_debug_ ## ratefunc("\\\\%s " fmt,			\
--				      sn, ##__VA_ARGS__);		\
-+				      server->hostname, ##__VA_ARGS__);	\
- 	}								\
-+	spin_unlock(&server->srv_lock);					\
- } while (0)
+ static ssize_t write_pmsg(struct file *file, const char __user *buf,
+ 			  size_t count, loff_t *ppos)
+@@ -29,9 +28,9 @@ static ssize_t write_pmsg(struct file *file, const char __user *buf,
+ 	if (!access_ok(buf, count))
+ 		return -EFAULT;
  
- #define cifs_server_dbg(type, fmt, ...)					\
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -452,8 +452,10 @@ static int __reconnect_target_unlocked(s
- 		if (server->hostname != target) {
- 			hostname = extract_hostname(target);
- 			if (!IS_ERR(hostname)) {
-+				spin_lock(&server->srv_lock);
- 				kfree(server->hostname);
- 				server->hostname = hostname;
-+				spin_unlock(&server->srv_lock);
- 			} else {
- 				cifs_dbg(FYI, "%s: couldn't extract hostname or address from dfs target: %ld\n",
- 					 __func__, PTR_ERR(hostname));
-@@ -620,9 +622,7 @@ cifs_echo_request(struct work_struct *wo
- 		goto requeue_echo;
+-	rt_mutex_lock(&pmsg_lock);
++	mutex_lock(&pmsg_lock);
+ 	ret = psinfo->write_user(&record, buf);
+-	rt_mutex_unlock(&pmsg_lock);
++	mutex_unlock(&pmsg_lock);
+ 	return ret ? ret : count;
+ }
  
- 	rc = server->ops->echo ? server->ops->echo(server) : -ENOSYS;
--	if (rc)
--		cifs_dbg(FYI, "Unable to send echo request to server: %s\n",
--			 server->hostname);
-+	cifs_server_dbg(FYI, "send echo request: rc = %d\n", rc);
- 
- 	/* Check witness registrations */
- 	cifs_swn_check();
-@@ -1462,6 +1462,8 @@ static int match_server(struct TCP_Serve
- {
- 	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
- 
-+	lockdep_assert_held(&server->srv_lock);
-+
- 	if (ctx->nosharesock)
- 		return 0;
- 
-@@ -1863,7 +1865,9 @@ cifs_setup_ipc(struct cifs_ses *ses, str
- 	if (tcon == NULL)
- 		return -ENOMEM;
- 
-+	spin_lock(&server->srv_lock);
- 	scnprintf(unc, sizeof(unc), "\\\\%s\\IPC$", server->hostname);
-+	spin_unlock(&server->srv_lock);
- 
- 	xid = get_xid();
- 	tcon->ses = ses;
---- a/fs/cifs/sess.c
-+++ b/fs/cifs/sess.c
-@@ -159,6 +159,7 @@ cifs_chan_is_iface_active(struct cifs_se
- /* returns number of channels added */
- int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- {
-+	struct TCP_Server_Info *server = ses->server;
- 	int old_chan_count, new_chan_count;
- 	int left;
- 	int rc = 0;
-@@ -178,16 +179,16 @@ int cifs_try_adding_channels(struct cifs
- 		return 0;
- 	}
- 
--	if (ses->server->dialect < SMB30_PROT_ID) {
-+	if (server->dialect < SMB30_PROT_ID) {
- 		spin_unlock(&ses->chan_lock);
- 		cifs_dbg(VFS, "multichannel is not supported on this protocol version, use 3.0 or above\n");
- 		return 0;
- 	}
- 
--	if (!(ses->server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+	if (!(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
- 		ses->chan_max = 1;
- 		spin_unlock(&ses->chan_lock);
--		cifs_dbg(VFS, "server %s does not support multichannel\n", ses->server->hostname);
-+		cifs_server_dbg(VFS, "no multichannel support\n");
- 		return 0;
- 	}
- 	spin_unlock(&ses->chan_lock);
+-- 
+2.39.2
+
 
 
