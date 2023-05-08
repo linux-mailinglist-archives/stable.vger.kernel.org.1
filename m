@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE81B6FA9D7
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0136FA9D8
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:56:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235325AbjEHK41 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57388 "EHLO
+        id S235330AbjEHK43 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:56:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235324AbjEHK4F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:05 -0400
+        with ESMTP id S235331AbjEHK4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:56:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B16AD3D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:54:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD1B11542
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:55:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EAFC6297F
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D71AC433D2;
-        Mon,  8 May 2023 10:54:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7E886294B
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8FCC433EF;
+        Mon,  8 May 2023 10:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543295;
-        bh=9OEA1UmThmOhHD7k3lMZMT5oujTCs8W7oOtYIeuUm7M=;
+        s=korg; t=1683543299;
+        bh=0VbnlVJjOo638DvmnajlggrGbUsglIz0Kltuz/fFdL0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UprDUihtuZNz4EjXjcmJ7EfpGrkSOttsq5JmtfWfi/qtA+m5oFRdC9pfHtBrddIOE
-         e3iKolIy0GvxzgWfHPqHq+0Hxla9A2ahkfar2KQF+EbG5uILc7NNYPLGZFwIrZfllA
-         FsDkTJqgv/HVoNj2ftDie5pnXS+hU6bTSQPqH6Z0=
+        b=vmbjR9f/N+lb92B5Z9zp63+F6qqSjOrTg5Cavxhshp3fcAuqa+G3GUuBUEDKAf4Sb
+         q8/Dtkn9jQzEF4pTnY59w/e5rV9oqczxkPJs+ZNtfx6cMZ+oINAzyD0+DVhawd54Jv
+         pvc9tC6s6eEEXG9+gQUvZ220lH+u8D1clVsEdsNE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH 6.3 043/694] pwm: meson: Fix g12a ao clk81 name
-Date:   Mon,  8 May 2023 11:37:58 +0200
-Message-Id: <20230508094434.016398669@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.3 044/694] soundwire: qcom: correct setting ignore bit on v1.5.1
+Date:   Mon,  8 May 2023 11:37:59 +0200
+Message-Id: <20230508094434.045564224@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
 References: <20230508094432.603705160@linuxfoundation.org>
@@ -54,42 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 9e4fa80ab7ef9eb4f7b1ea9fc31e0eb040e85e25 upstream.
+commit bd934f77eeac377e81ddac8673803e7334b82d3d upstream.
 
-Fix the name of the aoclk81 clock. Apparently name aoclk81 as used by
-the vendor driver was changed when mainlining the g12a clock driver.
+According to the comment and to downstream sources, the
+SWRM_CONTINUE_EXEC_ON_CMD_IGNORE in SWRM_CMD_FIFO_CFG_ADDR register
+should be set for v1.5.1 and newer, so fix the >= operator.
 
-Fixes: f41efceb46e6 ("pwm: meson: Add clock source configuration for Meson G12A")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Fixes: 542d3491cdd7 ("soundwire: qcom: set continue execution flag for ignored commands")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230222140343.188691-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-meson.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soundwire/qcom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -427,7 +427,7 @@ static const struct meson_pwm_data pwm_a
- };
+--- a/drivers/soundwire/qcom.c
++++ b/drivers/soundwire/qcom.c
+@@ -704,7 +704,7 @@ static int qcom_swrm_init(struct qcom_sw
+ 	}
  
- static const char * const pwm_g12a_ao_ab_parent_names[] = {
--	"xtal", "aoclk81", "fclk_div4", "fclk_div5"
-+	"xtal", "g12a_ao_clk81", "fclk_div4", "fclk_div5"
- };
- 
- static const struct meson_pwm_data pwm_g12a_ao_ab_data = {
-@@ -436,7 +436,7 @@ static const struct meson_pwm_data pwm_g
- };
- 
- static const char * const pwm_g12a_ao_cd_parent_names[] = {
--	"xtal", "aoclk81",
-+	"xtal", "g12a_ao_clk81",
- };
- 
- static const struct meson_pwm_data pwm_g12a_ao_cd_data = {
+ 	/* Configure number of retries of a read/write cmd */
+-	if (ctrl->version > 0x01050001) {
++	if (ctrl->version >= 0x01050001) {
+ 		/* Only for versions >= 1.5.1 */
+ 		ctrl->reg_write(ctrl, SWRM_CMD_FIFO_CFG_ADDR,
+ 				SWRM_RD_WR_CMD_RETRIES |
 
 
