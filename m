@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CC4F6FA780
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F6356FAAC9
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234686AbjEHKbM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:31:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32836 "EHLO
+        id S229986AbjEHLGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234690AbjEHKbF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:31:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D9A24A8E
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:31:00 -0700 (PDT)
+        with ESMTP id S233876AbjEHLGS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:06:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E248133D74
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:05:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E430A626CC
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B0C433D2;
-        Mon,  8 May 2023 10:30:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9645362A83
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD253C4339C;
+        Mon,  8 May 2023 11:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683541859;
-        bh=QpZGSFcUEdxc4V4AwY/r1ackKvIgcNwFVumQaCxvIpk=;
+        s=korg; t=1683543891;
+        bh=MkBSir096ixF+SGKwT4r3tz493K1/jDeIupkG2T4ODk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q2JPEKgIdPJS9oPGcMhK2wtPurPP3DmwcfsbZ1iZMo/8yvCMXU/ghZ70giH4ndMnN
-         Arg4dsalMgTxIEeii+bXEcqWpZFGZlTi9tq9WI4oHnQ6TQiz3l7ikE4pwVjGeRvEUI
-         k5tyawPTlnr5tItWM8hVUJCE4mkfWwkIUPTIeFxg=
+        b=1j3rPKmBm1uHgEmto6o02dEyITuH2/4J6NyafQ4ijL64XUq58ZyOQtu0ZFuVkEnM2
+         xph1gkrf7ZaMU9xXVSyHkXQ7KncXzKujpCBxgWkpA7VrI7eGzvwVG/NPp/eR2rdHX4
+         vzDX+e+KPw32qeCCy48ZOq/4EbKA5Jiw9Ud4J3oY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        Jia-Wei Chang <jia-wei.chang@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 242/663] media: mediatek: vcodec: making sure queue_work successfully
-Date:   Mon,  8 May 2023 11:41:08 +0200
-Message-Id: <20230508094436.132932694@linuxfoundation.org>
+Subject: [PATCH 6.3 234/694] cpufreq: mediatek: fix KP caused by handler usage after regulator_put/clk_put
+Date:   Mon,  8 May 2023 11:41:09 +0200
+Message-Id: <20230508094439.948201657@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,117 +58,156 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Jia-Wei Chang <jia-wei.chang@mediatek.com>
 
-[ Upstream commit 2e0ef56d81cb2569624d288b7e95a8a2734a7c74 ]
+[ Upstream commit d51e106240bc755cbe59634b70d567c192b045b2 ]
 
-Putting core work to work queue using queue_work maybe fail, call
-queue_work again when the count of core work in work queue is less
-than core_list_cnt, making sure all the buffer in core list can be
-scheduled.
+Any kind of failure in mtk_cpu_dvfs_info_init() will lead to calling
+regulator_put() or clk_put() and the KP will occur since the regulator/clk
+handlers are used after released in mtk_cpu_dvfs_info_release().
 
-Fixes: 365e4ba01df4 ("media: mtk-vcodec: Add work queue for core hardware decode")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+To prevent the usage after regulator_put()/clk_put(), the regulator/clk
+handlers are addressed in a way of "Free the Last Thing Style".
+
+Signed-off-by: Jia-Wei Chang <jia-wei.chang@mediatek.com>
+Fixes: 4b9ceb757bbb ("cpufreq: mediatek: Enable clocks and regulators")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Suggested-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/vdec_msg_queue.c | 31 ++++++++++++++-----
- .../platform/mediatek/vcodec/vdec_msg_queue.h |  2 ++
- 2 files changed, 25 insertions(+), 8 deletions(-)
+ drivers/cpufreq/mediatek-cpufreq.c | 62 +++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index cdc539a46cb95..f3073d1e7f420 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -71,6 +71,7 @@ static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_in
- int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
- {
- 	struct list_head *head;
-+	int status;
- 
- 	head = vdec_get_buf_list(msg_ctx->hardware_index, buf);
- 	if (!head) {
-@@ -83,11 +84,17 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
- 	msg_ctx->ready_num++;
- 
- 	vdec_msg_queue_inc(&buf->ctx->msg_queue, msg_ctx->hardware_index);
--	if (msg_ctx->hardware_index != MTK_VDEC_CORE)
-+	if (msg_ctx->hardware_index != MTK_VDEC_CORE) {
- 		wake_up_all(&msg_ctx->ready_to_use);
--	else
--		queue_work(buf->ctx->dev->core_workqueue,
--			   &buf->ctx->msg_queue.core_work);
-+	} else {
-+		if (buf->ctx->msg_queue.core_work_cnt <
-+			atomic_read(&buf->ctx->msg_queue.core_list_cnt)) {
-+			status = queue_work(buf->ctx->dev->core_workqueue,
-+					    &buf->ctx->msg_queue.core_work);
-+			if (status)
-+				buf->ctx->msg_queue.core_work_cnt++;
-+		}
-+	}
- 
- 	mtk_v4l2_debug(3, "enqueue buf type: %d addr: 0x%p num: %d",
- 		       msg_ctx->hardware_index, buf, msg_ctx->ready_num);
-@@ -254,6 +261,7 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
- 		container_of(msg_queue, struct mtk_vcodec_ctx, msg_queue);
- 	struct mtk_vcodec_dev *dev = ctx->dev;
- 	struct vdec_lat_buf *lat_buf;
-+	int status;
- 
- 	lat_buf = vdec_msg_queue_dqbuf(&dev->msg_queue_core_ctx);
- 	if (!lat_buf)
-@@ -270,11 +278,17 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
- 	vdec_msg_queue_qbuf(&ctx->msg_queue.lat_ctx, lat_buf);
- 
- 	wake_up_all(&ctx->msg_queue.core_dec_done);
--	if (atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
--		mtk_v4l2_debug(3, "re-schedule to decode for core: %d",
--			       dev->msg_queue_core_ctx.ready_num);
--		queue_work(dev->core_workqueue, &msg_queue->core_work);
-+	spin_lock(&dev->msg_queue_core_ctx.ready_lock);
-+	lat_buf->ctx->msg_queue.core_work_cnt--;
-+
-+	if (lat_buf->ctx->msg_queue.core_work_cnt <
-+		atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
-+		status = queue_work(lat_buf->ctx->dev->core_workqueue,
-+				    &lat_buf->ctx->msg_queue.core_work);
-+		if (status)
-+			lat_buf->ctx->msg_queue.core_work_cnt++;
+diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
+index 01d949707c373..6dc225546a8d6 100644
+--- a/drivers/cpufreq/mediatek-cpufreq.c
++++ b/drivers/cpufreq/mediatek-cpufreq.c
+@@ -420,7 +420,7 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
+ 		ret = PTR_ERR(info->inter_clk);
+ 		dev_err_probe(cpu_dev, ret,
+ 			      "cpu%d: failed to get intermediate clk\n", cpu);
+-		goto out_free_resources;
++		goto out_free_mux_clock;
  	}
-+	spin_unlock(&dev->msg_queue_core_ctx.ready_lock);
+ 
+ 	info->proc_reg = regulator_get_optional(cpu_dev, "proc");
+@@ -428,13 +428,13 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
+ 		ret = PTR_ERR(info->proc_reg);
+ 		dev_err_probe(cpu_dev, ret,
+ 			      "cpu%d: failed to get proc regulator\n", cpu);
+-		goto out_free_resources;
++		goto out_free_inter_clock;
+ 	}
+ 
+ 	ret = regulator_enable(info->proc_reg);
+ 	if (ret) {
+ 		dev_warn(cpu_dev, "cpu%d: failed to enable vproc\n", cpu);
+-		goto out_free_resources;
++		goto out_free_proc_reg;
+ 	}
+ 
+ 	/* Both presence and absence of sram regulator are valid cases. */
+@@ -442,14 +442,14 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
+ 	if (IS_ERR(info->sram_reg)) {
+ 		ret = PTR_ERR(info->sram_reg);
+ 		if (ret == -EPROBE_DEFER)
+-			goto out_free_resources;
++			goto out_disable_proc_reg;
+ 
+ 		info->sram_reg = NULL;
+ 	} else {
+ 		ret = regulator_enable(info->sram_reg);
+ 		if (ret) {
+ 			dev_warn(cpu_dev, "cpu%d: failed to enable vsram\n", cpu);
+-			goto out_free_resources;
++			goto out_free_sram_reg;
+ 		}
+ 	}
+ 
+@@ -458,13 +458,13 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
+ 	if (ret) {
+ 		dev_err(cpu_dev,
+ 			"cpu%d: failed to get OPP-sharing information\n", cpu);
+-		goto out_free_resources;
++		goto out_disable_sram_reg;
+ 	}
+ 
+ 	ret = dev_pm_opp_of_cpumask_add_table(&info->cpus);
+ 	if (ret) {
+ 		dev_warn(cpu_dev, "cpu%d: no OPP table\n", cpu);
+-		goto out_free_resources;
++		goto out_disable_sram_reg;
+ 	}
+ 
+ 	ret = clk_prepare_enable(info->cpu_clk);
+@@ -533,43 +533,41 @@ static int mtk_cpu_dvfs_info_init(struct mtk_cpu_dvfs_info *info, int cpu)
+ out_free_opp_table:
+ 	dev_pm_opp_of_cpumask_remove_table(&info->cpus);
+ 
+-out_free_resources:
+-	if (regulator_is_enabled(info->proc_reg))
+-		regulator_disable(info->proc_reg);
+-	if (info->sram_reg && regulator_is_enabled(info->sram_reg))
++out_disable_sram_reg:
++	if (info->sram_reg)
+ 		regulator_disable(info->sram_reg);
+ 
+-	if (!IS_ERR(info->proc_reg))
+-		regulator_put(info->proc_reg);
+-	if (!IS_ERR(info->sram_reg))
++out_free_sram_reg:
++	if (info->sram_reg)
+ 		regulator_put(info->sram_reg);
+-	if (!IS_ERR(info->cpu_clk))
+-		clk_put(info->cpu_clk);
+-	if (!IS_ERR(info->inter_clk))
+-		clk_put(info->inter_clk);
++
++out_disable_proc_reg:
++	regulator_disable(info->proc_reg);
++
++out_free_proc_reg:
++	regulator_put(info->proc_reg);
++
++out_free_inter_clock:
++	clk_put(info->inter_clk);
++
++out_free_mux_clock:
++	clk_put(info->cpu_clk);
+ 
+ 	return ret;
  }
  
- int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
-@@ -289,6 +303,7 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
- 		return 0;
- 
- 	msg_queue->ctx = ctx;
-+	msg_queue->core_work_cnt = 0;
- 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
- 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
- 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-index a75c04418f52e..a5d44bc97c16b 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-@@ -77,6 +77,7 @@ struct vdec_lat_buf {
-  * @lat_list_cnt: used to record each instance lat list count
-  * @core_list_cnt: used to record each instance core list count
-  * @core_dec_done: core work queue decode done event
-+ * @core_work_cnt: the number of core work in work queue
-  */
- struct vdec_msg_queue {
- 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
-@@ -92,6 +93,7 @@ struct vdec_msg_queue {
- 	atomic_t lat_list_cnt;
- 	atomic_t core_list_cnt;
- 	wait_queue_head_t core_dec_done;
-+	int core_work_cnt;
- };
- 
- /**
+ static void mtk_cpu_dvfs_info_release(struct mtk_cpu_dvfs_info *info)
+ {
+-	if (!IS_ERR(info->proc_reg)) {
+-		regulator_disable(info->proc_reg);
+-		regulator_put(info->proc_reg);
+-	}
+-	if (!IS_ERR(info->sram_reg)) {
++	regulator_disable(info->proc_reg);
++	regulator_put(info->proc_reg);
++	if (info->sram_reg) {
+ 		regulator_disable(info->sram_reg);
+ 		regulator_put(info->sram_reg);
+ 	}
+-	if (!IS_ERR(info->cpu_clk)) {
+-		clk_disable_unprepare(info->cpu_clk);
+-		clk_put(info->cpu_clk);
+-	}
+-	if (!IS_ERR(info->inter_clk)) {
+-		clk_disable_unprepare(info->inter_clk);
+-		clk_put(info->inter_clk);
+-	}
+-
++	clk_disable_unprepare(info->cpu_clk);
++	clk_put(info->cpu_clk);
++	clk_disable_unprepare(info->inter_clk);
++	clk_put(info->inter_clk);
+ 	dev_pm_opp_of_cpumask_remove_table(&info->cpus);
+ 	dev_pm_opp_unregister_notifier(info->cpu_dev, &info->opp_nb);
+ }
 -- 
 2.39.2
 
