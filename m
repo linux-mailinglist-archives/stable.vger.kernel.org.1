@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8FC6FAE30
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DB06FACA1
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236050AbjEHLmQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:42:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
+        id S235645AbjEHL0i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235923AbjEHLlv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:41:51 -0400
+        with ESMTP id S233980AbjEHL0a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:26:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA2354238D
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:41:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9BC239BAD
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:26:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E2746353B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974B2C433EF;
-        Mon,  8 May 2023 11:41:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99F4E62D6A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:26:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88794C433EF;
+        Mon,  8 May 2023 11:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546079;
-        bh=SwsQ3lFAvKOLFqaUS0or3M1VMwdweoEdWwZ8Dajs8ao=;
+        s=korg; t=1683545168;
+        bh=xghh3jpNNkWugck2oAidqLtKhwyzrLdC9xihcEx88bU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IHwvmJogbb/ATFj1nmkg5OdBzWzBuAghlKdL100iPoQxn7w/yTqezoW5Hf+itNEkJ
-         0rHqfd6rICfmzs5SQY8TXltASLlzHDXCHgOZeuOcwq0Oevd1Zt6HWuSMbXgLiRgrtA
-         zGdlZ/Uyz5TsdD+J455IzT5O2z34NS3r94Ogs7Eo=
+        b=QK9VLS6yOvEB7gzAsVxQVYuqrbpb9NVpb6knLAxfRpyGTP9YdDjF6EZ8qhU3iHa/W
+         TuNyaCd+R7hF5oEywlapnW//abXG+Xx1Jwpoo79OTTLz71aQDaR6KbMpSdUcspNxKs
+         ottc8vqJqIVJ/58Suimta0tkzYYXGns9ei2A3NdU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 249/371] usb: gadget: udc: renesas_usb3: Fix use after free bug in renesas_usb3_remove due to race condition
-Date:   Mon,  8 May 2023 11:47:30 +0200
-Message-Id: <20230508094821.951363671@linuxfoundation.org>
+Subject: [PATCH 6.3 616/694] clk: qcom: dispcc-qcm2290: Remove inexistent DSI1PHY clk
+Date:   Mon,  8 May 2023 11:47:31 +0200
+Message-Id: <20230508094455.465888735@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
+In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094432.603705160@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 2b947f8769be8b8181dc795fd292d3e7120f5204 ]
+[ Upstream commit 68d1151f03067533827fc50b770954ef33149533 ]
 
-In renesas_usb3_probe, role_work is bound with renesas_usb3_role_work.
-renesas_usb3_start will be called to start the work.
+There's only one DSI PHY on this SoC. Remove the ghost entry for the
+clock produced by a secondary one.
 
-If we remove the driver which will call usbhs_remove, there may be
-an unfinished work. The possible sequence is as follows:
-
-CPU0                  			CPU1
-
-                    			 renesas_usb3_role_work
-renesas_usb3_remove
-usb_role_switch_unregister
-device_unregister
-kfree(sw)
-//free usb3->role_sw
-                    			 usb_role_switch_set_role
-                    			 //use usb3->role_sw
-
-The usb3->role_sw could be freed under such circumstance and then
-used in usb_role_switch_set_role.
-
-This bug was found by static analysis. And note that removing a
-driver is a root-only operation, and should never happen in normal
-case. But the root user may directly remove the device which
-will also trigger the remove function.
-
-Fix it by canceling the work before cleanup in the renesas_usb3_remove.
-
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://lore.kernel.org/r/20230320062931.505170-1-zyytlz.wz@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc517ea3333f ("clk: qcom: Add display clock controller driver for QCM2290")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230412-topic-qcm_dispcc-v1-2-bf2989a75ae4@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/dispcc-qcm2290.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
-index 601829a6b4bad..a10f41c4a3f2f 100644
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2568,6 +2568,7 @@ static int renesas_usb3_remove(struct platform_device *pdev)
- 	debugfs_remove_recursive(usb3->dentry);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+diff --git a/drivers/clk/qcom/dispcc-qcm2290.c b/drivers/clk/qcom/dispcc-qcm2290.c
+index 2ebd9a02b8950..24755dc841f9d 100644
+--- a/drivers/clk/qcom/dispcc-qcm2290.c
++++ b/drivers/clk/qcom/dispcc-qcm2290.c
+@@ -26,7 +26,6 @@ enum {
+ 	P_DISP_CC_PLL0_OUT_MAIN,
+ 	P_DSI0_PHY_PLL_OUT_BYTECLK,
+ 	P_DSI0_PHY_PLL_OUT_DSICLK,
+-	P_DSI1_PHY_PLL_OUT_DSICLK,
+ 	P_GPLL0_OUT_MAIN,
+ 	P_SLEEP_CLK,
+ };
+@@ -106,13 +105,11 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
+ static const struct parent_map disp_cc_parent_map_4[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_DSI0_PHY_PLL_OUT_DSICLK, 1 },
+-	{ P_DSI1_PHY_PLL_OUT_DSICLK, 2 },
+ };
  
-+	cancel_work_sync(&usb3->role_work);
- 	usb_role_switch_unregister(usb3->role_sw);
+ static const struct clk_parent_data disp_cc_parent_data_4[] = {
+ 	{ .fw_name = "bi_tcxo" },
+ 	{ .fw_name = "dsi0_phy_pll_out_dsiclk" },
+-	{ .fw_name = "dsi1_phy_pll_out_dsiclk" },
+ };
  
- 	usb_del_gadget_udc(&usb3->gadget);
+ static const struct parent_map disp_cc_parent_map_5[] = {
 -- 
 2.39.2
 
