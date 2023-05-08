@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25E856FAB81
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA336FA873
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233939AbjEHLOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54890 "EHLO
+        id S234945AbjEHKkr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233943AbjEHLOF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:14:05 -0400
+        with ESMTP id S234954AbjEHKkT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:40:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AEBC35B32
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:14:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC88D29FD8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:40:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0076062BAA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:14:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18904C433D2;
-        Mon,  8 May 2023 11:13:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 38D1662836
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:40:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F48C433EF;
+        Mon,  8 May 2023 10:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683544440;
-        bh=GX31uYiQd+Qe+Ty2GIohKZrgGp6XxUZxZqptURN6Eas=;
+        s=korg; t=1683542408;
+        bh=wKVKdmKR/0Z8ottiA1B12h0ofaD4kKP0I1AvXCm/K5M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HYO13rHnx4AkofWRzJnsZ0hUZL4JI9oH43HDb3oZKwSEQ664um/pWQe35nM9XcFFq
-         56S3LFtHt9+DCaAlezTK2cHg16RB52B2GAvn8fM4FWEhvq0x0syThXn3qkzIDgFJ2h
-         pm2adeJ2/ukuEveB+XzeKWTR3OIOft8kOAO9tL5o=
+        b=SmtCc1QaBPoHQIvRdavoQ2vQLZnAwnQuIE8Z+bqhP3eM7MvzQ43oXWrGMo8/VtH+P
+         NZ4ZO/XXOKczLZHvS5oZdo+DlyVgrb/99sJFf8IT4XvDdlcZbhB/Ff7qkCQgjbud2f
+         yptUb5diyo2RJeLHBYsXMIBSyQhri+a7MlGJSVNE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 409/694] selftests/bpf: Fix leaked bpf_link in get_stackid_cannot_attach
+Subject: [PATCH 6.2 418/663] net/mlx5: Suspend auxiliary devices only in case of PCI device suspend
 Date:   Mon,  8 May 2023 11:44:04 +0200
-Message-Id: <20230508094446.503962755@linuxfoundation.org>
+Message-Id: <20230508094441.652142496@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +54,219 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Liu <song@kernel.org>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit c1e07a80cf23d3a6e96172bc9a73bfa912a9fcbc ]
+[ Upstream commit 72ed5d5624af384eaf74d84915810d54486a75e2 ]
 
-skel->links.oncpu is leaked in one case. This causes test perf_branches
-fails when it runs after get_stackid_cannot_attach:
+The original behavior introduced by commit c6acd629eec7 ("net/mlx5e: Add
+support for devlink-port in non-representors mode") correctly
+re-instantiated uplink devlink port and related netdevice during devlink
+reload. However with migration to auxiliary devices, this behaviour
+changed.
 
-./test_progs -t get_stackid_cannot_attach,perf_branches
-84      get_stackid_cannot_attach:OK
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:FAIL:output not valid no valid sample from prog
-146/1   perf_branches/perf_branches_hw:FAIL
-146/2   perf_branches/perf_branches_no_hw:OK
-146     perf_branches:FAIL
+Restore the original behaviour and tear down auxiliary devices
+completely during devlink reload.
 
-All error logs:
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:FAIL:output not valid no valid sample from prog
-146/1   perf_branches/perf_branches_hw:FAIL
-146     perf_branches:FAIL
-Summary: 1/1 PASSED, 0 SKIPPED, 1 FAILED
-
-Fix this by adding the missing bpf_link__destroy().
-
-Fixes: 346938e9380c ("selftests/bpf: Add get_stackid_cannot_attach")
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230412210423.900851-3-song@kernel.org
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: dfad99750c0f ("net/mlx5: Use recovery timeout on sync reset flow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/dev.c    |  4 ++--
+ .../net/ethernet/mellanox/mlx5/core/devlink.c    |  4 ++--
+ .../net/ethernet/mellanox/mlx5/core/fw_reset.c   |  4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/health.c |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 16 ++++++++--------
+ .../net/ethernet/mellanox/mlx5/core/mlx5_core.h  |  6 +++---
+ .../ethernet/mellanox/mlx5/core/sf/dev/driver.c  |  2 +-
+ 7 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
-index 5308de1ed478e..2715c68301f52 100644
---- a/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/get_stackid_cannot_attach.c
-@@ -65,6 +65,7 @@ void test_get_stackid_cannot_attach(void)
- 	skel->links.oncpu = bpf_program__attach_perf_event(skel->progs.oncpu,
- 							   pmu_fd);
- 	ASSERT_OK_PTR(skel->links.oncpu, "attach_perf_event_callchain");
-+	bpf_link__destroy(skel->links.oncpu);
- 	close(pmu_fd);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/dev.c b/drivers/net/ethernet/mellanox/mlx5/core/dev.c
+index 0571e40c6ee5f..02bb9d43ff9c4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/dev.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/dev.c
+@@ -396,7 +396,7 @@ int mlx5_attach_device(struct mlx5_core_dev *dev)
+ 	return ret;
+ }
  
- 	/* add exclude_callchain_kernel, attach should fail */
+-void mlx5_detach_device(struct mlx5_core_dev *dev)
++void mlx5_detach_device(struct mlx5_core_dev *dev, bool suspend)
+ {
+ 	struct mlx5_priv *priv = &dev->priv;
+ 	struct auxiliary_device *adev;
+@@ -426,7 +426,7 @@ void mlx5_detach_device(struct mlx5_core_dev *dev)
+ 
+ 		adrv = to_auxiliary_drv(adev->dev.driver);
+ 
+-		if (adrv->suspend) {
++		if (adrv->suspend && suspend) {
+ 			adrv->suspend(adev, pm);
+ 			continue;
+ 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 5bd83c0275f82..31ce591f527fa 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -104,7 +104,7 @@ static int mlx5_devlink_reload_fw_activate(struct devlink *devlink, struct netli
+ 	if (err)
+ 		return err;
+ 
+-	mlx5_unload_one_devl_locked(dev);
++	mlx5_unload_one_devl_locked(dev, true);
+ 	err = mlx5_health_wait_pci_up(dev);
+ 	if (err)
+ 		NL_SET_ERR_MSG_MOD(extack, "FW activate aborted, PCI reads fail after reset");
+@@ -162,7 +162,7 @@ static int mlx5_devlink_reload_down(struct devlink *devlink, bool netns_change,
+ 
+ 	switch (action) {
+ 	case DEVLINK_RELOAD_ACTION_DRIVER_REINIT:
+-		mlx5_unload_one_devl_locked(dev);
++		mlx5_unload_one_devl_locked(dev, false);
+ 		break;
+ 	case DEVLINK_RELOAD_ACTION_FW_ACTIVATE:
+ 		if (limit == DEVLINK_RELOAD_LIMIT_NO_RESET)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index a1f460c9d3cde..2ef42d76ac6a3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -150,7 +150,7 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
+ 	if (test_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP, &fw_reset->reset_flags)) {
+ 		complete(&fw_reset->done);
+ 	} else {
+-		mlx5_unload_one(dev);
++		mlx5_unload_one(dev, false);
+ 		if (mlx5_health_wait_pci_up(dev))
+ 			mlx5_core_err(dev, "reset reload flow aborted, PCI reads still not working\n");
+ 		else
+@@ -484,7 +484,7 @@ int mlx5_fw_reset_wait_reset_done(struct mlx5_core_dev *dev)
+ 	}
+ 	err = fw_reset->ret;
+ 	if (test_and_clear_bit(MLX5_FW_RESET_FLAGS_RELOAD_REQUIRED, &fw_reset->reset_flags)) {
+-		mlx5_unload_one_devl_locked(dev);
++		mlx5_unload_one_devl_locked(dev, false);
+ 		mlx5_load_one_devl_locked(dev, false);
+ 	}
+ out:
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index 879555ba847dd..e42e4ac231c64 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -699,7 +699,7 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
+ 		 * requests from the kernel.
+ 		 */
+ 		mlx5_core_err(dev, "Driver is in error state. Unloading\n");
+-		mlx5_unload_one(dev);
++		mlx5_unload_one(dev, false);
+ 	}
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 2772005be741a..d5d4f499a2a15 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1502,12 +1502,12 @@ int mlx5_load_one(struct mlx5_core_dev *dev)
+ 	return ret;
+ }
+ 
+-void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev)
++void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev, bool suspend)
+ {
+ 	devl_assert_locked(priv_to_devlink(dev));
+ 	mutex_lock(&dev->intf_state_mutex);
+ 
+-	mlx5_detach_device(dev);
++	mlx5_detach_device(dev, suspend);
+ 
+ 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
+ 		mlx5_core_warn(dev, "%s: interface is down, NOP\n",
+@@ -1522,12 +1522,12 @@ void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev)
+ 	mutex_unlock(&dev->intf_state_mutex);
+ }
+ 
+-void mlx5_unload_one(struct mlx5_core_dev *dev)
++void mlx5_unload_one(struct mlx5_core_dev *dev, bool suspend)
+ {
+ 	struct devlink *devlink = priv_to_devlink(dev);
+ 
+ 	devl_lock(devlink);
+-	mlx5_unload_one_devl_locked(dev);
++	mlx5_unload_one_devl_locked(dev, suspend);
+ 	devl_unlock(devlink);
+ }
+ 
+@@ -1809,7 +1809,7 @@ static pci_ers_result_t mlx5_pci_err_detected(struct pci_dev *pdev,
+ 
+ 	mlx5_enter_error_state(dev, false);
+ 	mlx5_error_sw_reset(dev);
+-	mlx5_unload_one(dev);
++	mlx5_unload_one(dev, true);
+ 	mlx5_drain_health_wq(dev);
+ 	mlx5_pci_disable_device(dev);
+ 
+@@ -1965,7 +1965,7 @@ static void shutdown(struct pci_dev *pdev)
+ 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
+ 	err = mlx5_try_fast_unload(dev);
+ 	if (err)
+-		mlx5_unload_one(dev);
++		mlx5_unload_one(dev, false);
+ 	mlx5_pci_disable_device(dev);
+ }
+ 
+@@ -1973,7 +1973,7 @@ static int mlx5_suspend(struct pci_dev *pdev, pm_message_t state)
+ {
+ 	struct mlx5_core_dev *dev = pci_get_drvdata(pdev);
+ 
+-	mlx5_unload_one(dev);
++	mlx5_unload_one(dev, true);
+ 
+ 	return 0;
+ }
+@@ -2016,7 +2016,7 @@ MODULE_DEVICE_TABLE(pci, mlx5_core_pci_table);
+ void mlx5_disable_device(struct mlx5_core_dev *dev)
+ {
+ 	mlx5_error_sw_reset(dev);
+-	mlx5_unload_one_devl_locked(dev);
++	mlx5_unload_one_devl_locked(dev, false);
+ }
+ 
+ int mlx5_recover_device(struct mlx5_core_dev *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index d670b28a73236..be0785f83083a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -236,7 +236,7 @@ void mlx5_adev_cleanup(struct mlx5_core_dev *dev);
+ int mlx5_adev_init(struct mlx5_core_dev *dev);
+ 
+ int mlx5_attach_device(struct mlx5_core_dev *dev);
+-void mlx5_detach_device(struct mlx5_core_dev *dev);
++void mlx5_detach_device(struct mlx5_core_dev *dev, bool suspend);
+ int mlx5_register_device(struct mlx5_core_dev *dev);
+ void mlx5_unregister_device(struct mlx5_core_dev *dev);
+ struct mlx5_core_dev *mlx5_get_next_phys_dev_lag(struct mlx5_core_dev *dev);
+@@ -319,8 +319,8 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx);
+ void mlx5_mdev_uninit(struct mlx5_core_dev *dev);
+ int mlx5_init_one(struct mlx5_core_dev *dev);
+ void mlx5_uninit_one(struct mlx5_core_dev *dev);
+-void mlx5_unload_one(struct mlx5_core_dev *dev);
+-void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev);
++void mlx5_unload_one(struct mlx5_core_dev *dev, bool suspend);
++void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev, bool suspend);
+ int mlx5_load_one(struct mlx5_core_dev *dev);
+ int mlx5_load_one_devl_locked(struct mlx5_core_dev *dev, bool recovery);
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index 7b4783ce213e2..a7377619ba6f2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -74,7 +74,7 @@ static void mlx5_sf_dev_shutdown(struct auxiliary_device *adev)
+ {
+ 	struct mlx5_sf_dev *sf_dev = container_of(adev, struct mlx5_sf_dev, adev);
+ 
+-	mlx5_unload_one(sf_dev->mdev);
++	mlx5_unload_one(sf_dev->mdev, false);
+ }
+ 
+ static const struct auxiliary_device_id mlx5_sf_dev_id_table[] = {
 -- 
 2.39.2
 
