@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B196FAAE8
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E75716FA7C5
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233117AbjEHLHw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46116 "EHLO
+        id S234740AbjEHKev (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233291AbjEHLH3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:07:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2130033D42
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:06:40 -0700 (PDT)
+        with ESMTP id S234800AbjEHKeR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:34:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD7128A8C
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:33:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 984FB62AC5
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:06:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8699AC433D2;
-        Mon,  8 May 2023 11:06:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B270625E8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92145C433D2;
+        Mon,  8 May 2023 10:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543999;
-        bh=/udD4aTSZTEpOkzkEGL8WCi98hBZUSpxZmWWW8RqDec=;
+        s=korg; t=1683542005;
+        bh=C3TNWy7E2eTHc/6V+meOjr38etecp82m9YMJVtbCKiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CKR0OxKNH4GWTF3tvDt9+Wd6tN/EN5gA9C6cCV+quJS97NUBzVfn6QlH7F0i2aRD4
-         tZyl+wqDjuHHMBvO9/a6BO4OwvBPQ9vxIOnAYYSmmncPsSAeqs0aWYi6bhGrckPrAV
-         SS3ueOkwqdn9lD/pzgDX44i9b1caHW90vEsMnueo=
+        b=EtMGMeneOL4V0hJgGxqmXnFIsexD9/h6jbegkT3d3AcH7KJXk6Lolkg2bMqvz4F9T
+         Kn5cFWq/lAFugDGo74KJ2IYwPm+fbhzJezTTgN3ncvoiHBwuHDmAg0MGZCihSydEYE
+         ZklquOa93gOKh/PnBfp2Eisa7gnNtEoIAfpjRdAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Vorel <pvorel@suse.cz>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+        =?UTF-8?q?Tom=C3=A1=C5=A1=20Pecka?= <tomas.pecka@cesnet.cz>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 269/694] arm64: dts: qcom: msm8994-angler: removed clash with smem_region
+Subject: [PATCH 6.2 278/663] hwmon: (pmbus/fsp-3y) Fix functionality bitmask in FSP-3Y YM-2151E
 Date:   Mon,  8 May 2023 11:41:44 +0200
-Message-Id: <20230508094440.993217488@linuxfoundation.org>
+Message-Id: <20230508094437.259650454@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,79 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Vorel <pvorel@suse.cz>
+From: Tomáš Pecka <tomas.pecka@cesnet.cz>
 
-[ Upstream commit c85c8a992794dfcd7cea7a41871710c27c5592a6 ]
+[ Upstream commit 93822f5161a2dc57a60b95b35b3cb8589f53413e ]
 
-This fixes memory overlap error:
-[    0.000000] reserved@6300000 (0x0000000006300000--0x0000000007000000) overlaps with smem_region@6a00000 (0x0000000006a00000--0x0000000006c00000)
+The bit flags in pmbus_driver_info functionality for YM-2151E chip were
+joined with a comma operator instead of a bitwise OR. This means that
+the last constant PMBUS_HAVE_IIN was not OR-ed with the other
+PM_BUS_HAVE_* constants for this page but it initialized the next element
+of the func array (which was not accessed from anywhere because of the
+number of pages).
 
-smem_region is the same as in downstream (qcom,smem) [1], therefore
-split reserved memory into two sections on either side of smem_region.
+However, there is no need for setting PMBUS_HAVE_IIN in the 5Vsb page
+because this command does not seem to be paged. Obviously, the device
+only has one IIN sensor, so it doesn't make sense to query it again from
+the second page.
 
-Not adding labels as it's not expected to be used.
-
-[1] https://android.googlesource.com/kernel/msm/+/refs/heads/android-msm-angler-3.10-marshmallow-mr1/arch/arm/boot/dts/qcom/msm8994.dtsi#948
-
-Fixes: 380cd3a34b7f ("arm64: dts: msm8994-angler: fix the memory map")
-
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230131200414.24373-3-pvorel@suse.cz
+Fixes: 1734b4135a62 ("hwmon: Add driver for fsp-3y PSUs and PDUs")
+Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Signed-off-by: Tomáš Pecka <tomas.pecka@cesnet.cz>
+Link: https://lore.kernel.org/r/20230420171939.212040-1-tomas.pecka@cesnet.cz
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi          | 5 -----
- arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts | 4 ++--
- arch/arm64/boot/dts/qcom/msm8994.dtsi                      | 5 +++++
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/hwmon/pmbus/fsp-3y.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-index cd77dcb558722..b8f2a01bcb96c 100644
---- a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-@@ -60,11 +60,6 @@
- 			reg = <0x0 0x05000000 0x0 0x1a00000>;
- 			no-map;
- 		};
--
--		reserved@6c00000 {
--			reg = <0x0 0x06c00000 0x0 0x400000>;
--			no-map;
--		};
- 	};
- };
- 
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
-index 59b9ed78cf0cb..29e79ae0849d8 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8994-huawei-angler-rev-101.dts
-@@ -41,8 +41,8 @@
- 			no-map;
- 		};
- 
--		removed_region: reserved@6300000 {
--			reg = <0 0x06300000 0 0xD00000>;
-+		reserved@6300000 {
-+			reg = <0 0x06300000 0 0x700000>;
- 			no-map;
- 		};
- 	};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-index 9ff9d35496d21..24c3fced8df71 100644
---- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-@@ -228,6 +228,11 @@
- 			reg = <0 0xc9400000 0 0x3f00000>;
- 			no-map;
- 		};
-+
-+		reserved@6c00000 {
-+			reg = <0 0x06c00000 0 0x400000>;
-+			no-map;
-+		};
- 	};
- 
- 	smd {
+diff --git a/drivers/hwmon/pmbus/fsp-3y.c b/drivers/hwmon/pmbus/fsp-3y.c
+index aec294cc72d1f..c7469d2cdedcf 100644
+--- a/drivers/hwmon/pmbus/fsp-3y.c
++++ b/drivers/hwmon/pmbus/fsp-3y.c
+@@ -180,7 +180,6 @@ static struct pmbus_driver_info fsp3y_info[] = {
+ 			PMBUS_HAVE_FAN12,
+ 		.func[YM2151_PAGE_5VSB_LOG] =
+ 			PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT,
+-			PMBUS_HAVE_IIN,
+ 		.read_word_data = fsp3y_read_word_data,
+ 		.read_byte_data = fsp3y_read_byte_data,
+ 	},
 -- 
 2.39.2
 
