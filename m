@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EE846FAC72
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBCBD6FADFC
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235659AbjEHLYg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39912 "EHLO
+        id S236025AbjEHLkL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235668AbjEHLYU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:24:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAEA439BBA
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:24:18 -0700 (PDT)
+        with ESMTP id S236119AbjEHLjk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:39:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8DD3F2FC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:39:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 817D962D32
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:24:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D329C4339B;
-        Mon,  8 May 2023 11:24:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70EE46341A
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC85C433D2;
+        Mon,  8 May 2023 11:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683545057;
-        bh=gX39DoRBJpT5cNtJczBvP/XQo875aKQmv20CC+EmjK8=;
+        s=korg; t=1683545968;
+        bh=KPh5Zkjm9LuKwavsUR7yD/4n66vyB1kYOCbXyWL3d8k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MhRPKtIYn1UQ25vweFcRGAXOJJgOyaUr3gf7qbVU6a0fCZB1uU8++/vHoLNcJE2KX
-         niwJSbEW4tcQtZaNtZXqMk3RX1xTeXO4xWyaGmJawCamq/ie5QP5VFD4NrK+iAXm/n
-         AGbWuENCkkNmiTvFo9MYPWaeVFJM9BaD0+BEMH/k=
+        b=XOePxHFlROoajvdjOgD6KF8DOw9qqOKSoLkhMJBHdEucYM+wF+BXr1LC2DaZNXLIi
+         aq5Oe9LF/Sj6QhS63bjjPckgYOOvHHnbayIx0f9RL8IWHSKtqqoxDb49V/QPDbOYva
+         y9DcEqBpxEjV5Eafp7KAftkborkP2vyZVQaQU5V8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 579/694] clk: mediatek: mt7622: Properly use CLK_IS_CRITICAL flag
+Subject: [PATCH 5.15 213/371] wifi: iwlwifi: mvm: initialize seq variable
 Date:   Mon,  8 May 2023 11:46:54 +0200
-Message-Id: <20230508094453.718528293@linuxfoundation.org>
+Message-Id: <20230508094820.527612752@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,118 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit fa8c0d01df62130ff596d560380a6f844f62639e ]
+[ Upstream commit 11e94d2bcd88dea5d9ce99555b6b172f5232d3e2 ]
 
-Instead of calling clk_prepare_enable() for clocks that shall stay
-enabled, use the CLK_IS_CRITICAL flag, which purpose is exactly that.
+Clang static analysis reports this issue
+d3.c:567:22: warning: The left operand of '>' is
+  a garbage value
+  if (seq.tkip.iv32 > cur_rx_iv32)
+      ~~~~~~~~~~~~~ ^
 
-Fixes: 2fc0a509e4ee ("clk: mediatek: add clock support for MT7622 SoC")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20230306140543.1813621-24-angelogioacchino.delregno@collabora.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+seq is never initialized. Call ieee80211_get_key_rx_seq() to
+initialize seq.
+
+Fixes: 0419e5e672d6 ("iwlwifi: mvm: d3: separate TKIP data from key iteration")
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230414130637.6dd372f84f93.If1f708c90e6424a935b4eba3917dfb7582e0dd0a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt7622.c | 35 +++++++++++++------------------
- 1 file changed, 15 insertions(+), 20 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt7622.c b/drivers/clk/mediatek/clk-mt7622.c
-index 41af8d420bbf8..1c0049fbeb69c 100644
---- a/drivers/clk/mediatek/clk-mt7622.c
-+++ b/drivers/clk/mediatek/clk-mt7622.c
-@@ -50,9 +50,9 @@
- 		 _pd_reg, _pd_shift, _tuner_reg, _pcw_reg, _pcw_shift,  \
- 		 NULL, "clkxtal")
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 00ca17f3b263c..6dde3bd8f4416 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -564,6 +564,7 @@ static void iwl_mvm_wowlan_get_tkip_data(struct ieee80211_hw *hw,
+ 		}
  
--#define GATE_APMIXED(_id, _name, _parent, _shift)			\
--	GATE_MTK(_id, _name, _parent, &apmixed_cg_regs, _shift,		\
--		 &mtk_clk_gate_ops_no_setclr_inv)
-+#define GATE_APMIXED_AO(_id, _name, _parent, _shift)			\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &apmixed_cg_regs, _shift,	\
-+		 &mtk_clk_gate_ops_no_setclr_inv, CLK_IS_CRITICAL)
- 
- #define GATE_INFRA(_id, _name, _parent, _shift)				\
- 	GATE_MTK(_id, _name, _parent, &infra_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-@@ -66,6 +66,10 @@
- #define GATE_PERI0(_id, _name, _parent, _shift)				\
- 	GATE_MTK(_id, _name, _parent, &peri0_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
- 
-+#define GATE_PERI0_AO(_id, _name, _parent, _shift)			\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &peri0_cg_regs, _shift,	\
-+		 &mtk_clk_gate_ops_setclr, CLK_IS_CRITICAL)
-+
- #define GATE_PERI1(_id, _name, _parent, _shift)				\
- 	GATE_MTK(_id, _name, _parent, &peri1_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
- 
-@@ -315,7 +319,7 @@ static const struct mtk_pll_data plls[] = {
- };
- 
- static const struct mtk_gate apmixed_clks[] = {
--	GATE_APMIXED(CLK_APMIXED_MAIN_CORE_EN, "main_core_en", "mainpll", 5),
-+	GATE_APMIXED_AO(CLK_APMIXED_MAIN_CORE_EN, "main_core_en", "mainpll", 5),
- };
- 
- static const struct mtk_gate infra_clks[] = {
-@@ -450,7 +454,7 @@ static const struct mtk_gate peri_clks[] = {
- 	GATE_PERI0(CLK_PERI_AP_DMA_PD, "peri_ap_dma_pd", "axi_sel", 12),
- 	GATE_PERI0(CLK_PERI_MSDC30_0_PD, "peri_msdc30_0", "msdc30_0_sel", 13),
- 	GATE_PERI0(CLK_PERI_MSDC30_1_PD, "peri_msdc30_1", "msdc30_1_sel", 14),
--	GATE_PERI0(CLK_PERI_UART0_PD, "peri_uart0_pd", "axi_sel", 17),
-+	GATE_PERI0_AO(CLK_PERI_UART0_PD, "peri_uart0_pd", "axi_sel", 17),
- 	GATE_PERI0(CLK_PERI_UART1_PD, "peri_uart1_pd", "axi_sel", 18),
- 	GATE_PERI0(CLK_PERI_UART2_PD, "peri_uart2_pd", "axi_sel", 19),
- 	GATE_PERI0(CLK_PERI_UART3_PD, "peri_uart3_pd", "axi_sel", 20),
-@@ -478,12 +482,12 @@ static struct mtk_composite infra_muxes[] = {
- 
- static struct mtk_composite top_muxes[] = {
- 	/* CLK_CFG_0 */
--	MUX_GATE(CLK_TOP_AXI_SEL, "axi_sel", axi_parents,
--		 0x040, 0, 3, 7),
--	MUX_GATE(CLK_TOP_MEM_SEL, "mem_sel", mem_parents,
--		 0x040, 8, 1, 15),
--	MUX_GATE(CLK_TOP_DDRPHYCFG_SEL, "ddrphycfg_sel", ddrphycfg_parents,
--		 0x040, 16, 1, 23),
-+	MUX_GATE_FLAGS(CLK_TOP_AXI_SEL, "axi_sel", axi_parents,
-+		       0x040, 0, 3, 7, CLK_IS_CRITICAL),
-+	MUX_GATE_FLAGS(CLK_TOP_MEM_SEL, "mem_sel", mem_parents,
-+		       0x040, 8, 1, 15, CLK_IS_CRITICAL),
-+	MUX_GATE_FLAGS(CLK_TOP_DDRPHYCFG_SEL, "ddrphycfg_sel", ddrphycfg_parents,
-+		       0x040, 16, 1, 23, CLK_IS_CRITICAL),
- 	MUX_GATE(CLK_TOP_ETH_SEL, "eth_sel", eth_parents,
- 		 0x040, 24, 3, 31),
- 
-@@ -621,10 +625,6 @@ static int mtk_topckgen_init(struct platform_device *pdev)
- 	mtk_clk_register_gates(&pdev->dev, node, top_clks,
- 			       ARRAY_SIZE(top_clks), clk_data);
- 
--	clk_prepare_enable(clk_data->hws[CLK_TOP_AXI_SEL]->clk);
--	clk_prepare_enable(clk_data->hws[CLK_TOP_MEM_SEL]->clk);
--	clk_prepare_enable(clk_data->hws[CLK_TOP_DDRPHYCFG_SEL]->clk);
--
- 	return of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
- }
- 
-@@ -667,9 +667,6 @@ static int mtk_apmixedsys_init(struct platform_device *pdev)
- 	mtk_clk_register_gates(&pdev->dev, node, apmixed_clks,
- 			       ARRAY_SIZE(apmixed_clks), clk_data);
- 
--	clk_prepare_enable(clk_data->hws[CLK_APMIXED_ARMPLL]->clk);
--	clk_prepare_enable(clk_data->hws[CLK_APMIXED_MAIN_CORE_EN]->clk);
--
- 	return of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
- }
- 
-@@ -697,8 +694,6 @@ static int mtk_pericfg_init(struct platform_device *pdev)
- 	if (r)
- 		return r;
- 
--	clk_prepare_enable(clk_data->hws[CLK_PERI_UART0_PD]->clk);
--
- 	mtk_register_reset_controller_with_dev(&pdev->dev, &clk_rst_desc[1]);
- 
- 	return 0;
+ 		for (i = 0; i < IWL_NUM_RSC; i++) {
++			ieee80211_get_key_rx_seq(key, i, &seq);
+ 			/* wrapping isn't allowed, AP must rekey */
+ 			if (seq.tkip.iv32 > cur_rx_iv32)
+ 				cur_rx_iv32 = seq.tkip.iv32;
 -- 
 2.39.2
 
