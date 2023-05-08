@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61D676FA961
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F0E6FAE19
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235223AbjEHKuY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 06:50:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
+        id S236185AbjEHLlU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 07:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235254AbjEHKty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:49:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D2D2A9D7
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:49:34 -0700 (PDT)
+        with ESMTP id S236182AbjEHLky (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:40:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F220D423BA
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 04:40:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1C1662916
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AE7C4339B;
-        Mon,  8 May 2023 10:49:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21D8E634CC
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 11:40:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F96C433D2;
+        Mon,  8 May 2023 11:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683542973;
-        bh=z68mJqRInk+pcesD3Pww50pW2B9wZJjCKfYA9GNFuts=;
+        s=korg; t=1683546033;
+        bh=F+osxqfzC+biuiMnQHmlr8pv9a1oMxu3axatNznUkLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WQZrdJJFDfp8pYR6S6rZc0I+GBMfnxIzSGgOTVMCsTDrUQeJl504ObzgnKr+Xob3b
-         YsLzPH4hq/N3KOXlUvNsRTlJRyMco0xz7LdZA7gNUwl3GXryshoKsjojZ/J3GvWogs
-         jk48zv8xHBOeSFKUR/PE1FTrNi1hiMec3S2T6NUQ=
+        b=utm17/unqYwYpKb5ScUHF6ksHrTzvTPDq8bf4Uzy0jHv3AbNqaRY/I05+Ip9dktGe
+         NlooznnIOjrXZyZX4TTenJXbYlRUZSMb8Vrwr/isP2Qfu5PTzfGXZvAqWixb1GjOJO
+         unna17L1i8EG9iMc1pDnsNH5YfpgPO1Ho97pRqYU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        linux-afs@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 609/663] afs: Fix getattr to report server i_size on dirs, not local size
-Date:   Mon,  8 May 2023 11:47:15 +0200
-Message-Id: <20230508094449.409584684@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willem de Bruijn <willemb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 235/371] tcp/udp: Fix memleaks of sk and zerocopy skbs with TX timestamp.
+Date:   Mon,  8 May 2023 11:47:16 +0200
+Message-Id: <20230508094821.395837406@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
-References: <20230508094428.384831245@linuxfoundation.org>
+In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
+References: <20230508094811.912279944@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,54 +56,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 45f66fa03ba9943cca5af88d691399332b8bde08 ]
+[ Upstream commit 50749f2dd6854a41830996ad302aef2ffaf011d8 ]
 
-Fix afs_getattr() to report the server's idea of the file size of a
-directory rather than the local size.  The local size may differ as we edit
-the local copy to avoid having to redownload it and we may end up with a
-differently structured blob of a different size.
+syzkaller reported [0] memory leaks of an UDP socket and ZEROCOPY
+skbs.  We can reproduce the problem with these sequences:
 
-However, if the directory is discarded from the pagecache we then download
-it again and the user may see the directory file size apparently change.
+  sk = socket(AF_INET, SOCK_DGRAM, 0)
+  sk.setsockopt(SOL_SOCKET, SO_TIMESTAMPING, SOF_TIMESTAMPING_TX_SOFTWARE)
+  sk.setsockopt(SOL_SOCKET, SO_ZEROCOPY, 1)
+  sk.sendto(b'', MSG_ZEROCOPY, ('127.0.0.1', 53))
+  sk.close()
 
-Fixes: 63a4681ff39c ("afs: Locally edit directory data for mkdir/create/unlink/...")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+sendmsg() calls msg_zerocopy_alloc(), which allocates a skb, sets
+skb->cb->ubuf.refcnt to 1, and calls sock_hold().  Here, struct
+ubuf_info_msgzc indirectly holds a refcnt of the socket.  When the
+skb is sent, __skb_tstamp_tx() clones it and puts the clone into
+the socket's error queue with the TX timestamp.
+
+When the original skb is received locally, skb_copy_ubufs() calls
+skb_unclone(), and pskb_expand_head() increments skb->cb->ubuf.refcnt.
+This additional count is decremented while freeing the skb, but struct
+ubuf_info_msgzc still has a refcnt, so __msg_zerocopy_callback() is
+not called.
+
+The last refcnt is not released unless we retrieve the TX timestamped
+skb by recvmsg().  Since we clear the error queue in inet_sock_destruct()
+after the socket's refcnt reaches 0, there is a circular dependency.
+If we close() the socket holding such skbs, we never call sock_put()
+and leak the count, sk, and skb.
+
+TCP has the same problem, and commit e0c8bccd40fc ("net: stream:
+purge sk_error_queue in sk_stream_kill_queues()") tried to fix it
+by calling skb_queue_purge() during close().  However, there is a
+small chance that skb queued in a qdisc or device could be put
+into the error queue after the skb_queue_purge() call.
+
+In __skb_tstamp_tx(), the cloned skb should not have a reference
+to the ubuf to remove the circular dependency, but skb_clone() does
+not call skb_copy_ubufs() for zerocopy skb.  So, we need to call
+skb_orphan_frags_rx() for the cloned skb to call skb_copy_ubufs().
+
+[0]:
+BUG: memory leak
+unreferenced object 0xffff88800c6d2d00 (size 1152):
+  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 cd af e8 81 00 00 00 00  ................
+    02 00 07 40 00 00 00 00 00 00 00 00 00 00 00 00  ...@............
+  backtrace:
+    [<0000000055636812>] sk_prot_alloc+0x64/0x2a0 net/core/sock.c:2024
+    [<0000000054d77b7a>] sk_alloc+0x3b/0x800 net/core/sock.c:2083
+    [<0000000066f3c7e0>] inet_create net/ipv4/af_inet.c:319 [inline]
+    [<0000000066f3c7e0>] inet_create+0x31e/0xe40 net/ipv4/af_inet.c:245
+    [<000000009b83af97>] __sock_create+0x2ab/0x550 net/socket.c:1515
+    [<00000000b9b11231>] sock_create net/socket.c:1566 [inline]
+    [<00000000b9b11231>] __sys_socket_create net/socket.c:1603 [inline]
+    [<00000000b9b11231>] __sys_socket_create net/socket.c:1588 [inline]
+    [<00000000b9b11231>] __sys_socket+0x138/0x250 net/socket.c:1636
+    [<000000004fb45142>] __do_sys_socket net/socket.c:1649 [inline]
+    [<000000004fb45142>] __se_sys_socket net/socket.c:1647 [inline]
+    [<000000004fb45142>] __x64_sys_socket+0x73/0xb0 net/socket.c:1647
+    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
+    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+BUG: memory leak
+unreferenced object 0xffff888017633a00 (size 240):
+  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 2d 6d 0c 80 88 ff ff  .........-m.....
+  backtrace:
+    [<000000002b1c4368>] __alloc_skb+0x229/0x320 net/core/skbuff.c:497
+    [<00000000143579a6>] alloc_skb include/linux/skbuff.h:1265 [inline]
+    [<00000000143579a6>] sock_omalloc+0xaa/0x190 net/core/sock.c:2596
+    [<00000000be626478>] msg_zerocopy_alloc net/core/skbuff.c:1294 [inline]
+    [<00000000be626478>] msg_zerocopy_realloc+0x1ce/0x7f0 net/core/skbuff.c:1370
+    [<00000000cbfc9870>] __ip_append_data+0x2adf/0x3b30 net/ipv4/ip_output.c:1037
+    [<0000000089869146>] ip_make_skb+0x26c/0x2e0 net/ipv4/ip_output.c:1652
+    [<00000000098015c2>] udp_sendmsg+0x1bac/0x2390 net/ipv4/udp.c:1253
+    [<0000000045e0e95e>] inet_sendmsg+0x10a/0x150 net/ipv4/af_inet.c:819
+    [<000000008d31bfde>] sock_sendmsg_nosec net/socket.c:714 [inline]
+    [<000000008d31bfde>] sock_sendmsg+0x141/0x190 net/socket.c:734
+    [<0000000021e21aa4>] __sys_sendto+0x243/0x360 net/socket.c:2117
+    [<00000000ac0af00c>] __do_sys_sendto net/socket.c:2129 [inline]
+    [<00000000ac0af00c>] __se_sys_sendto net/socket.c:2125 [inline]
+    [<00000000ac0af00c>] __x64_sys_sendto+0xe1/0x1c0 net/socket.c:2125
+    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
+    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Fixes: f214f915e7db ("tcp: enable MSG_ZEROCOPY")
+Fixes: b5947e5d1e71 ("udp: msg_zerocopy")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/inode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/core/skbuff.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 52d040ffde35f..5921dd3687e39 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -450,7 +450,7 @@ static void afs_get_inode_cache(struct afs_vnode *vnode)
- 				    0 : FSCACHE_ADV_SINGLE_CHUNK,
- 				    &key, sizeof(key),
- 				    &aux, sizeof(aux),
--				    vnode->status.size));
-+				    i_size_read(&vnode->netfs.inode)));
- #endif
- }
- 
-@@ -766,6 +766,13 @@ int afs_getattr(struct user_namespace *mnt_userns, const struct path *path,
- 		if (test_bit(AFS_VNODE_SILLY_DELETED, &vnode->flags) &&
- 		    stat->nlink > 0)
- 			stat->nlink -= 1;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 46cc3a7632f79..d4b25d6fd01d5 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4960,6 +4960,9 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
+ 			skb = alloc_skb(0, GFP_ATOMIC);
+ 	} else {
+ 		skb = skb_clone(orig_skb, GFP_ATOMIC);
 +
-+		/* Lie about the size of directories.  We maintain a locally
-+		 * edited copy and may make different allocation decisions on
-+		 * it, but we need to give userspace the server's size.
-+		 */
-+		if (S_ISDIR(inode->i_mode))
-+			stat->size = vnode->netfs.remote_i_size;
- 	} while (need_seqretry(&vnode->cb_lock, seq));
- 
- 	done_seqretry(&vnode->cb_lock, seq);
++		if (skb_orphan_frags_rx(skb, GFP_ATOMIC))
++			return;
+ 	}
+ 	if (!skb)
+ 		return;
 -- 
 2.39.2
 
