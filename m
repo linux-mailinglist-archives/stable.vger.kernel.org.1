@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659226FAA49
-	for <lists+stable@lfdr.de>; Mon,  8 May 2023 13:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5BD66FA701
+	for <lists+stable@lfdr.de>; Mon,  8 May 2023 12:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235508AbjEHLBO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 8 May 2023 07:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33338 "EHLO
+        id S234573AbjEHK0F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 8 May 2023 06:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235454AbjEHLA7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 07:00:59 -0400
+        with ESMTP id S234500AbjEHKZg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 8 May 2023 06:25:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D7829C86
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:59:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CC3DC5E
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 03:25:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CFDD162A0B
-        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:59:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBEFC433D2;
-        Mon,  8 May 2023 10:59:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DA0E625D8
+        for <stable@vger.kernel.org>; Mon,  8 May 2023 10:25:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0C8C433EF;
+        Mon,  8 May 2023 10:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683543585;
-        bh=UZHM4zO+EmMlB23qbAgl/0B8m1ovcquyrbgpi/aU0kw=;
+        s=korg; t=1683541533;
+        bh=CCBSryebc3uG0PaVN6xbha/mpSyz4nZJ2v/CDUz5eMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UW3heutlc9KhajNv2djiscpIFklxYgsOVzWTadVhLvXHINcGqJpDJOuimQlPZIZyB
-         TXwA5LiqQqSdq9NyG69bRQpLejAQ6qaSG+iqzey5bpiPHF14NcbRWRGVebGjWZAZB9
-         GFI8tWDGCSSSRIkuJOlcOBUMzA+QNRKWx+aJ9WJ0=
+        b=Is8+VgOl9Rkk1EiyPfBBwL6CxOP0m/MkCRBDB5t42wnLwoqqLBbM1Kp3bgXlZZbzS
+         Kj0F0TjDLgr+1MCDIG/CknbA541fWI9pascoDDfKEGDXpkY0efqehH1W75ZQMvCUR8
+         7HSo8gl1Db9uWuuRITDmnv20HJMedaFhz75x0QNM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
+        Guillaume Ranquet <granquet@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 137/694] ARM: 9293/1: vfp: Pass successful return address via register R3
+Subject: [PATCH 6.2 146/663] drm/mediatek: dp: Only trigger DRM HPD events if bridge is attached
 Date:   Mon,  8 May 2023 11:39:32 +0200
-Message-Id: <20230508094436.904567494@linuxfoundation.org>
+Message-Id: <20230508094433.241125576@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
-References: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094428.384831245@linuxfoundation.org>
+References: <20230508094428.384831245@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,98 +58,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 3a2bdad0b46649cc73fb3b3f9e2b91ef97a7fa63 ]
+[ Upstream commit 36b617f7e4ae663fcadd202ea061ca695ca75539 ]
 
-In preparation for reimplementing the do_vfp()->vfp_support_entry()
-handover in C code, switch to using R3 to pass the 'success' return
-address, rather than R9, as it cannot be used for parameter passing.
+The MediaTek DisplayPort interface bridge driver starts its interrupts
+as soon as its probed. However when the interrupts trigger the bridge
+might not have been attached to a DRM device. As drm_helper_hpd_irq_event()
+does not check whether the passed in drm_device is valid or not, a NULL
+pointer passed in results in a kernel NULL pointer dereference in it.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Stable-dep-of: c76c6c4ecbec ("ARM: 9294/2: vfp: Fix broken softirq handling with instrumentation enabled")
+Check whether the bridge is attached and only trigger an HPD event if
+it is.
+
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20230202045734.2773503-1-wenst@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/vfp/entry.S |  1 +
- arch/arm/vfp/vfphw.S | 14 +++++++-------
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/vfp/entry.S b/arch/arm/vfp/entry.S
-index cfedc2a3dbd68..6dabb47617781 100644
---- a/arch/arm/vfp/entry.S
-+++ b/arch/arm/vfp/entry.S
-@@ -23,6 +23,7 @@
- @
- ENTRY(do_vfp)
- 	mov	r1, r10
-+	mov	r3, r9
-  	ldr	r4, .LCvfp
- 	ldr	pc, [r4]		@ call VFP entry point
- ENDPROC(do_vfp)
-diff --git a/arch/arm/vfp/vfphw.S b/arch/arm/vfp/vfphw.S
-index 6d056d810e486..60acd42e05786 100644
---- a/arch/arm/vfp/vfphw.S
-+++ b/arch/arm/vfp/vfphw.S
-@@ -7,7 +7,7 @@
-  *
-  * This code is called from the kernel's undefined instruction trap.
-  * r1 holds the thread_info pointer
-- * r9 holds the return address for successful handling.
-+ * r3 holds the return address for successful handling.
-  * lr holds the return address for unrecognised instructions.
-  * sp points to a struct pt_regs (as defined in include/asm/proc/ptrace.h)
-  */
-@@ -71,7 +71,7 @@
- @  r0  = instruction opcode (32-bit ARM or two 16-bit Thumb)
- @  r1  = thread_info pointer
- @  r2  = PC value to resume execution after successful emulation
--@  r9  = normal "successful" return address
-+@  r3  = normal "successful" return address
- @  lr  = unrecognised instruction return address
- @  IRQs enabled.
- ENTRY(vfp_support_entry)
-@@ -89,9 +89,9 @@ ENTRY(vfp_support_entry)
- 	bne	look_for_VFP_exceptions	@ VFP is already enabled
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index 9d085c05c49c3..d28326350ea93 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -1823,7 +1823,8 @@ static irqreturn_t mtk_dp_hpd_event_thread(int hpd, void *dev)
+ 	spin_unlock_irqrestore(&mtk_dp->irq_thread_lock, flags);
  
- 	DBGSTR1 "enable %x", r10
--	ldr	r3, vfp_current_hw_state_address
-+	ldr	r9, vfp_current_hw_state_address
- 	orr	r1, r1, #FPEXC_EN	@ user FPEXC has the enable bit set
--	ldr	r4, [r3, r11, lsl #2]	@ vfp_current_hw_state pointer
-+	ldr	r4, [r9, r11, lsl #2]	@ vfp_current_hw_state pointer
- 	bic	r5, r1, #FPEXC_EX	@ make sure exceptions are disabled
- 	cmp	r4, r10			@ this thread owns the hw context?
- #ifndef CONFIG_SMP
-@@ -150,7 +150,7 @@ vfp_reload_hw:
- #endif
+ 	if (status & MTK_DP_THREAD_CABLE_STATE_CHG) {
+-		drm_helper_hpd_irq_event(mtk_dp->bridge.dev);
++		if (mtk_dp->bridge.dev)
++			drm_helper_hpd_irq_event(mtk_dp->bridge.dev);
  
- 	DBGSTR1	"load state %p", r10
--	str	r10, [r3, r11, lsl #2]	@ update the vfp_current_hw_state pointer
-+	str	r10, [r9, r11, lsl #2]	@ update the vfp_current_hw_state pointer
- 					@ Load the saved state back into the VFP
- 	VFPFLDMIA r10, r5		@ reload the working registers while
- 					@ FPEXC is in a safe state
-@@ -180,7 +180,7 @@ vfp_hw_state_valid:
- 					@ always subtract 4 from the following
- 					@ instruction address.
- 	local_bh_enable_ti r10, r4
--	ret	r9			@ we think we have handled things
-+	ret	r3			@ we think we have handled things
- 
- 
- look_for_VFP_exceptions:
-@@ -210,7 +210,7 @@ skip:
- process_exception:
- 	DBGSTR	"bounce"
- 	mov	r2, sp			@ nothing stacked - regdump is at TOS
--	mov	lr, r9			@ setup for a return to the user code.
-+	mov	lr, r3			@ setup for a return to the user code.
- 
- 	@ Now call the C code to package up the bounce to the support code
- 	@   r0 holds the trigger instruction
+ 		if (!mtk_dp->train_info.cable_plugged_in) {
+ 			mtk_dp_disable_sdp_aui(mtk_dp);
 -- 
 2.39.2
 
