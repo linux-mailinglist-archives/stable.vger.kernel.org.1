@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B64F96FC846
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 15:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 712566FC84D
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 15:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235138AbjEIN4s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 09:56:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41942 "EHLO
+        id S234641AbjEIN6Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 09:58:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234641AbjEIN4r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 09:56:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10AB01FC2;
-        Tue,  9 May 2023 06:56:47 -0700 (PDT)
+        with ESMTP id S235650AbjEIN6P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 09:58:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783122D78;
+        Tue,  9 May 2023 06:58:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89C2162C1E;
-        Tue,  9 May 2023 13:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09477C433D2;
-        Tue,  9 May 2023 13:56:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D40F645EA;
+        Tue,  9 May 2023 13:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC32C4339E;
+        Tue,  9 May 2023 13:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683640605;
-        bh=iJ/mPW2noo5FchdVMAsquorvcNaKJ/8jol/a+17DyPM=;
+        s=korg; t=1683640693;
+        bh=hKYOb1Y6uVSCJFo5Pe7rnYRyoRJeFAculEqB99V3fG8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DmywGlVa6UAq363sBBZnxsj6gA/l48yeQwhWQ6DL6wyghUFY1C7ZC2fwpuQY8va5i
-         jdXVSAW+2gcqA4IrF6KVmtGiwLY74ZynC64Ql+iqwxC2KuulH5HagvTF9tPrZMTY+q
-         zXq5icaPAy4hUKeHFLh92+zTZYw2vIV6t8lbaVNk=
-Date:   Tue, 9 May 2023 15:56:42 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Rudi Heitbaum <rudi@heitbaum.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        ntfs3@lists.linux.dev, almaz.alexandrovich@paragon-software.com
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
-Message-ID: <2023050913-spearhead-angrily-fc58@gregkh>
-References: <20230509030705.399628514@linuxfoundation.org>
- <20230509080658.GA152864@d6921c044a31>
- <20230509131032.GA8@9ed91d9f7b3c>
+        b=EUDdRjUwCMStnBHKNgEoctZUg/8V/fPvnUrT8oHNoPqhxUIQihZMdi2rJXfqvFxDY
+         RaMbBhsVwgqTrRRfAeExMJ31+99qfUudMjrsVsufel85UGlw1NFk3HeFfrH1EezaUd
+         qt+QVZw6HO8PZosSm2CRPrhiU3mKsgvhveus3mSI=
+Date:   Tue, 9 May 2023 15:58:10 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        INV Git Commit <INV.git-commit@tdk.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: inv_icm42600: fix timestamp reset
+Message-ID: <2023050924-vegan-snooper-cddc@gregkh>
+References: <20230503204410.165035-1-inv.git-commit@tdk.com>
+ <20230506191017.659b5196@jic23-huawei>
+ <FR3P281MB175745F6D7149F6D9F488496CE769@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230509131032.GA8@9ed91d9f7b3c>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <FR3P281MB175745F6D7149F6D9F488496CE769@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,27 +55,15 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 01:10:32PM +0000, Rudi Heitbaum wrote:
-> On Tue, May 09, 2023 at 08:06:58AM +0000, Rudi Heitbaum wrote:
-> > On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.3.2 release.
-> > > There are 694 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> > > Anything received after that time might be too late.
-> > 
-> > Hi Greg,
-> > 
-> > 6.3.2-rc2 tested.
+On Tue, May 09, 2023 at 10:27:31AM +0000, Jean-Baptiste Maneyrol wrote:
+> Hi Jonathan,
 > 
-> Hi Greg,
-> 
-> Further testing and have seen ntfs3: NULL pointer dereference with ntfs_lookup errors 
-> with 6.3.2-rc2 (I have not seen this error before.) No other errors in the logs.
+> the signed off is for the email address we are using for sending email to the mailing list.
 
-Can you reproduce this without the extern, gpl-violation module loaded?
+Please read the documentation for what Signed-off-by: means, it is NOT
+for email aliases, it is a legal statement.
+
+Please remove it when you resend.
 
 thanks,
 
