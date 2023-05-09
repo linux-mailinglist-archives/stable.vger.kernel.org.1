@@ -2,66 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0639F6FCE7F
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 21:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CB226FCE8E
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 21:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234922AbjEITY5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 15:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52468 "EHLO
+        id S234919AbjEITao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 15:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234686AbjEITYv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 15:24:51 -0400
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5967519D
-        for <stable@vger.kernel.org>; Tue,  9 May 2023 12:24:50 -0700 (PDT)
-Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-44fc48d993fso2265742e0c.1
-        for <stable@vger.kernel.org>; Tue, 09 May 2023 12:24:50 -0700 (PDT)
+        with ESMTP id S234410AbjEITao (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 15:30:44 -0400
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79BBE52
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 12:30:42 -0700 (PDT)
+Received: by mail-ua1-x935.google.com with SMTP id a1e0cc1a2514c-77d0419750eso1652461241.2
+        for <stable@vger.kernel.org>; Tue, 09 May 2023 12:30:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683660289; x=1686252289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8IiXlzVjPWNjMDVf9eo1m4vSOqBrngb4nz7OkCPHkxY=;
-        b=zUDlyq4tUf/VjpTweHN21KAob+U1M5Sq3Po9Z3SxX8EeRXergY7FH4n2xo5DsIcCri
-         QyN48OUNi+XXeY1P+LY9xonupHliOAHEJNYyASrdIpSIQ+lIX7aD5vozZ+4OdG+t9AKT
-         bLGMD1+fTpQzekUASMBhEP2iT1xvk+BwN3tr1fmrXbMCu5tbvK3q2plK+hb45+sGLC2r
-         6ouyuHewJjQIerewNZsPBmbwr5P8ieG4gWtpyvfcHuOPsNgF8g6X7JSiRsia3TubWDD0
-         I0o9BMpWGl4TdoDIsQvSA6cQJgdCg1YGuQrc6XzW7SfNEikuK88j/uKoMUgmR1TPDQHe
-         4zOg==
+        d=linaro.org; s=google; t=1683660642; x=1686252642;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yDoEr8WUcosWAB75TDES0XOSAOF70d3PYdw53BsU/vk=;
+        b=ZsEvVKJUooBL3kBWnwS/yGvHSKL06QhfHH8U9mp8k1NQa6oiAay5POTOjtD2MEkkVs
+         CnY0SjzBIiU/I4j4tZ3I0LBw6QO1tMsqnHUOAcyZ4UpLVVocmb7dNXei4KLphxWOZfyN
+         0/+wPgLft0o3PZ6+7cNysdw4C1gsZe+uOtpauquOYh8F3ZOkJ5pynm6mmpahCAi5Flx8
+         AUFhcDQVyFpT2keS7OPJmXQT1OMFd9KjWj8c3gxRRx5vf44Yu8/a+uQ70AL106SKBDF7
+         2b2yluloOXQtUrtfdj/c9MFYTmaD/jfG+r749/E/ik5Ic5bWMCpGxX1znI02jwSPTz/g
+         RXZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683660289; x=1686252289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8IiXlzVjPWNjMDVf9eo1m4vSOqBrngb4nz7OkCPHkxY=;
-        b=gH52gelxdVDeozFFNztvsQFWdgYCgyjrKdR2NTGkyvscgUYmabd3eibVABuOs9PZBa
-         z4dsypB/8lRtXcLujxawrLFZX35iG4qRv9t/u6AuPKxH5KivUz5RRFK35556r5OzHnmh
-         wOxKR6zJ8Nek27jPryWWRwtIRLO1mjGoJ9NddZf/lAmK3UgJjt9Jp4TInxOiYqicIhlj
-         E/WYeV5VZpr5iGItkwWgjlkGw56Z1njZ6Je7PAK5kxQhh4DnVG8+xc1Nle6TO9lRYtLX
-         wiSOPYq08/1q/dnBz/esFZDhz8CqjZTGxvvbApVXRWTlf/gJtnNgyA/D6EUYMyD4awC3
-         7AeA==
-X-Gm-Message-State: AC+VfDySqc65ywndyZUd42/OXQWg8EnxiglHct89Vj6qMjh1q1DDP1BF
-        rl9Lo/qpzFrS4wSh8B3KVagTv24NMKVe3BBlXNKekQ==
-X-Google-Smtp-Source: ACHHUZ7bdODG2ROfWT3zLbHHFz58vz+kU8t4yb5IbLWLxD+Hy8KsqzjNxV6hF4GR2NfPI1f8ABRpoTbK4Ta7rUEcAF0=
-X-Received: by 2002:a1f:ca03:0:b0:440:8a24:e71d with SMTP id
- a3-20020a1fca03000000b004408a24e71dmr3930486vkg.3.1683660289246; Tue, 09 May
- 2023 12:24:49 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683660642; x=1686252642;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yDoEr8WUcosWAB75TDES0XOSAOF70d3PYdw53BsU/vk=;
+        b=OZPNvUJWzOx5DuV+v1sC53swOxfXQ8+xAjNZZOMR4MJeqeR4puxIa6DbXaoi2HFbI6
+         ALDPLyBqD+L84vQAF9B+Mtj3q0tU1fnO9BrqESq77NcF37bOv//EAdeYyhmI5rJit4xx
+         J9n4qBusek6dwBjJrw37WQX2WoI7ADQ5DjqBFnRhG59/DKT4uVcGoRgYK/b6LLTTTBr/
+         H5omOSjtB5Le3awxe2lpL+mkB5WZcZy7IPQOH3lxXx7OoKMmlXXkCFQPJadL9M+g4SH/
+         igGBMj2itLd1Dt/1S0D2Gq5DYREpf0tyH69GG3g5A6R5x1FgIXnTQ0273ERBQ8d25QcR
+         3LQQ==
+X-Gm-Message-State: AC+VfDzbdk3tYilXBN9lEWQuJ+CN/D/Z+NUBnwrzk3LvhbU78FYB4khT
+        VlMPgbSwmrY9QdZVbybTnnFLs1W04pJ00frqx4vihA==
+X-Google-Smtp-Source: ACHHUZ5fYrN1bZ1MeR0WEVPl0NR6Kbq8GyLkmS3HqomWcgnKMgebrUFYqSL+BI/lDoWX3+QFhnJCEqwg1ULmh/7Lxls=
+X-Received: by 2002:a67:fd98:0:b0:430:e0:ac2e with SMTP id k24-20020a67fd98000000b0043000e0ac2emr4792589vsq.15.1683660641705;
+ Tue, 09 May 2023 12:30:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230509030705.399628514@linuxfoundation.org>
-In-Reply-To: <20230509030705.399628514@linuxfoundation.org>
+References: <20230509030705.399628514@linuxfoundation.org> <20230509080658.GA152864@d6921c044a31>
+ <20230509131032.GA8@9ed91d9f7b3c> <2023050913-spearhead-angrily-fc58@gregkh> <20230509145806.GA8@df3c0d7ae0b0>
+In-Reply-To: <20230509145806.GA8@df3c0d7ae0b0>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 10 May 2023 00:54:37 +0530
-Message-ID: <CA+G9fYuQZDSpqt2JHiyXwbJtnTfdZv2XA811sPJq+6vvwdouVw@mail.gmail.com>
+Date:   Wed, 10 May 2023 01:00:30 +0530
+Message-ID: <CA+G9fYuCLSuPchYoSfqnu6y+CUV+Km3TVFr1NhGj0dik-ScEdQ@mail.gmail.com>
 Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+To:     Rudi Heitbaum <rudi@heitbaum.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        ntfs3@lists.linux.dev, almaz.alexandrovich@paragon-software.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -72,166 +72,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 9 May 2023 at 08:56, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, 9 May 2023 at 20:28, Rudi Heitbaum <rudi@heitbaum.com> wrote:
 >
-> This is the start of the stable review cycle for the 6.3.2 release.
-> There are 694 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.3.2-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.3.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> On Tue, May 09, 2023 at 03:56:42PM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, May 09, 2023 at 01:10:32PM +0000, Rudi Heitbaum wrote:
+> > > On Tue, May 09, 2023 at 08:06:58AM +0000, Rudi Heitbaum wrote:
+> > > > On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.3.2 release.
+> > > > > There are 694 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > >
+> > > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > > > > Anything received after that time might be too late.
+> > > >
+> > > > Hi Greg,
+> > > >
+> > > > 6.3.2-rc2 tested.
+> > >
+> > > Hi Greg,
+> > >
+> > > Further testing and have seen ntfs3: NULL pointer dereference with ntfs_lookup errors
+> > > with 6.3.2-rc2 (I have not seen this error before.) No other errors in the logs.
+> >
+> > Can you reproduce this without the extern, gpl-violation module loaded?
 
+Please share the steps to reproduce
+ test case / Kconfigs / device under test environment / firmware / boot loaders.
 
-
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.3.2-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git branch: linux-6.3.y
-* git commit: f1bb4e945e5219450ada73892d323d09f590efca
-* git describe: v6.3-rc4-1630-gf1bb4e945e52
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3-r=
-c4-1630-gf1bb4e945e52
-
-## Test Regressions (compared to v6.3-rc4-935-gf45bb34ed520)
-
-## Metric Regressions (compared to v6.3-rc4-935-gf45bb34ed520)
-
-## Test Fixes (compared to v6.3-rc4-935-gf45bb34ed520)
-
-## Metric Fixes (compared to v6.3-rc4-935-gf45bb34ed520)
-
-## Test result summary
-total: 278269, pass: 244914, fail: 4454, skip: 28654, xfail: 247
-
-## Build Summary
-* arc: 15 total, 15 passed, 0 failed
-* arm: 395 total, 392 passed, 3 failed
-* arm64: 105 total, 105 passed, 0 failed
-* i386: 74 total, 72 passed, 2 failed
-* mips: 52 total, 52 passed, 0 failed
-* parisc: 12 total, 12 passed, 0 failed
-* powerpc: 68 total, 68 passed, 0 failed
-* riscv: 44 total, 44 passed, 0 failed
-* s390: 24 total, 24 passed, 0 failed
-* sh: 24 total, 24 passed, 0 failed
-* sparc: 12 total, 12 passed, 0 failed
-* x86_64: 84 total, 84 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+- Naresh
