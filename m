@@ -2,62 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FD566FBF3B
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 08:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 200A76FBF5F
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 08:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234777AbjEIG3y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 02:29:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39212 "EHLO
+        id S234941AbjEIGju (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 02:39:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234648AbjEIG3x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 02:29:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F84A65A4;
-        Mon,  8 May 2023 23:29:52 -0700 (PDT)
+        with ESMTP id S234771AbjEIGji (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 02:39:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D275BDC53;
+        Mon,  8 May 2023 23:39:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D00861683;
-        Tue,  9 May 2023 06:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771BFC433D2;
-        Tue,  9 May 2023 06:29:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4640A61BB8;
+        Tue,  9 May 2023 06:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D82C433EF;
+        Tue,  9 May 2023 06:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683613791;
-        bh=EWKmzmpmpIPk+tYsSQfEsNi+FvW3K1hTnV5qm+E9KKA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PVgirDeM/TOBShMWhAS+cU40d4jVIskEqHM8d5CurWK62swipZHL/6lIpnN4cLj6g
-         Mz8PczXzf8QDPDcvc26jO5YWEe1bsVlclARetdRywIQ75p1i/M9N+5ft6FNd0UF7u3
-         L+QgTa/8Tx9NKhV6X6qLz5kjpg7t18EGA55ajR9PxdKRiwJKJBcCd+k3+2bYSUG713
-         yDsL1gadY+5na7qGbXD9HH3Bl1xacva4wj4KwMLoPkDGq1U6+wzQgnqH9wyVtZT3wM
-         V4hdDvirNpLq0j3DLeVQV7Il9FsnMlwVR7eVTLU4yOVtSIJ2W0n0AgeOu5qoLekQXk
-         dK+bqrFUzKG8w==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1pwGrS-0007EC-Mt; Tue, 09 May 2023 08:30:10 +0200
-Date:   Tue, 9 May 2023 08:30:10 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Udipto Goswami <quic_ugoswami@quicinc.com>
-Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pratham Pratap <quic_ppratap@quicinc.com>,
-        Jack Pham <quic_jackp@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v9] usb: dwc3: debugfs: Prevent any register access when
- devices is runtime suspended
-Message-ID: <ZFnoctKuC2i2T8qV@hovoldconsulting.com>
-References: <20230505155103.30098-1-quic_ugoswami@quicinc.com>
- <20230506013036.j533xncixkky5uf6@synopsys.com>
- <ZFjePu8Wb6NUwCav@hovoldconsulting.com>
- <34a33b09-20aa-13e3-e4bd-c8b5854450a4@quicinc.com>
+        s=k20201202; t=1683614356;
+        bh=INBPQ8y3g/7EUeHHHVr3w5P6C4GQfzSlBDZrauXOIOg=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=e9vK78zS97QkvcJoQT5DpVwfb7YnqqQRm6YUkseC8Wib9fzMIMVGsOoxurlNOSHWi
+         7HrvxlTZa0tYgRpJht19+lZ/zqn05VKWE5FI2eKDfXPcXdmehNy2nxuQFBUXmc+TYo
+         hYq7tDsniCGTNUhTV0CxpcEjXTU/f6DDOzp9vqmkYI1/yGOXm2HjZqrn+wK1WgTkTw
+         yuweZx0+iuga43ADxxqLs0cA1UPImcsF1yxRpCS9gv8NK1CW/kN+jRVX2xfuFRlFNR
+         BIV4qb4KRlX9wH1q2lglnrUZ4b/Hv9cCmCIKFgtX5RWs0f2RBJKh1cTTcN5PRWcoIq
+         AKP1g8QD6JXOA==
+From:   Mark Brown <broonie@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jerome Neanne <jneanne@baylibre.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     stable@vger.kernel.org, khilman@baylibre.com, msp@baylibre.com,
+        j-keerthy@ti.com
+In-Reply-To: <20230507144656.192800-1-krzysztof.kozlowski@linaro.org>
+References: <20230507144656.192800-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [RESEND PATCH] regulator: tps65219: Fix matching interrupts
+ for their regulators
+Message-Id: <168361435149.303261.3406346409850990450.b4-ty@kernel.org>
+Date:   Tue, 09 May 2023 15:39:11 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34a33b09-20aa-13e3-e4bd-c8b5854450a4@quicinc.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bfdf5
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,33 +59,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 08, 2023 at 09:18:17PM +0530, Udipto Goswami wrote:
-
-> > I believe this should be backported as it fixes a crash/hang.
-> > 
-> > The stable rules are flexible, but it may also be possible to break the
-> > patch up in pieces and add a corresponding Fixes tag.
+On Sun, 07 May 2023 16:46:56 +0200, Krzysztof Kozlowski wrote:
+> The driver's probe() first registers regulators in a loop and then in a
+> second loop passes them as irq data to the interrupt handlers.  However
+> the function to get the regulator for given name
+> tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
+> not pointer, thus the second loop assigned always same value - from
+> previous loop.  The interrupts, when fired, where executed with wrong
+> data.  Compiler also noticed it:
 > 
-> Agree, I will add a fixes tag for the oldest change that introduced the 
-> debugfs attributes instead of breaking it to multiple patches and adding 
-> fixes for each one. (I think the present code changes can stay in one 
-> patch as we are fixing the same issue in all the functions).
-> 
-> Let me know if you think otherwise?
+> [...]
 
-Sounds good to me. Note that the fix depends on 
+Applied to
 
-	30332eeefec8 ("debugfs: regset32: Add Runtime PM support")
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-which went into 5.7.
+Thanks!
 
-This can be documented as
+[1/1] regulator: tps65219: Fix matching interrupts for their regulators
+      commit: f050e56de80591fee55bedbdf5b6b998c740cd0c
 
-	Cc: stable@vger.kernel.org	# 3.2: 30332eeefec8: debugfs: regset32: Add Runtime PM support
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-(see Documentation/process/stable-kernel-rules.rst).
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Note that this issue appears to have been there since the driver was
-first merged in 3.2.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Johan
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
