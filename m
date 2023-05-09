@@ -2,58 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0963C6FD177
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DC036FD186
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236333AbjEIVdA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 17:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55278 "EHLO
+        id S230177AbjEIVh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 17:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236356AbjEIVcr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:32:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826A4A268;
-        Tue,  9 May 2023 14:31:38 -0700 (PDT)
+        with ESMTP id S235241AbjEIVh5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:37:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796947D8E
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 14:37:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A06A61375;
-        Tue,  9 May 2023 21:30:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DB0C4339B;
-        Tue,  9 May 2023 21:30:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7686B61375
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 21:37:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E884C433D2;
+        Tue,  9 May 2023 21:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683667849;
-        bh=TV3iq4M+Rv3zhN9J5JlzxPrprg0eHHr6VLCMjCYMMck=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hqOXwCPhHpvlfvzNC2XLzHgxG6WH5eSr1z2xMCH6cEAjKQ9hMLdEmWMxKmDCViYlO
-         WcM7J6XBLvSp3D1CTAoCK6B2cn+W5fp3jw/iA+NXkQzoNENtST3VVTN6dzUnFIXFmT
-         zGZYYtzlGxgoOLPR+40NiZ9zCUCZklYazMVbtZg64Fq2sZpbadAXxNruiQ8N3i0v93
-         pZoUl8gKJMVhMZdLTBzM08jL1qWOlOW4uRX0v7y33U7hjDmQ3z29V/kIeJzqzYu7Pr
-         1PPh1ukZhHJOBxxBos4OVhoW6corTf/PSE7OSTTq0SZlYsDoyEy987B2Jdux/pf4KQ
-         2Ba+/nvpqd3UA==
-Date:   Tue, 9 May 2023 22:30:44 +0100
+        s=k20201202; t=1683668256;
+        bh=/qMD6Gzx42SZa/kvnOtKImiPphXGirzLMrCTaV+CjKI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UToau5gobOlzya/rfKvuy8LmtsPuVdvnBk6T9UnDVFuvwCyNPN4DGbDHHnd5Ic3pr
+         Dj5+TyXUS1/6THMaNiTEDUD2dm4AULnXwDpPbgcOwugZpKCrJDWvT17gEWHGal8DJF
+         3WpoPDit/GorQ9Xm1Ok/35lfNtS73WTcKnEBI2T9Oxm/zb0NLz55SnvNk71oXIfTBJ
+         KypMXAjPFRbWa7R13LN0tGpZVWKKZU93DB97EbQwr09BaIu10LZ0XelVx6z1U7yQl4
+         67/FPFBRD6se9KfqYl4KCnZ5HGy3hvjOfQh/ac5XO5TxARRGvTPYKBD10ndswY26JB
+         AFO7l8hePIPZg==
 From:   Conor Dooley <conor@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 000/610] 6.1.28-rc2 review
-Message-ID: <20230509-tacking-polo-d841ebfffcd0@spud>
-References: <20230509030653.039732630@linuxfoundation.org>
- <0837e157-8615-418a-a3d3-1c14af11aba5@roeck-us.net>
- <20230509-robust-crate-5fe128d00e6d@spud>
- <ce667220-5803-4b6a-a2d2-f538289af584@roeck-us.net>
+To:     stable@vger.kernel.org
+Cc:     conor@kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+        palmer@dabbelt.com, Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 v1] RISC-V: fix lock splat in riscv_cpufeature_patch_func()
+Date:   Tue,  9 May 2023 22:36:42 +0100
+Message-Id: <20230509-suspend-labrador-3eb6f0a8ac77@spud>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XZAFXv1xCRIWO+qY"
-Content-Disposition: inline
-In-Reply-To: <ce667220-5803-4b6a-a2d2-f538289af584@roeck-us.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1402; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=cmpJvMcC7Z+LVB1dS1TVFP8k1KKVKAPgETqIEvmqKW8=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDClRe55vW3P6zboCn0tlpde53dzlpUUFWlxNNNeZaUew7 Z9S8Uyho5SFQYyDQVZMkSXxdl+L1Po/Ljuce97CzGFlAhnCwMUpABNR2sLw3+farX8zy509pD1X sx30ZOLOymgvX+ggPsNFjdVFfekBLkaGGzfkKtT6ijfHyV8U4j/Mmscj1rxsc0HiOv/qqQ9kfx7 jBwA=
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,86 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Conor Dooley <conor.dooley@microchip.com>
 
---XZAFXv1xCRIWO+qY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Guenter reported a lockdep splat that appears to have been present for a
+while in v6.1.y & the backports of the riscv_patch_in_stop_machine dance
+did nothing to help here, as the lock is not being taken when
+patch_text_nosync() is called in riscv_cpufeature_patch_func().
+Add the lock/unlock; elide the splat.
 
-On Tue, May 09, 2023 at 02:18:35PM -0700, Guenter Roeck wrote:
-> On Tue, May 09, 2023 at 09:41:42PM +0100, Conor Dooley wrote:
-> > On Tue, May 09, 2023 at 12:57:58PM -0700, Guenter Roeck wrote:
-> > > On Tue, May 09, 2023 at 05:26:31AM +0200, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 6.1.28 release.
-> > > > There are 610 patches in this series, all will be posted as a respo=
-nse
-> > > > to this one.  If anyone has any issues with these being applied, pl=
-ease
-> > > > let me know.
-> > > >=20
-> > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> > > > Anything received after that time might be too late.
-> > > >=20
-> > >=20
-> > > Build results:
-> > > 	total: 155 pass: 155 fail: 0
-> > > Qemu test results:
-> > > 	total: 519 pass: 519 fail: 0
-> > >=20
-> > > New persistent runtime warning when booting riscv32/64 images:
-> >=20
-> > You sure this is new? I seem to be able to reproduce for QEMU (which I
->=20
-> New for my tests, yes.
->=20
-> > don't usually test) in several versions of 6.1. Don't see it in (my)
-> > hardware though, as the particular platform doesn't end up calling the
-> > offending function. Out of curiosity, what's your QEMU invocation?
->=20
-> Example boot from initrd:
->=20
-> qemu-system-riscv64 -M virt -m 512M \
->      -no-reboot -kernel arch/riscv/boot/Image \
->      -initrd rootfs.cpio \
->      -device e1000,netdev=3Dnet0 \
->      -netdev user,id=3Dnet0 -bios default \
->      -append "panic=3D-1 rdinit=3D/sbin/init console=3DttyS0,115200 early=
-con=3Duart8250,mmio,0x10000000,115200" \
->      -nographic -monitor none
+Fixes: c15ac4fd60d5 ("riscv/ftrace: Add dynamic function tracer support")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+cc: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ arch/riscv/kernel/cpufeature.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Cool, was mainly interested in seeing if you were explicitly enabling
-any ISA extensions. NGL, I expected to see some.
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 694267d1fe81..fd1238df6149 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -9,6 +9,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/ctype.h>
+ #include <linux/libfdt.h>
++#include <linux/memory.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <asm/alternative.h>
+@@ -316,8 +317,11 @@ void __init_or_module riscv_cpufeature_patch_func(struct alt_entry *begin,
+ 		}
+ 
+ 		tmp = (1U << alt->errata_id);
+-		if (cpu_req_feature & tmp)
++		if (cpu_req_feature & tmp) {
++			mutex_lock(&text_mutex);
+ 			patch_text_nosync(alt->old_ptr, alt->alt_ptr, alt->alt_len);
++			mutex_unlock(&text_mutex);
++		}
+ 	}
+ }
+ #endif
+-- 
+2.39.2
 
-> qemu version is 8.0, but I don't think that makes a difference.
-
-I'm on 7.2.50 (v7.2.0-2653-g7080c3ab79-dirty) as it is where I ended
-during my last bisection of QEMU. But aye, makes no odds - I see it on a
-more recent 8.0.50 version too.
-
-> What does your command line look like ?
-
-In this particular instance:
-	qemu-system-riscv64 -M virt \
-		-m 2G -smp 5 \
-		-nographic \
-		-kernel $(vmlinux_bin) \
-		-initrd $(initramfs)
-
-> > Anyways, looks like a partial backport is the cause. How's it look with:
-
-> This fixes the problem for me.
-
-Cool, shall send it as a real patch. Thanks.
-
---XZAFXv1xCRIWO+qY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFq7gwAKCRB4tDGHoIJi
-0pWvAQDpsknEvAm568mJ3lmPfIERipnx+EYNfwlScWRVYAPZTgD/UnSqcJTWGhHz
-An66ZI9Yfv3VaPqoUvYIezKns6Xa/w0=
-=LNau
------END PGP SIGNATURE-----
-
---XZAFXv1xCRIWO+qY--
