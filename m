@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52D326FD140
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0963C6FD177
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236150AbjEIVYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 17:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38402 "EHLO
+        id S236333AbjEIVdA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 17:33:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236065AbjEIVXz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:23:55 -0400
+        with ESMTP id S236356AbjEIVcr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:32:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59116A4B;
-        Tue,  9 May 2023 14:21:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826A4A268;
+        Tue,  9 May 2023 14:31:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A131763751;
-        Tue,  9 May 2023 21:21:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2694C433EF;
-        Tue,  9 May 2023 21:21:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A06A61375;
+        Tue,  9 May 2023 21:30:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DB0C4339B;
+        Tue,  9 May 2023 21:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683667284;
-        bh=3n+SNcNMcP7hfTQJNvXdLvIKxdODuYOCP6fDOZ6oYRM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wh5GiaHviEVzgKuAkD+iQLftXWVsHl5gLt80IkekrS5LpXRNYe2w2/7n77iplbe1X
-         ZsRYY5CDzLlQn5EtjmX0HUfLYEixw23hPCMlIv5/VOZB+o/GIoV47vgpPl9C7/QS5a
-         FL1A49NfqyuOk3VP6OgC7fxNN5E3jV2VSkx1L2SWyOdY/GmPfD2pW9AE+PUDQ0EP6E
-         PWgKnuAyUu0xLJpxltlQEeoHAM8Vp0RRAI+g6VEjc4FWPoOHMtNAfnY0LtfOvVvQW/
-         j8hyPSSD5ik6E5k8mfBQEpD6C+//acSXTFXQELuW7SwY90jvd3A9Bsjg+OsZxn8ht4
-         l7eBAcSlrICCA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Vicki Pfau <vi@endrift.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>, rojtberg@gmail.com,
-        nate@yocom.org, mkorpershoek@baylibre.com, radon86dev@gmail.com,
-        s.demassari@gmail.com, chaorace@gmail.com,
-        linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 2/2] Input: xpad - add constants for GIP interface numbers
-Date:   Tue,  9 May 2023 17:21:15 -0400
-Message-Id: <20230509212115.22774-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230509212115.22774-1-sashal@kernel.org>
-References: <20230509212115.22774-1-sashal@kernel.org>
+        s=k20201202; t=1683667849;
+        bh=TV3iq4M+Rv3zhN9J5JlzxPrprg0eHHr6VLCMjCYMMck=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hqOXwCPhHpvlfvzNC2XLzHgxG6WH5eSr1z2xMCH6cEAjKQ9hMLdEmWMxKmDCViYlO
+         WcM7J6XBLvSp3D1CTAoCK6B2cn+W5fp3jw/iA+NXkQzoNENtST3VVTN6dzUnFIXFmT
+         zGZYYtzlGxgoOLPR+40NiZ9zCUCZklYazMVbtZg64Fq2sZpbadAXxNruiQ8N3i0v93
+         pZoUl8gKJMVhMZdLTBzM08jL1qWOlOW4uRX0v7y33U7hjDmQ3z29V/kIeJzqzYu7Pr
+         1PPh1ukZhHJOBxxBos4OVhoW6corTf/PSE7OSTTq0SZlYsDoyEy987B2Jdux/pf4KQ
+         2Ba+/nvpqd3UA==
+Date:   Tue, 9 May 2023 22:30:44 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.1 000/610] 6.1.28-rc2 review
+Message-ID: <20230509-tacking-polo-d841ebfffcd0@spud>
+References: <20230509030653.039732630@linuxfoundation.org>
+ <0837e157-8615-418a-a3d3-1c14af11aba5@roeck-us.net>
+ <20230509-robust-crate-5fe128d00e6d@spud>
+ <ce667220-5803-4b6a-a2d2-f538289af584@roeck-us.net>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="XZAFXv1xCRIWO+qY"
+Content-Disposition: inline
+In-Reply-To: <ce667220-5803-4b6a-a2d2-f538289af584@roeck-us.net>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,45 +62,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit f9b2e603c6216824e34dc9a67205d98ccc9a41ca ]
+--XZAFXv1xCRIWO+qY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Wired GIP devices present multiple interfaces with the same USB identification
-other than the interface number. This adds constants for differentiating two of
-them and uses them where appropriate
+On Tue, May 09, 2023 at 02:18:35PM -0700, Guenter Roeck wrote:
+> On Tue, May 09, 2023 at 09:41:42PM +0100, Conor Dooley wrote:
+> > On Tue, May 09, 2023 at 12:57:58PM -0700, Guenter Roeck wrote:
+> > > On Tue, May 09, 2023 at 05:26:31AM +0200, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.1.28 release.
+> > > > There are 610 patches in this series, all will be posted as a respo=
+nse
+> > > > to this one.  If anyone has any issues with these being applied, pl=
+ease
+> > > > let me know.
+> > > >=20
+> > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > > > Anything received after that time might be too late.
+> > > >=20
+> > >=20
+> > > Build results:
+> > > 	total: 155 pass: 155 fail: 0
+> > > Qemu test results:
+> > > 	total: 519 pass: 519 fail: 0
+> > >=20
+> > > New persistent runtime warning when booting riscv32/64 images:
+> >=20
+> > You sure this is new? I seem to be able to reproduce for QEMU (which I
+>=20
+> New for my tests, yes.
+>=20
+> > don't usually test) in several versions of 6.1. Don't see it in (my)
+> > hardware though, as the particular platform doesn't end up calling the
+> > offending function. Out of curiosity, what's your QEMU invocation?
+>=20
+> Example boot from initrd:
+>=20
+> qemu-system-riscv64 -M virt -m 512M \
+>      -no-reboot -kernel arch/riscv/boot/Image \
+>      -initrd rootfs.cpio \
+>      -device e1000,netdev=3Dnet0 \
+>      -netdev user,id=3Dnet0 -bios default \
+>      -append "panic=3D-1 rdinit=3D/sbin/init console=3DttyS0,115200 early=
+con=3Duart8250,mmio,0x10000000,115200" \
+>      -nographic -monitor none
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20230411031650.960322-2-vi@endrift.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/input/joystick/xpad.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Cool, was mainly interested in seeing if you were explicitly enabling
+any ISA extensions. NGL, I expected to see some.
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 1a12f95227301..f1c2bc108fd76 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -506,6 +506,9 @@ struct xboxone_init_packet {
- 	}
- 
- 
-+#define GIP_WIRED_INTF_DATA 0
-+#define GIP_WIRED_INTF_AUDIO 1
-+
- /*
-  * This packet is required for all Xbox One pads with 2015
-  * or later firmware installed (or present from the factory).
-@@ -1830,7 +1833,7 @@ static int xpad_probe(struct usb_interface *intf, const struct usb_device_id *id
- 	}
- 
- 	if (xpad->xtype == XTYPE_XBOXONE &&
--	    intf->cur_altsetting->desc.bInterfaceNumber != 0) {
-+	    intf->cur_altsetting->desc.bInterfaceNumber != GIP_WIRED_INTF_DATA) {
- 		/*
- 		 * The Xbox One controller lists three interfaces all with the
- 		 * same interface class, subclass and protocol. Differentiate by
--- 
-2.39.2
+> qemu version is 8.0, but I don't think that makes a difference.
 
+I'm on 7.2.50 (v7.2.0-2653-g7080c3ab79-dirty) as it is where I ended
+during my last bisection of QEMU. But aye, makes no odds - I see it on a
+more recent 8.0.50 version too.
+
+> What does your command line look like ?
+
+In this particular instance:
+	qemu-system-riscv64 -M virt \
+		-m 2G -smp 5 \
+		-nographic \
+		-kernel $(vmlinux_bin) \
+		-initrd $(initramfs)
+
+> > Anyways, looks like a partial backport is the cause. How's it look with:
+
+> This fixes the problem for me.
+
+Cool, shall send it as a real patch. Thanks.
+
+--XZAFXv1xCRIWO+qY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFq7gwAKCRB4tDGHoIJi
+0pWvAQDpsknEvAm568mJ3lmPfIERipnx+EYNfwlScWRVYAPZTgD/UnSqcJTWGhHz
+An66ZI9Yfv3VaPqoUvYIezKns6Xa/w0=
+=LNau
+-----END PGP SIGNATURE-----
+
+--XZAFXv1xCRIWO+qY--
