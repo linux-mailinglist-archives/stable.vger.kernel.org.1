@@ -2,98 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A226FC63B
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 14:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E396FC713
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 14:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235205AbjEIMZ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 08:25:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35576 "EHLO
+        id S229520AbjEIMv5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 08:51:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235053AbjEIMZ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 08:25:28 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7126C44AF;
-        Tue,  9 May 2023 05:25:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1683635127; x=1715171127;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ijkGrW+2rpFL4Y0gLu0veMBivtrLnsxJY0JGpTtZ9Bk=;
-  b=VzdDXSnu7ppy6LMg/3wIq90VQzfw8zFHkoJqkgbVQoiYwpBAtTgb8YSX
-   OTJtXp09ZkLv3oKvN6WWDUZuYp1mA7n3CBOf7bRIj0NQ9xXbx5Q1NHJ8e
-   icncKEGmkYEq9pB5a87VhLcVLriOVPnJa0QZwTzMLk0MIOhtOEr+QQc5M
-   jnCvhBpPtdQBoQzDR0uZnvj1sA4l1eN7cDRNcJBYgUG8GZNT+MZnW+Rj1
-   rlGViWXWkWHq4f5AJweDA/DbfpGM1XdknAsWzruRS4/vVwzL/7iNviFsb
-   VIE7lhIC3Q3TWE8J8oGk1CnF8FD+D4GM96unL2zFuKbR66Z2Ih6amC6ha
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.99,262,1677567600"; 
-   d="asc'?scan'208";a="210342933"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 May 2023 05:25:26 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 9 May 2023 05:25:25 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Tue, 9 May 2023 05:25:22 -0700
-Date:   Tue, 9 May 2023 13:25:03 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
-Message-ID: <20230509-reheat-enclosure-c0f8fcf7f157@wendy>
-References: <20230509030705.399628514@linuxfoundation.org>
+        with ESMTP id S234756AbjEIMv4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 08:51:56 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898552D59
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 05:51:51 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3078a3f3b5fso3180294f8f.0
+        for <stable@vger.kernel.org>; Tue, 09 May 2023 05:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1683636710; x=1686228710;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fIRJ3tMbu1kEKHicGn7aNqHPuLMGYkIYm5dUP4PgE7E=;
+        b=yPjLeVDCgLXB3qhHZo7tFpYH3aJE6pz3KGf2TkDACAHQvFX5Eo3IEtaPgPj9EP90cD
+         LrMVAPn54Duu7Mc2pukHlShMIcJE6OH6huUwbcrlX/839YsVHckOTA6Ldwj6nltGZOHm
+         MtgahIoVAJQquOwWSfLs9gCcC57lfgv468nMG753UCZcJoBjOYYWSiXNWZvUEtuYoj7e
+         Z49PDGEwWlre6RmaafE8nuezMhGLTUWUeAKUzNaphY+RGy/Hu998TKwQDnzo5MZVMEjl
+         7mKE2FkISYuDCeVo/v8sLqu8pFRuXI90xcgz0KwBPSHiYH1GDHmOMzzl1+bpkgvwMpMF
+         Ynxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683636710; x=1686228710;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fIRJ3tMbu1kEKHicGn7aNqHPuLMGYkIYm5dUP4PgE7E=;
+        b=B4AFeYZeMJL4Bb+grkA8S9H1j3KAhq1vDfOXZpWNtKxcwTVy1u4Mh5/Jm6Q7t/jH7V
+         353JmzkyUF+NyLWyPlFrGEY4UEr59TFbCRReuz7r4kb+fj76ObQ90h/2iv7F9M9Dreub
+         C/A+KTEh1CcukFxq4hVBUB7Q6s5f44UpN5vpS+1QpsDD3XOPcTCkvfLIc1am2gGK/Z+Y
+         3wf1MRBVPDkI3ESv6281BzJVkCaTXqU4UZHFmeTWWeaqC10rmEZZXtKs+DZONXpQIxdZ
+         aH7TFtZPDMoZ9EWIi84mX4DIMDf1gw4OlU8GYZ62BkKemfnbYK+HmJe6AS2QLYSfKyd0
+         j/bA==
+X-Gm-Message-State: AC+VfDywodxVhTV6x2qVSrM0ArHhQ6uc+iSN2mnzNXdHZZWcqsRihOKG
+        bQ1e1NARUMjJq8DXObp6DwJ8YyqbJeCs6qcqJFg=
+X-Google-Smtp-Source: ACHHUZ4j9+YZEOybBKRrGkxJd3xOcGyAokDMpAbrHKlVbbT89qoBbzZ5yexf0f2MtUWaNojUjOL7yg==
+X-Received: by 2002:a5d:6b41:0:b0:307:14a6:ef97 with SMTP id x1-20020a5d6b41000000b0030714a6ef97mr9905270wrw.67.1683636709795;
+        Tue, 09 May 2023 05:51:49 -0700 (PDT)
+Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
+        by smtp.gmail.com with ESMTPSA id s6-20020adff806000000b003068f5cca8csm14131733wrp.94.2023.05.09.05.51.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 05:51:49 -0700 (PDT)
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+To:     stable@vger.kernel.org
+Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>,
+        kernel test robot <lkp@intel.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 5.15.110 v2] RISC-V: Fix up a cherry-pick warning in setup_vm_final()
+Date:   Tue,  9 May 2023 14:51:41 +0200
+Message-Id: <20230509125141.95587-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9nh3UvsGBTT76EVo"
-Content-Disposition: inline
-In-Reply-To: <20230509030705.399628514@linuxfoundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---9nh3UvsGBTT76EVo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This triggers a -Wdeclaration-after-statement as the code has changed a
+bit since upstream.  It might be better to hoist the whole block up, but
+this is a smaller change so I went with it.
 
-On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.2 release.
-> There are 694 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+arch/riscv/mm/init.c:755:16: warning: mixing declarations and code is a C99 extension [-Wdeclaration-after-statement]
+             unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
+                           ^
+     1 warning generated.
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: bbf94b042155 ("riscv: Move early dtb mapping into the fixmap region")
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202304300429.SXZOA5up-lkp@intel.com/
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+---
 
-Thanks,
-Conor.
+v2:
+- Fix rv64 warning introduced by the v1
+- Add Fixes tag
 
---9nh3UvsGBTT76EVo
-Content-Type: application/pgp-signature; name="signature.asc"
+ arch/riscv/mm/init.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index e800d7981e99..a382623e91cf 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -716,6 +716,7 @@ static void __init setup_vm_final(void)
+ {
+ 	uintptr_t va, map_size;
+ 	phys_addr_t pa, start, end;
++	unsigned long idx __maybe_unused;
+ 	u64 i;
+ 
+ 	/**
+@@ -735,7 +736,7 @@ static void __init setup_vm_final(void)
+ 	 * directly in swapper_pg_dir in addition to the pgd entry that points
+ 	 * to fixmap_pte.
+ 	 */
+-	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
++	idx = pgd_index(__fix_to_virt(FIX_FDT));
+ 
+ 	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
+ #endif
+-- 
+2.37.2
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFo7nwAKCRB4tDGHoIJi
-0rXdAQCStlcR0Mkfx/k9Pb/1gFsKOiO1GZCFh66yXngIdynN/QEAyex3G0ZVNS/F
-qe2nUILynK5mjBX5La5rIPAZCi7NAQw=
-=MJU6
------END PGP SIGNATURE-----
-
---9nh3UvsGBTT76EVo--
