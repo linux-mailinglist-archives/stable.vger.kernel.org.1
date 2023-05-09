@@ -2,105 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 714086FCBA7
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 18:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 570BE6FCBB7
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 18:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229575AbjEIQtl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 12:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        id S234438AbjEIQw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 12:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjEIQtk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 12:49:40 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BAA61725;
-        Tue,  9 May 2023 09:49:39 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-75773a7bd66so308362085a.1;
-        Tue, 09 May 2023 09:49:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683650978; x=1686242978;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+v/X+OxvTsGwJMDiA5a3JO4hrqmYlFbvSipw3tCkW7k=;
-        b=mi18ne7/zmw24M0PE5a/jix7FCxVRAPj2OWezMOLK435O6KTl91ufM7ecY/3An5FlG
-         3eDIxoiYdu6nOfrJG1xvexSDGBBA8iftptyC0At0dA4g4TSRiM+tkA3sJL8/LCj+5u2H
-         Bvl8EJoSWHQqjhd+Qtaly9hiW0mzpXzSC+Ff/OGOg6C6OOPVed4LlRAo/4/qB/c9FXM3
-         qAAJNsx/YYbRNnn7PHjDliADKFOFEmo3AV9DioKrvGDQHhEqFe3NYV0/YaryXGzVXliQ
-         7RKZFyJhAY3QPNhuyesiQtVX9bbyj1FqAqLttQffgFNCN5QhF4Ip9Qbx0BWt/7pTO0US
-         besA==
+        with ESMTP id S233712AbjEIQw0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 12:52:26 -0400
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CD81BD3
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 09:51:41 -0700 (PDT)
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7577ef2fa31so782367985a.0
+        for <stable@vger.kernel.org>; Tue, 09 May 2023 09:51:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683650978; x=1686242978;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+v/X+OxvTsGwJMDiA5a3JO4hrqmYlFbvSipw3tCkW7k=;
-        b=DraFSfJAYldTwMvMM8xq0QNwz2oBAKqXGg4DNDS3VRzD8A2q4X9XlmXibFSYXO2GnW
-         YVn7vnmj36oSeThnBVpaFGkpb/SZGKdY2V6GxbabhrKPbplD9s6KlIK4yehZfYoJHsfP
-         9GOor5Ol1WwFKnPURMTzSESOAMWxven20+7u5jCaOFLbJtT1TXOo10l0nfIXtO3di7c7
-         JH9XtAC+kJaDiqhc3X9wYLJKZpwVOmhwJsKAPdMgE5kyBI3yIwwnSFyvFIHUAPthhlv3
-         QflFPQiIth5M4htQE+t8IF7kvatqGlpwwZWyXX2pOEmbdV+cY8BTfWJxhwoOhgsbR5EJ
-         zq+A==
-X-Gm-Message-State: AC+VfDx3SWShDz91uhp68LF2g7jkJRjeplCzqGsTVavRymu/FncyKaVR
-        ioL0qVeR9pruf/QQ9VxixNo=
-X-Google-Smtp-Source: ACHHUZ4KMC8JbEB3svxiOe6ARE2a/tn5H49VSw4ZqmLxsz8hib28t5obbwshSIBb3QlXSqLgXxD0Vg==
-X-Received: by 2002:a05:6214:1243:b0:5c5:1a25:edf0 with SMTP id r3-20020a056214124300b005c51a25edf0mr21819667qvv.26.1683650978520;
-        Tue, 09 May 2023 09:49:38 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id u2-20020a0cdd02000000b005ef6128255bsm875900qvk.92.2023.05.09.09.49.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 May 2023 09:49:37 -0700 (PDT)
-Message-ID: <1f7ec6f8-dc61-9ea0-a7c6-1a51d69d0610@gmail.com>
-Date:   Tue, 9 May 2023 09:49:33 -0700
+        d=1e100.net; s=20221208; t=1683651100; x=1686243100;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8AiXugarlhHToBN2ueOGwWaX5E4llz8s13EASoB3wVI=;
+        b=dRw4U7P9c/V4kzIp7lMKdp4H6FrSFNDgd/Q82X3QdNBJVFd8YpkVHrj1+XpySzgfOX
+         9lCiQq71T0ycnlKNDvr2xRE0ao2u6EvndiAGKHXIKavw2hXKSN2vjIl4Z9Sb/M4VW+lf
+         JQS6/Ze+m4t9GnmTb4y3aREgbmmzvpZgIzI6jNdklH0JTZH0Hl/ghgTtA20OrG4iZUwP
+         0r4aiUEIh5fQXWbKB2FqKrSFPvF6aQuN4CcgnXmgsA0eVJENxUKQpfLJ1bzIwVPXCWcT
+         JAVf8zHvEWQMaSwcj1/nN0eAAoIJVAR3S5odNbmvKZLYcAce8/hmTdlMCHJtuvLshmEi
+         8v2g==
+X-Gm-Message-State: AC+VfDy37SfRBC+r9muIyGY2d5CveZoKWaaqX36dkH55BUoKzzlQY2BM
+        S009+IwG76tNfmOQgr/OVX6M
+X-Google-Smtp-Source: ACHHUZ4xRyujKImbkSQcW8Z759B/taKjk2/BBWT+4ePbKXa9irKnpFPNPIQc/SyDOhMLc66FmfxRwA==
+X-Received: by 2002:a05:6214:29c7:b0:56e:c066:3cd2 with SMTP id gh7-20020a05621429c700b0056ec0663cd2mr19939922qvb.2.1683651100740;
+        Tue, 09 May 2023 09:51:40 -0700 (PDT)
+Received: from localhost ([217.138.208.150])
+        by smtp.gmail.com with ESMTPSA id m4-20020a0cf184000000b0061b3338d6d9sm890247qvl.50.2023.05.09.09.51.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 09:51:40 -0700 (PDT)
+Date:   Tue, 9 May 2023 12:51:38 -0400
+From:   Mike Snitzer <snitzer@kernel.org>
+To:     Sarthak Kukreti <sarthakkukreti@chromium.org>
+Cc:     dm-devel@redhat.com, linux-block@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Theodore Ts'o <tytso@mit.edu>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Jason Wang <jasowang@redhat.com>,
+        Bart Van Assche <bvanassche@google.com>,
+        stable@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Brian Foster <bfoster@redhat.com>,
+        Alasdair Kergon <agk@redhat.com>
+Subject: Re: [PATCH v6 1/5] block: Don't invalidate pagecache for invalid
+ falloc modes
+Message-ID: <ZFp6GphV3H0eyrH+@redhat.com>
+References: <20230420004850.297045-1-sarthakkukreti@chromium.org>
+ <20230506062909.74601-1-sarthakkukreti@chromium.org>
+ <20230506062909.74601-2-sarthakkukreti@chromium.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 5.15 000/370] 5.15.111-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-References: <20230509030611.521807993@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230509030611.521807993@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230506062909.74601-2-sarthakkukreti@chromium.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/8/23 20:26, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.111 release.
-> There are 370 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.111-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Sat, May 06 2023 at  2:29P -0400,
+Sarthak Kukreti <sarthakkukreti@chromium.org> wrote:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+> Only call truncate_bdev_range() if the fallocate mode is
+> supported. This fixes a bug where data in the pagecache
+> could be invalidated if the fallocate() was called on the
+> block device with an invalid mode.
+> 
+> Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
+> Cc: stable@vger.kernel.org
+> Reported-by: Darrick J. Wong <djwong@kernel.org>
+> Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
 
-Tested-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
-
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
