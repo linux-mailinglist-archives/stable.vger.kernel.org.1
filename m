@@ -2,96 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E741F6FCEF4
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 22:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16F6C6FCFB3
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 22:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbjEIUAW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 16:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42398 "EHLO
+        id S229572AbjEIUlv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 16:41:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbjEIUAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 16:00:20 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0153C0D;
-        Tue,  9 May 2023 13:00:18 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6438d95f447so4421559b3a.3;
-        Tue, 09 May 2023 13:00:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683662418; x=1686254418;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OKKLAFyTiJU1GoBQgK70evF0DF5IZgIk1ne0+KMszP4=;
-        b=NGRA+5knmlP+GE4YkAOjgBOfSo3q+WTkUeDaOzjGZEkGESrM1cZppswykv1VK/TSkC
-         wGpDhAwZzLAIamlZyoaL82gojJQubWXhjmi93UpjYVFScF1M6hZyWig3Vm0Cl1dNrFdU
-         iONuzABrWOoOa0Gs1JsLXtY1dsjFoBKtVPx7wErZr3B9nepKJ6/A0gcUMA38Vd63Vd8M
-         D0cG3CO1NuS114dMsxsuEeALkQqSMP3INv0KBAyT4Xo6NBpjyGqFqqG34g2PA6z6iYi5
-         Dg851LL26Ku9fFI4Qhp2bKfO6eLodWR2BRgJSu3g5W9SbvCDWU++J9gkUaOqO8aNlmcd
-         yM5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683662418; x=1686254418;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OKKLAFyTiJU1GoBQgK70evF0DF5IZgIk1ne0+KMszP4=;
-        b=DDrDVePAZjR4FO9sBmh6/xWBkBulF2ghxe+tF0hpxY3whE8i2YwoHnwqe0es+Bl/n3
-         05f1TMumKkOqfV0vJvhHis+3Rfxya8EQVJEIeAngrzbzDiflJz4A9E2TcuOlpwuIZnUx
-         gk7sUNwsgvMFCxwiJdsY95VRLmXNMrxLEQbYOJPr/KfCutXjT6RuWREyQywPiEjb5AVf
-         heIR1kU9mx8sSPRnqvVJSnDzm32D6y88rsOSUNnUzYIco42YcZJwhiW0lGkldeOYOmmC
-         bhXMzMs/SFf8vaWALibrD7odZ4t795uPOHXedtYk8Sme9AXm2+N75+T2CVG/akqdgMF1
-         l6Pg==
-X-Gm-Message-State: AC+VfDxig0V2ettPaPckUx4xKT35Z5vwxY6/X38ABzmnAb8d8nubHADF
-        B6H/le4SSYuebJNj6fbF7CM=
-X-Google-Smtp-Source: ACHHUZ78WwXLcgQG9GilCWGtRMvh3SkxYYobB2xWTmaO/k8z3A50U90Dx+SiHD/iaqexy0v/EJvm1Q==
-X-Received: by 2002:a05:6a00:2344:b0:643:b68b:dd08 with SMTP id j4-20020a056a00234400b00643b68bdd08mr17639679pfj.30.1683662417927;
-        Tue, 09 May 2023 13:00:17 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c21-20020aa78c15000000b0063b8a30b571sm2155625pfd.9.2023.05.09.13.00.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 13:00:17 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 9 May 2023 13:00:16 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        with ESMTP id S235087AbjEIUlu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 16:41:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAB2E4A;
+        Tue,  9 May 2023 13:41:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D72962E9A;
+        Tue,  9 May 2023 20:41:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0BDC433EF;
+        Tue,  9 May 2023 20:41:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683664907;
+        bh=p7gqrjaa3BLpQFidpX4R4K9UjjHkyxfu2VmA/bZDg4o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Zh8SgB1qAxHsKtO9C1bFv1mRmgH1gELHqELdIX6SRGYExXHrfFNFaRSrg7yyzCJ5a
+         VPrRf99KWWVorUjkQ216ZuZG6iA4EIecaWaxQ5yqTMIsuFAW1b4SHAhM4UsdfkApci
+         Hv6EC1kVbWTJonTgGZRCcI5rHN7UVPwJEMPY33SYJzxZtWxCm2Q12rcFISJbke132B
+         0orLwyKxNtiesi+TCmA/IhxBbHh0mRexxclGE6pSZeHRyunmtOgLIu9GuaEeVhBIvX
+         y5m8nhoGOcrP5EmE91eceGPYABWT9pSYJsuGomiiSX600JJrmRDlLCgwHoqmbIybdI
+         CFKD05dUhfVeg==
+Date:   Tue, 9 May 2023 21:41:42 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
-Message-ID: <73d76fe5-81c6-464c-8926-e10a1b9ddffb@roeck-us.net>
-References: <20230509030705.399628514@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 000/610] 6.1.28-rc2 review
+Message-ID: <20230509-robust-crate-5fe128d00e6d@spud>
+References: <20230509030653.039732630@linuxfoundation.org>
+ <0837e157-8615-418a-a3d3-1c14af11aba5@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="dPlG/RYuOnEulgQG"
 Content-Disposition: inline
-In-Reply-To: <20230509030705.399628514@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <0837e157-8615-418a-a3d3-1c14af11aba5@roeck-us.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.2 release.
-> There are 694 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> Anything received after that time might be too late.
-> 
 
-Build results:
-	total: 153 pass: 153 fail: 0
-Qemu test results:
-	total: 520 pass: 520 fail: 0
+--dPlG/RYuOnEulgQG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+On Tue, May 09, 2023 at 12:57:58PM -0700, Guenter Roeck wrote:
+> On Tue, May 09, 2023 at 05:26:31AM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.28 release.
+> > There are 610 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >=20
+> > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > Anything received after that time might be too late.
+> >=20
+>=20
+> Build results:
+> 	total: 155 pass: 155 fail: 0
+> Qemu test results:
+> 	total: 519 pass: 519 fail: 0
+>=20
+> New persistent runtime warning when booting riscv32/64 images:
 
-Guenter
+You sure this is new? I seem to be able to reproduce for QEMU (which I
+don't usually test) in several versions of 6.1. Don't see it in (my)
+hardware though, as the particular platform doesn't end up calling the
+offending function. Out of curiosity, what's your QEMU invocation?
+
+Anyways, looks like a partial backport is the cause. How's it look with:
+
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 694267d1fe81..fd1238df6149 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -9,6 +9,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/ctype.h>
+ #include <linux/libfdt.h>
++#include <linux/memory.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <asm/alternative.h>
+@@ -316,8 +317,11 @@ void __init_or_module riscv_cpufeature_patch_func(stru=
+ct alt_entry *begin,
+ 		}
+=20
+ 		tmp =3D (1U << alt->errata_id);
+-		if (cpu_req_feature & tmp)
++		if (cpu_req_feature & tmp) {
++			mutex_lock(&text_mutex);
+ 			patch_text_nosync(alt->old_ptr, alt->alt_ptr, alt->alt_len);
++			mutex_unlock(&text_mutex);
++		}
+ 	}
+ }
+ #endif
+
+
+--dPlG/RYuOnEulgQG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFqwBQAKCRB4tDGHoIJi
+0kM+AP9mKBjfrOyYoDc67TNucbnE9c6dNPmztCZ0QCsJmIB+oAD9EIjXXj2Lt/JO
+9RCBwNWZe7IRi0/mz287+r4DFtmmwgY=
+=eiF8
+-----END PGP SIGNATURE-----
+
+--dPlG/RYuOnEulgQG--
