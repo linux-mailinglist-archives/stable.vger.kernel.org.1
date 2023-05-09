@@ -2,246 +2,273 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 328AF6FCD01
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 19:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA5F86FCD37
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 20:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233120AbjEIRuS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 13:50:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52924 "EHLO
+        id S234795AbjEISGH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 14:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbjEIRuR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 13:50:17 -0400
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B15E3AAD
-        for <stable@vger.kernel.org>; Tue,  9 May 2023 10:50:15 -0700 (PDT)
-Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-780b35fc823so2649795241.2
-        for <stable@vger.kernel.org>; Tue, 09 May 2023 10:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683654614; x=1686246614;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I4aNOaTI8HiaBrpvAYz/uvXyLMZm5BRoMqS/hObU+XE=;
-        b=SXWFRvj6GM+4X5hIZsN1P46oQ/o6sYM/TzLa0dX/TKmILWG4Dh/2bWieF+u4eJEdw6
-         9VBVyz94opxC1fRm7PrLMdCVFAN7zRaLZ5TqJYG7RZtQ/6IS0M1ymqEkDOhmvPSqg1AC
-         kjS9HuUjvMcBa2If6aict7y/xjj7mLsbybrYzSeL0jnwvn1j7WEzOxDUjePusMWEayRO
-         LShXcSL1sBj3aioz4He3xsBbD3X1cSHzoOIyOssNi4H9m2xZzvMvELSOwWSH4NuzvmHZ
-         HtveXtYCRJJt4Q5W3da9oYkr0N0VCi9R3KrcUxx4Y2t1e/RnD3vsgsDJBP+VKERlkVzQ
-         nNxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683654614; x=1686246614;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I4aNOaTI8HiaBrpvAYz/uvXyLMZm5BRoMqS/hObU+XE=;
-        b=FhxGodpoUot+nCDMNlhINha6RJJH+CZkyX4be2sG13LK7F4gupRA3MFw57YWSoXU8K
-         FnYXR2cNSz1CM1eHtCBJSgfikfoDaSrWO7ZDpssK9mWGrbrt/o2ZCUlEgFiH3sIAJnAi
-         fgB0CSIr55cTkJcNjUTYxVUqEsRAAMILS0OBe9ry5vqlFfN4d2ylZBl6VDJEbPVcoIRf
-         A/ENMUsefSQfP94Cu9WsjmAh9Bl/7IDPU4SR2gtGRcmH4QdCj6qYgv6ajD2ZmATjX5sR
-         K15K3VvmbMccKxvrzZat+05WqcHJcc22WThIijCyHlZbrecGr6Py319zyhWyXTzujmTE
-         FYqQ==
-X-Gm-Message-State: AC+VfDxTsqzA2QfYt+xP8K9Y6zNuRh9PkYjXM+Gr3tpn2KnX0HsBh4aI
-        duw3CekMFBT3yCuJKhT36IhUD4kO7gdyWvdkgHOeKA==
-X-Google-Smtp-Source: ACHHUZ4stgvON85kZzf7mBh1ADWZQPAzzLfTGueFSGoY4xHrKTmxyknnwwnoA+zMTop4ntucSfSTceleXS1WPRE3NM0=
-X-Received: by 2002:a67:e3bc:0:b0:42f:78d5:d987 with SMTP id
- j28-20020a67e3bc000000b0042f78d5d987mr4749675vsm.1.1683654614028; Tue, 09 May
- 2023 10:50:14 -0700 (PDT)
+        with ESMTP id S233813AbjEISGG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 14:06:06 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D866448D;
+        Tue,  9 May 2023 11:06:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IZYV2FYjw2GpCBd1XGDRLIgV/U5JCLWNq/6Bw0uJLthRhgO648TlcqO9NABDrYRMIEw8PNTBxqUpzhF+1gd5xcINHNCCEfUybY4F8XI80k5r8XMVyEoWpmnhfdgvuCsqcpGiHh3c08xlDj6dpJJdZuUQ1viY/JJSetsdDmtpjX3OVFp7w8Gu2SvSCDu8kHc+FlwOu2KBv8JPePee4SG6FDZ6hC/muFFKNPOYRTsOhVmGgWCKY6C1bo8EQNMm1hN/SPKvS9/kmnMm9yl3bFkx3VfPWxBI9ougCqilqU8zMtBcjTL7sVKW5vssRTvy/8VcIqZ7Puze6SxP6peg8xzLIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sUp3YkeCTwRdescTIfzzWbX376iMRu3vChpGue1dJXc=;
+ b=kdGlBqtQaBr29Rzk9iM4UyFzV+txNa6RpOF5HwRX3D1uaoWHulP1GqjF7ypdBG2ZcmEsSQ5f4v1FlvLouVbOYsA3xDtz8yvfjifZpT1QBLcDJR/p7TnR5psRJUADMMqpPiRy6hQKSF5K/871llcT2y5Qz0dtau57Xvat6AyefgH8TeNlfVo/zOqUwbXRkw3yihaKrgXY4YTqsxfQgXIOrbUJ3HCwIwJ2RoE6ybh2B0/qyMPV6xVZ8/llxy9NXCHTGTIeyW8A2MhnLtyg0MYPOjczFbXOQyt7F/2JHdakX3Or/i7Hvmo7840Yzs/F0hGaZbCT71z0mgYQ6TO/3PV6ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sUp3YkeCTwRdescTIfzzWbX376iMRu3vChpGue1dJXc=;
+ b=RrC0hFQuNLQQOeuKvuvHFu534g1j/I9kUzSm+0pCYmx/rc1j4rSot1GzcKKpxCv+3sMYXobfG8w8Kit+kY2g1eAIXBb+jzpL1DPG/BIT1v/gsPhO1ks1IicLOb9upiK1OLQzIpTeVMUCncAwEb9MqQ1Q7/agN2qPJKH2jl+erIw=
+Received: from MW2PR2101CA0035.namprd21.prod.outlook.com (2603:10b6:302:1::48)
+ by SJ2PR12MB8782.namprd12.prod.outlook.com (2603:10b6:a03:4d0::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.32; Tue, 9 May
+ 2023 18:05:58 +0000
+Received: from CO1NAM11FT021.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:302:1:cafe::5f) by MW2PR2101CA0035.outlook.office365.com
+ (2603:10b6:302:1::48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.4 via Frontend
+ Transport; Tue, 9 May 2023 18:05:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT021.mail.protection.outlook.com (10.13.175.51) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6363.33 via Frontend Transport; Tue, 9 May 2023 18:05:58 +0000
+Received: from beas.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 9 May
+ 2023 13:05:51 -0500
+From:   Wyes Karny <wyes.karny@amd.com>
+To:     <ray.huang@amd.com>, <rafael@kernel.org>,
+        <viresh.kumar@linaro.org>, <srinivas.pandruvada@linux.intel.com>,
+        <lenb@kernel.org>
+CC:     <mingo@redhat.com>, <peterz@infradead.org>,
+        <juri.lelli@redhat.com>, <vincent.guittot@linaro.org>,
+        <dietmar.eggemann@arm.com>, <rostedt@goodmis.org>,
+        <bsegall@google.com>, <mgorman@suse.de>, <joel@joelfernandes.org>,
+        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Wyes Karny <wyes.karny@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2 1/2] cpufreq/schedutil: Remove fast_switch_possible flag if driver doesn't set fast_switch
+Date:   Tue, 9 May 2023 18:05:02 +0000
+Message-ID: <20230509180503.739208-2-wyes.karny@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230509180503.739208-1-wyes.karny@amd.com>
+References: <20230509180503.739208-1-wyes.karny@amd.com>
 MIME-Version: 1.0
-References: <20230509030653.039732630@linuxfoundation.org>
-In-Reply-To: <20230509030653.039732630@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 9 May 2023 23:20:02 +0530
-Message-ID: <CA+G9fYtHRB8n_TxA6CrPfkP7FwL6N5Umg1ate_HA+PeLeoqw1A@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/610] 6.1.28-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT021:EE_|SJ2PR12MB8782:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb994f30-98a3-426b-b077-08db50b80a91
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3CAFiV3kWOu0oQQl5o2SrskB3chFaLzLImpeKYRRfFrGE6T6VUr0I/twRGi/yZgqqIAR0Dtx5595Adjad6uIEzMYx40YwVGf7Bhl+5SrzQ5n7wdw9iKs5IiEVrWPvkAFs+n2KaDTljNXqG7f4JeX4e2wfPuw3n3vtlC/HYJ3vlp8TZQcI167RaL4PXEhJY5uiDWxDbSziJUjY9eAWyLZFHUBmfLQgtCEQ8fOT1lAr3LHEwl/C9G4Kn5CwOBikVbqPaqjBfyY4DVo4VT8odnsuJOwZht9t6Td8cv0JOfSPhjrFTr+IBER9o3nJ0DufDcAL/JtDzciSHVLUPXfNOiU/ilwLIe6+MWBoLECCImaxvU/pbJV/n38Gnrkd42j04ww7LStFWHV1d0K1FIo/CjDC8mY286sTwAMi3NXujuKeD+G7zcbpopisQtLUGUdDSj4QtQsKkcLHaDwUCKF60c0jltkltGagWI1w2lbUuLF0BtSoUySrnoAzPNWt9BjefjYJF7Lpce2eG2lt/o7/DZVEcjMKnKG+KesCrwFTYRHEAGC0AHxuwcIXKsc9vD07yHopcs4OG2hWnJdhovdbfunCifyVWi28MVriq/zCDc4SIOMwEGypND7icgOLSjOMfgQen5Tqcgtl7P9ZJaEO/oHgwFtkE1FWEElv3scLL6YirmMu0209FT7KzIW8IIF7vkdx1mNAbYQPb8bASNL+LyB0mBAablCLO/rc37n+POo+fP98jc+V7wzAyurEzN+LWzlCp7YMSQbvkgeIfPq7IgmUFqODbJM7nFQluiFJedsFR0=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(396003)(346002)(39860400002)(451199021)(46966006)(40470700004)(36840700001)(16526019)(81166007)(356005)(478600001)(7696005)(110136005)(54906003)(8936002)(44832011)(7416002)(86362001)(70586007)(70206006)(82310400005)(4326008)(6666004)(316002)(8676002)(41300700001)(40480700001)(26005)(2616005)(336012)(47076005)(83380400001)(82740400003)(186003)(1076003)(2906002)(40460700003)(36756003)(426003)(36860700001)(5660300002)(2101003)(36900700001)(309714004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2023 18:05:58.3175
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb994f30-98a3-426b-b077-08db50b80a91
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT021.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8782
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 9 May 2023 at 08:56, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.28 release.
-> There are 610 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.28-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The set value of `fast_switch_enabled` indicates that fast_switch
+callback is set. For some drivers such as amd_pstate and intel_pstate,
+the adjust_perf callback is used but it still sets
+`fast_switch_possible` flag. This is because this flag also decides
+whether schedutil governor selects adjust_perf function for frequency
+update. This condition in the schedutil governor forces the scaling
+driver to set the `fast_switch_possible` flag.
 
+Remove `fast_switch_enabled` check when schedutil decides to select
+adjust_perf function for frequency update. Thus removing this drivers
+are now free to remove `fast_switch_possible` flag if they don't use
+fast_switch callback.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+This issue becomes apparent when aperf/mperf overflow occurs.  When this
+happens, kernel disables frequency invariance calculation which causes
+schedutil to fallback to sugov_update_single_freq which currently relies
+on the fast_switch callback.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Normal flow:
+  sugov_update_single_perf
+    cpufreq_driver_adjust_perf
+      cpufreq_driver->adjust_perf
 
-## Build
-* kernel: 6.1.28-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git branch: linux-6.1.y
-* git commit: 2b7e1f92aa55cac65688b3de87716bbd0cbfb88d
-* git describe: v6.1.22-1202-g2b7e1f92aa55
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.2=
-2-1202-g2b7e1f92aa55
+Error case flow:
+  sugov_update_single_perf
+    sugov_update_single_freq  <-- This is chosen because the freq invariant is disabled due to aperf/mperf overflow
+      cpufreq_driver_fast_switch
+         cpufreq_driver->fast_switch <-- Here NULL pointer dereference is happening, because fast_switch is not set
 
-## Test Regressions (compared to v6.1.22-591-g58b654bf36db)
+This change fixes this NULL pointer dereference issue.
 
-## Metric Regressions (compared to v6.1.22-591-g58b654bf36db)
+Fixes: a61dec744745 ("cpufreq: schedutil: Avoid missing updates for one-CPU policies")
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
 
-## Test Fixes (compared to v6.1.22-591-g58b654bf36db)
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/cpufreq/amd-pstate.c     | 10 +++++++---
+ drivers/cpufreq/cpufreq.c        | 20 +++++++++++++++++++-
+ drivers/cpufreq/intel_pstate.c   |  3 +--
+ include/linux/cpufreq.h          |  1 +
+ kernel/sched/cpufreq_schedutil.c |  2 +-
+ 5 files changed, 29 insertions(+), 7 deletions(-)
 
-## Metric Fixes (compared to v6.1.22-591-g58b654bf36db)
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 5a3d4aa0f45a..007bfe724a6a 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -671,8 +671,14 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
+ 	/* It will be updated by governor */
+ 	policy->cur = policy->cpuinfo.min_freq;
+ 
++	/**
++	 * For shared memory system frequency update takes time that's why
++	 * do this in deferred kthread context.
++	 */
+ 	if (boot_cpu_has(X86_FEATURE_CPPC))
+-		policy->fast_switch_possible = true;
++		current_pstate_driver->adjust_perf = amd_pstate_adjust_perf;
++	else
++		current_pstate_driver->adjust_perf = NULL;
+ 
+ 	ret = freq_qos_add_request(&policy->constraints, &cpudata->req[0],
+ 				   FREQ_QOS_MIN, policy->cpuinfo.min_freq);
+@@ -697,8 +703,6 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
+ 	policy->driver_data = cpudata;
+ 
+ 	amd_pstate_boost_init(cpudata);
+-	if (!current_pstate_driver->adjust_perf)
+-		current_pstate_driver->adjust_perf = amd_pstate_adjust_perf;
+ 
+ 	return 0;
+ 
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 6b52ebe5a890..366747012104 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -501,6 +501,13 @@ void cpufreq_enable_fast_switch(struct cpufreq_policy *policy)
+ 	if (!policy->fast_switch_possible)
+ 		return;
+ 
++	/**
++	 * It's not expected driver's fast_switch callback is not set
++	 * even fast_switch_possible is true.
++	 */
++	if (WARN_ON(!cpufreq_driver_has_fast_switch()))
++		return;
++
+ 	mutex_lock(&cpufreq_fast_switch_lock);
+ 	if (cpufreq_fast_switch_count >= 0) {
+ 		cpufreq_fast_switch_count++;
+@@ -2143,6 +2150,17 @@ unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
+ }
+ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+ 
++/**
++ * cpufreq_driver_has_fast_switch - Check "fast switch" callback.
++ *
++ * Return 'true' if the ->fast_switch callback is present for the
++ * current driver or 'false' otherwise.
++ */
++bool cpufreq_driver_has_fast_switch(void)
++{
++	return !!cpufreq_driver->fast_switch;
++}
++
+ /**
+  * cpufreq_driver_adjust_perf - Adjust CPU performance level in one go.
+  * @cpu: Target CPU.
+@@ -2157,7 +2175,7 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+  * and it is expected to select a suitable performance level equal to or above
+  * @min_perf and preferably equal to or below @target_perf.
+  *
+- * This function must not be called if policy->fast_switch_enabled is unset.
++ * By default this function takes the fast frequency update path.
+  *
+  * Governors calling this function must guarantee that it will never be invoked
+  * twice in parallel for the same CPU and that it will never be called in
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 2548ec92faa2..007893514c87 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2698,8 +2698,6 @@ static int __intel_pstate_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	intel_pstate_init_acpi_perf_limits(policy);
+ 
+-	policy->fast_switch_possible = true;
+-
+ 	return 0;
+ }
+ 
+@@ -2955,6 +2953,7 @@ static int intel_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	if (ret)
+ 		return ret;
+ 
++	policy->fast_switch_possible = true;
+ 	policy->cpuinfo.transition_latency = INTEL_CPUFREQ_TRANSITION_LATENCY;
+ 	/* This reflects the intel_pstate_get_cpu_pstates() setting. */
+ 	policy->cur = policy->cpuinfo.min_freq;
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 26e2eb399484..7a32cfca26c9 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -604,6 +604,7 @@ struct cpufreq_governor {
+ /* Pass a target to the cpufreq driver */
+ unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
+ 					unsigned int target_freq);
++bool cpufreq_driver_has_fast_switch(void);
+ void cpufreq_driver_adjust_perf(unsigned int cpu,
+ 				unsigned long min_perf,
+ 				unsigned long target_perf,
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index e3211455b203..f993ecf731a9 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -776,7 +776,7 @@ static int sugov_start(struct cpufreq_policy *policy)
+ 
+ 	if (policy_is_shared(policy))
+ 		uu = sugov_update_shared;
+-	else if (policy->fast_switch_enabled && cpufreq_driver_has_adjust_perf())
++	else if (cpufreq_driver_has_adjust_perf())
+ 		uu = sugov_update_single_perf;
+ 	else
+ 		uu = sugov_update_single_freq;
+-- 
+2.34.1
 
-## Test result summary
-total: 326453, pass: 278244, fail: 7551, skip: 40056, xfail: 602
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 297 total, 295 passed, 2 failed
-* arm64: 104 total, 103 passed, 1 failed
-* i386: 78 total, 74 passed, 4 failed
-* mips: 56 total, 54 passed, 2 failed
-* parisc: 14 total, 14 passed, 0 failed
-* powerpc: 72 total, 70 passed, 2 failed
-* riscv: 28 total, 27 passed, 1 failed
-* s390: 28 total, 28 passed, 0 failed
-* sh: 26 total, 24 passed, 2 failed
-* sparc: 14 total, 14 passed, 0 failed
-* x86_64: 88 total, 88 passed, 0 failed
-
-## Test suites summary
-* boot
-* fwts
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
