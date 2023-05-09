@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D23F6FBE41
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 06:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5FF6FBE54
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 06:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbjEIEgo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 00:36:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57730 "EHLO
+        id S234728AbjEIEoK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 00:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234813AbjEIEgX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 00:36:23 -0400
+        with ESMTP id S234636AbjEIEoJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 00:44:09 -0400
 Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F975BA0;
-        Mon,  8 May 2023 21:36:17 -0700 (PDT)
-Date:   Tue, 9 May 2023 06:36:15 +0200
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BAF76B9;
+        Mon,  8 May 2023 21:44:08 -0700 (PDT)
+Date:   Tue, 9 May 2023 06:44:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
-        s=202107; t=1683606975;
-        bh=4L2k8yoVXH7taiXhw9yvMHB9i7QcSIXSWcXxH8K+BqQ=;
+        s=202107; t=1683607447;
+        bh=YTDR7qmYHBvbgVIe6NbUQdxeZFCXkg67/GXnGv3XqNE=;
         h=Date:From:To:Subject:Message-ID:References:MIME-Version:
          Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
          From:from:in-reply-to:in-reply-to:message-id:mime-version:
          references:reply-to:Sender:Subject:Subject:To:To;
-        b=QYlEhup9rVs3NGMnC1k0WbXSvV/Z+hS41k/i222r8RzQ7j+n5dU13kevgSqV4WtTF
-         AnMB1l/u/KKFMxtq1Res7Y0YCYPEQGPFumGKhr1roaOPp5POd3m1e7KacpbkX1gtkK
-         DrQc1IV9ROEbgwKfYBzL4mtcdvvXa0RtQzw3W7DdzPzUPt60Yq9TlqJcf64kxyEC2A
-         ImWO/kHY63cun+uYLClRwjwXsJyq43wgy/lJ6iXeypeH4dkSFsv2rqtofTcqKiLWx6
-         CCddIALYr0sOR53Dt32Ydt/6Q6U3Jn6rnaixQCWuohdhVqlmEsefklipAycK0mJpkL
-         jrExrFPTbCbAQ==
+        b=gCshGcVF36YssyL1+3+i4w/IJitd2I8VvYL1FHGPlTqS6jcTr1+3TgAvSvAAkTKd8
+         5oTk+CAdX3uMw7KqMFkQtjX5JW16TsZdNjgjuQLHk4aDyUAHeB6LcYsvlaI+WXwpni
+         NXClmFrNNnbD8f6kiKIfUo0mjV6UiTuwtCBOW1XKsJ1x0n+T5jrWdxhPxP2WAXqCkg
+         msHRH8pjgrdhXE/MlniAecQrkL3qDUprlgy85SJKzq9Z/Vofiti2u+GsrrE2Eb0kTk
+         rzISm3gug4Q9Bpkhy92A9PUODBpcANn41V53E6bz+CitrRpVs2866Bg/HCB+o1H8Ls
+         xgNhKYie6Hh/g==
 From:   Markus Reichelt <lkt+2023@mareichelt.com>
 To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc1 review
-Message-ID: <20230509043615.GK3369@pc21.mareichelt.com>
+Subject: Re: [PATCH 6.1 000/611] 6.1.28-rc1 review
+Message-ID: <20230509044406.GA13383@pc21.mareichelt.com>
 Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230508094432.603705160@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230508094432.603705160@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
 Organization: still stuck in reorganization mode
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
@@ -51,8 +51,8 @@ X-Mailing-List: stable@vger.kernel.org
 
 * Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-> This is the start of the stable review cycle for the 6.3.2 release.
-> There are 694 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.28 release.
+> There are 611 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -61,7 +61,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hi Greg
 
-6.3.2-rc1
+6.1.28-rc1
 
 compiles, boots and runs here on x86_64
 (AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
