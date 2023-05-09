@@ -2,342 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 572A86FC8FF
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 16:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8287F6FC91A
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 16:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbjEIO3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 10:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42298 "EHLO
+        id S235825AbjEIOe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 10:34:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235768AbjEIO3W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 10:29:22 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AB5C3
-        for <stable@vger.kernel.org>; Tue,  9 May 2023 07:29:21 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-24e3a0aa408so5362448a91.1
-        for <stable@vger.kernel.org>; Tue, 09 May 2023 07:29:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1683642560; x=1686234560;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q4lcSKVcl45vTIyZU6tAXom6SQ9Ax0/ocje5smMT4IM=;
-        b=U+BKc2OUB4fta0FlSKU6n88fiE3YPpNqhHzk/SUIuyQi8rIaFsuvlNJ9VY9JiIRn4Q
-         4NjcUW7WHsumlhJJiw0TnBXODiTF92EUBtLS0GKxLGhRHF+StpgqgO4Z/lOo3rCQRYwI
-         5bC1nLAqxRzaGDqWxrEGusypgsYYn5En/QnfiCSIrZe9iQfUBiQ7kaaKdyjCgwmFzaRo
-         WyYE7C20x19sh75EzVa4RX28aoGELwhiXAqf/NzLF8XHFutN5PV9AU4bLdybfSCAg4HK
-         EqjoxZhSJ0qIMP7g7KiZCkjDPVoNm9rXki44S4B3ZpRWrykfMPCHF/FTsA6sWqXyRxL6
-         SP3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683642560; x=1686234560;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q4lcSKVcl45vTIyZU6tAXom6SQ9Ax0/ocje5smMT4IM=;
-        b=ONW6bDtBCRUU9ma7EADYlcf0Kf4bvuhmVtPkMS0TnXyhc65c2so5WUfNLs5Ozt+RcI
-         5VfytyOX8O01yQTwJ75YbJRUOKOLMXLPoHjm5ceqRY5mREKP/NuTr/Vpe7KvBsHUBRgY
-         xz7U3h4iMhxPQXzwV0OwWAI3uN+gvXiQHRR32EwYC1cAZ/vp/bxN5dCKdUVnYS3uRhU3
-         C2s4Tvzf7q+yAXnVQFE7ehXFQ/0/FY8aPXK0mceHnWFrs5W86pEQe4tU8sWmvWMbSOzv
-         nP1DBL57FhrwfWauG+iAep7Lxs7Ec3GfPeMxTtkB0EwnJnG7Hpq/5YJLKMVkU8HM4Hn9
-         641w==
-X-Gm-Message-State: AC+VfDz2TMGOca0inoS0ry8FtS35DsXU8smEZAyz0lqdwugnSzTu+IiJ
-        ZjUO4qVwA5eDPNiAE1ZQiNExnaNpPM8wMXV8j/BicQ==
-X-Google-Smtp-Source: ACHHUZ5Ih5euxTBMJ7qb3huCqcyKY8DvWiEMrHowY9HrcNt04BFBY/tSvUdwYNkjlyJVRP1DCcDVmw==
-X-Received: by 2002:a17:90b:38c8:b0:23d:500f:e826 with SMTP id nn8-20020a17090b38c800b0023d500fe826mr14110313pjb.14.1683642560168;
-        Tue, 09 May 2023 07:29:20 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id co1-20020a17090afe8100b0024de5227d1fsm11648587pjb.40.2023.05.09.07.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 07:29:19 -0700 (PDT)
-Message-ID: <645a58bf.170a0220.54652.6a1c@mx.google.com>
-Date:   Tue, 09 May 2023 07:29:19 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S235944AbjEIOex (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 10:34:53 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65AFE1BCA
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 07:34:52 -0700 (PDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 349E6YNS002577;
+        Tue, 9 May 2023 14:34:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : mime-version : content-type; s=pp1;
+ bh=YqlrglftFOBKlLndc5sqxJjJQ/NOxC/Mt19jexm4Hk4=;
+ b=Nk15vQjK/ZXX3aIaK9rqXUdvWZ+UhoE0JBUmzSRYRMwv6a1WAvD+ATQlwxDnXUvx5gyT
+ 97DDaNvPc5jmua6C1NuxuGxWOEc3xruiOdwrSCsR6W63x4hHkOMASaYKOUd3s9QDoD8w
+ Q5X+a2IYqI93MnRoglqdAQ08k4Ypb4pXaOKVjymVO1ucEDy/0oXGfcWB2LoySMa7MDNM
+ +i64HfiZHDKnfkDU9XOJEi5fdz6S5cUlUwtPN/xsBXjf/qS6+nRG9AUtMKFilugHZqZD
+ 8Vmb9NbW/W0+XykK+tbjK0B8jJKar2heRccUaJvInMGb11ZQJmZJBpmnYY3aLsYoJ/rJ jw== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qfmb3827e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 09 May 2023 14:34:41 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 349D7MxB025849;
+        Tue, 9 May 2023 14:31:17 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+        by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3qf7e0rdfr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 09 May 2023 14:31:17 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+        by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 349EVDNX13107954
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 9 May 2023 14:31:14 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D5AD320040;
+        Tue,  9 May 2023 14:31:13 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 70CB620043;
+        Tue,  9 May 2023 14:31:13 +0000 (GMT)
+Received: from localhost (unknown [9.179.7.201])
+        by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+        Tue,  9 May 2023 14:31:13 +0000 (GMT)
+Date:   Tue, 9 May 2023 16:31:11 +0200
+From:   Vasily Gorbik <gor@linux.ibm.com>
+To:     stable@vger.kernel.org
+Cc:     Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH stable 6.3 0/2] s390/mm: fix direct map accounting
+Message-ID: <cover.thread-961a23.your-ad-here.call-01683642007-ext-1116@work.hours>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.176-658-gc79570f37c8f
-X-Kernelci-Report-Type: test
-Subject: stable-rc/queue/5.10 baseline: 142 runs,
- 4 regressions (v5.10.176-658-gc79570f37c8f)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Patchwork-Bot: notify
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ayymI0BZS3IPenVVRO0DtQvgCJNNjZRm
+X-Proofpoint-GUID: ayymI0BZS3IPenVVRO0DtQvgCJNNjZRm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-09_08,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 suspectscore=0 bulkscore=0 adultscore=0
+ mlxlogscore=385 clxscore=1015 spamscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305090119
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/5.10 baseline: 142 runs, 4 regressions (v5.10.176-658-gc795=
-70f37c8f)
-
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.10/ker=
-nel/v5.10.176-658-gc79570f37c8f/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.10
-  Describe: v5.10.176-658-gc79570f37c8f
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      c79570f37c8f60746cb70b5573c0f12e08d11ec2 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/645a23890b46bdc0b82e860f
-
-  Results:     51 PASS, 4 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/645a23890b46bdc0b82e8644
-        failing since 84 days (last pass: v5.10.167-127-g921934d621e4, firs=
-t fail: v5.10.167-139-gf9519a5a1701)
-
-    2023-05-09T10:42:00.711718  <8>[   19.368182] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 435375_1.5.2.4.1>
-    2023-05-09T10:42:00.824282  / # #
-    2023-05-09T10:42:00.927450  export SHELL=3D/bin/sh
-    2023-05-09T10:42:00.928077  #
-    2023-05-09T10:42:01.029707  / # export SHELL=3D/bin/sh. /lava-435375/en=
-vironment
-    2023-05-09T10:42:01.030456  =
-
-    2023-05-09T10:42:01.132595  / # . /lava-435375/environment/lava-435375/=
-bin/lava-test-runner /lava-435375/1
-    2023-05-09T10:42:01.134140  =
-
-    2023-05-09T10:42:01.137697  / # /lava-435375/bin/lava-test-runner /lava=
--435375/1
-    2023-05-09T10:42:01.242261  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/645a309a155bdcf2092e88a2
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/645a309a155bdcf2092e88a7
-        failing since 40 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-05-09T11:37:49.358799  + set +x
-
-    2023-05-09T11:37:49.365232  <8>[   14.621744] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10255618_1.4.2.3.1>
-
-    2023-05-09T11:37:49.469841  / # #
-
-    2023-05-09T11:37:49.570377  export SHELL=3D/bin/sh
-
-    2023-05-09T11:37:49.570537  #
-
-    2023-05-09T11:37:49.670984  / # export SHELL=3D/bin/sh. /lava-10255618/=
-environment
-
-    2023-05-09T11:37:49.671148  =
-
-
-    2023-05-09T11:37:49.771638  / # . /lava-10255618/environment/lava-10255=
-618/bin/lava-test-runner /lava-10255618/1
-
-    2023-05-09T11:37:49.771933  =
-
-
-    2023-05-09T11:37:49.776564  / # /lava-10255618/bin/lava-test-runner /la=
-va-10255618/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/645a2a5961a2ebeb042e85e6
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/645a2a5961a2ebeb042e85eb
-        failing since 40 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-05-09T11:11:02.204160  <8>[   12.797646] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10255652_1.4.2.3.1>
-
-    2023-05-09T11:11:02.207697  + set +x
-
-    2023-05-09T11:11:02.313170  =
-
-
-    2023-05-09T11:11:02.414779  / # #export SHELL=3D/bin/sh
-
-    2023-05-09T11:11:02.415477  =
-
-
-    2023-05-09T11:11:02.516032  / # export SHELL=3D/bin/sh. /lava-10255652/=
-environment
-
-    2023-05-09T11:11:02.516215  =
-
-
-    2023-05-09T11:11:02.616762  / # . /lava-10255652/environment/lava-10255=
-652/bin/lava-test-runner /lava-10255652/1
-
-    2023-05-09T11:11:02.617023  =
-
-
-    2023-05-09T11:11:02.622308  / # /lava-10255652/bin/lava-test-runner /la=
-va-10255652/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/645a239952a8f6803d2e8672
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-sun8=
-i-h3-libretech-all-h3-cc.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--658-gc79570f37c8f/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-sun8=
-i-h3-libretech-all-h3-cc.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/645a239952a8f6803d2e8677
-        failing since 96 days (last pass: v5.10.165-139-gefb57ce0f880, firs=
-t fail: v5.10.165-149-ge30e8271d674)
-
-    2023-05-09T10:42:08.762928  / # #
-    2023-05-09T10:42:08.864840  export SHELL=3D/bin/sh
-    2023-05-09T10:42:08.865358  #
-    2023-05-09T10:42:08.966680  / # export SHELL=3D/bin/sh. /lava-3567980/e=
-nvironment
-    2023-05-09T10:42:08.967087  =
-
-    2023-05-09T10:42:09.068445  / # . /lava-3567980/environment/lava-356798=
-0/bin/lava-test-runner /lava-3567980/1
-    2023-05-09T10:42:09.069154  =
-
-    2023-05-09T10:42:09.075469  / # /lava-3567980/bin/lava-test-runner /lav=
-a-3567980/1
-    2023-05-09T10:42:09.173304  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-05-09T10:42:09.173565  + cd /lava-3567980/1/tests/1_bootrr =
-
-    ... (10 line(s) more)  =
-
- =20
+As an alternative to backporting part of a large s390 patch series to the
+6.3-stable tree as dependencies, here are just couple of rebased changes.
+
+Avoids the need for:
+Patch "s390/boot: rework decompressor reserved tracking" has been added to the 6.3-stable tree
+Patch "s390/boot: rename mem_detect to physmem_info" has been added to the 6.3-stable tree
+Patch "s390/boot: remove non-functioning image bootable check" has been added to the 6.3-stable tree
+
+Thank you
+
+Heiko Carstens (2):
+  s390/mm: rename POPULATE_ONE2ONE to POPULATE_DIRECT
+  s390/mm: fix direct map accounting
+
+ arch/s390/boot/vmem.c           | 27 ++++++++++++++++++++-------
+ arch/s390/include/asm/pgtable.h |  2 +-
+ arch/s390/mm/pageattr.c         |  2 +-
+ 3 files changed, 22 insertions(+), 9 deletions(-)
+
+-- 
+2.38.1
