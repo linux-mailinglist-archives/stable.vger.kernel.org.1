@@ -2,228 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 577DF6FC781
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 15:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5EB26FC78F
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 15:10:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234652AbjEINIy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 09:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
+        id S234645AbjEINKq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 09:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235214AbjEINIx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 09:08:53 -0400
-X-Greylist: delayed 543 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 May 2023 06:08:50 PDT
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [IPv6:2a01:4f8:150:2161:1:b009:f236:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E43B1E75
-        for <stable@vger.kernel.org>; Tue,  9 May 2023 06:08:50 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by mailout3.hostsharing.net (Postfix) with ESMTPS id 213A2101E6941;
-        Tue,  9 May 2023 14:59:45 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id CD3C6603E119;
-        Tue,  9 May 2023 14:59:44 +0200 (CEST)
-X-Mailbox-Line: From 4efe2952d1c46481f5b3b53403173fc8ecc8c0cd Mon Sep 17 00:00:00 2001
-Message-Id: <4efe2952d1c46481f5b3b53403173fc8ecc8c0cd.1683636753.git.lukas@wunner.de>
-In-Reply-To: <8017b674a87ae89a0577f008d7cef15e002b88d1.1683636753.git.lukas@wunner.de>
-References: <8017b674a87ae89a0577f008d7cef15e002b88d1.1683636753.git.lukas@wunner.de>
-From:   Lukas Wunner <lukas@wunner.de>
-Date:   Tue, 9 May 2023 14:55:19 +0200
-Subject: [PATCH 4.19.y 2/2] PCI: pciehp: Fix AB-BA deadlock between reset_lock
- and device_lock
-To:     stable@vger.kernel.org
-Cc:     Anatoli.Antonovitch@amd.com, alex.williamson@redhat.com,
-        amichon@kalrayinc.com, andrey2805@gmail.com, ashok.raj@intel.com,
-        bhelgaas@google.com, dstein@hpe.com, ian.may@canonical.com,
-        michael.haeuptle@hpe.com, mika.westerberg@linux.intel.com,
-        rahul.kumar1@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-        wangxiongfeng2@huawei.com, zhangjialin11@huawei.com
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230088AbjEINKp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 09:10:45 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 234E5E69
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 06:10:42 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1aad55244b7so44462745ad.2
+        for <stable@vger.kernel.org>; Tue, 09 May 2023 06:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1683637841; x=1686229841;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6gMtUFVUtibAULZvPwd52M7BBopM3ogrSj/Sov+ZbTA=;
+        b=MUXgsOwhUmVTd0d2v2rqyJytIQAKHt88dY61EYVuxmrW9QK1SOei5onvE1pUo8bO2J
+         w3iqKtEsk+ZmemRHsQUSjqh0NL03G+aG2onR7PoKn4BkUka/gYZCGvOcKoqCKis3gQ+s
+         E793pRqYyT9Vtg2gQQf1t9Kh3m73ANaZBsIYI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683637841; x=1686229841;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6gMtUFVUtibAULZvPwd52M7BBopM3ogrSj/Sov+ZbTA=;
+        b=RolyOXiMZFeLSICswiUKSiWVTAn5ECy5bzeCp/ymdsNXZaIc5zIZs3xS0SJA9mzYy4
+         mfVC9aOByJmIX6Jp+QGxmW+ppLbUoWlQI+GXyj7xYGvW6EK9ALZvlheSrk0eRLmHzxnw
+         jJVUMEszCCEH2fxuE/0CuAt4dkv4QiUPSLtMkuvagGBV89TKLbKT4myrL69LK1A7DPSf
+         mGkSZ9Tt4A5NCSE40LvymTxgKqvHqBUY2/b3rbR46PKyhP3RJmwB4CsHX45R5jnfe38y
+         ueJOVWfFG7Alw7FxvNNF7wJIGBDVMYMQuvl+u9kYUgxHM77oyS4ycySk1U1IlHPbB2Ki
+         ny9A==
+X-Gm-Message-State: AC+VfDwz7GIfT9YCIbu+CgGofU9pMT2mKcZTAxN7uT4jmM4GVArm57Vk
+        QHoqsCrbspA429/up7fz9yUw5Q==
+X-Google-Smtp-Source: ACHHUZ4/F48HMp1JD8Oe8h9sGL4Qb9YV1T5D9JJmTvkyZPVNCLnLZ81EWKuvWBDv8FVEbDmmh465Pw==
+X-Received: by 2002:a17:902:8a82:b0:1a8:11d3:6b93 with SMTP id p2-20020a1709028a8200b001a811d36b93mr13022275plo.66.1683637840981;
+        Tue, 09 May 2023 06:10:40 -0700 (PDT)
+Received: from 9ed91d9f7b3c ([122.199.31.3])
+        by smtp.gmail.com with ESMTPSA id jo13-20020a170903054d00b001a641e4738asm1539567plb.1.2023.05.09.06.10.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 06:10:39 -0700 (PDT)
+Date:   Tue, 9 May 2023 13:10:32 +0000
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        ntfs3@lists.linux.dev, almaz.alexandrovich@paragon-software.com
+Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
+Message-ID: <20230509131032.GA8@9ed91d9f7b3c>
+References: <20230509030705.399628514@linuxfoundation.org>
+ <20230509080658.GA152864@d6921c044a31>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230509080658.GA152864@d6921c044a31>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit f5eff5591b8f9c5effd25c92c758a127765f74c1 upstream.
+On Tue, May 09, 2023 at 08:06:58AM +0000, Rudi Heitbaum wrote:
+> On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.3.2 release.
+> > There are 694 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > Anything received after that time might be too late.
+> 
+> Hi Greg,
+> 
+> 6.3.2-rc2 tested.
 
-In 2013, commits
+Hi Greg,
 
-  2e35afaefe64 ("PCI: pciehp: Add reset_slot() method")
-  608c388122c7 ("PCI: Add slot reset option to pci_dev_reset()")
+Further testing and have seen ntfs3: NULL pointer dereference with ntfs_lookup errors 
+with 6.3.2-rc2 (I have not seen this error before.) No other errors in the logs.
 
-amended PCIe hotplug to mask Presence Detect Changed events during a
-Secondary Bus Reset.  The reset thus no longer causes gratuitous slot
-bringdown and bringup.
+https://bugzilla.kernel.org/show_bug.cgi?id=217422
 
-However the commits neglected to serialize reset with code paths reading
-slot registers.  For instance, a slot bringup due to an earlier hotplug
-event may see the Presence Detect State bit cleared during a concurrent
-Secondary Bus Reset.
+[ 9471.878611] BUG: kernel NULL pointer dereference, address: 0000000000000020
+[ 9471.879864] #PF: supervisor read access in kernel mode
+[ 9471.881177] #PF: error_code(0x0000) - not-present page
+[ 9471.882447] PGD 0 P4D 0 
+[ 9471.883680] Oops: 0000 [#1] SMP NOPTI
+[ 9471.884932] CPU: 15 PID: 81926 Comm: .NET ThreadPool Tainted: P     U     O       6.3.2-rc2 #1
+[ 9471.886494] Hardware name: Intel(R) Client Systems NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
+[ 9471.887641] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+[ 9471.888795] Code: 00 00 00 49 89 c4 e8 d9 33 fe ff 85 c0 79 3a 48 63 d8 48 8b 3d 2b 61 6d cb 4c 89 e6 e8 83 b0 cc c1 48 81 fb 00 f0 ff ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 e8 95 d1 c1 5b 41 5c 41
+[ 9471.890042] RSP: 0018:ffff949ca06d7bb8 EFLAGS: 00010207
+[ 9471.891291] RAX: 0000000000000001 RBX: 0000000000000000 RCX: 000000000010e7c3
+[ 9471.892555] RDX: 000000000010e7c2 RSI: ffffcb8fc0000000 RDI: 00000000000324f0
+[ 9471.893824] RBP: ffff949ca06d7bd8 R08: ffff90e24896b000 R09: ffff90e24187e702
+[ 9471.895081] R10: 0000000000000788 R11: 000000000000000a R12: ffff90e2c0caa000
+[ 9471.896343] R13: ffff90e4fbf9e780 R14: ffff90e2dee4aeb8 R15: ffff90e2dee4af90
+[ 9471.897615] FS:  00007f1f627fc6c0(0000) GS:ffff90e9779c0000(0000) knlGS:0000000000000000
+[ 9471.898907] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 9471.900198] CR2: 0000000000000020 CR3: 000000015b37c001 CR4: 0000000000f70ea0
+[ 9471.901503] PKRU: 55555554
+[ 9471.902803] Call Trace:
+[ 9471.904099]  <TASK>
+[ 9471.905381]  __lookup_slow+0x81/0x130
+[ 9471.906676]  walk_component+0x10b/0x180
+[ 9471.907966]  path_lookupat+0x6a/0x1a0
+[ 9471.909247]  filename_lookup+0xd0/0x190
+[ 9471.910533]  ? schedule+0x59/0xa0
+[ 9471.911813]  ? futex_wait_queue+0x69/0xa0
+[ 9471.913095]  ? kmem_cache_alloc+0x47/0x3c0
+[ 9471.914376]  vfs_statx+0x84/0x150
+[ 9471.915649]  ? getname_flags+0x54/0x1d0
+[ 9471.916926]  vfs_fstatat+0x5c/0x80
+[ 9471.918196]  __do_sys_newlstat+0x37/0x70
+[ 9471.919472]  ? do_futex+0x12e/0x1a0
+[ 9471.920758]  ? __x64_sys_futex+0x112/0x1d0
+[ 9471.922033]  ? trace_hardirqs_off.part.0+0x20/0x70
+[ 9471.923319]  ? trace_hardirqs_on+0x2f/0x80
+[ 9471.924598]  __x64_sys_newlstat+0x1a/0x20
+[ 9471.925897]  do_syscall_64+0x3c/0x90
+[ 9471.927639]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[ 9471.928951] RIP: 0033:0x7f206b4db184
+[ 9471.930235] Code: 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 89 f8 48 89 f7 48 89 d6 83 f8 01 77 2b b8 06 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 04 c3 0f 1f 00 48 8b 15 61 cc 0b 00 f7 d8 64
+[ 9471.931627] RSP: 002b:00007f1f627fa378 EFLAGS: 00000246 ORIG_RAX: 0000000000000006
+[ 9471.933021] RAX: ffffffffffffffda RBX: 00007f1fbe6ad248 RCX: 00007f206b4db184
+[ 9471.934435] RDX: 00007f1f627fa380 RSI: 00007f1f627fa380 RDI: 00007f1f627fa4f0
+[ 9471.935850] RBP: 00007f1f627fa4d0 R08: 00007f1f627fa600 R09: 000000000000002e
+[ 9471.937263] R10: 00007f1ff1ba15e8 R11: 0000000000000246 R12: 00007f1fbc018408
+[ 9471.938683] R13: 00007f1f627fa4f0 R14: 00007f1fbe6ad248 R15: 000000000000002e
+[ 9471.940106]  </TASK>
+[ 9471.941523] Modules linked in: rfcomm veth 8021q xt_nat xt_tcpudp xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype iptable_filter ip_tables x_tables br_netfilter bridge stp llc overlay ntfs3 exfat bnep btusb btrtl btbcm btintel btmtk bluetooth ecdh_generic ecc iwlmvm mac80211 libarc4 snd_hda_codec_hdmi iwlwifi wl(PO) snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio snd_hda_intel mei_pxp mei_hdcp x86_pkg_temp_thermal snd_hda_codec cfg80211 intel_powerclamp snd_hwdep intel_rapl_msr tpm_tis mei_me snd_hda_core idma64 tpm_tis_core intel_rapl_common mei snd_intel_dspcfg rfkill tpm_crb tpm rng_core pkcs8_key_parser fuse dmi_sysfs
+[ 9471.948020] CR2: 0000000000000020
+[ 9471.949674] ---[ end trace 0000000000000000 ]---
+[ 9471.949674] BUG: kernel NULL pointer dereference, address: 0000000000000020
+[ 9471.951352] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+[ 9471.953035] #PF: supervisor read access in kernel mode
+[ 9471.954720] Code: 00 00 00 49 89 c4 e8 d9 33 fe ff 85 c0 79 3a 48 63 d8 48 8b 3d 2b 61 6d cb 4c 89 e6 e8 83 b0 cc c1 48 81 fb 00 f0 ff ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 e8 95 d1 c1 5b 41 5c 41
+[ 9471.956410] #PF: error_code(0x0000) - not-present page
+[ 9471.958201] RSP: 0018:ffff949ca06d7bb8 EFLAGS: 00010207
+[ 9471.959982] PGD 0 P4D 0 
+[ 9471.961783] 
+[ 9471.961783] RAX: 0000000000000001 RBX: 0000000000000000 RCX: 000000000010e7c3
+[ 9471.963554] 
+[ 9471.965305] RDX: 000000000010e7c2 RSI: ffffcb8fc0000000 RDI: 00000000000324f0
+[ 9471.967092] Oops: 0000 [#2] SMP NOPTI
+[ 9471.969251] RBP: ffff949ca06d7bd8 R08: ffff90e24896b000 R09: ffff90e24187e702
+[ 9471.971054] CPU: 13 PID: 81947 Comm: .NET ThreadPool Tainted: P     UD    O       6.3.2-rc2 #1
+[ 9471.972824] R10: 0000000000000788 R11: 000000000000000a R12: ffff90e2c0caa000
+[ 9471.974610] Hardware name: Intel(R) Client Systems NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
+[ 9471.976406] R13: ffff90e4fbf9e780 R14: ffff90e2dee4aeb8 R15: ffff90e2dee4af90
+[ 9471.978206] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+[ 9471.980039] FS:  00007f1f627fc6c0(0000) GS:ffff90e9779c0000(0000) knlGS:0000000000000000
+[ 9471.981887] Code: 00 00 00 49 89 c4 e8 d9 33 fe ff 85 c0 79 3a 48 63 d8 48 8b 3d 2b 61 6d cb 4c 89 e6 e8 83 b0 cc c1 48 81 fb 00 f0 ff ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 e8 95 d1 c1 5b 41 5c 41
+[ 9471.983737] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 9471.985576] RSP: 0018:ffff949c8ff7fbb8 EFLAGS: 00010207
+[ 9471.987490] CR2: 0000000000000020 CR3: 000000015b37c001 CR4: 0000000000f70ea0
+[ 9471.989339] 
+[ 9471.991159] PKRU: 55555554
+[ 9471.991160] note: .NET ThreadPool[81926] exited with irqs disabled
+[ 9471.992978] RAX: ffff90e24ac6d001 RBX: 0000000000000000 RCX: 00000000000eea5f
+[ 9472.000239] RDX: 00000000000eea5e RSI: ffffcb8fc0000000 RDI: 00000000000324f0
+[ 9472.002036] RBP: ffff949c8ff7fbd8 R08: ffff90e24ac69002 R09: ffff90e3b570a5ea
+[ 9472.003843] R10: ffff90e25c340000 R11: 000000000000000a R12: ffff90e24ac69000
+[ 9472.005628] R13: ffff90e4fbeb2fc0 R14: ffff90e2dee4e488 R15: ffff90e2dee4e560
+[ 9472.007414] FS:  00007f1f01ffb6c0(0000) GS:ffff90e977940000(0000) knlGS:0000000000000000
+[ 9472.009218] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 9472.011496] CR2: 0000000000000020 CR3: 000000015b37c006 CR4: 0000000000f70ea0
+[ 9472.013344] PKRU: 55555554
+[ 9472.015171] Call Trace:
+[ 9472.016999]  <TASK>
+[ 9472.018813]  __lookup_slow+0x81/0x130
+[ 9472.020639]  walk_component+0x10b/0x180
+[ 9472.022454]  path_lookupat+0x6a/0x1a0
+[ 9472.024289]  filename_lookup+0xd0/0x190
+[ 9472.026106]  ? sched_clock+0xd/0x20
+[ 9472.027930]  ? sched_clock_cpu+0x14/0x190
+[ 9472.029753]  ? __smp_call_single_queue+0x40/0x50
+[ 9472.031576]  ? ttwu_queue_wakelist+0xfd/0x100
+[ 9472.033403]  ? kmem_cache_alloc+0x47/0x3c0
+[ 9472.035232]  vfs_statx+0x84/0x150
+[ 9472.037056]  ? getname_flags+0x54/0x1d0
+[ 9472.038876]  vfs_fstatat+0x5c/0x80
+[ 9472.040699]  __do_sys_newlstat+0x37/0x70
+[ 9472.042515]  ? do_futex+0x12e/0x1a0
+[ 9472.044332]  ? __x64_sys_futex+0x112/0x1d0
+[ 9472.046146]  ? switch_fpu_return+0x55/0xd0
+[ 9472.047912]  ? trace_hardirqs_off.part.0+0x20/0x70
+[ 9472.049636]  ? trace_hardirqs_on+0x2f/0x80
+[ 9472.051409]  __x64_sys_newlstat+0x1a/0x20
+[ 9472.053491]  do_syscall_64+0x3c/0x90
+[ 9472.055213]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[ 9472.056940] RIP: 0033:0x7f206b4db184
+[ 9472.058658] Code: 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 89 f8 48 89 f7 48 89 d6 83 f8 01 77 2b b8 06 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 04 c3 0f 1f 00 48 8b 15 61 cc 0b 00 f7 d8 64
+[ 9472.060473] RSP: 002b:00007f1f01ff9378 EFLAGS: 00000246 ORIG_RAX: 0000000000000006
+[ 9472.062212] RAX: ffffffffffffffda RBX: 00007f1fbe689478 RCX: 00007f206b4db184
+[ 9472.063898] RDX: 00007f1f01ff9380 RSI: 00007f1f01ff9380 RDI: 00007f1f01ff94f0
+[ 9472.065522] RBP: 00007f1f01ff94d0 R08: 00007f1f01ff9600 R09: 0000000000000035
+[ 9472.067094] R10: 00007f1ff1ba15e8 R11: 0000000000000246 R12: 00007f1fbc018408
+[ 9472.068665] R13: 00007f1f01ff94f0 R14: 00007f1fbe689478 R15: 0000000000000035
+[ 9472.070238]  </TASK>
+[ 9472.071799] Modules linked in: rfcomm veth 8021q xt_nat xt_tcpudp xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype iptable_filter ip_tables x_tables br_netfilter bridge stp llc overlay ntfs3 exfat bnep btusb btrtl btbcm btintel btmtk bluetooth ecdh_generic ecc iwlmvm mac80211 libarc4 snd_hda_codec_hdmi iwlwifi wl(PO) snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio snd_hda_intel mei_pxp mei_hdcp x86_pkg_temp_thermal snd_hda_codec cfg80211 intel_powerclamp snd_hwdep intel_rapl_msr tpm_tis mei_me snd_hda_core idma64 tpm_tis_core intel_rapl_common mei snd_intel_dspcfg rfkill tpm_crb tpm rng_core pkcs8_key_parser fuse dmi_sysfs
+[ 9472.078669] CR2: 0000000000000020
+[ 9472.080365] ---[ end trace 0000000000000000 ]---
+...
+[ 9476.855987] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+[ 9476.857799] Code: 00 00 00 49 89 c4 e8 d9 33 fe ff 85 c0 79 3a 48 63 d8 48 8b 3d 2b 61 6d cb 4c 89 e6 e8 83 b0 cc c1 48 81 fb 00 f0 ff ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 e8 95 d1 c1 5b 41 5c 41
+[ 9476.859687] RSP: 0018:ffff949ca06d7bb8 EFLAGS: 00010207
+[ 9476.861557] RAX: 0000000000000001 RBX: 0000000000000000 RCX: 000000000010e7c3
+[ 9476.863433] RDX: 000000000010e7c2 RSI: ffffcb8fc0000000 RDI: 00000000000324f0
+[ 9476.865302] RBP: ffff949ca06d7bd8 R08: ffff90e24896b000 R09: ffff90e24187e702
+[ 9476.867160] R10: 0000000000000788 R11: 000000000000000a R12: ffff90e2c0caa000
+[ 9476.869017] R13: ffff90e4fbf9e780 R14: ffff90e2dee4aeb8 R15: ffff90e2dee4af90
+[ 9476.870864] FS:  00007f1f617fa6c0(0000) GS:ffff90e977900000(0000) knlGS:0000000000000000
+[ 9476.872702] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 9476.874529] CR2: 0000000000000020 CR3: 000000015b37c003 CR4: 0000000000f70ea0
+[ 9476.876353] PKRU: 55555554
+[ 9476.878161] note: .NET ThreadPool[81927] exited with irqs disabled
 
-In 2018, commit
 
-  5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
 
-retrofitted the missing locking.  It introduced a reset_lock which
-serializes a Secondary Bus Reset with other parts of pciehp.
-
-Unfortunately the locking turns out to be overzealous:  reset_lock is
-held for the entire enumeration and de-enumeration of hotplugged devices,
-including driver binding and unbinding.
-
-Driver binding and unbinding acquires device_lock while the reset_lock
-of the ancestral hotplug port is held.  A concurrent Secondary Bus Reset
-acquires the ancestral reset_lock while already holding the device_lock.
-The asymmetric locking order in the two code paths can lead to AB-BA
-deadlocks.
-
-Michael Haeuptle reports such deadlocks on simultaneous hot-removal and
-vfio release (the latter implies a Secondary Bus Reset):
-
-  pciehp_ist()                                    # down_read(reset_lock)
-    pciehp_handle_presence_or_link_change()
-      pciehp_disable_slot()
-        __pciehp_disable_slot()
-          remove_board()
-            pciehp_unconfigure_device()
-              pci_stop_and_remove_bus_device()
-                pci_stop_bus_device()
-                  pci_stop_dev()
-                    device_release_driver()
-                      device_release_driver_internal()
-                        __device_driver_lock()    # device_lock()
-
-  SYS_munmap()
-    vfio_device_fops_release()
-      vfio_device_group_close()
-        vfio_device_close()
-          vfio_device_last_close()
-            vfio_pci_core_close_device()
-              vfio_pci_core_disable()             # device_lock()
-                __pci_reset_function_locked()
-                  pci_reset_bus_function()
-                    pci_dev_reset_slot_function()
-                      pci_reset_hotplug_slot()
-                        pciehp_reset_slot()       # down_write(reset_lock)
-
-Ian May reports the same deadlock on simultaneous hot-removal and an
-AER-induced Secondary Bus Reset:
-
-  aer_recover_work_func()
-    pcie_do_recovery()
-      aer_root_reset()
-        pci_bus_error_reset()
-          pci_slot_reset()
-            pci_slot_lock()                       # device_lock()
-            pci_reset_hotplug_slot()
-              pciehp_reset_slot()                 # down_write(reset_lock)
-
-Fix by releasing the reset_lock during driver binding and unbinding,
-thereby splitting and shrinking the critical section.
-
-Driver binding and unbinding is protected by the device_lock() and thus
-serialized with a Secondary Bus Reset.  There's no need to additionally
-protect it with the reset_lock.  However, pciehp does not bind and
-unbind devices directly, but rather invokes PCI core functions which
-also perform certain enumeration and de-enumeration steps.
-
-The reset_lock's purpose is to protect slot registers, not enumeration
-and de-enumeration of hotplugged devices.  That would arguably be the
-job of the PCI core, not the PCIe hotplug driver.  After all, an
-AER-induced Secondary Bus Reset may as well happen during boot-time
-enumeration of the PCI hierarchy and there's no locking to prevent that
-either.
-
-Exempting *de-enumeration* from the reset_lock is relatively harmless:
-A concurrent Secondary Bus Reset may foil config space accesses such as
-PME interrupt disablement.  But if the device is physically gone, those
-accesses are pointless anyway.  If the device is physically present and
-only logically removed through an Attention Button press or the sysfs
-"power" attribute, PME interrupts as well as DMA cannot come through
-because pciehp_unconfigure_device() disables INTx and Bus Master bits.
-That's still protected by the reset_lock in the present commit.
-
-Exempting *enumeration* from the reset_lock also has limited impact:
-The exempted call to pci_bus_add_device() may perform device accesses
-through pcibios_bus_add_device() and pci_fixup_device() which are now
-no longer protected from a concurrent Secondary Bus Reset.  Otherwise
-there should be no impact.
-
-In essence, the present commit seeks to fix the AB-BA deadlocks while
-still retaining a best-effort reset protection for enumeration and
-de-enumeration of hotplugged devices -- until a general solution is
-implemented in the PCI core.
-
-Link: https://lore.kernel.org/linux-pci/CS1PR8401MB0728FC6FDAB8A35C22BD90EC95F10@CS1PR8401MB0728.NAMPRD84.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20200615143250.438252-1-ian.may@canonical.com
-Link: https://lore.kernel.org/linux-pci/ce878dab-c0c4-5bd0-a725-9805a075682d@amd.com
-Link: https://lore.kernel.org/linux-pci/ed831249-384a-6d35-0831-70af191e9bce@huawei.com
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215590
-Fixes: 5b3f7b7d062b ("PCI: pciehp: Avoid slot access during reset")
-Link: https://lore.kernel.org/r/fef2b2e9edf245c049a8c5b94743c0f74ff5008a.1681191902.git.lukas@wunner.de
-Reported-by: Michael Haeuptle <michael.haeuptle@hpe.com>
-Reported-by: Ian May <ian.may@canonical.com>
-Reported-by: Andrey Grodzovsky <andrey2805@gmail.com>
-Reported-by: Rahul Kumar <rahul.kumar1@amd.com>
-Reported-by: Jialin Zhang <zhangjialin11@huawei.com>
-Tested-by: Anatoli Antonovitch <Anatoli.Antonovitch@amd.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Cc: Dan Stein <dstein@hpe.com>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Alex Michon <amichon@kalrayinc.com>
-Cc: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
----
- drivers/pci/hotplug/pciehp_pci.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/pci/hotplug/pciehp_pci.c b/drivers/pci/hotplug/pciehp_pci.c
-index 5c58c22e0c08..a32023afa25b 100644
---- a/drivers/pci/hotplug/pciehp_pci.c
-+++ b/drivers/pci/hotplug/pciehp_pci.c
-@@ -55,7 +55,14 @@ int pciehp_configure_device(struct slot *p_slot)
- 
- 	pci_assign_unassigned_bridge_resources(bridge);
- 	pcie_bus_configure_settings(parent);
-+
-+	/*
-+	 * Release reset_lock during driver binding
-+	 * to avoid AB-BA deadlock with device_lock.
-+	 */
-+	up_read(&ctrl->reset_lock);
- 	pci_bus_add_devices(parent);
-+	down_read_nested(&ctrl->reset_lock, ctrl->depth);
- 
-  out:
- 	pci_unlock_rescan_remove();
-@@ -91,7 +98,15 @@ void pciehp_unconfigure_device(struct slot *p_slot)
- 				pci_walk_bus(dev->subordinate,
- 					     pci_dev_set_disconnected, NULL);
- 		}
-+
-+		/*
-+		 * Release reset_lock during driver unbinding
-+		 * to avoid AB-BA deadlock with device_lock.
-+		 */
-+		up_read(&ctrl->reset_lock);
- 		pci_stop_and_remove_bus_device(dev);
-+		down_read_nested(&ctrl->reset_lock, ctrl->depth);
-+
- 		/*
- 		 * Ensure that no new Requests will be generated from
- 		 * the device.
--- 
-2.39.2
-
+--
+Rudi
