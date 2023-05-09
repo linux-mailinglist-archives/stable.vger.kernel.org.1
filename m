@@ -2,396 +2,237 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 687416FC3E0
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 12:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9326FC43B
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 12:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234503AbjEIKaj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 06:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60214 "EHLO
+        id S232747AbjEIKu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 06:50:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231467AbjEIKai (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 06:30:38 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C77EFDC58
-        for <stable@vger.kernel.org>; Tue,  9 May 2023 03:30:36 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6434e65d808so6000927b3a.3
-        for <stable@vger.kernel.org>; Tue, 09 May 2023 03:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1683628236; x=1686220236;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=r25IzfELsZY6/oYNhAs19vrDIJf1x1EIDes/yw2Q160=;
-        b=VJ0D9TlaFpE9QMsQNK5xKQPM3h4PEiCvCSraKFqjIWe9s0uTNQgPHu0D97gpsjWPus
-         qp2DQOokpMBpOatvFZTviV0IrQp8ROE2IscwLZparmrx4BzMR5UC0DmCaED/OcVP9nm+
-         G7CkkenATSn9y1kgQ907xTitXaziMQ6O53X7v1ebveWhjXvPWuplfns2xlhVoK5saISa
-         L4IQwPmRbl8uxrERwDQtZ+LWoX5FFDGrE+9w6yerS8kF7b0sqLELdB3NMhOjmpI/0hy7
-         79y3TDJ+olNq7rP5q9J3jbyKWUsciDN6e+4tf2GafjHltuhseeaZoPnIVPlVttH1HHZO
-         zpAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683628236; x=1686220236;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r25IzfELsZY6/oYNhAs19vrDIJf1x1EIDes/yw2Q160=;
-        b=bxMSgCuKp1d0+2XEdmy/CB1BzM90Hpsqjy5bmkustmaNBBnBhA5wc5M9gGFN8Lr2Lk
-         cvCb85Lu1acuWN5ikWzqOU6Af0V1ZXj6+nzSRZVkCUUYNtLhildvIggQSR9nGi6LVL0v
-         ip5ABYiHcmzQ5Gkw4sM6DyCfxfNSg9c+V1syRr1UId3Gp2PecI03FL6llTUG3pOFOV9E
-         dhswFm4Lg18EJjm4xA9sFKgxlyBWBPsvQIEUu+oNfQW9WuxrukzUOdnAY8Jdw9ewXEH0
-         UO+NTqR5bqFgUNxh5fTv2iJrQar9/co76pPed+BTRQYhABzvs03dKlbSpuC2hWKH/wNP
-         7AQQ==
-X-Gm-Message-State: AC+VfDxn+Ne2HTQiUmOPkDSjW6y7M97TYz+Rp4tvO80961nZs6TYuFIm
-        sl8gx8thvcviC/gSWRpblAFPS3OgVPok72gcQJqjGg==
-X-Google-Smtp-Source: ACHHUZ7rGI8nk1LGBILznbFkm1nAn5eRORGsoCkyTjcFgvo/F11bbXvLtbd24E8L1E/nxy8UeAEymA==
-X-Received: by 2002:a05:6a00:2408:b0:63f:18ae:1d5f with SMTP id z8-20020a056a00240800b0063f18ae1d5fmr16931806pfh.29.1683628235299;
-        Tue, 09 May 2023 03:30:35 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
-        by smtp.gmail.com with ESMTPSA id s145-20020a632c97000000b0050bc4ca9024sm1014807pgs.65.2023.05.09.03.30.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 03:30:34 -0700 (PDT)
-Message-ID: <645a20ca.630a0220.336ca.1ba4@mx.google.com>
-Date:   Tue, 09 May 2023 03:30:34 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.176-657-g136d893091a8
-X-Kernelci-Report-Type: test
-Subject: stable-rc/queue/5.10 baseline: 156 runs,
- 6 regressions (v5.10.176-657-g136d893091a8)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S234584AbjEIKu4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 06:50:56 -0400
+X-Greylist: delayed 528 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 May 2023 03:50:54 PDT
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54B584ECB
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 03:50:53 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by mailout1.hostsharing.net (Postfix) with ESMTPS id 6AE441002E5AF;
+        Tue,  9 May 2023 12:42:03 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 43D2A603E119;
+        Tue,  9 May 2023 12:42:03 +0200 (CEST)
+X-Mailbox-Line: From 0296a234ed04adfec0f256b24fae929f6a268509 Mon Sep 17 00:00:00 2001
+Message-Id: <0296a234ed04adfec0f256b24fae929f6a268509.1683628574.git.lukas@wunner.de>
+From:   Lukas Wunner <lukas@wunner.de>
+Date:   Tue, 9 May 2023 12:41:09 +0200
+Subject: [PATCH 5.4.y 1/2] PCI: pciehp: Use down_read/write_nested(reset_lock)
+ to fix lockdep errors
+To:     stable@vger.kernel.org
+Cc:     Anatoli.Antonovitch@amd.com, alex.williamson@redhat.com,
+        amichon@kalrayinc.com, andrey2805@gmail.com, ashok.raj@intel.com,
+        bhelgaas@google.com, dstein@hpe.com, ian.may@canonical.com,
+        michael.haeuptle@hpe.com, mika.westerberg@linux.intel.com,
+        rahul.kumar1@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+        wangxiongfeng2@huawei.com, zhangjialin11@huawei.com
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/5.10 baseline: 156 runs, 6 regressions (v5.10.176-657-g136d=
-893091a8)
+From: Hans de Goede <hdegoede@redhat.com>
+
+commit 085a9f43433f30cbe8a1ade62d9d7827c3217f4d upstream.
+
+Use down_read_nested() and down_write_nested() when taking the
+ctrl->reset_lock rw-sem, passing the number of PCIe hotplug controllers in
+the path to the PCI root bus as lock subclass parameter.
+
+This fixes the following false-positive lockdep report when unplugging a
+Lenovo X1C8 from a Lenovo 2nd gen TB3 dock:
+
+  pcieport 0000:06:01.0: pciehp: Slot(1): Link Down
+  pcieport 0000:06:01.0: pciehp: Slot(1): Card not present
+  ============================================
+  WARNING: possible recursive locking detected
+  5.16.0-rc2+ #621 Not tainted
+  --------------------------------------------
+  irq/124-pciehp/86 is trying to acquire lock:
+  ffff8e5ac4299ef8 (&ctrl->reset_lock){.+.+}-{3:3}, at: pciehp_check_presence+0x23/0x80
+
+  but task is already holding lock:
+  ffff8e5ac4298af8 (&ctrl->reset_lock){.+.+}-{3:3}, at: pciehp_ist+0xf3/0x180
+
+   other info that might help us debug this:
+   Possible unsafe locking scenario:
+
+	 CPU0
+	 ----
+    lock(&ctrl->reset_lock);
+    lock(&ctrl->reset_lock);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  3 locks held by irq/124-pciehp/86:
+   #0: ffff8e5ac4298af8 (&ctrl->reset_lock){.+.+}-{3:3}, at: pciehp_ist+0xf3/0x180
+   #1: ffffffffa3b024e8 (pci_rescan_remove_lock){+.+.}-{3:3}, at: pciehp_unconfigure_device+0x31/0x110
+   #2: ffff8e5ac1ee2248 (&dev->mutex){....}-{3:3}, at: device_release_driver+0x1c/0x40
+
+  stack backtrace:
+  CPU: 4 PID: 86 Comm: irq/124-pciehp Not tainted 5.16.0-rc2+ #621
+  Hardware name: LENOVO 20U90SIT19/20U90SIT19, BIOS N2WET30W (1.20 ) 08/26/2021
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x59/0x73
+   __lock_acquire.cold+0xc5/0x2c6
+   lock_acquire+0xb5/0x2b0
+   down_read+0x3e/0x50
+   pciehp_check_presence+0x23/0x80
+   pciehp_runtime_resume+0x5c/0xa0
+   device_for_each_child+0x45/0x70
+   pcie_port_device_runtime_resume+0x20/0x30
+   pci_pm_runtime_resume+0xa7/0xc0
+   __rpm_callback+0x41/0x110
+   rpm_callback+0x59/0x70
+   rpm_resume+0x512/0x7b0
+   __pm_runtime_resume+0x4a/0x90
+   __device_release_driver+0x28/0x240
+   device_release_driver+0x26/0x40
+   pci_stop_bus_device+0x68/0x90
+   pci_stop_bus_device+0x2c/0x90
+   pci_stop_and_remove_bus_device+0xe/0x20
+   pciehp_unconfigure_device+0x6c/0x110
+   pciehp_disable_slot+0x5b/0xe0
+   pciehp_handle_presence_or_link_change+0xc3/0x2f0
+   pciehp_ist+0x179/0x180
+
+This lockdep warning is triggered because with Thunderbolt, hotplug ports
+are nested. When removing multiple devices in a daisy-chain, each hotplug
+port's reset_lock may be acquired recursively. It's never the same lock, so
+the lockdep splat is a false positive.
+
+Because locks at the same hierarchy level are never acquired recursively, a
+per-level lockdep class is sufficient to fix the lockdep warning.
+
+The choice to use one lockdep subclass per pcie-hotplug controller in the
+path to the root-bus was made to conserve class keys because their number
+is limited and the complexity grows quadratically with number of keys
+according to Documentation/locking/lockdep-design.rst.
+
+Link: https://lore.kernel.org/linux-pci/20190402021933.GA2966@mit.edu/
+Link: https://lore.kernel.org/linux-pci/de684a28-9038-8fc6-27ca-3f6f2f6400d7@redhat.com/
+Link: https://lore.kernel.org/r/20211217141709.379663-1-hdegoede@redhat.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=208855
+Reported-by: "Theodore Ts'o" <tytso@mit.edu>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
+[lukas: backport to v5.4-stable]
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ drivers/pci/hotplug/pciehp.h      |  3 +++
+ drivers/pci/hotplug/pciehp_core.c |  2 +-
+ drivers/pci/hotplug/pciehp_hpc.c  | 19 +++++++++++++++++--
+ 3 files changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pci/hotplug/pciehp.h b/drivers/pci/hotplug/pciehp.h
+index aa61d4c219d7..79a713f5dbf4 100644
+--- a/drivers/pci/hotplug/pciehp.h
++++ b/drivers/pci/hotplug/pciehp.h
+@@ -72,6 +72,8 @@ extern int pciehp_poll_time;
+  * @reset_lock: prevents access to the Data Link Layer Link Active bit in the
+  *	Link Status register and to the Presence Detect State bit in the Slot
+  *	Status register during a slot reset which may cause them to flap
++ * @depth: Number of additional hotplug ports in the path to the root bus,
++ *	used as lock subclass for @reset_lock
+  * @ist_running: flag to keep user request waiting while IRQ thread is running
+  * @request_result: result of last user request submitted to the IRQ thread
+  * @requester: wait queue to wake up on completion of user request,
+@@ -102,6 +104,7 @@ struct controller {
+ 
+ 	struct hotplug_slot hotplug_slot;	/* hotplug core interface */
+ 	struct rw_semaphore reset_lock;
++	unsigned int depth;
+ 	unsigned int ist_running;
+ 	int request_result;
+ 	wait_queue_head_t requester;
+diff --git a/drivers/pci/hotplug/pciehp_core.c b/drivers/pci/hotplug/pciehp_core.c
+index 312cc45c44c7..f5255045b149 100644
+--- a/drivers/pci/hotplug/pciehp_core.c
++++ b/drivers/pci/hotplug/pciehp_core.c
+@@ -165,7 +165,7 @@ static void pciehp_check_presence(struct controller *ctrl)
+ {
+ 	int occupied;
+ 
+-	down_read(&ctrl->reset_lock);
++	down_read_nested(&ctrl->reset_lock, ctrl->depth);
+ 	mutex_lock(&ctrl->state_lock);
+ 
+ 	occupied = pciehp_card_present_or_link_active(ctrl);
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index 13f3bc239c66..651664fe4058 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -674,7 +674,7 @@ static irqreturn_t pciehp_ist(int irq, void *dev_id)
+ 	 * Disable requests have higher priority than Presence Detect Changed
+ 	 * or Data Link Layer State Changed events.
+ 	 */
+-	down_read(&ctrl->reset_lock);
++	down_read_nested(&ctrl->reset_lock, ctrl->depth);
+ 	if (events & DISABLE_SLOT)
+ 		pciehp_handle_disable_request(ctrl);
+ 	else if (events & (PCI_EXP_SLTSTA_PDC | PCI_EXP_SLTSTA_DLLSC))
+@@ -808,7 +808,7 @@ int pciehp_reset_slot(struct hotplug_slot *hotplug_slot, int probe)
+ 	if (probe)
+ 		return 0;
+ 
+-	down_write(&ctrl->reset_lock);
++	down_write_nested(&ctrl->reset_lock, ctrl->depth);
+ 
+ 	if (!ATTN_BUTTN(ctrl)) {
+ 		ctrl_mask |= PCI_EXP_SLTCTL_PDCE;
+@@ -864,6 +864,20 @@ static inline void dbg_ctrl(struct controller *ctrl)
+ 
+ #define FLAG(x, y)	(((x) & (y)) ? '+' : '-')
+ 
++static inline int pcie_hotplug_depth(struct pci_dev *dev)
++{
++	struct pci_bus *bus = dev->bus;
++	int depth = 0;
++
++	while (bus->parent) {
++		bus = bus->parent;
++		if (bus->self && bus->self->is_hotplug_bridge)
++			depth++;
++	}
++
++	return depth;
++}
++
+ struct controller *pcie_init(struct pcie_device *dev)
+ {
+ 	struct controller *ctrl;
+@@ -877,6 +891,7 @@ struct controller *pcie_init(struct pcie_device *dev)
+ 		return NULL;
+ 
+ 	ctrl->pcie = dev;
++	ctrl->depth = pcie_hotplug_depth(dev->port);
+ 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &slot_cap);
+ 
+ 	if (pdev->hotplug_user_indicators)
+-- 
+2.39.2
 
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-rk3399-gru-kevin             | arm64  | lab-collabora | gcc-10   | defconfi=
-g+arm64-chromebook   | 2          =
-
-sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.10/ker=
-nel/v5.10.176-657-g136d893091a8/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.10
-  Describe: v5.10.176-657-g136d893091a8
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      136d893091a8fe99c6c7eb99dc5299ddb4f85d3b =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-beaglebone-black             | arm    | lab-broonie   | gcc-10   | omap2plu=
-s_defconfig          | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6459f0978a44a758642e8617
-
-  Results:     51 PASS, 4 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6459f0978a44a758642e864d
-        failing since 84 days (last pass: v5.10.167-127-g921934d621e4, firs=
-t fail: v5.10.167-139-gf9519a5a1701)
-
-    2023-05-09T07:04:35.181438  <8>[   19.385139] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 433580_1.5.2.4.1>
-    2023-05-09T07:04:35.289636  / # #
-    2023-05-09T07:04:35.392446  export SHELL=3D/bin/sh
-    2023-05-09T07:04:35.393190  #
-    2023-05-09T07:04:35.495037  / # export SHELL=3D/bin/sh. /lava-433580/en=
-vironment
-    2023-05-09T07:04:35.495782  =
-
-    2023-05-09T07:04:35.598217  / # . /lava-433580/environment/lava-433580/=
-bin/lava-test-runner /lava-433580/1
-    2023-05-09T07:04:35.599329  =
-
-    2023-05-09T07:04:35.604442  / # /lava-433580/bin/lava-test-runner /lava=
--433580/1
-    2023-05-09T07:04:35.699557  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6459ec9781fd0ca0632e8610
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6459ec9781fd0ca0632e8614
-        failing since 39 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-05-09T06:47:40.476513  + set +x
-
-    2023-05-09T06:47:40.482645  <8>[   10.262346] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10251576_1.4.2.3.1>
-
-    2023-05-09T06:47:40.587044  / # #
-
-    2023-05-09T06:47:40.687694  export SHELL=3D/bin/sh
-
-    2023-05-09T06:47:40.687891  #
-
-    2023-05-09T06:47:40.788524  / # export SHELL=3D/bin/sh. /lava-10251576/=
-environment
-
-    2023-05-09T06:47:40.789317  =
-
-
-    2023-05-09T06:47:40.890782  / # . /lava-10251576/environment/lava-10251=
-576/bin/lava-test-runner /lava-10251576/1
-
-    2023-05-09T06:47:40.891950  =
-
-
-    2023-05-09T06:47:40.896528  / # /lava-10251576/bin/lava-test-runner /la=
-va-10251576/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6459ec8db4cb930d932e85e6
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collab=
-ora/baseline-hp-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6459ec8db4cb930d932e85eb
-        failing since 39 days (last pass: v5.10.176-61-g2332301f1fab4, firs=
-t fail: v5.10.176-104-g2b4187983740)
-
-    2023-05-09T06:47:27.389085  + set<8>[   12.955355] <LAVA_SIGNAL_ENDRUN =
-0_dmesg 10251582_1.4.2.3.1>
-
-    2023-05-09T06:47:27.389577   +x
-
-    2023-05-09T06:47:27.498457  #
-
-    2023-05-09T06:47:27.601360  / # #export SHELL=3D/bin/sh
-
-    2023-05-09T06:47:27.602163  =
-
-
-    2023-05-09T06:47:27.703730  / # export SHELL=3D/bin/sh. /lava-10251582/=
-environment
-
-    2023-05-09T06:47:27.704602  =
-
-
-    2023-05-09T06:47:27.806276  / # . /lava-10251582/environment/lava-10251=
-582/bin/lava-test-runner /lava-10251582/1
-
-    2023-05-09T06:47:27.808440  =
-
-
-    2023-05-09T06:47:27.813273  / # /lava-10251582/bin/lava-test-runner /la=
-va-10251582/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-rk3399-gru-kevin             | arm64  | lab-collabora | gcc-10   | defconfi=
-g+arm64-chromebook   | 2          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6459eede6c620591ff2e8616
-
-  Results:     84 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/ba=
-seline-rk3399-gru-kevin.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/ba=
-seline-rk3399-gru-kevin.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.rockchip-usb2phy1-probed: https://kernelci.org/test/cas=
-e/id/6459eede6c620591ff2e861c
-        failing since 56 days (last pass: v5.10.172-529-g06956b9e9396, firs=
-t fail: v5.10.173-69-gfcbe6bd469ed)
-
-    2023-05-09T06:57:25.764570  /lava-10251962/1/../bin/lava-test-case
-   =
-
-
-  * baseline.bootrr.rockchip-usb2phy0-probed: https://kernelci.org/test/cas=
-e/id/6459eede6c620591ff2e861d
-        failing since 56 days (last pass: v5.10.172-529-g06956b9e9396, firs=
-t fail: v5.10.173-69-gfcbe6bd469ed)
-
-    2023-05-09T06:57:23.702199  <8>[   31.397571] <LAVA_SIGNAL_TESTCASE TES=
-T_CASE_ID=3Drockchip-usb2phy-driver-present RESULT=3Dpass>
-
-    2023-05-09T06:57:24.727628  /lava-10251962/1/../bin/lava-test-case
-
-    2023-05-09T06:57:24.737408  <8>[   32.435451] <LAVA_SIGNAL_TESTCASE TES=
-T_CASE_ID=3Drockchip-usb2phy0-probed RESULT=3Dfail>
-   =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-sun8i-h3-libretech-all-h3-cc | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6459ee48ef60e61c762e866c
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-sun8=
-i-h3-libretech-all-h3-cc.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.176=
--657-g136d893091a8/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-sun8=
-i-h3-libretech-all-h3-cc.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230421.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6459ee48ef60e61c762e8671
-        failing since 96 days (last pass: v5.10.165-139-gefb57ce0f880, firs=
-t fail: v5.10.165-149-ge30e8271d674)
-
-    2023-05-09T06:54:40.990650  / # #
-    2023-05-09T06:54:41.092569  export SHELL=3D/bin/sh
-    2023-05-09T06:54:41.092994  #
-    2023-05-09T06:54:41.194285  / # export SHELL=3D/bin/sh. /lava-3567253/e=
-nvironment
-    2023-05-09T06:54:41.194724  =
-
-    2023-05-09T06:54:41.296039  / # . /lava-3567253/environment/lava-356725=
-3/bin/lava-test-runner /lava-3567253/1
-    2023-05-09T06:54:41.296764  =
-
-    2023-05-09T06:54:41.314539  / # /lava-3567253/bin/lava-test-runner /lav=
-a-3567253/1
-    2023-05-09T06:54:41.406579  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-05-09T06:54:41.407148  + cd /lava-3567253/1/tests/1_bootrr =
-
-    ... (10 line(s) more)  =
-
- =20
