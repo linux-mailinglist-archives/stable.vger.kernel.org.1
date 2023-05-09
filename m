@@ -2,460 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 354D86FC975
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 16:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 571DB6FC9B1
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 16:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235951AbjEIOtR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 10:49:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52860 "EHLO
+        id S229572AbjEIO6U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 10:58:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjEIOtQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 10:49:16 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A9830F9;
-        Tue,  9 May 2023 07:49:14 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 349CM94m025799;
-        Tue, 9 May 2023 14:49:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=Aq6v2rJLOgdYWwEKEDItqqwSLSKAWtteeRDRngmA220=;
- b=AJOPIkJjVVuLmeFxu/ogVk+9RFM23dufVV+a/yrhlMly1hRldtT2oUXt7H+xOCqlfZTW
- uH/TLYQc+yTmRwDEQf4PaqIP1ULi3HFwnQ1D7y5/t4p1uwC8BqZcshl63ChR76EjzCQB
- NzD33NYI5wz1HAJtqFWM08f6iIsDWWChgglg1KnTuhbeu8HyYl9TrJlIQioty6UaOH5s
- 4qFRH8OAWgyzRtHCKrf83YjtTUTG7D5L6dlHANADtJeHRHa0nnkiqa1XHUud4yLWovij
- d+cWd6WKOwdFOxgJVelLTJKn5gGo2lYdTvULHVE5mDuuxDaf4AYb3utwqHLXsYtOJDXT CA== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qf77ha2jr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 09 May 2023 14:49:07 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 349Emo20008154
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 9 May 2023 14:48:50 GMT
-Received: from hu-ugoswami-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Tue, 9 May 2023 07:48:47 -0700
-From:   Udipto Goswami <quic_ugoswami@quicinc.com>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Pratham Pratap <quic_ppratap@quicinc.com>,
-        Jack Pham <quic_jackp@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        "Oliver Neukum" <oneukum@suse.com>, <linux-usb@vger.kernel.org>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v10] usb: dwc3: debugfs: Resume dwc3 before accessing registers
-Date:   Tue, 9 May 2023 20:18:36 +0530
-Message-ID: <20230509144836.6803-1-quic_ugoswami@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S235980AbjEIO6T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 10:58:19 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92B235A9
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 07:58:16 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1aaed87d8bdso42255695ad.3
+        for <stable@vger.kernel.org>; Tue, 09 May 2023 07:58:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1683644296; x=1686236296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xQyduyaOzxht+4mYPyPs/f7DEi3T9R3/shYnH8c6rNQ=;
+        b=RLXshpVwTLVfs7Mh1ykszJU/0Rad9zYj0ppJPBR5+2SgzMjZKTIGaJDLyf6vHiWhG7
+         APTdiVXBrKXM0DPBstzuVTQES+mK9V4LaHZxT51y64UHNGTgkYrgxgVRA4g0EMgYdXgE
+         gQW4nyWp5Jxuul6kqZOwmLhhiVNlwz0WQwyKk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683644296; x=1686236296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xQyduyaOzxht+4mYPyPs/f7DEi3T9R3/shYnH8c6rNQ=;
+        b=h9jBO4bi9u0ECwLSEvrOoL4Yg5luhAwYe49EI32vQPRiiyuaPsoA6+XmyB5hpbV/UZ
+         LDoB5MzZLmsHBgZD0ciO0z1USfGV6auiTE+OjsU+6qJ5uPFw1xsPI4J70mftKdRUq9jV
+         +X4HQ/KMRybHtUb6TItrtmitAt+MkR9uH51fcdGxT+XQqbgmxfKcXaKppInthwCTn4+5
+         LFMG8q+bMaUQC83ASoF4BpRXwITgYgm152XppFCkkVNwQZrMvq6nbWuvFZ/JTqcRBc2w
+         U0W4sPKEdG0VspZHPOTVVO0m5Vp6Y35qXKUzq8CpxZV5EtSXN3zDIjPBPw9wZFyDqSQR
+         U9ug==
+X-Gm-Message-State: AC+VfDyzmOydssoBKvHH6gT7YIFXgILJfCkzPy9TJMOJ8p0hIt3MFFYm
+        UxuwXAIzg3geKoChAnhaAEuk2w==
+X-Google-Smtp-Source: ACHHUZ5+1hrInnUBHEW4lVg0LxkYXc2XplebkzdDOGq0nbcz3ZPfDaINnbQNdKCZwwHJgk6KYCNZDQ==
+X-Received: by 2002:a17:903:1c6:b0:1ac:946e:468e with SMTP id e6-20020a17090301c600b001ac946e468emr3553731plh.57.1683644296073;
+        Tue, 09 May 2023 07:58:16 -0700 (PDT)
+Received: from df3c0d7ae0b0 ([122.199.31.3])
+        by smtp.gmail.com with ESMTPSA id b7-20020a170902a9c700b001ab849b46d3sm1681391plr.178.2023.05.09.07.58.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 07:58:14 -0700 (PDT)
+Date:   Tue, 9 May 2023 14:58:06 +0000
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        ntfs3@lists.linux.dev, almaz.alexandrovich@paragon-software.com
+Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
+Message-ID: <20230509145806.GA8@df3c0d7ae0b0>
+References: <20230509030705.399628514@linuxfoundation.org>
+ <20230509080658.GA152864@d6921c044a31>
+ <20230509131032.GA8@9ed91d9f7b3c>
+ <2023050913-spearhead-angrily-fc58@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: wYM1Onm2LF83or9EpJqKmg5yki4EprDo
-X-Proofpoint-ORIG-GUID: wYM1Onm2LF83or9EpJqKmg5yki4EprDo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-09_08,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- bulkscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 phishscore=0 mlxlogscore=658
- adultscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305090122
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023050913-spearhead-angrily-fc58@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When the dwc3 device is runtime suspended, various required clocks are in
-disabled state and it is not guaranteed that access to any registers would
-work. Depending on the SoC glue, a register read could be as benign as
-returning 0 or be fatal enough to hang the system.
+On Tue, May 09, 2023 at 03:56:42PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, May 09, 2023 at 01:10:32PM +0000, Rudi Heitbaum wrote:
+> > On Tue, May 09, 2023 at 08:06:58AM +0000, Rudi Heitbaum wrote:
+> > > On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.3.2 release.
+> > > > There are 694 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > > > Anything received after that time might be too late.
+> > > 
+> > > Hi Greg,
+> > > 
+> > > 6.3.2-rc2 tested.
+> > 
+> > Hi Greg,
+> > 
+> > Further testing and have seen ntfs3: NULL pointer dereference with ntfs_lookup errors 
+> > with 6.3.2-rc2 (I have not seen this error before.) No other errors in the logs.
+> 
+> Can you reproduce this without the extern, gpl-violation module loaded?
+> 
+> thanks,
+> 
+> greg k-h
 
-In order to prevent such scenarios of fatal errors, make sure to resume
-dwc3 then allow the function to proceed.
+Hi Greg,
 
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable@vger.kernel.org #3.2: 30332eeefec8: debugfs: regset32: Add Runtime PM support
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
----
-v10: Re-wrote the subject & the commit text along with the dependency.
-v9: Fixed function dwc3_rx_fifo_size_show & return values in function
-	dwc3_link_state_write along with minor changes for code symmetry.
-v8: Replace pm_runtime_get_sync with pm_runtime_resume_and get.
-v7: Replaced pm_runtime_put with pm_runtime_put_sync & returned proper values.
-v6: Added changes to handle get_dync failure appropriately.
-v5: Reworked the patch to resume dwc3 while accessing the registers.
-v4: Introduced pm_runtime_get_if_in_use in order to make sure dwc3 isn't
-	suspended while accessing the registers.
-v3: Replace pr_err to dev_err. 
-v2: Replaced return 0 with -EINVAL & seq_puts with pr_err.
+I dropped the bcm_sta and recompiled and commented out the i915.guc=3
+and was able to reproduce.
 
- drivers/usb/dwc3/debugfs.c | 109 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 109 insertions(+)
-
-diff --git a/drivers/usb/dwc3/debugfs.c b/drivers/usb/dwc3/debugfs.c
-index e4a2560b9dc0..ebf03468fac4 100644
---- a/drivers/usb/dwc3/debugfs.c
-+++ b/drivers/usb/dwc3/debugfs.c
-@@ -332,6 +332,11 @@ static int dwc3_lsp_show(struct seq_file *s, void *unused)
- 	unsigned int		current_mode;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
-@@ -350,6 +355,8 @@ static int dwc3_lsp_show(struct seq_file *s, void *unused)
- 	}
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -395,6 +402,11 @@ static int dwc3_mode_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = s->private;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
-@@ -414,6 +426,8 @@ static int dwc3_mode_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "UNKNOWN %08x\n", DWC3_GCTL_PRTCAP(reg));
- 	}
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -463,6 +477,11 @@ static int dwc3_testmode_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = s->private;
- 	unsigned long		flags;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
-@@ -493,6 +512,8 @@ static int dwc3_testmode_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "UNKNOWN %d\n", reg);
- 	}
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -509,6 +530,7 @@ static ssize_t dwc3_testmode_write(struct file *file,
- 	unsigned long		flags;
- 	u32			testmode = 0;
- 	char			buf[32];
-+	int			ret;
- 
- 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
- 		return -EFAULT;
-@@ -526,10 +548,16 @@ static ssize_t dwc3_testmode_write(struct file *file,
- 	else
- 		testmode = 0;
- 
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc3_gadget_set_test_mode(dwc, testmode);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return count;
- }
- 
-@@ -548,12 +576,18 @@ static int dwc3_link_state_show(struct seq_file *s, void *unused)
- 	enum dwc3_link_state	state;
- 	u32			reg;
- 	u8			speed;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
- 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
- 		seq_puts(s, "Not available\n");
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return 0;
- 	}
- 
-@@ -566,6 +600,8 @@ static int dwc3_link_state_show(struct seq_file *s, void *unused)
- 		   dwc3_gadget_hs_link_string(state));
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -584,6 +620,7 @@ static ssize_t dwc3_link_state_write(struct file *file,
- 	char			buf[32];
- 	u32			reg;
- 	u8			speed;
-+	int			ret;
- 
- 	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
- 		return -EFAULT;
-@@ -603,10 +640,15 @@ static ssize_t dwc3_link_state_write(struct file *file,
- 	else
- 		return -EINVAL;
- 
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = dwc3_readl(dwc->regs, DWC3_GSTS);
- 	if (DWC3_GSTS_CURMOD(reg) != DWC3_GSTS_CURMOD_DEVICE) {
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return -EINVAL;
- 	}
- 
-@@ -616,12 +658,15 @@ static ssize_t dwc3_link_state_write(struct file *file,
- 	if (speed < DWC3_DSTS_SUPERSPEED &&
- 	    state != DWC3_LINK_STATE_RECOV) {
- 		spin_unlock_irqrestore(&dwc->lock, flags);
-+		pm_runtime_put_sync(dwc->dev);
- 		return -EINVAL;
- 	}
- 
- 	dwc3_gadget_set_link_state(dwc, state);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return count;
- }
- 
-@@ -645,6 +690,11 @@ static int dwc3_tx_fifo_size_show(struct seq_file *s, void *unused)
- 	unsigned long		flags;
- 	u32			mdwidth;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_TXFIFO);
-@@ -657,6 +707,8 @@ static int dwc3_tx_fifo_size_show(struct seq_file *s, void *unused)
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -667,6 +719,11 @@ static int dwc3_rx_fifo_size_show(struct seq_file *s, void *unused)
- 	unsigned long		flags;
- 	u32			mdwidth;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXFIFO);
-@@ -679,6 +736,8 @@ static int dwc3_rx_fifo_size_show(struct seq_file *s, void *unused)
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -688,12 +747,19 @@ static int dwc3_tx_request_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_TXREQQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -703,12 +769,19 @@ static int dwc3_rx_request_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXREQQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -718,12 +791,19 @@ static int dwc3_rx_info_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_RXINFOQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -733,12 +813,19 @@ static int dwc3_descriptor_fetch_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_DESCFETCHQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -748,12 +835,19 @@ static int dwc3_event_queue_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	u32			val;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	val = dwc3_core_fifo_space(dep, DWC3_EVENTQ);
- 	seq_printf(s, "%u\n", val);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -798,6 +892,11 @@ static int dwc3_trb_ring_show(struct seq_file *s, void *unused)
- 	struct dwc3		*dwc = dep->dwc;
- 	unsigned long		flags;
- 	int			i;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	if (dep->number <= 1) {
-@@ -827,6 +926,8 @@ static int dwc3_trb_ring_show(struct seq_file *s, void *unused)
- out:
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -839,6 +940,11 @@ static int dwc3_ep_info_register_show(struct seq_file *s, void *unused)
- 	u32			lower_32_bits;
- 	u32			upper_32_bits;
- 	u32			reg;
-+	int			ret;
-+
-+	ret = pm_runtime_resume_and_get(dwc->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	reg = DWC3_GDBGLSPMUX_EPSELECT(dep->number);
-@@ -851,6 +957,8 @@ static int dwc3_ep_info_register_show(struct seq_file *s, void *unused)
- 	seq_printf(s, "0x%016llx\n", ep_info);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	pm_runtime_put_sync(dwc->dev);
-+
- 	return 0;
- }
- 
-@@ -910,6 +1018,7 @@ void dwc3_debugfs_init(struct dwc3 *dwc)
- 	dwc->regset->regs = dwc3_regs;
- 	dwc->regset->nregs = ARRAY_SIZE(dwc3_regs);
- 	dwc->regset->base = dwc->regs - DWC3_GLOBALS_REGS_START;
-+	dwc->regset->dev = dwc->dev;
- 
- 	root = debugfs_create_dir(dev_name(dwc->dev), usb_debug_root);
- 	dwc->debug_root = root;
--- 
-2.17.1
-
+[   84.745080] BUG: kernel NULL pointer dereference, address: 0000000000000020
+[   84.746239] #PF: supervisor read access in kernel mode
+[   84.747599] #PF: error_code(0x0000) - not-present page
+[   84.748929] PGD 0 P4D 0 
+[   84.750240] Oops: 0000 [#1] SMP NOPTI
+[   84.751575] CPU: 2 PID: 3176 Comm: .NET ThreadPool Not tainted 6.3.2-rc2 #1
+[   84.752998] Hardware name: Intel(R) Client Systems NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
+[   84.754474] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+[   84.755899] Code: 00 00 00 49 89 c4 e8 d9 33 fe ff 85 c0 79 3a 48 63 d8 48 8b 3d 2b 51 74 e4 4c 89 e6 e8 83 a0 d3 da 48 81 fb 00 f0 ff ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 e8 85 d8 da 5b 41 5c 41
+[   84.757430] RSP: 0018:ffff9dea4072bbb8 EFLAGS: 00010207
+[   84.758943] RAX: ffff94fcf4efb001 RBX: 0000000000000000 RCX: 0000000000058509
+[   84.760485] RDX: 0000000000058508 RSI: ffffc40100000000 RDI: 00000000000324f0
+[   84.762031] RBP: ffff9dea4072bbd8 R08: ffff94fcf4eff008 R09: ffff94fcaaeb2c88
+[   84.763621] R10: ffff94fc58fc0000 R11: 0000000000000013 R12: ffff94fcf4eff000
+[   84.765191] R13: ffff94fcfe67a600 R14: ffff94fcdf008470 R15: ffff94fcdf008548
+[   84.766773] FS:  00007f51d1ffb6c0(0000) GS:ffff950377680000(0000) knlGS:0000000000000000
+[   84.768386] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   84.770001] CR2: 0000000000000020 CR3: 0000000177b5a004 CR4: 0000000000f70ea0
+[   84.771632] PKRU: 55555554
+[   84.773261] Call Trace:
+[   84.774890]  <TASK>
+[   84.776499]  __lookup_slow+0x81/0x130
+[   84.778107]  walk_component+0x10b/0x180
+[   84.779719]  path_lookupat+0x6a/0x1a0
+[   84.781368]  filename_lookup+0xd0/0x190
+[   84.782978]  ? sched_clock+0xd/0x20
+[   84.784592]  ? sched_clock_cpu+0x14/0x190
+[   84.786202]  ? __smp_call_single_queue+0x40/0x50
+[   84.787816]  ? ttwu_queue_wakelist+0xfd/0x100
+[   84.789436]  ? kmem_cache_alloc+0x47/0x3c0
+[   84.791050]  vfs_statx+0x84/0x150
+[   84.792669]  ? getname_flags+0x54/0x1d0
+[   84.794288]  vfs_fstatat+0x5c/0x80
+[   84.795905]  __do_sys_newlstat+0x37/0x70
+[   84.797549]  ? do_futex+0x12e/0x1a0
+[   84.799166]  ? __x64_sys_futex+0x112/0x1d0
+[   84.800773]  ? trace_hardirqs_off.part.0+0x20/0x70
+[   84.802395]  ? trace_hardirqs_on+0x2f/0x80
+[   84.803998]  __x64_sys_newlstat+0x1a/0x20
+[   84.805599]  do_syscall_64+0x3c/0x90
+[   84.807193]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[   84.808802] RIP: 0033:0x7f529d04e184
+[   84.810409] Code: 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 89 f8 48 89 f7 48 89 d6 83 f8 01 77 2b b8 06 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 04 c3 0f 1f 00 48 8b 15 61 cc 0b 00 f7 d8 64
+[   84.812161] RSP: 002b:00007f51d1ff9028 EFLAGS: 00000246 ORIG_RAX: 0000000000000006
+[   84.813959] RAX: ffffffffffffffda RBX: 00007f51eee2c010 RCX: 00007f529d04e184
+[   84.815723] RDX: 00007f51d1ff9030 RSI: 00007f51d1ff9030 RDI: 00007f51d1ff91a0
+[   84.817496] RBP: 00007f51d1ff9180 R08: 00007f51d1ff92b0 R09: 0000000000000029
+[   84.819271] R10: 00007f52237915e8 R11: 0000000000000246 R12: 00007f51ec018408
+[   84.821051] R13: 00007f51d1ff91a0 R14: 00007f51eee2c010 R15: 0000000000000029
+[   84.822845]  </TASK>
+[   84.824621] Modules linked in: rfcomm xt_nat xt_tcpudp veth 8021q xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype iptable_filter ip_tables x_tables br_netfilter bridge stp llc overlay ntfs3 bnep btusb btrtl btbcm btintel btmtk bluetooth exfat ecdh_generic ecc iwlmvm snd_hda_codec_hdmi mac80211 snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio libarc4 iwlwifi snd_hda_intel snd_hda_codec cfg80211 mei_pxp snd_hwdep mei_hdcp intel_rapl_msr x86_pkg_temp_thermal intel_powerclamp snd_hda_core intel_rapl_common mei_me snd_intel_dspcfg tpm_tis tpm_tis_core idma64 mei rfkill tpm_crb tpm rng_core pkcs8_key_parser fuse dmi_sysfs
+[   84.830844] CR2: 0000000000000020
+[   84.832982] ---[ end trace 0000000000000000 ]---
