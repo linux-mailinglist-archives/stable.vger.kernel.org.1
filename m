@@ -2,55 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 729C76FCEE5
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 21:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6196FCEED
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 21:59:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjEIT6C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 15:58:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
+        id S234738AbjEIT7J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 15:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233996AbjEIT6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 15:58:01 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288E74486;
-        Tue,  9 May 2023 12:58:00 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-64115e652eeso45243700b3a.0;
-        Tue, 09 May 2023 12:58:00 -0700 (PDT)
+        with ESMTP id S234743AbjEIT7I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 15:59:08 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAED4ED6;
+        Tue,  9 May 2023 12:59:06 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-644d9bf05b7so2611975b3a.3;
+        Tue, 09 May 2023 12:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683662279; x=1686254279;
+        d=gmail.com; s=20221208; t=1683662346; x=1686254346;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NtJaNCD7II6YcLTMy7Wvb7J7re+/dORtugyHESx6VTM=;
-        b=GQHj4+4cUlJ1JDEwYT9r2QsdjmNu+SF0pfB0DgDL0qWKtsJikhx8Blc3KjUlcQKHSy
-         q8i2pC5GN4/YZyk38sP1OOqAjm0aAQLODi1VoMIWOMKg+CgkcD9UWWnCkPeC3vh71lkZ
-         7iCJCfHk1PSGk3O3rnSaWueBDagRw/cE47J4XoL0dQ92gC73E42aNwIrvRmaBN/eEA8G
-         0R05dWR7yGqANQLU1lR9qhVidkLDH/5XyaQmcAZFQBPUpUQ0VwHJhKmI6E1znsIpmfRE
-         HK/pfCZDUPkRoLq4/xDW7fx2cRDrg5JM0meOL5u0FWZcRYvpZIM/ICvZSciPNhsmQlRn
-         SlHA==
+        bh=+qFLfy/RaoHobJwJIwlBPxnMu6peJ2rAXISdMhNVcn8=;
+        b=bwJ4F5Mi7rgxj74IL2eWTgEHDb5ITjsRwmhmoIsr5y3/PaHdtyBOo2aJM+7LelOLMG
+         Si1SlqfuZrzdkpRSCia/ir2gcwAcwBUeA1KB2alc3KS6LFnxgegAPeD1jV9ppAjzZRYy
+         zbDVcEq/tnltqCyAH3QTyqVKxAF0ztfOtpoeQEJhacQzjfD6AQfUEEtRQGsxcfbbJmXS
+         zwqg7kPhwsbrLEeq8lV3Rr/xHFPDgkWQh3JcVuuy925539uKYhN01XXgXIVaFIX2wjsI
+         +PqCt8gxbyKzj4PrlRSmbj8GhTz1HUv7rgTUimRIzurTuTGAFfyOygg9TQYwrTYat3ro
+         8k2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683662279; x=1686254279;
+        d=1e100.net; s=20221208; t=1683662346; x=1686254346;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NtJaNCD7II6YcLTMy7Wvb7J7re+/dORtugyHESx6VTM=;
-        b=MsIjjPLg4L9B7j9oxc0X+RFmvlPIaWkjdkdky6xVOVF3Oreq7Msl0pmzRM5DJ6y+Ra
-         Puz4pGRGswnrApB9ao+Scqlp/CQ/dXiLhCKTMrZ0pR0nNkljgykiIrrIkuvW417AJs60
-         9/l2x2dQQq+7b0akOFNo/t7LoExUPiDewSLVzS3XadeB2W4H3i9TjLAKf8FwCQzP7O+D
-         G591sRur5QOhZ/zyRQceSGxmHZNz8LpHg4HEnK7XG2iVSD0dxb76VOFF195N7pZtFnzY
-         k0BwzXN09/YJ3Pfv+rv60410Agkk9uEwN3wc66kJtj1BUj7gHyMtE23ZzqfzuVvdYLaM
-         B2fQ==
-X-Gm-Message-State: AC+VfDz7tQH7cxtaiqpK5Q58UgRBzfIt2yO7+wOH2sNsGM7W//2CX/Sr
-        xshLDGi3H41fTDZb95xiXBE=
-X-Google-Smtp-Source: ACHHUZ5xki0XCJPI0/6YSSDxUQs8NwGQv3oKkyh0lAZxTGz9uHDmoZ+PuG9fz6lhcU3Ehm+Uqpdueg==
-X-Received: by 2002:a17:902:f804:b0:1a6:d9a6:a9b4 with SMTP id ix4-20020a170902f80400b001a6d9a6a9b4mr15659513plb.3.1683662279483;
-        Tue, 09 May 2023 12:57:59 -0700 (PDT)
+        bh=+qFLfy/RaoHobJwJIwlBPxnMu6peJ2rAXISdMhNVcn8=;
+        b=hybuunWV/MEtWQr5HlGoN6wjcERuv4R+qO1HrR8iHzjaE84jG7rTVttczGu5sj41yk
+         UJeCIDmQ3TNKHAGhFRZLlB0Ogno0uIA8u6TKxdwB3AkxPNOkai2cz6nLqOr2N4qzotQ3
+         wA8eqT+DNnifKkWjBs4g3UEO0ZbVmro7xR8Y3sV2xmmQSAVNqKRNjI213RK5G5JtG7p4
+         GzgtTz0Q1r+9blJQVNvegR+VLz5pwV+HPzoNepPb6gLDAinH+Da1147EChet2RBS4K/K
+         RWwmmm19w0IuBOAg3UV6Hl2Qtnj253ffOr8FR3X354Oijfih/bWdE0dJZtXeUrUKmNwR
+         UqIQ==
+X-Gm-Message-State: AC+VfDxwHffISidb5FkSth0sTRwtDm36Y+fnGEh/Zx0kmliYmph3uo+I
+        d7IqC/vIulMfUlwmJpRs9T0=
+X-Google-Smtp-Source: ACHHUZ6ud33kVJrJ3TG6+Sx5LPatnQ9P/Hv9S8gNX1O1rpCqT1BJCT/wbMzfMfyviwl8IMuYhNQiSQ==
+X-Received: by 2002:a05:6a20:72a0:b0:101:8ff9:58c5 with SMTP id o32-20020a056a2072a000b001018ff958c5mr2536706pzk.27.1683662346204;
+        Tue, 09 May 2023 12:59:06 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l6-20020a170902d34600b001ac7ab3e97csm1976857plk.260.2023.05.09.12.57.58
+        by smtp.gmail.com with ESMTPSA id x12-20020a62fb0c000000b0063f172b1c47sm2164563pfm.35.2023.05.09.12.59.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 12:57:59 -0700 (PDT)
+        Tue, 09 May 2023 12:59:05 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 9 May 2023 12:57:58 -0700
+Date:   Tue, 9 May 2023 12:59:04 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -59,13 +59,13 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 000/610] 6.1.28-rc2 review
-Message-ID: <0837e157-8615-418a-a3d3-1c14af11aba5@roeck-us.net>
-References: <20230509030653.039732630@linuxfoundation.org>
+Subject: Re: [PATCH 6.2 000/662] 6.2.15-rc2 review
+Message-ID: <4adbfa4a-33fc-4caf-a58a-a27a8e296f13@roeck-us.net>
+References: <20230509030701.507375024@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230509030653.039732630@linuxfoundation.org>
+In-Reply-To: <20230509030701.507375024@linuxfoundation.org>
 X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -77,9 +77,9 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 05:26:31AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.28 release.
-> There are 610 patches in this series, all will be posted as a response
+On Tue, May 09, 2023 at 05:27:04AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.2.15 release.
+> There are 662 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -90,43 +90,8 @@ On Tue, May 09, 2023 at 05:26:31AM +0200, Greg Kroah-Hartman wrote:
 Build results:
 	total: 155 pass: 155 fail: 0
 Qemu test results:
-	total: 519 pass: 519 fail: 0
+	total: 520 pass: 520 fail: 0
 
-New persistent runtime warning when booting riscv32/64 images:
-
-[    0.000000] ------------[ cut here ]------------
-[    0.000000] WARNING: CPU: 0 PID: 0 at arch/riscv/kernel/patch.c:73 patch_insn_write+0x1f0/0x202
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.1.28-rc2-00611-g2b7e1f92aa55 #1
-[    0.000000] Hardware name: riscv-virtio,qemu (DT)
-[    0.000000] epc : patch_insn_write+0x1f0/0x202
-[    0.000000]  ra : patch_insn_write+0x1ec/0x202
-[    0.000000] epc : c0005f80 ra : c0005f7c sp : c1c01ed0
-[    0.000000]  gp : c1d97938 tp : c1c0c680 t0 : c1f2ca38
-[    0.000000]  t1 : 00000018 t2 : 00001fff s0 : c1c01f00
-[    0.000000]  s1 : c102d5b8 a0 : 00000000 a1 : ffffffff
-[    0.000000]  a2 : 00000018 a3 : 00000000 a4 : c101c480
-[    0.000000]  a5 : 00000000 a6 : 000094e4 a7 : 000096ba
-[    0.000000]  s2 : c00094e4 s3 : 00000018 s4 : 000004fc
-[    0.000000]  s5 : c00096ba s6 : c1010018 s7 : 000004e4
-[    0.000000]  s8 : 08000200 s9 : 81000200 s10: c164d6b0
-[    0.000000]  s11: c164d6bc t3 : 000000e4 t4 : 000000ba
-[    0.000000]  t5 : 00000018 t6 : 00000023
-[    0.000000] status: 00000100 badaddr: 00000000 cause: 00000003
-[    0.000000] [<c0005f80>] patch_insn_write+0x1f0/0x202
-[    0.000000] [<c000602a>] patch_text_nosync+0xa/0x28
-[    0.000000] [<c00039a2>] riscv_cpufeature_patch_func+0x10e/0x118
-[    0.000000] [<c000333e>] _apply_alternatives+0x3a/0x72
-[    0.000000] [<c0c02c4e>] apply_boot_alternatives+0x2a/0x32
-[    0.000000] [<c0c037c8>] setup_arch+0x43c/0x45a
-[    0.000000] [<c0c00736>] start_kernel+0xa2/0x7b0
-[    0.000000] irq event stamp: 0
-[    0.000000] hardirqs last  enabled at (0): [<00000000>] 0x0
-[    0.000000] hardirqs last disabled at (0): [<00000000>] 0x0
-[    0.000000] softirqs last  enabled at (0): [<00000000>] 0x0
-[    0.000000] softirqs last disabled at (0): [<00000000>] 0x0
-[    0.000000] ---[ end trace 0000000000000000 ]---
-
-I did not try to bisect.
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
 Guenter
