@@ -2,155 +2,237 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F9E6FD0AE
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CA646FD0B2
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230167AbjEIVSm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 17:18:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36378 "EHLO
+        id S235023AbjEIVTm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 17:19:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbjEIVSj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:18:39 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A39C30F0;
-        Tue,  9 May 2023 14:18:38 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-64359d9c531so4828391b3a.3;
-        Tue, 09 May 2023 14:18:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683667118; x=1686259118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pUcq0bug0o4ImBs4oiU3OPIPZpm1xhF2eAPPTNrxkAk=;
-        b=mTO1MOwZVXwTCILT7ASs1bZbgAz5iAd7xvGJizQL0B8U2kO/HmzCLBXh+OYgLzBugH
-         VkCIe6nd1zPaJUCJ+rpEXWCcE30llVcBnc4wRcOemUHCt2q+P9Y1tvvWjPLy6sLfELoA
-         y5g8GqzcfJsgpwcvhvegCCDAdaw/5fJdXK7583EEnCcoO1smzhIHKNRb5A0ZubQKl7Oa
-         ccdsKBMNqJA6B/bLljJr0iTdMyiMopYYg8Lu/l+LIQ26LExUJHJETCwLrdxk8he1Ii4L
-         YzHAPpWqFmaQ03l0gJTN5ER4IsI/XiZdVqRtqjqNkCu0crrkuuXelujdTITj45mNGfPY
-         jIlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683667118; x=1686259118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pUcq0bug0o4ImBs4oiU3OPIPZpm1xhF2eAPPTNrxkAk=;
-        b=I+WZpFAHYaI6APdd415J13GTjA93caDdHyPBYhBlfi41SSG11+ItaWuYwYwGsUVAaU
-         1FWeA719vVwM4/PE2xt8Cl1XIOZwqFoUb77ll3XsAQlRKmlOv6pV2kdWMn60eZt6+ROz
-         ynfrg+fOgYooC/wpK9fTrvoU7MbTIH+DGEiN7d5VA+KzZptRpkxpcR9iuUpUBFy/s9Lw
-         Jpo7urh58ByEwfbUZaPXX9ao5vvj+AY4c2OOCPL0rXY+ol9uXQ3AHAyQ/o1hhD4zYj0a
-         VmMyZ89rYUKY/Xba/SOyp0Q15SugBmZPonrf63c6EEIQg0Fuj/R6YCgAMEDjIa9Wk81v
-         oKtA==
-X-Gm-Message-State: AC+VfDylSHTf2lrm9BnVoXf3VemdMnxgkXqzZopypi4NNiJ/dt++5s1a
-        TL+wVt0z4c7N1XKB7ZylVA8=
-X-Google-Smtp-Source: ACHHUZ7hEN0mp51juiLovr+ikP4KMSZgmvgdBGzf8gnANj9xgf9K2fhXTO480NE8bSqYE0dXkhGuKA==
-X-Received: by 2002:a05:6a20:72a1:b0:100:6a95:c289 with SMTP id o33-20020a056a2072a100b001006a95c289mr11390356pzk.5.1683667117935;
-        Tue, 09 May 2023 14:18:37 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id p19-20020a63f453000000b005287b22ea8esm1800306pgk.88.2023.05.09.14.18.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 14:18:37 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 9 May 2023 14:18:35 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 000/610] 6.1.28-rc2 review
-Message-ID: <ce667220-5803-4b6a-a2d2-f538289af584@roeck-us.net>
-References: <20230509030653.039732630@linuxfoundation.org>
- <0837e157-8615-418a-a3d3-1c14af11aba5@roeck-us.net>
- <20230509-robust-crate-5fe128d00e6d@spud>
+        with ESMTP id S229561AbjEIVTl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:19:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22CF65589;
+        Tue,  9 May 2023 14:19:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95D7C634E7;
+        Tue,  9 May 2023 21:19:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED23C433EF;
+        Tue,  9 May 2023 21:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683667174;
+        bh=aeVE82GOAm+8/pi+l38V8m9CkT3EyRdDIYsSw5VqQw8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=g5/4E8HYdQqTpUvxqE0+Z7SR7ucyG7jxF73chu3Tm0qdUfJnnzw+kuiG3I3MfdYHP
+         BREvL3UDJlypcI0PX3BBiSdW4jlDjvsFtF6Ce+N0xSGHlu/DdD1zCtxs1zu1/c8tOM
+         1KZU5fsSUeeRj52HIwzBa4dZr1A+2J5ukXNNTeYhEtZlbLkgxHjW1v57p50S4IprjF
+         +BL+RrTQGDsCEzvQBb1/j/fevH45W+f5MOPPN/ddNtxcRcHBRUzfPnp/RFjXh13Cjf
+         QqYbLOtdYh8Uxrd6ewnGvMbJiFqV6Nd/ZV2dNDeHXOVVpLHKYmEELhrYqwuO7/HHmZ
+         qKHnAOxl3k/cA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, nathan@kernel.org,
+        ndesaulniers@google.com, gregkh@linuxfoundation.org,
+        mcgrof@kernel.org, linux-rdma@vger.kernel.org, llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.3 01/18] RDMA/core: Fix multiple -Warray-bounds warnings
+Date:   Tue,  9 May 2023 17:19:09 -0400
+Message-Id: <20230509211928.21010-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230509-robust-crate-5fe128d00e6d@spud>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 09:41:42PM +0100, Conor Dooley wrote:
-> On Tue, May 09, 2023 at 12:57:58PM -0700, Guenter Roeck wrote:
-> > On Tue, May 09, 2023 at 05:26:31AM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.1.28 release.
-> > > There are 610 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > 
-> > Build results:
-> > 	total: 155 pass: 155 fail: 0
-> > Qemu test results:
-> > 	total: 519 pass: 519 fail: 0
-> > 
-> > New persistent runtime warning when booting riscv32/64 images:
-> 
-> You sure this is new? I seem to be able to reproduce for QEMU (which I
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-New for my tests, yes.
+[ Upstream commit aa4d540b4150052ae3b36d286b9c833a961ce291 ]
 
-> don't usually test) in several versions of 6.1. Don't see it in (my)
-> hardware though, as the particular platform doesn't end up calling the
-> offending function. Out of curiosity, what's your QEMU invocation?
+GCC-13 (and Clang)[1] does not like to access a partially allocated
+object, since it cannot reason about it for bounds checking.
 
-Example boot from initrd:
+In this case 140 bytes are allocated for an object of type struct
+ib_umad_packet:
 
-qemu-system-riscv64 -M virt -m 512M \
-     -no-reboot -kernel arch/riscv/boot/Image \
-     -initrd rootfs.cpio \
-     -device e1000,netdev=net0 \
-     -netdev user,id=net0 -bios default \
-     -append "panic=-1 rdinit=/sbin/init console=ttyS0,115200 earlycon=uart8250,mmio,0x10000000,115200" \
-     -nographic -monitor none
+        packet = kzalloc(sizeof(*packet) + IB_MGMT_RMPP_HDR, GFP_KERNEL);
 
-qemu version is 8.0, but I don't think that makes a difference.
-What does your command line look like ?
+However, notice that sizeof(*packet) is only 104 bytes:
 
-> 
-> Anyways, looks like a partial backport is the cause. How's it look with:
-> 
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-> index 694267d1fe81..fd1238df6149 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
-> @@ -9,6 +9,7 @@
->  #include <linux/bitmap.h>
->  #include <linux/ctype.h>
->  #include <linux/libfdt.h>
-> +#include <linux/memory.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <asm/alternative.h>
-> @@ -316,8 +317,11 @@ void __init_or_module riscv_cpufeature_patch_func(struct alt_entry *begin,
->  		}
->  
->  		tmp = (1U << alt->errata_id);
-> -		if (cpu_req_feature & tmp)
-> +		if (cpu_req_feature & tmp) {
-> +			mutex_lock(&text_mutex);
->  			patch_text_nosync(alt->old_ptr, alt->alt_ptr, alt->alt_len);
-> +			mutex_unlock(&text_mutex);
-> +		}
->  	}
->  }
->  #endif
-> 
+struct ib_umad_packet {
+        struct ib_mad_send_buf *   msg;                  /*     0     8 */
+        struct ib_mad_recv_wc *    recv_wc;              /*     8     8 */
+        struct list_head           list;                 /*    16    16 */
+        int                        length;               /*    32     4 */
 
-This fixes the problem for me.
+        /* XXX 4 bytes hole, try to pack */
 
-Thanks,
-Guenter
+        struct ib_user_mad         mad __attribute__((__aligned__(8))); /*    40    64 */
+
+        /* size: 104, cachelines: 2, members: 5 */
+        /* sum members: 100, holes: 1, sum holes: 4 */
+        /* forced alignments: 1, forced holes: 1, sum forced holes: 4 */
+        /* last cacheline: 40 bytes */
+} __attribute__((__aligned__(8)));
+
+and 36 bytes extra bytes are allocated for a flexible-array member in
+struct ib_user_mad:
+
+include/rdma/ib_mad.h:
+120 enum {
+...
+123         IB_MGMT_RMPP_HDR = 36,
+... }
+
+struct ib_user_mad {
+        struct ib_user_mad_hdr     hdr;                  /*     0    64 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        __u64                      data[] __attribute__((__aligned__(8))); /*    64     0 */
+
+        /* size: 64, cachelines: 1, members: 2 */
+        /* forced alignments: 1 */
+} __attribute__((__aligned__(8)));
+
+So we have sizeof(*packet) + IB_MGMT_RMPP_HDR == 140 bytes
+
+Then the address of the flex-array member (for which only 36 bytes were
+allocated) is casted and copied into a pointer to struct ib_rmpp_mad,
+which, in turn, is of size 256 bytes:
+
+        rmpp_mad = (struct ib_rmpp_mad *) packet->mad.data;
+
+struct ib_rmpp_mad {
+        struct ib_mad_hdr          mad_hdr;              /*     0    24 */
+        struct ib_rmpp_hdr         rmpp_hdr;             /*    24    12 */
+        u8                         data[220];            /*    36   220 */
+
+        /* size: 256, cachelines: 4, members: 3 */
+};
+
+The thing is that those 36 bytes allocated for flex-array member data
+in struct ib_user_mad onlly account for the size of both struct ib_mad_hdr
+and struct ib_rmpp_hdr, but nothing is left for array u8 data[220].
+So, the compiler is legitimately complaining about accessing an object
+for which not enough memory was allocated.
+
+Apparently, the only members of struct ib_rmpp_mad that are relevant
+(that are actually being used) in function ib_umad_write() are mad_hdr
+and rmpp_hdr. So, instead of casting packet->mad.data to
+(struct ib_rmpp_mad *) create a new structure
+
+struct ib_rmpp_mad_hdr {
+        struct ib_mad_hdr       mad_hdr;
+        struct ib_rmpp_hdr      rmpp_hdr;
+} __packed;
+
+and cast packet->mad.data to (struct ib_rmpp_mad_hdr *).
+
+Notice that
+
+        IB_MGMT_RMPP_HDR == sizeof(struct ib_rmpp_mad_hdr) == 36 bytes
+
+Refactor the rest of the code, accordingly.
+
+Fix the following warnings seen under GCC-13 and -Warray-bounds:
+drivers/infiniband/core/user_mad.c:564:50: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+drivers/infiniband/core/user_mad.c:566:42: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+drivers/infiniband/core/user_mad.c:618:25: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+drivers/infiniband/core/user_mad.c:622:44: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
+
+Link: https://github.com/KSPP/linux/issues/273
+Link: https://godbolt.org/z/oYWaGM4Yb [1]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZBpB91qQcB10m3Fw@work
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/infiniband/core/user_mad.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
+index f83954180a338..d21c0a042f0a5 100644
+--- a/drivers/infiniband/core/user_mad.c
++++ b/drivers/infiniband/core/user_mad.c
+@@ -131,6 +131,11 @@ struct ib_umad_packet {
+ 	struct ib_user_mad mad;
+ };
+ 
++struct ib_rmpp_mad_hdr {
++	struct ib_mad_hdr	mad_hdr;
++	struct ib_rmpp_hdr      rmpp_hdr;
++} __packed;
++
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/ib_umad.h>
+ 
+@@ -494,11 +499,11 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 			     size_t count, loff_t *pos)
+ {
+ 	struct ib_umad_file *file = filp->private_data;
++	struct ib_rmpp_mad_hdr *rmpp_mad_hdr;
+ 	struct ib_umad_packet *packet;
+ 	struct ib_mad_agent *agent;
+ 	struct rdma_ah_attr ah_attr;
+ 	struct ib_ah *ah;
+-	struct ib_rmpp_mad *rmpp_mad;
+ 	__be64 *tid;
+ 	int ret, data_len, hdr_len, copy_offset, rmpp_active;
+ 	u8 base_version;
+@@ -506,7 +511,7 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 	if (count < hdr_size(file) + IB_MGMT_RMPP_HDR)
+ 		return -EINVAL;
+ 
+-	packet = kzalloc(sizeof *packet + IB_MGMT_RMPP_HDR, GFP_KERNEL);
++	packet = kzalloc(sizeof(*packet) + IB_MGMT_RMPP_HDR, GFP_KERNEL);
+ 	if (!packet)
+ 		return -ENOMEM;
+ 
+@@ -560,13 +565,13 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 		goto err_up;
+ 	}
+ 
+-	rmpp_mad = (struct ib_rmpp_mad *) packet->mad.data;
+-	hdr_len = ib_get_mad_data_offset(rmpp_mad->mad_hdr.mgmt_class);
++	rmpp_mad_hdr = (struct ib_rmpp_mad_hdr *)packet->mad.data;
++	hdr_len = ib_get_mad_data_offset(rmpp_mad_hdr->mad_hdr.mgmt_class);
+ 
+-	if (ib_is_mad_class_rmpp(rmpp_mad->mad_hdr.mgmt_class)
++	if (ib_is_mad_class_rmpp(rmpp_mad_hdr->mad_hdr.mgmt_class)
+ 	    && ib_mad_kernel_rmpp_agent(agent)) {
+ 		copy_offset = IB_MGMT_RMPP_HDR;
+-		rmpp_active = ib_get_rmpp_flags(&rmpp_mad->rmpp_hdr) &
++		rmpp_active = ib_get_rmpp_flags(&rmpp_mad_hdr->rmpp_hdr) &
+ 						IB_MGMT_RMPP_FLAG_ACTIVE;
+ 	} else {
+ 		copy_offset = IB_MGMT_MAD_HDR;
+@@ -615,12 +620,12 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
+ 		tid = &((struct ib_mad_hdr *) packet->msg->mad)->tid;
+ 		*tid = cpu_to_be64(((u64) agent->hi_tid) << 32 |
+ 				   (be64_to_cpup(tid) & 0xffffffff));
+-		rmpp_mad->mad_hdr.tid = *tid;
++		rmpp_mad_hdr->mad_hdr.tid = *tid;
+ 	}
+ 
+ 	if (!ib_mad_kernel_rmpp_agent(agent)
+-	   && ib_is_mad_class_rmpp(rmpp_mad->mad_hdr.mgmt_class)
+-	   && (ib_get_rmpp_flags(&rmpp_mad->rmpp_hdr) & IB_MGMT_RMPP_FLAG_ACTIVE)) {
++	    && ib_is_mad_class_rmpp(rmpp_mad_hdr->mad_hdr.mgmt_class)
++	    && (ib_get_rmpp_flags(&rmpp_mad_hdr->rmpp_hdr) & IB_MGMT_RMPP_FLAG_ACTIVE)) {
+ 		spin_lock_irq(&file->send_lock);
+ 		list_add_tail(&packet->list, &file->send_list);
+ 		spin_unlock_irq(&file->send_lock);
+-- 
+2.39.2
+
