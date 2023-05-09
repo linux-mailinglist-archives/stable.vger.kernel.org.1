@@ -2,116 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB90D6FC620
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 14:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DBB6FC636
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 14:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbjEIMU4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 08:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
+        id S233120AbjEIMYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 08:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjEIMUz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 08:20:55 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D5F30E3;
-        Tue,  9 May 2023 05:20:55 -0700 (PDT)
+        with ESMTP id S231467AbjEIMYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 08:24:48 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D74F19A9
+        for <stable@vger.kernel.org>; Tue,  9 May 2023 05:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683634855; x=1715170855;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1683635086; x=1715171086;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=DOQ2P+aYH6VjiZt4o6AQxKLdg0z9OmOL/AuxPkVqVi0=;
-  b=BVaRnI1UjoQPENACqXZb44hKD19la9BxTrDQfAmYV7C0vPo+yBh559zA
-   r7Il0z+R0g228O5ss5rMqJalY27AN1WGcdkmpFu/iKPZz83pcJCo4IpyK
-   xFtLNSRq++Z6yTi1d0DuNROwt1kJ5USM2LSW3hZBzWvDq01UvAbqgkfcH
-   KS9OekrEXx1OWbZTD7LyREKVtEg1cun9ruvS/NfarrIHSiO0QT53WE911
-   9pLtgabrgQYj33POPWkR+Cr9uKffsEyhEF7hp8GtovHAuUsJvgZizEZ4O
-   TQoehPFo3ylPihkG8w+4GoAgxrAWvbKU2PNiN6rruKhuOVy4RwArBsExU
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="347367793"
-X-IronPort-AV: E=Sophos;i="5.99,262,1677571200"; 
-   d="scan'208";a="347367793"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2023 05:20:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="843077899"
-X-IronPort-AV: E=Sophos;i="5.99,262,1677571200"; 
-   d="scan'208";a="843077899"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 09 May 2023 05:20:52 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 09 May 2023 15:20:51 +0300
-Date:   Tue, 9 May 2023 15:20:51 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rdbabiera@google.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: altmodes/displayport: fix
- pin_assignment_show
-Message-ID: <ZFo6oxjdWVzncyn2@kuha.fi.intel.com>
-References: <20230508214443.893436-1-badhri@google.com>
+  bh=kh42O3+uJmh8/ovlC6i2f/t7fdo0dloLStJAHg4siTA=;
+  b=bHSlzn6gmNxzNGAISoyLfZm054YN4rBjdLCHX2gEmcAdyzQvjPhTsFFA
+   EgZZNzt4q8tUtmLL9widQrH237MgNr0T23e5NzTfpjsDSe2DwBXVLAGQk
+   mGeKBrR9lW/GWg3dHyiPLhN7WGFuQa0Iz0GH43tJ422SMSIPrIg81bab7
+   IIEjFk9dxCyzNAM6GuD4uqU1CBk8SGDhXa2PX8zW2wlLomyE4XljgFcFl
+   5gHyQFjMBFc2M0CgBTGQ3JJTC5Nf24qV1HlNfhVtZI1RYVBnerR9Pn+ir
+   G5N4P8MqfwmK9U/leUstlAUZZwjUr6/u+Md84+9OEEpJxkUg1uMCW/KvJ
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.99,262,1677567600"; 
+   d="asc'?scan'208";a="151089056"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 May 2023 05:24:45 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Tue, 9 May 2023 05:24:36 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Tue, 9 May 2023 05:24:34 -0700
+Date:   Tue, 9 May 2023 13:24:15 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Conor Dooley <conor@kernel.org>, Dhruva Gole <d-gole@ti.com>,
+        <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 455/611] spi: bcm63xx: remove PM_SLEEP based
+ conditional compilation
+Message-ID: <20230509-cheating-chapped-5fd1a32a05e5@wendy>
+References: <20230508094421.513073170@linuxfoundation.org>
+ <20230508094436.944529030@linuxfoundation.org>
+ <0138fb50-507d-bccf-40bb-07340f3cbb33@ti.com>
+ <2023050808-overbite-dancing-53c5@gregkh>
+ <2023050845-pancreas-postage-5769@gregkh>
+ <20230508-undefined-opium-c9824d160898@spud>
+ <2023050940-outscore-kindle-f333@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="9oLdbBtJMdB9cq9y"
 Content-Disposition: inline
-In-Reply-To: <20230508214443.893436-1-badhri@google.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <2023050940-outscore-kindle-f333@gregkh>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 08, 2023 at 09:44:43PM +0000, Badhri Jagan Sridharan wrote:
-> This patch fixes negative indexing of buf array in pin_assignment_show
-> when get_current_pin_assignments returns 0 i.e. no compatible pin
-> assignments are found.
-> 
-> BUG: KASAN: use-after-free in pin_assignment_show+0x26c/0x33c
-> ...
-> Call trace:
-> dump_backtrace+0x110/0x204
-> dump_stack_lvl+0x84/0xbc
-> print_report+0x358/0x974
-> kasan_report+0x9c/0xfc
-> __do_kernel_fault+0xd4/0x2d4
-> do_bad_area+0x48/0x168
-> do_tag_check_fault+0x24/0x38
-> do_mem_abort+0x6c/0x14c
-> el1_abort+0x44/0x68
-> el1h_64_sync_handler+0x64/0xa4
-> el1h_64_sync+0x78/0x7c
-> pin_assignment_show+0x26c/0x33c
-> dev_attr_show+0x50/0xc0
-> 
-> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+--9oLdbBtJMdB9cq9y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+On Tue, May 09, 2023 at 04:54:45AM +0200, Greg Kroah-Hartman wrote:
+> On Mon, May 08, 2023 at 11:27:42PM +0100, Conor Dooley wrote:
+> > On Mon, May 08, 2023 at 03:25:11PM +0200, Greg Kroah-Hartman wrote:
+> > > On Mon, May 08, 2023 at 03:15:15PM +0200, Greg Kroah-Hartman wrote:
+> > > > On Mon, May 08, 2023 at 05:55:50PM +0530, Dhruva Gole wrote:
 
-> ---
->  drivers/usb/typec/altmodes/displayport.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-> index 8f3e884222ad..66de880b28d0 100644
-> --- a/drivers/usb/typec/altmodes/displayport.c
-> +++ b/drivers/usb/typec/altmodes/displayport.c
-> @@ -516,6 +516,10 @@ static ssize_t pin_assignment_show(struct device *dev,
->  
->  	mutex_unlock(&dp->lock);
->  
-> +	/* get_current_pin_assignments can return 0 when no matching pin assignments are found */
-> +	if (len == 0)
-> +		len++;
-> +
->  	buf[len - 1] = '\n';
->  	return len;
->  }
+> > > > > > -#endif
+> > > > >=20
+> > > > > This patch may cause build failures with some of the configs that=
+ disable
+> > > > > CONFIG_PM I understand,
+> > > > > So to fix that I had sent another patch:
+> > > > > https://lore.kernel.org/all/CAOiHx=3D=3DanPTqXNJNG7zap1XP2zKUp5Sb=
+aVJdyUsUvvitKRUHZw@mail.gmail.com/
+> > > > >=20
+> > > > > However missed out adding the fixes tag.
+> > > > >=20
+> > > > > I humbly request you to add
+> > > > > https://lore.kernel.org/all/20230424102546.1604484-1-d-gole@ti.co=
+m/
+> > > > >=20
+> > > > > this patch to fix this patch throughout the stable fixes trees.
+> > > > >=20
+> > > > > It can also be found on Linus' master branch here:
+> > > > >=20
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
+t/commit/drivers/spi/spi-bcm63xx.c?id=3Dcc5f6fa4f6590e3b9eb8d34302ea43af4a3=
+cfed7
+> > > > > >   static const struct dev_pm_ops bcm63xx_spi_pm_ops =3D {
+> > > > > >   	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_res=
+ume)
+> > > >=20
+> > > > Sure, now queued up, thanks!
+> > >=20
+> > >=20
+> > > Nope, sorry, that broke the build in many places, so I've dropped it =
+now
+> > > from kernels 5.15.y and older.
+> >=20
+> > I retriggered my CI after seeing these mails, but the build is still
+> > broken on RISC-V.
+>=20
+> Now dropped, thanks.
 
-thanks,
+All green now, thanks.
 
--- 
-heikki
+--9oLdbBtJMdB9cq9y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZFo7bgAKCRB4tDGHoIJi
+0qPPAP9YF43LLI/CKDk4Vwbnf+bwl6riszJiaWs8uI/rNIDIIwEAvuI6yUK//m76
+EkxC/Hhhq85BQHTMHs7gP5Ak7yv6Rww=
+=lIm7
+-----END PGP SIGNATURE-----
+
+--9oLdbBtJMdB9cq9y--
