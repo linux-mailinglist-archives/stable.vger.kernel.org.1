@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF2036FD121
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 027AF6FD124
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236168AbjEIVXP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 17:23:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37488 "EHLO
+        id S236171AbjEIVXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 17:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236076AbjEIVWC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:22:02 -0400
+        with ESMTP id S236078AbjEIVWK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:22:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C3376BF;
-        Tue,  9 May 2023 14:20:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2738A51;
+        Tue,  9 May 2023 14:20:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 844A56345E;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D854634F7;
+        Tue,  9 May 2023 21:20:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2733DC433A8;
         Tue,  9 May 2023 21:20:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1B0C4339C;
-        Tue,  9 May 2023 21:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683667247;
-        bh=18SUlECuH8ecv+har8QPVK6ThxrdIZBitTCya2J9bcE=;
+        s=k20201202; t=1683667248;
+        bh=Oi+gQzDH22UxfWh2JyqJkOQEmh0VRe7t9VVL4UTI+PE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uknj3Fgf9VTyUM1sa+9tf/tAJuAdADyyzOoSYgfRA4PW+JugyqIPjxmQnDBhyNM92
-         sgSe5TrkwAaH03wzuYz6ee2ptLvX1TxWnZ5RQo33YWord6uRTa9+4V9cSDAAHNByZK
-         yy0hob5LetOqYYxYgYLnFoZP7/4R4owmijuqWLGIUQeJ3Z6IJS2QZ9S0aSya2s6AgF
-         qDSl8RcY7aQTyTFPqgkRaZnP8w7t7oVM79O9kPtZQW0X91NNCRxWpNR1nMGysq8DnK
-         GaTTDEh0KhWPVsnmSxR8QLyXGInoiG8LnnrVwA46CXmMbXGYi7n8uMqXvPb+5jbTMu
-         ga1b5og9LmbUw==
+        b=KwNrdWrdcjF+H9n6b3l4gUmwdO2DKMhz2B7x83ytiTU1UIx3pcK80hDCYZWpRE1ZJ
+         jwaM1RzXSr1/xVYtVIkm4ui8CG6WxFElrQ6hnWNikuPCeUUBEndAdtoNlQK+RILTd5
+         mPwC/6BIzuQIsuhtw0ffKgrvnhgVMU0/rQ/ycxZeG4bIHVF3zgGjWnDYRSKAUDsLwl
+         dKS4H+/D2KadHBhXYVc4lU/Ed3c/hDO+PSwUw8nPFGPkSgjoaXcoLuUc6NhjvQOzz9
+         syB3eeQNrJjcFmA//KQN5ZijWNvF4tjZ4oUicBhpzXpoAH1XZiXWN9hdhrbJxVerg2
+         IEAhKx0iJ5VDA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        joro@8bytes.org, dmitry.baryshkov@linaro.org,
-        quic_saipraka@quicinc.com, konrad.dybcio@linaro.org,
-        quic_bjorande@quicinc.com, emma@anholt.net,
-        marijn.suijten@somainline.org, a39.skl@gmail.com, mani@kernel.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10 2/5] iommu/arm-smmu-qcom: Limit the SMR groups to 128
-Date:   Tue,  9 May 2023 17:20:38 -0400
-Message-Id: <20230509212044.22294-2-sashal@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, pdeschrijver@nvidia.com,
+        pgaikwad@nvidia.com, mturquette@baylibre.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        linux-clk@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/5] clk: tegra20: fix gcc-7 constant overflow warning
+Date:   Tue,  9 May 2023 17:20:39 -0400
+Message-Id: <20230509212044.22294-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230509212044.22294-1-sashal@kernel.org>
 References: <20230509212044.22294-1-sashal@kernel.org>
@@ -61,65 +58,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 12261134732689b7e30c59db9978f81230965181 ]
+[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
 
-Some platforms support more than 128 stream matching groups than what is
-defined by the ARM SMMU architecture specification. But due to some unknown
-reasons, those additional groups don't exhibit the same behavior as the
-architecture supported ones.
+Older gcc versions get confused by comparing a u32 value to a negative
+constant in a switch()/case block:
 
-For instance, the additional groups will not detect the quirky behavior of
-some firmware versions intercepting writes to S2CR register, thus skipping
-the quirk implemented in the driver and causing boot crash.
+drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
+drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_12MHZ:
+  ^~~~
+drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_26MHZ:
 
-So let's limit the groups to 128 for now until the issue with those groups
-are fixed and issue a notice to users in that case.
+Make the constants unsigned instead.
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230327080029.11584-1-manivannan.sadhasivam@linaro.org
-[will: Reworded the comment slightly]
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 63f7173b241f0..1598a1ddbf694 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -32,12 +32,26 @@ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index d60ee6e318a55..fb1da5d63f4b2 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -18,24 +18,24 @@
+ #define MISC_CLK_ENB 0x48
  
- static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- {
--	unsigned int last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
- 	struct qcom_smmu *qsmmu = to_qcom_smmu(smmu);
-+	unsigned int last_s2cr;
- 	u32 reg;
- 	u32 smr;
- 	int i;
+ #define OSC_CTRL 0x50
+-#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
+-#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
+-#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
+-#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
+-#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
+-#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
+-
+-#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
+-#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
+-#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
+-#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
++#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
++#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
++#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
++#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
++#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
++#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
++
++#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
++#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
++#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
++#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
  
-+	/*
-+	 * Some platforms support more than the Arm SMMU architected maximum of
-+	 * 128 stream matching groups. For unknown reasons, the additional
-+	 * groups don't exhibit the same behavior as the architected registers,
-+	 * so limit the groups to 128 until the behavior is fixed for the other
-+	 * groups.
-+	 */
-+	if (smmu->num_mapping_groups > 128) {
-+		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+		smmu->num_mapping_groups = 128;
-+	}
-+
-+	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
- 	 * ignored, and writing BYPASS will end up written as FAULT in the
+ #define OSC_FREQ_DET 0x58
+-#define OSC_FREQ_DET_TRIG (1<<31)
++#define OSC_FREQ_DET_TRIG (1u<<31)
+ 
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
+ 
+ #define TEGRA20_CLK_PERIPH_BANKS	3
+ 
 -- 
 2.39.2
 
