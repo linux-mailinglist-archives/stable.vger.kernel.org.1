@@ -2,237 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 777CF6FD159
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AA36FD12F
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 23:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236270AbjEIVZO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 17:25:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37684 "EHLO
+        id S236092AbjEIVXs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 17:23:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236111AbjEIVYm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:24:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59705A248;
-        Tue,  9 May 2023 14:22:06 -0700 (PDT)
+        with ESMTP id S235913AbjEIVXM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 17:23:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 009386A54;
+        Tue,  9 May 2023 14:21:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37DA363725;
-        Tue,  9 May 2023 21:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20298C4339C;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCADF63738;
+        Tue,  9 May 2023 21:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3178C433A4;
         Tue,  9 May 2023 21:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683667261;
-        bh=w3idX9v5XOeQ50vgBlbR+ZAhP3EpnQKSofC3XOe3QHE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=RQfqdy2+9YZ0o0vWKlvNh73jeAtOb5K4Aj2g7ThXJ2nOQLcbqIQdRPkq5RBup/LVZ
-         WkCNnuc2UuAqhlBRnfHLwJAzAqQ16n3opXZvOTrG9dLzsr1qfhuPX7mBuRtVrOUM+Q
-         JYJBwSGOn725j+NMCTCVLPua8z9HScmlF/9RkmGgQNeZ8XEoKRgJwsNLxLQIuUvK3t
-         tToDim3xnLrLDF+TBQIfb6E5hZQruaY4lyW7MAa/h7VlAKP89EUwxnXJQrv4BtZ9ew
-         2oPm9W9kMkNt3unKgNb7BBj7aQShUjTScMeEwCbBGcbTp5i8YKxm37X33OskZteD+w
-         csDcd6nFjoL/A==
+        s=k20201202; t=1683667263;
+        bh=3nSx2KCemwv4hbknYteFY1HJuji8xiFBfgoofsSnr+4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Jt3+9xWZcMoui6vtgzuXSgSJCvdXmCrKk1BgEJDsElzX0ekOs2Ddm1baylS7BO2t0
+         rRXrKLIOj720bqaLK/qINdVmahYrJm+sfw3jjgDDBEeYSQ22EUvXDeSsnlmksVVL/A
+         qaFMg6fxievsQ0IOeY+ftiujHZjnr6oF+zLaFgiX2WKEk6d6BOrmBPc54Bht9S6qwD
+         QGhCAX3WNmpHB6Z+WB+MoxD12cea7cKD49DL3lb42OyuTda/zJPtIisbVuT4oueBnS
+         EhUX+2XnRlWaMkCkw2pPk1WRy06GFeossvcnwZbkTe9I5q9KN2kLdWX+XMjz3kDPrm
+         ZwMkujYEpd9KA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, nathan@kernel.org,
-        ndesaulniers@google.com, gregkh@linuxfoundation.org,
-        mcgrof@kernel.org, linux-rdma@vger.kernel.org, llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 1/4] RDMA/core: Fix multiple -Warray-bounds warnings
-Date:   Tue,  9 May 2023 17:20:53 -0400
-Message-Id: <20230509212058.22651-1-sashal@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, pdeschrijver@nvidia.com,
+        pgaikwad@nvidia.com, mturquette@baylibre.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        linux-clk@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/4] clk: tegra20: fix gcc-7 constant overflow warning
+Date:   Tue,  9 May 2023 17:20:54 -0400
+Message-Id: <20230509212058.22651-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230509212058.22651-1-sashal@kernel.org>
+References: <20230509212058.22651-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit aa4d540b4150052ae3b36d286b9c833a961ce291 ]
+[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
 
-GCC-13 (and Clang)[1] does not like to access a partially allocated
-object, since it cannot reason about it for bounds checking.
+Older gcc versions get confused by comparing a u32 value to a negative
+constant in a switch()/case block:
 
-In this case 140 bytes are allocated for an object of type struct
-ib_umad_packet:
+drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
+drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_12MHZ:
+  ^~~~
+drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
+  case OSC_CTRL_OSC_FREQ_26MHZ:
 
-        packet = kzalloc(sizeof(*packet) + IB_MGMT_RMPP_HDR, GFP_KERNEL);
+Make the constants unsigned instead.
 
-However, notice that sizeof(*packet) is only 104 bytes:
-
-struct ib_umad_packet {
-        struct ib_mad_send_buf *   msg;                  /*     0     8 */
-        struct ib_mad_recv_wc *    recv_wc;              /*     8     8 */
-        struct list_head           list;                 /*    16    16 */
-        int                        length;               /*    32     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        struct ib_user_mad         mad __attribute__((__aligned__(8))); /*    40    64 */
-
-        /* size: 104, cachelines: 2, members: 5 */
-        /* sum members: 100, holes: 1, sum holes: 4 */
-        /* forced alignments: 1, forced holes: 1, sum forced holes: 4 */
-        /* last cacheline: 40 bytes */
-} __attribute__((__aligned__(8)));
-
-and 36 bytes extra bytes are allocated for a flexible-array member in
-struct ib_user_mad:
-
-include/rdma/ib_mad.h:
-120 enum {
-...
-123         IB_MGMT_RMPP_HDR = 36,
-... }
-
-struct ib_user_mad {
-        struct ib_user_mad_hdr     hdr;                  /*     0    64 */
-        /* --- cacheline 1 boundary (64 bytes) --- */
-        __u64                      data[] __attribute__((__aligned__(8))); /*    64     0 */
-
-        /* size: 64, cachelines: 1, members: 2 */
-        /* forced alignments: 1 */
-} __attribute__((__aligned__(8)));
-
-So we have sizeof(*packet) + IB_MGMT_RMPP_HDR == 140 bytes
-
-Then the address of the flex-array member (for which only 36 bytes were
-allocated) is casted and copied into a pointer to struct ib_rmpp_mad,
-which, in turn, is of size 256 bytes:
-
-        rmpp_mad = (struct ib_rmpp_mad *) packet->mad.data;
-
-struct ib_rmpp_mad {
-        struct ib_mad_hdr          mad_hdr;              /*     0    24 */
-        struct ib_rmpp_hdr         rmpp_hdr;             /*    24    12 */
-        u8                         data[220];            /*    36   220 */
-
-        /* size: 256, cachelines: 4, members: 3 */
-};
-
-The thing is that those 36 bytes allocated for flex-array member data
-in struct ib_user_mad onlly account for the size of both struct ib_mad_hdr
-and struct ib_rmpp_hdr, but nothing is left for array u8 data[220].
-So, the compiler is legitimately complaining about accessing an object
-for which not enough memory was allocated.
-
-Apparently, the only members of struct ib_rmpp_mad that are relevant
-(that are actually being used) in function ib_umad_write() are mad_hdr
-and rmpp_hdr. So, instead of casting packet->mad.data to
-(struct ib_rmpp_mad *) create a new structure
-
-struct ib_rmpp_mad_hdr {
-        struct ib_mad_hdr       mad_hdr;
-        struct ib_rmpp_hdr      rmpp_hdr;
-} __packed;
-
-and cast packet->mad.data to (struct ib_rmpp_mad_hdr *).
-
-Notice that
-
-        IB_MGMT_RMPP_HDR == sizeof(struct ib_rmpp_mad_hdr) == 36 bytes
-
-Refactor the rest of the code, accordingly.
-
-Fix the following warnings seen under GCC-13 and -Warray-bounds:
-drivers/infiniband/core/user_mad.c:564:50: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
-drivers/infiniband/core/user_mad.c:566:42: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
-drivers/infiniband/core/user_mad.c:618:25: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
-drivers/infiniband/core/user_mad.c:622:44: warning: array subscript ‘struct ib_rmpp_mad[0]’ is partly outside array bounds of ‘unsigned char[140]’ [-Warray-bounds=]
-
-Link: https://github.com/KSPP/linux/issues/273
-Link: https://godbolt.org/z/oYWaGM4Yb [1]
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/ZBpB91qQcB10m3Fw@work
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/user_mad.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
-index ad3a092b8b5c3..390123f87658b 100644
---- a/drivers/infiniband/core/user_mad.c
-+++ b/drivers/infiniband/core/user_mad.c
-@@ -131,6 +131,11 @@ struct ib_umad_packet {
- 	struct ib_user_mad mad;
- };
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index 3e0f04f0e16e5..3f74497d73e58 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -18,24 +18,24 @@
+ #define MISC_CLK_ENB 0x48
  
-+struct ib_rmpp_mad_hdr {
-+	struct ib_mad_hdr	mad_hdr;
-+	struct ib_rmpp_hdr      rmpp_hdr;
-+} __packed;
+ #define OSC_CTRL 0x50
+-#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
+-#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
+-#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
+-#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
+-#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
+-#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
+-
+-#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
+-#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
+-#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
+-#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
++#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
++#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
++#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
++#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
++#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
++#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
 +
- #define CREATE_TRACE_POINTS
- #include <trace/events/ib_umad.h>
++#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
++#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
++#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
++#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
  
-@@ -494,11 +499,11 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
- 			     size_t count, loff_t *pos)
- {
- 	struct ib_umad_file *file = filp->private_data;
-+	struct ib_rmpp_mad_hdr *rmpp_mad_hdr;
- 	struct ib_umad_packet *packet;
- 	struct ib_mad_agent *agent;
- 	struct rdma_ah_attr ah_attr;
- 	struct ib_ah *ah;
--	struct ib_rmpp_mad *rmpp_mad;
- 	__be64 *tid;
- 	int ret, data_len, hdr_len, copy_offset, rmpp_active;
- 	u8 base_version;
-@@ -506,7 +511,7 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
- 	if (count < hdr_size(file) + IB_MGMT_RMPP_HDR)
- 		return -EINVAL;
+ #define OSC_FREQ_DET 0x58
+-#define OSC_FREQ_DET_TRIG (1<<31)
++#define OSC_FREQ_DET_TRIG (1u<<31)
  
--	packet = kzalloc(sizeof *packet + IB_MGMT_RMPP_HDR, GFP_KERNEL);
-+	packet = kzalloc(sizeof(*packet) + IB_MGMT_RMPP_HDR, GFP_KERNEL);
- 	if (!packet)
- 		return -ENOMEM;
+ #define OSC_FREQ_DET_STATUS 0x5c
+-#define OSC_FREQ_DET_BUSY (1<<31)
+-#define OSC_FREQ_DET_CNT_MASK 0xFFFF
++#define OSC_FREQ_DET_BUSYu (1<<31)
++#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
  
-@@ -560,13 +565,13 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
- 		goto err_up;
- 	}
+ #define TEGRA20_CLK_PERIPH_BANKS	3
  
--	rmpp_mad = (struct ib_rmpp_mad *) packet->mad.data;
--	hdr_len = ib_get_mad_data_offset(rmpp_mad->mad_hdr.mgmt_class);
-+	rmpp_mad_hdr = (struct ib_rmpp_mad_hdr *)packet->mad.data;
-+	hdr_len = ib_get_mad_data_offset(rmpp_mad_hdr->mad_hdr.mgmt_class);
- 
--	if (ib_is_mad_class_rmpp(rmpp_mad->mad_hdr.mgmt_class)
-+	if (ib_is_mad_class_rmpp(rmpp_mad_hdr->mad_hdr.mgmt_class)
- 	    && ib_mad_kernel_rmpp_agent(agent)) {
- 		copy_offset = IB_MGMT_RMPP_HDR;
--		rmpp_active = ib_get_rmpp_flags(&rmpp_mad->rmpp_hdr) &
-+		rmpp_active = ib_get_rmpp_flags(&rmpp_mad_hdr->rmpp_hdr) &
- 						IB_MGMT_RMPP_FLAG_ACTIVE;
- 	} else {
- 		copy_offset = IB_MGMT_MAD_HDR;
-@@ -615,12 +620,12 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
- 		tid = &((struct ib_mad_hdr *) packet->msg->mad)->tid;
- 		*tid = cpu_to_be64(((u64) agent->hi_tid) << 32 |
- 				   (be64_to_cpup(tid) & 0xffffffff));
--		rmpp_mad->mad_hdr.tid = *tid;
-+		rmpp_mad_hdr->mad_hdr.tid = *tid;
- 	}
- 
- 	if (!ib_mad_kernel_rmpp_agent(agent)
--	   && ib_is_mad_class_rmpp(rmpp_mad->mad_hdr.mgmt_class)
--	   && (ib_get_rmpp_flags(&rmpp_mad->rmpp_hdr) & IB_MGMT_RMPP_FLAG_ACTIVE)) {
-+	    && ib_is_mad_class_rmpp(rmpp_mad_hdr->mad_hdr.mgmt_class)
-+	    && (ib_get_rmpp_flags(&rmpp_mad_hdr->rmpp_hdr) & IB_MGMT_RMPP_FLAG_ACTIVE)) {
- 		spin_lock_irq(&file->send_lock);
- 		list_add_tail(&packet->list, &file->send_list);
- 		spin_unlock_irq(&file->send_lock);
 -- 
 2.39.2
 
