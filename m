@@ -2,88 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 570BE6FCBB7
-	for <lists+stable@lfdr.de>; Tue,  9 May 2023 18:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F20A6FCC4A
+	for <lists+stable@lfdr.de>; Tue,  9 May 2023 19:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234438AbjEIQw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 9 May 2023 12:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34854 "EHLO
+        id S235280AbjEIRGd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 9 May 2023 13:06:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233712AbjEIQw0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 12:52:26 -0400
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CD81BD3
-        for <stable@vger.kernel.org>; Tue,  9 May 2023 09:51:41 -0700 (PDT)
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7577ef2fa31so782367985a.0
-        for <stable@vger.kernel.org>; Tue, 09 May 2023 09:51:41 -0700 (PDT)
+        with ESMTP id S235277AbjEIRGQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 9 May 2023 13:06:16 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1EFDC46;
+        Tue,  9 May 2023 10:03:52 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-52079a12451so4344289a12.3;
+        Tue, 09 May 2023 10:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683651778; x=1686243778;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dzB6zXeLLyFlCHebfFpxWpNyEmoL6v/kG0Zxv4l8LgA=;
+        b=mutBSZXL9ybuZwzsxpgW8DoesXa5uJk4VDj6zD2pz9V9wTs0Lcn8DXS/EZnEeufX3V
+         truznYxiMZPv9kYK3N7iOyAgOWuK1LtrCrSxxK/S8F8vETAuw4p/cPn28WoKfmcZEl8W
+         fHa2PtqTTmh6JRVc9nPpUZUCuqlwdp5n9o3VOh9AxjyEk9JZsXJXQdAyR5jy7RKSl33t
+         4VMzPtIBQpu0mi5SjFq+oFhHyvU/0IrLPCYx+x9U+G/yGgHi/TEsgcrYiQ/RRBy+GKlL
+         7qJfma0rxZbOWyHm8ugpP+DTkh8PCpl8o+fvGBROCEDgjPjt0nNFBl6bZZaOlhul6DHM
+         A3+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683651100; x=1686243100;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8AiXugarlhHToBN2ueOGwWaX5E4llz8s13EASoB3wVI=;
-        b=dRw4U7P9c/V4kzIp7lMKdp4H6FrSFNDgd/Q82X3QdNBJVFd8YpkVHrj1+XpySzgfOX
-         9lCiQq71T0ycnlKNDvr2xRE0ao2u6EvndiAGKHXIKavw2hXKSN2vjIl4Z9Sb/M4VW+lf
-         JQS6/Ze+m4t9GnmTb4y3aREgbmmzvpZgIzI6jNdklH0JTZH0Hl/ghgTtA20OrG4iZUwP
-         0r4aiUEIh5fQXWbKB2FqKrSFPvF6aQuN4CcgnXmgsA0eVJENxUKQpfLJ1bzIwVPXCWcT
-         JAVf8zHvEWQMaSwcj1/nN0eAAoIJVAR3S5odNbmvKZLYcAce8/hmTdlMCHJtuvLshmEi
-         8v2g==
-X-Gm-Message-State: AC+VfDy37SfRBC+r9muIyGY2d5CveZoKWaaqX36dkH55BUoKzzlQY2BM
-        S009+IwG76tNfmOQgr/OVX6M
-X-Google-Smtp-Source: ACHHUZ4xRyujKImbkSQcW8Z759B/taKjk2/BBWT+4ePbKXa9irKnpFPNPIQc/SyDOhMLc66FmfxRwA==
-X-Received: by 2002:a05:6214:29c7:b0:56e:c066:3cd2 with SMTP id gh7-20020a05621429c700b0056ec0663cd2mr19939922qvb.2.1683651100740;
-        Tue, 09 May 2023 09:51:40 -0700 (PDT)
-Received: from localhost ([217.138.208.150])
-        by smtp.gmail.com with ESMTPSA id m4-20020a0cf184000000b0061b3338d6d9sm890247qvl.50.2023.05.09.09.51.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 09:51:40 -0700 (PDT)
-Date:   Tue, 9 May 2023 12:51:38 -0400
-From:   Mike Snitzer <snitzer@kernel.org>
-To:     Sarthak Kukreti <sarthakkukreti@chromium.org>
-Cc:     dm-devel@redhat.com, linux-block@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Theodore Ts'o <tytso@mit.edu>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Jason Wang <jasowang@redhat.com>,
-        Bart Van Assche <bvanassche@google.com>,
-        stable@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Brian Foster <bfoster@redhat.com>,
-        Alasdair Kergon <agk@redhat.com>
-Subject: Re: [PATCH v6 1/5] block: Don't invalidate pagecache for invalid
- falloc modes
-Message-ID: <ZFp6GphV3H0eyrH+@redhat.com>
-References: <20230420004850.297045-1-sarthakkukreti@chromium.org>
- <20230506062909.74601-1-sarthakkukreti@chromium.org>
- <20230506062909.74601-2-sarthakkukreti@chromium.org>
+        d=1e100.net; s=20221208; t=1683651778; x=1686243778;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dzB6zXeLLyFlCHebfFpxWpNyEmoL6v/kG0Zxv4l8LgA=;
+        b=f0NqOzaNvwl+qd2P0YeZdoqjeBpAdlaHVQPTqC0O549Q0uhHNXPNtJ1X9K/SABSPvc
+         VMYsN3iLQ1PmqcUAVgXGyMkLYM7IhjRIX6Yv1lriGkUN2M/KcOHXw9hLoDq8vZ08AMEK
+         UoB+BX6mhMJ9Qh81/MZubIwhOQmWAALnkbTUhN/p3wg2n3MCekb7krttwTneLRxINblW
+         PgZKakN55qbOnwyJOStunSAX/AI1B5ecgd7P71+8pQ8kOcfQBcrhKgHxscTls+pJ32e3
+         6LHpLCNHK6i8IqMai0fVoXDK5S+Hcn7I9l30vR75NJJ3Q6o2VY/cAyizFc8y2xzn4iah
+         o3Bg==
+X-Gm-Message-State: AC+VfDxXiJtd4zjVG1angBWVlhx09eu7Tcp21WmKQXQ2lW+KaoebiFH7
+        BXROUWNNPM28HufhQYibntUnbkk4gfNtRiZBVhc=
+X-Google-Smtp-Source: ACHHUZ46/Bn1TTRRMmux+tpvAHmZpthxAfGAEUENhehYrsXm+f+TSVdLGdpFquvt/x2zOEfW9F0ybEuGDFUX5s1S3Gg=
+X-Received: by 2002:a17:90b:4b4a:b0:24e:3316:bb99 with SMTP id
+ mi10-20020a17090b4b4a00b0024e3316bb99mr14471863pjb.5.1683651777920; Tue, 09
+ May 2023 10:02:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230506062909.74601-2-sarthakkukreti@chromium.org>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20230508094421.513073170@linuxfoundation.org>
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Tue, 9 May 2023 10:02:46 -0700
+Message-ID: <CAJq+SaBaBEU63Ch1shuvK8k_nifjPN4M0BCc5WB55KKYqJUV7w@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/611] 6.1.28-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, May 06 2023 at  2:29P -0400,
-Sarthak Kukreti <sarthakkukreti@chromium.org> wrote:
+> This is the start of the stable review cycle for the 6.1.28 release.
+> There are 611 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 10 May 2023 09:42:40 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.28-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> Only call truncate_bdev_range() if the fallocate mode is
-> supported. This fixes a bug where data in the pagecache
-> could be invalidated if the fallocate() was called on the
-> block device with an invalid mode.
-> 
-> Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
-> Cc: stable@vger.kernel.org
-> Reported-by: Darrick J. Wong <djwong@kernel.org>
-> Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Tested-by: Allen Pais <apais@linux.microsoft.com>
+
+Thanks
