@@ -2,157 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D2616FE2A9
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 18:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25AD76FE2E6
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 19:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232256AbjEJQlU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 12:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60128 "EHLO
+        id S232680AbjEJRBT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 13:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231455AbjEJQlT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 12:41:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38CE77EC9
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 09:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683736835;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8NY0JJIQROZci35Lv+keQEV1GDPb9b7mS9KRBzx8tN4=;
-        b=dFY32iLGkBt/3MEijOm6Pe4YMncPhwCbXfVY+SR7xTKx+bL1VIljsiiXZ4qnMr4nxy2I1f
-        7ehkWhU/YVP5qSMZk/wUhWRZXgvpHogpX7koYyekzE20shvcxkxeS80IfSO/LmySr/m71U
-        7KYCp+2g3OuXCFgRAl5IwWN9McvFb1g=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-JE44QpJsMd6068K9rsRN4g-1; Wed, 10 May 2023 12:40:34 -0400
-X-MC-Unique: JE44QpJsMd6068K9rsRN4g-1
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-645538f6101so21951379b3a.1
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 09:40:33 -0700 (PDT)
+        with ESMTP id S236117AbjEJRBL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 13:01:11 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9491F526A
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 10:00:54 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3310c01beb9so52888885ab.2
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 10:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683738053; x=1686330053;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oBtF7LYkXSUt83SUWJ9QjemTqyVA/iZGdvboiNmRLKo=;
+        b=A+R7ioq0e74ZvC0NZ/Z7xGTuJG2Um8qhEGCM7Yx/wgrYSnsf353gWtHqFoThC9KRtz
+         Z42CTDGdljcZXtww9Su9lbBYEPVrO+LdhoP/FPgP9+5UcL8lKMjE2ZHpMa/gkmcwBIFY
+         GZiMb3Wdisz+9RzjXnvLQZBO5HG5Q4tZx0ca3ecPL2IQrVhYg1NSzADYmvCp/VZHLO4a
+         8uqIKS0oXHj++3PgwXtyM7W2aXMk1uAQ2MsBedUgPQ3ymx2PQTpX0zDSL424EiROh/ap
+         FgLDvZOCl3FAgr1VL43ll+L8Fk72JMowJiGc7hEVd9WE8Z/ldJHu3Clhl53HOzVyN9y3
+         /axA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683736833; x=1686328833;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8NY0JJIQROZci35Lv+keQEV1GDPb9b7mS9KRBzx8tN4=;
-        b=cUWMoFfziYQBCfryIHz6SVsrXJjXe8yGM0Vx+Ko77iqbuiVRch4GHKFt0TkWLYx55P
-         Rr/CoxsUxoMOZUEytkUMWR8OrF7gfnXQ4k5IX9bqpNVb+KxnhA57hboejzEPpLIkbhQ9
-         LPkRctCZQXjF4CsN17nn/1NV6Mq3OaCYLQmu5FdgGfcKUEtqxu6MKmya36RqbmpB4BhP
-         YRnh7UHOSi8JWtC9hEem0FmDmf09JC7OiiVMmHhXop9MsUDRBt44cHwHxn6BWn8V9jsQ
-         oGgj1RRwyABq7+KJXZKmdjHj8DCo8HSE1KWkL/efNZiV1UuRewQiBNBS4xUkuAIZRz/C
-         m3ow==
-X-Gm-Message-State: AC+VfDwgOM2e6P2igD7Iyaq26x7Ne7OOzXe802Uusq9nT0s6CHyHLdWM
-        UR2Ol9joA4a9YY2AAc1CQN3USrEWyOl6tHiVicS5gWYcLq378MBhJe6UIMXUHsJ4F9nkkOSBvyA
-        SVK21Nl8SZlOUBoIA
-X-Received: by 2002:a17:90b:1188:b0:250:32dc:3369 with SMTP id gk8-20020a17090b118800b0025032dc3369mr21521614pjb.15.1683736833001;
-        Wed, 10 May 2023 09:40:33 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6KmVpd3q4EvAEWG9cN6AIc7RLq0o7jc4GG/UBzSx5JcKue7oCjZjly+TneE2m+hsmUGhCWgw==
-X-Received: by 2002:a17:90b:1188:b0:250:32dc:3369 with SMTP id gk8-20020a17090b118800b0025032dc3369mr21521590pjb.15.1683736832601;
-        Wed, 10 May 2023 09:40:32 -0700 (PDT)
-Received: from ?IPV6:2001:4958:15a0:30:5835:5bd3:f0c8:e5ef? ([2001:4958:15a0:30:5835:5bd3:f0c8:e5ef])
-        by smtp.gmail.com with ESMTPSA id p19-20020a63f453000000b005287b22ea8esm3432907pgk.88.2023.05.10.09.40.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 May 2023 09:40:32 -0700 (PDT)
-Message-ID: <f74f2080-1def-f9c2-8884-97bb4c8ba4d1@redhat.com>
-Date:   Wed, 10 May 2023 18:40:31 +0200
+        d=1e100.net; s=20221208; t=1683738053; x=1686330053;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oBtF7LYkXSUt83SUWJ9QjemTqyVA/iZGdvboiNmRLKo=;
+        b=F/NgVGz4owc3f2kxLY13drupA4ZUY7+HTornU78QvR4yzFzuOYzWJCmSuy5JyeY94Y
+         Q4oEN0h7g53pYUFv0dupUQODvYzdDHI+etxG47H+3CTsM2D1OevqXXOQ65ZoNv45Bnd/
+         5Oif838j1vVSsb+/pX5PNeovL/VJoSLf+rMp0ShXHvnCsT4hcW8sLrGPdXYywDHtAvHI
+         llBkyZfzZ9z4jcm+nqP6O+ht270uZChJa8gV00e8ySCphaQpdlWIzGuQyngk46N1dRif
+         7mn4Bp5knNNGFWvWLW5pgGNfV7OXKiVDSIVJQQx5Y+kInnrGYoQFUSqBd6zzPY3BJXJe
+         6C/w==
+X-Gm-Message-State: AC+VfDzASfs4OZZv3JoejmSYsm52oFjJhSpqXxK4nfeuM5LRXhGjoX02
+        WkaXLp6bcpEnWUNuPvsGWLEYwPY/y3pH6PxWZHGpbw==
+X-Google-Smtp-Source: ACHHUZ5N9CS3CqU4NU1sy+urJFNG0b8bx2si2jJT7pLVYWpiBuXIOYmwNDCAOsTy75ZvINZV52K8ENNUmr4PnELimYw=
+X-Received: by 2002:a92:d245:0:b0:330:f7b3:ea4 with SMTP id
+ v5-20020a92d245000000b00330f7b30ea4mr13478553ilg.2.1683738053613; Wed, 10 May
+ 2023 10:00:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To:     Ruihan Li <lrh2000@pku.edu.cn>, linux-mm@kvack.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-References: <20230510085527.57953-1-lrh2000@pku.edu.cn>
- <20230510085527.57953-4-lrh2000@pku.edu.cn>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH 3/4] mm: page_table_check: Make it dependent on !DEVMEM
-In-Reply-To: <20230510085527.57953-4-lrh2000@pku.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230509030611.521807993@linuxfoundation.org> <863a112f-f4a4-d580-9687-f6214d555939@linaro.org>
+ <2023051035-monitor-sandy-2a5b@gregkh> <CAEUSe79AViqsHimbYbFjkKAxcvROGhFKA2yKVuC3aP1Gm=jc1w@mail.gmail.com>
+In-Reply-To: <CAEUSe79AViqsHimbYbFjkKAxcvROGhFKA2yKVuC3aP1Gm=jc1w@mail.gmail.com>
+From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date:   Wed, 10 May 2023 11:00:42 -0600
+Message-ID: <CAEUSe7_ZBW_hPUZYeKkZ6zuckeqYb+O46GdgGx0wE6T0=c5wZg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/370] 5.15.111-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        laoar.shao@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10.05.23 10:55, Ruihan Li wrote:
-> The special device /dev/mem enables users to map arbitrary physical
-> memory regions into the user space, which can conflict with the double
-> mapping detection logic used by the page table check. For instance,
-> pages may change their properties (e.g., from anonymous pages to named
-> pages) while they are still being mapped in the user space via /dev/mem,
-> leading to "corruption" detected by the page table check.
-> 
-> To address this issue, the PAGE_TABLE_CHECK config option is now
-> dependent on !DEVMM. This ensures that the page table check cannot be
-> enabled when /dev/mem is used. It should be noted that /dev/mem itself
-> is a significant security issue, and its conflict with a hardening
-> technique is understandable.
-> 
-> Cc: <stable@vger.kernel.org> # 5.17
-> Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-> ---
->   Documentation/mm/page_table_check.rst | 18 ++++++++++++++++++
->   mm/Kconfig.debug                      |  2 +-
->   2 files changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/mm/page_table_check.rst b/Documentation/mm/page_table_check.rst
-> index cfd8f4117..b04f29230 100644
-> --- a/Documentation/mm/page_table_check.rst
-> +++ b/Documentation/mm/page_table_check.rst
-> @@ -52,3 +52,21 @@ Build kernel with:
->   
->   Optionally, build kernel with PAGE_TABLE_CHECK_ENFORCED in order to have page
->   table support without extra kernel parameter.
-> +
-> +Implementation notes
-> +====================
-> +
-> +We specifically decided not to use VMA information in order to avoid relying on
-> +MM states (except for limited "struct page" info). The page table check is a
-> +separate from Linux-MM state machine that verifies that the user accessible
-> +pages are not falsely shared.
-> +
-> +As a result, special devices that violate the model cannot live with
-> +PAGE_TABLE_CHECK. Currently, /dev/mem is the only known example. Given it
-> +allows users to map arbitrary physical memory regions into the userspace, any
-> +pages may change their properties (e.g., from anonymous pages to named pages)
-> +while they are still being mapped in the userspace via /dev/mem, leading to
-> +"corruption" detected by the page table check. Therefore, the PAGE_TABLE_CHECK
-> +config option is now dependent on !DEVMEM. It's worth noting that /dev/mem
-> +itself is a significant security issue, and its conflict with a hardening
-> +technique is understandable.
-> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-> index a925415b4..37f3d5b20 100644
-> --- a/mm/Kconfig.debug
-> +++ b/mm/Kconfig.debug
-> @@ -97,7 +97,7 @@ config PAGE_OWNER
->   
->   config PAGE_TABLE_CHECK
->   	bool "Check for invalid mappings in user page tables"
-> -	depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK
-> +	depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK && !DEVMEM
->   	select PAGE_EXTENSION
->   	help
->   	  Check that anonymous page is not being mapped twice with read write
+Hello!
 
-That might disable it in a lot of environments I'm afraid. I wonder if 
-we could allow it for STRICT_DEVMEM. Hm ...
--- 
-Thanks,
+On Wed, 10 May 2023 at 09:46, Daniel D=C3=ADaz <daniel.diaz@linaro.org> wro=
+te:
+> Hello!
+>
+> On Wed, 10 May 2023 at 01:43, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > On Tue, May 09, 2023 at 09:12:33AM -0600, Daniel D=C3=ADaz wrote:
+> > > Hello!
+> > >
+> > > On 08/05/23 21:26, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 5.15.111 relea=
+se.
+> > > > There are 370 patches in this series, all will be posted as a respo=
+nse
+> > > > to this one.  If anyone has any issues with these being applied, pl=
+ease
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patc=
+h-5.15.111-rc2.gz
+> > > > or in the git tree and branch at:
+> > > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-5.15.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > > New warnings are introduced for Arm, PowerPC, RISC-V:
+> > >
+> > >   /builds/linux/kernel/sched/debug.c: In function 'print_cfs_group_st=
+ats':
+> > >   /builds/linux/kernel/sched/debug.c:465:41: warning: unused variable=
+ 'stats' [-Wunused-variable]
+> > >                   struct sched_statistics *stats =3D  __schedstats_fr=
+om_se(se);
+> > >                                            ^~~~~
+> >
+> > Odd, and this isn't on other kernels too?
+>
+> Only on 5.15, not on the 6.x RC's. I'll share more info after my
+> bisection is done.
 
-David / dhildenb
+Bisection leads to:
 
+  sched: Make struct sched_statistics independent of fair sched class
+
+Reverting makes the warning disappear.
+
+Greetings!
