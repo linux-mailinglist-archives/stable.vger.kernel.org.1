@@ -2,89 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B33446FE5B5
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 22:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A9996FE670
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 23:49:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237234AbjEJUw1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 16:52:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
+        id S229500AbjEJVtf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 17:49:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237083AbjEJUvy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 16:51:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F50583CE;
-        Wed, 10 May 2023 13:51:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCA4C649EE;
-        Wed, 10 May 2023 20:51:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063BEC433A1;
-        Wed, 10 May 2023 20:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683751866;
-        bh=xqECVp95j0ASjkgq/jmJaVtAt5Mj5ws54d3kcCXk9os=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lbOCrK9tKZb7PuqKmc08CBqoS5mxrxJE1zX5LZNZOlGdQkFy3EmbQyWycBjcfserv
-         s3M/v//Do1NbXfzF4PbhN6e3F6Ac5pqTZ5k0y7nxnRmC77iPwW+XSA62L0LOm8SZBQ
-         CN9QRt121LLB6pYtyLdTlxfjVqkQ0QlDvz4NuQqQ9gqHALLICP3rXfPFD7pzAMbETS
-         UoT/PR79QioyjC/gNVeCV6sdyGSMYdc88tHK8pEe3qHAEPGv5kRyKUVh6DEqT21SEw
-         kOg/VBdUkZ8ffj1y1Sf9Ynv88mB4cdzTnVnjRJbvIRj0IaAxDasVxSZXrDO7RqazOa
-         XehNoZ07dTKgQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Qiang Ning <qning0106@126.com>, Lee Jones <lee@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 2/2] mfd: dln2: Fix memory leak in dln2_probe()
-Date:   Wed, 10 May 2023 16:50:54 -0400
-Message-Id: <20230510205054.105151-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230510205054.105151-1-sashal@kernel.org>
-References: <20230510205054.105151-1-sashal@kernel.org>
+        with ESMTP id S229871AbjEJVte (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 17:49:34 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC0549F9
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 14:49:31 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-392116b8f31so2499782b6e.2
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 14:49:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683755371; x=1686347371;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C+z24Pl7od6xO10XmMEfecsYemTIfW+XARlPRi62dVY=;
+        b=adCTu3oX/wUIv+3gge7PhKiHXxZ1JbcdaPK8fJoYSpflaAVbAr+qqVryoewTfHmOqS
+         exdDdfg92AO9uuDNi654xofgz+Mvhr6GcM14/cRJZ26k905pEQbyylsh0eBJ9zkrD3Z6
+         kZPO2n9lBKltTm5Yl0xm4QOWxGVfzQV7zeke3VvvJ9Epvh6R9UWNXpYw57rzOCsiFlVC
+         uPcTIZVThLQeEx44pmqWC1HUcofF2+vgryc7XEW7E2LtNyEByrGBbpmIVNemIo0O9MYS
+         RQEUZ4/EvXkMO6UOx97u8zp9b8AA1c7E6fKN8Eb6FbFxr28Lpgspwftg3GjQN4YJ4ZVU
+         iXlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683755371; x=1686347371;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C+z24Pl7od6xO10XmMEfecsYemTIfW+XARlPRi62dVY=;
+        b=L4l2l/J5c/OUR4ApGuPS0+QX9LNj7188AF6zYUhZ4zdoFb2MmFzE+/XpeK95bwUxsG
+         YwT4RckyGn1FmF/PZs1fsu9mkG57yi6Q0/8DNFA2Y9UADRZ9O0kNSjAiaFohDWyJdLiW
+         pkk4h5EM9CRd9eX4IoBnmrCpbNKdHwt833IeOcSAbcGb1jbfVN9yKoq4Y6H6S/oGXEeA
+         CX2DetD52tk0q0L7pSvQnaHVdKtF6h8fdGG4IVyT/7ari99F0ak+vioRcW1csuyaUa+j
+         hiFLpo2hAvOOfAiT/jGV3hv7RCptLBKON43U4t32+vTS+qJ6pGoR/JzDXXL5mVrtChq+
+         7Ndg==
+X-Gm-Message-State: AC+VfDz1jYK1w43SplqbYhR+JHWEhFmnhemjx+CfWzKySdavwGBEUclW
+        UT6Ngi4ThPffhZS9XvI+/8FN5yZRa+J8Nl8kkTo=
+X-Google-Smtp-Source: ACHHUZ6ViGBeXq2hYcMyCn+PQaVlwh6ORErxgj83icahpF4kufVakbDx1/oLFOOzqjzvMp5Z4ucmlz2pFPVuqrNhByI=
+X-Received: by 2002:aca:1801:0:b0:38e:36d1:2f99 with SMTP id
+ h1-20020aca1801000000b0038e36d12f99mr3465331oih.12.1683755370655; Wed, 10 May
+ 2023 14:49:30 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6851:a9f:b0:46d:329b:b8e9 with HTTP; Wed, 10 May 2023
+ 14:49:29 -0700 (PDT)
+Reply-To: pmichae7707@gmail.com
+From:   paul michael <paulmichael2466@gmail.com>
+Date:   Wed, 10 May 2023 22:49:29 +0100
+Message-ID: <CACzWseofSDXqTQnbVVxtHjcg3GwotkC9qaawF6hr6BRat3bVtg@mail.gmail.com>
+Subject: Hello good
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiang Ning <qning0106@126.com>
-
-[ Upstream commit 96da8f148396329ba769246cb8ceaa35f1ddfc48 ]
-
-When dln2_setup_rx_urbs() in dln2_probe() fails, error out_free forgets
-to call usb_put_dev() to decrease the refcount of dln2->usb_dev.
-
-Fix this by adding usb_put_dev() in the error handling code of
-dln2_probe().
-
-Signed-off-by: Qiang Ning <qning0106@126.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230330024353.4503-1-qning0106@126.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mfd/dln2.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-index 97a69cd6f1278..a0ad99ca495fd 100644
---- a/drivers/mfd/dln2.c
-+++ b/drivers/mfd/dln2.c
-@@ -804,6 +804,7 @@ static int dln2_probe(struct usb_interface *interface,
- 	dln2_stop_rx_urbs(dln2);
- 
- out_free:
-+	usb_put_dev(dln2->usb_dev);
- 	dln2_free(dln2);
- 
- 	return ret;
--- 
-2.39.2
-
+Every time I retest your email, it tells me to check with my ISP or
+Log onto incoming mail server (POP3): Your e-mail server rejected .
+Kindly verify if your email is still valid for us to talk.
