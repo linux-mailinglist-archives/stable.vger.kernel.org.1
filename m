@@ -2,132 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CB476FE3C9
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 20:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 267666FE465
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 21:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbjEJSQf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 14:16:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52640 "EHLO
+        id S236088AbjEJTJX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 15:09:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235765AbjEJSQe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 14:16:34 -0400
-Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37E77698;
-        Wed, 10 May 2023 11:16:27 -0700 (PDT)
+        with ESMTP id S236162AbjEJTJW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 15:09:22 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CEF5592;
+        Wed, 10 May 2023 12:09:19 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1aaf2ede38fso74058975ad.2;
+        Wed, 10 May 2023 12:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1683742588; x=1715278588;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=41i3jbGmoeeWlkvCpeZNVgWkZ+MKgPaHFhCZx7gtgyU=;
-  b=fVg7YxnAui0yFNMkbLLsjWcqqFsvZSzEADDAdwTebmWyqfOI41hvfLFH
-   wSGGEtTz+BF22txM6Z5njJZcAOTQlsE/hGxUIoGoWMc0mlPn4AOssV+rw
-   OIDCkwS16aMCgm4+NlC+ZzFFKQ86JE7IUL6AnbRbAI5GLKrJf/15EDm2m
-   E=;
-X-IronPort-AV: E=Sophos;i="5.99,265,1677542400"; 
-   d="scan'208";a="283772039"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-ed19f671.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2023 18:16:26 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2b-m6i4x-ed19f671.us-west-2.amazon.com (Postfix) with ESMTPS id 9B56081A1E;
-        Wed, 10 May 2023 18:16:23 +0000 (UTC)
-Received: from EX19D002UWC004.ant.amazon.com (10.13.138.186) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 10 May 2023 18:16:18 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
- EX19D002UWC004.ant.amazon.com (10.13.138.186) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 10 May 2023 18:16:17 +0000
-Received: from dev-dsk-risbhat-2b-8bdc64cd.us-west-2.amazon.com
- (10.189.73.169) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
- Server id 15.2.1118.26 via Frontend Transport; Wed, 10 May 2023 18:16:17
- +0000
-Received: by dev-dsk-risbhat-2b-8bdc64cd.us-west-2.amazon.com (Postfix, from userid 22673075)
-        id 7146A4622; Wed, 10 May 2023 18:16:17 +0000 (UTC)
-From:   Rishabh Bhatnagar <risbhat@amazon.com>
-To:     <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC:     <lee@kernel.org>, <seanjc@google.com>, <kvm@vger.kernel.org>,
-        <bp@alien8.de>, <mingo@redhat.com>, <tglx@linutronix.de>,
-        <pbonzini@redhat.com>, <vkuznets@redhat.com>,
-        <wanpengli@tencent.com>, <jmattson@google.com>, <joro@8bytes.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "Rishabh Bhatnagar" <risbhat@amazon.com>,
-        Allen Pais <apais@linux.microsoft.com>
-Subject: [PATCH 9/9] KVM: x86: move guest_pv_has out of user_access section
-Date:   Wed, 10 May 2023 18:15:47 +0000
-Message-ID: <20230510181547.22451-10-risbhat@amazon.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230510181547.22451-1-risbhat@amazon.com>
-References: <20230510181547.22451-1-risbhat@amazon.com>
+        d=gmail.com; s=20221208; t=1683745759; x=1686337759;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gNlkpGUaNqMczv5xZxW+63h+QrX9tPOqLyoTH2dL8ww=;
+        b=OLJZdv6AmTISTbWYQwpUZyTXbqtTVJ1iAoDLVSKxVxHnPFITOpxlrD1BCq8k4uEtIm
+         RQjkap2JnxktKZtG4g3eE/X45hhFoWMN1MhhmVNn6N9ij9eShf7FbL/rByZgeAil3kIz
+         HstPNDCzD3E7YRa9GNYPM5b602h6IDo2pCPBRNjXT611b35ESKsmei9feY82yu3d2gqT
+         mGYRKx3e7HhFmsjYyzTFoc+9kXkS+y/dBKCCGj6ADX/8Zf7dkFo/y0iCYnNLzsqMQpqi
+         D+KlWrZNwoYhT4ADbI6D3WkRBj0PPoY4wsmQlJ+FQInP9Z1WAAGK4M9tKyw+qBLJ66iZ
+         19Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683745759; x=1686337759;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gNlkpGUaNqMczv5xZxW+63h+QrX9tPOqLyoTH2dL8ww=;
+        b=Fcftnhm8JGDiYeKWEDscRGSkgGnEEW3T8tGQwLLTn5jJUasRP9I4APtU3834CTYz/X
+         BUUoq5gJiPL2TR1wqbV2/ScA5hNPNStHBAEbbq+e8T0AqVyQOViGCwzkaJ0NJtBwGx11
+         FnQ+MIJlOiOxdjAHhp5PLtgGssin96bF1/aM2dgEEGuD5LRxhNTpFyiFrD9Le4+Tj1yg
+         tENCmq/gqLa5fIdL9wg7Eht8VaKsFZlxsdhE+qXynshByCyBD+szi+nCQFP+ZIBKQh5s
+         dUqJmiss43BMQlN1KfDXiBIulAW4ENqfXzjmp5kVpsIwY4pUG44EMOaLwWkKJH7F3b0J
+         XSlg==
+X-Gm-Message-State: AC+VfDxMag24mrWpYEtTxpM8hXF1zik3aFd8GD1+as6f7ED5wZ/fb/vx
+        PmMPu1zDZzqvAemIxdLe+WE=
+X-Google-Smtp-Source: ACHHUZ6zy911nNEAr8uwmueeH7bXhfdjScvRLeumyixtZTCvGmj873SmIL6BncZX/MFFk6be6JhYOg==
+X-Received: by 2002:a17:902:c412:b0:1ab:25a6:a54b with SMTP id k18-20020a170902c41200b001ab25a6a54bmr25085985plk.4.1683745758847;
+        Wed, 10 May 2023 12:09:18 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id j6-20020a170902690600b001a072aedec7sm4154803plk.75.2023.05.10.12.09.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 May 2023 12:09:18 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 10 May 2023 12:09:16 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 5.15 000/370] 5.15.111-rc2 review
+Message-ID: <b92bf726-cf81-4516-95c4-5aa534662224@roeck-us.net>
+References: <20230509030611.521807993@linuxfoundation.org>
+ <863a112f-f4a4-d580-9687-f6214d555939@linaro.org>
+ <2023051035-monitor-sandy-2a5b@gregkh>
+ <CAEUSe79AViqsHimbYbFjkKAxcvROGhFKA2yKVuC3aP1Gm=jc1w@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAEUSe79AViqsHimbYbFjkKAxcvROGhFKA2yKVuC3aP1Gm=jc1w@mail.gmail.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+On Wed, May 10, 2023 at 09:46:14AM -0600, Daniel Díaz wrote:
+> Hello!
+> 
+> On Wed, 10 May 2023 at 01:43, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > On Tue, May 09, 2023 at 09:12:33AM -0600, Daniel Díaz wrote:
+> > > Hello!
+> > >
+> > > On 08/05/23 21:26, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 5.15.111 release.
+> > > > There are 370 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.111-rc2.gz
+> > > > or in the git tree and branch at:
+> > > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > > New warnings are introduced for Arm, PowerPC, RISC-V:
+> > >
+> > >   /builds/linux/kernel/sched/debug.c: In function 'print_cfs_group_stats':
+> > >   /builds/linux/kernel/sched/debug.c:465:41: warning: unused variable 'stats' [-Wunused-variable]
+> > >                   struct sched_statistics *stats =  __schedstats_from_se(se);
+> > >                                            ^~~~~
+> >
+> > Odd, and this isn't on other kernels too?
+> 
+> Only on 5.15, not on the 6.x RC's. I'll share more info after my
+> bisection is done.
+> 
 
-commit 3e067fd8503d6205aa0c1c8f48f6b209c592d19c upstream.
+Upstream has
 
-When UBSAN is enabled, the code emitted for the call to guest_pv_has
-includes a call to __ubsan_handle_load_invalid_value.  objtool
-complains that this call happens with UACCESS enabled; to avoid
-the warning, pull the calls to user_access_begin into both arms
-of the "if" statement, after the check for guest_pv_has.
+	struct sched_statistics *stats;
+	stats = __schedstats_from_se(se);
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
-Tested-by: Allen Pais <apais@linux.microsoft.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/x86.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+which may trick the compiler into believing that 'stats' is used.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 8461aa63c251..5fbae8cc0697 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3049,9 +3049,6 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 	}
- 
- 	st = (struct kvm_steal_time __user *)ghc->hva;
--	if (!user_access_begin(st, sizeof(*st)))
--		return;
--
- 	/*
- 	 * Doing a TLB flush here, on the guest's behalf, can avoid
- 	 * expensive IPIs.
-@@ -3060,6 +3057,9 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 		u8 st_preempted = 0;
- 		int err = -EFAULT;
- 
-+		if (!user_access_begin(st, sizeof(*st)))
-+			return;
-+
- 		asm volatile("1: xchgb %0, %2\n"
- 			     "xor %1, %1\n"
- 			     "2:\n"
-@@ -3082,6 +3082,9 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
- 		if (!user_access_begin(st, sizeof(*st)))
- 			goto dirty;
- 	} else {
-+		if (!user_access_begin(st, sizeof(*st)))
-+			return;
-+
- 		unsafe_put_user(0, &st->preempted, out);
- 		vcpu->arch.st.preempted = 0;
- 	}
--- 
-2.39.2
-
+Guenter
