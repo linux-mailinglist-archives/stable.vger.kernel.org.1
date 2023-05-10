@@ -2,153 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C4216FDA7D
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 11:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1413C6FDAC3
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 11:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236404AbjEJJPm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 05:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34232 "EHLO
+        id S235731AbjEJJaS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 05:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjEJJPk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 05:15:40 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BE930CF
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 02:15:37 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 42EDE219F8;
-        Wed, 10 May 2023 09:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1683710136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        with ESMTP id S236694AbjEJJaR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 05:30:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF123A88
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 02:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1683710973;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Q2E3B7UCZEK+yd6Abi3HxDEbHxV/uOyadhCzRHgJYa4=;
-        b=CV50ljoMj1yefTb2u1WLwF2lpdSoQ2QS4DIO46O3pLj+dxT8m0rsJczULlsNnXo3stTLZP
-        8IH9cNWHzXfzqeXk6T94TqzGcOfEv7IMagWt7R7DsROPYQCUNQd9KFi5KKjMlGm841JFT/
-        M43UkYfHTwFRN73pdwm3YuzuP6vsXBI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1683710136;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q2E3B7UCZEK+yd6Abi3HxDEbHxV/uOyadhCzRHgJYa4=;
-        b=OtSP9+KoPeBst0+M0EygDIXHM2WTCvMM0rcxxmeXtErHPDzeAdkU76hMYGEFixe2xpaTFe
-        we1n2wm898mVxEDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1C3FF138E5;
-        Wed, 10 May 2023 09:15:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id xpziBbhgW2QECQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 10 May 2023 09:15:36 +0000
-Message-ID: <3efea3e4-09e2-a9f6-a4a2-365b48b1e63b@suse.de>
-Date:   Wed, 10 May 2023 11:15:35 +0200
+        bh=cismO5gcoL07rHvXzj2jjNiv1+1GOYd4Bvca5n96tH4=;
+        b=LDMlMs+mQIGkya4O5YMTDKulb2MsOj2vh+9ywXreiJ/UEKVuLL0HsrQq9cC19OKkyPQO4U
+        n2251SeO+jw3UJuDzIeJbgQsU1jl800qJ8aKokQ1PtHitOlYzP6RjARNqI5RNR65Biq4lT
+        up6TurwGHWx55MdvP7xbdBoECMLIKqA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-EZ4Gh0OBNF-M0G6ZByKgwQ-1; Wed, 10 May 2023 05:29:32 -0400
+X-MC-Unique: EZ4Gh0OBNF-M0G6ZByKgwQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3f429072212so10329695e9.1
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 02:29:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683710971; x=1686302971;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cismO5gcoL07rHvXzj2jjNiv1+1GOYd4Bvca5n96tH4=;
+        b=Xo9MFRyGyuahsTpSkyl44igwGzP87v6w4YEcIRUq+EbwhzCgE+qW1JzrT8ERebm8mM
+         0GYzS9HtPNcxP9zSVKizwJg11ZARuDaoIgBUZlzVQ/KEJtcIcW+/iinJ3pLnng8jQHq4
+         846hmBd5ATvNHJyfOsPmkyoP55QFEnw4+FYgMXTl1U00AhByQmaBtlavyUmh8feZazdf
+         SYK2yzCCd7rfF0r605HHNo00hv30Yd1Hy0P3zt5gDpp/F7yRsiLc30nf4Um8U7Cmdcul
+         TMzGLzN//6EpsCKrvTt0j3Y45J6vTafmHHLp/kmUXGZMlRkzUYS6ZqW1i4fSOOOo1Xad
+         PJrw==
+X-Gm-Message-State: AC+VfDzKgok7Zy5Fkdvw9EUnNm/60Xoper5QSuPwUrwJAYnWGGWKGGrP
+        RTYxfxYJ681N5Hnkot8OmkBrfUdJ1+vKsgrBHuit2gfXxe/NE2/A9e+tiHePxXhAYisinTWNuD9
+        hAZR6ineGHnmJQGmT
+X-Received: by 2002:a05:600c:22d8:b0:3f4:2805:c3a with SMTP id 24-20020a05600c22d800b003f428050c3amr5442294wmg.21.1683710970855;
+        Wed, 10 May 2023 02:29:30 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ57fjpPdjECjuDtIgxYVX6FkLTJshIH/D+lPxF2ej3tBCGB9xuDov3RkI+U0DR5LbpceVDVzA==
+X-Received: by 2002:a05:600c:22d8:b0:3f4:2805:c3a with SMTP id 24-20020a05600c22d800b003f428050c3amr5442281wmg.21.1683710970518;
+        Wed, 10 May 2023 02:29:30 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id u24-20020a7bc058000000b003f173987ec2sm22282453wmc.22.2023.05.10.02.29.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 May 2023 02:29:30 -0700 (PDT)
+Message-ID: <b719c37e-a0ff-b337-1d9f-51e3964dbe81@redhat.com>
+Date:   Wed, 10 May 2023 11:29:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
+ Thunderbird/102.9.1
 Subject: Re: [PATCH] drm/mgag200: Fix gamma lut not initialized.
-To:     Jocelyn Falempe <jfalempe@redhat.com>,
+Content-Language: en-US
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
         dri-devel@lists.freedesktop.org, airlied@redhat.com,
         javierm@redhat.com, lyude@redhat.com
 Cc:     Phil Oester <kernel@linuxace.com>, stable@vger.kernel.org
 References: <20230510085451.226546-1-jfalempe@redhat.com>
-Content-Language: en-US
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230510085451.226546-1-jfalempe@redhat.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------4bEn7bXcdCOPa8tBeKe4eW6J"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+ <3efea3e4-09e2-a9f6-a4a2-365b48b1e63b@suse.de>
+From:   Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <3efea3e4-09e2-a9f6-a4a2-365b48b1e63b@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------4bEn7bXcdCOPa8tBeKe4eW6J
-Content-Type: multipart/mixed; boundary="------------cWUgerY3RYcUmqupyIMpRQtd";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Jocelyn Falempe <jfalempe@redhat.com>, dri-devel@lists.freedesktop.org,
- airlied@redhat.com, javierm@redhat.com, lyude@redhat.com
-Cc: Phil Oester <kernel@linuxace.com>, stable@vger.kernel.org
-Message-ID: <3efea3e4-09e2-a9f6-a4a2-365b48b1e63b@suse.de>
-Subject: Re: [PATCH] drm/mgag200: Fix gamma lut not initialized.
-References: <20230510085451.226546-1-jfalempe@redhat.com>
-In-Reply-To: <20230510085451.226546-1-jfalempe@redhat.com>
+On 10/05/2023 11:15, Thomas Zimmermann wrote:
+> Hi,
+> 
+> oh great! Thank you for fixing this bug. And sorry that I broke it.
+> 
+> Am 10.05.23 um 10:54 schrieb Jocelyn Falempe:
+>> When mgag200 switched from simple KMS to regular atomic helpers,
+>> the initialization of the gamma settings was lost.
+>> This leads to a black screen, if the bios/uefi doesn't use the same
+>> pixel color depth.
+>>
+>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2171155
+>> Fixes: 1baf9127c482 ("drm/mgag200: Replace simple-KMS with regular 
+>> atomic helpers")
+>> Tested-by: Phil Oester <kernel@linuxace.com>
+>> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> 
+> Also needs:
+> 
+> Cc: <stable@vger.kernel.org> # v6.1+
 
---------------cWUgerY3RYcUmqupyIMpRQtd
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Should I send a v2 with this added ?
+> 
+> In terms of what it does:
+> 
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> 
+> but the patch is apparently for against an old version. (v6.1?) The code 
+> in mgag200_crtc_helper_atomic_enable has changed quite a bit.
 
-SGksDQoNCm9oIGdyZWF0ISBUaGFuayB5b3UgZm9yIGZpeGluZyB0aGlzIGJ1Zy4gQW5kIHNv
-cnJ5IHRoYXQgSSBicm9rZSBpdC4NCg0KQW0gMTAuMDUuMjMgdW0gMTA6NTQgc2NocmllYiBK
-b2NlbHluIEZhbGVtcGU6DQo+IFdoZW4gbWdhZzIwMCBzd2l0Y2hlZCBmcm9tIHNpbXBsZSBL
-TVMgdG8gcmVndWxhciBhdG9taWMgaGVscGVycywNCj4gdGhlIGluaXRpYWxpemF0aW9uIG9m
-IHRoZSBnYW1tYSBzZXR0aW5ncyB3YXMgbG9zdC4NCj4gVGhpcyBsZWFkcyB0byBhIGJsYWNr
-IHNjcmVlbiwgaWYgdGhlIGJpb3MvdWVmaSBkb2Vzbid0IHVzZSB0aGUgc2FtZQ0KPiBwaXhl
-bCBjb2xvciBkZXB0aC4NCj4gDQo+IExpbms6IGh0dHBzOi8vYnVnemlsbGEucmVkaGF0LmNv
-bS9zaG93X2J1Zy5jZ2k/aWQ9MjE3MTE1NQ0KPiBGaXhlczogMWJhZjkxMjdjNDgyICgiZHJt
-L21nYWcyMDA6IFJlcGxhY2Ugc2ltcGxlLUtNUyB3aXRoIHJlZ3VsYXIgYXRvbWljIGhlbHBl
-cnMiKQ0KPiBUZXN0ZWQtYnk6IFBoaWwgT2VzdGVyIDxrZXJuZWxAbGludXhhY2UuY29tPg0K
-PiBTaWduZWQtb2ZmLWJ5OiBKb2NlbHluIEZhbGVtcGUgPGpmYWxlbXBlQHJlZGhhdC5jb20+
-DQoNCkFsc28gbmVlZHM6DQoNCkNjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4gIyB2Ni4x
-Kw0KDQpJbiB0ZXJtcyBvZiB3aGF0IGl0IGRvZXM6DQoNClJldmlld2VkLWJ5OiBUaG9tYXMg
-WmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4NCg0KYnV0IHRoZSBwYXRjaCBpcyBh
-cHBhcmVudGx5IGZvciBhZ2FpbnN0IGFuIG9sZCB2ZXJzaW9uLiAodjYuMT8pIFRoZSBjb2Rl
-IA0KaW4gbWdhZzIwMF9jcnRjX2hlbHBlcl9hdG9taWNfZW5hYmxlIGhhcyBjaGFuZ2VkIHF1
-aXRlIGEgYml0Lg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IC0tLQ0KPiAgIGRyaXZl
-cnMvZ3B1L2RybS9tZ2FnMjAwL21nYWcyMDBfbW9kZS5jIHwgNSArKysrKw0KPiAgIDEgZmls
-ZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJz
-L2dwdS9kcm0vbWdhZzIwMC9tZ2FnMjAwX21vZGUuYyBiL2RyaXZlcnMvZ3B1L2RybS9tZ2Fn
-MjAwL21nYWcyMDBfbW9kZS5jDQo+IGluZGV4IDQ2MWRhMTQwOWZkZi4uOTExZDQ2NzQxZTQw
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2dwdS9kcm0vbWdhZzIwMC9tZ2FnMjAwX21vZGUu
-Yw0KPiArKysgYi9kcml2ZXJzL2dwdS9kcm0vbWdhZzIwMC9tZ2FnMjAwX21vZGUuYw0KPiBA
-QCAtODE5LDYgKzgxOSwxMSBAQCBzdGF0aWMgdm9pZCBtZ2FnMjAwX2NydGNfaGVscGVyX2F0
-b21pY19lbmFibGUoc3RydWN0IGRybV9jcnRjICpjcnRjLA0KPiAgIAllbHNlIGlmIChtZGV2
-LT50eXBlID09IEcyMDBfRVYpDQo+ICAgCQltZ2FnMjAwX2cyMDBldl9zZXRfaGlwcmlsdmwo
-bWRldik7DQo+ICAgDQo+ICsJaWYgKGNydGNfc3RhdGUtPmdhbW1hX2x1dCkNCj4gKwkJbWdh
-ZzIwMF9jcnRjX3NldF9nYW1tYShtZGV2LCBmb3JtYXQsIGNydGNfc3RhdGUtPmdhbW1hX2x1
-dC0+ZGF0YSk7DQo+ICsJZWxzZQ0KPiArCQltZ2FnMjAwX2NydGNfc2V0X2dhbW1hX2xpbmVh
-cihtZGV2LCBmb3JtYXQpOw0KPiArDQo+ICAgCW1nYWcyMDBfZW5hYmxlX2Rpc3BsYXkobWRl
-dik7DQo+ICAgDQo+ICAgCWlmIChtZGV2LT50eXBlID09IEcyMDBfV0IgfHwgbWRldi0+dHlw
-ZSA9PSBHMjAwX0VXMykNCj4gDQo+IGJhc2UtY29tbWl0OiAxYmFmOTEyN2M0ODJhM2E1OGFl
-ZjgxZDkyYWU3NTE3OThlMmRiMjAyDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBo
-aWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkg
-R21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdG
-OiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1v
-ZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
+Yes, I based it on the culprit commit 1baf9127c482, but it applies 
+cleanly with git am -3 on top of v6.3
 
---------------cWUgerY3RYcUmqupyIMpRQtd--
+> 
+> Best regards
+> Thomas
+> 
+>> ---
+>>   drivers/gpu/drm/mgag200/mgag200_mode.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c 
+>> b/drivers/gpu/drm/mgag200/mgag200_mode.c
+>> index 461da1409fdf..911d46741e40 100644
+>> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
+>> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+>> @@ -819,6 +819,11 @@ static void 
+>> mgag200_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+>>       else if (mdev->type == G200_EV)
+>>           mgag200_g200ev_set_hiprilvl(mdev);
+>> +    if (crtc_state->gamma_lut)
+>> +        mgag200_crtc_set_gamma(mdev, format, 
+>> crtc_state->gamma_lut->data);
+>> +    else
+>> +        mgag200_crtc_set_gamma_linear(mdev, format);
+>> +
+>>       mgag200_enable_display(mdev);
+>>       if (mdev->type == G200_WB || mdev->type == G200_EW3)
+>>
+>> base-commit: 1baf9127c482a3a58aef81d92ae751798e2db202
+> 
 
---------------4bEn7bXcdCOPa8tBeKe4eW6J
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+-- 
 
------BEGIN PGP SIGNATURE-----
+Jocelyn
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmRbYLcFAwAAAAAACgkQlh/E3EQov+BF
-lQ//dt4c/YLy9dzZS898z+pqogTxGWUazCHNJosRNyF0xaQpcvYH/HPGhLPySbuwfYYcgeufv3gv
-7wGFb95YgAQoRAZFABTYPZ5MeAYqHfNMEw4R9anfEr+Xrh9kZiQmLFy5AAnKXNFWzoAa+UuLK1oJ
-9d4Ja0bsJra38ZsiI1Q8U+HrNqg6qwFy86d/Bt4uArGa9zvv2UD/e7RwVZdg3IREhdkzko25VUv9
-byUgzCh4oyJEpIDWnlF/v2KxAxR2GIDueQ0i9Obgg1otDp1Ueaee9OD4uuTrbA8SWKxswgyLPH/B
-uruXmMuD2aodz2HNX90pSdI3TDg0PveVZrpb5ltIAg7mmV+6pmdCSNIJsTstdFMWH610IvrgFMUT
-8p4mYbs3ZZU4P5hW1XAwmpy4yMfJH+MXZxIJUPbz62gsuQxPWXI9TpZA5MYFoPzU1zGEkhgJPVtx
-pjEQbBuxOAXvtV6t+hfMGN9Q1/rmBUOFe6d/kGAvtM9Wr8caBSu2VZD8WCwuStFwJSfQBE9tvfVS
-97fJmo/0mJsxY+Ce6/tUOGJPjo1HR+TfpkqQcPBcSmFIliebQmiKSx9lIvWj9bOFh3nxZx50Ao9Y
-2rtkOKIuEBKVikXmwe3nBtH34jC0VOeIcV2nyNGQk80sKbMSI6IFXXo6KcLnHlUaUvMKJb/Y+LEE
-T28=
-=JrD4
------END PGP SIGNATURE-----
-
---------------4bEn7bXcdCOPa8tBeKe4eW6J--
