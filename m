@@ -2,114 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 861C86FE7F5
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 01:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970176FE7FB
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 01:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236313AbjEJXJ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 19:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
+        id S229487AbjEJXLm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 19:11:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236907AbjEJXJ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 19:09:56 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 535DDB1
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 16:09:55 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-966287b0f72so984505466b.0
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 16:09:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1683760194; x=1686352194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jqoKxzx8nbzMGeKcw393T5tuP9l9MYfmO2sKW8WQB+Q=;
-        b=ANW3gXPTsMJujOwxNhJ2I1zuSGraG9s1eUHJz3V5xLx6it/JmxcxrXRHSnNDWfaYrC
-         djPbZQ+T8xqfoi6mX2CsLZfps6PcrUpxt47BLLFV/39yAILF2gOLskuhBq2QyTEgG8sU
-         8cTihGAGBH0yLD+YuwdK6NQooC3MEPlunun6c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683760194; x=1686352194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jqoKxzx8nbzMGeKcw393T5tuP9l9MYfmO2sKW8WQB+Q=;
-        b=Vr8kUKMVskLQ6OrzGbt1PxTkLHjloWA4WR+V1ghj9/jtJo3647PgjXHKq4kycxY+6R
-         Km+260B6XuC8HAGyFFQgLEUeoyh9YFlmAwzBTH7ptR1Wl1JSgdYhpt8GVpFQyFV21Hch
-         GJZrpLEFUn6gsuOzTdGkqK8edocQ6gehs+m4c+O51nWB5RxurxXW6Z0jpAYaZleVeDXd
-         TNDwnH0IzNRVwnsYL1yzLf3qJzJRIrTsc6IeW1idGgddq9U96IwmilMdCgqvwlK+g3/k
-         nDAmqOas/rEEUJzrCcebECv5Y8j68Zyy79/On6NKIBPvSbFgKj3Mufl6GRjWjClL1Idm
-         DdPA==
-X-Gm-Message-State: AC+VfDy717IW5cute0unCg5aREmU2sO6PetG1ncPtMhlGEf7nKxhIXVT
-        atwhHHpTaPKHr3HaFEK34eFG3vUZKTkNnqXP3UeWBA==
-X-Google-Smtp-Source: ACHHUZ46bm+ZIriH+GSb6IRI4OJqRQ/VzEJI9lDJL5kyYtpz+esfX9ov0ZT3caAGXYe9mXR0tAzQaQ==
-X-Received: by 2002:a17:907:a41e:b0:965:e556:8f6d with SMTP id sg30-20020a170907a41e00b00965e5568f6dmr18291973ejc.63.1683760193732;
-        Wed, 10 May 2023 16:09:53 -0700 (PDT)
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com. [209.85.218.53])
-        by smtp.gmail.com with ESMTPSA id ca21-20020a170906a3d500b00965a52d2bf6sm3165589ejb.88.2023.05.10.16.09.53
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 May 2023 16:09:53 -0700 (PDT)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-965e4be7541so1268995166b.1
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 16:09:53 -0700 (PDT)
-X-Received: by 2002:a17:907:6e10:b0:968:1e8:a754 with SMTP id
- sd16-20020a1709076e1000b0096801e8a754mr10370572ejc.72.1683760192951; Wed, 10
- May 2023 16:09:52 -0700 (PDT)
+        with ESMTP id S236872AbjEJXLl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 19:11:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F355DD3
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 16:11:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 844C063710
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 23:11:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115A9C4339B;
+        Wed, 10 May 2023 23:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683760299;
+        bh=bwi0jjbF2LkM8qktz8up8fFi3lkSX222Yw83Igb6iXw=;
+        h=Subject:To:Cc:From:Date:From;
+        b=Knh1pz4+NYUItwa12/hjmVbp6yFmQxS7hjguZEo3xSe53Yl+srnmvpSDPJ6fPW8Lt
+         vj7SYTvQI2Tw1lGrUGNy+qhPV67Sn+hRcVl16v8PbyGrRhXnq5e2DbO80NWylwGrNJ
+         yF8XrgTQzRJviOuOsYCLJVcQvH3gT2tP06F/uOeg=
+Subject: FAILED: patch "[PATCH] fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()" failed to apply to 6.3-stable tree
+To:     zhangpeng362@huawei.com, almaz.alexandrovich@paragon-software.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Thu, 11 May 2023 08:11:30 +0900
+Message-ID: <2023051129-ripening-droop-2ae0@gregkh>
 MIME-Version: 1.0
-References: <20230509030611.521807993@linuxfoundation.org> <863a112f-f4a4-d580-9687-f6214d555939@linaro.org>
- <2023051035-monitor-sandy-2a5b@gregkh> <CAEUSe79AViqsHimbYbFjkKAxcvROGhFKA2yKVuC3aP1Gm=jc1w@mail.gmail.com>
- <CAEUSe7_ZBW_hPUZYeKkZ6zuckeqYb+O46GdgGx0wE6T0=c5wZg@mail.gmail.com>
- <4d3c5462-1788-426a-a44a-e839b1c4970d@roeck-us.net> <2023051154-activator-aside-bc8e@gregkh>
-In-Reply-To: <2023051154-activator-aside-bc8e@gregkh>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 10 May 2023 18:09:35 -0500
-X-Gmail-Original-Message-ID: <CAHk-=wh2nmNs98AUpv6+BZ3x_bNh6ps+nuufQO2Sn6LdXCbC9A@mail.gmail.com>
-Message-ID: <CAHk-=wh2nmNs98AUpv6+BZ3x_bNh6ps+nuufQO2Sn6LdXCbC9A@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/370] 5.15.111-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, laoar.shao@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 10, 2023 at 5:58=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> Thanks!  Turns out someone put the wrong "Fixes:" tag in that commit
-> which is why I missed it.
 
-Hmm. Presumably the real commit ceeadb83aea2 at some point got
-rebased, and had had that other mentioned SHA1 before that.
+The patch below does not apply to the 6.3-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-It might be a good idea in general - not just for stable - if we had
-some automation that said "this refers to a commit ID that doesn't
-exist".
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Of course, sometimes those commits might exist elsewhere (ie the
-stable tree obviously refers to upstream commits that are *not*
-directly reachable from the commit that refers to it, and thus relies
-on another tree not rebasing itself).
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git checkout FETCH_HEAD
+git cherry-pick -x 254e69f284d7270e0abdc023ee53b71401c3ba0c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051129-ripening-droop-2ae0@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
-But on the whole, I would expect that the normal situation, outside of
-that "upstream commit" issue in the stable tree, is that you only
-refer to commits that are actually reachable from the referrer commit.
+Possible dependencies:
 
-Or do people refer to other branches' (or even other projects') commit IDs?
+254e69f284d7 ("fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()")
 
-It might be interesting to have some automation, particularly if it
-then might highlight the situation where the same one-line description
-does exist under a different commit name...
+thanks,
 
-                Linus
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 254e69f284d7270e0abdc023ee53b71401c3ba0c Mon Sep 17 00:00:00 2001
+From: ZhangPeng <zhangpeng362@huawei.com>
+Date: Fri, 25 Nov 2022 10:21:59 +0000
+Subject: [PATCH] fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
+
+Syzbot reported a null-ptr-deref bug:
+
+ntfs3: loop0: Different NTFS' sector size (1024) and media sector size
+(512)
+ntfs3: loop0: Mark volume as dirty due to NTFS errors
+general protection fault, probably for non-canonical address
+0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+RIP: 0010:d_flags_for_inode fs/dcache.c:1980 [inline]
+RIP: 0010:__d_add+0x5ce/0x800 fs/dcache.c:2796
+Call Trace:
+ <TASK>
+ d_splice_alias+0x122/0x3b0 fs/dcache.c:3191
+ lookup_open fs/namei.c:3391 [inline]
+ open_last_lookups fs/namei.c:3481 [inline]
+ path_openat+0x10e6/0x2df0 fs/namei.c:3688
+ do_filp_open+0x264/0x4f0 fs/namei.c:3718
+ do_sys_openat2+0x124/0x4e0 fs/open.c:1310
+ do_sys_open fs/open.c:1326 [inline]
+ __do_sys_open fs/open.c:1334 [inline]
+ __se_sys_open fs/open.c:1330 [inline]
+ __x64_sys_open+0x221/0x270 fs/open.c:1330
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+If the MFT record of ntfs inode is not a base record, inode->i_op can be
+NULL. And a null-ptr-deref may happen:
+
+ntfs_lookup()
+    dir_search_u() # inode->i_op is set to NULL
+    d_splice_alias()
+        __d_add()
+            d_flags_for_inode() # inode->i_op->get_link null-ptr-deref
+
+Fix this by adding a Check on inode->i_op before calling the
+d_splice_alias() function.
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com
+Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index 407fe92394e2..8d206770d8c6 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -88,6 +88,16 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
+ 		__putname(uni);
+ 	}
+ 
++	/*
++	 * Check for a null pointer
++	 * If the MFT record of ntfs inode is not a base record, inode->i_op can be NULL.
++	 * This causes null pointer dereference in d_splice_alias().
++	 */
++	if (!IS_ERR(inode) && inode->i_op == NULL) {
++		iput(inode);
++		inode = ERR_PTR(-EINVAL);
++	}
++
+ 	return d_splice_alias(inode, dentry);
+ }
+ 
+
