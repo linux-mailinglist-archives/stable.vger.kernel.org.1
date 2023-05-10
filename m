@@ -2,148 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD246FD696
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 08:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E92A6FD772
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 08:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235700AbjEJGLV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 02:11:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
+        id S236129AbjEJGxX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 02:53:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235547AbjEJGLR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 02:11:17 -0400
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2108.outbound.protection.outlook.com [40.107.100.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A05D311B;
-        Tue,  9 May 2023 23:11:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H9ehqdmAVrGbNwW/Y/fV0oUQWv4QNgRG0sj3ePIz73K6XL3qDaLS244YEhFdqq8DBXXlbD7oiBwuJCOJB/9PHx/QoOa6bQglwkcJw/rkxmuEIIjH5eMUiWECERXM1T/k+NKP8alPFO2WKDSlOTNgkQFmFnbm2WfMaqSeW9+YdFU+WG0ESUQHMadea04GjAKqKVXD6H17dgWd9ty5UQiZ67N295rpuE3SX1MmCrzMT5PnQ9UMJfzdbt3PXrKQ4z5qTXFKyc4V31RjuQ3pjfLOJL/+dN1iZi+SW/i5mIqwAA+U0PyhG4VwK4ljyxHrbKgz8+UVcUr0C3yrKAoz73gpfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dGD9CbQZPKhaiMlfT04i9xBNfjWVgM4A65cQBY8oVHI=;
- b=l+hOdWxJHGTkPg0RlVX3+fvargOEjmjdByLzmPdCADmd+KkFpKyb/f12RxbyhqdlHsFJPYLaayT1yU8iW7hkHDLe5CEycvAnxBzAWh74TtgfhWrHqZJQ80/mCDwRbBTHkD8PZpnridLpwnXJOgcPuxDV92qffROunG4ljSEUXmvFIDrF+Ffs01JqrFgUiK5DOscG+LmHZKmfP+drySBmYVnFughGipoHf6ZPBCIeD4wWoezadzs/bx0MbpS5+o6o1IqhtPvF9WLqEFnWMSqEq/b482f3eD9r5D0+eotTQnRyruFqId7DM1wlIOWV56ynBF6zS2e+cpDERjq4E7AdKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dGD9CbQZPKhaiMlfT04i9xBNfjWVgM4A65cQBY8oVHI=;
- b=Cd/wWM7zjJElfZgVXSogxeDhqoGWbw96a9+UJsjrXCqHgAXgKuO+Y9qRAqaTzfmTiQtJyN42zTX01mX1CT3+33hlZjQZ9AggNls+33i5spP5ZTtffBA5tZ7TukI3S/aTatx75IzQXADKeREUTzZr8JUn0j7rDkUTPrZt9AUrC4U=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from DM6PR13MB4249.namprd13.prod.outlook.com (2603:10b6:5:7b::25) by
- CO6PR13MB5307.namprd13.prod.outlook.com (2603:10b6:303:14d::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6363.33; Wed, 10 May 2023 06:11:10 +0000
-Received: from DM6PR13MB4249.namprd13.prod.outlook.com
- ([fe80::47e:11b:a728:c09e]) by DM6PR13MB4249.namprd13.prod.outlook.com
- ([fe80::47e:11b:a728:c09e%7]) with mapi id 15.20.6363.032; Wed, 10 May 2023
- 06:11:10 +0000
-Date:   Wed, 10 May 2023 08:10:59 +0200
-From:   Louis Peens <louis.peens@corigine.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     David Miller <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        netdev@vger.kernel.org, stable@vger.kernel.org,
-        oss-drivers@corigine.com
-Subject: Re: [PATCH net] nfp: fix rcu_read_lock/unlock while rcu_derefrencing
-Message-ID: <ZFs1c2VLJIJTj0+B@LouisNoVo>
-References: <20230509060632.8233-1-louis.peens@corigine.com>
- <20230509194013.3c73ffbb@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230509194013.3c73ffbb@kernel.org>
-X-ClientProxiedBy: ZR0P278CA0053.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:1d::22) To DM6PR13MB4249.namprd13.prod.outlook.com
- (2603:10b6:5:7b::25)
+        with ESMTP id S235968AbjEJGxW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 02:53:22 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612762711;
+        Tue,  9 May 2023 23:53:17 -0700 (PDT)
+X-UUID: 53c081b4eeff11edb20a276fd37b9834-20230510
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Tx9CfWRYSGHMpHne4BeMeiM05WCsy/k7BT7zMI9zAyc=;
+        b=UgF+6FYJZevkbaFLaWeS/cL9frDY2tSXxlZtuvebQOJlFTRx/IHBxW37tHlPdZXfpj6S7WYM50m8x2X4nDzt4edqxc4azKDu8apwCVBj+209yoF4NIaervNzqwsDMBk1VmXZr/zj7azoepgUEzVQlKUGLF6rGaIvPwPLFtJln04=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.24,REQID:4824f41a-545c-413b-bcd8-4b90e66e8797,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:90
+X-CID-INFO: VERSION:1.1.24,REQID:4824f41a-545c-413b-bcd8-4b90e66e8797,IP:0,URL
+        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:90
+X-CID-META: VersionHash:178d4d4,CLOUDID:af9f5dc0-e32c-4c97-918d-fbb3fc224d4e,B
+        ulkID:230510145312T5M18QWD,BulkQuantity:0,Recheck:0,SF:48|38|29|28|17|19,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+        ,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-UUID: 53c081b4eeff11edb20a276fd37b9834-20230510
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 318407663; Wed, 10 May 2023 14:53:10 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.194) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 10 May 2023 14:53:09 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 10 May 2023 14:53:09 +0800
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Quan Zhou <quan.zhou@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7921: do not support one stream on secondary antenna only
+Date:   Wed, 10 May 2023 14:51:13 +0800
+Message-ID: <cc94dbd5a53537e82d0beaa2d986f0b18e06eee4.1683700651.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR13MB4249:EE_|CO6PR13MB5307:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08f7e12e-2a57-49a1-fea8-08db511d5980
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 86IFmxtf+qxWxTj2st0UiP+ggeIhO5LhjE0kHMa9/DL4sDUTUb+1h6+3gTl70Jq7oqURXurXF53PoWa2rQU3zDeGrkGBfnwHkFTY3suUeH75bkmRHVqca+PzNdIvLWUVbiTazEkpIkSnCkJRp+mV9gvSsQm3FiPUdQ+wJvF8iq+N6VWQwHHdxoki6LyNjm/XaNEersPwji5N2hP3s7VmMLyF4QK4AuvXGFzVSKoHTWFCfIMDw+c1fNBtTOSpGDcClvWrobnayrXtRdFiIiqx3wqg4aq0UdAptxkrqnfldJ/nZP78DPVBkgPtxvLaX8cdLK4lqbM0SlXAEqn3GAdKX6aUyB4Oi35/IgjGgJGnx4faFRVbJi6wd44zBxaFuOYqy/uDba8le5BxzkIDOfRYlNjpmXcBST3OuL1NM9XwXkMRGU2SnWFHMqU+nobu7d5iNuUc1OM+J3+F/VNRuRjnvjL8z52S9rF6w9jOoUMuQcLnfyr0et2sFg9u7wpYPKeM0gYrLYQpKqMyD9UPlGuXLrWg9eiRZ/R1Fa9nlPINE9wdEw0AtagMTf4H2v8o9V2xzGAk4BCBXGD8WQR2eRQJxO+iStcEuNWp+vuFk09TlCA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR13MB4249.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(376002)(346002)(39840400004)(136003)(366004)(396003)(451199021)(83380400001)(54906003)(8676002)(8936002)(316002)(6666004)(66946007)(4326008)(6486002)(6916009)(44832011)(5660300002)(66476007)(66556008)(478600001)(2906002)(86362001)(186003)(6506007)(6512007)(9686003)(107886003)(38100700002)(41300700001)(26005)(33716001)(67856001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?W8Qv+ZaeUnAdTOr1v5vE9gxqL8zAKjjM9yxyvQbc+LwFThcI98LQE5xWnvRp?=
- =?us-ascii?Q?FJQuOzm8CILjxDXQ937Z5xHQ2CrDw0oX6hbarxS3Vxohw6qe62L6kDMEa7c5?=
- =?us-ascii?Q?GYagLwI7bEza8PFU9Ao6+azdcsW3AIDeFe97pLc73gn37DAh9WFf+2paVnpU?=
- =?us-ascii?Q?OgNQBCGqGBeEDDL7VumkDMD7qD3438Msz5pXiyIJk5a2NIw4jVtgFfMCYys4?=
- =?us-ascii?Q?ezJv6kLvn8vTlqrDQlDjGK+RvG9iNaF1vX6XFaq06tfm/rfK0hmPL+c9araL?=
- =?us-ascii?Q?5BTijzG6VEzsSGKuptmUvPPm37r1HIhcN+s+RJegiRUKBNXdpAIF22gfVZ9e?=
- =?us-ascii?Q?tPTXM59oX1vl1mw7oJ3MUHLiWiTXhYGqk1h8rS2V6uPLqRXRbz0KJPGO/t5N?=
- =?us-ascii?Q?y+mPGehIVDFZ5RoWJafMv/ARv+PC/pMmbQcVpHhCZl0YYJKbWvDmgIS/GLah?=
- =?us-ascii?Q?hyAT3oeR2L6u6djjqBhpmBY3szj9OeO3AnR7CVyrjfE+9JO5cOSXkX9rFn76?=
- =?us-ascii?Q?8oEhLH0hvd8DoHyDqfGX8qsZ+mGLOOzAtKRnJkUsALIQW3p3cFyBNJTlFNAE?=
- =?us-ascii?Q?d68JFu3wmWTn6Fw3Yskby9bU6+1sWggSgNrAmvMXFnt6QJYK/85TEnHKGBGZ?=
- =?us-ascii?Q?t8bvw4QJ+neJnABdu+5kl9Lb3qeNpe76EBQOF6bz/tpCIHbbry3qHrJEgH8N?=
- =?us-ascii?Q?GhdW8zPyqBK/yxfFKoZrvNrvnCXzt13DiDrzfaXz1v0dqLieYhVADySgPeCU?=
- =?us-ascii?Q?S9eEihlkHMw9dMau7j0bz8yqrHiLO02ZSLpA/560nVolxrKg7LSFlaKvM7nk?=
- =?us-ascii?Q?pPusdIQ8XHWZUhrw80zxrw/JlEKJgeHdi/R/hjKwU4C/+jovjLv9JanreoSt?=
- =?us-ascii?Q?eD2IEFUZBnQlvldI3P6A1dsSYQI3bVfPGs9mevsJSwq72CVKC0rThh1gQB+E?=
- =?us-ascii?Q?Lfb1L+lJIExybf702ezEMnCBeZVGRPtYOwQBgiV9F6r8gwH2LiWOk766nUei?=
- =?us-ascii?Q?xiuOY6OZjHbm+16F6rtSMKUUXckrKHBXI4WSqu8BCALmFy8R0mrQQDwS2iyQ?=
- =?us-ascii?Q?rwFNmV6bPK/ULLfrIgnpXglZ4V71Ozw/4iiaONudaGR2LUYBc/wZVkgmlxD9?=
- =?us-ascii?Q?rMB7+6ajLCw5kYthdduSmfQb6QG0IS+G+9thAzq5HtmInieIw6/BqbQq+laB?=
- =?us-ascii?Q?IiF8rMli2UPRHoJ92phSYTTZ8EAPM+EInLNaxaO4kbVz9e9nxZnArzPS3BlX?=
- =?us-ascii?Q?EqhRCIDmqmrGKAijqUs3t0VxjH6UnJ/gfDOWFdeBI7hEGCThZiHSfjUzioy4?=
- =?us-ascii?Q?QOIE/D1ToZ0Zm+MftJUNKDWQuPhXLEmx5wKFQiHPdWSm3gnasMfadkxMcND5?=
- =?us-ascii?Q?En6/wwrIyFsGJphOGB1n7Fn+xyPBLsTdIRPRyfEsc+FjwwcSTD3mwZ+TiLUI?=
- =?us-ascii?Q?GApssGyxV1UdiagjnPXUm5n/wA0neVrYpJlz30c+oNNkaP1H2MXGJ2UFcWHy?=
- =?us-ascii?Q?HWFEMN18DQTctRU9CBzqSOMfx+I5yd2Gye3UTsHq5dQfisZdbsPla+GyEmKm?=
- =?us-ascii?Q?55XXh3yc2H48EuzMGptKtYaqF+zV0ANbc9I/MqYo4a14KP4Kaleuv8WFER2X?=
- =?us-ascii?Q?iQ=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08f7e12e-2a57-49a1-fea8-08db511d5980
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR13MB4249.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2023 06:11:10.4114
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y51dSWCsgCRk7SCKL7N5C12lZpWMtWCQ0pSGNdeBJo/X79DMkQiwsmbwzLRlnNoFvB2+mbpKNgufWCcHGAfKhVqhBlNboUzGbCiRIZLTHfI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR13MB5307
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 07:40:13PM -0700, Jakub Kicinski wrote:
-> On Tue,  9 May 2023 08:06:32 +0200 Louis Peens wrote:
-> > +static inline
-> > +struct net_device *nfp_app_dev_get_locked(struct nfp_app *app, u32 id,
-> 
-> _locked() in what way? RCU functions typically use an _rcu suffix, no?
-We were discussing the naming during internal review, for some reason didn't
-think about using _rcu, will update if there is a v2.
-> 
-> > +					  bool *redir_egress)
-> > +{
-> > +	struct net_device *dev;
-> > +
-> > +	if (unlikely(!app || !app->type->dev_get))
-> > +		return NULL;
-> > +
-> > +	rcu_read_lock();
-> > +	dev = app->type->dev_get(app, id, redir_egress);
-> > +	rcu_read_unlock();
-> > +
-> > +	return dev;
-> 
-> this looks very suspicious, RCU takes care primarily of the lifetime of
-> objects, in this case dev. Returning it after dropping the lock seems
-> wrong.
-> 
-> If the context is safe maybe it's a better idea to change the 
-> condition in rcu_dereference_check() to include rcu_read_lock_bh_held()?
-Thanks, will take a closer look at this.
-> -- 
-> pw-bot: cr
-> 
+mt7921 support following antenna combiantions only.
+* primary + secondary (2x2)
+* primary only        (1x1)
+
+Since we cannot work on secondary antenna only, return error if the
+antenna bitmap is 0x2 in .set_antenna().
+
+For example:
+iw phy0 set antenna 3 3 /* valid */
+iw phy0 set antenna 1 1 /* valid */
+iw phy0 set antenna 2 2 /* invalid */
+
+Cc: stable@vger.kernel.org
+Fixes: e0f9fdda81bd ("mt76: mt7921: add ieee80211_ops")
+Suggested-by: Knox Chiou <knoxchiou@google.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 0c9a472bc81a..6c971c30d6a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1364,7 +1364,7 @@ mt7921_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 		return -EINVAL;
+ 
+ 	if ((BIT(hweight8(tx_ant)) - 1) != tx_ant)
+-		tx_ant = BIT(ffs(tx_ant) - 1) - 1;
++		return -EINVAL;
+ 
+ 	mt7921_mutex_acquire(dev);
+ 
+-- 
+2.18.0
+
