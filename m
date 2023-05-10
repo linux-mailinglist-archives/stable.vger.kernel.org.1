@@ -2,69 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CFC26FE1B4
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 17:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A98B36FE1C3
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 17:45:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237688AbjEJPld (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 11:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55146 "EHLO
+        id S237102AbjEJPpt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 11:45:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237622AbjEJPlZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 11:41:25 -0400
-Received: from pku.edu.cn (mx19.pku.edu.cn [162.105.129.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CF7E63583;
-        Wed, 10 May 2023 08:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
-        Message-ID:References:MIME-Version:Content-Type:
-        Content-Disposition:In-Reply-To; bh=f2kwca3p5lvmK1UKkYNiCNtEhFHR
-        gCfnV1Hv36vabJE=; b=AUAyj4Rh8ryw5jfWK+eYdxwMtpGmL+2cMOMiHRSIKmRO
-        Ux8B+3fGADgsT9+Y57nXL03gP7QhZ/Koli5PlZj447yjYLzMU4pazuL1FRvlYgWL
-        D3bj89QLxyVciAJ05H3DVZ5Q+FwurbUdFHFVvztcxIUAjDbvB1hFuVX9ikdiTHc=
-Received: from localhost (unknown [10.7.101.92])
-        by front02 (Coremail) with SMTP id 54FpogCXbjgRu1tkSAlvEw--.9090S2;
-        Wed, 10 May 2023 23:41:10 +0800 (CST)
-Date:   Wed, 10 May 2023 23:41:05 +0800
-From:   Ruihan Li <lrh2000@pku.edu.cn>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     linux-mm@kvack.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        David Hildenbrand <david@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ruihan Li <lrh2000@pku.edu.cn>
-Subject: Re: [PATCH 2/4] usb: usbfs: Use consistent mmap functions
-Message-ID: <w6keszmqdkwsuw5k3dsyl67zgndorxsoeenysjyzlzf5v4p6bl@mvztdsgt7qjj>
-References: <20230510085527.57953-1-lrh2000@pku.edu.cn>
- <20230510085527.57953-3-lrh2000@pku.edu.cn>
- <e197f549-0ee7-446e-86af-ac173d047df5@rowland.harvard.edu>
+        with ESMTP id S237202AbjEJPpl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 11:45:41 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7906610FA
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 08:45:40 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34AFeIVM024355;
+        Wed, 10 May 2023 15:45:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=qcppdkim1;
+ bh=Ku4nVVWKmra1x3HHlwGy4/c+mhpSZ34JaG23S30FLWU=;
+ b=ckWj8IO4IMvYJDMLmjvKH0D7urGJBwtS42uufSKXna84zt7xTqJe6soZOanSDlrPQrSQ
+ Te9u2clOB/X8lDr2v5zatWy9ojUe6D6lV9m9/dZ2ffeZpKgLdVp72WfGXU/KIvxTZzUr
+ VY71+7PboYR2VE9v4TWRGvNrLtoxImPi1ip78C4uxxDDo85tOkShtwckNdef2VWvTR7w
+ iJdnFeBgWRJmwISj2+7NX7jrRxWljO5DhHS6sMUKimSgIXm2PaWxkcweKs1dQ1bzHGem
+ fCx3NxG60mbOIrANEbeL1cTWcF4ysayz86ZHPaOgwnaC8jlTcNhVNs+1WmUWwX6FgicS +Q== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qfr50apng-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 10 May 2023 15:45:39 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34AFjcAH007808
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 10 May 2023 15:45:38 GMT
+Received: from jhugo-lnx.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Wed, 10 May 2023 08:45:38 -0700
+From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
+To:     <stable@vger.kernel.org>
+CC:     Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 5.10.y] bus: mhi: host: Range check CHDBOFF and ERDBOFF
+Date:   Wed, 10 May 2023 09:45:22 -0600
+Message-ID: <1683733522-13432-1-git-send-email-quic_jhugo@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <2023050613-slacked-gush-009c@gregkh>
+References: <2023050613-slacked-gush-009c@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e197f549-0ee7-446e-86af-ac173d047df5@rowland.harvard.edu>
-X-CM-TRANSID: 54FpogCXbjgRu1tkSAlvEw--.9090S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAr4fXFWUAry5Jr4xtF48Crg_yoW5Xw4xpF
-        W8t3yjkF4YqFyI9r12van8WFyfGwn5KFyUGryIv3sxu3W3Xr1SkFySkFy5ZF12yr10qr1I
-        vFWqyw13u3W5uFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24V
-        AvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
-        McIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7
-        v_Jr0_Gr1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-        8cxan2IY04v7MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26w
-        4UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-        r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-        IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-        w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-        0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU1c4S5UUUUU==
-X-CM-SenderInfo: yssqiiarrvmko6sn3hxhgxhubq/1tbiAgEHBVPy772BUwAGsm
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: A0vnmJkP-E30BsYgjR6_YtkJLZ7EoAfj
+X-Proofpoint-ORIG-GUID: A0vnmJkP-E30BsYgjR6_YtkJLZ7EoAfj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-10_04,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0
+ adultscore=0 phishscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305100128
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,71 +77,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Alan,
+Commit 6a0c637bfee69a74c104468544d9f2a6579626d0 upstream.
 
-On Wed, May 10, 2023 at 10:38:48AM -0400, Alan Stern wrote:
-> On Wed, May 10, 2023 at 04:55:25PM +0800, Ruihan Li wrote:
-> > When hcd->localmem_pool is non-null, it is used to allocate DMA memory.
-> > In this case, the dma address will be properly returned (in dma_handle),
-> > and dma_mmap_coherent should be used to map this memory into the user
-> > space. However, the current implementation uses pfn_remap_range, which
-> > is supposed to map normal pages (instead of DMA pages).
-> > 
-> > Instead of repeating the logic in the memory allocation function, this
-> > patch introduces a more robust solution. To address the previous issue,
-> > this patch checks the type of allocated memory by testing whether
-> > dma_handle is properly set. If dma_handle is properly returned, it means
-> > some DMA pages are allocated and dma_mmap_coherent should be used to map
-> > them. Otherwise, normal pages are allocated and pfn_remap_range should
-> > be called. This ensures that the correct mmap functions are used
-> > consistently, independently with logic details that determine which type
-> > of memory gets allocated.
-> > 
-> > Fixes: a0e710a7def4 ("USB: usbfs: fix mmap dma mismatch")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-> > ---
-> >  drivers/usb/core/devio.c | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
-> > index b4cf9e860..5067030b7 100644
-> > --- a/drivers/usb/core/devio.c
-> > +++ b/drivers/usb/core/devio.c
-> > @@ -235,7 +235,7 @@ static int usbdev_mmap(struct file *file, struct vm_area_struct *vma)
-> >  	size_t size = vma->vm_end - vma->vm_start;
-> >  	void *mem;
-> >  	unsigned long flags;
-> > -	dma_addr_t dma_handle;
-> > +	dma_addr_t dma_handle = DMA_MAPPING_ERROR;
-> >  	int ret;
-> >  
-> >  	ret = usbfs_increase_memory_usage(size + sizeof(struct usb_memory));
-> > @@ -265,7 +265,13 @@ static int usbdev_mmap(struct file *file, struct vm_area_struct *vma)
-> >  	usbm->vma_use_count = 1;
-> >  	INIT_LIST_HEAD(&usbm->memlist);
-> >  
-> > -	if (hcd->localmem_pool || !hcd_uses_dma(hcd)) {
-> > +	/* In DMA-unavailable cases, hcd_buffer_alloc_pages allocates
-> > +	 * normal pages and assigns DMA_MAPPING_ERROR to dma_handle. Check
-> > +	 * whether we are in such cases, and then use remap_pfn_range (or
-> > +	 * dma_mmap_coherent) to map normal (or DMA) pages into the user
-> > +	 * space, respectively.
-> > +	 */
-> 
-> Another stylistic issue.  For multi-line comments, the format we use is:
-> 
-> 	/*
-> 	 * Blah, blah, blah
-> 	 * Blah, blah, blah
-> 	 */
-> 
-> Alan Stern
+If the value read from the CHDBOFF and ERDBOFF registers is outside the
+range of the MHI register space then an invalid address might be computed
+which later causes a kernel panic.  Range check the read value to prevent
+a crash due to bad data from the device.
 
-Yeah, I am pretty sure it is another style difference with the net
-subsystem. Again, in the next version, I'll follow the coding style that
-you have pointed out.
+Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://lore.kernel.org/r/1679674384-27209-1-git-send-email-quic_jhugo@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ drivers/bus/mhi/core/init.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Thanks,
-Ruihan Li
+diff --git a/drivers/bus/mhi/core/init.c b/drivers/bus/mhi/core/init.c
+index 0d0386f..2cc48f9 100644
+--- a/drivers/bus/mhi/core/init.c
++++ b/drivers/bus/mhi/core/init.c
+@@ -498,6 +498,12 @@ int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
+ 		return -EIO;
+ 	}
+ 
++	if (val >= mhi_cntrl->reg_len - (8 * MHI_DEV_WAKE_DB)) {
++		dev_err(dev, "CHDB offset: 0x%x is out of range: 0x%zx\n",
++			val, mhi_cntrl->reg_len - (8 * MHI_DEV_WAKE_DB));
++		return -ERANGE;
++	}
++
+ 	/* Setup wake db */
+ 	mhi_cntrl->wake_db = base + val + (8 * MHI_DEV_WAKE_DB);
+ 	mhi_write_reg(mhi_cntrl, mhi_cntrl->wake_db, 4, 0);
+@@ -517,6 +523,12 @@ int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
+ 		return -EIO;
+ 	}
+ 
++	if (val >= mhi_cntrl->reg_len - (8 * mhi_cntrl->total_ev_rings)) {
++		dev_err(dev, "ERDB offset: 0x%x is out of range: 0x%zx\n",
++			val, mhi_cntrl->reg_len - (8 * mhi_cntrl->total_ev_rings));
++		return -ERANGE;
++	}
++
+ 	/* Setup event db address for each ev_ring */
+ 	mhi_event = mhi_cntrl->mhi_event;
+ 	for (i = 0; i < mhi_cntrl->total_ev_rings; i++, val += 8, mhi_event++) {
+-- 
+2.7.4
 
