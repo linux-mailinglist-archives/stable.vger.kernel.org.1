@@ -2,195 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C97B6FDCD8
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 13:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A701B6FDD09
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 13:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236019AbjEJLhj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 07:37:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58024 "EHLO
+        id S236701AbjEJLnf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 07:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236697AbjEJLhi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 07:37:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296695FF1
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 04:36:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683718592;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=l/HaDYCzkd2AEz06wBgc3bIlPsg0QPKHrPvIoEzzDwY=;
-        b=dvjHsdur9c0s8+1yOLMiSTF2dXX+k5O40hnmW40KWrc/8aR36i41kYM1ulDlVStHhh5hvS
-        E0ldrvCpcSe/BDUQsFsYbqau9VRlM498XIeUjFBVHBx8R+/Jiabwq9pWST6mUMPjV5Cdy0
-        C9K1fPIAun7DIgcWJY6BhqIUaOzYwXg=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-qy95CSE9NYiNruWPc63ldA-1; Wed, 10 May 2023 07:36:31 -0400
-X-MC-Unique: qy95CSE9NYiNruWPc63ldA-1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1aae90111bdso72235695ad.2
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 04:36:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683718590; x=1686310590;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l/HaDYCzkd2AEz06wBgc3bIlPsg0QPKHrPvIoEzzDwY=;
-        b=k8PugwmYM2u9bXUgiknYOyvAJdZ4FGaYtvqgP8wtAMjAWx48iULVlDN4TUC4T1bOzL
-         6YQb6jRoiANEGTrDz2siwUorMtsUgRh9F4z5kmX6GawNy2ATzx+vRIp1RzSy4qqHn95E
-         XGeX4RpsTwxxyvzIHwcusOlndHFwCy6ul/msTnhJsK81DZ+Uu9VEB2BfB/JMbiEgOVUa
-         RV3Ot/JdpBc5OcaaJsO/i4ik7Q2fDKXH3ZYrlbAu5dZwpDai0EPaIejfi++iD0ULmFPr
-         ptYHBuITTCHi7KGCgX6Ac8rLcOFvEUoDyglGJzDDilc/PXM/grvI+Fe/LJgPyccNSDU/
-         6PrQ==
-X-Gm-Message-State: AC+VfDx5WeGqg4Sci/8soFoANYKLZfBEYq8vhQYxOAJz5nf5BOy1EHM5
-        6qAZT4JBK3VSBFu+jmK7mlg+asXrQ4358lqjth7cOqINpqKLm/IDp+UoRq9tRiqzZo5btWW0mNE
-        apXp2qVdNtwOFDDl0
-X-Received: by 2002:a17:903:41d0:b0:1ac:4412:bd9 with SMTP id u16-20020a17090341d000b001ac44120bd9mr21397782ple.3.1683718590057;
-        Wed, 10 May 2023 04:36:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7zXJwIXKOZpoh6ptTjXyY0CgtNX3JOiSA91fMaWONOaeHAqVtbEleJppftp+ntKiw205NODw==
-X-Received: by 2002:a17:903:41d0:b0:1ac:4412:bd9 with SMTP id u16-20020a17090341d000b001ac44120bd9mr21397757ple.3.1683718589727;
-        Wed, 10 May 2023 04:36:29 -0700 (PDT)
-Received: from [10.72.12.156] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id az7-20020a170902a58700b001a212a93295sm3531031plb.189.2023.05.10.04.36.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 May 2023 04:36:29 -0700 (PDT)
-Message-ID: <5f3c6853-cc1d-a46e-3422-b39a1666eb9c@redhat.com>
-Date:   Wed, 10 May 2023 19:36:23 +0800
+        with ESMTP id S236623AbjEJLnc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 07:43:32 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39F4FE;
+        Wed, 10 May 2023 04:43:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683719010; x=1715255010;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=MSj618sbErzIYmOGI7vjCs5DAq9sbq+ULbuXkoSQgsk=;
+  b=YyB6LTBjw4bBiuRjmDfZ2TFDUuB/yY2ARv7ER7dA0CtB/Hu4WezOq671
+   fW5dU0GJQnTGB9F1lS4pJk97JJSJ6xUzQQxL6VMkmR2RU12GuIXLNGWoM
+   ZCYXKwdy+EOTJS4ONJc7bvec4z714b2dPQ9+TSaRDkGFOeoeGi+Fd/aAl
+   m24j0U3ZUw6rtf0s4oZ8Q0ssRbHfU3rlw7nGYKoAuCYPkTeLP41fa/oUf
+   ldlJ7Yl3pIgEUcUpkwaNQY1n+SudWjuJncd1R9er29vIvCm9fjjMAPjo+
+   7TkYUVaJxKKINjwvPvMB8nDtPgJf4aIJNGXmuOHFvoaEeMBoWqBzvtdGF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10705"; a="329812487"
+X-IronPort-AV: E=Sophos;i="5.99,264,1677571200"; 
+   d="scan'208";a="329812487"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2023 04:43:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10705"; a="1029188655"
+X-IronPort-AV: E=Sophos;i="5.99,264,1677571200"; 
+   d="scan'208";a="1029188655"
+Received: from sschutze-mobl.ger.corp.intel.com ([10.251.218.236])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2023 04:43:28 -0700
+Date:   Wed, 10 May 2023 14:43:25 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Lukasz Majczak <lma@semihalf.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, upstream@semihalf.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] serial: core: enable FIFO after resume
+In-Reply-To: <20230405111559.110220-3-lma@semihalf.com>
+Message-ID: <2b3f5b4e-c75e-5c20-bb86-c5628e7e91a7@linux.intel.com>
+References: <20230405111559.110220-1-lma@semihalf.com> <20230405111559.110220-3-lma@semihalf.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4] ceph: fix blindly expanding the readahead windows
-Content-Language: en-US
-To:     =?UTF-8?B?6IOh546u5paH?= <huww98@outlook.com>
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org,
-        Hu Weiwen <sehuww@mail.scut.edu.cn>
-References: <20230509005703.155321-1-xiubli@redhat.com>
- <TYCP286MB2066E72A82760E96D328A420C0779@TYCP286MB2066.JPNP286.PROD.OUTLOOK.COM>
-From:   Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <TYCP286MB2066E72A82760E96D328A420C0779@TYCP286MB2066.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, 5 Apr 2023, Lukasz Majczak wrote:
 
-On 5/10/23 18:01, 胡玮文 wrote:
-> On Tue, May 09, 2023 at 08:57:03AM +0800, xiubli@redhat.com wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> Blindly expanding the readahead windows will cause unneccessary
->> pagecache thrashing and also will introdue the network workload.
->                                      ^^^^^^^^
->                                      introduce
->
->> We should disable expanding the windows if the readahead is disabled
->> and also shouldn't expand the windows too much.
->>
->> Expanding forward firstly instead of expanding backward for possible
->> sequential reads.
->>
->> Bound `rreq->len` to the actual file size to restore the previous page
->> cache usage.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
->> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
->> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
->> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
->> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->> ---
->>
->> V4:
->> - two small cleanup from Ilya's comments. Thanks
->>
->>
->>   fs/ceph/addr.c | 28 +++++++++++++++++++++-------
->>   1 file changed, 21 insertions(+), 7 deletions(-)
->>
->> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
->> index ca4dc6450887..683ba9fbd590 100644
->> --- a/fs/ceph/addr.c
->> +++ b/fs/ceph/addr.c
->> @@ -188,16 +188,30 @@ static void ceph_netfs_expand_readahead(struct netfs_io_request *rreq)
->>   	struct inode *inode = rreq->inode;
->>   	struct ceph_inode_info *ci = ceph_inode(inode);
->>   	struct ceph_file_layout *lo = &ci->i_layout;
->> +	unsigned long max_pages = inode->i_sb->s_bdi->ra_pages;
-> I think it is better to use `ractl->ra->ra_pages' instead of
-> `inode->i_sb->s_bdi->ra_pages'.  So that we can consider per-request ra
-> size config, e.g., posix_fadvise(POSIX_FADV_SEQUENTIAL) will double the
-> ra_pages.
+> The "serial/8250: Use fifo in 8250 console driver" commit
 
-Yeah, good catch.
+Use canonical formatting when referring to commit:
 
-> But `ractl' is not passed to this function.  Can we just add this
-> argument?  ceph seems to be the only implementation of expand_readahead,
-> so it should be easy.  Or since this patch will be backported, maybe we
-> should keep it simple, and write another patch for this?
+commit 12char_SHA1 ("shortlog")
 
-I think we should fix it together with this. It should be easy.
+> has revealed an issue of not re-enabling FIFO after resume.
+> The problematic path is inside uart_resume_port() function.
+> First, when the console device is re-enabled,
+> a call to uport->ops->set_termios() internally initializes FIFO
+> (in serial8250_do_set_termios()), although further code
 
-We can just store the "file->f_ra->ra_pages" in ceph_init_request() 
-instead, because each rreq will be related to a dedicated file.
+I'd drop "First," and start with "When" and change "although" to "then"
+
+> disables it by issuing ops->startup() (pointer to serial8250_do_startup,
+> internally calling serial8250_clear_fifos()).
+> There is even a comment saying "Clear the FIFO buffers and disable them.
+> (they will be reenabled in set_termios())", but in this scenario,
+> set_termios() has been called already and FIFO remains disabled.
+
+Also, you should reflow the text to 72 chars per line.
+
+> This patch address the issue by reversing the order - first checks
+> if tty port is suspended and performs actions accordingly
+> (e.g. call to ops->startup()), then tries to re-enable
+> the console device after suspend (and call to uport->ops->set_termios()).
+> 
+> Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+> Cc: <stable@vger.kernel.org> # 6.1+
+> ---
+>  drivers/tty/serial/serial_core.c | 54 ++++++++++++++++----------------
+>  1 file changed, 27 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> index 394a05c09d87..57a153adba3a 100644
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -2406,33 +2406,6 @@ int uart_resume_port(struct uart_driver *drv, struct uart_port *uport)
+>  	put_device(tty_dev);
+>  	uport->suspended = 0;
+>  
+> -	/*
+> -	 * Re-enable the console device after suspending.
+> -	 */
+> -	if (uart_console(uport)) {
+> -		/*
+> -		 * First try to use the console cflag setting.
+> -		 */
+> -		memset(&termios, 0, sizeof(struct ktermios));
+> -		termios.c_cflag = uport->cons->cflag;
+> -		termios.c_ispeed = uport->cons->ispeed;
+> -		termios.c_ospeed = uport->cons->ospeed;
+> -
+> -		/*
+> -		 * If that's unset, use the tty termios setting.
+> -		 */
+> -		if (port->tty && termios.c_cflag == 0)
+> -			termios = port->tty->termios;
+> -
+> -		if (console_suspend_enabled)
+> -			uart_change_pm(state, UART_PM_STATE_ON);
+> -		uport->ops->set_termios(uport, &termios, NULL);
+> -		if (!console_suspend_enabled && uport->ops->start_rx)
+> -			uport->ops->start_rx(uport);
+> -		if (console_suspend_enabled)
+> -			console_start(uport->cons);
+> -	}
+> -
+>  	if (tty_port_suspended(port)) {
+>  		const struct uart_ops *ops = uport->ops;
+>  		int ret;
+> @@ -2471,6 +2444,33 @@ int uart_resume_port(struct uart_driver *drv, struct uart_port *uport)
+>  		tty_port_set_suspended(port, false);
+>  	}
+>  
+> +	/*
+> +	 * Re-enable the console device after suspending.
+> +	 */
+> +	if (uart_console(uport)) {
+> +		/*
+> +		 * First try to use the console cflag setting.
+> +		 */
+> +		memset(&termios, 0, sizeof(struct ktermios));
+> +		termios.c_cflag = uport->cons->cflag;
+> +		termios.c_ispeed = uport->cons->ispeed;
+> +		termios.c_ospeed = uport->cons->ospeed;
+> +
+> +		/*
+> +		 * If that's unset, use the tty termios setting.
+> +		 */
+> +		if (port->tty && termios.c_cflag == 0)
+> +			termios = port->tty->termios;
+> +
+> +		if (console_suspend_enabled)
+> +			uart_change_pm(state, UART_PM_STATE_ON);
+> +		uport->ops->set_termios(uport, &termios, NULL);
+> +		if (!console_suspend_enabled && uport->ops->start_rx)
+> +			uport->ops->start_rx(uport);
+> +		if (console_suspend_enabled)
+> +			console_start(uport->cons);
+> +	}
+> +
+>  	mutex_unlock(&port->mutex);
+>  
+>  	return 0;
+> 
+
+To me it looks the whole function is too messed up to fix anything this 
+easily. I'd start with splitting the two large ifs block so that the 
+ordering makes sense:
+
+- set_termios / uart_change_line_settings is called only once
+- rx and tx is started only after set_termios
+- failure path (the one doing uart_shutdown) logic is reverse + gotoed
 
 
->> +	unsigned long max_len = max_pages << PAGE_SHIFT;
->> +	loff_t end = rreq->start + rreq->len, new_end;
->>   	u32 blockoff;
->> -	u64 blockno;
->>   
->> -	/* Expand the start downward */
->> -	blockno = div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
->> -	rreq->start = blockno * lo->stripe_unit;
->> -	rreq->len += blockoff;
->> +	/* Readahead is disabled */
->> +	if (!max_pages)
->> +		return;
-> If we have access to ractl here, we can also skip expanding on
-> `ractl->file->f_mode & FMODE_RANDOM', which is set by
-> `posix_fadvise(POSIX_FADV_RANDOM)'.
-
-Correct, because the "page_cache_sync_ra()' will do the right thing and 
-we can skip expanding it here in ceph.
-
-Thanks
-
-- Xiubo
-
->
->>   
->> -	/* Now, round up the length to the next block */
->> -	rreq->len = roundup(rreq->len, lo->stripe_unit);
->> +	/*
->> +	 * Try to expand the length forward by rounding  up it to the next
->                                                         ^^ an extra space
->
->> +	 * block, but do not exceed the file size, unless the original
->> +	 * request already exceeds it.
->> +	 */
->> +	new_end = min(round_up(end, lo->stripe_unit), rreq->i_size);
->> +	if (new_end > end && new_end <= rreq->start + max_len)
->> +		rreq->len = new_end - rreq->start;
->> +
->> +	/* Try to expand the start downward */
->> +	div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
->> +	if (rreq->len + blockoff <= max_len) {
->> +		rreq->start -= blockoff;
->> +		rreq->len += blockoff;
->> +	}
->>   }
->>   
->>   static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
->> -- 
->> 2.40.0
->>
+-- 
+ i.
 
