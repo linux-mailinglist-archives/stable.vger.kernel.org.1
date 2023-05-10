@@ -2,176 +2,195 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1CC6FDC7F
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 13:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C97B6FDCD8
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 13:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236594AbjEJLTR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 07:19:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44104 "EHLO
+        id S236019AbjEJLhj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 07:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231874AbjEJLTQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 07:19:16 -0400
-Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 087D5A1
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 04:19:15 -0700 (PDT)
-Received: by mail-ua1-x932.google.com with SMTP id a1e0cc1a2514c-77d0160ed4cso1865081241.0
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 04:19:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683717554; x=1686309554;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=w0rxn7yjUQBL3cbcVPmdIqJT/Pb8kMk5CCwtWmgzh5c=;
-        b=gGqU+U+0OJG/fkRdxOh9RaAefuV6RVWSQScJXxuxLYgThpPvP95h68E+QEk1dJ64FW
-         n//JhnuqL9lSEcMEwHrFczFlESBIZMSl6w69UUBflwtKPlvgXtkglNkIz+3JnZsOA1SS
-         3QIotbeQ56VF+GycqtE6QkSUa7hiqXpJTrgXZHLnX8ffXdkdJ82tJEfp6fYFkWx5JsSw
-         AblCJLzoW9SOBFK00Ai29gX1O8XIr/5s4RUfFL/r5gTGYQXmh29ABbJMVmsxUjNqlKih
-         oqYLMhXuqe5emM5F5fwmpqa66weJKBBDAh1ZUOZdC0m3i+ZYb4O+e/+ZK5+6l7Cl3ZuN
-         ky+Q==
+        with ESMTP id S236697AbjEJLhi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 07:37:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296695FF1
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 04:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1683718592;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=l/HaDYCzkd2AEz06wBgc3bIlPsg0QPKHrPvIoEzzDwY=;
+        b=dvjHsdur9c0s8+1yOLMiSTF2dXX+k5O40hnmW40KWrc/8aR36i41kYM1ulDlVStHhh5hvS
+        E0ldrvCpcSe/BDUQsFsYbqau9VRlM498XIeUjFBVHBx8R+/Jiabwq9pWST6mUMPjV5Cdy0
+        C9K1fPIAun7DIgcWJY6BhqIUaOzYwXg=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-257-qy95CSE9NYiNruWPc63ldA-1; Wed, 10 May 2023 07:36:31 -0400
+X-MC-Unique: qy95CSE9NYiNruWPc63ldA-1
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1aae90111bdso72235695ad.2
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 04:36:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683717554; x=1686309554;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w0rxn7yjUQBL3cbcVPmdIqJT/Pb8kMk5CCwtWmgzh5c=;
-        b=J58BMW3buCxpNnEGA9y/CwU7I3wCyntPGed1isu5zn/gA7xzBxnmrMcqGkfGECEXA6
-         8JTL9CbvzoNmAC0y07cmddJYiXu0v/t73mCwU4VjuOJs8g3M5dlh4ffIlcdn9UBCU7gI
-         J0dyUxIiM3GaU+UmnUCufrDKpTPLWh18CG1iWKc3x2Q27s84EDxLuz/koN4fN549twV+
-         9YmkOrnV/FKHCoslzR6nLHU67BZyKtK2IJikQ+0R96IUbenEQ91kCTa7L+PXKq4voJzX
-         yBsANbkfk35L56qsS41WYkZUyvTgZSN3R5aEIBFkn4oyOwAQQnrESBzq682vDx5LLwte
-         qD3A==
-X-Gm-Message-State: AC+VfDyo3r0ec6/SZYKziFsW32E8Tk2afO4U7RFEU8lC0Gm/kUnOyaey
-        FHEk73QJUaOiZOsTFQoUvcU9Cd3RNtiIeFejwBuE7A==
-X-Google-Smtp-Source: ACHHUZ6iEVbwGClp2RRNrPQESKr7qZwT74Mw9gt4GtOHFJBuV+LEa/nYOE/OFnUQ83brUfbou7aA+b0XMWkxtRdzJpo=
-X-Received: by 2002:a67:eb53:0:b0:434:66e3:74b4 with SMTP id
- x19-20020a67eb53000000b0043466e374b4mr5605280vso.8.1683717554117; Wed, 10 May
- 2023 04:19:14 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683718590; x=1686310590;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l/HaDYCzkd2AEz06wBgc3bIlPsg0QPKHrPvIoEzzDwY=;
+        b=k8PugwmYM2u9bXUgiknYOyvAJdZ4FGaYtvqgP8wtAMjAWx48iULVlDN4TUC4T1bOzL
+         6YQb6jRoiANEGTrDz2siwUorMtsUgRh9F4z5kmX6GawNy2ATzx+vRIp1RzSy4qqHn95E
+         XGeX4RpsTwxxyvzIHwcusOlndHFwCy6ul/msTnhJsK81DZ+Uu9VEB2BfB/JMbiEgOVUa
+         RV3Ot/JdpBc5OcaaJsO/i4ik7Q2fDKXH3ZYrlbAu5dZwpDai0EPaIejfi++iD0ULmFPr
+         ptYHBuITTCHi7KGCgX6Ac8rLcOFvEUoDyglGJzDDilc/PXM/grvI+Fe/LJgPyccNSDU/
+         6PrQ==
+X-Gm-Message-State: AC+VfDx5WeGqg4Sci/8soFoANYKLZfBEYq8vhQYxOAJz5nf5BOy1EHM5
+        6qAZT4JBK3VSBFu+jmK7mlg+asXrQ4358lqjth7cOqINpqKLm/IDp+UoRq9tRiqzZo5btWW0mNE
+        apXp2qVdNtwOFDDl0
+X-Received: by 2002:a17:903:41d0:b0:1ac:4412:bd9 with SMTP id u16-20020a17090341d000b001ac44120bd9mr21397782ple.3.1683718590057;
+        Wed, 10 May 2023 04:36:30 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7zXJwIXKOZpoh6ptTjXyY0CgtNX3JOiSA91fMaWONOaeHAqVtbEleJppftp+ntKiw205NODw==
+X-Received: by 2002:a17:903:41d0:b0:1ac:4412:bd9 with SMTP id u16-20020a17090341d000b001ac44120bd9mr21397757ple.3.1683718589727;
+        Wed, 10 May 2023 04:36:29 -0700 (PDT)
+Received: from [10.72.12.156] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id az7-20020a170902a58700b001a212a93295sm3531031plb.189.2023.05.10.04.36.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 May 2023 04:36:29 -0700 (PDT)
+Message-ID: <5f3c6853-cc1d-a46e-3422-b39a1666eb9c@redhat.com>
+Date:   Wed, 10 May 2023 19:36:23 +0800
 MIME-Version: 1.0
-References: <a52cd6075f806eed82d577a6d437c705c7f36a26.1683617412.git.Rijo-john.Thomas@amd.com>
-In-Reply-To: <a52cd6075f806eed82d577a6d437c705c7f36a26.1683617412.git.Rijo-john.Thomas@amd.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Wed, 10 May 2023 16:49:03 +0530
-Message-ID: <CAFA6WYNOjkU_4Kg=khuki3qv95f+bUB5hJUjRy2CoPXDvqW0Sw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] tee: amdtee: Add return_origin to 'struct tee_cmd_load_ta'
-To:     Rijo Thomas <Rijo-john.Thomas@amd.com>
-Cc:     Jens Wiklander <jens.wiklander@linaro.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Jan Dabros <jsd@semihalf.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org,
-        Mythri PK <Mythri.Pandeshwarakrishna@amd.com>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        stable@vger.kernel.org, Sourabh Das <sourabh.das@amd.com>,
-        Nimesh Easow <nimesh.easow@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4] ceph: fix blindly expanding the readahead windows
+Content-Language: en-US
+To:     =?UTF-8?B?6IOh546u5paH?= <huww98@outlook.com>
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org,
+        Hu Weiwen <sehuww@mail.scut.edu.cn>
+References: <20230509005703.155321-1-xiubli@redhat.com>
+ <TYCP286MB2066E72A82760E96D328A420C0779@TYCP286MB2066.JPNP286.PROD.OUTLOOK.COM>
+From:   Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <TYCP286MB2066E72A82760E96D328A420C0779@TYCP286MB2066.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 9 May 2023 at 13:03, Rijo Thomas <Rijo-john.Thomas@amd.com> wrote:
->
-> After TEE has completed processing of TEE_CMD_ID_LOAD_TA, set proper
-> value in 'return_origin' argument passed by open_session() call. To do
-> so, add 'return_origin' field to the structure tee_cmd_load_ta. The
-> Trusted OS shall update return_origin as part of TEE processing.
->
-> This change to 'struct tee_cmd_load_ta' interface requires a similar update
-> in AMD-TEE Trusted OS's TEE_CMD_ID_LOAD_TA interface.
->
-> This patch has been verified on Phoenix Birman setup. On older APUs,
-> return_origin value will be 0.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
-> Tested-by: Sourabh Das <sourabh.das@amd.com>
-> Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
-> ---
-> v2:
->  * Added Fixes tag.
->
->  drivers/tee/amdtee/amdtee_if.h | 10 ++++++----
->  drivers/tee/amdtee/call.c      | 30 +++++++++++++++++-------------
->  2 files changed, 23 insertions(+), 17 deletions(-)
->
 
-Acked-by: Sumit Garg <sumit.garg@linaro.org>
+On 5/10/23 18:01, 胡玮文 wrote:
+> On Tue, May 09, 2023 at 08:57:03AM +0800, xiubli@redhat.com wrote:
+>> From: Xiubo Li <xiubli@redhat.com>
+>>
+>> Blindly expanding the readahead windows will cause unneccessary
+>> pagecache thrashing and also will introdue the network workload.
+>                                      ^^^^^^^^
+>                                      introduce
+>
+>> We should disable expanding the windows if the readahead is disabled
+>> and also shouldn't expand the windows too much.
+>>
+>> Expanding forward firstly instead of expanding backward for possible
+>> sequential reads.
+>>
+>> Bound `rreq->len` to the actual file size to restore the previous page
+>> cache usage.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
+>> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
+>> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
+>> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
+>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+>> ---
+>>
+>> V4:
+>> - two small cleanup from Ilya's comments. Thanks
+>>
+>>
+>>   fs/ceph/addr.c | 28 +++++++++++++++++++++-------
+>>   1 file changed, 21 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+>> index ca4dc6450887..683ba9fbd590 100644
+>> --- a/fs/ceph/addr.c
+>> +++ b/fs/ceph/addr.c
+>> @@ -188,16 +188,30 @@ static void ceph_netfs_expand_readahead(struct netfs_io_request *rreq)
+>>   	struct inode *inode = rreq->inode;
+>>   	struct ceph_inode_info *ci = ceph_inode(inode);
+>>   	struct ceph_file_layout *lo = &ci->i_layout;
+>> +	unsigned long max_pages = inode->i_sb->s_bdi->ra_pages;
+> I think it is better to use `ractl->ra->ra_pages' instead of
+> `inode->i_sb->s_bdi->ra_pages'.  So that we can consider per-request ra
+> size config, e.g., posix_fadvise(POSIX_FADV_SEQUENTIAL) will double the
+> ra_pages.
 
--Sumit
+Yeah, good catch.
 
-> diff --git a/drivers/tee/amdtee/amdtee_if.h b/drivers/tee/amdtee/amdtee_if.h
-> index ff48c3e47375..e2014e21530a 100644
-> --- a/drivers/tee/amdtee/amdtee_if.h
-> +++ b/drivers/tee/amdtee/amdtee_if.h
-> @@ -118,16 +118,18 @@ struct tee_cmd_unmap_shared_mem {
+> But `ractl' is not passed to this function.  Can we just add this
+> argument?  ceph seems to be the only implementation of expand_readahead,
+> so it should be easy.  Or since this patch will be backported, maybe we
+> should keep it simple, and write another patch for this?
+
+I think we should fix it together with this. It should be easy.
+
+We can just store the "file->f_ra->ra_pages" in ceph_init_request() 
+instead, because each rreq will be related to a dedicated file.
+
+
+>> +	unsigned long max_len = max_pages << PAGE_SHIFT;
+>> +	loff_t end = rreq->start + rreq->len, new_end;
+>>   	u32 blockoff;
+>> -	u64 blockno;
+>>   
+>> -	/* Expand the start downward */
+>> -	blockno = div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+>> -	rreq->start = blockno * lo->stripe_unit;
+>> -	rreq->len += blockoff;
+>> +	/* Readahead is disabled */
+>> +	if (!max_pages)
+>> +		return;
+> If we have access to ractl here, we can also skip expanding on
+> `ractl->file->f_mode & FMODE_RANDOM', which is set by
+> `posix_fadvise(POSIX_FADV_RANDOM)'.
+
+Correct, because the "page_cache_sync_ra()' will do the right thing and 
+we can skip expanding it here in ceph.
+
+Thanks
+
+- Xiubo
+
 >
->  /**
->   * struct tee_cmd_load_ta - load Trusted Application (TA) binary into TEE
-> - * @low_addr:    [in] bits [31:0] of the physical address of the TA binary
-> - * @hi_addr:     [in] bits [63:32] of the physical address of the TA binary
-> - * @size:        [in] size of TA binary in bytes
-> - * @ta_handle:   [out] return handle of the loaded TA
-> + * @low_addr:       [in] bits [31:0] of the physical address of the TA binary
-> + * @hi_addr:        [in] bits [63:32] of the physical address of the TA binary
-> + * @size:           [in] size of TA binary in bytes
-> + * @ta_handle:      [out] return handle of the loaded TA
-> + * @return_origin:  [out] origin of return code after TEE processing
->   */
->  struct tee_cmd_load_ta {
->         u32 low_addr;
->         u32 hi_addr;
->         u32 size;
->         u32 ta_handle;
-> +       u32 return_origin;
->  };
+>>   
+>> -	/* Now, round up the length to the next block */
+>> -	rreq->len = roundup(rreq->len, lo->stripe_unit);
+>> +	/*
+>> +	 * Try to expand the length forward by rounding  up it to the next
+>                                                         ^^ an extra space
 >
->  /**
-> diff --git a/drivers/tee/amdtee/call.c b/drivers/tee/amdtee/call.c
-> index e8cd9aaa3467..e9b63dcb3194 100644
-> --- a/drivers/tee/amdtee/call.c
-> +++ b/drivers/tee/amdtee/call.c
-> @@ -423,19 +423,23 @@ int handle_load_ta(void *data, u32 size, struct tee_ioctl_open_session_arg *arg)
->         if (ret) {
->                 arg->ret_origin = TEEC_ORIGIN_COMMS;
->                 arg->ret = TEEC_ERROR_COMMUNICATION;
-> -       } else if (arg->ret == TEEC_SUCCESS) {
-> -               ret = get_ta_refcount(load_cmd.ta_handle);
-> -               if (!ret) {
-> -                       arg->ret_origin = TEEC_ORIGIN_COMMS;
-> -                       arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
-> -
-> -                       /* Unload the TA on error */
-> -                       unload_cmd.ta_handle = load_cmd.ta_handle;
-> -                       psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
-> -                                           (void *)&unload_cmd,
-> -                                           sizeof(unload_cmd), &ret);
-> -               } else {
-> -                       set_session_id(load_cmd.ta_handle, 0, &arg->session);
-> +       } else {
-> +               arg->ret_origin = load_cmd.return_origin;
-> +
-> +               if (arg->ret == TEEC_SUCCESS) {
-> +                       ret = get_ta_refcount(load_cmd.ta_handle);
-> +                       if (!ret) {
-> +                               arg->ret_origin = TEEC_ORIGIN_COMMS;
-> +                               arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
-> +
-> +                               /* Unload the TA on error */
-> +                               unload_cmd.ta_handle = load_cmd.ta_handle;
-> +                               psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
-> +                                                   (void *)&unload_cmd,
-> +                                                   sizeof(unload_cmd), &ret);
-> +                       } else {
-> +                               set_session_id(load_cmd.ta_handle, 0, &arg->session);
-> +                       }
->                 }
->         }
->         mutex_unlock(&ta_refcount_mutex);
-> --
-> 2.25.1
->
+>> +	 * block, but do not exceed the file size, unless the original
+>> +	 * request already exceeds it.
+>> +	 */
+>> +	new_end = min(round_up(end, lo->stripe_unit), rreq->i_size);
+>> +	if (new_end > end && new_end <= rreq->start + max_len)
+>> +		rreq->len = new_end - rreq->start;
+>> +
+>> +	/* Try to expand the start downward */
+>> +	div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+>> +	if (rreq->len + blockoff <= max_len) {
+>> +		rreq->start -= blockoff;
+>> +		rreq->len += blockoff;
+>> +	}
+>>   }
+>>   
+>>   static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
+>> -- 
+>> 2.40.0
+>>
+
