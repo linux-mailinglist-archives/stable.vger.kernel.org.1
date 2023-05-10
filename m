@@ -2,122 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C7226FE54A
-	for <lists+stable@lfdr.de>; Wed, 10 May 2023 22:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1155D6FE567
+	for <lists+stable@lfdr.de>; Wed, 10 May 2023 22:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236585AbjEJUky (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 16:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33240 "EHLO
+        id S236303AbjEJUtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 16:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbjEJUkx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 16:40:53 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5F55FD2
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 13:40:52 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1aaf2ede38fso74966525ad.2
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 13:40:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683751252; x=1686343252;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=3K6nAunvvqU+tkofP8qzXjG71Qeq6x9p+fbsBeGbDek=;
-        b=lLOFXLAIykmhYu/3xR51sQoM/r+CgP0efdyPQlsf7oBLO+CqPGT52cB196pyiAVlRo
-         8ztU5a8nteZ2g+loaBBowINQurLD/6Jbfrmkj6UHPiAtDU+XguauXg8+F4is79QCgAgm
-         scH/ZSz5Aj5e0K+hon0ez5RYb9KVfT5G6au5zViroaWSqVj286nvZRlfKevEp0IZpFaO
-         6uYmZIsvNgcN6SMn3dU/KXMe2rvUp10Ypa7KlKLCdlmtvnZWmAlRxILRcn1uadRarHlG
-         SxoqJUgF1qS4U1aq1djWRJW8JerpzUzv+xrpsjKLcmSdIiAakOo56f3ByXyuWNCLQo91
-         Mzkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683751252; x=1686343252;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3K6nAunvvqU+tkofP8qzXjG71Qeq6x9p+fbsBeGbDek=;
-        b=ZvStm08j8qKhXF/JuDYNZKB54SynuB1Md/v30aoZmy9L9xrIJBXfcNETJOV4j9N6lh
-         QdQVtxUp0krw95zdhxG5wj46g2FoY+KlmuX81qls3TJpV1D0pGA8ByzoXGREPtfGLYJp
-         06dfXPV8O6ScTue8p38MD36XqIDJ8WP/Qpq0XY9Nn3dALz/qSUhwX53GptjuDcJT85XA
-         HbwwTKxcPs8shN9zyLvcnSEScpNb4W+z0g6W9h07oZcojGqTegTdTV45iQsbWd7skAOK
-         ToQefwmkMyvhye4ibQDVHJLjMDdTo76uVuqzAuMwtmmiZCs2sZhoff7stgsVTGG26VCE
-         oXyg==
-X-Gm-Message-State: AC+VfDxDFd9KmCZdh/Mi9DAim3uxoW5TM8QiPemJiILu2Gp0HlnDnssd
-        KOe0VgC/xgYm9v08JYgRrqU=
-X-Google-Smtp-Source: ACHHUZ6lDgMesTVIiV1HTF4YmuyZWwVT01J4tksWd/wf6DezhiYBlI30Xt+s3DB0qgxbTGjrE1yMNw==
-X-Received: by 2002:a17:902:eccc:b0:1ac:b449:352d with SMTP id a12-20020a170902eccc00b001acb449352dmr4116398plh.61.1683751252177;
-        Wed, 10 May 2023 13:40:52 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id ji1-20020a170903324100b001a9b7584824sm4222107plb.159.2023.05.10.13.40.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 May 2023 13:40:51 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 10 May 2023 13:40:50 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     stable@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
-        palmer@dabbelt.com
-Subject: Re: [PATCH 6.1 v1] RISC-V: fix lock splat in
- riscv_cpufeature_patch_func()
-Message-ID: <0bcbfbd5-4702-48d4-81dc-118cefc63f46@roeck-us.net>
+        with ESMTP id S230520AbjEJUtT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 16:49:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2912BE62;
+        Wed, 10 May 2023 13:49:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AEC6561380;
+        Wed, 10 May 2023 20:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F82C433EF;
+        Wed, 10 May 2023 20:49:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683751757;
+        bh=sm5QAcd0taaclIH56EabPTS7FFL37JY5nKCmhFvm5pE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NsGp/Ck3h+O1cVsRbjpAUj0G/fUSo56FJzkXEZAgP9/lNUdZAcfoC6s0V7MYLIFt2
+         0xWBhEiNNrrT1umiTd+MqbqfUmtmufproi+j5/3t+Mvz4vptSfGEGe0+wiHLtDwOHW
+         LSi3NyGTDlPYQWguSmlDu/qu+AU9KYDqfOsyJrfyF5KX0WD/d4xK8ybFNDUEhwukLO
+         R9MgcriM9WyO5c0kia9pn883x0XQIuyUfpp5uwmD8ioOTHwmx12C6iFWjK/pE/raan
+         dpR2CDG5KALeZh4bAbwCTfufqtjy8AeuasMUbRIxT4jXncpHZ07inJMn6xcfeyDaR5
+         eNeNM4xC/QHvQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sasha Levin <sashal@kernel.org>,
+        ludovic.desroches@microchip.com, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.3 1/9] pinctrl: at91: use devm_kasprintf() to avoid potential leaks (part 2)
+Date:   Wed, 10 May 2023 16:48:57 -0400
+Message-Id: <20230510204905.104628-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, May 09, 2023 at 10:36:42PM +0100, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> Guenter reported a lockdep splat that appears to have been present for a
-> while in v6.1.y & the backports of the riscv_patch_in_stop_machine dance
-> did nothing to help here, as the lock is not being taken when
-> patch_text_nosync() is called in riscv_cpufeature_patch_func().
-> Add the lock/unlock; elide the splat.
-> 
-> Fixes: c15ac4fd60d5 ("riscv/ftrace: Add dynamic function tracer support")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> cc: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+[ Upstream commit f494c1913cbb34b9e2078b7b045c87c1ca6df791 ]
 
-Guenter
+Use devm_kasprintf() instead of kasprintf() to avoid any potential
+leaks. At the moment drivers have no remove functionality hence
+there is no need for fixes tag.
 
-> ---
->  arch/riscv/kernel/cpufeature.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-> index 694267d1fe81..fd1238df6149 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
-> @@ -9,6 +9,7 @@
->  #include <linux/bitmap.h>
->  #include <linux/ctype.h>
->  #include <linux/libfdt.h>
-> +#include <linux/memory.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <asm/alternative.h>
-> @@ -316,8 +317,11 @@ void __init_or_module riscv_cpufeature_patch_func(struct alt_entry *begin,
->  		}
->  
->  		tmp = (1U << alt->errata_id);
-> -		if (cpu_req_feature & tmp)
-> +		if (cpu_req_feature & tmp) {
-> +			mutex_lock(&text_mutex);
->  			patch_text_nosync(alt->old_ptr, alt->alt_ptr, alt->alt_len);
-> +			mutex_unlock(&text_mutex);
-> +		}
->  	}
->  }
->  #endif
-> -- 
-> 2.39.2
-> 
+While at it, switch to use devm_kasprintf_strarray().
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Tested-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230215134242.37618-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pinctrl/pinctrl-at91.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 735c501e7a06c..9fa68ca4a412d 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -18,6 +18,7 @@
+ #include <linux/pm.h>
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
++#include <linux/string_helpers.h>
+ 
+ /* Since we request GPIOs from ourself */
+ #include <linux/pinctrl/consumer.h>
+@@ -1371,6 +1372,7 @@ static int at91_pinctrl_probe_dt(struct platform_device *pdev,
+ 
+ static int at91_pinctrl_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	struct at91_pinctrl *info;
+ 	struct pinctrl_pin_desc *pdesc;
+ 	int ret, i, j, k;
+@@ -1394,9 +1396,19 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0, k = 0; i < gpio_banks; i++) {
++		char **names;
++
++		names = devm_kasprintf_strarray(dev, "pio", MAX_NB_GPIO_PER_BANK);
++		if (!names)
++			return -ENOMEM;
++
+ 		for (j = 0; j < MAX_NB_GPIO_PER_BANK; j++, k++) {
++			char *name = names[j];
++
++			strreplace(name, '-', i + 'A');
++
+ 			pdesc->number = k;
+-			pdesc->name = kasprintf(GFP_KERNEL, "pio%c%d", i + 'A', j);
++			pdesc->name = name;
+ 			pdesc++;
+ 		}
+ 	}
+@@ -1797,7 +1809,8 @@ static const struct of_device_id at91_gpio_of_match[] = {
+ 
+ static int at91_gpio_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = pdev->dev.of_node;
++	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
+ 	struct at91_gpio_chip *at91_chip = NULL;
+ 	struct gpio_chip *chip;
+ 	struct pinctrl_gpio_range *range;
+@@ -1866,16 +1879,14 @@ static int at91_gpio_probe(struct platform_device *pdev)
+ 			chip->ngpio = ngpio;
+ 	}
+ 
+-	names = devm_kcalloc(&pdev->dev, chip->ngpio, sizeof(char *),
+-			     GFP_KERNEL);
+-
++	names = devm_kasprintf_strarray(dev, "pio", chip->ngpio);
+ 	if (!names) {
+ 		ret = -ENOMEM;
+ 		goto clk_enable_err;
+ 	}
+ 
+ 	for (i = 0; i < chip->ngpio; i++)
+-		names[i] = devm_kasprintf(&pdev->dev, GFP_KERNEL, "pio%c%d", alias_idx + 'A', i);
++		strreplace(names[i], '-', alias_idx + 'A');
+ 
+ 	chip->names = (const char *const *)names;
+ 
+-- 
+2.39.2
+
