@@ -2,196 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 366E26FED8C
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 10:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B236FEDD9
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 10:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235497AbjEKIHy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 04:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35860 "EHLO
+        id S230317AbjEKIaU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 04:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjEKIHc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 04:07:32 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E60493E2
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:06:56 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-50bf7bb76d0so21007a12.0
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:06:56 -0700 (PDT)
+        with ESMTP id S229548AbjEKIaS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 04:30:18 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422FB4EF7
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:30:15 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-51b4ef5378bso7373235a12.1
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683792414; x=1686384414;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KljiQtSFqo+YtWAuOB2h9MgfsMKO5eDxysmOsAT/+yw=;
-        b=PHg2bnJhagsGAiFrglfHm2V7DArMp4AhZIz75pfeKg5hc+suQNxDqTW9aBWmE/t6hg
-         3rSf8UPSojB2gZKxGqG0/UowHOztzw5p5lAAZN2Vf1+yYAvtQXP3WQwlktpGpRAGhsul
-         76cey6/H6ww4hompKMHNsShE7/U1XoH7zaojTGiDwydB9LaW0aT7/i8vC0qUT8y86Dt9
-         JfB7dNFSVg2UZLT7eIRIS36WtPlTHetOw3MQyJfJk3tuRS2EvSoKDQXZrkS+IWzOvqzy
-         7r8ipLmCkEC7Puc12VedDlEC2mtTOCK9n6IlSQ+mCAvCUGx1glZoNdF46C3J6OtNfh4E
-         UINA==
+        d=heitbaum.com; s=google; t=1683793814; x=1686385814;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uBduSQSx05MHlBvD82+EqabT9/Ep5JlcWUORXDoOtcA=;
+        b=cUmBs1hPWa2SRLAW2xRdKd+TCclc1WmU+SkhJJ6LXx87U2+FgfoZ/hZrtFnsRD8I6M
+         ZuSZh5pGfLIJh01kxkYNjntsqag9jkEdu6GlV/vTvLIyQFsD1TIzCtKodT7EO2cHvuWR
+         Ia3bHhF+vy5bxWq53vTLQaB2zrKQJ6IqvncT8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683792414; x=1686384414;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KljiQtSFqo+YtWAuOB2h9MgfsMKO5eDxysmOsAT/+yw=;
-        b=e1aT0bmtWXM1+7lh5Q21A2PDErOL3L+FS8TS+pmTlCTZYzXE6zUm73pfj/UBTLTWfO
-         hAACDS2yRpQ/T/fYGCuW9Q86NnTc2tq3xJlenX7sjBugB5iAgUWcVPIq+znNFTOSz0Fu
-         4UDt3L1BBscRCvIUP+8ecB95RpluQWWWnUlM1y5UX/YjnFSEdfb6aDpessAU15K/NX4m
-         dyv49MXOl2jDgU23TbwDq4VUDjrAxqukJCwoCQBAeXfYhjglMacS2MJqEKx9YAiqiCxu
-         lt/QPZPWZZpPk5bys2xF27Rpwy0C9kHRZ9liHPWFoNI1tz4MHZwxXGA0BU5zaGIdBaba
-         7Pbg==
-X-Gm-Message-State: AC+VfDxSfevrb/XqO1YKlbAa0fUlMvFK1Ss2cktbi2REchrd/iSqwVCD
-        +bhINFnLJ/oVTk5v0BNZpdn8lTmOO+OOZscoB7u6Ow==
-X-Google-Smtp-Source: ACHHUZ5LaN5TDvN1FyO5MhQS0lmIkF5TXzwK6Dj9VdmOKW2CYodVmwm4+rhlyyeuU7KXDssjyC5Y6cQ5ZlwMYKZjXrE=
-X-Received: by 2002:a50:d71d:0:b0:506:9116:dcc8 with SMTP id
- t29-20020a50d71d000000b005069116dcc8mr31791edi.7.1683792414065; Thu, 11 May
- 2023 01:06:54 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683793814; x=1686385814;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uBduSQSx05MHlBvD82+EqabT9/Ep5JlcWUORXDoOtcA=;
+        b=kVDrc5St5JSz4FAnlZp65TD/rQ0+6OesSSexsMzP2ukh15yfJf+BUU8I4HADN4GIUH
+         nbKePVGbAu885rbNzsoHfoON5PJY2j3Mb4ZFIjSOMFihsu4LYIYbI4kfPZIQ9QV8Ocff
+         VkXofrr8LJRyK0QFGbZvRLVIGSAVsctOgwzojaqDX+3SJLp+9x2ckTLqa7FV3uWoNq19
+         zIv2Wz13lK+WA0jPub5992KOaAxkwqU9O8PUfGpI/vsYM+lmoYXjEdTqQ27R7NSVvtWo
+         G12bPUOBn4cpAa/Bzd5MPzNXNyZa50aNmADa0znK8Q4ynBMefMSwhomrOFqKjqHX9+DK
+         UC1A==
+X-Gm-Message-State: AC+VfDwu4tz4gOc/lwt7Pc3S0kqH2U8zM+Id48KfwuZ/4cDTje1ITM5h
+        S1i9QTd+t1s8RXwadRgEAQ55d5j0AU7HmI5M1+lhZaRZ9ba/qAkOf/q1xsP/
+X-Google-Smtp-Source: ACHHUZ5fZH5sQTSF9kSLjomYFKmTXdEya8wfytEsAnCND0kXRN3jlhDQ+LjZOBfSPpSW+yd7TjJQPApe7tfGB7zoTK4=
+X-Received: by 2002:a17:90b:b85:b0:24b:a5b6:e866 with SMTP id
+ bd5-20020a17090b0b8500b0024ba5b6e866mr21612001pjb.24.1683793814515; Thu, 11
+ May 2023 01:30:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230504092142.4190069-1-yixuanjiang@google.com>
- <2023050644-dwarf-shabby-d44d@gregkh> <CAGJzVQGxDHa83uV0w4Q35UaGpwNhLpKzcZ5y_qsfd4ELDi+OnA@mail.gmail.com>
- <2023051045-ransack-lullaby-a127@gregkh>
-In-Reply-To: <2023051045-ransack-lullaby-a127@gregkh>
-From:   Yixuan Jiang <yixuanjiang@google.com>
-Date:   Thu, 11 May 2023 16:06:42 +0800
-Message-ID: <CAGJzVQEy2E9WZOgiMtmXq0F=EEcse3YgQdrrqXhBS0dQmwtVGw@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: soc-pcm: Fix and cleanup DPCM locking
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        Takashi Iwai <tiwai@suse.de>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        stable@vger.kernel.org
+References: <20230509030705.399628514@linuxfoundation.org> <20230509080658.GA152864@d6921c044a31>
+ <20230509131032.GA8@9ed91d9f7b3c> <2023050913-spearhead-angrily-fc58@gregkh>
+ <20230509145806.GA8@df3c0d7ae0b0> <2023051025-plug-willow-e278@gregkh>
+ <CAG9oJsnr55Atybm4nOQAFjXQ_TeqVG+Nz_8zqMT3ansdnEpGBQ@mail.gmail.com>
+ <2023051048-plus-mountable-6280@gregkh> <CAG9oJskrJotpyqwi6AHVMmhnFmL+Ym=xAFmL51RiZFaU78wv-A@mail.gmail.com>
+ <2023051132-dweller-upturned-b446@gregkh>
+In-Reply-To: <2023051132-dweller-upturned-b446@gregkh>
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+Date:   Thu, 11 May 2023 18:30:02 +1000
+Message-ID: <CAG9oJskf0fE7LiumdzD4QW8dTmGpmVyXBSyiKu_xP+s72Rw44A@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        ntfs3@lists.linux.dev, almaz.alexandrovich@paragon-software.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greg KH <gregkh@linuxfoundation.org> =E6=96=BC 2023=E5=B9=B45=E6=9C=8810=E6=
-=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=8810:40=E5=AF=AB=E9=81=93=EF=BC=
-=9A
+On Thu, 11 May 2023 at 09:00, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Wed, May 10, 2023 at 07:59:49PM +0800, Yixuan Jiang wrote:
-> > Greg KH <greg@kroah.com> =E6=96=BC 2023=E5=B9=B45=E6=9C=886=E6=97=A5 =
-=E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=881:56=E5=AF=AB=E9=81=93=EF=BC=9A
+> On Wed, May 10, 2023 at 09:58:06PM +1000, Rudi Heitbaum wrote:
+> > On Wed, 10 May 2023 at 19:09, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
 > > >
-> > > On Thu, May 04, 2023 at 05:21:42PM +0800, yixuanjiang wrote:
-> > > > From: Takashi Iwai <tiwai@suse.de>
+> > > On Wed, May 10, 2023 at 06:29:23PM +1000, Rudi Heitbaum wrote:
+> > > > On Wed, 10 May 2023 at 17:25, Greg Kroah-Hartman
+> > > > <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > On Tue, May 09, 2023 at 02:58:06PM +0000, Rudi Heitbaum wrote:
+> > > > > > On Tue, May 09, 2023 at 03:56:42PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > > On Tue, May 09, 2023 at 01:10:32PM +0000, Rudi Heitbaum wrote:
+> > > > > > > > On Tue, May 09, 2023 at 08:06:58AM +0000, Rudi Heitbaum wrote:
+> > > > > > > > > On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
+> > > > > > > > > > This is the start of the stable review cycle for the 6.3.2 release.
+> > > > > > > > > > There are 694 patches in this series, all will be posted as a response
+> > > > > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > > > > let me know.
+> > > > > > > > > >
+> > > > > > > > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
+> > > > > > > > > > Anything received after that time might be too late.
+> > > > > > > > >
+> > > > > > > > > Hi Greg,
+> > > > > > > > >
+> > > > > > > > > 6.3.2-rc2 tested.
+> > > > > > > >
+> > > > > > > > Hi Greg,
+> > > > > > > >
+> > > > > > > > Further testing and have seen ntfs3: NULL pointer dereference with ntfs_lookup errors
+> > > > > > > > with 6.3.2-rc2 (I have not seen this error before.) No other errors in the logs.
+> > > > > > >
+> > > > > > > Can you reproduce this without the extern, gpl-violation module loaded?
+> > > > > > >
+> > > > > > > thanks,
+> > > > > > >
+> > > > > > > greg k-h
+> > > > > >
+> > > > > > Hi Greg,
+> > > > > >
+> > > > > > I dropped the bcm_sta and recompiled and commented out the i915.guc=3
+> > > > > > and was able to reproduce.
+> > > > > >
+> > > > > > [   84.745080] BUG: kernel NULL pointer dereference, address: 0000000000000020
+> > > > > > [   84.746239] #PF: supervisor read access in kernel mode
+> > > > > > [   84.747599] #PF: error_code(0x0000) - not-present page
+> > > > > > [   84.748929] PGD 0 P4D 0
+> > > > > > [   84.750240] Oops: 0000 [#1] SMP NOPTI
+> > > > > > [   84.751575] CPU: 2 PID: 3176 Comm: .NET ThreadPool Not tainted 6.3.2-rc2 #1
+> > > > > > [   84.752998] Hardware name: Intel(R) Client Systems NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
+> > > > > > [   84.754474] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+> > > > >
+> > > > > And do you get this same crash on ntfs3 on 6.4-rc1?  Is this a new
+> > > > > regression, or does it also show up on 6.3.1?
 > > > >
-> > > > The existing locking for DPCM has several issues
-> > > > a) a confusing mix of card->mutex and card->pcm_mutex.
-> > > > b) a dpcm_lock spinlock added inconsistently and on paths that coul=
-d
-> > > > be recursively taken. The use of irqsave/irqrestore was also overki=
-ll.
+> > > > Tested with 6.3.1 during the day today. No errors, and had been
+> > > > running 6.3.1 with no issue. Retested with 6.3.2-rc2 and problem
+> > > > immediately evident. So yes - I believe a regression.
 > > > >
-> > > > The suggested model is:
+> > > > I have built and am now testing 6.4.0-rc1 this evening - no errors so far.
 > > > >
-> > > > 1) The pcm_mutex is the top-most protection of BE links in the FE. =
-The
-> > > > pcm_mutex is applied always on either the top PCM callbacks or the
-> > > > external call from DAPM, not taken in the internal functions.
+> > > > [    0.000000] Linux version 6.4.0-rc1 (docker@1ccd349e2545)
+> > > > (x86_64-libreelec-linux-gnu-gcc-13.1.0 (GCC) 13.1.0, GNU ld (GNU
+> > > > Binutils) 2.40) #1 SMP Wed May 10 07:51:37 UTC 2023
 > > > >
-> > > > 2) the FE stream lock is taken in higher levels before invoking
-> > > > dpcm_be_dai_trigger()
+> > > > > And ntfs, ick, why?  And .NET?  What a combination...
 > > > >
-> > > > 3) when adding and deleting a BE, both the pcm_mutex and FE stream
-> > > > lock are taken.
-> > > >
-> > > > Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> > > > [clarification of commit message by plbossart]
-> > > > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.int=
-el.com>
-> > > > Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-> > > > Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-> > > > Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> > > > Link: https://lore.kernel.org/r/20211207173745.15850-4-pierre-louis=
-.bossart@linux.intel.com
-> > > > Cc: stable@vger.kernel.org # 5.15.x
-> > > > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > > > ---
+> > > > Joys of media players. Test device gets to test exfat, ntfs3, .NET,
+> > > > and throw in a compile host/GHA runner to put it through paces.
 > > >
-> > > What is the git commit id of this patch in Linus's tree?
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
+> > > Yeah, this should work.  Thanks for verifying this works on other
+> > > releases.  Any chance you can do 'git bisect' to track down the
+> > > offending commit?  In looking things over, I don't see anything
+> > > obvious...
 > >
 > > Hi Greg,
-> > For this patch I think it is [3/6] b7898396f4bbe160f546d0c5e9fa17cca9a7=
-d153
 > >
-> > >From https://lore.kernel.org/all/163953384515.1515253.1364147710634891=
-3835.b4-ty@kernel.org/
-> > Seems there are total 6 patches.
+> > I can confirm the offending commit in 6.3.2-rc2 is
 > >
-> > [1/6] ASoC: soc-pcm: use GFP_ATOMIC for dpcm structure
-> >       commit: d8a9c6e1f6766a16cf02b4e99a629f3c5512c183
-> > [2/6] ASoC: soc-pcm: align BE 'atomicity' with that of the FE
-> >       commit: bbf7d3b1c4f40eb02dd1dffb500ba00b0bff0303
-> > [3/6] ASoC: soc-pcm: Fix and cleanup DPCM locking
-> >       commit: b7898396f4bbe160f546d0c5e9fa17cca9a7d153
-> > [4/6] ASoC: soc-pcm: serialize BE triggers
-> >       commit: b2ae80663008a7662febe7d13f14ea1b2eb0cd51
-> > [5/6] ASoC: soc-pcm: test refcount before triggering
-> >       commit: 848aedfdc6ba25ad5652797db9266007773e44dd
-> > [6/6] ASoC: soc-pcm: fix BE handling of PAUSE_RELEASE
-> >       commit: 3aa1e96a2b95e2ece198f8dd01e96818971b84df
-> >
-> > These 6 patches could directly cherry-pick to in 5.15 without conflict.
+> > bf11fd528a97 fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
 >
-> Then please submit them for stable inclusion after you have tested that
-> they all work properly.  But first, what bug is actually needed to be
-> fixed here?  What is not working that this patch series fixes?
+> Thanks!  Odd that this didn't show up for you on the other stable -rc
+> releases, as that commit is also in those trees.
 >
-> thanks,
->
-> greg k-h
+> I'll go revert this for now and ask the maintainer to send a fixed
+> version.
 
 Hi Greg,
 
-The bug is, in 5.15
-It will always deadlock after stop compress playback.
+I have run 6.1.28-rc2 today, and was able to trigger the error. So
+definitely bad in both 6.3 and 6.1.
 
-The patch A
-  ASoC: soc-compress: Reposition and add pcm_mutex commit:
-aa9ff6a4955fdba02b54fbc4386db876603703b7
-From patch A comment it is about to fix the issue by adding lock hold
-becasue patch B will check if lock is held.
+[13812.020209] BUG: kernel NULL pointer dereference, address: 0000000000000020
+[13812.021322] #PF: supervisor read access in kernel mode
+[13812.022346] #PF: error_code(0x0000) - not-present page
+[13812.023591] PGD 0 P4D 0
+[13812.024876] Oops: 0000 [#1] SMP NOPTI
+[13812.026088] CPU: 5 PID: 20386 Comm: .NET ThreadPool Not tainted 6.1.28-rc2 #1
+[13812.027336] Hardware name: Intel(R) Client Systems
+NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
+[13812.028593] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
+[13812.029827] Code: 00 00 00 49 89 c4 e8 19 47 fe ff 85 c0 79 3a 48
+63 d8 48 8b 3d 4b 1d 77 cd 4c 89 e6 e8 33 25 d1 c3 48 81 fb 00 f0 ff
+ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 88 a5 d5 c3 5b 41
+5c 41
+[13812.031149] RSP: 0018:ffff91f40537bbc8 EFLAGS: 00010207
+[13812.032408] RAX: ffff8a844946a001 RBX: 0000000000000000 RCX: 00000000000042f7
+[13812.033650] RDX: 00000000000042f6 RSI: fffff40a00000000 RDI: 0000000000030ed0
+[13812.034869] RBP: ffff91f40537bbe8 R08: ffff8a844946c01e R09: ffff8a8474d0387e
+[13812.036138] R10: ffff8a845a900000 R11: 0000000000000017 R12: ffff8a844946c000
+[13812.037372] R13: ffff8a84db3fd2c0 R14: ffff8a84b44a0470 R15: ffff8a84b44a0548
+[13812.039002] FS:  00007f437e7fc6c0(0000) GS:ffff8a8b77740000(0000)
+knlGS:0000000000000000
+[13812.040509] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[13812.041741] CR2: 0000000000000020 CR3: 000000017835e006 CR4: 0000000000f70ea0
+[13812.042986] PKRU: 55555554
+[13812.044227] Call Trace:
+[13812.045464]  <TASK>
+[13812.046708]  __lookup_slow+0x81/0x130
+[13812.047939]  walk_component+0x10b/0x180
+[13812.049169]  path_lookupat+0x6a/0x1a0
+[13812.050388]  filename_lookup+0xd0/0x190
+[13812.051612]  vfs_statx+0x84/0x150
+[13812.052838]  ? getname_flags+0x54/0x1d0
+[13812.054062]  vfs_fstatat+0x5c/0x80
+[13812.055284]  __do_sys_newlstat+0x37/0x70
+[13812.056580]  ? trace_hardirqs_on+0x3a/0xe0
+[13812.058429]  __x64_sys_newlstat+0x1a/0x20
+[13812.059878]  do_syscall_64+0x3c/0x90
+[13812.061109]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[13812.062369] RIP: 0033:0x7f447ea17184
+[13812.063598] Code: 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00
+00 00 0f 1f 40 00 89 f8 48 89 f7 48 89 d6 83 f8 01 77 2b b8 06 00 00
+00 0f 05 <48> 3d 00 f0 ff ff 77 04 c3 0f 1f 00 48 8b 15 61 cc 0b 00 f7
+d8 64
+[13812.064927] RSP: 002b:00007f437e7fa098 EFLAGS: 00000246 ORIG_RAX:
+0000000000000006
+[13812.066267] RAX: ffffffffffffffda RBX: 00007f43cf45a870 RCX: 00007f447ea17184
+[13812.067601] RDX: 00007f437e7fa0a0 RSI: 00007f437e7fa0a0 RDI: 00007f437e7fa210
+[13812.068940] RBP: 00007f437e7fa1f0 R08: 00007f437e7fa320 R09: 000000000000002d
+[13812.070276] R10: 00007f44051a15e8 R11: 0000000000000246 R12: 00007f43cc018408
+[13812.071616] R13: 00007f437e7fa210 R14: 00007f43cf45a870 R15: 000000000000002d
+[13812.072960]  </TASK>
+[13812.074295] Modules linked in: rfcomm xt_nat xt_tcpudp veth
+xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat
+nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype
+iptable_filter ip_tables x_tables br_netfilter bridge stp llc overlay
+8021q ntfs3 bnep btusb btrtl btbcm btintel btmtk bluetooth
+ecdh_generic ecc exfat snd_hda_codec_hdmi snd_hda_codec_realtek
+snd_hda_codec_generic ledtrig_audio snd_hda_intel snd_hda_codec
+iwlwifi mei_hdcp snd_hwdep tpm_tis mei_pxp x86_pkg_temp_thermal
+snd_hda_core tpm_tis_core cfg80211 intel_rapl_msr mei_me
+intel_powerclamp snd_intel_dspcfg intel_rapl_common mei rfkill tpm_crb
+idma64 tpm rng_core pkcs8_key_parser fuse dmi_sysfs
+[13812.079600] CR2: 0000000000000020
+[13812.081160] ---[ end trace 0000000000000000 ]---
 
-The patch B
-  ASoC: soc-pcm: Fix and cleanup DPCM locking commit:
-b7898396f4bbe160f546d0c5e9fa17cca9a7d153
-Patch B remove lock aquire then check if lock is already held.
-
-In 5.15 it only include patch A then cause the deadlock.
-
-[  198.670679][    T1] Call trace:
-[  198.670690][    T1]  __switch_to+0x174/0x328
-[  198.670744][    T1]  __schedule+0x5d0/0xaec
-[  198.670784][    T1]  schedule+0xc8/0x134
-[  198.670803][    T1]  schedule_preempt_disabled+0x30/0x50
-[  198.670820][    T1]  __mutex_lock+0x39c/0xa70
-[  198.670845][    T1]  __mutex_lock_slowpath+0x1c/0x2c
-[  198.670862][    T1]  mutex_lock+0x4c/0x104
-[  198.670878][    T1]  soc_pcm_hw_clean+0x38/0x16c            <--
-Patch B will remove lock aquire, if no patch B, it will aquire lock
-again then cause AA deadlock
-[  198.670958][    T1]  dpcm_be_dai_hw_free+0x17c/0x1b4
-[  198.670983][    T1]  soc_compr_free_fe+0x84/0x158             <--
-Patch A aquire the lock
-[  198.671025][    T1]  snd_compr_free+0xac/0x148
-
-So is it better by revert patch A because purpose of patch A doesn't
-exist in 5.15 ?
-Or just backport full 6 patches series B to 5.15 ?
+> thanks,
+>
+> greg k-h
