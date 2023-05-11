@@ -2,139 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1256FF2E2
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 15:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 403866FF2E4
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 15:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238324AbjEKNck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 09:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47636 "EHLO
+        id S238296AbjEKNdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 09:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229815AbjEKNcF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 09:32:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF3EFDC7E
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 06:31:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683811870;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UNjSXYigSjFKy+QUeKCUEASx47pCMdyUi/tX4R1i/fw=;
-        b=cwgFq8N8ee7zoxigcCVWoU6Cvrgyk0OTRm0acYZaE3CXTkVNB5zSldidznSIPn/G7otrc+
-        zGTuK/QoD4FOSDavNcV7XIHVl4EgJSLvSjDnw+6D9d3AEGMZFEJVwxpdRim3ucJ2bsjGau
-        s1teMiKKYClB1yxR6tRFkT1Y8KhXBzo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-AWM4SUyBPAquAMK2tzhs1A-1; Thu, 11 May 2023 09:31:08 -0400
-X-MC-Unique: AWM4SUyBPAquAMK2tzhs1A-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f4ef4bf00dso2334035e9.1
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 06:31:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683811867; x=1686403867;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UNjSXYigSjFKy+QUeKCUEASx47pCMdyUi/tX4R1i/fw=;
-        b=W/x5Qa25mQjBQkffAvAH7d8XY8zPG30VIBK2kYOfVXpnLa2FBfLwsI8h7oGw4LEXwX
-         xSaQrgxGYN5XeZmZbbzbigmrVl7Se7Zd0NlzmO8DlRm+XJCVbTckStg1tZumokzNGwoQ
-         U7XVnfZhn0joWxkBmlp0IuOuwljaMoD19tku3EicmLXJCJC2uoxl+cQVjADicZLGQGtC
-         zynGlObqGzvflxxeXVfuAdjBj3s7mvFIwUS8HhdpoZkwRmVf6h1LVzCovsB4khDaBykS
-         73BG8tZz4Bi6OV5CqSukDg/I2FbxI7jrYZ/53bA+py32EvIK9NgdS1u/LKgRD5x6oU0G
-         7R2A==
-X-Gm-Message-State: AC+VfDzVxlWa7YQKPzV2B74CJczDDuzBH/NwUnSpGkNfv8x27yDAnrMi
-        y91+mutQXEnGmAQIR1pS7gaT+6EPLnfQA8RcUJrsMAsN9KoPzyFr3tEsoZIXbkAnMPIrWumFAUe
-        mVF3dc4uXbqxBgCPl
-X-Received: by 2002:a1c:f715:0:b0:3f1:661e:4686 with SMTP id v21-20020a1cf715000000b003f1661e4686mr16029363wmh.7.1683811867017;
-        Thu, 11 May 2023 06:31:07 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7L9to6DXGbiJOc7XWLzmBnCCDcfKe7PVBm5u+458DsvZQv52Cv7TLitHiLYrOTKBgMtsdHNg==
-X-Received: by 2002:a1c:f715:0:b0:3f1:661e:4686 with SMTP id v21-20020a1cf715000000b003f1661e4686mr16029337wmh.7.1683811866731;
-        Thu, 11 May 2023 06:31:06 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id c20-20020a7bc014000000b003ef64affec7sm25670321wmb.22.2023.05.11.06.31.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 May 2023 06:31:06 -0700 (PDT)
-Message-ID: <761364fc-7e21-581d-4fd4-d81cd27bd4b1@redhat.com>
-Date:   Thu, 11 May 2023 15:31:05 +0200
+        with ESMTP id S238058AbjEKNdO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 09:33:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F54210E70;
+        Thu, 11 May 2023 06:32:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8317064D69;
+        Thu, 11 May 2023 13:32:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF3AC433EF;
+        Thu, 11 May 2023 13:32:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683811927;
+        bh=oca3P+InscaRA4pHJGwip27OKZH2PogExy8mHm/WhQ0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WuFEV+jnE3lOJ1L9Y0Ct31oKVhU85Numto5xxLdt4NguDQDAXgHCFozjE1QcvOi3g
+         wBMs4JlzcSslV+20d/pwdhUPqjoMi60LdZEAa1XaNPM4b/bj3LEmlgQ41pOyLb1/N8
+         /j1Jwk7prPAdzmwHtEGQBw370/FZJlZBgAXMxM+M=
+Date:   Thu, 11 May 2023 22:32:03 +0900
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Yixuan Jiang <yixuanjiang@google.com>
+Cc:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.de>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: soc-pcm: Fix and cleanup DPCM locking
+Message-ID: <2023051151-unarmored-expansive-01bd@gregkh>
+References: <20230504092142.4190069-1-yixuanjiang@google.com>
+ <2023050644-dwarf-shabby-d44d@gregkh>
+ <CAGJzVQGxDHa83uV0w4Q35UaGpwNhLpKzcZ5y_qsfd4ELDi+OnA@mail.gmail.com>
+ <2023051045-ransack-lullaby-a127@gregkh>
+ <CAGJzVQEy2E9WZOgiMtmXq0F=EEcse3YgQdrrqXhBS0dQmwtVGw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v2] drm/mgag200: Fix gamma lut not initialized.
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        dri-devel@lists.freedesktop.org, airlied@redhat.com,
-        javierm@redhat.com, lyude@redhat.com
-Cc:     stable@vger.kernel.org, Phil Oester <kernel@linuxace.com>
-References: <20230510131034.284078-1-jfalempe@redhat.com>
- <3cdf3215-99ac-5000-1911-28639c4e6248@suse.de>
-Content-Language: en-US
-From:   Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <3cdf3215-99ac-5000-1911-28639c4e6248@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAGJzVQEy2E9WZOgiMtmXq0F=EEcse3YgQdrrqXhBS0dQmwtVGw@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/05/2023 14:26, Thomas Zimmermann wrote:
-> Hi
+On Thu, May 11, 2023 at 04:06:42PM +0800, Yixuan Jiang wrote:
+> Greg KH <gregkh@linuxfoundation.org> 於 2023年5月10日 週三 下午10:40寫道：
+> >
+> > On Wed, May 10, 2023 at 07:59:49PM +0800, Yixuan Jiang wrote:
+> > > Greg KH <greg@kroah.com> 於 2023年5月6日 週六 下午1:56寫道：
+> > > >
+> > > > On Thu, May 04, 2023 at 05:21:42PM +0800, yixuanjiang wrote:
+> > > > > From: Takashi Iwai <tiwai@suse.de>
+> > > > >
+> > > > > The existing locking for DPCM has several issues
+> > > > > a) a confusing mix of card->mutex and card->pcm_mutex.
+> > > > > b) a dpcm_lock spinlock added inconsistently and on paths that could
+> > > > > be recursively taken. The use of irqsave/irqrestore was also overkill.
+> > > > >
+> > > > > The suggested model is:
+> > > > >
+> > > > > 1) The pcm_mutex is the top-most protection of BE links in the FE. The
+> > > > > pcm_mutex is applied always on either the top PCM callbacks or the
+> > > > > external call from DAPM, not taken in the internal functions.
+> > > > >
+> > > > > 2) the FE stream lock is taken in higher levels before invoking
+> > > > > dpcm_be_dai_trigger()
+> > > > >
+> > > > > 3) when adding and deleting a BE, both the pcm_mutex and FE stream
+> > > > > lock are taken.
+> > > > >
+> > > > > Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> > > > > [clarification of commit message by plbossart]
+> > > > > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> > > > > Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+> > > > > Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+> > > > > Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+> > > > > Link: https://lore.kernel.org/r/20211207173745.15850-4-pierre-louis.bossart@linux.intel.com
+> > > > > Cc: stable@vger.kernel.org # 5.15.x
+> > > > > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > > > > ---
+> > > >
+> > > > What is the git commit id of this patch in Linus's tree?
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > > Hi Greg,
+> > > For this patch I think it is [3/6] b7898396f4bbe160f546d0c5e9fa17cca9a7d153
+> > >
+> > > >From https://lore.kernel.org/all/163953384515.1515253.13641477106348913835.b4-ty@kernel.org/
+> > > Seems there are total 6 patches.
+> > >
+> > > [1/6] ASoC: soc-pcm: use GFP_ATOMIC for dpcm structure
+> > >       commit: d8a9c6e1f6766a16cf02b4e99a629f3c5512c183
+> > > [2/6] ASoC: soc-pcm: align BE 'atomicity' with that of the FE
+> > >       commit: bbf7d3b1c4f40eb02dd1dffb500ba00b0bff0303
+> > > [3/6] ASoC: soc-pcm: Fix and cleanup DPCM locking
+> > >       commit: b7898396f4bbe160f546d0c5e9fa17cca9a7d153
+> > > [4/6] ASoC: soc-pcm: serialize BE triggers
+> > >       commit: b2ae80663008a7662febe7d13f14ea1b2eb0cd51
+> > > [5/6] ASoC: soc-pcm: test refcount before triggering
+> > >       commit: 848aedfdc6ba25ad5652797db9266007773e44dd
+> > > [6/6] ASoC: soc-pcm: fix BE handling of PAUSE_RELEASE
+> > >       commit: 3aa1e96a2b95e2ece198f8dd01e96818971b84df
+> > >
+> > > These 6 patches could directly cherry-pick to in 5.15 without conflict.
+> >
+> > Then please submit them for stable inclusion after you have tested that
+> > they all work properly.  But first, what bug is actually needed to be
+> > fixed here?  What is not working that this patch series fixes?
+> >
+> > thanks,
+> >
+> > greg k-h
 > 
-> Am 10.05.23 um 15:10 schrieb Jocelyn Falempe:
->> When mgag200 switched from simple KMS to regular atomic helpers,
->> the initialization of the gamma settings was lost.
->> This leads to a black screen, if the bios/uefi doesn't use the same
->> pixel color depth.
->>
->> v2: rebase on top of drm-misc-fixes, and add Cc stable tag.
+> Hi Greg,
 > 
-> Looks good. Please add the patch to drm-misc-fixes.
-Applied to drm-misc-fixes
+> The bug is, in 5.15
+> It will always deadlock after stop compress playback.
+> 
+> The patch A
+>   ASoC: soc-compress: Reposition and add pcm_mutex commit:
+> aa9ff6a4955fdba02b54fbc4386db876603703b7
+> >From patch A comment it is about to fix the issue by adding lock hold
+> becasue patch B will check if lock is held.
+> 
+> The patch B
+>   ASoC: soc-pcm: Fix and cleanup DPCM locking commit:
+> b7898396f4bbe160f546d0c5e9fa17cca9a7d153
+> Patch B remove lock aquire then check if lock is already held.
+> 
+> In 5.15 it only include patch A then cause the deadlock.
+> 
+> [  198.670679][    T1] Call trace:
+> [  198.670690][    T1]  __switch_to+0x174/0x328
+> [  198.670744][    T1]  __schedule+0x5d0/0xaec
+> [  198.670784][    T1]  schedule+0xc8/0x134
+> [  198.670803][    T1]  schedule_preempt_disabled+0x30/0x50
+> [  198.670820][    T1]  __mutex_lock+0x39c/0xa70
+> [  198.670845][    T1]  __mutex_lock_slowpath+0x1c/0x2c
+> [  198.670862][    T1]  mutex_lock+0x4c/0x104
+> [  198.670878][    T1]  soc_pcm_hw_clean+0x38/0x16c            <--
+> Patch B will remove lock aquire, if no patch B, it will aquire lock
+> again then cause AA deadlock
+> [  198.670958][    T1]  dpcm_be_dai_hw_free+0x17c/0x1b4
+> [  198.670983][    T1]  soc_compr_free_fe+0x84/0x158             <--
+> Patch A aquire the lock
+> [  198.671025][    T1]  snd_compr_free+0xac/0x148
+> 
+> So is it better by revert patch A because purpose of patch A doesn't
+> exist in 5.15 ?
+> Or just backport full 6 patches series B to 5.15 ?
 
-Thanks
+A full backport is always best.
 
--- 
+thanks,
 
-Jocelyn
-> 
-> Best regards
-> Thomas
-> 
->>
->> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2171155
->> Fixes: 1baf9127c482 ("drm/mgag200: Replace simple-KMS with regular 
->> atomic helpers")
->> Cc: <stable@vger.kernel.org>
->> Tested-by: Phil Oester <kernel@linuxace.com>
->> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
->> ---
->>   drivers/gpu/drm/mgag200/mgag200_mode.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c 
->> b/drivers/gpu/drm/mgag200/mgag200_mode.c
->> index 0a5aaf78172a..576c4c838a33 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
->> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
->> @@ -640,6 +640,11 @@ void mgag200_crtc_helper_atomic_enable(struct 
->> drm_crtc *crtc, struct drm_atomic_
->>       if (funcs->pixpllc_atomic_update)
->>           funcs->pixpllc_atomic_update(crtc, old_state);
->> +    if (crtc_state->gamma_lut)
->> +        mgag200_crtc_set_gamma(mdev, format, 
->> crtc_state->gamma_lut->data);
->> +    else
->> +        mgag200_crtc_set_gamma_linear(mdev, format);
->> +
->>       mgag200_enable_display(mdev);
->>       if (funcs->enable_vidrst)
->>
->> base-commit: a26cc2934331b57b5a7164bff344f0a2ec245fc0
-> 
-
+greg k-h
