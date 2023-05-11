@@ -2,148 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D913A6FF12D
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4AE6FF17B
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237986AbjEKMKf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 08:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48592 "EHLO
+        id S236865AbjEKM1D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 08:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238007AbjEKMKX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:10:23 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC677D82
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:09:48 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-b9963a72fd9so18552750276.0
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683806984; x=1686398984;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFFdKRwDpDILumhyLuLJOTrk05DbXLc6wTGy62C/3Mw=;
-        b=wS6sSkP9YPrEQci5WRw3K0xUtOK5+0/bwAebx2k91pqCIj0EfYjinxZrDO4ajIZjGM
-         93t//KRpj0A5F6J4KjOlKV1y+Lm/ePEWG+KQn/cR4aakq3zES0kTJ5K9FNJ38y837AN0
-         zBdhJGmHaQva80CE20d2I7pxXjrPjUcICIIMWKC+WwF8uB15gtNLv/4ImBvcL36KXmeB
-         lqIS0virSRAaqSbuFnvycK3dKd0Kl7oqzEVb5PehKYMtdlLdGF42nsRcfsVhiU5qg+8j
-         RWNR0gNjin97dZ3upG8fYJP+RPue2YJLbFd3/VCnCJqCjLsUh1T1O2t+pQCpgrkHV8vM
-         z1/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683806984; x=1686398984;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFFdKRwDpDILumhyLuLJOTrk05DbXLc6wTGy62C/3Mw=;
-        b=Y+8aPRXHFcrM0TWZIXyG7rgc0NvJf49oP540XJmBKF2N6QBQhzaB+VLW253T3KbagE
-         YT9/bOpFcZuObicPx8SdHF6/EgequE2p2vWH/U0WCuAfshvoL49leRWZdv7rjhVCzSFD
-         Sxqx5kRYZG0U71wAt/4ohymZYMpHluw/mFBJnM/4ofvo632em4F1AyeXaWpLzdQ1FP2R
-         +cMn47bQzLM2YVJMX0e0gbeY/1MXAvvmv3FTZD2chqcEBn0mkkjPvBzYoqvhLmbZS206
-         T/h8k1+f+r1fU84GBelAdSEzRavptzpyo2L8llueLNHTieoDnoixv87OW75hXkzz8tLw
-         m++A==
-X-Gm-Message-State: AC+VfDw4vPzYayUWcAiOpGs7t+ENngi9g+TkD8R9YaOtK5kk3jLxOFa8
-        DQwA1ZTP4zKK+j6gnmdABttZag8wFWPIECcGbQ==
-X-Google-Smtp-Source: ACHHUZ6WNFGb++Bi1s3+Qljz7xPC8nDjrsTQIYeDWQxaajEyJ9TDJ4kJ1ngdN74pybDKr5utVuVJdeHDE4xVvgjKyw==
-X-Received: from yixuanjiang.ntc.corp.google.com ([2401:fa00:fc:202:6c9a:64c9:7e44:6b1d])
- (user=yixuanjiang job=sendgmr) by 2002:a25:6648:0:b0:b68:7a4a:5258 with SMTP
- id z8-20020a256648000000b00b687a4a5258mr12799183ybm.3.1683806984600; Thu, 11
- May 2023 05:09:44 -0700 (PDT)
-Date:   Thu, 11 May 2023 20:08:41 +0800
-In-Reply-To: <20230511120841.2096524-1-yixuanjiang@google.com>
-Mime-Version: 1.0
-References: <20230511120841.2096524-1-yixuanjiang@google.com>
-X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
-Message-ID: <20230511120841.2096524-7-yixuanjiang@google.com>
-Subject: [PATCH 6/6] ASoC: soc-pcm: fix BE handling of PAUSE_RELEASE
-From:   yixuanjiang <yixuanjiang@google.com>
-To:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org
-Cc:     linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Bard Liao <bard.liao@intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Yixuan Jiang <yixuanjiang@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S237327AbjEKM1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:27:02 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0537E1FED
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:27:00 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id A415821BEE;
+        Thu, 11 May 2023 12:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1683808019; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Xy1l2ss8E338uG329wii5yR77yH6SJsF4p9AZPUdgMY=;
+        b=mla5Tjn/xcmFfQojDy2kLlbUDzspUu5niuFvnIaQKIkFchSoAhcp5iz7hkkLldYKsApK8F
+        L7RbD6L4K5MBDHE5vF5EG6FPJrdQDJRHixO6HGmgu0Zm1osnZpsGhM8wXeeOpi6Jls+H4t
+        fDwflVN7Dd3Zjek1ZZDx5tT1kfD/ikY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1683808019;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Xy1l2ss8E338uG329wii5yR77yH6SJsF4p9AZPUdgMY=;
+        b=VBi0nRUFr4+1/cl0qWjrde72nDuaI1P/c2aLYox2QVwV95qQgQAwqL7NlKoLCy3bOAmAOA
+        ZBL/8Kn0IuYb2PCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 70914134B2;
+        Thu, 11 May 2023 12:26:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id f4yJGhPfXGStAwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Thu, 11 May 2023 12:26:59 +0000
+Message-ID: <3cdf3215-99ac-5000-1911-28639c4e6248@suse.de>
+Date:   Thu, 11 May 2023 14:26:58 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v2] drm/mgag200: Fix gamma lut not initialized.
+Content-Language: en-US
+To:     Jocelyn Falempe <jfalempe@redhat.com>,
+        dri-devel@lists.freedesktop.org, airlied@redhat.com,
+        javierm@redhat.com, lyude@redhat.com
+Cc:     stable@vger.kernel.org, Phil Oester <kernel@linuxace.com>
+References: <20230510131034.284078-1-jfalempe@redhat.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230510131034.284078-1-jfalempe@redhat.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------ep00Q1gUqxYrBb4sUMKF3PpG"
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------ep00Q1gUqxYrBb4sUMKF3PpG
+Content-Type: multipart/mixed; boundary="------------0Gsj77Aht7BoEG0XSjodIJB6";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Jocelyn Falempe <jfalempe@redhat.com>, dri-devel@lists.freedesktop.org,
+ airlied@redhat.com, javierm@redhat.com, lyude@redhat.com
+Cc: stable@vger.kernel.org, Phil Oester <kernel@linuxace.com>
+Message-ID: <3cdf3215-99ac-5000-1911-28639c4e6248@suse.de>
+Subject: Re: [PATCH v2] drm/mgag200: Fix gamma lut not initialized.
+References: <20230510131034.284078-1-jfalempe@redhat.com>
+In-Reply-To: <20230510131034.284078-1-jfalempe@redhat.com>
 
-[ Upstream commit 3aa1e96a2b95e2ece198f8dd01e96818971b84df ]
+--------------0Gsj77Aht7BoEG0XSjodIJB6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-A BE connected to more than one FE, e.g. in a mixer case, can go
-through the following transitions.
+SGkNCg0KQW0gMTAuMDUuMjMgdW0gMTU6MTAgc2NocmllYiBKb2NlbHluIEZhbGVtcGU6DQo+
+IFdoZW4gbWdhZzIwMCBzd2l0Y2hlZCBmcm9tIHNpbXBsZSBLTVMgdG8gcmVndWxhciBhdG9t
+aWMgaGVscGVycywNCj4gdGhlIGluaXRpYWxpemF0aW9uIG9mIHRoZSBnYW1tYSBzZXR0aW5n
+cyB3YXMgbG9zdC4NCj4gVGhpcyBsZWFkcyB0byBhIGJsYWNrIHNjcmVlbiwgaWYgdGhlIGJp
+b3MvdWVmaSBkb2Vzbid0IHVzZSB0aGUgc2FtZQ0KPiBwaXhlbCBjb2xvciBkZXB0aC4NCj4g
+DQo+IHYyOiByZWJhc2Ugb24gdG9wIG9mIGRybS1taXNjLWZpeGVzLCBhbmQgYWRkIENjIHN0
+YWJsZSB0YWcuDQoNCkxvb2tzIGdvb2QuIFBsZWFzZSBhZGQgdGhlIHBhdGNoIHRvIGRybS1t
+aXNjLWZpeGVzLg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiBMaW5rOiBodHRw
+czovL2J1Z3ppbGxhLnJlZGhhdC5jb20vc2hvd19idWcuY2dpP2lkPTIxNzExNTUNCj4gRml4
+ZXM6IDFiYWY5MTI3YzQ4MiAoImRybS9tZ2FnMjAwOiBSZXBsYWNlIHNpbXBsZS1LTVMgd2l0
+aCByZWd1bGFyIGF0b21pYyBoZWxwZXJzIikNCj4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwu
+b3JnPg0KPiBUZXN0ZWQtYnk6IFBoaWwgT2VzdGVyIDxrZXJuZWxAbGludXhhY2UuY29tPg0K
+PiBSZXZpZXdlZC1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+
+DQo+IFNpZ25lZC1vZmYtYnk6IEpvY2VseW4gRmFsZW1wZSA8amZhbGVtcGVAcmVkaGF0LmNv
+bT4NCj4gLS0tDQo+ICAgZHJpdmVycy9ncHUvZHJtL21nYWcyMDAvbWdhZzIwMF9tb2RlLmMg
+fCA1ICsrKysrDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQ0KPiANCj4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9tZ2FnMjAwL21nYWcyMDBfbW9kZS5jIGIv
+ZHJpdmVycy9ncHUvZHJtL21nYWcyMDAvbWdhZzIwMF9tb2RlLmMNCj4gaW5kZXggMGE1YWFm
+NzgxNzJhLi41NzZjNGM4MzhhMzMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvZ3B1L2RybS9t
+Z2FnMjAwL21nYWcyMDBfbW9kZS5jDQo+ICsrKyBiL2RyaXZlcnMvZ3B1L2RybS9tZ2FnMjAw
+L21nYWcyMDBfbW9kZS5jDQo+IEBAIC02NDAsNiArNjQwLDExIEBAIHZvaWQgbWdhZzIwMF9j
+cnRjX2hlbHBlcl9hdG9taWNfZW5hYmxlKHN0cnVjdCBkcm1fY3J0YyAqY3J0Yywgc3RydWN0
+IGRybV9hdG9taWNfDQo+ICAgCWlmIChmdW5jcy0+cGl4cGxsY19hdG9taWNfdXBkYXRlKQ0K
+PiAgIAkJZnVuY3MtPnBpeHBsbGNfYXRvbWljX3VwZGF0ZShjcnRjLCBvbGRfc3RhdGUpOw0K
+PiAgIA0KPiArCWlmIChjcnRjX3N0YXRlLT5nYW1tYV9sdXQpDQo+ICsJCW1nYWcyMDBfY3J0
+Y19zZXRfZ2FtbWEobWRldiwgZm9ybWF0LCBjcnRjX3N0YXRlLT5nYW1tYV9sdXQtPmRhdGEp
+Ow0KPiArCWVsc2UNCj4gKwkJbWdhZzIwMF9jcnRjX3NldF9nYW1tYV9saW5lYXIobWRldiwg
+Zm9ybWF0KTsNCj4gKw0KPiAgIAltZ2FnMjAwX2VuYWJsZV9kaXNwbGF5KG1kZXYpOw0KPiAg
+IA0KPiAgIAlpZiAoZnVuY3MtPmVuYWJsZV92aWRyc3QpDQo+IA0KPiBiYXNlLWNvbW1pdDog
+YTI2Y2MyOTM0MzMxYjU3YjVhNzE2NGJmZjM0NGYwYTJlYzI0NWZjMA0KDQotLSANClRob21h
+cyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJl
+IFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVl
+cm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBN
+Y0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
 
-play FE1    -> BE state is START
-pause FE1   -> BE state is PAUSED
-play FE2    -> BE state is START
-stop FE2    -> BE state is STOP (see note [1] below)
-release FE1 -> BE state is START
-stop FE1    -> BE state is STOP
 
-play FE1    -> BE state is START
-pause FE1   -> BE state is PAUSED
-play FE2    -> BE state is START
-release FE1 -> BE state is START
-stop FE2    -> BE state is START
-stop FE1    -> BE state is STOP
+--------------0Gsj77Aht7BoEG0XSjodIJB6--
 
-play FE1    -> BE state is START
-play FE2    -> BE state is START (no change)
-pause FE1   -> BE state is START (no change)
-pause FE2   -> BE state is PAUSED
-release FE1 -> BE state is START
-release FE2 -> BE state is START (no change)
-stop FE1    -> BE state is START (no change)
-stop FE2    -> BE state is STOP
+--------------ep00Q1gUqxYrBb4sUMKF3PpG
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-The existing code for PAUSE_RELEASE only allows for the case where the
-BE is paused, which clearly would not work in the sequences above.
+-----BEGIN PGP SIGNATURE-----
 
-Extend the allowed states to restart the BE when PAUSE_RELEASE is
-received, and increase the refcount if the BE is already in START.
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmRc3xIFAwAAAAAACgkQlh/E3EQov+DH
+txAAi93YTwBzlMczeRk501ES8kZbz9M923Dhu1mweDhVf1CPwsTtOLl5ETSu3kOBZNYZQwGegOPH
+GDWi0p/yGJ2SsLy1gEIlm2WA0NdQS+qf15C26Ae+O4ukHCYyS0+rydGkAD07mhcXrwJivwuFJEe8
+TFj0DL5h/POmJCkLlUyeIldS/iRqD6+7p2u/BnpJRiCDw4Br8nysEsIxHb/nv7n3brB2UFueM2R6
+vVbHfWpeM4bpzMRLVbcdbBnT84ikHnnlAuFVc3AB5vlOyQLayDw7stt8C24MlVubRSCZcqOCt8r1
+d0oTjhNNPMcbQ2HtgRgkesPhFay5hJP1Tn+GIK17KjoG2JiuRKlieDaB5mJKQrMMFAvlcxXxNXit
+IOoL7W+A7xsgXYISNDXOYxGoJoXt4I2M8dTc/sLOG2a2vtfq8HkDf1O8gNsE/WnyRYT4DMaKqKWu
+eVn9Y1eiotkoX3zqfmt32KUYAGgZMrmO2CU/ABwjGL6NHVwbb8T39CeCiMie0rmFT9QxVNXnJSy6
+JyEvtepeu/Nn5tEll28mrHb0O5E9vfhttIMu68qDu60j7pZ2WYpGpW8EXMaei6Lz0nK1+snQ9Nzh
++Y9pFjuvhByjgDEoFAcoHuBawjX2OPrSt2gc7un2gezl7aZC66UFHiOKDrA+SdQP6hmZaGb7AB0H
+dOk=
+=DBC5
+-----END PGP SIGNATURE-----
 
-[1] the existing logic does not move the BE state back to PAUSED when
-the FE2 is stopped. This patch does not change the logic; it would be
-painful to keep a history of changes on the FE side, the state machine
-is already rather complicated with transitions based on the last BE
-state and the trigger type.
-
-Reported-by: Bard Liao <bard.liao@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20211207173745.15850-7-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Fixes: aa9ff6a4955f ("ASoC: soc-compress: Reposition and add pcm_mutex")
-Signed-off-by: Yixuan Jiang <yixuanjiang@google.com>
-Cc: stable@vger.kernel.org # 5.15+
----
- sound/soc/soc-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index b6099d36518f5..6e589708b9338 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -2151,7 +2151,10 @@ int dpcm_be_dai_trigger(struct snd_soc_pcm_runtime *fe, int stream,
- 			be->dpcm[stream].state = SND_SOC_DPCM_STATE_START;
- 			break;
- 		case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
--			if ((be->dpcm[stream].state != SND_SOC_DPCM_STATE_PAUSED))
-+			if (!be->dpcm[stream].be_start &&
-+			    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_START) &&
-+			    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_STOP) &&
-+			    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_PAUSED))
- 				goto next;
- 
- 			be->dpcm[stream].be_start++;
--- 
-2.40.1.521.gf1e218fcd8-goog
-
+--------------ep00Q1gUqxYrBb4sUMKF3PpG--
