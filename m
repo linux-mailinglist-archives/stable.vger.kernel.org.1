@@ -2,203 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8016FEC04
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 08:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 366E26FED8C
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 10:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236812AbjEKG5O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 02:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
+        id S235497AbjEKIHy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 04:07:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbjEKG46 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 02:56:58 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0585FD2
-        for <stable@vger.kernel.org>; Wed, 10 May 2023 23:56:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683788189; x=1715324189;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=+hdS4csDkq7VkrhCl/EBlw9+2oXmDOYb1H9op9n551Q=;
-  b=fWcyUXTlbC9iQC5KqbS5op89goq+XHDFgxg9OiwlpPB+DsD1fHOdjaoL
-   i2qrkMAvRkhO4y1mDk73smhfdvbfV7t0/ALKrfSCMVg1V6CETsck4/GqR
-   vKAFbuhAcUKsADj7hd8p4gwDP6BpVfJX8N2X+ORs5rmT9ZB2UrqIwsC4N
-   gy/M7kE+/1KdBo+16/zrkyqrqjbufesFrXkYnn0GAj8D1c/DF9K2vsqDE
-   3exnqrSi00JM3WKrikXq909sRoUJgmTrcQs+vsudz5kuXWC8+yRvdUPF5
-   KDXk6kCcMFOtv46pYhIs9ldy3Is0/UGFMnmUumTgzXQ5MMAKNBmQrd+L+
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="413741611"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="413741611"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2023 23:56:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="843812869"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="843812869"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga001.fm.intel.com with ESMTP; 10 May 2023 23:56:15 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 10 May 2023 23:56:15 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 10 May 2023 23:56:15 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Wed, 10 May 2023 23:56:15 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.105)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Wed, 10 May 2023 23:56:14 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XGwLRbp+gnIyja/Std2Ap0s7+ABLgiWZ2ePuINU62L2skdV2Iejuv0HwtaeSvstNztSypoVj7Wzy4LEK1DVo6bgVFirsk3E9vKKCN32JnTHJEcdKwOAyxnKDs0/g4MuBHgwO9jEl7meuAhlIdrxGA1iWpF+8hQ2gdwcujDg+hgoWZ/p5PypG1g7gSESh0Slis52sAaczo707mXuMNPRwg5PH511Ak/gBgS3yum6zM7ly1f/s1V31xbvQSuyYGYZSJM9jISwyYeGrECWhFxtws3OCkE+2jAxHsCjpWiMHUQCNQnPwjhocbLrJXOC5p/JMs3eoKvcp2ZF96lNXgDpIzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+hdS4csDkq7VkrhCl/EBlw9+2oXmDOYb1H9op9n551Q=;
- b=KWxmiG8hH72hYr0vPKF9QPkH0BvKA2kR0C95qAO2lvYTGiJJ2igw1qNSEhAOWk51hZ73yr7dgtWgbHPM3dsjFtw4dUzkxN9f6h64GrNUa9lHMJl7sNbE8JSUw/19oLfExs/5B8iu1LI7jSC6sr0FZ8Ocit1mL1hcIn8hL335wczLrM826+XYn05k8iX79mL8a840YCn00ltWXn97jucSDePMTmqbl/kST1GLihHoMpYHcO8cbqg2TJPOWEqRf1prSLApxxbFcfLM4Z85fBg0Ev/BNWzPTmP/jhE1Lgpqs02TZ59+nFXgyAouEbuquUGtneonNqxVy7Yx+ccIE2wOwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH0PR11MB5830.namprd11.prod.outlook.com (2603:10b6:510:129::20)
- by PH0PR11MB7167.namprd11.prod.outlook.com (2603:10b6:510:1e9::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.33; Thu, 11 May
- 2023 06:56:05 +0000
-Received: from PH0PR11MB5830.namprd11.prod.outlook.com
- ([fe80::1c4e:86ae:810d:1fee]) by PH0PR11MB5830.namprd11.prod.outlook.com
- ([fe80::1c4e:86ae:810d:1fee%3]) with mapi id 15.20.6363.030; Thu, 11 May 2023
- 06:56:05 +0000
-From:   "Song, Yoong Siang" <yoong.siang.song@intel.com>
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Florian Bezdeka <florian@bezdeka.de>
-CC:     "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-        "Brouer, Jesper" <brouer@redhat.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "Keller, Jacob E" <jacob.e.keller@intel.com>,
-        "leonro@nvidia.com" <leonro@nvidia.com>,
-        "naamax.meir@linux.intel.com" <naamax.meir@linux.intel.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: FAILED: patch "[PATCH] igc: read before write to SRRCTL register"
- failed to apply to 6.1-stable tree
-Thread-Topic: FAILED: patch "[PATCH] igc: read before write to SRRCTL
- register" failed to apply to 6.1-stable tree
-Thread-Index: AQHZgK90R4Iqi5B9REqNJLUBAFYwIa9UFJsAgAAMRYCAAITTUA==
-Date:   Thu, 11 May 2023 06:56:04 +0000
-Message-ID: <PH0PR11MB58305CBB67488FC9D6945208D8749@PH0PR11MB5830.namprd11.prod.outlook.com>
-References: <2023050749-deskwork-snowboard-82cf@gregkh>
- <46a3afc2-4b15-cb2d-b257-15e8928b8eec@bezdeka.de>
- <2023051115-width-squeeze-319b@gregkh>
-In-Reply-To: <2023051115-width-squeeze-319b@gregkh>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR11MB5830:EE_|PH0PR11MB7167:EE_
-x-ms-office365-filtering-correlation-id: 3aeaa875-3eee-40d2-c845-08db51ecca2d
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: as/iojgSh1xhKwI5iaCbRevwASiWko+XuRVaBKRirA+/5CK2Hq68FAmJY/ch6pQ2x3+aLbEmtJFYLwV8s5s/ayuDDML33/8vOKkdxPlidtfbNOmFUGvrlIXYYeSogX3NWlthLYfoPTrVBaAIqm/CToR4l1G64qCw5NGCXdQVOG1C7JiOaqs2Is9ngG5pigi5E/PQROZoTUCaKPgwRfBqlfbJwOgBux/CrUtZ4n9cWzreXOq+yPS8LiUwkmaQMzIi5RjJ8kVNdv8uf/qUUVj4N4PsQozPs2qt8UzrqyZrLFQhx1TC2ukXlZdIOZsqcIw+MDpbWKs+2m/Q5kFKo6dv9ryMGrzGwUkkRO6oIYKcExo8Xb4sLoEv017pKb9jCCr3Dqk2GT0Tevt52zBOTCnacyNWnnj2/Q+vVPo6ungbD/oy9MExORXlrVcL2hS67GnOUEsKS1UxnzmFYtQ7BunvnUmWM/hsf3Q5d7RwpBxKVA4FckTVIIUYMbGKrKFhzpLpDqWlfzd31F6tTsd/wUKSJzxOzeV9RsS1wzIvmH7cMLqAgTcng1shOZUq3gsk7Meh7vuMP61nQBwNdBcavMDeX4uwRzHn222qFcUGKhihJNI=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5830.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(366004)(39860400002)(396003)(346002)(376002)(451199021)(7696005)(76116006)(71200400001)(966005)(478600001)(110136005)(54906003)(316002)(66556008)(2906002)(33656002)(41300700001)(66446008)(55016003)(4326008)(66946007)(64756008)(8936002)(66476007)(52536014)(8676002)(82960400001)(122000001)(38100700002)(86362001)(53546011)(55236004)(38070700005)(9686003)(6506007)(26005)(186003)(5660300002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?iBH4K1r/gbtXADFxnl9RSEpgttwnurLGhTXr59ZhFy8y+hd52Qw8UP/lNq4P?=
- =?us-ascii?Q?nxQBW5LjwfivBBdIrERQ9ZpoLYFwrSW015ANh2MPy9GcsXUHDBrgVa1dZGXZ?=
- =?us-ascii?Q?xM0GfWMd3c022MjHEMJLdH8aWwThSpTAMAZSf2nvxakRMmyvXuoQDHwjpFz8?=
- =?us-ascii?Q?Kh+rXtc6jWtTXUwc5GIN6uL2F02gcMdga2n0/xlqvcL4/JOCYE5l8jx9h/Di?=
- =?us-ascii?Q?4bdgspnZrZbkGrfycSr7g63v4vVQC3d/0wa5KSGZ6gDrWwGuwFE7gy7Qr1ZD?=
- =?us-ascii?Q?kfWD+uOAUk+7l+VCAGa1BeRVQkW03GnH6iJidDp0oQ5VG9Dk1P2WY+SBNO5P?=
- =?us-ascii?Q?PBPrnXqYHBHIP8L+vPZr3c9LN9Z0OZUCXnfX3r34Df4zp3FoNUoknZH2Dncq?=
- =?us-ascii?Q?xg1w3gUOZUWbvJeHjQw3BqqL2/e/QLjKcvKcRpXjjsWfwfnFoPUUwfb/GI0O?=
- =?us-ascii?Q?91qGTz5DK7hVnQ3mzM94AjRZT7jHfuHxhYBx9FquEvGf2m4RohSQsgeQoPLW?=
- =?us-ascii?Q?NrcKNwcZYGLY2t9pvtluYd99hmi5NhxArPOCXJd6o6ieOpxxZiXeZCJlyR06?=
- =?us-ascii?Q?VhdcCBoMyoqf2Pg+FZLRWM9qDPLR66dvedqNELAuF5ZlJmZPVMo8oJ6CIdSm?=
- =?us-ascii?Q?1XmqSXDm5aaDifJy5tOpjGihKLy3B3ogwmBye2VStHLnwUWJGdSY49uhWB7S?=
- =?us-ascii?Q?nHjgru3z7udoqFkMJG1GbFGVJKxGKOrtTFy4bkWTzCy53BeIIyV2IM9LBpkp?=
- =?us-ascii?Q?XAFDqJBzyWn5cPpc7PM7cqgg6+CbCnzNPX6jh8UOuyX7iMpefcr2whMvUpvI?=
- =?us-ascii?Q?Crd9CTIeZZmeY3Y19VaUXzWKOiVWgA1Hwq7hnSMCLSwqNwiC/L2xKzYBdEuF?=
- =?us-ascii?Q?gki/YxGvBHB5P6xcXLgjxK/Iuj1stjefoizFXqyoBtVWN53M6odTPvnQzANv?=
- =?us-ascii?Q?HQWqOb6qe/vkNLgDf4uwzwcejY0eij79AmzODL4l/shywoldRYrAvTUU+euX?=
- =?us-ascii?Q?f8VSd0xPlIr8YDV2ZZlJ9jOpYuTTycREgvTyXAxOSVCzP1mhNS+iCmcoP5Oi?=
- =?us-ascii?Q?yQPKvctUHBvQq1Zt/O1rEqoBSUOtyE3mxMV3iObj+1SlVUtB2RPYcwtqKb/m?=
- =?us-ascii?Q?ZC0NhzZYEc2cj5aVJvvF5D/TJDTy0P8dmGxEH2mVLU0Rgdv9GowJsTA1ZQ3B?=
- =?us-ascii?Q?doWpjH3SYVg1b+NNPyyN5r63JCmTQ36N4AfGi4Y+qD006LQAuhAM/utj+TDJ?=
- =?us-ascii?Q?kx8gUn8I/dsA/4JhHNAuhJThUS1JCHHwAsckfKk9giZcp/uSwbJBozPVmgCo?=
- =?us-ascii?Q?NIjk2tJwKzBf3jo+d7VqZBtiZbc3iycxIvbkiEsyhjTPl27YpxZdWaGudoD8?=
- =?us-ascii?Q?vdUhG6GUfyjrmeiWC1sjJk6eHyu4sgyP2VMnNiNpZu0mzKIKpe7NeLQIJPPc?=
- =?us-ascii?Q?HURLemN3I+wyKGbN4UTFEa51X0Lt/lhUBdF3//5sHLplbIvkXPlSN3flJ753?=
- =?us-ascii?Q?ESxXgbM4YQAb6ZrdaLw47j/7wwpl/JwPgaaMD1gJI6ddO+3lh9JYrLUwj+9H?=
- =?us-ascii?Q?GFuuelFyfxcXx9We5cDo8SzYRBFM8woOPnGeirxBEfrMFRh1S2L43RZFQm3y?=
- =?us-ascii?Q?mg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S235696AbjEKIHc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 04:07:32 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E60493E2
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:06:56 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-50bf7bb76d0so21007a12.0
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683792414; x=1686384414;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KljiQtSFqo+YtWAuOB2h9MgfsMKO5eDxysmOsAT/+yw=;
+        b=PHg2bnJhagsGAiFrglfHm2V7DArMp4AhZIz75pfeKg5hc+suQNxDqTW9aBWmE/t6hg
+         3rSf8UPSojB2gZKxGqG0/UowHOztzw5p5lAAZN2Vf1+yYAvtQXP3WQwlktpGpRAGhsul
+         76cey6/H6ww4hompKMHNsShE7/U1XoH7zaojTGiDwydB9LaW0aT7/i8vC0qUT8y86Dt9
+         JfB7dNFSVg2UZLT7eIRIS36WtPlTHetOw3MQyJfJk3tuRS2EvSoKDQXZrkS+IWzOvqzy
+         7r8ipLmCkEC7Puc12VedDlEC2mtTOCK9n6IlSQ+mCAvCUGx1glZoNdF46C3J6OtNfh4E
+         UINA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683792414; x=1686384414;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KljiQtSFqo+YtWAuOB2h9MgfsMKO5eDxysmOsAT/+yw=;
+        b=e1aT0bmtWXM1+7lh5Q21A2PDErOL3L+FS8TS+pmTlCTZYzXE6zUm73pfj/UBTLTWfO
+         hAACDS2yRpQ/T/fYGCuW9Q86NnTc2tq3xJlenX7sjBugB5iAgUWcVPIq+znNFTOSz0Fu
+         4UDt3L1BBscRCvIUP+8ecB95RpluQWWWnUlM1y5UX/YjnFSEdfb6aDpessAU15K/NX4m
+         dyv49MXOl2jDgU23TbwDq4VUDjrAxqukJCwoCQBAeXfYhjglMacS2MJqEKx9YAiqiCxu
+         lt/QPZPWZZpPk5bys2xF27Rpwy0C9kHRZ9liHPWFoNI1tz4MHZwxXGA0BU5zaGIdBaba
+         7Pbg==
+X-Gm-Message-State: AC+VfDxSfevrb/XqO1YKlbAa0fUlMvFK1Ss2cktbi2REchrd/iSqwVCD
+        +bhINFnLJ/oVTk5v0BNZpdn8lTmOO+OOZscoB7u6Ow==
+X-Google-Smtp-Source: ACHHUZ5LaN5TDvN1FyO5MhQS0lmIkF5TXzwK6Dj9VdmOKW2CYodVmwm4+rhlyyeuU7KXDssjyC5Y6cQ5ZlwMYKZjXrE=
+X-Received: by 2002:a50:d71d:0:b0:506:9116:dcc8 with SMTP id
+ t29-20020a50d71d000000b005069116dcc8mr31791edi.7.1683792414065; Thu, 11 May
+ 2023 01:06:54 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5830.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3aeaa875-3eee-40d2-c845-08db51ecca2d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2023 06:56:04.8893
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9nMbRaY74JS+DYZJp1sfYoDyi8PXiIitUCiIyqqro9Z3k0em3Ky6QVdyOu7rvzMmwh6mR3RjEYCp5pbNbMZCWdsTuWfAfEro5hGVYjWnm3E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7167
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230504092142.4190069-1-yixuanjiang@google.com>
+ <2023050644-dwarf-shabby-d44d@gregkh> <CAGJzVQGxDHa83uV0w4Q35UaGpwNhLpKzcZ5y_qsfd4ELDi+OnA@mail.gmail.com>
+ <2023051045-ransack-lullaby-a127@gregkh>
+In-Reply-To: <2023051045-ransack-lullaby-a127@gregkh>
+From:   Yixuan Jiang <yixuanjiang@google.com>
+Date:   Thu, 11 May 2023 16:06:42 +0800
+Message-ID: <CAGJzVQEy2E9WZOgiMtmXq0F=EEcse3YgQdrrqXhBS0dQmwtVGw@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: soc-pcm: Fix and cleanup DPCM locking
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.de>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thursday, May 11, 2023 6:46 AM , Greg KH <gregkh@linuxfoundation.org> wr=
-ote:
->On Thu, May 11, 2023 at 12:01:36AM +0200, Florian Bezdeka wrote:
->> Hi all,
->>
->> On 07.05.23 08:44, gregkh@linuxfoundation.org wrote:
->> >
->> > The patch below does not apply to the 6.1-stable tree.
->> > If someone wants it applied there, or to any other stable or
->> > longterm tree, then please email the backport, including the
->> > original git commit id to <stable@vger.kernel.org>.
->> >
->> > To reproduce the conflict and resubmit, you may use the following comm=
-ands:
->> >
->> > git fetch
->> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/
->> > linux-6.1.y git checkout FETCH_HEAD git cherry-pick -x
->> > 3ce29c17dc847bf4245e16aad78a7617afa96297
->> > # <resolve conflicts, build, test, etc.> git commit -s git
->> > send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023050749-
->deskwork-snowboard-82cf@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
->>
->> Is someone already working on that? I would love to see this patch in
->> 6.1. If no further activities are planned I might have the option/time
->> to supply a backport as well.
+Greg KH <gregkh@linuxfoundation.org> =E6=96=BC 2023=E5=B9=B45=E6=9C=8810=E6=
+=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=8810:40=E5=AF=AB=E9=81=93=EF=BC=
+=9A
 >
->Please supply a backport, I don't think anyone is working on it :)
+> On Wed, May 10, 2023 at 07:59:49PM +0800, Yixuan Jiang wrote:
+> > Greg KH <greg@kroah.com> =E6=96=BC 2023=E5=B9=B45=E6=9C=886=E6=97=A5 =
+=E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=881:56=E5=AF=AB=E9=81=93=EF=BC=9A
+> > >
+> > > On Thu, May 04, 2023 at 05:21:42PM +0800, yixuanjiang wrote:
+> > > > From: Takashi Iwai <tiwai@suse.de>
+> > > >
+> > > > The existing locking for DPCM has several issues
+> > > > a) a confusing mix of card->mutex and card->pcm_mutex.
+> > > > b) a dpcm_lock spinlock added inconsistently and on paths that coul=
+d
+> > > > be recursively taken. The use of irqsave/irqrestore was also overki=
+ll.
+> > > >
+> > > > The suggested model is:
+> > > >
+> > > > 1) The pcm_mutex is the top-most protection of BE links in the FE. =
+The
+> > > > pcm_mutex is applied always on either the top PCM callbacks or the
+> > > > external call from DAPM, not taken in the internal functions.
+> > > >
+> > > > 2) the FE stream lock is taken in higher levels before invoking
+> > > > dpcm_be_dai_trigger()
+> > > >
+> > > > 3) when adding and deleting a BE, both the pcm_mutex and FE stream
+> > > > lock are taken.
+> > > >
+> > > > Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> > > > [clarification of commit message by plbossart]
+> > > > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.int=
+el.com>
+> > > > Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+> > > > Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+> > > > Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+> > > > Link: https://lore.kernel.org/r/20211207173745.15850-4-pierre-louis=
+.bossart@linux.intel.com
+> > > > Cc: stable@vger.kernel.org # 5.15.x
+> > > > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > > > ---
+> > >
+> > > What is the git commit id of this patch in Linus's tree?
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> >
+> > Hi Greg,
+> > For this patch I think it is [3/6] b7898396f4bbe160f546d0c5e9fa17cca9a7=
+d153
+> >
+> > >From https://lore.kernel.org/all/163953384515.1515253.1364147710634891=
+3835.b4-ty@kernel.org/
+> > Seems there are total 6 patches.
+> >
+> > [1/6] ASoC: soc-pcm: use GFP_ATOMIC for dpcm structure
+> >       commit: d8a9c6e1f6766a16cf02b4e99a629f3c5512c183
+> > [2/6] ASoC: soc-pcm: align BE 'atomicity' with that of the FE
+> >       commit: bbf7d3b1c4f40eb02dd1dffb500ba00b0bff0303
+> > [3/6] ASoC: soc-pcm: Fix and cleanup DPCM locking
+> >       commit: b7898396f4bbe160f546d0c5e9fa17cca9a7d153
+> > [4/6] ASoC: soc-pcm: serialize BE triggers
+> >       commit: b2ae80663008a7662febe7d13f14ea1b2eb0cd51
+> > [5/6] ASoC: soc-pcm: test refcount before triggering
+> >       commit: 848aedfdc6ba25ad5652797db9266007773e44dd
+> > [6/6] ASoC: soc-pcm: fix BE handling of PAUSE_RELEASE
+> >       commit: 3aa1e96a2b95e2ece198f8dd01e96818971b84df
+> >
+> > These 6 patches could directly cherry-pick to in 5.15 without conflict.
+>
+> Then please submit them for stable inclusion after you have tested that
+> they all work properly.  But first, what bug is actually needed to be
+> fixed here?  What is not working that this patch series fixes?
+>
+> thanks,
+>
+> greg k-h
 
-Hi Florian,
+Hi Greg,
 
-I not yet got plan to backport the patch, so I am more than happy
-if you could supply a backport.
+The bug is, in 5.15
+It will always deadlock after stop compress playback.
 
-Most probably the issue is due to missing "#include <linux/bitfield.h>".
+The patch A
+  ASoC: soc-compress: Reposition and add pcm_mutex commit:
+aa9ff6a4955fdba02b54fbc4386db876603703b7
+From patch A comment it is about to fix the issue by adding lock hold
+becasue patch B will check if lock is held.
 
-Will you do it for 5.15 and 6.2 as well?
+The patch B
+  ASoC: soc-pcm: Fix and cleanup DPCM locking commit:
+b7898396f4bbe160f546d0c5e9fa17cca9a7d153
+Patch B remove lock aquire then check if lock is already held.
 
-Thanks & Regards
-Siang
+In 5.15 it only include patch A then cause the deadlock.
+
+[  198.670679][    T1] Call trace:
+[  198.670690][    T1]  __switch_to+0x174/0x328
+[  198.670744][    T1]  __schedule+0x5d0/0xaec
+[  198.670784][    T1]  schedule+0xc8/0x134
+[  198.670803][    T1]  schedule_preempt_disabled+0x30/0x50
+[  198.670820][    T1]  __mutex_lock+0x39c/0xa70
+[  198.670845][    T1]  __mutex_lock_slowpath+0x1c/0x2c
+[  198.670862][    T1]  mutex_lock+0x4c/0x104
+[  198.670878][    T1]  soc_pcm_hw_clean+0x38/0x16c            <--
+Patch B will remove lock aquire, if no patch B, it will aquire lock
+again then cause AA deadlock
+[  198.670958][    T1]  dpcm_be_dai_hw_free+0x17c/0x1b4
+[  198.670983][    T1]  soc_compr_free_fe+0x84/0x158             <--
+Patch A aquire the lock
+[  198.671025][    T1]  snd_compr_free+0xac/0x148
+
+So is it better by revert patch A because purpose of patch A doesn't
+exist in 5.15 ?
+Or just backport full 6 patches series B to 5.15 ?
