@@ -2,82 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CAE96FF084
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 13:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C803E6FF122
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237895AbjEKL2J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 07:28:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55682 "EHLO
+        id S237655AbjEKMJn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 08:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbjEKL2I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 07:28:08 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EEB6E87
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 04:28:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683804488; x=1715340488;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=LGTcFkUu2O2bNdVPjLIv5NydNt+bv7zs9YzW4TO5K0g=;
-  b=n+CsfER116V8boKkOxWQtOkR8lKArnOc+5W+xxgnn3ICQZDIh/Yat8cr
-   1AkyRhDBeidsBCNb+noHi2gK/ISaO4pflVa7dyOnbn6vYjKBqKgF46Wd3
-   OG0C0/O0Dm8/sbPo8cp3RJBKnCi/Po9GFZptiz5XCNycR+oBxmupIWKmn
-   AQE1TLeRtByQrEcJL/mqVm74D5xckp7997ejKqhluWmC39hZepVqEI4DS
-   YZ6Z7xFR5nNUkNFGQiJjnSSraDZB+OtmH3Gocs7yYfwkc4G2crr6YCEqh
-   HRtRS0lMx6362SF+fBvEpTXDnPy+5z5jXfuIQfwt7LowrYrxSfDzC3tvx
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="350503677"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="350503677"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 04:28:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="677206932"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="677206932"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 11 May 2023 04:28:05 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1px4Sq-0003zI-2F;
-        Thu, 11 May 2023 11:28:04 +0000
-Date:   Thu, 11 May 2023 19:28:02 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Daniil Dulov <d.dulov@aladdin.ru>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] drm/amdkfd: Fix potential deallocation of previously
- deallocated memory.
-Message-ID: <ZFzRQnguWILn/uaF@e0f96cf4e6cd>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230511112314.29322-1-d.dulov@aladdin.ru>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S237925AbjEKMJk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:09:40 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3178AAD28
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:09:16 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-55ffc3d2b63so71962367b3.2
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:09:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683806955; x=1686398955;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7K8c0PbSb9/75eHA2UyPAuYfZp6gkS8+sNwMs4nkPsw=;
+        b=aId7+0deecHGhvzHiCpQ99QDZYxs8sOskTVuQh+Id0foMa14spsgvuQ0XA0Z2ZEMuQ
+         XuWIw22ug3J/BYgTc05q7rC0GG7biA1eiBtKmnUHCNLBLOoyslvxzJnEaU8TGLc/hRd0
+         sGUQCfw0KuMjHnNhKyQGQPxbx5ylmXI1mHuScaYgtPCzlzYAgg2QA2K8IcTSnJbeYsHn
+         zWZH0v/FMPmUTNE0s0iRHoD1v2dG094/NHJ2aH6MshBgjyUU9hs4oLsHhGpBd3ak/fT9
+         YFhEv6DkZqGYwPRdsNwLA3e+/2qG2HrjBK7ytxtwTYYJjCXevj13Xfhl7vsPsiuoVNIR
+         fELA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683806955; x=1686398955;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7K8c0PbSb9/75eHA2UyPAuYfZp6gkS8+sNwMs4nkPsw=;
+        b=XmhH8jn8fr76hGVwQQAt32eNA1OU1RoSL3uri0oN/m64XWeZKoZtzMa/Ae8Q8YJuNL
+         Ulcp0wT3EqLfrP63xTLGeYA+A5SAQBgGv79hn7zyNpD9DznLw3K09h4He9N1OcM7f7rE
+         bJLF1WWdxUVnRPM/rtw8WfnrZvIJTX7ZY9Ox4vy+s7xME1XK5rM1VIx3qHWEdT4rxcTm
+         b5ZPgnQmaYNJTRlya+y7YPnZSADqnkWewntkHc+w0OXNNsxAB1ZgLz1y3yYKWHqG4YpL
+         Yl6/AjHfQzVuc/yei2JEN/g4NKQbtqGF7TNVJf3EEKnyaH9yGj/yXfTzfNvMUKixG434
+         6vMg==
+X-Gm-Message-State: AC+VfDzGGJUNZ6zUre4LXXAQxkFdVt031upeiseAaFwTDDsIM67NEpEf
+        Ye0s9Ky0TdeK7QWQKpa3yMgUpctkTHnX6YYkmQ==
+X-Google-Smtp-Source: ACHHUZ649eEZOGu+69lcpa1h2QuufU2JwY+7I6E65DKzbwztYqdOFIXoAXFKOH6AJFiL/OCdeIEENenkhD6EYIzmYA==
+X-Received: from yixuanjiang.ntc.corp.google.com ([2401:fa00:fc:202:6c9a:64c9:7e44:6b1d])
+ (user=yixuanjiang job=sendgmr) by 2002:a81:b285:0:b0:559:f1b0:6eb with SMTP
+ id q127-20020a81b285000000b00559f1b006ebmr12820158ywh.4.1683806955346; Thu,
+ 11 May 2023 05:09:15 -0700 (PDT)
+Date:   Thu, 11 May 2023 20:08:36 +0800
+In-Reply-To: <20230511120841.2096524-1-yixuanjiang@google.com>
+Mime-Version: 1.0
+References: <20230511120841.2096524-1-yixuanjiang@google.com>
+X-Mailer: git-send-email 2.40.1.521.gf1e218fcd8-goog
+Message-ID: <20230511120841.2096524-2-yixuanjiang@google.com>
+Subject: [PATCH 1/6] ASoC: soc-pcm: use GFP_ATOMIC for dpcm structure
+From:   yixuanjiang <yixuanjiang@google.com>
+To:     tiwai@suse.com, lgirdwood@gmail.com, broonie@kernel.org
+Cc:     linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Yixuan Jiang <yixuanjiang@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-Thanks for your patch.
+[ Upstream commit d8a9c6e1f6766a16cf02b4e99a629f3c5512c183 ]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+We allocate a structure in dpcm_be_connect(), which may be called in
+atomic context. Using GFP_KERNEL is not quite right, we have to use
+GFP_ATOMIC to prevent the allocator from sleeping.
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH v2] drm/amdkfd: Fix potential deallocation of previously deallocated memory.
-Link: https://lore.kernel.org/stable/20230511112314.29322-1-d.dulov%40aladdin.ru
+Suggested-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20211207173745.15850-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: aa9ff6a4955f ("ASoC: soc-compress: Reposition and add pcm_mutex")
+Signed-off-by: Yixuan Jiang <yixuanjiang@google.com>
+Cc: stable@vger.kernel.org # 5.15+
+---
+ sound/soc/soc-pcm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 3b673477f6215..cffae9b7c2548 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -1132,7 +1132,7 @@ static int dpcm_be_connect(struct snd_soc_pcm_runtime *fe,
+ 			return 0;
+ 	}
+ 
+-	dpcm = kzalloc(sizeof(struct snd_soc_dpcm), GFP_KERNEL);
++	dpcm = kzalloc(sizeof(struct snd_soc_dpcm), GFP_ATOMIC);
+ 	if (!dpcm)
+ 		return -ENOMEM;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
-
-
+2.40.1.521.gf1e218fcd8-goog
 
