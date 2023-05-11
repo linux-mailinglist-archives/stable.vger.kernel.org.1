@@ -2,154 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7DB6FF019
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 12:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 875046FF04D
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 12:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235855AbjEKKqu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 06:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39230 "EHLO
+        id S231391AbjEKK6y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 06:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237169AbjEKKqt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 06:46:49 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 581CB2691
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 03:46:47 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3313fe59a61so20006805ab.0
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 03:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683802006; x=1686394006;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YQC7WIwcF1FJJhC2ovYQkP+IDF7Pqdo8FEQi9sx9wQ8=;
-        b=aU6ZwMmUdF5KaAfPtuVRd277smXzgdfHUD1DZRRbA4iEy84p8+EKqBbU2eZolSRDop
-         vdgBpr07/erMJs+E1LxvSAgh0tVF0ojaVSGwZPKqFk8dKSISJZxEsmmPRE4UHlEwkg0C
-         IM642VZsej9kv3icEpiHzW0gS5Nq+b5vGNt9DE/qP6+8j+njZhZJF5wrtuOHBICoE97S
-         XfIHHgTS3EySph3aqAV3u/pPrMrVsFrGbH2FIm7ShE12WZxi6e/ttQAYeVvWj37Vcdw2
-         gRMOrf85DWGJ1M4rkYvI4u9kArw/sBAHTTN7ZPd78UDeapa02R59j2C5bNppLhgPXnE4
-         8Kjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683802006; x=1686394006;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YQC7WIwcF1FJJhC2ovYQkP+IDF7Pqdo8FEQi9sx9wQ8=;
-        b=ELjTQy4B3PE+wLMge+bvJRdcdqCjsPsLHHQe1paliglm0k0sX3PMRcGdb4GxPyUucr
-         e+UjKmKlLPXNEFNCFiZzyBN+9F9DtPuwUhciwOvXevp2ORQGbl3RaopU6xp6UPDopybB
-         eEFbVqD2pGu9pApgofeeZy/M5VdY2vo7z997j1Fb7dEPLn9RVFQlviJs+wpFw9U1Rpjc
-         YAQ4RzcZuGNpX0qJA7gQAcDkeXUtnP4jzXOJBzNvo86FyW2m3f4bJXCpHpjbzW53isg1
-         rltqhW2aRK35AJpwgC9m7gnO1otx/es7qzGBp+1gbhh93k9QZWjOYSEO6BCXD0eqfz6n
-         00aw==
-X-Gm-Message-State: AC+VfDw95/u9nkLHDOUDUuNRlRGmkN65nzraSH3kZWONufjK5kECAkun
-        wnvpTa45uZkxJoD5qprlPPWmLqUqsZq7LAmHq6M=
-X-Google-Smtp-Source: ACHHUZ6H+RzXQBIpSn7dl7iV6A7SMvh69zhY7uQnrKb6tbVEfNaBlKgkqyX+sfXnxt09E4RellR1kTNgq31JyBN67Cs=
-X-Received: by 2002:a92:da0f:0:b0:334:c74c:43f9 with SMTP id
- z15-20020a92da0f000000b00334c74c43f9mr13015414ilm.13.1683802006602; Thu, 11
- May 2023 03:46:46 -0700 (PDT)
+        with ESMTP id S237235AbjEKK6x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 06:58:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031DAFA;
+        Thu, 11 May 2023 03:58:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88AFF64C3A;
+        Thu, 11 May 2023 10:58:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2170EC433D2;
+        Thu, 11 May 2023 10:58:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683802731;
+        bh=qcDiAjFqWhhByq5JwWK2mEEaI3nzFryjK7tJr89pp7Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CEjFQMdf7Jj+aStt5qyHlb4JjvgF+r2KsnPRRnT92mEJ4Ql/TTUFxzxMdp5u/oYwq
+         YbNCifcWA4EGsPuxb5BcydH8k29bN+7DjmaWWQ5MHQahMZ5/S6uiBlTBbAlTgCg/BK
+         dpm0O8SxJ4p3e/MDSHE9yevb67H1r5plm8qSDW391Nru2bqFI1RYQl7w7hkhA9FZLr
+         TaZtL4XuIwtpS/VvLVYyF4cw6mc+F78sxLVVwxozf2xj8jwYOpSdOdexjwIDtzfUF7
+         f4QiQ3aGJWcA6Y4PutrmGEdiRHDzkZCA1PikycZdA/1trPHaWnq9cP886iHxA5kahq
+         6c+/3EBqQJLOQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: [PATCH] clk: pxa: fix NULL pointer dereference in pxa3xx_clk_update_accr
+Date:   Thu, 11 May 2023 12:58:33 +0200
+Message-Id: <20230511105845.299859-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Received: by 2002:ac0:bd0d:0:b0:2d7:1dc:de22 with HTTP; Thu, 11 May 2023
- 03:46:45 -0700 (PDT)
-Reply-To: cristinacampel@outlook.com
-From:   "Mrs. Cristina Campbell" <smith45556544@gmail.com>
-Date:   Thu, 11 May 2023 11:46:45 +0100
-Message-ID: <CAKN6szd2WUqfhXFFUcV2Ud12uqNA8J1B_pX0Mx79_GYt_RaZXg@mail.gmail.com>
-Subject: =?UTF-8?B?0JzQvtC20LXRgtC1INC70Lgg0LLRiyDQv9C+0LzQvtGH0Ywg0LzQvdC1?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-0JTQvtGA0L7Qs9C+0Lkg0LvRjtCx0LjQvNGL0LksDQoNCtCf0L7QttCw0LvRg9C50YHRgtCwLCDQ
-v9GA0L7Rh9C40YLQsNC50YLQtSDRjdGC0L4g0LzQtdC00LvQtdC90L3QviDQuCDQstC90LjQvNCw
-0YLQtdC70YzQvdC+LCDRgtCw0Log0LrQsNC6INGN0YLQviDQvNC+0LbQtdGCDQrQsdGL0YLRjCDQ
-vtC00L3QviDQuNC3INGB0LDQvNGL0YUg0LLQsNC20L3Ri9GFINGN0LvQtdC60YLRgNC+0L3QvdGL
-0YUg0L/QuNGB0LXQvCwg0LrQvtGC0L7RgNGL0LUg0LLRiyDQutC+0LPQtNCwLdC70LjQsdC+DQrQ
-v9C+0LvRg9GH0LDQu9C4LiDQryDQvNC40YHRgdC40YEg0JrRgNC40YHRgtC40L3QsCDQmtGN0LzQ
-v9Cx0LXQu9C7LCDRjyDQsdGL0LvQsCDQt9Cw0LzRg9C20LXQvCDQt9CwINC/0L7QutC+0LnQvdGL
-0LwNCtCt0LTQstCw0YDQtNC+0Lwg0JrRjdC80L/QsdC10LvQu9C+0LwuINC+0L/Ri9GC0L3Ri9C5
-INC/0L7QtNGA0Y/QtNGH0LjQuiDQsiDRgNC10LPQuNC+0L3QtSDQktC+0YHRgtC+0YfQvdC+0Lkg
-0JDQt9C40LguINCe0L0NCtGD0LzQtdGAINCyINGH0LXRgtCy0LXRgNCzLCAzMSDQuNGO0LvRjyAy
-MDAzINCzLiwg0LIg0J/QsNGA0LjQttC1LiDQnNGLINCx0YvQu9C4INC20LXQvdCw0YLRiyDRgdC1
-0LzRjCDQu9C10YIg0LHQtdC3DQrRgNC10LHQtdC90LrQsC4NCg0K0J/QvtC60LAg0LLRiyDRh9C4
-0YLQsNC10YLQtSDRjdGC0L4sINGPINC90LUg0YXQvtGH0YMsINGH0YLQvtCx0Ysg0LLRiyDQttCw
-0LvQtdC70Lgg0LzQtdC90Y8sINC/0L7RgtC+0LzRgyDRh9GC0L4g0Y8NCtCy0LXRgNGOLCDRh9GC
-0L4g0LLRgdC1INC60L7Qs9C00LAt0L3QuNCx0YPQtNGMINGD0LzRgNGD0YIuINCjINC80LXQvdGP
-INCx0YvQuyDQtNC40LDQs9C90L7RgdGC0LjRgNC+0LLQsNC9INGA0LDQug0K0L/QuNGJ0LXQstC+
-0LTQsCwg0Lgg0LzQvtC5INCy0YDQsNGHINGB0LrQsNC30LDQuyDQvNC90LUsINGH0YLQviDRjyDQ
-vdC1INC/0YDQvtGC0Y/QvdGDINC00L7Qu9Cz0L4g0LjQty3Qt9CwINC80L7QuNGFDQrRgdC70L7Q
-ttC90YvRhSDQv9GA0L7QsdC70LXQvCDRgdC+INC30LTQvtGA0L7QstGM0LXQvC4NCg0K0K8g0YXQ
-vtGH0YMsINGH0YLQvtCx0Ysg0JHQvtCzINCx0YvQuyDQvNC40LvQvtGB0YLQuNCyINC60L4g0LzQ
-vdC1INC4INC/0YDQuNC90Y/QuyDQvNC+0Y4g0LTRg9GI0YMsINC/0L7RjdGC0L7QvNGDINGPDQrR
-gNC10YjQuNC7INC/0L7QtNCw0LLQsNGC0Ywg0LzQuNC70L7RgdGC0YvQvdGOINCx0LvQsNCz0L7R
-gtCy0L7RgNC40YLQtdC70YzQvdGL0Lwg0L7RgNCz0LDQvdC40LfQsNGG0LjRj9C8IC8g0YbQtdGA
-0LrQstGP0LwgLw0K0LHRg9C00LTQuNC50YHQutC40Lwg0YXRgNCw0LzQsNC8IC8g0LzQtdGH0LXR
-gtC4IC8g0YHQuNGA0L7RgtCw0LwgLyDQvNCw0LvQvtC+0LHQtdGB0L/QtdGH0LXQvdC90YvQvCDQ
-uCDQstC00L7QstCw0LwsINGC0LDQug0K0LrQsNC6INGPINGF0L7Rh9GDLCDRh9GC0L7QsdGLINGN
-0YLQviDQsdGL0LvQviDQvtC00L3QuNC8INC40Lcg0L/QvtGB0LvQtdC00L3QuNGFINC00L7QsdGA
-0YvRhSDQtNC10LsuINCvINC00LXQu9Cw0Y4g0L3QsA0K0LfQtdC80LvQtSwg0L/RgNC10LbQtNC1
-INGH0LXQvCDRjyDRg9C80YDRgy4g0J3QsCDQtNCw0L3QvdGL0Lkg0LzQvtC80LXQvdGCINGPINGA
-0LDQt9C00LDQuyDQtNC10L3RjNCz0Lgg0L3QtdC60L7RgtC+0YDRi9C8DQrQsdC70LDQs9C+0YLQ
-stC+0YDQuNGC0LXQu9GM0L3Ri9C8INC+0YDQs9Cw0L3QuNC30LDRhtC40Y/QvCDQsiDQqNC+0YLQ
-u9Cw0L3QtNC40LgsINCj0Y3Qu9GM0YHQtSwg0JjQt9GA0LDQuNC70LUsINCk0LjQvdC70Y/QvdC0
-0LjQuA0K0Lgg0JDRgNC80LXQvdC40LguINCi0LXQv9C10YDRjCwg0LrQvtCz0LTQsCDQvNC+0LUg
-0LfQtNC+0YDQvtCy0YzQtSDRgtCw0Log0YHQuNC70YzQvdC+INGD0YXRg9C00YjQuNC70L7RgdGM
-LCDRjyDQsdC+0LvRjNGI0LUNCtC90LUg0LzQvtCz0YMg0LfQsNC90LjQvNCw0YLRjNGB0Y8g0Y3R
-gtC40Lwg0YHQsNC80LAuDQoNCtCe0LTQvdCw0LbQtNGLINGPINC/0L7Qv9GA0L7RgdC40Lsg0YfQ
-u9C10L3QvtCyINC80L7QtdC5INGB0LXQvNGM0Lgg0LfQsNC60YDRi9GC0Ywg0L7QtNC40L0g0LjQ
-tyDQvNC+0LjRhSDRgdGH0LXRgtC+0LIg0LgNCtGA0LDQt9C00LDRgtGMINC00LXQvdGM0LPQuCwg
-0LrQvtGC0L7RgNGL0LUg0YMg0LzQtdC90Y8g0YLQsNC8INC10YHRgtGMLCDQsdC70LDQs9C+0YLQ
-stC+0YDQuNGC0LXQu9GM0L3Ri9C8DQrQvtGA0LPQsNC90LjQt9Cw0YbQuNGP0Lwg0LIg0JHQtdC7
-0LDRgNGD0YHQuCwg0KPQutGA0LDQuNC90LUsINCb0LDRgtCy0LjQuCwg0KDQvtGB0YHQuNC4INC4
-INCt0YHRgtC+0L3QuNC4LCDQvtC90LgNCtC+0YLQutCw0LfQsNC70LjRgdGMINC4INC+0YHRgtCw
-0LLQuNC70Lgg0LTQtdC90YzQs9C4INGB0LXQsdC1LiDQodC70LXQtNC+0LLQsNGC0LXQu9GM0L3Q
-viwg0Y8g0L3QtSDQtNC+0LLQtdGA0Y/RjiDQuNGFDQrQsdC+0LvRjNGI0LUsINGC0LDQuiDQutCw
-0Log0L7QvdC4LCDQutCw0LbQtdGC0YHRjywg0L3QtSDQsdC+0YDRjtGC0YHRjyDRgSDRgtC10Lws
-INGH0YLQviDRjyDQvtGB0YLQsNCy0LjQuyDQtNC70Y8g0L3QuNGFLg0K0J/QvtGB0LvQtdC00L3Q
-uNC1INC40Lcg0LzQvtC40YUg0LTQtdC90LXQsywg0L4g0LrQvtGC0L7RgNGL0YUg0L3QuNC60YLQ
-viDQvdC1INC30L3QsNC10YIsIOKAlCDRjdGC0L4g0L7Qs9GA0L7QvNC90YvQuQ0K0LTQtdC90LXQ
-ttC90YvQuSDQtNC10L/QvtC30LjRgiDQsiDRgNCw0LfQvNC10YDQtSDRiNC10YHRgtC4INC80LjQ
-u9C70LjQvtC90L7QsiDQtNC+0LvQu9Cw0YDQvtCyINCh0KjQkCDQsiDRgNCw0LfQvNC10YDQtSA2
-DQowMDAgMDAwINC00L7Qu9C70LDRgNC+0LIg0KHQqNCQLCDQutC+0YLQvtGA0YvQuSDRgyDQvNC1
-0L3RjyDQtdGB0YLRjCDQsiDQsdCw0L3QutC1INCyINCi0LDQuNC70LDQvdC00LUsINCz0LTQtSDR
-jw0K0YDQsNC30LzQtdGB0YLQuNC7INGN0YLQvtGCINGE0L7QvdC0LiDQryDRhdC+0YfRgywg0YfR
-gtC+0LHRiyDQstGLINC40YHQv9C+0LvRjNC30L7QstCw0LvQuCDRjdGC0L7RgiDRhNC+0L3QtCDQ
-tNC70Y8NCtCx0LvQsNCz0L7RgtCy0L7RgNC40YLQtdC70YzQvdGL0YUg0L/RgNC+0LPRgNCw0LzQ
-vCDQuCDQv9C+0LTQtNC10YDQttC40LLQsNC70Lgg0YfQtdC70L7QstC10YfQtdGB0YLQstC+INCy
-INGB0LLQvtC10Lkg0YHRgtGA0LDQvdC1LA0K0LXRgdC70Lgg0YLQvtC70YzQutC+INCy0Ysg0LHR
-g9C00LXRgtC1INC40YHQutGA0LXQvdC90LjQvNC4Lg0KDQrQryDQv9GA0LjQvdGP0Lsg0Y3RgtC+
-INGA0LXRiNC10L3QuNC1LCDQv9C+0YLQvtC80YMg0YfRgtC+INGDINC80LXQvdGPINC90LXRgiDR
-gNC10LHQtdC90LrQsCwg0LrQvtGC0L7RgNGL0LkNCtGD0L3QsNGB0LvQtdC00YPQtdGCINGN0YLQ
-uCDQtNC10L3RjNCz0LgsINGPINC90LUg0LHQvtGO0YHRjCDRgdC80LXRgNGC0LgsINC/0L7RjdGC
-0L7QvNGDINGPINC30L3QsNGOLCDQutGD0LTQsCDRjyDQuNC00YMuDQrQryDQt9C90LDRjiwg0YfR
-gtC+INGPINCx0YPQtNGDINCyINC70L7QvdC1INCT0L7RgdC/0L7QtNCwLiDQmtCw0Log0YLQvtC7
-0YzQutC+INGPINC/0L7Qu9GD0YfRgyDQstCw0Ygg0L7RgtCy0LXRgiwg0Y8NCtC00LDQvCDQstCw
-0Lwg0LrQvtC90YLQsNC60YLRiyDQkdCw0L3QutCwINC4INCy0YvRiNC70Y4g0LLQsNC8INC/0LjR
-gdGM0LzQvi3RgNCw0LfRgNC10YjQtdC90LjQtSwg0LrQvtGC0L7RgNC+0LUg0LTQsNGB0YIg0LLQ
-sNC8DQrQv9GA0LDQstC+INC60LDQuiDQv9C10YDQstC+0L3QsNGH0LDQu9GM0L3QvtC80YMg0LHQ
-tdC90LXRhNC40YbQuNCw0YDRgyDRjdGC0L7Qs9C+INGE0L7QvdC00LAg0L3QtdC80LXQtNC70LXQ
-vdC90L4g0L3QsNGH0LDRgtGMDQrRjdGC0YMg0LHQu9Cw0LPQvtGC0LLQvtGA0LjRgtC10LvRjNC9
-0YPRjiDQv9GA0L7Qs9GA0LDQvNC80YMg0LIg0LLQsNGI0LXQuSDRgdGC0YDQsNC90LUuDQoNCtCi
-0L7Qu9GM0LrQviDQttC40LfQvdGMLCDQv9GA0L7QttC40YLQsNGPINC00LvRjyDQtNGA0YPQs9C4
-0YUsINC40LzQtdC10YIg0YHQvNGL0YHQuy4g0K8g0YXQvtGH0YMsINGH0YLQvtCx0Ysg0LLRiw0K
-0LLRgdC10LPQtNCwINC80L7Qu9C40LvQuNGB0Ywg0LfQsCDQvNC10L3Rjy4g0JvRjtCx0LDRjyDQ
-t9Cw0LTQtdGA0LbQutCwINGBINCy0LDRiNC40Lwg0L7RgtCy0LXRgtC+0Lwg0LTQsNGB0YIg0LzQ
-vdC1DQrQstC+0LfQvNC+0LbQvdC+0YHRgtGMINC90LDQudGC0Lgg0LTRgNGD0LPQvtCz0L4g0YfQ
-tdC70L7QstC10LrQsCDQtNC70Y8g0YLQvtC5INC20LUg0YbQtdC70LguINCV0YHQu9C4INCy0Ysg
-0L3QtQ0K0LfQsNC40L3RgtC10YDQtdGB0L7QstCw0L3Riywg0L/QvtC20LDQu9GD0LnRgdGC0LAs
-INC40LfQstC40L3QuNGC0LUg0LzQtdC90Y8g0LfQsCDRgtC+LCDRh9GC0L4g0YHQstGP0LfQsNC7
-0YHRjyDRgSDQstCw0LzQuC4NCtCS0Ysg0LzQvtC20LXRgtC1INGB0LLRj9C30LDRgtGM0YHRjyDR
-gdC+INC80L3QvtC5INC40LvQuCDQvtGC0LLQtdGC0LjRgtGMINC80L3QtSDQvdCwINC80L7RjiDQ
-u9C40YfQvdGD0Y4g0Y3Qu9C10LrRgtGA0L7QvdC90YPRjg0K0L/QvtGH0YLRgzogKGNyaXN0aWlu
-YWNhbXBiZWxsQGhvdG1haWwuY29tKS4NCg0K0KHQv9Cw0YHQuNCx0L4sDQrQmNGB0LrRgNC10L3Q
-vdC1INCS0LDRiCwNCtC80LjRgdGB0LjRgSDQmtGA0LjRgdGC0LjQvdCwINCa0Y3QvNC/0LHQtdC7
-0LsNCtCt0LvQtdC60YLRgNC+0L3QvdCw0Y8g0L/QvtGH0YLQsDsgY3Jpc3RpaW5hY2FtcGJlbGxA
-aG90bWFpbC5jb20NCg==
+From: Arnd Bergmann <arnd@arndb.de>
+
+sparse points out an embarrasing bug in an older patch of mine,
+which uses the register offset instead of an __iomem pointer:
+
+drivers/clk/pxa/clk-pxa3xx.c:167:9: sparse: sparse: Using plain integer as NULL pointer
+
+Unlike sparse, gcc and clang ignore this bug and fail to warn
+because a literal '0' is considered a valid representation of
+a NULL pointer.
+
+Fixes: 3c816d950a49 ("ARM: pxa: move clk register definitions to driver")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202305111301.RAHohdob-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/clk/pxa/clk-pxa3xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/pxa/clk-pxa3xx.c b/drivers/clk/pxa/clk-pxa3xx.c
+index 42958a542662..621e298f101a 100644
+--- a/drivers/clk/pxa/clk-pxa3xx.c
++++ b/drivers/clk/pxa/clk-pxa3xx.c
+@@ -164,7 +164,7 @@ void pxa3xx_clk_update_accr(u32 disable, u32 enable, u32 xclkcfg, u32 mask)
+ 	accr &= ~disable;
+ 	accr |= enable;
+ 
+-	writel(accr, ACCR);
++	writel(accr, clk_regs + ACCR);
+ 	if (xclkcfg)
+ 		__asm__("mcr p14, 0, %0, c6, c0, 0\n" : : "r"(xclkcfg));
+ 
+-- 
+2.39.2
+
