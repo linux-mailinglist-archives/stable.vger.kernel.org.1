@@ -2,58 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDAA06FF193
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95D316FF1A1
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237541AbjEKMdG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 08:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35348 "EHLO
+        id S237519AbjEKMep (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 08:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237729AbjEKMdE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:33:04 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4212D49C0
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:32:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683808376; x=1715344376;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=HDOFjpxjhHanoIvcX/TU7slvxydWt5wqLwtAHoCym6w=;
-  b=RWR3jaYL1Z+RC/MOliC5BLqYhSLVwRxHjwZ/MTJDV0iZxxUdMEf9olgc
-   5tAeSCXUw0Y+p8ERFE0QjzkJ0+XyScDRAgsj9SQ5Ip+roCTMYcy+v/BD9
-   gpAYtDwN8Bb7MBJcYNHpvYUkOeCppBr9W+o4YfjbxkdJL0Yd5uHRxtFBZ
-   ZMF0IewXTCYLZQ47YiekEa/oVHLQM2+X45flAt0TklpVxnwWg5LR3tw6x
-   zmJ47/dMllmffOnqnr4yja8tZRpBRkI1IpFKtm7ZmhPtcgAPclVxeZhNr
-   gA34XHGGixTJm2KMJRj3VSfx5iZb6uA1DkO/x67tP6cwjuZ7ww09QMzXl
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="330844139"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="330844139"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 05:32:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="843930087"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="843930087"
-Received: from jsanche3-mobl1.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.39.112])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 05:32:54 -0700
-From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     stable@vger.kernel.org
-Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.10.y and below 2/2] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
-Date:   Thu, 11 May 2023 15:32:44 +0300
-Message-Id: <20230511123244.38514-2-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230511123244.38514-1-ilpo.jarvinen@linux.intel.com>
-References: <20230511123244.38514-1-ilpo.jarvinen@linux.intel.com>
+        with ESMTP id S237570AbjEKMeo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:34:44 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6146A10F;
+        Thu, 11 May 2023 05:34:42 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 9EBF71FE91;
+        Thu, 11 May 2023 12:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1683808481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=83yvFZ5iIQbRFdlm2LdYEQOdrJZ+zypJQp4T17WtAcY=;
+        b=cq5t3ADLmbRHetVLwL+ZtnNYPgqEVGy7WrBJZsI0DwR/doyLu8x4MjNibaN+2guhfHSLtX
+        PoB6jMdFGJg+LnXetFib1emaEo+/TVfA6Na6NS6H06565ExRwhzXYf2liUkt3CD+3fJw9H
+        iXFgSf8y/QLmAVADghGsj5z7xJi9aZk=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DC41F138FA;
+        Thu, 11 May 2023 12:34:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 7e1eNODgXGQjCAAAMHmgww
+        (envelope-from <jgross@suse.com>); Thu, 11 May 2023 12:34:40 +0000
+From:   Juergen Gross <jgross@suse.com>
+To:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org
+Cc:     Juergen Gross <jgross@suse.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
+Date:   Thu, 11 May 2023 14:34:32 +0200
+Message-Id: <20230511123432.5793-1-jgross@suse.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,97 +59,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-There's a potential race before THRE/TEMT deasserts when DMA Tx is
-starting up (or the next batch of continuous Tx is being submitted).
-This can lead to misdetecting Tx empty condition.
+Some callers of scsi_execute_cmd() (like e.g. sd_spinup_disk()) are
+passing an uninitialized struct sshdr and don't look at the return
+value of scsi_execute_cmd() before looking at the contents of that
+struct.
 
-It is entirely normal for THRE/TEMT to be set for some time after the
-DMA Tx had been setup in serial8250_tx_dma(). As Tx side is definitely
-not empty at that point, it seems incorrect for serial8250_tx_empty()
-claim Tx is empty.
+This can result in false positives when looking for specific error
+conditions.
 
-Fix the race by also checking in serial8250_tx_empty() whether there's
-DMA Tx active.
+In order to fix that let scsi_execute_cmd() zero sshdr->response_code,
+resulting in scsi_sense_valid() returning false.
 
-Note: This fix only addresses in-kernel race mainly to make using
-TCSADRAIN/FLUSH robust. Userspace can still cause other races but they
-seem userspace concurrency control problems.
-
-Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230317113318.31327-3-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 146a37e05d620cef4ad430e5d1c9c077fe6fa76f)
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 3949e2f04262 ("scsi: simplify scsi_execute_req_flags")
+Signed-off-by: Juergen Gross <jgross@suse.com>
 ---
- drivers/tty/serial/8250/8250.h      | 12 ++++++++++++
- drivers/tty/serial/8250/8250_port.c | 12 +++++++++---
- 2 files changed, 21 insertions(+), 3 deletions(-)
+I'm not aware of any real error having happened due to this problem,
+but I thought it should be fixed anyway.
+I _think_ 3949e2f04262 was introducing the problem, but I'm not 100%
+sure it is really the commit to be blamed.
+---
+ drivers/scsi/scsi_lib.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
-index b6dc9003b8c4..0771cd226581 100644
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -330,6 +330,13 @@ extern int serial8250_rx_dma(struct uart_8250_port *);
- extern void serial8250_rx_dma_flush(struct uart_8250_port *);
- extern int serial8250_request_dma(struct uart_8250_port *);
- extern void serial8250_release_dma(struct uart_8250_port *);
-+
-+static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
-+{
-+	struct uart_8250_dma *dma = p->dma;
-+
-+	return dma && dma->tx_running;
-+}
- #else
- static inline int serial8250_tx_dma(struct uart_8250_port *p)
- {
-@@ -345,6 +352,11 @@ static inline int serial8250_request_dma(struct uart_8250_port *p)
- 	return -1;
- }
- static inline void serial8250_release_dma(struct uart_8250_port *p) { }
-+
-+static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
-+{
-+	return false;
-+}
- #endif
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index b7c569a42aa4..923336620bff 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -209,11 +209,17 @@ int scsi_execute_cmd(struct scsi_device *sdev, const unsigned char *cmd,
+ 	struct scsi_cmnd *scmd;
+ 	int ret;
  
- static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 1f231fcda657..a12682a7012f 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1967,19 +1967,25 @@ static int serial8250_tx_threshold_handle_irq(struct uart_port *port)
- static unsigned int serial8250_tx_empty(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
-+	unsigned int result = 0;
- 	unsigned long flags;
- 	unsigned int lsr;
- 
- 	serial8250_rpm_get(up);
- 
- 	spin_lock_irqsave(&port->lock, flags);
--	lsr = serial_port_in(port, UART_LSR);
--	up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
-+	if (!serial8250_tx_dma_running(up)) {
-+		lsr = serial_port_in(port, UART_LSR);
-+		up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
+-	if (!args)
++	if (!args) {
+ 		args = &default_args;
+-	else if (WARN_ON_ONCE(args->sense &&
+-			      args->sense_len != SCSI_SENSE_BUFFERSIZE))
+-		return -EINVAL;
++	} else {
++		/* Mark sense data to be invalid. */
++		if (args->sshdr)
++			args->sshdr->response_code = 0;
 +
-+		if ((lsr & BOTH_EMPTY) == BOTH_EMPTY)
-+			result = TIOCSER_TEMT;
++		if (WARN_ON_ONCE(args->sense &&
++				 args->sense_len != SCSI_SENSE_BUFFERSIZE))
++			return -EINVAL;
 +	}
- 	spin_unlock_irqrestore(&port->lock, flags);
  
- 	serial8250_rpm_put(up);
- 
--	return (lsr & BOTH_EMPTY) == BOTH_EMPTY ? TIOCSER_TEMT : 0;
-+	return result;
- }
- 
- unsigned int serial8250_do_get_mctrl(struct uart_port *port)
+ 	req = scsi_alloc_request(sdev->request_queue, opf, args->req_flags);
+ 	if (IS_ERR(req))
 -- 
-2.30.2
+2.35.3
 
