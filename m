@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C81B86FFD65
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 01:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 384696FFD68
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 01:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238053AbjEKXiK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 19:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
+        id S239514AbjEKXj2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 19:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239465AbjEKXiJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 19:38:09 -0400
+        with ESMTP id S238953AbjEKXj1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 19:39:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA015170D
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 16:38:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6C1B3
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 16:39:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 872DE65291
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 23:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE015C433D2;
-        Thu, 11 May 2023 23:38:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A0C9652A4
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 23:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB4FC433EF;
+        Thu, 11 May 2023 23:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683848287;
-        bh=ChDXdSwpdLo8x277mIT+lr5GQ5FKLUXSifAXrBAX0Ow=;
+        s=k20201202; t=1683848365;
+        bh=Gv5MfhydX+49jiZzdsRRXtDqpEBgMyuFb+CambfuEgw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lJPznTtCjrsmLZigd1IZUz8QC/iVwtPjAlc5l4PbaOvhAJmFtMjr5z3Eu1qsNp5Qi
-         iGPKXqqpcUDWaSKhg6EMRfw9CjmcD4xZRETArrJmTUW4YSgv81Mvzeu00JOkTgKULI
-         szbjs/dpeVM+UD1M9etfy1VttnZbWpPOYKdmjXrrNyJ/ctkNlEnmQm8WFwkY3s/fiG
-         1jcNPLOqP5YsBE8eQ9HoDc9NWPP1a8hmLcKK0BFzs2uWEC7GiUcB/9hzMPlj4cjhbi
-         /MbjabqbtduCen9LU5AOdE3kMiCxhlZF0W03GSqelh5AGOO3uFxppyZ8wxhoNoGnBe
-         QylxHIt4uzbTw==
-Date:   Thu, 11 May 2023 19:38:07 -0400
+        b=WlyBUMXJ5U8ucF0yUrps0uElu/wpeLWSctmlsnq2FA8UfHJnL6tHxG28AjI6/Ktyw
+         DW38TJRoQRtmcizvqX/kU9Pc7ukF2OU096a7HJVcFN9uzLH54TMTP4qEHSqG7d438W
+         OJuThv6BnUlBIOmBMb8Tko+Hzu5CmklK8t0L1L4WoScJ3GV9+Xli6myQsYHDkfx7Of
+         LpLzhbBkhaGUVyywI5y6n1M+AiwtoGgP41b0mCwx5dHLgaVIKpgwdMRGHddyC+Em6h
+         5UY41OOZPZDwRjZtoKWKyDTbGNdTlxtqRKdTvXfyl17udrLnuiuXMigLFzXZBJLBqT
+         eJx4FvSUdCL9g==
+Date:   Thu, 11 May 2023 19:39:25 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Salvatore Bonaccorso <carnil@debian.org>
-Cc:     stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jared Epp <jaredepp@pm.me>
-Subject: Re: Please apply commit 6470accc7ba9 ("KVM: x86: hyper-v: Avoid
- calling kvm_make_vcpus_request_mask() with vcpu_mask==NULL") to v5.10.y
-Message-ID: <ZF18X3e6rrkACcMf@sashalap>
-References: <ZFuUstsT9plyGcTp@lorien.valinor.li>
+To:     Conor Dooley <conor@kernel.org>
+Cc:     stable@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+        palmer@dabbelt.com, Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 6.1 v1] RISC-V: fix lock splat in
+ riscv_cpufeature_patch_func()
+Message-ID: <ZF18raXiQKGbxl76@sashalap>
+References: <20230509-suspend-labrador-3eb6f0a8ac77@spud>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZFuUstsT9plyGcTp@lorien.valinor.li>
+In-Reply-To: <20230509-suspend-labrador-3eb6f0a8ac77@spud>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,16 +54,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 10, 2023 at 02:57:22PM +0200, Salvatore Bonaccorso wrote:
->Hi
+On Tue, May 09, 2023 at 10:36:42PM +0100, Conor Dooley wrote:
+>From: Conor Dooley <conor.dooley@microchip.com>
 >
->After we updated the kernel in Debian bullseye from 5.10.162 to
->5.10.178, we got a report from Jared Epp in
->https://bugs.debian.org/1035779 that a Windows Guest VM no longer
->booted, and Kernel reporting:
+>Guenter reported a lockdep splat that appears to have been present for a
+>while in v6.1.y & the backports of the riscv_patch_in_stop_machine dance
+>did nothing to help here, as the lock is not being taken when
+>patch_text_nosync() is called in riscv_cpufeature_patch_func().
+>Add the lock/unlock; elide the splat.
 
-This KVM commit wasn't tagged for stable, and would need an ack from the
-KVM maintainers to apply.
+Is this not a problem upstream?
 
 -- 
 Thanks,
