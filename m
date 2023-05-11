@@ -2,31 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D14356FF63F
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 17:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C666FF69F
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 17:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238800AbjEKPmN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 11:42:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34908 "EHLO
+        id S238429AbjEKP7a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 11:59:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238793AbjEKPmL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 11:42:11 -0400
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 951B230D3;
-        Thu, 11 May 2023 08:42:07 -0700 (PDT)
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     netfilter-devel@vger.kernel.org
-Cc:     fw@strlen.de, gregkh@linuxfoundation.org, sashal@kernel.org,
+        with ESMTP id S232006AbjEKP7a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 11:59:30 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 983CB40E7;
+        Thu, 11 May 2023 08:59:28 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 54A6B21E29;
+        Thu, 11 May 2023 15:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1683820767; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9Lj/YCJutpaNLuZIg73eRPmiuF7Hnb98ZHvSFAVP82o=;
+        b=o9OwJS0sfYehKFlOmkW54Waa0TK4gS9tf132nZp2uvhNtEAMuEM2Fu9M+t7ib6MpkTTi3q
+        S0THxkKqJYOj+sWBDHwmdvrtvjC6Yp8eVr++hLZo0mOlxzmAscKa5WqaN4CQgthBwTfz3M
+        EwijcuVizAUfHKAfSQd3uLZTUUILn2Y=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 12EA6134B2;
+        Thu, 11 May 2023 15:59:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id oB3ZAt8QXWRpfwAAMHmgww
+        (envelope-from <mwilck@suse.com>); Thu, 11 May 2023 15:59:27 +0000
+Message-ID: <7fc38a4a124caef6cb96a00000043a3288f4f004.camel@suse.com>
+Subject: Re: [PATCH] scsi: Let scsi_execute_cmd() mark args->sshdr as invalid
+From:   Martin Wilck <mwilck@suse.com>
+To:     Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
+        linux-scsi@vger.kernel.org
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         stable@vger.kernel.org
-Subject: [PATCH -stable,4.14 6/6] netfilter: nf_tables: deactivate anonymous set from preparation phase
-Date:   Thu, 11 May 2023 17:41:43 +0200
-Message-Id: <20230511154143.52469-7-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230511154143.52469-1-pablo@netfilter.org>
-References: <20230511154143.52469-1-pablo@netfilter.org>
+Date:   Thu, 11 May 2023 17:59:26 +0200
+In-Reply-To: <45d127c4-71e9-2959-b69c-d31c46ec721e@suse.com>
+References: <20230511123432.5793-1-jgross@suse.com>
+         <095a2264120ad51d0500c4ce8221be2f88a9537e.camel@suse.com>
+         <85a7dc28-74ec-f4d6-b5c3-ca456ce9d380@suse.com>
+         <e7c5f4334ab6ff897547c68ea216fbcba22d4929.camel@suse.com>
+         <45d127c4-71e9-2959-b69c-d31c46ec721e@suse.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -35,121 +68,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ backport for 4.14 of c1592a89942e9678f7d9c8030efa777c0d57edab ]
+On Thu, 2023-05-11 at 15:32 +0200, Juergen Gross wrote:
+> On 11.05.23 15:23, Martin Wilck wrote:
+> > On Thu, 2023-05-11 at 15:17 +0200, Juergen Gross wrote:
+> > > >=20
+> > > > We know for certain that sizeof(*sshdr) is 8 bytes, and will
+> > > > most
+> > > > probably remain so. Thus
+> > > >=20
+> > > > =A0=A0=A0=A0=A0 memset(sshdr, 0, sizeof(*sshdr))
+> > > >=20
+> > > > would result in more efficient code.
+> > >=20
+> > > I fail to see why zeroing a single byte would be less efficient
+> > > than
+> > > zeroing
+> > > a possibly unaligned 8-byte area.
+> >=20
+> > I don't think it can be unaligned. gcc seems to think the same. It
+> > compiles the memset(sshdr, ...) in scsi_normalize_sense() into a
+> > single
+> > instruction on x86_64.
+> >=20
+> > 0xffffffff8177e9d0 <scsi_normalize_sense>:=A0=A0=A0=A0=A0 nopl=A0=A0
+> > 0x0(%rax,%rax,1) [FTRACE NOP]
+> > 0xffffffff8177e9d5 <scsi_normalize_sense+5>:=A0=A0=A0 test=A0=A0 %rdi,%=
+rdi
+> > 0xffffffff8177e9d8 <scsi_normalize_sense+8>:=A0=A0=A0 movq=A0=A0 $0x0,(=
+%rdx)
+>=20
+> A struct with 8 "u8" fields can be unaligned.
 
-Toggle deleted anonymous sets as inactive in the next generation, so
-users cannot perform any update on it. Clear the generation bitmask
-in case the transaction is aborted.
+Right. I wrongly assumed this would be aligned like an u64. "The
+alignment of any given struct or union type is required by the ISO C
+standard to be at least a perfect multiple of the lowest common
+multiple of the alignments of all of the members of the struct".
 
-The following KASAN splat shows a set element deletion for a bound
-anonymous set that has been already removed in the same transaction.
+I wonder if this (non-)alignment of struct scsi_sense_hdr is
+intentional, but that's a different discussion.
 
-[   64.921510] ==================================================================
-[   64.923123] BUG: KASAN: wild-memory-access in nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.924745] Write of size 8 at addr dead000000000122 by task test/890
-[   64.927903] CPU: 3 PID: 890 Comm: test Not tainted 6.3.0+ #253
-[   64.931120] Call Trace:
-[   64.932699]  <TASK>
-[   64.934292]  dump_stack_lvl+0x33/0x50
-[   64.935908]  ? nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.937551]  kasan_report+0xda/0x120
-[   64.939186]  ? nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.940814]  nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.942452]  ? __kasan_slab_alloc+0x2d/0x60
-[   64.944070]  ? nf_tables_setelem_notify+0x190/0x190 [nf_tables]
-[   64.945710]  ? kasan_set_track+0x21/0x30
-[   64.947323]  nfnetlink_rcv_batch+0x709/0xd90 [nfnetlink]
-[   64.948898]  ? nfnetlink_rcv_msg+0x480/0x480 [nfnetlink]
-
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_tables.h |  1 +
- net/netfilter/nf_tables_api.c     | 12 ++++++++++++
- net/netfilter/nft_dynset.c        |  2 +-
- net/netfilter/nft_lookup.c        |  2 +-
- net/netfilter/nft_objref.c        |  2 +-
- 5 files changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index fe56b2f825b4..2db486e9724c 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -462,6 +462,7 @@ struct nft_set_binding {
- };
- 
- enum nft_trans_phase;
-+void nf_tables_activate_set(const struct nft_ctx *ctx, struct nft_set *set);
- void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase);
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 2f5b5d563e4d..c683a45b8ae5 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3420,12 +3420,24 @@ void nf_tables_unbind_set(const struct nft_ctx *ctx, struct nft_set *set,
- }
- EXPORT_SYMBOL_GPL(nf_tables_unbind_set);
- 
-+void nf_tables_activate_set(const struct nft_ctx *ctx, struct nft_set *set)
-+{
-+	if (set->flags & NFT_SET_ANONYMOUS)
-+		nft_clear(ctx->net, set);
-+
-+	set->use++;
-+}
-+EXPORT_SYMBOL_GPL(nf_tables_activate_set);
-+
- void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE:
-+		if (set->flags & NFT_SET_ANONYMOUS)
-+			nft_deactivate_next(ctx->net, set);
-+
- 		set->use--;
- 		return;
- 	case NFT_TRANS_ABORT:
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index a20f1668328d..74e8fdaa3432 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -237,7 +237,7 @@ static void nft_dynset_activate(const struct nft_ctx *ctx,
- {
- 	struct nft_dynset *priv = nft_expr_priv(expr);
- 
--	priv->set->use++;
-+	nf_tables_activate_set(ctx, priv->set);
- }
- 
- static void nft_dynset_destroy(const struct nft_ctx *ctx,
-diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index 453f84c57166..4fcbe51e88c7 100644
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -132,7 +132,7 @@ static void nft_lookup_activate(const struct nft_ctx *ctx,
- {
- 	struct nft_lookup *priv = nft_expr_priv(expr);
- 
--	priv->set->use++;
-+	nf_tables_activate_set(ctx, priv->set);
- }
- 
- static void nft_lookup_destroy(const struct nft_ctx *ctx,
-diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
-index 7e628f4f02b9..49a067a67e72 100644
---- a/net/netfilter/nft_objref.c
-+++ b/net/netfilter/nft_objref.c
-@@ -168,7 +168,7 @@ static void nft_objref_map_activate(const struct nft_ctx *ctx,
- {
- 	struct nft_objref_map *priv = nft_expr_priv(expr);
- 
--	priv->set->use++;
-+	nf_tables_activate_set(ctx, priv->set);
- }
- 
- static void nft_objref_map_destroy(const struct nft_ctx *ctx,
--- 
-2.30.2
+Thanks,
+Martin
 
