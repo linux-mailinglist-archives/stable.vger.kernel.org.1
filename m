@@ -2,61 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B0C6FE805
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 01:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9366FE854
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 02:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236884AbjEJXQ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 10 May 2023 19:16:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41106 "EHLO
+        id S236798AbjEKAJI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 10 May 2023 20:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236314AbjEJXQ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 19:16:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43C92272D;
-        Wed, 10 May 2023 16:16:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D037363806;
-        Wed, 10 May 2023 23:16:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB645C433EF;
-        Wed, 10 May 2023 23:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683760615;
-        bh=vIO/pbMw7hd/LQtTLHhb36ZJL8+SKJcMQgnYYrxnEhg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ChMvym4BdgnKakXfPkF5zMnoEW8XICR+Jj2XR2zfe8O50HEh8QvBe2QaVjCXonsUT
-         jVhvjk7t/nl43jboiRwtF6/lT+P7p9FotggtZg7Ec0nVL6Mh7wH+HWYrSnXZ0jfu38
-         +wdNoYIUbvwdyyg1GXUiEVO9a2h75UeYhYqEhhb8=
-Date:   Thu, 11 May 2023 08:16:47 +0900
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, laoar.shao@gmail.com
-Subject: Re: [PATCH 5.15 000/370] 5.15.111-rc2 review
-Message-ID: <2023051127-coastline-buffer-061a@gregkh>
-References: <20230509030611.521807993@linuxfoundation.org>
- <863a112f-f4a4-d580-9687-f6214d555939@linaro.org>
- <2023051035-monitor-sandy-2a5b@gregkh>
- <CAEUSe79AViqsHimbYbFjkKAxcvROGhFKA2yKVuC3aP1Gm=jc1w@mail.gmail.com>
- <CAEUSe7_ZBW_hPUZYeKkZ6zuckeqYb+O46GdgGx0wE6T0=c5wZg@mail.gmail.com>
- <4d3c5462-1788-426a-a44a-e839b1c4970d@roeck-us.net>
- <2023051154-activator-aside-bc8e@gregkh>
- <CAHk-=wh2nmNs98AUpv6+BZ3x_bNh6ps+nuufQO2Sn6LdXCbC9A@mail.gmail.com>
+        with ESMTP id S230374AbjEKAJH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 10 May 2023 20:09:07 -0400
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3866A2698
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 17:09:06 -0700 (PDT)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-76c6e795650so7836039f.1
+        for <stable@vger.kernel.org>; Wed, 10 May 2023 17:09:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683763745; x=1686355745;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Za2+jeiZw/3wYekYEcyNuKWRaZXywYW0iW1LDK1f/HU=;
+        b=ZiwmtkBHIB6aW64jOpaHctuZvkF7ESJmvil7usV3leHQSPb/UcbvRXBgCF6xTr5coB
+         HxXuqoQUv5Tc0vO0RKhebrjbdMjIsKtnaTfN2ez1wEnBhhjMW1oByKwmhX7/kGtCligs
+         8gr91AOSkmdf5twGZ3pvZrCra/CvAZM5Ec02b94x6dAx7RC9tIax+2uMvPIZI8t/3KUi
+         4I5ppke0sbSDxHSeUlbhuIX4eMwf1SpkUngcpw0OkWdFShSx+xJiPhiYXgkF1UVq74uw
+         eGlFKEBP7iUcADz5ZqeKoJxyOy4r7sasvOUpoKOdX77klXjAZXPkwvZO+FV1FZmySz8Q
+         4YkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683763745; x=1686355745;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Za2+jeiZw/3wYekYEcyNuKWRaZXywYW0iW1LDK1f/HU=;
+        b=VULWqw5PjwzzN/wlnfsh/ht7Lis4QbwTHSUnvcMF9VXRubpmzx+vQH9zQYRHLd8Ri0
+         ly5il/rKI8uT+vi9/TB1Of1xEyZRSRLj32J/hg+zvuWMITd64lXQli5UkhqKz1aBpTO1
+         tmvb9EoYq0Ppa4xr7hm/UC99b7Kjh4qNEpCuE5908KFpMGwYEzoh0EQlGzdr/9iXyAEH
+         jSoTO31cg3svn0PPPsFzheEq7gv2o7tQwm7wkdxTCHyrO/1n9VA3j8ucWqQzBtOkupqK
+         KTKpP0LR8t/YwyFOx/HspRavC7exmXrvAf/5weRHcww8ft73TYQ/80N64PX+Fzt3yV2/
+         E9Bg==
+X-Gm-Message-State: AC+VfDy3Pxfhv79tk7epWAEDljK1w6ALIap2C5l2MKZCJJpAktNJH6jN
+        eVZQ0/jDYJtCJvMx6DxFxpm9i59b4ZmMfQ9Z1sA=
+X-Google-Smtp-Source: ACHHUZ6BmM4QA43w2gB7zni4isOkOLF7ek1Fv3KU1Llkt2q3gyKPka4hUTH3UICV4/ciEkV6J9f4idUiJmUcMA4wow8=
+X-Received: by 2002:a05:6e02:1b08:b0:331:1267:31f9 with SMTP id
+ i8-20020a056e021b0800b00331126731f9mr9653791ilv.0.1683763744591; Wed, 10 May
+ 2023 17:09:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="NT7Vp7lOswVCjS8Z"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=wh2nmNs98AUpv6+BZ3x_bNh6ps+nuufQO2Sn6LdXCbC9A@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+References: <20230409164229.29777-1-ping.cheng@wacom.com> <CAF8JNhJudYKrzBuyaT5aYy+fzeaxtB6HALRrbHwYzjcwz+=S0g@mail.gmail.com>
+ <ZFmxMO6IyJx2/R1O@debian.me> <2023050922-zoologist-untaken-d73d@gregkh>
+In-Reply-To: <2023050922-zoologist-untaken-d73d@gregkh>
+From:   Ping Cheng <pinglinux@gmail.com>
+Date:   Wed, 10 May 2023 17:06:03 -0700
+Message-ID: <CAF8JNhJ9Q6+7O1pK-8SK_LYiJLsNYJLMyCaZbY73+1=-9jwdHw@mail.gmail.com>
+Subject: Re: [PATCH] HID: wacom: Set a default resolution for older tablets
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux Stable <stable@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="000000000000e1e9dd05fb5fcb3c"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,123 +67,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
---NT7Vp7lOswVCjS8Z
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-
-On Wed, May 10, 2023 at 06:09:35PM -0500, Linus Torvalds wrote:
-> On Wed, May 10, 2023 at 5:58 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > Thanks!  Turns out someone put the wrong "Fixes:" tag in that commit
-> > which is why I missed it.
-> 
-> Hmm. Presumably the real commit ceeadb83aea2 at some point got
-> rebased, and had had that other mentioned SHA1 before that.
-> 
-> It might be a good idea in general - not just for stable - if we had
-> some automation that said "this refers to a commit ID that doesn't
-> exist".
-
-We have that in linux-next today (or at least we used to, I took the
-scripts from linux-next and rely on them to catch this in my trees.)
-I cleaned up the scripts and posted them to the kernel workgroup mailing
-list a long time ago for any other maintainer to also use, I've attached
-it below as well.
-
-I run across this issue 2-3 times each -rc release, it's quite common
-but very low overall.
-
-thanks,
-
-greg k-h
-
---NT7Vp7lOswVCjS8Z
-Content-Type: application/x-sh
-Content-Disposition: attachment; filename="verify_fixes.sh"
+--000000000000e1e9dd05fb5fcb3c
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-#!/bin/bash=0A# SPDX-License-Identifier: GPL-2.0=0A#=0A# Copyright (C) 2019=
- Stephen Rothwell <sfr@canb.auug.org.au>=0A# Copyright (C) 2019 Greg Kroah-=
-Hartman <gregkh@linuxfoundation.org>=0A#=0A# Verify that the "Fixes:" tag i=
-s correct in a kernel commit=0A#=0A# usage:=0A#	verify_fixes.sh GIT_RANGE=
-=0A#=0A# To test just the HEAD commit do:=0A#	verify_fixes.sh HEAD^..HEAD=
-=0A#=0A#=0A# Thanks to Stephen Rothwell <sfr@canb.auug.org.au> for the majo=
-rity of this code=0A#=0A=0A# Only thing you might want to change here, the =
-location of where Linus's git=0A# tree is on your system:=0ALinus_tree=3D"/=
-home/gregkh/linux/work/torvalds/"=0A=0A####################################=
-######=0A# No need to touch anything below here=0A=0Asplit_re=3D'^([Cc][Oo]=
-[Mm][Mm][Ii][Tt])?[[:space:]]*([[:xdigit:]]{5,})([[:space:]]*)(.*)$'=0Anl=
-=3D$'\n'=0Atab=3D$'\t'=0A=0Ahelp()=0A{=0A	echo "error, git range not found"=
-=0A	echo "usage:"=0A	echo "	$0 GIT_RANGE"=0A	exit 1=0A}=0A=0A# Strip the le=
-ading and training spaces from a string=0Astrip_spaces()=0A{=0A	[[ "$1" =3D=
-~ ^[[:space:]]*(.*[^[:space:]])[[:space:]]*$ ]]=0A	echo "${BASH_REMATCH[1]}=
-"=0A}=0A=0Averify_fixes()=0A{=0A	git_range=3D$1=0A	error=3D0=0A	commits=3D$=
-(git rev-list --no-merges -i --grep=3D'^[[:space:]]*Fixes:' "${git_range}")=
-=0A	if [ -z "$commits" ]; then=0A	        return 0=0A	fi=0A=0A	for c in $co=
-mmits; do=0A=0A		commit_log=3D$(git log -1 --format=3D'%h ("%s")' "$c")=0A#=
-			commit_msg=3D"In commit:=0A#	$commit_log=0A#"=0A			commit_msg=3D"Commit:=
- $commit_log=0A"=0A=0A		fixes_lines=3D$(git log -1 --format=3D'%B' "$c" |=
-=0A				grep -i '^[[:space:]]*Fixes:')=0A=0A		while read -r fline; do=0A			[=
-[ "$fline" =3D~ ^[[:space:]]*[Ff][Ii][Xx][Ee][Ss]:[[:space:]]*(.*)$ ]]=0A		=
-	f=3D"${BASH_REMATCH[1]}"=0A#			fixes_msg=3D"	Fixes tag:=0A#		$fline=0A#	Ha=
-s these problem(s):=0A#"=0A			fixes_msg=3D"	Fixes tag: $fline=0A	Has these =
-problem(s):=0A"=0A			sha=3D=0A			subject=3D=0A			msg=3D=0A			=0A			if git l=
-og -1 --format=3D'%B' "$c" | tr '\n' '#' | grep -qF "##$fline##"; then=0A		=
-		msg=3D"${msg:+${msg}${nl}}${tab}${tab}- empty lines surround the Fixes ta=
-g"=0A			fi=0A			=0A			if [[ "$f" =3D~ $split_re ]]; then=0A				first=3D"${B=
-ASH_REMATCH[1]}"=0A				sha=3D"${BASH_REMATCH[2]}"=0A				spaces=3D"${BASH_RE=
-MATCH[3]}"=0A				subject=3D"${BASH_REMATCH[4]}"=0A				if [ "$first" ]; then=
-=0A					msg=3D"${msg:+${msg}${nl}}${tab}${tab}- leading word '$first' unexp=
-ected"=0A				fi=0A				if [ -z "$subject" ]; then=0A					msg=3D"${msg:+${msg=
-}${nl}}${tab}${tab}- missing subject"=0A				elif [ -z "$spaces" ]; then=0A	=
-				msg=3D"${msg:+${msg}${nl}}${tab}${tab}- missing space between the SHA1 =
-and the subject"=0A				fi=0A			else=0A				printf '%s%s\t\t- %s\n' "$commit_=
-msg" "$fixes_msg" 'No SHA1 recognised'=0A				commit_msg=3D''=0A				error=3D=
-1=0A				continue=0A			fi=0A			if ! git rev-parse -q --verify "$sha" >/dev/n=
-ull; then=0A				printf '%s%s\t\t- %s\n' "$commit_msg" "$fixes_msg" 'Target =
-SHA1 does not exist'=0A				commit_msg=3D''=0A				error=3D1=0A				continue=
-=0A			fi=0A=0A			if [ "${#sha}" -lt 12 ]; then=0A				msg=3D"${msg:+${msg}${=
-nl}}${tab}${tab}- SHA1 should be at least 12 digits long${nl}${tab}${tab}  =
-Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11${nl}$=
-{tab}${tab}  or later) just making sure it is not set (or set to \"auto\").=
-"=0A			fi=0A			# reduce the subject to the part between () if there=0A			if=
- [[ "$subject" =3D~ ^\((.*)\) ]]; then=0A				subject=3D"${BASH_REMATCH[1]}"=
-=0A			elif [[ "$subject" =3D~ ^\((.*) ]]; then=0A				subject=3D"${BASH_REMA=
-TCH[1]}"=0A				msg=3D"${msg:+${msg}${nl}}${tab}${tab}- Subject has leading =
-but no trailing parentheses"=0A			fi=0A=0A			# strip matching quotes at the=
- start and end of the subject=0A			# the unicode characters in the classes =
-are=0A			# U+201C LEFT DOUBLE QUOTATION MARK=0A			# U+201D RIGHT DOUBLE QUO=
-TATION MARK=0A			# U+2018 LEFT SINGLE QUOTATION MARK=0A			# U+2019 RIGHT SI=
-NGLE QUOTATION MARK=0A			re1=3D$'^[\"\u201C](.*)[\"\u201D]$'=0A			re2=3D$'^=
-[\'\u2018](.*)[\'\u2019]$'=0A			re3=3D$'^[\"\'\u201C\u2018](.*)$'=0A			if [=
-[ "$subject" =3D~ $re1 ]]; then=0A				subject=3D"${BASH_REMATCH[1]}"=0A			e=
-lif [[ "$subject" =3D~ $re2 ]]; then=0A				subject=3D"${BASH_REMATCH[1]}"=
-=0A			elif [[ "$subject" =3D~ $re3 ]]; then=0A				subject=3D"${BASH_REMATCH=
-[1]}"=0A				msg=3D"${msg:+${msg}${nl}}${tab}${tab}- Subject has leading but=
- no trailing quotes"=0A			fi=0A=0A			subject=3D$(strip_spaces "$subject")=
-=0A=0A			target_subject=3D$(git log -1 --format=3D'%s' "$sha")=0A			target_=
-subject=3D$(strip_spaces "$target_subject")=0A=0A			# match with ellipses=
-=0A			case "$subject" in=0A			*...)	subject=3D"${subject%...}"=0A				target=
-_subject=3D"${target_subject:0:${#subject}}"=0A				;;=0A			...*)	subject=3D=
-"${subject#...}"=0A				target_subject=3D"${target_subject: -${#subject}}"=
-=0A				;;=0A			*\ ...\ *)=0A				s1=3D"${subject% ... *}"=0A				s2=3D"${subj=
-ect#* ... }"=0A				subject=3D"$s1 $s2"=0A				t1=3D"${target_subject:0:${#s1=
-}}"=0A				t2=3D"${target_subject: -${#s2}}"=0A				target_subject=3D"$t1 $t2=
-"=0A				;;=0A			esac=0A			subject=3D$(strip_spaces "$subject")=0A			target_=
-subject=3D$(strip_spaces "$target_subject")=0A=0A			if [ "$subject" !=3D "$=
-{target_subject:0:${#subject}}" ]; then=0A				msg=3D"${msg:+${msg}${nl}}${t=
-ab}${tab}- Subject does not match target commit subject${nl}${tab}${tab}  J=
-ust use${nl}${tab}${tab}${tab}git log -1 --format=3D'Fixes: %h (\"%s\")'"=
-=0A			fi=0A			lsha=3D$(cd "$Linus_tree" && git rev-parse -q --verify "$sha"=
-)=0A			if [ -z "$lsha" ]; then=0A				count=3D$(git rev-list --count "$sha".=
-=2E"$c")=0A				if [ "$count" -eq 0 ]; then=0A					msg=3D"${msg:+${msg}${nl}=
-}${tab}${tab}- Target is not an ancestor of this commit"=0A				fi=0A			fi=
-=0A=0A			if [ "$msg" ]; then=0A				printf '%s%s%s\n' "$commit_msg" "$fixes_=
-msg" "$msg"=0A				commit_msg=3D''=0A				error=3D1=0A			fi=0A		done <<< "$fi=
-xes_lines"=0A	done=0A=0A	if [ ${error} -eq 1 ] ; then=0A		exit 1=0A	fi=0A}=
-=0A=0Agit_range=3D$1=0A=0Aif [ "${git_range}" =3D=3D "" ] ; then=0A	help=0A=
-fi=0A=0Averify_fixes "${git_range}"=0Aexit 0=0A
---NT7Vp7lOswVCjS8Z--
+On Mon, May 8, 2023 at 7:44=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> On Tue, May 09, 2023 at 09:34:24AM +0700, Bagas Sanjaya wrote:
+> > On Mon, May 08, 2023 at 06:05:02PM -0700, Ping Cheng wrote:
+> > > Hi Stable maintainers,
+> > >
+> > > This patch, ID 08a46b4190d3, fixes an issue for a few older devices.
+> > > It can be backported as is to all the current Long Term Supported
+> > > kernels.
+> > >
+> >
+> > Now that your fix has been upstreamed, can you provide a backport
+> > for each supported stable versions (v4.14 up to v6.3)?
+
+To speed up the process, I tested the patch on all stable branches.
+The upstream patch can be APPLIED to kernels 5.15 and later, AS IS.
+
+The attached patch applies to kernels 4.14 to 5.10. If you'd like me
+to send the patch in a separate email, please let me know. Thank you
+for your effort!
+
+> Why? That's not needed if the commit can be cherry-picked cleanly
+> everywhere.
+
+Thank you @Greg KH  for your support. The Linux community would not
+have got this far without people like you!
+
+Cheers,
+Ping
+
+--000000000000e1e9dd05fb5fcb3c
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="0001-HID-wacom-Set-a-default-resolution-for-older-tablets.patch"
+Content-Disposition: attachment; 
+	filename="0001-HID-wacom-Set-a-default-resolution-for-older-tablets.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lhidb8sx0>
+X-Attachment-Id: f_lhidb8sx0
+
+RnJvbSAzZWVmNjlkODQ5MDFmMWQ0MzY5YTQzNmY4N2IzMDQ5ZTQzMGI0YjM3IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBQaW5nIENoZW5nIDxwaW5nLmNoZW5nQHdhY29tLmNvbT4KRGF0
+ZTogV2VkLCAxMCBNYXkgMjAyMyAxMDoyMDoxNCAtMDcwMApTdWJqZWN0OiBbUEFUQ0ggTG9uZ3Rl
+cm0gNC4xMSAxLzVdIEhJRDogd2Fjb206IFNldCBhIGRlZmF1bHQgcmVzb2x1dGlvbiBmb3Igb2xk
+ZXIgdGFibGV0cwoKU29tZSBvbGRlciB0YWJsZXRzIG1heSBub3QgcmVwb3J0IHBoeXNpY2FsIG1h
+eGltdW0gZm9yIFgvWQpjb29yZGluYXRlcy4gU2V0IGEgZGVmYXVsdCB0byBwcmV2ZW50IHVuZGVm
+aW5lZCByZXNvbHV0aW9uLgoKU2lnbmVkLW9mZi1ieTogUGluZyBDaGVuZyA8cGluZy5jaGVuZ0B3
+YWNvbS5jb20+Ci0tLQogZHJpdmVycy9oaWQvd2Fjb21fd2FjLmMgfCAxMiArKysrKysrKysrLS0K
+IDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvaGlkL3dhY29tX3dhYy5jIGIvZHJpdmVycy9oaWQvd2Fjb21fd2FjLmMK
+aW5kZXggNDE3ZTEwODM1NTZiLi45MjFkNTE4NDE5NmQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvaGlk
+L3dhY29tX3dhYy5jCisrKyBiL2RyaXZlcnMvaGlkL3dhY29tX3dhYy5jCkBAIC0xNzM0LDYgKzE3
+MzQsNyBAQCBzdGF0aWMgdm9pZCB3YWNvbV9tYXBfdXNhZ2Uoc3RydWN0IGlucHV0X2RldiAqaW5w
+dXQsIHN0cnVjdCBoaWRfdXNhZ2UgKnVzYWdlLAogCWludCBmbWF4ID0gZmllbGQtPmxvZ2ljYWxf
+bWF4aW11bTsKIAl1bnNpZ25lZCBpbnQgZXF1aXZhbGVudF91c2FnZSA9IHdhY29tX2VxdWl2YWxl
+bnRfdXNhZ2UodXNhZ2UtPmhpZCk7CiAJaW50IHJlc29sdXRpb25fY29kZSA9IGNvZGU7CisJaW50
+IHJlc29sdXRpb24gPSBoaWRpbnB1dF9jYWxjX2Fic19yZXMoZmllbGQsIHJlc29sdXRpb25fY29k
+ZSk7CiAKIAlpZiAoZXF1aXZhbGVudF91c2FnZSA9PSBISURfREdfVFdJU1QpIHsKIAkJcmVzb2x1
+dGlvbl9jb2RlID0gQUJTX1JaOwpAQCAtMTc1Niw4ICsxNzU3LDE1IEBAIHN0YXRpYyB2b2lkIHdh
+Y29tX21hcF91c2FnZShzdHJ1Y3QgaW5wdXRfZGV2ICppbnB1dCwgc3RydWN0IGhpZF91c2FnZSAq
+dXNhZ2UsCiAJc3dpdGNoICh0eXBlKSB7CiAJY2FzZSBFVl9BQlM6CiAJCWlucHV0X3NldF9hYnNf
+cGFyYW1zKGlucHV0LCBjb2RlLCBmbWluLCBmbWF4LCBmdXp6LCAwKTsKLQkJaW5wdXRfYWJzX3Nl
+dF9yZXMoaW5wdXQsIGNvZGUsCi0JCQkJICBoaWRpbnB1dF9jYWxjX2Fic19yZXMoZmllbGQsIHJl
+c29sdXRpb25fY29kZSkpOworCisJCS8qIG9sZGVyIHRhYmxldCBtYXkgbWlzcyBwaHlzaWNhbCB1
+c2FnZSAqLworCQlpZiAoKGNvZGUgPT0gQUJTX1ggfHwgY29kZSA9PSBBQlNfWSkgJiYgIXJlc29s
+dXRpb24pIHsKKwkJCXJlc29sdXRpb24gPSBXQUNPTV9JTlRVT1NfUkVTOworCQkJaGlkX3dhcm4o
+aW5wdXQsCisJCQkJICJXYWNvbSB1c2FnZSAoJWQpIG1pc3NpbmcgcmVzb2x1dGlvbiBcbiIsCisJ
+CQkJIGNvZGUpOworCQl9CisJCWlucHV0X2Fic19zZXRfcmVzKGlucHV0LCBjb2RlLCByZXNvbHV0
+aW9uKTsKIAkJYnJlYWs7CiAJY2FzZSBFVl9LRVk6CiAJCWlucHV0X3NldF9jYXBhYmlsaXR5KGlu
+cHV0LCBFVl9LRVksIGNvZGUpOwotLSAKMi40MC4xCgo=
+--000000000000e1e9dd05fb5fcb3c--
