@@ -2,180 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03DB56FFBB5
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 23:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF0E6FFBBC
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 23:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238084AbjEKVMu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 17:12:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57484 "EHLO
+        id S239272AbjEKVPg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 17:15:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjEKVMt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 17:12:49 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2065.outbound.protection.outlook.com [40.107.244.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9F31BF2;
-        Thu, 11 May 2023 14:12:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ftDymdC01hrv4NPo45OfW9ZI4/qpuFtf1w+94NMovgEd1300yY1edMV4GV6CPYD7kTEf202aekFjqBVOEOEQoAdwhtcb4GkTDP7BOLwOwkrcc7MvcrsxrlEiySAL7kThBHtDZ19fGkNk6c6I8i7gkYvp6yH1xgJcCRaapsUdMvGZvDnjxjEI1EvAFAG83B7c+NtkOPR3Ph2wXD7rQeGwEMAcmnMmK+uGhhg75PbJaZK0uw6B8j7h3fTGJdB1U0+O8rnmH3PrDi/ebNCGMTA2dxCj3qsnlSqAXGcnjqsJpunV/O7pD1VR462nA9nkhuj1MRv9q6h8Z2tfO536NNgLdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lJG/Z9yl1w5kC1ssgM2AIsWhjArdmjCJZAqKELPmNiY=;
- b=SWkbD0UMU0W7dUYJTjuzpCnTCfhIToxCS29YRVz8FdBqeH0/+sZ6nIJhLVgbBZxhV+ETi6/RvzYx9BZuxaGJqCzqVgSyv0J3HWWa3grSGIvW12+5slN3UUsKNWkdAWNSNVlbmtKKh3/oHzEggFGuTUWG/6I+vgPrBcybOX7hVV4PkVBJSau2UR+F7PlQq3Z91ZIYVCe6k6OYJwxbY5BqAxe8CeHuf8UqUak4Z2HFi9I7iI1g4ebBFkb0Yp0/ScEu36dqy8olrQEP+Lq77WkpJuO0whaxYByHNGo5Vt1nGQG0Mz0xsKKuiz/SzdUp3t5Iorl1nga9o/Kdwu62QnosAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lJG/Z9yl1w5kC1ssgM2AIsWhjArdmjCJZAqKELPmNiY=;
- b=Z97WpyOF2Ncr9QMD6q3NPL/4JBPbcyeLXACYsFKNagDx8LCf8IE3XXgXOykGFfmtG16+ENdFpaCnSVXfnj64jjn0b+jvp6l8sYPcyops74NyXzXWXnPREMT1BGKzs384mT8NE5eolJ4jfPsFQN2Atpu/Qsh9GLk94FTQDwbYJws=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
- by SA0PR12MB4479.namprd12.prod.outlook.com (2603:10b6:806:95::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.18; Thu, 11 May
- 2023 21:12:45 +0000
-Received: from BN9PR12MB5115.namprd12.prod.outlook.com
- ([fe80::f170:8d72:ca64:bb26]) by BN9PR12MB5115.namprd12.prod.outlook.com
- ([fe80::f170:8d72:ca64:bb26%7]) with mapi id 15.20.6387.022; Thu, 11 May 2023
- 21:12:45 +0000
-Message-ID: <1435aa84-c45c-43ca-eac9-d9f85ebcf224@amd.com>
-Date:   Thu, 11 May 2023 17:12:43 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] drm/amdkfd: Fix potential deallocation of previously
- deallocated memory.
-Content-Language: en-US
-To:     Daniil Dulov <d.dulov@aladdin.ru>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Oak Zeng <oak.zeng@intel.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, "# v5 . 3+" <stable@vger.kernel.org>,
-        lvc-project@linuxtesting.org
-References: <20230511112314.29322-1-d.dulov@aladdin.ru>
-From:   Felix Kuehling <felix.kuehling@amd.com>
-Organization: AMD Inc.
-In-Reply-To: <20230511112314.29322-1-d.dulov@aladdin.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR01CA0130.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:1::30) To BN9PR12MB5115.namprd12.prod.outlook.com
- (2603:10b6:408:118::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|SA0PR12MB4479:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9dce1869-c8b5-4b90-cfdb-08db52647720
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KRIEyLpyd7yt66u42QJC45VgkiAHRsIp9txts/5W8WUDjXgf6WXMNh2GBCAMFVObJXI7aKISFwkhJgBZyxeD5f+pBee8YV4mlcADSrOVC2VQ4g+mxA2pqO3Fv7YPNRJkCL31ReqqI6MW1ZnJ5LH5wnGGX1wBpNI9A2M1c3LrnEjCKpvmbwRS0qbdN1hApzibyxT41TJZsbtrFFX6MSMT7rSI0BJaHZr3ifSOvasR5SU8EshU9hhtYtawhuwZP3pXyzIHl0veApPoZ+4MsOZ41nBtlS5pA7EToR6CP4zHzNjaUDGDk2URa+zn+XGJ19WrMhO6UppRhQLJZ9wtH3UtXXdemcbbNV7AW6jgJSc2FzhbO7JffSJdPBZbU9WB/Vr/nrXeoMTxiAUj1v7KbwlTQor18wRH5cXQJQCD9Q6ZU03CgQDvfm+mRl5KwxMHVOTguFa0wocu6Qe/YVdwsUmmYI4DpQQ/xx1Yjf0/T9P2fLqo1/CPaUaUPGQohE8HXtD5oIB7w/xpXPUwF9CabBECoRKs8JJQHV4brBnPdphKCNlOHvWvbA5g572IqRCHKp0SRyLypOgMLHTpyn63qGQ+akf/9iQv1YjfCrgofUZxMmDUiLe22myh+2Eot9H91eBzgC98yTnG6nsQjoe0/+Gz7Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(346002)(376002)(396003)(39860400002)(451199021)(31696002)(478600001)(66476007)(36916002)(44832011)(316002)(86362001)(41300700001)(54906003)(31686004)(66946007)(66556008)(4326008)(6916009)(83380400001)(66899021)(38100700002)(2616005)(8936002)(186003)(8676002)(6512007)(6506007)(5660300002)(36756003)(53546011)(2906002)(26005)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YXhzUXE0MWltaTVnRURxZFlqa2t1clZRcHlNY2paTTZKbVdQcE0zeDJCRWwv?=
- =?utf-8?B?aEU0bmZ5RTM2NFE1Z0g3cjVEeXFVOGRSY3ZicUhKUEZMMVhhNzEwYnRwd3hl?=
- =?utf-8?B?UHo0OFVaRXNRQlBLRWViTHN1Nms5bVNlZVJRMGUxd2Q5Ym5RR3dtb3BpTk81?=
- =?utf-8?B?QmhxQnhWbjNkQXMyMlk3cUdSM0FFTHdSQWpIcFZ6R2tpTjJaeVZ5Nm52OCtH?=
- =?utf-8?B?Rm1iMmgyTGVtbmFFejhycnpNZFNaR0tiQnZCak9BUi9SRE5KQTFoYnFsdUNG?=
- =?utf-8?B?a2VteEdFZzZlQ1R4b0R2WWRTZUFCL05iWVd0NklRVXFtSWw5YStYU0R2Y2th?=
- =?utf-8?B?b2NZdWorazZjYk80YitPaTJpRlRzZnU2Vk5PYmp3WmxHWWl6RE1NTUFwSDMz?=
- =?utf-8?B?UU0vTTVyWFYweU9OMlhsRFVzeWp3ZHlPUDVWaVJITHU1YzVONkVWUUJiUVdw?=
- =?utf-8?B?MFgzSm8xTVp1KytKUXdPKzZFZUhINlpkUk40SE5BMGFHWEJBL3ErdFV2d0Nl?=
- =?utf-8?B?N3NnTmE4Z082T0dyWEdndkRnazJxNS9KalJYeGhUOHgzWnR5TnV3K0xxUktH?=
- =?utf-8?B?NVFJS3c3Uis5NzBtN09HTUxhbE9KajAyZ1IyV04zQ1ZxQWlMQXF5T2pYYUVv?=
- =?utf-8?B?T2ltU0R1ZlhETk5KV0xwcCtwbVM3LzlVODNFbkdDcTRyUGlzbWE3Y09haVBx?=
- =?utf-8?B?Nm1BS0RHY0cyYWdnRDBITFJHTGpjMjk5dWMybGdzZ2x6Qm1xN1VRVTRDWHQ0?=
- =?utf-8?B?MVhLSjFYMER6UUpudG1rVnBlbDU0U3VVODNoZFFad01GZnoyL0ZVeUNYMTlw?=
- =?utf-8?B?d1BrUERMc3Mraml3SmJzaXZRa3J3bjdBODVUSVZ0Qmg5VDhETWYrY3l0Wnl3?=
- =?utf-8?B?NUZPWG42NmVraWpaL2MzUmFHYm5KMWt2VmNWZngyaDFWcFI4YW5IaUtUMUk5?=
- =?utf-8?B?WWVhQlh1emdUSDd5ck1nQm40cjY3NC9oL3d2N0dScjlIczBQeG1tREJwMzEv?=
- =?utf-8?B?VFR5OHRmcGpOR24xZUlCNVg5Tm1hell4RFlQZk1UdGpEbTZEQVdQUE9nQXda?=
- =?utf-8?B?b0lkNmx3SU9rZEYxUUkzK3dva0d5MC9odGhlUFYydmE0MER4U0hvYVRxOTZz?=
- =?utf-8?B?VGlLSStoRWVIM05ZZXo1TWxnTzZTbGRoNnUwclJHYWl3WXNTWUdvek8zWjFO?=
- =?utf-8?B?TWxrN05HVWpiM1dOd08vVTh3T3ZGViswdnNSZ3RFMzllbTBaQkI0ZGJab0hr?=
- =?utf-8?B?UFZuKzdoV3N1TEswQU5lNHNKU0JrOTdUQ2lmalVuck5MazVjSTNrd25nSTVN?=
- =?utf-8?B?a3VTTHM1R3BRbjkxNHl3eEFGKy85cDQ3dmVEWjFYR01vb3JrNVJ6VVF2OUNU?=
- =?utf-8?B?QThRVDJpSFBNQzkyOGorZk82RFNNYjJpRkxsZ2l5RGtwaTl0aDNleVJ5ajFD?=
- =?utf-8?B?Y1pxYnZUR1BCaFd4SEpyNmhIQjdGeHBOb0FZNGp4K1dUNjhxNmVtWG45Q2hI?=
- =?utf-8?B?OTYyUzBNL0g1SlBwNUZwT3dHOXhoa3lSelVrVjJ1bnFqNUtJNWV1MEprNkdw?=
- =?utf-8?B?VTZQbC8xakIvSVZuMGM0SlJLSmxualRnN3NGU2RnUnBDTE1lVjkxQ0dFdEV0?=
- =?utf-8?B?M1l4V2htWkFTZkI1NjFJcmxXQng1VjlRbWh3RjNESGpSek50MDdvSFZNQ25E?=
- =?utf-8?B?U1VVcGVUK2VFQm8wUkxRM2ZTVTFuR1RxNEZ1WWNGRjB6RkM2cklQR1dMUzNI?=
- =?utf-8?B?TmdDdGlCaW0ycmZXaDQ0Q1VBS0NYQ2dQUXdaVUZGbHU5bTlkNWRKbFV0SC8z?=
- =?utf-8?B?RzU4QjlQSEJzSEhoQmdNUEUyTDlFOWdCR2ErVit3U0pmMGRsRi81WjhpRkcy?=
- =?utf-8?B?OVBBcFE2ci8zTEM0MzM1am9kOWZvZEpQak5JcGFQMVlHdVg4aXJoVGpJK0tJ?=
- =?utf-8?B?R3VQVnlRaHlETkdJeGJNRUJaaURZdHB3NkpTdExDSzNkelp0Y2hLZU1EYjBG?=
- =?utf-8?B?cUN2SExPeWVrQTBoQlJNeHpVV0gvMEExZW8wRHlKdFg2eDMyY2FONVJXVmpG?=
- =?utf-8?B?T3U4WnN3S003ZUNyMkpjREZxNGNLVUhvblp4N3VRZTZDNnp6M1lqcEpmcGRB?=
- =?utf-8?Q?610INuunDD4vKMVWroRDcr9Co?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9dce1869-c8b5-4b90-cfdb-08db52647720
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2023 21:12:45.3423
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4v0MHHCRAfd5MLX18S3M3wxPpBt1PCGWRyFEA+pA9KKnENSLs6+jheOdlow4O4/qzYGyZy2Y9AOZDPHezmLstg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4479
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S238866AbjEKVPf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 17:15:35 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E0271FFF
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 14:15:34 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-ba6f530c9c7so499098276.3
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 14:15:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683839733; x=1686431733;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eYt/rFt4ATArTlkw2U5UMFdKJHBmWLe43VjEXYy+lio=;
+        b=lYv4EGgeOaaTWEyU/KcDRMofS3MH1008jKthME3mqsgtNK0qF3xIcEO3PIPE5PhVo2
+         6dNniCNbu6/CAxK+XIGlEwhCncsGpJwxBry3PUM5tJRHfRbmPLxF+b7GbTwCUG59eBOO
+         Y4WUaFxv9PiIl/fDq2mOpAXWI4/HMucX55WmwsRxWS8Em3Uo1OnDl3B91J5A5xuUTjTQ
+         MBF6bvZwNkQpRFdOwoXxPg0PU6AjSOo9OIHj2XVkm/PjASbiliUJ0yzFn0W1EFAtgEtC
+         90KSpYIEkSxWdJA7O/RhAtLlLuV+RHJuko8iSVx7OBrTJjKp067mjikten/jCUHBtoKM
+         ujHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683839733; x=1686431733;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eYt/rFt4ATArTlkw2U5UMFdKJHBmWLe43VjEXYy+lio=;
+        b=isiCQaBXclTtwfDxG1KzAAmf6Qsb38aqyCqA1F3nragOPs4xQa1ARvyXNnSuHH5Xoj
+         EnQMMAhLWcBV0+tOana1yqwapjdh4DqRVcquH8c2pOKbUizSeVgxym4trVUYS4rYDS/3
+         e+Bv3ytHH2pcWDt8Ct5OAcCk8cZpdB1VmIrxTgcfZlAF4zsa6rPR7gDcivHbOOCZJ9/u
+         S0U4vUd1ukhCdxZXCMgYZDOPU3sWeXQ1us4xZhwalcg7MCdbZN6Z1a+659BuXTa51+5e
+         BB8m7kJ6iP5fxY8AU27pXwyrhebS5S+EIUuKGicjwP95mXH9ev8YGN+rUNf27dGaKdLA
+         TfBQ==
+X-Gm-Message-State: AC+VfDzQvejMhjJSDBl9fAOb8gStYHpFEgNyqOB8C+M7ZXvamTVCPo9X
+        ktfNR23urZBPW1fetf6usoO0cYjpTEo=
+X-Google-Smtp-Source: ACHHUZ5IhR7PpbWupkdM3XbIo6vUvgVmG4Gxs9rkF8nEzxgMk7qZZC8AI71C9esWqCKNDDxGbZEiFlirgco=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:114e:b0:b4a:3896:bc17 with SMTP id
+ p14-20020a056902114e00b00b4a3896bc17mr10141981ybu.0.1683839733419; Thu, 11
+ May 2023 14:15:33 -0700 (PDT)
+Date:   Thu, 11 May 2023 14:15:31 -0700
+In-Reply-To: <20230508154709.30043-1-minipli@grsecurity.net>
+Mime-Version: 1.0
+References: <20230508154709.30043-1-minipli@grsecurity.net>
+Message-ID: <ZF1a8xIGLwcdJDVZ@google.com>
+Subject: Re: [PATCH 5.15 0/8] KVM CR0.WP series backport
+From:   Sean Christopherson <seanjc@google.com>
+To:     Mathias Krause <minipli@grsecurity.net>
+Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+        kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-05-11 07:23, Daniil Dulov wrote:
-> Pointer mqd_mem_obj can be deallocated in kfd_gtt_sa_allocate().
-> The function then returns non-zero value, which causes the second deallocation.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Fixes: d1f8f0d17d40 ("drm/amdkfd: Move non-sdma mqd allocation out of init_mqd")
-> Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+On Mon, May 08, 2023, Mathias Krause wrote:
+> This is a backport of the CR0.WP KVM series[1] to Linux v5.15. It
+> differs from the v6.1 backport as in needing additional prerequisite
+> patches from Lai Jiangshan (and fixes for those) to ensure the
+> assumption it's safe to let CR0.WP be a guest owned bit still stand.
 
-Thanks. I am applying this patch to amd-staging-drm-next.
+NAK.
 
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+The CR0.WP changes also very subtly rely on commit 2ba676774dfc ("KVM: x86/mmu:
+cleanup computation of MMU roles for two-dimensional paging"), which hardcodes
+WP=1 in the mmu role.  Without that, KVM will end up in a weird state when
+reinitializing the MMU context without reloading the root, as KVM will effectively
+change the role of an active root.  E.g. child pages in the legacy MMU will have
+a mix of WP=0 and WP=1 in their role.
 
-
-> ---
-> v2: Move if (retval) inside previous if as Andi Shyti <andi.shyti@linux.intel.com> suggested.
->   drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 13 +++++++------
->   1 file changed, 7 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-> index 3b6f5963180d..dadeb2013fd9 100644
-> --- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-> @@ -113,18 +113,19 @@ static struct kfd_mem_obj *allocate_mqd(struct kfd_dev *kfd,
->   			&(mqd_mem_obj->gtt_mem),
->   			&(mqd_mem_obj->gpu_addr),
->   			(void *)&(mqd_mem_obj->cpu_ptr), true);
-> +
-> +		if (retval) {
-> +			kfree(mqd_mem_obj);
-> +			return NULL;
-> +		}
->   	} else {
->   		retval = kfd_gtt_sa_allocate(kfd, sizeof(struct v9_mqd),
->   				&mqd_mem_obj);
-> -	}
-> -
-> -	if (retval) {
-> -		kfree(mqd_mem_obj);
-> -		return NULL;
-> +		if (retval)
-> +			return NULL;
->   	}
->   
->   	return mqd_mem_obj;
-> -
->   }
->   
->   static void init_mqd(struct mqd_manager *mm, void **mqd,
+The inconsistency may or may not cause functional problems (I honestly don't know),
+but this missed dependency is exactly the type of problem that I am/was worried
+about with respect to backporting these changes all the way to 5.15.  I'm simply
+not comfortable backporting these changes due to the number of modifications and
+enhancements that we've made to the TDP MMU, and to KVM's MMU handling in general,
+between 5.15 and 6.1.
