@@ -2,151 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4AE6FF17B
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A83226FF17D
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 14:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236865AbjEKM1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 08:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60304 "EHLO
+        id S237764AbjEKM2Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 08:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237327AbjEKM1C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:27:02 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0537E1FED
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:27:00 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id A415821BEE;
-        Thu, 11 May 2023 12:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1683808019; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Xy1l2ss8E338uG329wii5yR77yH6SJsF4p9AZPUdgMY=;
-        b=mla5Tjn/xcmFfQojDy2kLlbUDzspUu5niuFvnIaQKIkFchSoAhcp5iz7hkkLldYKsApK8F
-        L7RbD6L4K5MBDHE5vF5EG6FPJrdQDJRHixO6HGmgu0Zm1osnZpsGhM8wXeeOpi6Jls+H4t
-        fDwflVN7Dd3Zjek1ZZDx5tT1kfD/ikY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1683808019;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Xy1l2ss8E338uG329wii5yR77yH6SJsF4p9AZPUdgMY=;
-        b=VBi0nRUFr4+1/cl0qWjrde72nDuaI1P/c2aLYox2QVwV95qQgQAwqL7NlKoLCy3bOAmAOA
-        ZBL/8Kn0IuYb2PCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 70914134B2;
-        Thu, 11 May 2023 12:26:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id f4yJGhPfXGStAwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 11 May 2023 12:26:59 +0000
-Message-ID: <3cdf3215-99ac-5000-1911-28639c4e6248@suse.de>
-Date:   Thu, 11 May 2023 14:26:58 +0200
+        with ESMTP id S237327AbjEKM2X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 08:28:23 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F667198C
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 05:28:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683808103; x=1715344103;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Zfewlhwzgj/TgmvZ/Ivx2TWoDVyRGnBFFfb5f4Sx4mQ=;
+  b=eLDF0UvxZjiBWWJ4EHbB9idSnKBZxQOoRozAqHeHw6mPC0wrqC/MMs3F
+   6rSbbts9yFgpEz7Pergjem15f6pWDJeZDVWDOcgMGuY5ncVtR5umdOiKn
+   63YTV1ElAuwdwZWpQNHhch7/I+Rr9ImafzZwOoj0iN6zGbH8kS3RspGSD
+   +lg2D4/n66mFdDVPuR+BCxy7jd0Geo+3i7om+yLSVe9/SZIxTxD2PgJYT
+   kkWhq13i0FmYFP2kp82RwzB3g/t9rKvm2mfZs4GG8NKYERziFwHrp0tRX
+   KeSqiyZD3iCmjm7i4rg4hOKXDjhoOLJBvAcv+1LDJjBU0sXukeslAtTYh
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="347955428"
+X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
+   d="scan'208";a="347955428"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 05:28:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="811573953"
+X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
+   d="scan'208";a="811573953"
+Received: from jsanche3-mobl1.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.39.112])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2023 05:28:21 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     stable@vger.kernel.org
+Cc:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 5.15.y] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
+Date:   Thu, 11 May 2023 15:27:58 +0300
+Message-Id: <20230511122758.19505-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <2023050627-kept-container-b02a@gregkh>
+References: <2023050627-kept-container-b02a@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH v2] drm/mgag200: Fix gamma lut not initialized.
-Content-Language: en-US
-To:     Jocelyn Falempe <jfalempe@redhat.com>,
-        dri-devel@lists.freedesktop.org, airlied@redhat.com,
-        javierm@redhat.com, lyude@redhat.com
-Cc:     stable@vger.kernel.org, Phil Oester <kernel@linuxace.com>
-References: <20230510131034.284078-1-jfalempe@redhat.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230510131034.284078-1-jfalempe@redhat.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------ep00Q1gUqxYrBb4sUMKF3PpG"
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ep00Q1gUqxYrBb4sUMKF3PpG
-Content-Type: multipart/mixed; boundary="------------0Gsj77Aht7BoEG0XSjodIJB6";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Jocelyn Falempe <jfalempe@redhat.com>, dri-devel@lists.freedesktop.org,
- airlied@redhat.com, javierm@redhat.com, lyude@redhat.com
-Cc: stable@vger.kernel.org, Phil Oester <kernel@linuxace.com>
-Message-ID: <3cdf3215-99ac-5000-1911-28639c4e6248@suse.de>
-Subject: Re: [PATCH v2] drm/mgag200: Fix gamma lut not initialized.
-References: <20230510131034.284078-1-jfalempe@redhat.com>
-In-Reply-To: <20230510131034.284078-1-jfalempe@redhat.com>
+There's a potential race before THRE/TEMT deasserts when DMA Tx is
+starting up (or the next batch of continuous Tx is being submitted).
+This can lead to misdetecting Tx empty condition.
 
---------------0Gsj77Aht7BoEG0XSjodIJB6
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+It is entirely normal for THRE/TEMT to be set for some time after the
+DMA Tx had been setup in serial8250_tx_dma(). As Tx side is definitely
+not empty at that point, it seems incorrect for serial8250_tx_empty()
+claim Tx is empty.
 
-SGkNCg0KQW0gMTAuMDUuMjMgdW0gMTU6MTAgc2NocmllYiBKb2NlbHluIEZhbGVtcGU6DQo+
-IFdoZW4gbWdhZzIwMCBzd2l0Y2hlZCBmcm9tIHNpbXBsZSBLTVMgdG8gcmVndWxhciBhdG9t
-aWMgaGVscGVycywNCj4gdGhlIGluaXRpYWxpemF0aW9uIG9mIHRoZSBnYW1tYSBzZXR0aW5n
-cyB3YXMgbG9zdC4NCj4gVGhpcyBsZWFkcyB0byBhIGJsYWNrIHNjcmVlbiwgaWYgdGhlIGJp
-b3MvdWVmaSBkb2Vzbid0IHVzZSB0aGUgc2FtZQ0KPiBwaXhlbCBjb2xvciBkZXB0aC4NCj4g
-DQo+IHYyOiByZWJhc2Ugb24gdG9wIG9mIGRybS1taXNjLWZpeGVzLCBhbmQgYWRkIENjIHN0
-YWJsZSB0YWcuDQoNCkxvb2tzIGdvb2QuIFBsZWFzZSBhZGQgdGhlIHBhdGNoIHRvIGRybS1t
-aXNjLWZpeGVzLg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiBMaW5rOiBodHRw
-czovL2J1Z3ppbGxhLnJlZGhhdC5jb20vc2hvd19idWcuY2dpP2lkPTIxNzExNTUNCj4gRml4
-ZXM6IDFiYWY5MTI3YzQ4MiAoImRybS9tZ2FnMjAwOiBSZXBsYWNlIHNpbXBsZS1LTVMgd2l0
-aCByZWd1bGFyIGF0b21pYyBoZWxwZXJzIikNCj4gQ2M6IDxzdGFibGVAdmdlci5rZXJuZWwu
-b3JnPg0KPiBUZXN0ZWQtYnk6IFBoaWwgT2VzdGVyIDxrZXJuZWxAbGludXhhY2UuY29tPg0K
-PiBSZXZpZXdlZC1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+
-DQo+IFNpZ25lZC1vZmYtYnk6IEpvY2VseW4gRmFsZW1wZSA8amZhbGVtcGVAcmVkaGF0LmNv
-bT4NCj4gLS0tDQo+ICAgZHJpdmVycy9ncHUvZHJtL21nYWcyMDAvbWdhZzIwMF9tb2RlLmMg
-fCA1ICsrKysrDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQ0KPiANCj4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9tZ2FnMjAwL21nYWcyMDBfbW9kZS5jIGIv
-ZHJpdmVycy9ncHUvZHJtL21nYWcyMDAvbWdhZzIwMF9tb2RlLmMNCj4gaW5kZXggMGE1YWFm
-NzgxNzJhLi41NzZjNGM4MzhhMzMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvZ3B1L2RybS9t
-Z2FnMjAwL21nYWcyMDBfbW9kZS5jDQo+ICsrKyBiL2RyaXZlcnMvZ3B1L2RybS9tZ2FnMjAw
-L21nYWcyMDBfbW9kZS5jDQo+IEBAIC02NDAsNiArNjQwLDExIEBAIHZvaWQgbWdhZzIwMF9j
-cnRjX2hlbHBlcl9hdG9taWNfZW5hYmxlKHN0cnVjdCBkcm1fY3J0YyAqY3J0Yywgc3RydWN0
-IGRybV9hdG9taWNfDQo+ICAgCWlmIChmdW5jcy0+cGl4cGxsY19hdG9taWNfdXBkYXRlKQ0K
-PiAgIAkJZnVuY3MtPnBpeHBsbGNfYXRvbWljX3VwZGF0ZShjcnRjLCBvbGRfc3RhdGUpOw0K
-PiAgIA0KPiArCWlmIChjcnRjX3N0YXRlLT5nYW1tYV9sdXQpDQo+ICsJCW1nYWcyMDBfY3J0
-Y19zZXRfZ2FtbWEobWRldiwgZm9ybWF0LCBjcnRjX3N0YXRlLT5nYW1tYV9sdXQtPmRhdGEp
-Ow0KPiArCWVsc2UNCj4gKwkJbWdhZzIwMF9jcnRjX3NldF9nYW1tYV9saW5lYXIobWRldiwg
-Zm9ybWF0KTsNCj4gKw0KPiAgIAltZ2FnMjAwX2VuYWJsZV9kaXNwbGF5KG1kZXYpOw0KPiAg
-IA0KPiAgIAlpZiAoZnVuY3MtPmVuYWJsZV92aWRyc3QpDQo+IA0KPiBiYXNlLWNvbW1pdDog
-YTI2Y2MyOTM0MzMxYjU3YjVhNzE2NGJmZjM0NGYwYTJlYzI0NWZjMA0KDQotLSANClRob21h
-cyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJl
-IFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVl
-cm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBN
-Y0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
+Fix the race by also checking in serial8250_tx_empty() whether there's
+DMA Tx active.
 
+Note: This fix only addresses in-kernel race mainly to make using
+TCSADRAIN/FLUSH robust. Userspace can still cause other races but they
+seem userspace concurrency control problems.
 
---------------0Gsj77Aht7BoEG0XSjodIJB6--
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230317113318.31327-3-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 146a37e05d620cef4ad430e5d1c9c077fe6fa76f)
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+ drivers/tty/serial/8250/8250.h      | 12 ++++++++++++
+ drivers/tty/serial/8250/8250_port.c | 12 +++++++++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
---------------ep00Q1gUqxYrBb4sUMKF3PpG
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
+index b3abc29aa927..bb1a98c97adf 100644
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -349,6 +349,13 @@ static inline void serial8250_do_prepare_rx_dma(struct uart_8250_port *p)
+ 	if (dma->prepare_rx_dma)
+ 		dma->prepare_rx_dma(p);
+ }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	return dma && dma->tx_running;
++}
+ #else
+ static inline int serial8250_tx_dma(struct uart_8250_port *p)
+ {
+@@ -364,6 +371,11 @@ static inline int serial8250_request_dma(struct uart_8250_port *p)
+ 	return -1;
+ }
+ static inline void serial8250_release_dma(struct uart_8250_port *p) { }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	return false;
++}
+ #endif
+ 
+ static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 691e7a07565c..a01085791e13 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1984,19 +1984,25 @@ static int serial8250_tx_threshold_handle_irq(struct uart_port *port)
+ static unsigned int serial8250_tx_empty(struct uart_port *port)
+ {
+ 	struct uart_8250_port *up = up_to_u8250p(port);
++	unsigned int result = 0;
+ 	unsigned long flags;
+ 	unsigned int lsr;
+ 
+ 	serial8250_rpm_get(up);
+ 
+ 	spin_lock_irqsave(&port->lock, flags);
+-	lsr = serial_port_in(port, UART_LSR);
+-	up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
++	if (!serial8250_tx_dma_running(up)) {
++		lsr = serial_port_in(port, UART_LSR);
++		up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
++
++		if ((lsr & BOTH_EMPTY) == BOTH_EMPTY)
++			result = TIOCSER_TEMT;
++	}
+ 	spin_unlock_irqrestore(&port->lock, flags);
+ 
+ 	serial8250_rpm_put(up);
+ 
+-	return (lsr & BOTH_EMPTY) == BOTH_EMPTY ? TIOCSER_TEMT : 0;
++	return result;
+ }
+ 
+ unsigned int serial8250_do_get_mctrl(struct uart_port *port)
+-- 
+2.30.2
 
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmRc3xIFAwAAAAAACgkQlh/E3EQov+DH
-txAAi93YTwBzlMczeRk501ES8kZbz9M923Dhu1mweDhVf1CPwsTtOLl5ETSu3kOBZNYZQwGegOPH
-GDWi0p/yGJ2SsLy1gEIlm2WA0NdQS+qf15C26Ae+O4ukHCYyS0+rydGkAD07mhcXrwJivwuFJEe8
-TFj0DL5h/POmJCkLlUyeIldS/iRqD6+7p2u/BnpJRiCDw4Br8nysEsIxHb/nv7n3brB2UFueM2R6
-vVbHfWpeM4bpzMRLVbcdbBnT84ikHnnlAuFVc3AB5vlOyQLayDw7stt8C24MlVubRSCZcqOCt8r1
-d0oTjhNNPMcbQ2HtgRgkesPhFay5hJP1Tn+GIK17KjoG2JiuRKlieDaB5mJKQrMMFAvlcxXxNXit
-IOoL7W+A7xsgXYISNDXOYxGoJoXt4I2M8dTc/sLOG2a2vtfq8HkDf1O8gNsE/WnyRYT4DMaKqKWu
-eVn9Y1eiotkoX3zqfmt32KUYAGgZMrmO2CU/ABwjGL6NHVwbb8T39CeCiMie0rmFT9QxVNXnJSy6
-JyEvtepeu/Nn5tEll28mrHb0O5E9vfhttIMu68qDu60j7pZ2WYpGpW8EXMaei6Lz0nK1+snQ9Nzh
-+Y9pFjuvhByjgDEoFAcoHuBawjX2OPrSt2gc7un2gezl7aZC66UFHiOKDrA+SdQP6hmZaGb7AB0H
-dOk=
-=DBC5
------END PGP SIGNATURE-----
-
---------------ep00Q1gUqxYrBb4sUMKF3PpG--
