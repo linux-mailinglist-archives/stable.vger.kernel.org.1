@@ -2,235 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B236FEDD9
-	for <lists+stable@lfdr.de>; Thu, 11 May 2023 10:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7DB6FF019
+	for <lists+stable@lfdr.de>; Thu, 11 May 2023 12:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbjEKIaU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 04:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
+        id S235855AbjEKKqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 06:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjEKIaS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 04:30:18 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422FB4EF7
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:30:15 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-51b4ef5378bso7373235a12.1
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 01:30:15 -0700 (PDT)
+        with ESMTP id S237169AbjEKKqt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 06:46:49 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 581CB2691
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 03:46:47 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3313fe59a61so20006805ab.0
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 03:46:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=heitbaum.com; s=google; t=1683793814; x=1686385814;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=gmail.com; s=20221208; t=1683802006; x=1686394006;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uBduSQSx05MHlBvD82+EqabT9/Ep5JlcWUORXDoOtcA=;
-        b=cUmBs1hPWa2SRLAW2xRdKd+TCclc1WmU+SkhJJ6LXx87U2+FgfoZ/hZrtFnsRD8I6M
-         ZuSZh5pGfLIJh01kxkYNjntsqag9jkEdu6GlV/vTvLIyQFsD1TIzCtKodT7EO2cHvuWR
-         Ia3bHhF+vy5bxWq53vTLQaB2zrKQJ6IqvncT8=
+        bh=YQC7WIwcF1FJJhC2ovYQkP+IDF7Pqdo8FEQi9sx9wQ8=;
+        b=aU6ZwMmUdF5KaAfPtuVRd277smXzgdfHUD1DZRRbA4iEy84p8+EKqBbU2eZolSRDop
+         vdgBpr07/erMJs+E1LxvSAgh0tVF0ojaVSGwZPKqFk8dKSISJZxEsmmPRE4UHlEwkg0C
+         IM642VZsej9kv3icEpiHzW0gS5Nq+b5vGNt9DE/qP6+8j+njZhZJF5wrtuOHBICoE97S
+         XfIHHgTS3EySph3aqAV3u/pPrMrVsFrGbH2FIm7ShE12WZxi6e/ttQAYeVvWj37Vcdw2
+         gRMOrf85DWGJ1M4rkYvI4u9kArw/sBAHTTN7ZPd78UDeapa02R59j2C5bNppLhgPXnE4
+         8Kjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683793814; x=1686385814;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=1e100.net; s=20221208; t=1683802006; x=1686394006;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uBduSQSx05MHlBvD82+EqabT9/Ep5JlcWUORXDoOtcA=;
-        b=kVDrc5St5JSz4FAnlZp65TD/rQ0+6OesSSexsMzP2ukh15yfJf+BUU8I4HADN4GIUH
-         nbKePVGbAu885rbNzsoHfoON5PJY2j3Mb4ZFIjSOMFihsu4LYIYbI4kfPZIQ9QV8Ocff
-         VkXofrr8LJRyK0QFGbZvRLVIGSAVsctOgwzojaqDX+3SJLp+9x2ckTLqa7FV3uWoNq19
-         zIv2Wz13lK+WA0jPub5992KOaAxkwqU9O8PUfGpI/vsYM+lmoYXjEdTqQ27R7NSVvtWo
-         G12bPUOBn4cpAa/Bzd5MPzNXNyZa50aNmADa0znK8Q4ynBMefMSwhomrOFqKjqHX9+DK
-         UC1A==
-X-Gm-Message-State: AC+VfDwu4tz4gOc/lwt7Pc3S0kqH2U8zM+Id48KfwuZ/4cDTje1ITM5h
-        S1i9QTd+t1s8RXwadRgEAQ55d5j0AU7HmI5M1+lhZaRZ9ba/qAkOf/q1xsP/
-X-Google-Smtp-Source: ACHHUZ5fZH5sQTSF9kSLjomYFKmTXdEya8wfytEsAnCND0kXRN3jlhDQ+LjZOBfSPpSW+yd7TjJQPApe7tfGB7zoTK4=
-X-Received: by 2002:a17:90b:b85:b0:24b:a5b6:e866 with SMTP id
- bd5-20020a17090b0b8500b0024ba5b6e866mr21612001pjb.24.1683793814515; Thu, 11
- May 2023 01:30:14 -0700 (PDT)
+        bh=YQC7WIwcF1FJJhC2ovYQkP+IDF7Pqdo8FEQi9sx9wQ8=;
+        b=ELjTQy4B3PE+wLMge+bvJRdcdqCjsPsLHHQe1paliglm0k0sX3PMRcGdb4GxPyUucr
+         e+UjKmKlLPXNEFNCFiZzyBN+9F9DtPuwUhciwOvXevp2ORQGbl3RaopU6xp6UPDopybB
+         eEFbVqD2pGu9pApgofeeZy/M5VdY2vo7z997j1Fb7dEPLn9RVFQlviJs+wpFw9U1Rpjc
+         YAQ4RzcZuGNpX0qJA7gQAcDkeXUtnP4jzXOJBzNvo86FyW2m3f4bJXCpHpjbzW53isg1
+         rltqhW2aRK35AJpwgC9m7gnO1otx/es7qzGBp+1gbhh93k9QZWjOYSEO6BCXD0eqfz6n
+         00aw==
+X-Gm-Message-State: AC+VfDw95/u9nkLHDOUDUuNRlRGmkN65nzraSH3kZWONufjK5kECAkun
+        wnvpTa45uZkxJoD5qprlPPWmLqUqsZq7LAmHq6M=
+X-Google-Smtp-Source: ACHHUZ6H+RzXQBIpSn7dl7iV6A7SMvh69zhY7uQnrKb6tbVEfNaBlKgkqyX+sfXnxt09E4RellR1kTNgq31JyBN67Cs=
+X-Received: by 2002:a92:da0f:0:b0:334:c74c:43f9 with SMTP id
+ z15-20020a92da0f000000b00334c74c43f9mr13015414ilm.13.1683802006602; Thu, 11
+ May 2023 03:46:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230509030705.399628514@linuxfoundation.org> <20230509080658.GA152864@d6921c044a31>
- <20230509131032.GA8@9ed91d9f7b3c> <2023050913-spearhead-angrily-fc58@gregkh>
- <20230509145806.GA8@df3c0d7ae0b0> <2023051025-plug-willow-e278@gregkh>
- <CAG9oJsnr55Atybm4nOQAFjXQ_TeqVG+Nz_8zqMT3ansdnEpGBQ@mail.gmail.com>
- <2023051048-plus-mountable-6280@gregkh> <CAG9oJskrJotpyqwi6AHVMmhnFmL+Ym=xAFmL51RiZFaU78wv-A@mail.gmail.com>
- <2023051132-dweller-upturned-b446@gregkh>
-In-Reply-To: <2023051132-dweller-upturned-b446@gregkh>
-From:   Rudi Heitbaum <rudi@heitbaum.com>
-Date:   Thu, 11 May 2023 18:30:02 +1000
-Message-ID: <CAG9oJskf0fE7LiumdzD4QW8dTmGpmVyXBSyiKu_xP+s72Rw44A@mail.gmail.com>
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        ntfs3@lists.linux.dev, almaz.alexandrovich@paragon-software.com
+Received: by 2002:ac0:bd0d:0:b0:2d7:1dc:de22 with HTTP; Thu, 11 May 2023
+ 03:46:45 -0700 (PDT)
+Reply-To: cristinacampel@outlook.com
+From:   "Mrs. Cristina Campbell" <smith45556544@gmail.com>
+Date:   Thu, 11 May 2023 11:46:45 +0100
+Message-ID: <CAKN6szd2WUqfhXFFUcV2Ud12uqNA8J1B_pX0Mx79_GYt_RaZXg@mail.gmail.com>
+Subject: =?UTF-8?B?0JzQvtC20LXRgtC1INC70Lgg0LLRiyDQv9C+0LzQvtGH0Ywg0LzQvdC1?=
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 11 May 2023 at 09:00, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, May 10, 2023 at 09:58:06PM +1000, Rudi Heitbaum wrote:
-> > On Wed, 10 May 2023 at 19:09, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Wed, May 10, 2023 at 06:29:23PM +1000, Rudi Heitbaum wrote:
-> > > > On Wed, 10 May 2023 at 17:25, Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Tue, May 09, 2023 at 02:58:06PM +0000, Rudi Heitbaum wrote:
-> > > > > > On Tue, May 09, 2023 at 03:56:42PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > > On Tue, May 09, 2023 at 01:10:32PM +0000, Rudi Heitbaum wrote:
-> > > > > > > > On Tue, May 09, 2023 at 08:06:58AM +0000, Rudi Heitbaum wrote:
-> > > > > > > > > On Tue, May 09, 2023 at 05:26:44AM +0200, Greg Kroah-Hartman wrote:
-> > > > > > > > > > This is the start of the stable review cycle for the 6.3.2 release.
-> > > > > > > > > > There are 694 patches in this series, all will be posted as a response
-> > > > > > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > > > > > let me know.
-> > > > > > > > > >
-> > > > > > > > > > Responses should be made by Thu, 11 May 2023 03:05:05 +0000.
-> > > > > > > > > > Anything received after that time might be too late.
-> > > > > > > > >
-> > > > > > > > > Hi Greg,
-> > > > > > > > >
-> > > > > > > > > 6.3.2-rc2 tested.
-> > > > > > > >
-> > > > > > > > Hi Greg,
-> > > > > > > >
-> > > > > > > > Further testing and have seen ntfs3: NULL pointer dereference with ntfs_lookup errors
-> > > > > > > > with 6.3.2-rc2 (I have not seen this error before.) No other errors in the logs.
-> > > > > > >
-> > > > > > > Can you reproduce this without the extern, gpl-violation module loaded?
-> > > > > > >
-> > > > > > > thanks,
-> > > > > > >
-> > > > > > > greg k-h
-> > > > > >
-> > > > > > Hi Greg,
-> > > > > >
-> > > > > > I dropped the bcm_sta and recompiled and commented out the i915.guc=3
-> > > > > > and was able to reproduce.
-> > > > > >
-> > > > > > [   84.745080] BUG: kernel NULL pointer dereference, address: 0000000000000020
-> > > > > > [   84.746239] #PF: supervisor read access in kernel mode
-> > > > > > [   84.747599] #PF: error_code(0x0000) - not-present page
-> > > > > > [   84.748929] PGD 0 P4D 0
-> > > > > > [   84.750240] Oops: 0000 [#1] SMP NOPTI
-> > > > > > [   84.751575] CPU: 2 PID: 3176 Comm: .NET ThreadPool Not tainted 6.3.2-rc2 #1
-> > > > > > [   84.752998] Hardware name: Intel(R) Client Systems NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
-> > > > > > [   84.754474] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
-> > > > >
-> > > > > And do you get this same crash on ntfs3 on 6.4-rc1?  Is this a new
-> > > > > regression, or does it also show up on 6.3.1?
-> > > >
-> > > > Tested with 6.3.1 during the day today. No errors, and had been
-> > > > running 6.3.1 with no issue. Retested with 6.3.2-rc2 and problem
-> > > > immediately evident. So yes - I believe a regression.
-> > > >
-> > > > I have built and am now testing 6.4.0-rc1 this evening - no errors so far.
-> > > >
-> > > > [    0.000000] Linux version 6.4.0-rc1 (docker@1ccd349e2545)
-> > > > (x86_64-libreelec-linux-gnu-gcc-13.1.0 (GCC) 13.1.0, GNU ld (GNU
-> > > > Binutils) 2.40) #1 SMP Wed May 10 07:51:37 UTC 2023
-> > > >
-> > > > > And ntfs, ick, why?  And .NET?  What a combination...
-> > > >
-> > > > Joys of media players. Test device gets to test exfat, ntfs3, .NET,
-> > > > and throw in a compile host/GHA runner to put it through paces.
-> > >
-> > > Yeah, this should work.  Thanks for verifying this works on other
-> > > releases.  Any chance you can do 'git bisect' to track down the
-> > > offending commit?  In looking things over, I don't see anything
-> > > obvious...
-> >
-> > Hi Greg,
-> >
-> > I can confirm the offending commit in 6.3.2-rc2 is
-> >
-> > bf11fd528a97 fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
->
-> Thanks!  Odd that this didn't show up for you on the other stable -rc
-> releases, as that commit is also in those trees.
->
-> I'll go revert this for now and ask the maintainer to send a fixed
-> version.
-
-Hi Greg,
-
-I have run 6.1.28-rc2 today, and was able to trigger the error. So
-definitely bad in both 6.3 and 6.1.
-
-[13812.020209] BUG: kernel NULL pointer dereference, address: 0000000000000020
-[13812.021322] #PF: supervisor read access in kernel mode
-[13812.022346] #PF: error_code(0x0000) - not-present page
-[13812.023591] PGD 0 P4D 0
-[13812.024876] Oops: 0000 [#1] SMP NOPTI
-[13812.026088] CPU: 5 PID: 20386 Comm: .NET ThreadPool Not tainted 6.1.28-rc2 #1
-[13812.027336] Hardware name: Intel(R) Client Systems
-NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
-[13812.028593] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
-[13812.029827] Code: 00 00 00 49 89 c4 e8 19 47 fe ff 85 c0 79 3a 48
-63 d8 48 8b 3d 4b 1d 77 cd 4c 89 e6 e8 33 25 d1 c3 48 81 fb 00 f0 ff
-ff 77 07 <48> 83 7b 20 00 74 41 4c 89 ee 48 89 df e8 88 a5 d5 c3 5b 41
-5c 41
-[13812.031149] RSP: 0018:ffff91f40537bbc8 EFLAGS: 00010207
-[13812.032408] RAX: ffff8a844946a001 RBX: 0000000000000000 RCX: 00000000000042f7
-[13812.033650] RDX: 00000000000042f6 RSI: fffff40a00000000 RDI: 0000000000030ed0
-[13812.034869] RBP: ffff91f40537bbe8 R08: ffff8a844946c01e R09: ffff8a8474d0387e
-[13812.036138] R10: ffff8a845a900000 R11: 0000000000000017 R12: ffff8a844946c000
-[13812.037372] R13: ffff8a84db3fd2c0 R14: ffff8a84b44a0470 R15: ffff8a84b44a0548
-[13812.039002] FS:  00007f437e7fc6c0(0000) GS:ffff8a8b77740000(0000)
-knlGS:0000000000000000
-[13812.040509] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[13812.041741] CR2: 0000000000000020 CR3: 000000017835e006 CR4: 0000000000f70ea0
-[13812.042986] PKRU: 55555554
-[13812.044227] Call Trace:
-[13812.045464]  <TASK>
-[13812.046708]  __lookup_slow+0x81/0x130
-[13812.047939]  walk_component+0x10b/0x180
-[13812.049169]  path_lookupat+0x6a/0x1a0
-[13812.050388]  filename_lookup+0xd0/0x190
-[13812.051612]  vfs_statx+0x84/0x150
-[13812.052838]  ? getname_flags+0x54/0x1d0
-[13812.054062]  vfs_fstatat+0x5c/0x80
-[13812.055284]  __do_sys_newlstat+0x37/0x70
-[13812.056580]  ? trace_hardirqs_on+0x3a/0xe0
-[13812.058429]  __x64_sys_newlstat+0x1a/0x20
-[13812.059878]  do_syscall_64+0x3c/0x90
-[13812.061109]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[13812.062369] RIP: 0033:0x7f447ea17184
-[13812.063598] Code: 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00
-00 00 0f 1f 40 00 89 f8 48 89 f7 48 89 d6 83 f8 01 77 2b b8 06 00 00
-00 0f 05 <48> 3d 00 f0 ff ff 77 04 c3 0f 1f 00 48 8b 15 61 cc 0b 00 f7
-d8 64
-[13812.064927] RSP: 002b:00007f437e7fa098 EFLAGS: 00000246 ORIG_RAX:
-0000000000000006
-[13812.066267] RAX: ffffffffffffffda RBX: 00007f43cf45a870 RCX: 00007f447ea17184
-[13812.067601] RDX: 00007f437e7fa0a0 RSI: 00007f437e7fa0a0 RDI: 00007f437e7fa210
-[13812.068940] RBP: 00007f437e7fa1f0 R08: 00007f437e7fa320 R09: 000000000000002d
-[13812.070276] R10: 00007f44051a15e8 R11: 0000000000000246 R12: 00007f43cc018408
-[13812.071616] R13: 00007f437e7fa210 R14: 00007f43cf45a870 R15: 000000000000002d
-[13812.072960]  </TASK>
-[13812.074295] Modules linked in: rfcomm xt_nat xt_tcpudp veth
-xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat
-nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype
-iptable_filter ip_tables x_tables br_netfilter bridge stp llc overlay
-8021q ntfs3 bnep btusb btrtl btbcm btintel btmtk bluetooth
-ecdh_generic ecc exfat snd_hda_codec_hdmi snd_hda_codec_realtek
-snd_hda_codec_generic ledtrig_audio snd_hda_intel snd_hda_codec
-iwlwifi mei_hdcp snd_hwdep tpm_tis mei_pxp x86_pkg_temp_thermal
-snd_hda_core tpm_tis_core cfg80211 intel_rapl_msr mei_me
-intel_powerclamp snd_intel_dspcfg intel_rapl_common mei rfkill tpm_crb
-idma64 tpm rng_core pkcs8_key_parser fuse dmi_sysfs
-[13812.079600] CR2: 0000000000000020
-[13812.081160] ---[ end trace 0000000000000000 ]---
-
-> thanks,
->
-> greg k-h
+0JTQvtGA0L7Qs9C+0Lkg0LvRjtCx0LjQvNGL0LksDQoNCtCf0L7QttCw0LvRg9C50YHRgtCwLCDQ
+v9GA0L7Rh9C40YLQsNC50YLQtSDRjdGC0L4g0LzQtdC00LvQtdC90L3QviDQuCDQstC90LjQvNCw
+0YLQtdC70YzQvdC+LCDRgtCw0Log0LrQsNC6INGN0YLQviDQvNC+0LbQtdGCDQrQsdGL0YLRjCDQ
+vtC00L3QviDQuNC3INGB0LDQvNGL0YUg0LLQsNC20L3Ri9GFINGN0LvQtdC60YLRgNC+0L3QvdGL
+0YUg0L/QuNGB0LXQvCwg0LrQvtGC0L7RgNGL0LUg0LLRiyDQutC+0LPQtNCwLdC70LjQsdC+DQrQ
+v9C+0LvRg9GH0LDQu9C4LiDQryDQvNC40YHRgdC40YEg0JrRgNC40YHRgtC40L3QsCDQmtGN0LzQ
+v9Cx0LXQu9C7LCDRjyDQsdGL0LvQsCDQt9Cw0LzRg9C20LXQvCDQt9CwINC/0L7QutC+0LnQvdGL
+0LwNCtCt0LTQstCw0YDQtNC+0Lwg0JrRjdC80L/QsdC10LvQu9C+0LwuINC+0L/Ri9GC0L3Ri9C5
+INC/0L7QtNGA0Y/QtNGH0LjQuiDQsiDRgNC10LPQuNC+0L3QtSDQktC+0YHRgtC+0YfQvdC+0Lkg
+0JDQt9C40LguINCe0L0NCtGD0LzQtdGAINCyINGH0LXRgtCy0LXRgNCzLCAzMSDQuNGO0LvRjyAy
+MDAzINCzLiwg0LIg0J/QsNGA0LjQttC1LiDQnNGLINCx0YvQu9C4INC20LXQvdCw0YLRiyDRgdC1
+0LzRjCDQu9C10YIg0LHQtdC3DQrRgNC10LHQtdC90LrQsC4NCg0K0J/QvtC60LAg0LLRiyDRh9C4
+0YLQsNC10YLQtSDRjdGC0L4sINGPINC90LUg0YXQvtGH0YMsINGH0YLQvtCx0Ysg0LLRiyDQttCw
+0LvQtdC70Lgg0LzQtdC90Y8sINC/0L7RgtC+0LzRgyDRh9GC0L4g0Y8NCtCy0LXRgNGOLCDRh9GC
+0L4g0LLRgdC1INC60L7Qs9C00LAt0L3QuNCx0YPQtNGMINGD0LzRgNGD0YIuINCjINC80LXQvdGP
+INCx0YvQuyDQtNC40LDQs9C90L7RgdGC0LjRgNC+0LLQsNC9INGA0LDQug0K0L/QuNGJ0LXQstC+
+0LTQsCwg0Lgg0LzQvtC5INCy0YDQsNGHINGB0LrQsNC30LDQuyDQvNC90LUsINGH0YLQviDRjyDQ
+vdC1INC/0YDQvtGC0Y/QvdGDINC00L7Qu9Cz0L4g0LjQty3Qt9CwINC80L7QuNGFDQrRgdC70L7Q
+ttC90YvRhSDQv9GA0L7QsdC70LXQvCDRgdC+INC30LTQvtGA0L7QstGM0LXQvC4NCg0K0K8g0YXQ
+vtGH0YMsINGH0YLQvtCx0Ysg0JHQvtCzINCx0YvQuyDQvNC40LvQvtGB0YLQuNCyINC60L4g0LzQ
+vdC1INC4INC/0YDQuNC90Y/QuyDQvNC+0Y4g0LTRg9GI0YMsINC/0L7RjdGC0L7QvNGDINGPDQrR
+gNC10YjQuNC7INC/0L7QtNCw0LLQsNGC0Ywg0LzQuNC70L7RgdGC0YvQvdGOINCx0LvQsNCz0L7R
+gtCy0L7RgNC40YLQtdC70YzQvdGL0Lwg0L7RgNCz0LDQvdC40LfQsNGG0LjRj9C8IC8g0YbQtdGA
+0LrQstGP0LwgLw0K0LHRg9C00LTQuNC50YHQutC40Lwg0YXRgNCw0LzQsNC8IC8g0LzQtdGH0LXR
+gtC4IC8g0YHQuNGA0L7RgtCw0LwgLyDQvNCw0LvQvtC+0LHQtdGB0L/QtdGH0LXQvdC90YvQvCDQ
+uCDQstC00L7QstCw0LwsINGC0LDQug0K0LrQsNC6INGPINGF0L7Rh9GDLCDRh9GC0L7QsdGLINGN
+0YLQviDQsdGL0LvQviDQvtC00L3QuNC8INC40Lcg0L/QvtGB0LvQtdC00L3QuNGFINC00L7QsdGA
+0YvRhSDQtNC10LsuINCvINC00LXQu9Cw0Y4g0L3QsA0K0LfQtdC80LvQtSwg0L/RgNC10LbQtNC1
+INGH0LXQvCDRjyDRg9C80YDRgy4g0J3QsCDQtNCw0L3QvdGL0Lkg0LzQvtC80LXQvdGCINGPINGA
+0LDQt9C00LDQuyDQtNC10L3RjNCz0Lgg0L3QtdC60L7RgtC+0YDRi9C8DQrQsdC70LDQs9C+0YLQ
+stC+0YDQuNGC0LXQu9GM0L3Ri9C8INC+0YDQs9Cw0L3QuNC30LDRhtC40Y/QvCDQsiDQqNC+0YLQ
+u9Cw0L3QtNC40LgsINCj0Y3Qu9GM0YHQtSwg0JjQt9GA0LDQuNC70LUsINCk0LjQvdC70Y/QvdC0
+0LjQuA0K0Lgg0JDRgNC80LXQvdC40LguINCi0LXQv9C10YDRjCwg0LrQvtCz0LTQsCDQvNC+0LUg
+0LfQtNC+0YDQvtCy0YzQtSDRgtCw0Log0YHQuNC70YzQvdC+INGD0YXRg9C00YjQuNC70L7RgdGM
+LCDRjyDQsdC+0LvRjNGI0LUNCtC90LUg0LzQvtCz0YMg0LfQsNC90LjQvNCw0YLRjNGB0Y8g0Y3R
+gtC40Lwg0YHQsNC80LAuDQoNCtCe0LTQvdCw0LbQtNGLINGPINC/0L7Qv9GA0L7RgdC40Lsg0YfQ
+u9C10L3QvtCyINC80L7QtdC5INGB0LXQvNGM0Lgg0LfQsNC60YDRi9GC0Ywg0L7QtNC40L0g0LjQ
+tyDQvNC+0LjRhSDRgdGH0LXRgtC+0LIg0LgNCtGA0LDQt9C00LDRgtGMINC00LXQvdGM0LPQuCwg
+0LrQvtGC0L7RgNGL0LUg0YMg0LzQtdC90Y8g0YLQsNC8INC10YHRgtGMLCDQsdC70LDQs9C+0YLQ
+stC+0YDQuNGC0LXQu9GM0L3Ri9C8DQrQvtGA0LPQsNC90LjQt9Cw0YbQuNGP0Lwg0LIg0JHQtdC7
+0LDRgNGD0YHQuCwg0KPQutGA0LDQuNC90LUsINCb0LDRgtCy0LjQuCwg0KDQvtGB0YHQuNC4INC4
+INCt0YHRgtC+0L3QuNC4LCDQvtC90LgNCtC+0YLQutCw0LfQsNC70LjRgdGMINC4INC+0YHRgtCw
+0LLQuNC70Lgg0LTQtdC90YzQs9C4INGB0LXQsdC1LiDQodC70LXQtNC+0LLQsNGC0LXQu9GM0L3Q
+viwg0Y8g0L3QtSDQtNC+0LLQtdGA0Y/RjiDQuNGFDQrQsdC+0LvRjNGI0LUsINGC0LDQuiDQutCw
+0Log0L7QvdC4LCDQutCw0LbQtdGC0YHRjywg0L3QtSDQsdC+0YDRjtGC0YHRjyDRgSDRgtC10Lws
+INGH0YLQviDRjyDQvtGB0YLQsNCy0LjQuyDQtNC70Y8g0L3QuNGFLg0K0J/QvtGB0LvQtdC00L3Q
+uNC1INC40Lcg0LzQvtC40YUg0LTQtdC90LXQsywg0L4g0LrQvtGC0L7RgNGL0YUg0L3QuNC60YLQ
+viDQvdC1INC30L3QsNC10YIsIOKAlCDRjdGC0L4g0L7Qs9GA0L7QvNC90YvQuQ0K0LTQtdC90LXQ
+ttC90YvQuSDQtNC10L/QvtC30LjRgiDQsiDRgNCw0LfQvNC10YDQtSDRiNC10YHRgtC4INC80LjQ
+u9C70LjQvtC90L7QsiDQtNC+0LvQu9Cw0YDQvtCyINCh0KjQkCDQsiDRgNCw0LfQvNC10YDQtSA2
+DQowMDAgMDAwINC00L7Qu9C70LDRgNC+0LIg0KHQqNCQLCDQutC+0YLQvtGA0YvQuSDRgyDQvNC1
+0L3RjyDQtdGB0YLRjCDQsiDQsdCw0L3QutC1INCyINCi0LDQuNC70LDQvdC00LUsINCz0LTQtSDR
+jw0K0YDQsNC30LzQtdGB0YLQuNC7INGN0YLQvtGCINGE0L7QvdC0LiDQryDRhdC+0YfRgywg0YfR
+gtC+0LHRiyDQstGLINC40YHQv9C+0LvRjNC30L7QstCw0LvQuCDRjdGC0L7RgiDRhNC+0L3QtCDQ
+tNC70Y8NCtCx0LvQsNCz0L7RgtCy0L7RgNC40YLQtdC70YzQvdGL0YUg0L/RgNC+0LPRgNCw0LzQ
+vCDQuCDQv9C+0LTQtNC10YDQttC40LLQsNC70Lgg0YfQtdC70L7QstC10YfQtdGB0YLQstC+INCy
+INGB0LLQvtC10Lkg0YHRgtGA0LDQvdC1LA0K0LXRgdC70Lgg0YLQvtC70YzQutC+INCy0Ysg0LHR
+g9C00LXRgtC1INC40YHQutGA0LXQvdC90LjQvNC4Lg0KDQrQryDQv9GA0LjQvdGP0Lsg0Y3RgtC+
+INGA0LXRiNC10L3QuNC1LCDQv9C+0YLQvtC80YMg0YfRgtC+INGDINC80LXQvdGPINC90LXRgiDR
+gNC10LHQtdC90LrQsCwg0LrQvtGC0L7RgNGL0LkNCtGD0L3QsNGB0LvQtdC00YPQtdGCINGN0YLQ
+uCDQtNC10L3RjNCz0LgsINGPINC90LUg0LHQvtGO0YHRjCDRgdC80LXRgNGC0LgsINC/0L7RjdGC
+0L7QvNGDINGPINC30L3QsNGOLCDQutGD0LTQsCDRjyDQuNC00YMuDQrQryDQt9C90LDRjiwg0YfR
+gtC+INGPINCx0YPQtNGDINCyINC70L7QvdC1INCT0L7RgdC/0L7QtNCwLiDQmtCw0Log0YLQvtC7
+0YzQutC+INGPINC/0L7Qu9GD0YfRgyDQstCw0Ygg0L7RgtCy0LXRgiwg0Y8NCtC00LDQvCDQstCw
+0Lwg0LrQvtC90YLQsNC60YLRiyDQkdCw0L3QutCwINC4INCy0YvRiNC70Y4g0LLQsNC8INC/0LjR
+gdGM0LzQvi3RgNCw0LfRgNC10YjQtdC90LjQtSwg0LrQvtGC0L7RgNC+0LUg0LTQsNGB0YIg0LLQ
+sNC8DQrQv9GA0LDQstC+INC60LDQuiDQv9C10YDQstC+0L3QsNGH0LDQu9GM0L3QvtC80YMg0LHQ
+tdC90LXRhNC40YbQuNCw0YDRgyDRjdGC0L7Qs9C+INGE0L7QvdC00LAg0L3QtdC80LXQtNC70LXQ
+vdC90L4g0L3QsNGH0LDRgtGMDQrRjdGC0YMg0LHQu9Cw0LPQvtGC0LLQvtGA0LjRgtC10LvRjNC9
+0YPRjiDQv9GA0L7Qs9GA0LDQvNC80YMg0LIg0LLQsNGI0LXQuSDRgdGC0YDQsNC90LUuDQoNCtCi
+0L7Qu9GM0LrQviDQttC40LfQvdGMLCDQv9GA0L7QttC40YLQsNGPINC00LvRjyDQtNGA0YPQs9C4
+0YUsINC40LzQtdC10YIg0YHQvNGL0YHQuy4g0K8g0YXQvtGH0YMsINGH0YLQvtCx0Ysg0LLRiw0K
+0LLRgdC10LPQtNCwINC80L7Qu9C40LvQuNGB0Ywg0LfQsCDQvNC10L3Rjy4g0JvRjtCx0LDRjyDQ
+t9Cw0LTQtdGA0LbQutCwINGBINCy0LDRiNC40Lwg0L7RgtCy0LXRgtC+0Lwg0LTQsNGB0YIg0LzQ
+vdC1DQrQstC+0LfQvNC+0LbQvdC+0YHRgtGMINC90LDQudGC0Lgg0LTRgNGD0LPQvtCz0L4g0YfQ
+tdC70L7QstC10LrQsCDQtNC70Y8g0YLQvtC5INC20LUg0YbQtdC70LguINCV0YHQu9C4INCy0Ysg
+0L3QtQ0K0LfQsNC40L3RgtC10YDQtdGB0L7QstCw0L3Riywg0L/QvtC20LDQu9GD0LnRgdGC0LAs
+INC40LfQstC40L3QuNGC0LUg0LzQtdC90Y8g0LfQsCDRgtC+LCDRh9GC0L4g0YHQstGP0LfQsNC7
+0YHRjyDRgSDQstCw0LzQuC4NCtCS0Ysg0LzQvtC20LXRgtC1INGB0LLRj9C30LDRgtGM0YHRjyDR
+gdC+INC80L3QvtC5INC40LvQuCDQvtGC0LLQtdGC0LjRgtGMINC80L3QtSDQvdCwINC80L7RjiDQ
+u9C40YfQvdGD0Y4g0Y3Qu9C10LrRgtGA0L7QvdC90YPRjg0K0L/QvtGH0YLRgzogKGNyaXN0aWlu
+YWNhbXBiZWxsQGhvdG1haWwuY29tKS4NCg0K0KHQv9Cw0YHQuNCx0L4sDQrQmNGB0LrRgNC10L3Q
+vdC1INCS0LDRiCwNCtC80LjRgdGB0LjRgSDQmtGA0LjRgdGC0LjQvdCwINCa0Y3QvNC/0LHQtdC7
+0LsNCtCt0LvQtdC60YLRgNC+0L3QvdCw0Y8g0L/QvtGH0YLQsDsgY3Jpc3RpaW5hY2FtcGJlbGxA
+aG90bWFpbC5jb20NCg==
