@@ -2,81 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7B2700A86
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 16:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13559700A7E
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 16:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241322AbjELOnC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 10:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34496 "EHLO
+        id S240863AbjELOm2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 10:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241497AbjELOmr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 10:42:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB2E1FCE
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 07:42:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683902519;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JvRRrrUS+amocC/fh2T1NPUcq/rGeuX2ea8CCQPgemw=;
-        b=BiS0hzgaRQJpaMhuLcnV2BOxlQqpnwWMiBzRpU9xI15jXQfM/nABayKbSh43hTulR0dXsk
-        AiNsXJPb1S8YCHCnEKQmF/+aHzJnN99NvDQZtWmP+sj4LZYONjJ8g/OqlyHH3JD+3Q4pFH
-        6i3XiV3eW8tHRB3nxs/gQVkSfHo1a/k=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-OJLcvJU3Nc2gDlXzrujOoQ-1; Fri, 12 May 2023 10:41:58 -0400
-X-MC-Unique: OJLcvJU3Nc2gDlXzrujOoQ-1
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1aaf5dcd999so99747515ad.1
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 07:41:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683902517; x=1686494517;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JvRRrrUS+amocC/fh2T1NPUcq/rGeuX2ea8CCQPgemw=;
-        b=S5dDKORusMnOeyF4YJeq7W7RIjDytif44T2vFAXDcY7i0jsM1KNN3fzaNu9Q+UFfEk
-         iSoIbtah2tYBIM1MgIxHJrx4ZcIFn+E+nAvRnKNpb6Rk/xAFi/zcwoSTYGoIU8msWSdp
-         7kYn0ztetNcXeFvUiLCVcc4K7wZmZwIzHnyQXB6GlWC/8E0Z5/lev4BYemftyHx4Se4i
-         lB5GUte1CcMfnufA/0TZN0hhPEd9lyBkXS7QeSPGgo2WTPhN8czQ2NOCwKUo1jvP6gCY
-         cFuHIsRbdLy/aYrsLImosZdx+D11rK/ScISyf+JcJhGuhevxCz2XDpyobUDmpWotqokg
-         rQuA==
-X-Gm-Message-State: AC+VfDxl9INJm7xcj1ZHn+V35E2kjvoKfwTaCz8VADcBk8ZQ31KvTFO7
-        pMA0AvvtAffiC7W5GTC+yHD86Vh0uPVA6XYicm7qGBe0sIkEe95GFi3lZXNl2XsIUhdOYq+8YLe
-        ruTwkGd8PQ4IgcAmL
-X-Received: by 2002:a17:902:d4c1:b0:1a5:167f:620f with SMTP id o1-20020a170902d4c100b001a5167f620fmr32528940plg.15.1683902516937;
-        Fri, 12 May 2023 07:41:56 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4cJ/jmCw7jm94vZzoUfMoX537y73HXmEtgKFWxxxtasHChL3nWlUb+Or646ws6rmtBt3/eeg==
-X-Received: by 2002:a17:902:d4c1:b0:1a5:167f:620f with SMTP id o1-20020a170902d4c100b001a5167f620fmr32528916plg.15.1683902516489;
-        Fri, 12 May 2023 07:41:56 -0700 (PDT)
-Received: from [10.72.12.56] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id ix17-20020a170902f81100b0019a7d58e595sm8037295plb.143.2023.05.12.07.41.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 May 2023 07:41:56 -0700 (PDT)
-Message-ID: <20857f10-8f44-fd83-529d-7d21f7f31299@redhat.com>
-Date:   Fri, 12 May 2023 22:41:50 +0800
+        with ESMTP id S240471AbjELOm1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 10:42:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ABA11FEB;
+        Fri, 12 May 2023 07:42:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0330C65746;
+        Fri, 12 May 2023 14:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A31C433A4;
+        Fri, 12 May 2023 14:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683902545;
+        bh=Cq0Kbtx91XM0CWPBj4j6IY7NnGd/kSGer8Mrsg2uWeI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=TFARr7Yju0/zYC3P03kjGthGO4LKrUPM6ZV2dy1VAbme1m7iah/Q2v/j+YdArMjC2
+         IISKa5rqJe5QHiOpL+b1eQm3mm3PiZ9YkVaDKIDgwcEPNhOk5nodB0VrUQjSGwG44N
+         9c1JnpacFGfWPXVIAT5UOsLC42ZCz3IiNgQbk1vtX1cuWb1QnxeWvf6UVCnRY+TQk2
+         iX2Uo6MMgxgIUTbD4N1EKorWMs+I89a7xvcMNzbHLDjWqT4ZBw9aIvAM3kTxRvSbcf
+         M2ZGMl5kWNNFADPOgaGGQ8v0eFuvVYWfb0ZgnF7esXrQmmMj1/bysLxSRacvaK7oO1
+         NKVWaYw1e5ztw==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4f139de8cefso52620382e87.0;
+        Fri, 12 May 2023 07:42:25 -0700 (PDT)
+X-Gm-Message-State: AC+VfDxwY8UsslaU9jrWrQzimvkfEA9KdZKbr+T1uXi1lx8OlSoN7OZE
+        zh20YKwYlZMhvfCqQqB5pYuNrRJubxdrUShExjY=
+X-Google-Smtp-Source: ACHHUZ5EB+DWgV11PDIE1zsI8SLx4pz1jY2iF09/gzRcWg7Lu9DuSS4cTes2wcetJPmkVKvoac2pTbi5cjXcWlbxiso=
+X-Received: by 2002:a05:6512:33d4:b0:4f0:3e1:9ada with SMTP id
+ d20-20020a05651233d400b004f003e19adamr4151585lfg.31.1683902543268; Fri, 12
+ May 2023 07:42:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v5 1/2] ceph: add a dedicated private data for netfs rreq
-Content-Language: en-US
-To:     =?UTF-8?B?6IOh546u5paH?= <huww98@outlook.com>
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, sehuww@mail.scut.edu.cn,
+References: <20230406040515.383238-1-jhubbard@nvidia.com> <CAMj1kXHxyntweiq76CdW=ov2_CkEQUbdPekGNDtFp7rBCJJE2w@mail.gmail.com>
+ <a421b96a-ed4b-ae7d-2fe9-ed5f5f8deacf@nvidia.com> <CAMj1kXGtFyugzi9MZW=4_oVTy==eAF6283fwvX9fdZhO98ZA3g@mail.gmail.com>
+ <8dd0e252-8d8b-a62d-8836-f9f26bc12bc7@nvidia.com> <90505ef2-9250-d791-e05d-dbcb7672e4c4@nvidia.com>
+In-Reply-To: <90505ef2-9250-d791-e05d-dbcb7672e4c4@nvidia.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 12 May 2023 16:42:11 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFZ=4hLL1w6iCV5O5uVoVLHAJbc0rr40j24ObenAjXe9w@mail.gmail.com>
+Message-ID: <CAMj1kXFZ=4hLL1w6iCV5O5uVoVLHAJbc0rr40j24ObenAjXe9w@mail.gmail.com>
+Subject: Re: [PATCH] arm64/mm: don't WARN when alloc/free-ing device private pages
+To:     John Hubbard <jhubbard@nvidia.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Feiyang Chen <chenfeiyang@loongson.cn>,
+        Alistair Popple <apopple@nvidia.com>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        linux-arm-kernel@lists.infradead.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
         stable@vger.kernel.org
-References: <20230511030335.337094-1-xiubli@redhat.com>
- <20230511030335.337094-2-xiubli@redhat.com>
- <OSZP286MB2061BC99F3651AD6E2F3625EC0759@OSZP286MB2061.JPNP286.PROD.OUTLOOK.COM>
-From:   Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <OSZP286MB2061BC99F3651AD6E2F3625EC0759@OSZP286MB2061.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,173 +73,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-On 5/12/23 22:13, 胡玮文 wrote:
-> On Thu, May 11, 2023 at 11:03:34AM +0800, xiubli@redhat.com wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> We need to save the 'f_ra.ra_pages' to expand the readahead window
->> later.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
->> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
->> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
->> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
->> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->> ---
->>   fs/ceph/addr.c  | 43 ++++++++++++++++++++++++++++++++-----------
->>   fs/ceph/super.h | 13 +++++++++++++
->>   2 files changed, 45 insertions(+), 11 deletions(-)
->>
->> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
->> index 3b20873733af..db55fce13324 100644
->> --- a/fs/ceph/addr.c
->> +++ b/fs/ceph/addr.c
->> @@ -404,18 +404,27 @@ static int ceph_init_request(struct netfs_io_request *rreq, struct file *file)
->>   {
->>   	struct inode *inode = rreq->inode;
->>   	int got = 0, want = CEPH_CAP_FILE_CACHE;
->> +	struct ceph_netfs_request_data *priv;
->>   	int ret = 0;
->>   
->>   	if (rreq->origin != NETFS_READAHEAD)
->>   		return 0;
->>   
->> +	priv = kzalloc(sizeof(*priv), GFP_NOFS);
->> +	if (!priv)
->> +		return -ENOMEM;
->> +
->>   	if (file) {
->>   		struct ceph_rw_context *rw_ctx;
->>   		struct ceph_file_info *fi = file->private_data;
->>   
->>   		rw_ctx = ceph_find_rw_context(fi);
->> -		if (rw_ctx)
->> +		if (rw_ctx) {
->> +			kfree(priv);
->>   			return 0;
-> This is not working. When reaching here by read() system call, we always
-> have non-null rw_ctx.  (As I read the code and also verified with gdb)
-> ceph_add_rw_context() is invoked in ceph_read_iter().
-
-This should work:
-
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index e1bf90059112..d3e37e01c3d0 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -444,13 +444,14 @@ static int ceph_init_request(struct 
-netfs_io_request *rreq, struct file *file)
-                 struct ceph_rw_context *rw_ctx;
-                 struct ceph_file_info *fi = file->private_data;
-
-+               priv->file_ra_pages = file->f_ra.ra_pages;
-+               priv->file_ra_disabled = file->f_mode & FMODE_RANDOM;
-+
-                 rw_ctx = ceph_find_rw_context(fi);
-                 if (rw_ctx) {
--                       kfree(priv);
-+                       rreq->netfs_priv = priv;
-                         return 0;
-                 }
--               priv->file_ra_pages = file->f_ra.ra_pages;
--               priv->file_ra_disabled = !!(file->f_mode & FMODE_RANDOM);
-         }
-
-         /*
-
-Thanks
-
-- Xiubo
-
->> +		}
->> +		priv->file_ra_pages = file->f_ra.ra_pages;
->> +		priv->file_ra_disabled = !!(file->f_mode & FMODE_RANDOM);
-> '!!' is not needed. From coding-style.rst: "When using bool types the
-> !! construction is not needed, which eliminates a class of bugs".
+On Tue, 11 Apr 2023 at 04:48, John Hubbard <jhubbard@nvidia.com> wrote:
 >
-> Thanks
-> Hu Weiwen
+> On 4/10/23 00:39, John Hubbard wrote:
+> >> pfn_to_page(x) for values 0xc00_0000 < x < 0x1000_0000 will produce a
+> >> kernel VA that points outside the region set aside for the vmemmap.
+> >> This region is currently unused, but that will likely change soon.
+> >>
+> >
+> > I tentatively think I'm in this case right now. Because there is no wrap
+> > around happening in my particular config, which is CONFIG_ARM64_VA_BITS
+> > == 48, and PAGE_SIZE == 4KB and sizeof(struct page) == 64 (details
+> > below).
+> >
 >
->>   	}
->>   
->>   	/*
->> @@ -425,27 +434,39 @@ static int ceph_init_request(struct netfs_io_request *rreq, struct file *file)
->>   	ret = ceph_try_get_caps(inode, CEPH_CAP_FILE_RD, want, true, &got);
->>   	if (ret < 0) {
->>   		dout("start_read %p, error getting cap\n", inode);
->> -		return ret;
->> +		goto out;
->>   	}
->>   
->>   	if (!(got & want)) {
->>   		dout("start_read %p, no cache cap\n", inode);
->> -		return -EACCES;
->> +		ret = -EACCES;
->> +		goto out;
->> +	}
->> +	if (ret == 0) {
->> +		ret = -EACCES;
->> +		goto out;
->>   	}
->> -	if (ret == 0)
->> -		return -EACCES;
->>   
->> -	rreq->netfs_priv = (void *)(uintptr_t)got;
->> -	return 0;
->> +	priv->caps = got;
->> +	rreq->netfs_priv = priv;
->> +
->> +out:
->> +	if (ret)
->> +		kfree(priv);
->> +
->> +	return ret;
->>   }
->>   
->>   static void ceph_netfs_free_request(struct netfs_io_request *rreq)
->>   {
->> -	struct ceph_inode_info *ci = ceph_inode(rreq->inode);
->> -	int got = (uintptr_t)rreq->netfs_priv;
->> +	struct ceph_netfs_request_data *priv = rreq->netfs_priv;
->> +
->> +	if (!priv)
->> +		return;
->>   
->> -	if (got)
->> -		ceph_put_cap_refs(ci, got);
->> +	ceph_put_cap_refs(ceph_inode(rreq->inode), priv->caps);
->> +	kfree(priv);
->> +	rreq->netfs_priv = NULL;
->>   }
->>   
->>   const struct netfs_request_ops ceph_netfs_ops = {
->> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
->> index a226d36b3ecb..1233f53f6e0b 100644
->> --- a/fs/ceph/super.h
->> +++ b/fs/ceph/super.h
->> @@ -470,6 +470,19 @@ struct ceph_inode_info {
->>   #endif
->>   };
->>   
->> +struct ceph_netfs_request_data {
->> +	int caps;
->> +
->> +	/*
->> +	 * Maximum size of a file readahead request.
->> +	 * The posix_fadvise could update the bdi's default ra_pages.
->> +	 */
->> +	unsigned int file_ra_pages;
->> +
->> +	/* Set it if posix_fadvise disables file readahead entirely */
->> +	bool file_ra_disabled;
->> +};
->> +
->>   static inline struct ceph_inode_info *
->>   ceph_inode(const struct inode *inode)
->>   {
->> -- 
->> 2.40.0
->>
+> Correction, actually it *is* wrapping around, and ending up as a bogus
+> user space address, as you said it would when being above the range:
+>
+> page_to_pfn(0xffffffffaee00000):  0x0000000ffec38000
+>
 
+Interesting.
+
+>
+> > It occurs to me that ZONE_DEVICE and (within that category) device
+> > private page support need only support rather large setups. On x86, it
+> > requires 64-bit. And on arm64, from what I'm learning after a day or so
+> > of looking around and comparing, I think we must require at least 48 bit
+> > VA support. Otherwise there's just no room for things.
+>
+> I'm still not sure of how to make room, but working on it.
+>
+
+The assumption that only the linear map needs to be covered by struct
+pages is rather fundamental to the arm64 mm code, as far as I am
+aware.
+
+Given that these device memory regions have no direct correspondence
+with the linear map at all, couldn't we simply vmalloc() a range of
+memory for struct pages for such a region and wire that up in the
+existing code? That seems far more maintainable to me than
+reorganizing the entire kernel VA space, and only for some choices for
+the dimensions.
