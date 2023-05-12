@@ -2,94 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6706FFD78
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 01:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1226FFDCA
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 02:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239412AbjEKXrH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 11 May 2023 19:47:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
+        id S239628AbjELAPo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 11 May 2023 20:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238915AbjEKXrG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 19:47:06 -0400
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD6031AC
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 16:47:05 -0700 (PDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-24e4acd6b61so8735847a91.0
-        for <stable@vger.kernel.org>; Thu, 11 May 2023 16:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683848825; x=1686440825;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hDjdKrWUHGsVMJ2gMSx8epGixnLnx2dMDqo9vhiuXBs=;
-        b=qhfsMa2jOiqkhf4RshIh3PEfjniiGYeJZDmwYo7xFuYeX8NBFb1lf+uO9tQ3WplQ/w
-         cVkjbQau+GmcYpI3dJK+rjicYLHgj4wcOYfmY2DaMSUmr2qIah8WfJPUbXthoV2intEC
-         xGDaGhz5sn9ApDEPBi0VVUyUlPNu1yUUYmKltJsQaKTSjSDE8uA6CYgaE8Bsdp8wRluO
-         gug0ajehSHtekpAf9Z4bCcN4fewRrzhUJx50iTC25W4vdQxI8EszvPH/Ak4r01BwXhHn
-         ax1kUgt+eqXoB7JOVaKfY8Sv6/EejSNC7saZhILGktquZbb5XvHdBDDV0s+xAXwpPMVD
-         YKOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683848825; x=1686440825;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hDjdKrWUHGsVMJ2gMSx8epGixnLnx2dMDqo9vhiuXBs=;
-        b=YwezTPT2BEJDevXacp/7UCx7JDyLeG3ewb1IvfoJu+y6jK3wmaQ+JGTQyYevDjnTFv
-         b7bhZNE95mjRhQhvmwg07GzQWGav/3jb4zyqzeKznvoEXCi0BkV7zmJ8HifkCy6gpAlV
-         vm5zesvesgNxI1iQAZWCGNKo4zjw42xpLFsNLrUM6hkVxWQPqWShYZAMceZwsXqh2NsU
-         dhnU1nvhKYhoHUOmAgTiQ8EjnB4paBE3unEn1pLIgmlWOr12v6w9Mp4QIti8XQskMQlC
-         KEqsy8u+x1C4toLRkFboqoXr6ybmF+9ka26ivxsSL174a6oTqiDJ+I7wTenGZ79+Rqym
-         fAtw==
-X-Gm-Message-State: AC+VfDyXUQ1JhvcBEqKXB5Tyd3CnvvagpiOBs1TVXylZXpx36GuzSBFp
-        03GZYaakx2r76/CifZVPicf1uQkB64A=
-X-Google-Smtp-Source: ACHHUZ7Mjlxci3PIOr9utUnGxTlbJJRsGOa3EtjmfyiADDuMluEgDU+fA16XjSxvBGqRMOfxImArZV1V5GY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90a:c7d0:b0:24d:df95:fdc5 with SMTP id
- gf16-20020a17090ac7d000b0024ddf95fdc5mr6945096pjb.2.1683848825348; Thu, 11
- May 2023 16:47:05 -0700 (PDT)
-Date:   Thu, 11 May 2023 16:47:03 -0700
-In-Reply-To: <ZF18X3e6rrkACcMf@sashalap>
-Mime-Version: 1.0
-References: <ZFuUstsT9plyGcTp@lorien.valinor.li> <ZF18X3e6rrkACcMf@sashalap>
-Message-ID: <ZF1+d2XYcQ9xvUw1@google.com>
-Subject: Re: Please apply commit 6470accc7ba9 ("KVM: x86: hyper-v: Avoid
- calling kvm_make_vcpus_request_mask() with vcpu_mask==NULL") to v5.10.y
-From:   Sean Christopherson <seanjc@google.com>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     Salvatore Bonaccorso <carnil@debian.org>,
-        stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jared Epp <jaredepp@pm.me>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S239638AbjELAPl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 11 May 2023 20:15:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F9A7DBF
+        for <stable@vger.kernel.org>; Thu, 11 May 2023 17:15:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78493652C8
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 00:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54A9C433D2;
+        Fri, 12 May 2023 00:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683850528;
+        bh=sZk70NcrbVRpueC9ZJm09fpyJteFJmLq1NDkL3if4lo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Nox69fr5IEURUliYt+0G5sYCX+PkJn+5hn0KcfKLqSh/v5I/r/3Iji2+tcydQYQmA
+         oV6piv3y0c3BLwvmcLR1NHGULJ+Hg3t0+4bGgEEXPgog2fWNoBqcGEIKaex4iH6IwI
+         6VwALA/EUzuGOVU2gAUuKsuUxnwoDqU8JAzn2AIZeUJVsaFUZdSQUw7a2P9fNlqNAn
+         eKqZtVAOcu5bwupTrPAb1875vyLIF99f1OVwsm8NiYZhwBBc/Bc4esG9q5CUxcWTyt
+         ZBPQLRJxWuK1W4olkyi/xiClW8OfL7sZJ4y4CXwR8Z9njfG04wEt4KIQwZi4ClUgdQ
+         SNchB6sYUb6Cg==
+Date:   Thu, 11 May 2023 20:15:28 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     stable@vger.kernel.org, tsung-hua.lin@amd.com,
+        richard.gong@amd.com, Jerry Zuo <Jerry.Zuo@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH 6.1.y / PATCH 6.2.y 1/1] drm/amd/display: Ext displays
+ with dock can't recognized after resume
+Message-ID: <ZF2FIOG51Z/WKi0m@sashalap>
+References: <20230509160120.1033-1-mario.limonciello@amd.com>
+ <20230509160120.1033-2-mario.limonciello@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230509160120.1033-2-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 11, 2023, Sasha Levin wrote:
-> On Wed, May 10, 2023 at 02:57:22PM +0200, Salvatore Bonaccorso wrote:
-> > Hi
-> > 
-> > After we updated the kernel in Debian bullseye from 5.10.162 to
-> > 5.10.178, we got a report from Jared Epp in
-> > https://bugs.debian.org/1035779 that a Windows Guest VM no longer
-> > booted, and Kernel reporting:
-> 
-> This KVM commit wasn't tagged for stable, and would need an ack from the
-> KVM maintainers to apply.
+On Tue, May 09, 2023 at 11:01:20AM -0500, Mario Limonciello wrote:
+>From: Ryan Lin <tsung-hua.lin@amd.com>
+>
+>[Why]
+>Needs to set the default value of the LTTPR timeout after resume.
+>
+>[How]
+>Set the default (3.2ms) timeout at resuming if the sink supports
+>LTTPR
+>
+>Reviewed-by: Jerry Zuo <Jerry.Zuo@amd.com>
+>Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+>Signed-off-by: Ryan Lin <tsung-hua.lin@amd.com>
+>Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+>Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>(cherry picked from commit 01a18aa309aec12461fb5e6aecb76f8b33810658)
+>Hand modified for missing changes in older kernels including rename
+>of dc_link_aux_try_to_configure_timeout()
+>Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>(cherry picked from commit 5895ee73fc6b3d507b8ce42763df086acf43d26b)
 
-For grabbing commit 6470accc7ba9,
+Queued up, thanks!
 
-  Acked-by: Sean Christopherson <seanjc@google.com>
-
-If it helps,
-
-  Fixes: 6100066358ee ("KVM: Optimize kvm_make_vcpus_request_mask() a bit")
-
-That optimization got pulled in without the undocumented dependency due to:
-
-  Stable-dep-of: 2b0128127373 ("KVM: Register /dev/kvm as the _very_ last thing during initialization")
+-- 
+Thanks,
+Sasha
