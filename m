@@ -2,118 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2378B700EC0
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 20:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43325700EE0
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 20:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237339AbjELS0r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 14:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41286 "EHLO
+        id S238950AbjELSck (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 14:32:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238959AbjELS0b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 14:26:31 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7996FE727
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 11:25:53 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-b922aa3725fso19415012276.0
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 11:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683915862; x=1686507862;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDrV2J0MuuejNQd3OGtRf3MzD9HRU7n/LydIQyUlwvg=;
-        b=zw6GGWrdg/akBW0/1von3NObbXtRBBOuyUSn34fyswphLXKBMGuEiTieRoktg+xkTD
-         cyEu36o2hawoXKwiRXfZWInEIWtfOxuWV5IN5v0Y3PsfIiyiEJqHqE3l30WVDfVJ6DXQ
-         /1TSBhhgXIndcbS/UhjcJK95KyYpIrnu3TnouhsnGQZKI2/a6Ilgc+eHTt3Dc4ajgId9
-         s8bc1jm86Zr3PjaKTnpsQP7nSQoRDn6rrw8ceM6EjNia9CLcZ+5C5HHoJNuUy6ukxd3N
-         cws0BMRk9L8ihi/UZ+k8nGAJGdYxJzeouP+VAwFe10dNvU7m36TF2c/fFBVJS3WWScUF
-         6yYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683915862; x=1686507862;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDrV2J0MuuejNQd3OGtRf3MzD9HRU7n/LydIQyUlwvg=;
-        b=kPDFh94UG6p5ePcaHOL0q0kvDkpa5IUwG4rNYv0a60+mgPO+4o//gEEe9+lhNaiaQI
-         6KRf6DLw+FNZ9z3OoRqXI71fX6nRYINdwqJWS5QweJnZ16WvovDTu5rNPs1HqmrvZm8x
-         rmgQQf1ZCiC1pTLXFwFOvwKEX5INqh3yCtPJRiYGePxgLDrYYC9ONo5AhW7eFVQnLwzF
-         d0hFHasDEfzocWYuCojuVVFi7dK2byrb+f2fOX1/7dc28eo6TahmFod/3wCZ68DKw1/i
-         0BYzbzcm4IyRlNXAmkzHkkurfPg7j/dMLmiV/sR+opvhBX5EOLSA9+3J5Fv0GMTRkH2G
-         nWDg==
-X-Gm-Message-State: AC+VfDyRcP6cNSuVbBekAYtB4GKOE2Zt9/c17JBKTgZXqji/aSgog+Rx
-        d1ob1JFBoxTwIW6XIYnPHVx8d6GkcKo=
-X-Google-Smtp-Source: ACHHUZ5uvd72NRqqoexH340797LsKFik/QG6/fCm2C8egdLMSawkfKAhgV0Dq7wIwps3f6uSSFyLvUHR1cI=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:c50e:0:b0:ba7:42a6:bced with SMTP id
- v14-20020a25c50e000000b00ba742a6bcedmr547334ybe.5.1683915862729; Fri, 12 May
- 2023 11:24:22 -0700 (PDT)
-Date:   Fri, 12 May 2023 11:24:21 -0700
-In-Reply-To: <20230512132024.4029-1-minipli@grsecurity.net>
-Mime-Version: 1.0
-References: <20230512132024.4029-1-minipli@grsecurity.net>
-Message-ID: <ZF6EVeXU+RNVHIb+@google.com>
-Subject: Re: [PATCH 6.3 0/5] KVM CR0.WP series backport
-From:   Sean Christopherson <seanjc@google.com>
-To:     Mathias Krause <minipli@grsecurity.net>
-Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-        kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S238860AbjELScj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 14:32:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F03A1BF4;
+        Fri, 12 May 2023 11:32:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FC75657B6;
+        Fri, 12 May 2023 18:31:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68219C43443;
+        Fri, 12 May 2023 18:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683916279;
+        bh=QNtq+dSxf9S4yKVS21hk0h0xMTBN4aqiD72KDFJyBk8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=S3eckV/pl26k1JlgpYv0R7kzza2puVetV/PeBl8/OL+6nvWP/BO5PEXTygIWRKUWV
+         xbSja4rYBbpwOG/7GKAJtle5TcPVb/r7fk8oyYwhys+yS3TyDTWNyhg8hbS5DHI3O/
+         Rm8hlKJn+y/qS4hJ8aZZsSxe640f32ldjp0qCY1273MnyRul8tDEwL9sF5g9CQZTHo
+         51DuqmZ/1EaPhWY4C8Rr0p5qdOPHiqMhdKa84V5azCajimUcER8gcTU3ccAbd0ZxLR
+         wvLMS3pAr6k5gpBegrqX6caWeLBajjSiv+obtkeZw48No4aSrsVmEEeZH2AlbtwNkt
+         si0W2yVltrr0g==
+Date:   Fri, 12 May 2023 11:31:18 -0700
+From:   "Darrick J. Wong" <djwong@kernel.org>
+To:     Sarthak Kukreti <sarthakkukreti@chromium.org>
+Cc:     dm-devel@redhat.com, linux-block@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Brian Foster <bfoster@redhat.com>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Bart Van Assche <bvanassche@google.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] block: Don't invalidate pagecache for invalid
+ falloc modes
+Message-ID: <20230512183118.GD858791@frogsfrogsfrogs>
+References: <20230420004850.297045-1-sarthakkukreti@chromium.org>
+ <20230506062909.74601-1-sarthakkukreti@chromium.org>
+ <20230506062909.74601-2-sarthakkukreti@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230506062909.74601-2-sarthakkukreti@chromium.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, May 12, 2023, Mathias Krause wrote:
-> This is a backport of the CR0.WP KVM series[1] to Linux v6.3.
+On Fri, May 05, 2023 at 11:29:05PM -0700, Sarthak Kukreti wrote:
+> Only call truncate_bdev_range() if the fallocate mode is
+> supported. This fixes a bug where data in the pagecache
+> could be invalidated if the fallocate() was called on the
+> block device with an invalid mode.
 > 
-> As the original series is based on v6.3-rc1, it's mostly a verbatim
-> port. Only the last patch needed adaption, as it was a fix based on
-> v6.4-rc1. However, as for the v6.2 backport, I simply changed the code
-> to make use of the older kvm_is_cr0_bit_set() helper.
-> 
-> I used 'ssdd 10 50000' from rt-tests[2] as a micro-benchmark, running on
-> a grsecurity L1 VM. Below table shows the results (runtime in seconds,
-> lower is better):
-> 
->                        legacy     TDP
->     Linux v6.3.1        7.60s    8.29s
->     + patches           3.39s    3.39s
-> 
->     Linux v6.3.2        7.82s    7.81s
->     + patches           3.38s    3.38s
-> 
-> I left out the shadow MMU tests this time, as they're not impacted
-> anyways, only take a lot of time to run. I did, however, include
-> separate tests for v6.3.{1,2} -- not because I had an outdated
-> linux-stable git tree lying around *cough, cough* but because the later
-> includes commit 2ec1fe292d6e ("KVM: x86: Preserve TDP MMU roots until
-> they are explicitly invalidated"), the commit I wanted to benchmark
-> against anyways. Apparently, it has only a minor impact for our use
-> case, so this series is still wanted, imho.
-> 
-> Please consider applying.
-> 
-> Thanks,
-> Mathias
-> 
-> [1] https://lore.kernel.org/kvm/20230322013731.102955-1-minipli@grsecurity.net/
-> [2] https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
-> 
-> 
-> Mathias Krause (3):
->   KVM: x86: Do not unload MMU roots when only toggling CR0.WP with TDP
->     enabled
->   KVM: x86: Make use of kvm_read_cr*_bits() when testing bits
->   KVM: VMX: Make CR0.WP a guest owned bit
-> 
-> Paolo Bonzini (1):
->   KVM: x86/mmu: Avoid indirect call for get_cr3
-> 
-> Sean Christopherson (1):
->   KVM: x86/mmu: Refresh CR0.WP prior to checking for emulated permission
->     faults
+> Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
+> Cc: stable@vger.kernel.org
+> Reported-by: Darrick J. Wong <djwong@kernel.org>
+> Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+Ideally you'd only take filemap_invalidate_lock for valid modes, but eh
+who cares about efficiency for the EOPNOTSUPP case, let's move on. :)
+
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+
+--D
+
+> ---
+>  block/fops.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/block/fops.c b/block/fops.c
+> index d2e6be4e3d1c..4c70fdc546e7 100644
+> --- a/block/fops.c
+> +++ b/block/fops.c
+> @@ -648,24 +648,35 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+>  
+>  	filemap_invalidate_lock(inode->i_mapping);
+>  
+> -	/* Invalidate the page cache, including dirty pages. */
+> -	error = truncate_bdev_range(bdev, file->f_mode, start, end);
+> -	if (error)
+> -		goto fail;
+> -
+> +	/*
+> +	 * Invalidate the page cache, including dirty pages, for valid
+> +	 * de-allocate mode calls to fallocate().
+> +	 */
+>  	switch (mode) {
+>  	case FALLOC_FL_ZERO_RANGE:
+>  	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
+> +		error = truncate_bdev_range(bdev, file->f_mode, start, end);
+> +		if (error)
+> +			goto fail;
+> +
+>  		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+>  					     len >> SECTOR_SHIFT, GFP_KERNEL,
+>  					     BLKDEV_ZERO_NOUNMAP);
+>  		break;
+>  	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
+> +		error = truncate_bdev_range(bdev, file->f_mode, start, end);
+> +		if (error)
+> +			goto fail;
+> +
+>  		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+>  					     len >> SECTOR_SHIFT, GFP_KERNEL,
+>  					     BLKDEV_ZERO_NOFALLBACK);
+>  		break;
+>  	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
+> +		error = truncate_bdev_range(bdev, file->f_mode, start, end);
+> +		if (error)
+> +			goto fail;
+> +
+>  		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
+>  					     len >> SECTOR_SHIFT, GFP_KERNEL);
+>  		break;
+> -- 
+> 2.40.1.521.gf1e218fcd8-goog
+> 
