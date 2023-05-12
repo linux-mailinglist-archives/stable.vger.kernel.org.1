@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80B8570020F
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 10:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8157E700269
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 10:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240300AbjELIAm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 04:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33050 "EHLO
+        id S240097AbjELIWe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 04:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240313AbjELIA3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 04:00:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D865E10E4A
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 01:00:23 -0700 (PDT)
+        with ESMTP id S232164AbjELIWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 04:22:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B25940CD;
+        Fri, 12 May 2023 01:22:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DE80653BA
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 08:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BEDCCC433EF;
-        Fri, 12 May 2023 08:00:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C334560920;
+        Fri, 12 May 2023 08:22:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487E0C433D2;
+        Fri, 12 May 2023 08:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683878422;
-        bh=peiXR2wIzOlotz4x3dY6IyZNIatjmCjjAfG6Bws8ZRk=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=cl8pSJ7zsfPDFUSVBykJEGouGiv1jjV116OWIfpP4znD+d4pXjS4J5oi2TckOQ7V7
-         midcb3mAKsypN9ZtgowiUJD4kGkCMh98LydemzBKXd1p88VYZQXIIrnnmZTwWuOJZC
-         29+FauvGPIkcf1Da3e3Xp5uVctQCUPmlAg/n7/0UnaKJorZ2QttbnRuGiwYn6H8KNe
-         m+viE5unLk8S0Z4H44MTVGjGKm8R5P6J9V4ivUGt3MCUY0GBCQGLzSEtEgHn+Yt87O
-         8NbuST4pzYneWeU8OOElxP8xPWDRJUpzygIS+nebpgsXjJfx6WK7jEmnikqN9MgLwt
-         a/x+0rqtavGrg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A447CE450BB;
-        Fri, 12 May 2023 08:00:22 +0000 (UTC)
+        s=k20201202; t=1683879752;
+        bh=eOuGicipDQ0S1L6yb+ho/AhSB+0Z3aOwwL53vP8BHds=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=n9AhOre7C1ZOpLqtoJnN01zZogLEk9y4P4e0nd4NPAiUJlUoqUrzkj7FuoJN+mqFt
+         fc0paOXUt+1gzjCdb0xo7KdsBEOq4Kk7poAjDSCligcb4gIodaTg/2sv2J3tyLLC0+
+         YpClFlvZda8lQCpGh/U1vXVmoFWY/UnfBLwtur9/QJbKr8FPNVBbJ9S+E7MB0tk9Re
+         DY0OAU15yuDHp+Na82wTlPRgS3W4Yk4fEr8JneD0SVAo12l+tVN5+p15CuSOPVoU/g
+         xztAGc/u5h+q3QgGIK++riZ9clBtnUNZegnWk1X2F0xiQk+b4ihDhQHVtBieO1vkKn
+         y1rzhM/NnpYsg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] nfp: fix NFP_NET_MAX_DSCP definition error
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168387842266.16770.1434182525934270705.git-patchwork-notify@kernel.org>
-Date:   Fri, 12 May 2023 08:00:22 +0000
-References: <20230511065056.8882-1-louis.peens@corigine.com>
-In-Reply-To: <20230511065056.8882-1-louis.peens@corigine.com>
-To:     Louis Peens <louis.peens@corigine.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        simon.horman@corigine.com, netdev@vger.kernel.org,
-        stable@vger.kernel.org, oss-drivers@corigine.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: rtw89: 8852b: adjust quota to avoid SER L1
+ caused by
+ access null page
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230426034737.24870-1-pkshih@realtek.com>
+References: <20230426034737.24870-1-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <stable@vger.kernel.org>, <Larry.Finger@lwfinger.net>,
+        <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <168387974912.10206.8566556149003653588.kvalo@kernel.org>
+Date:   Fri, 12 May 2023 08:22:31 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,29 +56,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Thu, 11 May 2023 08:50:56 +0200 you wrote:
-> From: Huayu Chen <huayu.chen@corigine.com>
+> Though SER can recover this case, traffic can get stuck for a while. Fix it
+> by adjusting page quota to avoid hardware access null page of CMAC/DMAC.
 > 
-> The patch corrects the NFP_NET_MAX_DSCP definition in the main.h file.
-> 
-> The incorrect definition result DSCP bits not being mapped properly when
-> DCB is set. When NFP_NET_MAX_DSCP was defined as 4, the next 60 DSCP
-> bits failed to be set.
-> 
-> [...]
+> Fixes: a1cb097168fa ("wifi: rtw89: 8852b: configure DLE mem")
+> Fixes: 3e870b481733 ("wifi: rtw89: 8852b: add HFC quota arrays")
+> Cc: stable@vger.kernel.org
+> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Link: https://github.com/lwfinger/rtw89/issues/226#issuecomment-1520776761
+> Link: https://github.com/lwfinger/rtw89/issues/240
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Here is the summary with links:
-  - [net] nfp: fix NFP_NET_MAX_DSCP definition error
-    https://git.kernel.org/netdev/net/c/de9c1a23add9
+Patch applied to wireless.git, thanks.
 
-You are awesome, thank you!
+c0426c446d92 wifi: rtw89: 8852b: adjust quota to avoid SER L1 caused by access null page
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://patchwork.kernel.org/project/linux-wireless/patch/20230426034737.24870-1-pkshih@realtek.com/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
