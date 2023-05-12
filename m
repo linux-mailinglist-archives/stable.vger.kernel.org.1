@@ -2,114 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B57F87004F8
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 12:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBFEB700633
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 13:02:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240715AbjELKMV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 06:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39772 "EHLO
+        id S240971AbjELLCJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 07:02:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240413AbjELKMB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 06:12:01 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9B81BE1
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 03:11:33 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f42d937d61so37806565e9.3
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 03:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683886292; x=1686478292;
-        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
-         :content-language:subject:reply-to:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=9FxWivWJPVbRp/nOJzpvmn588X9UgZWMKzBDTI7Mfnc=;
-        b=dNJmRYkigUMvMB7lu+l44aLi+HUWM6ug0CERBaLjq8aWdPQwrBXMMGY4bkUSpEzqrz
-         OwkAjUcuxAO0CjuAg7r1p6ux/XXcgBmY5R278KwS2aXTqdYM/tybvElKoFzPkc3Y7JZN
-         huRr5GwVWOUubmQR4ULyy9q8eW+X93LbEBsiNXKMsvqE1TuIugabtiUxnSa6+FI8CvOv
-         zXLwJC80n3+jcU4x6R4X/0EMS29BD6Ir4e8/3N6iOefMeYQlMXyuyawNZBaPpxK5370V
-         PpNYGYd2tg9spvV9gZAFUXvBQnNC9Bdj2BRW5FPWvCrJ/XpFficE6mVheNXKBpYNJAE2
-         xf/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683886292; x=1686478292;
-        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
-         :content-language:subject:reply-to:from:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9FxWivWJPVbRp/nOJzpvmn588X9UgZWMKzBDTI7Mfnc=;
-        b=K4nebNSjuBSCe1uIe5awiHnTILVMkR5OZvFJtFhWHykLQm43ZqNbs+fapU7OBEQJ71
-         PZ5OWKCytxoUWUMnO0m8DzcnBz2zdsEPNWOCnQSCVLOU8c4NVW+pNbcCzdfLtoStbIiA
-         RVRuEeJi6kctl91rSfOhjMAdIUXLX4fc+2KVecQUWJeJd432FeIWqSZjhZu7GnCux64x
-         3tmD/kDk+A5+lik81cFENUol8a0UUujceWs+A3XxNX+sPF8vgsf5CnZwN4tvlo58DXX4
-         SbEp8LaEvGt2dMwc0ieQLlRhXLKA3afP34O7YPaGnIayQ0p2uWrK/DETJ2R04D3PQUJB
-         /+3g==
-X-Gm-Message-State: AC+VfDysvuaQ+a9JmWzQAsNd8YTvsBC7jmLsdTRNTKuTDXH3alixnyPl
-        Ow9cKcruPc6tgzkqlWoAgFOzjw==
-X-Google-Smtp-Source: ACHHUZ7j69KRqv2NtHMhTkTSuUkDIdWyH6tbjMQVWglcosDge7Hizlm2MN7ZYZkliSfcHGo1acDLag==
-X-Received: by 2002:a7b:c012:0:b0:3f0:9d1a:223b with SMTP id c18-20020a7bc012000000b003f09d1a223bmr18351406wmb.16.1683886292167;
-        Fri, 12 May 2023 03:11:32 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:95e3:a02f:1d34:8191? ([2a01:e0a:982:cbb0:95e3:a02f:1d34:8191])
-        by smtp.gmail.com with ESMTPSA id z18-20020a1c4c12000000b003f188f608b9sm28060105wmf.8.2023.05.12.03.11.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 May 2023 03:11:31 -0700 (PDT)
-Message-ID: <e2bd6ca0-ffa1-a1f3-340b-6522dacd099d@linaro.org>
-Date:   Fri, 12 May 2023 12:11:30 +0200
+        with ESMTP id S240956AbjELLCG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 07:02:06 -0400
+X-Greylist: delayed 366 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 12 May 2023 04:02:05 PDT
+Received: from mo6-p01-ob.smtp.rzone.de (mo6-p01-ob.smtp.rzone.de [IPv6:2a01:238:400:200::9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D22B106E7
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 04:02:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1683888954; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Aw1M/UbYyytpcMpiQxQzWfWNSArV/QO8rGWfMOd2Wy8n8aujh4ZdVnPnQuC97BaHEl
+    m2EVGUZUhrLJepfBqQAEQDMJmdv/VHpwf0Ctv/yCLRkJQIxOVYb5+CAEcVnCKb2lLAfG
+    Cfxp0yNGDDqFJX5JtkUZRqq7KpUGCD8W+YaB7cYiaBGwRjjlwz2EUf2ty8OguEYptCJY
+    Le9CzXOXxbfoDWZqDwfn5vShdn1twZecqOefnL8KUr5BYSlM/Gb9JbB4bYNqrUqrYMCZ
+    RNEiTI+jNxAUX0KxBbwm+yulImsM8Ji0Kh6d9B8Ws6Z/85RnkKvt1GDYMQKVRM9aIWwM
+    RF8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1683888954;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=IcnC9fQoMISibPV6bWeUYZDoYQ3HREw+uIToY4kSiuI=;
+    b=VY0rMiVBuRsrU9CwBUEiIDZCcMQMPCON0BNynoiCvGqUQifuSUO0O+07amI3MEodsu
+    C3yzQYvrm/d7cHsuXN9M4caIJ6ovXGsWF4Di0b/fQxbYuWXCR9c6l26RqlASVyO+36wY
+    Eb4fbijilY7dvJyLE7Fn1hRb8t/UOlRh18wue5tE6kvt++oCvlK87E5trgwBOtBqxdf1
+    nOSxEuBgqk8Ib3+IOOpD1hooKNRvc7cyZK3iCRGnC9ViZAjOitDmNDBUcfKKsY1S20Ah
+    bzINHVTm/eClAiPKcLTpEV9I0/kJykt2BncIATTFa/xU7FEUjoaX5ipgvDX41L7Uh5bh
+    ABNQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1683888953;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=IcnC9fQoMISibPV6bWeUYZDoYQ3HREw+uIToY4kSiuI=;
+    b=gguczXTCu2J8Sezn9hZ7yxNZXT6l3A8tWGtb42MNf8uJV59p8DtLxmYk+Ig+Fu4zkJ
+    Q21emEE0/RNpEoLnkQtTTHZ3H+QVbqrEt6pdOXwodnd5XpCqZRVcAG15NwyP8yScHQBS
+    0YwZX5r8CghLCLtFKDGVlIHPtSSHZ6Hetdfcoz7kfIYq3DQopwxghCo7AsERcb/94se1
+    X9hqQ0DK/96gBlc7rcmmrH5WS+cpvduUWTPwSBdboso5LYbhf07Xj7bTRi0FeCAHs10o
+    bh3m21zTNTUieNO8mEfkmMOOzdZNWkhQeJvvqAEIdbEfZgqUxY5UdhdqX7i26qKKJajM
+    PStA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1683888953;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=IcnC9fQoMISibPV6bWeUYZDoYQ3HREw+uIToY4kSiuI=;
+    b=qImzTiCB12p3WnxeMcNXHT/YJItRgBWRxrLefPfzG3u8cJhx0dE5k2rYSuu5j8wqB1
+    zc4gKSxLJWvZLm3WKECQ==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA8piL1A=="
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
+    with ESMTPSA id j6420az4CAtruum
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Fri, 12 May 2023 12:55:53 +0200 (CEST)
+Date:   Fri, 12 May 2023 12:55:46 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Francesco Dolcini <francesco@dolcini.it>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, stable@vger.kernel.org,
+        francesco.dolcini@toradex.com, liu.ming50@gmail.com,
+        Badhri Jagan Sridharan <badhri@google.com>
+Subject: Re: USB gadget regression on v6.4-rc1 and v6.1.28
+Message-ID: <ZF4bMptC3Lf2Hnee@gerhold.net>
+References: <ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-From:   Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH RESEND] pinctrl: meson-axg: add missing GPIOA_18 gpio
- group
-Content-Language: en-US
-To:     =?UTF-8?Q?Martin_Hundeb=c3=b8ll?= <martin@geanix.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Xingyu Chen <xingyu.chen@amlogic.com>,
-        Yixun Lan <yixun.lan@amlogic.com>
-Cc:     stable@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20230512064925.133516-1-martin@geanix.com>
-Organization: Linaro Developer Services
-In-Reply-To: <20230512064925.133516-1-martin@geanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 12/05/2023 08:49, Martin Hundebøll wrote:
-> Without this, the gpio cannot be explicitly mux'ed to its gpio function.
+On Fri, May 12, 2023 at 11:07:10AM +0200, Francesco Dolcini wrote:
+> Hello all,
+> I recently did have a regression on v6.4rc1, and it seems that the same
+> exact issue is now happening also on v6.1.28.
 > 
-> Fixes: 83c566806a68a ("pinctrl: meson-axg: Add new pinctrl driver for Meson AXG SoC")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Martin Hundebøll <martin@geanix.com>
-> ---
-> Changes since first mail:
->   * Added Cc: stable to commit message
->   * Expanded To: and Cc: with full list from get_maintainers.pl
+> I was not able yet to bisect it (yet), but what is happening is that
+> libusbgx[1] that we use to configure a USB NCM gadget interface[2][3] just
+> hang completely at boot.
 > 
->   drivers/pinctrl/meson/pinctrl-meson-axg.c | 1 +
->   1 file changed, 1 insertion(+)
+> This is happening with multiple ARM32 and ARM64 i.MX SOC (i.MX6, i.MX7,
+> i.MX8MM).
 > 
-> diff --git a/drivers/pinctrl/meson/pinctrl-meson-axg.c b/drivers/pinctrl/meson/pinctrl-meson-axg.c
-> index 7bfecdfba177..d249a035c2b9 100644
-> --- a/drivers/pinctrl/meson/pinctrl-meson-axg.c
-> +++ b/drivers/pinctrl/meson/pinctrl-meson-axg.c
-> @@ -400,6 +400,7 @@ static struct meson_pmx_group meson_axg_periphs_groups[] = {
->   	GPIO_GROUP(GPIOA_15),
->   	GPIO_GROUP(GPIOA_16),
->   	GPIO_GROUP(GPIOA_17),
-> +	GPIO_GROUP(GPIOA_18),
->   	GPIO_GROUP(GPIOA_19),
->   	GPIO_GROUP(GPIOA_20),
->   
+> The logs is something like that
+> 
+> ```
+> [*     �F] A start job is running for Load def…t schema g1.schema (6s / no limit)
+> M[K[**    �F] A start job is running for Load def…t schema g1.schema (7s / no limit)
+> M[K[***   �F] A start job is running for Load def…t schema g1.schema (8s / no limit)
+> M[K[ ***  �F] A start job is running for Load def…t schema g1.schema (8s / no limit)
+> ```
+> 
+> I will try to bisect this and provide more useful feedback ASAP, I
+> decided to not wait for it and just send this email in case someone has
+> some insight on what is going on.
+> 
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+I noticed a similar problem on the Qualcomm MSM8916 SoC (chipidea USB
+driver) and reverting commit 0db213ea8eed ("usb: gadget: udc: core:
+Invoke usb_gadget_connect only when started") fixes it for me. The
+follow-up commit a3afbf5cc887 ("usb: gadget: udc: core: Prevent
+redundant calls to pullup") must be reverted first to avoid conflicts.
+These two were also backported into 6.1.28.
+
+I didn't have time to investigate it further yet. With these patches it
+just hangs forever when setting up the USB gadget.
+
+Stephan
