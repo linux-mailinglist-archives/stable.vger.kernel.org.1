@@ -2,44 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE1AA700445
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 11:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C386F700496
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 12:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232260AbjELJvP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 05:51:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46866 "EHLO
+        id S240705AbjELKBT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 06:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240422AbjELJvN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 05:51:13 -0400
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 099F74C1F;
-        Fri, 12 May 2023 02:51:09 -0700 (PDT)
-Received: (Authenticated sender: alex@ghiti.fr)
-        by mail.gandi.net (Postfix) with ESMTPSA id 5C7EF24000C;
-        Fri, 12 May 2023 09:51:04 +0000 (UTC)
-Message-ID: <bea1128b-903c-a7d0-9929-d9667999bb6d@ghiti.fr>
-Date:   Fri, 12 May 2023 11:51:03 +0200
+        with ESMTP id S240718AbjELKAp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 06:00:45 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510021384E
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 02:59:57 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1aad6f2be8eso90151135ad.3
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 02:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1683885577; x=1686477577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9J2ZJnDmboCKN65asMulJKTQ7oAGkyMypOi8N9qUDaM=;
+        b=iV15/4Gc4dM5nXgibYo8jehJqP7rFQJLD4K+sKQke8vu5fqJMEVRnY1bsWBtX8OqEx
+         XjaC9mmxWFOPg76FeqUyxgZgK7lVA0cFiYgIGm57F3mn9rCGa69fdjrcdEJJKbiZJcJ1
+         PcA2cvzX/4eCHiZikCkVy3vfGSRto7clNkVrU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683885577; x=1686477577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9J2ZJnDmboCKN65asMulJKTQ7oAGkyMypOi8N9qUDaM=;
+        b=D5Cqq2CWNKz5V5D9ibITwe/BXRAkvKKoieR4nG5LH1PUw0u9/86n+8YpbpmoQtA6hO
+         Vf+tDLunmOdwTYPMMW8qSaT8tjJpZIMc5cO26+NTBpmigVoil6fTnnP4pfMtw0hWQb6Z
+         CIaBbXw7Eenv/kxFPIqHZDCRpAK0pRHAURmy2ivfUbwRgYLB9OlHNF4UIDmNjOOHQ2uw
+         Ef+ttJHcAJrZKm7mhavfNJ6vioeKLswWHxIhJl4CfSoi86pbEyhBQ9FwOZa36fwAbgSs
+         X/sKGF/aA99q1UAGYK2BZ5Nw5oR1eJBdeBmB1S/MMifJqNnCVwH2ICGHejpidhhuXoJV
+         YVnA==
+X-Gm-Message-State: AC+VfDysdCY9X7caV8gO8m5+FMX/RBh3nK92tVKZfwwelTYw/LVW0pzg
+        +qguKqkKz1MObcDs1yBhHHrdUOe42Lp7N6CiN78T2Q==
+X-Google-Smtp-Source: ACHHUZ4/ym6NDbByzCpXM236x7lUbxxOc0SnMwWRJXQor6i+H/EpLBaD/hjINvnPin0xJu7QH92ra92GuqfmxTkj7mI=
+X-Received: by 2002:a17:902:ce91:b0:1ad:c1c2:7d1a with SMTP id
+ f17-20020a170902ce9100b001adc1c27d1amr7752806plg.63.1683885577124; Fri, 12
+ May 2023 02:59:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH AUTOSEL 6.3 5/7] riscv: Unconditionnally select
- KASAN_VMALLOC if KASAN
-Content-Language: en-US
-To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu,
-        linux-riscv@lists.infradead.org
-References: <20230509035455.59524-1-sashal@kernel.org>
- <20230509035455.59524-5-sashal@kernel.org>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20230509035455.59524-5-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+References: <20230509030705.399628514@linuxfoundation.org> <20230509080658.GA152864@d6921c044a31>
+ <20230509131032.GA8@9ed91d9f7b3c> <2023050913-spearhead-angrily-fc58@gregkh>
+ <20230509145806.GA8@df3c0d7ae0b0> <2023051025-plug-willow-e278@gregkh>
+ <CAG9oJsnr55Atybm4nOQAFjXQ_TeqVG+Nz_8zqMT3ansdnEpGBQ@mail.gmail.com>
+ <2023051048-plus-mountable-6280@gregkh> <CAG9oJskrJotpyqwi6AHVMmhnFmL+Ym=xAFmL51RiZFaU78wv-A@mail.gmail.com>
+ <2023051132-dweller-upturned-b446@gregkh> <CAG9oJskf0fE7LiumdzD4QW8dTmGpmVyXBSyiKu_xP+s72Rw44A@mail.gmail.com>
+ <CAHk-=wjJNHjwfrT0X5DvSP3fZzUF0SAbErkc30qAWDW=U9uKtQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wjJNHjwfrT0X5DvSP3fZzUF0SAbErkc30qAWDW=U9uKtQ@mail.gmail.com>
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+Date:   Fri, 12 May 2023 19:59:25 +1000
+Message-ID: <CAG9oJsm7GA3A9MHcMiMqxzz5a9sV+S6BCzuYRbAVawweswSOAA@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, ntfs3@lists.linux.dev,
+        almaz.alexandrovich@paragon-software.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,43 +77,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sasha,
-
-On 5/9/23 05:54, Sasha Levin wrote:
-> From: Alexandre Ghiti <alexghiti@rivosinc.com>
+On Fri, 12 May 2023 at 00:24, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> [ Upstream commit 864046c512c2cd8418dc928b91981fb12a80396c ]
+> On Thu, May 11, 2023 at 3:30=E2=80=AFAM Rudi Heitbaum <rudi@heitbaum.com>=
+ wrote:
+> >
+> > I have run 6.1.28-rc2 today, and was able to trigger the error. So
+> > definitely bad in both 6.3 and 6.1.
+> >
+> > [13812.020209] BUG: kernel NULL pointer dereference, address: 000000000=
+0000020
+> > [13812.021322] #PF: supervisor read access in kernel mode
+> > [13812.022346] #PF: error_code(0x0000) - not-present page
+> > [13812.023591] PGD 0 P4D 0
+> > [13812.024876] Oops: 0000 [#1] SMP NOPTI
+> > [13812.026088] CPU: 5 PID: 20386 Comm: .NET ThreadPool Not tainted 6.1.=
+28-rc2 #1
+> > [13812.027336] Hardware name: Intel(R) Client Systems
+> > NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
+> > [13812.028593] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
 >
-> If KASAN is enabled, VMAP_STACK depends on KASAN_VMALLOC so enable
-> KASAN_VMALLOC with KASAN so that we can enable VMAP_STACK by default.
+> I suspect this is fixed in mainline by commit 6827d50b2c43 ("fs/ntfs3:
+> Refactoring of various minor issues") which changed the IS_ERR() check
+> into a IS_ERR_OR_NULL().
+
+Hi Linus,
+
+Thanks for the direction to the commit. I can confirm that once adding
+commit 6827d50b2c43 to both 6.1.28-rc2 and 6.3.2-rc2 and testing for
+today - that the error is not reproducible with the below lines.
+
+- if (!IS_ERR(inode) && inode->i_op =3D=3D NULL) {
++ if (!IS_ERR_OR_NULL(inode) && !inode->i_op) {
+
+Rudi
+
+> But dropping the original fix from stable might be the right thing to do.
 >
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-> Link: https://lore.kernel.org/r/20230203075232.274282-7-alexghiti@rivosinc.com
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   arch/riscv/Kconfig | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index eb7f29a412f87..d6aad84efb95e 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -118,6 +118,7 @@ config RISCV
->   	select HAVE_SYSCALL_TRACEPOINTS
->   	select IRQ_DOMAIN
->   	select IRQ_FORCED_THREADING
-> +	select KASAN_VMALLOC if KASAN
->   	select MODULES_USE_ELF_RELA if MODULES
->   	select MODULE_SECTIONS if MODULES
->   	select OF
-
-
-KASAN_VMALLOC is broken for any kernel < 6.4, so this one should not be 
-backported to any kernel (5.15, 6.1, 6.2, 6.3).
-
-Thanks,
-
-Alex
-
+>                  Linus
