@@ -2,117 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C386F700496
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 12:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B57F87004F8
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 12:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240705AbjELKBT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 06:01:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
+        id S240715AbjELKMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 06:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240718AbjELKAp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 06:00:45 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510021384E
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 02:59:57 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1aad6f2be8eso90151135ad.3
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 02:59:57 -0700 (PDT)
+        with ESMTP id S240413AbjELKMB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 06:12:01 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9B81BE1
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 03:11:33 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f42d937d61so37806565e9.3
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 03:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=heitbaum.com; s=google; t=1683885577; x=1686477577;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9J2ZJnDmboCKN65asMulJKTQ7oAGkyMypOi8N9qUDaM=;
-        b=iV15/4Gc4dM5nXgibYo8jehJqP7rFQJLD4K+sKQke8vu5fqJMEVRnY1bsWBtX8OqEx
-         XjaC9mmxWFOPg76FeqUyxgZgK7lVA0cFiYgIGm57F3mn9rCGa69fdjrcdEJJKbiZJcJ1
-         PcA2cvzX/4eCHiZikCkVy3vfGSRto7clNkVrU=
+        d=linaro.org; s=google; t=1683886292; x=1686478292;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:reply-to:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=9FxWivWJPVbRp/nOJzpvmn588X9UgZWMKzBDTI7Mfnc=;
+        b=dNJmRYkigUMvMB7lu+l44aLi+HUWM6ug0CERBaLjq8aWdPQwrBXMMGY4bkUSpEzqrz
+         OwkAjUcuxAO0CjuAg7r1p6ux/XXcgBmY5R278KwS2aXTqdYM/tybvElKoFzPkc3Y7JZN
+         huRr5GwVWOUubmQR4ULyy9q8eW+X93LbEBsiNXKMsvqE1TuIugabtiUxnSa6+FI8CvOv
+         zXLwJC80n3+jcU4x6R4X/0EMS29BD6Ir4e8/3N6iOefMeYQlMXyuyawNZBaPpxK5370V
+         PpNYGYd2tg9spvV9gZAFUXvBQnNC9Bdj2BRW5FPWvCrJ/XpFficE6mVheNXKBpYNJAE2
+         xf/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683885577; x=1686477577;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9J2ZJnDmboCKN65asMulJKTQ7oAGkyMypOi8N9qUDaM=;
-        b=D5Cqq2CWNKz5V5D9ibITwe/BXRAkvKKoieR4nG5LH1PUw0u9/86n+8YpbpmoQtA6hO
-         Vf+tDLunmOdwTYPMMW8qSaT8tjJpZIMc5cO26+NTBpmigVoil6fTnnP4pfMtw0hWQb6Z
-         CIaBbXw7Eenv/kxFPIqHZDCRpAK0pRHAURmy2ivfUbwRgYLB9OlHNF4UIDmNjOOHQ2uw
-         Ef+ttJHcAJrZKm7mhavfNJ6vioeKLswWHxIhJl4CfSoi86pbEyhBQ9FwOZa36fwAbgSs
-         X/sKGF/aA99q1UAGYK2BZ5Nw5oR1eJBdeBmB1S/MMifJqNnCVwH2ICGHejpidhhuXoJV
-         YVnA==
-X-Gm-Message-State: AC+VfDysdCY9X7caV8gO8m5+FMX/RBh3nK92tVKZfwwelTYw/LVW0pzg
-        +qguKqkKz1MObcDs1yBhHHrdUOe42Lp7N6CiN78T2Q==
-X-Google-Smtp-Source: ACHHUZ4/ym6NDbByzCpXM236x7lUbxxOc0SnMwWRJXQor6i+H/EpLBaD/hjINvnPin0xJu7QH92ra92GuqfmxTkj7mI=
-X-Received: by 2002:a17:902:ce91:b0:1ad:c1c2:7d1a with SMTP id
- f17-20020a170902ce9100b001adc1c27d1amr7752806plg.63.1683885577124; Fri, 12
- May 2023 02:59:37 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683886292; x=1686478292;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:reply-to:from:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9FxWivWJPVbRp/nOJzpvmn588X9UgZWMKzBDTI7Mfnc=;
+        b=K4nebNSjuBSCe1uIe5awiHnTILVMkR5OZvFJtFhWHykLQm43ZqNbs+fapU7OBEQJ71
+         PZ5OWKCytxoUWUMnO0m8DzcnBz2zdsEPNWOCnQSCVLOU8c4NVW+pNbcCzdfLtoStbIiA
+         RVRuEeJi6kctl91rSfOhjMAdIUXLX4fc+2KVecQUWJeJd432FeIWqSZjhZu7GnCux64x
+         3tmD/kDk+A5+lik81cFENUol8a0UUujceWs+A3XxNX+sPF8vgsf5CnZwN4tvlo58DXX4
+         SbEp8LaEvGt2dMwc0ieQLlRhXLKA3afP34O7YPaGnIayQ0p2uWrK/DETJ2R04D3PQUJB
+         /+3g==
+X-Gm-Message-State: AC+VfDysvuaQ+a9JmWzQAsNd8YTvsBC7jmLsdTRNTKuTDXH3alixnyPl
+        Ow9cKcruPc6tgzkqlWoAgFOzjw==
+X-Google-Smtp-Source: ACHHUZ7j69KRqv2NtHMhTkTSuUkDIdWyH6tbjMQVWglcosDge7Hizlm2MN7ZYZkliSfcHGo1acDLag==
+X-Received: by 2002:a7b:c012:0:b0:3f0:9d1a:223b with SMTP id c18-20020a7bc012000000b003f09d1a223bmr18351406wmb.16.1683886292167;
+        Fri, 12 May 2023 03:11:32 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:95e3:a02f:1d34:8191? ([2a01:e0a:982:cbb0:95e3:a02f:1d34:8191])
+        by smtp.gmail.com with ESMTPSA id z18-20020a1c4c12000000b003f188f608b9sm28060105wmf.8.2023.05.12.03.11.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 May 2023 03:11:31 -0700 (PDT)
+Message-ID: <e2bd6ca0-ffa1-a1f3-340b-6522dacd099d@linaro.org>
+Date:   Fri, 12 May 2023 12:11:30 +0200
 MIME-Version: 1.0
-References: <20230509030705.399628514@linuxfoundation.org> <20230509080658.GA152864@d6921c044a31>
- <20230509131032.GA8@9ed91d9f7b3c> <2023050913-spearhead-angrily-fc58@gregkh>
- <20230509145806.GA8@df3c0d7ae0b0> <2023051025-plug-willow-e278@gregkh>
- <CAG9oJsnr55Atybm4nOQAFjXQ_TeqVG+Nz_8zqMT3ansdnEpGBQ@mail.gmail.com>
- <2023051048-plus-mountable-6280@gregkh> <CAG9oJskrJotpyqwi6AHVMmhnFmL+Ym=xAFmL51RiZFaU78wv-A@mail.gmail.com>
- <2023051132-dweller-upturned-b446@gregkh> <CAG9oJskf0fE7LiumdzD4QW8dTmGpmVyXBSyiKu_xP+s72Rw44A@mail.gmail.com>
- <CAHk-=wjJNHjwfrT0X5DvSP3fZzUF0SAbErkc30qAWDW=U9uKtQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wjJNHjwfrT0X5DvSP3fZzUF0SAbErkc30qAWDW=U9uKtQ@mail.gmail.com>
-From:   Rudi Heitbaum <rudi@heitbaum.com>
-Date:   Fri, 12 May 2023 19:59:25 +1000
-Message-ID: <CAG9oJsm7GA3A9MHcMiMqxzz5a9sV+S6BCzuYRbAVawweswSOAA@mail.gmail.com>
-Subject: Re: [PATCH 6.3 000/694] 6.3.2-rc2 review
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, ntfs3@lists.linux.dev,
-        almaz.alexandrovich@paragon-software.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH RESEND] pinctrl: meson-axg: add missing GPIOA_18 gpio
+ group
+Content-Language: en-US
+To:     =?UTF-8?Q?Martin_Hundeb=c3=b8ll?= <martin@geanix.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Xingyu Chen <xingyu.chen@amlogic.com>,
+        Yixun Lan <yixun.lan@amlogic.com>
+Cc:     stable@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20230512064925.133516-1-martin@geanix.com>
+Organization: Linaro Developer Services
+In-Reply-To: <20230512064925.133516-1-martin@geanix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 12 May 2023 at 00:24, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Thu, May 11, 2023 at 3:30=E2=80=AFAM Rudi Heitbaum <rudi@heitbaum.com>=
- wrote:
-> >
-> > I have run 6.1.28-rc2 today, and was able to trigger the error. So
-> > definitely bad in both 6.3 and 6.1.
-> >
-> > [13812.020209] BUG: kernel NULL pointer dereference, address: 000000000=
-0000020
-> > [13812.021322] #PF: supervisor read access in kernel mode
-> > [13812.022346] #PF: error_code(0x0000) - not-present page
-> > [13812.023591] PGD 0 P4D 0
-> > [13812.024876] Oops: 0000 [#1] SMP NOPTI
-> > [13812.026088] CPU: 5 PID: 20386 Comm: .NET ThreadPool Not tainted 6.1.=
-28-rc2 #1
-> > [13812.027336] Hardware name: Intel(R) Client Systems
-> > NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0085.2022.0718.1739 07/18/2022
-> > [13812.028593] RIP: 0010:ntfs_lookup+0x76/0xe0 [ntfs3]
->
-> I suspect this is fixed in mainline by commit 6827d50b2c43 ("fs/ntfs3:
-> Refactoring of various minor issues") which changed the IS_ERR() check
-> into a IS_ERR_OR_NULL().
+On 12/05/2023 08:49, Martin Hundebøll wrote:
+> Without this, the gpio cannot be explicitly mux'ed to its gpio function.
+> 
+> Fixes: 83c566806a68a ("pinctrl: meson-axg: Add new pinctrl driver for Meson AXG SoC")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Martin Hundebøll <martin@geanix.com>
+> ---
+> Changes since first mail:
+>   * Added Cc: stable to commit message
+>   * Expanded To: and Cc: with full list from get_maintainers.pl
+> 
+>   drivers/pinctrl/meson/pinctrl-meson-axg.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/pinctrl/meson/pinctrl-meson-axg.c b/drivers/pinctrl/meson/pinctrl-meson-axg.c
+> index 7bfecdfba177..d249a035c2b9 100644
+> --- a/drivers/pinctrl/meson/pinctrl-meson-axg.c
+> +++ b/drivers/pinctrl/meson/pinctrl-meson-axg.c
+> @@ -400,6 +400,7 @@ static struct meson_pmx_group meson_axg_periphs_groups[] = {
+>   	GPIO_GROUP(GPIOA_15),
+>   	GPIO_GROUP(GPIOA_16),
+>   	GPIO_GROUP(GPIOA_17),
+> +	GPIO_GROUP(GPIOA_18),
+>   	GPIO_GROUP(GPIOA_19),
+>   	GPIO_GROUP(GPIOA_20),
+>   
 
-Hi Linus,
-
-Thanks for the direction to the commit. I can confirm that once adding
-commit 6827d50b2c43 to both 6.1.28-rc2 and 6.3.2-rc2 and testing for
-today - that the error is not reproducible with the below lines.
-
-- if (!IS_ERR(inode) && inode->i_op =3D=3D NULL) {
-+ if (!IS_ERR_OR_NULL(inode) && !inode->i_op) {
-
-Rudi
-
-> But dropping the original fix from stable might be the right thing to do.
->
->                  Linus
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
