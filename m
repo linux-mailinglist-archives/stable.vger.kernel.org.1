@@ -2,186 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9641E700913
-	for <lists+stable@lfdr.de>; Fri, 12 May 2023 15:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDC3C70096C
+	for <lists+stable@lfdr.de>; Fri, 12 May 2023 15:48:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241105AbjELNUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 09:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42514 "EHLO
+        id S241203AbjELNsy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 09:48:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240646AbjELNUq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 09:20:46 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A8C2D4A
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 06:20:44 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-966400ee79aso1357102266b.0
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 06:20:44 -0700 (PDT)
+        with ESMTP id S240963AbjELNsw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 09:48:52 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F4CB12EA9;
+        Fri, 12 May 2023 06:48:51 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1ab13da70a3so96134975ad.1;
+        Fri, 12 May 2023 06:48:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1683897643; x=1686489643;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EAj9+wwvvQBZb98iVWDhS9msbB+DvyCsfBWvAkxMn64=;
-        b=DPoOZm5Rl64bijgyVluptsPFEFFd2ZcMbhjgo9kJtSubQHcsnAmp6mg9cld22TEP/k
-         8gd0KwXkWIMvbu5SKWIzUOYciaRsxL+2TOIxqgAVw5OzjpBumNM0LKyA/Iz4/BgP9v5g
-         cRamXKMEVGn7ScSVK2z3AzXDOogjtOJp6AYjoHcay1MzYt3b6/WVeisZdVVkTLzFxGwS
-         KxgPjFvxXnljOSMUjf+7AGDzyk4kkZcm+NvQ43VY9/HnI8v43tCl/HyYtvAPanulIr/6
-         yBPrW9tqsRHxJ58CGj3Frvsl2QE2YdOj55MCzBO3V0TevenREPNAThyR9ihB35fnNBUM
-         T6/Q==
+        d=gmail.com; s=20221208; t=1683899330; x=1686491330;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6xvzEXyDsENHQd2trIjdOsTv/FkyNGg39h9NWdAg4uY=;
+        b=Kfm6Tk9N8hvSffS15wK5IU29YeLWGRDi9/30X6JkYBMlg51B8oEepxwMh+xWLajxHk
+         bEZal+CVzLzW5KoWuzrUUL5JmjKS1uFKe7DgX8pEfX+IlHoLl34eJOCIt54gsZ9zp2ko
+         vCJ8RMomxyhty3eEEx1I15SaaTLk2atrgblLcrv77bDys+07oMJ3VizxJuEm1e+DduIZ
+         7lT75pUhY9C1oAyUHrwqTO6e5gNKwlqjIMO2iSndOQgqHUpXcXlOyrm6Mt1GsA57hK3O
+         KS+VkKUjeJzolBdXHiNsoBXukRusiHhoTNFb3KHt6oy0WERpZ1tfHqYft/oWVS+wcrJL
+         pLLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683897643; x=1686489643;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EAj9+wwvvQBZb98iVWDhS9msbB+DvyCsfBWvAkxMn64=;
-        b=Z5fwZ99fHw8WV06pOdlO13MztG2jYSP48s2+ubywAD479bHqqaF4n07iLknIOp666K
-         m21P8udBLmlq4aKAYhd/5rU4KvxmO3zRdAK4PMhO176/ScXaLmdUHc7X5afzyXKuS+p+
-         wODq7pRWljLImlISIApOo9WNkhxXP+LzvY4vuONnQw6PgEeSuzTt4QLgM3p9gcTf8TTn
-         jarsur6l6r5yEiAyN4uRmmsOXSMrUM9F8eVBfeFKugwVYdB1gX8WJ/O6C6Y/SESB/bg4
-         Eyqwj5X1WY/vIMq/+Ouy1wYP6h9qSllrNG7Tr2qTaJxacB1N2gNp+ijPp2HZdbN7o5aV
-         38nQ==
-X-Gm-Message-State: AC+VfDxCQ+XoSOPNUUnyW4GETA4kPXfGtLDRb2WO7AbaMPX/saD1qq4v
-        fspWCXctH3OAeaH0k0kbCc2AXjSMwe+1mXA0DPs=
-X-Google-Smtp-Source: ACHHUZ5Xdbv4TKYy6h0Rjoz+3eKhIg12ZBJAmVqbeZQ0LPWOkKCp5otUgJd7XKtatLLOz1txgOuE4A==
-X-Received: by 2002:a17:907:720e:b0:966:5a6c:752d with SMTP id dr14-20020a170907720e00b009665a6c752dmr16587933ejc.20.1683897643124;
-        Fri, 12 May 2023 06:20:43 -0700 (PDT)
-Received: from nuc.fritz.box (p200300f6af43a100a78da3f586d44204.dip0.t-ipconnect.de. [2003:f6:af43:a100:a78d:a3f5:86d4:4204])
-        by smtp.gmail.com with ESMTPSA id w21-20020a170907271500b00969dfd160aesm5077981ejk.109.2023.05.12.06.20.42
+        d=1e100.net; s=20221208; t=1683899330; x=1686491330;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6xvzEXyDsENHQd2trIjdOsTv/FkyNGg39h9NWdAg4uY=;
+        b=PXoh9e01picuhbyzqdXNdc2ppl95gYX/bFPavHYblpUnPxhH4VlQcX8cWPLsZ2RLIb
+         kGBlQmStBDQakLfnLZfnuSPvZqAiU2+d6TH8PEz8ziHLQGO8FC73GPbcM+NM3tkO/K3L
+         zNFgPJ/IQ8EmbURj9sXgYePcCCWvG25bXJwZCD44dFhRss7Z9/9qCGrMJ5jM9D1iutVX
+         vJdblSNere2tvOCBP03wViPlmWv2JYOTMXwKw3gmZThA7b91BUCCh736x7DcZU2vM+es
+         tTBVevt09zkBHYrwa+P1VP6eOhbL9xKQIF3Vcp20VIIL+juZ4xZQYKC5OPtSYXs7kpOn
+         Ao+Q==
+X-Gm-Message-State: AC+VfDwQlhYuWjh/luY5mQ0UQlmgIAyaC0J+0PuagESuPpE/KxzrnwSc
+        ThzmiX2o2+9wMDvVIVtHCvuDhvWrjAe2ig==
+X-Google-Smtp-Source: ACHHUZ6k7WV7m+3s6Rs/xuXz+1ut7fJPmcn5PAjaJSL8tlNyfz1QckxCuV5mdf8gkDC6pX1lDCkkKw==
+X-Received: by 2002:a17:903:185:b0:1a1:e237:5f0 with SMTP id z5-20020a170903018500b001a1e23705f0mr33021596plg.58.1683899330548;
+        Fri, 12 May 2023 06:48:50 -0700 (PDT)
+Received: from debian.me (subs09b-223-255-225-227.three.co.id. [223.255.225.227])
+        by smtp.gmail.com with ESMTPSA id g22-20020a1709029f9600b001a1c721f7f8sm7901772plq.267.2023.05.12.06.48.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 May 2023 06:20:42 -0700 (PDT)
-From:   Mathias Krause <minipli@grsecurity.net>
-To:     stable@vger.kernel.org
-Cc:     Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
-        Mathias Krause <minipli@grsecurity.net>
-Subject: [PATCH 6.3 5/5] KVM: x86/mmu: Refresh CR0.WP prior to checking for emulated permission faults
-Date:   Fri, 12 May 2023 15:20:24 +0200
-Message-Id: <20230512132024.4029-6-minipli@grsecurity.net>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230512132024.4029-1-minipli@grsecurity.net>
-References: <20230512132024.4029-1-minipli@grsecurity.net>
+        Fri, 12 May 2023 06:48:50 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 84551106A0F; Fri, 12 May 2023 20:48:46 +0700 (WIB)
+Date:   Fri, 12 May 2023 20:48:46 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Francesco Dolcini <francesco@dolcini.it>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, stable@vger.kernel.org
+Cc:     francesco.dolcini@toradex.com, liu.ming50@gmail.com,
+        Badhri Jagan Sridharan <badhri@google.com>
+Subject: Re: USB gadget regression on v6.4-rc1 and v6.1.28
+Message-ID: <ZF5DvpOGGMTIIptx@debian.me>
+References: <ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ymYbBZk3RZHol3+p"
+Content-Disposition: inline
+In-Reply-To: <ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit cf9f4c0eb1699d306e348b1fd0225af7b2c282d3 ]
+--ymYbBZk3RZHol3+p
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Refresh the MMU's snapshot of the vCPU's CR0.WP prior to checking for
-permission faults when emulating a guest memory access and CR0.WP may be
-guest owned.  If the guest toggles only CR0.WP and triggers emulation of
-a supervisor write, e.g. when KVM is emulating UMIP, KVM may consume a
-stale CR0.WP, i.e. use stale protection bits metadata.
+On Fri, May 12, 2023 at 11:07:10AM +0200, Francesco Dolcini wrote:
+> Hello all,
+> I recently did have a regression on v6.4rc1, and it seems that the same
+> exact issue is now happening also on v6.1.28.
+>=20
+> I was not able yet to bisect it (yet), but what is happening is that
+> libusbgx[1] that we use to configure a USB NCM gadget interface[2][3] just
+> hang completely at boot.
+>=20
+> This is happening with multiple ARM32 and ARM64 i.MX SOC (i.MX6, i.MX7,
+> i.MX8MM).
+>=20
+> The logs is something like that
+>=20
+> ```
+> [*     =EF=BF=BDF] A start job is running for Load def=E2=80=A6t schema g=
+1.schema (6s / no limit)
+> M[K[**    =EF=BF=BDF] A start job is running for Load def=E2=80=A6t schem=
+a g1.schema (7s / no limit)
+> M[K[***   =EF=BF=BDF] A start job is running for Load def=E2=80=A6t schem=
+a g1.schema (8s / no limit)
+> M[K[ ***  =EF=BF=BDF] A start job is running for Load def=E2=80=A6t schem=
+a g1.schema (8s / no limit)
+> ```
+>=20
+> I will try to bisect this and provide more useful feedback ASAP, I
+> decided to not wait for it and just send this email in case someone has
+> some insight on what is going on.
+>=20
 
-Note, KVM passes through CR0.WP if and only if EPT is enabled as CR0.WP
-is part of the MMU role for legacy shadow paging, and SVM (NPT) doesn't
-support per-bit interception controls for CR0.  Don't bother checking for
-EPT vs. NPT as the "old == new" check will always be true under NPT, i.e.
-the only cost is the read of vcpu->arch.cr4 (SVM unconditionally grabs CR0
-from the VMCB on VM-Exit).
+Thanks for the report. I'm adding it to regzbot:
 
-Reported-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lkml.kernel.org/r/677169b4-051f-fcae-756b-9a3e1bb9f8fe%40grsecurity.net
-Fixes: fb509f76acc8 ("KVM: VMX: Make CR0.WP a guest owned bit")
-Tested-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lore.kernel.org/r/20230405002608.418442-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>	# backport to v6.3.x
----
-- substitute lack of kvm_is_cr0_bit_set() with the older
-  kvm_read_cr0_bits()
+#regzbot ^introduced: 0db213ea8eed55
+#regzbot titile: libusbgx hang completely at boot (stuck at loading g1.sche=
+ma)
 
- arch/x86/kvm/mmu.h     | 26 +++++++++++++++++++++++++-
- arch/x86/kvm/mmu/mmu.c | 15 +++++++++++++++
- 2 files changed, 40 insertions(+), 1 deletion(-)
+--=20
+An old man doll... just what I always wanted! - Clara
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 168c46fd8dd1..0f38b78ab04b 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -113,6 +113,8 @@ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
- bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
- int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 				u64 fault_address, char *insn, int insn_len);
-+void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
-+					struct kvm_mmu *mmu);
- 
- int kvm_mmu_load(struct kvm_vcpu *vcpu);
- void kvm_mmu_unload(struct kvm_vcpu *vcpu);
-@@ -153,6 +155,24 @@ static inline void kvm_mmu_load_pgd(struct kvm_vcpu *vcpu)
- 					  vcpu->arch.mmu->root_role.level);
- }
- 
-+static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
-+						    struct kvm_mmu *mmu)
-+{
-+	/*
-+	 * When EPT is enabled, KVM may passthrough CR0.WP to the guest, i.e.
-+	 * @mmu's snapshot of CR0.WP and thus all related paging metadata may
-+	 * be stale.  Refresh CR0.WP and the metadata on-demand when checking
-+	 * for permission faults.  Exempt nested MMUs, i.e. MMUs for shadowing
-+	 * nEPT and nNPT, as CR0.WP is ignored in both cases.  Note, KVM does
-+	 * need to refresh nested_mmu, a.k.a. the walker used to translate L2
-+	 * GVAs to GPAs, as that "MMU" needs to honor L2's CR0.WP.
-+	 */
-+	if (!tdp_enabled || mmu == &vcpu->arch.guest_mmu)
-+		return;
-+
-+	__kvm_mmu_refresh_passthrough_bits(vcpu, mmu);
-+}
-+
- /*
-  * Check if a given access (described through the I/D, W/R and U/S bits of a
-  * page fault error code pfec) causes a permission fault with the given PTE
-@@ -184,8 +204,12 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
- 	u64 implicit_access = access & PFERR_IMPLICIT_ACCESS;
- 	bool not_smap = ((rflags & X86_EFLAGS_AC) | implicit_access) == X86_EFLAGS_AC;
- 	int index = (pfec + (not_smap << PFERR_RSVD_BIT)) >> 1;
--	bool fault = (mmu->permissions[index] >> pte_access) & 1;
- 	u32 errcode = PFERR_PRESENT_MASK;
-+	bool fault;
-+
-+	kvm_mmu_refresh_passthrough_bits(vcpu, mmu);
-+
-+	fault = (mmu->permissions[index] >> pte_access) & 1;
- 
- 	WARN_ON(pfec & (PFERR_PK_MASK | PFERR_RSVD_MASK));
- 	if (unlikely(mmu->pkru_mask)) {
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 18c0deeaa2ec..d3812de54b02 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5121,6 +5121,21 @@ kvm_calc_cpu_role(struct kvm_vcpu *vcpu, const struct kvm_mmu_role_regs *regs)
- 	return role;
- }
- 
-+void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
-+					struct kvm_mmu *mmu)
-+{
-+	const bool cr0_wp = !!kvm_read_cr0_bits(vcpu, X86_CR0_WP);
-+
-+	BUILD_BUG_ON((KVM_MMU_CR0_ROLE_BITS & KVM_POSSIBLE_CR0_GUEST_BITS) != X86_CR0_WP);
-+	BUILD_BUG_ON((KVM_MMU_CR4_ROLE_BITS & KVM_POSSIBLE_CR4_GUEST_BITS));
-+
-+	if (is_cr0_wp(mmu) == cr0_wp)
-+		return;
-+
-+	mmu->cpu_role.base.cr0_wp = cr0_wp;
-+	reset_guest_paging_metadata(vcpu, mmu);
-+}
-+
- static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
- {
- 	/* tdp_root_level is architecture forced level, use it if nonzero */
--- 
-2.39.2
+--ymYbBZk3RZHol3+p
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZF5DtwAKCRD2uYlJVVFO
+o4qOAQDO9PNiRuKEsUvIqOWbxp2Lo3cwMGFNMFvVp1Be++PB6QEAuaOlI3oULkid
+PDbhZCvc6xTB1Q1XA5UW4kqSK6hsIws=
+=xkQO
+-----END PGP SIGNATURE-----
+
+--ymYbBZk3RZHol3+p--
