@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB7D9701512
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61A54701513
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:41:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbjEMHlp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:41:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
+        id S231273AbjEMHly (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230453AbjEMHlm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:41:42 -0400
+        with ESMTP id S231446AbjEMHlx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:41:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D2759FD
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:41:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DBF4697
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:41:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F99C61BFE
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:41:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1E0C433EF;
-        Sat, 13 May 2023 07:41:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F31F61C04
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:41:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC9EC433EF;
+        Sat, 13 May 2023 07:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963699;
-        bh=ofhV1XDt0RADpwukTREH2BIrez57f7fr12HKi4iuyL4=;
+        s=korg; t=1683963709;
+        bh=okptzfKHNMFG+1kdc7GQ9+gvxIfgCEADWg7T4ZcWThw=;
         h=Subject:To:Cc:From:Date:From;
-        b=IXiUBMMoplbrsLv2NZcHRG3Ovm+R3C68nczZtXWYAoUkduAI8i9bpZG/x48cUF7at
-         JxbwdJcSN7HI1bNLdiuV29r4biIdYsMiUdDOb+NE8jD+CrvqKjcyxT/0GMz9MiSXJD
-         9Rf7Ce6ol6nZpBFSwQveJbab9OL6hqQqXAN8XBko=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Take FEC Overhead into Timeslot Calculation" failed to apply to 6.2-stable tree
+        b=p2F/foW0rU0KPe3Wl9Se/Z+W2R2j5D83pxQXGZd05noPmdjr2MKh8myUpnu7s58eq
+         K6K41aCfTzI2+B7jef7bJ95wyAr+ktS7SGO05vlT2uRAqz3Qe7ZaFlMN8Rz+bJUkSb
+         VTy9NEy0wdeUWCi4vRJCoUOnb2SD8BXzgFe5sB/Y=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Take FEC Overhead into Timeslot Calculation" failed to apply to 6.1-stable tree
 To:     Jerry.Zuo@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com, hersenxs.wu@amd.com,
         mario.limonciello@amd.com, qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:21:26 +0900
-Message-ID: <2023051326-karma-ablaze-9a44@gregkh>
+Date:   Sat, 13 May 2023 16:21:29 +0900
+Message-ID: <2023051329-womanhood-managing-6cfe@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2792f98cdb1c8fa43bf4ee5ae00349b823a823b7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051326-karma-ablaze-9a44@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051329-womanhood-managing-6cfe@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
