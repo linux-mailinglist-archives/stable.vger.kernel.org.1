@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5DFD70150F
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535F2701510
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230483AbjEMHlO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:41:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55292 "EHLO
+        id S230205AbjEMHlY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbjEMHlN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:41:13 -0400
+        with ESMTP id S230453AbjEMHlW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:41:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497185BA0
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:41:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8705BA0
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:41:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 947C9619C8
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:41:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBB1C433EF;
-        Sat, 13 May 2023 07:41:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21BFC61BFE
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:41:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60F6C433D2;
+        Sat, 13 May 2023 07:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963671;
-        bh=VVBoxifj44nqBN/qVS6ZKK1OT8lDqZk6ckN1fyMmRtw=;
+        s=korg; t=1683963680;
+        bh=m9g8NJrk1RcvQnMRmAg8gACVcz+i2l7n3pqJoYmmq3o=;
         h=Subject:To:Cc:From:Date:From;
-        b=wmQWe+DPjDLa2nOfcpXCJ317ea+hItPBcaFjl9qOVc+VDiZc6hM+BVPO56n98Ic2U
-         UllI/ZB8DjvNdbxIOpgkdIVMpaV8NNoTJeNwhPZGtT51L0r7RZs2KtOU7r/Hc77Ob1
-         T+Ct0cx6oRgunY5rNV1+yBISbc34J9JOfk0mcyLc=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Remove OTG DIV register write for Virtual" failed to apply to 6.2-stable tree
+        b=G6u8KOCHzrWJbcYY4KD6uE/wegC7iLsNnfttFHpon+RUy8hgynsWB0NbR2pKzxsGl
+         XGP2hTy/rLNH4wcplNH2EhNQtvJd0m1ep7E/LVWNbQKNs6sxsHKLq+Qi/NIo9sPmzN
+         i4jmLQOcZcfi7HxlBT8u5k+PBLObb3RhxOxj0E1g=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Remove OTG DIV register write for Virtual" failed to apply to 6.1-stable tree
 To:     SyedSaaem.Rizvi@amd.com, Alvin.Lee2@amd.com, Samson.Tam@amd.com,
         alexander.deucher@amd.com, daniel.wheeler@amd.com,
         mario.limonciello@amd.com, qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:21:16 +0900
-Message-ID: <2023051316-overfull-prissy-1fa3@gregkh>
+Date:   Sat, 13 May 2023 16:21:21 +0900
+Message-ID: <2023051320-grumbling-usher-ecf0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,24 +50,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5d04d13954479292dd45e38a46dfa31abb8dc2e0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051316-overfull-prissy-1fa3@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051320-grumbling-usher-ecf0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 5d04d1395447 ("drm/amd/display: Remove OTG DIV register write for Virtual signals.")
 3b214bb7185d ("drm/amd/display: fix k1 k2 divider programming for phantom streams")
+368307cef69c ("drm/amd/display: Include virtual signal to set k1 and k2 values")
 
 thanks,
 
