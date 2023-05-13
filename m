@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAAA67014D7
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C517014D8
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjEMGus (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:50:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
+        id S229918AbjEMGux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjEMGun (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:50:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2E8420B
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:50:41 -0700 (PDT)
+        with ESMTP id S229490AbjEMGuw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:50:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D57422D
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:50:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7B6461092
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:50:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D88C4339C;
-        Sat, 13 May 2023 06:50:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3162E61B83
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:50:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9110CC4339B;
+        Sat, 13 May 2023 06:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960640;
-        bh=wl4VM8Bt0k1scCnrNIfDmNAlAmRA1WXxkaM/WPEqiLE=;
+        s=korg; t=1683960649;
+        bh=WhWu0EwXOj3fd5aaCQMs2SIjepFJiRthHtgW7xXgTdg=;
         h=Subject:To:Cc:From:Date:From;
-        b=rmGJwkuO4cgpjfq0DzuoI8ileIt6GrEP5ece8NFwyCQ5xQCHIw6teX0NxJyj80wCR
-         /GjhK8+vZc6uqznUz2h3DshMKxnMj9v/xmKtNypZLirm4Va59+ym2XgITbdZ83MRgn
-         /99jTfuWoEFqU6GJb7rArF8phWfjAow0Ff5dUWZY=
-Subject: FAILED: patch "[PATCH] f2fs: remove entire rb_entry sharing" failed to apply to 6.1-stable tree
+        b=BIx+SnpUF6n9GIro/grV8Ds6Eu0US2vI5kaCC8U97JM4bINdddumTnLD6cy3KagbV
+         bwTtJ/5lTQceVsMpA838M3V/uiljEcto0vzEniiRXXM+47ZbkvOPUNOIJWce07bTET
+         Lmzv+opTWBCYkHo3wabKzqy0hDKBLfn+8aCbhov0=
+Subject: FAILED: patch "[PATCH] f2fs: remove entire rb_entry sharing" failed to apply to 5.15-stable tree
 To:     jaegeuk@kernel.org, chao@kernel.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:48:59 +0900
-Message-ID: <2023051359-encode-cozy-e8c0@gregkh>
+Date:   Sat, 13 May 2023 15:49:03 +0900
+Message-ID: <2023051302-unroll-boat-fb21@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x bf21acf9959a48d90dd32869a0649525eb21be56
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051359-encode-cozy-e8c0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051302-unroll-boat-fb21@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,8 @@ e7547daccd6a ("f2fs: refactor extent_cache to support for read and more")
 12607c1ba763 ("f2fs: specify extent cache for read explicitly")
 c46867e9b9b8 ("f2fs: introduce max_ordered_discard sysfs node")
 b5f1a218ae5e ("f2fs: fix normal discard process")
+a251c17aa558 ("treewide: use get_random_u32() when possible")
+5d170fe435e5 ("Merge tag 'f2fs-for-6.1-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs")
 
 thanks,
 
