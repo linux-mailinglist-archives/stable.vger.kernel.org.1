@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B407014BD
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEFD7014BE
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjEMGpo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39686 "EHLO
+        id S230450AbjEMGq2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230102AbjEMGpl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:45:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7292D48
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:45:40 -0700 (PDT)
+        with ESMTP id S230102AbjEMGq2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:46:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCF52D48
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:46:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 420C661B20
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5F8C433D2;
-        Sat, 13 May 2023 06:45:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6013F60A36
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:46:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC2BC433EF;
+        Sat, 13 May 2023 06:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960339;
-        bh=3mAkXmU7FMDyOS2D92Z4grYw8wO6jJfWauCON6BvnHc=;
+        s=korg; t=1683960385;
+        bh=OiY92QryzgNcWdZ8DmKXmV5ujTqkGBmFhgmqMRnsL00=;
         h=Subject:To:Cc:From:Date:From;
-        b=s7sLN3lesiDBARO/H3S7/nwtrpw4KilqRgZUXUgQhzi1Mx5EACXFX2oQleN1RRtND
-         /GgAI8h3pHr+mRPc42aZx31s881NjZ2yUsbZNCxW4mEx7qyimyL4wJtuhrZOcu5ur1
-         20sgaObZ4h32sbCAVsXiYD6EBDWRom3tWRRb66K8=
-Subject: FAILED: patch "[PATCH] drm/msm: fix workqueue leak on bind errors" failed to apply to 4.14-stable tree
-To:     johan+linaro@kernel.org, dmitry.baryshkov@linaro.org,
-        robdclark@gmail.com
+        b=OlK3xzoEshqBeKOSKjDWoddFeb629p3DB3FL80mfxXoGMOHn7tml0Be8mXrgfP514
+         fnih0coeMdkcdXxK+MHcE81EJLmAVM3MOFPsBYMtg+7qsbCBHKfdYKrNlsUEQlnPsV
+         cZOL59Ux5QQGnvKpA9mlr0MXmeormCteDyPpOkLE=
+Subject: FAILED: patch "[PATCH] drm/i915: Pick the backlight controller based on VBT on ICP+" failed to apply to 6.3-stable tree
+To:     ville.syrjala@linux.intel.com, jani.nikula@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:44:40 +0900
-Message-ID: <2023051340-prodigal-chalice-873b@gregkh>
+Date:   Sat, 13 May 2023 15:46:13 +0900
+Message-ID: <2023051313-prideful-immovably-f891@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,30 +48,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x a75b49db6529b2af049eafd938fae888451c3685
+git cherry-pick -x b33771546309b46b681388b3540b69a75a0e2e69
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051340-prodigal-chalice-873b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051313-prideful-immovably-f891@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-a75b49db6529 ("drm/msm: fix workqueue leak on bind errors")
-60d476af9601 ("drm/msm: fix vram leak on bind errors")
-214b09db6197 ("drm/msm: fix drm device leak on bind errors")
-652eadfde810 ("Revert "drm/msm: Fix failure paths in msm_drm_init()"")
-8636500300a0 ("drm/msm: Fix failure paths in msm_drm_init()")
-2027e5b3413d ("drm/msm: Initialize MDSS irq domain at probe time")
-ec919e6e7146 ("drm/msm: Allocate msm_drm_private early and pass it as driver data")
-83b965d118cb ("Merge remote-tracking branch 'drm/drm-next' into msm-next-staging")
+b33771546309 ("drm/i915: Pick the backlight controller based on VBT on ICP+")
 
 thanks,
 
@@ -80,49 +72,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a75b49db6529b2af049eafd938fae888451c3685 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Mon, 6 Mar 2023 11:07:20 +0100
-Subject: [PATCH] drm/msm: fix workqueue leak on bind errors
+From b33771546309b46b681388b3540b69a75a0e2e69 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Date: Tue, 7 Feb 2023 08:43:37 +0200
+Subject: [PATCH] drm/i915: Pick the backlight controller based on VBT on ICP+
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Make sure to destroy the workqueue also in case of early errors during
-bind (e.g. a subcomponent failing to bind).
+Use the second backlight controller on ICP+ if the VBT asks
+us to do so.
 
-Since commit c3b790ea07a1 ("drm: Manage drm_mode_config_init with
-drmm_") the mode config will be freed when the drm device is released
-also when using the legacy interface, but add an explicit cleanup for
-consistency and to facilitate backporting.
+On pre-MTP we also check the chicken bit to make sure the
+pins have been correctly muxed by the firmware.
 
-Fixes: 060530f1ea67 ("drm/msm: use componentised device support")
-Cc: stable@vger.kernel.org      # 3.15
-Cc: Rob Clark <robdclark@gmail.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525093/
-Link: https://lore.kernel.org/r/20230306100722.28485-9-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8016
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230207064337.18697-4-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
-index 2a9a363afe50..1d0082ee255c 100644
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -459,7 +459,7 @@ static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
+diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
+index 5b7da72c95b8..a4e4b7f79e4d 100644
+--- a/drivers/gpu/drm/i915/display/intel_backlight.c
++++ b/drivers/gpu/drm/i915/display/intel_backlight.c
+@@ -1431,6 +1431,30 @@ bxt_setup_backlight(struct intel_connector *connector, enum pipe unused)
+ 	return 0;
+ }
  
- 	ret = msm_init_vram(ddev);
- 	if (ret)
--		goto err_put_dev;
-+		goto err_cleanup_mode_config;
++static int cnp_num_backlight_controllers(struct drm_i915_private *i915)
++{
++	if (INTEL_PCH_TYPE(i915) >= PCH_DG1)
++		return 1;
++
++	if (INTEL_PCH_TYPE(i915) >= PCH_ICP)
++		return 2;
++
++	return 1;
++}
++
++static bool cnp_backlight_controller_is_valid(struct drm_i915_private *i915, int controller)
++{
++	if (controller < 0 || controller >= cnp_num_backlight_controllers(i915))
++		return false;
++
++	if (controller == 1 &&
++	    INTEL_PCH_TYPE(i915) >= PCH_ICP &&
++	    INTEL_PCH_TYPE(i915) < PCH_MTP)
++		return intel_de_read(i915, SOUTH_CHICKEN1) & ICP_SECOND_PPS_IO_SELECT;
++
++	return true;
++}
++
+ static int
+ cnp_setup_backlight(struct intel_connector *connector, enum pipe unused)
+ {
+@@ -1440,10 +1464,14 @@ cnp_setup_backlight(struct intel_connector *connector, enum pipe unused)
  
- 	/* Bind all our sub-components: */
- 	ret = component_bind_all(dev, ddev);
-@@ -564,6 +564,9 @@ static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
+ 	/*
+ 	 * CNP has the BXT implementation of backlight, but with only one
+-	 * controller. TODO: ICP has multiple controllers but we only use
+-	 * controller 0 for now.
++	 * controller. ICP+ can have two controllers, depending on pin muxing.
+ 	 */
+-	panel->backlight.controller = 0;
++	panel->backlight.controller = connector->panel.vbt.backlight.controller;
++	if (!cnp_backlight_controller_is_valid(i915, panel->backlight.controller)) {
++		drm_dbg_kms(&i915->drm, "Invalid backlight controller %d, assuming 0\n",
++			    panel->backlight.controller);
++		panel->backlight.controller = 0;
++	}
  
- err_deinit_vram:
- 	msm_deinit_vram(ddev);
-+err_cleanup_mode_config:
-+	drm_mode_config_cleanup(ddev);
-+	destroy_workqueue(priv->wq);
- err_put_dev:
- 	drm_dev_put(ddev);
- 
+ 	pwm_ctl = intel_de_read(i915,
+ 				BXT_BLC_PWM_CTL(panel->backlight.controller));
 
