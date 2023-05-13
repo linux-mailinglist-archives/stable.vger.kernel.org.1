@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFFB97014DD
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F007014F8
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233395AbjEMGvj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:51:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41646 "EHLO
+        id S229519AbjEMHh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232661AbjEMGvd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:51:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA602D48
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:51:29 -0700 (PDT)
+        with ESMTP id S229463AbjEMHh5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:37:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F86E35B5
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:37:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAF9161B91
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:51:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE00C4339C;
-        Sat, 13 May 2023 06:51:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF54060E00
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740E1C433EF;
+        Sat, 13 May 2023 07:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960688;
-        bh=pT2xlqL08rFPoYoR8ohXSQdx/qH8S06h3v6u6DrtxQg=;
+        s=korg; t=1683963475;
+        bh=ictJhpijQD1hgbLJgjrrt+zel3ShHnAlVPIN8tJzfAQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=sIfTgv0AdWHpqz4l7GYl4X4nKiPv/eOmn9iCACFotWFjJj8OavnqayOgguJVZ+PUj
-         1KHJqL57iBxkN814pHqOWeICqDQtCyF1GQjrT+XVTsxFLbt2TmoGkeLDL1Vt8ktZmp
-         XT7UDsu24CJO2uPi0Ykfx5i8Wg2xsN1NkapEMo6g=
-Subject: FAILED: patch "[PATCH] f2fs: remove entire rb_entry sharing" failed to apply to 4.14-stable tree
-To:     jaegeuk@kernel.org, chao@kernel.org, stable@vger.kernel.org
+        b=1dik4zxdwkMaTIJfFeRwMWTgW8BxkeHh0pSCpAPagVc3peV3qIsvMABsbgkfC+3fj
+         pHAO5nm7Vt+/UDkpUCwmLSA37seKIAnI0k/EbsDR0edAtL8ekREU/FEqMl67jk8xys
+         1f8yqUW0b7PZXzVmOvQV8sLxTNfW4OLRFWZo8Zd0=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: Don't resume IOMMU after incomplete init" failed to apply to 6.3-stable tree
+To:     Felix.Kuehling@amd.com, alexander.deucher@amd.com,
+        matt.fagnani@bell.net, regressions@leemhuis.info,
+        vasant.hegde@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:49:17 +0900
-Message-ID: <2023051317-cake-doorway-5007@gregkh>
+Date:   Sat, 13 May 2023 16:19:38 +0900
+Message-ID: <2023051338-vocally-gander-2c08@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,38 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x bf21acf9959a48d90dd32869a0649525eb21be56
+git cherry-pick -x 7ee938ac006096fe9c3f1075f56b9263587c150f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051317-cake-doorway-5007@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051338-vocally-gander-2c08@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-bf21acf9959a ("f2fs: remove entire rb_entry sharing")
-f69475dd4878 ("f2fs: factor out discard_cmd usage from general rb_tree use")
-043d2d00b443 ("f2fs: factor out victim_entry usage from general rb_tree use")
-269d11948100 ("f2fs: fix to do sanity check on extent cache correctly")
-146949defda8 ("f2fs: fix typos in comments")
-d48a7b3a72f1 ("f2fs: fix to do sanity check on extent cache correctly")
-185a453bf1b5 ("f2fs: deliver the accumulated 'issued' to __issue_discard_cmd_orderly()")
-72840cccc0a1 ("f2fs: allocate the extent_cache by default")
-e7547daccd6a ("f2fs: refactor extent_cache to support for read and more")
-749d543c0d45 ("f2fs: remove unnecessary __init_extent_tree")
-3bac20a8f011 ("f2fs: move internal functions into extent_cache.c")
-12607c1ba763 ("f2fs: specify extent cache for read explicitly")
-c46867e9b9b8 ("f2fs: introduce max_ordered_discard sysfs node")
-b5f1a218ae5e ("f2fs: fix normal discard process")
-a251c17aa558 ("treewide: use get_random_u32() when possible")
-5d170fe435e5 ("Merge tag 'f2fs-for-6.1-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs")
+7ee938ac0060 ("drm/amdgpu: Don't resume IOMMU after incomplete init")
 
 thanks,
 
@@ -87,323 +74,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bf21acf9959a48d90dd32869a0649525eb21be56 Mon Sep 17 00:00:00 2001
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-Date: Fri, 10 Mar 2023 11:49:57 -0800
-Subject: [PATCH] f2fs: remove entire rb_entry sharing
+From 7ee938ac006096fe9c3f1075f56b9263587c150f Mon Sep 17 00:00:00 2001
+From: Felix Kuehling <Felix.Kuehling@amd.com>
+Date: Mon, 13 Mar 2023 20:03:08 -0400
+Subject: [PATCH] drm/amdgpu: Don't resume IOMMU after incomplete init
 
-This is a last part to remove the memory sharing for rb_tree in extent_cache.
+Check kfd->init_complete in kgd2kfd_iommu_resume, consistent with other
+kgd2kfd calls. This should fix IOMMU errors on resume from suspend when
+KFD IOMMU initialization failed.
 
-This should also fix arm32 memory alignment issue.
+Reported-by: Matt Fagnani <matt.fagnani@bell.net>
+Link: https://lore.kernel.org/r/4a3b225c-2ffd-e758-4de1-447375e34cad@bell.net/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217170
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2454
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info>
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Matt Fagnani <matt.fagnani@bell.net>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-[struct extent_node]               [struct rb_entry]
-[0] struct rb_node rb_node;        [0] struct rb_node rb_node;
-  union {                              union {
-    struct {                             struct {
-[16]  unsigned int fofs;           [12]    unsigned int ofs;
-      unsigned int len;                    unsigned int len;
-                                         };
-                                         unsigned long long key;
-                                       } __packed;
-
-Cc: <stable@vger.kernel.org>
-Fixes: 13054c548a1c ("f2fs: introduce infra macro and data structure of rb-tree extent cache")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 5c206f941aac..9a8153895d20 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -161,95 +161,52 @@ static bool __is_front_mergeable(struct extent_info *cur,
- 	return __is_extent_mergeable(cur, front, type);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 3de7f616a001..ec70a1658dc3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -59,6 +59,7 @@ static int kfd_gtt_sa_init(struct kfd_dev *kfd, unsigned int buf_size,
+ 				unsigned int chunk_size);
+ static void kfd_gtt_sa_fini(struct kfd_dev *kfd);
+ 
++static int kfd_resume_iommu(struct kfd_dev *kfd);
+ static int kfd_resume(struct kfd_dev *kfd);
+ 
+ static void kfd_device_info_set_sdma_info(struct kfd_dev *kfd)
+@@ -624,7 +625,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
+ 
+ 	svm_migrate_init(kfd->adev);
+ 
+-	if (kgd2kfd_resume_iommu(kfd))
++	if (kfd_resume_iommu(kfd))
+ 		goto device_iommu_error;
+ 
+ 	if (kfd_resume(kfd))
+@@ -772,6 +773,14 @@ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
  }
  
--static struct rb_entry *__lookup_rb_tree_fast(struct rb_entry *cached_re,
--							unsigned int ofs)
--{
--	if (cached_re) {
--		if (cached_re->ofs <= ofs &&
--				cached_re->ofs + cached_re->len > ofs) {
--			return cached_re;
--		}
--	}
--	return NULL;
--}
--
--static struct rb_entry *__lookup_rb_tree_slow(struct rb_root_cached *root,
--							unsigned int ofs)
-+static struct extent_node *__lookup_extent_node(struct rb_root_cached *root,
-+			struct extent_node *cached_en, unsigned int fofs)
- {
- 	struct rb_node *node = root->rb_root.rb_node;
--	struct rb_entry *re;
-+	struct extent_node *en;
+ int kgd2kfd_resume_iommu(struct kfd_dev *kfd)
++{
++	if (!kfd->init_complete)
++		return 0;
 +
-+	/* check a cached entry */
-+	if (cached_en && cached_en->ei.fofs <= fofs &&
-+			cached_en->ei.fofs + cached_en->ei.len > fofs)
-+		return cached_en;
- 
-+	/* check rb_tree */
- 	while (node) {
--		re = rb_entry(node, struct rb_entry, rb_node);
-+		en = rb_entry(node, struct extent_node, rb_node);
- 
--		if (ofs < re->ofs)
-+		if (fofs < en->ei.fofs)
- 			node = node->rb_left;
--		else if (ofs >= re->ofs + re->len)
-+		else if (fofs >= en->ei.fofs + en->ei.len)
- 			node = node->rb_right;
- 		else
--			return re;
-+			return en;
- 	}
- 	return NULL;
- }
- 
--static struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
--				struct rb_entry *cached_re, unsigned int ofs)
--{
--	struct rb_entry *re;
--
--	re = __lookup_rb_tree_fast(cached_re, ofs);
--	if (!re)
--		return __lookup_rb_tree_slow(root, ofs);
--
--	return re;
--}
--
--static struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
--				struct rb_root_cached *root,
--				struct rb_node **parent,
--				unsigned int ofs, bool *leftmost)
--{
--	struct rb_node **p = &root->rb_root.rb_node;
--	struct rb_entry *re;
--
--	while (*p) {
--		*parent = *p;
--		re = rb_entry(*parent, struct rb_entry, rb_node);
--
--		if (ofs < re->ofs) {
--			p = &(*p)->rb_left;
--		} else if (ofs >= re->ofs + re->len) {
--			p = &(*p)->rb_right;
--			*leftmost = false;
--		} else {
--			f2fs_bug_on(sbi, 1);
--		}
--	}
--
--	return p;
--}
--
- /*
-- * lookup rb entry in position of @ofs in rb-tree,
-+ * lookup rb entry in position of @fofs in rb-tree,
-  * if hit, return the entry, otherwise, return NULL
-- * @prev_ex: extent before ofs
-- * @next_ex: extent after ofs
-- * @insert_p: insert point for new extent at ofs
-+ * @prev_ex: extent before fofs
-+ * @next_ex: extent after fofs
-+ * @insert_p: insert point for new extent at fofs
-  * in order to simplify the insertion after.
-  * tree must stay unchanged between lookup and insertion.
-  */
--static struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
--				struct rb_entry *cached_re,
--				unsigned int ofs,
--				struct rb_entry **prev_entry,
--				struct rb_entry **next_entry,
-+static struct extent_node *__lookup_extent_node_ret(struct rb_root_cached *root,
-+				struct extent_node *cached_en,
-+				unsigned int fofs,
-+				struct extent_node **prev_entry,
-+				struct extent_node **next_entry,
- 				struct rb_node ***insert_p,
- 				struct rb_node **insert_parent,
--				bool force, bool *leftmost)
-+				bool *leftmost)
- {
- 	struct rb_node **pnode = &root->rb_root.rb_node;
- 	struct rb_node *parent = NULL, *tmp_node;
--	struct rb_entry *re = cached_re;
-+	struct extent_node *en = cached_en;
- 
- 	*insert_p = NULL;
- 	*insert_parent = NULL;
-@@ -259,24 +216,20 @@ static struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
- 	if (RB_EMPTY_ROOT(&root->rb_root))
- 		return NULL;
- 
--	if (re) {
--		if (re->ofs <= ofs && re->ofs + re->len > ofs)
--			goto lookup_neighbors;
--	}
-+	if (en && en->ei.fofs <= fofs && en->ei.fofs + en->ei.len > fofs)
-+		goto lookup_neighbors;
- 
--	if (leftmost)
--		*leftmost = true;
-+	*leftmost = true;
- 
- 	while (*pnode) {
- 		parent = *pnode;
--		re = rb_entry(*pnode, struct rb_entry, rb_node);
-+		en = rb_entry(*pnode, struct extent_node, rb_node);
- 
--		if (ofs < re->ofs) {
-+		if (fofs < en->ei.fofs) {
- 			pnode = &(*pnode)->rb_left;
--		} else if (ofs >= re->ofs + re->len) {
-+		} else if (fofs >= en->ei.fofs + en->ei.len) {
- 			pnode = &(*pnode)->rb_right;
--			if (leftmost)
--				*leftmost = false;
-+			*leftmost = false;
- 		} else {
- 			goto lookup_neighbors;
- 		}
-@@ -285,30 +238,32 @@ static struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
- 	*insert_p = pnode;
- 	*insert_parent = parent;
- 
--	re = rb_entry(parent, struct rb_entry, rb_node);
-+	en = rb_entry(parent, struct extent_node, rb_node);
- 	tmp_node = parent;
--	if (parent && ofs > re->ofs)
-+	if (parent && fofs > en->ei.fofs)
- 		tmp_node = rb_next(parent);
--	*next_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
-+	*next_entry = rb_entry_safe(tmp_node, struct extent_node, rb_node);
- 
- 	tmp_node = parent;
--	if (parent && ofs < re->ofs)
-+	if (parent && fofs < en->ei.fofs)
- 		tmp_node = rb_prev(parent);
--	*prev_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
-+	*prev_entry = rb_entry_safe(tmp_node, struct extent_node, rb_node);
- 	return NULL;
- 
- lookup_neighbors:
--	if (ofs == re->ofs || force) {
-+	if (fofs == en->ei.fofs) {
- 		/* lookup prev node for merging backward later */
--		tmp_node = rb_prev(&re->rb_node);
--		*prev_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
-+		tmp_node = rb_prev(&en->rb_node);
-+		*prev_entry = rb_entry_safe(tmp_node,
-+					struct extent_node, rb_node);
- 	}
--	if (ofs == re->ofs + re->len - 1 || force) {
-+	if (fofs == en->ei.fofs + en->ei.len - 1) {
- 		/* lookup next node for merging frontward later */
--		tmp_node = rb_next(&re->rb_node);
--		*next_entry = rb_entry_safe(tmp_node, struct rb_entry, rb_node);
-+		tmp_node = rb_next(&en->rb_node);
-+		*next_entry = rb_entry_safe(tmp_node,
-+					struct extent_node, rb_node);
- 	}
--	return re;
-+	return en;
- }
- 
- static struct kmem_cache *extent_tree_slab;
-@@ -523,8 +478,7 @@ static bool __lookup_extent_tree(struct inode *inode, pgoff_t pgofs,
- 		goto out;
- 	}
- 
--	en = (struct extent_node *)f2fs_lookup_rb_tree(&et->root,
--				(struct rb_entry *)et->cached_en, pgofs);
-+	en = __lookup_extent_node(&et->root, et->cached_en, pgofs);
- 	if (!en)
- 		goto out;
- 
-@@ -598,7 +552,7 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 				bool leftmost)
- {
- 	struct extent_tree_info *eti = &sbi->extent_tree[et->type];
--	struct rb_node **p;
-+	struct rb_node **p = &et->root.rb_root.rb_node;
- 	struct rb_node *parent = NULL;
- 	struct extent_node *en = NULL;
- 
-@@ -610,8 +564,21 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 
- 	leftmost = true;
- 
--	p = f2fs_lookup_rb_tree_for_insert(sbi, &et->root, &parent,
--						ei->fofs, &leftmost);
-+	/* look up extent_node in the rb tree */
-+	while (*p) {
-+		parent = *p;
-+		en = rb_entry(parent, struct extent_node, rb_node);
++	return kfd_resume_iommu(kfd);
++}
 +
-+		if (ei->fofs < en->ei.fofs) {
-+			p = &(*p)->rb_left;
-+		} else if (ei->fofs >= en->ei.fofs + en->ei.len) {
-+			p = &(*p)->rb_right;
-+			leftmost = false;
-+		} else {
-+			f2fs_bug_on(sbi, 1);
-+		}
-+	}
-+
- do_insert:
- 	en = __attach_extent_node(sbi, et, ei, parent, p, leftmost);
- 	if (!en)
-@@ -670,11 +637,10 @@ static void __update_extent_tree_range(struct inode *inode,
- 	}
++static int kfd_resume_iommu(struct kfd_dev *kfd)
+ {
+ 	int err = 0;
  
- 	/* 1. lookup first extent node in range [fofs, fofs + len - 1] */
--	en = (struct extent_node *)f2fs_lookup_rb_tree_ret(&et->root,
--					(struct rb_entry *)et->cached_en, fofs,
--					(struct rb_entry **)&prev_en,
--					(struct rb_entry **)&next_en,
--					&insert_p, &insert_parent, false,
-+	en = __lookup_extent_node_ret(&et->root,
-+					et->cached_en, fofs,
-+					&prev_en, &next_en,
-+					&insert_p, &insert_parent,
- 					&leftmost);
- 	if (!en)
- 		en = next_en;
-@@ -812,12 +778,11 @@ void f2fs_update_read_extent_tree_range_compressed(struct inode *inode,
- 
- 	write_lock(&et->lock);
- 
--	en = (struct extent_node *)f2fs_lookup_rb_tree_ret(&et->root,
--				(struct rb_entry *)et->cached_en, fofs,
--				(struct rb_entry **)&prev_en,
--				(struct rb_entry **)&next_en,
--				&insert_p, &insert_parent, false,
--				&leftmost);
-+	en = __lookup_extent_node_ret(&et->root,
-+					et->cached_en, fofs,
-+					&prev_en, &next_en,
-+					&insert_p, &insert_parent,
-+					&leftmost);
- 	if (en)
- 		goto unlock_out;
- 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 6e04fea9c34f..90a67feddcdc 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -620,12 +620,6 @@ enum extent_type {
- 	NR_EXTENT_CACHES,
- };
- 
--struct rb_entry {
--	struct rb_node rb_node;		/* rb node located in rb-tree */
--	unsigned int ofs;		/* start offset of the entry */
--	unsigned int len;		/* length of the entry */
--};
--
- struct extent_info {
- 	unsigned int fofs;		/* start offset in a file */
- 	unsigned int len;		/* length of the extent */
 
