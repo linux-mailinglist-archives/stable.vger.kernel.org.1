@@ -2,85 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0F27015C1
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 11:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A22F7015C3
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 11:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238125AbjEMJcM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 05:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36424 "EHLO
+        id S234163AbjEMJcY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 05:32:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238193AbjEMJcJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 05:32:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410141BF8
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 02:31:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C28F261D43
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 09:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A4FC4339B;
-        Sat, 13 May 2023 09:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683970317;
-        bh=7tT1fhkFZZGbWasfIS3tzwDuOwvyCh4hWYUrD1uWxeo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vljRjDNtSM7jWUm5EZTCLpEEKUVu4qXRJ1Y2wUsGzey7u4pZm58m8oq/LCkXl1DAC
-         8loNr2tkNKbKEJI3S/hMykfk4RdBRC63UpjdPJxr1+MNbdd1MtGw3k2rXwrI0TiHKp
-         fmDSv88lOz9LK3y1nu1dF1i5EZXWUU+ULlLJsM3g=
-Date:   Sat, 13 May 2023 18:28:57 +0900
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Sean Christopherson <seanjc@google.com>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        stable <stable@vger.kernel.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jared Epp <jaredepp@pm.me>
-Subject: Re: Please apply commit 6470accc7ba9 ("KVM: x86: hyper-v: Avoid
- calling kvm_make_vcpus_request_mask() with vcpu_mask==NULL") to v5.10.y
-Message-ID: <2023051349-waltz-designer-6a7e@gregkh>
-References: <ZFuUstsT9plyGcTp@lorien.valinor.li>
- <ZF18X3e6rrkACcMf@sashalap>
- <ZF1+d2XYcQ9xvUw1@google.com>
+        with ESMTP id S238138AbjEMJcX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 05:32:23 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C381720
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 02:32:09 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id DE8725C00EB;
+        Sat, 13 May 2023 05:32:05 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Sat, 13 May 2023 05:32:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1683970325; x=1684056725; bh=++
+        yClSm5vQnbLMIwEtH31nSHFtOpy8hEz6u0pwJv8Fs=; b=r7ZX9XSMslGcyw0Wiq
+        jf15IeXuom/UAl7Tb7JkGYm+Z0wzvssuK+jrOp+aYO6Q6L/AmnG4StEPTpNixOvu
+        i+Rd92z5LudsGXIjAb+jmO8qadWjLs/VIzRFDgUSXjp8l/3EgvIoLRPKQDigWBfx
+        IuDggeZhy4PRqigqfWA/w7gXKrd8VSDmPP54OPD+DaqLdpB1m2USMlT6w0KqpWkB
+        NNduUt+Ha6hzOiWxz26H+8ERx4p/GKrABouhSXgmrHPhs9K0WZRY7Hf1XgI5xvRs
+        WjVZmlVmqRXBgyBc37UERcy1PVAgpXgxVHOipYrcE0to13GG1C9BS3oUyDYbhHd7
+        awHw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1683970325; x=1684056725; bh=++yClSm5vQnbL
+        MIwEtH31nSHFtOpy8hEz6u0pwJv8Fs=; b=gFJ03z5/pc/ZRh/P8yYneYnBmctoW
+        JrXg1Fk3cztrYC1LcpOBhCMLbvbg8KkRRR//OD/6KEooPYviHMBu0Wbfkq47rLiz
+        fU3M1xgWDBpyJFAXDTglbxklj/vSudUsdoaMWypGrs/JFHHiHWKkMI7JZsHsgKqR
+        pkIbOSiqHuYJoCPqMwshNMicgvAOm1Ve1S+F+VveDVFiikfA0Z94kfdNVuwuHZPM
+        F9aUKE2E+OZ5Si2nrr3a0+cte5ZIGvWkK0lIy2iDpg1NG+SCwQsuAuqx0LaDogg2
+        tbMkgeJuoCI6Oiqyv0p39X1gU1ZlLQTPzYKYpObYK6cWp3bDc3VL2cQJg==
+X-ME-Sender: <xms:FVlfZElkiRiJjD-rnn5Ift5t1tcJVKGzr-XuPnr_fG6c02FSLsKfMA>
+    <xme:FVlfZD1l2-tRuuQsynVRqJnCmaarPb3keYlhh00azyY5hbqeKQClY_-0O3i5GQFfi
+    6Yp9ou8XMtd3g>
+X-ME-Received: <xmr:FVlfZCpB-7ohCGO0o8DDtydFJviwAb9q1sij3bCS1SPZg8I-0-7ql2ws_s0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehvddgudehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeffte
+    ejleejgfeugeeggedvvddtueetteehteffffdvudevudetteehhfelheejnecuffhomhgr
+    ihhnpegthhhrohhmihhumhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:FVlfZAnnIR3LRmq2W6NNzYMfoehYz1uV3qV6heZmmJD-IBKjMGuvHg>
+    <xmx:FVlfZC05keOqwLZtCNNrWYfPemRq1Mmg1TVL4EfxgaW1NqE1C4rDOw>
+    <xmx:FVlfZHtilpqtmj8Tu1ANdxOFSXA56nti6bC_d1iGVTxzT7yfci6LiA>
+    <xmx:FVlfZMptLMr8Tf1NmxPrNEFqfJXHwXwQTnDlLQQJ17o8BlHY3ZNSRw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 13 May 2023 05:32:04 -0400 (EDT)
+Date:   Sat, 13 May 2023 18:29:53 +0900
+From:   Greg KH <greg@kroah.com>
+To:     ovidiu.panait@windriver.com
+Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+        Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 5.10 1/1] KVM: x86: do not report a vCPU as preempted
+ outside instruction boundaries
+Message-ID: <2023051347-supervise-curve-e084@gregkh>
+References: <20230509133330.2638333-1-ovidiu.panait@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZF1+d2XYcQ9xvUw1@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230509133330.2638333-1-ovidiu.panait@windriver.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 11, 2023 at 04:47:03PM -0700, Sean Christopherson wrote:
-> On Thu, May 11, 2023, Sasha Levin wrote:
-> > On Wed, May 10, 2023 at 02:57:22PM +0200, Salvatore Bonaccorso wrote:
-> > > Hi
-> > > 
-> > > After we updated the kernel in Debian bullseye from 5.10.162 to
-> > > 5.10.178, we got a report from Jared Epp in
-> > > https://bugs.debian.org/1035779 that a Windows Guest VM no longer
-> > > booted, and Kernel reporting:
-> > 
-> > This KVM commit wasn't tagged for stable, and would need an ack from the
-> > KVM maintainers to apply.
+On Tue, May 09, 2023 at 04:33:30PM +0300, ovidiu.panait@windriver.com wrote:
+> From: Paolo Bonzini <pbonzini@redhat.com>
 > 
-> For grabbing commit 6470accc7ba9,
+> commit 6cd88243c7e03845a450795e134b488fc2afb736 upstream.
 > 
->   Acked-by: Sean Christopherson <seanjc@google.com>
+> If a vCPU is outside guest mode and is scheduled out, it might be in the
+> process of making a memory access.  A problem occurs if another vCPU uses
+> the PV TLB flush feature during the period when the vCPU is scheduled
+> out, and a virtual address has already been translated but has not yet
+> been accessed, because this is equivalent to using a stale TLB entry.
 > 
-> If it helps,
+> To avoid this, only report a vCPU as preempted if sure that the guest
+> is at an instruction boundary.  A rescheduling request will be delivered
+> to the host physical CPU as an external interrupt, so for simplicity
+> consider any vmexit *not* instruction boundary except for external
+> interrupts.
 > 
->   Fixes: 6100066358ee ("KVM: Optimize kvm_make_vcpus_request_mask() a bit")
+> It would in principle be okay to report the vCPU as preempted also
+> if it is sleeping in kvm_vcpu_block(): a TLB flush IPI will incur the
+> vmentry/vmexit overhead unnecessarily, and optimistic spinning is
+> also unlikely to succeed.  However, leave it for later because right
+> now kvm_vcpu_check_block() is doing memory accesses.  Even
+> though the TLB flush issue only applies to virtual memory address,
+> it's very much preferrable to be conservative.
 > 
-> That optimization got pulled in without the undocumented dependency due to:
+> Reported-by: Jann Horn <jannh@google.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> [OP: use VCPU_STAT() for debugfs entries]
+> Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+> ---
+> 5.10 backport of CVE-2022-39189 fix:
+> https://bugs.chromium.org/p/project-zero/issues/detail?id=2309
 > 
->   Stable-dep-of: 2b0128127373 ("KVM: Register /dev/kvm as the _very_ last thing during initialization")
 
-Thanks, now queued up.
+Now queued up, thanks.
 
 greg k-h
