@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F007014F8
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E268F7014F9
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:38:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjEMHh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
+        id S229547AbjEMHiI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjEMHh5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:37:57 -0400
+        with ESMTP id S229463AbjEMHiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:38:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F86E35B5
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:37:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043E25FCD
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:38:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF54060E00
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740E1C433EF;
-        Sat, 13 May 2023 07:37:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D86696126B
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:38:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F8BC433EF;
+        Sat, 13 May 2023 07:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963475;
-        bh=ictJhpijQD1hgbLJgjrrt+zel3ShHnAlVPIN8tJzfAQ=;
+        s=korg; t=1683963485;
+        bh=d0BYvFW8B5gj+OpSjoJxWFm8LG8cVUHdVSgIR0IAKVE=;
         h=Subject:To:Cc:From:Date:From;
-        b=1dik4zxdwkMaTIJfFeRwMWTgW8BxkeHh0pSCpAPagVc3peV3qIsvMABsbgkfC+3fj
-         pHAO5nm7Vt+/UDkpUCwmLSA37seKIAnI0k/EbsDR0edAtL8ekREU/FEqMl67jk8xys
-         1f8yqUW0b7PZXzVmOvQV8sLxTNfW4OLRFWZo8Zd0=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: Don't resume IOMMU after incomplete init" failed to apply to 6.3-stable tree
+        b=2U6KD6dHj5l3WL+tLbQtv0kCPafhZpLexJvRV4L9NlqToMW6s1TcQMY/wzg4pqpJ+
+         O/Bru63cKW0QP9v+t+g4k6HpyQzMM+5HwcYHruw4tiBjVOHqmvhyWUj3PqudIU79iN
+         h+Mwbn4wpEnIQpinWRLBtDAciyRcRGKYxRdaOnQI=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: Don't resume IOMMU after incomplete init" failed to apply to 6.2-stable tree
 To:     Felix.Kuehling@amd.com, alexander.deucher@amd.com,
         matt.fagnani@bell.net, regressions@leemhuis.info,
         vasant.hegde@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:19:38 +0900
-Message-ID: <2023051338-vocally-gander-2c08@gregkh>
+Date:   Sat, 13 May 2023 16:19:43 +0900
+Message-ID: <2023051343-header-connected-1fbb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7ee938ac006096fe9c3f1075f56b9263587c150f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051338-vocally-gander-2c08@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051343-header-connected-1fbb@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
