@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E29370152A
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6BB701534
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 10:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229849AbjEMHxd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:53:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60918 "EHLO
+        id S229653AbjEMIJ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 04:09:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjEMHxb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:53:31 -0400
+        with ESMTP id S229463AbjEMIJ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 04:09:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080324C1B
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:53:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0BC172C
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 01:09:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 990FF60A6E
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5F5C433D2;
-        Sat, 13 May 2023 07:53:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AAD3561032
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 08:09:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF31AC433EF;
+        Sat, 13 May 2023 08:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683964409;
-        bh=230gTjEiKrVKiJZUmqAmuka3Sl8shN4MocC+tBfiCPo=;
+        s=korg; t=1683965397;
+        bh=w2NAakyk9JG+dbO9yWRXKqXJEeO3S47xN45lGP4bDq4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SHgCKRTUPecowrghms5Vus7eWUdoayjPkwhny/RbsjjdLiddJ+sE1AfpTPzYaB3k2
-         +QZrDJxd8Cdk71MZ0H8HjaBh1pMCgYXTgEsOp0qsK2nmY8zGG+2t4c4Yrn1Hlruwoc
-         +qly/zYmYYlI5+FVh+LFMT4ACAcp+c54739G2m+M=
-Date:   Sat, 13 May 2023 16:28:21 +0900
+        b=bgKodvtCVQuopjs3I31JnkMwAC/ZSZ4KmYbPd23Avcg5FC+mm8FzupvuouscB2p/D
+         95QPyh+EA2SIuUeL8j7pSI8oAbp8Be86RKcJ+gqzs/DtFzaHjVaGbxKWT8yAIWtSEN
+         +7v3lkGAOVQj1WT+s+WldniZs9hs2UtVXbmGKrvk=
+Date:   Sat, 13 May 2023 16:50:08 +0900
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Gong, Richard" <richard.gong@amd.com>
-Cc:     stable@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: AMD Navi3x dGPU experience improvement
-Message-ID: <2023051312-visible-badland-1311@gregkh>
-References: <5ca2e61d-08d6-3070-f281-e2483cb7718a@amd.com>
+To:     Ping Cheng <pinglinux@gmail.com>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux Stable <stable@vger.kernel.org>
+Subject: Re: [PATCH] HID: wacom: Set a default resolution for older tablets
+Message-ID: <2023051359-jawline-magical-7b44@gregkh>
+References: <20230409164229.29777-1-ping.cheng@wacom.com>
+ <CAF8JNhJudYKrzBuyaT5aYy+fzeaxtB6HALRrbHwYzjcwz+=S0g@mail.gmail.com>
+ <ZFmxMO6IyJx2/R1O@debian.me>
+ <2023050922-zoologist-untaken-d73d@gregkh>
+ <CAF8JNhJ9Q6+7O1pK-8SK_LYiJLsNYJLMyCaZbY73+1=-9jwdHw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5ca2e61d-08d6-3070-f281-e2483cb7718a@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAF8JNhJ9Q6+7O1pK-8SK_LYiJLsNYJLMyCaZbY73+1=-9jwdHw@mail.gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -50,35 +55,27 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 08, 2023 at 08:19:41AM -0500, Gong, Richard wrote:
-> Hi,
+On Wed, May 10, 2023 at 05:06:03PM -0700, Ping Cheng wrote:
+> On Mon, May 8, 2023 at 7:44 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, May 09, 2023 at 09:34:24AM +0700, Bagas Sanjaya wrote:
+> > > On Mon, May 08, 2023 at 06:05:02PM -0700, Ping Cheng wrote:
+> > > > Hi Stable maintainers,
+> > > >
+> > > > This patch, ID 08a46b4190d3, fixes an issue for a few older devices.
+> > > > It can be backported as is to all the current Long Term Supported
+> > > > kernels.
+> > > >
+> > >
+> > > Now that your fix has been upstreamed, can you provide a backport
+> > > for each supported stable versions (v4.14 up to v6.3)?
 > 
-> Since AMD introduced Navi3x dGPUs, setting them up is more difficult than it
-> need to be, as you need the GPU firmware binaries present in the filesystem
-> before the kernel drivers can be loaded. If you don't, you'll just "hang" at
-> a black screen. This is awkward because you must do
-> modprobe.blacklist=amdgpu and then load the file.
+> To speed up the process, I tested the patch on all stable branches.
+> The upstream patch can be APPLIED to kernels 5.15 and later, AS IS.
 > 
-> A large commit series went into 6.3 that improve this experience, but not
-> all of it is stable materiel.
-> 
-> As the dGPUs are supported on 6.1.y and 6.2.y, we can improve the experience
-> specifically for these new produces by back-porting a small subset of
-> commits that correspond to firmware files that are uniquely loaded by the
-> new products. With these commits amdgpu driver will return an error code and
-> you can continue to use framebuffer provided by UEFI GOP driver until you
-> have GPU firmware binaries loaded onto your system.
-> 
-> Commits needed for 6.2.y
-> 	cc42e76e7de5 "drm/amd: Load MES microcode during early_init"
-> 	2210af50ae7f "drm/amd: Add a new helper for loading/validating microcode"
-> 	11e0b0067ec0 "drm/amd: Use `amdgpu_ucode_*` helpers for MES"
-> 
-> Commits needed for 6.1.y
-> 	6040517e4a29 "drm/amdgpu: remove deprecated MES version vars"
-> 	cc42e76e7de5 "drm/amd: Load MES microcode during early_init"
-> 	2210af50ae7f "drm/amd: Add a new helper for loading/validating microcode"
-> 	11e0b0067ec0 "drm/amd: Use `amdgpu_ucode_*` helpers for MES"
+> The attached patch applies to kernels 4.14 to 5.10. If you'd like me
+> to send the patch in a separate email, please let me know. Thank you
+> for your effort!
 
 All now queued up, thanks.
 
