@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A34A2701518
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7176D701519
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjEMHmi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:42:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56102 "EHLO
+        id S231637AbjEMHmv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231325AbjEMHmh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:42:37 -0400
+        with ESMTP id S231664AbjEMHmr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:42:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D4D196
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:42:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D9E272C
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:42:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B3AF61C18
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:42:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9407C433EF;
-        Sat, 13 May 2023 07:42:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E8FB61C04
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:42:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7725C433EF;
+        Sat, 13 May 2023 07:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963755;
-        bh=+AVaNhvSYrjCq0cQJ8K0s1MM3ROATM9scLhUb2zyK8E=;
+        s=korg; t=1683963764;
+        bh=lqGfMOIha1UxTq39ea5VaY40zsuZ0gFeaX4yyaG1kdo=;
         h=Subject:To:Cc:From:Date:From;
-        b=opXn9UJ+B2KQ8v3bbU1O1/KvXVRdxPjjpB+R9e9egdGhAldE1am1MTNVtBpCuDjLS
-         H8m8yq5lWvlsqG94M7T0vjPSSk7c7KqvOE2ftYWNoUUCZqvwip3kVuGSxjtq/9kSWw
-         aPkdZ24n+HvG1AP0fGAnqS70ZqmhJnNkVQ/D03lI=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Lowering min Z8 residency time" failed to apply to 6.2-stable tree
+        b=fAWxkM4A23GmhdWiDhc6oyHXh5mTQMw399i6jTeWswszVp5+/mlIMNDPh6s4QpreA
+         2W5G0f4N+iuVOTqngaIfoG23rmrflsELHjYVpc+fldIKjXH7lFlPDQWMjbZEVJc0jI
+         OYC+B4f7UB8k3wIrG8oGBx7D2CTMnl9lCcAWNUs0=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Lowering min Z8 residency time" failed to apply to 6.1-stable tree
 To:     sancchen@amd.com, Nicholas.Kazlauskas@amd.com,
         Rodrigo.Siqueira@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:21:50 +0900
-Message-ID: <2023051350-purgatory-gyration-e5e3@gregkh>
+Date:   Sat, 13 May 2023 16:21:54 +0900
+Message-ID: <2023051354-pureblood-sanctuary-48a1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x d893f39320e1248d1c97fde0d6e51e5ea008a76b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051350-purgatory-gyration-e5e3@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051354-pureblood-sanctuary-48a1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,9 @@ d893f39320e1 ("drm/amd/display: Lowering min Z8 residency time")
 0215ce9057ed ("drm/amd/display: Update minimum stutter residency for DCN314 Z8")
 0db13eae41fc ("drm/amd/display: Add minimum Z8 residency debug option")
 73dd4ca4b5a0 ("drm/amd/display: Fix Z8 support configurations")
+00812bfc7bcb ("drm/amd/display: Add debug option to skip PSR CRTC disable")
+80676936805e ("drm/amd/display: Add Z8 allow states to z-state support list")
+bd829d570773 ("drm/amd/display: Refactor eDP PSR codes")
 
 thanks,
 
