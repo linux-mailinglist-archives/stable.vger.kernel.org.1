@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47E607014C3
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE28D7014C4
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231637AbjEMGrS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:47:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40320 "EHLO
+        id S230102AbjEMGr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230102AbjEMGrR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:47:17 -0400
+        with ESMTP id S231664AbjEMGr2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:47:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EFC2D48
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:47:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F082D48
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:47:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E25A61B47
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:47:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C9EC433D2;
-        Sat, 13 May 2023 06:47:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 894A761B47
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F60C433D2;
+        Sat, 13 May 2023 06:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960435;
-        bh=mQX2EzDG7WPt1zeaNES6MupKRhyYsUohwBrfX0cpvcI=;
+        s=korg; t=1683960446;
+        bh=BAgS2pxoLyKiU1rYOWPkzTqOtrftJqak1vg9O8Jak4M=;
         h=Subject:To:Cc:From:Date:From;
-        b=ORJ8ZUVm7zv/dacE+tdFhwY1E+B9FxQE+LM1dseN1xEz97XrL4ry/F3XTaW/oJUio
-         53wLA/sm6K5F0X57QoliV9eak1pYMEbouX+HPqt3NjILpHVy1dyk0DOWmiqRm2wVTu
-         3eUrLYF0xVhUzZ3YxbMoy07hWGtLAPO6HNE2bvOc=
-Subject: FAILED: patch "[PATCH] drm/i915: disable sampler indirect state in bindless heap" failed to apply to 6.2-stable tree
+        b=EqMc69T3BydDGpFdeCQs5I3HfmXTRsFiI4LcL/VF4xd+41teYn6Oz7RxpQ9iEgpWj
+         C2E03tBYYW4OZJKQsPxP2HULM3BYcgFmYceCTij5xb726b1+6Yzic/4L8VE9YWzN5C
+         /HpP27TxqIoD3QlORYBFx4hLEQoODf69UwPFpgGo=
+Subject: FAILED: patch "[PATCH] drm/i915: disable sampler indirect state in bindless heap" failed to apply to 6.1-stable tree
 To:     lionel.g.landwerlin@intel.com, haridhar.kalvala@intel.com,
         joonas.lahtinen@linux.intel.com, matthew.d.roper@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:46:30 +0900
-Message-ID: <2023051330-endanger-twistable-6c02@gregkh>
+Date:   Sat, 13 May 2023 15:46:33 +0900
+Message-ID: <2023051333-jubilance-brewing-06db@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 81900e3a37750d8c6ad705045310e002f6dd0356
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051330-endanger-twistable-6c02@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051333-jubilance-brewing-06db@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,6 +69,12 @@ Possible dependencies:
 4b51210f98c2 ("drm/i915/mtl: Add Wa_14017856879")
 5fba65efa7cf ("drm/i915/mtl: Add workarounds Wa_14017066071 and Wa_14017654203")
 41bb543f5598 ("drm/i915/mtl: Add initial gt workarounds")
+4bb9ca7ee074 ("drm/i915/mtl: C6 residency and C state type for MTL SAMedia")
+78d0b4552c37 ("drm/i915/gt: Use RC6 residency types as arguments to residency functions")
+22009b6dad66 ("drm/i915/mtl: Modify CAGF functions for MTL")
+01b8c2e60e96 ("drm/i915: Use GEN12_RPSTAT register for GT freq")
+2c0a284c5d70 ("drm/i915/rps: Prefer REG_FIELD_GET in intel_rps_get_cagf")
+60ba8c5bd94e ("Merge tag 'drm-intel-gt-next-2022-11-03' of git://anongit.freedesktop.org/drm/drm-intel into drm-next")
 
 thanks,
 
