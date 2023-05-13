@@ -2,240 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18007012DE
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 01:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF28A7013DC
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 04:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240703AbjELX7A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 12 May 2023 19:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60900 "EHLO
+        id S230186AbjEMCGf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 12 May 2023 22:06:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241022AbjELX6t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 19:58:49 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D36344219
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 16:58:24 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-52857fc23b1so9904331a12.2
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 16:58:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683935899; x=1686527899;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PFB1dkpGULUqWzGVGpWTfZD/wGkLnLUL2yYSj9UHJe8=;
-        b=RfEuSDTLMnNvVhco/REROey0gb2x3qNZHS7QsUUEezpvjObhi40SJ4Ivhu9qrO+zn9
-         KaL54Or+583uthg14uV25Du+x+MjKeSsXpP0N8kbyqmOimQ32HKrIuItJhzMEe7Z7r00
-         H3xPmIPgJeHVZwbgHFPY4EK7ygVj2/eXjW5vntomlpbdw4u2rW1l7DywwTG+JbEDqlqW
-         a2pVysEP1gPh7M/+7mMP5dvhKaBf8GtLDWx16ApQeX5HQjqiHJ5Sq4w6ZHe7QyWEHes7
-         xcFButTqpKqyg6mne6Xbpv8LV/kx6mv3uBW1s8FPhdpT8SGS/NjZYbwltNiI2b33sVlg
-         VO5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683935899; x=1686527899;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PFB1dkpGULUqWzGVGpWTfZD/wGkLnLUL2yYSj9UHJe8=;
-        b=LZhdxWwnWBklxHd6RWdl1jp2BKxmegn6JaoSigXH7NmniVfCJv1aFyvth0diCz+tnp
-         rdurJmXA00+P1d0/oG4CDweSO10A/n9f0pt/aDeHASHVIm92Jx3KJkOF07K5qPjy8TSf
-         zvI8U9QZIzHFQ4UeWvBOCy52LDpRuszaZVZX+GiMit01yBuvBCWq/v4tgeEyr6vtMlQ1
-         LddQDmly0uB+Sr9Pc8DokjeMOZO504iO5sJ8Xq6IOOQ7aQ5KUTWlqSUA6w/TypGOW31e
-         KiL1RP5+Wa9wjO9s7PgHcf4/MAjo33EEgktf4Dz1ebqRQfIYAQToF4Shc65F72FcviV6
-         o7Jg==
-X-Gm-Message-State: AC+VfDzjod5VvsEx3FWU+CoWKswzwHYThOUHHUPVbYZlxwtmF4SMZP6f
-        +poqYnRfdYrKpdUygz1lTKrQCn8=
-X-Google-Smtp-Source: ACHHUZ4Om3weymLriZRqilqiW1Q7IzP8A/Hgna9MQFb9oy4dHoPlAMWv6ovNh/hRL0eehCAtf3LXCLo=
-X-Received: from pcc-desktop.svl.corp.google.com ([2620:15c:2d3:205:ff6:108b:739d:6a1c])
- (user=pcc job=sendgmr) by 2002:a63:151:0:b0:52c:6149:f6be with SMTP id
- 78-20020a630151000000b0052c6149f6bemr7437419pgb.4.1683935899323; Fri, 12 May
- 2023 16:58:19 -0700 (PDT)
-Date:   Fri, 12 May 2023 16:57:52 -0700
-In-Reply-To: <20230512235755.1589034-1-pcc@google.com>
-Message-Id: <20230512235755.1589034-4-pcc@google.com>
-Mime-Version: 1.0
-References: <20230512235755.1589034-1-pcc@google.com>
-X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-Subject: [PATCH 3/3] arm64: mte: Simplify swap tag restoration logic and fix
- uninitialized tag issue
-From:   Peter Collingbourne <pcc@google.com>
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Peter Collingbourne <pcc@google.com>,
-        "=?UTF-8?q?Qun-wei=20Lin=20=28=E6=9E=97=E7=BE=A4=E5=B4=B4=29?=" 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        "=?UTF-8?q?Chinwen=20Chang=20=28=E5=BC=B5=E9=8C=A6=E6=96=87=29?=" 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        "=?UTF-8?q?Kuan-Ying=20Lee=20=28=E6=9D=8E=E5=86=A0=E7=A9=8E=29?=" 
-        <Kuan-Ying.Lee@mediatek.com>,
-        "=?UTF-8?q?Casper=20Li=20=28=E6=9D=8E=E4=B8=AD=E6=A6=AE=29?=" 
-        <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
-        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229507AbjEMCGe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 12 May 2023 22:06:34 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2051.outbound.protection.outlook.com [40.107.92.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9797B1BEF;
+        Fri, 12 May 2023 19:06:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iLJw9/Yrsia6eTM6roCz56CHSHn8V7HDsY4NaCS/TdH+/IVNaWGWntlGzju3VSqLPh39Di72TyfnzWuxBB4XNcYLi9P+HAdvsNmmkvCTlNeQBWucN+nlqSu8ngAGl//ATVDQqBmoTw620ANLCeluXASNWuq0khe+G/2HQn0u4BMRt3oQLVRwbJJfVp/UBLEHvg+cOcm0Pn8UPd14UfTsReGl41TB0kO2qhGpV6+6FdxOIwFCQJP7Nyho6bazQFVkoD/6DyKTjH+tEWVkFZrGnh3XBUtvktUAP1TdEG4OjpJAllxPyW3ukEO03yGABp/79QU2PxqVtronuhOnfI74+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oG7JYvn61Q12HdENJ4dw7LrDt1HRLBd+mOyfbd1FJsY=;
+ b=WTgqBLR+RixfLUm0IoOqc1PigR5RFFhIt5Be//4ggrwI3Zix2XXK/XUF8c5Xvb6nAPrNGcuqvPy5snFsE+uMzVE6qndd17zaEBF/Gf1v+LDS6yVByuDPBlwY/jo5Rk6jwe2QuNANjXF+qonYuPnV1SmcUhb5I1/aUnI5OAsjnm3C+tfh3AGrW/78IyNyGW4cuuwxM5Cwk6dmWv6KUfw8ZlaDyVhtjY0NEznW7A+axW7aCIIYJVlWuDxGSWOA0O8FCg3OYT6Vjp6tEQqP7WAVS6AwPWSeD3VxoPcTG/7vgyuXzfX6cM6Ib8SLjaQRqfYa2pydkcbW+2ybuyKUujVWRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oG7JYvn61Q12HdENJ4dw7LrDt1HRLBd+mOyfbd1FJsY=;
+ b=Y2GjO6ZTahdtYqIXvfiEddqgPnIW5iiNr3KqQ3toZUU1nfdsQ4VGgeUe530qd/MSUXRwVjkV76vmlOGNLIZUymiyzwfhP3oe1lPUdnR5jxbxYPqWzZN0VCEHJyFegYAdBAUSj8Z/bbw2rsClMLcpDxlrgGKDow4WndqUoiX1fp8x7GcgfKLaKEvtykZBuyXZVBx5dOXkHvAyeTaRg9yyl7JSVXe59JKc1T2e9FeS/YpI9HUORp6rXfBYC0u5PW8rLrLedyHN2NR6G+rq8JXLzH5/QxwizsctGcN5E5aT7kPw2D/mRYh6kbXTkCVQcLHHcJMsg9UsEUdU18VtpNie0Q==
+Received: from MW4PR04CA0205.namprd04.prod.outlook.com (2603:10b6:303:86::30)
+ by SN7PR12MB7371.namprd12.prod.outlook.com (2603:10b6:806:29a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.22; Sat, 13 May
+ 2023 02:06:30 +0000
+Received: from CO1NAM11FT034.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:86:cafe::d1) by MW4PR04CA0205.outlook.office365.com
+ (2603:10b6:303:86::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.25 via Frontend
+ Transport; Sat, 13 May 2023 02:06:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1NAM11FT034.mail.protection.outlook.com (10.13.174.248) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6387.27 via Frontend Transport; Sat, 13 May 2023 02:06:29 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Fri, 12 May 2023
+ 19:06:17 -0700
+Received: from [10.110.48.28] (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Fri, 12 May
+ 2023 19:06:16 -0700
+Message-ID: <dbea2e8b-41ea-565c-a78e-61105e23fc08@nvidia.com>
+Date:   Fri, 12 May 2023 19:06:15 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH] arm64/mm: don't WARN when alloc/free-ing device private
+ pages
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Feiyang Chen <chenfeiyang@loongson.cn>,
+        Alistair Popple <apopple@nvidia.com>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <stable@vger.kernel.org>
+References: <20230406040515.383238-1-jhubbard@nvidia.com>
+ <CAMj1kXHxyntweiq76CdW=ov2_CkEQUbdPekGNDtFp7rBCJJE2w@mail.gmail.com>
+ <a421b96a-ed4b-ae7d-2fe9-ed5f5f8deacf@nvidia.com>
+ <CAMj1kXGtFyugzi9MZW=4_oVTy==eAF6283fwvX9fdZhO98ZA3g@mail.gmail.com>
+ <8dd0e252-8d8b-a62d-8836-f9f26bc12bc7@nvidia.com>
+ <90505ef2-9250-d791-e05d-dbcb7672e4c4@nvidia.com>
+ <CAMj1kXFZ=4hLL1w6iCV5O5uVoVLHAJbc0rr40j24ObenAjXe9w@mail.gmail.com>
+From:   John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <CAMj1kXFZ=4hLL1w6iCV5O5uVoVLHAJbc0rr40j24ObenAjXe9w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.231.37]
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT034:EE_|SN7PR12MB7371:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0dc4b180-bd07-444d-1376-08db5356aac6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ofkLTJzhw6xT4ycMzyQCbOJSgxI1u9UrGLbNRz6bS7j8BdCw/vndZtwDKNy/DAviUBfVY4HpQbhWK1/lVBI1nUQ9bd817zH/VXhOoStMaYmoAISW3IiBexwfa9Y/hLZPpoo+0w9eGcyS/2dT6xilTOVO5pD2iqxHbxv1WHSnTSAl9MMkuygr/4DTbNnoV2YOPDivz2pjTJJuhiONKMpzebWw/6791NWXe/juvFBLoyzAnwksP4Fo1QqyL+dPkA6flNXSOicasPmlxT+VDU+L2eyIJZIZY36mROrhXgUfGchE0ve0GW200qZfO3EN+H4RbQhMk3TJrtXSCjrgKIPMaSqfuh78YtEJp1gt8gBfUwwl2gibuPWGfXFRkrVygSNWyPITXNTRBTiwemEk2ggzS90r3qfFDFGcv1kOXUEIDityIBpf0BrQd6jMvmKfxbJ9F1+XfG6U2SsuN5VBpMCPPiUud8GtSw30RrPeFxRzWnRWS1yGPyDwDzjVexuZ75G79QF4Wlq/L3MUPQPwCSjMOsiSp8Uc+9diMQ+lrXEbj3klWkf4TpommI8mkci10BNK6W2MSzb1Pidweq1xiKYv4qSz66UAs4kcUHe+ZQ5E8qpK/IAQQoKlsz/MEubOjIeVgxDOnatt9y7JiPtXXR+6iCL3GtQZuzgC6t51+QaOKxOs67baoiPZWo8tACsKIXiIE6MwHqLtk1cShr3UwiuG5fqNgBaDwNS/XyIy3xDWcC8ujVrHgrufUMgESOHE/oxa+ZXwjrHxJ66HiT+8IrzNag==
+X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(39860400002)(376002)(136003)(451199021)(46966006)(36840700001)(40470700004)(36756003)(478600001)(86362001)(31696002)(54906003)(6916009)(4326008)(16576012)(70586007)(70206006)(316002)(82310400005)(40480700001)(7416002)(2906002)(8676002)(5660300002)(8936002)(4744005)(2616005)(82740400003)(41300700001)(356005)(7636003)(16526019)(186003)(36860700001)(53546011)(336012)(426003)(47076005)(26005)(31686004)(40460700003)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2023 02:06:29.9520
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dc4b180-bd07-444d-1376-08db5356aac6
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT034.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7371
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-As a result of the previous two patches, there are no circumstances
-in which a swapped-in page is installed in a page table without first
-having arch_swap_restore() called on it. Therefore, we no longer need
-the logic in set_pte_at() that restores the tags, so remove it.
+On 5/12/23 07:42, Ard Biesheuvel wrote:
+>> I'm still not sure of how to make room, but working on it.
+>>
+> 
+> The assumption that only the linear map needs to be covered by struct
+> pages is rather fundamental to the arm64 mm code, as far as I am
+> aware.
+> 
+> Given that these device memory regions have no direct correspondence
+> with the linear map at all, couldn't we simply vmalloc() a range of
+> memory for struct pages for such a region and wire that up in the
+> existing code? That seems far more maintainable to me than
+> reorganizing the entire kernel VA space, and only for some choices for
+> the dimensions.
 
-Because we can now rely on the page being locked, we no longer need to
-handle the case where a page is having its tags restored by multiple tasks
-concurrently, so we can slightly simplify the logic in mte_restore_tags().
+The vmalloc approach does sound like it should Just Work, yes. I'll try it out.
 
-This patch also fixes an issue where a page can have PG_mte_tagged set
-with uninitialized tags. The issue is that the mte_sync_page_tags()
-function sets PG_mte_tagged if it initializes page tags. Then we
-return to mte_sync_tags(), which sets PG_mte_tagged again. At best,
-this is redundant. However, it is possible for mte_sync_page_tags()
-to return without having initialized tags for the page, i.e. in the
-case where check_swap is true (non-compound page), is_swap_pte(old_pte)
-is false and pte_is_tagged is false. So at worst, we set PG_mte_tagged
-on a page with uninitialized tags. This can happen if, for example,
-page migration causes a PTE for an untagged page to be replaced. If the
-userspace program subsequently uses mprotect() to enable PROT_MTE for
-that page, the uninitialized tags will be exposed to userspace.
+And now I'm trying to remember why Jerome didn't use that approach for x86
+originally. If this fixes HMM on arm64, I'll revisit that question too.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/I8ad54476f3b2d0144ccd8ce0c1d7a2963e5ff6f3
-Fixes: e059853d14ca ("arm64: mte: Fix/clarify the PG_mte_tagged semantics")
-Cc: <stable@vger.kernel.org> # 6.1
----
-The Fixes: tag (and the commit message in general) are written assuming
-that this patch is landed in a maintainer tree instead of
-"arm64: mte: Do not set PG_mte_tagged if tags were not initialized".
+Really appreciate the help and advice here.
 
- arch/arm64/include/asm/mte.h     |  4 ++--
- arch/arm64/include/asm/pgtable.h | 14 ++------------
- arch/arm64/kernel/mte.c          | 32 +++-----------------------------
- arch/arm64/mm/mteswap.c          |  7 +++----
- 4 files changed, 10 insertions(+), 47 deletions(-)
 
-diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
-index 20dd06d70af5..dfea486a6a85 100644
---- a/arch/arm64/include/asm/mte.h
-+++ b/arch/arm64/include/asm/mte.h
-@@ -90,7 +90,7 @@ static inline bool try_page_mte_tagging(struct page *page)
- }
- 
- void mte_zero_clear_page_tags(void *addr);
--void mte_sync_tags(pte_t old_pte, pte_t pte);
-+void mte_sync_tags(pte_t pte);
- void mte_copy_page_tags(void *kto, const void *kfrom);
- void mte_thread_init_user(void);
- void mte_thread_switch(struct task_struct *next);
-@@ -122,7 +122,7 @@ static inline bool try_page_mte_tagging(struct page *page)
- static inline void mte_zero_clear_page_tags(void *addr)
- {
- }
--static inline void mte_sync_tags(pte_t old_pte, pte_t pte)
-+static inline void mte_sync_tags(pte_t pte)
- {
- }
- static inline void mte_copy_page_tags(void *kto, const void *kfrom)
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index b6ba466e2e8a..efdf48392026 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -337,18 +337,8 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
- 	 * don't expose tags (instruction fetches don't check tags).
- 	 */
- 	if (system_supports_mte() && pte_access_permitted(pte, false) &&
--	    !pte_special(pte)) {
--		pte_t old_pte = READ_ONCE(*ptep);
--		/*
--		 * We only need to synchronise if the new PTE has tags enabled
--		 * or if swapping in (in which case another mapping may have
--		 * set tags in the past even if this PTE isn't tagged).
--		 * (!pte_none() && !pte_present()) is an open coded version of
--		 * is_swap_pte()
--		 */
--		if (pte_tagged(pte) || (!pte_none(old_pte) && !pte_present(old_pte)))
--			mte_sync_tags(old_pte, pte);
--	}
-+	    !pte_special(pte) && pte_tagged(pte))
-+		mte_sync_tags(pte);
- 
- 	__check_safe_pte_update(mm, ptep, pte);
- 
-diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-index f5bcb0dc6267..c40728046fed 100644
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -35,41 +35,15 @@ DEFINE_STATIC_KEY_FALSE(mte_async_or_asymm_mode);
- EXPORT_SYMBOL_GPL(mte_async_or_asymm_mode);
- #endif
- 
--static void mte_sync_page_tags(struct page *page, pte_t old_pte,
--			       bool check_swap, bool pte_is_tagged)
--{
--	if (check_swap && is_swap_pte(old_pte)) {
--		swp_entry_t entry = pte_to_swp_entry(old_pte);
--
--		if (!non_swap_entry(entry))
--			mte_restore_tags(entry, page);
--	}
--
--	if (!pte_is_tagged)
--		return;
--
--	if (try_page_mte_tagging(page)) {
--		mte_clear_page_tags(page_address(page));
--		set_page_mte_tagged(page);
--	}
--}
--
--void mte_sync_tags(pte_t old_pte, pte_t pte)
-+void mte_sync_tags(pte_t pte)
- {
- 	struct page *page = pte_page(pte);
- 	long i, nr_pages = compound_nr(page);
--	bool check_swap = nr_pages == 1;
--	bool pte_is_tagged = pte_tagged(pte);
--
--	/* Early out if there's nothing to do */
--	if (!check_swap && !pte_is_tagged)
--		return;
- 
- 	/* if PG_mte_tagged is set, tags have already been initialised */
- 	for (i = 0; i < nr_pages; i++, page++) {
--		if (!page_mte_tagged(page)) {
--			mte_sync_page_tags(page, old_pte, check_swap,
--					   pte_is_tagged);
-+		if (try_page_mte_tagging(page)) {
-+			mte_clear_page_tags(page_address(page));
- 			set_page_mte_tagged(page);
- 		}
- 	}
-diff --git a/arch/arm64/mm/mteswap.c b/arch/arm64/mm/mteswap.c
-index cd508ba80ab1..3a78bf1b1364 100644
---- a/arch/arm64/mm/mteswap.c
-+++ b/arch/arm64/mm/mteswap.c
-@@ -53,10 +53,9 @@ void mte_restore_tags(swp_entry_t entry, struct page *page)
- 	if (!tags)
- 		return;
- 
--	if (try_page_mte_tagging(page)) {
--		mte_restore_page_tags(page_address(page), tags);
--		set_page_mte_tagged(page);
--	}
-+	WARN_ON_ONCE(!try_page_mte_tagging(page));
-+	mte_restore_page_tags(page_address(page), tags);
-+	set_page_mte_tagged(page);
- }
- 
- void mte_invalidate_tags(int type, pgoff_t offset)
+thanks,
 -- 
-2.40.1.606.ga4b1b128d6-goog
+John Hubbard
+NVIDIA
 
