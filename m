@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB679701505
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2560B701506
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjEMHj6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:39:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54524 "EHLO
+        id S229882AbjEMHkI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbjEMHj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:39:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 275A659FD
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:39:56 -0700 (PDT)
+        with ESMTP id S229918AbjEMHkG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:40:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA3C35B5
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:40:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B67FF61A4D
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:39:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C3EC433D2;
-        Sat, 13 May 2023 07:39:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2EFD609EB
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:40:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8BDC433EF;
+        Sat, 13 May 2023 07:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963595;
-        bh=4POaFmOIFPz7YUJ/kLbgFwxOcYubhjJo/wcQ7zQSzR8=;
+        s=korg; t=1683963604;
+        bh=5kLTmNMvBB9luFkq69Dm0boCztlsfKvBmLnv03bmpnM=;
         h=Subject:To:Cc:From:Date:From;
-        b=TFjkE/rKok3EO3Yk9RHvW8bW4rb2Xp1t5GNebsHX4h7FawxgONmRGHd3H716j7Nwn
-         7zrHGhKubiO9S8yMR+Dd/iK8F2zxokGEArSQJ5jy0nDr1sGPqfsWaqP1l2kRO99Ifq
-         RmKxAjPyyIMcQwJIlHdGu64akcHGdgnO4/bTzNgo=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/vcn: Disable indirect SRAM on Vangogh broken" failed to apply to 6.2-stable tree
-To:     gpiccoli@igalia.com, James.Zhu@amd.com, alexander.deucher@amd.com,
-        leo.liu@amd.com
+        b=dWTk6zT2EJJIp1HbGUIoCpzxT1pQLY77dsujtBY+rJgy3DbHqrFCduigYM3SWmypG
+         1PloyMvex15sHN2+ewpmyg57uU2AVGMUQvF4RnZIm6Y0qeo+9IC9POC9GR+TSs5pdj
+         ocmbrLB29yG2RygGYRod6zyWDI6lM88y37aIU3Yg=
+Subject: FAILED: patch "[PATCH] drm/amd/display: hpd rx irq not working with eDP interface" failed to apply to 6.3-stable tree
+To:     robin.chen@amd.com, Wenjing.Liu@amd.com, alexander.deucher@amd.com,
+        daniel.wheeler@amd.com, mario.limonciello@amd.com,
+        qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:20:43 +0900
-Message-ID: <2023051343-subsonic-reliable-9c17@gregkh>
+Date:   Sat, 13 May 2023 16:20:50 +0900
+Message-ID: <2023051350-ruckus-chemist-caf3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,23 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1aff0a5d71d23be6658f893c88c6a9791202bcb1
+git cherry-pick -x eeefe7c4820b6baa0462a8b723ea0a3b5846ccae
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051343-subsonic-reliable-9c17@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051350-ruckus-chemist-caf3@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-1aff0a5d71d2 ("drm/amdgpu/vcn: Disable indirect SRAM on Vangogh broken BIOSes")
+eeefe7c4820b ("drm/amd/display: hpd rx irq not working with eDP interface")
+7ae1dbe6547c ("drm/amd/display: merge dc_link.h into dc.h and dc_types.h")
 
 thanks,
 
@@ -73,75 +75,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1aff0a5d71d23be6658f893c88c6a9791202bcb1 Mon Sep 17 00:00:00 2001
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Date: Sun, 12 Mar 2023 13:51:00 -0300
-Subject: [PATCH] drm/amdgpu/vcn: Disable indirect SRAM on Vangogh broken
- BIOSes
+From eeefe7c4820b6baa0462a8b723ea0a3b5846ccae Mon Sep 17 00:00:00 2001
+From: Robin Chen <robin.chen@amd.com>
+Date: Fri, 17 Feb 2023 20:47:57 +0800
+Subject: [PATCH] drm/amd/display: hpd rx irq not working with eDP interface
 
-The VCN firmware loading path enables the indirect SRAM mode if it's
-advertised as supported. We might have some cases of FW issues that
-prevents this mode to working properly though, ending-up in a failed
-probe. An example below, observed in the Steam Deck:
+[Why]
+This is the fix for the defect of commit ab144f0b4ad6
+("drm/amd/display: Allow individual control of eDP hotplug support").
 
-[...]
-[drm] failed to load ucode VCN0_RAM(0x3A)
-[drm] psp gfx command LOAD_IP_FW(0x6) failed and response status is (0xFFFF0000)
-amdgpu 0000:04:00.0: [drm:amdgpu_ring_test_helper [amdgpu]] *ERROR* ring vcn_dec_0 test failed (-110)
-[drm:amdgpu_device_init.cold [amdgpu]] *ERROR* hw_init of IP block <vcn_v3_0> failed -110
-amdgpu 0000:04:00.0: amdgpu: amdgpu_device_ip_init failed
-amdgpu 0000:04:00.0: amdgpu: Fatal error during GPU init
-[...]
+[How]
+To revise the default eDP hotplug setting and use the enum to git rid
+of the magic number for different options.
 
-Disabling the VCN block circumvents this, but it's a very invasive
-workaround that turns off the entire feature. So, let's add a quirk
-on VCN loading that checks for known problematic BIOSes on Vangogh,
-so we can proactively disable the indirect SRAM mode and allow the
-HW proper probe and VCN IP block to work fine.
-
-Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/2385
-Fixes: 82132ecc5432 ("drm/amdgpu: enable Vangogh VCN indirect sram mode")
+Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP hotplug support")
 Cc: stable@vger.kernel.org
-Cc: James Zhu <James.Zhu@amd.com>
-Cc: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Robin Chen <robin.chen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-index 0b1980ac4098..e63fcc58e8e0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-@@ -26,6 +26,7 @@
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index 4b47fa00610b..45ab48fe5d00 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1080,4 +1080,11 @@ struct dc_dpia_bw_alloc {
+ };
  
- #include <linux/firmware.h>
- #include <linux/module.h>
-+#include <linux/dmi.h>
- #include <linux/pci.h>
- #include <linux/debugfs.h>
- #include <drm/drm_drv.h>
-@@ -114,6 +115,24 @@ int amdgpu_vcn_sw_init(struct amdgpu_device *adev)
- 	    (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG))
- 		adev->vcn.indirect_sram = true;
- 
-+	/*
-+	 * Some Steam Deck's BIOS versions are incompatible with the
-+	 * indirect SRAM mode, leading to amdgpu being unable to get
-+	 * properly probed (and even potentially crashing the kernel).
-+	 * Hence, check for these versions here - notice this is
-+	 * restricted to Vangogh (Deck's APU).
-+	 */
-+	if (adev->ip_versions[UVD_HWIP][0] == IP_VERSION(3, 0, 2)) {
-+		const char *bios_ver = dmi_get_system_info(DMI_BIOS_VERSION);
+ #define MAX_SINKS_PER_LINK 4
 +
-+		if (bios_ver && (!strncmp("F7A0113", bios_ver, 7) ||
-+		     !strncmp("F7A0114", bios_ver, 7))) {
-+			adev->vcn.indirect_sram = false;
-+			dev_info(adev->dev,
-+				"Steam Deck quirk: indirect SRAM disabled on BIOS %s\n", bios_ver);
-+		}
-+	}
++enum dc_hpd_enable_select {
++	HPD_EN_FOR_ALL_EDP = 0,
++	HPD_EN_FOR_PRIMARY_EDP_ONLY,
++	HPD_EN_FOR_SECONDARY_EDP_ONLY,
++};
 +
- 	hdr = (const struct common_firmware_header *)adev->vcn.fw->data;
- 	adev->vcn.fw_version = le32_to_cpu(hdr->ucode_version);
+ #endif /* DC_TYPES_H_ */
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+index 995032a341b3..3951d48118c4 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -528,14 +528,18 @@ static bool construct_phy(struct dc_link *link,
+ 				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
  
+ 			switch (link->dc->config.allow_edp_hotplug_detection) {
+-			case 1: // only the 1st eDP handles hotplug
++			case HPD_EN_FOR_ALL_EDP:
++				link->irq_source_hpd_rx =
++						dal_irq_get_rx_source(link->hpd_gpio);
++				break;
++			case HPD_EN_FOR_PRIMARY_EDP_ONLY:
+ 				if (link->link_index == 0)
+ 					link->irq_source_hpd_rx =
+ 						dal_irq_get_rx_source(link->hpd_gpio);
+ 				else
+ 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+-			case 2: // only the 2nd eDP handles hotplug
++			case HPD_EN_FOR_SECONDARY_EDP_ONLY:
+ 				if (link->link_index == 1)
+ 					link->irq_source_hpd_rx =
+ 						dal_irq_get_rx_source(link->hpd_gpio);
+@@ -543,6 +547,7 @@ static bool construct_phy(struct dc_link *link,
+ 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+ 			default:
++				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
+ 				break;
+ 			}
+ 		}
 
