@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45EA1701514
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AF52701515
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231358AbjEMHmC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:42:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55906 "EHLO
+        id S231174AbjEMHmL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230453AbjEMHmB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:42:01 -0400
+        with ESMTP id S230453AbjEMHmK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:42:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27C0C2738
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:41:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66981196
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:42:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FAC661C04
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:41:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC54C433D2;
-        Sat, 13 May 2023 07:41:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 034C461C12
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813B7C433D2;
+        Sat, 13 May 2023 07:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963718;
-        bh=Q3Gq/x/wm0WWEgIo0Fnqt7aBepwd6C8qtNfQP6kHawU=;
+        s=korg; t=1683963728;
+        bh=d28Qdkrb/tqp3SqJMw7MB/vzIvEmIPOtfPPbWv7W9m0=;
         h=Subject:To:Cc:From:Date:From;
-        b=mae6fktNWUe5NtN9+AygeVFoj6ii3wNKTRAyRIZE/EtW2ytCVmUbtc4fpHhqRi9iQ
-         6LHrEEFFzXr0hvxupwgJnsATXzd81kLhCEP8fN6fiq7F8Unei/f4GBIg9/dz1UOpbK
-         jR8gg7uRvgKzWSj3Dnonjcn7MoBLOzS9PaETLOig=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Do not set DRR on pipe Commit" failed to apply to 6.3-stable tree
+        b=KF6eh6nz3XOY9poRtmorXVRUr+zscMtWjPi83X7FNSlzqFSH0MBIeYJ/J5KSfs73L
+         Ml3BZFpDd9R9BBSIxOBq6VSGW/VU1bnJiU43LntxdCyV2q5nEez7ubCpYj7lR2pQQ4
+         vrpOSoYy1u+TUD3tVEhaZ+r0WfthfOqnwkFTsB1I=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Do not set DRR on pipe Commit" failed to apply to 6.2-stable tree
 To:     Wesley.Chalmers@amd.com, Jun.Lei@amd.com,
         alexander.deucher@amd.com, daniel.wheeler@amd.com,
         mario.limonciello@amd.com, qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:21:33 +0900
-Message-ID: <2023051333-matcher-chihuahua-80da@gregkh>
+Date:   Sat, 13 May 2023 16:21:36 +0900
+Message-ID: <2023051336-return-stooge-8bf8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,24 +50,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
 git cherry-pick -x 825b3772a2047bd32ed3b3914234da0de19ef2e0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051333-matcher-chihuahua-80da@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051336-return-stooge-8bf8@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
 825b3772a204 ("drm/amd/display: Do not set DRR on pipe Commit")
 36951fc9460f ("Revert "drm/amd/display: Do not set DRR on pipe commit"")
+4f1b5e739dfd ("drm/amd/display: Do not set DRR on pipe commit")
 
 thanks,
 
