@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3357014C1
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 412D97014C2
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjEMGq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
+        id S231196AbjEMGrK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230102AbjEMGqz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:46:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADDF62712
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:46:54 -0700 (PDT)
+        with ESMTP id S230102AbjEMGrI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:47:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD1822712
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:47:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4923461A78
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0382C433D2;
-        Sat, 13 May 2023 06:46:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 425A761B47
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:47:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F9BC433EF;
+        Sat, 13 May 2023 06:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960413;
-        bh=7/jWJabkM7p1GNhTYhCXYoFUGbwU0tfCz27q7nvY3zw=;
+        s=korg; t=1683960425;
+        bh=Xc6zc5JD/4i0Zrr2N57mNdR969xwIsXYksFQTOW8QB8=;
         h=Subject:To:Cc:From:Date:From;
-        b=ICVF5+YybJGXe6ts2i/ync9mfcEWcb2hHGorPgr+r6xJ5iOG6in6tJ1D9GhYouUrL
-         iHemDGWJvQCQVhWxOGycMjEex2QICa0Y0dd6w6JguwiCCw9bpZjZ8RR79n4HX4dHAE
-         WRPuq56gxmgktb3HDex2UTFSDsp4DJp4JLK5ntqs=
-Subject: FAILED: patch "[PATCH] drm/i915: Pick the backlight controller based on VBT on ICP+" failed to apply to 5.15-stable tree
-To:     ville.syrjala@linux.intel.com, jani.nikula@intel.com
+        b=ckZYjlzzFNbupJUfXFEIeFHifCOC8WX5DafmkcuxzhlCEAnM5e/nZ21Jb+VxFpv0D
+         5f3kcF72N/k9aCiL07svxX7xu/SX/Ei3dad2F1GHdQTy6kAwm80J7uBXUuDPA0sD2x
+         4/BnidUOrXfXRFP3JKy1KlhCQ1BNWD8IYJtn7yVg=
+Subject: FAILED: patch "[PATCH] drm/i915: disable sampler indirect state in bindless heap" failed to apply to 6.3-stable tree
+To:     lionel.g.landwerlin@intel.com, haridhar.kalvala@intel.com,
+        joonas.lahtinen@linux.intel.com, matthew.d.roper@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:46:24 +0900
-Message-ID: <2023051324-cringe-regime-31ad@gregkh>
+Date:   Sat, 13 May 2023 15:46:27 +0900
+Message-ID: <2023051327-caption-anyhow-595d@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,24 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x b33771546309b46b681388b3540b69a75a0e2e69
+git cherry-pick -x 81900e3a37750d8c6ad705045310e002f6dd0356
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051324-cringe-regime-31ad@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051327-caption-anyhow-595d@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-b33771546309 ("drm/i915: Pick the backlight controller based on VBT on ICP+")
-6cc42fbeb150 ("drm/i915/backlight: extract backlight code to a separate file")
+81900e3a3775 ("drm/i915: disable sampler indirect state in bindless heap")
+4b51210f98c2 ("drm/i915/mtl: Add Wa_14017856879")
+5fba65efa7cf ("drm/i915/mtl: Add workarounds Wa_14017066071 and Wa_14017654203")
 
 thanks,
 
@@ -73,77 +75,73 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b33771546309b46b681388b3540b69a75a0e2e69 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Date: Tue, 7 Feb 2023 08:43:37 +0200
-Subject: [PATCH] drm/i915: Pick the backlight controller based on VBT on ICP+
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 81900e3a37750d8c6ad705045310e002f6dd0356 Mon Sep 17 00:00:00 2001
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Fri, 7 Apr 2023 12:32:37 +0300
+Subject: [PATCH] drm/i915: disable sampler indirect state in bindless heap
 
-Use the second backlight controller on ICP+ if the VBT asks
-us to do so.
+By default the indirect state sampler data (border colors) are stored
+in the same heap as the SAMPLER_STATE structure. For userspace drivers
+that can be 2 different heaps (dynamic state heap & bindless sampler
+state heap). This means that border colors have to copied in 2
+different places so that the same SAMPLER_STATE structure find the
+right data.
 
-On pre-MTP we also check the chicken bit to make sure the
-pins have been correctly muxed by the firmware.
+This change is forcing the indirect state sampler data to only be in
+the dynamic state pool (more convenient for userspace drivers, they
+only have to have one copy of the border colors). This is reproducing
+the behavior of the Windows drivers.
 
+BSpec: 46052
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8016
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230207064337.18697-4-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Haridhar Kalvala <haridhar.kalvala@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230407093237.3296286-1-lionel.g.landwerlin@intel.com
+(cherry picked from commit 16fc9c08f0ec7b1c95f1ea4a16097acdb3fc943d)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-diff --git a/drivers/gpu/drm/i915/display/intel_backlight.c b/drivers/gpu/drm/i915/display/intel_backlight.c
-index 5b7da72c95b8..a4e4b7f79e4d 100644
---- a/drivers/gpu/drm/i915/display/intel_backlight.c
-+++ b/drivers/gpu/drm/i915/display/intel_backlight.c
-@@ -1431,6 +1431,30 @@ bxt_setup_backlight(struct intel_connector *connector, enum pipe unused)
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+index 492b3de6678d..fd1f9cd35e9d 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
++++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+@@ -1145,6 +1145,7 @@
+ #define   SC_DISABLE_POWER_OPTIMIZATION_EBB	REG_BIT(9)
+ #define   GEN11_SAMPLER_ENABLE_HEADLESS_MSG	REG_BIT(5)
+ #define   MTL_DISABLE_SAMPLER_SC_OOO		REG_BIT(3)
++#define   GEN11_INDIRECT_STATE_BASE_ADDR_OVERRIDE	REG_BIT(0)
  
-+static int cnp_num_backlight_controllers(struct drm_i915_private *i915)
-+{
-+	if (INTEL_PCH_TYPE(i915) >= PCH_DG1)
-+		return 1;
-+
-+	if (INTEL_PCH_TYPE(i915) >= PCH_ICP)
-+		return 2;
-+
-+	return 1;
-+}
-+
-+static bool cnp_backlight_controller_is_valid(struct drm_i915_private *i915, int controller)
-+{
-+	if (controller < 0 || controller >= cnp_num_backlight_controllers(i915))
-+		return false;
-+
-+	if (controller == 1 &&
-+	    INTEL_PCH_TYPE(i915) >= PCH_ICP &&
-+	    INTEL_PCH_TYPE(i915) < PCH_MTP)
-+		return intel_de_read(i915, SOUTH_CHICKEN1) & ICP_SECOND_PPS_IO_SELECT;
-+
-+	return true;
-+}
-+
- static int
- cnp_setup_backlight(struct intel_connector *connector, enum pipe unused)
- {
-@@ -1440,10 +1464,14 @@ cnp_setup_backlight(struct intel_connector *connector, enum pipe unused)
+ #define GEN9_HALF_SLICE_CHICKEN7		MCR_REG(0xe194)
+ #define   DG2_DISABLE_ROUND_ENABLE_ALLOW_FOR_SSLA	REG_BIT(15)
+diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+index 6ea453ddd011..b925ef47304b 100644
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -2971,6 +2971,25 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
  
- 	/*
- 	 * CNP has the BXT implementation of backlight, but with only one
--	 * controller. TODO: ICP has multiple controllers but we only use
--	 * controller 0 for now.
-+	 * controller. ICP+ can have two controllers, depending on pin muxing.
- 	 */
--	panel->backlight.controller = 0;
-+	panel->backlight.controller = connector->panel.vbt.backlight.controller;
-+	if (!cnp_backlight_controller_is_valid(i915, panel->backlight.controller)) {
-+		drm_dbg_kms(&i915->drm, "Invalid backlight controller %d, assuming 0\n",
-+			    panel->backlight.controller);
-+		panel->backlight.controller = 0;
+ 	add_render_compute_tuning_settings(i915, wal);
+ 
++	if (GRAPHICS_VER(i915) >= 11) {
++		/* This is not a Wa (although referred to as
++		 * WaSetInidrectStateOverride in places), this allows
++		 * applications that reference sampler states through
++		 * the BindlessSamplerStateBaseAddress to have their
++		 * border color relative to DynamicStateBaseAddress
++		 * rather than BindlessSamplerStateBaseAddress.
++		 *
++		 * Otherwise SAMPLER_STATE border colors have to be
++		 * copied in multiple heaps (DynamicStateBaseAddress &
++		 * BindlessSamplerStateBaseAddress)
++		 *
++		 * BSpec: 46052
++		 */
++		wa_mcr_masked_en(wal,
++				 GEN10_SAMPLER_MODE,
++				 GEN11_INDIRECT_STATE_BASE_ADDR_OVERRIDE);
 +	}
- 
- 	pwm_ctl = intel_de_read(i915,
- 				BXT_BLC_PWM_CTL(panel->backlight.controller));
++
+ 	if (IS_MTL_GRAPHICS_STEP(i915, M, STEP_B0, STEP_FOREVER) ||
+ 	    IS_MTL_GRAPHICS_STEP(i915, P, STEP_B0, STEP_FOREVER))
+ 		/* Wa_14017856879 */
 
