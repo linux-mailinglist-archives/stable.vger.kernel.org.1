@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D417014D0
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A8EE7014D1
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:49:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232146AbjEMGtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
+        id S229547AbjEMGtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:49:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjEMGtO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:49:14 -0400
+        with ESMTP id S229715AbjEMGtY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:49:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 583324218
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:49:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABDF272B
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:49:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D446561092
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:49:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AA4C4339C;
-        Sat, 13 May 2023 06:49:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77A9F61092
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE12C4339B;
+        Sat, 13 May 2023 06:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960551;
-        bh=4HdqF4bt2nG71DngUXWqu3hKwxVliTgQ8yKrMgxons8=;
+        s=korg; t=1683960560;
+        bh=P7vttrzpi0NcxQffNlrwkeH5k9GaT7Veh0rqMJM7Xzc=;
         h=Subject:To:Cc:From:Date:From;
-        b=uBo+sC8vq5DBJq3VFZ3yuSQiDXpnDNPmp3Pk9zT8JUR7ivySCiTo113IYcjhauvSS
-         bQVGsT2KWcI8zCuPIZpr2/3phswxIPoeO4l1lFxevrb8D+2dYlmUSwh7GgvNPUh5SM
-         oJzT91KKtRZ3ik1jNDLEByFkzmLNs9HmOblL60EI=
-Subject: FAILED: patch "[PATCH] f2fs: factor out discard_cmd usage from general rb_tree use" failed to apply to 6.1-stable tree
+        b=zciDXJXvPaa+tIOx3OIEeQL/nMl7M/aZW7Dde5uoWE5OXfVU293vchdWZsmBHrXF6
+         OXLc2LPPFW+IorDMasjm6fYOzEOVFD3LMpx2MXd2C6j/wvdK9Tf0OOEW8Si3wuWmVS
+         5k4Kty+tW0ZR1d+WFcsojPUEgsObeogtYG/USoH8=
+Subject: FAILED: patch "[PATCH] f2fs: factor out discard_cmd usage from general rb_tree use" failed to apply to 5.15-stable tree
 To:     jaegeuk@kernel.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:48:40 +0900
-Message-ID: <2023051340-subscribe-audible-dbca@gregkh>
+Date:   Sat, 13 May 2023 15:48:44 +0900
+Message-ID: <2023051344-unsightly-mollusk-fa55@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f69475dd4878e5f2e316a6573044d55f294baa51
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051340-subscribe-audible-dbca@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051344-unsightly-mollusk-fa55@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,8 @@ e7547daccd6a ("f2fs: refactor extent_cache to support for read and more")
 12607c1ba763 ("f2fs: specify extent cache for read explicitly")
 c46867e9b9b8 ("f2fs: introduce max_ordered_discard sysfs node")
 b5f1a218ae5e ("f2fs: fix normal discard process")
+a251c17aa558 ("treewide: use get_random_u32() when possible")
+5d170fe435e5 ("Merge tag 'f2fs-for-6.1-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs")
 
 thanks,
 
