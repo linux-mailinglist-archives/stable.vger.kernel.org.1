@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC06C70149E
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8CFF70149F
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230049AbjEMGdM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36174 "EHLO
+        id S230084AbjEMGdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjEMGdL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:33:11 -0400
+        with ESMTP id S229463AbjEMGdW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:33:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DFC82D48
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:33:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2AD2D4F
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:33:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15C34609FB
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:33:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B17C433EF;
-        Sat, 13 May 2023 06:33:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 39C8A60A0A
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35ACC433D2;
+        Sat, 13 May 2023 06:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683959589;
-        bh=wRFEyVJY/ulxL15wlYdvTEWL657vaixeUmd7SOzOrD8=;
+        s=korg; t=1683959599;
+        bh=5uIAQKuJNx0GrYojLxYmuwVHBF/vY/JcZF6KNLkQhE4=;
         h=Subject:To:Cc:From:Date:From;
-        b=kcMPJ1bxSd5WtUZVY+ksbvJHs1GYYv/teNhSqeB1GWo6dQoQZaBY8zB6MXizA5EWL
-         S+B2mm34HHf3YE0Uglm094u7L7vO2N0Z/p48MNWuWnCAYKLijIztTTob0VNeUZIvsJ
-         EQ1+BX0RXuUCfH9zL7qUkOyz8I62MWX035u5lpEs=
-Subject: FAILED: patch "[PATCH] btrfs: fix space cache inconsistency after error loading it" failed to apply to 5.10-stable tree
+        b=dp8Cq7cnIyNcIfmIRApEYL9Gkm6zXVdqN2ThH6mH4wdXd9uJ36rJMIlUponYUk0tO
+         sAqkcuULqPb1GK6klxwRFcCUubMRFTzm2P+kf5V9MTd/YitDZkQUekQ3AO+XF0cTNH
+         lzvjyiC2fUr1h0hTNlLUu/V7d+N862jReFsx88uE=
+Subject: FAILED: patch "[PATCH] btrfs: fix space cache inconsistency after error loading it" failed to apply to 5.4-stable tree
 To:     fdmanana@suse.com, anand.jain@oracle.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:32:58 +0900
-Message-ID: <2023051358-embattled-detest-37ff@gregkh>
+Date:   Sat, 13 May 2023 15:33:02 +0900
+Message-ID: <2023051302-outlet-silly-1404@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,25 +48,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0004ff15ea26015a0a3a6182dca3b9d1df32e2b7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051358-embattled-detest-37ff@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051302-outlet-silly-1404@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 0004ff15ea26 ("btrfs: fix space cache inconsistency after error loading it from disk")
 fa598b069640 ("btrfs: remove recalc_thresholds from free space ops")
 cd79909bc7cd ("btrfs: load free space cache into a temporary ctl")
+6b7304af62d0 ("btrfs: rename member 'trimming' of block group to a more generic name")
+2473d24f2b77 ("btrfs: fix a race between scrub and block group removal/allocation")
+5d90c5c75711 ("btrfs: increase the metadata allowance for the free_space_cache")
+7fe6d45e4009 ("btrfs: have multiple discard lists")
+19b2a2c71979 ("btrfs: make max async discard size tunable")
+4aa9ad520398 ("btrfs: limit max discard size for async discard")
+e93591bb6ecf ("btrfs: add kbps discard rate limit for async discard")
+a23093008412 ("btrfs: calculate discard delay based on number of extents")
+5dc7c10b8747 ("btrfs: keep track of discardable_bytes for async discard")
+dfb79ddb130e ("btrfs: track discardable extents for async discard")
+e4faab844a55 ("btrfs: sysfs: add UUID/debug/discard directory")
+93945cb43ead ("btrfs: sysfs: make UUID/debug have its own kobject")
+71e8978eb456 ("btrfs: sysfs: add removal calls for debug/")
+2bee7eb8bb81 ("btrfs: discard one region at a time in async discard")
+6e80d4f8c422 ("btrfs: handle empty block_group removal for async discard")
+b0643e59cfa6 ("btrfs: add the beginning of async discard, discard workqueue")
+da080fe1bad4 ("btrfs: keep track of free space bitmap trim status cleanliness")
 
 thanks,
 
