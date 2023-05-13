@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C28B7014CF
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D417014D0
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbjEMGtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40896 "EHLO
+        id S232146AbjEMGtP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:49:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232146AbjEMGtF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:49:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4B62D48
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:49:02 -0700 (PDT)
+        with ESMTP id S229547AbjEMGtO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:49:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 583324218
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:49:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6960860BED
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:49:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE4AC4339B;
-        Sat, 13 May 2023 06:49:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D446561092
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AA4C4339C;
+        Sat, 13 May 2023 06:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683960541;
-        bh=WolSOyS3GRUNh0p4/sMg3ajK1cPdeNwmHEZocVyH6uc=;
+        s=korg; t=1683960551;
+        bh=4HdqF4bt2nG71DngUXWqu3hKwxVliTgQ8yKrMgxons8=;
         h=Subject:To:Cc:From:Date:From;
-        b=nVRzhv8e1NzTOtbBHpHRzpSWSCJSo+AEwk+Zwu5kZM1oP1X4NVOUEa6d9Zp8b2V4+
-         /6LVc5AKeH5MYEx1jeylf/YTNiOaKZ1GsTaXxx/DZCV/MaA6geRG0fBA0rQg645O59
-         l7B0RwDB33l/1NYteLlEg/nSQ+W+UefZxSxelYTs=
-Subject: FAILED: patch "[PATCH] f2fs: factor out discard_cmd usage from general rb_tree use" failed to apply to 6.2-stable tree
+        b=uBo+sC8vq5DBJq3VFZ3yuSQiDXpnDNPmp3Pk9zT8JUR7ivySCiTo113IYcjhauvSS
+         bQVGsT2KWcI8zCuPIZpr2/3phswxIPoeO4l1lFxevrb8D+2dYlmUSwh7GgvNPUh5SM
+         oJzT91KKtRZ3ik1jNDLEByFkzmLNs9HmOblL60EI=
+Subject: FAILED: patch "[PATCH] f2fs: factor out discard_cmd usage from general rb_tree use" failed to apply to 6.1-stable tree
 To:     jaegeuk@kernel.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:48:36 +0900
-Message-ID: <2023051336-bullseye-tweak-5c9a@gregkh>
+Date:   Sat, 13 May 2023 15:48:40 +0900
+Message-ID: <2023051340-subscribe-audible-dbca@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x f69475dd4878e5f2e316a6573044d55f294baa51
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051336-bullseye-tweak-5c9a@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051340-subscribe-audible-dbca@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,6 +69,13 @@ f69475dd4878 ("f2fs: factor out discard_cmd usage from general rb_tree use")
 269d11948100 ("f2fs: fix to do sanity check on extent cache correctly")
 d48a7b3a72f1 ("f2fs: fix to do sanity check on extent cache correctly")
 185a453bf1b5 ("f2fs: deliver the accumulated 'issued' to __issue_discard_cmd_orderly()")
+72840cccc0a1 ("f2fs: allocate the extent_cache by default")
+e7547daccd6a ("f2fs: refactor extent_cache to support for read and more")
+749d543c0d45 ("f2fs: remove unnecessary __init_extent_tree")
+3bac20a8f011 ("f2fs: move internal functions into extent_cache.c")
+12607c1ba763 ("f2fs: specify extent cache for read explicitly")
+c46867e9b9b8 ("f2fs: introduce max_ordered_discard sysfs node")
+b5f1a218ae5e ("f2fs: fix normal discard process")
 
 thanks,
 
