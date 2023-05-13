@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9B99701507
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF1F7701508
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjEMHkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54608 "EHLO
+        id S229918AbjEMHk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229918AbjEMHkP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:40:15 -0400
+        with ESMTP id S230205AbjEMHkZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:40:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80CCB59FD
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:40:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B49B235B5
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:40:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B0C861AAD
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:40:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814ADC433EF;
-        Sat, 13 May 2023 07:40:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 503B261AB2
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:40:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00C7C4339E;
+        Sat, 13 May 2023 07:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963613;
-        bh=C9GHMUP3z8pbS7G3yxCoGmBrtnM6+QcDQKMcCg1Ai+k=;
+        s=korg; t=1683963622;
+        bh=lcOY5cC4A4xGlCMD6x1Yo3NcjDTWupEAR9v3AAL5zz0=;
         h=Subject:To:Cc:From:Date:From;
-        b=P2Q4l/UMvyJLXSsZYYs/InfYxZn6Hk/zDC2E3uicJoI3anUIppmijrZQUa9AiwKz1
-         AZQnVHxZ2H0Y+KdbfQ6eyXjfl1W3pJ0UETKWRlcp0RsEGUuDSUFtg8xH8xbaXo0l01
-         oNR5hS72jlk/fbW/1rYbMxn11tzsl00i0gB687hs=
-Subject: FAILED: patch "[PATCH] drm/amd/display: hpd rx irq not working with eDP interface" failed to apply to 6.2-stable tree
+        b=FaMG/iVzFEvtGHTMtqfc/+Yp4tQjdgncsUgfHZxWzAr5OLHo2FgTyPnY+fpEij/R1
+         usSKysb55vU3M7rLtAIfdINSAX2wzH0KxQc60RFQo505KC0wjUP0IqiACdRkNaApcd
+         uLqibPUz4mhGRToowbNAM2MfQpkHtKxeOgNL9rEA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: hpd rx irq not working with eDP interface" failed to apply to 6.1-stable tree
 To:     robin.chen@amd.com, Wenjing.Liu@amd.com, alexander.deucher@amd.com,
         daniel.wheeler@amd.com, mario.limonciello@amd.com,
         qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:20:53 +0900
-Message-ID: <2023051353-album-booth-d380@gregkh>
+Date:   Sat, 13 May 2023 16:20:56 +0900
+Message-ID: <2023051356-helpful-blunt-f7fa@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.2-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x eeefe7c4820b6baa0462a8b723ea0a3b5846ccae
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051353-album-booth-d380@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051356-helpful-blunt-f7fa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
