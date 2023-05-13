@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6467014FA
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20CE27014FB
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjEMHiR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:38:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
+        id S229535AbjEMHi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:38:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjEMHiQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:38:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB9935B5
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:38:15 -0700 (PDT)
+        with ESMTP id S229463AbjEMHiZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:38:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA3E35B5
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:38:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D3F1F61348
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:38:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A7EC433EF;
-        Sat, 13 May 2023 07:38:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 663CD61348
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:38:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19D6C433D2;
+        Sat, 13 May 2023 07:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963494;
-        bh=kH4uv5nFXxN3YwaCUv26/VQXmOYvHrmNDJO76YPLzRQ=;
+        s=korg; t=1683963503;
+        bh=s742VA+bq8Lpxo9pryiTXeqTBJjMeURGqryWTpnN38E=;
         h=Subject:To:Cc:From:Date:From;
-        b=i/oku+kspWM1ejwKhBeW7JtnCgv34T5KwQSGTx5YlAycK1pI/wiaRiEtibGrEpxMD
-         Op8wGRe3noxxndbJO+p4bjeDo9o7VKga344lMuHvtBUjKvqj2qrCdQBp4UdnXaVMVJ
-         lXRRDhEJ7WyBXFoHxVivMpuS2X5U7nF/ZY3gPt/E=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: Don't resume IOMMU after incomplete init" failed to apply to 6.1-stable tree
-To:     Felix.Kuehling@amd.com, alexander.deucher@amd.com,
-        matt.fagnani@bell.net, regressions@leemhuis.info,
-        vasant.hegde@amd.com
+        b=lAFoAvuYkVT+tRDdLoKkL0NBUMjubRs8FxaZjECAx0wyBdRZQFnYKN5ZPnl1Xzy4P
+         OfUHefiiroed5g/aHyq4AMjARqaRKspeNjlWNrBmFy1XoUX1LpM/FYYc19aDeGFHjK
+         P8X1p/33AB4aeRj3A7rNWHMQfn3rrAdnlJBj52Ng=
+Subject: FAILED: patch "[PATCH] drm/amd/display: fix wrong index used in" failed to apply to 6.3-stable tree
+To:     hersenxs.wu@amd.com, alexander.deucher@amd.com,
+        daniel.wheeler@amd.com, mario.limonciello@amd.com,
+        qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:19:47 +0900
-Message-ID: <2023051347-schnapps-ecard-bd25@gregkh>
+Date:   Sat, 13 May 2023 16:19:54 +0900
+Message-ID: <2023051354-scallop-nintendo-7a6b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,23 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7ee938ac006096fe9c3f1075f56b9263587c150f
+git cherry-pick -x 2fedafc7ef071979b07fe9e9ccb7af210b65da0e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051347-schnapps-ecard-bd25@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051354-scallop-nintendo-7a6b@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-7ee938ac0060 ("drm/amdgpu: Don't resume IOMMU after incomplete init")
+2fedafc7ef07 ("drm/amd/display: fix wrong index used in dccg32_set_dpstreamclk")
 
 thanks,
 
@@ -74,61 +74,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7ee938ac006096fe9c3f1075f56b9263587c150f Mon Sep 17 00:00:00 2001
-From: Felix Kuehling <Felix.Kuehling@amd.com>
-Date: Mon, 13 Mar 2023 20:03:08 -0400
-Subject: [PATCH] drm/amdgpu: Don't resume IOMMU after incomplete init
+From 2fedafc7ef071979b07fe9e9ccb7af210b65da0e Mon Sep 17 00:00:00 2001
+From: Hersen Wu <hersenxs.wu@amd.com>
+Date: Thu, 9 Mar 2023 16:14:08 -0500
+Subject: [PATCH] drm/amd/display: fix wrong index used in
+ dccg32_set_dpstreamclk
 
-Check kfd->init_complete in kgd2kfd_iommu_resume, consistent with other
-kgd2kfd calls. This should fix IOMMU errors on resume from suspend when
-KFD IOMMU initialization failed.
+[Why & How]
+When merging commit 9af611f29034
+("drm/amd/display: Fix DCN32 DPSTREAMCLK_CNTL programming"),
+index change was not picked up.
 
-Reported-by: Matt Fagnani <matt.fagnani@bell.net>
-Link: https://lore.kernel.org/r/4a3b225c-2ffd-e758-4de1-447375e34cad@bell.net/
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217170
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2454
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info>
 Cc: stable@vger.kernel.org
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Matt Fagnani <matt.fagnani@bell.net>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: 9af611f29034 ("drm/amd/display: Fix DCN32 DPSTREAMCLK_CNTL programming")
+Reviewed-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index 3de7f616a001..ec70a1658dc3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -59,6 +59,7 @@ static int kfd_gtt_sa_init(struct kfd_dev *kfd, unsigned int buf_size,
- 				unsigned int chunk_size);
- static void kfd_gtt_sa_fini(struct kfd_dev *kfd);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c
+index 5dbef498580b..ffbb739d85b6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_dccg.c
+@@ -293,8 +293,7 @@ static void dccg32_set_dpstreamclk(
+ 	dccg32_set_dtbclk_p_src(dccg, src, otg_inst);
  
-+static int kfd_resume_iommu(struct kfd_dev *kfd);
- static int kfd_resume(struct kfd_dev *kfd);
- 
- static void kfd_device_info_set_sdma_info(struct kfd_dev *kfd)
-@@ -624,7 +625,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
- 
- 	svm_migrate_init(kfd->adev);
- 
--	if (kgd2kfd_resume_iommu(kfd))
-+	if (kfd_resume_iommu(kfd))
- 		goto device_iommu_error;
- 
- 	if (kfd_resume(kfd))
-@@ -772,6 +773,14 @@ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
- }
- 
- int kgd2kfd_resume_iommu(struct kfd_dev *kfd)
-+{
-+	if (!kfd->init_complete)
-+		return 0;
-+
-+	return kfd_resume_iommu(kfd);
-+}
-+
-+static int kfd_resume_iommu(struct kfd_dev *kfd)
- {
- 	int err = 0;
- 
+ 	/* enabled to select one of the DTBCLKs for pipe */
+-	switch (otg_inst)
+-	{
++	switch (dp_hpo_inst) {
+ 	case 0:
+ 		REG_UPDATE_2(DPSTREAMCLK_CNTL,
+ 			     DPSTREAMCLK0_EN,
 
