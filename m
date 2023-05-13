@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2D897014A9
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43BBE7014AB
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230048AbjEMGhl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
+        id S231325AbjEMGhv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:37:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjEMGhl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:37:41 -0400
+        with ESMTP id S229527AbjEMGhu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:37:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA032D48
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:37:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0C72D48
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:37:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FC0660A4C
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:37:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10DDC433D2;
-        Sat, 13 May 2023 06:37:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80270617E7
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:37:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10835C433EF;
+        Sat, 13 May 2023 06:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683959858;
-        bh=wV1HnU0GtzR+k9HyWl6uTSEbbBXCMWI1P4DT+XBSp+s=;
+        s=korg; t=1683959868;
+        bh=wI2VIx4+NM+Igkn17D1Y9O4IiqhY/Ke/FNFC7s+21Ug=;
         h=Subject:To:Cc:From:Date:From;
-        b=PieYVo5mgK0T52V9AxKKhAZ0nSTsooiiWF7K5JxG6i0pHmYcsvWPF0FWXNHS8ZvNC
-         gDVHun1VJKWmxKFWsg95Q/ow204fk+7dV9Ae6gucEgtGZEEuORuQPaidF2QIcuR1ax
-         19eZiTUNikpplkNrtysHEWrz3YfDfOta8q7gHQVs=
-Subject: FAILED: patch "[PATCH] sh: mcount.S: fix build error when PRINTK is not enabled" failed to apply to 5.4-stable tree
+        b=uN/FjlJUAGWghQE4nR2R8ftryvEgrLZTQwWwBnxc3dy37LLCaginmnPiuuiHWr8F1
+         jSO5ueZQ4mo/Z64Uv0WnodUZvhcGrJsYpZCsLZ/q8TCoNgA5ttGvcPlMmONbbxLLRg
+         UqAUuRN11a244+Txlp496APFs7lKqXrVlrNt+baQ=
+Subject: FAILED: patch "[PATCH] sh: mcount.S: fix build error when PRINTK is not enabled" failed to apply to 4.19-stable tree
 To:     rdunlap@infradead.org, dalias@libc.org, geert@linux-m68k.org,
         glaubitz@physik.fu-berlin.de, ysato@users.sourceforge.jp
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:37:27 +0900
-Message-ID: <2023051327-diligence-reshuffle-6a74@gregkh>
+Date:   Sat, 13 May 2023 15:37:31 +0900
+Message-ID: <2023051330-unused-wrongness-eefc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x c2bd1e18c6f85c0027da2e5e7753b9bfd9f8e6dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051327-diligence-reshuffle-6a74@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051330-unused-wrongness-eefc@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
