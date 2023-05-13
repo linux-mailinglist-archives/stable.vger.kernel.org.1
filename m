@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6437014A5
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 829C47014A6
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 08:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbjEMGgG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 02:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
+        id S233212AbjEMGgR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 02:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233014AbjEMGgF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:36:05 -0400
+        with ESMTP id S233014AbjEMGgR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 02:36:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA0C2D5A
-        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:36:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872752D5A
+        for <stable@vger.kernel.org>; Fri, 12 May 2023 23:36:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE2D460A4E
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15934C433EF;
-        Sat, 13 May 2023 06:36:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0421560A4C
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 06:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D06BC433D2;
+        Sat, 13 May 2023 06:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683959763;
-        bh=Bwv4OT9vJR5C64VPVpYNfvfG1RlnvPpP3zdh5+ZRkGs=;
+        s=korg; t=1683959774;
+        bh=YNzGNBLUyj6pyVsV8oygumn1aVp/eubGnPKwvphYdUs=;
         h=Subject:To:Cc:From:Date:From;
-        b=GgIC3vqRXBg0LcTbgSBFNmPsjSGCPJk9jg9bwefYKUAyxyh0ssAyNgfJEddD+UzVz
-         VeejWAaE+RqZR0r+FO2UFdLWco7wylRX835eMVDYuxFGfaiMvz31SR4NoWbljzOx3l
-         Xcgu1PHYwmrf3xVFyxYs9mWku4huAeL8HR6cLMVk=
-Subject: FAILED: patch "[PATCH] inotify: Avoid reporting event with invalid wd" failed to apply to 4.19-stable tree
+        b=0DBX2Auf26bzsDjviHUgCRVnx7ZDUEDWQa0ZsnNg76FItoSFA4jyqeDlNGh7cQAmx
+         p0ukgOvcCotZdh6Ce9OtqFVp3IyFM7fUduEyymEcfrSUl8V/0TCKcCTsM5QS3pKgEi
+         BbpiM2kkxEMvtZcjmXPiwdQtACPEWKRpIKOMDwHY=
+Subject: FAILED: patch "[PATCH] inotify: Avoid reporting event with invalid wd" failed to apply to 4.14-stable tree
 To:     jack@suse.cz, amir73il@gmail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 15:35:51 +0900
-Message-ID: <2023051351-cross-bunny-a0c7@gregkh>
+Date:   Sat, 13 May 2023 15:35:55 +0900
+Message-ID: <2023051355-axis-manly-3a44@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x c915d8f5918bea7c3962b09b8884ca128bfd9b0c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051351-cross-bunny-a0c7@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051355-axis-manly-3a44@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,7 @@ a72fd224e37b ("fanotify: simplify handling of FAN_ONDIR")
 b723a7911d02 ("fanotify: fix collision of internal and uapi mark flags")
 96a71f21ef1f ("fanotify: store fanotify_init() flags in group's fanotify_data")
 d54f4fba889b ("fanotify: add API to attach/detach super block mark")
+6ada4e282679 ("Merge branch 'akpm' (patches from Andrew)")
 
 thanks,
 
