@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A44FF7014FE
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7664C7014FF
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbjEMHiy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:38:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54244 "EHLO
+        id S229688AbjEMHjE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:39:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjEMHix (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:38:53 -0400
+        with ESMTP id S229463AbjEMHjC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:39:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7232835B5
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:38:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335F935B5
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:39:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E74A60F7C
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:38:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2EBC433EF;
-        Sat, 13 May 2023 07:38:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C430E618DB
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:39:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518B8C433D2;
+        Sat, 13 May 2023 07:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963531;
-        bh=IfuKrmIHWas4hyLn6qOD33DgibpPG2wVXIoSpGyPCUI=;
+        s=korg; t=1683963540;
+        bh=raGPCTcsGdvSMERU4vUtTugkDia0MvnFKw4h3bMyX7g=;
         h=Subject:To:Cc:From:Date:From;
-        b=FSDxf4cwl61Lx+2eQ+crKcNLaB9YMhgBv4lqxwIBiLGo0O8QbxX5FrY0ZE0CNOYGx
-         2GLw7FgUwtQRZga3PJm0KjbJqIWrG+vb11K9DcaA3/1Kuwb2nJaMwcONwEDNlPDQDK
-         ME5YHXDnS2sLvjdHGWmesrFfaaxZPPvBujZrDhK8=
-Subject: FAILED: patch "[PATCH] drm/amd/display: fix double memory allocation" failed to apply to 6.3-stable tree
+        b=dTgdINbU28axNKzg1mEeXfEPZiITB67NpC1NipHGIGeyXw8Ad4qj00PQqqAeKT5fA
+         KXEGhpBV90uzSscRgmw6x1vdAPFYJG2GJekGbBDogPEHnVSa4BXpwcaoJWuLEXeJWN
+         CmoB3F0juEBqSDIESLLk9sd27qycTSNiJhTe0kJs=
+Subject: FAILED: patch "[PATCH] drm/amd/display: fix double memory allocation" failed to apply to 6.2-stable tree
 To:     Martin.Leung@amd.com, Hanghong.Ma@amd.com,
         alexander.deucher@amd.com, daniel.wheeler@amd.com,
         mario.limonciello@amd.com, qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:20:06 +0900
-Message-ID: <2023051306-elves-dividers-01e7@gregkh>
+Date:   Sat, 13 May 2023 16:20:10 +0900
+Message-ID: <2023051310-tipping-creation-c33f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
 git cherry-pick -x f5442b35e69e42015ef3082008c0d85cdcc0ca05
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051306-elves-dividers-01e7@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051310-tipping-creation-c33f@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
