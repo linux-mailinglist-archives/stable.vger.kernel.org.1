@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF1F7701508
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF79070150A
+	for <lists+stable@lfdr.de>; Sat, 13 May 2023 09:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229918AbjEMHk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 03:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
+        id S230322AbjEMHkf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 13 May 2023 03:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbjEMHkZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:40:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B49B235B5
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:40:23 -0700 (PDT)
+        with ESMTP id S230431AbjEMHke (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 03:40:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A46AD65B8
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 00:40:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 503B261AB2
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00C7C4339E;
-        Sat, 13 May 2023 07:40:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C52E61AC0
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 07:40:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2F9C433D2;
+        Sat, 13 May 2023 07:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683963622;
-        bh=lcOY5cC4A4xGlCMD6x1Yo3NcjDTWupEAR9v3AAL5zz0=;
+        s=korg; t=1683963631;
+        bh=CpIs35yh8rdATvyxpE4Ov2NfBnnQ6JEiUqcgH2zLle4=;
         h=Subject:To:Cc:From:Date:From;
-        b=FaMG/iVzFEvtGHTMtqfc/+Yp4tQjdgncsUgfHZxWzAr5OLHo2FgTyPnY+fpEij/R1
-         usSKysb55vU3M7rLtAIfdINSAX2wzH0KxQc60RFQo505KC0wjUP0IqiACdRkNaApcd
-         uLqibPUz4mhGRToowbNAM2MfQpkHtKxeOgNL9rEA=
-Subject: FAILED: patch "[PATCH] drm/amd/display: hpd rx irq not working with eDP interface" failed to apply to 6.1-stable tree
-To:     robin.chen@amd.com, Wenjing.Liu@amd.com, alexander.deucher@amd.com,
-        daniel.wheeler@amd.com, mario.limonciello@amd.com,
-        qingqing.zhuo@amd.com
+        b=r3qJSDAiQGqtDdCeEHW59KDiyv32RETpcWbFCNkwDTE+/dNfSvQwOi/3vop4BoDnI
+         NfInJCFLnxoO9y4UUMC5Xjg+8GZSAvlDU/hMlQxSJi7rKJzO/59YnvLK7/6SMDpDaP
+         OOZaalL+F3EUwz1I/RJ3q5HAFdrTFxGtkhwUdIbo=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix DP MST sinks removal issue" failed to apply to 6.3-stable tree
+To:     Cruise.Hung@amd.com, Wenjing.Liu@amd.com,
+        alexander.deucher@amd.com, daniel.wheeler@amd.com,
+        mario.limonciello@amd.com, qingqing.zhuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 13 May 2023 16:20:56 +0900
-Message-ID: <2023051356-helpful-blunt-f7fa@gregkh>
+Date:   Sat, 13 May 2023 16:21:01 +0900
+Message-ID: <2023051301-handgrip-critter-a2d2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,42 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x eeefe7c4820b6baa0462a8b723ea0a3b5846ccae
+git cherry-pick -x deaccddaf4921faa5dfc71e8936dd8daa98ba33d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051356-helpful-blunt-f7fa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051301-handgrip-critter-a2d2@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
-eeefe7c4820b ("drm/amd/display: hpd rx irq not working with eDP interface")
-7ae1dbe6547c ("drm/amd/display: merge dc_link.h into dc.h and dc_types.h")
-8e5cfe547bf3 ("drm/amd/display: upstream link_dp_dpia_bw.c")
-5ca38a18b5a4 ("drm/amd/display: move public dc link function implementation to dc_link_exports")
-54618888d1ea ("drm/amd/display: break down dc_link.c")
-71d7e8904d54 ("drm/amd/display: Add HDMI manufacturer OUI and device id read")
-65a4cfb45e0e ("drm/amdgpu/display: remove duplicate include header in files")
-e322843e5e33 ("drm/amd/display: fix linux dp link lost handled only one time")
-0c2bfcc338eb ("drm/amd/display: Add Function declaration in dc_link")
-6ca7415f11af ("drm/amd/display: merge dc_link_dp into dc_link")
-de3fb390175b ("drm/amd/display: move dp cts functions from dc_link_dp to link_dp_cts")
-c5a31f178e35 ("drm/amd/display: move dp irq handler functions from dc_link_dp to link_dp_irq_handler")
-e95afc1cf7c6 ("drm/amd/display: Enable AdaptiveSync in DC interface")
-0078c924e733 ("drm/amd/display: move eDP panel control logic to link_edp_panel_control")
-bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
-2daeb74b7d66 ("drm/amdgpu/display/mst: update mst_mgr relevant variable when long HPD")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-603a521ec279 ("drm/amd/display: remove duplicate included header files")
-bd3149014dff ("drm/amd/display: Decrease messaging about DP alt mode state to debug")
-d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
+deaccddaf492 ("drm/amd/display: Fix DP MST sinks removal issue")
 
 thanks,
 
@@ -93,75 +74,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From eeefe7c4820b6baa0462a8b723ea0a3b5846ccae Mon Sep 17 00:00:00 2001
-From: Robin Chen <robin.chen@amd.com>
-Date: Fri, 17 Feb 2023 20:47:57 +0800
-Subject: [PATCH] drm/amd/display: hpd rx irq not working with eDP interface
+From deaccddaf4921faa5dfc71e8936dd8daa98ba33d Mon Sep 17 00:00:00 2001
+From: Cruise Hung <Cruise.Hung@amd.com>
+Date: Thu, 2 Mar 2023 10:33:51 +0800
+Subject: [PATCH] drm/amd/display: Fix DP MST sinks removal issue
 
 [Why]
-This is the fix for the defect of commit ab144f0b4ad6
-("drm/amd/display: Allow individual control of eDP hotplug support").
+In USB4 DP tunneling, it's possible to have this scenario that
+the path becomes unavailable and CM tears down the path a little bit late.
+So, in this case, the HPD is high but fails to read any DPCD register.
+That causes the link connection type to be set to sst.
+And not all sinks are removed behind the MST branch.
 
 [How]
-To revise the default eDP hotplug setting and use the enum to git rid
-of the magic number for different options.
+Restore the link connection type if it fails to read DPCD register.
 
-Fixes: ab144f0b4ad6 ("drm/amd/display: Allow individual control of eDP hotplug support")
 Cc: stable@vger.kernel.org
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Reviewed-by: Wenjing Liu <Wenjing.Liu@amd.com>
 Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Robin Chen <robin.chen@amd.com>
+Signed-off-by: Cruise Hung <Cruise.Hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
-index 4b47fa00610b..45ab48fe5d00 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -1080,4 +1080,11 @@ struct dc_dpia_bw_alloc {
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index 13e5222249ec..fee71ebdfc73 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -853,6 +853,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 	struct dc_sink *prev_sink = NULL;
+ 	struct dpcd_caps prev_dpcd_caps;
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
++	enum dc_connection_type pre_connection_type = link->type;
+ 	const uint32_t post_oui_delay = 30; // 30ms
  
- #define MAX_SINKS_PER_LINK 4
-+
-+enum dc_hpd_enable_select {
-+	HPD_EN_FOR_ALL_EDP = 0,
-+	HPD_EN_FOR_PRIMARY_EDP_ONLY,
-+	HPD_EN_FOR_SECONDARY_EDP_ONLY,
-+};
-+
- #endif /* DC_TYPES_H_ */
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index 995032a341b3..3951d48118c4 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -528,14 +528,18 @@ static bool construct_phy(struct dc_link *link,
- 				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 
- 			switch (link->dc->config.allow_edp_hotplug_detection) {
--			case 1: // only the 1st eDP handles hotplug
-+			case HPD_EN_FOR_ALL_EDP:
-+				link->irq_source_hpd_rx =
-+						dal_irq_get_rx_source(link->hpd_gpio);
-+				break;
-+			case HPD_EN_FOR_PRIMARY_EDP_ONLY:
- 				if (link->link_index == 0)
- 					link->irq_source_hpd_rx =
- 						dal_irq_get_rx_source(link->hpd_gpio);
- 				else
- 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
--			case 2: // only the 2nd eDP handles hotplug
-+			case HPD_EN_FOR_SECONDARY_EDP_ONLY:
- 				if (link->link_index == 1)
- 					link->irq_source_hpd_rx =
- 						dal_irq_get_rx_source(link->hpd_gpio);
-@@ -543,6 +547,7 @@ static bool construct_phy(struct dc_link *link,
- 					link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
- 			default:
-+				link->irq_source_hpd = DC_IRQ_SOURCE_INVALID;
- 				break;
+ 	DC_LOGGER_INIT(link->ctx->logger);
+@@ -955,6 +956,8 @@ static bool detect_link_and_local_sink(struct dc_link *link,
  			}
- 		}
+ 
+ 			if (!detect_dp(link, &sink_caps, reason)) {
++				link->type = pre_connection_type;
++
+ 				if (prev_sink)
+ 					dc_sink_release(prev_sink);
+ 				return false;
+@@ -1236,11 +1239,16 @@ bool link_detect(struct dc_link *link, enum dc_detect_reason reason)
+ 	bool is_delegated_to_mst_top_mgr = false;
+ 	enum dc_connection_type pre_link_type = link->type;
+ 
++	DC_LOGGER_INIT(link->ctx->logger);
++
+ 	is_local_sink_detect_success = detect_link_and_local_sink(link, reason);
+ 
+ 	if (is_local_sink_detect_success && link->local_sink)
+ 		verify_link_capability(link, link->local_sink, reason);
+ 
++	DC_LOG_DC("%s: link_index=%d is_local_sink_detect_success=%d pre_link_type=%d link_type=%d\n", __func__,
++				link->link_index, is_local_sink_detect_success, pre_link_type, link->type);
++
+ 	if (is_local_sink_detect_success && link->local_sink &&
+ 			dc_is_dp_signal(link->local_sink->sink_signal) &&
+ 			link->dpcd_caps.is_mst_capable)
 
