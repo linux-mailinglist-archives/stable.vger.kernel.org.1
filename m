@@ -2,104 +2,236 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1558701DA8
-	for <lists+stable@lfdr.de>; Sun, 14 May 2023 15:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB82701DAB
+	for <lists+stable@lfdr.de>; Sun, 14 May 2023 15:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbjENNzu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 09:55:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53734 "EHLO
+        id S233648AbjENN4I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 09:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjENNzt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 09:55:49 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66AF119AC
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 06:55:48 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2ad89c7a84fso95702501fa.2
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 06:55:48 -0700 (PDT)
+        with ESMTP id S229635AbjENN4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 09:56:07 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B7919AC;
+        Sun, 14 May 2023 06:56:05 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4f139de8cefso60571219e87.0;
+        Sun, 14 May 2023 06:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684072546; x=1686664546;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xvlUHM+AeT0nrl6pi6zSHWypFX8amZHiNpAMdt9We3s=;
-        b=g+a6Gglr5aZUU6m2fZMILI8JWrgdnLZhKnu7T4vf3lePX/G5plwLLCcEspxKYMSkcy
-         ueGaq71cXZhvTbQ/Wja7qIJxSBRhHkGpF5KpwsaK1TadaUwRYtionStpIFdMqbri9Ba9
-         +RkkhrQb/RCyxyA5yyBLxQ47oFn9SpvTMbMLHaU7E11NFHObWuZ8ay+rE94Un3RmaMRH
-         YklJCAA8jUZhbhp7TWAP/3tiT8CdoLPHkKkSUhdDi/jfSr48ZB39hQPchXzAvSWWuWpq
-         CpTBuh3Pt+jwFi8a3xE1R/5tqdE8oo7j01/poFv9M9ykTTNYE4gJ1OkHXMDrb1WBuwf9
-         HkuQ==
+        d=gmail.com; s=20221208; t=1684072564; x=1686664564;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ZVKIUKzGX05OMg0P/SQC1TBuz/zx2SrEhQdY2C1eVk=;
+        b=e0jL1+x+B+CVF5D5kZvCOlSKlGE+7Pz/TLv0uhcK/uzns0Bh8hero3o8Fo/erRqUCJ
+         PitZDzEqXuKhiXoferofSQxwm1+ZlDLyTDQ9Wtm8fL2MD5Nd8nS2mmp68juxCoACoad7
+         eCKBMLrKglQPGDfshYP4i/xyujCWSCEQxjAKTeZSzTyc5uXpVTkbkKIqAZ6VmYwjo9b6
+         D+2IpuJ/raLjQcDG5x8whLooOicrUw8ENJKD2xmQR8NPmEH1RZ8yMZhYb8Sur8qNM+WC
+         nvna/yVJ9DvOrUp4eXaSwvVEidy5kuDXu5Ipg9O5hWOLCFai3Bpijjkpbf6zaPkE8A5M
+         0fGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684072546; x=1686664546;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xvlUHM+AeT0nrl6pi6zSHWypFX8amZHiNpAMdt9We3s=;
-        b=Qy4JbHTwq6AJ0ltK6/t8X69VyNnlEDFvUdkcTqKC/10/uuXlMEDx5nxD0kQQ44IBn/
-         BwtBJLvdyC2TmvSNRzM/9eWKyGC1fhswFxbO7/fHqHIPvD0p8TIHimFBobg6j+YMhgkn
-         xiaPjWPLwMCNmdLqSByNPITYthwZOd7mtli6nSCD5Ib4l/hGpa8hbnHtJqgtr8l4C9vo
-         XE4L/vmF0HR9aN/MPukOvGgaFb51ulraFd1OQaI/r7sYVFCMjKXOUGN7q+Jvx0YPj1n6
-         BbK+ylG/X3r4vERJ2JPQP8QBJrho7cTJfpG0XeYu9wzSMNJEhNdM4ewNbwwdSWdFMz+p
-         Acdw==
-X-Gm-Message-State: AC+VfDyR9Z30mC3MZkU3GM8wjDOzs/zFkliLozPtxUdArk3osLTLjlgc
-        sTXGi8qj7a4b1dkvUAUF47n+SXGCldfRVwdoxFY=
-X-Google-Smtp-Source: ACHHUZ4L+2AjEYQCeSJCfEkufiMQv5B5DXHC8SmKAGi0bs1h5ryRtj0CBZwSXReR61wPwurzR0lVsy6sGJRBEZEiSP8=
-X-Received: by 2002:a2e:3c05:0:b0:2ad:d9bd:1d2 with SMTP id
- j5-20020a2e3c05000000b002add9bd01d2mr1997788lja.16.1684072546251; Sun, 14 May
- 2023 06:55:46 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684072564; x=1686664564;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ZVKIUKzGX05OMg0P/SQC1TBuz/zx2SrEhQdY2C1eVk=;
+        b=Orx5QsZaPkG3VwhWkf25+rbeGZwHjVBqjrG/u45Lp5wzMDIW16TbNzQJvVdcXkjET9
+         I2w3RTnCmvQwAzlofs3x9MnAzhJBpk9CSum7ME6F7Fa/t1YWU99zoBQ8EF/s71mSSJv3
+         Ph3FfDxDm9llvMVq/o1hzbe3UIm5BYzv78G/0FI1IWcfVnmnTcP9FfHkNPOm8do3K8jA
+         SOKzTCcni2VtOWdC2faWzXE0UtWqbR7DC9Vc2gqS0n8HXFeA4ieEFMzJLnjrZxMD0Rqn
+         5IjRPIE0MJ4hi9rd5ZTsk4Fu0239cd8otRDu00ITioWYCe0txjp01l563jSpr6J4lQdM
+         VGqg==
+X-Gm-Message-State: AC+VfDxd/e++HlYpaJcJXpfGsOW0oF8QQ7TxPYVjAoMYiTlPh1QX+/Aa
+        uzZPBribhfBO5RxdqaFerRw=
+X-Google-Smtp-Source: ACHHUZ7mQ7RO6cdlG9W7P4VAMMcMRRu+pFti/c2Y25RROUCnNz6dYcMDHV9/AJDpmEfzZe3BiBUSKw==
+X-Received: by 2002:ac2:47f8:0:b0:4f3:78dd:8e0b with SMTP id b24-20020ac247f8000000b004f378dd8e0bmr928479lfp.32.1684072563576;
+        Sun, 14 May 2023 06:56:03 -0700 (PDT)
+Received: from mobilestation ([95.79.140.35])
+        by smtp.gmail.com with ESMTPSA id n15-20020ac2490f000000b004efe9a169d2sm2224611lfi.64.2023.05.14.06.56.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 May 2023 06:56:03 -0700 (PDT)
+Date:   Sun, 14 May 2023 16:56:01 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     maz@kernel.org, tsbogend@alpha.franken.de, tglx@linutronix.de,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] irqchip/mips-gic: Use raw spinlock for gic_lock
+Message-ID: <20230514135601.5irhslf6tdv4tk5z@mobilestation>
+References: <20230424103156.66753-1-jiaxun.yang@flygoat.com>
+ <20230424103156.66753-3-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-Received: by 2002:ab3:67ea:0:b0:228:a49e:83bd with HTTP; Sun, 14 May 2023
- 06:55:45 -0700 (PDT)
-Reply-To: wormer.amos@aol.com
-From:   wormer Amos <johnjohnmore2022@gmail.com>
-Date:   Sun, 14 May 2023 14:55:45 +0100
-Message-ID: <CAJ-8a6jcgot5TjpX=D-uf9wXFe21d-WjX1=TU2FGfrBwXGQ56Q@mail.gmail.com>
-Subject: PROJECT IDEA?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:234 listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [johnjohnmore2022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [johnjohnmore2022[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230424103156.66753-3-jiaxun.yang@flygoat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Good Day. please i want to know if you're capable for business investment
-project in
-your country because i
-need a serious business partnership with good background, kindly reply
-me to discuss details immediately. i will appreciate you to contact me
-on this email below.
+On Mon, Apr 24, 2023 at 11:31:56AM +0100, Jiaxun Yang wrote:
+> Since we may hold gic_lock in hardirq context, use raw spinlock
+> makes more sense given that it is for low-level interrupt handling
+> routine and the critical section is small.
+> 
+> Fixes BUG:
+> 
+> [    0.426106] =============================
+> [    0.426257] [ BUG: Invalid wait context ]
+> [    0.426422] 6.3.0-rc7-next-20230421-dirty #54 Not tainted
+> [    0.426638] -----------------------------
+> [    0.426766] swapper/0/1 is trying to lock:
+> [    0.426954] ffffffff8104e7b8 (gic_lock){....}-{3:3}, at: gic_set_type+0x30/08
+> 
+> Fixes: 95150ae8b330 ("irqchip: mips-gic: Implement irq_set_type callback")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-Thanks and awaiting for your quick response,
+LGTM especially in the RT-patch context. Feel free to add:
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
 
-Amos!!
+Please see a tiny nitpick below.
+
+> ---
+>  drivers/irqchip/irq-mips-gic.c | 30 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+> index b568d55ef7c5..6d5ecc10a870 100644
+> --- a/drivers/irqchip/irq-mips-gic.c
+> +++ b/drivers/irqchip/irq-mips-gic.c
+> @@ -50,7 +50,7 @@ void __iomem *mips_gic_base;
+>  
+>  static DEFINE_PER_CPU_READ_MOSTLY(unsigned long[GIC_MAX_LONGS], pcpu_masks);
+>  
+> -static DEFINE_SPINLOCK(gic_lock);
+> +static DEFINE_RAW_SPINLOCK(gic_lock);
+>  static struct irq_domain *gic_irq_domain;
+>  static int gic_shared_intrs;
+>  static unsigned int gic_cpu_pin;
+> @@ -210,7 +210,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+>  
+>  	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
+>  
+
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+
+AFAICS this call can be moved way down to be after the switch-case
+block.
+
+-Serge(y)
+
+>  	switch (type & IRQ_TYPE_SENSE_MASK) {
+>  	case IRQ_TYPE_EDGE_FALLING:
+>  		pol = GIC_POL_FALLING_EDGE;
+> @@ -250,7 +250,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+>  	else
+>  		irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
+>  						 handle_level_irq, NULL);
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  
+>  	return 0;
+>  }
+> @@ -268,7 +268,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+>  		return -EINVAL;
+>  
+>  	/* Assumption : cpumask refers to a single CPU */
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+>  
+>  	/* Re-route this IRQ */
+>  	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpu)));
+> @@ -279,7 +279,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+>  		set_bit(irq, per_cpu_ptr(pcpu_masks, cpu));
+>  
+>  	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  
+>  	return IRQ_SET_MASK_OK;
+>  }
+> @@ -357,12 +357,12 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+>  	cd = irq_data_get_irq_chip_data(d);
+>  	cd->mask = false;
+>  
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+>  	for_each_online_cpu(cpu) {
+>  		write_gic_vl_other(mips_cm_vp_id(cpu));
+>  		write_gic_vo_rmask(BIT(intr));
+>  	}
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  }
+>  
+>  static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+> @@ -375,12 +375,12 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+>  	cd = irq_data_get_irq_chip_data(d);
+>  	cd->mask = true;
+>  
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+>  	for_each_online_cpu(cpu) {
+>  		write_gic_vl_other(mips_cm_vp_id(cpu));
+>  		write_gic_vo_smask(BIT(intr));
+>  	}
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  }
+>  
+>  static void gic_all_vpes_irq_cpu_online(void)
+> @@ -393,7 +393,7 @@ static void gic_all_vpes_irq_cpu_online(void)
+>  	unsigned long flags;
+>  	int i;
+>  
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+>  
+>  	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
+>  		unsigned int intr = local_intrs[i];
+> @@ -407,7 +407,7 @@ static void gic_all_vpes_irq_cpu_online(void)
+>  			write_gic_vl_smask(BIT(intr));
+>  	}
+>  
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  }
+>  
+>  static struct irq_chip gic_all_vpes_local_irq_controller = {
+> @@ -437,11 +437,11 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+>  
+>  	data = irq_get_irq_data(virq);
+>  
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+>  	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
+>  	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
+>  	irq_data_update_effective_affinity(data, cpumask_of(cpu));
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  
+>  	return 0;
+>  }
+> @@ -533,12 +533,12 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+>  	if (!gic_local_irq_is_routable(intr))
+>  		return -EPERM;
+>  
+> -	spin_lock_irqsave(&gic_lock, flags);
+> +	raw_spin_lock_irqsave(&gic_lock, flags);
+>  	for_each_online_cpu(cpu) {
+>  		write_gic_vl_other(mips_cm_vp_id(cpu));
+>  		write_gic_vo_map(mips_gic_vx_map_reg(intr), map);
+>  	}
+> -	spin_unlock_irqrestore(&gic_lock, flags);
+> +	raw_spin_unlock_irqrestore(&gic_lock, flags);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.34.1
+> 
