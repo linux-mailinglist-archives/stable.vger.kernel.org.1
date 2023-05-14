@@ -2,84 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53A79702074
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 00:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80AAE7020BC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 02:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjENWaw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 18:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33926 "EHLO
+        id S236070AbjEOAUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 20:20:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjENWat (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 18:30:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62ADC10EF;
-        Sun, 14 May 2023 15:30:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0036A616F6;
-        Sun, 14 May 2023 22:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFA8C433EF;
-        Sun, 14 May 2023 22:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684103447;
-        bh=0Zu+Moxt89SvEkQoekYiB8XJzcCpCjsAEr25gRJ6iX0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=d7cVgU+Zm+MPP/qJJqUxj2ah0X9nEA/O7JzKezKZwUHapJ7djlAtVPXfdI4Z2Gq2g
-         MPUfcda646V20B+6kGBjxTu6DXqratvXg10/MK9gz0E83VBIKgRvCe6R+rfXDUm5yL
-         1sfQrndSoHzRvZVhbLqF5i/kr7Ya/N8PFzZR5TX/gHZ7+39UwiWtzSeE92Zc+iVLQP
-         w38VQyGP36IxApZyzFfdYXCxrxpgv2iBqMG594hYjH9Wy7shfd2wl5dP75xZoQ+Fxt
-         sRkauTqAo+hu61M7j7c2oyBi4TZggqNpK/q4LHEzWmnA6Q2s0rfaQ7a8h7w6TvOcFX
-         M6wrnXR3Ns3DQ==
-Message-ID: <920892df-9429-d185-d037-d8f22574d91f@kernel.org>
-Date:   Mon, 15 May 2023 07:30:45 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] dt-bindings: ata: ahci-ceva: Cover all 4 iommus
- entries
+        with ESMTP id S229929AbjEOAUJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 20:20:09 -0400
+X-Greylist: delayed 458 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 14 May 2023 17:20:07 PDT
+Received: from mail-out02.belwue.de (mail-out02.belwue.de [129.143.76.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B71410F0
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 17:20:06 -0700 (PDT)
+Received: from mail-hub01.belwue.de (mail-hub01.belwue.de [IPv6:2001:7c0:0:76::41])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by mail-out02.belwue.de (Postfix) with ESMTPS id 4QKKZ12wyHz9yW39;
+        Mon, 15 May 2023 02:12:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dhbw-ravensburg.de;
+        s=DKIM001; t=1684109546; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=RNaOgrSy70wp7WTLmZJTA9WP9+nLRpFE39oHhVNwQlE=;
+        b=rASGkIBbqTvJ/DkbWqxwgLjv6hU7UloAwdbpy3E3fZCSxijikgYrCrkBB9sZ/pGoAxxPDE
+        UUcOOcyXTosQ24w++L30DY1nQVVnQDNDCrk0ElrgXPyPN0BcoTVSJB4HPo6iXXKIvH1wrR
+        +w9DIsV89YXZYggv63ln/VfrKtUe/wzAkif4jI6JkzH3Fygz2gwNNUUZ1pmE2NiB9YUylr
+        CLjmPNl2fEIGDoSkt0PYOvaWz9nhv0rl0g3pLMBF6C7akDF9Rox+jgTyXFQf9ObJweq1Yo
+        3ZS8v1WD+yowEiZ/lEl0kwTXCbwo6bgoHIO5zGGih1YIjNtWZd8Lbzg8GvifLA==
+Received: from exhubcas01.dhbw-ravensburg.de (unknown [141.68.130.11])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by mail-hub01.belwue.de (Postfix) with ESMTPS id 4QKKNF49sXz52B62;
+        Mon, 15 May 2023 02:03:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dhbw-ravensburg.de;
+        s=DKIM001; t=1684109545; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=RNaOgrSy70wp7WTLmZJTA9WP9+nLRpFE39oHhVNwQlE=;
+        b=sFaSPK9eZYRZAVrgi93zWMI88KA+UZBLhDmmjP6PIGQLz0vNMgDGLrColl/N74T8ag1bRI
+        ANLVggdHenFm/xw/VlBl504nY8OGvxzZqtpd64MRwy6C1zoPrmgRFvxYPMz1Q+B1raDzUo
+        tHG8hIlvAW/bTjvFXd2drn1sdVaM9NRQxSFudFDkP+vRM5wUnm3c3DbgGK8PP/2vHJq4nC
+        0ukGBKyAIO/v7lIMWywnt2G7Vq0MUIyeLGPEMlN8z55WoiCm8haZmrMnFv8GYgbQ4Wz1i+
+        YW1Us6HTN/dPTjU28Ht/jioWSihn+eB44ukK8ibUw9jOEmKwJ73AAvEoUpQREg==
+Received: from EXHUBCAS02.msx-dhbw-rv.intra (141.68.130.12) by
+ exhubcas01.msx-dhbw-rv.intra (141.68.130.11) with Microsoft SMTP Server (TLS)
+ id 14.3.498.0; Mon, 15 May 2023 01:52:03 +0200
+Received: from EXMAIL02.msx-dhbw-rv.intra ([141.68.130.22]) by exhubcas02
+ ([141.68.130.12]) with mapi id 14.03.0513.000; Mon, 15 May 2023 01:52:00
+ +0200
+From:   "Bergmann, Michaela - DHBW-Ravensburg" <bergmann@dhbw-ravensburg.de>
+Subject: Aw: Das META-Unternehmen Zuschuss 
+Thread-Topic: Aw: Das META-Unternehmen Zuschuss 
+Thread-Index: AdmGvxFhKy8vPhFORey9CnXkvvLZRg==
+Date:   Sun, 14 May 2023 23:51:58 +0000
+Message-ID: <9B98CDA3A8E98B478103857425C9C0FD042A441221@exmail02>
+Reply-To: "contact@mtagroup.info" <contact@mtagroup.info>
+Accept-Language: de-DE, en-US
 Content-Language: en-US
-To:     Michal Simek <michal.simek@amd.com>, linux-kernel@vger.kernel.org,
-        monstr@monstr.eu, michal.simek@xilinx.com, git@xilinx.com
-Cc:     stable@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Piyush Mehta <piyush.mehta@xilinx.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-ide@vger.kernel.org
-References: <de594534321417d25d2434db334db075524f61e0.1683892320.git.michal.simek@amd.com>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <de594534321417d25d2434db334db075524f61e0.1683892320.git.michal.simek@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [141.68.120.240]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+To:     Undisclosed recipients:;
+X-Rspamd-UID: 62d982
+X-Rspamd-Queue-Id: 4QKKZ12wyHz9yW39
+X-Rspamd-UID: d9ea58
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,LOTS_OF_MONEY,
+        MONEY_FORM,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/12/23 20:52, Michal Simek wrote:
-> Current only one entry is enabled but IP itself is using 4 different IDs
-> which are already listed in zynqmp.dtsi.
-> 
-> sata: ahci@fd0c0000 {
-> 	compatible = "ceva,ahci-1v84";
-> 	...
-> 	iommus = <&smmu 0x4c0>, <&smmu 0x4c1>,
-> 		 <&smmu 0x4c2>, <&smmu 0x4c3>;
-> };
-> 
-> Fixes: 8ac47837f0e0 ("arm64: dts: zynqmp: Add missing iommu IDs")
-> Cc: stable@vger.kernel.org # v5.12+
-> Signed-off-by: Michal Simek <michal.simek@amd.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Applied to for-6.4-fixes. Thanks !
+META Unternehmen
+Facebook, Instagram und WhatsApp
+1601 WILLOW ROAD MENLO PARK, CA 94025
+www. facebook. com
+
+Dem Unternehmen META geh=F6ren neben anderen Produkten und Dienstleistungen=
+ auch Facebook, Instagram und WhatsApp. Meta ist eines der wertvollsten Unt=
+ernehmen der Welt.
+
+META (die Muttergesellschaft von Facebook, Instagram und WhatsApp) vergibt =
+einen Zuschuss in H=F6he von $920.000,00USD an 10 gl=FCckliche Kunden aus a=
+llen L=E4ndern der Welt. Wir gratulieren Ihnen, dass Sie einer der zehn Gl=
+=FCcklichen sind, die diesen Zuschuss von $920.000,00USD erhalten.
+
+Kontaktieren Sie uns per E-Mail: contact@mtagroup.info mit den folgenden In=
+formationen, um Ihren Zuschuss zu bearbeiten.
+=A0
+Vollst=E4ndige Namen .............
+Telefonnummer ........
+Adresse .............
+Land ................
+Geschlecht .................
+Alter ....................
+Beruf .............
+=A0
+Die Firma META sch=E4tzt Ihr Recht auf Privatsph=E4re! Ihre Daten sind zu 1=
+00 % sicher und werden ausschlie=DFlich f=FCr den Zweck dieses Zuschusses v=
+erwendet.
+
+Es gelten die allgemeinen Gesch=E4ftsbedingungen.
 
 
+
+B=FCro des Pr=E4sidenten von
+Facebook-CEO
+Herr Mark Zuckerberg
