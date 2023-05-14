@@ -2,93 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9195E7019E6
-	for <lists+stable@lfdr.de>; Sat, 13 May 2023 22:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 642BA701B8E
+	for <lists+stable@lfdr.de>; Sun, 14 May 2023 06:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232258AbjEMUu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 13 May 2023 16:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40914 "EHLO
+        id S230205AbjENElx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 00:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233033AbjEMUux (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 13 May 2023 16:50:53 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC5B3ABE;
-        Sat, 13 May 2023 13:50:32 -0700 (PDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34DKd27F023684;
-        Sat, 13 May 2023 20:49:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=I27LXEJntY2DfEoNMiFVMi2f4t0raGMYhUupEu65Rnk=;
- b=WrWe6YRybHOEhQlBLFLKLkF12zkQ+VaRVMpMRGL/l9vGnEcpY8+69uLRFn5a4NNOLymc
- tjBwLT+G382oIJLhgbsOmngIoPvb5e/lM72pLvNVeqfg/qtW34gBOrf3V8cbUG7mmBh2
- ODU5505YwjrFhkBQOTqoSmis12EDzJPJIPCGbUdSX4iVupPtAoqnB7dNyg7sQWPOlHEM
- r8Dc396Oseefdr8va3dS5lGeWNHmY6usfcySflCdp8ulH3sUhX6mQkYsYuaELboytbAW
- jL5gctqUj0g4fwKNR0DTNHFkTst24B1uChJ3JCYKf4s0/hArsUChxj0XrsA8vTkAxtUm Wg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qj3cjn88c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 13 May 2023 20:49:22 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34DKg8pr031011;
-        Sat, 13 May 2023 20:49:21 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qj3cjn882-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 13 May 2023 20:49:21 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34DHwSpG025221;
-        Sat, 13 May 2023 20:49:20 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
-        by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3qj265c6uc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 13 May 2023 20:49:20 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-        by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34DKnJu61376812
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 13 May 2023 20:49:19 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 26C9958056;
-        Sat, 13 May 2023 20:49:19 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A35905803F;
-        Sat, 13 May 2023 20:49:18 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Sat, 13 May 2023 20:49:18 +0000 (GMT)
-Message-ID: <4651cf1c-423d-05c2-b4c3-9d829a2eadf4@linux.ibm.com>
-Date:   Sat, 13 May 2023 16:49:18 -0400
+        with ESMTP id S229462AbjENElw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 00:41:52 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72FC51FFD
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 21:41:50 -0700 (PDT)
+Received: from fsav415.sakura.ne.jp (fsav415.sakura.ne.jp [133.242.250.114])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 34E4fRc0090281;
+        Sun, 14 May 2023 13:41:27 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav415.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav415.sakura.ne.jp);
+ Sun, 14 May 2023 13:41:27 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav415.sakura.ne.jp)
+Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 34E4fQI9090277
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Sun, 14 May 2023 13:41:27 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <767ab028-d946-98d5-4a13-d6ed6df77763@I-love.SAKURA.ne.jp>
+Date:   Sun, 14 May 2023 13:41:27 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] tpm_vtpm_proxy: fix race condition in /dev/vtpmx creation
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: [PATCH 5.10.y] printk: declare printk_deferred_{enter,safe}() in
+ include/linux/printk.h
 Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
-        linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Stefan Berger <stefanb@linux.vnet.ibm.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230513172818.752712-1-jarkko.sakkinen@tuni.fi>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230513172818.752712-1-jarkko.sakkinen@tuni.fi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     stable@vger.kernel.org
+References: <2023042446-gills-morality-d566@gregkh>
+Cc:     John Ogness <john.ogness@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <2023042446-gills-morality-d566@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oz8RkJ5B5Aw2orpsZgYZagNJNyQAqtrK
-X-Proofpoint-GUID: KqGggd8sB_JG8SF7ZRCAI0ZHu5ruDStp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-13_16,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 mlxlogscore=741 mlxscore=0 bulkscore=0 phishscore=0
- adultscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0
- impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2304280000 definitions=main-2305130193
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -96,16 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
+
+[This patch implements subset of original commit 85e3e7fbbb72 ("printk:
+remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
+potential deadlock on zonelist_update_seq seqlock") depends on, for
+commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
+build_all_zonelists and page allocation") was backported to stable.]
+
+All NMI contexts are handled the same as the safe context: store the
+message and defer printing. There is no need to have special NMI
+context tracking for this. Using in_nmi() is enough.
+
+There are several parts of the kernel that are manually calling into
+the printk NMI context tracking in order to cause general printk
+deferred printing:
+
+    arch/arm/kernel/smp.c
+    arch/powerpc/kexec/crash.c
+    kernel/trace/trace.c
+
+For arm/kernel/smp.c and powerpc/kexec/crash.c, provide a new
+function pair printk_deferred_enter/exit that explicitly achieves the
+same objective.
+
+For ftrace, remove the printk context manipulation completely. It was
+added in commit 03fc7f9c99c1 ("printk/nmi: Prevent deadlock when
+accessing the main log buffer in NMI"). The purpose was to enforce
+storing messages directly into the ring buffer even in NMI context.
+It really should have only modified the behavior in NMI context.
+There is no need for a special behavior any longer. All messages are
+always stored directly now. The console deferring is handled
+transparently in vprintk().
+
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+[pmladek@suse.com: Remove special handling in ftrace.c completely.
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20210715193359.25946-5-john.ogness@linutronix.de
+[penguin-kernel: Copy only printk_deferred_{enter,safe}() definition ]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+---
+ include/linux/printk.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index fe7eb2351610..344f6da3d4c3 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -623,4 +623,23 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
+ #define print_hex_dump_bytes(prefix_str, prefix_type, buf, len)	\
+ 	print_hex_dump_debug(prefix_str, prefix_type, 16, 1, buf, len, true)
+ 
++#ifdef CONFIG_PRINTK
++extern void __printk_safe_enter(void);
++extern void __printk_safe_exit(void);
++/*
++ * The printk_deferred_enter/exit macros are available only as a hack for
++ * some code paths that need to defer all printk console printing. Interrupts
++ * must be disabled for the deferred duration.
++ */
++#define printk_deferred_enter __printk_safe_enter
++#define printk_deferred_exit __printk_safe_exit
++#else
++static inline void printk_deferred_enter(void)
++{
++}
++static inline void printk_deferred_exit(void)
++{
++}
++#endif
++
+ #endif
+-- 
+2.34.1
 
 
-On 5/13/23 13:28, Jarkko Sakkinen wrote:
-> /dev/vtpmx is made visible before the workqueue exist, which can lead
-
-which can lead to
-
-> memory corruption in the worst case, if workqueue is used before it has
-> been fully initialized. Address this by changing the call order.
-> 
-
-Thanks,
-    Stefan
