@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8366701B8F
+	by mail.lfdr.de (Postfix) with ESMTP id 19D22701B8D
 	for <lists+stable@lfdr.de>; Sun, 14 May 2023 06:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbjENElz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 00:41:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
+        id S231506AbjENElx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 00:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjENElx (ORCPT
+        with ESMTP id S229808AbjENElx (ORCPT
         <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 00:41:53 -0400
 Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C802101
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 21:41:52 -0700 (PDT)
-Received: from fsav118.sakura.ne.jp (fsav118.sakura.ne.jp [27.133.134.245])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 34E4fXpl090343;
-        Sun, 14 May 2023 13:41:33 +0900 (JST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA921FFE
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 21:41:51 -0700 (PDT)
+Received: from fsav115.sakura.ne.jp (fsav115.sakura.ne.jp [27.133.134.242])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 34E4fep4090375;
+        Sun, 14 May 2023 13:41:40 +0900 (JST)
         (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
 Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav118.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav118.sakura.ne.jp);
- Sun, 14 May 2023 13:41:33 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav118.sakura.ne.jp)
+ by fsav115.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp);
+ Sun, 14 May 2023 13:41:40 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp)
 Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
         (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 34E4fX6f090340
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 34E4feEd090371
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Sun, 14 May 2023 13:41:33 +0900 (JST)
+        Sun, 14 May 2023 13:41:40 +0900 (JST)
         (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <75ec7807-0022-fc13-c9a5-e414578b0d70@I-love.SAKURA.ne.jp>
-Date:   Sun, 14 May 2023 13:41:33 +0900
+Message-ID: <6416445d-cb8e-d7d7-20c0-5df72b2ba664@I-love.SAKURA.ne.jp>
+Date:   Sun, 14 May 2023 13:41:40 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: [PATCH 5.4.y] printk: declare printk_deferred_{enter,safe}() in
+Subject: [PATCH 4.19.y] printk: declare printk_deferred_{enter,safe}() in
  include/linux/printk.h
 Content-Language: en-US
 To:     stable@vger.kernel.org
-References: <2023042449-wobbling-putdown-13ea@gregkh>
+References: <2023042452-stopper-engross-e9da@gregkh>
 Cc:     John Ogness <john.ogness@linutronix.de>,
         Petr Mladek <pmladek@suse.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <2023042449-wobbling-putdown-13ea@gregkh>
+In-Reply-To: <2023042452-stopper-engross-e9da@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
@@ -98,12 +98,12 @@ Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
  1 file changed, 19 insertions(+)
 
 diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 3b5cb66d8bc1..eb2a093ba042 100644
+index 6dd867e39365..f4d7e643f010 100644
 --- a/include/linux/printk.h
 +++ b/include/linux/printk.h
-@@ -529,4 +529,23 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
- #define print_hex_dump_bytes(prefix_str, prefix_type, buf, len)	\
- 	print_hex_dump_debug(prefix_str, prefix_type, 16, 1, buf, len, true)
+@@ -525,4 +525,23 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
+ }
+ #endif
  
 +#ifdef CONFIG_PRINTK
 +extern void __printk_safe_enter(void);
