@@ -2,135 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F67701DA0
-	for <lists+stable@lfdr.de>; Sun, 14 May 2023 15:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1558701DA8
+	for <lists+stable@lfdr.de>; Sun, 14 May 2023 15:55:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbjENNlu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 09:41:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
+        id S229963AbjENNzu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 09:55:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjENNlt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 09:41:49 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FACF10FC;
-        Sun, 14 May 2023 06:41:48 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4f139de8cefso60535236e87.0;
-        Sun, 14 May 2023 06:41:48 -0700 (PDT)
+        with ESMTP id S229635AbjENNzt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 09:55:49 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66AF119AC
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 06:55:48 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2ad89c7a84fso95702501fa.2
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 06:55:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684071706; x=1686663706;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+qvnHcB/azIUhjmByanInN+pkcOd92LVDrbUZO6gKU=;
-        b=Sj2fAQWPczlH0VqG5hHOFSTTCgAOvfl/SegsvPvdegYis30vX0MbwKvXo4X0O/W73V
-         n0mJEjtQvn53XqQaab6hXIJb96BKe5CTLDOX1uofBwAuyOltJDePPyFoWpEDXzSp9Zj/
-         LP5CQmNBGln8qyXnleH/YIEl2IeMFjtiDyycJ1eX42d5PHW1awmV7N8sgJSbGevdEUSC
-         /5YPVZDsFL33yrx51WBJlflK8SvOaNolxMCWBLNxbOiBPHBEXyMGDgf+AlEi+yAG2Gwx
-         3XC8hXzsBMBlZ+e2P+zWutu0Qjnm3hCf8yi0ZsFAXmfL/Eu4/H68vHlbEm+l5+YK+vNS
-         Uo4w==
+        d=gmail.com; s=20221208; t=1684072546; x=1686664546;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xvlUHM+AeT0nrl6pi6zSHWypFX8amZHiNpAMdt9We3s=;
+        b=g+a6Gglr5aZUU6m2fZMILI8JWrgdnLZhKnu7T4vf3lePX/G5plwLLCcEspxKYMSkcy
+         ueGaq71cXZhvTbQ/Wja7qIJxSBRhHkGpF5KpwsaK1TadaUwRYtionStpIFdMqbri9Ba9
+         +RkkhrQb/RCyxyA5yyBLxQ47oFn9SpvTMbMLHaU7E11NFHObWuZ8ay+rE94Un3RmaMRH
+         YklJCAA8jUZhbhp7TWAP/3tiT8CdoLPHkKkSUhdDi/jfSr48ZB39hQPchXzAvSWWuWpq
+         CpTBuh3Pt+jwFi8a3xE1R/5tqdE8oo7j01/poFv9M9ykTTNYE4gJ1OkHXMDrb1WBuwf9
+         HkuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684071706; x=1686663706;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2+qvnHcB/azIUhjmByanInN+pkcOd92LVDrbUZO6gKU=;
-        b=KfllxvXjLfcTdAENvODsQIrotai1QlG3et4FLbfCq7yJhrL9SyllLiHyBc4rp43PAD
-         WRgtQ3Qu/4dB35XSGxXM9+WQC1vP721SqZ4mmYALLTnGLc9K9c56bENi08dDsHWG+heQ
-         9cRv7skz84fI8UDuOFO6mgnk/TsgFCal3UloWlUoaFXqHzTkBrs+JZ+vt7cjf5qpcePJ
-         GD4B2z4k9xQEPN1FESA6ln3hXLC2WwFIDLd5BNlWrU/TfP8bfN85D0WHDWQqguG2/Mo5
-         X7a01BC8t/4hrah1ERwQr70UDisxPy8gFTdYBfRDUBrnmSgly9PN5H2pUfnZXW9ElzGe
-         lJjg==
-X-Gm-Message-State: AC+VfDzMr+s0CIPRRBF0EC/NYLRpBbC28sH5lywMrPenhZxrm8b2+m13
-        z2FGY+a1IRlaGfe06YXMI/T1aT4r+HOMeA==
-X-Google-Smtp-Source: ACHHUZ7vkpLjRVlgFHbnD4i09hJ/Fxd5i1LjlJnB4WMMZCY0L4enBlQd68HBgM1gDhyw4F2OGcaKmw==
-X-Received: by 2002:a05:6512:10c6:b0:4ed:b86b:9cc9 with SMTP id k6-20020a05651210c600b004edb86b9cc9mr5369371lfg.28.1684071705983;
-        Sun, 14 May 2023 06:41:45 -0700 (PDT)
-Received: from mobilestation ([95.79.140.35])
-        by smtp.gmail.com with ESMTPSA id t27-20020ac243bb000000b004f27d033994sm806724lfl.267.2023.05.14.06.41.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 May 2023 06:41:44 -0700 (PDT)
-Date:   Sun, 14 May 2023 16:41:43 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     maz@kernel.org, tsbogend@alpha.franken.de, tglx@linutronix.de,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] irqchip/mips-gic: Don't touch vl_map if a local
- interrupt is not routable
-Message-ID: <20230514134143.6uclwfhzkar4jupe@mobilestation>
-References: <20230424103156.66753-1-jiaxun.yang@flygoat.com>
- <20230424103156.66753-2-jiaxun.yang@flygoat.com>
+        d=1e100.net; s=20221208; t=1684072546; x=1686664546;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xvlUHM+AeT0nrl6pi6zSHWypFX8amZHiNpAMdt9We3s=;
+        b=Qy4JbHTwq6AJ0ltK6/t8X69VyNnlEDFvUdkcTqKC/10/uuXlMEDx5nxD0kQQ44IBn/
+         BwtBJLvdyC2TmvSNRzM/9eWKyGC1fhswFxbO7/fHqHIPvD0p8TIHimFBobg6j+YMhgkn
+         xiaPjWPLwMCNmdLqSByNPITYthwZOd7mtli6nSCD5Ib4l/hGpa8hbnHtJqgtr8l4C9vo
+         XE4L/vmF0HR9aN/MPukOvGgaFb51ulraFd1OQaI/r7sYVFCMjKXOUGN7q+Jvx0YPj1n6
+         BbK+ylG/X3r4vERJ2JPQP8QBJrho7cTJfpG0XeYu9wzSMNJEhNdM4ewNbwwdSWdFMz+p
+         Acdw==
+X-Gm-Message-State: AC+VfDyR9Z30mC3MZkU3GM8wjDOzs/zFkliLozPtxUdArk3osLTLjlgc
+        sTXGi8qj7a4b1dkvUAUF47n+SXGCldfRVwdoxFY=
+X-Google-Smtp-Source: ACHHUZ4L+2AjEYQCeSJCfEkufiMQv5B5DXHC8SmKAGi0bs1h5ryRtj0CBZwSXReR61wPwurzR0lVsy6sGJRBEZEiSP8=
+X-Received: by 2002:a2e:3c05:0:b0:2ad:d9bd:1d2 with SMTP id
+ j5-20020a2e3c05000000b002add9bd01d2mr1997788lja.16.1684072546251; Sun, 14 May
+ 2023 06:55:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230424103156.66753-2-jiaxun.yang@flygoat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:ab3:67ea:0:b0:228:a49e:83bd with HTTP; Sun, 14 May 2023
+ 06:55:45 -0700 (PDT)
+Reply-To: wormer.amos@aol.com
+From:   wormer Amos <johnjohnmore2022@gmail.com>
+Date:   Sun, 14 May 2023 14:55:45 +0100
+Message-ID: <CAJ-8a6jcgot5TjpX=D-uf9wXFe21d-WjX1=TU2FGfrBwXGQ56Q@mail.gmail.com>
+Subject: PROJECT IDEA?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:234 listed in]
+        [list.dnswl.org]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [johnjohnmore2022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [johnjohnmore2022[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello Jiaxun
+Good Day. please i want to know if you're capable for business investment
+project in
+your country because i
+need a serious business partnership with good background, kindly reply
+me to discuss details immediately. i will appreciate you to contact me
+on this email below.
 
-On Mon, Apr 24, 2023 at 11:31:55AM +0100, Jiaxun Yang wrote:
-> When a GIC local interrupt is not routable, it's vl_map will be used
-> to control some internal states for core (providing IPTI, IPPCI, IPFDC
+Thanks and awaiting for your quick response,
 
-> input signal for core). Overriding it will interfere core's intetrupt
-
-s/intetrupt/interrupt
-
-> controller.
-> 
-> Do not touch vl_map if a local interrupt is not routable, we are not
-> going to remap it.
-> 
-> Before dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on
-> irq_cpu_online()"), if a local interrupt is not routable, then it won't
-> be requested from GIC Local domain, and thus gic_all_vpes_irq_cpu_online
-> won't be called for that particular interrupt.
-> 
-> Fixes: dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-
-My system doesn't have VPEs but 2x MIPS32 P5600 cores with GIC enabled as
-EIC device so I can't fully test this change, but at the very least it
-looks reasonable. Indeed performing the local IRQs routing setups for
-the non-routable IRQs looks invalid. A similar change can be spotted
-in the gic_irq_domain_map() method implementation.
-
-> ---
->  drivers/irqchip/irq-mips-gic.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-> index 046c355e120b..b568d55ef7c5 100644
-> --- a/drivers/irqchip/irq-mips-gic.c
-> +++ b/drivers/irqchip/irq-mips-gic.c
-> @@ -399,6 +399,8 @@ static void gic_all_vpes_irq_cpu_online(void)
->  		unsigned int intr = local_intrs[i];
->  		struct gic_all_vpes_chip_data *cd;
->  
-> +		if (!gic_local_irq_is_routable(intr))
-> +			continue;
-
-Please add newline here to distinguish the skip-step code chunk and
-the setup code so the look would look a tiny bit more readable.
-
->  		cd = &gic_all_vpes_chip_data[intr];
->  		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
->  		if (cd->mask)
-
-Other than that the change looks good. Thanks.
-
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-
--Serge(y)
-
-> -- 
-> 2.34.1
-> 
+Amos!!
