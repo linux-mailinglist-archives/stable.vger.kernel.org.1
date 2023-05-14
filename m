@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19D22701B8D
-	for <lists+stable@lfdr.de>; Sun, 14 May 2023 06:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6597A701B90
+	for <lists+stable@lfdr.de>; Sun, 14 May 2023 06:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231506AbjENElx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 00:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57392 "EHLO
+        id S231776AbjENEmD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 00:42:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjENElx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 00:41:53 -0400
+        with ESMTP id S229462AbjENEmC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 00:42:02 -0400
 Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA921FFE
-        for <stable@vger.kernel.org>; Sat, 13 May 2023 21:41:51 -0700 (PDT)
-Received: from fsav115.sakura.ne.jp (fsav115.sakura.ne.jp [27.133.134.242])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 34E4fep4090375;
-        Sun, 14 May 2023 13:41:40 +0900 (JST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAD0A1FFD
+        for <stable@vger.kernel.org>; Sat, 13 May 2023 21:42:00 -0700 (PDT)
+Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 34E4flrK090392;
+        Sun, 14 May 2023 13:41:47 +0900 (JST)
         (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
 Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav115.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp);
- Sun, 14 May 2023 13:41:40 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp)
+ by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
+ Sun, 14 May 2023 13:41:47 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
 Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
         (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 34E4feEd090371
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 34E4flQw090389
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Sun, 14 May 2023 13:41:40 +0900 (JST)
+        Sun, 14 May 2023 13:41:47 +0900 (JST)
         (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <6416445d-cb8e-d7d7-20c0-5df72b2ba664@I-love.SAKURA.ne.jp>
-Date:   Sun, 14 May 2023 13:41:40 +0900
+Message-ID: <adafe5d2-7bf2-81a1-d9de-541b417be209@I-love.SAKURA.ne.jp>
+Date:   Sun, 14 May 2023 13:41:47 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: [PATCH 4.19.y] printk: declare printk_deferred_{enter,safe}() in
+Subject: [PATCH 4.14.y] printk: declare printk_deferred_{enter,safe}() in
  include/linux/printk.h
 Content-Language: en-US
 To:     stable@vger.kernel.org
-References: <2023042452-stopper-engross-e9da@gregkh>
+References: <2023042455-skinless-muzzle-1c50@gregkh>
 Cc:     John Ogness <john.ogness@linutronix.de>,
         Petr Mladek <pmladek@suse.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <2023042452-stopper-engross-e9da@gregkh>
+In-Reply-To: <2023042455-skinless-muzzle-1c50@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
@@ -98,10 +98,10 @@ Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
  1 file changed, 19 insertions(+)
 
 diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 6dd867e39365..f4d7e643f010 100644
+index 6106befed756..77429d3eb0de 100644
 --- a/include/linux/printk.h
 +++ b/include/linux/printk.h
-@@ -525,4 +525,23 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
+@@ -528,4 +528,23 @@ static inline void print_hex_dump_debug(const char *prefix_str, int prefix_type,
  }
  #endif
  
