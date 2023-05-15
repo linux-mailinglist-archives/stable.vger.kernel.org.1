@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA5B7039FF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68AFB703834
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244692AbjEORrK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:47:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
+        id S244273AbjEOR3i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244722AbjEORqt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F051176EE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:35 -0700 (PDT)
+        with ESMTP id S244220AbjEOR3M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:29:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 445C81209D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90B7762EAD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9B6C4339E;
-        Mon, 15 May 2023 17:45:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 405D762D04
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35218C433D2;
+        Mon, 15 May 2023 17:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172734;
-        bh=04447L49oRns11iP+ZnF4u6Xb2qCCEjWtaUMZPnAUhc=;
+        s=korg; t=1684171613;
+        bh=vYQUcLPMTRVFgU2TgOleFQK6YisZAf2Z3MsTK94EWuo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TLA4GO2Psx3IVq+XLKdM/Nh1ak8wgLRKcLUS13MOFOUlNACBXdcd282l2MGDrSkIC
-         MHrr9oOXAW2QnuCMTo29KRfh2i4ypK1ga2SHB5u8EatuOmBTx04n/1oJ6xDkF1FueA
-         MBPCOC0r/YMjJSZukBVvUBcPvTHlff8sMdKpy5uU=
+        b=1If3tvMu8DaYpJYz4UL++PgfRK1SdqNz+tasjVY5GrKh0uKt61tpGuMh5YnvIQENf
+         AHOfYwEBDb6HkeDHpqMVk3uVaOAa4fkloXHQ0lLFD8pz7rEAE96qlwm9ThApxV3c/0
+         HXfaAbdRtSQCtfC1I9kAm0Wasxp4FHNvQMNvBD6U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kaike Wan <kaike.wan@intel.com>,
-        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>,
+        David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 249/381] IB/hfi1: Add AIP tx traces
+Subject: [PATCH 5.15 023/134] selftests: srv6: make srv6_end_dt46_l3vpn_test more robust
 Date:   Mon, 15 May 2023 18:28:20 +0200
-Message-Id: <20230515161747.952619905@linuxfoundation.org>
+Message-Id: <20230515161703.772716105@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,233 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit 4bd00b55c978017aad10f0ff3e45525cd62cca07 ]
+[ Upstream commit 46ef24c60f8ee70662968ac55325297ed4624d61 ]
 
-Add traces to allow for debugging issues with AIP tx.
+On some distributions, the rp_filter is automatically set (=1) by
+default on a netdev basis (also on VRFs).
+In an SRv6 End.DT46 behavior, decapsulated IPv4 packets are routed using
+the table associated with the VRF bound to that tunnel. During lookup
+operations, the rp_filter can lead to packet loss when activated on the
+VRF.
+Therefore, we chose to make this selftest more robust by explicitly
+disabling the rp_filter during tests (as it is automatically set by some
+Linux distributions).
 
-Link: https://lore.kernel.org/r/1617026056-50483-2-git-send-email-dennis.dalessandro@cornelisnetworks.com
-Reviewed-by: Kaike Wan <kaike.wan@intel.com>
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 00cbce5cbf88 ("IB/hfi1: Fix bugs with non-PAGE_SIZE-end multi-iovec user SDMA requests")
+Fixes: 03a0b567a03d ("selftests: seg6: add selftest for SRv6 End.DT46 Behavior")
+Reported-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Tested-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/ipoib_tx.c |  18 ++++-
- drivers/infiniband/hw/hfi1/trace_tx.h | 104 ++++++++++++++++++++++++++
- 2 files changed, 119 insertions(+), 3 deletions(-)
+ .../testing/selftests/net/srv6_end_dt46_l3vpn_test.sh  | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/ipoib_tx.c b/drivers/infiniband/hw/hfi1/ipoib_tx.c
-index ab1eefffc14b3..ec187ec746749 100644
---- a/drivers/infiniband/hw/hfi1/ipoib_tx.c
-+++ b/drivers/infiniband/hw/hfi1/ipoib_tx.c
-@@ -15,6 +15,7 @@
- #include "verbs.h"
- #include "trace_ibhdrs.h"
- #include "ipoib.h"
-+#include "trace_tx.h"
+diff --git a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
+index aebaab8ce44cb..441eededa0312 100755
+--- a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
++++ b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
+@@ -292,6 +292,11 @@ setup_hs()
+ 	ip netns exec ${hsname} sysctl -wq net.ipv6.conf.all.accept_dad=0
+ 	ip netns exec ${hsname} sysctl -wq net.ipv6.conf.default.accept_dad=0
  
- /* Add a convenience helper */
- #define CIRC_ADD(val, add, size) (((val) + (add)) & ((size) - 1))
-@@ -63,12 +64,14 @@ static u64 hfi1_ipoib_used(struct hfi1_ipoib_txq *txq)
++	# disable the rp_filter otherwise the kernel gets confused about how
++	# to route decap ipv4 packets.
++	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
++	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.default.rp_filter=0
++
+ 	ip -netns ${hsname} link add veth0 type veth peer name ${rtveth}
+ 	ip -netns ${hsname} link set ${rtveth} netns ${rtname}
+ 	ip -netns ${hsname} addr add ${IPv6_HS_NETWORK}::${hs}/64 dev veth0 nodad
+@@ -316,11 +321,6 @@ setup_hs()
+ 	ip netns exec ${rtname} sysctl -wq net.ipv6.conf.${rtveth}.proxy_ndp=1
+ 	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.proxy_arp=1
  
- static void hfi1_ipoib_stop_txq(struct hfi1_ipoib_txq *txq)
- {
-+	trace_hfi1_txq_stop(txq);
- 	if (atomic_inc_return(&txq->stops) == 1)
- 		netif_stop_subqueue(txq->priv->netdev, txq->q_idx);
+-	# disable the rp_filter otherwise the kernel gets confused about how
+-	# to route decap ipv4 packets.
+-	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.all.rp_filter=0
+-	ip netns exec ${rtname} sysctl -wq net.ipv4.conf.${rtveth}.rp_filter=0
+-
+ 	ip netns exec ${rtname} sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
  }
  
- static void hfi1_ipoib_wake_txq(struct hfi1_ipoib_txq *txq)
- {
-+	trace_hfi1_txq_wake(txq);
- 	if (atomic_dec_and_test(&txq->stops))
- 		netif_wake_subqueue(txq->priv->netdev, txq->q_idx);
- }
-@@ -89,8 +92,10 @@ static void hfi1_ipoib_check_queue_depth(struct hfi1_ipoib_txq *txq)
- {
- 	++txq->sent_txreqs;
- 	if (hfi1_ipoib_used(txq) >= hfi1_ipoib_ring_hwat(txq) &&
--	    !atomic_xchg(&txq->ring_full, 1))
-+	    !atomic_xchg(&txq->ring_full, 1)) {
-+		trace_hfi1_txq_full(txq);
- 		hfi1_ipoib_stop_txq(txq);
-+	}
- }
- 
- static void hfi1_ipoib_check_queue_stopped(struct hfi1_ipoib_txq *txq)
-@@ -112,8 +117,10 @@ static void hfi1_ipoib_check_queue_stopped(struct hfi1_ipoib_txq *txq)
- 	 * to protect against ring overflow.
- 	 */
- 	if (hfi1_ipoib_used(txq) < hfi1_ipoib_ring_lwat(txq) &&
--	    atomic_xchg(&txq->ring_full, 0))
-+	    atomic_xchg(&txq->ring_full, 0)) {
-+		trace_hfi1_txq_xmit_unstopped(txq);
- 		hfi1_ipoib_wake_txq(txq);
-+	}
- }
- 
- static void hfi1_ipoib_free_tx(struct ipoib_txreq *tx, int budget)
-@@ -405,6 +412,7 @@ static struct ipoib_txreq *hfi1_ipoib_send_dma_common(struct net_device *dev,
- 				sdma_select_engine_sc(priv->dd,
- 						      txp->flow.tx_queue,
- 						      txp->flow.sc5);
-+			trace_hfi1_flow_switch(txp->txq);
- 		}
- 
- 		return tx;
-@@ -525,6 +533,7 @@ static int hfi1_ipoib_send_dma_list(struct net_device *dev,
- 	if (txq->flow.as_int != txp->flow.as_int) {
- 		int ret;
- 
-+		trace_hfi1_flow_flush(txq);
- 		ret = hfi1_ipoib_flush_tx_list(dev, txq);
- 		if (unlikely(ret)) {
- 			if (ret == -EBUSY)
-@@ -635,8 +644,10 @@ static int hfi1_ipoib_sdma_sleep(struct sdma_engine *sde,
- 			/* came from non-list submit */
- 			list_add_tail(&txreq->list, &txq->tx_list);
- 		if (list_empty(&txq->wait.list)) {
--			if (!atomic_xchg(&txq->no_desc, 1))
-+			if (!atomic_xchg(&txq->no_desc, 1)) {
-+				trace_hfi1_txq_queued(txq);
- 				hfi1_ipoib_stop_txq(txq);
-+			}
- 			iowait_queue(pkts_sent, wait->iow, &sde->dmawait);
- 		}
- 
-@@ -659,6 +670,7 @@ static void hfi1_ipoib_sdma_wakeup(struct iowait *wait, int reason)
- 	struct hfi1_ipoib_txq *txq =
- 		container_of(wait, struct hfi1_ipoib_txq, wait);
- 
-+	trace_hfi1_txq_wakeup(txq);
- 	if (likely(txq->priv->netdev->reg_state == NETREG_REGISTERED))
- 		iowait_schedule(wait, system_highpri_wq, WORK_CPU_UNBOUND);
- }
-diff --git a/drivers/infiniband/hw/hfi1/trace_tx.h b/drivers/infiniband/hw/hfi1/trace_tx.h
-index 769e5e4710c64..847654196dd34 100644
---- a/drivers/infiniband/hw/hfi1/trace_tx.h
-+++ b/drivers/infiniband/hw/hfi1/trace_tx.h
-@@ -53,6 +53,7 @@
- #include "hfi.h"
- #include "mad.h"
- #include "sdma.h"
-+#include "ipoib.h"
- 
- const char *parse_sdma_flags(struct trace_seq *p, u64 desc0, u64 desc1);
- 
-@@ -858,6 +859,109 @@ DEFINE_EVENT(
- 	TP_ARGS(qp, flag)
- );
- 
-+DECLARE_EVENT_CLASS(/* AIP  */
-+	hfi1_ipoib_txq_template,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq),
-+	TP_STRUCT__entry(/* entry */
-+		DD_DEV_ENTRY(txq->priv->dd)
-+		__field(struct hfi1_ipoib_txq *, txq)
-+		__field(struct sdma_engine *, sde)
-+		__field(ulong, head)
-+		__field(ulong, tail)
-+		__field(uint, used)
-+		__field(uint, flow)
-+		__field(int, stops)
-+		__field(int, no_desc)
-+		__field(u8, idx)
-+		__field(u8, stopped)
-+	),
-+	TP_fast_assign(/* assign */
-+		DD_DEV_ASSIGN(txq->priv->dd)
-+		__entry->txq = txq;
-+		__entry->sde = txq->sde;
-+		__entry->head = txq->tx_ring.head;
-+		__entry->tail = txq->tx_ring.tail;
-+		__entry->idx = txq->q_idx;
-+		__entry->used =
-+			txq->sent_txreqs -
-+			atomic64_read(&txq->complete_txreqs);
-+		__entry->flow = txq->flow.as_int;
-+		__entry->stops = atomic_read(&txq->stops);
-+		__entry->no_desc = atomic_read(&txq->no_desc);
-+		__entry->stopped =
-+		 __netif_subqueue_stopped(txq->priv->netdev, txq->q_idx);
-+	),
-+	TP_printk(/* print  */
-+		"[%s] txq %llx idx %u sde %llx head %lx tail %lx flow %x used %u stops %d no_desc %d stopped %u",
-+		__get_str(dev),
-+		(unsigned long long)__entry->txq,
-+		__entry->idx,
-+		(unsigned long long)__entry->sde,
-+		__entry->head,
-+		__entry->tail,
-+		__entry->flow,
-+		__entry->used,
-+		__entry->stops,
-+		__entry->no_desc,
-+		__entry->stopped
-+	)
-+);
-+
-+DEFINE_EVENT(/* queue stop */
-+	hfi1_ipoib_txq_template, hfi1_txq_stop,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* queue wake */
-+	hfi1_ipoib_txq_template, hfi1_txq_wake,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* flow flush */
-+	hfi1_ipoib_txq_template, hfi1_flow_flush,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* flow switch */
-+	hfi1_ipoib_txq_template, hfi1_flow_switch,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* wakeup */
-+	hfi1_ipoib_txq_template, hfi1_txq_wakeup,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* full */
-+	hfi1_ipoib_txq_template, hfi1_txq_full,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* queued */
-+	hfi1_ipoib_txq_template, hfi1_txq_queued,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* xmit_stopped */
-+	hfi1_ipoib_txq_template, hfi1_txq_xmit_stopped,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
-+DEFINE_EVENT(/* xmit_unstopped */
-+	hfi1_ipoib_txq_template, hfi1_txq_xmit_unstopped,
-+	TP_PROTO(struct hfi1_ipoib_txq *txq),
-+	TP_ARGS(txq)
-+);
-+
- #endif /* __HFI1_TRACE_TX_H */
- 
- #undef TRACE_INCLUDE_PATH
 -- 
 2.39.2
 
