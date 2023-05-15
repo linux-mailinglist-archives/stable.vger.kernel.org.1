@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6328C703314
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94776703912
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241954AbjEOQdA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
+        id S244412AbjEORij (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242161AbjEOQc5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32A50B0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:51 -0700 (PDT)
+        with ESMTP id S244463AbjEORiU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B271560B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95A406279F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37F4C4339E;
-        Mon, 15 May 2023 16:32:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5372462DCB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461EEC433EF;
+        Mon, 15 May 2023 17:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168370;
-        bh=sm0lFB1Hn23gvq32Ugr83/HZ6PHLx2Be4MFFqTicPKI=;
+        s=korg; t=1684172132;
+        bh=/psOibmtnnkcz1+tirmhsBiDgkCvd5+0ZG4x9ICNoaM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F8zDOgUO6u85CXKb0wZbVZSKH9TwnyR4jB+7BJkcsaNHUtog1dC6RPkc2fwYt9cEQ
-         xaec87QPDGmUtXBDusK7T8vjGtrRAC0zHeHdQpJ0LLQGyqr7OA+c7DLFvi99yBZZO7
-         so6A0O83I25PHbv76P+CyOrlal6Je2tjKs4pSF1Q=
+        b=YToaXaL2r5U+O/oWqQWlGhpTxLF6a9QLdTv0tI1IQ4dov/KK4S/jXO2oVCop4CHr7
+         c9NLpyB8m10wBAReI2H53EkdVfMQUm/W67DZ2eBbSk4pT+98AHDS5C5QwFqHFrjtXr
+         MqQUcKVpTCN1tNQHP8XMoL6O3mir9EMf+M6KNcv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 4.14 007/116] perf sched: Cast PTHREAD_STACK_MIN to int as it may turn into sysconf(__SC_THREAD_STACK_MIN_VALUE)
-Date:   Mon, 15 May 2023 18:25:04 +0200
-Message-Id: <20230515161658.507043042@linuxfoundation.org>
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 054/381] nilfs2: fix infinite loop in nilfs_mdt_get_block()
+Date:   Mon, 15 May 2023 18:25:05 +0200
+Message-Id: <20230515161739.268467383@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit d08c84e01afa7a7eee6badab25d5420fa847f783 upstream.
+commit a6a491c048882e7e424d407d32cba0b52d9ef2bf upstream.
 
-In fedora rawhide the PTHREAD_STACK_MIN define may end up expanded to a
-sysconf() call, and that will return 'long int', breaking the build:
+If the disk image that nilfs2 mounts is corrupted and a virtual block
+address obtained by block lookup for a metadata file is invalid,
+nilfs_bmap_lookup_at_level() may return the same internal return code as
+-ENOENT, meaning the block does not exist in the metadata file.
 
-    45 fedora:rawhide                : FAIL gcc version 11.1.1 20210623 (Red Hat 11.1.1-6) (GCC)
-      builtin-sched.c: In function 'create_tasks':
-      /git/perf-5.14.0-rc1/tools/include/linux/kernel.h:43:24: error: comparison of distinct pointer types lacks a cast [-Werror]
-         43 |         (void) (&_max1 == &_max2);              \
-            |                        ^~
-      builtin-sched.c:673:34: note: in expansion of macro 'max'
-        673 |                         (size_t) max(16 * 1024, PTHREAD_STACK_MIN));
-            |                                  ^~~
-      cc1: all warnings being treated as errors
+This duplication of return codes confuses nilfs_mdt_get_block(), causing
+it to read and create a metadata block indefinitely.
 
-  $ grep __sysconf /usr/include/*/*.h
-  /usr/include/bits/pthread_stack_min-dynamic.h:extern long int __sysconf (int __name) __THROW;
-  /usr/include/bits/pthread_stack_min-dynamic.h:#   define PTHREAD_STACK_MIN __sysconf (__SC_THREAD_STACK_MIN_VALUE)
-  /usr/include/bits/time.h:extern long int __sysconf (int);
-  /usr/include/bits/time.h:# define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
-  $
+In particular, if this happens to the inode metadata file, ifile,
+semaphore i_rwsem can be left held, causing task hangs in lock_mount.
 
-So cast it to int to cope with that.
+Fix this issue by making nilfs_bmap_lookup_at_level() treat virtual block
+address translation failures with -ENOENT as metadata corruption instead
+of returning the error code.
 
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
+Link: https://lkml.kernel.org/r/20230430193046.6769-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com
+  Link: https://syzkaller.appspot.com/bug?extid=221d75710bde87fa0e97
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/bmap.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -655,7 +655,7 @@ static void create_tasks(struct perf_sch
- 	err = pthread_attr_init(&attr);
- 	BUG_ON(err);
- 	err = pthread_attr_setstacksize(&attr,
--			(size_t) max(16 * 1024, PTHREAD_STACK_MIN));
-+			(size_t) max(16 * 1024, (int)PTHREAD_STACK_MIN));
- 	BUG_ON(err);
- 	err = pthread_mutex_lock(&sched->start_work_mutex);
- 	BUG_ON(err);
+--- a/fs/nilfs2/bmap.c
++++ b/fs/nilfs2/bmap.c
+@@ -67,20 +67,28 @@ int nilfs_bmap_lookup_at_level(struct ni
+ 
+ 	down_read(&bmap->b_sem);
+ 	ret = bmap->b_ops->bop_lookup(bmap, key, level, ptrp);
+-	if (ret < 0) {
+-		ret = nilfs_bmap_convert_error(bmap, __func__, ret);
++	if (ret < 0)
+ 		goto out;
+-	}
++
+ 	if (NILFS_BMAP_USE_VBN(bmap)) {
+ 		ret = nilfs_dat_translate(nilfs_bmap_get_dat(bmap), *ptrp,
+ 					  &blocknr);
+ 		if (!ret)
+ 			*ptrp = blocknr;
++		else if (ret == -ENOENT) {
++			/*
++			 * If there was no valid entry in DAT for the block
++			 * address obtained by b_ops->bop_lookup, then pass
++			 * internal code -EINVAL to nilfs_bmap_convert_error
++			 * to treat it as metadata corruption.
++			 */
++			ret = -EINVAL;
++		}
+ 	}
+ 
+  out:
+ 	up_read(&bmap->b_sem);
+-	return ret;
++	return nilfs_bmap_convert_error(bmap, __func__, ret);
+ }
+ 
+ int nilfs_bmap_lookup_contig(struct nilfs_bmap *bmap, __u64 key, __u64 *ptrp,
 
 
