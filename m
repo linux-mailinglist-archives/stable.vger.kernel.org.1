@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E411A7038B2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A0C4703A70
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243340AbjEOReO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:34:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54420 "EHLO
+        id S244904AbjEORvI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242397AbjEORd5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AD8768A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:48 -0700 (PDT)
+        with ESMTP id S244903AbjEORum (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898471B75C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5E6A62D3E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADD6C433A4;
-        Mon, 15 May 2023 17:31:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6122262F21
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573FAC433D2;
+        Mon, 15 May 2023 17:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171906;
-        bh=R/w3ZWL5iDvF2yuzA+q0jnh4dGOhVz+mEum8a8FXayE=;
+        s=korg; t=1684172928;
+        bh=jMuUOgIu8Yv/QEghRySHjIYMRgs8xq45SiW/u5cuJLo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KhZ5S19oyMOtIrhdoeoPt6CMCAfk1MV3/KSA1pt4D1sj4gS+W4bUZHuLglGr9wlNx
-         31XjDhUg56b/MUPf7F4Zx4s60i9p/ayYkqbK8uWKWieT+HGSTH70y9s7KJwWRDrELi
-         Bq5qlFjdBDV9sz8asLXF6miBaCkPu18liFE+Veys=
+        b=sKXnS96+IsdbXD91kS4lVf5vDS4w5LxkXrKqSUNZWWSNcddbIEXxcHRtB8+ifo+rU
+         KiBdaRlpgglogTQG5w5L/w/nWUlXWD1PhP4YqFfxHZEaZVDcEOG8Ru2vOxRaBacqNt
+         FiQ0R782oeZzmATZO5l1s8xWUO6Uy/spHyabtHu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 5.15 086/134] drm/msm: fix NULL-deref on irq uninstall
+        patches@lists.linux.dev,
+        Angelo Dureghello <angelo.dureghello@timesys.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 312/381] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
 Date:   Mon, 15 May 2023 18:29:23 +0200
-Message-Id: <20230515161706.030757219@linuxfoundation.org>
+Message-Id: <20230515161750.928104459@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,43 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Angelo Dureghello <angelo.dureghello@timesys.com>
 
-commit cd459c005de3e2b855a8cc7768e633ce9d018e9f upstream.
+[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
 
-In case of early initialisation errors and on platforms that do not use
-the DPU controller, the deinitilisation code can be called with the kms
-pointer set to NULL.
+Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
+processing.
 
-Fixes: f026e431cf86 ("drm/msm: Convert to Linux IRQ interfaces")
-Cc: stable@vger.kernel.org	# 5.14
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525104/
-Link: https://lore.kernel.org/r/20230306100722.28485-5-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -364,9 +364,11 @@ static int msm_drm_uninit(struct device
- 
- 	drm_mode_config_cleanup(ddev);
- 
--	pm_runtime_get_sync(dev);
--	msm_irq_uninstall(ddev);
--	pm_runtime_put_sync(dev);
-+	if (kms) {
-+		pm_runtime_get_sync(dev);
-+		msm_irq_uninstall(ddev);
-+		pm_runtime_put_sync(dev);
-+	}
- 
- 	if (kms && kms->funcs)
- 		kms->funcs->destroy(kms);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 0b104a90c0d80..321c821876f65 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -4182,6 +4182,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
+ 	.set_egress_port = mv88e6095_g1_set_egress_port,
+ 	.watchdog_ops = &mv88e6390_watchdog_ops,
++	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.reset = mv88e6352_g1_reset,
+ 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
+ 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
+-- 
+2.39.2
+
 
 
