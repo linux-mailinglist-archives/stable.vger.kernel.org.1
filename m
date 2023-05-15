@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04BEB703863
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4A570380E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242626AbjEORcS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53946 "EHLO
+        id S244229AbjEOR06 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244332AbjEORbi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F31BA10C7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:36 -0700 (PDT)
+        with ESMTP id S243914AbjEOR0h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB5186B4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4FEE62104
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA16C433D2;
-        Mon, 15 May 2023 17:28:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD19262CE7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97D4C433D2;
+        Mon, 15 May 2023 17:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171716;
-        bh=29ckEqml1JH/fAj+xKwjmyhdaULBFOlVIdWogxQmqB4=;
+        s=korg; t=1684171523;
+        bh=PnbshWFvQEIxorj/Qld9/dSOPMyUbO+hOm9MEinElUY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GoAFweTfrnEAFMQDXaqzB5bsB2rEHX+844y1o8gE0OEstF7Jos0D/wOq+0/HOEN0O
-         k4NSCI/de46rPGRwcJ/PrndHy4imEG+LD1p6xmCVqLybdZAE1bHCuupAwPja+q5Dv1
-         Ky1BjagSPYMG6fcSfES+jZiQEii7SIRPRvVJx5Qc=
+        b=hRui8KGGRblAjAMPAqfDRXZqVfaw0onL6ZOQzujDROyUc7+z8BJ9y4GWo72/125Th
+         Cb3XIOCF6isedvuoKBdvGGe7vSBMBqDGMDWvCpG+WpDMTlG5mQL35Iym9xQ1Ep1o0p
+         aP5VlKkiNpgSvVP3yVRMDd+aOHEk7QVCTyzgLuEU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/134] crypto: engine - Use crypto_request_complete
+        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
+        Jason Gerecke <jason.gerecke@wacom.com>,
+        Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 6.2 207/242] HID: wacom: insert timestamp to packed Bluetooth (BT) events
 Date:   Mon, 15 May 2023 18:28:53 +0200
-Message-Id: <20230515161705.027543395@linuxfoundation.org>
+Message-Id: <20230515161728.147321032@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,53 +54,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ping Cheng <pinglinux@gmail.com>
 
-[ Upstream commit 6909823d47c17cba84e9244d04050b5db8d53789 ]
+commit 17d793f3ed53080dab6bbeabfc82de890c901001 upstream.
 
-Use the crypto_request_complete helper instead of calling the
-completion function directly.
+To fully utilize the BT polling/refresh rate, a few input events
+are sent together to reduce event delay. This causes issue to the
+timestamp generated by input_sync since all the events in the same
+packet would pretty much have the same timestamp. This patch inserts
+time interval to the events by averaging the total time used for
+sending the packet.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 4140aafcff16 ("crypto: engine - fix crypto_queue backlog handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This decision was mainly based on observing the actual time interval
+between each BT polling. The interval doesn't seem to be constant,
+due to the network and system environment. So, using solutions other
+than averaging doesn't end up with valid timestamps.
+
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Reviewed-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/crypto_engine.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/wacom_wac.c |   26 ++++++++++++++++++++++++++
+ drivers/hid/wacom_wac.h |    1 +
+ 2 files changed, 27 insertions(+)
 
-diff --git a/crypto/crypto_engine.c b/crypto/crypto_engine.c
-index fecf6baaa4f7d..43fe324b9521b 100644
---- a/crypto/crypto_engine.c
-+++ b/crypto/crypto_engine.c
-@@ -54,7 +54,7 @@ static void crypto_finalize_request(struct crypto_engine *engine,
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1308,6 +1308,9 @@ static void wacom_intuos_pro2_bt_pen(str
+ 
+ 	struct input_dev *pen_input = wacom->pen_input;
+ 	unsigned char *data = wacom->data;
++	int number_of_valid_frames = 0;
++	int time_interval = 15000000;
++	ktime_t time_packet_received = ktime_get();
+ 	int i;
+ 
+ 	if (wacom->features.type == INTUOSP2_BT ||
+@@ -1328,12 +1331,30 @@ static void wacom_intuos_pro2_bt_pen(str
+ 		wacom->id[0] |= (wacom->serial[0] >> 32) & 0xFFFFF;
+ 	}
+ 
++	/* number of valid frames */
+ 	for (i = 0; i < pen_frames; i++) {
+ 		unsigned char *frame = &data[i*pen_frame_len + 1];
+ 		bool valid = frame[0] & 0x80;
++
++		if (valid)
++			number_of_valid_frames++;
++	}
++
++	if (number_of_valid_frames) {
++		if (wacom->hid_data.time_delayed)
++			time_interval = ktime_get() - wacom->hid_data.time_delayed;
++		time_interval /= number_of_valid_frames;
++		wacom->hid_data.time_delayed = time_packet_received;
++	}
++
++	for (i = 0; i < number_of_valid_frames; i++) {
++		unsigned char *frame = &data[i*pen_frame_len + 1];
++		bool valid = frame[0] & 0x80;
+ 		bool prox = frame[0] & 0x40;
+ 		bool range = frame[0] & 0x20;
+ 		bool invert = frame[0] & 0x10;
++		int frames_number_reversed = number_of_valid_frames - i - 1;
++		int event_timestamp = time_packet_received - frames_number_reversed * time_interval;
+ 
+ 		if (!valid)
+ 			continue;
+@@ -1346,6 +1367,7 @@ static void wacom_intuos_pro2_bt_pen(str
+ 			wacom->tool[0] = 0;
+ 			wacom->id[0] = 0;
+ 			wacom->serial[0] = 0;
++			wacom->hid_data.time_delayed = 0;
+ 			return;
  		}
- 	}
- 	lockdep_assert_in_softirq();
--	req->complete(req, err);
-+	crypto_request_complete(req, err);
  
- 	kthread_queue_work(engine->kworker, &engine->pump_requests);
+@@ -1382,6 +1404,7 @@ static void wacom_intuos_pro2_bt_pen(str
+ 						 get_unaligned_le16(&frame[11]));
+ 			}
+ 		}
++
+ 		if (wacom->tool[0]) {
+ 			input_report_abs(pen_input, ABS_PRESSURE, get_unaligned_le16(&frame[5]));
+ 			if (wacom->features.type == INTUOSP2_BT ||
+@@ -1405,6 +1428,9 @@ static void wacom_intuos_pro2_bt_pen(str
+ 
+ 		wacom->shared->stylus_in_proximity = prox;
+ 
++		/* add timestamp to unpack the frames */
++		input_set_timestamp(pen_input, event_timestamp);
++
+ 		input_sync(pen_input);
+ 	}
  }
-@@ -130,7 +130,7 @@ static void crypto_pump_requests(struct crypto_engine *engine,
- 		engine->cur_req = async_req;
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -324,6 +324,7 @@ struct hid_data {
+ 	int ps_connected;
+ 	bool pad_input_event_flag;
+ 	unsigned short sequence_number;
++	int time_delayed;
+ };
  
- 	if (backlog)
--		backlog->complete(backlog, -EINPROGRESS);
-+		crypto_request_complete(backlog, -EINPROGRESS);
- 
- 	if (engine->busy)
- 		was_busy = true;
-@@ -214,7 +214,7 @@ static void crypto_pump_requests(struct crypto_engine *engine,
- 	}
- 
- req_err_2:
--	async_req->complete(async_req, ret);
-+	crypto_request_complete(async_req, ret);
- 
- retry:
- 	/* If retry mechanism is supported, send new requests to engine */
--- 
-2.39.2
-
+ struct wacom_remote_data {
 
 
