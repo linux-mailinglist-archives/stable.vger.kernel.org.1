@@ -2,55 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF65703609
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6054703337
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243630AbjEORFo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47520 "EHLO
+        id S238826AbjEOQee (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243745AbjEORFM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B668A7C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:49 -0700 (PDT)
+        with ESMTP id S242758AbjEOQea (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1795B170C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F41D662A99
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:03:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA87DC433A1;
-        Mon, 15 May 2023 17:03:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC624627B9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2395C433D2;
+        Mon, 15 May 2023 16:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170218;
-        bh=u2ZgtOrU/K0L+xo5x66dqKqo6u0TaJmw6QguNrgyeDg=;
+        s=korg; t=1684168466;
+        bh=jdf0Lm5Co7qGO1tW7IoCCoZuWtSg6iPb9cOJvWGpKiE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=10FXvXse6rMp2Glhw3rGTU/acd6K/0vJzxUiiEnqNXAlNMDkZdzwMEcOXHFc6l9w9
-         WFt49woIyfxXMR/FhopaTj/skE1k9nJCrNG8fPGzioViCYhgCfoRx0HAqr5erCwEQ/
-         qp5UZ2+OIpoyuGaDJ6llKhvruLO2x7/eUeV5NnvU=
+        b=IxsvDpDO63N+Q+rzi02P6qz7V7bCZkXivm1XUfc/eYxdyj/l/klqob3BfcxpKRQKF
+         cj46gTdY9A1jCRYST2GMahWaJ4pEianiNu0g0iQ31Kfl/P7BILHQ7Lai9uvv6TeI7y
+         HKEf9Lhe83cw3PQXRjrw05/66kuy7GMApaYqkRAc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        kernel test robot <lkp@intel.com>,
-        Jisheng Zhang <jszhang@kernel.org>,
-        Guo Ren <guoren@linux.alibaba.com>,
-        Guo Ren <guoren@kernel.org>,
-        Drew Fustini <dfustini@baylibre.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/239] riscv: compat_syscall_table: Fixup compile warning
-Date:   Mon, 15 May 2023 18:25:25 +0200
-Message-Id: <20230515161723.559672973@linuxfoundation.org>
+        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Subject: [PATCH 4.14 029/116] wifi: ath6kl: reduce WARN to dev_dbg() in callback
+Date:   Mon, 15 May 2023 18:25:26 +0200
+Message-Id: <20230515161659.238288428@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,44 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit f9c4bbddece7eff1155c70d48e3c9c2a01b9d778 ]
+[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
 
-../arch/riscv/kernel/compat_syscall_table.c:12:41: warning: initialized
-field overwritten [-Woverride-init]
-   12 | #define __SYSCALL(nr, call)      [nr] = (call),
-      |                                         ^
-../include/uapi/asm-generic/unistd.h:567:1: note: in expansion of macro
-'__SYSCALL'
-  567 | __SYSCALL(__NR_semget, sys_semget)
+The warn is triggered on a known race condition, documented in the code above
+the test, that is correctly handled.  Using WARN() hinders automated testing.
+Reducing severity.
 
-Fixes: 59c10c52f573 ("riscv: compat: syscall: Add compat_sys_call_table implementation")
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Tested-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Drew Fustini <dfustini@baylibre.com>
-Link: https://lore.kernel.org/r/20230501223353.2833899-1-dfustini@baylibre.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
+Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index db6e4b1294ba3..ab333cb792fd9 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -9,6 +9,7 @@ CFLAGS_REMOVE_patch.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_sbi.o	= $(CC_FLAGS_FTRACE)
- endif
- CFLAGS_syscall_table.o	+= $(call cc-option,-Wno-override-init,)
-+CFLAGS_compat_syscall_table.o += $(call cc-option,-Wno-override-init,)
- 
- ifdef CONFIG_KEXEC
- AFLAGS_kexec_relocate.o := -mcmodel=medany $(call cc-option,-mno-relax)
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index 546243e117379..634cde696272c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -969,8 +969,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
+ 	 */
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
+ 	}
 -- 
 2.39.2
 
