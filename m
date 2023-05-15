@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 154EE7033A7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC6F7038F4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242867AbjEOQkF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42866 "EHLO
+        id S244439AbjEORgx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242897AbjEOQj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:57 -0400
+        with ESMTP id S244445AbjEORgf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C594219
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5E01FEF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB0EF62867
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992C4C433D2;
-        Mon, 15 May 2023 16:39:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D1E462D97
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510A5C433D2;
+        Mon, 15 May 2023 17:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168782;
-        bh=0rA4eYM5UuckOLg09kPwgQB0speykBb3UIQzUBkg+Ts=;
+        s=korg; t=1684172045;
+        bh=ZjsgIJLsIXwmuUIjaC1TAkaeNGyaxxzkRGsceUABVSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dlb+Bzb3UPecLbqY4abcZi4wACnHPjy8SMLVqaq94cmPq8jQ0FuOCokeobbXOtygC
-         H9bE2mD6Pwj1xNbnWDzMMMxlDmLS+kOFl7qllRcgQ8Kx7O9nwdNe/h9b1m3s5N4sEv
-         rs8yKtgopVhmRXc2J+fPIQn7Z3XQc+2hjh5PF+/g=
+        b=J7xtvx6s7C93+7azpCemlzcW+namHga0foTUPDIRs1MjRuRBd2Wil6XAhR81OBkwT
+         zx3XC6Hv9LXLexYNHKRKAEoDq4S5X9wURVbcyo5r79fhMZWgro2k/HR5Sw+FqPT8Mk
+         AV5bBhdOgnmR5WQ7xHAoM/wOyDfmrXpfI2TIjvZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tang Bin <tangbin@cmss.chinamobile.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 040/191] media: rcar_fdp1: Fix the correct variable assignments
+        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 026/381] blk-crypto: make blk_crypto_evict_key() more robust
 Date:   Mon, 15 May 2023 18:24:37 +0200
-Message-Id: <20230515161708.649543401@linuxfoundation.org>
+Message-Id: <20230515161737.968056959@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,48 +53,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tang Bin <tangbin@cmss.chinamobile.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit af88c2adbb72a09ab1bb5c37ba388c98fecca69b ]
+commit 5c7cb94452901a93e90c2230632e2c12a681bc92 upstream.
 
-In the function fdp1_probe(), when get irq failed, the
-function platform_get_irq() log an error message, so
-remove redundant message here. And the variable type
-of "ret" is int, the "fdp1->irq" is unsigned int, when
-irq failed, this place maybe wrong, thus fix it.
+If blk_crypto_evict_key() sees that the key is still in-use (due to a
+bug) or that ->keyslot_evict failed, it currently just returns while
+leaving the key linked into the keyslot management structures.
 
-Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, blk_crypto_evict_key() is only called in contexts such as inode
+eviction where failure is not an option.  So actually the caller
+proceeds with freeing the blk_crypto_key regardless of the return value
+of blk_crypto_evict_key().
+
+These two assumptions don't match, and the result is that there can be a
+use-after-free in blk_crypto_reprogram_all_keys() after one of these
+errors occurs.  (Note, these errors *shouldn't* happen; we're just
+talking about what happens if they do anyway.)
+
+Fix this by making blk_crypto_evict_key() unlink the key from the
+keyslot management structures even on failure.
+
+Also improve some comments.
+
+Fixes: 1b2628397058 ("block: Keyslot Manager for Inline Encryption")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rcar_fdp1.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ block/blk-crypto.c      |   29 +++++++++++++++++++++--------
+ block/keyslot-manager.c |   43 +++++++++++++++++++++----------------------
+ 2 files changed, 42 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
-index 2bd5898a62044..e1c8701d44ade 100644
---- a/drivers/media/platform/rcar_fdp1.c
-+++ b/drivers/media/platform/rcar_fdp1.c
-@@ -2287,11 +2287,10 @@ static int fdp1_probe(struct platform_device *pdev)
- 		return PTR_ERR(fdp1->regs);
+--- a/block/blk-crypto.c
++++ b/block/blk-crypto.c
+@@ -385,15 +385,20 @@ int blk_crypto_start_using_key(const str
+ }
  
- 	/* Interrupt service routine registration */
--	fdp1->irq = ret = platform_get_irq(pdev, 0);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "cannot find IRQ\n");
-+	ret = platform_get_irq(pdev, 0);
-+	if (ret < 0)
- 		return ret;
--	}
-+	fdp1->irq = ret;
+ /**
+- * blk_crypto_evict_key() - Evict a key from any inline encryption hardware
+- *			    it may have been programmed into
+- * @q: The request queue who's associated inline encryption hardware this key
+- *     might have been programmed into
+- * @key: The key to evict
++ * blk_crypto_evict_key() - Evict a blk_crypto_key from a request_queue
++ * @q: a request_queue on which I/O using the key may have been done
++ * @key: the key to evict
+  *
+- * Upper layers (filesystems) must call this function to ensure that a key is
+- * evicted from any hardware that it might have been programmed into.  The key
+- * must not be in use by any in-flight IO when this function is called.
++ * For a given request_queue, this function removes the given blk_crypto_key
++ * from the keyslot management structures and evicts it from any underlying
++ * hardware keyslot(s) or blk-crypto-fallback keyslot it may have been
++ * programmed into.
++ *
++ * Upper layers must call this before freeing the blk_crypto_key.  It must be
++ * called for every request_queue the key may have been used on.  The key must
++ * no longer be in use by any I/O when this function is called.
++ *
++ * Context: May sleep.
+  */
+ void blk_crypto_evict_key(struct request_queue *q,
+ 			  const struct blk_crypto_key *key)
+@@ -404,6 +409,14 @@ void blk_crypto_evict_key(struct request
+ 		err = blk_ksm_evict_key(q->ksm, key);
+ 	else
+ 		err = blk_crypto_fallback_evict_key(key);
++	/*
++	 * An error can only occur here if the key failed to be evicted from a
++	 * keyslot (due to a hardware or driver issue) or is allegedly still in
++	 * use by I/O (due to a kernel bug).  Even in these cases, the key is
++	 * still unlinked from the keyslot management structures, and the caller
++	 * is allowed and expected to free it right away.  There's nothing
++	 * callers can do to handle errors, so just log them and return void.
++	 */
+ 	if (err)
+ 		pr_warn_ratelimited("error %d evicting key\n", err);
+ }
+--- a/block/keyslot-manager.c
++++ b/block/keyslot-manager.c
+@@ -305,44 +305,43 @@ bool blk_ksm_crypto_cfg_supported(struct
+ 	return true;
+ }
  
- 	ret = devm_request_irq(&pdev->dev, fdp1->irq, fdp1_irq_handler, 0,
- 			       dev_name(&pdev->dev), fdp1);
--- 
-2.39.2
-
+-/**
+- * blk_ksm_evict_key() - Evict a key from the lower layer device.
+- * @ksm: The keyslot manager to evict from
+- * @key: The key to evict
+- *
+- * Find the keyslot that the specified key was programmed into, and evict that
+- * slot from the lower layer device. The slot must not be in use by any
+- * in-flight IO when this function is called.
+- *
+- * Context: Process context. Takes and releases ksm->lock.
+- * Return: 0 on success or if there's no keyslot with the specified key, -EBUSY
+- *	   if the keyslot is still in use, or another -errno value on other
+- *	   error.
++/*
++ * This is an internal function that evicts a key from an inline encryption
++ * device that can be either a real device or the blk-crypto-fallback "device".
++ * It is used only by blk_crypto_evict_key(); see that function for details.
+  */
+ int blk_ksm_evict_key(struct blk_keyslot_manager *ksm,
+ 		      const struct blk_crypto_key *key)
+ {
+ 	struct blk_ksm_keyslot *slot;
+-	int err = 0;
++	int err;
+ 
+ 	blk_ksm_hw_enter(ksm);
+ 	slot = blk_ksm_find_keyslot(ksm, key);
+-	if (!slot)
+-		goto out_unlock;
++	if (!slot) {
++		/*
++		 * Not an error, since a key not in use by I/O is not guaranteed
++		 * to be in a keyslot.  There can be more keys than keyslots.
++		 */
++		err = 0;
++		goto out;
++	}
+ 
+ 	if (WARN_ON_ONCE(atomic_read(&slot->slot_refs) != 0)) {
++		/* BUG: key is still in use by I/O */
+ 		err = -EBUSY;
+-		goto out_unlock;
++		goto out_remove;
+ 	}
+ 	err = ksm->ksm_ll_ops.keyslot_evict(ksm, key,
+ 					    blk_ksm_get_slot_idx(slot));
+-	if (err)
+-		goto out_unlock;
+-
++out_remove:
++	/*
++	 * Callers free the key even on error, so unlink the key from the hash
++	 * table and clear slot->key even on error.
++	 */
+ 	hlist_del(&slot->hash_node);
+ 	slot->key = NULL;
+-	err = 0;
+-out_unlock:
++out:
+ 	blk_ksm_hw_exit(ksm);
+ 	return err;
+ }
 
 
