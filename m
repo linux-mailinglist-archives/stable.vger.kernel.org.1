@@ -2,56 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55221702117
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 03:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E32647021BE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 04:36:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237512AbjEOBWU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 14 May 2023 21:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39650 "EHLO
+        id S237971AbjEOCgV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 14 May 2023 22:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236152AbjEOBWT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 21:22:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABAD410FF
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 18:21:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684113690;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OmB3wXr05ZF4mv5+5tdgNLyO+5Jy1xAtgK7GM+TTU58=;
-        b=G19TJWQ+g4CanY+Ht/C/6uHmwKVWzW94HUzp23cdoYJyApP8FjwwVTspAsaafMxxubEwRH
-        vsqlgnvzUcb2RbqrqYJahRC0aFoEDWTDGZ/8caIygnDUeGYT3qIUQXUhaDnD9828TxcSYQ
-        7FeluE6vufq5V/zYRTFrkgVNEuQRf/c=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-209-JM9T5lI2P46YW92KpEk3OQ-1; Sun, 14 May 2023 21:21:27 -0400
-X-MC-Unique: JM9T5lI2P46YW92KpEk3OQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DF71101A551;
-        Mon, 15 May 2023 01:21:27 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-56.pek2.redhat.com [10.72.12.56])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0C73A63F5F;
-        Mon, 15 May 2023 01:21:22 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com, sehuww@mail.scut.edu.cn,
-        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH v6 2/2] ceph: fix blindly expanding the readahead windows
-Date:   Mon, 15 May 2023 09:20:44 +0800
-Message-Id: <20230515012044.98096-3-xiubli@redhat.com>
-In-Reply-To: <20230515012044.98096-1-xiubli@redhat.com>
-References: <20230515012044.98096-1-xiubli@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        with ESMTP id S230281AbjEOCgU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 14 May 2023 22:36:20 -0400
+X-Greylist: delayed 1348 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 14 May 2023 19:36:17 PDT
+Received: from mail-m127104.qiye.163.com (mail-m127104.qiye.163.com [115.236.127.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F411BB
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 19:36:17 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPV6:240e:3b7:3270:1980:719c:500e:9fa7:6718])
+        by mail-m127104.qiye.163.com (Hmail) with ESMTPA id 83E3DA40111;
+        Mon, 15 May 2023 10:13:44 +0800 (CST)
+From:   Ding Hui <dinghui@sangfor.com.cn>
+To:     chuck.lever@oracle.com, jlayton@kernel.org,
+        trond.myklebust@hammerspace.com, anna@kernel.org
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-nfs@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dinghui@sangfor.com.cn, stable@vger.kernel.org
+Subject: [PATCH] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
+Date:   Mon, 15 May 2023 10:13:07 +0800
+Message-Id: <20230515021307.3072-1-dinghui@sangfor.com.cn>
+X-Mailer: git-send-email 2.17.1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCThkYVksYGkIeTkwYS0xLGFUTARMWGhIXJBQOD1
+        lXWRgSC1lBWUlPSx5BSBlMQUhJTEtBSkJDS0FMSkIYQU5LSx5BQh0aTEFNTEpDWVdZFhoPEhUdFF
+        lBWU9LSFVKSktISkxVSktLVUtZBg++
+X-HM-Tid: 0a881d2f6370b282kuuu83e3da40111
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MT46Hio5Mj0XNxksMEIOHR8U
+        TD4wCSpVSlVKTUNPSkpNQ0lOSEJIVTMWGhIXVR8SFRwTDhI7CBoVHB0UCVUYFBZVGBVFWVdZEgtZ
+        QVlJT0seQUgZTEFISUxLQUpCQ0tBTEpCGEFOS0seQUIdGkxBTUxKQ1lXWQgBWUFOT01NNwY+
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,85 +47,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+After the listener svc_sock be freed, and before invoking svc_tcp_accept()
+for the established child sock, there is a window that the newsock
+retaining a freed listener svc_sock in sk_user_data which cloning from
+parent. In the race windows if data is received on the newsock, we will
+observe use-after-free report in svc_tcp_listen_data_ready().
 
-Blindly expanding the readahead windows will cause unneccessary
-pagecache thrashing and also will introdue the network workload.
-We should disable expanding the windows if the readahead is disabled
-and also shouldn't expand the windows too much.
+Reproduce by two tasks:
 
-Expanding forward firstly instead of expanding backward for possible
-sequential reads.
+1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
+2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
 
-Bound `rreq->len` to the actual file size to restore the previous page
-cache usage.
+KASAN report:
 
-The posix_fadvise may change the maximum size of a file readahead.
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
+  Read of size 8 at addr ffff888139d96228 by task nc/102553
+  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
+  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x33/0x50
+   print_address_description.constprop.0+0x27/0x310
+   print_report+0x3e/0x70
+   kasan_report+0xae/0xe0
+   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
+   tcp_data_queue+0x9f4/0x20e0
+   tcp_rcv_established+0x666/0x1f60
+   tcp_v4_do_rcv+0x51c/0x850
+   tcp_v4_rcv+0x23fc/0x2e80
+   ip_protocol_deliver_rcu+0x62/0x300
+   ip_local_deliver_finish+0x267/0x350
+   ip_local_deliver+0x18b/0x2d0
+   ip_rcv+0x2fb/0x370
+   __netif_receive_skb_one_core+0x166/0x1b0
+   process_backlog+0x24c/0x5e0
+   __napi_poll+0xa2/0x500
+   net_rx_action+0x854/0xc90
+   __do_softirq+0x1bb/0x5de
+   do_softirq+0xcb/0x100
+   </IRQ>
+   <TASK>
+   ...
+   </TASK>
 
-Cc: stable@vger.kernel.org
-Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
-URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
-URL: https://www.spinics.net/lists/ceph-users/msg76183.html
-Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
+  Allocated by task 102371:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   __kasan_kmalloc+0x7b/0x90
+   svc_setup_socket+0x52/0x4f0 [sunrpc]
+   svc_addsock+0x20d/0x400 [sunrpc]
+   __write_ports_addfd+0x209/0x390 [nfsd]
+   write_ports+0x239/0x2c0 [nfsd]
+   nfsctl_transaction_write+0xac/0x110 [nfsd]
+   vfs_write+0x1c3/0xae0
+   ksys_write+0xed/0x1c0
+   do_syscall_64+0x38/0x90
+   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+  Freed by task 102551:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   kasan_save_free_info+0x2a/0x50
+   __kasan_slab_free+0x106/0x190
+   __kmem_cache_free+0x133/0x270
+   svc_xprt_free+0x1e2/0x350 [sunrpc]
+   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
+   nfsd_put+0x125/0x240 [nfsd]
+   nfsd_svc+0x2cb/0x3c0 [nfsd]
+   write_threads+0x1ac/0x2a0 [nfsd]
+   nfsctl_transaction_write+0xac/0x110 [nfsd]
+   vfs_write+0x1c3/0xae0
+   ksys_write+0xed/0x1c0
+   do_syscall_64+0x38/0x90
+   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
+if state != TCP_LISTEN, that will avoid dereferencing svsk for all
+child socket.
+
+Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
+Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
+Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
+Cc: <stable@vger.kernel.org>
 ---
- fs/ceph/addr.c | 40 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+ net/sunrpc/svcsock.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 93fff1a7373f..4b29777c01d7 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -188,16 +188,42 @@ static void ceph_netfs_expand_readahead(struct netfs_io_request *rreq)
- 	struct inode *inode = rreq->inode;
- 	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_file_layout *lo = &ci->i_layout;
-+	unsigned long max_pages = inode->i_sb->s_bdi->ra_pages;
-+	loff_t end = rreq->start + rreq->len, new_end;
-+	struct ceph_netfs_request_data *priv = rreq->netfs_priv;
-+	unsigned long max_len;
- 	u32 blockoff;
--	u64 blockno;
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index a51c9b989d58..9aca6e1e78e4 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -825,12 +825,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
  
--	/* Expand the start downward */
--	blockno = div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
--	rreq->start = blockno * lo->stripe_unit;
--	rreq->len += blockoff;
-+	if (priv) {
-+		/* Readahead is disabled by posix_fadvise POSIX_FADV_RANDOM */
-+		if (priv->file_ra_disabled)
-+			max_pages = 0;
-+		else
-+			max_pages = priv->file_ra_pages;
-+
-+	}
-+
-+	/* Readahead is disabled */
-+	if (!max_pages)
+ 	trace_sk_data_ready(sk);
+ 
+-	if (svsk) {
+-		/* Refer to svc_setup_socket() for details. */
+-		rmb();
+-		svsk->sk_odata(sk);
+-	}
+-
+ 	/*
+ 	 * This callback may called twice when a new connection
+ 	 * is established as a child socket inherits everything
+@@ -839,13 +833,18 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
+ 	 *    when one of child sockets become ESTABLISHED.
+ 	 * 2) data_ready method of the child socket may be called
+ 	 *    when it receives data before the socket is accepted.
+-	 * In case of 2, we should ignore it silently.
++	 * In case of 2, we should ignore it silently and DO NOT
++	 * dereference svsk.
+ 	 */
+-	if (sk->sk_state == TCP_LISTEN) {
+-		if (svsk) {
+-			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
+-			svc_xprt_enqueue(&svsk->sk_xprt);
+-		}
++	if (sk->sk_state != TCP_LISTEN)
 +		return;
- 
--	/* Now, round up the length to the next block */
--	rreq->len = roundup(rreq->len, lo->stripe_unit);
-+	max_len = max_pages << PAGE_SHIFT;
 +
-+	/*
-+	 * Try to expand the length forward by rounding  up it to the next
-+	 * block, but do not exceed the file size, unless the original
-+	 * request already exceeds it.
-+	 */
-+	new_end = min(round_up(end, lo->stripe_unit), rreq->i_size);
-+	if (new_end > end && new_end <= rreq->start + max_len)
-+		rreq->len = new_end - rreq->start;
-+
-+	/* Try to expand the start downward */
-+	div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
-+	if (rreq->len + blockoff <= max_len) {
-+		rreq->start -= blockoff;
-+		rreq->len += blockoff;
-+	}
++	if (svsk) {
++		/* Refer to svc_setup_socket() for details. */
++		rmb();
++		svsk->sk_odata(sk);
++		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
++		svc_xprt_enqueue(&svsk->sk_xprt);
+ 	}
  }
  
- static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
 -- 
-2.40.1
+2.17.1
 
