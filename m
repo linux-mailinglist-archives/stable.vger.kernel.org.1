@@ -2,59 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF49703A88
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF9070389F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244926AbjEORwN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:52:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47322 "EHLO
+        id S244335AbjEORdm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244825AbjEORvz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:51:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB249160BE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:44 -0700 (PDT)
+        with ESMTP id S244348AbjEORd1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4133E15247
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC8A462F41
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1D6C433A8;
-        Mon, 15 May 2023 17:49:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B184262D2A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCFEC433EF;
+        Mon, 15 May 2023 17:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172984;
-        bh=DYCDQSX6e2aCpFkWWDHy9QThWDeyYdelg0ru7Y9wukM=;
+        s=korg; t=1684171875;
+        bh=ZsyEdIHpU2jOgYvQP82kq0HW7VDTkiDo4p+w8JTrXgE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HJUhIUNdynilRGWpekO1z5f/KabFDeatx286Rt7VK99xi+zRmXF0/w9UCcFOIVAE3
-         otwn/DcF8hDZqDLGfRX/4mWaaKr2lGkKSZE3CL9+iDIsaKsMrtxHFQvMkenc4OC0OK
-         YiHc5kIP1W2F1DjmAI/Ia+M6C/sk1Ety4gptQbZA=
+        b=dUkhQmJXPpOLULEDuNdbZtERF4ZDLouaEoqiUFpU8tomk6mutrYEO6d1iL/v5eq85
+         vTXCBJNJuRcH/lWO2TUgFjQd6a8PpmgtbJNH/7TyxInyG/ibTzXOTihjRhLIg77X9U
+         wUpqSoqSbsDjXeGSDsAg2bIroxxbJClVjrJ+j3zU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, elfring@users.sourceforge.net,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        German Gomez <german.gomez@arm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 331/381] perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
-Date:   Mon, 15 May 2023 18:29:42 +0200
-Message-Id: <20230515161751.770562681@linuxfoundation.org>
+Subject: [PATCH 5.15 106/134] drm/msm/adreno: fix runtime PM imbalance at gpu load
+Date:   Mon, 15 May 2023 18:29:43 +0200
+Message-Id: <20230515161706.648821122@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,54 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <Markus.Elfring@web.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c160118a90d4acf335993d8d59b02ae2147a524e ]
+[ Upstream commit 0d997f95b70f98987ae031a89677c13e0e223670 ]
 
-Addresses of two data structure members were determined before
-corresponding null pointer checks in the implementation of the function
-“sort__sym_from_cmp”.
+A recent commit moved enabling of runtime PM to GPU load time (first
+open()) but failed to update the error paths so that runtime PM is
+disabled if initialisation of the GPU fails. This would trigger a
+warning about the unbalanced disable count on the next open() attempt.
 
-Thus avoid the risk for undefined behaviour by removing extra
-initialisations for the local variables “from_l” and “from_r” (also
-because they were already reassigned with the same value behind this
-pointer check).
+Note that pm_runtime_put_noidle() is sufficient to balance the usage
+count when pm_runtime_put_sync() fails (and is chosen over
+pm_runtime_resume_and_get() for consistency reasons).
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 1b9e97a2a95e4941 ("perf tools: Fix report -F symbol_from for data without branch info")
-Signed-off-by: <elfring@users.sourceforge.net>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/cocci/54a21fea-64e3-de67-82ef-d61b90ffad05@web.de/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 4b18299b3365 ("drm/msm/adreno: Defer enabling runpm until hw_init()")
+Cc: stable@vger.kernel.org      # 6.0
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/524971/
+Link: https://lore.kernel.org/r/20230303164807.13124-3-johan+linaro@kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/sort.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/adreno_device.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 5e9e96452b9e6..42806102010bb 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -873,8 +873,7 @@ static int hist_entry__dso_to_filter(struct hist_entry *he, int type,
- static int64_t
- sort__sym_from_cmp(struct hist_entry *left, struct hist_entry *right)
- {
--	struct addr_map_symbol *from_l = &left->branch_info->from;
--	struct addr_map_symbol *from_r = &right->branch_info->from;
-+	struct addr_map_symbol *from_l, *from_r;
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
+index afdfa9edbea3d..7c3d80e78fb8b 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -406,20 +406,21 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
  
- 	if (!left->branch_info || !right->branch_info)
- 		return cmp_null(left->branch_info, right->branch_info);
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0) {
+-		pm_runtime_put_sync(&pdev->dev);
++		pm_runtime_put_noidle(&pdev->dev);
+ 		DRM_DEV_ERROR(dev->dev, "Couldn't power up the GPU: %d\n", ret);
+-		return NULL;
++		goto err_disable_rpm;
+ 	}
+ 
+ 	mutex_lock(&gpu->lock);
+ 	ret = msm_gpu_hw_init(gpu);
+ 	mutex_unlock(&gpu->lock);
+-	pm_runtime_put_autosuspend(&pdev->dev);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev->dev, "gpu hw init failed: %d\n", ret);
+-		return NULL;
++		goto err_put_rpm;
+ 	}
+ 
++	pm_runtime_put_autosuspend(&pdev->dev);
++
+ #ifdef CONFIG_DEBUG_FS
+ 	if (gpu->funcs->debugfs_init) {
+ 		gpu->funcs->debugfs_init(gpu, dev->primary);
+@@ -428,6 +429,13 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
+ #endif
+ 
+ 	return gpu;
++
++err_put_rpm:
++	pm_runtime_put_sync(&pdev->dev);
++err_disable_rpm:
++	pm_runtime_disable(&pdev->dev);
++
++	return NULL;
+ }
+ 
+ static void set_gpu_pdev(struct drm_device *dev,
 -- 
 2.39.2
 
