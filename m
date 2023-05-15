@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04FC4703753
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28488703376
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243944AbjEORTm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35558 "EHLO
+        id S242799AbjEOQhV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243927AbjEORTW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A0B10E65
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:27 -0700 (PDT)
+        with ESMTP id S242723AbjEOQhU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0BF7170C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4354962C17
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C56C433A1;
-        Mon, 15 May 2023 17:17:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B9F862823
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81149C4339B;
+        Mon, 15 May 2023 16:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171046;
-        bh=Ty7xaup1dXD+bIdBtOPIkp6yGaSWELaxes2zmfKj59g=;
+        s=korg; t=1684168638;
+        bh=8afgsrcNcw6Gj401uwuAQoUK/YFyVd649gWWMzrs7SQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hAT2FVVTiZNKrZoPE8LMCJOFw49ztcWC2dJwFwYqdubjIZBUdsVH4qI8nSm2zQruV
-         el+lXXaNbhKzkk+8hHFJu7tPErerlc1d0PnI7U2cM6Khc15YwVHKJ3uyESTHPlNRa4
-         e1ElkCtzEAgx1IYICIjwlty4E3p+7a6IOVwck2AA=
+        b=UE/5Qd6YE/ulxPr1t4QVCYTIArZ4FoH9glp5skDCtNb1rd2A8ButBgfmpO2MZ51ww
+         mclLW3MPWPBPSSl54crkM4lrjnkHcnnjGyUziTyU0w9b4SZEvklU9dnVUx+CI9E/u9
+         yU8Rj0XKB6q8F52vl5mTKxOVlJffdP9uaM95WZkU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 084/242] KVM: s390: fix race in gmap_make_secure()
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 4.14 113/116] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
 Date:   Mon, 15 May 2023 18:26:50 +0200
-Message-Id: <20230515161724.415577915@linuxfoundation.org>
+Message-Id: <20230515161701.988550652@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,94 +53,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: "Ilpo J�rvinen" <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit c148dc8e2fa403be501612ee409db866eeed35c0 ]
+There's a potential race before THRE/TEMT deasserts when DMA Tx is
+starting up (or the next batch of continuous Tx is being submitted).
+This can lead to misdetecting Tx empty condition.
 
-Fix a potential race in gmap_make_secure() and remove the last user of
-follow_page() without FOLL_GET.
+It is entirely normal for THRE/TEMT to be set for some time after the
+DMA Tx had been setup in serial8250_tx_dma(). As Tx side is definitely
+not empty at that point, it seems incorrect for serial8250_tx_empty()
+claim Tx is empty.
 
-The old code is locking something it doesn't have a reference to, and
-as explained by Jason and David in this discussion:
-https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
-it can lead to all kind of bad things, including the page getting
-unmapped (MADV_DONTNEED), freed, reallocated as a larger folio and the
-unlock_page() would target the wrong bit.
-There is also another race with the FOLL_WRITE, which could race
-between the follow_page() and the get_locked_pte().
+Fix the race by also checking in serial8250_tx_empty() whether there's
+DMA Tx active.
 
-The main point is to remove the last use of follow_page() without
-FOLL_GET or FOLL_PIN, removing the races can be considered a nice
-bonus.
+Note: This fix only addresses in-kernel race mainly to make using
+TCSADRAIN/FLUSH robust. Userspace can still cause other races but they
+seem userspace concurrency control problems.
 
-Link: https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20230428092753.27913-2-imbrenda@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230317113318.31327-3-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 146a37e05d620cef4ad430e5d1c9c077fe6fa76f)
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/uv.c | 32 +++++++++++---------------------
- 1 file changed, 11 insertions(+), 21 deletions(-)
+ drivers/tty/serial/8250/8250.h      |   12 ++++++++++++
+ drivers/tty/serial/8250/8250_port.c |   12 +++++++++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index 9f18a4af9c131..cb2ee06df286c 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -192,21 +192,10 @@ static int expected_page_refs(struct page *page)
- 	return res;
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -221,6 +221,13 @@ extern int serial8250_rx_dma(struct uart
+ extern void serial8250_rx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_request_dma(struct uart_8250_port *);
+ extern void serial8250_release_dma(struct uart_8250_port *);
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	return dma && dma->tx_running;
++}
+ #else
+ static inline int serial8250_tx_dma(struct uart_8250_port *p)
+ {
+@@ -236,6 +243,11 @@ static inline int serial8250_request_dma
+ 	return -1;
+ }
+ static inline void serial8250_release_dma(struct uart_8250_port *p) { }
++
++static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
++{
++	return false;
++}
+ #endif
+ 
+ static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1968,19 +1968,25 @@ static int serial8250_tx_threshold_handl
+ static unsigned int serial8250_tx_empty(struct uart_port *port)
+ {
+ 	struct uart_8250_port *up = up_to_u8250p(port);
++	unsigned int result = 0;
+ 	unsigned long flags;
+ 	unsigned int lsr;
+ 
+ 	serial8250_rpm_get(up);
+ 
+ 	spin_lock_irqsave(&port->lock, flags);
+-	lsr = serial_port_in(port, UART_LSR);
+-	up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
++	if (!serial8250_tx_dma_running(up)) {
++		lsr = serial_port_in(port, UART_LSR);
++		up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
++
++		if ((lsr & BOTH_EMPTY) == BOTH_EMPTY)
++			result = TIOCSER_TEMT;
++	}
+ 	spin_unlock_irqrestore(&port->lock, flags);
+ 
+ 	serial8250_rpm_put(up);
+ 
+-	return (lsr & BOTH_EMPTY) == BOTH_EMPTY ? TIOCSER_TEMT : 0;
++	return result;
  }
  
--static int make_secure_pte(pte_t *ptep, unsigned long addr,
--			   struct page *exp_page, struct uv_cb_header *uvcb)
-+static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
- {
--	pte_t entry = READ_ONCE(*ptep);
--	struct page *page;
- 	int expected, cc = 0;
- 
--	if (!pte_present(entry))
--		return -ENXIO;
--	if (pte_val(entry) & _PAGE_INVALID)
--		return -ENXIO;
--
--	page = pte_page(entry);
--	if (page != exp_page)
--		return -ENXIO;
- 	if (PageWriteback(page))
- 		return -EAGAIN;
- 	expected = expected_page_refs(page);
-@@ -304,17 +293,18 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 		goto out;
- 
- 	rc = -ENXIO;
--	page = follow_page(vma, uaddr, FOLL_WRITE);
--	if (IS_ERR_OR_NULL(page))
--		goto out;
--
--	lock_page(page);
- 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
--	if (should_export_before_import(uvcb, gmap->mm))
--		uv_convert_from_secure(page_to_phys(page));
--	rc = make_secure_pte(ptep, uaddr, page, uvcb);
-+	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
-+		page = pte_page(*ptep);
-+		rc = -EAGAIN;
-+		if (trylock_page(page)) {
-+			if (should_export_before_import(uvcb, gmap->mm))
-+				uv_convert_from_secure(page_to_phys(page));
-+			rc = make_page_secure(page, uvcb);
-+			unlock_page(page);
-+		}
-+	}
- 	pte_unmap_unlock(ptep, ptelock);
--	unlock_page(page);
- out:
- 	mmap_read_unlock(gmap->mm);
- 
--- 
-2.39.2
-
+ unsigned int serial8250_do_get_mctrl(struct uart_port *port)
 
 
