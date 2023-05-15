@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA49703352
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3003703AC4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242771AbjEOQfm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:35:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
+        id S241787AbjEORzW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242768AbjEOQfl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:41 -0400
+        with ESMTP id S245017AbjEORy5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:54:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603633C12
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02EE1A382
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F255F62805
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AEDC433D2;
-        Mon, 15 May 2023 16:35:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8010D62FB2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAF0C4339C;
+        Mon, 15 May 2023 17:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168539;
-        bh=bWTEZj0+X4yIFUJTsuf0oUXxSSD0CE1N/62KF8kIN2c=;
+        s=korg; t=1684173171;
+        bh=T/Zz5UIkW10aOfxXBaq89zgCFFGHVwIPW8esAUjMMGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eTjPrZ6ug/otTAt1jWgMVni4h5S8ikxtzFTmyQdXT/oitTKHf4lM5gKOYUBP7yKeK
-         gkHU6xr3Xtu7ngn60UBW8dDMXIDRPjnffAQ5zmineFHpxvE46eRJ9N8+lViG8HLj58
-         3SHYze6Tibmlqs2ZQKsfPmBv9pIZKSqa5pyD9qTM=
+        b=nWQIrT7PHTB87IET381gBjzh7/lhej5jtnHPCbxu6ery5ycMdpqU4Ti44zV7RQ2af
+         7ra9Nha9eQ3JCgBt8eN4JVFSJjLanjcEZCT/K0jslB6uCWwoa1j8jHAXGUm77H2BHY
+         2M8c7AHJJnD6DZitExyuyZAIi3Q22j9U1u3mPJj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 4.14 082/116] perf auxtrace: Fix address filter entire kernel size
+        patches@lists.linux.dev,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH 5.4 001/282] counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
 Date:   Mon, 15 May 2023 18:26:19 +0200
-Message-Id: <20230515161700.995259060@linuxfoundation.org>
+Message-Id: <20230515161722.202667889@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -55,65 +55,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-commit 1f9f33ccf0320be21703d9195dd2b36a1c9a07cb upstream.
+commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
 
-kallsyms is not completely in address order.
+The Counter (CNTR) register is 24 bits wide, but we can have an
+effective 25-bit count value by setting bit 24 to the XOR of the Borrow
+flag and Carry flag. The flags can be read from the FLAG register, but a
+race condition exists: the Borrow flag and Carry flag are instantaneous
+and could change by the time the count value is read from the CNTR
+register.
 
-In find_entire_kern_cb(), calculate the kernel end from the maximum
-address not the last symbol.
+Since the race condition could result in an incorrect 25-bit count
+value, remove support for 25-bit count values from this driver;
+hard-coded maximum count values are replaced by a LS7267_CNTR_MAX define
+for consistency and clarity.
 
-Example:
-
- Before:
-
-    $ sudo cat /proc/kallsyms | grep ' [twTw] ' | tail -1
-    ffffffffc00b8bd0 t bpf_prog_6deef7357e7b4530    [bpf]
-    $ sudo cat /proc/kallsyms | grep ' [twTw] ' | sort | tail -1
-    ffffffffc15e0cc0 t iwl_mvm_exit [iwlmvm]
-    $ perf.d093603a05aa record -v --kcore -e intel_pt// --filter 'filter *' -- uname |& grep filter
-    Address filter: filter 0xffffffff93200000/0x2ceba000
-
- After:
-
-    $ perf.8fb0f7a01f8e record -v --kcore -e intel_pt// --filter 'filter *' -- uname |& grep filter
-    Address filter: filter 0xffffffff93200000/0x2e3e2000
-
-Fixes: 1b36c03e356936d6 ("perf record: Add support for using symbols in address filters")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230403154831.8651-2-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 104-QUAD-8")
+Cc: <stable@vger.kernel.org> # 6.1.x
+Cc: <stable@vger.kernel.org> # 6.2.x
+Link: https://lore.kernel.org/r/20230312231554.134858-1-william.gray@linaro.org/
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/auxtrace.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/counter/104-quad-8.c |   30 ++++--------------------------
+ 1 file changed, 4 insertions(+), 26 deletions(-)
 
---- a/tools/perf/util/auxtrace.c
-+++ b/tools/perf/util/auxtrace.c
-@@ -1776,6 +1776,7 @@ static int find_entire_kern_cb(void *arg
- 			       char type, u64 start)
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -57,10 +57,6 @@ struct quad8_iio {
+ 
+ #define QUAD8_REG_CHAN_OP 0x11
+ #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
+-/* Borrow Toggle flip-flop */
+-#define QUAD8_FLAG_BT BIT(0)
+-/* Carry Toggle flip-flop */
+-#define QUAD8_FLAG_CT BIT(1)
+ /* Error flag */
+ #define QUAD8_FLAG_E BIT(4)
+ /* Up/Down flag */
+@@ -97,9 +93,6 @@ static int quad8_read_raw(struct iio_dev
  {
- 	struct sym_args *args = arg;
-+	u64 size;
+ 	struct quad8_iio *const priv = iio_priv(indio_dev);
+ 	const int base_offset = priv->base + 2 * chan->channel;
+-	unsigned int flags;
+-	unsigned int borrow;
+-	unsigned int carry;
+ 	int i;
  
- 	if (!symbol_type__is_a(type, MAP__FUNCTION))
- 		return 0;
-@@ -1785,7 +1786,9 @@ static int find_entire_kern_cb(void *arg
- 		args->start = start;
- 	}
- 	/* Don't know exactly where the kernel ends, so we add a page */
--	args->size = round_up(start, page_size) + page_size - args->start;
-+	size = round_up(start, page_size) + page_size - args->start;
-+	if (size > args->size)
-+		args->size = size;
+ 	switch (mask) {
+@@ -110,12 +103,7 @@ static int quad8_read_raw(struct iio_dev
+ 			return IIO_VAL_INT;
+ 		}
  
- 	return 0;
+-		flags = inb(base_offset + 1);
+-		borrow = flags & QUAD8_FLAG_BT;
+-		carry = !!(flags & QUAD8_FLAG_CT);
+-
+-		/* Borrow XOR Carry effectively doubles count range */
+-		*val = (borrow ^ carry) << 24;
++		*val = 0;
+ 
+ 		mutex_lock(&priv->lock);
+ 
+@@ -639,19 +627,9 @@ static int quad8_count_read(struct count
+ {
+ 	struct quad8_iio *const priv = counter->priv;
+ 	const int base_offset = priv->base + 2 * count->id;
+-	unsigned int flags;
+-	unsigned int borrow;
+-	unsigned int carry;
+-	unsigned long position;
++	unsigned long position = 0;
+ 	int i;
+ 
+-	flags = inb(base_offset + 1);
+-	borrow = flags & QUAD8_FLAG_BT;
+-	carry = !!(flags & QUAD8_FLAG_CT);
+-
+-	/* Borrow XOR Carry effectively doubles count range */
+-	position = (unsigned long)(borrow ^ carry) << 24;
+-
+ 	mutex_lock(&priv->lock);
+ 
+ 	/* Reset Byte Pointer; transfer Counter to Output Latch */
+@@ -1204,8 +1182,8 @@ static ssize_t quad8_count_ceiling_read(
+ 
+ 	mutex_unlock(&priv->lock);
+ 
+-	/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
+-	return sprintf(buf, "33554431\n");
++	/* By default 0xFFFFFF (24 bits unsigned) is maximum count */
++	return sprintf(buf, "16777215\n");
  }
+ 
+ static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
 
 
