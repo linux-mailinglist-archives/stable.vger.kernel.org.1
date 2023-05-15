@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0EB17034B2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBFB7038F1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243072AbjEOQvm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:51:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
+        id S244401AbjEORgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243129AbjEOQvP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3835B91
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:04 -0700 (PDT)
+        with ESMTP id S244412AbjEORgc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE83514903
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71A6362984
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66483C433EF;
-        Mon, 15 May 2023 16:51:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8450262246
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFB9C433EF;
+        Mon, 15 May 2023 17:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169463;
-        bh=pT+aH9WvcAJbgoqzADH5KCtQV4XQFy2qkP6YOaLD26g=;
+        s=korg; t=1684172049;
+        bh=o+KMXiCq1DBJWT7LA7RDUDmk+R1++gOk+TuPuIQz8t0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SyrkLbJMxUAt7vq/ulSwqV76bZsftSDKQd5gx2v2NsGMqn0exMKYmgoPRkUsbyj+g
-         cR0SSxemCSBvAsu7mUZ1sICV3THqIbUjmmTTyieeS+TVCPK5XWEjCHw8J/jOYpU4/k
-         6o4mTO5ax5979JO6mXAzkAA1btIqRg+bDfVin1Yw=
+        b=f1LMW6b8D2pZ6OjSuKVwLY4WDTW06xDnkyUOadqMz9eoXYDS28QlmUzXl+cFNyE3S
+         PlXEMIVjixTATDD2Y6+rUDGdUNBwEeOdHzU7rMqN+nX/2S/3uoeNTIQgZTewZ1speW
+         MD/UnP6SeAFKlT5MnyfYWNkFiJcglul2KfpownIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 066/246] octeontx2-af: Fix start and end bit for scan config
+        patches@lists.linux.dev,
+        Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 027/381] ext4: use ext4_journal_start/stop for fast commit transactions
 Date:   Mon, 15 May 2023 18:24:38 +0200
-Message-Id: <20230515161724.557375798@linuxfoundation.org>
+Message-Id: <20230515161738.008423425@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,42 +54,178 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Harshad Shirwadkar <harshadshirwadkar@gmail.com>
 
-[ Upstream commit c60a6b90e7890453f09e0d2163d6acadabe3415b ]
+commit 2729cfdcfa1cc49bef5a90d046fa4a187fdfcc69 upstream.
 
-In the current driver, NPC exact match feature was not getting
-enabled as configured bit was not read properly.
-for_each_set_bit_from() need end bit as one bit post
-position in the bit map to read NPC exact nibble enable
-bits properly. This patch fixes the same.
+This patch drops all calls to ext4_fc_start_update() and
+ext4_fc_stop_update(). To ensure that there are no ongoing journal
+updates during fast commit, we also make jbd2_fc_begin_commit() lock
+journal for updates. This way we don't have to maintain two different
+transaction start stop APIs for fast commit and full commit. This
+patch doesn't remove the functions altogether since in future we want
+to have inode level locking for fast commits.
 
-Fixes: b747923afff8 ("octeontx2-af: Exact match support")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Harshad Shirwadkar <harshadshirwadkar@gmail.com>
+Link: https://lore.kernel.org/r/20211223202140.2061101-2-harshads@google.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ext4/acl.c     |    2 --
+ fs/ext4/extents.c |    2 --
+ fs/ext4/file.c    |    4 ----
+ fs/ext4/inode.c   |    7 +------
+ fs/ext4/ioctl.c   |    8 +-------
+ fs/jbd2/journal.c |    2 ++
+ 6 files changed, 4 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index 006beb5cf98dd..f15efd41972ee 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -594,8 +594,7 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
- 	 */
- 	masked_cfg = cfg & NPC_EXACT_NIBBLE;
- 	bitnr = NPC_EXACT_NIBBLE_START;
--	for_each_set_bit_from(bitnr, (unsigned long *)&masked_cfg,
--			      NPC_EXACT_NIBBLE_START) {
-+	for_each_set_bit_from(bitnr, (unsigned long *)&masked_cfg, NPC_EXACT_NIBBLE_END + 1) {
- 		npc_scan_exact_result(mcam, bitnr, key_nibble, intf);
- 		key_nibble++;
+--- a/fs/ext4/acl.c
++++ b/fs/ext4/acl.c
+@@ -242,7 +242,6 @@ retry:
+ 	handle = ext4_journal_start(inode, EXT4_HT_XATTR, credits);
+ 	if (IS_ERR(handle))
+ 		return PTR_ERR(handle);
+-	ext4_fc_start_update(inode);
+ 
+ 	if ((type == ACL_TYPE_ACCESS) && acl) {
+ 		error = posix_acl_update_mode(inode, &mode, &acl);
+@@ -260,7 +259,6 @@ retry:
  	}
--- 
-2.39.2
-
+ out_stop:
+ 	ext4_journal_stop(handle);
+-	ext4_fc_stop_update(inode);
+ 	if (error == -ENOSPC && ext4_should_retry_alloc(inode->i_sb, &retries))
+ 		goto retry;
+ 	return error;
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4694,7 +4694,6 @@ long ext4_fallocate(struct file *file, i
+ 		     FALLOC_FL_INSERT_RANGE))
+ 		return -EOPNOTSUPP;
+ 
+-	ext4_fc_start_update(inode);
+ 	inode_lock(inode);
+ 	ret = ext4_convert_inline_data(inode);
+ 	inode_unlock(inode);
+@@ -4764,7 +4763,6 @@ out:
+ 	inode_unlock(inode);
+ 	trace_ext4_fallocate_exit(inode, offset, max_blocks, ret);
+ exit:
+-	ext4_fc_stop_update(inode);
+ 	return ret;
+ }
+ 
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -260,7 +260,6 @@ static ssize_t ext4_buffered_write_iter(
+ 	if (iocb->ki_flags & IOCB_NOWAIT)
+ 		return -EOPNOTSUPP;
+ 
+-	ext4_fc_start_update(inode);
+ 	inode_lock(inode);
+ 	ret = ext4_write_checks(iocb, from);
+ 	if (ret <= 0)
+@@ -272,7 +271,6 @@ static ssize_t ext4_buffered_write_iter(
+ 
+ out:
+ 	inode_unlock(inode);
+-	ext4_fc_stop_update(inode);
+ 	if (likely(ret > 0)) {
+ 		iocb->ki_pos += ret;
+ 		ret = generic_write_sync(iocb, ret);
+@@ -559,9 +557,7 @@ static ssize_t ext4_dio_write_iter(struc
+ 			goto out;
+ 		}
+ 
+-		ext4_fc_start_update(inode);
+ 		ret = ext4_orphan_add(handle, inode);
+-		ext4_fc_stop_update(inode);
+ 		if (ret) {
+ 			ext4_journal_stop(handle);
+ 			goto out;
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5437,7 +5437,7 @@ int ext4_setattr(struct dentry *dentry,
+ 		if (error)
+ 			return error;
+ 	}
+-	ext4_fc_start_update(inode);
++
+ 	if ((ia_valid & ATTR_UID && !uid_eq(attr->ia_uid, inode->i_uid)) ||
+ 	    (ia_valid & ATTR_GID && !gid_eq(attr->ia_gid, inode->i_gid))) {
+ 		handle_t *handle;
+@@ -5461,7 +5461,6 @@ int ext4_setattr(struct dentry *dentry,
+ 
+ 		if (error) {
+ 			ext4_journal_stop(handle);
+-			ext4_fc_stop_update(inode);
+ 			return error;
+ 		}
+ 		/* Update corresponding info in inode so that everything is in
+@@ -5473,7 +5472,6 @@ int ext4_setattr(struct dentry *dentry,
+ 		error = ext4_mark_inode_dirty(handle, inode);
+ 		ext4_journal_stop(handle);
+ 		if (unlikely(error)) {
+-			ext4_fc_stop_update(inode);
+ 			return error;
+ 		}
+ 	}
+@@ -5488,12 +5486,10 @@ int ext4_setattr(struct dentry *dentry,
+ 			struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
+ 
+ 			if (attr->ia_size > sbi->s_bitmap_maxbytes) {
+-				ext4_fc_stop_update(inode);
+ 				return -EFBIG;
+ 			}
+ 		}
+ 		if (!S_ISREG(inode->i_mode)) {
+-			ext4_fc_stop_update(inode);
+ 			return -EINVAL;
+ 		}
+ 
+@@ -5619,7 +5615,6 @@ err_out:
+ 		ext4_std_error(inode->i_sb, error);
+ 	if (!error)
+ 		error = rc;
+-	ext4_fc_stop_update(inode);
+ 	return error;
+ }
+ 
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -1322,13 +1322,7 @@ out:
+ 
+ long ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ {
+-	long ret;
+-
+-	ext4_fc_start_update(file_inode(filp));
+-	ret = __ext4_ioctl(filp, cmd, arg);
+-	ext4_fc_stop_update(file_inode(filp));
+-
+-	return ret;
++	return __ext4_ioctl(filp, cmd, arg);
+ }
+ 
+ #ifdef CONFIG_COMPAT
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -757,6 +757,7 @@ int jbd2_fc_begin_commit(journal_t *jour
+ 	}
+ 	journal->j_flags |= JBD2_FAST_COMMIT_ONGOING;
+ 	write_unlock(&journal->j_state_lock);
++	jbd2_journal_lock_updates(journal);
+ 
+ 	return 0;
+ }
+@@ -768,6 +769,7 @@ EXPORT_SYMBOL(jbd2_fc_begin_commit);
+  */
+ static int __jbd2_fc_end_commit(journal_t *journal, tid_t tid, bool fallback)
+ {
++	jbd2_journal_unlock_updates(journal);
+ 	if (journal->j_fc_cleanup_callback)
+ 		journal->j_fc_cleanup_callback(journal, 0);
+ 	write_lock(&journal->j_state_lock);
 
 
