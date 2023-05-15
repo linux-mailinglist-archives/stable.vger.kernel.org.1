@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8D87039E1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D157703B45
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244712AbjEORqh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
+        id S242233AbjEOSBf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244630AbjEORqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BD7E78
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:27 -0700 (PDT)
+        with ESMTP id S243467AbjEOSBD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0487B17954
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A8D962E96
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC7FC433EF;
-        Mon, 15 May 2023 17:44:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 331E963001
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250ADC433EF;
+        Mon, 15 May 2023 17:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172666;
-        bh=SwsQ3lFAvKOLFqaUS0or3M1VMwdweoEdWwZ8Dajs8ao=;
+        s=korg; t=1684173457;
+        bh=JIbDUYnII4i271qjKieXGt2Oy4nzk7VKyLk58eaihxg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lBxy86Tk64kFBDbPM0dTvv8PPLeK3ryQY6fDFS+6SI40/VizJkNTCp2VME1zEB/Hi
-         Bt3K0U9IOFYw2qp2+JzE9AhnlQkXJXm1RfQh3OuY4CKdHYmaamDWvuJpuUmd0hku8r
-         hzOf4wFddqT8LQ8qApf/k/i9UxIoJ6ve7c7ykWkw=
+        b=TUikO0PjvtVd0zjtOuK1SkUwRbOTIXoGqn8EMZwzBgyvZvI5i7YF86cjGteOIB1xo
+         geEFQ8rJWjdCA/hJSRwJE5w1s+j8nR+hgIXOF6IPouvB8bADMwa4jNxgQ5AgHmAIkj
+         M4dvgSTkxfLA/UuXvwkMsWPiXxbJZP3uSOlaCH10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        patches@lists.linux.dev, Gusenleitner Klaus <gus@keba.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 200/381] usb: gadget: udc: renesas_usb3: Fix use after free bug in renesas_usb3_remove due to race condition
+Subject: [PATCH 5.4 073/282] tick/common: Align tick period with the HZ tick.
 Date:   Mon, 15 May 2023 18:27:31 +0200
-Message-Id: <20230515161745.856131440@linuxfoundation.org>
+Message-Id: <20230515161724.423385256@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,59 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 2b947f8769be8b8181dc795fd292d3e7120f5204 ]
+[ Upstream commit e9523a0d81899361214d118ad60ef76f0e92f71d ]
 
-In renesas_usb3_probe, role_work is bound with renesas_usb3_role_work.
-renesas_usb3_start will be called to start the work.
+With HIGHRES enabled tick_sched_timer() is programmed every jiffy to
+expire the timer_list timers. This timer is programmed accurate in
+respect to CLOCK_MONOTONIC so that 0 seconds and nanoseconds is the
+first tick and the next one is 1000/CONFIG_HZ ms later. For HZ=250 it is
+every 4 ms and so based on the current time the next tick can be
+computed.
 
-If we remove the driver which will call usbhs_remove, there may be
-an unfinished work. The possible sequence is as follows:
+This accuracy broke since the commit mentioned below because the jiffy
+based clocksource is initialized with higher accuracy in
+read_persistent_wall_and_boot_offset(). This higher accuracy is
+inherited during the setup in tick_setup_device(). The timer still fires
+every 4ms with HZ=250 but timer is no longer aligned with
+CLOCK_MONOTONIC with 0 as it origin but has an offset in the us/ns part
+of the timestamp. The offset differs with every boot and makes it
+impossible for user land to align with the tick.
 
-CPU0                  			CPU1
+Align the tick period with CLOCK_MONOTONIC ensuring that it is always a
+multiple of 1000/CONFIG_HZ ms.
 
-                    			 renesas_usb3_role_work
-renesas_usb3_remove
-usb_role_switch_unregister
-device_unregister
-kfree(sw)
-//free usb3->role_sw
-                    			 usb_role_switch_set_role
-                    			 //use usb3->role_sw
-
-The usb3->role_sw could be freed under such circumstance and then
-used in usb_role_switch_set_role.
-
-This bug was found by static analysis. And note that removing a
-driver is a root-only operation, and should never happen in normal
-case. But the root user may directly remove the device which
-will also trigger the remove function.
-
-Fix it by canceling the work before cleanup in the renesas_usb3_remove.
-
-Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://lore.kernel.org/r/20230320062931.505170-1-zyytlz.wz@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 857baa87b6422 ("sched/clock: Enable sched clock early")
+Reported-by: Gusenleitner Klaus <gus@keba.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/20230406095735.0_14edn3@linutronix.de
+Link: https://lore.kernel.org/r/20230418122639.ikgfvu3f@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/tick-common.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
-index 601829a6b4bad..a10f41c4a3f2f 100644
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -2568,6 +2568,7 @@ static int renesas_usb3_remove(struct platform_device *pdev)
- 	debugfs_remove_recursive(usb3->dentry);
- 	device_remove_file(&pdev->dev, &dev_attr_role);
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 92bf99d558b48..2b7448ae5b478 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -216,9 +216,19 @@ static void tick_setup_device(struct tick_device *td,
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
++			ktime_t next_p;
++			u32 rem;
++
+ 			tick_do_timer_cpu = cpu;
  
-+	cancel_work_sync(&usb3->role_work);
- 	usb_role_switch_unregister(usb3->role_sw);
- 
- 	usb_del_gadget_udc(&usb3->gadget);
+-			tick_next_period = ktime_get();
++			next_p = ktime_get();
++			div_u64_rem(next_p, TICK_NSEC, &rem);
++			if (rem) {
++				next_p -= rem;
++				next_p += TICK_NSEC;
++			}
++
++			tick_next_period = next_p;
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
 -- 
 2.39.2
 
