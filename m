@@ -2,52 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52DD0703625
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D8470335B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243589AbjEORHM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47524 "EHLO
+        id S242775AbjEOQgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:36:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243652AbjEORG4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:56 -0400
+        with ESMTP id S242779AbjEOQgM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7168BD079
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EEE93C38
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A48C462AE4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86834C4339B;
-        Mon, 15 May 2023 17:05:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13F5C62803
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F344CC433D2;
+        Mon, 15 May 2023 16:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170323;
-        bh=CQLT/bsvAJd2jCdkCfQb3EdAHZfQbieJuhsfPHb1y0o=;
+        s=korg; t=1684168567;
+        bh=fm4ANcIVKjOawTKLX6tE4YaaVSDii09q5juDefNaC04=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qd7TtTRrxaU5ZM1Za82HUiv7BwVvZ/iV7Pv5A63Ut4CFpBXA6XanPIITM+hbTIBvq
-         f8J4MaSlF+kmDeBGn5TZQhZ05MdHcMc5k4xf+j8LSv+OWqBQPe6X8HzZEA27nv167j
-         b3Bp47Epumbqr9IPTZY0LN6KGkxJ/seF3pZGWGcc=
+        b=O7qURahFVkSgqZ/AzJgViE79O4sAaH4Ar+AI2q8ravzRu9XIuNFiKwRsS2EkaHTiD
+         qExMCh7qP1C8nC+uNUw3SDFWYbtcNWEsrRVlFrhI7AwMRSYEex4mz3cfIUTgFelTCk
+         S4QUAeevwJ9hwSeVjeIf1rE31cdrGRtUYTcswyZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@kernel.com>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/239] perf vendor events power9: Remove UTF-8 characters from JSON files
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 061/116] macintosh: via-pmu-led: requires ATA to be set
 Date:   Mon, 15 May 2023 18:25:58 +0200
-Message-Id: <20230515161724.526487240@linuxfoundation.org>
+Message-Id: <20230515161700.302533385@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -62,106 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
+[ Upstream commit 05dce4ba125336875cd3eed3c1503fa81cd2f691 ]
 
-Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
-events") added and updated power9 PMU JSON events. However some of the
-JSON events which are part of other.json and pipeline.json files,
-contains UTF-8 characters in their brief description.  Having UTF-8
-character could breaks the perf build on some distros.
+LEDS_TRIGGER_DISK depends on ATA, so selecting LEDS_TRIGGER_DISK
+when ATA is not set/enabled causes a Kconfig warning:
 
-Fix this issue by removing the UTF-8 characters from other.json and
-pipeline.json files.
+WARNING: unmet direct dependencies detected for LEDS_TRIGGER_DISK
+  Depends on [n]: NEW_LEDS [=y] && LEDS_TRIGGERS [=y] && ATA [=n]
+  Selected by [y]:
+  - ADB_PMU_LED_DISK [=y] && MACINTOSH_DRIVERS [=y] && ADB_PMU_LED [=y] && LEDS_CLASS [=y]
 
-Result without the fix:
+Fix this by making ADB_PMU_LED_DISK depend on ATA.
 
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
+Seen on both PPC32 and PPC64.
 
-Result with the fix:
-
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 0e865a80c135 ("macintosh: Remove dependency on IDE_GD_ATA if ADB_PMU_LED_DISK is selected")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230223014241.20878-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
- tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/macintosh/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 3f69422c21f99..f10bd554521a0 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -1417,7 +1417,7 @@
-   {
-     "EventCode": "0x45054",
-     "EventName": "PM_FMA_CMPL",
--    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
-+    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
-   },
-   {
-     "EventCode": "0x201E8",
-@@ -2017,7 +2017,7 @@
-   {
-     "EventCode": "0xC0BC",
-     "EventName": "PM_LSU_FLUSH_OTHER",
--    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
-+    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
-   },
-   {
-     "EventCode": "0x5094",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-index d0265f255de2b..723bffa41c448 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-@@ -442,7 +442,7 @@
-   {
-     "EventCode": "0x4D052",
-     "EventName": "PM_2FLOP_CMPL",
--    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
-+    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
-   },
-   {
-     "EventCode": "0x1F142",
+diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+index 5e47d91da5193..aa42a41ba4389 100644
+--- a/drivers/macintosh/Kconfig
++++ b/drivers/macintosh/Kconfig
+@@ -94,6 +94,7 @@ config ADB_PMU_LED
+ 
+ config ADB_PMU_LED_DISK
+ 	bool "Use front LED as DISK LED by default"
++	depends on ATA
+ 	depends on ADB_PMU_LED
+ 	depends on LEDS_CLASS
+ 	select LEDS_TRIGGERS
 -- 
 2.39.2
 
