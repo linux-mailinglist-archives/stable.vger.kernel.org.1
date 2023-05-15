@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE13703AEC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE86703450
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238964AbjEOR5N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:57:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53852 "EHLO
+        id S242974AbjEOQqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243918AbjEOR4D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:03 -0400
+        with ESMTP id S242981AbjEOQql (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F1811CA74
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F9F5244
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80CF062216
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E9EC433D2;
-        Mon, 15 May 2023 17:54:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 745596290B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D26C433EF;
+        Mon, 15 May 2023 16:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173249;
-        bh=DoeMCd1uStccZCBdClFYyd9psEmXblRdmGQVJ48UocU=;
+        s=korg; t=1684169199;
+        bh=DyI88KyUF4ckzNnoo/l+FNcfVJaHFfmKZ+rkuO2U6Pk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SHlh9fLewjLGQ1vXZ0VWG/3EsU1vck1xMRqJSozTho4DIGzElaoARs4xN+/1nxTok
-         XXLEupbcxOOwlfRdtghIyaSCtJzqiio+te3BS4swWV0xjrrH1IXhPWGWmlMcCcSBVe
-         uKQiJsmQm1ByRF2C93MePsNYXJI5Swg4g2FmamKQ=
+        b=XI4dO/9TDtQVtc8lMNRykK49GzCpS6s1SkrdBMF67otrNgzpyxKXUPD4XdCSJt5lJ
+         M1A4abCO4oS7JHOdP4VnYMLDd/onpHhezWUCE2d6umLBx+R28TDqwYu56tO4EhrQ70
+         MN7XAskqzj0i1FoTH6RQuj5JPvX+ZZ0SHRLJi83Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
-        Chao Yu <chao@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        syzbot+aafb3f37cfeb6534c4ac@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 033/282] erofs: stop parsing non-compact HEAD index if clusterofs is invalid
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 4.19 174/191] ARM: dts: exynos: fix WM8960 clock name in Itop Elite
 Date:   Mon, 15 May 2023 18:26:51 +0200
-Message-Id: <20230515161723.267554103@linuxfoundation.org>
+Message-Id: <20230515161713.755395604@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +53,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit cc4efd3dd2ac9f89143e5d881609747ecff04164 ]
+commit 6c950c20da38debf1ed531e0b972bd8b53d1c11f upstream.
 
-Syzbot generated a crafted image [1] with a non-compact HEAD index of
-clusterofs 33024 while valid numbers should be 0 ~ lclustersize-1,
-which causes the following unexpected behavior as below:
+The WM8960 Linux driver expects the clock to be named "mclk".  Otherwise
+the clock will be ignored and not prepared/enabled by the driver.
 
- BUG: unable to handle page fault for address: fffff52101a3fff9
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 23ffed067 P4D 23ffed067 PUD 0
- Oops: 0000 [#1] PREEMPT SMP KASAN
- CPU: 1 PID: 4398 Comm: kworker/u5:1 Not tainted 6.3.0-rc6-syzkaller-g09a9639e56c0 #0
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
- Workqueue: erofs_worker z_erofs_decompressqueue_work
- RIP: 0010:z_erofs_decompress_queue+0xb7e/0x2b40
- ...
- Call Trace:
-  <TASK>
-  z_erofs_decompressqueue_work+0x99/0xe0
-  process_one_work+0x8f6/0x1170
-  worker_thread+0xa63/0x1210
-  kthread+0x270/0x300
-  ret_from_fork+0x1f/0x30
-
-Note that normal images or images using compact indexes are not
-impacted.  Let's fix this now.
-
-[1] https://lore.kernel.org/r/000000000000ec75b005ee97fbaa@google.com
-
-Reported-and-tested-by: syzbot+aafb3f37cfeb6534c4ac@syzkaller.appspotmail.com
-Fixes: 02827e1796b3 ("staging: erofs: add erofs_map_blocks_iter")
-Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20230410173714.104604-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 339b2fb36a67 ("ARM: dts: exynos: Add TOPEET itop elite based board")
+Link: https://lore.kernel.org/r/20230217150627.779764-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/exynos4412-itop-elite.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index fff5741007214..b5ee58fdd82f3 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -179,6 +179,10 @@ static int vle_legacy_load_cluster_from_disk(struct z_erofs_maprecorder *m,
- 	case Z_EROFS_VLE_CLUSTER_TYPE_PLAIN:
- 	case Z_EROFS_VLE_CLUSTER_TYPE_HEAD:
- 		m->clusterofs = le16_to_cpu(di->di_clusterofs);
-+		if (m->clusterofs >= 1 << vi->z_logical_clusterbits) {
-+			DBG_BUGON(1);
-+			return -EFSCORRUPTED;
-+		}
- 		m->pblk = le32_to_cpu(di->di_u.blkaddr);
- 		break;
- 	default:
--- 
-2.39.2
-
+--- a/arch/arm/boot/dts/exynos4412-itop-elite.dts
++++ b/arch/arm/boot/dts/exynos4412-itop-elite.dts
+@@ -184,7 +184,7 @@
+ 		compatible = "wlf,wm8960";
+ 		reg = <0x1a>;
+ 		clocks = <&pmu_system_controller 0>;
+-		clock-names = "MCLK1";
++		clock-names = "mclk";
+ 		wlf,shared-lrclk;
+ 		#sound-dai-cells = <0>;
+ 	};
 
 
