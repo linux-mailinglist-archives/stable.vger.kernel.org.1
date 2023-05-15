@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A39D67034B7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 347987038FC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:37:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243029AbjEOQvw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55712 "EHLO
+        id S244487AbjEORhU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:37:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243163AbjEOQv2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:28 -0400
+        with ESMTP id S242536AbjEORg7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836FD61B4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B82514E56
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1A2E62988
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A423AC433D2;
-        Mon, 15 May 2023 16:51:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37E2162DA3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258C5C433D2;
+        Mon, 15 May 2023 17:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169479;
-        bh=38VOvIjYb8mF1p9TGzQuNVI0AQz2UA/nhKziWfKr+Gc=;
+        s=korg; t=1684172067;
+        bh=XmcK61++eq3I1ivCFoKSwIBTROMsf1phJzvHxWTo/XA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sq5QpIYo1n+35TgaesQhQACzL1MFEyGMbHLwHHDR/uo4UmyygNaqPo6N4phKXzxy4
-         xrSiGHQsWWzS6ImxUI+RbhnPoMJAzhBPJCvcxl8g0YhoJ2+6LaQUfAQoAX3K7lrnWb
-         h6DCuqcrOUpZ8iuC5bIA+N1M4Pff+d3SRRdh7z8s=
+        b=fCb3cQoP5b4QgFiOxjL9GMHid2UmsNjYiAumFXkk8DnfxhjkjmBsK1hAUdqNhODTU
+         TkmRjIGTIjKBEyegwMjNjBWoYw3hYCcp4aQZ412k0aSAT5bHuBmb46xueHgsoLeBPb
+         OjAg0cGWxFNiHSb39El0mgCw/ALIwSPGlr5j7HjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 071/246] octeontx2-af: Update/Fix NPC field hash extract feature
+        patches@lists.linux.dev, Pavel Machek <pavel@denx.de>,
+        Corey Minyard <minyard@acm.org>
+Subject: [PATCH 5.10 032/381] ipmi:ssif: Add send_retries increment
 Date:   Mon, 15 May 2023 18:24:43 +0200
-Message-Id: <20230515161724.702958908@linuxfoundation.org>
+Message-Id: <20230515161738.249626143@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,197 +53,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Corey Minyard <minyard@acm.org>
 
-[ Upstream commit 406bed11fb91a0b35c26fe633d8700febaec6439 ]
+commit 6ce7995a43febe693d4894033c6e29314970646a upstream.
 
-1. As per previous implementation, mask and control parameter to
-generate the field hash value was not passed to the caller program.
-Updated the secret key mbox to share that information as well,
-as a part of the fix.
-2. Earlier implementation did not consider hash reduction of both
-source and destination IPv6 addresses. Only source IPv6 address
-was considered. This fix solves that and provides option to hash
+A recent change removed an increment of send_retries, re-add it.
 
-Fixes: 56d9f5fd2246 ("octeontx2-af: Use hashed field in MCAM key")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 95767ed78a18 ipmi:ssif: resend_msg() cannot fail
+Reported-by: Pavel Machek <pavel@denx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Corey Minyard <minyard@acm.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  | 16 +++++---
- .../marvell/octeontx2/af/rvu_npc_hash.c       | 37 ++++++++++++-------
- .../marvell/octeontx2/af/rvu_npc_hash.h       |  6 +++
- 3 files changed, 41 insertions(+), 18 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 5727d67e0259c..0ce533848536e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -245,9 +245,9 @@ M(NPC_MCAM_READ_BASE_RULE, 0x6011, npc_read_base_steer_rule,            \
- M(NPC_MCAM_GET_STATS, 0x6012, npc_mcam_entry_stats,                     \
- 				   npc_mcam_get_stats_req,              \
- 				   npc_mcam_get_stats_rsp)              \
--M(NPC_GET_SECRET_KEY, 0x6013, npc_get_secret_key,                     \
--				   npc_get_secret_key_req,              \
--				   npc_get_secret_key_rsp)              \
-+M(NPC_GET_FIELD_HASH_INFO, 0x6013, npc_get_field_hash_info,                     \
-+				   npc_get_field_hash_info_req,              \
-+				   npc_get_field_hash_info_rsp)              \
- M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
- 				   npc_get_field_status_req,              \
- 				   npc_get_field_status_rsp)              \
-@@ -1524,14 +1524,20 @@ struct npc_mcam_get_stats_rsp {
- 	u8 stat_ena; /* enabled */
- };
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -564,8 +564,10 @@ static void retry_timeout(struct timer_l
  
--struct npc_get_secret_key_req {
-+struct npc_get_field_hash_info_req {
- 	struct mbox_msghdr hdr;
- 	u8 intf;
- };
- 
--struct npc_get_secret_key_rsp {
-+struct npc_get_field_hash_info_rsp {
- 	struct mbox_msghdr hdr;
- 	u64 secret_key[3];
-+#define NPC_MAX_HASH 2
-+#define NPC_MAX_HASH_MASK 2
-+	/* NPC_AF_INTF(0..1)_HASH(0..1)_MASK(0..1) */
-+	u64 hash_mask[NPC_MAX_INTF][NPC_MAX_HASH][NPC_MAX_HASH_MASK];
-+	/* NPC_AF_INTF(0..1)_HASH(0..1)_RESULT_CTRL */
-+	u64 hash_ctrl[NPC_MAX_INTF][NPC_MAX_HASH];
- };
- 
- enum ptp_op {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-index 6597af84aa367..68f813040363d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-@@ -110,8 +110,8 @@ static u64 npc_update_use_hash(int lt, int ld)
- 		 * in KEX_LD_CFG
- 		 */
- 		cfg = KEX_LD_CFG_USE_HASH(0x1, 0x03,
--					  ld ? 0x8 : 0x18,
--					  0x1, 0x0, 0x10);
-+					  ld ? 0x18 : 0x8,
-+					  0x1, 0x0, ld ? 0x14 : 0x10);
- 		break;
- 	}
- 
-@@ -134,7 +134,6 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
- 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
- 					u64 cfg = npc_update_use_hash(lt, ld);
- 
--					hash_cnt++;
- 					if (hash_cnt == NPC_MAX_HASH)
- 						return;
- 
-@@ -149,6 +148,8 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
- 							     mkex_hash->hash_mask[intf][ld][1]);
- 					SET_KEX_LD_HASH_CTRL(intf, ld,
- 							     mkex_hash->hash_ctrl[intf][ld]);
-+
-+					hash_cnt++;
- 				}
- 			}
- 		}
-@@ -171,7 +172,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
- 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
- 					u64 cfg = npc_update_use_hash(lt, ld);
- 
--					hash_cnt++;
- 					if (hash_cnt == NPC_MAX_HASH)
- 						return;
- 
-@@ -187,8 +187,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
- 					SET_KEX_LD_HASH_CTRL(intf, ld,
- 							     mkex_hash->hash_ctrl[intf][ld]);
- 					hash_cnt++;
--					if (hash_cnt == NPC_MAX_HASH)
--						return;
- 				}
- 		}
- 	}
-@@ -238,8 +236,8 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 			   struct flow_msg *omask)
- {
- 	struct npc_mcam_kex_hash *mkex_hash = rvu->kpu.mkex_hash;
--	struct npc_get_secret_key_req req;
--	struct npc_get_secret_key_rsp rsp;
-+	struct npc_get_field_hash_info_req req;
-+	struct npc_get_field_hash_info_rsp rsp;
- 	u64 ldata[2], cfg;
- 	u32 field_hash;
- 	u8 hash_idx;
-@@ -250,7 +248,7 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 	}
- 
- 	req.intf = intf;
--	rvu_mbox_handler_npc_get_secret_key(rvu, &req, &rsp);
-+	rvu_mbox_handler_npc_get_field_hash_info(rvu, &req, &rsp);
- 
- 	for (hash_idx = 0; hash_idx < NPC_MAX_HASH; hash_idx++) {
- 		cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_CFG(intf, hash_idx));
-@@ -311,13 +309,13 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 	}
- }
- 
--int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
--					struct npc_get_secret_key_req *req,
--					struct npc_get_secret_key_rsp *rsp)
-+int rvu_mbox_handler_npc_get_field_hash_info(struct rvu *rvu,
-+					     struct npc_get_field_hash_info_req *req,
-+					     struct npc_get_field_hash_info_rsp *rsp)
- {
- 	u64 *secret_key = rsp->secret_key;
- 	u8 intf = req->intf;
--	int blkaddr;
-+	int i, j, blkaddr;
- 
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
- 	if (blkaddr < 0) {
-@@ -329,6 +327,19 @@ int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
- 	secret_key[1] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY1(intf));
- 	secret_key[2] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY2(intf));
- 
-+	for (i = 0; i < NPC_MAX_HASH; i++) {
-+		for (j = 0; j < NPC_MAX_HASH_MASK; j++) {
-+			rsp->hash_mask[NIX_INTF_RX][i][j] =
-+				GET_KEX_LD_HASH_MASK(NIX_INTF_RX, i, j);
-+			rsp->hash_mask[NIX_INTF_TX][i][j] =
-+				GET_KEX_LD_HASH_MASK(NIX_INTF_TX, i, j);
-+		}
+ 	if (waiting)
+ 		start_get(ssif_info);
+-	if (resend)
++	if (resend) {
+ 		start_resend(ssif_info);
++		ssif_inc_stat(ssif_info, send_retries);
 +	}
-+
-+	for (i = 0; i < NPC_MAX_INTF; i++)
-+		for (j = 0; j < NPC_MAX_HASH; j++)
-+			rsp->hash_ctrl[i][j] = GET_KEX_LD_HASH_CTRL(i, j);
-+
- 	return 0;
  }
  
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-index 3efeb09c58dec..65936f4aeaacf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-@@ -31,6 +31,12 @@
- 	rvu_write64(rvu, blkaddr,	\
- 		    NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx), cfg)
- 
-+#define GET_KEX_LD_HASH_CTRL(intf, ld)	\
-+	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld))
-+
-+#define GET_KEX_LD_HASH_MASK(intf, ld, mask_idx)	\
-+	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx))
-+
- #define SET_KEX_LD_HASH_CTRL(intf, ld, cfg) \
- 	rvu_write64(rvu, blkaddr,	\
- 		    NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld), cfg)
--- 
-2.39.2
-
+ static void watch_timeout(struct timer_list *t)
 
 
