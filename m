@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51AC6703427
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA40B703732
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242934AbjEOQpW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:45:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49328 "EHLO
+        id S243972AbjEORSI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:18:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242926AbjEOQpT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:19 -0400
+        with ESMTP id S243975AbjEORRl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFFD4C3F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 858A311DA5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21462628E6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168FAC433EF;
-        Mon, 15 May 2023 16:45:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72DD462BEE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606F8C433D2;
+        Mon, 15 May 2023 17:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169117;
-        bh=HEuM5DoyHbhD/4ne0xmTZRZIa3UKxcg+6Q7ZMvk95o0=;
+        s=korg; t=1684170965;
+        bh=uDRo++hqK3SzFxaKPIVM1dD1G5nxJYJJupxA11R3zyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yuI9qLb8tue2v0GrUCUZZdnXMAoFI9EXyKFsk/t5U8gnB9ajQKE3rKcr4GAjcZdG6
-         ApOfFZ6Ou+lpT/pagCjd+sOVJd4utNj4R+yLcQLxtzZiZ00xoLz778IwIMjTspZCPK
-         0LZKHPiDbW2vNKz5itmtP8czQa7mzU2CZeMPP5C0=
+        b=eGZ4FiAFnPQB7+qWdZnrusslulh+ibgc2gCNSUt5qqyyYE9Ud6w17rQxdI7pqB0HU
+         rlZ3qCkw3HvTsfGzxDPKD1eoBK+T6HE5g4QwuXixx+pyalsvIexZXGy87EJm/MSl6C
+         oFUPtqQR/9QEbO1qxH34tCE7oiNvCsMOCtTqXM+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pengcheng Yang <yangpc@wangsu.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Jann Horn <jannh@google.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 4.19 147/191] kernel/relay.c: fix read_pos error when multiple readers
+        patches@lists.linux.dev, Andy Moreton <andy.moreton@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 058/242] sfc: Fix module EEPROM reporting for QSFP modules
 Date:   Mon, 15 May 2023 18:26:24 +0200
-Message-Id: <20230515161712.753925865@linuxfoundation.org>
+Message-Id: <20230515161723.647419542@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,90 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pengcheng Yang <yangpc@wangsu.com>
+From: Andy Moreton <andy.moreton@amd.com>
 
-[ Upstream commit 341a7213e5c1ce274cc0f02270054905800ea660 ]
+[ Upstream commit 281900a923d4c50df109b52a22ae3cdac150159b ]
 
-When reading, read_pos should start with bytes_consumed, not file->f_pos.
-Because when there is more than one reader, the read_pos corresponding to
-file->f_pos may have been consumed, which will cause the data that has
-been consumed to be read and the bytes_consumed update error.
+The sfc driver does not report QSFP module EEPROM contents correctly
+as only the first page is fetched from hardware.
 
-Signed-off-by: Pengcheng Yang <yangpc@wangsu.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>e
-Link: http://lkml.kernel.org/r/1579691175-28949-1-git-send-email-yangpc@wangsu.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 43ec16f1450f ("relayfs: fix out-of-bounds access in relay_file_read")
+Commit 0e1a2a3e6e7d ("ethtool: Add SFF-8436 and SFF-8636 max EEPROM
+length definitions") added ETH_MODULE_SFF_8436_MAX_LEN for the overall
+size of the EEPROM info, so use that to report the full EEPROM contents.
+
+Fixes: 9b17010da57a ("sfc: Add ethtool -m support for QSFP modules")
+Signed-off-by: Andy Moreton <andy.moreton@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/relay.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/sfc/mcdi_port_common.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/relay.c b/kernel/relay.c
-index b7aa7df43955b..0f027e04b0094 100644
---- a/kernel/relay.c
-+++ b/kernel/relay.c
-@@ -997,14 +997,14 @@ static void relay_file_read_consume(struct rchan_buf *buf,
- /*
-  *	relay_file_read_avail - boolean, are there unconsumed bytes available?
-  */
--static int relay_file_read_avail(struct rchan_buf *buf, size_t read_pos)
-+static int relay_file_read_avail(struct rchan_buf *buf)
- {
- 	size_t subbuf_size = buf->chan->subbuf_size;
- 	size_t n_subbufs = buf->chan->n_subbufs;
- 	size_t produced = buf->subbufs_produced;
- 	size_t consumed = buf->subbufs_consumed;
+diff --git a/drivers/net/ethernet/sfc/mcdi_port_common.c b/drivers/net/ethernet/sfc/mcdi_port_common.c
+index 899cc16710048..0ab14f3d01d4d 100644
+--- a/drivers/net/ethernet/sfc/mcdi_port_common.c
++++ b/drivers/net/ethernet/sfc/mcdi_port_common.c
+@@ -972,12 +972,15 @@ static u32 efx_mcdi_phy_module_type(struct efx_nic *efx)
  
--	relay_file_read_consume(buf, read_pos, 0);
-+	relay_file_read_consume(buf, 0, 0);
+ 	/* A QSFP+ NIC may actually have an SFP+ module attached.
+ 	 * The ID is page 0, byte 0.
++	 * QSFP28 is of type SFF_8636, however, this is treated
++	 * the same by ethtool, so we can also treat them the same.
+ 	 */
+ 	switch (efx_mcdi_phy_get_module_eeprom_byte(efx, 0, 0)) {
+-	case 0x3:
++	case 0x3: /* SFP */
+ 		return MC_CMD_MEDIA_SFP_PLUS;
+-	case 0xc:
+-	case 0xd:
++	case 0xc: /* QSFP */
++	case 0xd: /* QSFP+ */
++	case 0x11: /* QSFP28 */
+ 		return MC_CMD_MEDIA_QSFP_PLUS;
+ 	default:
+ 		return 0;
+@@ -1075,7 +1078,7 @@ int efx_mcdi_phy_get_module_info(struct efx_nic *efx, struct ethtool_modinfo *mo
  
- 	consumed = buf->subbufs_consumed;
+ 	case MC_CMD_MEDIA_QSFP_PLUS:
+ 		modinfo->type = ETH_MODULE_SFF_8436;
+-		modinfo->eeprom_len = ETH_MODULE_SFF_8436_LEN;
++		modinfo->eeprom_len = ETH_MODULE_SFF_8436_MAX_LEN;
+ 		break;
  
-@@ -1065,23 +1065,20 @@ static size_t relay_file_read_subbuf_avail(size_t read_pos,
- 
- /**
-  *	relay_file_read_start_pos - find the first available byte to read
-- *	@read_pos: file read position
-  *	@buf: relay channel buffer
-  *
-- *	If the @read_pos is in the middle of padding, return the
-+ *	If the read_pos is in the middle of padding, return the
-  *	position of the first actually available byte, otherwise
-  *	return the original value.
-  */
--static size_t relay_file_read_start_pos(size_t read_pos,
--					struct rchan_buf *buf)
-+static size_t relay_file_read_start_pos(struct rchan_buf *buf)
- {
- 	size_t read_subbuf, padding, padding_start, padding_end;
- 	size_t subbuf_size = buf->chan->subbuf_size;
- 	size_t n_subbufs = buf->chan->n_subbufs;
- 	size_t consumed = buf->subbufs_consumed % n_subbufs;
-+	size_t read_pos = consumed * subbuf_size + buf->bytes_consumed;
- 
--	if (!read_pos)
--		read_pos = consumed * subbuf_size + buf->bytes_consumed;
- 	read_subbuf = read_pos / subbuf_size;
- 	padding = buf->padding[read_subbuf];
- 	padding_start = (read_subbuf + 1) * subbuf_size - padding;
-@@ -1137,10 +1134,10 @@ static ssize_t relay_file_read(struct file *filp,
- 	do {
- 		void *from;
- 
--		if (!relay_file_read_avail(buf, *ppos))
-+		if (!relay_file_read_avail(buf))
- 			break;
- 
--		read_start = relay_file_read_start_pos(*ppos, buf);
-+		read_start = relay_file_read_start_pos(buf);
- 		avail = relay_file_read_subbuf_avail(read_start, buf);
- 		if (!avail)
- 			break;
+ 	default:
 -- 
 2.39.2
 
