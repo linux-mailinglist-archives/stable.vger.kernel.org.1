@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ACC0703B4F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1037036EE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242462AbjEOSBw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:01:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
+        id S243891AbjEORPT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242735AbjEOSBU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49F7A1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:54 -0700 (PDT)
+        with ESMTP id S243912AbjEOROv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D7111577
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44E77621A8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B97C433D2;
-        Mon, 15 May 2023 17:58:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED24462A30
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ACFC433D2;
+        Mon, 15 May 2023 17:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173524;
-        bh=XFmwQPBp075IrwiZSMqUh8QW5dwqOujOVStZgkr7jQ4=;
+        s=korg; t=1684170799;
+        bh=bxY6flUVg6hxBf+YC4JoIgClaWBrMJABTZY30VfhaKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b375hxa8FVusLesSRCK543dnvAX7ooZ5o6tR0Ch506+4eTpKuayZAw/ppZb0Ay408
-         lNTK54BNkG0vXwQQVm7S7hSFTSNgww+rNGf/i0tM7zLBuzeh1UjyYZJTFjquUKmWIp
-         8WUfQmb271sfzTbfh8zSMSb1rqe3VO0PQd2Jgyjw=
+        b=P8ABHQxPGs4bfRHZmxr0QO5GrEiGqEpWQaOYdsJsJM3/Y1pQKIVlYXYD6mL7qQOHI
+         ZNJLBapZ7ENIyhZCMJSoDzkDNRPf9HMl75PHJXUJAcpiI/+kDi4cQGhnEKRc42YPQ4
+         ZGwgkh/4qdgXB/b0qsZGSWJ5G5gUCx30Ah7Z9tB0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 122/282] spi: imx: enable runtime pm support
-Date:   Mon, 15 May 2023 18:28:20 +0200
-Message-Id: <20230515161725.892619304@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 238/239] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
+Date:   Mon, 15 May 2023 18:28:21 +0200
+Message-Id: <20230515161728.845601511@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,233 +54,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 525c9e5a32bd7951eae3f06d9d077fea51718a6c ]
+commit fc96ec826bced75cc6b9c07a4ac44bbf651337ab upstream.
 
-Enable runtime pm support for spi-imx driver.
+On CPM, the RISC core is a lot more efficiant when doing transfers
+in 16-bits chunks than in 8-bits chunks, but unfortunately the
+words need to be byte swapped as seen in a previous commit.
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Link: https://lore.kernel.org/r/20200727063354.17031-1-xiaoning.wang@nxp.com
+So, for large tranfers with an even size, allocate a temporary tx
+buffer and byte-swap data before and after transfer.
+
+This change allows setting higher speed for transfer. For instance
+on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
+that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
+at 25 MHz while a word transfer at the same speed uses 0.032%
+of CPM load. This means the speed can be 6 times higher in
+word mode for the same CPM load.
+
+For the time being, only do it on CPM1 as there must be a
+trade-off between the CPM load reduction and the CPU load required
+to byte swap the data.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 11951c9e3f36 ("spi: imx: Don't skip cleanup in remove's error path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c | 121 ++++++++++++++++++++++++++++++------------
- 1 file changed, 88 insertions(+), 33 deletions(-)
+ drivers/spi/spi-fsl-cpm.c |   23 +++++++++++++++++++++++
+ drivers/spi/spi-fsl-spi.c |    3 +++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 90793fc321358..95f1746a85d9d 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -13,7 +13,9 @@
- #include <linux/irq.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -21,6 +21,7 @@
  #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-@@ -30,6 +32,8 @@ static bool use_dma = true;
- module_param(use_dma, bool, 0644);
- MODULE_PARM_DESC(use_dma, "Enable usage of DMA when available (default)");
+ #include <linux/types.h>
+ #include <linux/platform_device.h>
++#include <linux/byteorder/generic.h>
  
-+#define MXC_RPM_TIMEOUT		2000 /* 2000ms */
+ #include "spi-fsl-cpm.h"
+ #include "spi-fsl-lib.h"
+@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi
+ 		mspi->rx_dma = mspi->dma_dummy_rx;
+ 		mspi->map_rx_dma = 0;
+ 	}
++	if (t->bits_per_word == 16 && t->tx_buf) {
++		const u16 *src = t->tx_buf;
++		u16 *dst;
++		int i;
 +
- #define MXC_CSPIRXDATA		0x00
- #define MXC_CSPITXDATA		0x04
- #define MXC_CSPICTRL		0x08
-@@ -1532,20 +1536,16 @@ spi_imx_prepare_message(struct spi_master *master, struct spi_message *msg)
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 	int ret;
- 
--	ret = clk_enable(spi_imx->clk_per);
--	if (ret)
--		return ret;
--
--	ret = clk_enable(spi_imx->clk_ipg);
--	if (ret) {
--		clk_disable(spi_imx->clk_per);
-+	ret = pm_runtime_get_sync(spi_imx->dev);
-+	if (ret < 0) {
-+		dev_err(spi_imx->dev, "failed to enable clock\n");
- 		return ret;
- 	}
- 
- 	ret = spi_imx->devtype_data->prepare_message(spi_imx, msg);
- 	if (ret) {
--		clk_disable(spi_imx->clk_ipg);
--		clk_disable(spi_imx->clk_per);
-+		pm_runtime_mark_last_busy(spi_imx->dev);
-+		pm_runtime_put_autosuspend(spi_imx->dev);
- 	}
- 
- 	return ret;
-@@ -1556,8 +1556,8 @@ spi_imx_unprepare_message(struct spi_master *master, struct spi_message *msg)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 
--	clk_disable(spi_imx->clk_ipg);
--	clk_disable(spi_imx->clk_per);
-+	pm_runtime_mark_last_busy(spi_imx->dev);
-+	pm_runtime_put_autosuspend(spi_imx->dev);
- 	return 0;
- }
- 
-@@ -1676,13 +1676,15 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		goto out_master_put;
- 	}
- 
--	ret = clk_prepare_enable(spi_imx->clk_per);
--	if (ret)
--		goto out_master_put;
-+	pm_runtime_enable(spi_imx->dev);
-+	pm_runtime_set_autosuspend_delay(spi_imx->dev, MXC_RPM_TIMEOUT);
-+	pm_runtime_use_autosuspend(spi_imx->dev);
- 
--	ret = clk_prepare_enable(spi_imx->clk_ipg);
--	if (ret)
--		goto out_put_per;
-+	ret = pm_runtime_get_sync(spi_imx->dev);
-+	if (ret < 0) {
-+		dev_err(spi_imx->dev, "failed to enable clock\n");
-+		goto out_runtime_pm_put;
++		dst = kmalloc(t->len, GFP_KERNEL);
++		if (!dst)
++			return -ENOMEM;
++
++		for (i = 0; i < t->len >> 1; i++)
++			dst[i] = cpu_to_le16p(src + i);
++
++		mspi->tx = dst;
++		mspi->map_tx_dma = 1;
 +	}
  
- 	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
- 	/*
-@@ -1692,7 +1694,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	if (spi_imx->devtype_data->has_dmamode) {
- 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
- 		if (ret == -EPROBE_DEFER)
--			goto out_clk_put;
-+			goto out_runtime_pm_put;
- 
- 		if (ret < 0)
- 			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
-@@ -1707,19 +1709,20 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	ret = spi_bitbang_start(&spi_imx->bitbang);
- 	if (ret) {
- 		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
--		goto out_clk_put;
-+		goto out_runtime_pm_put;
- 	}
- 
- 	dev_info(&pdev->dev, "probed\n");
- 
--	clk_disable(spi_imx->clk_ipg);
--	clk_disable(spi_imx->clk_per);
-+	pm_runtime_mark_last_busy(spi_imx->dev);
-+	pm_runtime_put_autosuspend(spi_imx->dev);
+ 	if (mspi->map_tx_dma) {
+ 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
+@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mp
+ 	if (mspi->map_rx_dma)
+ 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
+ 	mspi->xfer_in_progress = NULL;
 +
- 	return ret;
- 
--out_clk_put:
--	clk_disable_unprepare(spi_imx->clk_ipg);
--out_put_per:
--	clk_disable_unprepare(spi_imx->clk_per);
-+out_runtime_pm_put:
-+	pm_runtime_dont_use_autosuspend(spi_imx->dev);
-+	pm_runtime_put_sync(spi_imx->dev);
-+	pm_runtime_disable(spi_imx->dev);
- out_master_put:
- 	spi_master_put(master);
- 
-@@ -1734,30 +1737,82 @@ static int spi_imx_remove(struct platform_device *pdev)
- 
- 	spi_bitbang_stop(&spi_imx->bitbang);
- 
--	ret = clk_enable(spi_imx->clk_per);
-+	ret = pm_runtime_get_sync(spi_imx->dev);
-+	if (ret < 0) {
-+		dev_err(spi_imx->dev, "failed to enable clock\n");
-+		return ret;
++	if (t->bits_per_word == 16 && t->rx_buf) {
++		int i;
++
++		for (i = 0; i < t->len; i += 2)
++			le16_to_cpus(t->rx_buf + i);
 +	}
-+
-+	writel(0, spi_imx->base + MXC_CSPICTRL);
-+
-+	pm_runtime_dont_use_autosuspend(spi_imx->dev);
-+	pm_runtime_put_sync(spi_imx->dev);
-+	pm_runtime_disable(spi_imx->dev);
-+
-+	spi_imx_sdma_exit(spi_imx);
-+	spi_master_put(master);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused spi_imx_runtime_resume(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct spi_imx_data *spi_imx;
-+	int ret;
-+
-+	spi_imx = spi_master_get_devdata(master);
-+
-+	ret = clk_prepare_enable(spi_imx->clk_per);
- 	if (ret)
- 		return ret;
- 
--	ret = clk_enable(spi_imx->clk_ipg);
-+	ret = clk_prepare_enable(spi_imx->clk_ipg);
- 	if (ret) {
--		clk_disable(spi_imx->clk_per);
-+		clk_disable_unprepare(spi_imx->clk_per);
- 		return ret;
- 	}
- 
--	writel(0, spi_imx->base + MXC_CSPICTRL);
--	clk_disable_unprepare(spi_imx->clk_ipg);
-+	return 0;
-+}
-+
-+static int __maybe_unused spi_imx_runtime_suspend(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct spi_imx_data *spi_imx;
-+
-+	spi_imx = spi_master_get_devdata(master);
-+
- 	clk_disable_unprepare(spi_imx->clk_per);
--	spi_imx_sdma_exit(spi_imx);
--	spi_master_put(master);
-+	clk_disable_unprepare(spi_imx->clk_ipg);
-+
-+	return 0;
-+}
- 
-+static int __maybe_unused spi_imx_suspend(struct device *dev)
-+{
-+	pinctrl_pm_select_sleep_state(dev);
- 	return 0;
  }
+ EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
  
-+static int __maybe_unused spi_imx_resume(struct device *dev)
-+{
-+	pinctrl_pm_select_default_state(dev);
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops imx_spi_pm = {
-+	SET_RUNTIME_PM_OPS(spi_imx_runtime_suspend,
-+				spi_imx_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(spi_imx_suspend, spi_imx_resume)
-+};
-+
- static struct platform_driver spi_imx_driver = {
- 	.driver = {
- 		   .name = DRIVER_NAME,
- 		   .of_match_table = spi_imx_dt_ids,
--		   },
-+		   .pm = &imx_spi_pm,
-+	},
- 	.id_table = spi_imx_devtype,
- 	.probe = spi_imx_probe,
- 	.remove = spi_imx_remove,
--- 
-2.39.2
-
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -351,6 +351,9 @@ static int fsl_spi_prepare_message(struc
+ 				return -EINVAL;
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
++			if (t->bits_per_word == 8 && t->len >= 256 &&
++			    (mpc8xxx_spi->flags & SPI_CPM1))
++				t->bits_per_word = 16;
+ 		}
+ 	}
+ 	return fsl_spi_setup_transfer(m->spi, first);
 
 
