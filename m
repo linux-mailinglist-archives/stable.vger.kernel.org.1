@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5820E70385C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D9E703B48
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243353AbjEORcJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52866 "EHLO
+        id S244181AbjEOSBn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242625AbjEORbe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:34 -0400
+        with ESMTP id S244684AbjEOSBE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A30D14E70
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 489EC183C4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6A6762CF6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A3AC433EF;
-        Mon, 15 May 2023 17:28:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF16262FD1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFA1C433D2;
+        Mon, 15 May 2023 17:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171694;
-        bh=3vLdLPB3pcM1IWnqjkfSjDouRNOjFoxsNHVOaWvc284=;
+        s=korg; t=1684173509;
+        bh=F0D29cH+R5sLsaxDjg/0W1w+R8wbJpNL23Fn3mRPq0E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xT1hfVtbySch8e5ZCCfxE7TkyOL7C0917GkrC+Au2DJ20XJMELOwWDwvJsWVAh9BX
-         2iC7+rFEyY7l21vHWLpsoO8SrM4Mu+LLhfyETS+rHC/HkW0/+HmbHJa9+OTfPt/XQM
-         fVTDOEO827ZpsEtG2S8w/rhrDRIIMM3tOFEzByTY=
+        b=NHPzOfbIPwEdgQRw26y0DHf2lg0Fd29NyFYu1UkHqlVNKOkcYehPZJw4HeLUml50K
+         jdLUI0mFgxm7qjj6p9dYVb5Lu+Fw3eeLfyJrRLNdl2Vc7+uOj0L5o3JsVGOTIH2voH
+         SLzg7xdrDB4g8WkcciSAOfyXKK4nYk/T8THMHhbs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Saurabh Sengar <ssengar@linux.microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/134] drm/hyperv: Dont overwrite dirt_needed value set by host
-Date:   Mon, 15 May 2023 18:28:15 +0200
-Message-Id: <20230515161703.604152837@linuxfoundation.org>
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 118/282] usb: host: xhci-rcar: remove leftover quirk handling
+Date:   Mon, 15 May 2023 18:28:16 +0200
+Message-Id: <20230515161725.775408125@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 19b5e6659eaf537ebeac90ae30c7df0296fe5ab9 ]
+[ Upstream commit 5d67f4861884762ebc2bddb5d667444e45f25782 ]
 
-Existing code is causing a race condition where dirt_needed value is
-already set by the host and gets overwritten with default value. Remove
-this default setting of dirt_needed, to avoid overwriting the value
-received in the channel callback set by vmbus_open. Removing this
-setting also means the default value for dirt_needed is changed to false
-as it's allocated by kzalloc which is similar to legacy hyperv_fb driver.
+Loading V3 firmware does not need a quirk anymore, remove the leftover
+code.
 
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1662996766-19304-1-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Fixes: ed8603e11124 ("usb: host: xhci-rcar: Simplify getting the firmware name for R-Car Gen3")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20230307163041.3815-10-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/host/xhci-rcar.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index 00e53de4812bb..584d3a73db96c 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -198,8 +198,6 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
- 	if (ret)
- 		drm_warn(dev, "Failed to update vram location.\n");
+diff --git a/drivers/usb/host/xhci-rcar.c b/drivers/usb/host/xhci-rcar.c
+index 3da75b367f952..5d78352992454 100644
+--- a/drivers/usb/host/xhci-rcar.c
++++ b/drivers/usb/host/xhci-rcar.c
+@@ -74,7 +74,6 @@ MODULE_FIRMWARE(XHCI_RCAR_FIRMWARE_NAME_V3);
  
--	hv->dirt_needed = true;
--
- 	ret = hyperv_mode_config_init(hv);
- 	if (ret)
- 		goto err_vmbus_close;
+ /* For soc_device_attribute */
+ #define RCAR_XHCI_FIRMWARE_V2   BIT(0) /* FIRMWARE V2 */
+-#define RCAR_XHCI_FIRMWARE_V3   BIT(1) /* FIRMWARE V3 */
+ 
+ static const struct soc_device_attribute rcar_quirks_match[]  = {
+ 	{
+@@ -147,8 +146,6 @@ static int xhci_rcar_download_firmware(struct usb_hcd *hcd)
+ 
+ 	if (quirks & RCAR_XHCI_FIRMWARE_V2)
+ 		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V2;
+-	else if (quirks & RCAR_XHCI_FIRMWARE_V3)
+-		firmware_name = XHCI_RCAR_FIRMWARE_NAME_V3;
+ 	else
+ 		firmware_name = priv->firmware_name;
+ 
 -- 
 2.39.2
 
