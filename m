@@ -2,46 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B93B703AF6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9862B703772
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244915AbjEOR5i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:57:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53994 "EHLO
+        id S243961AbjEORVR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241400AbjEOR5O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:57:14 -0400
+        with ESMTP id S244073AbjEORVB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AAA1692F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8FE212EBD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4308862F8D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2A1C433D2;
-        Mon, 15 May 2023 17:55:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF8C96205E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D82C433D2;
+        Mon, 15 May 2023 17:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173302;
-        bh=BngxkBEeruidy+V43jLSck4RA53JDM+RyB8mLAt8jJc=;
+        s=korg; t=1684171131;
+        bh=m7i8Y8IHu/njLCDUUr8smsA3tgSYIqo4RuzfNnHOmXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bjQeeFqnMNUryNQCJYZyQKmqwIuGStwUofe+npMeHlM+OWKPF68TdfAzjnzlbqY/w
-         mtwRZRIo0qyAth0Z6kkYyxpOEQ58kRKzJb/dBfmDDn4pwu/lu1H+Kz8jN9wYZslsCe
-         GWpHxlDeL4iIu26lgTRvdOxWqAfuCauxMcbQSpaI=
+        b=fFJ5tLgwB1NhI8rxr5I8C4CxZSefwT86YLjyZAKECPkqr4O9Tsew7Q/WkcD8LB+L6
+         mwBNx5yGRLY5SkMGv5vBmbZMhsRsjhGbKITdhylGtHZ3fOP9EolbFkRH6BoOo87sDC
+         e/QfgRREx4sWOerR0a6lwkpYXUZhbBGqFmS7C42E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Georgii Kruglov <georgy.kruglov@yandex.ru>,
+        patches@lists.linux.dev, elfring@users.sourceforge.net,
+        Ian Rogers <irogers@google.com>,
         Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        German Gomez <german.gomez@arm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/282] mmc: sdhci-of-esdhc: fix quirk to ignore command inhibit for data
+Subject: [PATCH 6.2 103/242] perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
 Date:   Mon, 15 May 2023 18:27:09 +0200
-Message-Id: <20230515161723.784972052@linuxfoundation.org>
+Message-Id: <20230515161724.992300832@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,80 +63,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georgii Kruglov <georgy.kruglov@yandex.ru>
+From: Markus Elfring <Markus.Elfring@web.de>
 
-[ Upstream commit 0dd8316037a2a6d85b2be208bef9991de7b42170 ]
+[ Upstream commit c160118a90d4acf335993d8d59b02ae2147a524e ]
 
-If spec_reg is equal to 'SDHCI_PRESENT_STATE', esdhc_readl_fixup()
-fixes up register value and returns it immediately. As a result, the
-further block
-(spec_reg == SDHCI_PRESENT_STATE)
-    &&(esdhc->quirk_ignore_data_inhibit == true),
-is never executed.
+Addresses of two data structure members were determined before
+corresponding null pointer checks in the implementation of the function
+“sort__sym_from_cmp”.
 
-The patch merges the second block into the first one.
+Thus avoid the risk for undefined behaviour by removing extra
+initialisations for the local variables “from_l” and “from_r” (also
+because they were already reassigned with the same value behind this
+pointer check).
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This issue was detected by using the Coccinelle software.
 
-Fixes: 1f1929f3f2fa ("mmc: sdhci-of-esdhc: add quirk to ignore command inhibit for data")
-Signed-off-by: Georgii Kruglov <georgy.kruglov@yandex.ru>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230321203715.3975-1-georgy.kruglov@yandex.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 1b9e97a2a95e4941 ("perf tools: Fix report -F symbol_from for data without branch info")
+Signed-off-by: <elfring@users.sourceforge.net>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/cocci/54a21fea-64e3-de67-82ef-d61b90ffad05@web.de/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-esdhc.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ tools/perf/util/sort.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-index 69c133e7ced05..48765208e2953 100644
---- a/drivers/mmc/host/sdhci-of-esdhc.c
-+++ b/drivers/mmc/host/sdhci-of-esdhc.c
-@@ -124,6 +124,7 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
- 			return ret;
- 		}
- 	}
-+
- 	/*
- 	 * The DAT[3:0] line signal levels and the CMD line signal level are
- 	 * not compatible with standard SDHC register. The line signal levels
-@@ -135,6 +136,16 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
- 		ret = value & 0x000fffff;
- 		ret |= (value >> 4) & SDHCI_DATA_LVL_MASK;
- 		ret |= (value << 1) & SDHCI_CMD_LVL;
-+
-+		/*
-+		 * Some controllers have unreliable Data Line Active
-+		 * bit for commands with busy signal. This affects
-+		 * Command Inhibit (data) bit. Just ignore it since
-+		 * MMC core driver has already polled card status
-+		 * with CMD13 after any command with busy siganl.
-+		 */
-+		if (esdhc->quirk_ignore_data_inhibit)
-+			ret &= ~SDHCI_DATA_INHIBIT;
- 		return ret;
- 	}
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index 2bf3f88276972..22808643ab725 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -966,8 +966,7 @@ static int hist_entry__dso_to_filter(struct hist_entry *he, int type,
+ static int64_t
+ sort__sym_from_cmp(struct hist_entry *left, struct hist_entry *right)
+ {
+-	struct addr_map_symbol *from_l = &left->branch_info->from;
+-	struct addr_map_symbol *from_r = &right->branch_info->from;
++	struct addr_map_symbol *from_l, *from_r;
  
-@@ -149,19 +160,6 @@ static u32 esdhc_readl_fixup(struct sdhci_host *host,
- 		return ret;
- 	}
- 
--	/*
--	 * Some controllers have unreliable Data Line Active
--	 * bit for commands with busy signal. This affects
--	 * Command Inhibit (data) bit. Just ignore it since
--	 * MMC core driver has already polled card status
--	 * with CMD13 after any command with busy siganl.
--	 */
--	if ((spec_reg == SDHCI_PRESENT_STATE) &&
--	(esdhc->quirk_ignore_data_inhibit == true)) {
--		ret = value & ~SDHCI_DATA_INHIBIT;
--		return ret;
--	}
--
- 	ret = value;
- 	return ret;
- }
+ 	if (!left->branch_info || !right->branch_info)
+ 		return cmp_null(left->branch_info, right->branch_info);
 -- 
 2.39.2
 
