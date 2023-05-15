@@ -2,49 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2E7B703482
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EE70703494
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243013AbjEOQtT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54138 "EHLO
+        id S243075AbjEOQuN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243026AbjEOQtL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:11 -0400
+        with ESMTP id S243077AbjEOQt6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4170544A8;
-        Mon, 15 May 2023 09:49:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5295BA7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB68662943;
-        Mon, 15 May 2023 16:49:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69DCC4339B;
-        Mon, 15 May 2023 16:49:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 741F16295D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871D1C433EF;
+        Mon, 15 May 2023 16:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169349;
-        bh=4jSls9SEgL+5agkw266mNjGCuZcNspC+bOyWIa1yb6I=;
+        s=korg; t=1684169386;
+        bh=vNu5/Ha+wdbcfN9nLgGOHdPhDJYDG3KZ19kvAPi4csw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kk4VFaSRFyahPWxvKpax6/RILTBAey9EVY5YahJj82+jATZik1JejB/+aUEVco+er
-         WMXF2SulHockieY7uZTLLKKKvT6njq0gJ2AiCV0fjLKAeXJcSKFn82nQ5TOOa5+LtI
-         FTMbTWw0IPqSTXl/0zMC+3IVEKXji2x/D6A7mGv8=
+        b=GRfVZP2N+e6hxXUXd9+hP9HmbO8T6ybdWgW0+ZTEjEHpumxJ0Bm52Ae8o9gdjqNZy
+         C/5kqqrJVth7Kz/bmY0LDpxWucpgMetFkExdNZZPNMRJj/DthvdjHRXzQ80ZPNiDsk
+         A5ma80aJXOqps3lFepdZNNSluGBunFHgPOA7oAM8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+ebc945fdb4acd72cba78@syzkaller.appspotmail.com,
-        David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org,
+        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 022/246] rxrpc: Fix potential data race in rxrpc_wait_to_be_connected()
-Date:   Mon, 15 May 2023 18:23:54 +0200
-Message-Id: <20230515161723.275161336@linuxfoundation.org>
+Subject: [PATCH 6.3 023/246] net/sched: flower: Fix wrong handle assignment during filter change
+Date:   Mon, 15 May 2023 18:23:55 +0200
+Message-Id: <20230515161723.304815375@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
 References: <20230515161722.610123835@linuxfoundation.org>
@@ -62,114 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 2b5fdc0f5caa505afe34d608e2eefadadf2ee67a ]
+[ Upstream commit 32eff6bacec2cb574677c15378169a9fa30043ef ]
 
-Inside the loop in rxrpc_wait_to_be_connected() it checks call->error to
-see if it should exit the loop without first checking the call state.  This
-is probably safe as if call->error is set, the call is dead anyway, but we
-should probably wait for the call state to have been set to completion
-first, lest it cause surprise on the way out.
+Commit 08a0063df3ae ("net/sched: flower: Move filter handle initialization
+earlier") moved filter handle initialization but an assignment of
+the handle to fnew->handle is done regardless of fold value. This is wrong
+because if fold != NULL (so fold->handle == handle) no new handle is
+allocated and passed handle is assigned to fnew->handle. Then if any
+subsequent action in fl_change() fails then the handle value is
+removed from IDR that is incorrect as we will have still valid old filter
+instance with handle that is not present in IDR.
+Fix this issue by moving the assignment so it is done only when passed
+fold == NULL.
 
-Fix this by only accessing call->error if the call is complete.  We don't
-actually need to access the error inside the loop as we'll do that after.
+Prior the patch:
+[root@machine tc-testing]# ./tdc.py -d enp1s0f0np0 -e 14be
+Test 14be: Concurrently replace same range of 100k flower filters from 10 tc instances
+exit: 123
+exit: 0
+RTNETLINK answers: Invalid argument
+We have an error talking to the kernel
+Command failed tmp/replace_6:1885
 
-This caused the following report:
+All test results:
 
-    BUG: KCSAN: data-race in rxrpc_send_data / rxrpc_set_call_completion
+1..1
+not ok 1 14be - Concurrently replace same range of 100k flower filters from 10 tc instances
+        Command exited with 123, expected 0
+RTNETLINK answers: Invalid argument
+We have an error talking to the kernel
+Command failed tmp/replace_6:1885
 
-    write to 0xffff888159cf3c50 of 4 bytes by task 25673 on cpu 1:
-     rxrpc_set_call_completion+0x71/0x1c0 net/rxrpc/call_state.c:22
-     rxrpc_send_data_packet+0xba9/0x1650 net/rxrpc/output.c:479
-     rxrpc_transmit_one+0x1e/0x130 net/rxrpc/output.c:714
-     rxrpc_decant_prepared_tx net/rxrpc/call_event.c:326 [inline]
-     rxrpc_transmit_some_data+0x496/0x600 net/rxrpc/call_event.c:350
-     rxrpc_input_call_event+0x564/0x1220 net/rxrpc/call_event.c:464
-     rxrpc_io_thread+0x307/0x1d80 net/rxrpc/io_thread.c:461
-     kthread+0x1ac/0x1e0 kernel/kthread.c:376
-     ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+After the patch:
+[root@machine tc-testing]# ./tdc.py -d enp1s0f0np0 -e 14be
+Test 14be: Concurrently replace same range of 100k flower filters from 10 tc instances
 
-    read to 0xffff888159cf3c50 of 4 bytes by task 25672 on cpu 0:
-     rxrpc_send_data+0x29e/0x1950 net/rxrpc/sendmsg.c:296
-     rxrpc_do_sendmsg+0xb7a/0xc20 net/rxrpc/sendmsg.c:726
-     rxrpc_sendmsg+0x413/0x520 net/rxrpc/af_rxrpc.c:565
-     sock_sendmsg_nosec net/socket.c:724 [inline]
-     sock_sendmsg net/socket.c:747 [inline]
-     ____sys_sendmsg+0x375/0x4c0 net/socket.c:2501
-     ___sys_sendmsg net/socket.c:2555 [inline]
-     __sys_sendmmsg+0x263/0x500 net/socket.c:2641
-     __do_sys_sendmmsg net/socket.c:2670 [inline]
-     __se_sys_sendmmsg net/socket.c:2667 [inline]
-     __x64_sys_sendmmsg+0x57/0x60 net/socket.c:2667
-     do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-     do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-     entry_SYSCALL_64_after_hwframe+0x63/0xcd
+All test results:
 
-    value changed: 0x00000000 -> 0xffffffea
+1..1
+ok 1 14be - Concurrently replace same range of 100k flower filters from 10 tc instances
 
-Fixes: 9d35d880e0e4 ("rxrpc: Move client call connection to the I/O thread")
-Reported-by: syzbot+ebc945fdb4acd72cba78@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/000000000000e7c6d205fa10a3cd@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Dmitry Vyukov <dvyukov@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/r/508133.1682427395@warthog.procyon.org.uk
+Fixes: 08a0063df3ae ("net/sched: flower: Move filter handle initialization earlier")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230425140604.169881-1-ivecera@redhat.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/sendmsg.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/sched/cls_flower.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index da49fcf1c4567..6caa47d352ed6 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -50,15 +50,11 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
- 	_enter("%d", call->debug_id);
- 
- 	if (rxrpc_call_state(call) != RXRPC_CALL_CLIENT_AWAIT_CONN)
--		return call->error;
-+		goto no_wait;
- 
- 	add_wait_queue_exclusive(&call->waitq, &myself);
- 
- 	for (;;) {
--		ret = call->error;
--		if (ret < 0)
--			break;
--
- 		switch (call->interruptibility) {
- 		case RXRPC_INTERRUPTIBLE:
- 		case RXRPC_PREINTERRUPTIBLE:
-@@ -69,10 +65,9 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
- 			set_current_state(TASK_UNINTERRUPTIBLE);
- 			break;
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 475fe222a8556..fa6c2bb0b6267 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -2231,8 +2231,8 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 			kfree(fnew);
+ 			goto errout_tb;
  		}
--		if (rxrpc_call_state(call) != RXRPC_CALL_CLIENT_AWAIT_CONN) {
--			ret = call->error;
-+
-+		if (rxrpc_call_state(call) != RXRPC_CALL_CLIENT_AWAIT_CONN)
- 			break;
--		}
- 		if ((call->interruptibility == RXRPC_INTERRUPTIBLE ||
- 		     call->interruptibility == RXRPC_PREINTERRUPTIBLE) &&
- 		    signal_pending(current)) {
-@@ -85,6 +80,7 @@ static int rxrpc_wait_to_be_connected(struct rxrpc_call *call, long *timeo)
- 	remove_wait_queue(&call->waitq, &myself);
- 	__set_current_state(TASK_RUNNING);
++		fnew->handle = handle;
+ 	}
+-	fnew->handle = handle;
  
-+no_wait:
- 	if (ret == 0 && rxrpc_call_is_complete(call))
- 		ret = call->error;
- 
+ 	err = tcf_exts_init_ex(&fnew->exts, net, TCA_FLOWER_ACT, 0, tp, handle,
+ 			       !tc_skip_hw(fnew->flags));
 -- 
 2.39.2
 
