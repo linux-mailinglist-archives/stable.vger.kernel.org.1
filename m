@@ -2,98 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D02B703EB4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 22:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B3A703EC6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 22:47:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245399AbjEOUjL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 16:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51222 "EHLO
+        id S245161AbjEOUrd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 16:47:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231392AbjEOUjI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 16:39:08 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 059ED173C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 13:39:08 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-24deb9c5ffcso8899015a91.1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 13:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684183147; x=1686775147;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3VnIlIKlgYtK2cK+0dhB1nFTXDfzrC4hKFVLUidauWQ=;
-        b=4lEo7PiBFRrylrAWAv8CLnPJVHW8HCY0TI0xbb3qciNDlGiv5aV83Vku9oMZe6ckdD
-         2BZLis1r43qAZyku0rmm2m1whIY587nZsxZpedIZZqqEDbF8XQ1Qz+faKVaumUxM3iPw
-         jJDDF+l2/WTT3r+9lskPZZfCA+4bnbaMJM6x/2/RnhCo1MHeT2nKghzA56ztbMHHQo0I
-         0Rvr92MWC6nVEnVWXrdzNA6oTj9XAxpKAF3cvSwazzGonfSdwJExkJlYvyYdB6GeWq5j
-         ssnL6oNBJq7I6fKHsHb2loOIMs9OKHnxOYFUA0Kj3Y0sp0/Vlrb198e4dQ5kYEwOGaTI
-         m5XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684183147; x=1686775147;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3VnIlIKlgYtK2cK+0dhB1nFTXDfzrC4hKFVLUidauWQ=;
-        b=JAPget2f033YgfDjC2qu4ewu0xKbJJtu8RakH75E+6xyiP0X6KnADg+kDq/z+jWGfC
-         OzXLpeqAM50a1wbYORlxvSu6Fr5j4zuxJL9LTSB7hZUwDbjMwgFG3YKaCkrDOl8yV2op
-         FyOD/igErW/oycLch8tUbDthmSLR/OEM+on0h8R3mau6lOuzusmGzr/HvzVQ/O2JCzqH
-         r9BpdIzWCREPwTUWNLfXSHWrSXiVqPaUA/yvZeWlKhcGstj5LZz2rV5mIYb8Ix7v5cKR
-         BA99nLVXNCzzbpBkJryB7Oc3AmsYmIkCsaYg47hArU5F2kcTjntvvKqS8zfE9+0Aqj8v
-         x4WQ==
-X-Gm-Message-State: AC+VfDzc8j9/zfby/0ref646Ie6GKxtB8lTlVYWSSdBC1PRlisNLWvpc
-        hQ3Zp0TCDKhH1SYarPD+xo4IRcXR0Bumef8G11rENA==
-X-Google-Smtp-Source: ACHHUZ4ifykc1+tBQypDNvbOXYPO6HKpgor4vVWAxDkB3OBtzFJShON/PwlC6C4drmtuMCyBjdYMFGeDGxZuyk5BY4w=
-X-Received: by 2002:a17:90b:384b:b0:252:c3b7:6689 with SMTP id
- nl11-20020a17090b384b00b00252c3b76689mr10261495pjb.49.1684183147398; Mon, 15
- May 2023 13:39:07 -0700 (PDT)
+        with ESMTP id S245336AbjEOUrc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 16:47:32 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 482637EDD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 13:47:31 -0700 (PDT)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1pyf6P-0004ls-DW
+        for stable@vger.kernel.org; Mon, 15 May 2023 22:47:29 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+        by bjornoya.blackshift.org (Postfix) with SMTP id 2A1B11C5C38
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 20:47:27 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bjornoya.blackshift.org (Postfix) with ESMTPS id DF1551C5C03;
+        Mon, 15 May 2023 20:47:24 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 1c41ad3d;
+        Mon, 15 May 2023 20:47:24 +0000 (UTC)
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     netdev@vger.kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
+        kernel@pengutronix.de, Oliver Hartkopp <socketcan@hartkopp.net>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Marc Kleine-Budde <mkl@pengutronix.de>, stable@vger.kernel.org
+Subject: [PATCH net 1/9] can: isotp: recvmsg(): allow MSG_CMSG_COMPAT flag
+Date:   Mon, 15 May 2023 22:47:14 +0200
+Message-Id: <20230515204722.1000957-2-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230515204722.1000957-1-mkl@pengutronix.de>
+References: <20230515204722.1000957-1-mkl@pengutronix.de>
 MIME-Version: 1.0
-References: <ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com>
- <ZF4bMptC3Lf2Hnee@gerhold.net> <13285014.O9o76ZdvQC@z3ntu.xyz> <ZF5evXbOXhWFoaus@francesco-nb.int.toradex.com>
-In-Reply-To: <ZF5evXbOXhWFoaus@francesco-nb.int.toradex.com>
-From:   Badhri Jagan Sridharan <badhri@google.com>
-Date:   Mon, 15 May 2023 13:38:30 -0700
-Message-ID: <CAPTae5+uv3ZJaF7kAdkCzGnTgz3LzoCsT97_Mtv10+5kaEXrQA@mail.gmail.com>
-Subject: Re: USB gadget regression on v6.4-rc1 and v6.1.28
-To:     Francesco Dolcini <francesco@dolcini.it>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, Stephan Gerhold <stephan@gerhold.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, stable@vger.kernel.org,
-        francesco.dolcini@toradex.com, liu.ming50@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi all,
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Thanks for reporting !
-Do you see the system to crash (or) wait indefinitely for the gadget
-being pulled up ?
-Is it possible to get the stack trace ?
+The control message provided by isotp support MSG_CMSG_COMPAT but
+blocked recvmsg() syscalls that have set this flag, i.e. on 32bit user
+space on 64 bit kernels.
 
-Thanks,
-Badhri
+Link: https://github.com/hartkopp/can-isotp/issues/59
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Suggested-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Fixes: 42bf50a1795a ("can: isotp: support MSG_TRUNC flag when reading from socket")
+Link: https://lore.kernel.org/20230505110308.81087-2-mkl@pengutronix.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/isotp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/can/isotp.c b/net/can/isotp.c
+index a750259cb79c..84f9aba02901 100644
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1139,7 +1139,7 @@ static int isotp_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	struct isotp_sock *so = isotp_sk(sk);
+ 	int ret = 0;
+ 
+-	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK))
++	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK | MSG_CMSG_COMPAT))
+ 		return -EINVAL;
+ 
+ 	if (!so->bound)
+
+base-commit: df0acdc59b094cdaef19b1c8d83c9721082bab7b
+-- 
+2.39.2
 
 
-
-
-
-On Fri, May 12, 2023 at 8:44=E2=80=AFAM Francesco Dolcini <francesco@dolcin=
-i.it> wrote:
->
-> On Fri, May 12, 2023 at 05:42:03PM +0200, Luca Weiss wrote:
-> > to confirm I'm seeing the same issue on Qualcomm MSM8974 and MSM8226 bo=
-ards.
-> > Reverting the patches Stephan mentioned makes it work again on v6.4-rc1=
-.
->
-> https://lore.kernel.org/all/20230512131435.205464-1-francesco@dolcini.it/
->
