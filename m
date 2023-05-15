@@ -2,58 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE64702E85
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 15:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C322702F7A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 16:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241579AbjEONkS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 09:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52482 "EHLO
+        id S240461AbjEOOUn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 10:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242225AbjEONkO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 09:40:14 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315112690;
-        Mon, 15 May 2023 06:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684158013; x=1715694013;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=WP+yFp91mqP5IhHCOHfOiS43Cj02tZQHbOCUjxgaHRw=;
-  b=nA3HG6Er6PDHP+F12Y+U35DswrBAhawpz/HK0Beoj2BBJrvaIWlQwwrz
-   XqHgrfxscRSeOnZuJyXEo2VE4wUR0ZkfqKP8Ta7101D6wEImVk1WlH/z9
-   pxXipLQcU0ARKYCJ4hSfc1ME9CIn2EG3kcFNS1/H7ZCUhjFjnJTTs1a2K
-   r2zRTEae4I9Te8mmSbJy9spPE8xXhpggcwn1TF69vvrpndzhmFrZuRX1t
-   /O7/FHYlCvl4SOsxOruxufbR7EnW17hPDNpDkTzBfOG6PvJ0YJQukyGe1
-   TnGHsUhLX4r+3SRWZFHINVZRiuh8hTZUzB5nXLQXFrpNaws1Tq+mkNWh4
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="414598016"
-X-IronPort-AV: E=Sophos;i="5.99,276,1677571200"; 
-   d="scan'208";a="414598016"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2023 06:39:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="700964227"
-X-IronPort-AV: E=Sophos;i="5.99,276,1677571200"; 
-   d="scan'208";a="700964227"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by orsmga002.jf.intel.com with ESMTP; 15 May 2023 06:39:57 -0700
-From:   Mathias Nyman <mathias.nyman@linux.intel.com>
-To:     <gregkh@linuxfoundation.org>
-Cc:     <linux-usb@vger.kernel.org>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        stable@vger.kernel.org, Miller Hunter <MillerH@hearthnhome.com>
-Subject: [PATCH 2/2] xhci: Fix incorrect tracking of free space on transfer rings
-Date:   Mon, 15 May 2023 16:40:59 +0300
-Message-Id: <20230515134059.161110-3-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230515134059.161110-1-mathias.nyman@linux.intel.com>
-References: <20230515134059.161110-1-mathias.nyman@linux.intel.com>
+        with ESMTP id S240239AbjEOOUj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 10:20:39 -0400
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79DA2685;
+        Mon, 15 May 2023 07:20:35 -0700 (PDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+        by localhost (Postfix) with ESMTP id 4QKh695P20z9sfM;
+        Mon, 15 May 2023 16:08:01 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id n7iBsVw3BR-u; Mon, 15 May 2023 16:08:01 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4QKh662g1Wz9sfH;
+        Mon, 15 May 2023 16:07:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A0618B770;
+        Mon, 15 May 2023 16:07:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id alq4ozSJz5kR; Mon, 15 May 2023 16:07:58 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.36])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 08C2C8B763;
+        Mon, 15 May 2023 16:07:57 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 34FE7OO1583495
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+        Mon, 15 May 2023 16:07:24 +0200
+Received: (from chleroy@localhost)
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 34FE7OhM583494;
+        Mon, 15 May 2023 16:07:24 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+To:     gregkh@linuxfoundation.org, stable@vger.kernel.org
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 1/3][For 4.19/4.14] spi: spi-fsl-spi: automatically adapt bits-per-word in cpu mode
+Date:   Mon, 15 May 2023 16:07:13 +0200
+Message-Id: <674d9af640acf4aa04abd642cc81de926d3271ed.1684158520.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1684159634; l=1846; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=OWc7X3nzzTeipDvjQyYBRZZJhdcswKxTsmbPVSf0T6w=; b=wRJPE7NaTac/3r834KzwijlYzcX1UtMJJV6UAtQ0MOaDVhKWMSQWCsCpEmOR2Pg6Me5ICd3gb epA+e6RJDvEC4MrkUpuXfOyzZwIndITdnQ1g0xp6vMnK7u8+nSVwxEa
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,87 +65,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This incorrect tracking caused unnecessary ring expansion in some
-usecases which over days of use consume a lot of memory.
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 
-xhci driver tries to keep track of free transfer blocks (TRBs) on the
-ring buffer, but failed to add back some cancelled transfers that were
-turned into no-op operations instead of just moving past them.
+(cherry picked from upstream af0e6242909c3c4297392ca3e94eff1b4db71a97)
 
-This can happen if there are several queued pending transfers which
-then are cancelled in reverse order.
+Taking one interrupt for every byte is rather slow. Since the
+controller is perfectly capable of transmitting 32 bits at a time,
+change t->bits_per-word to 32 when the length is divisible by 4 and
+large enough that the reduced number of interrupts easily compensates
+for the one or two extra fsl_spi_setup_transfer() calls this causes.
 
-Solve this by counting the numer of steps we move the dequeue pointer
-once we complete a transfer, and add it to the number of free trbs
-instead of just adding the trb number of the current transfer.
-This way we ensure we count the no-op trbs on the way as well.
-
-Fixes: 55f6153d8cc8 ("xhci: remove extra loop in interrupt context")
-Cc: stable@vger.kernel.org
-Reported-by: Miller Hunter <MillerH@hearthnhome.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217242
-Tested-by: Miller Hunter <MillerH@hearthnhome.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/usb/host/xhci-ring.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-spi.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 1ad12d5a4857..2bc82b3a2f98 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -276,6 +276,26 @@ static void inc_enq(struct xhci_hcd *xhci, struct xhci_ring *ring,
- 	trace_xhci_inc_enq(ring);
- }
- 
-+static int xhci_num_trbs_to(struct xhci_segment *start_seg, union xhci_trb *start,
-+			    struct xhci_segment *end_seg, union xhci_trb *end,
-+			    unsigned int num_segs)
-+{
-+	union xhci_trb *last_on_seg;
-+	int num = 0;
-+	int i = 0;
-+
-+	do {
-+		if (start_seg == end_seg && end >= start)
-+			return num + (end - start);
-+		last_on_seg = &start_seg->trbs[TRBS_PER_SEGMENT - 1];
-+		num += last_on_seg - start;
-+		start_seg = start_seg->next;
-+		start = start_seg->trbs;
-+	} while (i++ <= num_segs);
-+
-+	return -EINVAL;
-+}
-+
- /*
-  * Check to see if there's room to enqueue num_trbs on the ring and make sure
-  * enqueue pointer will not advance into dequeue segment. See rules above.
-@@ -2140,6 +2160,7 @@ static int finish_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
- 		     u32 trb_comp_code)
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 479d10dc6cb8..946b417f2d1c 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -357,12 +357,28 @@ static int fsl_spi_bufs(struct spi_device *spi, struct spi_transfer *t,
+ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 			      struct spi_message *m)
  {
- 	struct xhci_ep_ctx *ep_ctx;
-+	int trbs_freed;
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
+ 	struct spi_device *spi = m->spi;
+ 	struct spi_transfer *t, *first;
+ 	unsigned int cs_change;
+ 	const int nsecs = 50;
+ 	int status;
  
- 	ep_ctx = xhci_get_ep_ctx(xhci, ep->vdev->out_ctx, ep->ep_index);
- 
-@@ -2209,9 +2230,15 @@ static int finish_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
- 	}
- 
- 	/* Update ring dequeue pointer */
-+	trbs_freed = xhci_num_trbs_to(ep_ring->deq_seg, ep_ring->dequeue,
-+				      td->last_trb_seg, td->last_trb,
-+				      ep_ring->num_segs);
-+	if (trbs_freed < 0)
-+		xhci_dbg(xhci, "Failed to count freed trbs at TD finish\n");
-+	else
-+		ep_ring->num_trbs_free += trbs_freed;
- 	ep_ring->dequeue = td->last_trb;
- 	ep_ring->deq_seg = td->last_trb_seg;
--	ep_ring->num_trbs_free += td->num_trbs - 1;
- 	inc_deq(xhci, ep_ring);
- 
- 	return xhci_td_cleanup(xhci, td, ep_ring, td->status);
++	/*
++	 * In CPU mode, optimize large byte transfers to use larger
++	 * bits_per_word values to reduce number of interrupts taken.
++	 */
++	if (!(mpc8xxx_spi->flags & SPI_CPM_MODE)) {
++		list_for_each_entry(t, &m->transfers, transfer_list) {
++			if (t->len < 256 || t->bits_per_word != 8)
++				continue;
++			if ((t->len & 3) == 0)
++				t->bits_per_word = 32;
++			else if ((t->len & 1) == 0)
++				t->bits_per_word = 16;
++		}
++	}
++
+ 	/* Don't allow changes if CS is active */
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+ 			transfer_list);
 -- 
-2.25.1
+2.40.1
 
