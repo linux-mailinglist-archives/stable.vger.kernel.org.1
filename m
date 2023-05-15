@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C0F703528
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF1270334C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243179AbjEOQ4E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:56:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34708 "EHLO
+        id S242758AbjEOQf0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:35:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243155AbjEOQ4C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5604249D1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:01 -0700 (PDT)
+        with ESMTP id S242694AbjEOQf0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED5A3AAC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E07F562A05
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3599C4339C;
-        Mon, 15 May 2023 16:55:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B05EA627F7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF20AC4339B;
+        Mon, 15 May 2023 16:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169760;
-        bh=2X4k2/iIks3FseQkiid0IWUxRMlvGIKBkbXIxiXk09Q=;
+        s=korg; t=1684168524;
+        bh=fPMY8DUmeIXb2/hGuzOQ8DnAu+Y2EKJOtaLUF/Kxjf0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L1+0kBjcf8+AAXeRgGb004ZX54MiEY0LwL8VpDYCYLmAItBHR+ru8OcDCiJTcQVSd
-         a7C+C8ha4c1d0WB8gSisoUjLN3iTfT0DcCzbKSTtMwnZqzP4h/yIJIrFu2Nsv5kd9f
-         eY9TQEV77kUC3L1SYWVujWvBzu5trEa/dUpzlGbQ=
+        b=NNJ9hojGI/ht2hSEUZ5UVbBMiTcOWWa9owkvjSPdXW76EMZlqtVYnlW+NYdaRlLfd
+         Orz+rQZ4FolxxlgPsD0t+pEp8W8Q1HcX/R24cwpjpigZ/aY/BNQDU31jjsxcgS5Xmm
+         +kf0iVCEFrFBKk0pZ4GFPDIBZ5r+/50zS71/DL/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.3 162/246] sysctl: clarify register_sysctl_init() base directory order
+        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.14 077/116] btrfs: scrub: reject unsupported scrub flags
 Date:   Mon, 15 May 2023 18:26:14 +0200
-Message-Id: <20230515161727.495484545@linuxfoundation.org>
+Message-Id: <20230515161700.839828188@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +53,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 228b09de936395ddd740df3522ea35ae934830d8 upstream.
+commit 604e6681e114d05a2e384c4d1e8ef81918037ef5 upstream.
 
-Relatively new docs which I added which hinted the base directories needed
-to be created before is wrong, remove that incorrect comment. This has been
-hinted before by Eric twice already [0] [1], I had just not verified that
-until now. Now that I've verified that updates the docs to relax the context
-described.
+Since the introduction of scrub interface, the only flag that we support
+is BTRFS_SCRUB_READONLY.  Thus there is no sanity checks, if there are
+some undefined flags passed in, we just ignore them.
 
-[0] https://lkml.kernel.org/r/875ys0azt8.fsf@email.froward.int.ebiederm.org
-[1] https://lkml.kernel.org/r/87ftbiud6s.fsf@x220.int.ebiederm.org
+This is problematic if we want to introduce new scrub flags, as we have
+no way to determine if such flags are supported.
 
-Cc: stable@vger.kernel.org # v5.17
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Suggested-by: Eric W. Biederman <ebiederm@xmission.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Address the problem by introducing a check for the flags, and if
+unsupported flags are set, return -EOPNOTSUPP to inform the user space.
+
+This check should be backported for all supported kernels before any new
+scrub flags are introduced.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/btrfs/ioctl.c           |    5 +++++
+ include/uapi/linux/btrfs.h |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1445,10 +1445,7 @@ EXPORT_SYMBOL(register_sysctl);
-  * register_sysctl() failing on init are extremely low, and so for both reasons
-  * this function does not return any error as it is used by initialization code.
-  *
-- * Context: Can only be called after your respective sysctl base path has been
-- * registered. So for instance, most base directories are registered early on
-- * init before init levels are processed through proc_sys_init() and
-- * sysctl_init_bases().
-+ * Context: if your base directory does not exist it will be created for you.
-  */
- void __init __register_sysctl_init(const char *path, struct ctl_table *table,
- 				 const char *table_name)
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4442,6 +4442,11 @@ static long btrfs_ioctl_scrub(struct fil
+ 	if (IS_ERR(sa))
+ 		return PTR_ERR(sa);
+ 
++	if (sa->flags & ~BTRFS_SCRUB_SUPPORTED_FLAGS) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
+ 	if (!(sa->flags & BTRFS_SCRUB_READONLY)) {
+ 		ret = mnt_want_write_file(file);
+ 		if (ret)
+--- a/include/uapi/linux/btrfs.h
++++ b/include/uapi/linux/btrfs.h
+@@ -161,6 +161,7 @@ struct btrfs_scrub_progress {
+ };
+ 
+ #define BTRFS_SCRUB_READONLY	1
++#define BTRFS_SCRUB_SUPPORTED_FLAGS	(BTRFS_SCRUB_READONLY)
+ struct btrfs_ioctl_scrub_args {
+ 	__u64 devid;				/* in */
+ 	__u64 start;				/* in */
 
 
