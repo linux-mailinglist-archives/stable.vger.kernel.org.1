@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A48A67039C5
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4A3703B28
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244676AbjEORpw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
+        id S242701AbjEOSAZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244621AbjEORpa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1911B0BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:22 -0700 (PDT)
+        with ESMTP id S244902AbjEOR7n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:59:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE77183E3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 481D362303
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D344C433EF;
-        Mon, 15 May 2023 17:43:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09BC362FC1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125B1C4339B;
+        Mon, 15 May 2023 17:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172601;
-        bh=LbwPvUirsIADwAEuM9Nm/X3rFHKV4cx1p/SUjW84twQ=;
+        s=korg; t=1684173391;
+        bh=/Uh98s5Dkcs1xs6RH/lx9E66JVp5GZxSv4+t0wJNBUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1h2qxsnjWd97jTh+mAFZStwbF8rGi1gibk54IWsG/9T/5D5LGgR+WPYoUMJt+o5VJ
-         NmpgtSypXGzca5j0grd2saOy7dNvKFsyHqTc1Zisuw+f0vRvnQFyZo3URSonBRFOLl
-         EaP7847DTd1ZhN/o9P1bPzVEGx4Awq7lXPbzGqaI=
+        b=faPjOzC0Xnk1/MWNyulE+Bx3SsX813KS7WmYJG8syNkvO/KRK1MUeYlIpepeKYbsk
+         IGqmQ8FcgxLSVflrSlz6tEXNnD+KDYlqWAXI8ai5jYh+OzkhxhX7qrKtEqwZeq9jvU
+         udg86HcXcHsfwBlhLFuWoJ1rrizCmquHX77XnLYw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Dae R. Jeong" <threeearcat@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/381] vmci_host: fix a race condition in vmci_host_poll() causing GPF
+        patches@lists.linux.dev,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 080/282] wifi: rtw88: mac: Return the original error from rtw_mac_power_switch()
 Date:   Mon, 15 May 2023 18:27:38 +0200
-Message-Id: <20230515161746.150016155@linuxfoundation.org>
+Message-Id: <20230515161724.640113130@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,93 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dae R. Jeong <threeearcat@gmail.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit ae13381da5ff0e8e084c0323c3cc0a945e43e9c7 ]
+[ Upstream commit 15c8e267dfa62f207ee1db666c822324e3362b84 ]
 
-During fuzzing, a general protection fault is observed in
-vmci_host_poll().
+rtw_mac_power_switch() calls rtw_pwr_seq_parser() which can return
+-EINVAL, -EBUSY or 0. Propagate the original error code instead of
+unconditionally returning -EINVAL in case of an error.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000019: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x00000000000000c8-0x00000000000000cf]
-RIP: 0010:__lock_acquire+0xf3/0x5e00 kernel/locking/lockdep.c:4926
-<- omitting registers ->
-Call Trace:
- <TASK>
- lock_acquire+0x1a4/0x4a0 kernel/locking/lockdep.c:5672
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0xb3/0x100 kernel/locking/spinlock.c:162
- add_wait_queue+0x3d/0x260 kernel/sched/wait.c:22
- poll_wait include/linux/poll.h:49 [inline]
- vmci_host_poll+0xf8/0x2b0 drivers/misc/vmw_vmci/vmci_host.c:174
- vfs_poll include/linux/poll.h:88 [inline]
- do_pollfd fs/select.c:873 [inline]
- do_poll fs/select.c:921 [inline]
- do_sys_poll+0xc7c/0x1aa0 fs/select.c:1015
- __do_sys_ppoll fs/select.c:1121 [inline]
- __se_sys_ppoll+0x2cc/0x330 fs/select.c:1101
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x4e/0xa0 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-
-Example thread interleaving that causes the general protection fault
-is as follows:
-
-CPU1 (vmci_host_poll)               CPU2 (vmci_host_do_init_context)
------                               -----
-// Read uninitialized context
-context = vmci_host_dev->context;
-                                    // Initialize context
-                                    vmci_host_dev->context = vmci_ctx_create();
-                                    vmci_host_dev->ct_type = VMCIOBJ_CONTEXT;
-
-if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-    // Dereferencing the wrong pointer
-    poll_wait(..., &context->host_context);
-}
-
-In this scenario, vmci_host_poll() reads vmci_host_dev->context first,
-and then reads vmci_host_dev->ct_type to check that
-vmci_host_dev->context is initialized. However, since these two reads
-are not atomically executed, there is a chance of a race condition as
-described above.
-
-To fix this race condition, read vmci_host_dev->context after checking
-the value of vmci_host_dev->ct_type so that vmci_host_poll() always
-reads an initialized context.
-
-Reported-by: Dae R. Jeong <threeearcat@gmail.com>
-Fixes: 8bf503991f87 ("VMCI: host side driver implementation.")
-Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
-Link: https://lore.kernel.org/r/ZCGFsdBAU4cYww5l@dragonet
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230226221004.138331-3-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/mac.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
-index 2d8328d928d53..4a903770b8e1d 100644
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -165,10 +165,16 @@ static int vmci_host_close(struct inode *inode, struct file *filp)
- static __poll_t vmci_host_poll(struct file *filp, poll_table *wait)
- {
- 	struct vmci_host_dev *vmci_host_dev = filp->private_data;
--	struct vmci_ctx *context = vmci_host_dev->context;
-+	struct vmci_ctx *context;
- 	__poll_t mask = 0;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index 9a50984fa06c9..94e69e97d5f5f 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -224,6 +224,7 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 	struct rtw_pwr_seq_cmd **pwr_seq;
+ 	u8 rpwm;
+ 	bool cur_pwr;
++	int ret;
  
- 	if (vmci_host_dev->ct_type == VMCIOBJ_CONTEXT) {
-+		/*
-+		 * Read context only if ct_type == VMCIOBJ_CONTEXT to make
-+		 * sure that context is initialized
-+		 */
-+		context = vmci_host_dev->context;
-+
- 		/* Check for VMCI calls to this VM context. */
- 		if (wait)
- 			poll_wait(filp, &context->host_context.wait_queue,
+ 	rpwm = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
+ 
+@@ -245,8 +246,9 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 		return -EALREADY;
+ 
+ 	pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
+-	if (rtw_pwr_seq_parser(rtwdev, pwr_seq))
+-		return -EINVAL;
++	ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
++	if (ret)
++		return ret;
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
