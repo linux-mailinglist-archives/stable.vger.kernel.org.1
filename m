@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8655C703320
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09ADB70351E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242040AbjEOQda (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36448 "EHLO
+        id S243134AbjEOQzs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242723AbjEOQd1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:27 -0400
+        with ESMTP id S243169AbjEOQzl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15689E6E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C1A5B82
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D2A061F96
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89844C4339C;
-        Mon, 15 May 2023 16:33:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 03575629F3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A2CC433EF;
+        Mon, 15 May 2023 16:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168404;
-        bh=/uRF8dhUS+84Y1s2gqN5Thr5vmmt1gqe5R3/JXpvp3w=;
+        s=korg; t=1684169738;
+        bh=W1XWttFkTyC5uweeaLBNCl0HwjJv4Vp4m65w0gkHsuQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D4rVjMNZGMBL+AQq6Arqct20qMta/sE86i9xOGMlKX1XhhLw09B6CancCL1PDVAhF
-         891YB8xWmfHqXhRUgDF3SvRRHyE02KD0jTdNNUQucRHNrzdvERD12eF4Q0ZAqLOXkl
-         uv6+Wf3DFlScw1C/A2Tf/gMq0vG1CBPpSFe86PoI=
+        b=n+Cjvi0DXmoEvSOrsER0CZhLYuL83ToOD6UQb5Grnstn0SC0/CIcc/1l1n5Bwt+Mo
+         yHD2jVIiIs7A1U92BDal6DhrgqlVlm0qP2/6Ulci6f8Z+Jrb8UKJvE1Txz99k29gQ1
+         OYXr7jLSYzej4OtqscEZig7GZRy8OQeB12YkLYRo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
-        Sridhar Samudrala <sridhar.samudrala@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.14 039/116] ixgbe: Allow flow hash to be set via ethtool
-Date:   Mon, 15 May 2023 18:25:36 +0200
-Message-Id: <20230515161659.569587253@linuxfoundation.org>
+        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
+        Sean Christopherson <seanjc@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 125/246] KVM: x86/mmu: Refresh CR0.WP prior to checking for emulated permission faults
+Date:   Mon, 15 May 2023 18:25:37 +0200
+Message-Id: <20230515161726.313876269@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +54,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joe Damato <jdamato@fastly.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 4f3ed1293feb9502dc254b05802faf1ad3317ac6 ]
+[ Upstream commit cf9f4c0eb1699d306e348b1fd0225af7b2c282d3 ]
 
-ixgbe currently returns `EINVAL` whenever the flowhash it set by ethtool
-because the ethtool code in the kernel passes a non-zero value for hfunc
-that ixgbe should allow.
+Refresh the MMU's snapshot of the vCPU's CR0.WP prior to checking for
+permission faults when emulating a guest memory access and CR0.WP may be
+guest owned.  If the guest toggles only CR0.WP and triggers emulation of
+a supervisor write, e.g. when KVM is emulating UMIP, KVM may consume a
+stale CR0.WP, i.e. use stale protection bits metadata.
 
-When ethtool is called with `ETHTOOL_SRXFHINDIR`,
-`ethtool_set_rxfh_indir` will call ixgbe's set_rxfh function
-with `ETH_RSS_HASH_NO_CHANGE`. This value should be accepted.
+Note, KVM passes through CR0.WP if and only if EPT is enabled as CR0.WP
+is part of the MMU role for legacy shadow paging, and SVM (NPT) doesn't
+support per-bit interception controls for CR0.  Don't bother checking for
+EPT vs. NPT as the "old == new" check will always be true under NPT, i.e.
+the only cost is the read of vcpu->arch.cr4 (SVM unconditionally grabs CR0
+from the VMCB on VM-Exit).
 
-When ethtool is called with `ETHTOOL_SRSSH`, `ethtool_set_rxfh` will
-call ixgbe's set_rxfh function with `rxfh.hfunc`, which appears to be
-hardcoded in ixgbe to always be `ETH_RSS_HASH_TOP`. This value should
-also be accepted.
-
-Before this patch:
-
-$ sudo ethtool -L eth1 combined 10
-$ sudo ethtool -X eth1 default
-Cannot set RX flow hash configuration: Invalid argument
-
-After this patch:
-
-$ sudo ethtool -L eth1 combined 10
-$ sudo ethtool -X eth1 default
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 10 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9     0     1     2     3     4     5
-   16:      6     7     8     9     0     1     2     3
-   24:      4     5     6     7     8     9     0     1
-   ...
-
-Fixes: 1c7cf0784e4d ("ixgbe: support for ethtool set_rxfh")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reported-by: Mathias Krause <minipli@grsecurity.net>
+Link: https://lkml.kernel.org/r/677169b4-051f-fcae-756b-9a3e1bb9f8fe%40grsecurity.net
+Fixes: fb509f76acc8 ("KVM: VMX: Make CR0.WP a guest owned bit")
+Tested-by: Mathias Krause <minipli@grsecurity.net>
+Link: https://lore.kernel.org/r/20230405002608.418442-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>	# backport to v6.3.x
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/mmu.h     | 26 +++++++++++++++++++++++++-
+ arch/x86/kvm/mmu/mmu.c | 15 +++++++++++++++
+ 2 files changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index f7e68083200cf..4bfa9ba8201b1 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3020,8 +3020,8 @@ static int ixgbe_set_rxfh(struct net_device *netdev, const u32 *indir,
- 	int i;
- 	u32 reta_entries = ixgbe_rss_indir_tbl_entries(adapter);
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 168c46fd8dd18..0f38b78ab04b7 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -113,6 +113,8 @@ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
+ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+ 				u64 fault_address, char *insn, int insn_len);
++void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
++					struct kvm_mmu *mmu);
  
--	if (hfunc)
--		return -EINVAL;
-+	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
-+		return -EOPNOTSUPP;
+ int kvm_mmu_load(struct kvm_vcpu *vcpu);
+ void kvm_mmu_unload(struct kvm_vcpu *vcpu);
+@@ -153,6 +155,24 @@ static inline void kvm_mmu_load_pgd(struct kvm_vcpu *vcpu)
+ 					  vcpu->arch.mmu->root_role.level);
+ }
  
- 	/* Fill out the redirection table */
- 	if (indir) {
++static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
++						    struct kvm_mmu *mmu)
++{
++	/*
++	 * When EPT is enabled, KVM may passthrough CR0.WP to the guest, i.e.
++	 * @mmu's snapshot of CR0.WP and thus all related paging metadata may
++	 * be stale.  Refresh CR0.WP and the metadata on-demand when checking
++	 * for permission faults.  Exempt nested MMUs, i.e. MMUs for shadowing
++	 * nEPT and nNPT, as CR0.WP is ignored in both cases.  Note, KVM does
++	 * need to refresh nested_mmu, a.k.a. the walker used to translate L2
++	 * GVAs to GPAs, as that "MMU" needs to honor L2's CR0.WP.
++	 */
++	if (!tdp_enabled || mmu == &vcpu->arch.guest_mmu)
++		return;
++
++	__kvm_mmu_refresh_passthrough_bits(vcpu, mmu);
++}
++
+ /*
+  * Check if a given access (described through the I/D, W/R and U/S bits of a
+  * page fault error code pfec) causes a permission fault with the given PTE
+@@ -184,8 +204,12 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+ 	u64 implicit_access = access & PFERR_IMPLICIT_ACCESS;
+ 	bool not_smap = ((rflags & X86_EFLAGS_AC) | implicit_access) == X86_EFLAGS_AC;
+ 	int index = (pfec + (not_smap << PFERR_RSVD_BIT)) >> 1;
+-	bool fault = (mmu->permissions[index] >> pte_access) & 1;
+ 	u32 errcode = PFERR_PRESENT_MASK;
++	bool fault;
++
++	kvm_mmu_refresh_passthrough_bits(vcpu, mmu);
++
++	fault = (mmu->permissions[index] >> pte_access) & 1;
+ 
+ 	WARN_ON(pfec & (PFERR_PK_MASK | PFERR_RSVD_MASK));
+ 	if (unlikely(mmu->pkru_mask)) {
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 18c0deeaa2ec4..d3812de54b02c 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5121,6 +5121,21 @@ kvm_calc_cpu_role(struct kvm_vcpu *vcpu, const struct kvm_mmu_role_regs *regs)
+ 	return role;
+ }
+ 
++void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
++					struct kvm_mmu *mmu)
++{
++	const bool cr0_wp = !!kvm_read_cr0_bits(vcpu, X86_CR0_WP);
++
++	BUILD_BUG_ON((KVM_MMU_CR0_ROLE_BITS & KVM_POSSIBLE_CR0_GUEST_BITS) != X86_CR0_WP);
++	BUILD_BUG_ON((KVM_MMU_CR4_ROLE_BITS & KVM_POSSIBLE_CR4_GUEST_BITS));
++
++	if (is_cr0_wp(mmu) == cr0_wp)
++		return;
++
++	mmu->cpu_role.base.cr0_wp = cr0_wp;
++	reset_guest_paging_metadata(vcpu, mmu);
++}
++
+ static inline int kvm_mmu_get_tdp_level(struct kvm_vcpu *vcpu)
+ {
+ 	/* tdp_root_level is architecture forced level, use it if nonzero */
 -- 
 2.39.2
 
