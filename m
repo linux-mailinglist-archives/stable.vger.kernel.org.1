@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D854670333A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208547036F2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240156AbjEOQeg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37644 "EHLO
+        id S243907AbjEORPW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242552AbjEOQee (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6840C2D4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:33 -0700 (PDT)
+        with ESMTP id S243760AbjEORPD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A2ADDA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03895627CB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE55C433EF;
-        Mon, 15 May 2023 16:34:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24C1A62B92
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDDCC4339B;
+        Mon, 15 May 2023 17:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168472;
-        bh=6z9xOcEbsVGrDT4mttiiXZJTastv1uH7L4qetwN81tE=;
+        s=korg; t=1684170811;
+        bh=aebu5AmRjdAg2J39aY6IJOnUyymxxJWQF3A/gRu9Hm8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KTA4H34srwNRcqwj/D/ZjtQ00o2L29V1oFH3kYu/SNKA+Oh8WaRhOWEdk3Ox0M/yk
-         whE8jfbe3K57wUrT3VuYg74z2bDaHtqx0Yrp5oTG/3SftgVawt/IT6Vw7OhuUMkrpl
-         4fVV3mHx1Cpv/KSqVAlFsAwVpG8PA4aLmDjAAEY4=
+        b=tbVMLVs1vYcmPd5HZLhkE2MzK0GD46oBasCJS78VE+CFbemh/1ZxWaEV6qKcyQvdC
+         cJLZB2MJ+S/jN5zgGg2x8WxaClpGQwCQ1T8O0K9TzEyZ5rAqlOPKKhqtQq8OT2WsPy
+         F+yDW4KayjRQYATcNf1V+kCoJtegfkTd4GoU3uWo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 031/116] vlan: partially enable SIOCSHWTSTAMP in container
+Subject: [PATCH 6.2 002/242] usb: dwc3: gadget: Execute gadget stop after halting the controller
 Date:   Mon, 15 May 2023 18:25:28 +0200
-Message-Id: <20230515161659.298204621@linuxfoundation.org>
+Message-Id: <20230515161721.879805810@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,35 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 731b73dba359e3ff00517c13aa0daa82b34ff466 ]
+[ Upstream commit 39674be56fba1cd3a03bf4617f523a35f85fd2c1 ]
 
-Setting timestamp filter was explicitly disabled on vlan devices in
-containers because it might affect other processes on the host. But it's
-absolutely legit in case when real device is in the same namespace.
+Do not call gadget stop until the poll for controller halt is
+completed.  DEVTEN is cleared as part of gadget stop, so the intention to
+allow ep0 events to continue while waiting for controller halt is not
+happening.
 
-Fixes: 873017af7784 ("vlan: disable SIOCSHWTSTAMP in container")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230420212759.29429-2-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan_dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index ed3717dc2d201..e871d3b27c479 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -367,7 +367,7 @@ static int vlan_dev_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index a995e3f4df37f..e63700937ba8c 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2546,7 +2546,6 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	 * bit.
+ 	 */
+ 	dwc3_stop_active_transfers(dwc);
+-	__dwc3_gadget_stop(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
  
- 	switch (cmd) {
- 	case SIOCSHWTSTAMP:
--		if (!net_eq(dev_net(dev), &init_net))
-+		if (!net_eq(dev_net(dev), dev_net(real_dev)))
- 			break;
- 	case SIOCGMIIPHY:
- 	case SIOCGMIIREG:
+ 	/*
+@@ -2583,7 +2582,19 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	 * remaining event generated by the controller while polling for
+ 	 * DSTS.DEVCTLHLT.
+ 	 */
+-	return dwc3_gadget_run_stop(dwc, false);
++	ret = dwc3_gadget_run_stop(dwc, false);
++
++	/*
++	 * Stop the gadget after controller is halted, so that if needed, the
++	 * events to update EP0 state can still occur while the run/stop
++	 * routine polls for the halted state.  DEVTEN is cleared as part of
++	 * gadget stop.
++	 */
++	spin_lock_irqsave(&dwc->lock, flags);
++	__dwc3_gadget_stop(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
++
++	return ret;
+ }
+ 
+ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
 -- 
 2.39.2
 
