@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBA2703553
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF612703AEA
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243263AbjEOQ5y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36964 "EHLO
+        id S244604AbjEOR4r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243251AbjEOQ5x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C755278
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:46 -0700 (PDT)
+        with ESMTP id S244034AbjEORz5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E35D22D7F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1DEA62A2C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F2C433D2;
-        Mon, 15 May 2023 16:57:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB2B1622D2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B49C433EF;
+        Mon, 15 May 2023 17:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169865;
-        bh=QZhYRkOFQiVLrhGHtoI9Hs0G+I1WS7Z++H6m1o4v2zc=;
+        s=korg; t=1684173240;
+        bh=F32SgxFxSlSAZdoCkwBof7lccVyUxHj9VpqqE+ccSW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R+nj5ymwtZB5kuksfO243/fuDZ+RhFF72DL9hWCse/I0wabtUOxxBTT9m0DWnFH7i
-         R/QkQKGqGQxh2bWhdPCguTnzjvmV3BM1IC1ckSw/UeT+8UARVjZDCtOqUkZECMyktP
-         +3BqlXzOAbqr51OVoAUroeDuPmGPI49zntew3gJ0=
+        b=H7Giypbb2V3aRKDAcoEwYc4wLu3JFfij/C2BxQe8k5RtPhpqo43yM3g9H9m4UpbUQ
+         zeKLYRFzZdz54qIidzvmodH5Y2sE5Gh0QNjg+FcYFuP5v1KAF1DkkZbatcrRs1WeXh
+         /93wpmBXKsEMTOR/+ZZvbbVBShoT5J81A8nyoROU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alan Liu <HaoPing.Liu@amd.com>, Leo Chen <sancchen@amd.com>
-Subject: [PATCH 6.3 196/246] drm/amd/display: Change default Z8 watermark values
+        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 030/282] selinux: fix Makefile dependencies of flask.h
 Date:   Mon, 15 May 2023 18:26:48 +0200
-Message-Id: <20230515161728.494225171@linuxfoundation.org>
+Message-Id: <20230515161723.180174251@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,38 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leo Chen <sancchen@amd.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit 8f586cc16c1fc3c2202c9d54563db8c7ed365f82 upstream.
+[ Upstream commit bcab1adeaad4b39a1e04cb98979a367d08253f03 ]
 
-[Why & How]
-Previous Z8 watermark values were causing flickering and OTC underflow.
-Updating Z8 watermark values based on the measurement.
+Make the flask.h target depend on the genheaders binary instead of
+classmap.h to ensure that it is rebuilt if any of the dependencies of
+genheaders are changed.
 
-Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Alan Liu <HaoPing.Liu@amd.com>
-Signed-off-by: Leo Chen <sancchen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Notably this fixes flask.h not being rebuilt when
+initial_sid_to_string.h is modified.
+
+Fixes: 8753f6bec352 ("selinux: generate flask headers during kernel build")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c |    4 ++--
+ security/selinux/Makefile | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -149,8 +149,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3
- 	.num_states = 5,
- 	.sr_exit_time_us = 16.5,
- 	.sr_enter_plus_exit_time_us = 18.5,
--	.sr_exit_z8_time_us = 210.0,
--	.sr_enter_plus_exit_z8_time_us = 310.0,
-+	.sr_exit_z8_time_us = 268.0,
-+	.sr_enter_plus_exit_z8_time_us = 393.0,
- 	.writeback_latency_us = 12.0,
- 	.dram_channel_width_bytes = 4,
- 	.round_trip_ping_latency_dcfclk_cycles = 106,
+diff --git a/security/selinux/Makefile b/security/selinux/Makefile
+index ccf9504093841..c0dfb9f3db692 100644
+--- a/security/selinux/Makefile
++++ b/security/selinux/Makefile
+@@ -19,8 +19,8 @@ ccflags-y := -I$(srctree)/security/selinux -I$(srctree)/security/selinux/include
+ $(addprefix $(obj)/,$(selinux-y)): $(obj)/flask.h
+ 
+ quiet_cmd_flask = GEN     $(obj)/flask.h $(obj)/av_permissions.h
+-      cmd_flask = scripts/selinux/genheaders/genheaders $(obj)/flask.h $(obj)/av_permissions.h
++      cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
+ 
+ targets += flask.h av_permissions.h
+-$(obj)/flask.h: $(src)/include/classmap.h FORCE
++$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
+ 	$(call if_changed,flask)
+-- 
+2.39.2
+
 
 
