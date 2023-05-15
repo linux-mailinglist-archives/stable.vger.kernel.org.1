@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82217703807
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35506703A63
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244241AbjEOR0t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47140 "EHLO
+        id S244888AbjEORvB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:51:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244138AbjEOR0Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DFC11D84
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:11 -0700 (PDT)
+        with ESMTP id S244887AbjEORue (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48CA19F18
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80A9262CB2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D503C433D2;
-        Mon, 15 May 2023 17:25:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC28362F3E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11BDC4339E;
+        Mon, 15 May 2023 17:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171510;
-        bh=m/jFLvKIQTPU0pAeXn3u6KckevLTwYF9dNl3BQzSJt8=;
+        s=korg; t=1684172910;
+        bh=UqsV6kpN6V5dhZKIggXFyrj9RMxF6R5AszPr6eTzBb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eqX1MfNITaz5QQlBC22b9QcQdUBLzYS6N5Y6WoEJxV2diHHaH/Qz9k1vGl0mnF9FD
-         UsCUjQlrJZUobawTmtrBJSMtp23uKAL+wI8O74Vp0KmtShw5WClAxI9eMqQQ9ZlUEw
-         ENUNLlc6yIO6Mm9zVWFLY1u2ngdD6riB3a6eY3Zw=
+        b=qyctGcJEDZaJCEo4jUcG4ZdH2wiNGb+NwZYrLqnlMUxPp9J1x0Z2h1ap52bNsvip8
+         zayO36oR5+co4fKtJvqSfXG9uFzTvTrQkcEmXflt0ycWwZgpKAF41t/DLEONwL6ztR
+         h0qTq5hBaptXvQPN1BHCtA6jFJ7OyytasMm6affg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+91dccab7c64e2850a4e5@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 231/242] ext4: fix deadlock when converting an inline directory in nojournal mode
+        patches@lists.linux.dev, Sami Tolvanen <samitolvanen@google.com>,
+        Akilesh Kailash <akailash@google.com>,
+        Mike Snitzer <snitzer@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 306/381] dm verity: skip redundant verity_handle_err() on I/O errors
 Date:   Mon, 15 May 2023 18:29:17 +0200
-Message-Id: <20230515161728.843947735@linuxfoundation.org>
+Message-Id: <20230515161750.661730862@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,63 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Akilesh Kailash <akailash@google.com>
 
-commit f4ce24f54d9cca4f09a395f3eecce20d6bec4663 upstream.
+[ Upstream commit 2c0468e054c0adb660ac055fc396622ec7235df9 ]
 
-In no journal mode, ext4_finish_convert_inline_dir() can self-deadlock
-by calling ext4_handle_dirty_dirblock() when it already has taken the
-directory lock.  There is a similar self-deadlock in
-ext4_incvert_inline_data_nolock() for data files which we'll fix at
-the same time.
+Without FEC, dm-verity won't call verity_handle_err() when I/O fails,
+but with FEC enabled, it currently does even if an I/O error has
+occurred.
 
-A simple reproducer demonstrating the problem:
+If there is an I/O error and FEC correction fails, return the error
+instead of calling verity_handle_err() again.
 
-    mke2fs -Fq -t ext2 -O inline_data -b 4k /dev/vdc 64
-    mount -t ext4 -o dirsync /dev/vdc /vdc
-    cd /vdc
-    mkdir file0
-    cd file0
-    touch file0
-    touch file1
-    attr -s BurnSpaceInEA -V abcde .
-    touch supercalifragilisticexpialidocious
-
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230507021608.1290720-1-tytso@mit.edu
-Reported-by: syzbot+91dccab7c64e2850a4e5@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=ba84cc80a9491d65416bc7877e1650c87530fe8a
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Akilesh Kailash <akailash@google.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Mike Snitzer <snitzer@redhat.com>
+Stable-dep-of: e8c5d45f82ce ("dm verity: fix error handling for check_at_most_once on FEC")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/dm-verity-target.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1177,6 +1177,7 @@ static int ext4_finish_convert_inline_di
- 		ext4_initialize_dirent_tail(dir_block,
- 					    inode->i_sb->s_blocksize);
- 	set_buffer_uptodate(dir_block);
-+	unlock_buffer(dir_block);
- 	err = ext4_handle_dirty_dirblock(handle, inode, dir_block);
- 	if (err)
- 		return err;
-@@ -1251,6 +1252,7 @@ static int ext4_convert_inline_data_nolo
- 	if (!S_ISDIR(inode->i_mode)) {
- 		memcpy(data_bh->b_data, buf, inline_size);
- 		set_buffer_uptodate(data_bh);
-+		unlock_buffer(data_bh);
- 		error = ext4_handle_dirty_metadata(handle,
- 						   inode, data_bh);
- 	} else {
-@@ -1258,7 +1260,6 @@ static int ext4_convert_inline_data_nolo
- 						       buf, inline_size);
+diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
+index c801f6b93b7b4..d9c388e6ce76c 100644
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -475,6 +475,7 @@ static int verity_verify_io(struct dm_verity_io *io)
+ 	struct bvec_iter start;
+ 	unsigned b;
+ 	struct crypto_wait wait;
++	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
+ 
+ 	for (b = 0; b < io->n_blocks; b++) {
+ 		int r;
+@@ -529,9 +530,17 @@ static int verity_verify_io(struct dm_verity_io *io)
+ 		else if (verity_fec_decode(v, io, DM_VERITY_BLOCK_TYPE_DATA,
+ 					   cur_block, NULL, &start) == 0)
+ 			continue;
+-		else if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA,
+-					   cur_block))
+-			return -EIO;
++		else {
++			if (bio->bi_status) {
++				/*
++				 * Error correction failed; Just return error
++				 */
++				return -EIO;
++			}
++			if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA,
++					      cur_block))
++				return -EIO;
++		}
  	}
  
--	unlock_buffer(data_bh);
- out_restore:
- 	if (error)
- 		ext4_restore_inline_data(handle, inode, iloc, buf, inline_size);
+ 	return 0;
+-- 
+2.39.2
+
 
 
