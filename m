@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6021703750
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C4A0703AD8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244012AbjEORTd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:19:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S242475AbjEOR4M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:56:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243725AbjEORTL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:11 -0400
+        with ESMTP id S244848AbjEORze (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585FE86B4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2363812C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D837A62C08
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA2DC433D2;
-        Mon, 15 May 2023 17:17:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 011D162FBF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABD8C433EF;
+        Mon, 15 May 2023 17:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171034;
-        bh=SKYHOo+ocBqi3svK99f0dRZfnFk8GrZrVbQK4/JBTHY=;
+        s=korg; t=1684173206;
+        bh=vA0zeCbEd66IIZ09tbi0zkeB5Meh+dk0ngEv/bIiDe0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RevHFrGjuxLPOt0erqieNijjGlFVO3F8qeZu+3JFgytaLAaS7yfL591I6EeApAuP3
-         ji1o+BCRlVWTyiUuN/IyH4SFh59l5EZAWt5VM1VJIi1v9UXi7OPVpZUbsha9eecgai
-         t3UwNBUhtIGlNypQM5yLzNfdJot454GogmYJubbU=
+        b=IRj10UwZkW8fKt9yYQLAT/4SlW2GsFFL4KDJtLzBjABKX1Wc7DhiiDhmyXHLTmiKG
+         9lUeuG3Z4SPBOEpa94afEO4166zkHFK0UEcNgh0pClI5In2Z1JZZTdjNWlJ7OJIseC
+         LlAVOH9nILDgcskqUrw1aQoGwdgbaAY5/keS6N8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 072/242] octeontx2-af: Update/Fix NPC field hash extract feature
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Subject: [PATCH 5.4 020/282] pwm: meson: Fix axg ao mux parents
 Date:   Mon, 15 May 2023 18:26:38 +0200
-Message-Id: <20230515161724.063922248@linuxfoundation.org>
+Message-Id: <20230515161722.879907252@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,197 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 406bed11fb91a0b35c26fe633d8700febaec6439 ]
+commit eb411c0cf59ae6344b34bc6f0d298a22b300627e upstream.
 
-1. As per previous implementation, mask and control parameter to
-generate the field hash value was not passed to the caller program.
-Updated the secret key mbox to share that information as well,
-as a part of the fix.
-2. Earlier implementation did not consider hash reduction of both
-source and destination IPv6 addresses. Only source IPv6 address
-was considered. This fix solves that and provides option to hash
+This fix is basically the same as 9bce02ef0dfa ("pwm: meson: Fix the
+G12A AO clock parents order"). Vendor driver referenced there has
+xtal as first parent also for axg ao. In addition fix the name
+of the aoclk81 clock. Apparently name aoclk81 as used by the vendor
+driver was changed when mainlining the axg clock driver.
 
-Fixes: 56d9f5fd2246 ("octeontx2-af: Use hashed field in MCAM key")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bccaa3f917c9 ("pwm: meson: Add clock source configuration for Meson-AXG")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  | 16 +++++---
- .../marvell/octeontx2/af/rvu_npc_hash.c       | 37 ++++++++++++-------
- .../marvell/octeontx2/af/rvu_npc_hash.h       |  6 +++
- 3 files changed, 41 insertions(+), 18 deletions(-)
+ drivers/pwm/pwm-meson.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index d2584ebb7a70c..ac90131d5b4ad 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -242,9 +242,9 @@ M(NPC_MCAM_READ_BASE_RULE, 0x6011, npc_read_base_steer_rule,            \
- M(NPC_MCAM_GET_STATS, 0x6012, npc_mcam_entry_stats,                     \
- 				   npc_mcam_get_stats_req,              \
- 				   npc_mcam_get_stats_rsp)              \
--M(NPC_GET_SECRET_KEY, 0x6013, npc_get_secret_key,                     \
--				   npc_get_secret_key_req,              \
--				   npc_get_secret_key_rsp)              \
-+M(NPC_GET_FIELD_HASH_INFO, 0x6013, npc_get_field_hash_info,                     \
-+				   npc_get_field_hash_info_req,              \
-+				   npc_get_field_hash_info_rsp)              \
- M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
- 				   npc_get_field_status_req,              \
- 				   npc_get_field_status_rsp)              \
-@@ -1517,14 +1517,20 @@ struct npc_mcam_get_stats_rsp {
- 	u8 stat_ena; /* enabled */
+--- a/drivers/pwm/pwm-meson.c
++++ b/drivers/pwm/pwm-meson.c
+@@ -424,7 +424,7 @@ static const struct meson_pwm_data pwm_a
  };
  
--struct npc_get_secret_key_req {
-+struct npc_get_field_hash_info_req {
- 	struct mbox_msghdr hdr;
- 	u8 intf;
+ static const char * const pwm_axg_ao_parent_names[] = {
+-	"aoclk81", "xtal", "fclk_div4", "fclk_div5"
++	"xtal", "axg_ao_clk81", "fclk_div4", "fclk_div5"
  };
  
--struct npc_get_secret_key_rsp {
-+struct npc_get_field_hash_info_rsp {
- 	struct mbox_msghdr hdr;
- 	u64 secret_key[3];
-+#define NPC_MAX_HASH 2
-+#define NPC_MAX_HASH_MASK 2
-+	/* NPC_AF_INTF(0..1)_HASH(0..1)_MASK(0..1) */
-+	u64 hash_mask[NPC_MAX_INTF][NPC_MAX_HASH][NPC_MAX_HASH_MASK];
-+	/* NPC_AF_INTF(0..1)_HASH(0..1)_RESULT_CTRL */
-+	u64 hash_ctrl[NPC_MAX_INTF][NPC_MAX_HASH];
- };
- 
- enum ptp_op {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-index f2d7156262ff1..9ec5b3c65020b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-@@ -110,8 +110,8 @@ static u64 npc_update_use_hash(int lt, int ld)
- 		 * in KEX_LD_CFG
- 		 */
- 		cfg = KEX_LD_CFG_USE_HASH(0x1, 0x03,
--					  ld ? 0x8 : 0x18,
--					  0x1, 0x0, 0x10);
-+					  ld ? 0x18 : 0x8,
-+					  0x1, 0x0, ld ? 0x14 : 0x10);
- 		break;
- 	}
- 
-@@ -134,7 +134,6 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
- 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
- 					u64 cfg = npc_update_use_hash(lt, ld);
- 
--					hash_cnt++;
- 					if (hash_cnt == NPC_MAX_HASH)
- 						return;
- 
-@@ -149,6 +148,8 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
- 							     mkex_hash->hash_mask[intf][ld][1]);
- 					SET_KEX_LD_HASH_CTRL(intf, ld,
- 							     mkex_hash->hash_ctrl[intf][ld]);
-+
-+					hash_cnt++;
- 				}
- 			}
- 		}
-@@ -171,7 +172,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
- 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
- 					u64 cfg = npc_update_use_hash(lt, ld);
- 
--					hash_cnt++;
- 					if (hash_cnt == NPC_MAX_HASH)
- 						return;
- 
-@@ -187,8 +187,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
- 					SET_KEX_LD_HASH_CTRL(intf, ld,
- 							     mkex_hash->hash_ctrl[intf][ld]);
- 					hash_cnt++;
--					if (hash_cnt == NPC_MAX_HASH)
--						return;
- 				}
- 		}
- 	}
-@@ -242,8 +240,8 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 			   struct flow_msg *omask)
- {
- 	struct npc_mcam_kex_hash *mkex_hash = rvu->kpu.mkex_hash;
--	struct npc_get_secret_key_req req;
--	struct npc_get_secret_key_rsp rsp;
-+	struct npc_get_field_hash_info_req req;
-+	struct npc_get_field_hash_info_rsp rsp;
- 	u64 ldata[2], cfg;
- 	u32 field_hash;
- 	u8 hash_idx;
-@@ -254,7 +252,7 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 	}
- 
- 	req.intf = intf;
--	rvu_mbox_handler_npc_get_secret_key(rvu, &req, &rsp);
-+	rvu_mbox_handler_npc_get_field_hash_info(rvu, &req, &rsp);
- 
- 	for (hash_idx = 0; hash_idx < NPC_MAX_HASH; hash_idx++) {
- 		cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_CFG(intf, hash_idx));
-@@ -315,13 +313,13 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 	}
- }
- 
--int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
--					struct npc_get_secret_key_req *req,
--					struct npc_get_secret_key_rsp *rsp)
-+int rvu_mbox_handler_npc_get_field_hash_info(struct rvu *rvu,
-+					     struct npc_get_field_hash_info_req *req,
-+					     struct npc_get_field_hash_info_rsp *rsp)
- {
- 	u64 *secret_key = rsp->secret_key;
- 	u8 intf = req->intf;
--	int blkaddr;
-+	int i, j, blkaddr;
- 
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
- 	if (blkaddr < 0) {
-@@ -333,6 +331,19 @@ int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
- 	secret_key[1] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY1(intf));
- 	secret_key[2] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY2(intf));
- 
-+	for (i = 0; i < NPC_MAX_HASH; i++) {
-+		for (j = 0; j < NPC_MAX_HASH_MASK; j++) {
-+			rsp->hash_mask[NIX_INTF_RX][i][j] =
-+				GET_KEX_LD_HASH_MASK(NIX_INTF_RX, i, j);
-+			rsp->hash_mask[NIX_INTF_TX][i][j] =
-+				GET_KEX_LD_HASH_MASK(NIX_INTF_TX, i, j);
-+		}
-+	}
-+
-+	for (i = 0; i < NPC_MAX_INTF; i++)
-+		for (j = 0; j < NPC_MAX_HASH; j++)
-+			rsp->hash_ctrl[i][j] = GET_KEX_LD_HASH_CTRL(i, j);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-index 3efeb09c58dec..65936f4aeaacf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-@@ -31,6 +31,12 @@
- 	rvu_write64(rvu, blkaddr,	\
- 		    NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx), cfg)
- 
-+#define GET_KEX_LD_HASH_CTRL(intf, ld)	\
-+	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld))
-+
-+#define GET_KEX_LD_HASH_MASK(intf, ld, mask_idx)	\
-+	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx))
-+
- #define SET_KEX_LD_HASH_CTRL(intf, ld, cfg) \
- 	rvu_write64(rvu, blkaddr,	\
- 		    NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld), cfg)
--- 
-2.39.2
-
+ static const struct meson_pwm_data pwm_axg_ao_data = {
 
 
