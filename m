@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A377703712
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7049703432
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243899AbjEORQj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:16:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33368 "EHLO
+        id S242939AbjEOQpo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243890AbjEORQG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:06 -0400
+        with ESMTP id S242953AbjEOQpk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6468310A10
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06D64EE4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDF9D62BB4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A08C433D2;
-        Mon, 15 May 2023 17:14:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7844C628E8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788BFC433D2;
+        Mon, 15 May 2023 16:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170900;
-        bh=HX9vy3xJqmFHeCKdTjHTgeWOe/WpGRX6hfvOQ15G+OM=;
+        s=korg; t=1684169138;
+        bh=4ZDjMyZlTE9Oi+5UsaZHV9CcbRHm4y+tdZZZXlM/SyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KbA75E/qnPf6Hq8YWlzmn0B4HeCY2bO+usM9UUSGOsVIHmj4yaEBmWKY7dlkfB1at
-         WRTE6k7xjFrcoSW3xayRB06j3vFCQcKr+uVtYUrvp8/lngXJM0KKzY+aJyoOc4COVC
-         ioAEcllKRJ9qzy9KYYfUX/Paeh1WOawSgoEzz3xg=
+        b=S7XM6r6ms8P5zOihU14PdPiwo9tpTZsqcCyukIu+iT6JjDNTSwMasjtyF9uuMSCHn
+         Zoe1K7Sgb8LAcmjzXf7Ac4XNvWTLZ7Fvor4PBd3DRJMfwyINVNZh+B23KQh+JfuwsP
+         hkE8uUeWX1MK++wy5r+DBZcB7dAUlMeaO9CGBS+I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 036/242] octeontx2-af: mcs: Fix MCS block interrupt
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 125/191] parisc: Fix argument pointer in real64_call_asm()
 Date:   Mon, 15 May 2023 18:26:02 +0200
-Message-Id: <20230515161723.003460846@linuxfoundation.org>
+Message-Id: <20230515161711.863806555@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,404 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit b8aebeaaf9ffb1e99c642eb3751e28981f9be475 ]
+commit 6e3220ba3323a2c24be834aebf5d6e9f89d0993f upstream.
 
-On CN10KB, MCS IP vector number, BBE and PAB interrupt mask
-got changed to support more block level interrupts.
-To address this changes, this patch fixes the bbe and pab
-interrupt handlers.
+Fix the argument pointer (ap) to point to real-mode memory
+instead of virtual memory.
 
-Fixes: 6c635f78c474 ("octeontx2-af: cn10k: mcs: Handle MCS block interrupts")
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It's interesting that this issue hasn't shown up earlier, as this could
+have happened with any 64-bit PDC ROM code.
+
+I just noticed it because I suddenly faced a HPMC while trying to execute
+the 64-bit STI ROM code of an Visualize-FXe graphics card for the STI
+text console.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mcs.c   | 95 ++++++++-----------
- .../net/ethernet/marvell/octeontx2/af/mcs.h   | 26 +++--
- .../marvell/octeontx2/af/mcs_cnf10kb.c        | 63 ++++++++++++
- .../ethernet/marvell/octeontx2/af/mcs_reg.h   |  5 +-
- 4 files changed, 119 insertions(+), 70 deletions(-)
+ arch/parisc/kernel/real2.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-index 148417d633a56..c43f19dfbd744 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-@@ -936,60 +936,42 @@ static void mcs_tx_misc_intr_handler(struct mcs *mcs, u64 intr)
- 	mcs_add_intr_wq_entry(mcs, &event);
- }
+--- a/arch/parisc/kernel/real2.S
++++ b/arch/parisc/kernel/real2.S
+@@ -248,9 +248,6 @@ ENTRY_CFI(real64_call_asm)
+ 	/* save fn */
+ 	copy	%arg2, %r31
  
--static void mcs_bbe_intr_handler(struct mcs *mcs, u64 intr, enum mcs_direction dir)
-+void cn10kb_mcs_bbe_intr_handler(struct mcs *mcs, u64 intr,
-+				 enum mcs_direction dir)
- {
--	struct mcs_intr_event event = { 0 };
--	int i;
-+	u64 val, reg;
-+	int lmac;
- 
--	if (!(intr & MCS_BBE_INT_MASK))
-+	if (!(intr & 0x6ULL))
- 		return;
- 
--	event.mcs_id = mcs->mcs_id;
--	event.pcifunc = mcs->pf_map[0];
-+	if (intr & BIT_ULL(1))
-+		reg = (dir == MCS_RX) ? MCSX_BBE_RX_SLAVE_DFIFO_OVERFLOW_0 :
-+					MCSX_BBE_TX_SLAVE_DFIFO_OVERFLOW_0;
-+	else
-+		reg = (dir == MCS_RX) ? MCSX_BBE_RX_SLAVE_PLFIFO_OVERFLOW_0 :
-+					MCSX_BBE_TX_SLAVE_PLFIFO_OVERFLOW_0;
-+	val = mcs_reg_read(mcs, reg);
- 
--	for (i = 0; i < MCS_MAX_BBE_INT; i++) {
--		if (!(intr & BIT_ULL(i)))
-+	/* policy/data over flow occurred */
-+	for (lmac = 0; lmac < mcs->hw->lmac_cnt; lmac++) {
-+		if (!(val & BIT_ULL(lmac)))
- 			continue;
+-	/* set up the new ap */
+-	ldo	64(%arg1), %r29
 -
--		/* Lower nibble denotes data fifo overflow interrupts and
--		 * upper nibble indicates policy fifo overflow interrupts.
--		 */
--		if (intr & 0xFULL)
--			event.intr_mask = (dir == MCS_RX) ?
--					  MCS_BBE_RX_DFIFO_OVERFLOW_INT :
--					  MCS_BBE_TX_DFIFO_OVERFLOW_INT;
--		else
--			event.intr_mask = (dir == MCS_RX) ?
--					  MCS_BBE_RX_PLFIFO_OVERFLOW_INT :
--					  MCS_BBE_TX_PLFIFO_OVERFLOW_INT;
--
--		/* Notify the lmac_id info which ran into BBE fatal error */
--		event.lmac_id = i & 0x3ULL;
--		mcs_add_intr_wq_entry(mcs, &event);
-+		dev_warn(mcs->dev, "BEE:Policy or data overflow occurred on lmac:%d\n", lmac);
- 	}
- }
+ 	/* load up the arg registers from the saved arg area */
+ 	/* 32-bit calling convention passes first 4 args in registers */
+ 	ldd	0*REG_SZ(%arg1), %arg0		/* note overwriting arg0 */
+@@ -262,7 +259,9 @@ ENTRY_CFI(real64_call_asm)
+ 	ldd	7*REG_SZ(%arg1), %r19
+ 	ldd	1*REG_SZ(%arg1), %arg1		/* do this one last! */
  
--static void mcs_pab_intr_handler(struct mcs *mcs, u64 intr, enum mcs_direction dir)
-+void cn10kb_mcs_pab_intr_handler(struct mcs *mcs, u64 intr,
-+				 enum mcs_direction dir)
- {
--	struct mcs_intr_event event = { 0 };
--	int i;
-+	int lmac;
++	/* set up real-mode stack and real-mode ap */
+ 	tophys_r1 %sp
++	ldo	-16(%sp), %r29			/* Reference param save area */
  
--	if (!(intr & MCS_PAB_INT_MASK))
-+	if (!(intr & 0xFFFFFULL))
- 		return;
- 
--	event.mcs_id = mcs->mcs_id;
--	event.pcifunc = mcs->pf_map[0];
--
--	for (i = 0; i < MCS_MAX_PAB_INT; i++) {
--		if (!(intr & BIT_ULL(i)))
--			continue;
--
--		event.intr_mask = (dir == MCS_RX) ? MCS_PAB_RX_CHAN_OVERFLOW_INT :
--				  MCS_PAB_TX_CHAN_OVERFLOW_INT;
--
--		/* Notify the lmac_id info which ran into PAB fatal error */
--		event.lmac_id = i;
--		mcs_add_intr_wq_entry(mcs, &event);
-+	for (lmac = 0; lmac < mcs->hw->lmac_cnt; lmac++) {
-+		if (intr & BIT_ULL(lmac))
-+			dev_warn(mcs->dev, "PAB: overflow occurred on lmac:%d\n", lmac);
- 	}
- }
- 
-@@ -998,9 +980,8 @@ static irqreturn_t mcs_ip_intr_handler(int irq, void *mcs_irq)
- 	struct mcs *mcs = (struct mcs *)mcs_irq;
- 	u64 intr, cpm_intr, bbe_intr, pab_intr;
- 
--	/* Disable and clear the interrupt */
-+	/* Disable  the interrupt */
- 	mcs_reg_write(mcs, MCSX_IP_INT_ENA_W1C, BIT_ULL(0));
--	mcs_reg_write(mcs, MCSX_IP_INT, BIT_ULL(0));
- 
- 	/* Check which block has interrupt*/
- 	intr = mcs_reg_read(mcs, MCSX_TOP_SLAVE_INT_SUM);
-@@ -1047,7 +1028,7 @@ static irqreturn_t mcs_ip_intr_handler(int irq, void *mcs_irq)
- 	/* BBE RX */
- 	if (intr & MCS_BBE_RX_INT_ENA) {
- 		bbe_intr = mcs_reg_read(mcs, MCSX_BBE_RX_SLAVE_BBE_INT);
--		mcs_bbe_intr_handler(mcs, bbe_intr, MCS_RX);
-+		mcs->mcs_ops->mcs_bbe_intr_handler(mcs, bbe_intr, MCS_RX);
- 
- 		/* Clear the interrupt */
- 		mcs_reg_write(mcs, MCSX_BBE_RX_SLAVE_BBE_INT_INTR_RW, 0);
-@@ -1057,7 +1038,7 @@ static irqreturn_t mcs_ip_intr_handler(int irq, void *mcs_irq)
- 	/* BBE TX */
- 	if (intr & MCS_BBE_TX_INT_ENA) {
- 		bbe_intr = mcs_reg_read(mcs, MCSX_BBE_TX_SLAVE_BBE_INT);
--		mcs_bbe_intr_handler(mcs, bbe_intr, MCS_TX);
-+		mcs->mcs_ops->mcs_bbe_intr_handler(mcs, bbe_intr, MCS_TX);
- 
- 		/* Clear the interrupt */
- 		mcs_reg_write(mcs, MCSX_BBE_TX_SLAVE_BBE_INT_INTR_RW, 0);
-@@ -1067,7 +1048,7 @@ static irqreturn_t mcs_ip_intr_handler(int irq, void *mcs_irq)
- 	/* PAB RX */
- 	if (intr & MCS_PAB_RX_INT_ENA) {
- 		pab_intr = mcs_reg_read(mcs, MCSX_PAB_RX_SLAVE_PAB_INT);
--		mcs_pab_intr_handler(mcs, pab_intr, MCS_RX);
-+		mcs->mcs_ops->mcs_pab_intr_handler(mcs, pab_intr, MCS_RX);
- 
- 		/* Clear the interrupt */
- 		mcs_reg_write(mcs, MCSX_PAB_RX_SLAVE_PAB_INT_INTR_RW, 0);
-@@ -1077,14 +1058,15 @@ static irqreturn_t mcs_ip_intr_handler(int irq, void *mcs_irq)
- 	/* PAB TX */
- 	if (intr & MCS_PAB_TX_INT_ENA) {
- 		pab_intr = mcs_reg_read(mcs, MCSX_PAB_TX_SLAVE_PAB_INT);
--		mcs_pab_intr_handler(mcs, pab_intr, MCS_TX);
-+		mcs->mcs_ops->mcs_pab_intr_handler(mcs, pab_intr, MCS_TX);
- 
- 		/* Clear the interrupt */
- 		mcs_reg_write(mcs, MCSX_PAB_TX_SLAVE_PAB_INT_INTR_RW, 0);
- 		mcs_reg_write(mcs, MCSX_PAB_TX_SLAVE_PAB_INT, pab_intr);
- 	}
- 
--	/* Enable the interrupt */
-+	/* Clear and enable the interrupt */
-+	mcs_reg_write(mcs, MCSX_IP_INT, BIT_ULL(0));
- 	mcs_reg_write(mcs, MCSX_IP_INT_ENA_W1S, BIT_ULL(0));
- 
- 	return IRQ_HANDLED;
-@@ -1166,7 +1148,7 @@ static int mcs_register_interrupts(struct mcs *mcs)
- 		return ret;
- 	}
- 
--	ret = request_irq(pci_irq_vector(mcs->pdev, MCS_INT_VEC_IP),
-+	ret = request_irq(pci_irq_vector(mcs->pdev, mcs->hw->ip_vec),
- 			  mcs_ip_intr_handler, 0, "MCS_IP", mcs);
- 	if (ret) {
- 		dev_err(mcs->dev, "MCS IP irq registration failed\n");
-@@ -1185,11 +1167,11 @@ static int mcs_register_interrupts(struct mcs *mcs)
- 	mcs_reg_write(mcs, MCSX_CPM_TX_SLAVE_TX_INT_ENB, 0x7ULL);
- 	mcs_reg_write(mcs, MCSX_CPM_RX_SLAVE_RX_INT_ENB, 0x7FULL);
- 
--	mcs_reg_write(mcs, MCSX_BBE_RX_SLAVE_BBE_INT_ENB, 0xff);
--	mcs_reg_write(mcs, MCSX_BBE_TX_SLAVE_BBE_INT_ENB, 0xff);
-+	mcs_reg_write(mcs, MCSX_BBE_RX_SLAVE_BBE_INT_ENB, 0xFFULL);
-+	mcs_reg_write(mcs, MCSX_BBE_TX_SLAVE_BBE_INT_ENB, 0xFFULL);
- 
--	mcs_reg_write(mcs, MCSX_PAB_RX_SLAVE_PAB_INT_ENB, 0xff);
--	mcs_reg_write(mcs, MCSX_PAB_TX_SLAVE_PAB_INT_ENB, 0xff);
-+	mcs_reg_write(mcs, MCSX_PAB_RX_SLAVE_PAB_INT_ENB, 0xFFFFFULL);
-+	mcs_reg_write(mcs, MCSX_PAB_TX_SLAVE_PAB_INT_ENB, 0xFFFFFULL);
- 
- 	mcs->tx_sa_active = alloc_mem(mcs, mcs->hw->sc_entries);
- 	if (!mcs->tx_sa_active) {
-@@ -1200,7 +1182,7 @@ static int mcs_register_interrupts(struct mcs *mcs)
- 	return ret;
- 
- free_irq:
--	free_irq(pci_irq_vector(mcs->pdev, MCS_INT_VEC_IP), mcs);
-+	free_irq(pci_irq_vector(mcs->pdev, mcs->hw->ip_vec), mcs);
- exit:
- 	pci_free_irq_vectors(mcs->pdev);
- 	mcs->num_vec = 0;
-@@ -1497,6 +1479,7 @@ void cn10kb_mcs_set_hw_capabilities(struct mcs *mcs)
- 	hw->lmac_cnt = 20;		/* lmacs/ports per mcs block */
- 	hw->mcs_x2p_intf = 5;		/* x2p clabration intf */
- 	hw->mcs_blks = 1;		/* MCS blocks */
-+	hw->ip_vec = MCS_CN10KB_INT_VEC_IP; /* IP vector */
- }
- 
- static struct mcs_ops cn10kb_mcs_ops = {
-@@ -1505,6 +1488,8 @@ static struct mcs_ops cn10kb_mcs_ops = {
- 	.mcs_tx_sa_mem_map_write	= cn10kb_mcs_tx_sa_mem_map_write,
- 	.mcs_rx_sa_mem_map_write	= cn10kb_mcs_rx_sa_mem_map_write,
- 	.mcs_flowid_secy_map		= cn10kb_mcs_flowid_secy_map,
-+	.mcs_bbe_intr_handler		= cn10kb_mcs_bbe_intr_handler,
-+	.mcs_pab_intr_handler		= cn10kb_mcs_pab_intr_handler,
- };
- 
- static int mcs_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-@@ -1605,7 +1590,7 @@ static void mcs_remove(struct pci_dev *pdev)
- 
- 	/* Set MCS to external bypass */
- 	mcs_set_external_bypass(mcs, true);
--	free_irq(pci_irq_vector(pdev, MCS_INT_VEC_IP), mcs);
-+	free_irq(pci_irq_vector(pdev, mcs->hw->ip_vec), mcs);
- 	pci_free_irq_vectors(pdev);
- 	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.h b/drivers/net/ethernet/marvell/octeontx2/af/mcs.h
-index 64dc2b80e15dd..0f89dcb764654 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.h
-@@ -43,24 +43,15 @@
- /* Reserved resources for default bypass entry */
- #define MCS_RSRC_RSVD_CNT		1
- 
--/* MCS Interrupt Vector Enumeration */
--enum mcs_int_vec_e {
--	MCS_INT_VEC_MIL_RX_GBL		= 0x0,
--	MCS_INT_VEC_MIL_RX_LMACX	= 0x1,
--	MCS_INT_VEC_MIL_TX_LMACX	= 0x5,
--	MCS_INT_VEC_HIL_RX_GBL		= 0x9,
--	MCS_INT_VEC_HIL_RX_LMACX	= 0xa,
--	MCS_INT_VEC_HIL_TX_GBL		= 0xe,
--	MCS_INT_VEC_HIL_TX_LMACX	= 0xf,
--	MCS_INT_VEC_IP			= 0x13,
--	MCS_INT_VEC_CNT			= 0x14,
--};
-+/* MCS Interrupt Vector */
-+#define MCS_CNF10KB_INT_VEC_IP	0x13
-+#define MCS_CN10KB_INT_VEC_IP	0x53
- 
- #define MCS_MAX_BBE_INT			8ULL
- #define MCS_BBE_INT_MASK		0xFFULL
- 
--#define MCS_MAX_PAB_INT			4ULL
--#define MCS_PAB_INT_MASK		0xFULL
-+#define MCS_MAX_PAB_INT		8ULL
-+#define MCS_PAB_INT_MASK	0xFULL
- 
- #define MCS_BBE_RX_INT_ENA		BIT_ULL(0)
- #define MCS_BBE_TX_INT_ENA		BIT_ULL(1)
-@@ -137,6 +128,7 @@ struct hwinfo {
- 	u8 lmac_cnt;
- 	u8 mcs_blks;
- 	unsigned long	lmac_bmap; /* bitmap of enabled mcs lmac */
-+	u16 ip_vec;
- };
- 
- struct mcs {
-@@ -165,6 +157,8 @@ struct mcs_ops {
- 	void	(*mcs_tx_sa_mem_map_write)(struct mcs *mcs, struct mcs_tx_sc_sa_map *map);
- 	void	(*mcs_rx_sa_mem_map_write)(struct mcs *mcs, struct mcs_rx_sc_sa_map *map);
- 	void	(*mcs_flowid_secy_map)(struct mcs *mcs, struct secy_mem_map *map, int dir);
-+	void	(*mcs_bbe_intr_handler)(struct mcs *mcs, u64 intr, enum mcs_direction dir);
-+	void	(*mcs_pab_intr_handler)(struct mcs *mcs, u64 intr, enum mcs_direction dir);
- };
- 
- extern struct pci_driver mcs_driver;
-@@ -219,6 +213,8 @@ void cn10kb_mcs_tx_sa_mem_map_write(struct mcs *mcs, struct mcs_tx_sc_sa_map *ma
- void cn10kb_mcs_flowid_secy_map(struct mcs *mcs, struct secy_mem_map *map, int dir);
- void cn10kb_mcs_rx_sa_mem_map_write(struct mcs *mcs, struct mcs_rx_sc_sa_map *map);
- void cn10kb_mcs_parser_cfg(struct mcs *mcs);
-+void cn10kb_mcs_pab_intr_handler(struct mcs *mcs, u64 intr, enum mcs_direction dir);
-+void cn10kb_mcs_bbe_intr_handler(struct mcs *mcs, u64 intr, enum mcs_direction dir);
- 
- /* CNF10K-B APIs */
- struct mcs_ops *cnf10kb_get_mac_ops(void);
-@@ -229,6 +225,8 @@ void cnf10kb_mcs_rx_sa_mem_map_write(struct mcs *mcs, struct mcs_rx_sc_sa_map *m
- void cnf10kb_mcs_parser_cfg(struct mcs *mcs);
- void cnf10kb_mcs_tx_pn_thresh_reached_handler(struct mcs *mcs);
- void cnf10kb_mcs_tx_pn_wrapped_handler(struct mcs *mcs);
-+void cnf10kb_mcs_bbe_intr_handler(struct mcs *mcs, u64 intr, enum mcs_direction dir);
-+void cnf10kb_mcs_pab_intr_handler(struct mcs *mcs, u64 intr, enum mcs_direction dir);
- 
- /* Stats APIs */
- void mcs_get_sc_stats(struct mcs *mcs, struct mcs_sc_stats *stats, int id, int dir);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_cnf10kb.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_cnf10kb.c
-index 7b62054144286..9f9b904ab2cd0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_cnf10kb.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_cnf10kb.c
-@@ -13,6 +13,8 @@ static struct mcs_ops cnf10kb_mcs_ops   = {
- 	.mcs_tx_sa_mem_map_write	= cnf10kb_mcs_tx_sa_mem_map_write,
- 	.mcs_rx_sa_mem_map_write	= cnf10kb_mcs_rx_sa_mem_map_write,
- 	.mcs_flowid_secy_map		= cnf10kb_mcs_flowid_secy_map,
-+	.mcs_bbe_intr_handler		= cnf10kb_mcs_bbe_intr_handler,
-+	.mcs_pab_intr_handler		= cnf10kb_mcs_pab_intr_handler,
- };
- 
- struct mcs_ops *cnf10kb_get_mac_ops(void)
-@@ -31,6 +33,7 @@ void cnf10kb_mcs_set_hw_capabilities(struct mcs *mcs)
- 	hw->lmac_cnt = 4;		/* lmacs/ports per mcs block */
- 	hw->mcs_x2p_intf = 1;		/* x2p clabration intf */
- 	hw->mcs_blks = 7;		/* MCS blocks */
-+	hw->ip_vec = MCS_CNF10KB_INT_VEC_IP; /* IP vector */
- }
- 
- void cnf10kb_mcs_parser_cfg(struct mcs *mcs)
-@@ -212,3 +215,63 @@ void cnf10kb_mcs_tx_pn_wrapped_handler(struct mcs *mcs)
- 		mcs_add_intr_wq_entry(mcs, &event);
- 	}
- }
-+
-+void cnf10kb_mcs_bbe_intr_handler(struct mcs *mcs, u64 intr,
-+				  enum mcs_direction dir)
-+{
-+	struct mcs_intr_event event = { 0 };
-+	int i;
-+
-+	if (!(intr & MCS_BBE_INT_MASK))
-+		return;
-+
-+	event.mcs_id = mcs->mcs_id;
-+	event.pcifunc = mcs->pf_map[0];
-+
-+	for (i = 0; i < MCS_MAX_BBE_INT; i++) {
-+		if (!(intr & BIT_ULL(i)))
-+			continue;
-+
-+		/* Lower nibble denotes data fifo overflow interrupts and
-+		 * upper nibble indicates policy fifo overflow interrupts.
-+		 */
-+		if (intr & 0xFULL)
-+			event.intr_mask = (dir == MCS_RX) ?
-+					  MCS_BBE_RX_DFIFO_OVERFLOW_INT :
-+					  MCS_BBE_TX_DFIFO_OVERFLOW_INT;
-+		else
-+			event.intr_mask = (dir == MCS_RX) ?
-+					  MCS_BBE_RX_PLFIFO_OVERFLOW_INT :
-+					  MCS_BBE_TX_PLFIFO_OVERFLOW_INT;
-+
-+		/* Notify the lmac_id info which ran into BBE fatal error */
-+		event.lmac_id = i & 0x3ULL;
-+		mcs_add_intr_wq_entry(mcs, &event);
-+	}
-+}
-+
-+void cnf10kb_mcs_pab_intr_handler(struct mcs *mcs, u64 intr,
-+				  enum mcs_direction dir)
-+{
-+	struct mcs_intr_event event = { 0 };
-+	int i;
-+
-+	if (!(intr & MCS_PAB_INT_MASK))
-+		return;
-+
-+	event.mcs_id = mcs->mcs_id;
-+	event.pcifunc = mcs->pf_map[0];
-+
-+	for (i = 0; i < MCS_MAX_PAB_INT; i++) {
-+		if (!(intr & BIT_ULL(i)))
-+			continue;
-+
-+		event.intr_mask = (dir == MCS_RX) ?
-+				  MCS_PAB_RX_CHAN_OVERFLOW_INT :
-+				  MCS_PAB_TX_CHAN_OVERFLOW_INT;
-+
-+		/* Notify the lmac_id info which ran into PAB fatal error */
-+		event.lmac_id = i;
-+		mcs_add_intr_wq_entry(mcs, &event);
-+	}
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-index 7427e3b1490f4..f3ab01fc363c8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-@@ -276,7 +276,10 @@
- #define MCSX_BBE_RX_SLAVE_CAL_ENTRY			0x180ull
- #define MCSX_BBE_RX_SLAVE_CAL_LEN			0x188ull
- #define MCSX_PAB_RX_SLAVE_FIFO_SKID_CFGX(a)		(0x290ull + (a) * 0x40ull)
--
-+#define MCSX_BBE_RX_SLAVE_DFIFO_OVERFLOW_0		0xe20
-+#define MCSX_BBE_TX_SLAVE_DFIFO_OVERFLOW_0		0x1298
-+#define MCSX_BBE_RX_SLAVE_PLFIFO_OVERFLOW_0		0xe40
-+#define MCSX_BBE_TX_SLAVE_PLFIFO_OVERFLOW_0		0x12b8
- #define MCSX_BBE_RX_SLAVE_BBE_INT ({	\
- 	u64 offset;			\
- 					\
--- 
-2.39.2
-
+ 	b,l	rfi_virt2real,%r2
+ 	nop
 
 
