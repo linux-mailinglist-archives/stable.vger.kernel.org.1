@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7AF703670
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9D770372B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243673AbjEORKM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:10:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47536 "EHLO
+        id S243901AbjEORRm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243569AbjEORJc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:32 -0400
+        with ESMTP id S243725AbjEORRW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F32C36A76
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3B17DA5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2E0562B02
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E86C433D2;
-        Mon, 15 May 2023 17:08:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1891F62BDD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0908EC433EF;
+        Mon, 15 May 2023 17:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170482;
-        bh=ZL8xKWxBHVZbgeOKHejjilTWvrbTDP2x7LhD65KmWYk=;
+        s=korg; t=1684170953;
+        bh=BhvebBb+HeGYZCLPU+1fJN8yJf+OfH6keQuVtaSHC/g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KY/fSxOSsvzxVAn7058ARHEgABGxWfzi8xQjQcMuk3Ht4W8YMloXilUurtC4OP79A
-         87peP62ORVJLel5Igy/NQZFPaRgE+Igc6jjjCJunr3WaGHsKp7oI3cwCIoc4LKL6Bd
-         uGNlHLhRRJmuN0EKyl0BlOzilcj6NwRgASy4fWUU=
+        b=Bvt1xcOYs4LeF+YSHCjp9gqtEqPx4mnq0mP0LeT62qrV8Mv8rrK0kPWtfNJBmgYpJ
+         RsJrSOzIwU/4AMDzWHolF5Jj7zOs6qLhSZPJK2ftz0DpJiRRxDTrR/rpxBm/qACu/d
+         xTMNUdfiTzM8/Bup4ZABML/n8pLJACucpUL6xdCk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Anastasia Belova <abelova@astralinux.ru>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 117/239] btrfs: print-tree: parent bytenr must be aligned to sector size
+        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 054/242] net/sched: act_mirred: Add carrier check
 Date:   Mon, 15 May 2023 18:26:20 +0200
-Message-Id: <20230515161725.212768833@linuxfoundation.org>
+Message-Id: <20230515161723.531906028@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit c87f318e6f47696b4040b58f460d5c17ea0280e6 upstream.
+[ Upstream commit 526f28bd0fbdc699cda31426928802650c1528e5 ]
 
-Check nodesize to sectorsize in alignment check in print_extent_item.
-The comment states that and this is correct, similar check is done
-elsewhere in the functions.
+There are cases where the device is adminstratively UP, but operationally
+down. For example, we have a physical device (Nvidia ConnectX-6 Dx, 25Gbps)
+who's cable was pulled out, here is its ip link output:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+5: ens2f1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000
+    link/ether b8:ce:f6:4b:68:35 brd ff:ff:ff:ff:ff:ff
+    altname enp179s0f1np1
 
-Fixes: ea57788eb76d ("btrfs: require only sector size alignment for parent eb bytenr")
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As you can see, it's administratively UP but operationally down.
+In this case, sending a packet to this port caused a nasty kernel hang (so
+nasty that we were unable to capture it). Aborting a transmit based on
+operational status (in addition to administrative status) fixes the issue.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+v1->v2: Add fixes tag
+v2->v3: Remove blank line between tags + add change log, suggested by Leon
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/print-tree.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/act_mirred.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/print-tree.c
-+++ b/fs/btrfs/print-tree.c
-@@ -148,10 +148,10 @@ static void print_extent_item(struct ext
- 			pr_cont("shared data backref parent %llu count %u\n",
- 			       offset, btrfs_shared_data_ref_count(eb, sref));
- 			/*
--			 * offset is supposed to be a tree block which
--			 * must be aligned to nodesize.
-+			 * Offset is supposed to be a tree block which must be
-+			 * aligned to sectorsize.
- 			 */
--			if (!IS_ALIGNED(offset, eb->fs_info->nodesize))
-+			if (!IS_ALIGNED(offset, eb->fs_info->sectorsize))
- 				pr_info(
- 			"\t\t\t(parent %llu not aligned to sectorsize %u)\n",
- 				     offset, eb->fs_info->sectorsize);
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 8037ec9b1d311..a61482c5edbe7 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -264,7 +264,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
+ 		goto out;
+ 	}
+ 
+-	if (unlikely(!(dev->flags & IFF_UP))) {
++	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
+ 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
+ 				       dev->name);
+ 		goto out;
+-- 
+2.39.2
+
 
 
