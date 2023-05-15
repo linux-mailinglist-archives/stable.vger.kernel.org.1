@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF00703B6F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A45BF703B8E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242567AbjEOSDB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
+        id S244924AbjEOSEN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244545AbjEOSCj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1E2160B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:00:14 -0700 (PDT)
+        with ESMTP id S244822AbjEOSDw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:03:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60FA81EC2E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:01:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7515B62FFA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8660FC433EF;
-        Mon, 15 May 2023 17:59:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0585D6303C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:01:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC3FC433D2;
+        Mon, 15 May 2023 18:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173564;
-        bh=V8oPrjeKtaJJyT2im+G+Sa4pDTScJLM7CULtk0mDrgg=;
+        s=korg; t=1684173680;
+        bh=iE0wZMksM6a9tSftIOGq0hN69rU1j92IRkBBYfHFQZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cdN8tvWXh5o6J/ekD1Bag7H3dajOY7eLhWlVrr3zYX/NfWbKui/u5WE+fS2OKb65g
-         aZrh86RU1wIYaeBIvSBFoijpaDSlpIs+nNRPbGdCPeJRQw3hIMYewblkogmoYm4LEh
-         x05yoLig9vAqn783fC/S+APA6Fx9A+zKOMXkirg0=
+        b=MOjjv4wHTo4RF1YtAeX6jHdYYb1MeZo8zRCD6nZi0TWNpJxajJIDAdQLvGFQpSPHw
+         CZUQExzvVdY1tUlBNJUTZRF2tlu6Bmtla+EanwudveBsKFWqWVSREdeVQUZ3t1E76B
+         kbdhsCZomQWNQXJY5YiHDADZY+RK/DScW/kthBCk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 107/282] wifi: iwlwifi: mvm: check firmware response size
-Date:   Mon, 15 May 2023 18:28:05 +0200
-Message-Id: <20230515161725.457367202@linuxfoundation.org>
+Subject: [PATCH 5.4 132/282] spi: fsl-spi: Fix CPM/QE mode Litte Endian
+Date:   Mon, 15 May 2023 18:28:30 +0200
+Message-Id: <20230515161726.181212525@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -44,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,51 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 13513cec93ac9902d0b896976d8bab3758a9881c ]
+[ Upstream commit c20c57d9868d7f9fd1b2904c7801b07e128f6322 ]
 
-Check the firmware response size for responses to the
-memory read/write command in debugfs before using it.
+CPM has the same problem as QE so for CPM also use the fix added
+by commit 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian"):
 
-Fixes: 2b55f43f8e47 ("iwlwifi: mvm: Add mem debugfs entry")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230417113648.0d56fcaf68ee.I70e9571f3ed7263929b04f8fabad23c9b999e4ea@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  CPM mode uses Little Endian so words > 8 bits are byte swapped.
+  Workaround this by always enforcing wordsize 8 for 16 and 32 bits
+  words. Unfortunately this will not work for LSB transfers
+  where wordsize is > 8 bits so disable these for now.
+
+Also limit the workaround to 16 and 32 bits words because it can
+only work for multiples of 8-bits.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Fixes: 0398fb70940e ("spi/spi_mpc8xxx: Fix QE mode Litte Endian")
+Link: https://lore.kernel.org/r/1b7d3e84b1128f42c1887dd2fb9cdf390f541bc1.1680371809.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-fsl-spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 524f9dd2323dc..f8785c70842dc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -1877,6 +1877,11 @@ static ssize_t iwl_dbgfs_mem_read(struct file *file, char __user *user_buf,
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 02b999d48ca19..ae805f91eafa5 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -208,8 +208,8 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+ 				struct spi_device *spi,
+ 				int bits_per_word)
+ {
+-	/* QE uses Little Endian for words > 8
+-	 * so transform all words > 8 into 8 bits
++	/* CPM/QE uses Little Endian for words > 8
++	 * so transform 16 and 32 bits words into 8 bits
+ 	 * Unfortnatly that doesn't work for LSB so
+ 	 * reject these for now */
+ 	/* Note: 32 bits word, LSB works iff
+@@ -217,9 +217,11 @@ static int mspi_apply_qe_mode_quirks(struct spi_mpc8xxx_cs *cs,
+ 	if (spi->mode & SPI_LSB_FIRST &&
+ 	    bits_per_word > 8)
+ 		return -EINVAL;
+-	if (bits_per_word > 8)
++	if (bits_per_word <= 8)
++		return bits_per_word;
++	if (bits_per_word == 16 || bits_per_word == 32)
+ 		return 8; /* pretend its 8 bits */
+-	return bits_per_word;
++	return -EINVAL;
+ }
  
-+	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
-+		ret = -EIO;
-+		goto out;
-+	}
-+
- 	rsp = (void *)hcmd.resp_pkt->data;
- 	if (le32_to_cpu(rsp->status) != DEBUG_MEM_STATUS_SUCCESS) {
- 		ret = -ENXIO;
-@@ -1954,6 +1959,11 @@ static ssize_t iwl_dbgfs_mem_write(struct file *file,
- 	if (ret < 0)
- 		return ret;
+ static int fsl_spi_setup_transfer(struct spi_device *spi,
+@@ -249,7 +251,7 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
+ 		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
+ 							   mpc8xxx_spi,
+ 							   bits_per_word);
+-	else if (mpc8xxx_spi->flags & SPI_QE)
++	else
+ 		bits_per_word = mspi_apply_qe_mode_quirks(cs, spi,
+ 							  bits_per_word);
  
-+	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
-+		ret = -EIO;
-+		goto out;
-+	}
-+
- 	rsp = (void *)hcmd.resp_pkt->data;
- 	if (rsp->status != DEBUG_MEM_STATUS_SUCCESS) {
- 		ret = -ENXIO;
 -- 
 2.39.2
 
