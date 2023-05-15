@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2613F703576
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C198A70369D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243311AbjEOQ7W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:59:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39998 "EHLO
+        id S243612AbjEORMA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243314AbjEOQ7U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:20 -0400
+        with ESMTP id S243734AbjEORLc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E125BA3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2FB7D94
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1DE062A57
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5B0C433D2;
-        Mon, 15 May 2023 16:59:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C088C62B0A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BA4C433D2;
+        Mon, 15 May 2023 17:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169958;
-        bh=GxQ9fxtSG9yNnYCYqsb4hr8oiXzXMYmyrsCNA6xT4Vo=;
+        s=korg; t=1684170579;
+        bh=XURPeCvrUWTcOcQM7aBFDLH+SOba1tSvMHlhrbFXblE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pOrNESsqJ1UhZsyj93pr1vFceTS6Zz2z9wrBczHbLPjy3Hbks5N8pYFeMhn6qRYQB
-         kPhJ5PWKXVJ7jfWumuAn9O3GW7vQWzzXChgVDXiS2ZRNGdmrGhy1vI4ZrHeiRshRIh
-         I2hKxD8I3AHlrh//lFw1oLzAJ9sNwLD/XlmUx6CA=
+        b=ZeHsDgYehShccCMY7UognJVyQKwhgqhNui+Wp3/EppFDoaTHJRDMcjDZwTwzYWdZX
+         vaQPVnEabT/w92fBimAUWiiWPZFlvpuhqlTgH8SL9my6D+RMnmD7uwxDoKfQZ8rlNZ
+         BGmg3Nqml6/BhxMvmMgouMuRvXD5a1fEXbwtzsPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tim Murray <timmurray@google.com>,
-        John Stultz <jstultz@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>
-Subject: [PATCH 6.3 226/246] locking/rwsem: Add __always_inline annotation to __down_read_common() and inlined callers
+        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 175/239] drm/amd/pm: avoid potential UBSAN issue on legacy asics
 Date:   Mon, 15 May 2023 18:27:18 +0200
-Message-Id: <20230515161729.383494580@linuxfoundation.org>
+Message-Id: <20230515161726.915863353@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Stultz <jstultz@google.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-commit 92cc5d00a431e96e5a49c0b97e5ad4fa7536bd4b upstream.
+commit 5247f05eadf1081a74b2233f291cee2efed25e3a upstream.
 
-Apparently despite it being marked inline, the compiler
-may not inline __down_read_common() which makes it difficult
-to identify the cause of lock contention, as the blocked
-function in traceevents will always be listed as
-__down_read_common().
+Prevent further dpm casting on legacy asics without od_enabled in
+amdgpu_dpm_is_overdrive_supported. This can avoid UBSAN complain
+in init sequence.
 
-So this patch adds __always_inline annotation to the common
-function (as well as the inlined helper callers) to force it to
-be inlined so the blocking function will be listed (via Wchan)
-in traceevents.
+v2: add a macro to check legacy dpm instead of checking asic family/type
+v3: refine macro name for naming consistency
 
-Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
-Reported-by: Tim Murray <timmurray@google.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
+Suggested-by: Evan Quan <evan.quan@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20230503023351.2832796-1-jstultz@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rwsem.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1240,7 +1240,7 @@ static struct rw_semaphore *rwsem_downgr
- /*
-  * lock for reading
-  */
--static inline int __down_read_common(struct rw_semaphore *sem, int state)
-+static __always_inline int __down_read_common(struct rw_semaphore *sem, int state)
- {
- 	int ret = 0;
- 	long count;
-@@ -1258,17 +1258,17 @@ out:
- 	return ret;
- }
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
+@@ -36,6 +36,8 @@
+ #define amdgpu_dpm_enable_bapm(adev, e) \
+ 		((adev)->powerplay.pp_funcs->enable_bapm((adev)->powerplay.pp_handle, (e)))
  
--static inline void __down_read(struct rw_semaphore *sem)
-+static __always_inline void __down_read(struct rw_semaphore *sem)
++#define amdgpu_dpm_is_legacy_dpm(adev) ((adev)->powerplay.pp_handle == (adev))
++
+ int amdgpu_dpm_get_sclk(struct amdgpu_device *adev, bool low)
  {
- 	__down_read_common(sem, TASK_UNINTERRUPTIBLE);
- }
+ 	const struct amd_pm_funcs *pp_funcs = adev->powerplay.pp_funcs;
+@@ -1421,8 +1423,11 @@ int amdgpu_dpm_is_overdrive_supported(st
+ 	} else {
+ 		struct pp_hwmgr *hwmgr;
  
--static inline int __down_read_interruptible(struct rw_semaphore *sem)
-+static __always_inline int __down_read_interruptible(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_INTERRUPTIBLE);
- }
+-		/* SI asic does not carry od_enabled */
+-		if (adev->family == AMDGPU_FAMILY_SI)
++		/*
++		 * dpm on some legacy asics don't carry od_enabled member
++		 * as its pp_handle is casted directly from adev.
++		 */
++		if (amdgpu_dpm_is_legacy_dpm(adev))
+ 			return false;
  
--static inline int __down_read_killable(struct rw_semaphore *sem)
-+static __always_inline int __down_read_killable(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_KILLABLE);
- }
+ 		hwmgr = (struct pp_hwmgr *)adev->powerplay.pp_handle;
 
 
