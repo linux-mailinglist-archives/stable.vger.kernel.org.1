@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03BBA7037C6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10FEB7036D7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244195AbjEORYI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40840 "EHLO
+        id S243867AbjEOROb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:14:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244103AbjEORXl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:41 -0400
+        with ESMTP id S243872AbjEOROR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA23BDD85
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5BD106C5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89FBC62C56
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9597DC4339B;
-        Mon, 15 May 2023 17:22:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8936D62B69
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C464C433D2;
+        Mon, 15 May 2023 17:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171332;
-        bh=q6AzAGrTG8ArFQN82EMIcsu59wUViAOx8XuiCJeb2zI=;
+        s=korg; t=1684170756;
+        bh=cM9hCIJWkYH8wtlY+P3U/BCIGe/AsngQZFUXG+8Dzr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=edSM6uHrVSzLAHifASKTq4oI2uk9qm4jP0DCJbAt4Ymag59YIkXPF8BESMvQfi7R4
-         PMlHpC0I4gPKJUaKKCawOuYxMn4EOTNf2HKmVELLecjwbGCPddQDIu0UQQQ65sDHS6
-         Y5vfAZ2QIjd+gCMJtondu/NyDq6iTx60PSCDVTp8=
+        b=AeWHj5wT1Yt5dWxiTiP5TTYnDkp0fHspQLN2wRjns56fdvr/LMNGdZsYt1ogDUEWu
+         W+yIaamZNLIZm/9iI37qd2PE+lZAZYnPIG/UWocJccJ7wgqUkHU9JLRUsVuY16eb3C
+         0kCIqJpfPp6ZibpCtw94rGUFcXK9nCdIj0Cv4yfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 6.2 168/242] drm/msm/adreno: fix runtime PM imbalance at gpu load
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com,
+        syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 231/239] ext4: fix invalid free tracking in ext4_xattr_move_to_block()
 Date:   Mon, 15 May 2023 18:28:14 +0200
-Message-Id: <20230515161726.921128187@linuxfoundation.org>
+Message-Id: <20230515161728.641688504@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,71 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 0d997f95b70f98987ae031a89677c13e0e223670 upstream.
+commit b87c7cdf2bed4928b899e1ce91ef0d147017ba45 upstream.
 
-A recent commit moved enabling of runtime PM to GPU load time (first
-open()) but failed to update the error paths so that runtime PM is
-disabled if initialisation of the GPU fails. This would trigger a
-warning about the unbalanced disable count on the next open() attempt.
+In ext4_xattr_move_to_block(), the value of the extended attribute
+which we need to move to an external block may be allocated by
+kvmalloc() if the value is stored in an external inode.  So at the end
+of the function the code tried to check if this was the case by
+testing entry->e_value_inum.
 
-Note that pm_runtime_put_noidle() is sufficient to balance the usage
-count when pm_runtime_put_sync() fails (and is chosen over
-pm_runtime_resume_and_get() for consistency reasons).
+However, at this point, the pointer to the xattr entry is no longer
+valid, because it was removed from the original location where it had
+been stored.  So we could end up calling kvfree() on a pointer which
+was not allocated by kvmalloc(); or we could also potentially leak
+memory by not freeing the buffer when it should be freed.  Fix this by
+storing whether it should be freed in a separate variable.
 
-Fixes: 4b18299b3365 ("drm/msm/adreno: Defer enabling runpm until hw_init()")
-Cc: stable@vger.kernel.org      # 6.0
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/524971/
-Link: https://lore.kernel.org/r/20230303164807.13124-3-johan+linaro@kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230430160426.581366-1-tytso@mit.edu
+Link: https://syzkaller.appspot.com/bug?id=5c2aee8256e30b55ccf57312c16d88417adbd5e1
+Link: https://syzkaller.appspot.com/bug?id=41a6b5d4917c0412eb3b3c3c604965bed7d7420b
+Reported-by: syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com
+Reported-by: syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ fs/ext4/xattr.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -440,20 +440,21 @@ struct msm_gpu *adreno_load_gpu(struct d
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2564,6 +2564,7 @@ static int ext4_xattr_move_to_block(hand
+ 		.in_inode = !!entry->e_value_inum,
+ 	};
+ 	struct ext4_xattr_ibody_header *header = IHDR(inode, raw_inode);
++	int needs_kvfree = 0;
+ 	int error;
  
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
--		pm_runtime_put_sync(&pdev->dev);
-+		pm_runtime_put_noidle(&pdev->dev);
- 		DRM_DEV_ERROR(dev->dev, "Couldn't power up the GPU: %d\n", ret);
--		return NULL;
-+		goto err_disable_rpm;
- 	}
+ 	is = kzalloc(sizeof(struct ext4_xattr_ibody_find), GFP_NOFS);
+@@ -2586,7 +2587,7 @@ static int ext4_xattr_move_to_block(hand
+ 			error = -ENOMEM;
+ 			goto out;
+ 		}
+-
++		needs_kvfree = 1;
+ 		error = ext4_xattr_inode_get(inode, entry, buffer, value_size);
+ 		if (error)
+ 			goto out;
+@@ -2625,7 +2626,7 @@ static int ext4_xattr_move_to_block(hand
  
- 	mutex_lock(&gpu->lock);
- 	ret = msm_gpu_hw_init(gpu);
- 	mutex_unlock(&gpu->lock);
--	pm_runtime_put_autosuspend(&pdev->dev);
- 	if (ret) {
- 		DRM_DEV_ERROR(dev->dev, "gpu hw init failed: %d\n", ret);
--		return NULL;
-+		goto err_put_rpm;
- 	}
- 
-+	pm_runtime_put_autosuspend(&pdev->dev);
-+
- #ifdef CONFIG_DEBUG_FS
- 	if (gpu->funcs->debugfs_init) {
- 		gpu->funcs->debugfs_init(gpu, dev->primary);
-@@ -462,6 +463,13 @@ struct msm_gpu *adreno_load_gpu(struct d
- #endif
- 
- 	return gpu;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+err_disable_rpm:
-+	pm_runtime_disable(&pdev->dev);
-+
-+	return NULL;
- }
- 
- static int find_chipid(struct device *dev, struct adreno_rev *rev)
+ out:
+ 	kfree(b_entry_name);
+-	if (entry->e_value_inum && buffer)
++	if (needs_kvfree && buffer)
+ 		kvfree(buffer);
+ 	if (is)
+ 		brelse(is->iloc.bh);
 
 
