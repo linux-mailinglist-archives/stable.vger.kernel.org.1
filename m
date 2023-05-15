@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1522C7036FF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B3370394E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243660AbjEORP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55560 "EHLO
+        id S244295AbjEORlE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:41:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243910AbjEORP0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:26 -0400
+        with ESMTP id S244349AbjEORkn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1BCF6A79
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0DE176FC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:38:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ED3362B9F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75020C433D2;
-        Mon, 15 May 2023 17:14:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89B1462E06
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8D9C433D2;
+        Mon, 15 May 2023 17:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170852;
-        bh=WBQ9hH3nxmTiJJgOZHvBVBhVH2U49nOnCXS4krNfZu4=;
+        s=korg; t=1684172270;
+        bh=U9UFjfNFrQBsyQeUKVZNgfvgzfrgTvWmmBXozIiD7Mw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tQiS8y/OwX56m2WTeRo7c30iVq3tKH5no+FDplwCKRC94wOLIFtvnPK4xdiKkYpPV
-         SzhXcH2QRSwp7CRgNAE216GdIlFETmLrucjZX1vTkL5c4Z7T7QChYgPvV7YfOR6IPZ
-         00+cUhQg7gcAXtizVwZImK1iss/c5tgonIMp+e+M=
+        b=KivczN2jp2gNqiBEIcSVxv+S4+mqXro4sCXzLS7MhrYdysQT0rz46ZEGCcsO9PLes
+         1vNe6+HI5MHaeRqaIsdAZEDc2Tti3iHOoZRrrYyqBGCWvdFA4F1yAJtYAp7+MYxxas
+         w9SQ5Fe4K7AcGD6nByhnQnnxKGglcVLz01HeB2SA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 022/242] RDMA/rxe: Extend dbg log messages to err and info
+Subject: [PATCH 5.10 097/381] drm/msm/adreno: drop bogus pm_runtime_set_active()
 Date:   Mon, 15 May 2023 18:25:48 +0200
-Message-Id: <20230515161722.597355728@linuxfoundation.org>
+Message-Id: <20230515161741.195917292@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,116 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 9ac01f434a1eb56ea94611bd75cf62fa276b41f4 ]
+[ Upstream commit db7662d076c973072d788bd0e8130e04430307a1 ]
 
-Extend the dbg log messages (e.g. rxe_dbg_xxx) to include
-err and info types. rxe.c is modified to use these new log
-messages as examples.
+The runtime PM status can only be updated while runtime PM is disabled.
 
-Link: https://lore.kernel.org/r/20230303221623.8053-4-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 78b26a335310 ("RDMA/rxe: Remove tasklet call from rxe_cq.c")
+Drop the bogus pm_runtime_set_active() call that was made after enabling
+runtime PM and which (incidentally but correctly) left the runtime PM
+status set to 'suspended'.
+
+Fixes: 2c087a336676 ("drm/msm/adreno: Load the firmware before bringing up the hardware")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/524972/
+Link: https://lore.kernel.org/r/20230303164807.13124-4-johan+linaro@kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c |  8 ++++---
- drivers/infiniband/sw/rxe/rxe.h | 42 +++++++++++++++++++++++++++++++++
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/adreno_device.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index d57ba7a5964b9..7a7e713de52db 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -160,6 +160,8 @@ void rxe_set_mtu(struct rxe_dev *rxe, unsigned int ndev_mtu)
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
+index c06202b9243c4..760687f66ae5b 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -307,9 +307,6 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev)
+ 	 */
+ 	pm_runtime_enable(&pdev->dev);
  
- 	port->attr.active_mtu = mtu;
- 	port->mtu_cap = ib_mtu_enum_to_int(mtu);
-+
-+	rxe_info_dev(rxe, "Set mtu to %d", port->mtu_cap);
- }
- 
- /* called by ifc layer to create new rxe device.
-@@ -179,7 +181,7 @@ static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
- 	int err = 0;
- 
- 	if (is_vlan_dev(ndev)) {
--		pr_err("rxe creation allowed on top of a real device only\n");
-+		rxe_err("rxe creation allowed on top of a real device only");
- 		err = -EPERM;
- 		goto err;
- 	}
-@@ -187,14 +189,14 @@ static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
- 	rxe = rxe_get_dev_from_net(ndev);
- 	if (rxe) {
- 		ib_device_put(&rxe->ib_dev);
--		rxe_dbg_dev(rxe, "already configured on %s\n", ndev->name);
-+		rxe_err_dev(rxe, "already configured on %s", ndev->name);
- 		err = -EEXIST;
- 		goto err;
- 	}
- 
- 	err = rxe_net_add(ibdev_name, ndev);
- 	if (err) {
--		pr_debug("failed to add %s\n", ndev->name);
-+		rxe_err("failed to add %s\n", ndev->name);
- 		goto err;
- 	}
- err:
-diff --git a/drivers/infiniband/sw/rxe/rxe.h b/drivers/infiniband/sw/rxe/rxe.h
-index 0757acc381038..bd8a8ea4ea8fd 100644
---- a/drivers/infiniband/sw/rxe/rxe.h
-+++ b/drivers/infiniband/sw/rxe/rxe.h
-@@ -58,6 +58,48 @@
- #define rxe_dbg_mw(mw, fmt, ...) ibdev_dbg((mw)->ibmw.device,		\
- 		"mw#%d %s:  " fmt, (mw)->elem.index, __func__, ##__VA_ARGS__)
- 
-+#define rxe_err(fmt, ...) pr_err_ratelimited("%s: " fmt "\n", __func__, \
-+					##__VA_ARGS__)
-+#define rxe_err_dev(rxe, fmt, ...) ibdev_err_ratelimited(&(rxe)->ib_dev, \
-+		"%s: " fmt, __func__, ##__VA_ARGS__)
-+#define rxe_err_uc(uc, fmt, ...) ibdev_err_ratelimited((uc)->ibuc.device, \
-+		"uc#%d %s: " fmt, (uc)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_pd(pd, fmt, ...) ibdev_err_ratelimited((pd)->ibpd.device, \
-+		"pd#%d %s: " fmt, (pd)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_ah(ah, fmt, ...) ibdev_err_ratelimited((ah)->ibah.device, \
-+		"ah#%d %s: " fmt, (ah)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_srq(srq, fmt, ...) ibdev_err_ratelimited((srq)->ibsrq.device, \
-+		"srq#%d %s: " fmt, (srq)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_qp(qp, fmt, ...) ibdev_err_ratelimited((qp)->ibqp.device, \
-+		"qp#%d %s: " fmt, (qp)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_cq(cq, fmt, ...) ibdev_err_ratelimited((cq)->ibcq.device, \
-+		"cq#%d %s: " fmt, (cq)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_mr(mr, fmt, ...) ibdev_err_ratelimited((mr)->ibmr.device, \
-+		"mr#%d %s:  " fmt, (mr)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_err_mw(mw, fmt, ...) ibdev_err_ratelimited((mw)->ibmw.device, \
-+		"mw#%d %s:  " fmt, (mw)->elem.index, __func__, ##__VA_ARGS__)
-+
-+#define rxe_info(fmt, ...) pr_info_ratelimited("%s: " fmt "\n", __func__, \
-+					##__VA_ARGS__)
-+#define rxe_info_dev(rxe, fmt, ...) ibdev_info_ratelimited(&(rxe)->ib_dev, \
-+		"%s: " fmt, __func__, ##__VA_ARGS__)
-+#define rxe_info_uc(uc, fmt, ...) ibdev_info_ratelimited((uc)->ibuc.device, \
-+		"uc#%d %s: " fmt, (uc)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_pd(pd, fmt, ...) ibdev_info_ratelimited((pd)->ibpd.device, \
-+		"pd#%d %s: " fmt, (pd)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_ah(ah, fmt, ...) ibdev_info_ratelimited((ah)->ibah.device, \
-+		"ah#%d %s: " fmt, (ah)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_srq(srq, fmt, ...) ibdev_info_ratelimited((srq)->ibsrq.device, \
-+		"srq#%d %s: " fmt, (srq)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_qp(qp, fmt, ...) ibdev_info_ratelimited((qp)->ibqp.device, \
-+		"qp#%d %s: " fmt, (qp)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_cq(cq, fmt, ...) ibdev_info_ratelimited((cq)->ibcq.device, \
-+		"cq#%d %s: " fmt, (cq)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_mr(mr, fmt, ...) ibdev_info_ratelimited((mr)->ibmr.device, \
-+		"mr#%d %s:  " fmt, (mr)->elem.index, __func__, ##__VA_ARGS__)
-+#define rxe_info_mw(mw, fmt, ...) ibdev_info_ratelimited((mw)->ibmw.device, \
-+		"mw#%d %s:  " fmt, (mw)->elem.index, __func__, ##__VA_ARGS__)
-+
- /* responder states */
- enum resp_states {
- 	RESPST_NONE,
+-	/* Make sure pm runtime is active and reset any previous errors */
+-	pm_runtime_set_active(&pdev->dev);
+-
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0) {
+ 		pm_runtime_put_sync(&pdev->dev);
 -- 
 2.39.2
 
