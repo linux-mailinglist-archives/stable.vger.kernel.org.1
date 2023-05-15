@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A8670396B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 469E870372A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244556AbjEORmY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39806 "EHLO
+        id S243875AbjEORRh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242397AbjEORlv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61F5106C2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:26 -0700 (PDT)
+        with ESMTP id S243860AbjEORRO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0863411B72
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EB1B62E0D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A7CC433EF;
-        Mon, 15 May 2023 17:39:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD7466283E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F430C433D2;
+        Mon, 15 May 2023 17:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172365;
-        bh=627qYvQNFw9V9sbptJ4sxMHV571wznNetJ2c2u32ARs=;
+        s=korg; t=1684170950;
+        bh=tj7zoHpiZNLEIYce4u4hTlXFxi7sDiQgkzNQinovvgw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zDtKB937IRbbVT385d2Sj3RQ9ILiSB8R8Cj1OUfr9ipSP6psDy1ejq2zr13RgVtNQ
-         XwEGvXG7jc/WmtUbURME/Wou69insltClrnv2AsCCzPR8GphW9DKWsjBWfg4puLSCx
-         JWEr83aCitEEz6O6yZ6ozoHJTY328B6rR5Hg/UFo=
+        b=sD8b4jDPAbYZFmfN8eJPSeW5S3Xdhv+qT3Lm5KV80Nuum74Bz88zHqZzUeC9MeLMh
+         Hb4DGChKVQF5HOPlHYoGUQV431J+OOoYMiUnxsRYyXaIaK0EVh9azBUCFkmZdA08gI
+         81Lo0L12JyALt5/9CwKqjr79o2/1TEt1uLP1uh+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/381] tick: Get rid of tick_period
+        patches@lists.linux.dev, Akhil R <akhilrajeev@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 053/242] i2c: tegra: Fix PEC support for SMBUS block read
 Date:   Mon, 15 May 2023 18:26:19 +0200
-Message-Id: <20230515161742.606276309@linuxfoundation.org>
+Message-Id: <20230515161723.502609325@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,190 +54,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit b996544916429946bf4934c1c01a306d1690972c ]
+[ Upstream commit 9f855779a3874eee70e9f6be57b5f7774f14e510 ]
 
-The variable tick_period is initialized to NSEC_PER_TICK / HZ during boot
-and never updated again.
+Update the msg->len value correctly for SMBUS block read. The discrepancy
+went unnoticed as msg->len is used in SMBUS transfers only when a PEC
+byte is added.
 
-If NSEC_PER_TICK is not an integer multiple of HZ this computation is less
-accurate than TICK_NSEC which has proper rounding in place.
-
-Aside of the inaccuracy there is no reason for having this variable at
-all. It's just a pointless indirection and all usage sites can just use the
-TICK_NSEC constant.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201117132006.766643526@linutronix.de
-Stable-dep-of: e9523a0d8189 ("tick/common: Align tick period with the HZ tick.")
+Fixes: d7583c8a5748 ("i2c: tegra: Add SMBus block read function")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-broadcast.c |  2 +-
- kernel/time/tick-common.c    |  8 +++-----
- kernel/time/tick-internal.h  |  1 -
- kernel/time/tick-sched.c     | 22 +++++++++++-----------
- 4 files changed, 15 insertions(+), 18 deletions(-)
+ drivers/i2c/busses/i2c-tegra.c | 40 +++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
-index 36d7464c89625..a9530e866e5f1 100644
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -331,7 +331,7 @@ static void tick_handle_periodic_broadcast(struct clock_event_device *dev)
- 	bc_local = tick_do_periodic_broadcast();
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 6aab84c8d22b4..157066f06a32d 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -242,9 +242,10 @@ struct tegra_i2c_hw_feature {
+  * @is_dvc: identifies the DVC I2C controller, has a different register layout
+  * @is_vi: identifies the VI I2C controller, has a different register layout
+  * @msg_complete: transfer completion notifier
++ * @msg_buf_remaining: size of unsent data in the message buffer
++ * @msg_len: length of message in current transfer
+  * @msg_err: error code for completed message
+  * @msg_buf: pointer to current message data
+- * @msg_buf_remaining: size of unsent data in the message buffer
+  * @msg_read: indicates that the transfer is a read access
+  * @timings: i2c timings information like bus frequency
+  * @multimaster_mode: indicates that I2C controller is in multi-master mode
+@@ -277,6 +278,7 @@ struct tegra_i2c_dev {
  
- 	if (clockevent_state_oneshot(dev)) {
--		ktime_t next = ktime_add(dev->next_event, tick_period);
-+		ktime_t next = ktime_add_ns(dev->next_event, TICK_NSEC);
+ 	struct completion msg_complete;
+ 	size_t msg_buf_remaining;
++	unsigned int msg_len;
+ 	int msg_err;
+ 	u8 *msg_buf;
  
- 		clockevents_program_event(dev, next, true);
- 	}
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 6c9c342dd0e53..92bf99d558b48 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -30,7 +30,6 @@ DEFINE_PER_CPU(struct tick_device, tick_cpu_device);
-  * Tick next event: keeps track of the tick time
-  */
- ktime_t tick_next_period;
--ktime_t tick_period;
+@@ -1169,7 +1171,7 @@ static void tegra_i2c_push_packet_header(struct tegra_i2c_dev *i2c_dev,
+ 	else
+ 		i2c_writel(i2c_dev, packet_header, I2C_TX_FIFO);
  
- /*
-  * tick_do_timer_cpu is a timer core internal variable which holds the CPU NR
-@@ -88,7 +87,7 @@ static void tick_periodic(int cpu)
- 		write_seqcount_begin(&jiffies_seq);
+-	packet_header = msg->len - 1;
++	packet_header = i2c_dev->msg_len - 1;
  
- 		/* Keep track of the next tick event */
--		tick_next_period = ktime_add(tick_next_period, tick_period);
-+		tick_next_period = ktime_add_ns(tick_next_period, TICK_NSEC);
+ 	if (i2c_dev->dma_mode && !i2c_dev->msg_read)
+ 		*dma_buf++ = packet_header;
+@@ -1242,20 +1244,32 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
+ 		return err;
  
- 		do_timer(1);
- 		write_seqcount_end(&jiffies_seq);
-@@ -127,7 +126,7 @@ void tick_handle_periodic(struct clock_event_device *dev)
- 		 * Setup the next period for devices, which do not have
- 		 * periodic mode:
- 		 */
--		next = ktime_add(next, tick_period);
-+		next = ktime_add_ns(next, TICK_NSEC);
+ 	i2c_dev->msg_buf = msg->buf;
++	i2c_dev->msg_len = msg->len;
  
- 		if (!clockevents_program_event(dev, next, false))
- 			return;
-@@ -173,7 +172,7 @@ void tick_setup_periodic(struct clock_event_device *dev, int broadcast)
- 		for (;;) {
- 			if (!clockevents_program_event(dev, next, false))
- 				return;
--			next = ktime_add(next, tick_period);
-+			next = ktime_add_ns(next, TICK_NSEC);
+-	/* The condition true implies smbus block read and len is already read */
+-	if (msg->flags & I2C_M_RECV_LEN && end_state != MSG_END_CONTINUE)
+-		i2c_dev->msg_buf = msg->buf + 1;
+-
+-	i2c_dev->msg_buf_remaining = msg->len;
+ 	i2c_dev->msg_err = I2C_ERR_NONE;
+ 	i2c_dev->msg_read = !!(msg->flags & I2C_M_RD);
+ 	reinit_completion(&i2c_dev->msg_complete);
+ 
++	/*
++	 * For SMBUS block read command, read only 1 byte in the first transfer.
++	 * Adjust that 1 byte for the next transfer in the msg buffer and msg
++	 * length.
++	 */
++	if (msg->flags & I2C_M_RECV_LEN) {
++		if (end_state == MSG_END_CONTINUE) {
++			i2c_dev->msg_len = 1;
++		} else {
++			i2c_dev->msg_buf += 1;
++			i2c_dev->msg_len -= 1;
++		}
++	}
++
++	i2c_dev->msg_buf_remaining = i2c_dev->msg_len;
++
+ 	if (i2c_dev->msg_read)
+-		xfer_size = msg->len;
++		xfer_size = i2c_dev->msg_len;
+ 	else
+-		xfer_size = msg->len + I2C_PACKET_HEADER_SIZE;
++		xfer_size = i2c_dev->msg_len + I2C_PACKET_HEADER_SIZE;
+ 
+ 	xfer_size = ALIGN(xfer_size, BYTES_PER_FIFO_WORD);
+ 
+@@ -1295,7 +1309,7 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
+ 	if (!i2c_dev->msg_read) {
+ 		if (i2c_dev->dma_mode) {
+ 			memcpy(i2c_dev->dma_buf + I2C_PACKET_HEADER_SIZE,
+-			       msg->buf, msg->len);
++			       msg->buf, i2c_dev->msg_len);
+ 
+ 			dma_sync_single_for_device(i2c_dev->dma_dev,
+ 						   i2c_dev->dma_phys,
+@@ -1352,7 +1366,7 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
+ 						i2c_dev->dma_phys,
+ 						xfer_size, DMA_FROM_DEVICE);
+ 
+-			memcpy(i2c_dev->msg_buf, i2c_dev->dma_buf, msg->len);
++			memcpy(i2c_dev->msg_buf, i2c_dev->dma_buf, i2c_dev->msg_len);
  		}
  	}
- }
-@@ -220,7 +219,6 @@ static void tick_setup_device(struct tick_device *td,
- 			tick_do_timer_cpu = cpu;
  
- 			tick_next_period = ktime_get();
--			tick_period = NSEC_PER_SEC / HZ;
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
-diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-index 5294f5b1f9550..e61c1244e7d46 100644
---- a/kernel/time/tick-internal.h
-+++ b/kernel/time/tick-internal.h
-@@ -15,7 +15,6 @@
- 
- DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
- extern ktime_t tick_next_period;
--extern ktime_t tick_period;
- extern int tick_do_timer_cpu __read_mostly;
- 
- extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 5c3d4355266db..17dc3f53efef8 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -92,17 +92,17 @@ static void tick_do_update_jiffies64(ktime_t now)
- 	write_seqcount_begin(&jiffies_seq);
- 
- 	delta = ktime_sub(now, tick_next_period);
--	if (unlikely(delta >= tick_period)) {
-+	if (unlikely(delta >= TICK_NSEC)) {
- 		/* Slow path for long idle sleep times */
--		s64 incr = ktime_to_ns(tick_period);
-+		s64 incr = TICK_NSEC;
- 
- 		ticks += ktime_divns(delta, incr);
- 
- 		last_jiffies_update = ktime_add_ns(last_jiffies_update,
- 						   incr * ticks);
- 	} else {
--		last_jiffies_update = ktime_add(last_jiffies_update,
--						tick_period);
-+		last_jiffies_update = ktime_add_ns(last_jiffies_update,
-+						   TICK_NSEC);
- 	}
- 
- 	do_timer(ticks);
-@@ -112,7 +112,7 @@ static void tick_do_update_jiffies64(ktime_t now)
- 	 * pairs with the READ_ONCE() in the lockless quick check above.
- 	 */
- 	WRITE_ONCE(tick_next_period,
--		   ktime_add(last_jiffies_update, tick_period));
-+		   ktime_add_ns(last_jiffies_update, TICK_NSEC));
- 
- 	write_seqcount_end(&jiffies_seq);
- 	raw_spin_unlock(&jiffies_lock);
-@@ -688,7 +688,7 @@ static void tick_nohz_restart(struct tick_sched *ts, ktime_t now)
- 	hrtimer_set_expires(&ts->sched_timer, ts->last_tick);
- 
- 	/* Forward the time to expire in the future */
--	hrtimer_forward(&ts->sched_timer, now, tick_period);
-+	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 
- 	if (ts->nohz_mode == NOHZ_MODE_HIGHRES) {
- 		hrtimer_start_expires(&ts->sched_timer,
-@@ -1250,7 +1250,7 @@ static void tick_nohz_handler(struct clock_event_device *dev)
- 	if (unlikely(ts->tick_stopped))
- 		return;
- 
--	hrtimer_forward(&ts->sched_timer, now, tick_period);
-+	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
- }
- 
-@@ -1287,7 +1287,7 @@ static void tick_nohz_switch_to_nohz(void)
- 	next = tick_init_jiffy_update();
- 
- 	hrtimer_set_expires(&ts->sched_timer, next);
--	hrtimer_forward_now(&ts->sched_timer, tick_period);
-+	hrtimer_forward_now(&ts->sched_timer, TICK_NSEC);
- 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
- 	tick_nohz_activate(ts, NOHZ_MODE_LOWRES);
- }
-@@ -1353,7 +1353,7 @@ static enum hrtimer_restart tick_sched_timer(struct hrtimer *timer)
- 	if (unlikely(ts->tick_stopped))
- 		return HRTIMER_NORESTART;
- 
--	hrtimer_forward(timer, now, tick_period);
-+	hrtimer_forward(timer, now, TICK_NSEC);
- 
- 	return HRTIMER_RESTART;
- }
-@@ -1387,13 +1387,13 @@ void tick_setup_sched_timer(void)
- 
- 	/* Offset the tick to avert jiffies_lock contention. */
- 	if (sched_skew_tick) {
--		u64 offset = ktime_to_ns(tick_period) >> 1;
-+		u64 offset = TICK_NSEC >> 1;
- 		do_div(offset, num_possible_cpus());
- 		offset *= smp_processor_id();
- 		hrtimer_add_expires_ns(&ts->sched_timer, offset);
- 	}
- 
--	hrtimer_forward(&ts->sched_timer, now, tick_period);
-+	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 	hrtimer_start_expires(&ts->sched_timer, HRTIMER_MODE_ABS_PINNED_HARD);
- 	tick_nohz_activate(ts, NOHZ_MODE_HIGHRES);
- }
+@@ -1408,8 +1422,8 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
+ 			if (ret)
+ 				break;
+-			/* Set the read byte as msg len */
+-			msgs[i].len = msgs[i].buf[0];
++			/* Set the msg length from first byte */
++			msgs[i].len += msgs[i].buf[0];
+ 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
+ 		}
+ 		ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], end_type);
 -- 
 2.39.2
 
