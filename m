@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4138870353B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEEBB703442
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243244AbjEOQ5G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36662 "EHLO
+        id S242968AbjEOQqj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:46:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243247AbjEOQ5F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:05 -0400
+        with ESMTP id S242986AbjEOQqf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E5D7689
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDAB4EFE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B98AA62A11
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB26C4339B;
-        Mon, 15 May 2023 16:56:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 135E3628F7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A121C433EF;
+        Mon, 15 May 2023 16:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169813;
-        bh=nHZnYamtmPV/3wUMops14Xghzl7WBlHWOCulpsPYuEo=;
+        s=korg; t=1684169187;
+        bh=uQtyOy6TNsbELjjqbnDxZNPI4ULgQu9ZfLQXiBaHeQU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iU+CXn/3kKEAjthEq2IjhwZRNgxl3/a/RhpHNV67K2HtdtWrSpG4UOsqJX0yO5BsS
-         rw5khyrVaQNIkqycBnD3argMyZJtsVeuGTriWV08x7VtiDnPwO3Szh8F/WixEoyFfd
-         jcXu2ARDAHfRJrkb0V0e+K43s/OBNWq0a09N4bz4=
+        b=Z4wqRYYlkJlIhzcovXD56kJ8d0E0u8s5KXnbSDFu2E0HNJ5+7fEG4VT+aeuelQdsK
+         Plxt5NoxzqNbXrL0TRQpHl8oMxcifPftekR5H7Ae+qRlGsz9ZtUKkud2B8HSvYcA05
+         fj2k5ePMQDp+S+UcKT2EsSHXRfxXrD/buDzycvh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-        Manasi Navare <navaremanasi@google.com>,
-        Anusha Srivatsa <anusha.srivatsa@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH 6.3 178/246] drm/dsc: fix drm_edp_dsc_sink_output_bpp() DPCD high byte usage
+        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 153/191] net/sched: act_mirred: Add carrier check
 Date:   Mon, 15 May 2023 18:26:30 +0200
-Message-Id: <20230515161727.969386828@linuxfoundation.org>
+Message-Id: <20230515161712.969118391@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 13525645e2246ebc8a21bd656248d86022a6ee8f upstream.
+[ Upstream commit 526f28bd0fbdc699cda31426928802650c1528e5 ]
 
-The operator precedence between << and & is wrong, leading to the high
-byte being completely ignored. For example, with the 6.4 format, 32
-becomes 0 and 24 becomes 8. Fix it, and remove the slightly confusing
-and unnecessary DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT macro while at it.
+There are cases where the device is adminstratively UP, but operationally
+down. For example, we have a physical device (Nvidia ConnectX-6 Dx, 25Gbps)
+who's cable was pulled out, here is its ip link output:
 
-Fixes: 0575650077ea ("drm/dp: DRM DP helper/macros to get DP sink DSC parameters")
-Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Cc: Manasi Navare <navaremanasi@google.com>
-Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
-Cc: <stable@vger.kernel.org> # v5.0+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230406134615.1422509-1-jani.nikula@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+5: ens2f1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000
+    link/ether b8:ce:f6:4b:68:35 brd ff:ff:ff:ff:ff:ff
+    altname enp179s0f1np1
+
+As you can see, it's administratively UP but operationally down.
+In this case, sending a packet to this port caused a nasty kernel hang (so
+nasty that we were unable to capture it). Aborting a transmit based on
+operational status (in addition to administrative status) fixes the issue.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+v1->v2: Add fixes tag
+v2->v3: Remove blank line between tags + add change log, suggested by Leon
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/display/drm_dp.h        |    1 -
- include/drm/display/drm_dp_helper.h |    5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ net/sched/act_mirred.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/drm/display/drm_dp.h
-+++ b/include/drm/display/drm_dp.h
-@@ -286,7 +286,6 @@
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index a30c17a282819..9aad86e4a0fb9 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -220,7 +220,7 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+ 		goto out;
+ 	}
  
- #define DP_DSC_MAX_BITS_PER_PIXEL_HI        0x068   /* eDP 1.4 */
- # define DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK  (0x3 << 0)
--# define DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT 8
- # define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  0x06
- # define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  0x08
- 
---- a/include/drm/display/drm_dp_helper.h
-+++ b/include/drm/display/drm_dp_helper.h
-@@ -181,9 +181,8 @@ static inline u16
- drm_edp_dsc_sink_output_bpp(const u8 dsc_dpcd[DP_DSC_RECEIVER_CAP_SIZE])
- {
- 	return dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_LOW - DP_DSC_SUPPORT] |
--		(dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_HI - DP_DSC_SUPPORT] &
--		 DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK <<
--		 DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT);
-+		((dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_HI - DP_DSC_SUPPORT] &
-+		  DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK) << 8);
- }
- 
- static inline u32
+-	if (unlikely(!(dev->flags & IFF_UP))) {
++	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
+ 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
+ 				       dev->name);
+ 		goto out;
+-- 
+2.39.2
+
 
 
