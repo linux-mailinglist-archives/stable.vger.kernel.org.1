@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B61A7037E7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA5B7039FF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244060AbjEORZC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:25:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40840 "EHLO
+        id S244692AbjEORrK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244192AbjEORYm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:42 -0400
+        with ESMTP id S244722AbjEORqt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828BC11DA0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F051176EE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 605C262C92
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EADC433D2;
-        Mon, 15 May 2023 17:23:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90B7762EAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9B6C4339E;
+        Mon, 15 May 2023 17:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171422;
-        bh=qRacf3d9zqa8JPCICGZ9g6cRbmCDnT/mRzFISU6SVus=;
+        s=korg; t=1684172734;
+        bh=04447L49oRns11iP+ZnF4u6Xb2qCCEjWtaUMZPnAUhc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tqfFIcyM9HdZ1DUqdr6CwMVfHgv92iaL0wY8gaNJvWM45NIXSaySv7zFeBE11Tumr
-         KeOkTR6uyhSxroWEt212M/VVreeJOUesrMXL7qy2pEiKhTCNpFlOI19DZFnRleBuOM
-         KFJpuvBtXmihgR4sRMIzKJSPhUBfW36iLBWC8FiI=
+        b=TLA4GO2Psx3IVq+XLKdM/Nh1ak8wgLRKcLUS13MOFOUlNACBXdcd282l2MGDrSkIC
+         MHrr9oOXAW2QnuCMTo29KRfh2i4ypK1ga2SHB5u8EatuOmBTx04n/1oJ6xDkF1FueA
+         MBPCOC0r/YMjJSZukBVvUBcPvTHlff8sMdKpy5uU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Craig Tatlor <ctatlor97@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.2 174/242] drm/msm: fix vram leak on bind errors
+        patches@lists.linux.dev, Kaike Wan <kaike.wan@intel.com>,
+        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 249/381] IB/hfi1: Add AIP tx traces
 Date:   Mon, 15 May 2023 18:28:20 +0200
-Message-Id: <20230515161727.097492076@linuxfoundation.org>
+Message-Id: <20230515161747.952619905@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,88 +56,235 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
 
-commit 60d476af96015891c7959f30838ae7a9749932bf upstream.
+[ Upstream commit 4bd00b55c978017aad10f0ff3e45525cd62cca07 ]
 
-Make sure to release the VRAM buffer also in a case a subcomponent fails
-to bind.
+Add traces to allow for debugging issues with AIP tx.
 
-Fixes: d863f0c7b536 ("drm/msm: Call msm_init_vram before binding the gpu")
-Cc: stable@vger.kernel.org      # 5.11
-Cc: Craig Tatlor <ctatlor97@gmail.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/525094/
-Link: https://lore.kernel.org/r/20230306100722.28485-7-johan+linaro@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/1617026056-50483-2-git-send-email-dennis.dalessandro@cornelisnetworks.com
+Reviewed-by: Kaike Wan <kaike.wan@intel.com>
+Signed-off-by: Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>
+Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 00cbce5cbf88 ("IB/hfi1: Fix bugs with non-PAGE_SIZE-end multi-iovec user SDMA requests")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/hfi1/ipoib_tx.c |  18 ++++-
+ drivers/infiniband/hw/hfi1/trace_tx.h | 104 ++++++++++++++++++++++++++
+ 2 files changed, 119 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -50,6 +50,8 @@
- #define MSM_VERSION_MINOR	9
- #define MSM_VERSION_PATCHLEVEL	0
+diff --git a/drivers/infiniband/hw/hfi1/ipoib_tx.c b/drivers/infiniband/hw/hfi1/ipoib_tx.c
+index ab1eefffc14b3..ec187ec746749 100644
+--- a/drivers/infiniband/hw/hfi1/ipoib_tx.c
++++ b/drivers/infiniband/hw/hfi1/ipoib_tx.c
+@@ -15,6 +15,7 @@
+ #include "verbs.h"
+ #include "trace_ibhdrs.h"
+ #include "ipoib.h"
++#include "trace_tx.h"
  
-+static void msm_deinit_vram(struct drm_device *ddev);
-+
- static const struct drm_mode_config_funcs mode_config_funcs = {
- 	.fb_create = msm_framebuffer_create,
- 	.output_poll_changed = drm_fb_helper_output_poll_changed,
-@@ -259,12 +261,7 @@ static int msm_drm_uninit(struct device
- 	if (kms && kms->funcs)
- 		kms->funcs->destroy(kms);
+ /* Add a convenience helper */
+ #define CIRC_ADD(val, add, size) (((val) + (add)) & ((size) - 1))
+@@ -63,12 +64,14 @@ static u64 hfi1_ipoib_used(struct hfi1_ipoib_txq *txq)
  
--	if (priv->vram.paddr) {
--		unsigned long attrs = DMA_ATTR_NO_KERNEL_MAPPING;
--		drm_mm_takedown(&priv->vram.mm);
--		dma_free_attrs(dev, priv->vram.size, NULL,
--			       priv->vram.paddr, attrs);
--	}
-+	msm_deinit_vram(ddev);
- 
- 	component_unbind_all(dev, ddev);
- 
-@@ -402,6 +399,19 @@ static int msm_init_vram(struct drm_devi
- 	return ret;
+ static void hfi1_ipoib_stop_txq(struct hfi1_ipoib_txq *txq)
+ {
++	trace_hfi1_txq_stop(txq);
+ 	if (atomic_inc_return(&txq->stops) == 1)
+ 		netif_stop_subqueue(txq->priv->netdev, txq->q_idx);
  }
  
-+static void msm_deinit_vram(struct drm_device *ddev)
-+{
-+	struct msm_drm_private *priv = ddev->dev_private;
-+	unsigned long attrs = DMA_ATTR_NO_KERNEL_MAPPING;
-+
-+	if (!priv->vram.paddr)
-+		return;
-+
-+	drm_mm_takedown(&priv->vram.mm);
-+	dma_free_attrs(ddev->dev, priv->vram.size, NULL, priv->vram.paddr,
-+			attrs);
-+}
-+
- static int msm_drm_init(struct device *dev, const struct drm_driver *drv)
+ static void hfi1_ipoib_wake_txq(struct hfi1_ipoib_txq *txq)
  {
- 	struct msm_drm_private *priv = dev_get_drvdata(dev);
-@@ -448,7 +458,7 @@ static int msm_drm_init(struct device *d
- 	/* Bind all our sub-components: */
- 	ret = component_bind_all(dev, ddev);
- 	if (ret)
--		goto err_put_dev;
-+		goto err_deinit_vram;
++	trace_hfi1_txq_wake(txq);
+ 	if (atomic_dec_and_test(&txq->stops))
+ 		netif_wake_subqueue(txq->priv->netdev, txq->q_idx);
+ }
+@@ -89,8 +92,10 @@ static void hfi1_ipoib_check_queue_depth(struct hfi1_ipoib_txq *txq)
+ {
+ 	++txq->sent_txreqs;
+ 	if (hfi1_ipoib_used(txq) >= hfi1_ipoib_ring_hwat(txq) &&
+-	    !atomic_xchg(&txq->ring_full, 1))
++	    !atomic_xchg(&txq->ring_full, 1)) {
++		trace_hfi1_txq_full(txq);
+ 		hfi1_ipoib_stop_txq(txq);
++	}
+ }
  
- 	dma_set_max_seg_size(dev, UINT_MAX);
+ static void hfi1_ipoib_check_queue_stopped(struct hfi1_ipoib_txq *txq)
+@@ -112,8 +117,10 @@ static void hfi1_ipoib_check_queue_stopped(struct hfi1_ipoib_txq *txq)
+ 	 * to protect against ring overflow.
+ 	 */
+ 	if (hfi1_ipoib_used(txq) < hfi1_ipoib_ring_lwat(txq) &&
+-	    atomic_xchg(&txq->ring_full, 0))
++	    atomic_xchg(&txq->ring_full, 0)) {
++		trace_hfi1_txq_xmit_unstopped(txq);
+ 		hfi1_ipoib_wake_txq(txq);
++	}
+ }
  
-@@ -546,6 +556,8 @@ err_msm_uninit:
+ static void hfi1_ipoib_free_tx(struct ipoib_txreq *tx, int budget)
+@@ -405,6 +412,7 @@ static struct ipoib_txreq *hfi1_ipoib_send_dma_common(struct net_device *dev,
+ 				sdma_select_engine_sc(priv->dd,
+ 						      txp->flow.tx_queue,
+ 						      txp->flow.sc5);
++			trace_hfi1_flow_switch(txp->txq);
+ 		}
  
- 	return ret;
+ 		return tx;
+@@ -525,6 +533,7 @@ static int hfi1_ipoib_send_dma_list(struct net_device *dev,
+ 	if (txq->flow.as_int != txp->flow.as_int) {
+ 		int ret;
  
-+err_deinit_vram:
-+	msm_deinit_vram(ddev);
- err_put_dev:
- 	drm_dev_put(ddev);
++		trace_hfi1_flow_flush(txq);
+ 		ret = hfi1_ipoib_flush_tx_list(dev, txq);
+ 		if (unlikely(ret)) {
+ 			if (ret == -EBUSY)
+@@ -635,8 +644,10 @@ static int hfi1_ipoib_sdma_sleep(struct sdma_engine *sde,
+ 			/* came from non-list submit */
+ 			list_add_tail(&txreq->list, &txq->tx_list);
+ 		if (list_empty(&txq->wait.list)) {
+-			if (!atomic_xchg(&txq->no_desc, 1))
++			if (!atomic_xchg(&txq->no_desc, 1)) {
++				trace_hfi1_txq_queued(txq);
+ 				hfi1_ipoib_stop_txq(txq);
++			}
+ 			iowait_queue(pkts_sent, wait->iow, &sde->dmawait);
+ 		}
  
+@@ -659,6 +670,7 @@ static void hfi1_ipoib_sdma_wakeup(struct iowait *wait, int reason)
+ 	struct hfi1_ipoib_txq *txq =
+ 		container_of(wait, struct hfi1_ipoib_txq, wait);
+ 
++	trace_hfi1_txq_wakeup(txq);
+ 	if (likely(txq->priv->netdev->reg_state == NETREG_REGISTERED))
+ 		iowait_schedule(wait, system_highpri_wq, WORK_CPU_UNBOUND);
+ }
+diff --git a/drivers/infiniband/hw/hfi1/trace_tx.h b/drivers/infiniband/hw/hfi1/trace_tx.h
+index 769e5e4710c64..847654196dd34 100644
+--- a/drivers/infiniband/hw/hfi1/trace_tx.h
++++ b/drivers/infiniband/hw/hfi1/trace_tx.h
+@@ -53,6 +53,7 @@
+ #include "hfi.h"
+ #include "mad.h"
+ #include "sdma.h"
++#include "ipoib.h"
+ 
+ const char *parse_sdma_flags(struct trace_seq *p, u64 desc0, u64 desc1);
+ 
+@@ -858,6 +859,109 @@ DEFINE_EVENT(
+ 	TP_ARGS(qp, flag)
+ );
+ 
++DECLARE_EVENT_CLASS(/* AIP  */
++	hfi1_ipoib_txq_template,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq),
++	TP_STRUCT__entry(/* entry */
++		DD_DEV_ENTRY(txq->priv->dd)
++		__field(struct hfi1_ipoib_txq *, txq)
++		__field(struct sdma_engine *, sde)
++		__field(ulong, head)
++		__field(ulong, tail)
++		__field(uint, used)
++		__field(uint, flow)
++		__field(int, stops)
++		__field(int, no_desc)
++		__field(u8, idx)
++		__field(u8, stopped)
++	),
++	TP_fast_assign(/* assign */
++		DD_DEV_ASSIGN(txq->priv->dd)
++		__entry->txq = txq;
++		__entry->sde = txq->sde;
++		__entry->head = txq->tx_ring.head;
++		__entry->tail = txq->tx_ring.tail;
++		__entry->idx = txq->q_idx;
++		__entry->used =
++			txq->sent_txreqs -
++			atomic64_read(&txq->complete_txreqs);
++		__entry->flow = txq->flow.as_int;
++		__entry->stops = atomic_read(&txq->stops);
++		__entry->no_desc = atomic_read(&txq->no_desc);
++		__entry->stopped =
++		 __netif_subqueue_stopped(txq->priv->netdev, txq->q_idx);
++	),
++	TP_printk(/* print  */
++		"[%s] txq %llx idx %u sde %llx head %lx tail %lx flow %x used %u stops %d no_desc %d stopped %u",
++		__get_str(dev),
++		(unsigned long long)__entry->txq,
++		__entry->idx,
++		(unsigned long long)__entry->sde,
++		__entry->head,
++		__entry->tail,
++		__entry->flow,
++		__entry->used,
++		__entry->stops,
++		__entry->no_desc,
++		__entry->stopped
++	)
++);
++
++DEFINE_EVENT(/* queue stop */
++	hfi1_ipoib_txq_template, hfi1_txq_stop,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* queue wake */
++	hfi1_ipoib_txq_template, hfi1_txq_wake,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* flow flush */
++	hfi1_ipoib_txq_template, hfi1_flow_flush,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* flow switch */
++	hfi1_ipoib_txq_template, hfi1_flow_switch,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* wakeup */
++	hfi1_ipoib_txq_template, hfi1_txq_wakeup,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* full */
++	hfi1_ipoib_txq_template, hfi1_txq_full,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* queued */
++	hfi1_ipoib_txq_template, hfi1_txq_queued,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* xmit_stopped */
++	hfi1_ipoib_txq_template, hfi1_txq_xmit_stopped,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
++DEFINE_EVENT(/* xmit_unstopped */
++	hfi1_ipoib_txq_template, hfi1_txq_xmit_unstopped,
++	TP_PROTO(struct hfi1_ipoib_txq *txq),
++	TP_ARGS(txq)
++);
++
+ #endif /* __HFI1_TRACE_TX_H */
+ 
+ #undef TRACE_INCLUDE_PATH
+-- 
+2.39.2
+
 
 
