@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C68703786
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0FF7036AF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244011AbjEORWO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
+        id S243662AbjEORMr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244015AbjEORVz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:55 -0400
+        with ESMTP id S243825AbjEORMa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFAEF11B4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A108A42
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF78362C33
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F0BC433EF;
-        Mon, 15 May 2023 17:20:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 680B062B60
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EE8C433EF;
+        Mon, 15 May 2023 17:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171203;
-        bh=VbmG4b/PP0cMZbKPa6u8FDsjcWq3UUmX/mC1ek3GoNk=;
+        s=korg; t=1684170638;
+        bh=O5Og/VhS5c+1C948jlT/tSohK77NsFpWdTOU+CBT02k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k1MRhRNlV5TtqI19pjytTyPafysg6/6/ngZQ37xqJGmr7R46zrAm1MViObVfR89Pu
-         UPhASuwB7She2yAbXtxYdH9lq/wSY6QuOH2Z97odDAsA2CArpiJacLJi0xsC3CVCgJ
-         lb0KpZF4AGrQJQbz6E9VYmPKlxBDZeP18mmREJH0=
+        b=IjT+MTH5sYnjD3mQYL8ZV4RMfVw2oL/6V1iAGf2dCqe0IWucQjt4PRsmCaCFwnuDa
+         vhJhfoTgzQl1+GDD0zVwnHY/sxLqlVwetl3IRxzZ+NKER+c+taqpVMZw7y0MvwpD3g
+         hDG4VYxl2uQqgQOotrftUfZAo1CbfaQ9E4akEGXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Boris Burkov <boris@bur.io>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.2 132/242] btrfs: fix encoded write i_size corruption with no-holes
+        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 195/239] irqchip/loongson-eiointc: Fix registration of syscore_ops
 Date:   Mon, 15 May 2023 18:27:38 +0200
-Message-Id: <20230515161725.863571149@linuxfoundation.org>
+Message-Id: <20230515161727.585103467@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,92 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Boris Burkov <boris@bur.io>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-commit e7db9e5c6b9615b287d01f0231904fbc1fbde9c5 upstream.
+[ Upstream commit bdd60211eebb43ba1c4c14704965f4d4b628b931 ]
 
-We have observed a btrfs filesystem corruption on workloads using
-no-holes and encoded writes via send stream v2. The symptom is that a
-file appears to be truncated to the end of its last aligned extent, even
-though the final unaligned extent and even the file extent and otherwise
-correctly updated inode item have been written.
+When support suspend/resume for loongson-eiointc, the syscore_ops
+is registered twice in dual-bridges machines where there are two
+eiointc IRQ domains. Repeated registration of an same syscore_ops
+broke syscore_ops_list. Also, cpuhp_setup_state_nocalls is only
+needed to call for once. So the patch will corret them.
 
-So if we were writing out a 1MiB+X file via 8 128K extents and one
-extent of length X, i_size would be set to 1MiB, but the ninth extent,
-nbyte, etc. would all appear correct otherwise.
-
-The source of the race is a narrow (one line of code) window in which a
-no-holes fs has read in an updated i_size, but has not yet set a shared
-disk_i_size variable to write. Therefore, if two ordered extents run in
-parallel (par for the course for receive workloads), the following
-sequence can play out: (following "threads" a bit loosely, since there
-are callbacks involved for endio but extra threads aren't needed to
-cause the issue)
-
-  ENC-WR1 (second to last)                                         ENC-WR2 (last)
-  -------                                                          -------
-  btrfs_do_encoded_write
-    set i_size = 1M
-    submit bio B1 ending at 1M
-  endio B1
-  btrfs_inode_safe_disk_i_size_write
-    local i_size = 1M
-    falls off a cliff for some reason
-							      btrfs_do_encoded_write
-								set i_size = 1M+X
-								submit bio B2 ending at 1M+X
-							      endio B2
-							      btrfs_inode_safe_disk_i_size_write
-								local i_size = 1M+X
-								disk_i_size = 1M+X
-    disk_i_size = 1M
-							      btrfs_delayed_update_inode
-    btrfs_delayed_update_inode
-
-And the delayed inode ends up filled with nbytes=1M+X and isize=1M, and
-writes respect i_size and present a corrupted file missing its last
-extents.
-
-Fix this by holding the inode lock in the no-holes case so that a thread
-can't sneak in a write to disk_i_size that gets overwritten with an out
-of date i_size.
-
-Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a90335c2dfb4 ("irqchip/loongson-eiointc: Add suspend/resume support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230407083453.6305-4-lvjianmin@loongson.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file-item.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-loongson-eiointc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/file-item.c
-+++ b/fs/btrfs/file-item.c
-@@ -52,13 +52,13 @@ void btrfs_inode_safe_disk_i_size_write(
- 	u64 start, end, i_size;
- 	int ret;
+diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
+index 768ed36f5f663..ac04aeaa2d308 100644
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -390,9 +390,11 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
+ 	parent_irq = irq_create_mapping(parent, acpi_eiointc->cascade);
+ 	irq_set_chained_handler_and_data(parent_irq, eiointc_irq_dispatch, priv);
  
-+	spin_lock(&inode->lock);
- 	i_size = new_i_size ?: i_size_read(&inode->vfs_inode);
- 	if (btrfs_fs_incompat(fs_info, NO_HOLES)) {
- 		inode->disk_i_size = i_size;
--		return;
-+		goto out_unlock;
- 	}
+-	cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_LOONGARCH_STARTING,
++	if (nr_pics == 1) {
++		cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_LOONGARCH_STARTING,
+ 				  "irqchip/loongarch/intc:starting",
+ 				  eiointc_router_init, NULL);
++	}
  
--	spin_lock(&inode->lock);
- 	ret = find_contiguous_extent_bit(&inode->file_extent_tree, 0, &start,
- 					 &end, EXTENT_DIRTY);
- 	if (!ret && start == 0)
-@@ -66,6 +66,7 @@ void btrfs_inode_safe_disk_i_size_write(
- 	else
- 		i_size = 0;
- 	inode->disk_i_size = i_size;
-+out_unlock:
- 	spin_unlock(&inode->lock);
- }
- 
+ 	if (cpu_has_flatmode)
+ 		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
+-- 
+2.39.2
+
 
 
