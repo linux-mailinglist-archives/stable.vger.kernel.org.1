@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABAF67034F7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C9E7033C2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243258AbjEOQyb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:54:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
+        id S242420AbjEOQlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243248AbjEOQyP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:15 -0400
+        with ESMTP id S242866AbjEOQlF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51386A79
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49AD420B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ACC0629C6
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAFFC433D2;
-        Mon, 15 May 2023 16:53:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AF106287A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F1CC433EF;
+        Mon, 15 May 2023 16:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169630;
-        bh=ypc6FpyCLBdab/YHAQMeI8P8UhUrjE11EkqkidVDsGU=;
+        s=korg; t=1684168862;
+        bh=4pJEIKx4+a7gE73pHJQTqEAJE+KO8WjUlvrNjiZqzUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p34jS7aLw9JYMsRsVoOi6lHLILs5Of12kAZOTNwJo+Kty8VOIs8oGVyq5tFRl6Gsn
-         OVKNgepfzDRdei6WZxoIcAqalyNxZbD1obsJ8MLUKW/h5U3QOwqqqeApA+aEFEcsJn
-         B2slQpeCWU/0/64B0D2zI97eQYe1/A5Uz4pZcU2Y=
+        b=OwPG7qNbKzlqvBZpDMiFaUBCN5JMKADYpo9Bq2L9v6xINHA4yXmft7jmZH3PAZni7
+         ya5mhEHkBRJbB5fJxZrrWGwqVkoTl4lgFZU4UIGEQ52MSDO0e5SCGdsofi6ZyHafEQ
+         ONakC6apVcDtQUobxR6FQXU3Dt/bt+IWj/g+tieI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Golle <daniel@makrotopia.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
+        Stephan Mueller <smueller@chronox.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 090/246] net: dsa: mt7530: split-off common parts from mt7531_setup
-Date:   Mon, 15 May 2023 18:25:02 +0200
-Message-Id: <20230515161725.280638036@linuxfoundation.org>
+Subject: [PATCH 4.19 066/191] crypto: drbg - Only fail when jent is unavailable in FIPS mode
+Date:   Mon, 15 May 2023 18:25:03 +0200
+Message-Id: <20230515161709.604973336@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,152 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 7f54cc9772ced2d76ac11832f0ada43798443ac9 ]
+[ Upstream commit 686cd976b6ddedeeb1a1fb09ba53a891d3cc9a03 ]
 
-MT7988 shares a significant part of the setup function with MT7531.
-Split-off those parts into a shared function which is going to be used
-also by mt7988_setup.
+When jent initialisation fails for any reason other than ENOENT,
+the entire drbg fails to initialise, even when we're not in FIPS
+mode.  This is wrong because we can still use the kernel RNG when
+we're not in FIPS mode.
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 120a56b01bee ("net: dsa: mt7530: fix network connectivity with multiple CPU ports")
+Change it so that it only fails when we are in FIPS mode.
+
+Fixes: 57225e679788 ("crypto: drbg - Use callback API for random readiness")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 99 ++++++++++++++++++++++------------------
- 1 file changed, 55 insertions(+), 44 deletions(-)
+ crypto/drbg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 4d5c5820e4618..8cbde093fbd9e 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2307,12 +2307,65 @@ mt7530_setup(struct dsa_switch *ds)
- 	return 0;
- }
+diff --git a/crypto/drbg.c b/crypto/drbg.c
+index 8b80fd3690ff4..0df8cc9bb5637 100644
+--- a/crypto/drbg.c
++++ b/crypto/drbg.c
+@@ -1516,7 +1516,7 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
+ 		const int err = PTR_ERR(drbg->jent);
  
-+static int
-+mt7531_setup_common(struct dsa_switch *ds)
-+{
-+	struct mt7530_priv *priv = ds->priv;
-+	struct dsa_port *cpu_dp;
-+	int ret, i;
-+
-+	/* BPDU to CPU port */
-+	dsa_switch_for_each_cpu_port(cpu_dp, ds) {
-+		mt7530_rmw(priv, MT7531_CFC, MT7531_CPU_PMAP_MASK,
-+			   BIT(cpu_dp->index));
-+		break;
-+	}
-+	mt7530_rmw(priv, MT753X_BPC, MT753X_BPDU_PORT_FW_MASK,
-+		   MT753X_BPDU_CPU_ONLY);
-+
-+	/* Enable and reset MIB counters */
-+	mt7530_mib_reset(ds);
-+
-+	for (i = 0; i < MT7530_NUM_PORTS; i++) {
-+		/* Disable forwarding by default on all ports */
-+		mt7530_rmw(priv, MT7530_PCR_P(i), PCR_MATRIX_MASK,
-+			   PCR_MATRIX_CLR);
-+
-+		/* Disable learning by default on all ports */
-+		mt7530_set(priv, MT7530_PSC_P(i), SA_DIS);
-+
-+		mt7530_set(priv, MT7531_DBG_CNT(i), MT7531_DIS_CLR);
-+
-+		if (dsa_is_cpu_port(ds, i)) {
-+			ret = mt753x_cpu_port_enable(ds, i);
-+			if (ret)
-+				return ret;
-+		} else {
-+			mt7530_port_disable(ds, i);
-+
-+			/* Set default PVID to 0 on all user ports */
-+			mt7530_rmw(priv, MT7530_PPBV1_P(i), G0_PORT_VID_MASK,
-+				   G0_PORT_VID_DEF);
-+		}
-+
-+		/* Enable consistent egress tag */
-+		mt7530_rmw(priv, MT7530_PVC_P(i), PVC_EG_TAG_MASK,
-+			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
-+	}
-+
-+	/* Flush the FDB table */
-+	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int
- mt7531_setup(struct dsa_switch *ds)
- {
- 	struct mt7530_priv *priv = ds->priv;
- 	struct mt7530_dummy_poll p;
--	struct dsa_port *cpu_dp;
- 	u32 val, id;
- 	int ret, i;
- 
-@@ -2390,44 +2443,7 @@ mt7531_setup(struct dsa_switch *ds)
- 	mt7531_ind_c45_phy_write(priv, MT753X_CTRL_PHY_ADDR, MDIO_MMD_VEND2,
- 				 CORE_PLL_GROUP4, val);
- 
--	/* BPDU to CPU port */
--	dsa_switch_for_each_cpu_port(cpu_dp, ds) {
--		mt7530_rmw(priv, MT7531_CFC, MT7531_CPU_PMAP_MASK,
--			   BIT(cpu_dp->index));
--		break;
--	}
--	mt7530_rmw(priv, MT753X_BPC, MT753X_BPDU_PORT_FW_MASK,
--		   MT753X_BPDU_CPU_ONLY);
--
--	/* Enable and reset MIB counters */
--	mt7530_mib_reset(ds);
--
--	for (i = 0; i < MT7530_NUM_PORTS; i++) {
--		/* Disable forwarding by default on all ports */
--		mt7530_rmw(priv, MT7530_PCR_P(i), PCR_MATRIX_MASK,
--			   PCR_MATRIX_CLR);
--
--		/* Disable learning by default on all ports */
--		mt7530_set(priv, MT7530_PSC_P(i), SA_DIS);
--
--		mt7530_set(priv, MT7531_DBG_CNT(i), MT7531_DIS_CLR);
--
--		if (dsa_is_cpu_port(ds, i)) {
--			ret = mt753x_cpu_port_enable(ds, i);
--			if (ret)
--				return ret;
--		} else {
--			mt7530_port_disable(ds, i);
--
--			/* Set default PVID to 0 on all user ports */
--			mt7530_rmw(priv, MT7530_PPBV1_P(i), G0_PORT_VID_MASK,
--				   G0_PORT_VID_DEF);
--		}
--
--		/* Enable consistent egress tag */
--		mt7530_rmw(priv, MT7530_PVC_P(i), PVC_EG_TAG_MASK,
--			   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
--	}
-+	mt7531_setup_common(ds);
- 
- 	/* Setup VLAN ID 0 for VLAN-unaware bridges */
- 	ret = mt7530_setup_vlan0(priv);
-@@ -2437,11 +2453,6 @@ mt7531_setup(struct dsa_switch *ds)
- 	ds->assisted_learning_on_cpu_port = true;
- 	ds->mtu_enforcement_ingress = true;
- 
--	/* Flush the FDB table */
--	ret = mt7530_fdb_cmd(priv, MT7530_FDB_FLUSH, NULL);
--	if (ret < 0)
--		return ret;
--
- 	return 0;
- }
- 
+ 		drbg->jent = NULL;
+-		if (fips_enabled || err != -ENOENT)
++		if (fips_enabled)
+ 			return err;
+ 		pr_info("DRBG: Continuing without Jitter RNG\n");
+ 	}
 -- 
 2.39.2
 
