@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 488AC7036E2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B65397037B4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243439AbjEORO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55926 "EHLO
+        id S244158AbjEORXq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243725AbjEOROb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:31 -0400
+        with ESMTP id S243888AbjEORXW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20EF35BA3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD9544A8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6726762B5C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C18C433D2;
-        Mon, 15 May 2023 17:12:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FB6E62C59
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D4BC433D2;
+        Mon, 15 May 2023 17:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170749;
-        bh=lDTQYbdc1BGD6M667YgLb39vXyQ/4IshAFZ7gVNmv8o=;
+        s=korg; t=1684171307;
+        bh=OPVuo+IubyEzmIK31J2qWvvUjhxo+wHgQdAXGBTYA8I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p1ZGmU4Jxi2komr/7La7AIVKdhTYGOr2nZFsR1arYfwR2JL1LPyXcdRhhdHOCPAPY
-         aqAImgCgLmfSWHu4DDH5Pn5YQdvT9JffghEWxEjGL61dQ41rbZl9OoiSKvekdO5CHZ
-         DLhc7qBzP4k8Cy1uE+f4IyDUk0Bn0BCEdU0zvBpM=
+        b=LFS4J1fCwqDEWTV3wEIVwfpBJ+BQR9RdnVdmisliNRv2giquvOppZXVh03klEukJH
+         dyc0OHQjalq5em3tYbFFn9d3gnNUcc82//9ziwMQ+aGFGssUtYIVFbCWSw6kKAl5d3
+         +LgNQGq6wUjR/wXHgK7/1mYntrjtaWei0o8u/IdI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>,
-        Christian Brauner <brauner@kernel.org>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 229/239] ext4: fix lockdep warning when enabling MMP
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.2 166/242] ARM: dts: s5pv210: correct MIPI CSIS clock name
 Date:   Mon, 15 May 2023 18:28:12 +0200
-Message-Id: <20230515161728.583672604@linuxfoundation.org>
+Message-Id: <20230515161726.861027476@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,89 +53,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 949f95ff39bf188e594e7ecd8e29b82eb108f5bf upstream.
+commit 665b9459bb53b8f19bd1541567e1fe9782c83c4b upstream.
 
-When we enable MMP in ext4_multi_mount_protect() during mount or
-remount, we end up calling sb_start_write() from write_mmp_block(). This
-triggers lockdep warning because freeze protection ranks above s_umount
-semaphore we are holding during mount / remount. The problem is harmless
-because we are guaranteed the filesystem is not frozen during mount /
-remount but still let's fix the warning by not grabbing freeze
-protection from ext4_multi_mount_protect().
+The Samsung S5P/Exynos MIPI CSIS bindings and Linux driver expect first
+clock name to be "csis".  Otherwise the driver fails to probe.
 
-Cc: stable@kernel.org
-Reported-by: syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=ab7e5b6f400b7778d46f01841422e5718fb81843
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://lore.kernel.org/r/20230411121019.21940-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 94ad0f6d9278 ("ARM: dts: Add Device tree for s5pv210 SoC")
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230212185818.43503-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mmp.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ arch/arm/boot/dts/s5pv210.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/mmp.c
-+++ b/fs/ext4/mmp.c
-@@ -39,28 +39,36 @@ static void ext4_mmp_csum_set(struct sup
-  * Write the MMP block using REQ_SYNC to try to get the block on-disk
-  * faster.
-  */
--static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
-+static int write_mmp_block_thawed(struct super_block *sb,
-+				  struct buffer_head *bh)
- {
- 	struct mmp_struct *mmp = (struct mmp_struct *)(bh->b_data);
- 
--	/*
--	 * We protect against freezing so that we don't create dirty buffers
--	 * on frozen filesystem.
--	 */
--	sb_start_write(sb);
- 	ext4_mmp_csum_set(sb, mmp);
- 	lock_buffer(bh);
- 	bh->b_end_io = end_buffer_write_sync;
- 	get_bh(bh);
- 	submit_bh(REQ_OP_WRITE | REQ_SYNC | REQ_META | REQ_PRIO, bh);
- 	wait_on_buffer(bh);
--	sb_end_write(sb);
- 	if (unlikely(!buffer_uptodate(bh)))
- 		return -EIO;
--
- 	return 0;
- }
- 
-+static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
-+{
-+	int err;
-+
-+	/*
-+	 * We protect against freezing so that we don't create dirty buffers
-+	 * on frozen filesystem.
-+	 */
-+	sb_start_write(sb);
-+	err = write_mmp_block_thawed(sb, bh);
-+	sb_end_write(sb);
-+	return err;
-+}
-+
- /*
-  * Read the MMP block. It _must_ be read from disk and hence we clear the
-  * uptodate flag on the buffer.
-@@ -346,7 +354,11 @@ skip:
- 	seq = mmp_new_seq();
- 	mmp->mmp_seq = cpu_to_le32(seq);
- 
--	retval = write_mmp_block(sb, bh);
-+	/*
-+	 * On mount / remount we are protected against fs freezing (by s_umount
-+	 * semaphore) and grabbing freeze protection upsets lockdep
-+	 */
-+	retval = write_mmp_block_thawed(sb, bh);
- 	if (retval)
- 		goto failed;
- 
+--- a/arch/arm/boot/dts/s5pv210.dtsi
++++ b/arch/arm/boot/dts/s5pv210.dtsi
+@@ -566,7 +566,7 @@
+ 				interrupts = <29>;
+ 				clocks = <&clocks CLK_CSIS>,
+ 						<&clocks SCLK_CSIS>;
+-				clock-names = "clk_csis",
++				clock-names = "csis",
+ 						"sclk_csis";
+ 				bus-width = <4>;
+ 				status = "disabled";
 
 
