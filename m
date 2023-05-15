@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 217D270355C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E05D703AF9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243281AbjEOQ6P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38028 "EHLO
+        id S243105AbjEOR6H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243292AbjEOQ6J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:09 -0400
+        with ESMTP id S243991AbjEOR5s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:57:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9225B88
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F15C16E9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA05561F7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4D0C433D2;
-        Mon, 15 May 2023 16:58:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8DE462F4F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CEFC433D2;
+        Mon, 15 May 2023 17:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169887;
-        bh=Db35oJ7nP8VKQqC6YjMXrYMAho4NgfrfuTh2jHm7xq8=;
+        s=korg; t=1684173259;
+        bh=Xrox2fRCjcLb95pUmINaXF58e4rt0x2KEm9R5jxDu88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EXuoVMm6A7NIC2xDGqoTWXiH33v2zBuBj51HLln8/rP2Z1WIzjy810U4v524NENol
-         h9F34grEYYwDothxNTILJ46qeaqoNCEqhB8YHK6L0bVpt0v18EdST82ySA/zmxxdQl
-         vjDcGX+fDT9IN1dRy5IlWrdGLPMi/v27jN/7XrbE=
+        b=ktS7tlDEmKbL10w9+2xYq9Eacr24uZIrapWzxa/2wjYWgGdwXtE5+nk6JmyU0vbA8
+         2m0ASZgoAvH7V7PYAmIWQzi+lrkExljOHXd+xPLuvuCv4EojnesAghy6DY5YbBn3H9
+         7ofghtN8jn2FmwtZLwSBbmjG9OsrZSti3UGsyR1Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yifan Zhang <yifan1.zhang@amd.com>,
-        Yogesh Mohan Marimuthu <Yogesh.Mohanmarimuthu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Tim Huang <Tim.Huang@amd.com>
-Subject: [PATCH 6.3 202/246] drm/amdgpu: change gfx 11.0.4 external_id range
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 036/282] drm/vgem: add missing mutex_destroy
 Date:   Mon, 15 May 2023 18:26:54 +0200
-Message-Id: <20230515161728.668845415@linuxfoundation.org>
+Message-Id: <20230515161723.354831035@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 996e93a3fe74dcf9d467ae3020aea42cc3ff65e3 upstream.
+[ Upstream commit 7c18189b14b33c1fbf76480b1bd217877c086e67 ]
 
-gfx 11.0.4 range starts from 0x80.
+vgem_fence_open() instantiates a mutex for a particular fence
+instance, but never destroys it by calling mutex_destroy() in
+vgem_fence_close().
 
-Fixes: 311d52367d0a ("drm/amdgpu: add soc21 common ip block support for GC 11.0.4")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Reported-by: Yogesh Mohan Marimuthu <Yogesh.Mohanmarimuthu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, add the missing mutex_destroy() to guarantee proper resource
+destruction.
+
+Fixes: 407779848445 ("drm/vgem: Attach sw fences to exported vGEM dma-buf (ioctl)")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Maíra Canal <mairacanal@riseup.net>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230202125517.427976-1-mcanal@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc21.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vgem/vgem_fence.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -778,7 +778,7 @@ static int soc21_common_early_init(void
- 			AMD_PG_SUPPORT_VCN_DPG |
- 			AMD_PG_SUPPORT_GFX_PG |
- 			AMD_PG_SUPPORT_JPEG;
--		adev->external_rev_id = adev->rev_id + 0x1;
-+		adev->external_rev_id = adev->rev_id + 0x80;
- 		break;
- 
- 	default:
+diff --git a/drivers/gpu/drm/vgem/vgem_fence.c b/drivers/gpu/drm/vgem/vgem_fence.c
+index 9268f6fc3f662..92895937aba9b 100644
+--- a/drivers/gpu/drm/vgem/vgem_fence.c
++++ b/drivers/gpu/drm/vgem/vgem_fence.c
+@@ -249,4 +249,5 @@ void vgem_fence_close(struct vgem_file *vfile)
+ {
+ 	idr_for_each(&vfile->fence_idr, __vgem_fence_idr_fini, vfile);
+ 	idr_destroy(&vfile->fence_idr);
++	mutex_destroy(&vfile->fence_mutex);
+ }
+-- 
+2.39.2
+
 
 
