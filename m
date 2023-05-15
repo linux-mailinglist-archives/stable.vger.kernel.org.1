@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A15970349D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3851F703394
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243010AbjEOQu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
+        id S242824AbjEOQiv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243100AbjEOQuP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:15 -0400
+        with ESMTP id S242827AbjEOQiu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D315B8A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1DD219A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA0DA6295D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE97EC4339B;
-        Mon, 15 May 2023 16:50:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5540662855
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CCCC433EF;
+        Mon, 15 May 2023 16:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169408;
-        bh=G9zu7M9hMJi/JlGJIC5x2rGeXqrPlGS/I0skrk1HoNY=;
+        s=korg; t=1684168728;
+        bh=koAzxtXuaMyqS/E7Q1TRybKGLoUA3aMFquWrq5ovTgQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MsJUmVPPqbrWA3R80rgBqPgpktyCxT8On5uX7HDaLIdaWlQ1BSWM+Us3nO5y9WkPv
-         s7VD4nCtAmb44gTK6u2qyyV6u0MeQMkVWNUkjfKrpcKXPav1GmCVDaCkReao1esB4Z
-         IatFB6Vs97qWhcg140us4TETDsYe4YryNwnq/XY4=
+        b=Mz6nAdRxuvdJoM9BrGJlV7lZadFrYBRU0G2rlJHx9v+D4FbTt4HRfA3ZFGLoYHVq2
+         BOp1t/Ex1UY4Ci7AeboQZJoFQfeiUIvQCMGdwJTEU7k1Vs8uE36rrywNoGYascpwb6
+         AVLeFfSP6K7iNmCbmyeB0JObmk0c6wd4U8Sw0nWc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 047/246] r8152: fix flow control issue of RTL8156A
+        patches@lists.linux.dev,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 4.19 022/191] ubifs: Free memory for tmpfile name
 Date:   Mon, 15 May 2023 18:24:19 +0200
-Message-Id: <20230515161723.998653172@linuxfoundation.org>
+Message-Id: <20230515161707.994588363@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,129 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Mårten Lindahl <marten.lindahl@axis.com>
 
-[ Upstream commit 8ceda6d5a1e5402fd852e6cc59a286ce3dc545ee ]
+commit 1fb815b38bb31d6af9bd0540b8652a0d6fe6cfd3 upstream.
 
-The feature of flow control becomes abnormal, if the device sends a
-pause frame and the tx/rx is disabled before sending a release frame. It
-causes the lost of packets.
+When opening a ubifs tmpfile on an encrypted directory, function
+fscrypt_setup_filename allocates memory for the name that is to be
+stored in the directory entry, but after the name has been copied to the
+directory entry inode, the memory is not freed.
 
-Set PLA_RX_FIFO_FULL and PLA_RX_FIFO_EMPTY to zeros before disabling the
-tx/rx. And, toggle FC_PATCH_TASK before enabling tx/rx to reset the flow
-control patch and timer. Then, the hardware could clear the state and
-the flow control becomes normal after enabling tx/rx.
+When running kmemleak on it we see that it is registered as a leak. The
+report below is triggered by a simple program 'tmpfile' just opening a
+tmpfile:
 
-Besides, remove inline for fc_pause_on_auto() and fc_pause_off_auto().
+  unreferenced object 0xffff88810178f380 (size 32):
+    comm "tmpfile", pid 509, jiffies 4294934744 (age 1524.742s)
+    backtrace:
+      __kmem_cache_alloc_node
+      __kmalloc
+      fscrypt_setup_filename
+      ubifs_tmpfile
+      vfs_tmpfile
+      path_openat
 
-Fixes: 195aae321c82 ("r8152: support new chips")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Free this memory after it has been copied to the inode.
+
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 56 ++++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 20 deletions(-)
+ fs/ubifs/dir.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 0fc4b959edc18..afd50e90d1fee 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5986,6 +5986,25 @@ static void rtl8153_disable(struct r8152 *tp)
- 	r8153_aldps_en(tp, true);
- }
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -445,6 +445,7 @@ static int do_tmpfile(struct inode *dir,
+ 	mutex_unlock(&dir_ui->ui_mutex);
  
-+static u32 fc_pause_on_auto(struct r8152 *tp)
-+{
-+	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 6 * 1024);
-+}
-+
-+static u32 fc_pause_off_auto(struct r8152 *tp)
-+{
-+	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 14 * 1024);
-+}
-+
-+static void r8156_fc_parameter(struct r8152 *tp)
-+{
-+	u32 pause_on = tp->fc_pause_on ? tp->fc_pause_on : fc_pause_on_auto(tp);
-+	u32 pause_off = tp->fc_pause_off ? tp->fc_pause_off : fc_pause_off_auto(tp);
-+
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, pause_on / 16);
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, pause_off / 16);
-+}
-+
- static int rtl8156_enable(struct r8152 *tp)
- {
- 	u32 ocp_data;
-@@ -5994,6 +6013,7 @@ static int rtl8156_enable(struct r8152 *tp)
- 	if (test_bit(RTL8152_UNPLUG, &tp->flags))
- 		return -ENODEV;
+ 	ubifs_release_budget(c, &req);
++	fscrypt_free_filename(&nm);
  
-+	r8156_fc_parameter(tp);
- 	set_tx_qlen(tp);
- 	rtl_set_eee_plus(tp);
- 	r8153_set_rx_early_timeout(tp);
-@@ -6025,9 +6045,24 @@ static int rtl8156_enable(struct r8152 *tp)
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_L1_CTRL, ocp_data);
- 	}
+ 	return 0;
  
-+	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_FW_TASK);
-+	ocp_data &= ~FC_PATCH_TASK;
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_TASK, ocp_data);
-+	usleep_range(1000, 2000);
-+	ocp_data |= FC_PATCH_TASK;
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_TASK, ocp_data);
-+
- 	return rtl_enable(tp);
- }
- 
-+static void rtl8156_disable(struct r8152 *tp)
-+{
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, 0);
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, 0);
-+
-+	rtl8153_disable(tp);
-+}
-+
- static int rtl8156b_enable(struct r8152 *tp)
- {
- 	u32 ocp_data;
-@@ -6429,25 +6464,6 @@ static void rtl8153c_up(struct r8152 *tp)
- 	r8153b_u1u2en(tp, true);
- }
- 
--static inline u32 fc_pause_on_auto(struct r8152 *tp)
--{
--	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 6 * 1024);
--}
--
--static inline u32 fc_pause_off_auto(struct r8152 *tp)
--{
--	return (ALIGN(mtu_to_size(tp->netdev->mtu), 1024) + 14 * 1024);
--}
--
--static void r8156_fc_parameter(struct r8152 *tp)
--{
--	u32 pause_on = tp->fc_pause_on ? tp->fc_pause_on : fc_pause_on_auto(tp);
--	u32 pause_off = tp->fc_pause_off ? tp->fc_pause_off : fc_pause_off_auto(tp);
--
--	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_FULL, pause_on / 16);
--	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RX_FIFO_EMPTY, pause_off / 16);
--}
--
- static void rtl8156_change_mtu(struct r8152 *tp)
- {
- 	u32 rx_max_size = mtu_to_size(tp->netdev->mtu);
-@@ -9340,7 +9356,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 	case RTL_VER_10:
- 		ops->init		= r8156_init;
- 		ops->enable		= rtl8156_enable;
--		ops->disable		= rtl8153_disable;
-+		ops->disable		= rtl8156_disable;
- 		ops->up			= rtl8156_up;
- 		ops->down		= rtl8156_down;
- 		ops->unload		= rtl8153_unload;
--- 
-2.39.2
-
 
 
