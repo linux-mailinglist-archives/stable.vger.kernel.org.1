@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25976703ADD
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F25E703981
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243966AbjEOR4Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54070 "EHLO
+        id S244442AbjEORnK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:43:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244958AbjEORzi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:38 -0400
+        with ESMTP id S244451AbjEORmz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E845F15521
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AF416909
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61F9B62FCE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559D6C433D2;
-        Mon, 15 May 2023 17:53:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D274162E43
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA923C433D2;
+        Mon, 15 May 2023 17:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173218;
-        bh=sqgjuYoBvM3iwHTCSTqdB7g+zCKq4SAQtqS36Hx4hhs=;
+        s=korg; t=1684172433;
+        bh=9/6LlRfl/kUD2BqVQtsuiqByjr8LxB7egT0JkvGpwCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D3y9+r9rWxWbAfUo3mVKsC4aJigxK7Dsavt0/Jb/IOjx57vU40gXtf0jT3KwSkDqY
-         iUUUiGNt5G9y3xLOpHxE/mwpzrgyZYf/E9db8W25APFpf+Xoc04jElPDufFkXN2VvH
-         /5Frx6gTsxjWeSY3K3FlFvu4hVXcVBr5Yvu4lqYo=
+        b=wPAkyZ1Z9nH0aG5h6TMZ91hHFloSBWRW3m6vexx3um7Stk7YO1gnnHPQUq6ywlGxu
+         qIAHK3te7CGLW68of77i8Z/Z1AP9n1nVidVLJbaUEltL2/nYY6XPbGqCr8MWjJ4xrS
+         UlJeA9HAL6mSILkevKu2dbduMRBQZFFnVWS1Enqw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.4 024/282] KVM: nVMX: Emulate NOPs in L2, and PAUSE if its not intercepted
+        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 151/381] f2fs: handle dqget error in f2fs_transfer_project_quota()
 Date:   Mon, 15 May 2023 18:26:42 +0200
-Message-Id: <20230515161722.996435058@linuxfoundation.org>
+Message-Id: <20230515161743.662184743@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-commit 4984563823f0034d3533854c1b50e729f5191089 upstream.
+[ Upstream commit 8051692f5f23260215bfe9a72e712d93606acc5f ]
 
-Extend VMX's nested intercept logic for emulated instructions to handle
-"pause" interception, in quotes because KVM's emulator doesn't filter out
-NOPs when checking for nested intercepts.  Failure to allow emulation of
-NOPs results in KVM injecting a #UD into L2 on any NOP that collides with
-the emulator's definition of PAUSE, i.e. on all single-byte NOPs.
+We should set the error code when dqget() failed.
 
-For PAUSE itself, honor L1's PAUSE-exiting control, but ignore PLE to
-avoid unnecessarily injecting a #UD into L2.  Per the SDM, the first
-execution of PAUSE after VM-Entry is treated as the beginning of a new
-loop, i.e. will never trigger a PLE VM-Exit, and so L1 can't expect any
-given execution of PAUSE to deterministically exit.
-
-  ... the processor considers this execution to be the first execution of
-  PAUSE in a loop. (It also does so for the first execution of PAUSE at
-  CPL 0 after VM entry.)
-
-All that said, the PLE side of things is currently a moot point, as KVM
-doesn't expose PLE to L1.
-
-Note, vmx_check_intercept() is still wildly broken when L1 wants to
-intercept an instruction, as KVM injects a #UD instead of synthesizing a
-nested VM-Exit.  That issue extends far beyond NOP/PAUSE and needs far
-more effort to fix, i.e. is a problem for the future.
-
-Fixes: 07721feee46b ("KVM: nVMX: Don't emulate instructions in guest mode")
-Cc: Mathias Krause <minipli@grsecurity.net>
-Cc: stable@vger.kernel.org
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20230405002359.418138-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2c1d03056991 ("f2fs: support F2FS_IOC_FS{GET,SET}XATTR")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/f2fs/file.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7266,6 +7266,21 @@ static int vmx_check_intercept(struct kv
- 		/* FIXME: produce nested vmexit and return X86EMUL_INTERCEPTED.  */
- 		break;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index d56fcace18211..a0d8aa52b696b 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3013,15 +3013,16 @@ int f2fs_transfer_project_quota(struct inode *inode, kprojid_t kprojid)
+ 	struct dquot *transfer_to[MAXQUOTAS] = {};
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct super_block *sb = sbi->sb;
+-	int err = 0;
++	int err;
  
-+	case x86_intercept_pause:
-+		/*
-+		 * PAUSE is a single-byte NOP with a REPE prefix, i.e. collides
-+		 * with vanilla NOPs in the emulator.  Apply the interception
-+		 * check only to actual PAUSE instructions.  Don't check
-+		 * PAUSE-loop-exiting, software can't expect a given PAUSE to
-+		 * exit, i.e. KVM is within its rights to allow L2 to execute
-+		 * the PAUSE.
-+		 */
-+		if ((info->rep_prefix != REPE_PREFIX) ||
-+		    !nested_cpu_has2(vmcs12, CPU_BASED_PAUSE_EXITING))
-+			return X86EMUL_CONTINUE;
+ 	transfer_to[PRJQUOTA] = dqget(sb, make_kqid_projid(kprojid));
+-	if (!IS_ERR(transfer_to[PRJQUOTA])) {
+-		err = __dquot_transfer(inode, transfer_to);
+-		if (err)
+-			set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
+-		dqput(transfer_to[PRJQUOTA]);
+-	}
++	if (IS_ERR(transfer_to[PRJQUOTA]))
++		return PTR_ERR(transfer_to[PRJQUOTA]);
 +
-+		break;
-+
- 	/* TODO: check more intercepts... */
- 	default:
- 		break;
++	err = __dquot_transfer(inode, transfer_to);
++	if (err)
++		set_sbi_flag(sbi, SBI_QUOTA_NEED_REPAIR);
++	dqput(transfer_to[PRJQUOTA]);
+ 	return err;
+ }
+ 
+-- 
+2.39.2
+
 
 
