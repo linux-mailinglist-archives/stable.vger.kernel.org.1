@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8041E7035C3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 950EA703780
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243363AbjEORCb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:02:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40790 "EHLO
+        id S244089AbjEORWA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243522AbjEORCL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E5B8A66
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:07 -0700 (PDT)
+        with ESMTP id S244046AbjEORVl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B501157F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:19:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0073E62A62
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEF0C4339E;
-        Mon, 15 May 2023 17:00:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AB2B62C4B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0762EC433D2;
+        Mon, 15 May 2023 17:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170005;
-        bh=CO+ruu5NkpRgtRYA3hftMbSIOvFlNRVgiGKt7J7EbIA=;
+        s=korg; t=1684171184;
+        bh=/4Cmt3xNe5p47FhOZ2B3mNMwtPAWH2t44j6oe8ANPCs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eHMUdn8d5JmOjCidfSSP41u1OMRG34427diwqjknjh0Lfj0UK+Sc951OX8KS+Jb1K
-         MpOu7Rk03MwgMlx9l6wtmLcwO1UuXboJ+mvLt6iVT6SBkv7YgdoQdi10ns6iNE/3GW
-         lLmU2WLO1gFUupmjQtMbIGpuBlW2ThnkdDKuVhW0=
+        b=I2ER7eymTyLu71mhLJ/tSVvWuuaHWWrPyv8dlVB/AJDJpqadRP5qzV0rAGz3rGBmF
+         14zzctc6IV90Nw6V+lNftCQdFxD4rqpvZozU0IMTd0lZHYkmLg4d7IAXzd+BJaz3q4
+         H8a7ucMhqksM5RTKNJYEw1ur837fETGKP0lTiwj4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.3 240/246] x86/amd_nb: Add PCI ID for family 19h model 78h
-Date:   Mon, 15 May 2023 18:27:32 +0200
-Message-Id: <20230515161729.847915315@linuxfoundation.org>
+        patches@lists.linux.dev, "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.2 127/242] x86/retbleed: Fix return thunk alignment
+Date:   Mon, 15 May 2023 18:27:33 +0200
+Message-Id: <20230515161725.712966144@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,61 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 23a5b8bb022c1e071ca91b1a9c10f0ad6a0966e9 upstream.
+commit 9a48d604672220545d209e9996c2a1edbb5637f6 upstream.
 
-Commit
+SYM_FUNC_START_LOCAL_NOALIGN() adds an endbr leading to this layout
+(leaving only the last 2 bytes of the address):
 
-  310e782a99c7 ("platform/x86/amd: pmc: Utilize SMN index 0 for driver probe")
+  3bff <zen_untrain_ret>:
+  3bff:       f3 0f 1e fa             endbr64
+  3c03:       f6                      test   $0xcc,%bl
 
-switched to using amd_smn_read() which relies upon the misc PCI ID used
-by DF function 3 being included in a table.  The ID for model 78h is
-missing in that table, so amd_smn_read() doesn't work.
+  3c04 <__x86_return_thunk>:
+  3c04:       c3                      ret
+  3c05:       cc                      int3
+  3c06:       0f ae e8                lfence
 
-Add the missing ID into amd_nb, restoring s2idle on this system.
+However, "the RET at __x86_return_thunk must be on a 64 byte boundary,
+for alignment within the BTB."
 
-  [ bp: Simplify commit message. ]
+Use SYM_START instead.
 
-Fixes: 310e782a99c7 ("platform/x86/amd: pmc: Utilize SMN index 0 for driver probe")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>  # pci_ids.h
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230427053338.16653-2-mario.limonciello@amd.com
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/amd_nb.c |    2 ++
- include/linux/pci_ids.h  |    1 +
- 2 files changed, 3 insertions(+)
+ arch/x86/lib/retpoline.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -36,6 +36,7 @@
- #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F4 0x166e
- #define PCI_DEVICE_ID_AMD_19H_M60H_DF_F4 0x14e4
- #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4 0x14f4
-+#define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4 0x12fc
- 
- /* Protect the PCI config register pairs used for SMN. */
- static DEFINE_MUTEX(smn_mutex);
-@@ -79,6 +80,7 @@ static const struct pci_device_id amd_nb
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M60H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F3) },
- 	{}
- };
- 
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -567,6 +567,7 @@
- #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F3 0x166d
- #define PCI_DEVICE_ID_AMD_19H_M60H_DF_F3 0x14e3
- #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F3 0x14f3
-+#define PCI_DEVICE_ID_AMD_19H_M78H_DF_F3 0x12fb
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
- #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -144,8 +144,8 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
+  */
+ 	.align 64
+ 	.skip 63, 0xcc
+-SYM_FUNC_START_NOALIGN(zen_untrain_ret);
+-
++SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
++	ANNOTATE_NOENDBR
+ 	/*
+ 	 * As executed from zen_untrain_ret, this is:
+ 	 *
 
 
