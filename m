@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F5AB703A99
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FDFB703892
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244889AbjEORxA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53442 "EHLO
+        id S243181AbjEORdN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238964AbjEORwl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:52:41 -0400
+        with ESMTP id S244252AbjEORcp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE9911D9C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:50:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B951120AC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBEB062F64
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:50:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C14C433A1;
-        Mon, 15 May 2023 17:50:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3D8E62D2D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F60C433D2;
+        Mon, 15 May 2023 17:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173037;
-        bh=78+3sAd+Pzct+cdC/aPsGnTrySnJraeL1fsSQU54C1k=;
+        s=korg; t=1684171834;
+        bh=B4NmIIfCyZvHfNU7wknHF7dbItUFAbYJvEYS6Jdg7Nw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c7hIjJ9mEfb866cQaXMPZ5cAsUOdbDiMEZb/JSl8kWujJFzqqpor/mkrXZScrhTUS
-         avlk2gNObBhtE7JyD1MtoZIVFbrSNo3DxrCon51o9gQOD7RAsvyA41XApRqMMJ7HZg
-         czscz6TnFuCcUTdFiK8hMq8/8l4Ibzsth0olwyew=
+        b=OH1SDHRaenhX6uI7pEN616x5eaknXrTYM9/Rua05X5hZmH/XHBuXqzZQZXbsVZG72
+         fPNOCWNziwdNHzKEFNMgNN1xLGTqjtEjPE4rhXIUwjjA+QGsvJfvDMdv9fIPBw8Vf5
+         y7v9B52kBruOn120eIirl1iFTqk7fDhBAqTjerlI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 320/381] ionic: remove noise from ethtool rxnfc error msg
+        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Subject: [PATCH 5.15 094/134] HID: wacom: Set a default resolution for older tablets
 Date:   Mon, 15 May 2023 18:29:31 +0200
-Message-Id: <20230515161751.257877539@linuxfoundation.org>
+Message-Id: <20230515161706.288201535@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Ping Cheng <pinglinux@gmail.com>
 
-[ Upstream commit 3711d44fac1f80ea69ecb7315fed05b3812a7401 ]
+commit 08a46b4190d345544d04ce4fe2e1844b772b8535 upstream.
 
-It seems that ethtool is calling into .get_rxnfc more often with
-ETHTOOL_GRXCLSRLCNT which ionic doesn't know about.  We don't
-need to log a message about it, just return not supported.
+Some older tablets may not report physical maximum for X/Y
+coordinates. Set a default to prevent undefined resolution.
 
-Fixes: aa3198819bea6 ("ionic: Add RSS support")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Link: https://lore.kernel.org/r/20230409164229.29777-1-ping.cheng@wacom.com
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index 35c72d4a78b3f..8e5b01af85ed2 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -693,7 +693,7 @@ static int ionic_get_rxnfc(struct net_device *netdev,
- 		info->data = lif->nxqs;
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1857,6 +1857,7 @@ static void wacom_map_usage(struct input
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
++	int resolution = hidinput_calc_abs_res(field, resolution_code);
+ 
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
+@@ -1877,8 +1878,15 @@ static void wacom_map_usage(struct input
+ 	switch (type) {
+ 	case EV_ABS:
+ 		input_set_abs_params(input, code, fmin, fmax, fuzz, 0);
+-		input_abs_set_res(input, code,
+-				  hidinput_calc_abs_res(field, resolution_code));
++
++		/* older tablet may miss physical usage */
++		if ((code == ABS_X || code == ABS_Y) && !resolution) {
++			resolution = WACOM_INTUOS_RES;
++			hid_warn(input,
++				 "Wacom usage (%d) missing resolution \n",
++				 code);
++		}
++		input_abs_set_res(input, code, resolution);
  		break;
- 	default:
--		netdev_err(netdev, "Command parameter %d is not supported\n",
-+		netdev_dbg(netdev, "Command parameter %d is not supported\n",
- 			   info->cmd);
- 		err = -EOPNOTSUPP;
- 	}
--- 
-2.39.2
-
+ 	case EV_KEY:
+ 	case EV_MSC:
 
 
