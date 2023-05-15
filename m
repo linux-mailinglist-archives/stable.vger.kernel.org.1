@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF24B7037A5
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C582870382E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244067AbjEORX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40222 "EHLO
+        id S244305AbjEOR2w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243997AbjEORXL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CCB12E8E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:17 -0700 (PDT)
+        with ESMTP id S244138AbjEOR1n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7784C11569
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24ED562C6C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3D9C433EF;
-        Mon, 15 May 2023 17:21:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 438B762CBB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A223C433D2;
+        Mon, 15 May 2023 17:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171276;
-        bh=4Ny3p2o9OM+jC1Iv2+g7vg/8g1qFfvD4X9sbg8Vc5wc=;
+        s=korg; t=1684171588;
+        bh=Ny8WIhhc+DsIwnwuaYUZiTvakmtGRstHvTGDZXsgPEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Is5SotVnIGyr8v2Pmk4AQx1Lf7mRzGWeMpjpi2PH/hbudoPrFcRrlj/JknMpRStiD
-         dWA+YpRTCkZ6HjtBYwQSAPWhraqsiCGxWRtG1nfbvCCbilzylNqesBuGOggyYM7X+a
-         lDt+mFA+LhM0fdqx9C1W9f39x5V5DOLDxXTvbOMk=
+        b=VuRyHYtkamK50mFfmriMaSBXbJ1G7JRf/oNkJ6xn239c4s1f+jVgXGAJ5nedSLLu7
+         3ePlXSgQuysH3wWFfrQRUcHuM2J8XPPwkSuxglKmeNXfQ/k22Kf3RnWoYQImiXLyFW
+         MdHElPD6RJ+WWRsdenkuD/ZDnyRkOW47qi2BEYnA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.2 157/242] proc_sysctl: enhance documentation
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Carl Vanderlip <quic_carlv@quicinc.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 006/134] bus: mhi: host: Remove duplicate ee check for syserr
 Date:   Mon, 15 May 2023 18:28:03 +0200
-Message-Id: <20230515161726.598286396@linuxfoundation.org>
+Message-Id: <20230515161703.139942312@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,87 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-commit 1dc8689e4cc651e21566e10206a84c4006e81fb1 upstream.
+[ Upstream commit d469d9448a0f1a33c175d3280b1542fa0158ad7a ]
 
-Expand documentation to clarify:
+If we detect a system error via intvec, we only process the syserr if the
+current ee is different than the last observed ee.  The reason for this
+check is to prevent bhie from running multiple times, but with the single
+queue handling syserr, that is not possible.
 
-  o that paths don't need to exist for the new API callers
-  o clarify that we *require* callers to keep the memory of
-    the table around during the lifetime of the sysctls
-  o annotate routines we are trying to deprecate and later remove
+The check can cause an issue with device recovery.  If PBL loads a bad SBL
+via BHI, but that SBL hangs before notifying the host of an ee change,
+then issuing soc_reset to crash the device and retry (after supplying a
+fixed SBL) will not recover the device as the host will observe a PBL->PBL
+transition and not process the syserr.  The device will be stuck until
+either the driver is reloaded, or the host is rebooted.  Instead, remove
+the check so that we can attempt to recover the device.
 
-Cc: stable@vger.kernel.org # v5.17
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef2126c4e2ea ("bus: mhi: core: Process execution environment changes serially")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://lore.kernel.org/r/1681142292-27571-2-git-send-email-quic_jhugo@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/proc_sysctl.c |   25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/bus/mhi/host/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1287,7 +1287,10 @@ out:
-  * __register_sysctl_table - register a leaf sysctl table
-  * @set: Sysctl tree to register on
-  * @path: The path to the directory the sysctl table is in.
-- * @table: the top-level table structure without any child
-+ * @table: the top-level table structure without any child. This table
-+ * 	 should not be free'd after registration. So it should not be
-+ * 	 used on stack. It can either be a global or dynamically allocated
-+ * 	 by the caller and free'd later after sysctl unregistration.
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-@@ -1402,8 +1405,15 @@ fail:
+diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+index 9a94b8d66f575..6b36689999427 100644
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -489,7 +489,7 @@ irqreturn_t mhi_intvec_threaded_handler(int irq_number, void *priv)
+ 	}
+ 	write_unlock_irq(&mhi_cntrl->pm_lock);
  
- /**
-  * register_sysctl - register a sysctl table
-- * @path: The path to the directory the sysctl table is in.
-- * @table: the table structure
-+ * @path: The path to the directory the sysctl table is in. If the path
-+ * 	doesn't exist we will create it for you.
-+ * @table: the table structure. The calller must ensure the life of the @table
-+ * 	will be kept during the lifetime use of the syctl. It must not be freed
-+ * 	until unregister_sysctl_table() is called with the given returned table
-+ * 	with this registration. If your code is non modular then you don't need
-+ * 	to call unregister_sysctl_table() and can instead use something like
-+ * 	register_sysctl_init() which does not care for the result of the syctl
-+ * 	registration.
-  *
-  * Register a sysctl table. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-@@ -1419,8 +1429,11 @@ EXPORT_SYMBOL(register_sysctl);
+-	if (pm_state != MHI_PM_SYS_ERR_DETECT || ee == mhi_cntrl->ee)
++	if (pm_state != MHI_PM_SYS_ERR_DETECT)
+ 		goto exit_intvec;
  
- /**
-  * __register_sysctl_init() - register sysctl table to path
-- * @path: path name for sysctl base
-- * @table: This is the sysctl table that needs to be registered to the path
-+ * @path: path name for sysctl base. If that path doesn't exist we will create
-+ * 	it for you.
-+ * @table: This is the sysctl table that needs to be registered to the path.
-+ * 	The caller must ensure the life of the @table will be kept during the
-+ * 	lifetime use of the sysctl.
-  * @table_name: The name of sysctl table, only used for log printing when
-  *              registration fails
-  *
-@@ -1565,6 +1578,7 @@ out:
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-+ * We are slowly deprecating this call so avoid its use.
-  *
-  * See __register_sysctl_table for more details.
-  */
-@@ -1636,6 +1650,7 @@ err_register_leaves:
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-+ * We are slowly deprecating this caller so avoid future uses of it.
-  *
-  * See __register_sysctl_paths for more details.
-  */
+ 	switch (ee) {
+-- 
+2.39.2
+
 
 
