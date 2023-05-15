@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88812703B2F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8D87039E1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242647AbjEOSAa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58746 "EHLO
+        id S244712AbjEORqh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245089AbjEOSAD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:03 -0400
+        with ESMTP id S244630AbjEORqP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E94C1A3A1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BD7E78
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 776EB62FE0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71248C433D2;
-        Mon, 15 May 2023 17:57:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A8D962E96
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC7FC433EF;
+        Mon, 15 May 2023 17:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173422;
-        bh=Z1kiKh9dKavSr1sCdXmm1quMVrWqBX0zqcmUon5u63U=;
+        s=korg; t=1684172666;
+        bh=SwsQ3lFAvKOLFqaUS0or3M1VMwdweoEdWwZ8Dajs8ao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FQsVD6/iIs9lXOj/t5annTgMGlsZVJ1/n5vmCcZimA3L5ysDITcZvLRlOMcOsyFm8
-         MuOYBbxQ7U2lC2mqZ5xbdUypz+DudzmJa50Uf89a1Wqfz3DgH124S3YHVbuhsvOa4g
-         rf6KB2zDSgZsGWNEgD4s6ggovnuP/HF2HG/sV5+4=
+        b=lBxy86Tk64kFBDbPM0dTvv8PPLeK3ryQY6fDFS+6SI40/VizJkNTCp2VME1zEB/Hi
+         Bt3K0U9IOFYw2qp2+JzE9AhnlQkXJXm1RfQh3OuY4CKdHYmaamDWvuJpuUmd0hku8r
+         hzOf4wFddqT8LQ8qApf/k/i9UxIoJ6ve7c7ykWkw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/282] tick: Get rid of tick_period
-Date:   Mon, 15 May 2023 18:27:30 +0200
-Message-Id: <20230515161724.394825097@linuxfoundation.org>
+Subject: [PATCH 5.10 200/381] usb: gadget: udc: renesas_usb3: Fix use after free bug in renesas_usb3_remove due to race condition
+Date:   Mon, 15 May 2023 18:27:31 +0200
+Message-Id: <20230515161745.856131440@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,190 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit b996544916429946bf4934c1c01a306d1690972c ]
+[ Upstream commit 2b947f8769be8b8181dc795fd292d3e7120f5204 ]
 
-The variable tick_period is initialized to NSEC_PER_TICK / HZ during boot
-and never updated again.
+In renesas_usb3_probe, role_work is bound with renesas_usb3_role_work.
+renesas_usb3_start will be called to start the work.
 
-If NSEC_PER_TICK is not an integer multiple of HZ this computation is less
-accurate than TICK_NSEC which has proper rounding in place.
+If we remove the driver which will call usbhs_remove, there may be
+an unfinished work. The possible sequence is as follows:
 
-Aside of the inaccuracy there is no reason for having this variable at
-all. It's just a pointless indirection and all usage sites can just use the
-TICK_NSEC constant.
+CPU0                  			CPU1
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20201117132006.766643526@linutronix.de
-Stable-dep-of: e9523a0d8189 ("tick/common: Align tick period with the HZ tick.")
+                    			 renesas_usb3_role_work
+renesas_usb3_remove
+usb_role_switch_unregister
+device_unregister
+kfree(sw)
+//free usb3->role_sw
+                    			 usb_role_switch_set_role
+                    			 //use usb3->role_sw
+
+The usb3->role_sw could be freed under such circumstance and then
+used in usb_role_switch_set_role.
+
+This bug was found by static analysis. And note that removing a
+driver is a root-only operation, and should never happen in normal
+case. But the root user may directly remove the device which
+will also trigger the remove function.
+
+Fix it by canceling the work before cleanup in the renesas_usb3_remove.
+
+Fixes: 39facfa01c9f ("usb: gadget: udc: renesas_usb3: Add register of usb role switch")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20230320062931.505170-1-zyytlz.wz@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-broadcast.c |  2 +-
- kernel/time/tick-common.c    |  8 +++-----
- kernel/time/tick-internal.h  |  1 -
- kernel/time/tick-sched.c     | 22 +++++++++++-----------
- 4 files changed, 15 insertions(+), 18 deletions(-)
+ drivers/usb/gadget/udc/renesas_usb3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
-index e51778c312f1c..ce7339ff10d22 100644
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -331,7 +331,7 @@ static void tick_handle_periodic_broadcast(struct clock_event_device *dev)
- 	bc_local = tick_do_periodic_broadcast();
+diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
+index 601829a6b4bad..a10f41c4a3f2f 100644
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -2568,6 +2568,7 @@ static int renesas_usb3_remove(struct platform_device *pdev)
+ 	debugfs_remove_recursive(usb3->dentry);
+ 	device_remove_file(&pdev->dev, &dev_attr_role);
  
- 	if (clockevent_state_oneshot(dev)) {
--		ktime_t next = ktime_add(dev->next_event, tick_period);
-+		ktime_t next = ktime_add_ns(dev->next_event, TICK_NSEC);
++	cancel_work_sync(&usb3->role_work);
+ 	usb_role_switch_unregister(usb3->role_sw);
  
- 		clockevents_program_event(dev, next, true);
- 	}
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index 6c9c342dd0e53..92bf99d558b48 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -30,7 +30,6 @@ DEFINE_PER_CPU(struct tick_device, tick_cpu_device);
-  * Tick next event: keeps track of the tick time
-  */
- ktime_t tick_next_period;
--ktime_t tick_period;
- 
- /*
-  * tick_do_timer_cpu is a timer core internal variable which holds the CPU NR
-@@ -88,7 +87,7 @@ static void tick_periodic(int cpu)
- 		write_seqcount_begin(&jiffies_seq);
- 
- 		/* Keep track of the next tick event */
--		tick_next_period = ktime_add(tick_next_period, tick_period);
-+		tick_next_period = ktime_add_ns(tick_next_period, TICK_NSEC);
- 
- 		do_timer(1);
- 		write_seqcount_end(&jiffies_seq);
-@@ -127,7 +126,7 @@ void tick_handle_periodic(struct clock_event_device *dev)
- 		 * Setup the next period for devices, which do not have
- 		 * periodic mode:
- 		 */
--		next = ktime_add(next, tick_period);
-+		next = ktime_add_ns(next, TICK_NSEC);
- 
- 		if (!clockevents_program_event(dev, next, false))
- 			return;
-@@ -173,7 +172,7 @@ void tick_setup_periodic(struct clock_event_device *dev, int broadcast)
- 		for (;;) {
- 			if (!clockevents_program_event(dev, next, false))
- 				return;
--			next = ktime_add(next, tick_period);
-+			next = ktime_add_ns(next, TICK_NSEC);
- 		}
- 	}
- }
-@@ -220,7 +219,6 @@ static void tick_setup_device(struct tick_device *td,
- 			tick_do_timer_cpu = cpu;
- 
- 			tick_next_period = ktime_get();
--			tick_period = NSEC_PER_SEC / HZ;
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
-diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-index 5294f5b1f9550..e61c1244e7d46 100644
---- a/kernel/time/tick-internal.h
-+++ b/kernel/time/tick-internal.h
-@@ -15,7 +15,6 @@
- 
- DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
- extern ktime_t tick_next_period;
--extern ktime_t tick_period;
- extern int tick_do_timer_cpu __read_mostly;
- 
- extern void tick_setup_periodic(struct clock_event_device *dev, int broadcast);
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 3b00167656d78..1b5037ba4ec40 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -92,17 +92,17 @@ static void tick_do_update_jiffies64(ktime_t now)
- 	write_seqcount_begin(&jiffies_seq);
- 
- 	delta = ktime_sub(now, tick_next_period);
--	if (unlikely(delta >= tick_period)) {
-+	if (unlikely(delta >= TICK_NSEC)) {
- 		/* Slow path for long idle sleep times */
--		s64 incr = ktime_to_ns(tick_period);
-+		s64 incr = TICK_NSEC;
- 
- 		ticks += ktime_divns(delta, incr);
- 
- 		last_jiffies_update = ktime_add_ns(last_jiffies_update,
- 						   incr * ticks);
- 	} else {
--		last_jiffies_update = ktime_add(last_jiffies_update,
--						tick_period);
-+		last_jiffies_update = ktime_add_ns(last_jiffies_update,
-+						   TICK_NSEC);
- 	}
- 
- 	do_timer(ticks);
-@@ -112,7 +112,7 @@ static void tick_do_update_jiffies64(ktime_t now)
- 	 * pairs with the READ_ONCE() in the lockless quick check above.
- 	 */
- 	WRITE_ONCE(tick_next_period,
--		   ktime_add(last_jiffies_update, tick_period));
-+		   ktime_add_ns(last_jiffies_update, TICK_NSEC));
- 
- 	write_seqcount_end(&jiffies_seq);
- 	raw_spin_unlock(&jiffies_lock);
-@@ -659,7 +659,7 @@ static void tick_nohz_restart(struct tick_sched *ts, ktime_t now)
- 	hrtimer_set_expires(&ts->sched_timer, ts->last_tick);
- 
- 	/* Forward the time to expire in the future */
--	hrtimer_forward(&ts->sched_timer, now, tick_period);
-+	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 
- 	if (ts->nohz_mode == NOHZ_MODE_HIGHRES) {
- 		hrtimer_start_expires(&ts->sched_timer,
-@@ -1221,7 +1221,7 @@ static void tick_nohz_handler(struct clock_event_device *dev)
- 	if (unlikely(ts->tick_stopped))
- 		return;
- 
--	hrtimer_forward(&ts->sched_timer, now, tick_period);
-+	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
- }
- 
-@@ -1258,7 +1258,7 @@ static void tick_nohz_switch_to_nohz(void)
- 	next = tick_init_jiffy_update();
- 
- 	hrtimer_set_expires(&ts->sched_timer, next);
--	hrtimer_forward_now(&ts->sched_timer, tick_period);
-+	hrtimer_forward_now(&ts->sched_timer, TICK_NSEC);
- 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
- 	tick_nohz_activate(ts, NOHZ_MODE_LOWRES);
- }
-@@ -1324,7 +1324,7 @@ static enum hrtimer_restart tick_sched_timer(struct hrtimer *timer)
- 	if (unlikely(ts->tick_stopped))
- 		return HRTIMER_NORESTART;
- 
--	hrtimer_forward(timer, now, tick_period);
-+	hrtimer_forward(timer, now, TICK_NSEC);
- 
- 	return HRTIMER_RESTART;
- }
-@@ -1358,13 +1358,13 @@ void tick_setup_sched_timer(void)
- 
- 	/* Offset the tick to avert jiffies_lock contention. */
- 	if (sched_skew_tick) {
--		u64 offset = ktime_to_ns(tick_period) >> 1;
-+		u64 offset = TICK_NSEC >> 1;
- 		do_div(offset, num_possible_cpus());
- 		offset *= smp_processor_id();
- 		hrtimer_add_expires_ns(&ts->sched_timer, offset);
- 	}
- 
--	hrtimer_forward(&ts->sched_timer, now, tick_period);
-+	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 	hrtimer_start_expires(&ts->sched_timer, HRTIMER_MODE_ABS_PINNED_HARD);
- 	tick_nohz_activate(ts, NOHZ_MODE_HIGHRES);
- }
+ 	usb_del_gadget_udc(&usb3->gadget);
 -- 
 2.39.2
 
