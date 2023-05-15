@@ -2,68 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56B527034E0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 823617035FC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243217AbjEOQxi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59120 "EHLO
+        id S243522AbjEORFU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243149AbjEOQxL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F1BA6A63
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:52:52 -0700 (PDT)
+        with ESMTP id S243608AbjEOREv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB759A245
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F8FF629A7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:52:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C56CC433EF;
-        Mon, 15 May 2023 16:52:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E50A620EE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:03:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1D0C433EF;
+        Mon, 15 May 2023 17:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169571;
-        bh=oGbSyybgHOiv+yB1HSOexqXpS711Yac1vMP33T06qQI=;
+        s=korg; t=1684170186;
+        bh=JXxS43nUL58BOdPsQqp5xzV7KF0+YOCZ0ty+S7D7Gyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kl8SwcAsHfNFr8WWeUaSPyte9sTxgdd12aXeQ2JoTY8Ji0kmUcoDyo7/5e2GI+pSl
-         LPZbwW+zxFW1bbhZSoz770AZ+915IoR5FIIOb9z+xCAEupiM/ieL2qbx3DJ+nC77GF
-         EahAo1OIIUCTNqBdfLu+3nI1Htw06McXwrPlo3rs=
+        b=XdO8nXUjZ/uA11GU4OMLeILUVCPDNjmwMnpM50Mka7+b1uAuwvgfIqx8iEZkItkry
+         YYVrKUBTSbixyXx/oRlR8DKBRRw5zoFSpw9tUJ80u4/XBOJueiMWFsbu/8hD1xxzos
+         JNhXiPLVUvYdy6PgCiz37WsB1vGDgXFzXPfUKHj4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andres Freund <andres@anarazel.de>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Martin=20Li=C5=A1ka?= <mliska@suse.cz>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Pavithra Gurushankar <gpavithrasha@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Quentin Monnet <quentin@isovalent.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Stephane Eranian <eranian@google.com>,
-        Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Tom Rix <trix@redhat.com>,
-        Yang Jihong <yangjihong1@huawei.com>, llvm@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Angelo Dureghello <angelo.dureghello@timesys.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 101/246] perf build: Support python/perf.so testing
+Subject: [PATCH 6.1 050/239] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
 Date:   Mon, 15 May 2023 18:25:13 +0200
-Message-Id: <20230515161725.613015792@linuxfoundation.org>
+Message-Id: <20230515161723.209233596@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,102 +56,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ian Rogers <irogers@google.com>
+From: Angelo Dureghello <angelo.dureghello@timesys.com>
 
-[ Upstream commit 7a9b223ca0761a7c7c72e569b86b84a907aa0f92 ]
+[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
 
-Add a build target to echo the python/perf.so's name from
-Makefile.perf. Use it in tests/make so the correct target is built and
-tested for.
+Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
+processing.
 
-Fixes: caec54705adb73b0 ("perf build: Fix python/perf.so library's name")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andres Freund <andres@anarazel.de>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin Liška <mliska@suse.cz>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Pavithra Gurushankar <gpavithrasha@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Quentin Monnet <quentin@isovalent.com>
-Cc: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Tom Rix <trix@redhat.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: llvm@lists.linux.dev
-Link: https://lore.kernel.org/r/20230311065753.3012826-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.perf | 7 +++++--
- tools/perf/tests/make    | 5 +++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index bac9272682b75..2fcee585b225d 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -647,13 +647,16 @@ all: shell_compatibility_test $(ALL_PROGRAMS) $(LANG_BINDINGS) $(OTHER_PROGRAMS)
- # Create python binding output directory if not already present
- _dummy := $(shell [ -d '$(OUTPUT)python' ] || mkdir -p '$(OUTPUT)python')
- 
--$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): $(PYTHON_EXT_SRCS) $(PYTHON_EXT_DEPS) $(LIBPERF)
-+$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): $(PYTHON_EXT_SRCS) $(PYTHON_EXT_DEPS) $(LIBPERF) $(LIBSUBCMD)
- 	$(QUIET_GEN)LDSHARED="$(CC) -pthread -shared" \
-         CFLAGS='$(CFLAGS)' LDFLAGS='$(LDFLAGS)' \
- 	  $(PYTHON_WORD) util/setup.py \
- 	  --quiet build_ext; \
- 	cp $(PYTHON_EXTBUILD_LIB)perf*.so $(OUTPUT)python/
- 
-+python_perf_target:
-+	@echo "Target is: $(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX)"
-+
- please_set_SHELL_PATH_to_a_more_modern_shell:
- 	$(Q)$$(:)
- 
-@@ -1152,7 +1155,7 @@ FORCE:
- .PHONY: all install clean config-clean strip install-gtk
- .PHONY: shell_compatibility_test please_set_SHELL_PATH_to_a_more_modern_shell
- .PHONY: .FORCE-PERF-VERSION-FILE TAGS tags cscope FORCE prepare
--.PHONY: archheaders
-+.PHONY: archheaders python_perf_target
- 
- endif # force_fixdep
- 
-diff --git a/tools/perf/tests/make b/tools/perf/tests/make
-index 009d6efb673ce..deb37fb982e97 100644
---- a/tools/perf/tests/make
-+++ b/tools/perf/tests/make
-@@ -62,10 +62,11 @@ lib = lib
- endif
- 
- has = $(shell which $1 2>/dev/null)
-+python_perf_so := $(shell $(MAKE) python_perf_target|grep "Target is:"|awk '{print $$3}')
- 
- # standard single make variable specified
- make_clean_all      := clean all
--make_python_perf_so := python/perf.so
-+make_python_perf_so := $(python_perf_so)
- make_debug          := DEBUG=1
- make_no_libperl     := NO_LIBPERL=1
- make_no_libpython   := NO_LIBPYTHON=1
-@@ -204,7 +205,7 @@ test_make_doc    := $(test_ok)
- test_make_help_O := $(test_ok)
- test_make_doc_O  := $(test_ok)
- 
--test_make_python_perf_so := test -f $(PERF_O)/python/perf.so
-+test_make_python_perf_so := test -f $(PERF_O)/$(python_perf_so)
- 
- test_make_perf_o           := test -f $(PERF_O)/perf.o
- test_make_util_map_o       := test -f $(PERF_O)/util/map.o
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index f1d9ee2a78b0f..12175195d3968 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5109,6 +5109,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
+ 	.set_egress_port = mv88e6095_g1_set_egress_port,
+ 	.watchdog_ops = &mv88e6390_watchdog_ops,
++	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.reset = mv88e6352_g1_reset,
+ 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
+ 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
 -- 
 2.39.2
 
