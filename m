@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36CAE7037F3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 918BB703871
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244203AbjEORZr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
+        id S244171AbjEORcl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244210AbjEORZc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7349E13C26
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:19 -0700 (PDT)
+        with ESMTP id S244332AbjEORcS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C0151163D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95B6462CBC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0B6C433EF;
-        Mon, 15 May 2023 17:24:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C71F62CF9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB49C433D2;
+        Mon, 15 May 2023 17:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171458;
-        bh=ySzyVxVmWL0qF749aKDXnCtw9gVgM89n6QudJK/XpVk=;
+        s=korg; t=1684171748;
+        bh=S1OI2djbRaB9GKqHShLKh3z1Ci1kMER4m43qABQQ05Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JS//GIfS/u0b10PSZvc736xwFH+cosD02wr1s1NMPLeb0+4j1sY5RMks5OY0m2G9c
-         48SDhfGWnZsnANnmwEE75oRD8psyAhNVaEtJqZua587kKL8bakCpuyDU+6vsgHRebZ
-         hxxeyuDFeLfMs3pRzOpijXZAPyy4YtVK3dr+M+ks=
+        b=hzjiZ7GA7rdb3jTx2aG/X9hskD2PRPP/tSxfAOZf1oyVLb5XvOZ+wmCGHd6JGxWxE
+         Y4UiYH9WARcLITbwbH7qJ+GhQhcIWI+2wjvce8G0K9GX7IiMIcZJaRnPXMCl6zkteB
+         AS5M6k9JI5q6Nh5BSVd8+LSJBay5ORIgVcpSajzs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jun Lei <Jun.Lei@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 216/242] drm/amd/display: Add minimum Z8 residency debug option
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 065/134] btrfs: zero the buffer before marking it dirty in btrfs_redirty_list_add
 Date:   Mon, 15 May 2023 18:29:02 +0200
-Message-Id: <20230515161728.406005756@linuxfoundation.org>
+Message-Id: <20230515161705.326776083@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,70 +53,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 0db13eae41fcc67f408dbb3dfda59633c4fa03fb ]
+commit c83b56d1dd87cf67492bb770c26d6f87aee70ed6 upstream.
 
-[Why]
-Allows finer control and tuning for debug and profiling.
+btrfs_redirty_list_add zeroes the buffer data and sets the
+EXTENT_BUFFER_NO_CHECK to make sure writeback is fine with a bogus
+header.  But it does that after already marking the buffer dirty, which
+means that writeback could already be looking at the buffer.
 
-[How]
-Add the debug option into DC. The default remains the same as before
-for now.
+Switch the order of operations around so that the buffer is only marked
+dirty when we're ready to write it.
 
-Reviewed-by: Jun Lei <Jun.Lei@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: d893f39320e1 ("drm/amd/display: Lowering min Z8 residency time")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d3575156f662 ("btrfs: zoned: redirty released extent buffers")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h                     | 1 +
- drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c | 1 +
- drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c    | 3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/zoned.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 37998dc0fc144..b519602c054b2 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -796,6 +796,7 @@ struct dc_debug_options {
- 	unsigned int force_odm_combine; //bit vector based on otg inst
- 	unsigned int seamless_boot_odm_combine;
- 	unsigned int force_odm_combine_4to1; //bit vector based on otg inst
-+	int minimum_z8_residency_time;
- 	bool disable_z9_mpc;
- 	unsigned int force_fclk_khz;
- 	bool enable_tri_buf;
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
-index 9ffba4c6fe550..5c23c934c9751 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
-@@ -887,6 +887,7 @@ static const struct dc_plane_cap plane_cap = {
- static const struct dc_debug_options debug_defaults_drv = {
- 	.disable_z10 = false,
- 	.enable_z9_disable_interface = true,
-+	.minimum_z8_residency_time = 1000,
- 	.psr_skip_crtc_disable = true,
- 	.disable_dmcu = true,
- 	.force_abm_enable = false,
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-index 859dc67a1fb6b..b6b8be74ee0ea 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -973,7 +973,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
- 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
- 		struct dc_link *link = context->streams[0]->sink->link;
- 		struct dc_stream_status *stream_status = &context->stream_status[0];
--		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
-+		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
-+		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
- 		bool is_pwrseq0 = link->link_index == 0;
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1347,11 +1347,11 @@ void btrfs_redirty_list_add(struct btrfs
+ 	    !list_empty(&eb->release_list))
+ 		return;
  
- 		if (dc_extended_blank_supported(dc)) {
--- 
-2.39.2
-
++	memzero_extent_buffer(eb, 0, eb->len);
++	set_bit(EXTENT_BUFFER_NO_CHECK, &eb->bflags);
+ 	set_extent_buffer_dirty(eb);
+ 	set_extent_bits_nowait(&trans->dirty_pages, eb->start,
+ 			       eb->start + eb->len - 1, EXTENT_DIRTY);
+-	memzero_extent_buffer(eb, 0, eb->len);
+-	set_bit(EXTENT_BUFFER_NO_CHECK, &eb->bflags);
+ 
+ 	spin_lock(&trans->releasing_ebs_lock);
+ 	list_add_tail(&eb->release_list, &trans->releasing_ebs);
 
 
