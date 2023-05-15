@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 375F8703608
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D342F7034F0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243624AbjEORFo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47508 "EHLO
+        id S243250AbjEOQyX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243742AbjEORFM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:12 -0400
+        with ESMTP id S243244AbjEOQxy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8D683C5;
-        Mon, 15 May 2023 10:03:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1372D65A9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D08762AA7;
-        Mon, 15 May 2023 17:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D8EC4339B;
-        Mon, 15 May 2023 17:03:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9892562038
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70887C433D2;
+        Mon, 15 May 2023 16:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170214;
-        bh=43pq+UjSaKTzdKcTZSc3BjZWUVTfug1scezW8PiZqrk=;
+        s=korg; t=1684169609;
+        bh=q7uSRsJsO29IA51Q1xdw9dYkw7E3rxMHB33ck/9LeZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pPDRqyDM4UXbgM6QIIzixQs6Qs6lOG7/T6g0isuRjU4KmGWIWj7rX7oloBRcBkN98
-         ymJfE81WgNqB+ZQ1hZ4IVu9nVAkwM/LnGFq1F5ORQhz8+kErticgUgRoVtasKzJxU9
-         iFYQ/IdBO4Y6/fUPuceC/Boi6lHA2vi0WWzHyTV4=
+        b=HrV9y7Ml1KFda22FQKhiISpsxDtGdYZAROx/yflumlGkrJusFgxLXtv6qR+jAHSV/
+         JHrx0bYWTsniDBJZw9k+LQ9IkKkcRGrWolXdtMyFy8UMotxDSQWaAwIA/+UahCrgUS
+         CMbnG+MODP0eyyztPxus10isz4FOpSvXcBz5oFiY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, kernel test robot <yujie.liu@intel.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/239] rxrpc: Fix hard call timeout units
+Subject: [PATCH 6.3 112/246] perf symbols: Fix unaligned access in get_x86_64_plt_disp()
 Date:   Mon, 15 May 2023 18:25:24 +0200
-Message-Id: <20230515161723.530352001@linuxfoundation.org>
+Message-Id: <20230515161725.935895692@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,43 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 0d098d83c5d9e107b2df7f5e11f81492f56d2fe7 ]
+[ Upstream commit a2410b579c72242ac0f77b3768093d8c1b48012e ]
 
-The hard call timeout is specified in the RXRPC_SET_CALL_TIMEOUT cmsg in
-seconds, so fix the point at which sendmsg() applies it to the call to
-convert to jiffies from seconds, not milliseconds.
+Use memcpy() to avoid unaligned access.
 
-Fixes: a158bdd3247b ("rxrpc: Fix timeout of a call that hasn't yet been granted a channel")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Discovered using EXTRA_CFLAGS="-fsanitize=undefined -fsanitize=address".
+
+Fixes: ce4c8e7966f317ef ("perf symbols: Get symbols for .plt.got for x86-64")
+Reported-by: kernel test robot <yujie.liu@intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/oe-lkp/202303061424.6ad43294-yujie.liu@intel.com
+Link: https://lore.kernel.org/r/20230316194156.8320-2-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/sendmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/symbol-elf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index d4e4e94f4f987..71e40f91dd398 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -736,7 +736,7 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
- 		fallthrough;
- 	case 1:
- 		if (p.call.timeouts.hard > 0) {
--			j = msecs_to_jiffies(p.call.timeouts.hard);
-+			j = p.call.timeouts.hard * HZ;
- 			now = jiffies;
- 			j += now;
- 			WRITE_ONCE(call->expect_term_by, j);
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index 98a18fb854180..42b83bef67aaf 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -565,9 +565,12 @@ static u32 get_x86_64_plt_disp(const u8 *p)
+ 		n += 1;
+ 	/* jmp with 4-byte displacement */
+ 	if (p[n] == 0xff && p[n + 1] == 0x25) {
++		u32 disp;
++
+ 		n += 2;
+ 		/* Also add offset from start of entry to end of instruction */
+-		return n + 4 + le32toh(*(const u32 *)(p + n));
++		memcpy(&disp, p + n, sizeof(disp));
++		return n + 4 + le32toh(disp);
+ 	}
+ 	return 0;
+ }
 -- 
 2.39.2
 
