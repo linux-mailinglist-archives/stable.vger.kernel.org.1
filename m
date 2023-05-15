@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C49703A15
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBAB4703860
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244678AbjEORsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44614 "EHLO
+        id S243031AbjEORcP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244726AbjEORsN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DC415515
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:40 -0700 (PDT)
+        with ESMTP id S244342AbjEORbg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 924E24C9DB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 122F762EED
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DC0C433D2;
-        Mon, 15 May 2023 17:46:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 725046205E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A3CC433EF;
+        Mon, 15 May 2023 17:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172799;
-        bh=64si91uDfxTHtxRqAnDkzgHV4kefBb+WYEOTUHF2Loo=;
+        s=korg; t=1684171706;
+        bh=D3uckklQ1UeCpHz7LholJ0IBq7LyCObOReAb7nvozY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ryJpovFulK1Kf0Y8ifMJ+mYZtviUU+NW51PO91Z+wteUWCxmRgqt4GqurDvvDj+pH
-         jjE+U1NrAi/uT1w6JeqOnoj2ow8pRptCseSg3vmElG4bc8UMnnB0s1NsTJffAmx+f8
-         P1HsOxxWl3qHH7Dr1CVZNMJscVqAoYKddWy6eAXs=
+        b=xmqKjDGnoyAGIDcQL+VQPcNqPQk7dba+fKeHUl6lpPaq0awSNQ+7Syvvc9REjUUFZ
+         kWwwv70W5fCfbJHkILck1UzwRiGOvLCzKtV0ZNs1SMV21kFwYjT7XVo30a/WVy7yBy
+         Y2/ZS/4jdjo+NusEhpHuY1wmeWXdhmRr1PAm8J2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/381] dmaengine: at_xdmac: do not enable all cyclic channels
+        patches@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 045/134] virtio_net: split free_unused_bufs()
 Date:   Mon, 15 May 2023 18:28:42 +0200
-Message-Id: <20230515161749.013968492@linuxfoundation.org>
+Message-Id: <20230515161704.639534608@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-[ Upstream commit f8435befd81dd85b7b610598551fadf675849bc1 ]
+[ Upstream commit 6e345f8c7cd029ad3aaece15ad4425ac26e4eb63 ]
 
-Do not global enable all the cyclic channels in at_xdmac_resume(). Instead
-save the global status in at_xdmac_suspend() and re-enable the cyclic
-channel only if it was active before suspend.
+This patch separates two functions for freeing sq buf and rq buf from
+free_unused_bufs().
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-6-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+When supporting the enable/disable tx/rq queue in the future, it is
+necessary to support separate recovery of a sq buf or a rq buf.
+
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20220801063902.129329-40-xuanzhuo@linux.alibaba.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: f8bb51043945 ("virtio_net: suppress cpu stall when free_unused_bufs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c | 41 ++++++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index b5d691ae45dcf..1fe006cc643e7 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -212,6 +212,7 @@ struct at_xdmac {
- 	int			irq;
- 	struct clk		*clk;
- 	u32			save_gim;
-+	u32			save_gs;
- 	struct dma_pool		*at_xdmac_desc_pool;
- 	struct at_xdmac_chan	chan[];
- };
-@@ -1910,6 +1911,7 @@ static int atmel_xdmac_suspend(struct device *dev)
- 		}
- 	}
- 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
-+	atxdmac->save_gs = at_xdmac_read(atxdmac, AT_XDMAC_GS);
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 8a380086ac257..cff3e2a7ce7fc 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2814,6 +2814,27 @@ static void free_receive_page_frags(struct virtnet_info *vi)
+ 			put_page(vi->rq[i].alloc_frag.page);
+ }
  
- 	at_xdmac_off(atxdmac);
- 	clk_disable_unprepare(atxdmac->clk);
-@@ -1946,7 +1948,8 @@ static int atmel_xdmac_resume(struct device *dev)
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
- 			wmb();
--			at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
-+			if (atxdmac->save_gs & atchan->mask)
-+				at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
- 		}
++static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
++{
++	if (!is_xdp_frame(buf))
++		dev_kfree_skb(buf);
++	else
++		xdp_return_frame(ptr_to_xdp(buf));
++}
++
++static void virtnet_rq_free_unused_buf(struct virtqueue *vq, void *buf)
++{
++	struct virtnet_info *vi = vq->vdev->priv;
++	int i = vq2rxq(vq);
++
++	if (vi->mergeable_rx_bufs)
++		put_page(virt_to_head_page(buf));
++	else if (vi->big_packets)
++		give_pages(&vi->rq[i], buf);
++	else
++		put_page(virt_to_head_page(buf));
++}
++
+ static void free_unused_bufs(struct virtnet_info *vi)
+ {
+ 	void *buf;
+@@ -2821,26 +2842,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
+ 
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		struct virtqueue *vq = vi->sq[i].vq;
+-		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL) {
+-			if (!is_xdp_frame(buf))
+-				dev_kfree_skb(buf);
+-			else
+-				xdp_return_frame(ptr_to_xdp(buf));
+-		}
++		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
++			virtnet_sq_free_unused_buf(vq, buf);
  	}
- 	return 0;
+ 
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		struct virtqueue *vq = vi->rq[i].vq;
+-
+-		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL) {
+-			if (vi->mergeable_rx_bufs) {
+-				put_page(virt_to_head_page(buf));
+-			} else if (vi->big_packets) {
+-				give_pages(&vi->rq[i], buf);
+-			} else {
+-				put_page(virt_to_head_page(buf));
+-			}
+-		}
++		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
++			virtnet_rq_free_unused_buf(vq, buf);
+ 	}
+ }
+ 
 -- 
 2.39.2
 
