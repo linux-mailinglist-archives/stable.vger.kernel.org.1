@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E99D703B0F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D25B97039BA
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242445AbjEOR7J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:59:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60602 "EHLO
+        id S244631AbjEORpb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242391AbjEOR6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:34 -0400
+        with ESMTP id S244634AbjEORpH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAF215EE3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC5B147F0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDBF162FCE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CD7C433D2;
-        Mon, 15 May 2023 17:55:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C3E8B62E73
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A9BC4339B;
+        Mon, 15 May 2023 17:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173358;
-        bh=ibV1hz2WLEypWNcZxo0jHF4o7TnY+GNC9df8nLcNMoo=;
+        s=korg; t=1684172571;
+        bh=AqVr0k5FPJ7EOCjgmSYetb54VLQ6RC3DDmqKM2NSm0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MJPpgB4T9CmWkgLM3NiqgGJcDGE3VYkwjjsKnaWxJmN2xXqV0bng9BIdCAwKOStZ1
-         X9hVw3F82D/n0y0fg4JwXNmNLVC0tqxhpqc/Ewb7xYUVZrFasO2cp11SJs0NrowlW8
-         fdorlbUAit1/annSjIMr7c+0nirhgiSdZOWh6zxk=
+        b=GwPryDHHtZu/2Tfq75C3KYJ8wMvmU7F5j2vrGipn4IAbtg9zOefsHYhdPEVRiU2wq
+         XKqAzE0Xru0mZKBK8KSXE8ifN/FqZNodaTEr3yieZ0FajA/shsUtMPtjnvFYx94jD8
+         ss3qLzwC/xGdasMQeyAeB5c5XYET9SGMBV6IpxXM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
+        Xin Liu <liuxin350@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/282] ARM: dts: qcom: ipq4019: Fix the PCI I/O port range
+Subject: [PATCH 5.10 168/381] bpf, sockmap: fix deadlocks in the sockhash and sockmap
 Date:   Mon, 15 May 2023 18:26:59 +0200
-Message-Id: <20230515161723.498226044@linuxfoundation.org>
+Message-Id: <20230515161744.401645930@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +56,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Xin Liu <liuxin350@huawei.com>
 
-[ Upstream commit 2540279e9a9e74fc880d1e4c83754ecfcbe290a0 ]
+[ Upstream commit ed17aa92dc56b6d8883e4b7a8f1c6fbf5ed6cd29 ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI address
-(0x40200000) specified in the ranges property for I/O region.
+When huang uses sched_switch tracepoint, the tracepoint
+does only one thing in the mounted ebpf program, which
+deletes the fixed elements in sockhash ([0])
 
-While at it, let's use the missing 0x prefix for the addresses.
+It seems that elements in sockhash are rarely actively
+deleted by users or ebpf program. Therefore, we do not
+pay much attention to their deletion. Compared with hash
+maps, sockhash only provides spin_lock_bh protection.
+This causes it to appear to have self-locking behavior
+in the interrupt context.
 
-Fixes: 187519403273 ("ARM: dts: ipq4019: Add a few peripheral nodes")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-16-manivannan.sadhasivam@linaro.org
+  [0]:https://lore.kernel.org/all/CABcoxUayum5oOqFMMqAeWuS8+EzojquSOSyDA3J_2omY=2EeAg@mail.gmail.com/
+
+Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Xin Liu <liuxin350@huawei.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230406122622.109978-1-liuxin350@huawei.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-ipq4019.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/sock_map.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-index 338256c59ca5a..fc31ee980639a 100644
---- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-@@ -393,8 +393,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index ee5d3f49b0b5b..e21adbbb7461c 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -423,8 +423,9 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ {
+ 	struct sock *sk;
+ 	int err = 0;
++	unsigned long flags;
  
--			ranges = <0x81000000 0 0x40200000 0x40200000 0 0x00100000>,
--				 <0x82000000 0 0x40300000 0x40300000 0 0x00d00000>;
-+			ranges = <0x81000000 0x0 0x00000000 0x40200000 0x0 0x00100000>,
-+				 <0x82000000 0x0 0x40300000 0x40300000 0x0 0x00d00000>;
+-	raw_spin_lock_bh(&stab->lock);
++	raw_spin_lock_irqsave(&stab->lock, flags);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+ 		sk = xchg(psk, NULL);
+@@ -434,7 +435,7 @@ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ 	else
+ 		err = -EINVAL;
  
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
+-	raw_spin_unlock_bh(&stab->lock);
++	raw_spin_unlock_irqrestore(&stab->lock, flags);
+ 	return err;
+ }
+ 
+@@ -956,11 +957,12 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 	struct bpf_shtab_bucket *bucket;
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
++	unsigned long flags;
+ 
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
+-	raw_spin_lock_bh(&bucket->lock);
++	raw_spin_lock_irqsave(&bucket->lock, flags);
+ 	elem = sock_hash_lookup_elem_raw(&bucket->head, hash, key, key_size);
+ 	if (elem) {
+ 		hlist_del_rcu(&elem->node);
+@@ -968,7 +970,7 @@ static int sock_hash_delete_elem(struct bpf_map *map, void *key)
+ 		sock_hash_free_elem(htab, elem);
+ 		ret = 0;
+ 	}
+-	raw_spin_unlock_bh(&bucket->lock);
++	raw_spin_unlock_irqrestore(&bucket->lock, flags);
+ 	return ret;
+ }
+ 
 -- 
 2.39.2
 
