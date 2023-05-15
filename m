@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C257470385D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA97E703B4B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243888AbjEORcM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53176 "EHLO
+        id S243359AbjEOSBp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243997AbjEORbf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:35 -0400
+        with ESMTP id S232079AbjEOSBF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67A7A4C9C0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8F11997B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E654D62CB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCD8C433EF;
-        Mon, 15 May 2023 17:28:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB1F062FFB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1FAC433D2;
+        Mon, 15 May 2023 17:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171697;
-        bh=zILS+NdQ4mJKrNVsOyfPoE81OgIygHCaFqtaZV3+Ofs=;
+        s=korg; t=1684173512;
+        bh=h4P1oZyGi8cssGckqf6CN2b6xUXBvd7blVRw1mkbgSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gDzkGrBAXBqlf5ajbdMPZ8vH99SPf7op0K/yTjBn/AqNV4Ih2j0CrNG022C+bmYTX
-         /MZlUt71KuU/gsbCAfoY8JX5fNfi17ODgdnSdAZI9gIK7w6bcrBR6CfyUTx/kwlDTH
-         Zflths9PYJMHPeMHgFXYeCswySYXfM3Jk7OdyERE=
+        b=cn5cek2+o5s/E7idhUMG6oZ1a6LYzds4PTtbt7ATnZR5HfkrZmiow/awtCUxjtjhV
+         pj6h1yv/g9aiUzbQ/ottUFskea41i4sHoOIvVvjRzkFDenp0snF3HkUGRFnzzTDtDI
+         vo0K/Q6lQheza9OYCLOATUyfct5VxV/01F1egScU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Marco Pagani <marpagan@redhat.com>,
+        Tom Rix <trix@redhat.com>, Xu Yilun <yilun.xu@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/134] scsi: qedi: Fix use after free bug in qedi_remove()
-Date:   Mon, 15 May 2023 18:28:16 +0200
-Message-Id: <20230515161703.644113656@linuxfoundation.org>
+Subject: [PATCH 5.4 119/282] fpga: bridge: fix kernel-doc parameter description
+Date:   Mon, 15 May 2023 18:28:17 +0200
+Message-Id: <20230515161725.804474099@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,60 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Marco Pagani <marpagan@redhat.com>
 
-[ Upstream commit c5749639f2d0a1f6cbe187d05f70c2e7c544d748 ]
+[ Upstream commit 7ef1a2c1c9dffa177ecc3ea50b7f5ee63a621137 ]
 
-In qedi_probe() we call __qedi_probe() which initializes
-&qedi->recovery_work with qedi_recovery_handler() and
-&qedi->board_disable_work with qedi_board_disable_work().
+Fix the kernel-doc description for the "struct fpga_image_info *info"
+parameter of the fpga_bridge_get() function.
 
-When qedi_schedule_recovery_handler() is called, schedule_delayed_work()
-will finally start the work.
-
-In qedi_remove(), which is called to remove the driver, the following
-sequence may be observed:
-
-Fix this by finishing the work before cleanup in qedi_remove().
-
-CPU0                  CPU1
-
-                     |qedi_recovery_handler
-qedi_remove          |
-  __qedi_remove      |
-iscsi_host_free      |
-scsi_host_put        |
-//free shost         |
-                     |iscsi_host_for_each_session
-                     |//use qedi->shost
-
-Cancel recovery_work and board_disable_work in __qedi_remove().
-
-Fixes: 4b1068f5d74b ("scsi: qedi: Add MFW error recovery process")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Link: https://lore.kernel.org/r/20230413033422.28003-1-zyytlz.wz@163.com
-Acked-by: Manish Rangankar <mrangankar@marvell.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 060ac5c8fa7b ("fpga: bridge: kernel-doc fixes")
+Signed-off-by: Marco Pagani <marpagan@redhat.com>
+Reviewed-by: Tom Rix <trix@redhat.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20230301140309.512578-1-marpagan@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/fpga/fpga-bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index a117d11f2b078..e0096fc5927e7 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -2455,6 +2455,9 @@ static void __qedi_remove(struct pci_dev *pdev, int mode)
- 		qedi_ops->ll2->stop(qedi->cdev);
- 	}
- 
-+	cancel_delayed_work_sync(&qedi->recovery_work);
-+	cancel_delayed_work_sync(&qedi->board_disable_work);
-+
- 	qedi_free_iscsi_pf_param(qedi);
- 
- 	rval = qedi_ops->common->update_drv_state(qedi->cdev, false);
+diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
+index 4bab9028940a8..aea4ceeed5363 100644
+--- a/drivers/fpga/fpga-bridge.c
++++ b/drivers/fpga/fpga-bridge.c
+@@ -115,7 +115,7 @@ static int fpga_bridge_dev_match(struct device *dev, const void *data)
+ /**
+  * fpga_bridge_get - get an exclusive reference to a fpga bridge
+  * @dev:	parent device that fpga bridge was registered with
+- * @info:	fpga manager info
++ * @info:	fpga image specific information
+  *
+  * Given a device, get an exclusive reference to a fpga bridge.
+  *
 -- 
 2.39.2
 
