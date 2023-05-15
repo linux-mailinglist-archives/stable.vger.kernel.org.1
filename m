@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7DC7033A6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5735F7035E2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242845AbjEOQkF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42858 "EHLO
+        id S243365AbjEORE2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:04:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242887AbjEOQj4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF54C4214
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:39 -0700 (PDT)
+        with ESMTP id S243570AbjEOREH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376E083FE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:02:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DB2B62866
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8A4C4339E;
-        Mon, 15 May 2023 16:39:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD92062976
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:01:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2412C433EF;
+        Mon, 15 May 2023 17:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168778;
-        bh=B3DNZ4uP3qz5Muc0Eq10wvdq5oUeHd+9JbGPh8ZKKFA=;
+        s=korg; t=1684170063;
+        bh=/d+DYCyv4m8AS9PiBWghviGaVmP0w+vgpbRIo1+x38c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0hxbpHL3IKw1uNvx8AI6/iIg3IbdaZ+Mph2ei+w9MZrApoFwSoa7j0F9B1Uvt+dNH
-         tcO05nrzUz7zTliKE8YEpcJv0dJ5gRcANIrYbK4Pa9ZQdpOWqBj5/vyHYlPB7I6LaV
-         yUTLIQxMemw+9QRL62wpExOiydvFemPykSlk4io8=
+        b=lOGb+I924k5V+e1DcUSrZ9dxSElNMKBnX+2xr8kusDYU3pmLuAvlHw4sjalW6u59O
+         EIsyMR54/k3s3vZONQVKJjLrjYw/HD7hx25LLdftl+Cjp79a5dho9g4I6bbWYMU0bv
+         7ZIFK2nmpbF22hFVgURC6zHxp4Oxo/OHzBwIMTPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 039/191] media: saa7134: fix use after free bug in saa7134_finidev due to race condition
+        patches@lists.linux.dev, Luca Weiss <luca.weiss@fairphone.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 6.1 013/239] qcom: llcc/edac: Support polling mode for ECC handling
 Date:   Mon, 15 May 2023 18:24:36 +0200
-Message-Id: <20230515161708.602887921@linuxfoundation.org>
+Message-Id: <20230515161721.988274855@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,83 +58,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 30cf57da176cca80f11df0d9b7f71581fe601389 ]
+[ Upstream commit 721d3e91bfc93975c5e1a76c7d588dd8df5d82da ]
 
-In saa7134_initdev, it will call saa7134_hwinit1. There are three
-function invoking here: saa7134_video_init1, saa7134_ts_init1
-and saa7134_vbi_init1.
+Not all Qcom platforms support IRQ mode for ECC handling. For those
+platforms, the current EDAC driver will not be probed due to missing ECC
+IRQ in devicetree.
 
-All of them will init a timer with same function. Take
-saa7134_video_init1 as an example. It'll bound &dev->video_q.timeout
-with saa7134_buffer_timeout.
+So add support for polling mode so that the EDAC driver can be used on all
+Qcom platforms supporting LLCC.
 
-In buffer_activate, the timer funtcion is started.
+The polling delay of 5000ms is chosen based on Qcom downstream/vendor
+driver.
 
-If we remove the module or device which will call saa7134_finidev
-to make cleanup, there may be a unfinished work. The
-possible sequence is as follows, which will cause a
-typical UAF bug.
-
-Fix it by canceling the timer works accordingly before cleanup in
-saa7134_finidev.
-
-CPU0                  CPU1
-
-                    |saa7134_buffer_timeout
-saa7134_finidev     |
-  kfree(dev);       |
-                    |
-                    | saa7134_buffer_next
-                    | //use dev
-
-Fixes: 1e7126b4a86a ("media: saa7134: Convert timers to use timer_setup()")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Luca Weiss <luca.weiss@fairphone.com>
+Tested-by: Luca Weiss <luca.weiss@fairphone.com>
+Tested-by: Steev Klimaszewski <steev@kali.org> # Thinkpad X13s
+Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8540p-ride
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230314080443.64635-14-manivannan.sadhasivam@linaro.org
+Stable-dep-of: cca94f1dd6d0 ("soc: qcom: llcc: Do not create EDAC platform device on SDM845")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/saa7134/saa7134-ts.c    | 1 +
- drivers/media/pci/saa7134/saa7134-vbi.c   | 1 +
- drivers/media/pci/saa7134/saa7134-video.c | 1 +
- 3 files changed, 3 insertions(+)
+ drivers/edac/qcom_edac.c     | 50 +++++++++++++++++++++---------------
+ drivers/soc/qcom/llcc-qcom.c | 13 +++++-----
+ 2 files changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/media/pci/saa7134/saa7134-ts.c b/drivers/media/pci/saa7134/saa7134-ts.c
-index 2be703617e294..e7adcd4f99623 100644
---- a/drivers/media/pci/saa7134/saa7134-ts.c
-+++ b/drivers/media/pci/saa7134/saa7134-ts.c
-@@ -309,6 +309,7 @@ int saa7134_ts_start(struct saa7134_dev *dev)
+diff --git a/drivers/edac/qcom_edac.c b/drivers/edac/qcom_edac.c
+index c45519f59dc11..2c91ceff8a9ca 100644
+--- a/drivers/edac/qcom_edac.c
++++ b/drivers/edac/qcom_edac.c
+@@ -76,6 +76,8 @@
+ #define DRP0_INTERRUPT_ENABLE           BIT(6)
+ #define SB_DB_DRP_INTERRUPT_ENABLE      0x3
  
- int saa7134_ts_fini(struct saa7134_dev *dev)
- {
-+	del_timer_sync(&dev->ts_q.timeout);
- 	saa7134_pgtable_free(dev->pci, &dev->ts_q.pt);
- 	return 0;
- }
-diff --git a/drivers/media/pci/saa7134/saa7134-vbi.c b/drivers/media/pci/saa7134/saa7134-vbi.c
-index 57bea543c39ba..559db500b19ce 100644
---- a/drivers/media/pci/saa7134/saa7134-vbi.c
-+++ b/drivers/media/pci/saa7134/saa7134-vbi.c
-@@ -194,6 +194,7 @@ int saa7134_vbi_init1(struct saa7134_dev *dev)
- int saa7134_vbi_fini(struct saa7134_dev *dev)
- {
- 	/* nothing */
-+	del_timer_sync(&dev->vbi_q.timeout);
- 	return 0;
++#define ECC_POLL_MSEC			5000
++
+ enum {
+ 	LLCC_DRAM_CE = 0,
+ 	LLCC_DRAM_UE,
+@@ -285,8 +287,7 @@ dump_syn_reg(struct edac_device_ctl_info *edev_ctl, int err_type, u32 bank)
+ 	return ret;
  }
  
-diff --git a/drivers/media/pci/saa7134/saa7134-video.c b/drivers/media/pci/saa7134/saa7134-video.c
-index 079219288af7b..90255ecb08ca4 100644
---- a/drivers/media/pci/saa7134/saa7134-video.c
-+++ b/drivers/media/pci/saa7134/saa7134-video.c
-@@ -2213,6 +2213,7 @@ int saa7134_video_init1(struct saa7134_dev *dev)
- 
- void saa7134_video_fini(struct saa7134_dev *dev)
+-static irqreturn_t
+-llcc_ecc_irq_handler(int irq, void *edev_ctl)
++static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
  {
-+	del_timer_sync(&dev->video_q.timeout);
- 	/* free stuff */
- 	vb2_queue_release(&dev->video_vbq);
- 	saa7134_pgtable_free(dev->pci, &dev->video_q.pt);
+ 	struct edac_device_ctl_info *edac_dev_ctl = edev_ctl;
+ 	struct llcc_drv_data *drv = edac_dev_ctl->dev->platform_data;
+@@ -332,6 +333,11 @@ llcc_ecc_irq_handler(int irq, void *edev_ctl)
+ 	return irq_rc;
+ }
+ 
++static void llcc_ecc_check(struct edac_device_ctl_info *edev_ctl)
++{
++	llcc_ecc_irq_handler(0, edev_ctl);
++}
++
+ static int qcom_llcc_edac_probe(struct platform_device *pdev)
+ {
+ 	struct llcc_drv_data *llcc_driv_data = pdev->dev.platform_data;
+@@ -359,29 +365,31 @@ static int qcom_llcc_edac_probe(struct platform_device *pdev)
+ 	edev_ctl->ctl_name = "llcc";
+ 	edev_ctl->panic_on_ue = LLCC_ERP_PANIC_ON_UE;
+ 
+-	rc = edac_device_add_device(edev_ctl);
+-	if (rc)
+-		goto out_mem;
+-
+-	platform_set_drvdata(pdev, edev_ctl);
+-
+-	/* Request for ecc irq */
++	/* Check if LLCC driver has passed ECC IRQ */
+ 	ecc_irq = llcc_driv_data->ecc_irq;
+-	if (ecc_irq < 0) {
+-		rc = -ENODEV;
+-		goto out_dev;
+-	}
+-	rc = devm_request_irq(dev, ecc_irq, llcc_ecc_irq_handler,
++	if (ecc_irq > 0) {
++		/* Use interrupt mode if IRQ is available */
++		rc = devm_request_irq(dev, ecc_irq, llcc_ecc_irq_handler,
+ 			      IRQF_TRIGGER_HIGH, "llcc_ecc", edev_ctl);
+-	if (rc)
+-		goto out_dev;
++		if (!rc) {
++			edac_op_state = EDAC_OPSTATE_INT;
++			goto irq_done;
++		}
++	}
+ 
+-	return rc;
++	/* Fall back to polling mode otherwise */
++	edev_ctl->poll_msec = ECC_POLL_MSEC;
++	edev_ctl->edac_check = llcc_ecc_check;
++	edac_op_state = EDAC_OPSTATE_POLL;
+ 
+-out_dev:
+-	edac_device_del_device(edev_ctl->dev);
+-out_mem:
+-	edac_device_free_ctl_info(edev_ctl);
++irq_done:
++	rc = edac_device_add_device(edev_ctl);
++	if (rc) {
++		edac_device_free_ctl_info(edev_ctl);
++		return rc;
++	}
++
++	platform_set_drvdata(pdev, edev_ctl);
+ 
+ 	return rc;
+ }
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index 9c6cf2f5d77ce..63a08635fc159 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -850,13 +850,12 @@ static int qcom_llcc_probe(struct platform_device *pdev)
+ 		goto err;
+ 
+ 	drv_data->ecc_irq = platform_get_irq_optional(pdev, 0);
+-	if (drv_data->ecc_irq >= 0) {
+-		llcc_edac = platform_device_register_data(&pdev->dev,
+-						"qcom_llcc_edac", -1, drv_data,
+-						sizeof(*drv_data));
+-		if (IS_ERR(llcc_edac))
+-			dev_err(dev, "Failed to register llcc edac driver\n");
+-	}
++
++	llcc_edac = platform_device_register_data(&pdev->dev,
++					"qcom_llcc_edac", -1, drv_data,
++					sizeof(*drv_data));
++	if (IS_ERR(llcc_edac))
++		dev_err(dev, "Failed to register llcc edac driver\n");
+ 
+ 	return 0;
+ err:
 -- 
 2.39.2
 
