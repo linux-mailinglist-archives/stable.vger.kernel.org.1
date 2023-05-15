@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 005847037C0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD547039D5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244136AbjEORX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40254 "EHLO
+        id S244682AbjEORqR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244137AbjEORX3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3D44C23
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:00 -0700 (PDT)
+        with ESMTP id S244683AbjEORqA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6779A113
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FBF862C56
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174F0C4339B;
-        Mon, 15 May 2023 17:21:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0529362DBE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F48C433D2;
+        Mon, 15 May 2023 17:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171319;
-        bh=pf6+SKiWM4pVf5L2+Cue4JEmUJowG91OBj+W4/tfvNk=;
+        s=korg; t=1684172635;
+        bh=OQjjANkcR+s7Bt46b9oCFPm6ZkiUzY5NQVROiqBiH2I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H6lcLmefygzjZPL3Rn3vcX8776O9lsDoYCF4iXYdMm3qzeh8nWfT3vnq/C2tF+9eJ
-         KD3hcA0QJlXXxrEwerBFAzwbZ7fDAF3yI3k0IxU5lchUHsNjrlHniIMJu267xtK2Re
-         O1lU843caGusHxSkeOlctbxMVhen2nNmn5XreIMA=
+        b=ZDjeRX95YOK+9Xvy86EO3efid3ertCVdDONG5ww8w6Zb29pDS8tvD+xvMP9Io2vpU
+         6HNlPNm+r8styv4KLPukyzl+Pv3kxHVzfPlL6Jj15dw7xH87eWRim6Z5omB6lO4TpI
+         zxCQcRT8BlIumAhb+2IeY4BENN7WfZ7R6hic4h/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pawel Witek <pawel.ireneusz.witek@gmail.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.2 141/242] cifs: fix pcchunk length type in smb2_copychunk_range
-Date:   Mon, 15 May 2023 18:27:47 +0200
-Message-Id: <20230515161726.134356267@linuxfoundation.org>
+        patches@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@amd.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 217/381] i2c: cadence: cdns_i2c_master_xfer(): Fix runtime PM leak on error path
+Date:   Mon, 15 May 2023 18:27:48 +0200
+Message-Id: <20230515161746.569064971@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pawel Witek <pawel.ireneusz.witek@gmail.com>
+From: Lars-Peter Clausen <lars@metafoo.de>
 
-commit d66cde50c3c868af7abddafce701bb86e4a93039 upstream.
+[ Upstream commit ae1664f04f504a998737f5bb563f16b44357bcca ]
 
-Change type of pcchunk->Length from u32 to u64 to match
-smb2_copychunk_range arguments type. Fixes the problem where performing
-server-side copy with CIFS_IOC_COPYCHUNK_FILE ioctl resulted in incomplete
-copy of large files while returning -EINVAL.
+The cdns_i2c_master_xfer() function gets a runtime PM reference when the
+function is entered. This reference is released when the function is
+exited. There is currently one error path where the function exits
+directly, which leads to a leak of the runtime PM reference.
 
-Fixes: 9bf0c9cd4314 ("CIFS: Fix SMB2/SMB3 Copy offload support (refcopy) for large files")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Pawel Witek <pawel.ireneusz.witek@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make sure that this error path also releases the runtime PM reference.
+
+Fixes: 1a351b10b967 ("i2c: cadence: Added slave support")
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2ops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-cadence.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -1682,7 +1682,7 @@ smb2_copychunk_range(const unsigned int
- 		pcchunk->SourceOffset = cpu_to_le64(src_off);
- 		pcchunk->TargetOffset = cpu_to_le64(dest_off);
- 		pcchunk->Length =
--			cpu_to_le32(min_t(u32, len, tcon->max_bytes_chunk));
-+			cpu_to_le32(min_t(u64, len, tcon->max_bytes_chunk));
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
+index 50928216b3f28..24987902ca590 100644
+--- a/drivers/i2c/busses/i2c-cadence.c
++++ b/drivers/i2c/busses/i2c-cadence.c
+@@ -792,8 +792,10 @@ static int cdns_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
+ #if IS_ENABLED(CONFIG_I2C_SLAVE)
+ 	/* Check i2c operating mode and switch if possible */
+ 	if (id->dev_mode == CDNS_I2C_MODE_SLAVE) {
+-		if (id->slave_state != CDNS_I2C_SLAVE_STATE_IDLE)
+-			return -EAGAIN;
++		if (id->slave_state != CDNS_I2C_SLAVE_STATE_IDLE) {
++			ret = -EAGAIN;
++			goto out;
++		}
  
- 		/* Request server copy to target from src identified by key */
- 		kfree(retbuf);
+ 		/* Set mode to master */
+ 		cdns_i2c_set_mode(CDNS_I2C_MODE_MASTER, id);
+-- 
+2.39.2
+
 
 
