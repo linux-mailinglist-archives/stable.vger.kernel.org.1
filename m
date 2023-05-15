@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 448CA70349A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B92DA703392
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242929AbjEOQuV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55860 "EHLO
+        id S242829AbjEOQip (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243080AbjEOQuI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931B16192
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:03 -0700 (PDT)
+        with ESMTP id S242824AbjEOQio (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D38A40DB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B8A062967
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ADEC433D2;
-        Mon, 15 May 2023 16:50:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E72AC6284D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F8EC433EF;
+        Mon, 15 May 2023 16:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169402;
-        bh=tj7zoHpiZNLEIYce4u4hTlXFxi7sDiQgkzNQinovvgw=;
+        s=korg; t=1684168722;
+        bh=9NEO4qoZs1n3ecrQzOIe+RxE4zN97tlMd1Vi3EoLct4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RkbSEWgVSkBCL4ckxyBFBC8/yThAavFQsAz730Yts5RVBzNgNyZ1OBlNUw8BUOi4D
-         mUMHIOG8AjgVvpWeosou6k8xIsV7gQJii29I39sIl0+1PfCFJJBMdp6AsoySBsItQB
-         lG4R3irKKdPit7qPpLQeSq56vYCy+AX9lWupVvy0=
+        b=Dh0udTbhyjmfTA4odTL5AvI6yJ61Fsx/d0ImTVyy3IspxhRFp9UbNJtjO2THNLe++
+         R30G7ylRGKWDTuUiEtAEsKFD10gcnfC6rS63687ZIy0sXS+BZkrf1DiVONV3QZB2gE
+         jD1saDOs9ey2kcGw7IVJ49/Z/jFm7ihL42Triq24=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Akhil R <akhilrajeev@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 045/246] i2c: tegra: Fix PEC support for SMBUS block read
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 4.19 020/191] ubifs: Fix memleak when insert_old_idx() failed
 Date:   Mon, 15 May 2023 18:24:17 +0200
-Message-Id: <20230515161723.941017399@linuxfoundation.org>
+Message-Id: <20230515161707.934148054@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,127 +53,222 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 9f855779a3874eee70e9f6be57b5f7774f14e510 ]
+commit b5fda08ef213352ac2df7447611eb4d383cce929 upstream.
 
-Update the msg->len value correctly for SMBUS block read. The discrepancy
-went unnoticed as msg->len is used in SMBUS transfers only when a PEC
-byte is added.
+Following process will cause a memleak for copied up znode:
 
-Fixes: d7583c8a5748 ("i2c: tegra: Add SMBus block read function")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+dirty_cow_znode
+  zn = copy_znode(c, znode);
+  err = insert_old_idx(c, zbr->lnum, zbr->offs);
+  if (unlikely(err))
+     return ERR_PTR(err);   // No one refers to zn.
+
+Fetch a reproducer in [Link].
+
+Function copy_znode() is split into 2 parts: resource allocation
+and znode replacement, insert_old_idx() is split in similar way,
+so resource cleanup could be done in error handling path without
+corrupting metadata(mem & disk).
+It's okay that old index inserting is put behind of add_idx_dirt(),
+old index is used in layout_leb_in_gaps(), so the two processes do
+not depend on each other.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216705
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-tegra.c | 40 +++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ fs/ubifs/tnc.c |  137 ++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 87 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
-index 6aab84c8d22b4..157066f06a32d 100644
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -242,9 +242,10 @@ struct tegra_i2c_hw_feature {
-  * @is_dvc: identifies the DVC I2C controller, has a different register layout
-  * @is_vi: identifies the VI I2C controller, has a different register layout
-  * @msg_complete: transfer completion notifier
-+ * @msg_buf_remaining: size of unsent data in the message buffer
-+ * @msg_len: length of message in current transfer
-  * @msg_err: error code for completed message
-  * @msg_buf: pointer to current message data
-- * @msg_buf_remaining: size of unsent data in the message buffer
-  * @msg_read: indicates that the transfer is a read access
-  * @timings: i2c timings information like bus frequency
-  * @multimaster_mode: indicates that I2C controller is in multi-master mode
-@@ -277,6 +278,7 @@ struct tegra_i2c_dev {
+--- a/fs/ubifs/tnc.c
++++ b/fs/ubifs/tnc.c
+@@ -56,6 +56,33 @@ enum {
+ 	NOT_ON_MEDIA = 3,
+ };
  
- 	struct completion msg_complete;
- 	size_t msg_buf_remaining;
-+	unsigned int msg_len;
- 	int msg_err;
- 	u8 *msg_buf;
++static void do_insert_old_idx(struct ubifs_info *c,
++			      struct ubifs_old_idx *old_idx)
++{
++	struct ubifs_old_idx *o;
++	struct rb_node **p, *parent = NULL;
++
++	p = &c->old_idx.rb_node;
++	while (*p) {
++		parent = *p;
++		o = rb_entry(parent, struct ubifs_old_idx, rb);
++		if (old_idx->lnum < o->lnum)
++			p = &(*p)->rb_left;
++		else if (old_idx->lnum > o->lnum)
++			p = &(*p)->rb_right;
++		else if (old_idx->offs < o->offs)
++			p = &(*p)->rb_left;
++		else if (old_idx->offs > o->offs)
++			p = &(*p)->rb_right;
++		else {
++			ubifs_err(c, "old idx added twice!");
++			kfree(old_idx);
++		}
++	}
++	rb_link_node(&old_idx->rb, parent, p);
++	rb_insert_color(&old_idx->rb, &c->old_idx);
++}
++
+ /**
+  * insert_old_idx - record an index node obsoleted since the last commit start.
+  * @c: UBIFS file-system description object
+@@ -81,35 +108,15 @@ enum {
+  */
+ static int insert_old_idx(struct ubifs_info *c, int lnum, int offs)
+ {
+-	struct ubifs_old_idx *old_idx, *o;
+-	struct rb_node **p, *parent = NULL;
++	struct ubifs_old_idx *old_idx;
  
-@@ -1169,7 +1171,7 @@ static void tegra_i2c_push_packet_header(struct tegra_i2c_dev *i2c_dev,
- 	else
- 		i2c_writel(i2c_dev, packet_header, I2C_TX_FIFO);
+ 	old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
+ 	if (unlikely(!old_idx))
+ 		return -ENOMEM;
+ 	old_idx->lnum = lnum;
+ 	old_idx->offs = offs;
++	do_insert_old_idx(c, old_idx);
  
--	packet_header = msg->len - 1;
-+	packet_header = i2c_dev->msg_len - 1;
+-	p = &c->old_idx.rb_node;
+-	while (*p) {
+-		parent = *p;
+-		o = rb_entry(parent, struct ubifs_old_idx, rb);
+-		if (lnum < o->lnum)
+-			p = &(*p)->rb_left;
+-		else if (lnum > o->lnum)
+-			p = &(*p)->rb_right;
+-		else if (offs < o->offs)
+-			p = &(*p)->rb_left;
+-		else if (offs > o->offs)
+-			p = &(*p)->rb_right;
+-		else {
+-			ubifs_err(c, "old idx added twice!");
+-			kfree(old_idx);
+-			return 0;
+-		}
+-	}
+-	rb_link_node(&old_idx->rb, parent, p);
+-	rb_insert_color(&old_idx->rb, &c->old_idx);
+ 	return 0;
+ }
  
- 	if (i2c_dev->dma_mode && !i2c_dev->msg_read)
- 		*dma_buf++ = packet_header;
-@@ -1242,20 +1244,32 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
- 		return err;
+@@ -211,23 +218,6 @@ static struct ubifs_znode *copy_znode(st
+ 	__set_bit(DIRTY_ZNODE, &zn->flags);
+ 	__clear_bit(COW_ZNODE, &zn->flags);
  
- 	i2c_dev->msg_buf = msg->buf;
-+	i2c_dev->msg_len = msg->len;
- 
--	/* The condition true implies smbus block read and len is already read */
--	if (msg->flags & I2C_M_RECV_LEN && end_state != MSG_END_CONTINUE)
--		i2c_dev->msg_buf = msg->buf + 1;
+-	ubifs_assert(c, !ubifs_zn_obsolete(znode));
+-	__set_bit(OBSOLETE_ZNODE, &znode->flags);
 -
--	i2c_dev->msg_buf_remaining = msg->len;
- 	i2c_dev->msg_err = I2C_ERR_NONE;
- 	i2c_dev->msg_read = !!(msg->flags & I2C_M_RD);
- 	reinit_completion(&i2c_dev->msg_complete);
+-	if (znode->level != 0) {
+-		int i;
+-		const int n = zn->child_cnt;
+-
+-		/* The children now have new parent */
+-		for (i = 0; i < n; i++) {
+-			struct ubifs_zbranch *zbr = &zn->zbranch[i];
+-
+-			if (zbr->znode)
+-				zbr->znode->parent = zn;
+-		}
+-	}
+-
+-	atomic_long_inc(&c->dirty_zn_cnt);
+ 	return zn;
+ }
  
-+	/*
-+	 * For SMBUS block read command, read only 1 byte in the first transfer.
-+	 * Adjust that 1 byte for the next transfer in the msg buffer and msg
-+	 * length.
-+	 */
-+	if (msg->flags & I2C_M_RECV_LEN) {
-+		if (end_state == MSG_END_CONTINUE) {
-+			i2c_dev->msg_len = 1;
-+		} else {
-+			i2c_dev->msg_buf += 1;
-+			i2c_dev->msg_len -= 1;
+@@ -246,6 +236,42 @@ static int add_idx_dirt(struct ubifs_inf
+ }
+ 
+ /**
++ * replace_znode - replace old znode with new znode.
++ * @c: UBIFS file-system description object
++ * @new_zn: new znode
++ * @old_zn: old znode
++ * @zbr: the branch of parent znode
++ *
++ * Replace old znode with new znode in TNC.
++ */
++static void replace_znode(struct ubifs_info *c, struct ubifs_znode *new_zn,
++			  struct ubifs_znode *old_zn, struct ubifs_zbranch *zbr)
++{
++	ubifs_assert(c, !ubifs_zn_obsolete(old_zn));
++	__set_bit(OBSOLETE_ZNODE, &old_zn->flags);
++
++	if (old_zn->level != 0) {
++		int i;
++		const int n = new_zn->child_cnt;
++
++		/* The children now have new parent */
++		for (i = 0; i < n; i++) {
++			struct ubifs_zbranch *child = &new_zn->zbranch[i];
++
++			if (child->znode)
++				child->znode->parent = new_zn;
 +		}
 +	}
 +
-+	i2c_dev->msg_buf_remaining = i2c_dev->msg_len;
++	zbr->znode = new_zn;
++	zbr->lnum = 0;
++	zbr->offs = 0;
++	zbr->len = 0;
 +
- 	if (i2c_dev->msg_read)
--		xfer_size = msg->len;
-+		xfer_size = i2c_dev->msg_len;
- 	else
--		xfer_size = msg->len + I2C_PACKET_HEADER_SIZE;
-+		xfer_size = i2c_dev->msg_len + I2C_PACKET_HEADER_SIZE;
++	atomic_long_inc(&c->dirty_zn_cnt);
++}
++
++/**
+  * dirty_cow_znode - ensure a znode is not being committed.
+  * @c: UBIFS file-system description object
+  * @zbr: branch of znode to check
+@@ -277,21 +303,32 @@ static struct ubifs_znode *dirty_cow_zno
+ 		return zn;
  
- 	xfer_size = ALIGN(xfer_size, BYTES_PER_FIFO_WORD);
+ 	if (zbr->len) {
+-		err = insert_old_idx(c, zbr->lnum, zbr->offs);
+-		if (unlikely(err))
+-			return ERR_PTR(err);
++		struct ubifs_old_idx *old_idx;
++
++		old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
++		if (unlikely(!old_idx)) {
++			err = -ENOMEM;
++			goto out;
++		}
++		old_idx->lnum = zbr->lnum;
++		old_idx->offs = zbr->offs;
++
+ 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
+-	} else
+-		err = 0;
++		if (err) {
++			kfree(old_idx);
++			goto out;
++		}
  
-@@ -1295,7 +1309,7 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
- 	if (!i2c_dev->msg_read) {
- 		if (i2c_dev->dma_mode) {
- 			memcpy(i2c_dev->dma_buf + I2C_PACKET_HEADER_SIZE,
--			       msg->buf, msg->len);
-+			       msg->buf, i2c_dev->msg_len);
+-	zbr->znode = zn;
+-	zbr->lnum = 0;
+-	zbr->offs = 0;
+-	zbr->len = 0;
++		do_insert_old_idx(c, old_idx);
++	}
++
++	replace_znode(c, zn, znode, zbr);
  
- 			dma_sync_single_for_device(i2c_dev->dma_dev,
- 						   i2c_dev->dma_phys,
-@@ -1352,7 +1366,7 @@ static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
- 						i2c_dev->dma_phys,
- 						xfer_size, DMA_FROM_DEVICE);
+-	if (unlikely(err))
+-		return ERR_PTR(err);
+ 	return zn;
++
++out:
++	kfree(zn);
++	return ERR_PTR(err);
+ }
  
--			memcpy(i2c_dev->msg_buf, i2c_dev->dma_buf, msg->len);
-+			memcpy(i2c_dev->msg_buf, i2c_dev->dma_buf, i2c_dev->msg_len);
- 		}
- 	}
- 
-@@ -1408,8 +1422,8 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
- 			if (ret)
- 				break;
--			/* Set the read byte as msg len */
--			msgs[i].len = msgs[i].buf[0];
-+			/* Set the msg length from first byte */
-+			msgs[i].len += msgs[i].buf[0];
- 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
- 		}
- 		ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], end_type);
--- 
-2.39.2
-
+ /**
 
 
