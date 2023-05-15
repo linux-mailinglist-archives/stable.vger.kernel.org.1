@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2056470386F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A17B17037E2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244316AbjEORcb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
+        id S243672AbjEORZA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244351AbjEORcH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C587B100F3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:02 -0700 (PDT)
+        with ESMTP id S244138AbjEORYd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1A6111B51
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59BC562055
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCFCC433D2;
-        Mon, 15 May 2023 17:29:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC8A061EDA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD08C433EF;
+        Mon, 15 May 2023 17:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171741;
-        bh=6Fgw64fpYc87AhTpLHs2vEyrQdL3rfavMM6jVgfeCvU=;
+        s=korg; t=1684171407;
+        bh=PjmJWPFcpTMDaeSb9ywvtzIO9lzGkQvW3EjR+EdjbA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nsqHNvzk8fk5V5N/TLLDlDiyLNwwN37utzLpRKkFTiOjo50S3K8pEalQB3wfhl9e+
-         2lcbGtyPmDApq9aS785IrDu6l54j5ynrp9tpfv7gEPB31JJvQ5ujWYdtInurpQqBWv
-         AeOrVtQtZiizXN3mYl9E3mFY+0B6Go2zJN8DD7IE=
+        b=Zq5pFjNA1Lj6E8TkqWVq7GICG3Up3g5lKt8TGzbbICkBDoQeWQ9XUFCcWDcR5baCV
+         f2ryn5BuEm20+dPm3dXln2kafdOvDiqcBWT7RiBFGHEReR/EWuGlK7XFiEJIv8hACm
+         0dGMu3YTGOx5cZDV5/iDa1lr6fcJgKxDMuaXDMaI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Wenliang Wang <wangwenliang.1995@bytedance.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/134] virtio_net: suppress cpu stall when free_unused_bufs
-Date:   Mon, 15 May 2023 18:28:43 +0200
-Message-Id: <20230515161704.669232348@linuxfoundation.org>
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Lin.Cao" <lincao12@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.2 198/242] drm/amdgpu: Fix vram recover doesnt work after whole GPU reset (v2)
+Date:   Mon, 15 May 2023 18:28:44 +0200
+Message-Id: <20230515161727.885993490@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wenliang Wang <wangwenliang.1995@bytedance.com>
+From: Lin.Cao <lincao12@amd.com>
 
-[ Upstream commit f8bb5104394560e29017c25bcade4c6b7aabd108 ]
+commit 6c032c37ac3ef3b7df30937c785ecc4da428edc0 upstream.
 
-For multi-queue and large ring-size use case, the following error
-occurred when free_unused_bufs:
-rcu: INFO: rcu_sched self-detected stall on CPU.
+v1: Vmbo->shadow is used to back vram bo up when vram lost. So that we
+should set shadow as vmbo->shadow to recover vmbo->bo
+v2: Modify if(vmbo->shadow) shadow = vmbo->shadow as if(!vmbo->shadow)
+continue;
 
-Fixes: 986a4f4d452d ("virtio_net: multiqueue support")
-Signed-off-by: Wenliang Wang <wangwenliang.1995@bytedance.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e18aaea733da ("drm/amdgpu: move shadow_list to amdgpu_bo_vm")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index cff3e2a7ce7fc..9f2d691908b42 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2844,12 +2844,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
- 		struct virtqueue *vq = vi->sq[i].vq;
- 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
- 			virtnet_sq_free_unused_buf(vq, buf);
-+		cond_resched();
- 	}
- 
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		struct virtqueue *vq = vi->rq[i].vq;
- 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
- 			virtnet_rq_free_unused_buf(vq, buf);
-+		cond_resched();
- 	}
- }
- 
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4503,7 +4503,11 @@ static int amdgpu_device_recover_vram(st
+ 	dev_info(adev->dev, "recover vram bo from shadow start\n");
+ 	mutex_lock(&adev->shadow_list_lock);
+ 	list_for_each_entry(vmbo, &adev->shadow_list, shadow_list) {
+-		shadow = &vmbo->bo;
++		/* If vm is compute context or adev is APU, shadow will be NULL */
++		if (!vmbo->shadow)
++			continue;
++		shadow = vmbo->shadow;
++
+ 		/* No need to recover an evicted BO */
+ 		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
+ 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
 
 
