@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3C8703B30
+	by mail.lfdr.de (Postfix) with ESMTP id F0516703B31
 	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243731AbjEOSAa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58748 "EHLO
+        id S243908AbjEOSAd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245087AbjEOSAC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:02 -0400
+        with ESMTP id S245104AbjEOSAF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D6B1A3B5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7421BB9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C051D62FD9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DD1C4339B;
-        Mon, 15 May 2023 17:57:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ABC4762FC1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78B6C433EF;
+        Mon, 15 May 2023 17:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173439;
-        bh=ZrO5iTBAhqSpaCmxHecgXDWrD6cpCiJJ0pdWWLd7XFA=;
+        s=korg; t=1684173442;
+        bh=YEB+Jut9FpCIkPP9R++XHX142KeQUeO4gw+CbmMqB2w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wo7r30Yew0qTSuVEw8sknbq0RvU7mqfVZl+TP8fpuSYjOa+n5KrqLntCReRXGE2c9
-         i1Sc90zfp7dQ6Nr9tAKNX1BV4oCFoW6QUvRDIYsCl4qPZ3kbaEYtXN4sSpXbu/0m3k
-         BL8Pw8aQuzK/itBUjZPAGTCzD/icjDUC6uO0ABhc=
+        b=BvSQN3kxdTpViDcVisDlotlLivuCN5rUKLMjDrGNiv7jgOWqo5DIKg4H41aXKH56f
+         t+f15kmkvr/ndlejBB2ER+9Qcd/XVedBtS1ypglRR8vurN/vkrKniQwTs883szTWTJ
+         eB9JZp6uEZ+7kD8cNRT25c+Zg6d9ZhgYwWqmMODA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicolai Stange <nstange@suse.de>,
-        =?UTF-8?q?Stephan=20M=C3=BCller?= <smueller@chronox.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
+        Stephan Mueller <smueller@chronox.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 094/282] crypto: drbg - make drbg_prepare_hrng() handle jent instantiation errors
-Date:   Mon, 15 May 2023 18:27:52 +0200
-Message-Id: <20230515161725.081319619@linuxfoundation.org>
+Subject: [PATCH 5.4 095/282] crypto: drbg - Only fail when jent is unavailable in FIPS mode
+Date:   Mon, 15 May 2023 18:27:53 +0200
+Message-Id: <20230515161725.109561072@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -55,62 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolai Stange <nstange@suse.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 559edd47cce4cc407d606b4d7f376822816fd4b8 ]
+[ Upstream commit 686cd976b6ddedeeb1a1fb09ba53a891d3cc9a03 ]
 
-Now that drbg_prepare_hrng() doesn't do anything but to instantiate a
-jitterentropy crypto_rng instance, it looks a little odd to have the
-related error handling at its only caller, drbg_instantiate().
+When jent initialisation fails for any reason other than ENOENT,
+the entire drbg fails to initialise, even when we're not in FIPS
+mode.  This is wrong because we can still use the kernel RNG when
+we're not in FIPS mode.
 
-Move the handling of jitterentropy allocation failures from
-drbg_instantiate() close to the allocation itself in drbg_prepare_hrng().
+Change it so that it only fails when we are in FIPS mode.
 
-There is no change in behaviour.
-
-Signed-off-by: Nicolai Stange <nstange@suse.de>
-Reviewed-by: Stephan Müller <smueller@chronox.de>
+Fixes: 57225e679788 ("crypto: drbg - Use callback API for random readiness")
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 686cd976b6dd ("crypto: drbg - Only fail when jent is unavailable in FIPS mode")
+Reviewed-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/drbg.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ crypto/drbg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/crypto/drbg.c b/crypto/drbg.c
-index 9329d9dcc210f..732b72e4ee4dd 100644
+index 732b72e4ee4dd..df80752fb649b 100644
 --- a/crypto/drbg.c
 +++ b/crypto/drbg.c
-@@ -1515,6 +1515,14 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
- 		return 0;
+@@ -1519,7 +1519,7 @@ static int drbg_prepare_hrng(struct drbg_state *drbg)
+ 		const int err = PTR_ERR(drbg->jent);
  
- 	drbg->jent = crypto_alloc_rng("jitterentropy_rng", 0, 0);
-+	if (IS_ERR(drbg->jent)) {
-+		const int err = PTR_ERR(drbg->jent);
-+
-+		drbg->jent = NULL;
-+		if (fips_enabled || err != -ENOENT)
-+			return err;
-+		pr_info("DRBG: Continuing without Jitter RNG\n");
-+	}
- 
- 	return 0;
- }
-@@ -1570,14 +1578,6 @@ static int drbg_instantiate(struct drbg_state *drbg, struct drbg_string *pers,
- 		if (ret)
- 			goto free_everything;
- 
--		if (IS_ERR(drbg->jent)) {
--			ret = PTR_ERR(drbg->jent);
--			drbg->jent = NULL;
--			if (fips_enabled || ret != -ENOENT)
--				goto free_everything;
--			pr_info("DRBG: Continuing without Jitter RNG\n");
--		}
--
- 		reseed = false;
+ 		drbg->jent = NULL;
+-		if (fips_enabled || err != -ENOENT)
++		if (fips_enabled)
+ 			return err;
+ 		pr_info("DRBG: Continuing without Jitter RNG\n");
  	}
- 
 -- 
 2.39.2
 
