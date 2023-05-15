@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52724703682
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CDA3703566
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243733AbjEORKu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:10:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49420 "EHLO
+        id S243326AbjEOQ6l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243735AbjEORKW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:22 -0400
+        with ESMTP id S243313AbjEOQ6e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C598A68
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB0B7AAC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CB8E62B0A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B65AC433D2;
-        Mon, 15 May 2023 17:08:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6111C61F7D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55992C433EF;
+        Mon, 15 May 2023 16:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170522;
-        bh=Q78DGS2MyicXtrjFMWMxC3toSrSzxb74uLDbtfm8efw=;
+        s=korg; t=1684169908;
+        bh=JW545nhLk1RCYnKAJDDWHqWoYnPRADpqDVQ/UZpANlg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W/eZM6QlrOWVt8bJwnW0VFO46nt1HiVuhKyjUhWUbq+f+tKZFvE9F3SM5fOEa+oSh
-         av19sKVefEzthdwDHOP2cu0Qt/Ht9bYS/zAoMWJy9IbfRfXCK7cMRP6Y+fiXetgfDx
-         bSFRopX2ert+Jh133LD/seBz+OU7GERDm6TUIJ7I=
+        b=rWKoO8PpgAqzQTVDDnPoa15uIN5o2wgGqVk6GLf3AIhPMmXAf2B9fqb9pdFbAl5rS
+         yxXg6bIUkDv8Q1HBD3rt1G8mYKPpNppNIcFDxFP0P3hK5b6oaOqI7zF6UIpQtvHTSA
+         pPsDj84XRnpltK7EkmcQHMWfHl59PSwH8Gr4gSEs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 158/239] irqchip/loongson-pch-pic: Fix pch_pic_acpi_init calling
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 6.3 209/246] firewire: net: fix unexpected release of object for asynchronous request packet
 Date:   Mon, 15 May 2023 18:27:01 +0200
-Message-Id: <20230515161726.416922652@linuxfoundation.org>
+Message-Id: <20230515161728.871413483@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,68 +53,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianmin Lv <lvjianmin@loongson.cn>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-commit 48ce2d722f7f108f27bedddf54bee3423a57ce57 upstream.
+commit f7dcc5e33c1e4b0d278a30f7d2f0c9a63d7b40ca upstream.
 
-For dual-bridges scenario, pch_pic_acpi_init() will be called
-in following path:
+The lifetime of object for asynchronous request packet is now maintained
+by reference counting, while current implementation of firewire-net
+releases the passed object in the handler.
 
-cpuintc_acpi_init
-  acpi_cascade_irqdomain_init(in cpuintc driver)
-    acpi_table_parse_madt
-      eiointc_parse_madt
-        eiointc_acpi_init /* this will be called two times
-                             correspondingto parsing two
-                             eiointc entries in MADT under
-                             dual-bridges scenario*/
-          acpi_cascade_irqdomain_init(in eiointc driver)
-            acpi_table_parse_madt
-              pch_pic_parse_madt
-                pch_pic_acpi_init /* this will be called depend
-                                     on valid parent IRQ domain
-                                     handle for one or two times
-                                     corresponding to parsing
-                                     two pchpic entries in MADT
-                                     druring calling
-                                     eiointc_acpi_init() under
-                                     dual-bridges scenario*/
+This commit fixes the bug.
 
-During the first eiointc_acpi_init() calling, the
-pch_pic_acpi_init() will be called just one time since only
-one valid parent IRQ domain handle will be found for current
-eiointc IRQ domain.
-
-During the second eiointc_acpi_init() calling, the
-pch_pic_acpi_init() will be called two times since two valid
-parent IRQ domain handles will be found. So in pch_pic_acpi_init(),
-we must have a reasonable way to prevent from creating second same
-pch_pic IRQ domain.
-
-The patch matches gsi base information in created pch_pic IRQ
-domains to check if the target domain has been created to avoid the
-bug mentioned above.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230407083453.6305-6-lvjianmin@loongson.cn
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/lkml/Y%2Fymx6WZIAlrtjLc@workstation/
+Fixes: 13a55d6bb15f ("firewire: core: use kref structure to maintain lifetime of data for fw_request structure")
+Link: https://lore.kernel.org/lkml/20230510031205.782032-1-o-takashi@sakamocchi.jp/
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-loongson-pch-pic.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firewire/net.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/irqchip/irq-loongson-pch-pic.c
-+++ b/drivers/irqchip/irq-loongson-pch-pic.c
-@@ -350,6 +350,9 @@ int __init pch_pic_acpi_init(struct irq_
- 	int ret, vec_base;
- 	struct fwnode_handle *domain_handle;
+diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
+index af22be84034b..538bd677c254 100644
+--- a/drivers/firewire/net.c
++++ b/drivers/firewire/net.c
+@@ -706,21 +706,22 @@ static void fwnet_receive_packet(struct fw_card *card, struct fw_request *r,
+ 	int rcode;
  
-+	if (find_pch_pic(acpi_pchpic->gsi_base) >= 0)
-+		return 0;
-+
- 	vec_base = acpi_pchpic->gsi_base - GSI_MIN_PCH_IRQ;
+ 	if (destination == IEEE1394_ALL_NODES) {
+-		kfree(r);
+-
+-		return;
+-	}
+-
+-	if (offset != dev->handler.offset)
++		// Although the response to the broadcast packet is not necessarily required, the
++		// fw_send_response() function should still be called to maintain the reference
++		// counting of the object. In the case, the call of function just releases the
++		// object as a result to decrease the reference counting.
++		rcode = RCODE_COMPLETE;
++	} else if (offset != dev->handler.offset) {
+ 		rcode = RCODE_ADDRESS_ERROR;
+-	else if (tcode != TCODE_WRITE_BLOCK_REQUEST)
++	} else if (tcode != TCODE_WRITE_BLOCK_REQUEST) {
+ 		rcode = RCODE_TYPE_ERROR;
+-	else if (fwnet_incoming_packet(dev, payload, length,
+-				       source, generation, false) != 0) {
++	} else if (fwnet_incoming_packet(dev, payload, length,
++					 source, generation, false) != 0) {
+ 		dev_err(&dev->netdev->dev, "incoming packet failure\n");
+ 		rcode = RCODE_CONFLICT_ERROR;
+-	} else
++	} else {
+ 		rcode = RCODE_COMPLETE;
++	}
  
- 	domain_handle = irq_domain_alloc_fwnode(&acpi_pchpic->address);
+ 	fw_send_response(card, r, rcode);
+ }
+-- 
+2.40.1
+
 
 
