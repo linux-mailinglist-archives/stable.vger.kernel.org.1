@@ -2,161 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721CC702F73
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 16:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5B45702F3F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 16:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234659AbjEOOU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 10:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48746 "EHLO
+        id S240262AbjEOOI2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 10:08:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237208AbjEOOU0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 10:20:26 -0400
-X-Greylist: delayed 732 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 15 May 2023 07:20:11 PDT
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45ABD1BFB;
-        Mon, 15 May 2023 07:20:11 -0700 (PDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4QKh661Dlvz9sfQ;
-        Mon, 15 May 2023 16:07:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id w4uLJCqqlfgU; Mon, 15 May 2023 16:07:58 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4QKh653GcGz9sfH;
-        Mon, 15 May 2023 16:07:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 612298B770;
-        Mon, 15 May 2023 16:07:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id XkCE40cnUtUC; Mon, 15 May 2023 16:07:57 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.36])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 1C1658B763;
-        Mon, 15 May 2023 16:07:57 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 34FE7P2x583513
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Mon, 15 May 2023 16:07:25 +0200
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 34FE7PPr583512;
-        Mon, 15 May 2023 16:07:25 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     gregkh@linuxfoundation.org, stable@vger.kernel.org
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 2/2][For 5.15/5.10/5.4] spi: fsl-cpm: Use 16 bit mode for large transfers with even size
-Date:   Mon, 15 May 2023 16:07:17 +0200
-Message-Id: <3a1b8774ad7004acb594fbf220f98488dbaa2896.1684156552.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <1e4bfb4850ba849c316f48a0ab0d7123da0e2f54.1684156552.git.christophe.leroy@csgroup.eu>
-References: <1e4bfb4850ba849c316f48a0ab0d7123da0e2f54.1684156552.git.christophe.leroy@csgroup.eu>
+        with ESMTP id S240697AbjEOOIO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 10:08:14 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F56B2137
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 07:08:03 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34FBAjuv012069;
+        Mon, 15 May 2023 14:08:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=t31+xZ3ANxVVpT+jjfvoJACPd4NU8Cd8f+BFv3K1mFs=;
+ b=R7glSo8URBTLRi46wAQa/F760T9YKH9Qzu1GTIfSmK1N0b+njlfhzH7DVgM3iLv5h5X/
+ e9qxwUrP89/FO3qaM35KLJSuKuZA9GdT68NaLkhMVjy9sRWmR9ADkMtiuFDJmIt74Nns
+ 6c1Bsy5hHp2jlTaOHboNbwy6Eh8Dtb7NnI8lHeiCKf2VhQ49Gq+YPzKEI5kuv2QlMrsN
+ r6pdqGpl93ifnoPWNWlEMEmo5Ro6eeYLubxmmw+gEApcpeUNAUbmcfTQ92G+q/BoqjvW
+ JiqU+zgMveehOg6p6MUUHkwoNFmFa3shgCt2cfsLlztXEus52ge9gI3Htn4j7wbwh+pV nw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qkjwdrh92-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 May 2023 14:08:00 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34FE7xR3010678
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 May 2023 14:07:59 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 15 May
+ 2023 07:07:59 -0700
+Message-ID: <955b04f0-6976-be9f-b089-ff2fb6f9e5aa@quicinc.com>
+Date:   Mon, 15 May 2023 08:07:58 -0600
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1684159635; l=3126; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=rWNKzWkmM4gdwZv1WlKPnv51S6gxaEarWczSGvDbNzU=; b=oSiEq83dOBUPrvqbyLZ/irXtj4gfJMUpwNyaspQMKeCsGOEpp4RJ69yRyVpJasLnuv0zqY1L+ WRp2fzaSzmuCaxKZGPG11CgXaCdmBLzPVLcokvicW5OtVYvRVTtLEgr
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH 5.10.y] bus: mhi: host: Range check CHDBOFF and ERDBOFF
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+References: <2023050613-slacked-gush-009c@gregkh>
+ <1683733522-13432-1-git-send-email-quic_jhugo@quicinc.com>
+ <2023051536-ammonium-tropical-bfd9@gregkh>
+From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <2023051536-ammonium-tropical-bfd9@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: kDFf9V5vCWIipGF0NyQY1thzK8TGbT15
+X-Proofpoint-GUID: kDFf9V5vCWIipGF0NyQY1thzK8TGbT15
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-15_11,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
+ mlxlogscore=999 bulkscore=0 suspectscore=0 mlxscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305150120
+X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-(cherry picked from upstream fc96ec826bced75cc6b9c07a4ac44bbf651337ab)
+On 5/15/2023 6:46 AM, Greg KH wrote:
+> On Wed, May 10, 2023 at 09:45:22AM -0600, Jeffrey Hugo wrote:
+>> Commit 6a0c637bfee69a74c104468544d9f2a6579626d0 upstream.
+>>
+>> If the value read from the CHDBOFF and ERDBOFF registers is outside the
+>> range of the MHI register space then an invalid address might be computed
+>> which later causes a kernel panic.  Range check the read value to prevent
+>> a crash due to bad data from the device.
+>>
+>> Fixes: 6cd330ae76ff ("bus: mhi: core: Add support for ringing channel/event ring doorbells")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+>> Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+>> Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+>> Link: https://lore.kernel.org/r/1679674384-27209-1-git-send-email-quic_jhugo@quicinc.com
+>> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> ---
+>>   drivers/bus/mhi/core/init.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
+> 
+> This breaks the build, did you test it?
+> 
 
-On CPM, the RISC core is a lot more efficiant when doing transfers
-in 16-bits chunks than in 8-bits chunks, but unfortunately the
-words need to be byte swapped as seen in a previous commit.
+Checked the workspace and it is "working".  Recreated it from scratch, 
+and I see the build failure.  Clearly I messed something up.
 
-So, for large tranfers with an even size, allocate a temporary tx
-buffer and byte-swap data before and after transfer.
-
-This change allows setting higher speed for transfer. For instance
-on an MPC 8xx (CPM1 comms RISC processor), the documentation tells
-that transfer in byte mode at 1 kbit/s uses 0.200% of CPM load
-at 25 MHz while a word transfer at the same speed uses 0.032%
-of CPM load. This means the speed can be 6 times higher in
-word mode for the same CPM load.
-
-For the time being, only do it on CPM1 as there must be a
-trade-off between the CPM load reduction and the CPU load required
-to byte swap the data.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/f2e981f20f92dd28983c3949702a09248c23845c.1680371809.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-fsl-cpm.c | 23 +++++++++++++++++++++++
- drivers/spi/spi-fsl-spi.c |  3 +++
- 2 files changed, 26 insertions(+)
-
-diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-index ee905880769e..7832ce330b29 100644
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -21,6 +21,7 @@
- #include <linux/spi/spi.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
-+#include <linux/byteorder/generic.h>
- 
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -120,6 +121,21 @@ int fsl_spi_cpm_bufs(struct mpc8xxx_spi *mspi,
- 		mspi->rx_dma = mspi->dma_dummy_rx;
- 		mspi->map_rx_dma = 0;
- 	}
-+	if (t->bits_per_word == 16 && t->tx_buf) {
-+		const u16 *src = t->tx_buf;
-+		u16 *dst;
-+		int i;
-+
-+		dst = kmalloc(t->len, GFP_KERNEL);
-+		if (!dst)
-+			return -ENOMEM;
-+
-+		for (i = 0; i < t->len >> 1; i++)
-+			dst[i] = cpu_to_le16p(src + i);
-+
-+		mspi->tx = dst;
-+		mspi->map_tx_dma = 1;
-+	}
- 
- 	if (mspi->map_tx_dma) {
- 		void *nonconst_tx = (void *)mspi->tx; /* shut up gcc */
-@@ -173,6 +189,13 @@ void fsl_spi_cpm_bufs_complete(struct mpc8xxx_spi *mspi)
- 	if (mspi->map_rx_dma)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
-+
-+	if (t->bits_per_word == 16 && t->rx_buf) {
-+		int i;
-+
-+		for (i = 0; i < t->len; i += 2)
-+			le16_to_cpus(t->rx_buf + i);
-+	}
- }
- EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
- 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index f1d4aa310233..63302e21e574 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -368,6 +368,9 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
- 				return -EINVAL;
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
-+			if (t->bits_per_word == 8 && t->len >= 256 &&
-+			    (mpc8xxx_spi->flags & SPI_CPM1))
-+				t->bits_per_word = 16;
- 		}
- 	}
- 
--- 
-2.40.1
+Will fix.  Sorry.
 
