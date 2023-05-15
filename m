@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4820703664
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F26703AF3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243639AbjEORJd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
+        id S242606AbjEOR5Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243643AbjEORJK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:10 -0400
+        with ESMTP id S241578AbjEOR4o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E365FA5F7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D24A01D4A0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 316E862B09
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27348C433EF;
-        Mon, 15 May 2023 17:07:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DEDD62F51
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922F7C433EF;
+        Mon, 15 May 2023 17:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170425;
-        bh=a1M1EWTg/Tj3W4kFPczX5O5Q5hj7pOo9ag4sxKlJT8c=;
+        s=korg; t=1684173272;
+        bh=Y81ck8f9JFOZl4W2yMziyUFKOW/A6Cf/RHftLAzUJ9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tWEfzxQB/vFKhKixaDAqULDQHJ//xjHb94wGUQShGQk/5BJYftopkeLm5fPj5X45j
-         EdbdK/pYg9gC+WSczh8+9FiPlQnCrv8GoDWLKukkIAejAmgpgrhAZVeqPIdTet1/iH
-         wv5EQCoV9lfbxlXpWqyYZhIllSP4QcnC3SHBAWLw=
+        b=1DKj52CCZ0yHYj/CDzSAvZukWp+OwK2nNkposTaco3cy3v1v3xNNT68bnCIodQJP3
+         QOuvER6612uQ0ZonIivU5PL+V9Mi5pfq82mxWbS+oWlwML71nLhlKFdRdqFjgZBEG1
+         Mx/7xAyKzOFnpef1Pty3T5qCb4rjgIliRAVT3QKo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 127/239] platform/x86: thinkpad_acpi: Add profile force ability
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.4 012/282] perf sched: Cast PTHREAD_STACK_MIN to int as it may turn into sysconf(__SC_THREAD_STACK_MIN_VALUE)
 Date:   Mon, 15 May 2023 18:26:30 +0200
-Message-Id: <20230515161725.509045307@linuxfoundation.org>
+Message-Id: <20230515161722.638224979@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,70 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 1684878952929e20a864af5df7b498941c750f45 upstream.
+commit d08c84e01afa7a7eee6badab25d5420fa847f783 upstream.
 
-There has been a lot of confusion around which platform profiles are
-supported on various platforms and it would be useful to have a debug
-method to be able to override the profile mode that is selected.
+In fedora rawhide the PTHREAD_STACK_MIN define may end up expanded to a
+sysconf() call, and that will return 'long int', breaking the build:
 
-I don't expect this to be used in anything other than debugging in
-conjunction with Lenovo engineers - but it does give a way to get a
-system working whilst we wait for either FW fixes, or a driver fix
-to land upstream, if something is wonky in the mode detection logic
+    45 fedora:rawhide                : FAIL gcc version 11.1.1 20210623 (Red Hat 11.1.1-6) (GCC)
+      builtin-sched.c: In function 'create_tasks':
+      /git/perf-5.14.0-rc1/tools/include/linux/kernel.h:43:24: error: comparison of distinct pointer types lacks a cast [-Werror]
+         43 |         (void) (&_max1 == &_max2);              \
+            |                        ^~
+      builtin-sched.c:673:34: note: in expansion of macro 'max'
+        673 |                         (size_t) max(16 * 1024, PTHREAD_STACK_MIN));
+            |                                  ^~~
+      cc1: all warnings being treated as errors
 
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20230505132523.214338-2-mpearson-lenovo@squebb.ca
-Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+  $ grep __sysconf /usr/include/*/*.h
+  /usr/include/bits/pthread_stack_min-dynamic.h:extern long int __sysconf (int __name) __THROW;
+  /usr/include/bits/pthread_stack_min-dynamic.h:#   define PTHREAD_STACK_MIN __sysconf (__SC_THREAD_STACK_MIN_VALUE)
+  /usr/include/bits/time.h:extern long int __sysconf (int);
+  /usr/include/bits/time.h:# define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
+  $
+
+So cast it to int to cope with that.
+
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ tools/perf/builtin-sched.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10322,6 +10322,7 @@ static atomic_t dytc_ignore_event = ATOM
- static DEFINE_MUTEX(dytc_mutex);
- static int dytc_capabilities;
- static bool dytc_mmc_get_available;
-+static int profile_force;
- 
- static int convert_dytc_to_profile(int funcmode, int dytcmode,
- 		enum platform_profile_option *profile)
-@@ -10584,6 +10585,21 @@ static int tpacpi_dytc_profile_init(stru
- 	if (err)
- 		return err;
- 
-+	/* Check if user wants to override the profile selection */
-+	if (profile_force) {
-+		switch (profile_force) {
-+		case -1:
-+			dytc_capabilities = 0;
-+			break;
-+		case 1:
-+			dytc_capabilities = BIT(DYTC_FC_MMC);
-+			break;
-+		case 2:
-+			dytc_capabilities = BIT(DYTC_FC_PSC);
-+			break;
-+		}
-+		pr_debug("Profile selection forced: 0x%x\n", dytc_capabilities);
-+	}
- 	if (dytc_capabilities & BIT(DYTC_FC_MMC)) { /* MMC MODE */
- 		pr_debug("MMC is supported\n");
- 		/*
-@@ -11645,6 +11661,9 @@ MODULE_PARM_DESC(uwb_state,
- 		 "Initial state of the emulated UWB switch");
- #endif
- 
-+module_param(profile_force, int, 0444);
-+MODULE_PARM_DESC(profile_force, "Force profile mode. -1=off, 1=MMC, 2=PSC");
-+
- static void thinkpad_acpi_module_exit(void)
- {
- 	struct ibm_struct *ibm, *itmp;
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -666,7 +666,7 @@ static void create_tasks(struct perf_sch
+ 	err = pthread_attr_init(&attr);
+ 	BUG_ON(err);
+ 	err = pthread_attr_setstacksize(&attr,
+-			(size_t) max(16 * 1024, PTHREAD_STACK_MIN));
++			(size_t) max(16 * 1024, (int)PTHREAD_STACK_MIN));
+ 	BUG_ON(err);
+ 	err = pthread_mutex_lock(&sched->start_work_mutex);
+ 	BUG_ON(err);
 
 
