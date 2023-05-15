@@ -2,80 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6707170322A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF5E703250
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242497AbjEOQGl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38552 "EHLO
+        id S242560AbjEOQIH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Mon, 15 May 2023 12:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242484AbjEOQGk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:06:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E634830E3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:06:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CED4626D5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:06:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3B9C4339B;
-        Mon, 15 May 2023 16:06:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684166768;
-        bh=pzmeoheS/FFaE7ErQiSxJTxI+0lbm6CGIGbULZ1NUmk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eZBFwzDLmt8VxVir+pMiyJyDOEDy5PkGb37x8Tda+3rZNqmGRkYLPgZy7JAzBGIVE
-         t5C1h+nqVJ/7wGr66lwpc9IRRFIRLnvDn4S5FAo76Xui6rXHwG5WcW2dmTaQve9KOh
-         MqpdRiQkeV/mWoAD9bDuPP2uZkWA6uF7/YLsCLS4=
-Date:   Mon, 15 May 2023 18:06:06 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     stable@vger.kernel.org, John Ogness <john.ogness@linutronix.de>,
-        Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH 5.10.y] printk: declare printk_deferred_{enter,safe}() in
- include/linux/printk.h
-Message-ID: <2023051501-mockup-override-c57e@gregkh>
-References: <2023042446-gills-morality-d566@gregkh>
- <767ab028-d946-98d5-4a13-d6ed6df77763@I-love.SAKURA.ne.jp>
- <2023051537-embargo-scouting-a849@gregkh>
- <7f66845a-d27f-f1c8-fccf-91cd3be95024@I-love.SAKURA.ne.jp>
+        with ESMTP id S242513AbjEOQIG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:08:06 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF0D2D70
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:07:37 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-143-uRU4qE7IPxOBaj4CStDw6Q-1; Mon, 15 May 2023 17:07:06 +0100
+X-MC-Unique: uRU4qE7IPxOBaj4CStDw6Q-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 15 May
+ 2023 17:07:01 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Mon, 15 May 2023 17:07:01 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Ruihan Li' <lrh2000@pku.edu.cn>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+        David Hildenbrand <david@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        "Alan Stern" <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v2 2/4] usb: usbfs: Use consistent mmap functions
+Thread-Topic: [PATCH v2 2/4] usb: usbfs: Use consistent mmap functions
+Thread-Index: AQHZhy64xAEf6PI6fk2CO41aswORIq9be+FQ
+Date:   Mon, 15 May 2023 16:07:01 +0000
+Message-ID: <2b6cb73d2cd14a46b7e4553566030b22@AcuMS.aculab.com>
+References: <20230515130958.32471-1-lrh2000@pku.edu.cn>
+ <20230515130958.32471-3-lrh2000@pku.edu.cn>
+In-Reply-To: <20230515130958.32471-3-lrh2000@pku.edu.cn>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f66845a-d27f-f1c8-fccf-91cd3be95024@I-love.SAKURA.ne.jp>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 10:11:33PM +0900, Tetsuo Handa wrote:
-> On 2023/05/15 21:56, Greg Kroah-Hartman wrote:
-> > On Sun, May 14, 2023 at 01:41:27PM +0900, Tetsuo Handa wrote:
-> >> commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
-> >>
-> >> [This patch implements subset of original commit 85e3e7fbbb72 ("printk:
-> >> remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
-> >> potential deadlock on zonelist_update_seq seqlock") depends on, for
-> >> commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
-> >> build_all_zonelists and page allocation") was backported to stable.]
-> > 
-> > All now queued up, thanks.
+From: Ruihan Li
+> Sent: 15 May 2023 14:10
 > 
-> Thank you. Then, please also queue original "[PATCH] mm/page_alloc: fix potential
-> deadlock on zonelist_update_seq" (Message ID listed below) to stable kernels.
-> 
->   <2023042446-gills-morality-d566@gregkh>
->   <2023042449-wobbling-putdown-13ea@gregkh>
->   <2023042452-stopper-engross-e9da@gregkh>
->   <2023042455-skinless-muzzle-1c50@gregkh>
-> 
+> When hcd->localmem_pool is non-null, localmem_pool is used to allocate
+> DMA memory. In this case, the dma address will be properly returned (in
+> dma_handle), and dma_mmap_coherent should be used to map this memory
+> into the user space. However, the current implementation uses
+> pfn_remap_range, which is supposed to map normal pages.
 
-Now done, thanks.
+I've an (out of tree) driver that does the same.
+Am I right in thinking that this does still work?
 
-greg k-h
+I can't change the driver to use dma_map_coherent() because it
+doesn't let me mmap from a page offset within a 16k allocation.
+
+In this case the memory area is an 8MB shared transfer area to an
+FPGA PCIe target sparsely filled with 16kB allocation (max 512 allocs).
+The discontinuous physical memory blocks appear as logically
+contiguous to both the FPGA logic and when mapped to userspace.
+(But not to driver code.)
+
+I don't really want to expose the 16k allocation size to userspace.
+If we need more than 8MB then the allocation size would need
+changing.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
