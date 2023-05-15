@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8728F7039E6
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E3BB7037A9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244717AbjEORqm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        id S244142AbjEORXa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244684AbjEORqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F2311B4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:44:43 -0700 (PDT)
+        with ESMTP id S244026AbjEORXM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2F712EA0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF63F62EA2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:44:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47F7C433EF;
-        Mon, 15 May 2023 17:44:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6994E62C54
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F22DC433EF;
+        Mon, 15 May 2023 17:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172682;
-        bh=hO7xPhrREoVxlkouoqE91heUC0ALVMUIfGgzo7zpx9s=;
+        s=korg; t=1684171279;
+        bh=2EaW7i5oK03C6plaqf6B4fGQ+TiCohS8YiwsNwcLvA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iahS03n+EAA3dfXULtQNn3LAkLU+rVBhWM7ju4LrlV07pdOgzGsVgyzYO3AHw3vPn
-         uQFJAqvF/kGrQcJ7xe4RbC9u+CJEUO/2qwcnAWn8o6aaeuMiXfSt+Ti1Qv1Kew1GhQ
-         KnBBziOvoRy+P9ebnDaUYSLCIobu9mq0WU0YfxPY=
+        b=v6b1z//jSi0N5Jj0ScZXBLTzU7rALK6tBpvuuw/+eSGxcd0N/V9Ul1V5OqDId1Evq
+         P45toecYWOA9Fj33GICt83Z4Q3Cu5G1flRJ2vmFI/x25XC8etVbyi4Ugf1Jro79QnT
+         Q6bq50KaT9w2oxMQ9iQ6VgweMwikTdRHlJE1oAoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 233/381] powerpc/rtas: use memmove for potentially overlapping buffer copy
+        patches@lists.linux.dev,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Subject: [PATCH 6.2 158/242] remoteproc: stm32: Call of_node_put() on iteration error
 Date:   Mon, 15 May 2023 18:28:04 +0200
-Message-Id: <20230515161747.230347516@linuxfoundation.org>
+Message-Id: <20230515161726.627007704@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,56 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-[ Upstream commit 271208ee5e335cb1ad280d22784940daf7ddf820 ]
+commit ccadca5baf5124a880f2bb50ed1ec265415f025b upstream.
 
-Using memcpy() isn't safe when buf is identical to rtas_err_buf, which
-can happen during boot before slab is up. Full context which may not
-be obvious from the diff:
+Function of_phandle_iterator_next() calls of_node_put() on the last
+device_node it iterated over, but when the loop exits prematurely it has
+to be called explicitly.
 
-	if (altbuf) {
-		buf = altbuf;
-	} else {
-		buf = rtas_err_buf;
-		if (slab_is_available())
-			buf = kmalloc(RTAS_ERROR_LOG_MAX, GFP_ATOMIC);
-	}
-	if (buf)
-		memcpy(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
-
-This was found by inspection and I'm not aware of it causing problems
-in practice. It appears to have been introduced by commit
-033ef338b6e0 ("powerpc: Merge rtas.c into arch/powerpc/kernel"); the
-old ppc64 version of this code did not have this problem.
-
-Use memmove() instead.
-
-Fixes: 033ef338b6e0 ("powerpc: Merge rtas.c into arch/powerpc/kernel")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230220-rtas-queue-for-6-4-v1-2-010e4416f13f@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 13140de09cc2 ("remoteproc: stm32: add an ST stm32_rproc driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Link: https://lore.kernel.org/r/20230320221826.2728078-2-mathieu.poirier@linaro.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/rtas.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/stm32_rproc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c2e407a112a28..5976a25c6264d 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -399,7 +399,7 @@ static char *__fetch_rtas_last_error(char *altbuf)
- 				buf = kmalloc(RTAS_ERROR_LOG_MAX, GFP_ATOMIC);
+--- a/drivers/remoteproc/stm32_rproc.c
++++ b/drivers/remoteproc/stm32_rproc.c
+@@ -223,11 +223,13 @@ static int stm32_rproc_prepare(struct rp
+ 	while (of_phandle_iterator_next(&it) == 0) {
+ 		rmem = of_reserved_mem_lookup(it.node);
+ 		if (!rmem) {
++			of_node_put(it.node);
+ 			dev_err(dev, "unable to acquire memory-region\n");
+ 			return -EINVAL;
  		}
- 		if (buf)
--			memcpy(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
-+			memmove(buf, rtas_err_buf, RTAS_ERROR_LOG_MAX);
- 	}
  
- 	return buf;
--- 
-2.39.2
-
+ 		if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0) {
++			of_node_put(it.node);
+ 			dev_err(dev, "memory region not valid %pa\n",
+ 				&rmem->base);
+ 			return -EINVAL;
+@@ -254,8 +256,10 @@ static int stm32_rproc_prepare(struct rp
+ 							   it.node->name);
+ 		}
+ 
+-		if (!mem)
++		if (!mem) {
++			of_node_put(it.node);
+ 			return -ENOMEM;
++		}
+ 
+ 		rproc_add_carveout(rproc, mem);
+ 		index++;
 
 
