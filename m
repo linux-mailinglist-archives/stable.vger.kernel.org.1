@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFB2A703891
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F5AB703A99
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244260AbjEORdM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
+        id S244889AbjEORxA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:53:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244249AbjEORcp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:45 -0400
+        with ESMTP id S238964AbjEORwl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:52:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12005120BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE9911D9C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:50:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89D5062D2A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CA3C433EF;
-        Mon, 15 May 2023 17:30:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBEB062F64
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:50:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C14C433A1;
+        Mon, 15 May 2023 17:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171831;
-        bh=rdAfqVUtLL6Z2n9+iP9AJ4CxZ3K7czSzF3RcegeTrzw=;
+        s=korg; t=1684173037;
+        bh=78+3sAd+Pzct+cdC/aPsGnTrySnJraeL1fsSQU54C1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vEBhRthoSG05sDhR7Ae7arHLU5Mf1PXP8UjlRnMHK9OnDXrnQqw+eISeYMPW4KElm
-         Y00iZwXn7b7EhT6vuprQ++CqQ5+uLCEMH42hy0aeMh5jeMq4GE2zhBnEL0zCuZpMYE
-         0gvdV6PTZ8FzFSHdD619l3T8ltArWEHjigHmfw7w=
+        b=c7hIjJ9mEfb866cQaXMPZ5cAsUOdbDiMEZb/JSl8kWujJFzqqpor/mkrXZScrhTUS
+         avlk2gNObBhtE7JyD1MtoZIVFbrSNo3DxrCon51o9gQOD7RAsvyA41XApRqMMJ7HZg
+         czscz6TnFuCcUTdFiK8hMq8/8l4Ibzsth0olwyew=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
-        Tao Zhou <tao.zhou1@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 093/134] drm/amdgpu: disable sdma ecc irq only when sdma RAS is enabled in suspend
-Date:   Mon, 15 May 2023 18:29:30 +0200
-Message-Id: <20230515161706.258156298@linuxfoundation.org>
+        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 320/381] ionic: remove noise from ethtool rxnfc error msg
+Date:   Mon, 15 May 2023 18:29:31 +0200
+Message-Id: <20230515161751.257877539@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,60 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit 8b229ada2669b74fdae06c83fbfda5a5a99fc253 upstream.
+[ Upstream commit 3711d44fac1f80ea69ecb7315fed05b3812a7401 ]
 
-sdma_v4_0_ip is shared on a few asics, but in sdma_v4_0_hw_fini,
-driver unconditionally disables ecc_irq which is only enabled on
-those asics enabling sdma ecc. This will introduce a warning in
-suspend cycle on those chips with sdma ip v4.0, while without
-sdma ecc. So this patch correct this.
+It seems that ethtool is calling into .get_rxnfc more often with
+ETHTOOL_GRXCLSRLCNT which ionic doesn't know about.  We don't
+need to log a message about it, just return not supported.
 
-[ 7283.166354] RIP: 0010:amdgpu_irq_put+0x45/0x70 [amdgpu]
-[ 7283.167001] RSP: 0018:ffff9a5fc3967d08 EFLAGS: 00010246
-[ 7283.167019] RAX: ffff98d88afd3770 RBX: 0000000000000001 RCX: 0000000000000000
-[ 7283.167023] RDX: 0000000000000000 RSI: ffff98d89da30390 RDI: ffff98d89da20000
-[ 7283.167025] RBP: ffff98d89da20000 R08: 0000000000036838 R09: 0000000000000006
-[ 7283.167028] R10: ffffd5764243c008 R11: 0000000000000000 R12: ffff98d89da30390
-[ 7283.167030] R13: ffff98d89da38978 R14: ffffffff999ae15a R15: ffff98d880130105
-[ 7283.167032] FS:  0000000000000000(0000) GS:ffff98d996f00000(0000) knlGS:0000000000000000
-[ 7283.167036] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7283.167039] CR2: 00000000f7a9d178 CR3: 00000001c42ea000 CR4: 00000000003506e0
-[ 7283.167041] Call Trace:
-[ 7283.167046]  <TASK>
-[ 7283.167048]  sdma_v4_0_hw_fini+0x38/0xa0 [amdgpu]
-[ 7283.167704]  amdgpu_device_ip_suspend_phase2+0x101/0x1a0 [amdgpu]
-[ 7283.168296]  amdgpu_device_suspend+0x103/0x180 [amdgpu]
-[ 7283.168875]  amdgpu_pmops_freeze+0x21/0x60 [amdgpu]
-[ 7283.169464]  pci_pm_freeze+0x54/0xc0
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aa3198819bea6 ("ionic: Add RSS support")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -2044,9 +2044,11 @@ static int sdma_v4_0_hw_fini(void *handl
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
- 
--	for (i = 0; i < adev->sdma.num_instances; i++) {
--		amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
--			       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__SDMA)) {
-+		for (i = 0; i < adev->sdma.num_instances; i++) {
-+			amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
-+				       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+		}
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 35c72d4a78b3f..8e5b01af85ed2 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -693,7 +693,7 @@ static int ionic_get_rxnfc(struct net_device *netdev,
+ 		info->data = lif->nxqs;
+ 		break;
+ 	default:
+-		netdev_err(netdev, "Command parameter %d is not supported\n",
++		netdev_dbg(netdev, "Command parameter %d is not supported\n",
+ 			   info->cmd);
+ 		err = -EOPNOTSUPP;
  	}
- 
- 	sdma_v4_0_ctx_switch_enable(adev, false);
+-- 
+2.39.2
+
 
 
