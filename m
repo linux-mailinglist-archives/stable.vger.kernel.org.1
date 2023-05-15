@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B9A7036C7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94EF67037A4
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243799AbjEORN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
+        id S243929AbjEORX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243793AbjEORNf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:35 -0400
+        with ESMTP id S244109AbjEORXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4112C10A27
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3263E12492
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C23A762B69
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13BFC433EF;
-        Mon, 15 May 2023 17:11:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 132B362C56
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CEBC433EF;
+        Mon, 15 May 2023 17:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170715;
-        bh=M/copmAjhGeQYpsI5ttyFcJzqH1oBN5vjwjcsRJY2Bg=;
+        s=korg; t=1684171273;
+        bh=Kd0NWkY0y7jCOTkO6lIGUyZ2q02mDPaJKTU8wMhqGfQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SFgF7FrUqj18MIJT4fw/966W871G9GnBVg+jWUCNxJj0eLAtCJTl3jZSjVe82AQpt
-         mTm/C0VSCZnZks8Z0vVG7Xu2Vwpwkix9xjSz/ut8f603zXcAbqYIvrnaqPKnVXKVrE
-         Gba/zwxFspqIE3DxW6ZbgiP3bV8EbUT4B1kEVwcY=
+        b=WEwgT6Pkzz90WMYvzo1Ax8M7UcTXqxd6xP2TzZdsD+DGzQ0GUMlykzSpe7lPmgjOH
+         LUZJaK/4ZguoW8h0GCwQKqlMaM3RB1+sJ/faEnOaMrRZ0BSpDOHVyqhvRStL/JMWoZ
+         OiQN4NBz09XrInNjPhb/6MZQzLL+2hQVpStKM9lk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tim Murray <timmurray@google.com>,
-        John Stultz <jstultz@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>
-Subject: [PATCH 6.1 219/239] locking/rwsem: Add __always_inline annotation to __down_read_common() and inlined callers
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.2 156/242] proc_sysctl: update docs for __register_sysctl_table()
 Date:   Mon, 15 May 2023 18:28:02 +0200
-Message-Id: <20230515161728.295674057@linuxfoundation.org>
+Message-Id: <20230515161726.568117182@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +54,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Stultz <jstultz@google.com>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-commit 92cc5d00a431e96e5a49c0b97e5ad4fa7536bd4b upstream.
+commit 67ff32289acad9ed338cd9f2351b44939e55163e upstream.
 
-Apparently despite it being marked inline, the compiler
-may not inline __down_read_common() which makes it difficult
-to identify the cause of lock contention, as the blocked
-function in traceevents will always be listed as
-__down_read_common().
+Update the docs for __register_sysctl_table() to make it clear no child
+entries can be passed. When the child is true these are non-leaf entries
+on the ctl table and sysctl treats these as directories. The point to
+__register_sysctl_table() is to deal only with directories not part of
+the ctl table where thay may riside, to be simple and avoid recursion.
 
-So this patch adds __always_inline annotation to the common
-function (as well as the inlined helper callers) to force it to
-be inlined so the blocking function will be listed (via Wchan)
-in traceevents.
+While at it, hint towards using long on extra1 and extra2 later.
 
-Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
-Reported-by: Tim Murray <timmurray@google.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20230503023351.2832796-1-jstultz@google.com
+Cc: stable@vger.kernel.org # v5.17
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rwsem.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/proc/proc_sysctl.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1251,7 +1251,7 @@ static struct rw_semaphore *rwsem_downgr
- /*
-  * lock for reading
-  */
--static inline int __down_read_common(struct rw_semaphore *sem, int state)
-+static __always_inline int __down_read_common(struct rw_semaphore *sem, int state)
- {
- 	int ret = 0;
- 	long count;
-@@ -1269,17 +1269,17 @@ out:
- 	return ret;
- }
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1287,7 +1287,7 @@ out:
+  * __register_sysctl_table - register a leaf sysctl table
+  * @set: Sysctl tree to register on
+  * @path: The path to the directory the sysctl table is in.
+- * @table: the top-level table structure
++ * @table: the top-level table structure without any child
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
+@@ -1308,9 +1308,12 @@ out:
+  * proc_handler - the text handler routine (described below)
+  *
+  * extra1, extra2 - extra pointers usable by the proc handler routines
++ * XXX: we should eventually modify these to use long min / max [0]
++ * [0] https://lkml.kernel.org/87zgpte9o4.fsf@email.froward.int.ebiederm.org
+  *
+  * Leaf nodes in the sysctl tree will be represented by a single file
+- * under /proc; non-leaf nodes will be represented by directories.
++ * under /proc; non-leaf nodes (where child is not NULL) are not allowed,
++ * sysctl_check_table() verifies this.
+  *
+  * There must be a proc_handler routine for any terminal nodes.
+  * Several default handlers are available to cover common cases -
+@@ -1352,7 +1355,7 @@ struct ctl_table_header *__register_sysc
  
--static inline void __down_read(struct rw_semaphore *sem)
-+static __always_inline void __down_read(struct rw_semaphore *sem)
- {
- 	__down_read_common(sem, TASK_UNINTERRUPTIBLE);
- }
+ 	spin_lock(&sysctl_lock);
+ 	dir = &set->dir;
+-	/* Reference moved down the diretory tree get_subdir */
++	/* Reference moved down the directory tree get_subdir */
+ 	dir->header.nreg++;
+ 	spin_unlock(&sysctl_lock);
  
--static inline int __down_read_interruptible(struct rw_semaphore *sem)
-+static __always_inline int __down_read_interruptible(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_INTERRUPTIBLE);
- }
+@@ -1369,6 +1372,11 @@ struct ctl_table_header *__register_sysc
+ 		if (namelen == 0)
+ 			continue;
  
--static inline int __down_read_killable(struct rw_semaphore *sem)
-+static __always_inline int __down_read_killable(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_KILLABLE);
- }
++		/*
++		 * namelen ensures if name is "foo/bar/yay" only foo is
++		 * registered first. We traverse as if using mkdir -p and
++		 * return a ctl_dir for the last directory entry.
++		 */
+ 		dir = get_subdir(dir, name, namelen);
+ 		if (IS_ERR(dir))
+ 			goto fail;
 
 
