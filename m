@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D7D703AFA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B649E70337C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243746AbjEOR6J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:58:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60548 "EHLO
+        id S242723AbjEOQhn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244933AbjEOR5u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:57:50 -0400
+        with ESMTP id S242805AbjEOQhn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423EA19967
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F4A19A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DA6B62FCE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E04C433EF;
-        Mon, 15 May 2023 17:54:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B385F62823
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C048FC4339B;
+        Mon, 15 May 2023 16:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173262;
-        bh=9873AN7ruXnRNMUukeNYPmOhvnuxy9TUjX0nQxZiGgM=;
+        s=korg; t=1684168661;
+        bh=4zdhsuLg8Vqs9QRlbSfNY9mAAA98rmCH3VLQxjxS04o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=su9tIHUCniBsmMpcza9MKbc4dLv9tR4uuwlNix7mTjo/+SaKzXfTHxlevR34RQE8W
-         6nPRBJvYd7EjnDX3Hs5/+Apv19tvAUx01SGyWftTJX7lbkL4gQ2/zK9GPeb3mvqPpY
-         +7bRrI8qFBREosVjkDLHKtI789F9ybxidluu3+R0=
+        b=SZTtel4qu/ySgXnGHY0Tr+zHfnO4eqF5FK8Cm3y9ExJ88ssGkEjp9r4JDQ7oMHk1R
+         aJ7mN/5tcZZDS8UvrYW09vZWosmvpPFcR8hutL9ewrjGR7xum6pYpwot+k5LD4uOi3
+         cRxViU5HcDKpKy8RNR5nTH3RXT29EjDgTLidrpLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roger Quadros <rogerq@ti.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 5.4 010/282] USB: dwc3: fix runtime pm imbalance on probe errors
+        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 091/116] net/sched: act_mirred: Add carrier check
 Date:   Mon, 15 May 2023 18:26:28 +0200
-Message-Id: <20230515161722.577425493@linuxfoundation.org>
+Message-Id: <20230515161701.290239435@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 9a8ad10c9f2e0925ff26308ec6756b93fc2f4977 upstream.
+[ Upstream commit 526f28bd0fbdc699cda31426928802650c1528e5 ]
 
-Make sure not to suspend the device when probe fails to avoid disabling
-clocks and phys multiple times.
+There are cases where the device is adminstratively UP, but operationally
+down. For example, we have a physical device (Nvidia ConnectX-6 Dx, 25Gbps)
+who's cable was pulled out, here is its ip link output:
 
-Fixes: 328082376aea ("usb: dwc3: fix runtime PM in error path")
-Cc: stable@vger.kernel.org      # 4.8
-Cc: Roger Quadros <rogerq@ti.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-2-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+5: ens2f1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN mode DEFAULT group default qlen 1000
+    link/ether b8:ce:f6:4b:68:35 brd ff:ff:ff:ff:ff:ff
+    altname enp179s0f1np1
+
+As you can see, it's administratively UP but operationally down.
+In this case, sending a packet to this port caused a nasty kernel hang (so
+nasty that we were unable to capture it). Aborting a transmit based on
+operational status (in addition to administrative status) fixes the issue.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+v1->v2: Add fixes tag
+v2->v3: Remove blank line between tags + add change log, suggested by Leon
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ net/sched/act_mirred.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1496,13 +1496,11 @@ static int dwc3_probe(struct platform_de
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index dcfaa4f9c7c5b..0a032c4d26b86 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -181,7 +181,7 @@ static int tcf_mirred(struct sk_buff *skb, const struct tc_action *a,
+ 		goto out;
+ 	}
  
- 	spin_lock_init(&dwc->lock);
- 
-+	pm_runtime_get_noresume(dev);
- 	pm_runtime_set_active(dev);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_set_autosuspend_delay(dev, DWC3_DEFAULT_AUTOSUSPEND_DELAY);
- 	pm_runtime_enable(dev);
--	ret = pm_runtime_get_sync(dev);
--	if (ret < 0)
--		goto err1;
- 
- 	pm_runtime_forbid(dev);
- 
-@@ -1562,12 +1560,10 @@ err3:
- 	dwc3_free_event_buffers(dwc);
- 
- err2:
--	pm_runtime_allow(&pdev->dev);
--
--err1:
--	pm_runtime_put_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
--
-+	pm_runtime_allow(dev);
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
-+	pm_runtime_put_noidle(dev);
- disable_clks:
- 	clk_bulk_disable_unprepare(dwc->num_clks, dwc->clks);
- assert_reset:
+-	if (unlikely(!(dev->flags & IFF_UP))) {
++	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
+ 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
+ 				       dev->name);
+ 		goto out;
+-- 
+2.39.2
+
 
 
