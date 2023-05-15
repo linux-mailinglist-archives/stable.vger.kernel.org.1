@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E75217035C2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFBE7036A7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243411AbjEORCY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:02:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
+        id S243782AbjEORMS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243403AbjEORCE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:04 -0400
+        with ESMTP id S243785AbjEORMC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA3286A4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1C0DC50
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C0E6D62A44
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DDBC433EF;
-        Mon, 15 May 2023 17:00:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE20762B4A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11F3C433D2;
+        Mon, 15 May 2023 17:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170002;
-        bh=1zb8Ey/MVSe1zLHuRIFD5SMwRO3RGD8I6SRjxY31cmo=;
+        s=korg; t=1684170617;
+        bh=NdQC4j9rbfzgrqJC26PMtR0k2cueOUmcn8kcyzR3voM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O9xCaZzSEbgp/JTbl5VoM7zyWJUiZIsenrWhz/r0uAc1BRqCpaP9/yeZs9X26ucZy
-         xvefs3j/x6j9wvCLdw+TWhksoFMbYUL/NkQrat2j+cqWDoBojfzA8CI2qX1CvjuAzE
-         cPbrlMcZRDsXZjOpwM86pxihIWopI+4kttP8jCh8=
+        b=wMm1VHc3HWvxPqO19AU2etdAYlwmW3qeqpWl3NUbqAJgy3CXGxOhf9Re+V5A3huy4
+         xbqwyNHVSPkEklcR+0rKC4HWo6oLxsvGpx5RHPxP99egf2uMfjXZ4rhRfcn63WdcMI
+         VUC7P3PipjPGKQNCuzH5OcyFAB3LeYZ3RWTDsj+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com,
-        syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.3 239/246] ext4: fix invalid free tracking in ext4_xattr_move_to_block()
+        patches@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 188/239] f2fs: allocate the extent_cache by default
 Date:   Mon, 15 May 2023 18:27:31 +0200
-Message-Id: <20230515161729.814215621@linuxfoundation.org>
+Message-Id: <20230515161727.298043912@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +53,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-commit b87c7cdf2bed4928b899e1ce91ef0d147017ba45 upstream.
+[ Upstream commit 72840cccc0a1a0a0dc1bb27b669a9111be6d0f6a ]
 
-In ext4_xattr_move_to_block(), the value of the extended attribute
-which we need to move to an external block may be allocated by
-kvmalloc() if the value is stored in an external inode.  So at the end
-of the function the code tried to check if this was the case by
-testing entry->e_value_inum.
+Let's allocate it to remove the runtime complexity.
 
-However, at this point, the pointer to the xattr entry is no longer
-valid, because it was removed from the original location where it had
-been stored.  So we could end up calling kvfree() on a pointer which
-was not allocated by kvmalloc(); or we could also potentially leak
-memory by not freeing the buffer when it should be freed.  Fix this by
-storing whether it should be freed in a separate variable.
-
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230430160426.581366-1-tytso@mit.edu
-Link: https://syzkaller.appspot.com/bug?id=5c2aee8256e30b55ccf57312c16d88417adbd5e1
-Link: https://syzkaller.appspot.com/bug?id=41a6b5d4917c0412eb3b3c3c604965bed7d7420b
-Reported-by: syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com
-Reported-by: syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 043d2d00b443 ("f2fs: factor out victim_entry usage from general rb_tree use")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/f2fs/extent_cache.c | 38 +++++++++++++++++++-------------------
+ fs/f2fs/f2fs.h         |  3 ++-
+ fs/f2fs/inode.c        |  6 ++++--
+ fs/f2fs/namei.c        |  4 ++--
+ 4 files changed, 27 insertions(+), 24 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2615,6 +2615,7 @@ static int ext4_xattr_move_to_block(hand
- 		.in_inode = !!entry->e_value_inum,
- 	};
- 	struct ext4_xattr_ibody_header *header = IHDR(inode, raw_inode);
-+	int needs_kvfree = 0;
- 	int error;
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 4217076df1024..794a8134687ae 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -47,20 +47,23 @@ static bool __may_read_extent_tree(struct inode *inode)
+ 	return S_ISREG(inode->i_mode);
+ }
  
- 	is = kzalloc(sizeof(struct ext4_xattr_ibody_find), GFP_NOFS);
-@@ -2637,7 +2638,7 @@ static int ext4_xattr_move_to_block(hand
- 			error = -ENOMEM;
- 			goto out;
- 		}
+-static bool __may_extent_tree(struct inode *inode, enum extent_type type)
++static bool __init_may_extent_tree(struct inode *inode, enum extent_type type)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
++	if (type == EX_READ)
++		return __may_read_extent_tree(inode);
++	return false;
++}
+ 
++static bool __may_extent_tree(struct inode *inode, enum extent_type type)
++{
+ 	/*
+ 	 * for recovered files during mount do not create extents
+ 	 * if shrinker is not registered.
+ 	 */
+-	if (list_empty(&sbi->s_list))
++	if (list_empty(&F2FS_I_SB(inode)->s_list))
+ 		return false;
+ 
+-	if (type == EX_READ)
+-		return __may_read_extent_tree(inode);
+-	return false;
++	return __init_may_extent_tree(inode, type);
+ }
+ 
+ static void __try_update_largest_extent(struct extent_tree *et,
+@@ -439,20 +442,18 @@ static void __drop_largest_extent(struct extent_tree *et,
+ 	}
+ }
+ 
+-/* return true, if inode page is changed */
+-static void __f2fs_init_extent_tree(struct inode *inode, struct page *ipage,
+-							enum extent_type type)
++void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage)
+ {
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-	struct extent_tree_info *eti = &sbi->extent_tree[type];
+-	struct f2fs_extent *i_ext = ipage ? &F2FS_INODE(ipage)->i_ext : NULL;
++	struct extent_tree_info *eti = &sbi->extent_tree[EX_READ];
++	struct f2fs_extent *i_ext = &F2FS_INODE(ipage)->i_ext;
+ 	struct extent_tree *et;
+ 	struct extent_node *en;
+ 	struct extent_info ei;
+ 
+-	if (!__may_extent_tree(inode, type)) {
++	if (!__may_extent_tree(inode, EX_READ)) {
+ 		/* drop largest read extent */
+-		if (type == EX_READ && i_ext && i_ext->len) {
++		if (i_ext && i_ext->len) {
+ 			f2fs_wait_on_page_writeback(ipage, NODE, true, true);
+ 			i_ext->len = 0;
+ 			set_page_dirty(ipage);
+@@ -460,13 +461,11 @@ static void __f2fs_init_extent_tree(struct inode *inode, struct page *ipage,
+ 		goto out;
+ 	}
+ 
+-	et = __grab_extent_tree(inode, type);
++	et = __grab_extent_tree(inode, EX_READ);
+ 
+ 	if (!i_ext || !i_ext->len)
+ 		goto out;
+ 
+-	BUG_ON(type != EX_READ);
 -
-+		needs_kvfree = 1;
- 		error = ext4_xattr_inode_get(inode, entry, buffer, value_size);
- 		if (error)
- 			goto out;
-@@ -2676,7 +2677,7 @@ static int ext4_xattr_move_to_block(hand
+ 	get_read_extent_info(&ei, i_ext);
  
+ 	write_lock(&et->lock);
+@@ -486,14 +485,15 @@ static void __f2fs_init_extent_tree(struct inode *inode, struct page *ipage,
+ unlock_out:
+ 	write_unlock(&et->lock);
  out:
- 	kfree(b_entry_name);
--	if (entry->e_value_inum && buffer)
-+	if (needs_kvfree && buffer)
- 		kvfree(buffer);
- 	if (is)
- 		brelse(is->iloc.bh);
+-	if (type == EX_READ && !F2FS_I(inode)->extent_tree[EX_READ])
++	if (!F2FS_I(inode)->extent_tree[EX_READ])
+ 		set_inode_flag(inode, FI_NO_EXTENT);
+ }
+ 
+-void f2fs_init_extent_tree(struct inode *inode, struct page *ipage)
++void f2fs_init_extent_tree(struct inode *inode)
+ {
+ 	/* initialize read cache */
+-	__f2fs_init_extent_tree(inode, ipage, EX_READ);
++	if (__init_may_extent_tree(inode, EX_READ))
++		__grab_extent_tree(inode, EX_READ);
+ }
+ 
+ static bool __lookup_extent_tree(struct inode *inode, pgoff_t pgofs,
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index cf45af3a44a7a..3fc9d98112166 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -4147,7 +4147,7 @@ struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
+ 		bool force, bool *leftmost);
+ bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+ 				struct rb_root_cached *root, bool check_key);
+-void f2fs_init_extent_tree(struct inode *inode, struct page *ipage);
++void f2fs_init_extent_tree(struct inode *inode);
+ void f2fs_drop_extent_tree(struct inode *inode);
+ void f2fs_destroy_extent_node(struct inode *inode);
+ void f2fs_destroy_extent_tree(struct inode *inode);
+@@ -4156,6 +4156,7 @@ int __init f2fs_create_extent_cache(void);
+ void f2fs_destroy_extent_cache(void);
+ 
+ /* read extent cache ops */
++void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage);
+ bool f2fs_lookup_read_extent_cache(struct inode *inode, pgoff_t pgofs,
+ 			struct extent_info *ei);
+ void f2fs_update_read_extent_cache(struct dnode_of_data *dn);
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 7bfe29626024d..2bda4e73fc1ce 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -392,8 +392,6 @@ static int do_read_inode(struct inode *inode)
+ 	fi->i_pino = le32_to_cpu(ri->i_pino);
+ 	fi->i_dir_level = ri->i_dir_level;
+ 
+-	f2fs_init_extent_tree(inode, node_page);
+-
+ 	get_inline_info(inode, ri);
+ 
+ 	fi->i_extra_isize = f2fs_has_extra_attr(inode) ?
+@@ -479,6 +477,10 @@ static int do_read_inode(struct inode *inode)
+ 	}
+ 
+ 	init_idisk_time(inode);
++
++	/* Need all the flag bits */
++	f2fs_init_read_extent_tree(inode, node_page);
++
+ 	f2fs_put_page(node_page, 1);
+ 
+ 	stat_inc_inline_xattr(inode);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 51d0030bddb27..d879a295b688e 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -258,8 +258,6 @@ static struct inode *f2fs_new_inode(struct user_namespace *mnt_userns,
+ 	}
+ 	F2FS_I(inode)->i_inline_xattr_size = xattr_size;
+ 
+-	f2fs_init_extent_tree(inode, NULL);
+-
+ 	F2FS_I(inode)->i_flags =
+ 		f2fs_mask_flags(mode, F2FS_I(dir)->i_flags & F2FS_FL_INHERITED);
+ 
+@@ -282,6 +280,8 @@ static struct inode *f2fs_new_inode(struct user_namespace *mnt_userns,
+ 
+ 	f2fs_set_inode_flags(inode);
+ 
++	f2fs_init_extent_tree(inode);
++
+ 	trace_f2fs_new_inode(inode, 0);
+ 	return inode;
+ 
+-- 
+2.39.2
+
 
 
