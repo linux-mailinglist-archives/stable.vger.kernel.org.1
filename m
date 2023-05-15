@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B513703AE9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADD570374F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244034AbjEOR4t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53416 "EHLO
+        id S243921AbjEORTe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239975AbjEORzy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21C3F1CA40
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:05 -0700 (PDT)
+        with ESMTP id S243760AbjEORTM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A942A11558
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C87EC621EB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C111FC433EF;
-        Mon, 15 May 2023 17:53:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF20262BF9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F16C4339B;
+        Mon, 15 May 2023 17:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173237;
-        bh=oRZ9Zk8JKRJs7mhvky8oFjkc1pDdqMhApMAnCGrtaKY=;
+        s=korg; t=1684171037;
+        bh=Fy1TiHkbTaEi1fw06xSCWC0V11qSGjZg9LOrFxrMTOM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XR4UGWK4OcZZR7AHtCQobXBnIAuf/8QHoTBLqUVGvZFxu2/Uqm/jgdiKS+1WDyZxG
-         u4Kbq4GFuvN6/suAVmlsGS0el+MpG+XJMpL9U2zslRISiYRzAISqSNBdMa5eI6CpEB
-         hfPHENN91QN5IRTk/B97rlmsP9x89BSFgD3iZUT8=
+        b=poxbamNTWssQgRWSbO5gCdJA3J3LozZkCYt53jP6mnWQ12wye1mbkt5BJ+ahKSS5/
+         1HF4tdO2jHkztRm1w9aAspxPYCX3wn91J8QLMDXbpdG3akXr7MUtFx0tnWy4rGgEpX
+         Sfg5kRaxzgfWAGyPdrj3o3kcZb4MyeoRbv9vmCLA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.4 029/282] ubifs: Free memory for tmpfile name
+        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 081/242] drm/amdgpu: add a missing lock for AMDGPU_SCHED
 Date:   Mon, 15 May 2023 18:26:47 +0200
-Message-Id: <20230515161723.151200436@linuxfoundation.org>
+Message-Id: <20230515161724.324404677@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,49 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mårten Lindahl <marten.lindahl@axis.com>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-commit 1fb815b38bb31d6af9bd0540b8652a0d6fe6cfd3 upstream.
+[ Upstream commit 2397e3d8d2e120355201a8310b61929f5a8bd2c0 ]
 
-When opening a ubifs tmpfile on an encrypted directory, function
-fscrypt_setup_filename allocates memory for the name that is to be
-stored in the directory entry, but after the name has been copied to the
-directory entry inode, the memory is not freed.
+mgr->ctx_handles should be protected by mgr->lock.
 
-When running kmemleak on it we see that it is registered as a leak. The
-report below is triggered by a simple program 'tmpfile' just opening a
-tmpfile:
+v2: improve commit message
+v3: add a Fixes tag
 
-  unreferenced object 0xffff88810178f380 (size 32):
-    comm "tmpfile", pid 509, jiffies 4294934744 (age 1524.742s)
-    backtrace:
-      __kmem_cache_alloc_node
-      __kmalloc
-      fscrypt_setup_filename
-      ubifs_tmpfile
-      vfs_tmpfile
-      path_openat
-
-Free this memory after it has been copied to the inode.
-
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Fixes: 52c6a62c64fa ("drm/amdgpu: add interface for editing a foreign process's priority v3")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/dir.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -433,6 +433,7 @@ static int do_tmpfile(struct inode *dir,
- 	mutex_unlock(&dir_ui->ui_mutex);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
+index e9b45089a28a6..863b2a34b2d64 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
+@@ -38,6 +38,7 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
+ {
+ 	struct fd f = fdget(fd);
+ 	struct amdgpu_fpriv *fpriv;
++	struct amdgpu_ctx_mgr *mgr;
+ 	struct amdgpu_ctx *ctx;
+ 	uint32_t id;
+ 	int r;
+@@ -51,8 +52,11 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
+ 		return r;
+ 	}
  
- 	ubifs_release_budget(c, &req);
-+	fscrypt_free_filename(&nm);
+-	idr_for_each_entry(&fpriv->ctx_mgr.ctx_handles, ctx, id)
++	mgr = &fpriv->ctx_mgr;
++	mutex_lock(&mgr->lock);
++	idr_for_each_entry(&mgr->ctx_handles, ctx, id)
+ 		amdgpu_ctx_priority_override(ctx, priority);
++	mutex_unlock(&mgr->lock);
  
+ 	fdput(f);
  	return 0;
- 
+-- 
+2.39.2
+
 
 
