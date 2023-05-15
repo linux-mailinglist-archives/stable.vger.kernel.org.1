@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC93703936
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B48170362D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244472AbjEORkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33468 "EHLO
+        id S243629AbjEORHc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244584AbjEORj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AC591794E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:19 -0700 (PDT)
+        with ESMTP id S243550AbjEORHI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61656DC42
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0820E62DFC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111DFC433EF;
-        Mon, 15 May 2023 17:37:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30F03620EE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F86C4339B;
+        Mon, 15 May 2023 17:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172238;
-        bh=0VVpOUotMO8F7BC9YNIV0tcowO8G/cQQCPlFsnJC7yQ=;
+        s=korg; t=1684170267;
+        bh=Z/gDJJJKMVNdVuRO3qUjS8ELSXpCSLM7BwbRrtdpN58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ySRWKeH2SnUZkRasIc31GZMBbJhHiF0Y1lvEEG///opglEKZcIFAOOtH+vOB7nxSx
-         YEhDviJlzeEXymnwiluyDHkf9aWF/wtjJkrPapQ+JkZ/BJtffDkbsEv19qO5ZLmQfH
-         hMZ1AXspzCVuoEfrqTNgsyKjmEyY8ye4kEy30Ic4=
+        b=RQY02RxKhE0tNdkyik34WCkULX6Q6mGN0iOVwe5K+hoeFOgREa6jF5i9U0qrRcIHe
+         0NNLuILxRxAJp3v8gkN3/Msk1qsJ03HkoE3kdBKOx5LfqUGUyyE3XQxDjOeU6iwIw/
+         TTlNm1PwFivsBob5jx+0wOljzNwti47H7BHwRVlQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/381] ARM: dts: qcom: ipq4019: Fix the PCI I/O port range
+Subject: [PATCH 6.1 076/239] ionic: remove noise from ethtool rxnfc error msg
 Date:   Mon, 15 May 2023 18:25:39 +0200
-Message-Id: <20230515161740.774645817@linuxfoundation.org>
+Message-Id: <20230515161723.966490915@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,43 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 2540279e9a9e74fc880d1e4c83754ecfcbe290a0 ]
+[ Upstream commit 3711d44fac1f80ea69ecb7315fed05b3812a7401 ]
 
-For 1MiB of the I/O region, the I/O ports of the legacy PCI devices are
-located in the range of 0x0 to 0x100000. Hence, fix the bogus PCI address
-(0x40200000) specified in the ranges property for I/O region.
+It seems that ethtool is calling into .get_rxnfc more often with
+ETHTOOL_GRXCLSRLCNT which ionic doesn't know about.  We don't
+need to log a message about it, just return not supported.
 
-While at it, let's use the missing 0x prefix for the addresses.
-
-Fixes: 187519403273 ("ARM: dts: ipq4019: Add a few peripheral nodes")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/linux-arm-msm/7c5dfa87-41df-4ba7-b0e4-72c8386402a8@app.fastmail.com/
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230228164752.55682-16-manivannan.sadhasivam@linaro.org
+Fixes: aa3198819bea6 ("ionic: Add RSS support")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-ipq4019.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-index 3defd47fd8fab..037bb8a9b01ec 100644
---- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-@@ -414,8 +414,8 @@
- 			#address-cells = <3>;
- 			#size-cells = <2>;
- 
--			ranges = <0x81000000 0 0x40200000 0x40200000 0 0x00100000>,
--				 <0x82000000 0 0x40300000 0x40300000 0 0x00d00000>;
-+			ranges = <0x81000000 0x0 0x00000000 0x40200000 0x0 0x00100000>,
-+				 <0x82000000 0x0 0x40300000 0x40300000 0x0 0x00d00000>;
- 
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi";
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 01c22701482d9..d7370fb60a168 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -691,7 +691,7 @@ static int ionic_get_rxnfc(struct net_device *netdev,
+ 		info->data = lif->nxqs;
+ 		break;
+ 	default:
+-		netdev_err(netdev, "Command parameter %d is not supported\n",
++		netdev_dbg(netdev, "Command parameter %d is not supported\n",
+ 			   info->cmd);
+ 		err = -EOPNOTSUPP;
+ 	}
 -- 
 2.39.2
 
