@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE787037F0
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C836703A75
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243840AbjEORZg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40884 "EHLO
+        id S244792AbjEORvN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244240AbjEORZU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:20 -0400
+        with ESMTP id S244805AbjEORur (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA16132BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCB21CA45
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F21AC62C49
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5465C433D2;
-        Mon, 15 May 2023 17:24:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1651062E06
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D56DC433EF;
+        Mon, 15 May 2023 17:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171448;
-        bh=YcZJu+xEqBVbuXs9A7Hv1gAQC7Z4UgkSRCZdWBuTSWA=;
+        s=korg; t=1684172937;
+        bh=qAWGRpUIBnXMdNJmWOeWjj6QEEvjuwCCa1UXsR7N9AE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gh+4y3kxodlaPrAX0N+VJ4UVoVfpQ9NMMxWjZdoZdZl0nB8l58pkTbf1Wzd1ACHNn
-         Kyki00Gob/y1j3ZRzDbzPihjNIQChA8h4yf2prxNC90LOWV666L3TqWui+zD9ai3JM
-         c/pvHna/vchocCzhmDUEwA+ucTTSse4CJZwUyNPk=
+        b=OsR/6XuZ3I9h6qtcCVlDdjWo1IDse/1zeiXoTHhWHJxgLpN3zmbfqOXn2P7Ux7PKn
+         erCM/On7l02VSI3cyD38S9m2dEhNhI97nyBieayXeN7rY6t/HD7Gx7K9IYfLgEszCa
+         RhqU+qWANi42XnDAXXZnoDro5+fpW3vmbYug752A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-        Animesh Manna <animesh.manna@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 213/242] drm/i915/mtl: update scaler source and destination limits for MTL
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 5.10 288/381] perf intel-pt: Fix CYC timestamps after standalone CBR
 Date:   Mon, 15 May 2023 18:28:59 +0200
-Message-Id: <20230515161728.319620707@linuxfoundation.org>
+Message-Id: <20230515161749.791786782@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,93 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Animesh Manna <animesh.manna@intel.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit f840834a8b60ffd305f03a53007605ba4dfbbc4b ]
+commit 430635a0ef1ce958b7b4311f172694ece2c692b8 upstream.
 
-The max source and destination limits for scalers in MTL have changed.
-Use the new values accordingly.
+After a standalone CBR (not associated with TSC), update the cycles
+reference timestamp and reset the cycle count, so that CYC timestamps
+are calculated relative to that point with the new frequency.
 
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Signed-off-by: Animesh Manna <animesh.manna@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Signed-off-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20221223130509.43245-3-luciano.coelho@intel.com
-Stable-dep-of: d944eafed618 ("drm/i915: Check pipe source size when using skl+ scalers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cc33618619cefc6d ("perf tools: Add Intel PT support for decoding CYC packets")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230403154831.8651-2-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/skl_scaler.c | 40 ++++++++++++++++++-----
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ tools/perf/util/intel-pt-decoder/intel-pt-decoder.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/skl_scaler.c b/drivers/gpu/drm/i915/display/skl_scaler.c
-index d7390067b7d4c..01e8812936126 100644
---- a/drivers/gpu/drm/i915/display/skl_scaler.c
-+++ b/drivers/gpu/drm/i915/display/skl_scaler.c
-@@ -87,6 +87,10 @@ static u16 skl_scaler_calc_phase(int sub, int scale, bool chroma_cosited)
- #define ICL_MAX_SRC_H 4096
- #define ICL_MAX_DST_W 5120
- #define ICL_MAX_DST_H 4096
-+#define MTL_MAX_SRC_W 4096
-+#define MTL_MAX_SRC_H 8192
-+#define MTL_MAX_DST_W 8192
-+#define MTL_MAX_DST_H 8192
- #define SKL_MIN_YUV_420_SRC_W 16
- #define SKL_MIN_YUV_420_SRC_H 16
+--- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
++++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
+@@ -1639,6 +1639,8 @@ static void intel_pt_calc_cbr(struct int
  
-@@ -103,6 +107,8 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
- 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
- 	const struct drm_display_mode *adjusted_mode =
- 		&crtc_state->hw.adjusted_mode;
-+	int min_src_w, min_src_h, min_dst_w, min_dst_h;
-+	int max_src_w, max_src_h, max_dst_w, max_dst_h;
+ 	decoder->cbr = cbr;
+ 	decoder->cbr_cyc_to_tsc = decoder->max_non_turbo_ratio_fp / cbr;
++	decoder->cyc_ref_timestamp = decoder->timestamp;
++	decoder->cycle_cnt = 0;
  
- 	/*
- 	 * Src coordinates are already rotated by 270 degrees for
-@@ -157,15 +163,33 @@ skl_update_scaler(struct intel_crtc_state *crtc_state, bool force_detach,
- 		return -EINVAL;
- 	}
- 
-+	min_src_w = SKL_MIN_SRC_W;
-+	min_src_h = SKL_MIN_SRC_H;
-+	min_dst_w = SKL_MIN_DST_W;
-+	min_dst_h = SKL_MIN_DST_H;
-+
-+	if (DISPLAY_VER(dev_priv) < 11) {
-+		max_src_w = SKL_MAX_SRC_W;
-+		max_src_h = SKL_MAX_SRC_H;
-+		max_dst_w = SKL_MAX_DST_W;
-+		max_dst_h = SKL_MAX_DST_H;
-+	} else if (DISPLAY_VER(dev_priv) < 14) {
-+		max_src_w = ICL_MAX_SRC_W;
-+		max_src_h = ICL_MAX_SRC_H;
-+		max_dst_w = ICL_MAX_DST_W;
-+		max_dst_h = ICL_MAX_DST_H;
-+	} else {
-+		max_src_w = MTL_MAX_SRC_W;
-+		max_src_h = MTL_MAX_SRC_H;
-+		max_dst_w = MTL_MAX_DST_W;
-+		max_dst_h = MTL_MAX_DST_H;
-+	}
-+
- 	/* range checks */
--	if (src_w < SKL_MIN_SRC_W || src_h < SKL_MIN_SRC_H ||
--	    dst_w < SKL_MIN_DST_W || dst_h < SKL_MIN_DST_H ||
--	    (DISPLAY_VER(dev_priv) >= 11 &&
--	     (src_w > ICL_MAX_SRC_W || src_h > ICL_MAX_SRC_H ||
--	      dst_w > ICL_MAX_DST_W || dst_h > ICL_MAX_DST_H)) ||
--	    (DISPLAY_VER(dev_priv) < 11 &&
--	     (src_w > SKL_MAX_SRC_W || src_h > SKL_MAX_SRC_H ||
--	      dst_w > SKL_MAX_DST_W || dst_h > SKL_MAX_DST_H)))	{
-+	if (src_w < min_src_w || src_h < min_src_h ||
-+	    dst_w < min_dst_w || dst_h < min_dst_h ||
-+	    src_w > max_src_w || src_h > max_src_h ||
-+	    dst_w > max_dst_w || dst_h > max_dst_h) {
- 		drm_dbg_kms(&dev_priv->drm,
- 			    "scaler_user index %u.%u: src %ux%u dst %ux%u "
- 			    "size is out of scaler range\n",
--- 
-2.39.2
-
+ 	intel_pt_mtc_cyc_cnt_cbr(decoder);
+ }
 
 
