@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6DC3703462
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C952703539
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242988AbjEOQr6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:47:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
+        id S243241AbjEOQ47 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242983AbjEOQr4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:47:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB9F44A8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:37 -0700 (PDT)
+        with ESMTP id S243244AbjEOQ46 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFAD34EF3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AB9E6292D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F1BC433EF;
-        Mon, 15 May 2023 16:47:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C62962A0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C423C433EF;
+        Mon, 15 May 2023 16:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169253;
-        bh=10PrFOX4WF5f8/43rF2h3WrMmn/LvJNR/3zPcqbrsbo=;
+        s=korg; t=1684169806;
+        bh=AR+0ZKtJh0ms8RrjA/q7jX7w9PQ0Dy2FGWPcDQV+/+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2UGJD8AdsPy8iRG5q9ePJH7/Uv1xw/Zr2NfTEzuea9c1aEebmZOF1JEYODc8opKEH
-         9gxqo0XKeWEjq/o+3LcRN6DT86LBFAk1gaGFfJ/b0Vb4Cmb+t9tll6gTg/qSDajX2w
-         jdTkl6LgKR9S68ZllKO8hoOE+okhP6gMyq8X+BoE=
+        b=t2DmTWoNrbg5VtpX1pX2aSbvw4AXIH/3W7NnxgtaVjcurnUgagfwyaFIgnC5sqvbF
+         /0fylezv6MOUssud52rlI8EQNxSfz4/ibyaSqGaAzsUBlG8+MZs/hEvqoa2g/g7eyX
+         YVHQTeNO3M9ZtvRnTq5D5/Cg9zE9uZS4wmDqdNAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Angelo Dureghello <angelo.dureghello@timesys.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 151/191] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
+        patches@lists.linux.dev, Ross Zwisler <zwisler@google.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.3 176/246] drm/i915: Check pipe source size when using skl+ scalers
 Date:   Mon, 15 May 2023 18:26:28 +0200
-Message-Id: <20230515161712.898675370@linuxfoundation.org>
+Message-Id: <20230515161727.912170441@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,36 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Angelo Dureghello <angelo.dureghello@timesys.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
+commit d944eafed618a8507270b324ad9d5405bb7f0b3e upstream.
 
-Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
-processing.
+The skl+ scalers only sample 12 bits of PIPESRC so we can't
+do any plane scaling at all when the pipe source size is >4k.
 
-Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
-Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make sure the pipe source size is also below the scaler's src
+size limits. Might not be 100% accurate, but should at least be
+safe. We can refine the limits later if we discover that recent
+hw is less restricted.
+
+Cc: stable@vger.kernel.org
+Tested-by: Ross Zwisler <zwisler@google.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8357
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230418175528.13117-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 691248d4135fe3fae64b4ee0676bc96a7fd6950c)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/skl_scaler.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index fddd7e4f3de71..b593e4d85e9c0 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3645,6 +3645,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
- 	.set_egress_port = mv88e6095_g1_set_egress_port,
- 	.watchdog_ops = &mv88e6390_watchdog_ops,
-+	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/i915/display/skl_scaler.c
++++ b/drivers/gpu/drm/i915/display/skl_scaler.c
+@@ -111,6 +111,8 @@ skl_update_scaler(struct intel_crtc_stat
+ 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+ 	const struct drm_display_mode *adjusted_mode =
+ 		&crtc_state->hw.adjusted_mode;
++	int pipe_src_w = drm_rect_width(&crtc_state->pipe_src);
++	int pipe_src_h = drm_rect_height(&crtc_state->pipe_src);
+ 	int min_src_w, min_src_h, min_dst_w, min_dst_h;
+ 	int max_src_w, max_src_h, max_dst_w, max_dst_h;
+ 
+@@ -207,6 +209,21 @@ skl_update_scaler(struct intel_crtc_stat
+ 		return -EINVAL;
+ 	}
+ 
++	/*
++	 * The pipe scaler does not use all the bits of PIPESRC, at least
++	 * on the earlier platforms. So even when we're scaling a plane
++	 * the *pipe* source size must not be too large. For simplicity
++	 * we assume the limits match the scaler source size limits. Might
++	 * not be 100% accurate on all platforms, but good enough for now.
++	 */
++	if (pipe_src_w > max_src_w || pipe_src_h > max_src_h) {
++		drm_dbg_kms(&dev_priv->drm,
++			    "scaler_user index %u.%u: pipe src size %ux%u "
++			    "is out of scaler range\n",
++			    crtc->pipe, scaler_user, pipe_src_w, pipe_src_h);
++		return -EINVAL;
++	}
++
+ 	/* mark this plane as a scaler user in crtc_state */
+ 	scaler_state->scaler_users |= (1 << scaler_user);
+ 	drm_dbg_kms(&dev_priv->drm, "scaler_user index %u.%u: "
 
 
