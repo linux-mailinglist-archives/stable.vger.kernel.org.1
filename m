@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CF7703B59
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F3177037CC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243883AbjEOSCK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:02:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60474 "EHLO
+        id S244066AbjEORYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244079AbjEOSBf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:35 -0400
+        with ESMTP id S244162AbjEORXr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F9319F25
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:59:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0056BDC55
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A890A62FD9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BD5C433EF;
-        Mon, 15 May 2023 17:59:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FF9E62C7B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F80C433D2;
+        Mon, 15 May 2023 17:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173543;
-        bh=G8diV8oYAu1rja+PookfHyVFe7N7l1GMrkKAYTOL+dc=;
+        s=korg; t=1684171347;
+        bh=tPSVz4NBhSMOYeOgTzwDoMxs1IxWrZOBVBJI9KE2Op8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fkfuAnFmfH4ZBdRJon9DUJYOOoqHU9Sp/MEacYwKV6WPpHldFH4nuO5hJ4IlkVwja
-         T2EbpXJR8Yy6sAYOGYVZfxLq7FyF+aLL0HPI/6vjUwggS3PU3DhWgyRBARAagYJ93z
-         N0okN6vc12EduQY25y9B6DlKelyJAN3gey2vKecw=
+        b=g6ktQme2uEGEHXhgkqROzEKKBOFaeGxz3QcztTH11EHXEeuzkauq05atl71hG4UG5
+         wO5ahVMeDnaNXHM6CPlkRxb4G5yTAJbZpAd6bM1SXqwfa4CK3P8byBGeEjEZ7mAnqZ
+         iHo9ubEH9cKAw43Sm52aZZIt+IuUCycWvF0IIIuU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 128/282] ASoC: es8316: Use IRQF_NO_AUTOEN when requesting the IRQ
-Date:   Mon, 15 May 2023 18:28:26 +0200
-Message-Id: <20230515161726.065595752@linuxfoundation.org>
+        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.2 181/242] irqchip/loongson-pch-pic: Fix pch_pic_acpi_init calling
+Date:   Mon, 15 May 2023 18:28:27 +0200
+Message-Id: <20230515161727.304047490@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +53,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-[ Upstream commit 1cf2aa665901054b140eb71748661ceae99b6b5a ]
+commit 48ce2d722f7f108f27bedddf54bee3423a57ce57 upstream.
 
-Use the new IRQF_NO_AUTOEN flag when requesting the IRQ, rather then
-disabling it immediately after requesting it.
+For dual-bridges scenario, pch_pic_acpi_init() will be called
+in following path:
 
-This fixes a possible race where the IRQ might trigger between requesting
-and disabling it; and this also leads to a small code cleanup.
+cpuintc_acpi_init
+  acpi_cascade_irqdomain_init(in cpuintc driver)
+    acpi_table_parse_madt
+      eiointc_parse_madt
+        eiointc_acpi_init /* this will be called two times
+                             correspondingto parsing two
+                             eiointc entries in MADT under
+                             dual-bridges scenario*/
+          acpi_cascade_irqdomain_init(in eiointc driver)
+            acpi_table_parse_madt
+              pch_pic_parse_madt
+                pch_pic_acpi_init /* this will be called depend
+                                     on valid parent IRQ domain
+                                     handle for one or two times
+                                     corresponding to parsing
+                                     two pchpic entries in MADT
+                                     druring calling
+                                     eiointc_acpi_init() under
+                                     dual-bridges scenario*/
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20211003132255.31743-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 39db65a0a17b ("ASoC: es8316: Handle optional IRQ assignment")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+During the first eiointc_acpi_init() calling, the
+pch_pic_acpi_init() will be called just one time since only
+one valid parent IRQ domain handle will be found for current
+eiointc IRQ domain.
+
+During the second eiointc_acpi_init() calling, the
+pch_pic_acpi_init() will be called two times since two valid
+parent IRQ domain handles will be found. So in pch_pic_acpi_init(),
+we must have a reasonable way to prevent from creating second same
+pch_pic IRQ domain.
+
+The patch matches gsi base information in created pch_pic IRQ
+domains to check if the target domain has been created to avoid the
+bug mentioned above.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230407083453.6305-6-lvjianmin@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/es8316.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-loongson-pch-pic.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index b781b28de0126..573085f7cfd1e 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -807,12 +807,9 @@ static int es8316_i2c_probe(struct i2c_client *i2c_client,
- 	mutex_init(&es8316->lock);
+--- a/drivers/irqchip/irq-loongson-pch-pic.c
++++ b/drivers/irqchip/irq-loongson-pch-pic.c
+@@ -403,6 +403,9 @@ int __init pch_pic_acpi_init(struct irq_
+ 	int ret, vec_base;
+ 	struct fwnode_handle *domain_handle;
  
- 	ret = devm_request_threaded_irq(dev, es8316->irq, NULL, es8316_irq,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					IRQF_TRIGGER_HIGH | IRQF_ONESHOT | IRQF_NO_AUTOEN,
- 					"es8316", es8316);
--	if (ret == 0) {
--		/* Gets re-enabled by es8316_set_jack() */
--		disable_irq(es8316->irq);
--	} else {
-+	if (ret) {
- 		dev_warn(dev, "Failed to get IRQ %d: %d\n", es8316->irq, ret);
- 		es8316->irq = -ENXIO;
- 	}
--- 
-2.39.2
-
++	if (find_pch_pic(acpi_pchpic->gsi_base) >= 0)
++		return 0;
++
+ 	vec_base = acpi_pchpic->gsi_base - GSI_MIN_PCH_IRQ;
+ 
+ 	domain_handle = irq_domain_alloc_fwnode(&acpi_pchpic->address);
 
 
