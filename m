@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE64870387A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC037037E3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242240AbjEORct (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
+        id S243964AbjEORZA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244288AbjEORca (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:30 -0400
+        with ESMTP id S244161AbjEORYf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D33C5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E72CB40FF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70F4B62CB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A760C433D2;
-        Mon, 15 May 2023 17:29:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A843A62BF9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE3AC433D2;
+        Mon, 15 May 2023 17:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171775;
-        bh=S8m6ri7NQ+2GPJoA6oG4oZ704b1jhgM6NeY7xB2y71A=;
+        s=korg; t=1684171410;
+        bh=n9qPg8YDBuATL63fuxweux1pB0Yu8n5yzAX8U/Y7gcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sIVqSOl2uv3vQRqIup395985docdbyTU1XoVEQqt+inhoCVoPbUSNfPBQ2mnSNF9r
-         XGVA+7Lun2LmGB4qw6KtLnCwWKDwNGj6B5WncEz8hQ0rELDbZI4lIsoCcQ/gpzQxGL
-         k+86aSQmkLb+zJVePyF3HTOz9SkTt34Eym+8Fkp4=
+        b=ZKTdTl5/qmgC/A7Z2drvv7bRK5GKx5HlOqAZKfAydVy4/4Z+DuQ93oGenunkskktX
+         CZ91md///cYRD9wBkHbNCCJg8ozi3By1pQq9V7P1WnMlXVLRd+12Gdb4A40x05Wcmy
+         hAzz+p7gWxbwIxYcmv9QdjLuu9n/sAFVqPSmvEhU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/134] net: enetc: check the index of the SFI rather than the handle
-Date:   Mon, 15 May 2023 18:28:44 +0200
-Message-Id: <20230515161704.712190619@linuxfoundation.org>
+        patches@lists.linux.dev, Nevenko Stupar <Nevenko.Stupar@amd.com>,
+        Jun Lei <Jun.Lei@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Alex Hung <alex.hung@amd.com>, Alvin Lee <Alvin.Lee2@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.2 199/242] drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK modes
+Date:   Mon, 15 May 2023 18:28:45 +0200
+Message-Id: <20230515161727.914816557@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Alvin Lee <Alvin.Lee2@amd.com>
 
-[ Upstream commit 299efdc2380aac588557f4d0b2ce7bee05bd0cf2 ]
+commit b504f99ccaa64da364443431e388ecf30b604e38 upstream.
 
-We should check whether the current SFI (Stream Filter Instance) table
-is full before creating a new SFI entry. However, the previous logic
-checks the handle by mistake and might lead to unpredictable behavior.
+[Description]
+- Due to bandwidth / arbitration issues at 200Mhz DCFCLK,
+  we want to enforce minimum 60us of prefetch to avoid
+  intermittent underflow issues
+- Since 60us prefetch is already enforced for UCLK DPM0,
+  and many DCFCLK's > 200Mhz are mapped to UCLK DPM1, in
+  theory there should not be any UCLK DPM regressions by
+  enforcing greater prefetch
 
-Fixes: 888ae5a3952b ("net: enetc: add tc flower psfp offload driver")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Nevenko Stupar <Nevenko.Stupar@amd.com>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_qos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c |    5 +++--
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-index ba51fb381f0cb..4e9cb1deaf810 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-@@ -1270,7 +1270,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 		int index;
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -807,7 +807,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleep
+ 					v->SwathHeightY[k],
+ 					v->SwathHeightC[k],
+ 					TWait,
+-					v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ?
++					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
++						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= MIN_DCFCLK_FREQ_MHZ) ?
+ 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
+ 					/* Output */
+ 					&v->DSTXAfterScaler[k],
+@@ -3289,7 +3290,7 @@ void dml32_ModeSupportAndSystemConfigura
+ 							v->swath_width_chroma_ub_this_state[k],
+ 							v->SwathHeightYThisState[k],
+ 							v->SwathHeightCThisState[k], v->TWait,
+-							v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ ?
++							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= MIN_DCFCLK_FREQ_MHZ) ?
+ 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
  
- 		index = enetc_get_free_index(priv);
--		if (sfi->handle < 0) {
-+		if (index < 0) {
- 			NL_SET_ERR_MSG_MOD(extack, "No Stream Filter resource!");
- 			err = -ENOSPC;
- 			goto free_fmi;
--- 
-2.39.2
-
+ 							/* Output */
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
+@@ -52,6 +52,7 @@
+ #define BPP_BLENDED_PIPE 0xffffffff
+ 
+ #define MEM_STROBE_FREQ_MHZ 1600
++#define MIN_DCFCLK_FREQ_MHZ 200
+ #define MEM_STROBE_MAX_DELIVERY_TIME_US 60.0
+ 
+ struct display_mode_lib;
 
 
