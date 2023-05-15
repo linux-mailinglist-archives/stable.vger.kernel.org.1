@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 674A970367E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94755703AED
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243761AbjEORKj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:10:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
+        id S238267AbjEOR5N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:57:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243884AbjEORKE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:04 -0400
+        with ESMTP id S244797AbjEOR4A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 577CC8692
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B3ED870
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ABE9620FF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327A1C433D2;
-        Mon, 15 May 2023 17:08:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E679762FC1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAAAC433D2;
+        Mon, 15 May 2023 17:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170513;
-        bh=q6AzAGrTG8ArFQN82EMIcsu59wUViAOx8XuiCJeb2zI=;
+        s=korg; t=1684173246;
+        bh=PfyDjqO/6tcjDC+GDrPObxuTvMlznqvtvK2/x5DRIuU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jzD7d2iTuXlTZVmgP7pyr9GxFKDw0LVQU2EHOzSdj2f1VnyHesQ8/UpmJ+01/fpfw
-         T9c9TN4FN15XJBlgDE/+RdyC5Ri+FAVR7wFPhCcbCxGnM+5O98LTGBqpTZkryTN+Q8
-         ULkvVkI6hu+afMVCAjWaKzNcv/vXLSk0Duz2162Q=
+        b=WqH2E/JdlZkGt11urPmA8XbAdSl2G1WIEYNgozV1XPe39MJfgwCIC5/gp/ehxz0MN
+         monmMP3w2zbYjAljhVnEVZzJ4Ync22ziD/Xz7s66GlzvDmt+RN6lcvsug2r16WqLks
+         bUUjzY4dSf/uLGojBmtLl72TItdpZNeqfjeoBrTQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 6.1 147/239] drm/msm/adreno: fix runtime PM imbalance at gpu load
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 032/282] tpm, tpm_tis: Do not skip reset of original interrupt vector
 Date:   Mon, 15 May 2023 18:26:50 +0200
-Message-Id: <20230515161726.094047552@linuxfoundation.org>
+Message-Id: <20230515161723.238443849@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,71 +54,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-commit 0d997f95b70f98987ae031a89677c13e0e223670 upstream.
+[ Upstream commit ed9be0e6c892a783800d77a41ca4c7255c6af8c5 ]
 
-A recent commit moved enabling of runtime PM to GPU load time (first
-open()) but failed to update the error paths so that runtime PM is
-disabled if initialisation of the GPU fails. This would trigger a
-warning about the unbalanced disable count on the next open() attempt.
+If in tpm_tis_probe_irq_single() an error occurs after the original
+interrupt vector has been read, restore the interrupts before the error is
+returned.
 
-Note that pm_runtime_put_noidle() is sufficient to balance the usage
-count when pm_runtime_put_sync() fails (and is chosen over
-pm_runtime_resume_and_get() for consistency reasons).
+Since the caller does not check the error value, return -1 in any case that
+the TPM_CHIP_FLAG_IRQ flag is not set. Since the return value of function
+tpm_tis_gen_interrupt() is not longer used, make it a void function.
 
-Fixes: 4b18299b3365 ("drm/msm/adreno: Defer enabling runpm until hw_init()")
-Cc: stable@vger.kernel.org      # 6.0
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/524971/
-Link: https://lore.kernel.org/r/20230303164807.13124-3-johan+linaro@kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1107d065fdf1 ("tpm_tis: Introduce intermediate layer for TPM access")
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_device.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -440,20 +440,21 @@ struct msm_gpu *adreno_load_gpu(struct d
- 
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0) {
--		pm_runtime_put_sync(&pdev->dev);
-+		pm_runtime_put_noidle(&pdev->dev);
- 		DRM_DEV_ERROR(dev->dev, "Couldn't power up the GPU: %d\n", ret);
--		return NULL;
-+		goto err_disable_rpm;
- 	}
- 
- 	mutex_lock(&gpu->lock);
- 	ret = msm_gpu_hw_init(gpu);
- 	mutex_unlock(&gpu->lock);
--	pm_runtime_put_autosuspend(&pdev->dev);
- 	if (ret) {
- 		DRM_DEV_ERROR(dev->dev, "gpu hw init failed: %d\n", ret);
--		return NULL;
-+		goto err_put_rpm;
- 	}
- 
-+	pm_runtime_put_autosuspend(&pdev->dev);
-+
- #ifdef CONFIG_DEBUG_FS
- 	if (gpu->funcs->debugfs_init) {
- 		gpu->funcs->debugfs_init(gpu, dev->primary);
-@@ -462,6 +463,13 @@ struct msm_gpu *adreno_load_gpu(struct d
- #endif
- 
- 	return gpu;
-+
-+err_put_rpm:
-+	pm_runtime_put_sync(&pdev->dev);
-+err_disable_rpm:
-+	pm_runtime_disable(&pdev->dev);
-+
-+	return NULL;
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 70f7859942287..cb0660304e480 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -613,7 +613,7 @@ static irqreturn_t tis_int_handler(int dummy, void *dev_id)
+ 	return IRQ_HANDLED;
  }
  
- static int find_chipid(struct device *dev, struct adreno_rev *rev)
+-static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
++static void tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ {
+ 	const char *desc = "attempting to generate an interrupt";
+ 	u32 cap2;
+@@ -622,7 +622,7 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 
+ 	ret = request_locality(chip, 0);
+ 	if (ret < 0)
+-		return ret;
++		return;
+ 
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
+ 		ret = tpm2_get_tpm_pt(chip, 0x100, &cap2, desc);
+@@ -630,8 +630,6 @@ static int tpm_tis_gen_interrupt(struct tpm_chip *chip)
+ 		ret = tpm1_getcap(chip, TPM_CAP_PROP_TIS_TIMEOUT, &cap, desc, 0);
+ 
+ 	release_locality(chip, 0);
+-
+-	return ret;
+ }
+ 
+ /* Register the IRQ and issue a command that will cause an interrupt. If an
+@@ -661,42 +659,37 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 
+ 	rc = tpm_tis_write8(priv, TPM_INT_VECTOR(priv->locality), irq);
+ 	if (rc < 0)
+-		return rc;
++		goto restore_irqs;
+ 
+ 	rc = tpm_tis_read32(priv, TPM_INT_STATUS(priv->locality), &int_status);
+ 	if (rc < 0)
+-		return rc;
++		goto restore_irqs;
+ 
+ 	/* Clear all existing */
+ 	rc = tpm_tis_write32(priv, TPM_INT_STATUS(priv->locality), int_status);
+ 	if (rc < 0)
+-		return rc;
+-
++		goto restore_irqs;
+ 	/* Turn on */
+ 	rc = tpm_tis_write32(priv, TPM_INT_ENABLE(priv->locality),
+ 			     intmask | TPM_GLOBAL_INT_ENABLE);
+ 	if (rc < 0)
+-		return rc;
++		goto restore_irqs;
+ 
+ 	priv->irq_tested = false;
+ 
+ 	/* Generate an interrupt by having the core call through to
+ 	 * tpm_tis_send
+ 	 */
+-	rc = tpm_tis_gen_interrupt(chip);
+-	if (rc < 0)
+-		return rc;
++	tpm_tis_gen_interrupt(chip);
+ 
++restore_irqs:
+ 	/* tpm_tis_send will either confirm the interrupt is working or it
+ 	 * will call disable_irq which undoes all of the above.
+ 	 */
+ 	if (!(chip->flags & TPM_CHIP_FLAG_IRQ)) {
+-		rc = tpm_tis_write8(priv, original_int_vec,
+-				TPM_INT_VECTOR(priv->locality));
+-		if (rc < 0)
+-			return rc;
+-
+-		return 1;
++		tpm_tis_write8(priv, original_int_vec,
++			       TPM_INT_VECTOR(priv->locality));
++		return -1;
+ 	}
+ 
+ 	return 0;
+-- 
+2.39.2
+
 
 
