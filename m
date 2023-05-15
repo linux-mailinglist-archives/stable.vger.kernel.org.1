@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EE70703494
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41DCD7034A1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243075AbjEOQuN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55496 "EHLO
+        id S243043AbjEOQuo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:50:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243077AbjEOQt6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5295BA7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:47 -0700 (PDT)
+        with ESMTP id S243090AbjEOQuc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AAE5FEF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 741F16295D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871D1C433EF;
-        Mon, 15 May 2023 16:49:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ECF662968
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00568C433D2;
+        Mon, 15 May 2023 16:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169386;
-        bh=vNu5/Ha+wdbcfN9nLgGOHdPhDJYDG3KZ19kvAPi4csw=;
+        s=korg; t=1684169420;
+        bh=iT6QGnE7W6qfLqycX7nD3cRzpg+UkHGgMHnz6hlLvQI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GRfVZP2N+e6hxXUXd9+hP9HmbO8T6ybdWgW0+ZTEjEHpumxJ0Bm52Ae8o9gdjqNZy
-         C/5kqqrJVth7Kz/bmY0LDpxWucpgMetFkExdNZZPNMRJj/DthvdjHRXzQ80ZPNiDsk
-         A5ma80aJXOqps3lFepdZNNSluGBunFHgPOA7oAM8=
+        b=CKF3eT4bY1jybgP4YV4kFWHMEzFuxHzFozJbmnmJ7HZstIgSRGuT7uMDdcZ2n8Vip
+         TtwLl3S0RBt8aFqzZNIkY9L0k81RFtbluzrRbvYfECebi5uxqlMExFU9Jj/0S0Eztm
+         byo/tP/Y+2PP7OQj+RfkC0HbHKhA/qUzsqsyLuBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
+        patches@lists.linux.dev, John Hickey <jjh@daedalian.us>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 023/246] net/sched: flower: Fix wrong handle assignment during filter change
-Date:   Mon, 15 May 2023 18:23:55 +0200
-Message-Id: <20230515161723.304815375@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>,
+        Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.3 024/246] ixgbe: Fix panic during XDP_TX with > 64 CPUs
+Date:   Mon, 15 May 2023 18:23:56 +0200
+Message-Id: <20230515161723.334003938@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
 References: <20230515161722.610123835@linuxfoundation.org>
@@ -45,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,72 +57,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: John Hickey <jjh@daedalian.us>
 
-[ Upstream commit 32eff6bacec2cb574677c15378169a9fa30043ef ]
+[ Upstream commit c23ae5091a8b3e50fe755257df020907e7c029bb ]
 
-Commit 08a0063df3ae ("net/sched: flower: Move filter handle initialization
-earlier") moved filter handle initialization but an assignment of
-the handle to fnew->handle is done regardless of fold value. This is wrong
-because if fold != NULL (so fold->handle == handle) no new handle is
-allocated and passed handle is assigned to fnew->handle. Then if any
-subsequent action in fl_change() fails then the handle value is
-removed from IDR that is incorrect as we will have still valid old filter
-instance with handle that is not present in IDR.
-Fix this issue by moving the assignment so it is done only when passed
-fold == NULL.
+Commit 4fe815850bdc ("ixgbe: let the xdpdrv work with more than 64 cpus")
+adds support to allow XDP programs to run on systems with more than
+64 CPUs by locking the XDP TX rings and indexing them using cpu % 64
+(IXGBE_MAX_XDP_QS).
 
-Prior the patch:
-[root@machine tc-testing]# ./tdc.py -d enp1s0f0np0 -e 14be
-Test 14be: Concurrently replace same range of 100k flower filters from 10 tc instances
-exit: 123
-exit: 0
-RTNETLINK answers: Invalid argument
-We have an error talking to the kernel
-Command failed tmp/replace_6:1885
+Upon trying this out patch on a system with more than 64 cores,
+the kernel paniced with an array-index-out-of-bounds at the return in
+ixgbe_determine_xdp_ring in ixgbe.h, which means ixgbe_determine_xdp_q_idx
+was just returning the cpu instead of cpu % IXGBE_MAX_XDP_QS.  An example
+splat:
 
-All test results:
+ ==========================================================================
+ UBSAN: array-index-out-of-bounds in
+ /var/lib/dkms/ixgbe/5.18.6+focal-1/build/src/ixgbe.h:1147:26
+ index 65 is out of range for type 'ixgbe_ring *[64]'
+ ==========================================================================
+ BUG: kernel NULL pointer dereference, address: 0000000000000058
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 [#1] SMP NOPTI
+ CPU: 65 PID: 408 Comm: ksoftirqd/65
+ Tainted: G          IOE     5.15.0-48-generic #54~20.04.1-Ubuntu
+ Hardware name: Dell Inc. PowerEdge R640/0W23H8, BIOS 2.5.4 01/13/2020
+ RIP: 0010:ixgbe_xmit_xdp_ring+0x1b/0x1c0 [ixgbe]
+ Code: 3b 52 d4 cf e9 42 f2 ff ff 66 0f 1f 44 00 00 0f 1f 44 00 00 55 b9
+ 00 00 00 00 48 89 e5 41 57 41 56 41 55 41 54 53 48 83 ec 08 <44> 0f b7
+ 47 58 0f b7 47 5a 0f b7 57 54 44 0f b7 76 08 66 41 39 c0
+ RSP: 0018:ffffbc3fcd88fcb0 EFLAGS: 00010282
+ RAX: ffff92a253260980 RBX: ffffbc3fe68b00a0 RCX: 0000000000000000
+ RDX: ffff928b5f659000 RSI: ffff928b5f659000 RDI: 0000000000000000
+ RBP: ffffbc3fcd88fce0 R08: ffff92b9dfc20580 R09: 0000000000000001
+ R10: 3d3d3d3d3d3d3d3d R11: 3d3d3d3d3d3d3d3d R12: 0000000000000000
+ R13: ffff928b2f0fa8c0 R14: ffff928b9be20050 R15: 000000000000003c
+ FS:  0000000000000000(0000) GS:ffff92b9dfc00000(0000)
+ knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000058 CR3: 000000011dd6a002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ixgbe_poll+0x103e/0x1280 [ixgbe]
+  ? sched_clock_cpu+0x12/0xe0
+  __napi_poll+0x30/0x160
+  net_rx_action+0x11c/0x270
+  __do_softirq+0xda/0x2ee
+  run_ksoftirqd+0x2f/0x50
+  smpboot_thread_fn+0xb7/0x150
+  ? sort_range+0x30/0x30
+  kthread+0x127/0x150
+  ? set_kthread_struct+0x50/0x50
+  ret_from_fork+0x1f/0x30
+  </TASK>
 
-1..1
-not ok 1 14be - Concurrently replace same range of 100k flower filters from 10 tc instances
-        Command exited with 123, expected 0
-RTNETLINK answers: Invalid argument
-We have an error talking to the kernel
-Command failed tmp/replace_6:1885
+I think this is how it happens:
 
-After the patch:
-[root@machine tc-testing]# ./tdc.py -d enp1s0f0np0 -e 14be
-Test 14be: Concurrently replace same range of 100k flower filters from 10 tc instances
+Upon loading the first XDP program on a system with more than 64 CPUs,
+ixgbe_xdp_locking_key is incremented in ixgbe_xdp_setup.  However,
+immediately after this, the rings are reconfigured by ixgbe_setup_tc.
+ixgbe_setup_tc calls ixgbe_clear_interrupt_scheme which calls
+ixgbe_free_q_vectors which calls ixgbe_free_q_vector in a loop.
+ixgbe_free_q_vector decrements ixgbe_xdp_locking_key once per call if
+it is non-zero.  Commenting out the decrement in ixgbe_free_q_vector
+stopped my system from panicing.
 
-All test results:
+I suspect to make the original patch work, I would need to load an XDP
+program and then replace it in order to get ixgbe_xdp_locking_key back
+above 0 since ixgbe_setup_tc is only called when transitioning between
+XDP and non-XDP ring configurations, while ixgbe_xdp_locking_key is
+incremented every time ixgbe_xdp_setup is called.
 
-1..1
-ok 1 14be - Concurrently replace same range of 100k flower filters from 10 tc instances
+Also, ixgbe_setup_tc can be called via ethtool --set-channels, so this
+becomes another path to decrement ixgbe_xdp_locking_key to 0 on systems
+with more than 64 CPUs.
 
-Fixes: 08a0063df3ae ("net/sched: flower: Move filter handle initialization earlier")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230425140604.169881-1-ivecera@redhat.com
+Since ixgbe_xdp_locking_key only protects the XDP_TX path and is tied
+to the number of CPUs present, there is no reason to disable it upon
+unloading an XDP program.  To avoid confusion, I have moved enabling
+ixgbe_xdp_locking_key into ixgbe_sw_init, which is part of the probe path.
+
+Fixes: 4fe815850bdc ("ixgbe: let the xdpdrv work with more than 64 cpus")
+Signed-off-by: John Hickey <jjh@daedalian.us>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20230425170308.2522429-1-anthony.l.nguyen@intel.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_flower.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c  | 3 ---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 6 ++++--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 475fe222a8556..fa6c2bb0b6267 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -2231,8 +2231,8 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
- 			kfree(fnew);
- 			goto errout_tb;
- 		}
-+		fnew->handle = handle;
- 	}
--	fnew->handle = handle;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c
+index f8156fe4b1dc4..0ee943db3dc92 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c
+@@ -1035,9 +1035,6 @@ static void ixgbe_free_q_vector(struct ixgbe_adapter *adapter, int v_idx)
+ 	adapter->q_vector[v_idx] = NULL;
+ 	__netif_napi_del(&q_vector->napi);
  
- 	err = tcf_exts_init_ex(&fnew->exts, net, TCA_FLOWER_ACT, 0, tp, handle,
- 			       !tc_skip_hw(fnew->flags));
+-	if (static_key_enabled(&ixgbe_xdp_locking_key))
+-		static_branch_dec(&ixgbe_xdp_locking_key);
+-
+ 	/*
+ 	 * after a call to __netif_napi_del() napi may still be used and
+ 	 * ixgbe_get_stats64() might access the rings on this vector,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 773c35fecacef..d7c247e46dfcc 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -6495,6 +6495,10 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
+ 	set_bit(0, adapter->fwd_bitmask);
+ 	set_bit(__IXGBE_DOWN, &adapter->state);
+ 
++	/* enable locking for XDP_TX if we have more CPUs than queues */
++	if (nr_cpu_ids > IXGBE_MAX_XDP_QS)
++		static_branch_enable(&ixgbe_xdp_locking_key);
++
+ 	return 0;
+ }
+ 
+@@ -10290,8 +10294,6 @@ static int ixgbe_xdp_setup(struct net_device *dev, struct bpf_prog *prog)
+ 	 */
+ 	if (nr_cpu_ids > IXGBE_MAX_XDP_QS * 2)
+ 		return -ENOMEM;
+-	else if (nr_cpu_ids > IXGBE_MAX_XDP_QS)
+-		static_branch_inc(&ixgbe_xdp_locking_key);
+ 
+ 	old_prog = xchg(&adapter->xdp_prog, prog);
+ 	need_reset = (!!prog != !!old_prog);
 -- 
 2.39.2
 
