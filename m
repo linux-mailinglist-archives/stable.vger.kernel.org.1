@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFFBD703AF1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5268703998
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242485AbjEOR5Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53796 "EHLO
+        id S244598AbjEORoG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244975AbjEOR4l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966B61D49C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:29 -0700 (PDT)
+        with ESMTP id S244599AbjEORnp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBBCBDDA1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 767CF621EB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4A4C433D2;
-        Mon, 15 May 2023 17:54:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCA2162E56
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55B9C433D2;
+        Mon, 15 May 2023 17:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173268;
-        bh=hegmyrfBK1DgQ6ioUcBCOVPq9e94EZJ/mwFhF2lB0jQ=;
+        s=korg; t=1684172479;
+        bh=gcdkkqw8BzI02L9OoQNfcSdM2/7xisG6SgRd5XFrvWo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d3VB/CDIn//BaW3iM7gUSutq+g5QInMJ0atWi8HBWXuyyq9yxIUJ50HL4p3UJkqAD
-         3m06O2zBGor0/0qnqitXykkLIawh7V+tBqR6H5wpbWTB/IVTAKHjeroXZHvfEpaaUe
-         shiegSAHx2gx6VCDGWnos+pSRRO36FeqvrbG7wv0=
+        b=rt0xunqtq1wwk8O46DmSjakY+zI4N/b723Fq2hkTjudDvBt874XZys5eyjwqDJz+S
+         KAxMRiYaGS4+NIy0tMdfjrj0O1qVRtj+MRzVm3nBwJtSUWk9jwqDKqlgwDySqRiUmx
+         emohXHxE/lptKixdTk1hCfOw5gh71J7aQkAH6Xh0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 5.4 011/282] USB: dwc3: fix runtime pm imbalance on unbind
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 138/381] bpf: fix precision propagation verbose logging
 Date:   Mon, 15 May 2023 18:26:29 +0200
-Message-Id: <20230515161722.607438539@linuxfoundation.org>
+Message-Id: <20230515161743.066341783@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 44d257e9012ee8040e41d224d0e5bfb5ef5427ea upstream.
+[ Upstream commit 34f0677e7afd3a292bc1aadda7ce8e35faedb204 ]
 
-Make sure to balance the runtime PM usage count on driver unbind by
-adding back the pm_runtime_allow() call that had been erroneously
-removed.
+Fix wrong order of frame index vs register/slot index in precision
+propagation verbose (level 2) output. It's wrong and very confusing as is.
 
-Fixes: 266d0493900a ("usb: dwc3: core: don't trigger runtime pm when remove driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Li Jun <jun.li@nxp.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230404072524.19014-3-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 529409ea92d5 ("bpf: propagate precision across all frames, not just the last one")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20230313184017.4083374-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/verifier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1584,6 +1584,7 @@ static int dwc3_remove(struct platform_d
- 	dwc3_core_exit(dwc);
- 	dwc3_ulpi_exit(dwc);
- 
-+	pm_runtime_allow(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index e2488a00efc5a..232f720104cdf 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -9554,7 +9554,7 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 			    !(state_reg->live & REG_LIVE_READ))
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+-				verbose(env, "frame %d: propagating r%d\n", i, fr);
++				verbose(env, "frame %d: propagating r%d\n", fr, i);
+ 			err = mark_chain_precision_frame(env, fr, i);
+ 			if (err < 0)
+ 				return err;
+@@ -9570,7 +9570,7 @@ static int propagate_precision(struct bpf_verifier_env *env,
+ 				continue;
+ 			if (env->log.level & BPF_LOG_LEVEL2)
+ 				verbose(env, "frame %d: propagating fp%d\n",
+-					(-i - 1) * BPF_REG_SIZE, fr);
++					fr, (-i - 1) * BPF_REG_SIZE);
+ 			err = mark_chain_precision_stack_frame(env, fr, i);
+ 			if (err < 0)
+ 				return err;
+-- 
+2.39.2
+
 
 
