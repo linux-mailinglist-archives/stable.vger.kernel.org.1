@@ -2,58 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED97270337F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF2C70353E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242805AbjEOQhz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41186 "EHLO
+        id S243255AbjEOQ5M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242819AbjEOQhw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE503C3C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:51 -0700 (PDT)
+        with ESMTP id S243240AbjEOQ5J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9DCC5275
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E913C62823
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD8FC433D2;
-        Mon, 15 May 2023 16:37:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC4CA62A0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CAEC433EF;
+        Mon, 15 May 2023 16:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168670;
-        bh=CmgM/PIwsVAX6k9rEN88Wruqx4PIDenkBh/UWv7DCig=;
+        s=korg; t=1684169819;
+        bh=cSOiOznBrKJLOl5pV3FfwgXDbn7hveJiL9lDKX0iOX8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DTOEcrxaQzNMxkEwXDYFdXRCdkTVjQ6uz01UaI4RARBNQVaIhS6DE5v0/YDW4OJIJ
-         iBJnroFAp4m1nUnIc1qAjBFJRTcUlUgMCSZO+2ixYRIVYa0GZt8dKy3yWQSK+eCuwd
-         EveaYwpGlzWbdCcFyNjPCNwrkgLmCS7b7+EZ10tk=
+        b=VEWNtKX9G1H/AALpH3j2QdKfwDdnB2vsFK9R07fmlqJcHY0fu/ZnWMGKvTjVbaZ7B
+         OfUqamRcKpwi6Qg/61uBmgo7qkmgHzT25EjOMJthoD3ZwWx5osNF/xefdaX3COplDP
+         oJPNXSFoDVbqAnsZn/TL4MGMbGU+hy6+ih2foFbU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@kernel.com>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 094/116] perf vendor events power9: Remove UTF-8 characters from JSON files
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.3 179/246] f2fs: factor out victim_entry usage from general rb_tree use
 Date:   Mon, 15 May 2023 18:26:31 +0200
-Message-Id: <20230515161701.376943982@linuxfoundation.org>
+Message-Id: <20230515161727.999031846@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,108 +53,414 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
+commit 043d2d00b44310f84c0593c63e51fae88c829cdd upstream.
 
-Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
-events") added and updated power9 PMU JSON events. However some of the
-JSON events which are part of other.json and pipeline.json files,
-contains UTF-8 characters in their brief description.  Having UTF-8
-character could breaks the perf build on some distros.
+Let's reduce the complexity of mixed use of rb_tree in victim_entry from
+extent_cache and discard_cmd.
 
-Fix this issue by removing the UTF-8 characters from other.json and
-pipeline.json files.
+This should fix arm32 memory alignment issue caused by shared rb_entry.
 
-Result without the fix:
+[struct victim_entry]              [struct rb_entry]
+[0] struct rb_node rb_node;        [0] struct rb_node rb_node;
+                                       union {
+                                         struct {
+                                           unsigned int ofs;
+                                           unsigned int len;
+                                         };
+[16] unsigned long long mtime;     [12] unsigned long long key;
+                                       } __packed;
 
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Result with the fix:
-
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
-
-Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 093749e296e2 ("f2fs: support age threshold based garbage collection")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
- tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/extent_cache.c |   36 ------------
+ fs/f2fs/f2fs.h         |   15 +----
+ fs/f2fs/gc.c           |  139 +++++++++++++++++++++++++++++--------------------
+ fs/f2fs/gc.h           |   14 ----
+ fs/f2fs/segment.c      |    4 -
+ 5 files changed, 93 insertions(+), 115 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 54cc3be00fc2d..0048c27d75f35 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -1452,7 +1452,7 @@
-   {,
-     "EventCode": "0x45054",
-     "EventName": "PM_FMA_CMPL",
--    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
-+    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
-   },
-   {,
-     "EventCode": "0x5090",
-@@ -2067,7 +2067,7 @@
-   {,
-     "EventCode": "0xC0BC",
-     "EventName": "PM_LSU_FLUSH_OTHER",
--    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
-+    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
-   },
-   {,
-     "EventCode": "0x5094",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-index bc2db636dabf1..876292f69e1f6 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-@@ -462,7 +462,7 @@
-   {,
-     "EventCode": "0x4D052",
-     "EventName": "PM_2FLOP_CMPL",
--    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
-+    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
-   },
-   {,
-     "EventCode": "0x1F142",
--- 
-2.39.2
-
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -204,29 +204,6 @@ struct rb_entry *f2fs_lookup_rb_tree(str
+ 	return re;
+ }
+ 
+-struct rb_node **f2fs_lookup_rb_tree_ext(struct f2fs_sb_info *sbi,
+-					struct rb_root_cached *root,
+-					struct rb_node **parent,
+-					unsigned long long key, bool *leftmost)
+-{
+-	struct rb_node **p = &root->rb_root.rb_node;
+-	struct rb_entry *re;
+-
+-	while (*p) {
+-		*parent = *p;
+-		re = rb_entry(*parent, struct rb_entry, rb_node);
+-
+-		if (key < re->key) {
+-			p = &(*p)->rb_left;
+-		} else {
+-			p = &(*p)->rb_right;
+-			*leftmost = false;
+-		}
+-	}
+-
+-	return p;
+-}
+-
+ struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+ 				struct rb_root_cached *root,
+ 				struct rb_node **parent,
+@@ -335,7 +312,7 @@ lookup_neighbors:
+ }
+ 
+ bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+-				struct rb_root_cached *root, bool check_key)
++				struct rb_root_cached *root)
+ {
+ #ifdef CONFIG_F2FS_CHECK_FS
+ 	struct rb_node *cur = rb_first_cached(root), *next;
+@@ -352,23 +329,12 @@ bool f2fs_check_rb_tree_consistence(stru
+ 		cur_re = rb_entry(cur, struct rb_entry, rb_node);
+ 		next_re = rb_entry(next, struct rb_entry, rb_node);
+ 
+-		if (check_key) {
+-			if (cur_re->key > next_re->key) {
+-				f2fs_info(sbi, "inconsistent rbtree, "
+-					"cur(%llu) next(%llu)",
+-					cur_re->key, next_re->key);
+-				return false;
+-			}
+-			goto next;
+-		}
+-
+ 		if (cur_re->ofs + cur_re->len > next_re->ofs) {
+ 			f2fs_info(sbi, "inconsistent rbtree, cur(%u, %u) next(%u, %u)",
+ 				  cur_re->ofs, cur_re->len,
+ 				  next_re->ofs, next_re->len);
+ 			return false;
+ 		}
+-next:
+ 		cur = next;
+ 	}
+ #endif
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -630,13 +630,8 @@ enum extent_type {
+ 
+ struct rb_entry {
+ 	struct rb_node rb_node;		/* rb node located in rb-tree */
+-	union {
+-		struct {
+-			unsigned int ofs;	/* start offset of the entry */
+-			unsigned int len;	/* length of the entry */
+-		};
+-		unsigned long long key;		/* 64-bits key */
+-	} __packed;
++	unsigned int ofs;		/* start offset of the entry */
++	unsigned int len;		/* length of the entry */
+ };
+ 
+ struct extent_info {
+@@ -4141,10 +4136,6 @@ void f2fs_leave_shrinker(struct f2fs_sb_
+ bool sanity_check_extent_cache(struct inode *inode);
+ struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
+ 				struct rb_entry *cached_re, unsigned int ofs);
+-struct rb_node **f2fs_lookup_rb_tree_ext(struct f2fs_sb_info *sbi,
+-				struct rb_root_cached *root,
+-				struct rb_node **parent,
+-				unsigned long long key, bool *left_most);
+ struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+ 				struct rb_root_cached *root,
+ 				struct rb_node **parent,
+@@ -4155,7 +4146,7 @@ struct rb_entry *f2fs_lookup_rb_tree_ret
+ 		struct rb_node ***insert_p, struct rb_node **insert_parent,
+ 		bool force, bool *leftmost);
+ bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+-				struct rb_root_cached *root, bool check_key);
++				struct rb_root_cached *root);
+ void f2fs_init_extent_tree(struct inode *inode);
+ void f2fs_drop_extent_tree(struct inode *inode);
+ void f2fs_destroy_extent_node(struct inode *inode);
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -390,40 +390,95 @@ static unsigned int count_bits(const uns
+ 	return sum;
+ }
+ 
+-static struct victim_entry *attach_victim_entry(struct f2fs_sb_info *sbi,
+-				unsigned long long mtime, unsigned int segno,
+-				struct rb_node *parent, struct rb_node **p,
+-				bool left_most)
++static bool f2fs_check_victim_tree(struct f2fs_sb_info *sbi,
++				struct rb_root_cached *root)
++{
++#ifdef CONFIG_F2FS_CHECK_FS
++	struct rb_node *cur = rb_first_cached(root), *next;
++	struct victim_entry *cur_ve, *next_ve;
++
++	while (cur) {
++		next = rb_next(cur);
++		if (!next)
++			return true;
++
++		cur_ve = rb_entry(cur, struct victim_entry, rb_node);
++		next_ve = rb_entry(next, struct victim_entry, rb_node);
++
++		if (cur_ve->mtime > next_ve->mtime) {
++			f2fs_info(sbi, "broken victim_rbtree, "
++				"cur_mtime(%llu) next_mtime(%llu)",
++				cur_ve->mtime, next_ve->mtime);
++			return false;
++		}
++		cur = next;
++	}
++#endif
++	return true;
++}
++
++static struct victim_entry *__lookup_victim_entry(struct f2fs_sb_info *sbi,
++					unsigned long long mtime)
++{
++	struct atgc_management *am = &sbi->am;
++	struct rb_node *node = am->root.rb_root.rb_node;
++	struct victim_entry *ve = NULL;
++
++	while (node) {
++		ve = rb_entry(node, struct victim_entry, rb_node);
++
++		if (mtime < ve->mtime)
++			node = node->rb_left;
++		else
++			node = node->rb_right;
++	}
++	return ve;
++}
++
++static struct victim_entry *__create_victim_entry(struct f2fs_sb_info *sbi,
++		unsigned long long mtime, unsigned int segno)
+ {
+ 	struct atgc_management *am = &sbi->am;
+ 	struct victim_entry *ve;
+ 
+-	ve =  f2fs_kmem_cache_alloc(victim_entry_slab,
+-				GFP_NOFS, true, NULL);
++	ve =  f2fs_kmem_cache_alloc(victim_entry_slab, GFP_NOFS, true, NULL);
+ 
+ 	ve->mtime = mtime;
+ 	ve->segno = segno;
+ 
+-	rb_link_node(&ve->rb_node, parent, p);
+-	rb_insert_color_cached(&ve->rb_node, &am->root, left_most);
+-
+ 	list_add_tail(&ve->list, &am->victim_list);
+-
+ 	am->victim_count++;
+ 
+ 	return ve;
+ }
+ 
+-static void insert_victim_entry(struct f2fs_sb_info *sbi,
++static void __insert_victim_entry(struct f2fs_sb_info *sbi,
+ 				unsigned long long mtime, unsigned int segno)
+ {
+ 	struct atgc_management *am = &sbi->am;
+-	struct rb_node **p;
++	struct rb_root_cached *root = &am->root;
++	struct rb_node **p = &root->rb_root.rb_node;
+ 	struct rb_node *parent = NULL;
++	struct victim_entry *ve;
+ 	bool left_most = true;
+ 
+-	p = f2fs_lookup_rb_tree_ext(sbi, &am->root, &parent, mtime, &left_most);
+-	attach_victim_entry(sbi, mtime, segno, parent, p, left_most);
++	/* look up rb tree to find parent node */
++	while (*p) {
++		parent = *p;
++		ve = rb_entry(parent, struct victim_entry, rb_node);
++
++		if (mtime < ve->mtime) {
++			p = &(*p)->rb_left;
++		} else {
++			p = &(*p)->rb_right;
++			left_most = false;
++		}
++	}
++
++	ve = __create_victim_entry(sbi, mtime, segno);
++
++	rb_link_node(&ve->rb_node, parent, p);
++	rb_insert_color_cached(&ve->rb_node, root, left_most);
+ }
+ 
+ static void add_victim_entry(struct f2fs_sb_info *sbi,
+@@ -459,19 +514,7 @@ static void add_victim_entry(struct f2fs
+ 	if (sit_i->dirty_max_mtime - mtime < p->age_threshold)
+ 		return;
+ 
+-	insert_victim_entry(sbi, mtime, segno);
+-}
+-
+-static struct rb_node *lookup_central_victim(struct f2fs_sb_info *sbi,
+-						struct victim_sel_policy *p)
+-{
+-	struct atgc_management *am = &sbi->am;
+-	struct rb_node *parent = NULL;
+-	bool left_most;
+-
+-	f2fs_lookup_rb_tree_ext(sbi, &am->root, &parent, p->age, &left_most);
+-
+-	return parent;
++	__insert_victim_entry(sbi, mtime, segno);
+ }
+ 
+ static void atgc_lookup_victim(struct f2fs_sb_info *sbi,
+@@ -481,7 +524,6 @@ static void atgc_lookup_victim(struct f2
+ 	struct atgc_management *am = &sbi->am;
+ 	struct rb_root_cached *root = &am->root;
+ 	struct rb_node *node;
+-	struct rb_entry *re;
+ 	struct victim_entry *ve;
+ 	unsigned long long total_time;
+ 	unsigned long long age, u, accu;
+@@ -508,12 +550,10 @@ static void atgc_lookup_victim(struct f2
+ 
+ 	node = rb_first_cached(root);
+ next:
+-	re = rb_entry_safe(node, struct rb_entry, rb_node);
+-	if (!re)
++	ve = rb_entry_safe(node, struct victim_entry, rb_node);
++	if (!ve)
+ 		return;
+ 
+-	ve = (struct victim_entry *)re;
+-
+ 	if (ve->mtime >= max_mtime || ve->mtime < min_mtime)
+ 		goto skip;
+ 
+@@ -555,8 +595,6 @@ static void atssr_lookup_victim(struct f
+ {
+ 	struct sit_info *sit_i = SIT_I(sbi);
+ 	struct atgc_management *am = &sbi->am;
+-	struct rb_node *node;
+-	struct rb_entry *re;
+ 	struct victim_entry *ve;
+ 	unsigned long long age;
+ 	unsigned long long max_mtime = sit_i->dirty_max_mtime;
+@@ -566,25 +604,22 @@ static void atssr_lookup_victim(struct f
+ 	unsigned int dirty_threshold = max(am->max_candidate_count,
+ 					am->candidate_ratio *
+ 					am->victim_count / 100);
+-	unsigned int cost;
+-	unsigned int iter = 0;
++	unsigned int cost, iter;
+ 	int stage = 0;
+ 
+ 	if (max_mtime < min_mtime)
+ 		return;
+ 	max_mtime += 1;
+ next_stage:
+-	node = lookup_central_victim(sbi, p);
++	iter = 0;
++	ve = __lookup_victim_entry(sbi, p->age);
+ next_node:
+-	re = rb_entry_safe(node, struct rb_entry, rb_node);
+-	if (!re) {
+-		if (stage == 0)
+-			goto skip_stage;
++	if (!ve) {
++		if (stage++ == 0)
++			goto next_stage;
+ 		return;
+ 	}
+ 
+-	ve = (struct victim_entry *)re;
+-
+ 	if (ve->mtime >= max_mtime || ve->mtime < min_mtime)
+ 		goto skip_node;
+ 
+@@ -610,24 +645,20 @@ next_node:
+ 	}
+ skip_node:
+ 	if (iter < dirty_threshold) {
+-		if (stage == 0)
+-			node = rb_prev(node);
+-		else if (stage == 1)
+-			node = rb_next(node);
++		ve = rb_entry(stage == 0 ? rb_prev(&ve->rb_node) :
++					rb_next(&ve->rb_node),
++					struct victim_entry, rb_node);
+ 		goto next_node;
+ 	}
+-skip_stage:
+-	if (stage < 1) {
+-		stage++;
+-		iter = 0;
++
++	if (stage++ == 0)
+ 		goto next_stage;
+-	}
+ }
++
+ static void lookup_victim_by_age(struct f2fs_sb_info *sbi,
+ 						struct victim_sel_policy *p)
+ {
+-	f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+-						&sbi->am.root, true));
++	f2fs_bug_on(sbi, !f2fs_check_victim_tree(sbi, &sbi->am.root));
+ 
+ 	if (p->gc_mode == GC_AT)
+ 		atgc_lookup_victim(sbi, p);
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -55,20 +55,10 @@ struct gc_inode_list {
+ 	struct radix_tree_root iroot;
+ };
+ 
+-struct victim_info {
+-	unsigned long long mtime;	/* mtime of section */
+-	unsigned int segno;		/* section No. */
+-};
+-
+ struct victim_entry {
+ 	struct rb_node rb_node;		/* rb node located in rb-tree */
+-	union {
+-		struct {
+-			unsigned long long mtime;	/* mtime of section */
+-			unsigned int segno;		/* segment No. */
+-		};
+-		struct victim_info vi;	/* victim info */
+-	};
++	unsigned long long mtime;	/* mtime of section */
++	unsigned int segno;		/* segment No. */
+ 	struct list_head list;
+ };
+ 
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1484,7 +1484,7 @@ retry:
+ 			goto next;
+ 		if (unlikely(dcc->rbtree_check))
+ 			f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+-							&dcc->root, false));
++							&dcc->root));
+ 		blk_start_plug(&plug);
+ 		list_for_each_entry_safe(dc, tmp, pend_list, list) {
+ 			f2fs_bug_on(sbi, dc->state != D_PREP);
+@@ -2971,7 +2971,7 @@ next:
+ 	mutex_lock(&dcc->cmd_lock);
+ 	if (unlikely(dcc->rbtree_check))
+ 		f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+-							&dcc->root, false));
++							&dcc->root));
+ 
+ 	dc = (struct discard_cmd *)f2fs_lookup_rb_tree_ret(&dcc->root,
+ 					NULL, start,
 
 
