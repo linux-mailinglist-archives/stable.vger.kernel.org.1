@@ -2,105 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE3F703318
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5065F70361B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242515AbjEOQdM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
+        id S243489AbjEORGu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242618AbjEOQdH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 820742D61
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:02 -0700 (PDT)
+        with ESMTP id S243493AbjEORGd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C291903A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6251062792
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D17C4339E;
-        Mon, 15 May 2023 16:33:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D83062ABE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA3FC433D2;
+        Mon, 15 May 2023 17:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168381;
-        bh=k7IX5QJR5FwzdJcUtLO9ziOnSoOHlK5R/5PqTBl+6kI=;
+        s=korg; t=1684170300;
+        bh=r+SSyj6xy+isNVZlVW0ckysKn30n63yxHTczV9k9BUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bt7kGPzAXWXMkuq6PSf1faH6EXsQLSZcuStioiQtLgp//Y7JYmgQ5fZ7r1WwYeOzK
-         h3Up2OWXyJNai8ppVnEvtzynfBALnFBr9qqB+q3MaMO35l9x8xKNuCa1V9IzeBaQy/
-         0JEIRuH7jP6LhGFoUus7s+ExEOOmGoDnCPsGXTcg=
+        b=A8RRNuQpbcVGd7cUHoh1qyVC/Ir3PPpCpWax8xawOeKU2d81vy5IVb8xTHmeuxydW
+         MmDdVIfN0amslFxqYH1H8JU5Fe4ip9LrI0GS+cecM8XtlhlT8uhJ69Bp2c5bvNLABJ
+         4phiTS+Qfp34exIkgP/8KhNe8oSPEkfHyrK/7VNM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 024/116] media: dm1105: Fix use after free bug in dm1105_remove due to race condition
+Subject: [PATCH 6.1 058/239] r8152: fix the poor throughput for 2.5G devices
 Date:   Mon, 15 May 2023 18:25:21 +0200
-Message-Id: <20230515161659.082605478@linuxfoundation.org>
+Message-Id: <20230515161723.443519615@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_PDS_OTHER_BAD_TLD,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Hayes Wang <hayeswang@realtek.com>
 
-[ Upstream commit 5abda7a16698d4d1f47af1168d8fa2c640116b4a ]
+[ Upstream commit 61b0ad6f58e2066e054c6d4839d67974d2861a7d ]
 
-In dm1105_probe, it called dm1105_ir_init and bound
-&dm1105->ir.work with dm1105_emit_key.
-When it handles IRQ request with dm1105_irq,
-it may call schedule_work to start the work.
+Fix the poor throughput for 2.5G devices, when changing the speed from
+auto mode to force mode. This patch is used to notify the MAC when the
+mode is changed.
 
-When we call dm1105_remove to remove the driver, there
-may be a sequence as follows:
-
-Fix it by finishing the work before cleanup in dm1105_remove
-
-CPU0                  CPU1
-
-                    |dm1105_emit_key
-dm1105_remove      |
-  dm1105_ir_exit       |
-    rc_unregister_device |
-    rc_free_device  |
-    rc_dev_release  |
-    kfree(dev);     |
-                    |
-                    | rc_keydown
-                    |   //use
-
-Fixes: 34d2f9bf189c ("V4L/DVB: dm1105: use dm1105_dev & dev instead of dm1105dvb")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 195aae321c82 ("r8152: support new chips")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/dm1105/dm1105.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/r8152.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/media/pci/dm1105/dm1105.c b/drivers/media/pci/dm1105/dm1105.c
-index 7c3900dec3686..df08297911546 100644
---- a/drivers/media/pci/dm1105/dm1105.c
-+++ b/drivers/media/pci/dm1105/dm1105.c
-@@ -1185,6 +1185,7 @@ static void dm1105_remove(struct pci_dev *pdev)
- 	struct dvb_demux *dvbdemux = &dev->demux;
- 	struct dmx_demux *dmx = &dvbdemux->dmx;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index b0ce524ef1a50..a7665accc81c8 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -199,6 +199,7 @@
+ #define OCP_EEE_AR		0xa41a
+ #define OCP_EEE_DATA		0xa41c
+ #define OCP_PHY_STATUS		0xa420
++#define OCP_INTR_EN		0xa424
+ #define OCP_NCTL_CFG		0xa42c
+ #define OCP_POWER_CFG		0xa430
+ #define OCP_EEE_CFG		0xa432
+@@ -620,6 +621,9 @@ enum spd_duplex {
+ #define PHY_STAT_LAN_ON		3
+ #define PHY_STAT_PWRDN		5
  
-+	cancel_work_sync(&dev->ir.work);
- 	dm1105_ir_exit(dev);
- 	dmx->close(dmx);
- 	dvb_net_release(&dev->dvbnet);
++/* OCP_INTR_EN */
++#define INTR_SPEED_FORCE	BIT(3)
++
+ /* OCP_NCTL_CFG */
+ #define PGA_RETURN_EN		BIT(1)
+ 
+@@ -7554,6 +7558,11 @@ static void r8156_hw_phy_cfg(struct r8152 *tp)
+ 				      ((swap_a & 0x1f) << 8) |
+ 				      ((swap_a >> 8) & 0x1f));
+ 		}
++
++		/* Notify the MAC when the speed is changed to force mode. */
++		data = ocp_reg_read(tp, OCP_INTR_EN);
++		data |= INTR_SPEED_FORCE;
++		ocp_reg_write(tp, OCP_INTR_EN, data);
+ 		break;
+ 	default:
+ 		break;
+@@ -7949,6 +7958,11 @@ static void r8156b_hw_phy_cfg(struct r8152 *tp)
+ 		break;
+ 	}
+ 
++	/* Notify the MAC when the speed is changed to force mode. */
++	data = ocp_reg_read(tp, OCP_INTR_EN);
++	data |= INTR_SPEED_FORCE;
++	ocp_reg_write(tp, OCP_INTR_EN, data);
++
+ 	if (rtl_phy_patch_request(tp, true, true))
+ 		return;
+ 
 -- 
 2.39.2
 
