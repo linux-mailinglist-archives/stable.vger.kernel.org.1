@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D808A7038E4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89EB7038E7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244296AbjEORg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
+        id S244414AbjEORgc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:36:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243915AbjEORft (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:35:49 -0400
+        with ESMTP id S244428AbjEORfz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:35:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D0912EBD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C461328B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92DBC61EC4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878E1C4339B;
-        Mon, 15 May 2023 17:33:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F1166204A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F29C433D2;
+        Mon, 15 May 2023 17:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172012;
-        bh=RV+L31XDP9zeY/onZ/nkM0t2f9jzlGEyCwgsp5GiaOs=;
+        s=korg; t=1684172015;
+        bh=8r1z6+zlLX5kZZjRsnVMbks8vuLgQJO5hKGKMtuVvsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zTb31ZUDwB9NtfKZGtd9YW7mrWs+UyzF4CU1wVji03E58ywL/CxZqOatHeV6cJ/+f
-         MHihn9BVAdAp5kH00N98zizf9T/LKjSRvw/mIvcnzKNQNpQBY0Hg7r3kc5btHDzwqD
-         iDNUBWzvScK7yqtaiKZvZxdEeGdeZW3Dqpa/DZ0U=
+        b=mTeDZuAGjP8YLWOccUBxqsX1Z9mB6LoUYt0EC9buRoHSQZlXlG5xIm5PDsKHMwk0R
+         XRz4lUAK94c5x5OSSebj33Ipw515EAtSslwF8XZwqn7FgXyUhrrrrAn8qE9M+rRo2R
+         cHUu/DvBY9xuPFh48eyQ3/HwmJZx05hELX41alvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 5.10 016/381] PCI: qcom: Fix the incorrect register usage in v2.7.0 config
-Date:   Mon, 15 May 2023 18:24:27 +0200
-Message-Id: <20230515161737.500827258@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 5.10 017/381] IMA: allow/fix UML builds
+Date:   Mon, 15 May 2023 18:24:28 +0200
+Message-Id: <20230515161737.553558624@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
 References: <20230515161736.775969473@linuxfoundation.org>
@@ -54,44 +57,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 2542e16c392508800f1d9037feee881a9c444951 upstream.
+commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
 
-Qcom PCIe IP version v2.7.0 and its derivatives don't contain the
-PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT register. Instead, they have the new
-PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2 register. So fix the incorrect
-register usage which is modifying a different register.
+UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
+NO_IOMEM).
 
-Also in this IP version, this register change doesn't depend on MSI
-being enabled. So remove that check also.
+Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
 
-Link: https://lore.kernel.org/r/20230316081117.14288-2-manivannan.sadhasivam@linaro.org
-Fixes: ed8cc3b1fc84 ("PCI: qcom: Add support for SDM845 PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.6+
+ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
+ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
+ld: security/integrity/ima/ima_init.o: in function `ima_init':
+ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
+ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
+ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
+ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
+
+Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
+is set, regardless of the UML Kconfig setting.
+This updates TCG_TPM from =m to =y and fixes the linker errors.
+
+Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
+Cc: Stable <stable@vger.kernel.org> # v5.14+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ security/integrity/ima/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1210,11 +1210,9 @@ static int qcom_pcie_init_2_7_0(struct q
- 	val |= BIT(4);
- 	writel(val, pcie->parf + PCIE20_PARF_MHI_CLOCK_RESET_CTRL);
- 
--	if (IS_ENABLED(CONFIG_PCI_MSI)) {
--		val = readl(pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT);
--		val |= BIT(31);
--		writel(val, pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT);
--	}
-+	val = readl(pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2);
-+	val |= BIT(31);
-+	writel(val, pcie->parf + PCIE20_PARF_AXI_MSTR_WR_ADDR_HALT_V2);
- 
- 	return 0;
- err_disable_clocks:
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -8,7 +8,7 @@ config IMA
+ 	select CRYPTO_HMAC
+ 	select CRYPTO_SHA1
+ 	select CRYPTO_HASH_INFO
+-	select TCG_TPM if HAS_IOMEM && !UML
++	select TCG_TPM if HAS_IOMEM
+ 	select TCG_TIS if TCG_TPM && X86
+ 	select TCG_CRB if TCG_TPM && ACPI
+ 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
 
 
