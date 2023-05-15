@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA8C3703418
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53446703526
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242916AbjEOQom (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48596 "EHLO
+        id S243211AbjEOQ4D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:56:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241879AbjEOQol (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:41 -0400
+        with ESMTP id S243227AbjEOQ4A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F454C03
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C80259DF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57816627C4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DF3C433EF;
-        Mon, 15 May 2023 16:44:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B5DC5629FD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8934C433EF;
+        Mon, 15 May 2023 16:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169079;
-        bh=dmsKnl24JXvUHTbFJilFHC1wQqrXFqe+duimmLnkt8o=;
+        s=korg; t=1684169757;
+        bh=1KPsK5CooWq2LIUUkVehmIvDtU8paAYcvb+8wlSp0d0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zF9gQzZNbJmmcp4RsZGsCGuuFy8qPZwtZ+qMZJTuCWXoAaymuCbb1z3ryUnF/mcSP
-         dJhgmEMf/ZIuPtgXk2Cu0+3JhhBfYUn8YxyTj1K3VZgsXQPoM7bzMZoJJP7q+4UJqx
-         vcMUphl52CCh2JfXpRKMRLDEC4uBfF7mddDJQy9Y=
+        b=zwb0Px5oEdmD/jC/6T8bdoO+BjG41ofUhiRaCINFHOVXx5xJe7kWFzfgG39KYVNGR
+         OvJ1M6fBsbCPdde3ZJInMPSviSZ+GfteXNw5secp0CXQ4lj0TjZu6xf3k4p0C2QdZ1
+         K5foV9SJmcpqjEQx4cKV0/qTBdEqdLSwyrKALL54=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 4.19 136/191] perf auxtrace: Fix address filter entire kernel size
+        patches@lists.linux.dev,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.3 161/246] remoteproc: rcar_rproc: Call of_node_put() on iteration error
 Date:   Mon, 15 May 2023 18:26:13 +0200
-Message-Id: <20230515161712.323065125@linuxfoundation.org>
+Message-Id: <20230515161727.466467941@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +53,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-commit 1f9f33ccf0320be21703d9195dd2b36a1c9a07cb upstream.
+commit f8bae637d3d5e082b4ced71e28b16eb3ee0683c1 upstream.
 
-kallsyms is not completely in address order.
+Function of_phandle_iterator_next() calls of_node_put() on the last
+device_node it iterated over, but when the loop exits prematurely it has
+to be called explicitly.
 
-In find_entire_kern_cb(), calculate the kernel end from the maximum
-address not the last symbol.
-
-Example:
-
- Before:
-
-    $ sudo cat /proc/kallsyms | grep ' [twTw] ' | tail -1
-    ffffffffc00b8bd0 t bpf_prog_6deef7357e7b4530    [bpf]
-    $ sudo cat /proc/kallsyms | grep ' [twTw] ' | sort | tail -1
-    ffffffffc15e0cc0 t iwl_mvm_exit [iwlmvm]
-    $ perf.d093603a05aa record -v --kcore -e intel_pt// --filter 'filter *' -- uname |& grep filter
-    Address filter: filter 0xffffffff93200000/0x2ceba000
-
- After:
-
-    $ perf.8fb0f7a01f8e record -v --kcore -e intel_pt// --filter 'filter *' -- uname |& grep filter
-    Address filter: filter 0xffffffff93200000/0x2e3e2000
-
-Fixes: 1b36c03e356936d6 ("perf record: Add support for using symbols in address filters")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
+Fixes: 285892a74f13 ("remoteproc: Add Renesas rcar driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230403154831.8651-2-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/20230320221826.2728078-4-mathieu.poirier@linaro.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/auxtrace.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/remoteproc/rcar_rproc.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/tools/perf/util/auxtrace.c
-+++ b/tools/perf/util/auxtrace.c
-@@ -1793,6 +1793,7 @@ static int find_entire_kern_cb(void *arg
- 			       char type, u64 start)
- {
- 	struct sym_args *args = arg;
-+	u64 size;
+--- a/drivers/remoteproc/rcar_rproc.c
++++ b/drivers/remoteproc/rcar_rproc.c
+@@ -62,13 +62,16 @@ static int rcar_rproc_prepare(struct rpr
  
- 	if (!kallsyms__is_function(type))
- 		return 0;
-@@ -1802,7 +1803,9 @@ static int find_entire_kern_cb(void *arg
- 		args->start = start;
+ 		rmem = of_reserved_mem_lookup(it.node);
+ 		if (!rmem) {
++			of_node_put(it.node);
+ 			dev_err(&rproc->dev,
+ 				"unable to acquire memory-region\n");
+ 			return -EINVAL;
+ 		}
+ 
+-		if (rmem->base > U32_MAX)
++		if (rmem->base > U32_MAX) {
++			of_node_put(it.node);
+ 			return -EINVAL;
++		}
+ 
+ 		/* No need to translate pa to da, R-Car use same map */
+ 		da = rmem->base;
+@@ -79,8 +82,10 @@ static int rcar_rproc_prepare(struct rpr
+ 					   rcar_rproc_mem_release,
+ 					   it.node->name);
+ 
+-		if (!mem)
++		if (!mem) {
++			of_node_put(it.node);
+ 			return -ENOMEM;
++		}
+ 
+ 		rproc_add_carveout(rproc, mem);
  	}
- 	/* Don't know exactly where the kernel ends, so we add a page */
--	args->size = round_up(start, page_size) + page_size - args->start;
-+	size = round_up(start, page_size) + page_size - args->start;
-+	if (size > args->size)
-+		args->size = size;
- 
- 	return 0;
- }
 
 
