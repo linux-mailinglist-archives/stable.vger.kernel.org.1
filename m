@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4391470389A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B95703A8C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244276AbjEORdc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:33:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
+        id S244879AbjEORwW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244286AbjEORdQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DD0813281
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:00 -0700 (PDT)
+        with ESMTP id S244740AbjEORwD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:52:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F6B616920
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07B3762D3B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B275C433D2;
-        Mon, 15 May 2023 17:30:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8052462F0F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8164DC4339B;
+        Mon, 15 May 2023 17:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171859;
-        bh=QI2K0loe8k3M28BNuCxhp4xyfKlRNfUnnoBlg1EQw4s=;
+        s=korg; t=1684172971;
+        bh=xMrFAoh38Lf0+4jQsrvPJxGNdrMitewQdeJ/LJiL4nY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AjEKgqiZ+s8XFq1+JWX+j/ZaBEkkcl9En2sORl0zJQSw/UcvwZ4b1Och8PrnUw4qj
-         Z7vjO7RdjVjaWmRi83PTJMX3W/0zJXfs75MnpNZbFuaz+1/IIbWq6MZxelLFkjeeWJ
-         04Ei1gYFiyPDbw0ZesDDS/kKOAwDA7z8/bH1+bFA=
+        b=l2VJLg1zqD+aqIjXKae86ODsypzMvWkRBGlDVMNXDcpGvEd10liBocvCjLWo3RFQx
+         TB1t1eTgNuMwC0n3Up5JFHz04kTpIOh5eWDGGTpaRoyYAqdZtBiPEuixkOOAecNIaV
+         Ga5m4Q8AssNdXefDYk9AxZBCkMX1VyYO0jqbEIj4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 101/134] ASoC: soc-pcm.c: call __soc_pcm_close() in soc_pcm_close()
+        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 327/381] net: enetc: check the index of the SFI rather than the handle
 Date:   Mon, 15 May 2023 18:29:38 +0200
-Message-Id: <20230515161706.494629358@linuxfoundation.org>
+Message-Id: <20230515161751.575423067@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,50 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 6bbabd28805f36baf6d0f3eb082db032a638f612 upstream.
+[ Upstream commit 299efdc2380aac588557f4d0b2ce7bee05bd0cf2 ]
 
-commit b7898396f4bbe16 ("ASoC: soc-pcm: Fix and cleanup DPCM locking")
-added __soc_pcm_close() for non-lock version of soc_pcm_close().
-But soc_pcm_close() is not using it. It is no problem, but confusable.
+We should check whether the current SFI (Stream Filter Instance) table
+is full before creating a new SFI entry. However, the previous logic
+checks the handle by mistake and might lead to unpredictable behavior.
 
-	static int __soc_pcm_close(...)
-	{
-=>		return soc_pcm_clean(rtd, substream, 0);
-	}
-
-	static int soc_pcm_close(...)
-	{
-		...
-		snd_soc_dpcm_mutex_lock(rtd);
-=>		soc_pcm_clean(rtd, substream, 0);
-		snd_soc_dpcm_mutex_unlock(rtd);
-		return 0;
-	}
-
-This patch use it.
-
-Fixes: b7898396f4bbe16 ("ASoC: soc-pcm: Fix and cleanup DPCM locking")
-Cc: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87czctgg3w.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 888ae5a3952b ("net: enetc: add tc flower psfp offload driver")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-pcm.c |    2 +-
+ drivers/net/ethernet/freescale/enetc/enetc_qos.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -723,7 +723,7 @@ static int soc_pcm_close(struct snd_pcm_
- 	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+index 5841721c81190..8d92dc6bc9945 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+@@ -1266,7 +1266,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
+ 		int index;
  
- 	snd_soc_dpcm_mutex_lock(rtd);
--	soc_pcm_clean(rtd, substream, 0);
-+	__soc_pcm_close(rtd, substream);
- 	snd_soc_dpcm_mutex_unlock(rtd);
- 	return 0;
- }
+ 		index = enetc_get_free_index(priv);
+-		if (sfi->handle < 0) {
++		if (index < 0) {
+ 			NL_SET_ERR_MSG_MOD(extack, "No Stream Filter resource!");
+ 			err = -ENOSPC;
+ 			goto free_fmi;
+-- 
+2.39.2
+
 
 
