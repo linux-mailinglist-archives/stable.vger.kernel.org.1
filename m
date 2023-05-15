@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63DA670355E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF282703B1A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243268AbjEOQ6S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
+        id S244025AbjEOR7S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243295AbjEOQ6P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:15 -0400
+        with ESMTP id S244887AbjEOR65 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B80768E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C141B747
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F46D61E7F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BD0C433D2;
-        Mon, 15 May 2023 16:58:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E3E562FD3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C45C433EF;
+        Mon, 15 May 2023 17:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169893;
-        bh=UFMDJh7KJWjZHQPcpfDQDnUz68/Uyt3gAUDuOqNaUAc=;
+        s=korg; t=1684173385;
+        bh=bEIKGAQbp/KphUsam3+MFK8xuifrtlvo7EjO6XbEiwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GIGCGnD2uOEJTmLVpW/WwikFLVOtrz4PT1G9DrDsbqBpeR1yImG0U6+NauyrnKr3a
-         s/RLojX/m180YMVIyhGxAj/F2IwOjgyMSdkazSLEz0/FS/NuGFW0EYyTPTlDLVl9Ev
-         KquIpaRZcyZdGMQtlah9ISDSB8G9A5LzNxHcBdjs=
+        b=nvdlS1RuIZZkWT5sL1lgFLzemyejXi5cZZJIrBJMUtkRV1YSjqR0wKDcCtV497+zW
+         LI7bfxmzduOAhh61kvfPidqrRZ8pOgG2nCAWpvFtaVnFdqtGtXOsxFx79hxhTOyZBh
+         +Lrx/e0rCoovhyS4D6N0xLlX5dbmxz+UBuVWalRc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nevenko Stupar <Nevenko.Stupar@amd.com>,
-        Jun Lei <Jun.Lei@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alex Hung <alex.hung@amd.com>, Alvin Lee <Alvin.Lee2@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.3 204/246] drm/amd/display: Enforce 60us prefetch for 200Mhz DCFCLK modes
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 038/282] arm64: dts: renesas: r8a77990: Remove bogus voltages from OPP table
 Date:   Mon, 15 May 2023 18:26:56 +0200
-Message-Id: <20230515161728.727247271@linuxfoundation.org>
+Message-Id: <20230515161723.412051162@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alvin Lee <Alvin.Lee2@amd.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit b504f99ccaa64da364443431e388ecf30b604e38 upstream.
+[ Upstream commit fb76b0fae3ca880363214e1dcd6513ab8bd529e7 ]
 
-[Description]
-- Due to bandwidth / arbitration issues at 200Mhz DCFCLK,
-  we want to enforce minimum 60us of prefetch to avoid
-  intermittent underflow issues
-- Since 60us prefetch is already enforced for UCLK DPM0,
-  and many DCFCLK's > 200Mhz are mapped to UCLK DPM1, in
-  theory there should not be any UCLK DPM regressions by
-  enforcing greater prefetch
+According to the R-Car Series, 3rd Generation Hardware User’s Manual
+Rev. 2.30, the System CPU cores on R-Car E3 do not have their own power
+supply, but use the common internal power supply (typical 1.03V).
 
-Reviewed-by: Nevenko Stupar <Nevenko.Stupar@amd.com>
-Reviewed-by: Jun Lei <Jun.Lei@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Hence remove the "opp-microvolt" properties from the Operating
+Performance Points table.  They are optional, and unused, when none of
+the CPU nodes is tied to a regulator using the "cpu-supply" property.
+
+Fixes: dd7188eb4ed128dc ("arm64: dts: renesas: r8a77990: Add OPPs table for cpu devices")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/9232578d9d395d529f64db3333a371e31327f459.1676560856.git.geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c |    5 +++--
- drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h |    1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/renesas/r8a77990.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -810,7 +810,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleep
- 					v->SwathHeightY[k],
- 					v->SwathHeightC[k],
- 					TWait,
--					v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ?
-+					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
-+						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= MIN_DCFCLK_FREQ_MHZ) ?
- 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
- 					/* Output */
- 					&v->DSTXAfterScaler[k],
-@@ -3309,7 +3310,7 @@ void dml32_ModeSupportAndSystemConfigura
- 							v->swath_width_chroma_ub_this_state[k],
- 							v->SwathHeightYThisState[k],
- 							v->SwathHeightCThisState[k], v->TWait,
--							v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ ?
-+							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= MIN_DCFCLK_FREQ_MHZ) ?
- 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
- 
- 							/* Output */
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-@@ -53,6 +53,7 @@
- #define BPP_BLENDED_PIPE 0xffffffff
- 
- #define MEM_STROBE_FREQ_MHZ 1600
-+#define MIN_DCFCLK_FREQ_MHZ 200
- #define MEM_STROBE_MAX_DELIVERY_TIME_US 60.0
- 
- struct display_mode_lib;
+diff --git a/arch/arm64/boot/dts/renesas/r8a77990.dtsi b/arch/arm64/boot/dts/renesas/r8a77990.dtsi
+index dabee157119f9..82efc8a3627d9 100644
+--- a/arch/arm64/boot/dts/renesas/r8a77990.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a77990.dtsi
+@@ -60,17 +60,14 @@
+ 		opp-shared;
+ 		opp-800000000 {
+ 			opp-hz = /bits/ 64 <800000000>;
+-			opp-microvolt = <820000>;
+ 			clock-latency-ns = <300000>;
+ 		};
+ 		opp-1000000000 {
+ 			opp-hz = /bits/ 64 <1000000000>;
+-			opp-microvolt = <820000>;
+ 			clock-latency-ns = <300000>;
+ 		};
+ 		opp-1200000000 {
+ 			opp-hz = /bits/ 64 <1200000000>;
+-			opp-microvolt = <820000>;
+ 			clock-latency-ns = <300000>;
+ 			opp-suspend;
+ 		};
+-- 
+2.39.2
+
 
 
