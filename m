@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 662F7703A46
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D17703875
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244798AbjEORuX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47218 "EHLO
+        id S244369AbjEORco (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244781AbjEORtz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DB2E16E95
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:57 -0700 (PDT)
+        with ESMTP id S244249AbjEORcV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62561E52
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F27162EEB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0BFC433D2;
-        Mon, 15 May 2023 17:47:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E52E862055
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19E8C433D2;
+        Mon, 15 May 2023 17:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172873;
-        bh=c0q4Pa9RUsjPwM87U5v9KA9oRJzlW1FsOsEQ21jYaaE=;
+        s=korg; t=1684171760;
+        bh=4lPZSqgKYP1OTvSzvcfeyhcDLndJdaVW6IyNcZ5JejA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lASWbWB4WsLfqztbxf77KVNW8FWVMGQVKhZU07ERrNJp0OfT3poa6Cx4q00pu6bkr
-         T0RcWBJzkY8L2h346kf6fy+0lDOxYwNdqAhLeqTinMPOZg3xdQHOi/LMFfvxVCtXPX
-         Fo5BXpTr9JzuMwmZ0Qa7pkBBPZsSCU5IF4lQ4DJI=
+        b=N1g3u4ZiHyg6PMhGsPTHV/JB2dMKNq3RF4HHjfItVfI21dnOCoBAgyK8qbkhiNtXp
+         pJMdoUbYMlBacuRNfLyv+duC6Myk2oY6YSBH6aJvf+OloCnCzvUwqW8Mgp+VLW7XSO
+         7Qb3XhlOlmzL1i0BsVQGjActFCLTjdDBO644RLNI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 295/381] netfilter: nf_tables: deactivate anonymous set from preparation phase
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 069/134] cifs: release leases for deferred close handles when freezing
 Date:   Mon, 15 May 2023 18:29:06 +0200
-Message-Id: <20230515161750.120782998@linuxfoundation.org>
+Message-Id: <20230515161705.453385939@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,113 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit c1592a89942e9678f7d9c8030efa777c0d57edab upstream.
+commit d39fc592ef8ae9a89c5e85c8d9f760937a57d5ba upstream.
 
-Toggle deleted anonymous sets as inactive in the next generation, so
-users cannot perform any update on it. Clear the generation bitmask
-in case the transaction is aborted.
+We should not be caching closed files when freeze is invoked on an fs
+(so we can release resources more gracefully).
 
-The following KASAN splat shows a set element deletion for a bound
-anonymous set that has been already removed in the same transaction.
+Fixes xfstests generic/068 generic/390 generic/491
 
-[   64.921510] ==================================================================
-[   64.923123] BUG: KASAN: wild-memory-access in nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.924745] Write of size 8 at addr dead000000000122 by task test/890
-[   64.927903] CPU: 3 PID: 890 Comm: test Not tainted 6.3.0+ #253
-[   64.931120] Call Trace:
-[   64.932699]  <TASK>
-[   64.934292]  dump_stack_lvl+0x33/0x50
-[   64.935908]  ? nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.937551]  kasan_report+0xda/0x120
-[   64.939186]  ? nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.940814]  nf_tables_commit+0xa24/0x1490 [nf_tables]
-[   64.942452]  ? __kasan_slab_alloc+0x2d/0x60
-[   64.944070]  ? nf_tables_setelem_notify+0x190/0x190 [nf_tables]
-[   64.945710]  ? kasan_set_track+0x21/0x30
-[   64.947323]  nfnetlink_rcv_batch+0x709/0xd90 [nfnetlink]
-[   64.948898]  ? nfnetlink_rcv_msg+0x480/0x480 [nfnetlink]
-
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |    1 +
- net/netfilter/nf_tables_api.c     |   12 ++++++++++++
- net/netfilter/nft_dynset.c        |    2 +-
- net/netfilter/nft_lookup.c        |    2 +-
- net/netfilter/nft_objref.c        |    2 +-
- 5 files changed, 16 insertions(+), 3 deletions(-)
+ fs/cifs/cifsfs.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -507,6 +507,7 @@ struct nft_set_binding {
- };
- 
- enum nft_trans_phase;
-+void nf_tables_activate_set(const struct nft_ctx *ctx, struct nft_set *set);
- void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase);
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4479,12 +4479,24 @@ static void nf_tables_unbind_set(const s
- 	}
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -730,6 +730,20 @@ static void cifs_umount_begin(struct sup
+ 	return;
  }
  
-+void nf_tables_activate_set(const struct nft_ctx *ctx, struct nft_set *set)
++static int cifs_freeze(struct super_block *sb)
 +{
-+	if (nft_set_is_anonymous(set))
-+		nft_clear(ctx->net, set);
++	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
++	struct cifs_tcon *tcon;
 +
-+	set->use++;
++	if (cifs_sb == NULL)
++		return 0;
++
++	tcon = cifs_sb_master_tcon(cifs_sb);
++
++	cifs_close_all_deferred_files(tcon);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(nf_tables_activate_set);
 +
- void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
+ #ifdef CONFIG_CIFS_STATS2
+ static int cifs_show_stats(struct seq_file *s, struct dentry *root)
  {
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE:
-+		if (nft_set_is_anonymous(set))
-+			nft_deactivate_next(ctx->net, set);
-+
- 		set->use--;
- 		return;
- 	case NFT_TRANS_ABORT:
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -233,7 +233,7 @@ static void nft_dynset_activate(const st
- {
- 	struct nft_dynset *priv = nft_expr_priv(expr);
- 
--	priv->set->use++;
-+	nf_tables_activate_set(ctx, priv->set);
- }
- 
- static void nft_dynset_destroy(const struct nft_ctx *ctx,
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -132,7 +132,7 @@ static void nft_lookup_activate(const st
- {
- 	struct nft_lookup *priv = nft_expr_priv(expr);
- 
--	priv->set->use++;
-+	nf_tables_activate_set(ctx, priv->set);
- }
- 
- static void nft_lookup_destroy(const struct nft_ctx *ctx,
---- a/net/netfilter/nft_objref.c
-+++ b/net/netfilter/nft_objref.c
-@@ -180,7 +180,7 @@ static void nft_objref_map_activate(cons
- {
- 	struct nft_objref_map *priv = nft_expr_priv(expr);
- 
--	priv->set->use++;
-+	nf_tables_activate_set(ctx, priv->set);
- }
- 
- static void nft_objref_map_destroy(const struct nft_ctx *ctx,
+@@ -761,6 +775,7 @@ static const struct super_operations cif
+ 	as opens */
+ 	.show_options = cifs_show_options,
+ 	.umount_begin   = cifs_umount_begin,
++	.freeze_fs      = cifs_freeze,
+ #ifdef CONFIG_CIFS_STATS2
+ 	.show_stats = cifs_show_stats,
+ #endif
 
 
