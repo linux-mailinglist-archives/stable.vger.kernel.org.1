@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EEC0703B3A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C679703782
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243528AbjEOSA5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
+        id S244063AbjEORWG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243991AbjEOSAf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:35 -0400
+        with ESMTP id S244065AbjEORVq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F05A1994B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7B3DC45
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:19:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CE9C62FE9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32470C433EF;
-        Mon, 15 May 2023 17:57:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A0EE62013
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A322C433D2;
+        Mon, 15 May 2023 17:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173472;
-        bh=WBQHgrZivu1/vaqI2bSpJ1ggUsNp54OLvpEqeScgugQ=;
+        s=korg; t=1684171190;
+        bh=13udJ+ZtaykusAywslxvA6GUiWZSKuvBPG/1OIfydqE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=io1a06uwXo3mAf1sNyuhDBAQQuHNeBMLd/a5nr1OMbYSSkY6MIelirCk3Inn3s5ol
-         iaaxCArVegxol6YDgZO8wbRic6xUVCduxSLPMcC+UAcJHTyZ+2SQo+u0pu3J2L4awf
-         MKG9K1z0mviPJ6QUhVlH/PvA7nXnBsw20SGBVBm4=
+        b=tC9LjsOlj+Fi5eWHku9wQ6s4TuUF2bGa0kmehffuywK0QWwSdLvqFZ/eRldbsYri/
+         zut15KcWbgDu4E4mSlbKXzy2nohPocZKP7RuHyxG9Suf/OM5mxAjFZGhA9ypxBAPtL
+         1rL/fixEChQjdyF2sG2upkv8kzjaknb+b5LiwlpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oliver Neukum <oneukum@suse.com>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 077/282] wifi: ath6kl: reduce WARN to dev_dbg() in callback
+        patches@lists.linux.dev, Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.2 129/242] btrfs: zoned: fix wrong use of bitops API in btrfs_ensure_empty_zones
 Date:   Mon, 15 May 2023 18:27:35 +0200
-Message-Id: <20230515161724.549300929@linuxfoundation.org>
+Message-Id: <20230515161725.773645280@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 75c4a8154cb6c7239fb55d5550f481f6765fb83c ]
+commit 631003e2333c12cc1b52df06a707365b7363a159 upstream.
 
-The warn is triggered on a known race condition, documented in the code above
-the test, that is correctly handled.  Using WARN() hinders automated testing.
-Reducing severity.
+find_next_bit and find_next_zero_bit take @size as the second parameter and
+@offset as the third parameter. They are specified opposite in
+btrfs_ensure_empty_zones(). Thanks to the later loop, it never failed to
+detect the empty zones. Fix them and (maybe) return the result a bit
+faster.
 
-Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
-Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230126182431.867984-1-pchelkin@ispras.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note: the naming is a bit confusing, size has two meanings here, bitmap
+and our range size.
+
+Fixes: 1cd6121f2a38 ("btrfs: zoned: implement zoned chunk allocator")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/zoned.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-index c68848819a52d..9b88d96bfe96c 100644
---- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-+++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
- 	 * Thus the possibility of ar->htc_target being NULL
- 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
- 	 */
--	if (WARN_ON_ONCE(!target)) {
--		ath6kl_err("Target not yet initialized\n");
-+	if (!target) {
-+		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
- 		status = -EINVAL;
- 		goto free_skb;
- 	}
--- 
-2.39.2
-
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1164,12 +1164,12 @@ int btrfs_ensure_empty_zones(struct btrf
+ 		return -ERANGE;
+ 
+ 	/* All the zones are conventional */
+-	if (find_next_bit(zinfo->seq_zones, begin, end) == end)
++	if (find_next_bit(zinfo->seq_zones, end, begin) == end)
+ 		return 0;
+ 
+ 	/* All the zones are sequential and empty */
+-	if (find_next_zero_bit(zinfo->seq_zones, begin, end) == end &&
+-	    find_next_zero_bit(zinfo->empty_zones, begin, end) == end)
++	if (find_next_zero_bit(zinfo->seq_zones, end, begin) == end &&
++	    find_next_zero_bit(zinfo->empty_zones, end, begin) == end)
+ 		return 0;
+ 
+ 	for (pos = start; pos < start + size; pos += zinfo->zone_size) {
 
 
