@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9618703419
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7704970374B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242913AbjEOQoq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:44:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
+        id S243913AbjEORTZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:19:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242917AbjEOQop (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE3B04C3C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:43 -0700 (PDT)
+        with ESMTP id S243860AbjEORTG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A16D10A10
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67F30628DE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758CCC433EF;
-        Mon, 15 May 2023 16:44:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F48162C01
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC38C433D2;
+        Mon, 15 May 2023 17:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169082;
-        bh=2vfoooX6IhvEmM2mujXCsv3TM1IFWjRCEjiGHsVuOfE=;
+        s=korg; t=1684171027;
+        bh=m01/IfZB+8zJi0k3WNaBYq520zyTqjmV6RuxkPTTXz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ARCnQxam51rQQzT4s5dklueVep2g/0uI7B4joDy3n+Ogeyc62Eb2d5cSJ2is9Lzan
-         Is9sY3piepPPbkV6MctcA10UtQ8YWdjtR/AQrD99ukTX7HuihV/D2zQinv/BJI6PQu
-         xXMQX+fUmrPW1DC5Jpk+nt8Y+Ms16LIZdkbVx7Gg=
+        b=L0s9SloM3OhBpt3UpwiW9G4rT1UMBgtgBGEPUYJWkc8unFAxt+xzd0Gv0kgf3BxF/
+         PNH2PXa8DbMevmMzDKwmPy1VLO8i15dmmEmK8TID6Eo/ExL+kIx/F1tXJ4/KiUpH6Y
+         fn6Qh13pUAqKeK2aYnqFnbN4u7F8/uKjWNKFltko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 4.19 137/191] debugobject: Ensure pool refill (again)
+        patches@lists.linux.dev,
+        Angelo Dureghello <angelo.dureghello@timesys.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 048/242] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
 Date:   Mon, 15 May 2023 18:26:14 +0200
-Message-Id: <20230515161712.373109664@linuxfoundation.org>
+Message-Id: <20230515161723.356187593@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,80 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Angelo Dureghello <angelo.dureghello@timesys.com>
 
-commit 0af462f19e635ad522f28981238334620881badc upstream.
+[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
 
-The recent fix to ensure atomicity of lookup and allocation inadvertently
-broke the pool refill mechanism.
+Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
+processing.
 
-Prior to that change debug_objects_activate() and debug_objecs_assert_init()
-invoked debug_objecs_init() to set up the tracking object for statically
-initialized objects. That's not longer the case and debug_objecs_init() is
-now the only place which does pool refills.
-
-Depending on the number of statically initialized objects this can be
-enough to actually deplete the pool, which was observed by Ido via a
-debugobjects OOM warning.
-
-Restore the old behaviour by adding explicit refill opportunities to
-debug_objects_activate() and debug_objecs_assert_init().
-
-Fixes: 63a759694eed ("debugobject: Prevent init race with static objects")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/871qk05a9d.ffs@tglx
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -460,6 +460,16 @@ static struct debug_obj *lookup_object_o
- 	return NULL;
- }
- 
-+static void debug_objects_fill_pool(void)
-+{
-+	/*
-+	 * On RT enabled kernels the pool refill must happen in preemptible
-+	 * context:
-+	 */
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
-+		fill_pool();
-+}
-+
- static void
- __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
- {
-@@ -468,7 +478,7 @@ __debug_object_init(void *addr, struct d
- 	struct debug_obj *obj;
- 	unsigned long flags;
- 
--	fill_pool();
-+	debug_objects_fill_pool();
- 
- 	db = get_bucket((unsigned long) addr);
- 
-@@ -553,6 +563,8 @@ int debug_object_activate(void *addr, st
- 	if (!debug_objects_enabled)
- 		return 0;
- 
-+	debug_objects_fill_pool();
-+
- 	db = get_bucket((unsigned long) addr);
- 
- 	raw_spin_lock_irqsave(&db->lock, flags);
-@@ -762,6 +774,8 @@ void debug_object_assert_init(void *addr
- 	if (!debug_objects_enabled)
- 		return;
- 
-+	debug_objects_fill_pool();
-+
- 	db = get_bucket((unsigned long) addr);
- 
- 	raw_spin_lock_irqsave(&db->lock, flags);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index e57d86484a3a4..9959262ebad2c 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5113,6 +5113,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
+ 	.set_egress_port = mv88e6095_g1_set_egress_port,
+ 	.watchdog_ops = &mv88e6390_watchdog_ops,
++	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.reset = mv88e6352_g1_reset,
+ 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
+ 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
+-- 
+2.39.2
+
 
 
