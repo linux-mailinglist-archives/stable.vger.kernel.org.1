@@ -2,47 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96438703809
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 677E1703876
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244266AbjEOR04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48462 "EHLO
+        id S244371AbjEORcp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244211AbjEOR0f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:35 -0400
+        with ESMTP id S243577AbjEORc0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4311A120A5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 964B9171E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B56862CB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20541C4339B;
-        Mon, 15 May 2023 17:24:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EBE662CB3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CF4C433EF;
+        Mon, 15 May 2023 17:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171473;
-        bh=1VZ9z9YU8Bg3+XNRgYWsjrs9Iwk/RKfesX+KPNNud44=;
+        s=korg; t=1684171763;
+        bh=hwUZ9YVafrpiG1N1lIpwutibPFDmewnCBy5rSOHCh9E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CRAcC4BALeH4BWrtrLu/FseT3fjEkW1UHHoE77KNFfYsX3cmuyPZ0tJE7dBsAzCgF
-         TjdJclO1x20rT00my23y8g7mTGvZwaqLOE3ubkBS33FNE6wBSlvfI9wr0aSo/FWfYF
-         dbpC58fW1C87cUcefCP2CDHVt+6ecG0wlOjBFZRE=
+        b=0eTTNLHkqUvgxJEaeHbuKSJ3eGE4Kv8AsmEwQUWzuHJz8epJstc+tGuBklGvyRUF8
+         KNLiwaOB6JNCaOxeJGNUUeV5J1BQ+MDVEZ55WfuJmlz3+BXfc/I4lJJTfqtTEOw1SW
+         9XMNR9tdo/X5+G1Y1LnHgtFH80iff4o2GNGVbCc0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alan Liu <HaoPing.Liu@amd.com>, Leo Chen <sancchen@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 220/242] drm/amd/display: Change default Z8 watermark values
-Date:   Mon, 15 May 2023 18:29:06 +0200
-Message-Id: <20230515161728.523848201@linuxfoundation.org>
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.15 070/134] platform/x86: touchscreen_dmi: Add upside-down quirk for GDIX1002 ts on the Juno Tablet
+Date:   Mon, 15 May 2023 18:29:07 +0200
+Message-Id: <20230515161705.493725004@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leo Chen <sancchen@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 8f586cc16c1fc3c2202c9d54563db8c7ed365f82 ]
+commit 6abfa99ce52f61a31bcfc2aaaae09006f5665495 upstream.
 
-[Why & How]
-Previous Z8 watermark values were causing flickering and OTC underflow.
-Updating Z8 watermark values based on the measurement.
+The Juno Computers Juno Tablet has an upside-down mounted Goodix
+touchscreen. Add a quirk to invert both axis to correct for this.
 
-Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Link: https://junocomputers.com/us/product/juno-tablet/
 Cc: stable@vger.kernel.org
-Acked-by: Alan Liu <HaoPing.Liu@amd.com>
-Signed-off-by: Leo Chen <sancchen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230505210323.43177-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 0c91d8a3de4c3..db06f3b9e637e 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -149,8 +149,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_14_soc = {
- 	.num_states = 5,
- 	.sr_exit_time_us = 16.5,
- 	.sr_enter_plus_exit_time_us = 18.5,
--	.sr_exit_z8_time_us = 210.0,
--	.sr_enter_plus_exit_z8_time_us = 310.0,
-+	.sr_exit_z8_time_us = 268.0,
-+	.sr_enter_plus_exit_z8_time_us = 393.0,
- 	.writeback_latency_us = 12.0,
- 	.dram_channel_width_bytes = 4,
- 	.round_trip_ping_latency_dcfclk_cycles = 106,
--- 
-2.39.2
-
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -381,6 +381,11 @@ static const struct ts_dmi_data glavey_t
+ 	.properties	= glavey_tm800a550l_props,
+ };
+ 
++static const struct ts_dmi_data gdix1002_00_upside_down_data = {
++	.acpi_name	= "GDIX1002:00",
++	.properties	= gdix1001_upside_down_props,
++};
++
+ static const struct property_entry gp_electronic_t701_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 960),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 640),
+@@ -1281,6 +1286,18 @@ const struct dmi_system_id touchscreen_d
+ 		},
+ 	},
+ 	{
++		/* Juno Tablet */
++		.driver_data = (void *)&gdix1002_00_upside_down_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Default string"),
++			/* Both product- and board-name being "Default string" is somewhat rare */
++			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
++			DMI_MATCH(DMI_BOARD_NAME, "Default string"),
++			/* Above matches are too generic, add partial bios-version match */
++			DMI_MATCH(DMI_BIOS_VERSION, "JP2V1."),
++		},
++	},
++	{
+ 		/* Mediacom WinPad 7.0 W700 (same hw as Wintron surftab 7") */
+ 		.driver_data = (void *)&trekstor_surftab_wintron70_data,
+ 		.matches = {
 
 
