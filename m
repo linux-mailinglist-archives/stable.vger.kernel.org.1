@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B579970381F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F747038B0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244274AbjEOR1e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48694 "EHLO
+        id S243930AbjEOReK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244008AbjEOR1R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:17 -0400
+        with ESMTP id S243997AbjEORdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D28210A12
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB4C49F5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D32C62CEE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A97C433EF;
-        Mon, 15 May 2023 17:25:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A90C962D5A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5F4C433D2;
+        Mon, 15 May 2023 17:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171541;
-        bh=bMM3M3/6iaUkQz5bnBelOCDckOMOPVJg0H7sSqX7GwU=;
+        s=korg; t=1684171900;
+        bh=OS/0TrytQFg/zb1q7nr/0ZmHojUHwONBC8iw3eH7D8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ssePoZqc47mcNOMVli2bajHrx51u9WDup3eNqOwo7FAtakjxWV2N5Ie1Z2Pl4xII5
-         5Seqp5BbuErh+3hHOzFFIzl0eUEj7LE0aNzAnicZFhs0wOfXpBrRVEMX/kNindAS5f
-         EblpI9eaGH3EPC42aZWb+ihapTb7ONYbamV/w0QQ=
+        b=bW/7DNRDLSHXofSRfs+6WkcgcDqTJF59/vAYh1Y/k0taHulQciWN66thWfsHGVci9
+         BihNOzsp7k/02cttTmzNAvnr6Ms+rLOwYVZbSsXRp6/0WYQXcG0iAvaOFas5RMKKUY
+         /0rKmf4xe9DQKvi359AsNCNKH1JteucVQjyL5Yvk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+e2efa3efc15a1c9e95c3@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 235/242] ext4: remove a BUG_ON in ext4_mb_release_group_pa()
+        patches@lists.linux.dev,
+        Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 5.15 084/134] drm/bridge: lt8912b: Fix DSI Video Mode
 Date:   Mon, 15 May 2023 18:29:21 +0200
-Message-Id: <20230515161728.959268131@linuxfoundation.org>
+Message-Id: <20230515161705.970534179@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 463808f237cf73e98a1a45ff7460c2406a150a0b upstream.
+commit f435b7ef3b360d689df2ffa8326352cd07940d92 upstream.
 
-If a malicious fuzzer overwrites the ext4 superblock while it is
-mounted such that the s_first_data_block is set to a very large
-number, the calculation of the block group can underflow, and trigger
-a BUG_ON check.  Change this to be an ext4_warning so that we don't
-crash the kernel.
+LT8912 DSI port supports only Non-Burst mode video operation with Sync
+Events and continuous clock on clock lane, correct dsi mode flags
+according to that removing MIPI_DSI_MODE_VIDEO_BURST flag.
 
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230430154311.579720-3-tytso@mit.edu
-Reported-by: syzbot+e2efa3efc15a1c9e95c3@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=69b28112e098b070f639efb356393af3ffec4220
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: <stable@vger.kernel.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230330093131.424828-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4820,7 +4820,11 @@ ext4_mb_release_group_pa(struct ext4_bud
- 	trace_ext4_mb_release_group_pa(sb, pa);
- 	BUG_ON(pa->pa_deleted == 0);
- 	ext4_get_group_no_and_offset(sb, pa->pa_pstart, &group, &bit);
--	BUG_ON(group != e4b->bd_group && pa->pa_len != 0);
-+	if (unlikely(group != e4b->bd_group && pa->pa_len != 0)) {
-+		ext4_warning(sb, "bad group: expected %u, group %u, pa_start %llu",
-+			     e4b->bd_group, group, pa->pa_pstart);
-+		return 0;
-+	}
- 	mb_free_blocks(pa->pa_inode, e4b, bit, pa->pa_len);
- 	atomic_add(pa->pa_len, &EXT4_SB(sb)->s_mb_discarded);
- 	trace_ext4_mballoc_discard(sb, NULL, group, bit, pa->pa_len);
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -494,7 +494,6 @@ static int lt8912_attach_dsi(struct lt89
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO |
+-			  MIPI_DSI_MODE_VIDEO_BURST |
+ 			  MIPI_DSI_MODE_LPM |
+ 			  MIPI_DSI_MODE_NO_EOT_PACKET;
+ 
 
 
