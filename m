@@ -2,52 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D76687033D1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68EA67034E7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242865AbjEOQlw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
+        id S243242AbjEOQxy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242873AbjEOQlv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAA23A80
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:50 -0700 (PDT)
+        with ESMTP id S243179AbjEOQxa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:53:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F0465B5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8F116289C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6234C433EF;
-        Mon, 15 May 2023 16:41:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88A5162033
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62066C433D2;
+        Mon, 15 May 2023 16:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168909;
-        bh=mbDebCj3pqJVusJbFWAgowxo5RCkuViN6m/EFdjNSuQ=;
+        s=korg; t=1684169587;
+        bh=8UhImnYKD/cheR8rqjeWIXSP6mgZTjvymyqqjJIXPiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oqVwvthFAP7Al9OW7EEHxZeZ0kRro5XH4KDrVo4XWdXOMdu7Af4hAT9lIK+4riPDR
-         VIAtPb/Grye2vZ77M3kRg0xohNPJbQCn/QlhUOeNfmdr4khkeBAouUbeFR/fEZYYgY
-         D+PAlEPqWRYhPSuuJF2YPeL85j7VSJT3ZuLxVde4=
+        b=fI1geG5hxxKU1+CWjmhiPJZE9hMw9ofnBLARhGTIuE//x+9uGt34NmtMu9ZPJR7f6
+         pSsAQ40p9++QGi9e1+YZ/SGU1QImIUMuTo19wseDKd3QklMEkKqU5ceNnDS7/fGe+Y
+         6R+Wsw66/aHd0ehAdftItMaVhG/ifL98CuUhzw8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Thomas Richter <tmricht@linux.ibm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Rob Herring <robh@kernel.org>,
+        Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 080/191] tcp/udp: Fix memleaks of sk and zerocopy skbs with TX timestamp.
+Subject: [PATCH 6.3 105/246] perf test: Fix wrong size expectation for Setup struct perf_event_attr
 Date:   Mon, 15 May 2023 18:25:17 +0200
-Message-Id: <20230515161710.182101199@linuxfoundation.org>
+Message-Id: <20230515161725.731178863@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,123 +61,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 50749f2dd6854a41830996ad302aef2ffaf011d8 ]
+[ Upstream commit 30df88a80f32ccca5c5cdcf2710d1fb2de5e314d ]
 
-syzkaller reported [0] memory leaks of an UDP socket and ZEROCOPY
-skbs.  We can reproduce the problem with these sequences:
+The test case "perf test 'Setup struct perf_event_attr'" is failing.
 
-  sk = socket(AF_INET, SOCK_DGRAM, 0)
-  sk.setsockopt(SOL_SOCKET, SO_TIMESTAMPING, SOF_TIMESTAMPING_TX_SOFTWARE)
-  sk.setsockopt(SOL_SOCKET, SO_ZEROCOPY, 1)
-  sk.sendto(b'', MSG_ZEROCOPY, ('127.0.0.1', 53))
-  sk.close()
+On s390 this output is observed:
 
-sendmsg() calls msg_zerocopy_alloc(), which allocates a skb, sets
-skb->cb->ubuf.refcnt to 1, and calls sock_hold().  Here, struct
-ubuf_info_msgzc indirectly holds a refcnt of the socket.  When the
-skb is sent, __skb_tstamp_tx() clones it and puts the clone into
-the socket's error queue with the TX timestamp.
+ # ./perf test -Fvvvv 17
+ 17: Setup struct perf_event_attr                                    :
+ --- start ---
+ running './tests/attr/test-stat-C0'
+ Using CPUID IBM,8561,703,T01,3.6,002f
+ .....
+ Event event:base-stat
+      fd = 1
+      group_fd = -1
+      flags = 0|8
+      cpu = *
+      type = 0
+      size = 128     <<<--- wrong, specified in file base-stat
+      config = 0
+      sample_period = 0
+      sample_type = 65536
+      ...
+ 'PERF_TEST_ATTR=/tmp/tmpgw574wvg ./perf stat -o \
+	/tmp/tmpgw574wvg/perf.data -e cycles -C 0 kill >/dev/null \
+	2>&1 ret '1', expected '1'
+  loading result events
+    Event event-0-0-4
+      fd = 4
+      group_fd = -1
+      cpu = 0
+      pid = -1
+      flags = 8
+      type = 0
+      size = 136     <<<--- actual size used in system call
+      .....
+  compare
+    matching [event-0-0-4]
+      to [event:base-stat]
+      [cpu] 0 *
+      [flags] 8 0|8
+      [type] 0 0
+      [size] 136 128
+    ->FAIL
+    match: [event-0-0-4] matches []
+  expected size=136, got 128
+  FAILED './tests/attr/test-stat-C0' - match failure
 
-When the original skb is received locally, skb_copy_ubufs() calls
-skb_unclone(), and pskb_expand_head() increments skb->cb->ubuf.refcnt.
-This additional count is decremented while freeing the skb, but struct
-ubuf_info_msgzc still has a refcnt, so __msg_zerocopy_callback() is
-not called.
+This mismatch is caused by
+commit 09519ec3b19e ("perf: Add perf_event_attr::config3")
+which enlarges the structure perf_event_attr by 8 bytes.
 
-The last refcnt is not released unless we retrieve the TX timestamped
-skb by recvmsg().  Since we clear the error queue in inet_sock_destruct()
-after the socket's refcnt reaches 0, there is a circular dependency.
-If we close() the socket holding such skbs, we never call sock_put()
-and leak the count, sk, and skb.
+Fix this by adjusting the expected value of size.
 
-TCP has the same problem, and commit e0c8bccd40fc ("net: stream:
-purge sk_error_queue in sk_stream_kill_queues()") tried to fix it
-by calling skb_queue_purge() during close().  However, there is a
-small chance that skb queued in a qdisc or device could be put
-into the error queue after the skb_queue_purge() call.
+Output after:
+ # ./perf test -Fvvvv 17
+ 17: Setup struct perf_event_attr                                    :
+ --- start ---
+ running './tests/attr/test-stat-C0'
+ Using CPUID IBM,8561,703,T01,3.6,002f
+ ...
+  matched
+  compare
+    matching [event-0-0-4]
+      to [event:base-stat]
+      [cpu] 0 *
+      [flags] 8 0|8
+      [type] 0 0
+      [size] 136 136
+      ....
+   ->OK
+   match: [event-0-0-4] matches ['event:base-stat']
+ matched
 
-In __skb_tstamp_tx(), the cloned skb should not have a reference
-to the ubuf to remove the circular dependency, but skb_clone() does
-not call skb_copy_ubufs() for zerocopy skb.  So, we need to call
-skb_orphan_frags_rx() for the cloned skb to call skb_copy_ubufs().
-
-[0]:
-BUG: memory leak
-unreferenced object 0xffff88800c6d2d00 (size 1152):
-  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 cd af e8 81 00 00 00 00  ................
-    02 00 07 40 00 00 00 00 00 00 00 00 00 00 00 00  ...@............
-  backtrace:
-    [<0000000055636812>] sk_prot_alloc+0x64/0x2a0 net/core/sock.c:2024
-    [<0000000054d77b7a>] sk_alloc+0x3b/0x800 net/core/sock.c:2083
-    [<0000000066f3c7e0>] inet_create net/ipv4/af_inet.c:319 [inline]
-    [<0000000066f3c7e0>] inet_create+0x31e/0xe40 net/ipv4/af_inet.c:245
-    [<000000009b83af97>] __sock_create+0x2ab/0x550 net/socket.c:1515
-    [<00000000b9b11231>] sock_create net/socket.c:1566 [inline]
-    [<00000000b9b11231>] __sys_socket_create net/socket.c:1603 [inline]
-    [<00000000b9b11231>] __sys_socket_create net/socket.c:1588 [inline]
-    [<00000000b9b11231>] __sys_socket+0x138/0x250 net/socket.c:1636
-    [<000000004fb45142>] __do_sys_socket net/socket.c:1649 [inline]
-    [<000000004fb45142>] __se_sys_socket net/socket.c:1647 [inline]
-    [<000000004fb45142>] __x64_sys_socket+0x73/0xb0 net/socket.c:1647
-    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
-    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-BUG: memory leak
-unreferenced object 0xffff888017633a00 (size 240):
-  comm "syz-executor392", pid 264, jiffies 4294785440 (age 13.044s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 2d 6d 0c 80 88 ff ff  .........-m.....
-  backtrace:
-    [<000000002b1c4368>] __alloc_skb+0x229/0x320 net/core/skbuff.c:497
-    [<00000000143579a6>] alloc_skb include/linux/skbuff.h:1265 [inline]
-    [<00000000143579a6>] sock_omalloc+0xaa/0x190 net/core/sock.c:2596
-    [<00000000be626478>] msg_zerocopy_alloc net/core/skbuff.c:1294 [inline]
-    [<00000000be626478>] msg_zerocopy_realloc+0x1ce/0x7f0 net/core/skbuff.c:1370
-    [<00000000cbfc9870>] __ip_append_data+0x2adf/0x3b30 net/ipv4/ip_output.c:1037
-    [<0000000089869146>] ip_make_skb+0x26c/0x2e0 net/ipv4/ip_output.c:1652
-    [<00000000098015c2>] udp_sendmsg+0x1bac/0x2390 net/ipv4/udp.c:1253
-    [<0000000045e0e95e>] inet_sendmsg+0x10a/0x150 net/ipv4/af_inet.c:819
-    [<000000008d31bfde>] sock_sendmsg_nosec net/socket.c:714 [inline]
-    [<000000008d31bfde>] sock_sendmsg+0x141/0x190 net/socket.c:734
-    [<0000000021e21aa4>] __sys_sendto+0x243/0x360 net/socket.c:2117
-    [<00000000ac0af00c>] __do_sys_sendto net/socket.c:2129 [inline]
-    [<00000000ac0af00c>] __se_sys_sendto net/socket.c:2125 [inline]
-    [<00000000ac0af00c>] __x64_sys_sendto+0xe1/0x1c0 net/socket.c:2125
-    [<0000000066999e0e>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<0000000066999e0e>] do_syscall_64+0x38/0x90 arch/x86/entry/common.c:80
-    [<0000000017f238c1>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fixes: f214f915e7db ("tcp: enable MSG_ZEROCOPY")
-Fixes: b5947e5d1e71 ("udp: msg_zerocopy")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 09519ec3b19e4144 ("perf: Add perf_event_attr::config3")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20230322094731.1768281-1-tmricht@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/tests/attr/base-record       | 2 +-
+ tools/perf/tests/attr/base-stat         | 2 +-
+ tools/perf/tests/attr/system-wide-dummy | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 7f501dff4501c..5ae62d7433575 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4445,6 +4445,9 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
- 			skb = alloc_skb(0, GFP_ATOMIC);
- 	} else {
- 		skb = skb_clone(orig_skb, GFP_ATOMIC);
-+
-+		if (skb_orphan_frags_rx(skb, GFP_ATOMIC))
-+			return;
- 	}
- 	if (!skb)
- 		return;
+diff --git a/tools/perf/tests/attr/base-record b/tools/perf/tests/attr/base-record
+index 3ef07a12aa142..27c21271a16c9 100644
+--- a/tools/perf/tests/attr/base-record
++++ b/tools/perf/tests/attr/base-record
+@@ -5,7 +5,7 @@ group_fd=-1
+ flags=0|8
+ cpu=*
+ type=0|1
+-size=128
++size=136
+ config=0
+ sample_period=*
+ sample_type=263
+diff --git a/tools/perf/tests/attr/base-stat b/tools/perf/tests/attr/base-stat
+index 4081644565306..a21fb65bc012e 100644
+--- a/tools/perf/tests/attr/base-stat
++++ b/tools/perf/tests/attr/base-stat
+@@ -5,7 +5,7 @@ group_fd=-1
+ flags=0|8
+ cpu=*
+ type=0
+-size=128
++size=136
+ config=0
+ sample_period=0
+ sample_type=65536
+diff --git a/tools/perf/tests/attr/system-wide-dummy b/tools/perf/tests/attr/system-wide-dummy
+index 8fec06eda5f90..2f3e3eb728eb4 100644
+--- a/tools/perf/tests/attr/system-wide-dummy
++++ b/tools/perf/tests/attr/system-wide-dummy
+@@ -7,7 +7,7 @@ cpu=*
+ pid=-1
+ flags=8
+ type=1
+-size=128
++size=136
+ config=9
+ sample_period=4000
+ sample_type=455
 -- 
 2.39.2
 
