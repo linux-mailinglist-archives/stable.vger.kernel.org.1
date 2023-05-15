@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAD57036C9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF24B7037A5
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243833AbjEORN7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56384 "EHLO
+        id S244067AbjEORX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243830AbjEORNi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:38 -0400
+        with ESMTP id S243997AbjEORXL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D7A9EC9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CCB12E8E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:21:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D3AA862B7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A0BC433D2;
-        Mon, 15 May 2023 17:11:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24ED562C6C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3D9C433EF;
+        Mon, 15 May 2023 17:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170718;
-        bh=wSUrz+NeO/lYyL3E4TXSTgZljsA16Z692dL1f7VyAE0=;
+        s=korg; t=1684171276;
+        bh=4Ny3p2o9OM+jC1Iv2+g7vg/8g1qFfvD4X9sbg8Vc5wc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e1BRbMF0Ad6O5eGqLntJlNSScEqG6GT4zsBF5LLKbTTlnrPakX/QoRxCFoz6VzQnK
-         6WeFh1/ct+lmaZn3NbSfhbwoXvu46ySdDUPID0Z4JDLA2OzNfpQGTzzLMe2bxzc+Er
-         F2WYcYxTf9/YxV03dnJgsB1DqJA2SS7HGLJjH+LE=
+        b=Is5SotVnIGyr8v2Pmk4AQx1Lf7mRzGWeMpjpi2PH/hbudoPrFcRrlj/JknMpRStiD
+         dWA+YpRTCkZ6HjtBYwQSAPWhraqsiCGxWRtG1nfbvCCbilzylNqesBuGOggyYM7X+a
+         lDt+mFA+LhM0fdqx9C1W9f39x5V5DOLDxXTvbOMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com,
-        Ye Bin <yebin10@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 220/239] ext4: fix WARNING in mb_find_extent
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.2 157/242] proc_sysctl: enhance documentation
 Date:   Mon, 15 May 2023 18:28:03 +0200
-Message-Id: <20230515161728.324346265@linuxfoundation.org>
+Message-Id: <20230515161726.598286396@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,129 +54,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ye Bin <yebin10@huawei.com>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-commit fa08a7b61dff8a4df11ff1e84abfc214b487caf7 upstream.
+commit 1dc8689e4cc651e21566e10206a84c4006e81fb1 upstream.
 
-Syzbot found the following issue:
+Expand documentation to clarify:
 
-EXT4-fs: Warning: mounting with data=journal disables delayed allocation, dioread_nolock, O_DIRECT and fast_commit support!
-EXT4-fs (loop0): orphan cleanup on readonly fs
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 5067 at fs/ext4/mballoc.c:1869 mb_find_extent+0x8a1/0xe30
-Modules linked in:
-CPU: 1 PID: 5067 Comm: syz-executor307 Not tainted 6.2.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-RIP: 0010:mb_find_extent+0x8a1/0xe30 fs/ext4/mballoc.c:1869
-RSP: 0018:ffffc90003c9e098 EFLAGS: 00010293
-RAX: ffffffff82405731 RBX: 0000000000000041 RCX: ffff8880783457c0
-RDX: 0000000000000000 RSI: 0000000000000041 RDI: 0000000000000040
-RBP: 0000000000000040 R08: ffffffff82405723 R09: ffffed10053c9402
-R10: ffffed10053c9402 R11: 1ffff110053c9401 R12: 0000000000000000
-R13: ffffc90003c9e538 R14: dffffc0000000000 R15: ffffc90003c9e2cc
-FS:  0000555556665300(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056312f6796f8 CR3: 0000000022437000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ext4_mb_complex_scan_group+0x353/0x1100 fs/ext4/mballoc.c:2307
- ext4_mb_regular_allocator+0x1533/0x3860 fs/ext4/mballoc.c:2735
- ext4_mb_new_blocks+0xddf/0x3db0 fs/ext4/mballoc.c:5605
- ext4_ext_map_blocks+0x1868/0x6880 fs/ext4/extents.c:4286
- ext4_map_blocks+0xa49/0x1cc0 fs/ext4/inode.c:651
- ext4_getblk+0x1b9/0x770 fs/ext4/inode.c:864
- ext4_bread+0x2a/0x170 fs/ext4/inode.c:920
- ext4_quota_write+0x225/0x570 fs/ext4/super.c:7105
- write_blk fs/quota/quota_tree.c:64 [inline]
- get_free_dqblk+0x34a/0x6d0 fs/quota/quota_tree.c:130
- do_insert_tree+0x26b/0x1aa0 fs/quota/quota_tree.c:340
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- dq_insert_tree fs/quota/quota_tree.c:401 [inline]
- qtree_write_dquot+0x3b6/0x530 fs/quota/quota_tree.c:420
- v2_write_dquot+0x11b/0x190 fs/quota/quota_v2.c:358
- dquot_acquire+0x348/0x670 fs/quota/dquot.c:444
- ext4_acquire_dquot+0x2dc/0x400 fs/ext4/super.c:6740
- dqget+0x999/0xdc0 fs/quota/dquot.c:914
- __dquot_initialize+0x3d0/0xcf0 fs/quota/dquot.c:1492
- ext4_process_orphan+0x57/0x2d0 fs/ext4/orphan.c:329
- ext4_orphan_cleanup+0xb60/0x1340 fs/ext4/orphan.c:474
- __ext4_fill_super fs/ext4/super.c:5516 [inline]
- ext4_fill_super+0x81cd/0x8700 fs/ext4/super.c:5644
- get_tree_bdev+0x400/0x620 fs/super.c:1282
- vfs_get_tree+0x88/0x270 fs/super.c:1489
- do_new_mount+0x289/0xad0 fs/namespace.c:3145
- do_mount fs/namespace.c:3488 [inline]
- __do_sys_mount fs/namespace.c:3697 [inline]
- __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  o that paths don't need to exist for the new API callers
+  o clarify that we *require* callers to keep the memory of
+    the table around during the lifetime of the sysctls
+  o annotate routines we are trying to deprecate and later remove
 
-Add some debug information:
-mb_find_extent: mb_find_extent block=41, order=0 needed=64 next=0 ex=0/41/1@3735929054 64 64 7
-block_bitmap: ff 3f 0c 00 fc 01 00 00 d2 3d 00 00 00 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Acctually, blocks per group is 64, but block bitmap indicate at least has
-128 blocks. Now, ext4_validate_block_bitmap() didn't check invalid block's
-bitmap if set.
-To resolve above issue, add check like fsck "Padding at end of block bitmap is
-not set".
-
-Cc: stable@kernel.org
-Reported-by: syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230116020015.1506120-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org # v5.17
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/balloc.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ fs/proc/proc_sysctl.c |   25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -303,6 +303,22 @@ struct ext4_group_desc * ext4_get_group_
- 	return desc;
- }
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1287,7 +1287,10 @@ out:
+  * __register_sysctl_table - register a leaf sysctl table
+  * @set: Sysctl tree to register on
+  * @path: The path to the directory the sysctl table is in.
+- * @table: the top-level table structure without any child
++ * @table: the top-level table structure without any child. This table
++ * 	 should not be free'd after registration. So it should not be
++ * 	 used on stack. It can either be a global or dynamically allocated
++ * 	 by the caller and free'd later after sysctl unregistration.
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
+@@ -1402,8 +1405,15 @@ fail:
  
-+static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
-+						    ext4_group_t block_group,
-+						    struct buffer_head *bh)
-+{
-+	ext4_grpblk_t next_zero_bit;
-+	unsigned long bitmap_size = sb->s_blocksize * 8;
-+	unsigned int offset = num_clusters_in_group(sb, block_group);
-+
-+	if (bitmap_size <= offset)
-+		return 0;
-+
-+	next_zero_bit = ext4_find_next_zero_bit(bh->b_data, bitmap_size, offset);
-+
-+	return (next_zero_bit < bitmap_size ? next_zero_bit : 0);
-+}
-+
- /*
-  * Return the block number which was discovered to be invalid, or 0 if
-  * the block bitmap is valid.
-@@ -401,6 +417,15 @@ static int ext4_validate_block_bitmap(st
- 					EXT4_GROUP_INFO_BBITMAP_CORRUPT);
- 		return -EFSCORRUPTED;
- 	}
-+	blk = ext4_valid_block_bitmap_padding(sb, block_group, bh);
-+	if (unlikely(blk != 0)) {
-+		ext4_unlock_group(sb, block_group);
-+		ext4_error(sb, "bg %u: block %llu: padding at end of block bitmap is not set",
-+			   block_group, blk);
-+		ext4_mark_group_bitmap_corrupted(sb, block_group,
-+						 EXT4_GROUP_INFO_BBITMAP_CORRUPT);
-+		return -EFSCORRUPTED;
-+	}
- 	set_buffer_verified(bh);
- verified:
- 	ext4_unlock_group(sb, block_group);
+ /**
+  * register_sysctl - register a sysctl table
+- * @path: The path to the directory the sysctl table is in.
+- * @table: the table structure
++ * @path: The path to the directory the sysctl table is in. If the path
++ * 	doesn't exist we will create it for you.
++ * @table: the table structure. The calller must ensure the life of the @table
++ * 	will be kept during the lifetime use of the syctl. It must not be freed
++ * 	until unregister_sysctl_table() is called with the given returned table
++ * 	with this registration. If your code is non modular then you don't need
++ * 	to call unregister_sysctl_table() and can instead use something like
++ * 	register_sysctl_init() which does not care for the result of the syctl
++ * 	registration.
+  *
+  * Register a sysctl table. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
+@@ -1419,8 +1429,11 @@ EXPORT_SYMBOL(register_sysctl);
+ 
+ /**
+  * __register_sysctl_init() - register sysctl table to path
+- * @path: path name for sysctl base
+- * @table: This is the sysctl table that needs to be registered to the path
++ * @path: path name for sysctl base. If that path doesn't exist we will create
++ * 	it for you.
++ * @table: This is the sysctl table that needs to be registered to the path.
++ * 	The caller must ensure the life of the @table will be kept during the
++ * 	lifetime use of the sysctl.
+  * @table_name: The name of sysctl table, only used for log printing when
+  *              registration fails
+  *
+@@ -1565,6 +1578,7 @@ out:
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
++ * We are slowly deprecating this call so avoid its use.
+  *
+  * See __register_sysctl_table for more details.
+  */
+@@ -1636,6 +1650,7 @@ err_register_leaves:
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
++ * We are slowly deprecating this caller so avoid future uses of it.
+  *
+  * See __register_sysctl_paths for more details.
+  */
 
 
