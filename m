@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 934AF7033ED
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C81A70371B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242228AbjEOQnH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46518 "EHLO
+        id S243935AbjEORQ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:16:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242894AbjEOQnF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 978FD49D2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:55 -0700 (PDT)
+        with ESMTP id S243934AbjEORQg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFA6D876
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77260627D2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCC0C433A0;
-        Mon, 15 May 2023 16:42:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A22D62BD5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61475C433EF;
+        Mon, 15 May 2023 17:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168974;
-        bh=8O+kAZRqcXrBLWJwN/QLcaRb/hlFHY6MSSCIJjzt5ec=;
+        s=korg; t=1684170921;
+        bh=y1OoO1JxQZYli/Db7UQi/zrERtly5GFjUhpdPADO2pE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Moyo1gvBfNbX8AmK9QlGF0ROvFXifEZuuBfP6B0RUt9zzp5Ht1WaegTc8Kf8qPvQw
-         g9+NPhsTqVT6/6ogzXgqjenGhn6lDnzplook9kGhUfoNOgNmaoxYhllZsCA4BhZbuD
-         v7rJwsEbSYdVPPoWi1Myozj5dSgldEONyeK+SRPQ=
+        b=JaWTsTtLS2hGespVPt7NyZa0C/JrpF6apL5laSxCfyze5Hmb5OC55IgFZ1P6c6sno
+         RmbSkGJB1tLHcMasGDtwmOCeAp7v1o3zUZoHDOnXmJbGNC3fSxKSXh2vLQCdqbGjYL
+         GI3QuNWq6vKd1MeREhc1iHmYZ/LYCUemfUdy8qkU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        patches@lists.linux.dev, Jerry Zuo <Jerry.Zuo@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Ryan Lin <tsung-hua.lin@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 102/191] staging: rtl8192e: Fix W_DISABLE# does not work after stop/start
-Date:   Mon, 15 May 2023 18:25:39 +0200
-Message-Id: <20230515161710.950438449@linuxfoundation.org>
+Subject: [PATCH 6.2 014/242] drm/amd/display: Ext displays with dock cant recognized after resume
+Date:   Mon, 15 May 2023 18:25:40 +0200
+Message-Id: <20230515161722.250726436@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +57,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+From: Ryan Lin <tsung-hua.lin@amd.com>
 
-[ Upstream commit 3fac2397f562eb669ddc2f45867a253f3fc26184 ]
+[ Upstream commit 1e5d4d8eb8c0f15d90c50e7abd686c980e54e42e ]
 
-When loading the driver for rtl8192e, the W_DISABLE# switch is working as
-intended. But when the WLAN is turned off in software and then turned on
-again the W_DISABLE# does not work anymore. Reason for this is that in
-the function _rtl92e_dm_check_rf_ctrl_gpio() the bfirst_after_down is
-checked and returned when true. bfirst_after_down is set true when
-switching the WLAN off in software. But it is not set to false again
-when WLAN is turned on again.
+[Why]
+Needs to set the default value of the LTTPR timeout after resume.
 
-Add bfirst_after_down = false in _rtl92e_sta_up to reset bit and fix
-above described bug.
+[How]
+Set the default (3.2ms) timeout at resuming if the sink supports
+LTTPR
 
-Fixes: 94a799425eee ("From: wlanfae <wlanfae@realtek.com> [PATCH 1/8] rtl8192e: Import new version of driver from realtek")
-Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Link: https://lore.kernel.org/r/20230418200201.GA17398@matrix-ESPRIMO-P710
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jerry Zuo <Jerry.Zuo@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Ryan Lin <tsung-hua.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-index da73998bc5f70..d5ef1986bde4d 100644
---- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-+++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
-@@ -778,6 +778,7 @@ static int _rtl92e_sta_up(struct net_device *dev, bool is_silent_reset)
- 	else
- 		netif_wake_queue(dev);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 422909d1f352b..58fdd39f5bde9 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -39,6 +39,7 @@
+ #include "dc/dc_edid_parser.h"
+ #include "dc/dc_stat.h"
+ #include "amdgpu_dm_trace.h"
++#include "dc/inc/dc_link_ddc.h"
  
-+	priv->bfirst_after_down = false;
- 	return 0;
- }
- 
+ #include "vid.h"
+ #include "amdgpu.h"
+@@ -2262,6 +2263,14 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
+ 		if (suspend) {
+ 			drm_dp_mst_topology_mgr_suspend(mgr);
+ 		} else {
++			/* if extended timeout is supported in hardware,
++			 * default to LTTPR timeout (3.2ms) first as a W/A for DP link layer
++			 * CTS 4.2.1.1 regression introduced by CTS specs requirement update.
++			 */
++			dc_link_aux_try_to_configure_timeout(aconnector->dc_link->ddc, LINK_AUX_DEFAULT_LTTPR_TIMEOUT_PERIOD);
++			if (!dp_is_lttpr_present(aconnector->dc_link))
++				dc_link_aux_try_to_configure_timeout(aconnector->dc_link->ddc, LINK_AUX_DEFAULT_TIMEOUT_PERIOD);
++
+ 			ret = drm_dp_mst_topology_mgr_resume(mgr, true);
+ 			if (ret < 0) {
+ 				dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
 -- 
 2.39.2
 
