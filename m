@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ABE070354C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17214703956
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243259AbjEOQ5k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37190 "EHLO
+        id S244325AbjEORlY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243292AbjEOQ51 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C5A76B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:24 -0700 (PDT)
+        with ESMTP id S244128AbjEORlE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA38106F9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:38:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BCC162A1A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BFBC4339B;
-        Mon, 15 May 2023 16:57:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E298D62DFC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:38:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AD9C433EF;
+        Mon, 15 May 2023 17:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169844;
-        bh=V+LebuTAQf3IroqiJmTNAP7rY7/JNxVn3Zv3axklaOw=;
+        s=korg; t=1684172303;
+        bh=FKQliO2HJDCQSwslC89Yr+EOytJmpJIXDvsUaNIGtNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uc0tq8P4u0UU8L5U5BtTVp2f0OjgApOKzONNxdlpO9iM908Z20HtolPRUPfviOUG0
-         x7kwhkD9R2HTD7PhpRWUbqUlIBlVtMrhGkL+4HXATNn6J0oZE51/3MRYdrKiWziT2D
-         j+W0x+uIcaHEkVjLvzvHhxB6yHr8vLuFJ5xvi2KA=
+        b=PQweJNv9mBXDCATg1DWINlRgqm/PXK2+3XjE9Zqz2YQ6Mm6Jn8cT9C17DN4RJpI5J
+         UczetwXVIg0asMeaDFfkwciuWxulbv1SRRsQYJWlfIC+mdci7QUb+VeSdtZtRUW2IB
+         YJnfGxoPVCCX81xasDZDl54EiDwVOsmcjYES3SUE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.3 149/246] smb3: fix problem remounting a share after shutdown
+        patches@lists.linux.dev,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 110/381] media: rcar_fdp1: fix pm_runtime_get_sync() usage count
 Date:   Mon, 15 May 2023 18:26:01 +0200
-Message-Id: <20230515161727.024289599@linuxfoundation.org>
+Message-Id: <20230515161741.778817016@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,40 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 716a3cf317456fa01d54398bb14ab354f50ed6a2 upstream.
+[ Upstream commit 45e75a8c6fa455a5909ac04db76a4b15d6bb8368 ]
 
-xfstests generic/392 showed a problem where even after a
-shutdown call was made on a mount, we would still attempt
-to use the (now inaccessible) superblock if another mount
-was attempted for the same share.
+The pm_runtime_get_sync() internally increments the
+dev->power.usage_count without decrementing it, even on errors.
+Replace it by the new pm_runtime_resume_and_get(), introduced by:
+commit dd8088d5a896 ("PM: runtime: Add pm_runtime_resume_and_get to deal with usage counter")
+in order to properly decrement the usage counter, avoiding
+a potential PM usage counter leak.
 
-Reported-by: David Howells <dhowells@redhat.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: <stable@vger.kernel.org>
-Fixes: 087f757b0129 ("cifs: add shutdown support")
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also, right now, the driver is ignoring any troubles when
+trying to do PM resume. So, add the proper error handling
+for the code.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/connect.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/platform/rcar_fdp1.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -2705,6 +2705,13 @@ cifs_match_super(struct super_block *sb,
+diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
+index ac2e7b2c60829..cedae184c6ad4 100644
+--- a/drivers/media/platform/rcar_fdp1.c
++++ b/drivers/media/platform/rcar_fdp1.c
+@@ -2139,7 +2139,9 @@ static int fdp1_open(struct file *file)
+ 	}
  
- 	spin_lock(&cifs_tcp_ses_lock);
- 	cifs_sb = CIFS_SB(sb);
+ 	/* Perform any power management required */
+-	pm_runtime_get_sync(fdp1->dev);
++	ret = pm_runtime_resume_and_get(fdp1->dev);
++	if (ret < 0)
++		goto error_pm;
+ 
+ 	v4l2_fh_add(&ctx->fh);
+ 
+@@ -2149,6 +2151,8 @@ static int fdp1_open(struct file *file)
+ 	mutex_unlock(&fdp1->dev_mutex);
+ 	return 0;
+ 
++error_pm:
++       v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+ error_ctx:
+ 	v4l2_ctrl_handler_free(&ctx->hdl);
+ 	kfree(ctx);
+@@ -2356,7 +2360,9 @@ static int fdp1_probe(struct platform_device *pdev)
+ 
+ 	/* Power up the cells to read HW */
+ 	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(fdp1->dev);
++	ret = pm_runtime_resume_and_get(fdp1->dev);
++	if (ret < 0)
++		goto disable_pm;
+ 
+ 	hw_version = fdp1_read(fdp1, FD1_IP_INTDATA);
+ 	switch (hw_version) {
+@@ -2385,6 +2391,9 @@ static int fdp1_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
++disable_pm:
++	pm_runtime_disable(fdp1->dev);
 +
-+	/* We do not want to use a superblock that has been shutdown */
-+	if (CIFS_MOUNT_SHUTDOWN & cifs_sb->mnt_cifs_flags) {
-+		spin_unlock(&cifs_tcp_ses_lock);
-+		return 0;
-+	}
-+
- 	tlink = cifs_get_tlink(cifs_sb_master_tlink(cifs_sb));
- 	if (tlink == NULL) {
- 		/* can not match superblock if tlink were ever null */
+ release_m2m:
+ 	v4l2_m2m_release(fdp1->m2m_dev);
+ 
+-- 
+2.39.2
+
 
 
