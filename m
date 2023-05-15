@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BEAC703336
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 287217034F1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242749AbjEOQed (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
+        id S243111AbjEOQyZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242754AbjEOQe1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:27 -0400
+        with ESMTP id S243185AbjEOQyB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40DF5172D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A01C6588
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:53:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA87A627E1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D642EC433D2;
-        Mon, 15 May 2023 16:34:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B29F062063
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:53:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0869C433EF;
+        Mon, 15 May 2023 16:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168460;
-        bh=l9ihL4LLSdP9ilZPWjq3E58wqc+k9I3wi/q0FWPZEjI=;
+        s=korg; t=1684169612;
+        bh=8J6z1eXqjkYjJ0O8rLB0VqmummOG2Mc92aEBuzUcn5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dRtOUDGbtZc5oBydlf0yqL63DYGKKXbNg3OCb4+w31hDtO8HcRfs24XUGH+YMN9r1
-         VcEJbWEL05WOQuVslxOK0FwJlC54EsII9uTFgXXW1YTC1kIfNTN8LRMknWNWDMQdnh
-         wwOp7f1RvcCWya4bK9hk2x6QwpJue+Ay0zShC6Tk=
+        b=IUDot4Y42MfDNubtxV1vmHnHqFtaOxxYx5EwsWUpOSI8MOnJDjmfVsa5DdRwjZAKG
+         Cj8iS/y43exsy1S6K4bNcz3aqzDjL+DIHPXt5eKDBkFHVZz0uG5rkUftrjuN1sv5F7
+         rppy/kQQoku1wdAehwfUQzhn9O5IDUs2xRXViz44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Alexey V. Vissarionov" <gremlin@altlinux.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 027/116] wifi: ath6kl: minor fix for allocation size
-Date:   Mon, 15 May 2023 18:25:24 +0200
-Message-Id: <20230515161659.179124029@linuxfoundation.org>
+Subject: [PATCH 6.3 113/246] perf pmu: zfree() expects a pointer to a pointer to zero it after freeing its contents
+Date:   Mon, 15 May 2023 18:25:25 +0200
+Message-Id: <20230515161725.964571001@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +54,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey V. Vissarionov <gremlin@altlinux.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 778f83f889e7fca37780d9640fcbd0229ae38eaa ]
+[ Upstream commit 57f14b5ae1a97537f2abd2828ee7212cada7036e ]
 
-Although the "param" pointer occupies more or equal space compared
-to "*param", the allocation size should use the size of variable
-itself.
+An audit showed just this one problem with zfree(), fix it.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bdcd81707973cf8a ("Add ath6kl cleaned up driver")
-Signed-off-by: Alexey V. Vissarionov <gremlin@altlinux.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230117110414.GC12547@altlinux.org
+Fixes: 9fbc61f832ebf432 ("perf pmu: Add support for PMU capabilities")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath6kl/bmi.c | 2 +-
+ tools/perf/util/pmu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
-index 334dbd834b3a6..8380ee76bdde7 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -246,7 +246,7 @@ int ath6kl_bmi_execute(struct ath6kl *ar, u32 addr, u32 *param)
- 		return -EACCES;
- 	}
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index c256b29defad3..d64d7b43f806d 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -1745,7 +1745,7 @@ static int perf_pmu__new_caps(struct list_head *list, char *name, char *value)
+ 	return 0;
  
--	size = sizeof(cid) + sizeof(addr) + sizeof(param);
-+	size = sizeof(cid) + sizeof(addr) + sizeof(*param);
- 	if (size > ar->bmi.max_cmd_size) {
- 		WARN_ON(1);
- 		return -EINVAL;
+ free_name:
+-	zfree(caps->name);
++	zfree(&caps->name);
+ free_caps:
+ 	free(caps);
+ 
 -- 
 2.39.2
 
