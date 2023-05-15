@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72208703788
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B487036B3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244038AbjEORWS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42376 "EHLO
+        id S243819AbjEORM4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244031AbjEORV7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD2F120A8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:06 -0700 (PDT)
+        with ESMTP id S243797AbjEORMj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2269028
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD47A6210B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35EEC433D2;
-        Mon, 15 May 2023 17:20:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E56162B5F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8466EC433EF;
+        Mon, 15 May 2023 17:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171206;
-        bh=XGM6gZJzD88LVq2+6ZwZ204UFWDDs4SgUijuLLH/l70=;
+        s=korg; t=1684170642;
+        bh=Gh/QbhWTrUr/l0iHos07jUWH4qymi1LKmFW4D2kfl7c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W+2mNA//LFgbkVWjaq2LUkG9gBkIbtfGU/rkc/ISMEI7m7LyCpo2HpHNZQeMUfR1i
-         wp60UxsrW+iVX7ukgAPcleoFtiWKUAMzwYpYsvKfG0V9TE1Ng1nzEydAQBbGc0W0yQ
-         kfvH5D9jeodiQUg7fYxxc5UkN6KYjSJucDMkq5sw=
+        b=dc2AwvZ6txntFjwjg3kyVgtj5poYiTDD2ircui4Hvn/5iMqu+zrn6XR4ZtCmol4X9
+         XmIaD+vDGFBMshBNPOl5GafhjW7lUs6W33P0tPrnXghVizkQtnF1JkzGG8f1Hr9g5O
+         BSWw+aHOtUZaCcmOvEtFOdUx4C1RFNnufq9RbV8Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.2 133/242] btrfs: dont free qgroup space unless specified
+        patches@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
+        Alexandru gagniuc <mr.nuke.me@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        ValdikSS <iam@valdikss.org.ru>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 196/239] wifi: rtw88: rtw8821c: Fix rfe_option field width
 Date:   Mon, 15 May 2023 18:27:39 +0200
-Message-Id: <20230515161725.893426566@linuxfoundation.org>
+Message-Id: <20230515161727.614175892@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,87 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit d246331b78cbef86237f9c22389205bc9b4e1cc1 upstream.
+[ Upstream commit 14705f969d98187a1cc2682e0c9bd2e230b8098f ]
 
-Boris noticed in his simple quotas testing that he was getting a leak
-with Sweet Tea's change to subvol create that stopped doing a
-transaction commit.  This was just a side effect of that change.
+On my RTW8821CU chipset rfe_option reads as 0x22. Looking at the
+vendor driver suggests that the field width of rfe_option is 5 bit,
+so rfe_option should be masked with 0x1f.
 
-In the delayed inode code we have an optimization that will free extra
-reservations if we think we can pack a dir item into an already modified
-leaf.  Previously this wouldn't be triggered in the subvolume create
-case because we'd commit the transaction, it was still possible but
-much harder to trigger.  It could actually be triggered if we did a
-mkdir && subvol create with qgroups enabled.
+Without this the rfe_option comparisons with 2 further down the
+driver evaluate as false when they should really evaluate as true.
+The effect is that 2G channels do not work.
 
-This occurs because in btrfs_insert_delayed_dir_index(), which gets
-called when we're adding the dir item, we do the following:
+rfe_option is also used as an array index into rtw8821c_rfe_defs[].
+rtw8821c_rfe_defs[34] (0x22) was added as part of adding USB support,
+likely because rfe_option reads as 0x22. As this now becomes 0x2,
+rtw8821c_rfe_defs[34] is no longer used and can be removed.
 
-  btrfs_block_rsv_release(fs_info, trans->block_rsv, bytes, NULL);
+Note that this might not be the whole truth. In the vendor driver
+there are indeed places where the unmasked rfe_option value is used.
+However, the driver has several places where rfe_option is tested
+with the pattern if (rfe_option == 2 || rfe_option == 0x22) or
+if (rfe_option == 4 || rfe_option == 0x24), so that rfe_option BIT(5)
+has no influence on the code path taken. We therefore mask BIT(5)
+out from rfe_option entirely until this assumption is proved wrong
+by some chip variant we do not know yet.
 
-if we're able to skip reserving space.
-
-The problem here is that trans->block_rsv points at the temporary block
-rsv for the subvolume create, which has qgroup reservations in the block
-rsv.
-
-This is a problem because btrfs_block_rsv_release() will do the
-following:
-
-  if (block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
-	  qgroup_to_release = block_rsv->qgroup_rsv_reserved -
-		  block_rsv->qgroup_rsv_size;
-	  block_rsv->qgroup_rsv_reserved = block_rsv->qgroup_rsv_size;
-  }
-
-The temporary block rsv just has ->qgroup_rsv_reserved set,
-->qgroup_rsv_size == 0.  The optimization in
-btrfs_insert_delayed_dir_index() sets ->qgroup_rsv_reserved = 0.  Then
-later on when we call btrfs_subvolume_release_metadata() which has
-
-  btrfs_block_rsv_release(fs_info, rsv, (u64)-1, &qgroup_to_release);
-  btrfs_qgroup_convert_reserved_meta(root, qgroup_to_release);
-
-qgroup_to_release is set to 0, and we do not convert the reserved
-metadata space.
-
-The problem here is that the block rsv code has been unconditionally
-messing with ->qgroup_rsv_reserved, because the main place this is used
-is delalloc, and any time we call btrfs_block_rsv_release() we do it
-with qgroup_to_release set, and thus do the proper accounting.
-
-The subvolume code is the only other code that uses the qgroup
-reservation stuff, but it's intermingled with the above optimization,
-and thus was getting its reservation freed out from underneath it and
-thus leaking the reserved space.
-
-The solution is to simply not mess with the qgroup reservations if we
-don't have qgroup_to_release set.  This works with the existing code as
-anything that messes with the delalloc reservations always have
-qgroup_to_release set.  This fixes the leak that Boris was observing.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Tested-by: ValdikSS <iam@valdikss.org.ru>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230417140358.2240429-3-s.hauer@pengutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-rsv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/block-rsv.c
-+++ b/fs/btrfs/block-rsv.c
-@@ -124,7 +124,8 @@ static u64 block_rsv_release_bytes(struc
- 	} else {
- 		num_bytes = 0;
- 	}
--	if (block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
-+	if (qgroup_to_release_ret &&
-+	    block_rsv->qgroup_rsv_reserved >= block_rsv->qgroup_rsv_size) {
- 		qgroup_to_release = block_rsv->qgroup_rsv_reserved -
- 				    block_rsv->qgroup_rsv_size;
- 		block_rsv->qgroup_rsv_reserved = block_rsv->qgroup_rsv_size;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 9afdc5ce86b43..609a2b86330d8 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -41,7 +41,7 @@ static int rtw8821c_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ 
+ 	map = (struct rtw8821c_efuse *)log_map;
+ 
+-	efuse->rfe_option = map->rfe_option;
++	efuse->rfe_option = map->rfe_option & 0x1f;
+ 	efuse->rf_board_option = map->rf_board_option;
+ 	efuse->crystal_cap = map->xtal_k;
+ 	efuse->pa_type_2g = map->pa_type;
+-- 
+2.39.2
+
 
 
