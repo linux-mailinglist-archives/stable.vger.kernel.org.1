@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 977CA7033FA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1D4703509
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242883AbjEOQnl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46882 "EHLO
+        id S243252AbjEOQzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242645AbjEOQng (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:36 -0400
+        with ESMTP id S243301AbjEOQyx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E23E46BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BEE5FD9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:54:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE786224B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF4EC433D2;
-        Mon, 15 May 2023 16:43:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02F55629C8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAEDC433D2;
+        Mon, 15 May 2023 16:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169005;
-        bh=UaVUNDuAd6sNyyicXipIYUf6FCxE9BpdtsRdu342S3w=;
+        s=korg; t=1684169679;
+        bh=TU+tnQ2Ae9mEfDDSV50Mz2VLeYfxmFTYpNP8fYWtdf0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ufc6crUrpo1QnSmrtfwAJxJA0tmvtDdxDDrAOkupQk0D9gSClSgIZhgGslz2S008C
-         zotHpb8JOghC3kX8LhfPTGVqOavE+8vl7ctkyhVyfFiEoSitLCXmZ+Irm1EjCLy5Dm
-         NWjxbEFNV13IeZT1bdvo0BjXF4X/0GhSh7/cWs70=
+        b=H5ir6PP+YhTZtAA+hcshhd6eou5Zw3Yw1TiE7H3Egd+DooRzq7LPOb5w4yPcR74dU
+         UpoTZ4+Y1mqppXm1wnQ5yJ1in060vr+SQAzBfNSi1t7jEIVdrYIjK/Fes1jBfQVR5o
+         sKkXaQd489lsZpMW2EY/sLizNRyE86q1hFBk6HGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 111/191] RDMA/rdmavt: Delete unnecessary NULL check
+        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 136/246] btrfs: fix space cache inconsistency after error loading it from disk
 Date:   Mon, 15 May 2023 18:25:48 +0200
-Message-Id: <20230515161711.299651018@linuxfoundation.org>
+Message-Id: <20230515161726.645809109@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Natalia Petrova <n.petrova@fintech.ru>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit b73a0b80c69de77d8d4942abb37066531c0169b2 ]
+commit 0004ff15ea26015a0a3a6182dca3b9d1df32e2b7 upstream.
 
-There is no need to check 'rdi->qp_dev' for NULL. The field 'qp_dev'
-is created in rvt_register_device() which will fail if the 'qp_dev'
-allocation fails in rvt_driver_qp_init(). Overwise this pointer
-doesn't changed and passed to rvt_qp_exit() by the next step.
+When loading a free space cache from disk, at __load_free_space_cache(),
+if we fail to insert a bitmap entry, we still increment the number of
+total bitmaps in the btrfs_free_space_ctl structure, which is incorrect
+since we failed to add the bitmap entry. On error we then empty the
+cache by calling __btrfs_remove_free_space_cache(), which will result
+in getting the total bitmaps counter set to 1.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+A failure to load a free space cache is not critical, so if a failure
+happens we just rebuild the cache by scanning the extent tree, which
+happens at block-group.c:caching_thread(). Yet the failure will result
+in having the total bitmaps of the btrfs_free_space_ctl always bigger
+by 1 then the number of bitmap entries we have. So fix this by having
+the total bitmaps counter be incremented only if we successfully added
+the bitmap entry.
 
-Fixes: 0acb0cc7ecc1 ("IB/rdmavt: Initialize and teardown of qpn table")
-Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
-Link: https://lore.kernel.org/r/20230303124408.16685-1-n.petrova@fintech.ru
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a67509c30079 ("Btrfs: add a io_ctl struct and helpers for dealing with the space cache")
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+CC: stable@vger.kernel.org # 4.4+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rdmavt/qp.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/btrfs/free-space-cache.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rdmavt/qp.c b/drivers/infiniband/sw/rdmavt/qp.c
-index fbc316775669c..c12fc2eace161 100644
---- a/drivers/infiniband/sw/rdmavt/qp.c
-+++ b/drivers/infiniband/sw/rdmavt/qp.c
-@@ -321,8 +321,6 @@ void rvt_qp_exit(struct rvt_dev_info *rdi)
- 	if (qps_inuse)
- 		rvt_pr_err(rdi, "QP memory leak! %u still in use\n",
- 			   qps_inuse);
--	if (!rdi->qp_dev)
--		return;
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -870,15 +870,16 @@ static int __load_free_space_cache(struc
+ 			}
+ 			spin_lock(&ctl->tree_lock);
+ 			ret = link_free_space(ctl, e);
+-			ctl->total_bitmaps++;
+-			recalculate_thresholds(ctl);
+-			spin_unlock(&ctl->tree_lock);
+ 			if (ret) {
++				spin_unlock(&ctl->tree_lock);
+ 				btrfs_err(fs_info,
+ 					"Duplicate entries in free space cache, dumping");
+ 				kmem_cache_free(btrfs_free_space_cachep, e);
+ 				goto free_cache;
+ 			}
++			ctl->total_bitmaps++;
++			recalculate_thresholds(ctl);
++			spin_unlock(&ctl->tree_lock);
+ 			list_add_tail(&e->list, &bitmaps);
+ 		}
  
- 	kfree(rdi->qp_dev->qp_table);
- 	free_qpn_table(&rdi->qp_dev->qpn_table);
--- 
-2.39.2
-
 
 
