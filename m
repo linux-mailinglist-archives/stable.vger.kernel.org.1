@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B603270352E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A85703353
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243210AbjEOQ43 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:56:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35660 "EHLO
+        id S242766AbjEOQfp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:35:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243228AbjEOQ42 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877BD6E9A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:19 -0700 (PDT)
+        with ESMTP id S242770AbjEOQfp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D6F43C19
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BE9C62A01
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16774C433EF;
-        Mon, 15 May 2023 16:56:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BA4D6206F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027D4C433EF;
+        Mon, 15 May 2023 16:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169778;
-        bh=C1EHBejhltQUJsb+n597kPRcWUmcmrDTBbB4j7w2Thc=;
+        s=korg; t=1684168542;
+        bh=wqPLNHtjJw4WofteTxseRyq7bnkjVWNpglfvo6yA61E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tY0RhuhfUsAXXlmq7EHFF0drLJkwDW8aUeasLiRGgPNATnut+IfIXeJTmitsUp/Ni
-         o8zrf4tp7qLV3LF2zuCY64lppvxKhw42FVCrHSxMtaLvLqUYCdMECDStyMaZuv7pae
-         qzN0yR1evFBZ8xyJ4CEIY8PCo+EG8dyS9DShT77g=
+        b=X7WyKOYud2R8NFOfUJ33RhQ1Wv6tw3CmITVuJjZwy0NJuey+hK+ssrrmjR6P8Mf/Z
+         WetuVYxuNFn9PpL4A4l41/OVQY+LGuxNtxyfLU8fn0zCuqesd5bgK9ze1FeiZjsjye
+         wxUjj1QSQt8XKor4mavkw3Vp+ybn0XaD2hf00c2E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 6.3 168/246] drm/bridge: lt8912b: Fix DSI Video Mode
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 083/116] netfilter: nf_tables: split set destruction in deactivate and destroy phase
 Date:   Mon, 15 May 2023 18:26:20 +0200
-Message-Id: <20230515161727.673967895@linuxfoundation.org>
+Message-Id: <20230515161701.035731114@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +54,269 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit f435b7ef3b360d689df2ffa8326352cd07940d92 upstream.
+[ backport for 4.14 of cd5125d8f51882279f50506bb9c7e5e89dc9bef3 ]
 
-LT8912 DSI port supports only Non-Burst mode video operation with Sync
-Events and continuous clock on clock lane, correct dsi mode flags
-according to that removing MIPI_DSI_MODE_VIDEO_BURST flag.
+Splits unbind_set into destroy_set and unbinding operation.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230330093131.424828-1-francesco@dolcini.it
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unbinding removes set from lists (so new transaction would not
+find it anymore) but keeps memory allocated (so packet path continues
+to work).
+
+Rebind function is added to allow unrolling in case transaction
+that wants to remove set is aborted.
+
+Destroy function is added to free the memory, but this could occur
+outside of transaction in the future.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c |    1 -
- 1 file changed, 1 deletion(-)
+ include/net/netfilter/nf_tables.h |  7 +++++-
+ net/netfilter/nf_tables_api.c     | 36 +++++++++++++++++++++----------
+ net/netfilter/nft_dynset.c        | 21 +++++++++++++++++-
+ net/netfilter/nft_lookup.c        | 20 ++++++++++++++++-
+ net/netfilter/nft_objref.c        | 20 ++++++++++++++++-
+ 5 files changed, 89 insertions(+), 15 deletions(-)
 
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -504,7 +504,6 @@ static int lt8912_attach_dsi(struct lt89
- 	dsi->format = MIPI_DSI_FMT_RGB888;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 3107895115c25..59da90bb840d9 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -463,6 +463,9 @@ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 		       struct nft_set_binding *binding);
+ void nf_tables_unbind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			  struct nft_set_binding *binding);
++void nf_tables_rebind_set(const struct nft_ctx *ctx, struct nft_set *set,
++			  struct nft_set_binding *binding);
++void nf_tables_destroy_set(const struct nft_ctx *ctx, struct nft_set *set);
  
- 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO |
--			  MIPI_DSI_MODE_VIDEO_BURST |
- 			  MIPI_DSI_MODE_LPM |
- 			  MIPI_DSI_MODE_NO_EOT_PACKET;
+ /**
+  *	enum nft_set_extensions - set extension type IDs
+@@ -716,7 +719,9 @@ struct nft_expr_type {
+  *	@eval: Expression evaluation function
+  *	@size: full expression size, including private data size
+  *	@init: initialization function
+- *	@destroy: destruction function
++ *	@activate: activate expression in the next generation
++ *	@deactivate: deactivate expression in next generation
++ *	@destroy: destruction function, called after synchronize_rcu
+  *	@dump: function to dump parameters
+  *	@type: expression type
+  *	@validate: validate expression, called during loop detection
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b24c83cf64b97..39416c568d181 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -327,7 +327,7 @@ static int nft_delrule_by_chain(struct nft_ctx *ctx)
+ 	return 0;
+ }
  
+-static int nft_trans_set_add(struct nft_ctx *ctx, int msg_type,
++static int nft_trans_set_add(const struct nft_ctx *ctx, int msg_type,
+ 			     struct nft_set *set)
+ {
+ 	struct nft_trans *trans;
+@@ -347,7 +347,7 @@ static int nft_trans_set_add(struct nft_ctx *ctx, int msg_type,
+ 	return 0;
+ }
+ 
+-static int nft_delset(struct nft_ctx *ctx, struct nft_set *set)
++static int nft_delset(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+ 	int err;
+ 
+@@ -3311,13 +3311,6 @@ static void nft_set_destroy(struct nft_set *set)
+ 	kvfree(set);
+ }
+ 
+-static void nf_tables_set_destroy(const struct nft_ctx *ctx, struct nft_set *set)
+-{
+-	list_del_rcu(&set->list);
+-	nf_tables_set_notify(ctx, set, NFT_MSG_DELSET, GFP_ATOMIC);
+-	nft_set_destroy(set);
+-}
+-
+ static int nf_tables_delset(struct net *net, struct sock *nlsk,
+ 			    struct sk_buff *skb, const struct nlmsghdr *nlh,
+ 			    const struct nlattr * const nla[],
+@@ -3400,17 +3393,38 @@ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ }
+ EXPORT_SYMBOL_GPL(nf_tables_bind_set);
+ 
+-void nf_tables_unbind_set(const struct nft_ctx *ctx, struct nft_set *set,
++void nf_tables_rebind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			  struct nft_set_binding *binding)
++{
++	if (list_empty(&set->bindings) && set->flags & NFT_SET_ANONYMOUS &&
++	    nft_is_active(ctx->net, set))
++		list_add_tail_rcu(&set->list, &ctx->table->sets);
++
++	list_add_tail_rcu(&binding->list, &set->bindings);
++}
++EXPORT_SYMBOL_GPL(nf_tables_rebind_set);
++
++void nf_tables_unbind_set(const struct nft_ctx *ctx, struct nft_set *set,
++		          struct nft_set_binding *binding)
+ {
+ 	list_del_rcu(&binding->list);
+ 
+ 	if (list_empty(&set->bindings) && set->flags & NFT_SET_ANONYMOUS &&
+ 	    nft_is_active(ctx->net, set))
+-		nf_tables_set_destroy(ctx, set);
++		list_del_rcu(&set->list);
+ }
+ EXPORT_SYMBOL_GPL(nf_tables_unbind_set);
+ 
++void nf_tables_destroy_set(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	if (list_empty(&set->bindings) && set->flags & NFT_SET_ANONYMOUS &&
++	    nft_is_active(ctx->net, set)) {
++		nf_tables_set_notify(ctx, set, NFT_MSG_DELSET, GFP_ATOMIC);
++		nft_set_destroy(set);
++	}
++}
++EXPORT_SYMBOL_GPL(nf_tables_destroy_set);
++
+ const struct nft_set_ext_type nft_set_ext_types[] = {
+ 	[NFT_SET_EXT_KEY]		= {
+ 		.align	= __alignof__(u32),
+diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
+index f8688f9bf46ca..800ca627a4577 100644
+--- a/net/netfilter/nft_dynset.c
++++ b/net/netfilter/nft_dynset.c
+@@ -223,14 +223,31 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
+ 	return err;
+ }
+ 
++static void nft_dynset_activate(const struct nft_ctx *ctx,
++				const struct nft_expr *expr)
++{
++	struct nft_dynset *priv = nft_expr_priv(expr);
++
++	nf_tables_rebind_set(ctx, priv->set, &priv->binding);
++}
++
++static void nft_dynset_deactivate(const struct nft_ctx *ctx,
++				  const struct nft_expr *expr)
++{
++	struct nft_dynset *priv = nft_expr_priv(expr);
++
++	nf_tables_unbind_set(ctx, priv->set, &priv->binding);
++}
++
+ static void nft_dynset_destroy(const struct nft_ctx *ctx,
+ 			       const struct nft_expr *expr)
+ {
+ 	struct nft_dynset *priv = nft_expr_priv(expr);
+ 
+-	nf_tables_unbind_set(ctx, priv->set, &priv->binding);
+ 	if (priv->expr != NULL)
+ 		nft_expr_destroy(ctx, priv->expr);
++
++	nf_tables_destroy_set(ctx, priv->set);
+ }
+ 
+ static int nft_dynset_dump(struct sk_buff *skb, const struct nft_expr *expr)
+@@ -267,6 +284,8 @@ static const struct nft_expr_ops nft_dynset_ops = {
+ 	.eval		= nft_dynset_eval,
+ 	.init		= nft_dynset_init,
+ 	.destroy	= nft_dynset_destroy,
++	.activate	= nft_dynset_activate,
++	.deactivate	= nft_dynset_deactivate,
+ 	.dump		= nft_dynset_dump,
+ };
+ 
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index 44015a151ad69..c34667f4f48a5 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -118,12 +118,28 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
+ 	return 0;
+ }
+ 
++static void nft_lookup_activate(const struct nft_ctx *ctx,
++				const struct nft_expr *expr)
++{
++	struct nft_lookup *priv = nft_expr_priv(expr);
++
++	nf_tables_rebind_set(ctx, priv->set, &priv->binding);
++}
++
++static void nft_lookup_deactivate(const struct nft_ctx *ctx,
++				  const struct nft_expr *expr)
++{
++	struct nft_lookup *priv = nft_expr_priv(expr);
++
++	nf_tables_unbind_set(ctx, priv->set, &priv->binding);
++}
++
+ static void nft_lookup_destroy(const struct nft_ctx *ctx,
+ 			       const struct nft_expr *expr)
+ {
+ 	struct nft_lookup *priv = nft_expr_priv(expr);
+ 
+-	nf_tables_unbind_set(ctx, priv->set, &priv->binding);
++	nf_tables_destroy_set(ctx, priv->set);
+ }
+ 
+ static int nft_lookup_dump(struct sk_buff *skb, const struct nft_expr *expr)
+@@ -151,6 +167,8 @@ static const struct nft_expr_ops nft_lookup_ops = {
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_lookup)),
+ 	.eval		= nft_lookup_eval,
+ 	.init		= nft_lookup_init,
++	.activate	= nft_lookup_activate,
++	.deactivate	= nft_lookup_deactivate,
+ 	.destroy	= nft_lookup_destroy,
+ 	.dump		= nft_lookup_dump,
+ };
+diff --git a/net/netfilter/nft_objref.c b/net/netfilter/nft_objref.c
+index 7bcdc48f3d737..d289fa5e4eb96 100644
+--- a/net/netfilter/nft_objref.c
++++ b/net/netfilter/nft_objref.c
+@@ -154,12 +154,28 @@ static int nft_objref_map_dump(struct sk_buff *skb, const struct nft_expr *expr)
+ 	return -1;
+ }
+ 
++static void nft_objref_map_activate(const struct nft_ctx *ctx,
++				    const struct nft_expr *expr)
++{
++	struct nft_objref_map *priv = nft_expr_priv(expr);
++
++	nf_tables_rebind_set(ctx, priv->set, &priv->binding);
++}
++
++static void nft_objref_map_deactivate(const struct nft_ctx *ctx,
++				      const struct nft_expr *expr)
++{
++	struct nft_objref_map *priv = nft_expr_priv(expr);
++
++	nf_tables_unbind_set(ctx, priv->set, &priv->binding);
++}
++
+ static void nft_objref_map_destroy(const struct nft_ctx *ctx,
+ 				   const struct nft_expr *expr)
+ {
+ 	struct nft_objref_map *priv = nft_expr_priv(expr);
+ 
+-	nf_tables_unbind_set(ctx, priv->set, &priv->binding);
++	nf_tables_destroy_set(ctx, priv->set);
+ }
+ 
+ static struct nft_expr_type nft_objref_type;
+@@ -168,6 +184,8 @@ static const struct nft_expr_ops nft_objref_map_ops = {
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_objref_map)),
+ 	.eval		= nft_objref_map_eval,
+ 	.init		= nft_objref_map_init,
++	.activate	= nft_objref_map_activate,
++	.deactivate	= nft_objref_map_deactivate,
+ 	.destroy	= nft_objref_map_destroy,
+ 	.dump		= nft_objref_map_dump,
+ };
+-- 
+2.39.2
+
 
 
