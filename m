@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA2A703374
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26FF170398F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242808AbjEOQhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40758 "EHLO
+        id S244615AbjEORnm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:43:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242799AbjEOQhP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:15 -0400
+        with ESMTP id S243060AbjEORnW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EC13AAC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E6711565
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6A8362823
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6A3C433EF;
-        Mon, 15 May 2023 16:37:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B511862E4A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5508C4339E;
+        Mon, 15 May 2023 17:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168633;
-        bh=GlLKchtGOYLvwPcxXBP/qDaJ5S5fsUO1cK/Slfo2m6Y=;
+        s=korg; t=1684172452;
+        bh=ht4eD109vJ3wW+ZjBtY5hoH5e2hvHJKXeQfGyZOYbrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lf433/7lq3vFyTxnmMYdOetD1vqaeEbXlCCF5hc6OJE4BcrrCHXrdzjCOta7qBhO9
-         pT6hvff/r8GrOIVG24OyHUB9xFi+vLOEuG4XOcnUfow+R/24jA6CTqxgvB8BH8ivVD
-         DyG6lhV4ufIgnyXc3n0WKKL/FOzmNgcGDlcBlVJw=
+        b=EFUENSkEX+/k+PX5f32KrBMYz+8GPKtGDbsTliNXMTlCt0xWNSqCfiDSHCPrFDyVQ
+         dhHJ56eoD6ofKGBgTMVg7lDwyAzEa1nLyfK5fasyg5ycPNPU2G8fG92yHMY5T/Ggzo
+         kC/It514Gaa1C7nsn2NNcWXzwy+eO6Xqw6iGPYMo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        =?UTF-8?q?Daniel=20D=C3=ADaz?= <daniel.diaz@linaro.org>
-Subject: [PATCH 4.14 111/116] perf bench: Share some global variables to fix build with gcc 10
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 157/381] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
 Date:   Mon, 15 May 2023 18:26:48 +0200
-Message-Id: <20230515161701.922956299@linuxfoundation.org>
+Message-Id: <20230515161743.924320938@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,149 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit e4d9b04b973b2dbce7b42af95ea70d07da1c936d ]
+[ Upstream commit 905a9241e4e8c15d2c084fee916280514848fe35 ]
 
-Noticed with gcc 10 (fedora rawhide) that those variables were not being
-declared as static, so end up with:
+If there is a failure during copy_from_user or user-provided data buffer
+is invalid, rtl_debugfs_set_write_rfreg should return negative error code
+instead of a positive value count.
 
-  ld: /tmp/build/perf/bench/epoll-wait.o:/git/perf/tools/perf/bench/epoll-wait.c:93: multiple definition of `end'; /tmp/build/perf/bench/futex-hash.o:/git/perf/tools/perf/bench/futex-hash.c:40: first defined here
-  ld: /tmp/build/perf/bench/epoll-wait.o:/git/perf/tools/perf/bench/epoll-wait.c:93: multiple definition of `start'; /tmp/build/perf/bench/futex-hash.o:/git/perf/tools/perf/bench/futex-hash.c:40: first defined here
-  ld: /tmp/build/perf/bench/epoll-wait.o:/git/perf/tools/perf/bench/epoll-wait.c:93: multiple definition of `runtime'; /tmp/build/perf/bench/futex-hash.o:/git/perf/tools/perf/bench/futex-hash.c:40: first defined here
-  ld: /tmp/build/perf/bench/epoll-ctl.o:/git/perf/tools/perf/bench/epoll-ctl.c:38: multiple definition of `end'; /tmp/build/perf/bench/futex-hash.o:/git/perf/tools/perf/bench/futex-hash.c:40: first defined here
-  ld: /tmp/build/perf/bench/epoll-ctl.o:/git/perf/tools/perf/bench/epoll-ctl.c:38: multiple definition of `start'; /tmp/build/perf/bench/futex-hash.o:/git/perf/tools/perf/bench/futex-hash.c:40: first defined here
-  ld: /tmp/build/perf/bench/epoll-ctl.o:/git/perf/tools/perf/bench/epoll-ctl.c:38: multiple definition of `runtime'; /tmp/build/perf/bench/futex-hash.o:/git/perf/tools/perf/bench/futex-hash.c:40: first defined here
-  make[4]: *** [/git/perf/tools/build/Makefile.build:145: /tmp/build/perf/bench/perf-in.o] Error 1
+Fix this bug by returning correct error code. Moreover, the check of buffer
+against null is removed since it will be handled by copy_from_user.
 
-Prefix those with bench__ and add them to bench/bench.h, so that we can
-share those on the tools needing to access those variables from signal
-handlers.
-
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: http://lore.kernel.org/lkml/20200303155811.GD13702@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Daniel Díaz <daniel.diaz@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230326053138.91338-1-harperchen1110@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/bench/bench.h         |    4 ++++
- tools/perf/bench/futex-hash.c    |   12 ++++++------
- tools/perf/bench/futex-lock-pi.c |   11 +++++------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/perf/bench/bench.h
-+++ b/tools/perf/bench/bench.h
-@@ -2,6 +2,10 @@
- #ifndef BENCH_H
- #define BENCH_H
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index 0b1bc04cb6adb..602717928887d 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -375,8 +375,8 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
  
-+#include <sys/time.h>
-+
-+extern struct timeval bench__start, bench__end, bench__runtime;
-+
- /*
-  * The madvise transparent hugepage constants were added in glibc
-  * 2.13. For compatibility with older versions of glibc, define these
---- a/tools/perf/bench/futex-hash.c
-+++ b/tools/perf/bench/futex-hash.c
-@@ -35,7 +35,7 @@ static unsigned int nfutexes = 1024;
- static bool fshared = false, done = false, silent = false;
- static int futex_flag = 0;
+ 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
  
--struct timeval start, end, runtime;
-+struct timeval bench__start, bench__end, bench__runtime;
- static pthread_mutex_t thread_lock;
- static unsigned int threads_starting;
- static struct stats throughput_stats;
-@@ -101,8 +101,8 @@ static void toggle_done(int sig __maybe_
- {
- 	/* inform all threads that we're done for the day */
- 	done = true;
--	gettimeofday(&end, NULL);
--	timersub(&end, &start, &runtime);
-+	gettimeofday(&bench__end, NULL);
-+	timersub(&bench__end, &bench__start, &bench__runtime);
- }
+-	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+-		return count;
++	if (copy_from_user(tmp, buffer, tmp_len))
++		return -EFAULT;
  
- static void print_summary(void)
-@@ -112,7 +112,7 @@ static void print_summary(void)
+ 	tmp[tmp_len] = '\0';
  
- 	printf("%sAveraged %ld operations/sec (+- %.2f%%), total secs = %d\n",
- 	       !silent ? "\n" : "", avg, rel_stddev_stats(stddev, avg),
--	       (int) runtime.tv_sec);
-+	       (int)bench__runtime.tv_sec);
- }
+@@ -386,7 +386,7 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
+ 	if (num != 4) {
+ 		rtl_dbg(rtlpriv, COMP_ERR, DBG_DMESG,
+ 			"Format is <path> <addr> <mask> <data>\n");
+-		return count;
++		return -EINVAL;
+ 	}
  
- int bench_futex_hash(int argc, const char **argv)
-@@ -156,7 +156,7 @@ int bench_futex_hash(int argc, const cha
- 
- 	threads_starting = nthreads;
- 	pthread_attr_init(&thread_attr);
--	gettimeofday(&start, NULL);
-+	gettimeofday(&bench__start, NULL);
- 	for (i = 0; i < nthreads; i++) {
- 		worker[i].tid = i;
- 		worker[i].futex = calloc(nfutexes, sizeof(*worker[i].futex));
-@@ -199,7 +199,7 @@ int bench_futex_hash(int argc, const cha
- 	pthread_mutex_destroy(&thread_lock);
- 
- 	for (i = 0; i < nthreads; i++) {
--		unsigned long t = worker[i].ops/runtime.tv_sec;
-+		unsigned long t = worker[i].ops / bench__runtime.tv_sec;
- 		update_stats(&throughput_stats, t);
- 		if (!silent) {
- 			if (nfutexes == 1)
---- a/tools/perf/bench/futex-lock-pi.c
-+++ b/tools/perf/bench/futex-lock-pi.c
-@@ -34,7 +34,6 @@ static bool silent = false, multi = fals
- static bool done = false, fshared = false;
- static unsigned int ncpus, nthreads = 0;
- static int futex_flag = 0;
--struct timeval start, end, runtime;
- static pthread_mutex_t thread_lock;
- static unsigned int threads_starting;
- static struct stats throughput_stats;
-@@ -61,7 +60,7 @@ static void print_summary(void)
- 
- 	printf("%sAveraged %ld operations/sec (+- %.2f%%), total secs = %d\n",
- 	       !silent ? "\n" : "", avg, rel_stddev_stats(stddev, avg),
--	       (int) runtime.tv_sec);
-+	       (int)bench__runtime.tv_sec);
- }
- 
- static void toggle_done(int sig __maybe_unused,
-@@ -70,8 +69,8 @@ static void toggle_done(int sig __maybe_
- {
- 	/* inform all threads that we're done for the day */
- 	done = true;
--	gettimeofday(&end, NULL);
--	timersub(&end, &start, &runtime);
-+	gettimeofday(&bench__end, NULL);
-+	timersub(&bench__end, &bench__start, &bench__runtime);
- }
- 
- static void *workerfn(void *arg)
-@@ -178,7 +177,7 @@ int bench_futex_lock_pi(int argc, const
- 
- 	threads_starting = nthreads;
- 	pthread_attr_init(&thread_attr);
--	gettimeofday(&start, NULL);
-+	gettimeofday(&bench__start, NULL);
- 
- 	create_threads(worker, thread_attr);
- 	pthread_attr_destroy(&thread_attr);
-@@ -204,7 +203,7 @@ int bench_futex_lock_pi(int argc, const
- 	pthread_mutex_destroy(&thread_lock);
- 
- 	for (i = 0; i < nthreads; i++) {
--		unsigned long t = worker[i].ops/runtime.tv_sec;
-+		unsigned long t = worker[i].ops / bench__runtime.tv_sec;
- 
- 		update_stats(&throughput_stats, t);
- 		if (!silent)
+ 	rtl_set_rfreg(hw, path, addr, bitmask, data);
+-- 
+2.39.2
+
 
 
