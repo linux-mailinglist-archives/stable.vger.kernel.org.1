@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C62C703883
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3718703A29
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244377AbjEORcz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
+        id S244648AbjEORtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244344AbjEORci (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:38 -0400
+        with ESMTP id S243502AbjEORtE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E089D06C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E422183EA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F94862D1D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F8FC433D2;
-        Mon, 15 May 2023 17:29:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C2BD662F0D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EC0C4339C;
+        Mon, 15 May 2023 17:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171797;
-        bh=IXW+SxrrS9I3G4nKeObOhNkcrAc+UvDXcBFwOekBzes=;
+        s=korg; t=1684172821;
+        bh=lotCwatslFPZITBt8TkH1xDOh26ZQ35HXt0PMV1FPo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GZR4XrP22p1OH1YauJv5mu4BGvbZ7hJAIz5+Ekl9/4yINsq9gbEZu596dUDYZD5+s
-         v0pXTN/QdG5v8Ps/g2pfZyp5tpbdBFORc8I/1699ADHCr+ObVlrSA8jKYBKonpVmmU
-         9MhexkvTpca2wVb2RTWxbh7dIbSEg+d7zjHMU27Q=
+        b=SDP4rwsbaCHyGRXe7wMcv7LKRWVvjdJY1gorTx8i+4iwhrF+rAJ2GT8Jlhwnezkzf
+         nNACyXfe7e9KiYlYPG7L4rkqARZHfB21QVDA3ElLl3IJZcnp+NnT6PFj52aNsVbVkH
+         BiowS5HMLObONlcP940852nOjaRRQYxk1FSV2JfY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/134] perf pmu: zfree() expects a pointer to a pointer to zero it after freeing its contents
+Subject: [PATCH 5.10 277/381] mfd: tqmx86: Correct board names for TQMxE39x
 Date:   Mon, 15 May 2023 18:28:48 +0200
-Message-Id: <20230515161704.842936829@linuxfoundation.org>
+Message-Id: <20230515161749.294142497@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,32 +55,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-[ Upstream commit 57f14b5ae1a97537f2abd2828ee7212cada7036e ]
+[ Upstream commit f376c479668557bcc2fd9e9fbc0f53e7819a11cd ]
 
-An audit showed just this one problem with zfree(), fix it.
+It seems that this driver was developed based on preliminary documentation.
+Report the correct names for all TQMxE39x variants, as they are used by
+the released hardware revisions:
 
-Fixes: 9fbc61f832ebf432 ("perf pmu: Add support for PMU capabilities")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+- Fix names for TQMxE39C1/C2 board IDs
+- Distinguish TQMxE39M and TQMxE39S, which use the same board ID
+
+The TQMxE39M/S are distinguished using the SAUC (Sanctioned Alternate
+Uses Configuration) register of the GPIO controller. This also prepares
+for the correct handling of the differences between the GPIO controllers
+of our COMe and SMARC modules.
+
+Fixes: 2f17dd34ffed ("mfd: tqmx86: IO controller with I2C, Wachdog and GPIO")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/aca9a7cb42a85181bcb456c437554d2728e708ec.1676892223.git.matthias.schiffer@ew.tq-group.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/tqmx86.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 26c0b88cef4c8..eafd80be66076 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -1858,7 +1858,7 @@ static int perf_pmu__new_caps(struct list_head *list, char *name, char *value)
- 	return 0;
+diff --git a/drivers/mfd/tqmx86.c b/drivers/mfd/tqmx86.c
+index c8ec0f92bc10a..0498f1b7e2e36 100644
+--- a/drivers/mfd/tqmx86.c
++++ b/drivers/mfd/tqmx86.c
+@@ -30,9 +30,9 @@
+ #define TQMX86_REG_BOARD_ID_50UC	2
+ #define TQMX86_REG_BOARD_ID_E38C	3
+ #define TQMX86_REG_BOARD_ID_60EB	4
+-#define TQMX86_REG_BOARD_ID_E39M	5
+-#define TQMX86_REG_BOARD_ID_E39C	6
+-#define TQMX86_REG_BOARD_ID_E39x	7
++#define TQMX86_REG_BOARD_ID_E39MS	5
++#define TQMX86_REG_BOARD_ID_E39C1	6
++#define TQMX86_REG_BOARD_ID_E39C2	7
+ #define TQMX86_REG_BOARD_ID_70EB	8
+ #define TQMX86_REG_BOARD_ID_80UC	9
+ #define TQMX86_REG_BOARD_ID_110EB	11
+@@ -48,6 +48,7 @@
+ #define TQMX86_REG_IO_EXT_INT_12		3
+ #define TQMX86_REG_IO_EXT_INT_MASK		0x3
+ #define TQMX86_REG_IO_EXT_INT_GPIO_SHIFT	4
++#define TQMX86_REG_SAUC		0x17
  
- free_name:
--	zfree(caps->name);
-+	zfree(&caps->name);
- free_caps:
- 	free(caps);
+ #define TQMX86_REG_I2C_DETECT	0x1a7
+ #define TQMX86_REG_I2C_DETECT_SOFT		0xa5
+@@ -110,7 +111,7 @@ static const struct mfd_cell tqmx86_devs[] = {
+ 	},
+ };
  
+-static const char *tqmx86_board_id_to_name(u8 board_id)
++static const char *tqmx86_board_id_to_name(u8 board_id, u8 sauc)
+ {
+ 	switch (board_id) {
+ 	case TQMX86_REG_BOARD_ID_E38M:
+@@ -121,12 +122,12 @@ static const char *tqmx86_board_id_to_name(u8 board_id)
+ 		return "TQMxE38C";
+ 	case TQMX86_REG_BOARD_ID_60EB:
+ 		return "TQMx60EB";
+-	case TQMX86_REG_BOARD_ID_E39M:
+-		return "TQMxE39M";
+-	case TQMX86_REG_BOARD_ID_E39C:
+-		return "TQMxE39C";
+-	case TQMX86_REG_BOARD_ID_E39x:
+-		return "TQMxE39x";
++	case TQMX86_REG_BOARD_ID_E39MS:
++		return (sauc == 0xff) ? "TQMxE39M" : "TQMxE39S";
++	case TQMX86_REG_BOARD_ID_E39C1:
++		return "TQMxE39C1";
++	case TQMX86_REG_BOARD_ID_E39C2:
++		return "TQMxE39C2";
+ 	case TQMX86_REG_BOARD_ID_70EB:
+ 		return "TQMx70EB";
+ 	case TQMX86_REG_BOARD_ID_80UC:
+@@ -159,9 +160,9 @@ static int tqmx86_board_id_to_clk_rate(u8 board_id)
+ 	case TQMX86_REG_BOARD_ID_E40C1:
+ 	case TQMX86_REG_BOARD_ID_E40C2:
+ 		return 24000;
+-	case TQMX86_REG_BOARD_ID_E39M:
+-	case TQMX86_REG_BOARD_ID_E39C:
+-	case TQMX86_REG_BOARD_ID_E39x:
++	case TQMX86_REG_BOARD_ID_E39MS:
++	case TQMX86_REG_BOARD_ID_E39C1:
++	case TQMX86_REG_BOARD_ID_E39C2:
+ 		return 25000;
+ 	case TQMX86_REG_BOARD_ID_E38M:
+ 	case TQMX86_REG_BOARD_ID_E38C:
+@@ -173,7 +174,7 @@ static int tqmx86_board_id_to_clk_rate(u8 board_id)
+ 
+ static int tqmx86_probe(struct platform_device *pdev)
+ {
+-	u8 board_id, rev, i2c_det, io_ext_int_val;
++	u8 board_id, sauc, rev, i2c_det, io_ext_int_val;
+ 	struct device *dev = &pdev->dev;
+ 	u8 gpio_irq_cfg, readback;
+ 	const char *board_name;
+@@ -203,7 +204,8 @@ static int tqmx86_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	board_id = ioread8(io_base + TQMX86_REG_BOARD_ID);
+-	board_name = tqmx86_board_id_to_name(board_id);
++	sauc = ioread8(io_base + TQMX86_REG_SAUC);
++	board_name = tqmx86_board_id_to_name(board_id, sauc);
+ 	rev = ioread8(io_base + TQMX86_REG_BOARD_REV);
+ 
+ 	dev_info(dev,
 -- 
 2.39.2
 
