@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B89270351C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E180E703704
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243215AbjEOQzp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57542 "EHLO
+        id S243887AbjEORQI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:16:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243227AbjEOQze (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:34 -0400
+        with ESMTP id S243880AbjEORPg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494747289
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51DF68A55
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D381D62A06
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DE8C433EF;
-        Mon, 15 May 2023 16:55:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB94F62BAC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3E4C4339B;
+        Mon, 15 May 2023 17:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169732;
-        bh=zwYjLt6fK9ltAW4ZDMPdUWRJ57KTSf0r+ZYcAzHnx8U=;
+        s=korg; t=1684170868;
+        bh=dGSZtykAz1SgYQunmoxeFTh7UV2GyiCpvAZcTkzTbJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tSmEmyHmtwBBkz42WDJ4l1N/c7knXDdUtSx092rB/0I83+r1R5H2lbKae8feVDmCn
-         NS3kidnI7TUFsIJxjMZxAqIsmfP9o5PkyGBuA+5K26C05HK2dS6EROkYY+jnJXaoJa
-         PmjwAbwiXMq+scZDdK006BraFwwRR76lyenR/bu8=
+        b=I+xZa5dTr4JOKtxBPunk2azD5WQfq+Fr8DAqmopXrUtCliDJpF9JsUG1JbI+DENF4
+         P+IS78YeYEZzzZpPcgWeUwgWI30d47eepUx2vSQqZmzQVF5ZKcL5SQJRLcW1mW+BQV
+         vF5usy7QjmYVdYhf/iWf5eiyTtp17nITyfMzAB1w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
-        Sean Christopherson <seanjc@google.com>,
+        patches@lists.linux.dev, Steev Klimaszewski <steev@kali.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 123/246] KVM: x86: Make use of kvm_read_cr*_bits() when testing bits
+Subject: [PATCH 6.2 009/242] soc: qcom: llcc: Do not create EDAC platform device on SDM845
 Date:   Mon, 15 May 2023 18:25:35 +0200
-Message-Id: <20230515161726.255905409@linuxfoundation.org>
+Message-Id: <20230515161722.092502039@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,64 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 74cdc836919bf34684ef66f995273f35e2189daf ]
+[ Upstream commit cca94f1dd6d0a4c7e5c8190672f5747e3c00ddde ]
 
-Make use of the kvm_read_cr{0,4}_bits() helper functions when we only
-want to know the state of certain bits instead of the whole register.
+The platforms based on SDM845 SoC locks the access to EDAC registers in the
+bootloader. So probing the EDAC driver will result in a crash. Hence,
+disable the creation of EDAC platform device on all SDM845 devices.
 
-This not only makes the intent cleaner, it also avoids a potential
-VMREAD in case the tested bits aren't guest owned.
+The issue has been observed on Lenovo Yoga C630 and DB845c.
 
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://lore.kernel.org/r/20230322013731.102955-5-minipli@grsecurity.net
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+While at it, also sort the members of `struct qcom_llcc_config` to avoid
+any holes in-between.
+
+Cc: <stable@vger.kernel.org> # 5.10
+Reported-by: Steev Klimaszewski <steev@kali.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230314080443.64635-15-manivannan.sadhasivam@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/pmu.c     | 4 ++--
- arch/x86/kvm/vmx/vmx.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/soc/qcom/llcc-qcom.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 612e6c70ce2e7..f4aa170b5b972 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -540,9 +540,9 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
- 	if (!pmc)
- 		return 1;
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index e417bd285d9db..d4d3eced52f35 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -122,10 +122,11 @@ struct llcc_slice_config {
  
--	if (!(kvm_read_cr4(vcpu) & X86_CR4_PCE) &&
-+	if (!(kvm_read_cr4_bits(vcpu, X86_CR4_PCE)) &&
- 	    (static_call(kvm_x86_get_cpl)(vcpu) != 0) &&
--	    (kvm_read_cr0(vcpu) & X86_CR0_PE))
-+	    (kvm_read_cr0_bits(vcpu, X86_CR0_PE)))
- 		return 1;
+ struct qcom_llcc_config {
+ 	const struct llcc_slice_config *sct_data;
+-	int size;
+-	bool need_llcc_cfg;
+ 	const u32 *reg_offset;
+ 	const struct llcc_edac_reg_offset *edac_reg_offset;
++	int size;
++	bool need_llcc_cfg;
++	bool no_edac;
+ };
  
- 	*data = pmc_read_counter(pmc) & mask;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index dd92361f41b3f..64b35223dc3d7 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5500,7 +5500,7 @@ static int handle_cr(struct kvm_vcpu *vcpu)
- 		break;
- 	case 3: /* lmsw */
- 		val = (exit_qualification >> LMSW_SOURCE_DATA_SHIFT) & 0x0f;
--		trace_kvm_cr_write(0, (kvm_read_cr0(vcpu) & ~0xful) | val);
-+		trace_kvm_cr_write(0, (kvm_read_cr0_bits(vcpu, ~0xful) | val));
- 		kvm_lmsw(vcpu, val);
+ enum llcc_reg_offset {
+@@ -454,6 +455,7 @@ static const struct qcom_llcc_config sdm845_cfg = {
+ 	.need_llcc_cfg	= false,
+ 	.reg_offset	= llcc_v1_reg_offset,
+ 	.edac_reg_offset = &llcc_v1_edac_reg_offset,
++	.no_edac	= true,
+ };
  
- 		return kvm_skip_emulated_instruction(vcpu);
-@@ -7558,7 +7558,7 @@ static u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
- 	if (!kvm_arch_has_noncoherent_dma(vcpu->kvm))
- 		return (MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT) | VMX_EPT_IPAT_BIT;
+ static const struct qcom_llcc_config sm6350_cfg = {
+@@ -1002,11 +1004,19 @@ static int qcom_llcc_probe(struct platform_device *pdev)
  
--	if (kvm_read_cr0(vcpu) & X86_CR0_CD) {
-+	if (kvm_read_cr0_bits(vcpu, X86_CR0_CD)) {
- 		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_CD_NW_CLEARED))
- 			cache = MTRR_TYPE_WRBACK;
- 		else
+ 	drv_data->ecc_irq = platform_get_irq_optional(pdev, 0);
+ 
+-	llcc_edac = platform_device_register_data(&pdev->dev,
+-					"qcom_llcc_edac", -1, drv_data,
+-					sizeof(*drv_data));
+-	if (IS_ERR(llcc_edac))
+-		dev_err(dev, "Failed to register llcc edac driver\n");
++	/*
++	 * On some platforms, the access to EDAC registers will be locked by
++	 * the bootloader. So probing the EDAC driver will result in a crash.
++	 * Hence, disable the creation of EDAC platform device for the
++	 * problematic platforms.
++	 */
++	if (!cfg->no_edac) {
++		llcc_edac = platform_device_register_data(&pdev->dev,
++						"qcom_llcc_edac", -1, drv_data,
++						sizeof(*drv_data));
++		if (IS_ERR(llcc_edac))
++			dev_err(dev, "Failed to register llcc edac driver\n");
++	}
+ 
+ 	return 0;
+ err:
 -- 
 2.39.2
 
