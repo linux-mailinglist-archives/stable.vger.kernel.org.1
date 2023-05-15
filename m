@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E777703885
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0777A703A24
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244382AbjEORc4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54022 "EHLO
+        id S244727AbjEORtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244348AbjEORck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D58DC56
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:04 -0700 (PDT)
+        with ESMTP id S244748AbjEORtB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140BC176F2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3EAF62D26
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D408AC4339B;
-        Mon, 15 May 2023 17:30:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E98DB62EC7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BFBC433D2;
+        Mon, 15 May 2023 17:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171803;
-        bh=9dNCFdcbj4sG5xdcKXS+glwPFLlv9F0uT9RfLy7Ksfo=;
+        s=korg; t=1684172827;
+        bh=wE6pSbNrn6qYaSIOmf7p4c3njD5jJ9XV1sMYnghL00I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2nR9fUjw2oiT36gBRS4MafdL5zpEUGgqO/wP6GbT9vnoG117zPyliTt618dkeFrPg
-         5Fe2YCI44LXdGJC/ouMEBK4IKJLOxIX8+Q6lkXXtsE1/DejEi5RpgBwMjxcUXtDAKE
-         hGL6vq/xGcKKmqWkAX/b7J/dZgO9Ittjw1phbR2E=
+        b=NtuoOtdj0tEyi/weA8JP7URihbp+Zmfphie4EQtmj/UqwMw+NFpXYhHnqRGYs4zqH
+         /LWU0jq/c9Fgv8kEwjlZ+T7cQdgyr0uJvq+hnDf6MXLFCU9JWDqKT241KsDzN0HO2+
+         7yOw6fcXCAVBioYoyhAtRCrAImbSI/7LVH0t0VGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/134] crypto: sun8i-ss - Fix a test in sun8i_ss_setup_ivs()
+        patches@lists.linux.dev, Peng Liu <liupeng17@lenovo.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 279/381] scripts/gdb: fix lx-timerlist for Python3
 Date:   Mon, 15 May 2023 18:28:50 +0200
-Message-Id: <20230515161704.911562055@linuxfoundation.org>
+Message-Id: <20230515161749.381061993@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,38 +56,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Peng Liu <liupeng17@lenovo.com>
 
-[ Upstream commit 8fd91151ebcb21b3f2f2bf158ac6092192550b2b ]
+commit 7362042f3556528e9e9b1eb5ce8d7a3a6331476b upstream.
 
-SS_ENCRYPTION is (0 << 7 = 0), so the test can never be true.
-Use a direct comparison to SS_ENCRYPTION instead.
+Below incompatibilities between Python2 and Python3 made lx-timerlist fail
+to run under Python3.
 
-The same king of test is already done the same way in sun8i_ss_run_task().
+o xrange() is replaced by range() in Python3
+o bytes and str are different types in Python3
+o the return value of Inferior.read_memory() is memoryview object in
+  Python3
 
-Fixes: 359e893e8af4 ("crypto: sun8i-ss - rework handling of IV")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+akpm: cc stable so that older kernels are properly debuggable under newer
+Python.
+
+Link: https://lkml.kernel.org/r/TYCP286MB2146EE1180A4D5176CBA8AB2C6819@TYCP286MB2146.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Peng Liu <liupeng17@lenovo.com>
+Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/gdb/linux/timerlist.py |    4 +++-
+ scripts/gdb/linux/utils.py     |    5 ++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-index 005eefecfdf59..0cc8cafdde27c 100644
---- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-@@ -132,7 +132,7 @@ static int sun8i_ss_setup_ivs(struct skcipher_request *areq)
- 		}
- 		rctx->p_iv[i] = a;
- 		/* we need to setup all others IVs only in the decrypt way */
--		if (rctx->op_dir & SS_ENCRYPTION)
-+		if (rctx->op_dir == SS_ENCRYPTION)
- 			return 0;
- 		todo = min(len, sg_dma_len(sg));
- 		len -= todo;
--- 
-2.39.2
-
+--- a/scripts/gdb/linux/timerlist.py
++++ b/scripts/gdb/linux/timerlist.py
+@@ -73,7 +73,7 @@ def print_cpu(hrtimer_bases, cpu, max_cl
+     ts = cpus.per_cpu(tick_sched_ptr, cpu)
+ 
+     text = "cpu: {}\n".format(cpu)
+-    for i in xrange(max_clock_bases):
++    for i in range(max_clock_bases):
+         text += " clock {}:\n".format(i)
+         text += print_base(cpu_base['clock_base'][i])
+ 
+@@ -158,6 +158,8 @@ def pr_cpumask(mask):
+     num_bytes = (nr_cpu_ids + 7) / 8
+     buf = utils.read_memoryview(inf, bits, num_bytes).tobytes()
+     buf = binascii.b2a_hex(buf)
++    if type(buf) is not str:
++        buf=buf.decode()
+ 
+     chunks = []
+     i = num_bytes
+--- a/scripts/gdb/linux/utils.py
++++ b/scripts/gdb/linux/utils.py
+@@ -89,7 +89,10 @@ def get_target_endianness():
+ 
+ 
+ def read_memoryview(inf, start, length):
+-    return memoryview(inf.read_memory(start, length))
++    m = inf.read_memory(start, length)
++    if type(m) is memoryview:
++        return m
++    return memoryview(m)
+ 
+ 
+ def read_u16(buffer, offset):
 
 
