@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A137038C8
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A91703A9D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242535AbjEORfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
+        id S244960AbjEORxZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:53:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242397AbjEOReb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0BF4C9C3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:34 -0700 (PDT)
+        with ESMTP id S240901AbjEORxF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:53:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC41619F02
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:51:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EA3562D46
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24F2C433EF;
-        Mon, 15 May 2023 17:32:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCBA762F7D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:51:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF83C433D2;
+        Mon, 15 May 2023 17:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171953;
-        bh=De2i338n1K5D4zknbNCI2ER3uADqMbvgJ82boCtVRfs=;
+        s=korg; t=1684173066;
+        bh=Fn7XZrxNZA4XDU0uM9REamtFXS7LYsjls0OiNJWP7H8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M97zvLlCWCUhENro4q1D1YJBeyzpHyPlvLuc0Rl/nCYu1ZDmQGFE6JpoYUMtBrxTV
-         l7OiYKhkbT/BAevnjcx8b/D3A+NSZ+RE9nPuBZ/7/FS9zTbhohKzjarz5hKYmERimy
-         OpzTTajzmdVA2yJPohCBdBE+IrCkTN4XtCT6RGQo=
+        b=AIvq1nTDzMdef1v52Tv9H6IfLUEUP/1g6izLch1WtqX2PRm6Nf+kjTDFgOKwn6oss
+         kB1wX7bfLvcxqkrrPTmF/8JKdbUhI1gbEJ9YVXMR00TCbsqRIwepIkqyfmxgLINKDE
+         QsYyn97TeWlXu5L+Yz6ZfrEO437mgD3yO1D+UG6Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 131/134] serial: 8250: Fix serial8250_tx_empty() race with DMA Tx
+        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>
+Subject: [PATCH 5.10 357/381] KVM: x86: do not report a vCPU as preempted outside instruction boundaries
 Date:   Mon, 15 May 2023 18:30:08 +0200
-Message-Id: <20230515161707.532154260@linuxfoundation.org>
+Message-Id: <20230515161753.014828080@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,94 +54,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 146a37e05d620cef4ad430e5d1c9c077fe6fa76f upstream.
+commit 6cd88243c7e03845a450795e134b488fc2afb736 upstream.
 
-There's a potential race before THRE/TEMT deasserts when DMA Tx is
-starting up (or the next batch of continuous Tx is being submitted).
-This can lead to misdetecting Tx empty condition.
+If a vCPU is outside guest mode and is scheduled out, it might be in the
+process of making a memory access.  A problem occurs if another vCPU uses
+the PV TLB flush feature during the period when the vCPU is scheduled
+out, and a virtual address has already been translated but has not yet
+been accessed, because this is equivalent to using a stale TLB entry.
 
-It is entirely normal for THRE/TEMT to be set for some time after the
-DMA Tx had been setup in serial8250_tx_dma(). As Tx side is definitely
-not empty at that point, it seems incorrect for serial8250_tx_empty()
-claim Tx is empty.
+To avoid this, only report a vCPU as preempted if sure that the guest
+is at an instruction boundary.  A rescheduling request will be delivered
+to the host physical CPU as an external interrupt, so for simplicity
+consider any vmexit *not* instruction boundary except for external
+interrupts.
 
-Fix the race by also checking in serial8250_tx_empty() whether there's
-DMA Tx active.
+It would in principle be okay to report the vCPU as preempted also
+if it is sleeping in kvm_vcpu_block(): a TLB flush IPI will incur the
+vmentry/vmexit overhead unnecessarily, and optimistic spinning is
+also unlikely to succeed.  However, leave it for later because right
+now kvm_vcpu_check_block() is doing memory accesses.  Even
+though the TLB flush issue only applies to virtual memory address,
+it's very much preferrable to be conservative.
 
-Note: This fix only addresses in-kernel race mainly to make using
-TCSADRAIN/FLUSH robust. Userspace can still cause other races but they
-seem userspace concurrency control problems.
-
-Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230317113318.31327-3-ilpo.jarvinen@linux.intel.com
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[OP: use VCPU_STAT() for debugfs entries]
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250.h      |   12 ++++++++++++
- drivers/tty/serial/8250/8250_port.c |   12 +++++++++---
- 2 files changed, 21 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    3 +++
+ arch/x86/kvm/svm/svm.c          |    2 ++
+ arch/x86/kvm/vmx/vmx.c          |    1 +
+ arch/x86/kvm/x86.c              |   22 ++++++++++++++++++++++
+ 4 files changed, 28 insertions(+)
 
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -349,6 +349,13 @@ static inline void serial8250_do_prepare
- 	if (dma->prepare_rx_dma)
- 		dma->prepare_rx_dma(p);
- }
-+
-+static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
-+{
-+	struct uart_8250_dma *dma = p->dma;
-+
-+	return dma && dma->tx_running;
-+}
- #else
- static inline int serial8250_tx_dma(struct uart_8250_port *p)
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -553,6 +553,7 @@ struct kvm_vcpu_arch {
+ 	u64 ia32_misc_enable_msr;
+ 	u64 smbase;
+ 	u64 smi_count;
++	bool at_instruction_boundary;
+ 	bool tpr_access_reporting;
+ 	bool xsaves_enabled;
+ 	u64 ia32_xss;
+@@ -1061,6 +1062,8 @@ struct kvm_vcpu_stat {
+ 	u64 req_event;
+ 	u64 halt_poll_success_ns;
+ 	u64 halt_poll_fail_ns;
++	u64 preemption_reported;
++	u64 preemption_other;
+ };
+ 
+ struct x86_instruction_info;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3983,6 +3983,8 @@ out:
+ 
+ static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
  {
-@@ -364,6 +371,11 @@ static inline int serial8250_request_dma
- 	return -1;
++	if (to_svm(vcpu)->vmcb->control.exit_code == SVM_EXIT_INTR)
++		vcpu->arch.at_instruction_boundary = true;
  }
- static inline void serial8250_release_dma(struct uart_8250_port *p) { }
-+
-+static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
-+{
-+	return false;
-+}
- #endif
  
- static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1988,19 +1988,25 @@ static int serial8250_tx_threshold_handl
- static unsigned int serial8250_tx_empty(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
-+	unsigned int result = 0;
- 	unsigned long flags;
- 	unsigned int lsr;
+ static void svm_sched_in(struct kvm_vcpu *vcpu, int cpu)
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6510,6 +6510,7 @@ static void handle_external_interrupt_ir
+ 		return;
  
- 	serial8250_rpm_get(up);
+ 	handle_interrupt_nmi_irqoff(vcpu, gate_offset(desc));
++	vcpu->arch.at_instruction_boundary = true;
+ }
  
- 	spin_lock_irqsave(&port->lock, flags);
--	lsr = serial_port_in(port, UART_LSR);
--	up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
-+	if (!serial8250_tx_dma_running(up)) {
-+		lsr = serial_port_in(port, UART_LSR);
-+		up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
-+
-+		if ((lsr & BOTH_EMPTY) == BOTH_EMPTY)
-+			result = TIOCSER_TEMT;
+ static void vmx_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -231,6 +231,8 @@ struct kvm_stats_debugfs_item debugfs_en
+ 	VCPU_STAT("l1d_flush", l1d_flush),
+ 	VCPU_STAT("halt_poll_success_ns", halt_poll_success_ns),
+ 	VCPU_STAT("halt_poll_fail_ns", halt_poll_fail_ns),
++	VCPU_STAT("preemption_reported", preemption_reported),
++	VCPU_STAT("preemption_other", preemption_other),
+ 	VM_STAT("mmu_shadow_zapped", mmu_shadow_zapped),
+ 	VM_STAT("mmu_pte_write", mmu_pte_write),
+ 	VM_STAT("mmu_pde_zapped", mmu_pde_zapped),
+@@ -4052,6 +4054,19 @@ static void kvm_steal_time_set_preempted
+ 	struct kvm_host_map map;
+ 	struct kvm_steal_time *st;
+ 
++	/*
++	 * The vCPU can be marked preempted if and only if the VM-Exit was on
++	 * an instruction boundary and will not trigger guest emulation of any
++	 * kind (see vcpu_run).  Vendor specific code controls (conservatively)
++	 * when this is true, for example allowing the vCPU to be marked
++	 * preempted if and only if the VM-Exit was due to a host interrupt.
++	 */
++	if (!vcpu->arch.at_instruction_boundary) {
++		vcpu->stat.preemption_other++;
++		return;
 +	}
- 	spin_unlock_irqrestore(&port->lock, flags);
++
++	vcpu->stat.preemption_reported++;
+ 	if (!(vcpu->arch.st.msr_val & KVM_MSR_ENABLED))
+ 		return;
  
- 	serial8250_rpm_put(up);
+@@ -9357,6 +9372,13 @@ static int vcpu_run(struct kvm_vcpu *vcp
+ 	vcpu->arch.l1tf_flush_l1d = true;
  
--	return (lsr & BOTH_EMPTY) == BOTH_EMPTY ? TIOCSER_TEMT : 0;
-+	return result;
- }
- 
- unsigned int serial8250_do_get_mctrl(struct uart_port *port)
+ 	for (;;) {
++		/*
++		 * If another guest vCPU requests a PV TLB flush in the middle
++		 * of instruction emulation, the rest of the emulation could
++		 * use a stale page translation. Assume that any code after
++		 * this point can start executing an instruction.
++		 */
++		vcpu->arch.at_instruction_boundary = false;
+ 		if (kvm_vcpu_running(vcpu)) {
+ 			r = vcpu_enter_guest(vcpu);
+ 		} else {
 
 
