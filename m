@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E1A703ADF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16B2570336E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244179AbjEOR4R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53818 "EHLO
+        id S242795AbjEOQgw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:36:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244983AbjEORzo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E60315EEC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:53 -0700 (PDT)
+        with ESMTP id S242787AbjEOQgu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C3019A5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:36:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86CCB62F8D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DA9C433EF;
-        Mon, 15 May 2023 17:53:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 796BF6281A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86851C433D2;
+        Mon, 15 May 2023 16:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173222;
-        bh=vaDW+pMskZ06wVM0nSA+WW0HTIbPuEn+CC9mZ315wMY=;
+        s=korg; t=1684168607;
+        bh=p+6hsCOim05Ss+KpqZ3HcYA6pnCbUGaDC4YDrfXKZWY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WUSXzXt9XNNhocLBm2STbhERdLjEgV2F15J0+PHUJ1AA26APCTdyeNZ38/+UgSYhz
-         0rpp7s00U78upt+BQyGr1f/r+AT/nsK3AXyUXtgv8FYhPWF2evLxoqPduHGs9aNray
-         C49azveci7yPDm9TMtTHyO7nfpbm5INAMI2rdFmw=
+        b=Dt9z96GeuH4adyxa7ru44vydBF3Qau3RtJJV8yY8YdgknPZYFMqVuN/QtlL/OJjfx
+         XSY9nk80HgxYe9iu2K+6oYU+tRwXqQv8TMzYGnIX8AUxmujJMa+SNJ+45rrugK0Gh2
+         nsnRZdKaB9ySNiNJidU5MfkqoOqSAExt+BX6Feno=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Reid Tonking <reidt@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tony Lindgren <tony@atomide.com>, Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.4 025/282] i2c: omap: Fix standard mode false ACK readings
+        patches@lists.linux.dev, stable@kernel.org,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.14 106/116] ext4: improve error recovery code paths in __ext4_remount()
 Date:   Mon, 15 May 2023 18:26:43 +0200
-Message-Id: <20230515161723.024918207@linuxfoundation.org>
+Message-Id: <20230515161701.765305256@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Reid Tonking <reidt@ti.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit c770657bd2611b077ec1e7b1fe6aa92f249399bd upstream.
+commit 4c0b4818b1f636bc96359f7817a2d8bab6370162 upstream.
 
-Using standard mode, rare false ACK responses were appearing with
-i2cdetect tool. This was happening due to NACK interrupt triggering
-ISR thread before register access interrupt was ready. Removing the
-NACK interrupt's ability to trigger ISR thread lets register access
-ready interrupt do this instead.
+If there are failures while changing the mount options in
+__ext4_remount(), we need to restore the old mount options.
 
-Cc: <stable@vger.kernel.org> # v3.7+
-Fixes: 3b2f8f82dad7 ("i2c: omap: switch to threaded IRQ support")
-Signed-off-by: Reid Tonking <reidt@ti.com>
-Acked-by: Vignesh Raghavendra <vigneshr@ti.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+This commit fixes two problem.  The first is there is a chance that we
+will free the old quota file names before a potential failure leading
+to a use-after-free.  The second problem addressed in this commit is
+if there is a failed read/write to read-only transition, if the quota
+has already been suspended, we need to renable quota handling.
+
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230506142419.984260-2-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-omap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/super.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1058,7 +1058,7 @@ omap_i2c_isr(int irq, void *dev_id)
- 	u16 stat;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5390,9 +5390,6 @@ static int ext4_remount(struct super_blo
+ 		ext4_commit_super(sb, 1);
  
- 	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
--	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG);
-+	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+ #ifdef CONFIG_QUOTA
+-	/* Release old quota file names */
+-	for (i = 0; i < EXT4_MAXQUOTAS; i++)
+-		kfree(old_opts.s_qf_names[i]);
+ 	if (enable_quota) {
+ 		if (sb_any_quota_suspended(sb))
+ 			dquot_resume(sb, -1);
+@@ -5402,6 +5399,9 @@ static int ext4_remount(struct super_blo
+ 				goto restore_opts;
+ 		}
+ 	}
++	/* Release old quota file names */
++	for (i = 0; i < EXT4_MAXQUOTAS; i++)
++		kfree(old_opts.s_qf_names[i]);
+ #endif
  
- 	if (stat & mask)
- 		ret = IRQ_WAKE_THREAD;
+ 	*flags = (*flags & ~MS_LAZYTIME) | (sb->s_flags & MS_LAZYTIME);
+@@ -5410,6 +5410,13 @@ static int ext4_remount(struct super_blo
+ 	return 0;
+ 
+ restore_opts:
++	/*
++	 * If there was a failing r/w to ro transition, we may need to
++	 * re-enable quota
++	 */
++	if ((sb->s_flags & SB_RDONLY) && !(old_sb_flags & SB_RDONLY) &&
++	    sb_any_quota_suspended(sb))
++		dquot_resume(sb, -1);
+ 	sb->s_flags = old_sb_flags;
+ 	sbi->s_mount_opt = old_opts.s_mount_opt;
+ 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
 
 
