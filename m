@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 377C9703A43
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF0C5703849
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244855AbjEORuT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:50:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47570 "EHLO
+        id S244257AbjEORb0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244872AbjEORtw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E081D1692B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:48 -0700 (PDT)
+        with ESMTP id S244269AbjEORai (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:30:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B210513C18
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:27:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F41762F1F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCA0C4339B;
-        Mon, 15 May 2023 17:47:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFD9062D10
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E55C433EF;
+        Mon, 15 May 2023 17:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172867;
-        bh=NTnTgBHvGS2sPmmcschSakYcit8uEF+uf8wePGtnKks=;
+        s=korg; t=1684171622;
+        bh=nS6aM9AY1Bgs3wx+KVgG80mV3Jl/9j6/u8OMDFdsE/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aNdfXzjqDrx982fFPIhAOyHb24u7RJlQ6mAW9Y9qfJzgZj2eCigdLoYuA7SZRER4y
-         68brNKvmEiFC83/zTZ/KD4VlPbPshiOZfREB27S8JEe/YeKi6hMWL5g/kCOGIn8LnG
-         4Y35bGEax3/4lLWSDH2mKUdSmak0fOn39Y5RJsUw=
+        b=ODdJLUUXq8Scwh93ANewIiM0rNA7R7wVMi0Xo8mGohsqrfUt+3fNPPy0QRyNs2RRP
+         t0EhgnJI8R1lvEvTVX6O7E2YlZp67n+wpBuDdxaBVG0yyj1lRL5ckLfFOAIk9+rDhZ
+         HNOnDJzbjoPOoI4IMAtWcJmSCHSy/2c6bvZ6xheQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/381] NFSv4.1: Always send a RECLAIM_COMPLETE after establishing lease
+Subject: [PATCH 5.15 026/134] watchdog: dw_wdt: Fix the error handling path of dw_wdt_drv_probe()
 Date:   Mon, 15 May 2023 18:28:23 +0200
-Message-Id: <20230515161748.094894643@linuxfoundation.org>
+Message-Id: <20230515161703.899312931@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,43 +57,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 40882deb83c29d8df4470d4e5e7f137b6acf7ad1 ]
+[ Upstream commit 7f5390750645756bd5da2b24fac285f2654dd922 ]
 
-The spec requires that we always at least send a RECLAIM_COMPLETE when
-we're done establishing the lease and recovering any state.
+The commit in Fixes has only updated the remove function and missed the
+error handling path of the probe.
 
-Fixes: fce5c838e133 ("nfs41: RECLAIM_COMPLETE functionality")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Add the missing reset_control_assert() call.
+
+Fixes: 65a3b6935d92 ("watchdog: dw_wdt: get reset lines from dt")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/fbb650650bbb33a8fa2fd028c23157bedeed50e1.1682491863.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/watchdog/dw_wdt.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 628e030f8e3ba..ff6ca05a9d441 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -67,6 +67,8 @@
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index cd578843277e5..498c1c403fc92 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -637,7 +637,7 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
  
- #define OPENOWNER_POOL_SIZE	8
+ 	ret = dw_wdt_init_timeouts(dw_wdt, dev);
+ 	if (ret)
+-		goto out_disable_clk;
++		goto out_assert_rst;
  
-+static void nfs4_state_start_reclaim_reboot(struct nfs_client *clp);
+ 	wdd = &dw_wdt->wdd;
+ 	wdd->ops = &dw_wdt_ops;
+@@ -668,12 +668,15 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
+ 
+ 	ret = watchdog_register_device(wdd);
+ 	if (ret)
+-		goto out_disable_pclk;
++		goto out_assert_rst;
+ 
+ 	dw_wdt_dbgfs_init(dw_wdt);
+ 
+ 	return 0;
+ 
++out_assert_rst:
++	reset_control_assert(dw_wdt->rst);
 +
- const nfs4_stateid zero_stateid = {
- 	{ .data = { 0 } },
- 	.type = NFS4_SPECIAL_STATEID_TYPE,
-@@ -330,6 +332,8 @@ int nfs41_init_clientid(struct nfs_client *clp, const struct cred *cred)
- 	status = nfs4_proc_create_session(clp, cred);
- 	if (status != 0)
- 		goto out;
-+	if (!(clp->cl_exchange_flags & EXCHGID4_FLAG_CONFIRMED_R))
-+		nfs4_state_start_reclaim_reboot(clp);
- 	nfs41_finish_session_reset(clp);
- 	nfs_mark_client_ready(clp, NFS_CS_READY);
- out:
+ out_disable_pclk:
+ 	clk_disable_unprepare(dw_wdt->pclk);
+ 
 -- 
 2.39.2
 
