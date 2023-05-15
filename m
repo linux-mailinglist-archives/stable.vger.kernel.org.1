@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7922D70361A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EED2970331E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243626AbjEORGt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:06:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
+        id S242641AbjEOQd1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243448AbjEORGb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:31 -0400
+        with ESMTP id S242732AbjEOQdX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BA4902A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:04:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0C923A94
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DC9862A83
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B91CC433EF;
-        Mon, 15 May 2023 17:04:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4403562001
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CAFC433EF;
+        Mon, 15 May 2023 16:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170252;
-        bh=m2lkswpJOp0oKDZg8Uah530RHxko+TYz2w3YLEY3548=;
+        s=korg; t=1684168397;
+        bh=d2d4YQMP3hmvPscyAbT3dtPn3ZZeXUF+aKfO0eNxaKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qMH9R63mTgtTJK6tBLNShnzZw/NeLE6SjrK0oygUiV/pN5FxfYq867Kk3FiP8NLQT
-         72nco0OPLz9qjoT+Ij5cb3s0LqUc4/xaUYtJGYiYPpbpmWaIgAfhKvAUSzD9ISOx5r
-         wxzXtawegxbKTdl76UuEPp4H31vFujZpzXJTRYI8=
+        b=NFYOkwRlvnSCDtRidZ51f1WmVYkCPb5nEmTEG6mHo7pfdGASLzHeJwmJl4ljOPdys
+         GA9+dm83SmXiXZYaDMIw6jEe3KtyHLKR3CkUtPPC6qLzJPzUxEftWU8cjz4TyvdS2I
+         JknvhiaeKgnX3ffijs0Uza54N9jrJ1/PW4XI1xW0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/239] octeontx2-af: Update/Fix NPC field hash extract feature
+        patches@lists.linux.dev,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Lorenzo Zolfanelli <lorenzo@zolfa.nl>
+Subject: [PATCH 4.14 037/116] wifi: iwlwifi: make the loop for card preparation effective
 Date:   Mon, 15 May 2023 18:25:34 +0200
-Message-Id: <20230515161723.821731298@linuxfoundation.org>
+Message-Id: <20230515161659.509458413@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,195 +57,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 406bed11fb91a0b35c26fe633d8700febaec6439 ]
+[ Upstream commit 28965ec0b5d9112585f725660e2ff13218505ace ]
 
-1. As per previous implementation, mask and control parameter to
-generate the field hash value was not passed to the caller program.
-Updated the secret key mbox to share that information as well,
-as a part of the fix.
-2. Earlier implementation did not consider hash reduction of both
-source and destination IPv6 addresses. Only source IPv6 address
-was considered. This fix solves that and provides option to hash
+Since we didn't reset t to 0, only the first iteration of the loop
+did checked the ready bit several times.
+>From the second iteration and on, we just tested the bit once and
+continued to the next iteration.
 
-Fixes: 56d9f5fd2246 ("octeontx2-af: Use hashed field in MCAM key")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-and-tested-by: Lorenzo Zolfanelli <lorenzo@zolfa.nl>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216452
+Fixes: 289e5501c314 ("iwlwifi: fix the preparation of the card")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230416154301.615b683ab9c8.Ic52c3229d3345b0064fa34263293db095d88daf8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  | 16 +++++---
- .../marvell/octeontx2/af/rvu_npc_hash.c       | 37 ++++++++++++-------
- .../marvell/octeontx2/af/rvu_npc_hash.h       |  6 +++
- 3 files changed, 41 insertions(+), 18 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index c7c92c7510fa6..5921a78661e41 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -242,9 +242,9 @@ M(NPC_MCAM_READ_BASE_RULE, 0x6011, npc_read_base_steer_rule,            \
- M(NPC_MCAM_GET_STATS, 0x6012, npc_mcam_entry_stats,                     \
- 				   npc_mcam_get_stats_req,              \
- 				   npc_mcam_get_stats_rsp)              \
--M(NPC_GET_SECRET_KEY, 0x6013, npc_get_secret_key,                     \
--				   npc_get_secret_key_req,              \
--				   npc_get_secret_key_rsp)              \
-+M(NPC_GET_FIELD_HASH_INFO, 0x6013, npc_get_field_hash_info,                     \
-+				   npc_get_field_hash_info_req,              \
-+				   npc_get_field_hash_info_rsp)              \
- M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
- 				   npc_get_field_status_req,              \
- 				   npc_get_field_status_rsp)              \
-@@ -1513,14 +1513,20 @@ struct npc_mcam_get_stats_rsp {
- 	u8 stat_ena; /* enabled */
- };
- 
--struct npc_get_secret_key_req {
-+struct npc_get_field_hash_info_req {
- 	struct mbox_msghdr hdr;
- 	u8 intf;
- };
- 
--struct npc_get_secret_key_rsp {
-+struct npc_get_field_hash_info_rsp {
- 	struct mbox_msghdr hdr;
- 	u64 secret_key[3];
-+#define NPC_MAX_HASH 2
-+#define NPC_MAX_HASH_MASK 2
-+	/* NPC_AF_INTF(0..1)_HASH(0..1)_MASK(0..1) */
-+	u64 hash_mask[NPC_MAX_INTF][NPC_MAX_HASH][NPC_MAX_HASH_MASK];
-+	/* NPC_AF_INTF(0..1)_HASH(0..1)_RESULT_CTRL */
-+	u64 hash_ctrl[NPC_MAX_INTF][NPC_MAX_HASH];
- };
- 
- enum ptp_op {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-index 5aed3dbf3b991..18f12f9156544 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-@@ -110,8 +110,8 @@ static u64 npc_update_use_hash(int lt, int ld)
- 		 * in KEX_LD_CFG
- 		 */
- 		cfg = KEX_LD_CFG_USE_HASH(0x1, 0x03,
--					  ld ? 0x8 : 0x18,
--					  0x1, 0x0, 0x10);
-+					  ld ? 0x18 : 0x8,
-+					  0x1, 0x0, ld ? 0x14 : 0x10);
- 		break;
- 	}
- 
-@@ -134,7 +134,6 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
- 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
- 					u64 cfg = npc_update_use_hash(lt, ld);
- 
--					hash_cnt++;
- 					if (hash_cnt == NPC_MAX_HASH)
- 						return;
- 
-@@ -149,6 +148,8 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
- 							     mkex_hash->hash_mask[intf][ld][1]);
- 					SET_KEX_LD_HASH_CTRL(intf, ld,
- 							     mkex_hash->hash_ctrl[intf][ld]);
-+
-+					hash_cnt++;
- 				}
- 			}
- 		}
-@@ -171,7 +172,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
- 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
- 					u64 cfg = npc_update_use_hash(lt, ld);
- 
--					hash_cnt++;
- 					if (hash_cnt == NPC_MAX_HASH)
- 						return;
- 
-@@ -187,8 +187,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
- 					SET_KEX_LD_HASH_CTRL(intf, ld,
- 							     mkex_hash->hash_ctrl[intf][ld]);
- 					hash_cnt++;
--					if (hash_cnt == NPC_MAX_HASH)
--						return;
- 				}
- 		}
- 	}
-@@ -242,8 +240,8 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 			   struct flow_msg *omask)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 4d3cbe554f5bf..647ca6479a1e7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -562,7 +562,6 @@ static int iwl_pcie_set_hw_ready(struct iwl_trans *trans)
+ int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
  {
- 	struct npc_mcam_kex_hash *mkex_hash = rvu->kpu.mkex_hash;
--	struct npc_get_secret_key_req req;
--	struct npc_get_secret_key_rsp rsp;
-+	struct npc_get_field_hash_info_req req;
-+	struct npc_get_field_hash_info_rsp rsp;
- 	u64 ldata[2], cfg;
- 	u32 field_hash;
- 	u8 hash_idx;
-@@ -254,7 +252,7 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 	}
+ 	int ret;
+-	int t = 0;
+ 	int iter;
  
- 	req.intf = intf;
--	rvu_mbox_handler_npc_get_secret_key(rvu, &req, &rsp);
-+	rvu_mbox_handler_npc_get_field_hash_info(rvu, &req, &rsp);
+ 	IWL_DEBUG_INFO(trans, "iwl_trans_prepare_card_hw enter\n");
+@@ -577,6 +576,8 @@ int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
+ 	usleep_range(1000, 2000);
  
- 	for (hash_idx = 0; hash_idx < NPC_MAX_HASH; hash_idx++) {
- 		cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_CFG(intf, hash_idx));
-@@ -315,13 +313,13 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
- 	}
- }
- 
--int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
--					struct npc_get_secret_key_req *req,
--					struct npc_get_secret_key_rsp *rsp)
-+int rvu_mbox_handler_npc_get_field_hash_info(struct rvu *rvu,
-+					     struct npc_get_field_hash_info_req *req,
-+					     struct npc_get_field_hash_info_rsp *rsp)
- {
- 	u64 *secret_key = rsp->secret_key;
- 	u8 intf = req->intf;
--	int blkaddr;
-+	int i, j, blkaddr;
- 
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
- 	if (blkaddr < 0) {
-@@ -333,6 +331,19 @@ int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
- 	secret_key[1] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY1(intf));
- 	secret_key[2] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY2(intf));
- 
-+	for (i = 0; i < NPC_MAX_HASH; i++) {
-+		for (j = 0; j < NPC_MAX_HASH_MASK; j++) {
-+			rsp->hash_mask[NIX_INTF_RX][i][j] =
-+				GET_KEX_LD_HASH_MASK(NIX_INTF_RX, i, j);
-+			rsp->hash_mask[NIX_INTF_TX][i][j] =
-+				GET_KEX_LD_HASH_MASK(NIX_INTF_TX, i, j);
-+		}
-+	}
+ 	for (iter = 0; iter < 10; iter++) {
++		int t = 0;
 +
-+	for (i = 0; i < NPC_MAX_INTF; i++)
-+		for (j = 0; j < NPC_MAX_HASH; j++)
-+			rsp->hash_ctrl[i][j] = GET_KEX_LD_HASH_CTRL(i, j);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-index 3efeb09c58dec..65936f4aeaacf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
-@@ -31,6 +31,12 @@
- 	rvu_write64(rvu, blkaddr,	\
- 		    NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx), cfg)
- 
-+#define GET_KEX_LD_HASH_CTRL(intf, ld)	\
-+	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld))
-+
-+#define GET_KEX_LD_HASH_MASK(intf, ld, mask_idx)	\
-+	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx))
-+
- #define SET_KEX_LD_HASH_CTRL(intf, ld, cfg) \
- 	rvu_write64(rvu, blkaddr,	\
- 		    NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld), cfg)
+ 		/* If HW is not ready, prepare the conditions to check again */
+ 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+ 			    CSR_HW_IF_CONFIG_REG_PREPARE);
 -- 
 2.39.2
 
