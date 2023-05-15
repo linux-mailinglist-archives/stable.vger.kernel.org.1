@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F49703754
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63B71703379
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244006AbjEORTs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33370 "EHLO
+        id S242784AbjEOQh1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244027AbjEORTY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9269C10E53
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:30 -0700 (PDT)
+        with ESMTP id S242723AbjEOQh0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D12953C13
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71F9662C0D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61862C433D2;
-        Mon, 15 May 2023 17:17:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E9C162823
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F99C433D2;
+        Mon, 15 May 2023 16:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171049;
-        bh=BhiG/p0Fq2BsEXtcHi/FRyQHI8sjz5QJ1PM8p/z52U4=;
+        s=korg; t=1684168644;
+        bh=j5e+lCVoCmVxZTlp7q4ccaZq+tw4YDcvEPll5BsSS4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TJd5gSOzEAPZhxtTzAK+gGZifmf8TnzA8ZeSRTiZ5UkaYeCIlu1hZ+fHHGf3JngBP
-         bjDv3VJHQoxPLyWvBNq2ymJ7RmMBtApL2Or8pezroZUj/3m0DofeecWwG410qNmC8y
-         tvDwba63KDoVg/rO7L3WlDsAJPnShO1YJfJsJpA0=
+        b=eFa6FZmq1bxI+YCqxcJ5jK28nzwjmS9EURKFaUHsTNBVoVD81HD37YlGrq/FUvmcG
+         eKfNtpXyJXYSQrlvnA7kscR+jv+dfZ9QFBU5x3hH1PGRt3lgnGKDinJ88Vs+6mz1ku
+         899S9/wWlLXnss41Fw0UB8qctYGnnGMTXIBju90Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bartel Eerdekens <bartel.eerdekens@constell8.be>,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 085/242] net: dsa: mt7530: fix corrupt frames using trgmii on 40 MHz XTAL MT7621
-Date:   Mon, 15 May 2023 18:26:51 +0200
-Message-Id: <20230515161724.444388062@linuxfoundation.org>
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 4.14 115/116] printk: declare printk_deferred_{enter,safe}() in include/linux/printk.h
+Date:   Mon, 15 May 2023 18:26:52 +0200
+Message-Id: <20230515161702.048591213@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,61 +54,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 37c218d8021e36e226add4bab93d071d30fe0704 ]
+commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
 
-The multi-chip module MT7530 switch with a 40 MHz oscillator on the
-MT7621AT, MT7621DAT, and MT7621ST SoCs forwards corrupt frames using
-trgmii.
+[This patch implements subset of original commit 85e3e7fbbb72 ("printk:
+remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
+potential deadlock on zonelist_update_seq seqlock") depends on, for
+commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
+build_all_zonelists and page allocation") was backported to stable.]
 
-This is caused by the assumption that MT7621 SoCs have got 150 MHz PLL,
-hence using the ncpo1 value, 0x0780.
+All NMI contexts are handled the same as the safe context: store the
+message and defer printing. There is no need to have special NMI
+context tracking for this. Using in_nmi() is enough.
 
-My testing shows this value works on Unielec U7621-06, Bartel's testing
-shows it won't work on Hi-Link HLK-MT7621A and Netgear WAC104. All devices
-tested have got 40 MHz oscillators.
+There are several parts of the kernel that are manually calling into
+the printk NMI context tracking in order to cause general printk
+deferred printing:
 
-Using the value for 125 MHz PLL, 0x0640, works on all boards at hand. The
-definitions for 125 MHz PLL exist on the Banana Pi BPI-R2 BSP source code
-whilst 150 MHz PLL don't.
+    arch/arm/kernel/smp.c
+    arch/powerpc/kexec/crash.c
+    kernel/trace/trace.c
 
-Forwarding frames using trgmii on the MCM MT7530 switch with a 25 MHz
-oscillator on the said MT7621 SoCs works fine because the ncpo1 value
-defined for it is for 125 MHz PLL.
+For arm/kernel/smp.c and powerpc/kexec/crash.c, provide a new
+function pair printk_deferred_enter/exit that explicitly achieves the
+same objective.
 
-Change the 150 MHz PLL comment to 125 MHz PLL, and use the 125 MHz PLL
-ncpo1 values for both oscillator frequencies.
+For ftrace, remove the printk context manipulation completely. It was
+added in commit 03fc7f9c99c1 ("printk/nmi: Prevent deadlock when
+accessing the main log buffer in NMI"). The purpose was to enforce
+storing messages directly into the ring buffer even in NMI context.
+It really should have only modified the behavior in NMI context.
+There is no need for a special behavior any longer. All messages are
+always stored directly now. The console deferring is handled
+transparently in vprintk().
 
-Link: https://github.com/BPI-SINOVOIP/BPI-R2-bsp/blob/81d24bbce7d99524d0771a8bdb2d6663e4eb4faa/u-boot-mt/drivers/net/rt2880_eth.c#L2195
-Fixes: 7ef6f6f8d237 ("net: dsa: mt7530: Add MT7621 TRGMII mode support")
-Tested-by: Bartel Eerdekens <bartel.eerdekens@constell8.be>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+[pmladek@suse.com: Remove special handling in ftrace.c completely.
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20210715193359.25946-5-john.ogness@linutronix.de
+[penguin-kernel: Copy only printk_deferred_{enter,safe}() definition ]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/printk.h |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 326f992536a7e..f61e6e89339e1 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -446,9 +446,9 @@ mt7530_pad_clk_setup(struct dsa_switch *ds, phy_interface_t interface)
- 		else
- 			ssc_delta = 0x87;
- 		if (priv->id == ID_MT7621) {
--			/* PLL frequency: 150MHz: 1.2GBit */
-+			/* PLL frequency: 125MHz: 1.0GBit */
- 			if (xtal == HWTRAP_XTAL_40MHZ)
--				ncpo1 = 0x0780;
-+				ncpo1 = 0x0640;
- 			if (xtal == HWTRAP_XTAL_25MHZ)
- 				ncpo1 = 0x0a00;
- 		} else { /* PLL frequency: 250MHz: 2.0Gbit */
--- 
-2.39.2
-
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -528,4 +528,23 @@ static inline void print_hex_dump_debug(
+ }
+ #endif
+ 
++#ifdef CONFIG_PRINTK
++extern void __printk_safe_enter(void);
++extern void __printk_safe_exit(void);
++/*
++ * The printk_deferred_enter/exit macros are available only as a hack for
++ * some code paths that need to defer all printk console printing. Interrupts
++ * must be disabled for the deferred duration.
++ */
++#define printk_deferred_enter __printk_safe_enter
++#define printk_deferred_exit __printk_safe_exit
++#else
++static inline void printk_deferred_enter(void)
++{
++}
++static inline void printk_deferred_exit(void)
++{
++}
++#endif
++
+ #endif
 
 
