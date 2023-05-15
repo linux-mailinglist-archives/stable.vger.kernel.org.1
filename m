@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02E50703A16
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6347037C9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244759AbjEORse (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
+        id S244197AbjEORYO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244687AbjEORsS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:18 -0400
+        with ESMTP id S244105AbjEORXp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5FA16EAF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BBAD06C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BC3E62EEC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD94C433D2;
-        Mon, 15 May 2023 17:46:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1751B62C77
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218BFC4339B;
+        Mon, 15 May 2023 17:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172802;
-        bh=L7JbHZYtEIk3eI+2jU5fBBEyPDFe1yx28TA0eVJ3giM=;
+        s=korg; t=1684171341;
+        bh=q4w0+U513VitpwFD4lMi/QpdKyHY0TOfvVAnetzZqeU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DbrDze1t1cyGFaG3L6J375Iq7ZwqbhIoktL4yKsr+gxAPOCS1nzjGiRWi/xVqnyed
-         auq5aLiMS4uhFrWgHAWnwu1fi0RUOPmKjswUWDByNc0aSnfuzh2/nAeIU7xi/DTo3o
-         tXceypIWT9QwIouna+VEZa3jlSWqn2xgIkku6wSE=
+        b=pN2WpQjRknv8bswUL1QNwlqyQC4KkdcymPYuvWYVLhtPSkqpb8Ju33sSfNrlD8BgR
+         dO/7ytzxdfn8QbBWVQtlwznKzug+ajFauB/sSqTVknH9cj0HX6CPWW8oBYMuJBcQr1
+         X3t9QIO6js6f90SBYMqsoEpE9MOfEOpIEpr17bu4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 254/381] input: raspberrypi-ts: Release firmware handle when not needed
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.2 179/242] f2fs: fix null pointer panic in tracepoint in __replace_atomic_write_block
 Date:   Mon, 15 May 2023 18:28:25 +0200
-Message-Id: <20230515161748.190696500@linuxfoundation.org>
+Message-Id: <20230515161727.245402905@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 3b8ddff780b7d12e99ae39177f84b9003097777a ]
+commit da6ea0b050fa720302b56fbb59307e7c7531a342 upstream.
 
-There is no use for the firmware interface after getting the touch
-buffer address, so release it.
+We got a kernel panic if old_addr is NULL.
 
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Stable-dep-of: 5bca3688bdbc ("Input: raspberrypi-ts - fix refcount leak in rpi_ts_probe")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+https://bugzilla.kernel.org/show_bug.cgi?id=217266
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+ Call Trace:
+  <TASK>
+  f2fs_commit_atomic_write+0x619/0x990 [f2fs a1b985b80f5babd6f3ea778384908880812bfa43]
+  __f2fs_ioctl+0xd8e/0x4080 [f2fs a1b985b80f5babd6f3ea778384908880812bfa43]
+  ? vfs_write+0x2ae/0x3f0
+  ? vfs_write+0x2ae/0x3f0
+  __x64_sys_ioctl+0x91/0xd0
+  do_syscall_64+0x5c/0x90
+  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+ RIP: 0033:0x7f69095fe53f
+
+Fixes: 2f3a9ae990a7 ("f2fs: introduce trace_f2fs_replace_atomic_write_block")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/raspberrypi-ts.c | 2 +-
+ fs/f2fs/segment.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/touchscreen/raspberrypi-ts.c b/drivers/input/touchscreen/raspberrypi-ts.c
-index ef6aaed217cfb..5000f5fd9ec38 100644
---- a/drivers/input/touchscreen/raspberrypi-ts.c
-+++ b/drivers/input/touchscreen/raspberrypi-ts.c
-@@ -160,7 +160,7 @@ static int rpi_ts_probe(struct platform_device *pdev)
- 	touchbuf = (u32)ts->fw_regs_phys;
- 	error = rpi_firmware_property(fw, RPI_FIRMWARE_FRAMEBUFFER_SET_TOUCHBUF,
- 				      &touchbuf, sizeof(touchbuf));
--
-+	rpi_firmware_put(fw);
- 	if (error || touchbuf != 0) {
- 		dev_warn(dev, "Failed to set touchbuf, %d\n", error);
- 		return error;
--- 
-2.39.2
-
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -263,7 +263,7 @@ retry:
+ 	f2fs_put_dnode(&dn);
+ 
+ 	trace_f2fs_replace_atomic_write_block(inode, F2FS_I(inode)->cow_inode,
+-					index, *old_addr, new_addr, recover);
++			index, old_addr ? *old_addr : 0, new_addr, recover);
+ 	return 0;
+ }
+ 
 
 
