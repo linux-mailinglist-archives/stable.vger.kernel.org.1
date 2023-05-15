@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81DE770344F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB43703993
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242967AbjEOQqt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50682 "EHLO
+        id S244397AbjEORnt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242953AbjEOQqj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:39 -0400
+        with ESMTP id S244408AbjEORne (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10521524B;
-        Mon, 15 May 2023 09:46:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325E111624
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 975F562906;
-        Mon, 15 May 2023 16:46:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8762AC433EF;
-        Mon, 15 May 2023 16:46:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B1DCF62E3F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7192C433EF;
+        Mon, 15 May 2023 17:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169197;
-        bh=Na2VM1Wf6BrkX347llMLUoTmaOF8sVJrWPnjz0Eqzv0=;
+        s=korg; t=1684172461;
+        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hf9ORkmMZ8m4tMrywIYererPwMqAFOL66j1lRoEuisBsW9VgQCFrQdQEli8Og4mQa
-         M4JdhpxDml6zdqCWPHjLqHoHzGJJ8X3mWQHTQqH5UDvFJ/6IvcNUOK1hx1rn/uAPYq
-         KiHcG8jAurTv7kGuEhXZOCowcrNghA3J2fGWnbr0=
+        b=y0W+Ly56sEurdL4bDhb1vae7mmX3HbZAD0NoFdoicUcJXUPkgtdrEUX6PgiDMAtb0
+         sf/c2YaNyosel5GPgiUwPUjHAeR3eYZZpalrGQNtDj+INLZuEKOfU7/3/7Te5Se1J/
+         mfo863Nz8lWFdzjwqsD8J4ZjZbyBXQfpUAe7wtQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Igor Zhbanov <izh1979@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
-Subject: [PATCH 4.19 173/191] sh: nmi_debug: fix return value of __setup handler
+        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 159/381] net: qrtr: correct types of trace event parameters
 Date:   Mon, 15 May 2023 18:26:50 +0200
-Message-Id: <20230515161713.725424119@linuxfoundation.org>
+Message-Id: <20230515161743.996934270@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +55,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Simon Horman <horms@kernel.org>
 
-commit d1155e4132de712a9d3066e2667ceaad39a539c5 upstream.
+[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from nmi_debug_setup().
+The arguments passed to the trace events are of type unsigned int,
+however the signature of the events used __le32 parameters.
 
-Fixes: 1e1030dccb10 ("sh: nmi_debug support.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-3-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I may be missing the point here, but sparse flagged this and it
+does seem incorrect to me.
+
+  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
+  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
+  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
+  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
+  ... (a lot more similar warnings)
+  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
+  net/qrtr/ns.c:115:47:    got unsigned int service
+  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
+  ... (a lot more similar warnings)
+
+Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/nmi_debug.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
---- a/arch/sh/kernel/nmi_debug.c
-+++ b/arch/sh/kernel/nmi_debug.c
-@@ -52,7 +52,7 @@ static int __init nmi_debug_setup(char *
- 	register_die_notifier(&nmi_debug_nb);
+diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
+index b1de14c3bb934..441132c67133f 100644
+--- a/include/trace/events/qrtr.h
++++ b/include/trace/events/qrtr.h
+@@ -10,15 +10,16 @@
  
- 	if (*str != '=')
--		return 0;
-+		return 1;
+ TRACE_EVENT(qrtr_ns_service_announce_new,
  
- 	for (p = str + 1; *p; p = sep + 1) {
- 		sep = strchr(p, ',');
-@@ -73,6 +73,6 @@ static int __init nmi_debug_setup(char *
- 			break;
- 	}
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
  
--	return 0;
-+	return 1;
- }
- __setup("nmi_debug", nmi_debug_setup);
+ 	TP_ARGS(service, instance, node, port),
+ 
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
+ 
+ TRACE_EVENT(qrtr_ns_service_announce_del,
+ 
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
+ 
+ 	TP_ARGS(service, instance, node, port),
+ 
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
+ 
+ TRACE_EVENT(qrtr_ns_server_add,
+ 
+-	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
++	TP_PROTO(unsigned int service, unsigned int instance,
++		 unsigned int node, unsigned int port),
+ 
+ 	TP_ARGS(service, instance, node, port),
+ 
+ 	TP_STRUCT__entry(
+-		__field(__le32, service)
+-		__field(__le32, instance)
+-		__field(__le32, node)
+-		__field(__le32, port)
++		__field(unsigned int, service)
++		__field(unsigned int, instance)
++		__field(unsigned int, node)
++		__field(unsigned int, port)
+ 	),
+ 
+ 	TP_fast_assign(
+-- 
+2.39.2
+
 
 
