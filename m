@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A506F7035EC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D470D70391D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243429AbjEOREr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:04:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
+        id S244376AbjEORjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243417AbjEOREa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:30 -0400
+        with ESMTP id S244065AbjEORip (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC8F902A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:02:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DC81B747
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21F6C62A9C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165B1C4339C;
-        Mon, 15 May 2023 17:02:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E594562DD9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F671C4339B;
+        Mon, 15 May 2023 17:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170145;
-        bh=jj5JZiR+OLZzBZ+k3qtOnGQ9jDuRXAXPo3Qghqv6rvA=;
+        s=korg; t=1684172120;
+        bh=qG3t6hDwXvIDoNWas+q3ijmmtyRvzXYKHav44WDZj9w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2WEuwKP816LmcI/jKnklvFrYCWiwwsZetmU/lINTVVIy6uwZBdzLeoUD04w0s17tv
-         7lSAbepYPnon1slbpkB/soBjeYayO+TevzZq4/0QJM5ndLU3OTjorXq2rCF/Gv/k/W
-         I5fO5kbzrV62nNCxSUw5Mr8jnBPUj/Xw9SNXlMTI=
+        b=YlQRs5nY3tc8qqGMKAnoEbKTxzv9H9J10FZsbcsRKO0ycpKe0A7tm4Pwxyb/mv0Bw
+         exKPvo/dcc90G16VdrPWgI/v+hJzPrRGaZIVkWW2zvNMdjOZ3gsisAO2stWBq3+HRU
+         GTICCUnv++7NAha5uAA53Nyh6/pSCiBWlvHYFPrg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/239] octeontx2-pf: mcs: Fix NULL pointer dereferences
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 051/381] sound/oss/dmasound: fix build when drivers are mixed =y/=m
 Date:   Mon, 15 May 2023 18:25:02 +0200
-Message-Id: <20230515161722.886944910@linuxfoundation.org>
+Message-Id: <20230515161739.138348227@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,104 +58,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 699af748c61574125d269db260dabbe20436d74e ]
+commit 9dd7c46346ca4390f84a7ea9933005eb1b175c15 upstream.
 
-When system is rebooted after creating macsec interface
-below NULL pointer dereference crashes occurred. This
-patch fixes those crashes by using correct order of teardown
+When CONFIG_DMASOUND_ATARI=m and CONFIG_DMASOUND_Q40=y (or vice versa),
+dmasound_core.o can be built without dmasound_deinit() being defined,
+causing a build error:
 
-[ 3324.406942] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[ 3324.415726] Mem abort info:
-[ 3324.418510]   ESR = 0x96000006
-[ 3324.421557]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 3324.426865]   SET = 0, FnV = 0
-[ 3324.429913]   EA = 0, S1PTW = 0
-[ 3324.433047] Data abort info:
-[ 3324.435921]   ISV = 0, ISS = 0x00000006
-[ 3324.439748]   CM = 0, WnR = 0
-....
-[ 3324.575915] Call trace:
-[ 3324.578353]  cn10k_mdo_del_secy+0x24/0x180
-[ 3324.582440]  macsec_common_dellink+0xec/0x120
-[ 3324.586788]  macsec_notify+0x17c/0x1c0
-[ 3324.590529]  raw_notifier_call_chain+0x50/0x70
-[ 3324.594965]  call_netdevice_notifiers_info+0x34/0x7c
-[ 3324.599921]  rollback_registered_many+0x354/0x5bc
-[ 3324.604616]  unregister_netdevice_queue+0x88/0x10c
-[ 3324.609399]  unregister_netdev+0x20/0x30
-[ 3324.613313]  otx2_remove+0x8c/0x310
-[ 3324.616794]  pci_device_shutdown+0x30/0x70
-[ 3324.620882]  device_shutdown+0x11c/0x204
+ERROR: modpost: "dmasound_deinit" [sound/oss/dmasound/dmasound_atari.ko] undefined!
 
-[  966.664930] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  966.673712] Mem abort info:
-[  966.676497]   ESR = 0x96000006
-[  966.679543]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  966.684848]   SET = 0, FnV = 0
-[  966.687895]   EA = 0, S1PTW = 0
-[  966.691028] Data abort info:
-[  966.693900]   ISV = 0, ISS = 0x00000006
-[  966.697729]   CM = 0, WnR = 0
-[  966.833467] Call trace:
-[  966.835904]  cn10k_mdo_stop+0x20/0xa0
-[  966.839557]  macsec_dev_stop+0xe8/0x11c
-[  966.843384]  __dev_close_many+0xbc/0x140
-[  966.847298]  dev_close_many+0x84/0x120
-[  966.851039]  rollback_registered_many+0x114/0x5bc
-[  966.855735]  unregister_netdevice_many.part.0+0x14/0xa0
-[  966.860952]  unregister_netdevice_many+0x18/0x24
-[  966.865560]  macsec_notify+0x1ac/0x1c0
-[  966.869303]  raw_notifier_call_chain+0x50/0x70
-[  966.873738]  call_netdevice_notifiers_info+0x34/0x7c
-[  966.878694]  rollback_registered_many+0x354/0x5bc
-[  966.883390]  unregister_netdevice_queue+0x88/0x10c
-[  966.888173]  unregister_netdev+0x20/0x30
-[  966.892090]  otx2_remove+0x8c/0x310
-[  966.895571]  pci_device_shutdown+0x30/0x70
-[  966.899660]  device_shutdown+0x11c/0x204
-[  966.903574]  __do_sys_reboot+0x208/0x290
-[  966.907487]  __arm64_sys_reboot+0x20/0x30
-[  966.911489]  el0_svc_handler+0x80/0x1c0
-[  966.915316]  el0_svc+0x8/0x180
-[  966.918362] Code: f9400000 f9400a64 91220014 f94b3403 (f9400060)
-[  966.924448] ---[ end trace 341778e799c3d8d7 ]---
+Modify dmasound_core.c and dmasound.h so that dmasound_deinit() is
+always available.
 
-Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The mixed modes (=y/=m) also mean that several variables and structs
+have to be declared in all cases.
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: lore.kernel.org/r/202204032138.EFT9qGEd-lkp@intel.com
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: alsa-devel@alsa-project.org
+Link: https://lore.kernel.org/r/20220405234118.24830-1-rdunlap@infradead.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/oss/dmasound/dmasound.h      |    6 ------
+ sound/oss/dmasound/dmasound_core.c |   24 +-----------------------
+ 2 files changed, 1 insertion(+), 29 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 303930499a4c0..2221220abcaae 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -3069,8 +3069,6 @@ static void otx2_remove(struct pci_dev *pdev)
- 		otx2_config_pause_frm(pf);
+--- a/sound/oss/dmasound/dmasound.h
++++ b/sound/oss/dmasound/dmasound.h
+@@ -88,11 +88,7 @@ static inline int ioctl_return(int __use
+      */
+ 
+ extern int dmasound_init(void);
+-#ifdef MODULE
+ extern void dmasound_deinit(void);
+-#else
+-#define dmasound_deinit()	do { } while (0)
+-#endif
+ 
+ /* description of the set-up applies to either hard or soft settings */
+ 
+@@ -114,9 +110,7 @@ typedef struct {
+     void *(*dma_alloc)(unsigned int, gfp_t);
+     void (*dma_free)(void *, unsigned int);
+     int (*irqinit)(void);
+-#ifdef MODULE
+     void (*irqcleanup)(void);
+-#endif
+     void (*init)(void);
+     void (*silence)(void);
+     int (*setFormat)(int);
+--- a/sound/oss/dmasound/dmasound_core.c
++++ b/sound/oss/dmasound/dmasound_core.c
+@@ -206,12 +206,10 @@ module_param(writeBufSize, int, 0);
+ 
+ MODULE_LICENSE("GPL");
+ 
+-#ifdef MODULE
+ static int sq_unit = -1;
+ static int mixer_unit = -1;
+ static int state_unit = -1;
+ static int irq_installed;
+-#endif /* MODULE */
+ 
+ /* control over who can modify resources shared between play/record */
+ static fmode_t shared_resource_owner;
+@@ -391,9 +389,6 @@ static const struct file_operations mixe
+ 
+ static void mixer_init(void)
+ {
+-#ifndef MODULE
+-	int mixer_unit;
+-#endif
+ 	mixer_unit = register_sound_mixer(&mixer_fops, -1);
+ 	if (mixer_unit < 0)
+ 		return;
+@@ -1176,9 +1171,6 @@ static const struct file_operations sq_f
+ static int sq_init(void)
+ {
+ 	const struct file_operations *fops = &sq_fops;
+-#ifndef MODULE
+-	int sq_unit;
+-#endif
+ 
+ 	sq_unit = register_sound_dsp(fops, -1);
+ 	if (sq_unit < 0) {
+@@ -1380,9 +1372,6 @@ static const struct file_operations stat
+ 
+ static int state_init(void)
+ {
+-#ifndef MODULE
+-	int state_unit;
+-#endif
+ 	state_unit = register_sound_special(&state_fops, SND_DEV_STATUS);
+ 	if (state_unit < 0)
+ 		return state_unit ;
+@@ -1400,10 +1389,9 @@ static int state_init(void)
+ int dmasound_init(void)
+ {
+ 	int res ;
+-#ifdef MODULE
++
+ 	if (irq_installed)
+ 		return -EBUSY;
+-#endif
+ 
+ 	/* Set up sound queue, /dev/audio and /dev/dsp. */
+ 
+@@ -1422,9 +1410,7 @@ int dmasound_init(void)
+ 		printk(KERN_ERR "DMA sound driver: Interrupt initialization failed\n");
+ 		return -ENODEV;
  	}
+-#ifdef MODULE
+ 	irq_installed = 1;
+-#endif
  
--	cn10k_mcs_free(pf);
+ 	printk(KERN_INFO "%s DMA sound driver rev %03d installed\n",
+ 		dmasound.mach.name, (DMASOUND_CORE_REVISION<<4) +
+@@ -1438,8 +1424,6 @@ int dmasound_init(void)
+ 	return 0;
+ }
+ 
+-#ifdef MODULE
 -
- #ifdef CONFIG_DCB
- 	/* Disable PFC config */
- 	if (pf->pfc_en) {
-@@ -3084,6 +3082,7 @@ static void otx2_remove(struct pci_dev *pdev)
+ void dmasound_deinit(void)
+ {
+ 	if (irq_installed) {
+@@ -1458,8 +1442,6 @@ void dmasound_deinit(void)
+ 		unregister_sound_dsp(sq_unit);
+ }
  
- 	otx2_unregister_dl(pf);
- 	unregister_netdev(netdev);
-+	cn10k_mcs_free(pf);
- 	otx2_sriov_disable(pf->pdev);
- 	otx2_sriov_vfcfg_cleanup(pf);
- 	if (pf->otx2_wq)
--- 
-2.39.2
-
+-#else /* !MODULE */
+-
+ static int dmasound_setup(char *str)
+ {
+ 	int ints[6], size;
+@@ -1503,8 +1485,6 @@ static int dmasound_setup(char *str)
+ 
+ __setup("dmasound=", dmasound_setup);
+ 
+-#endif /* !MODULE */
+-
+     /*
+      *  Conversion tables
+      */
+@@ -1591,9 +1571,7 @@ char dmasound_alaw2dma8[] = {
+ 
+ EXPORT_SYMBOL(dmasound);
+ EXPORT_SYMBOL(dmasound_init);
+-#ifdef MODULE
+ EXPORT_SYMBOL(dmasound_deinit);
+-#endif
+ EXPORT_SYMBOL(dmasound_write_sq);
+ EXPORT_SYMBOL(dmasound_catchRadius);
+ #ifdef HAS_8BIT_TABLES
 
 
