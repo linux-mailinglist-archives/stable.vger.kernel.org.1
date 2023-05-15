@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4548703910
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C09247034BF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244368AbjEORih (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:38:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60964 "EHLO
+        id S243137AbjEOQv5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:51:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244394AbjEORiS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:18 -0400
+        with ESMTP id S243111AbjEOQvj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81161552B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBD36585
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43FCE62DD2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE48C433EF;
-        Mon, 15 May 2023 17:35:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 448CD62973
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B740C433EF;
+        Mon, 15 May 2023 16:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172129;
-        bh=0kM0V+605O1M1znJUIHIVJQociBMYCy5OXAFrQeck+o=;
+        s=korg; t=1684169494;
+        bh=HanVtLJpY1guYUzj/8wbjpECc797Bwor7zkaj1alfHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xsg7Hi9S+qi6BkJnwyHVVcrijnjOftqGg3W4ta7whnJbj5u83mdIKZ6FAW6FUJXs6
-         Ag1VZ44eSM2/lvRm1dRl45ui6BKhXXtzanx6ZC6kGIvDX/vjxCca5yqoeuRk4xzpx/
-         RO9H+3MPh4ALt0Wu0Mc0rqei1gqFZFV+M4UoWbZg=
+        b=Zj+Vs+j8IHJNPsNQRQhsSiNXEUQvm/O/iyE6k0J11tBkTIPn3nJVQ3Fgv+Y13T8it
+         QoCU8HVeerLyYrgZDddMM9fCUqAYEUlaJu/rNDNWZ4avIbUZ7wWj2e/Wp8kLT2t3Lb
+         8iUIHs1NLoZLcA78/1ApD0aVmHbMY0Ekzer98cp8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH 5.10 036/381] pwm: meson: Fix g12a ao clk81 name
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 075/246] octeontx2-vf: Detach LF resources on probe cleanup
 Date:   Mon, 15 May 2023 18:24:47 +0200
-Message-Id: <20230515161738.438355183@linuxfoundation.org>
+Message-Id: <20230515161724.822739573@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit 9e4fa80ab7ef9eb4f7b1ea9fc31e0eb040e85e25 upstream.
+[ Upstream commit 99ae1260fdb5f15beab8a3adfb93a9041c87a2c1 ]
 
-Fix the name of the aoclk81 clock. Apparently name aoclk81 as used by
-the vendor driver was changed when mainlining the g12a clock driver.
+When a VF device probe fails due to error in MSIX vector allocation then
+the resources NIX and NPA LFs were not detached. Fix this by detaching
+the LFs when MSIX vector allocation fails.
 
-Fixes: f41efceb46e6 ("pwm: meson: Add clock source configuration for Meson G12A")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3184fb5ba96e ("octeontx2-vf: Virtual function driver support")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-meson.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -433,7 +433,7 @@ static const struct meson_pwm_data pwm_a
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+index ab126f8706c74..53366dbfbf27c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+@@ -621,7 +621,7 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
  
- static const char * const pwm_g12a_ao_ab_parent_names[] = {
--	"xtal", "aoclk81", "fclk_div4", "fclk_div5"
-+	"xtal", "g12a_ao_clk81", "fclk_div4", "fclk_div5"
- };
+ 	err = otx2vf_realloc_msix_vectors(vf);
+ 	if (err)
+-		goto err_mbox_destroy;
++		goto err_detach_rsrc;
  
- static const struct meson_pwm_data pwm_g12a_ao_ab_data = {
-@@ -442,7 +442,7 @@ static const struct meson_pwm_data pwm_g
- };
- 
- static const char * const pwm_g12a_ao_cd_parent_names[] = {
--	"xtal", "aoclk81",
-+	"xtal", "g12a_ao_clk81",
- };
- 
- static const struct meson_pwm_data pwm_g12a_ao_cd_data = {
+ 	err = otx2_set_real_num_queues(netdev, qcount, qcount);
+ 	if (err)
+-- 
+2.39.2
+
 
 
