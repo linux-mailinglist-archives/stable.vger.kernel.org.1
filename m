@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D175703963
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD66703349
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244486AbjEORmO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38514 "EHLO
+        id S242752AbjEOQfV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244503AbjEORlb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:31 -0400
+        with ESMTP id S242584AbjEOQfU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DADF1B0B0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2DAA4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0350462DFC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D098AC433EF;
-        Mon, 15 May 2023 17:38:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5289627CB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB22EC4339B;
+        Mon, 15 May 2023 16:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172340;
-        bh=3DjDHBHv6GorIZE37NXcCAWHWx/LJZ69tNc00lBfrqI=;
+        s=korg; t=1684168518;
+        bh=lWvqTOxU1QgW3fIQ7ZpzBHA2YPWpg0MaVGVFKM3GgC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m7WyGRsKMgoRKhTIu2cQLBvKK+lys233taSSedEMoSIn/EFRa4XkJOQcjZW8qNovo
-         N2iDE+GbWL3fiIZHLkok9h20tIQbZ8xHUdnYQ6KtsO4sE2lhYFJASSj5/+oh1frFm9
-         KrMyG7xtRVDqpYWbzrrPc8xekfnSJ4wyWXDP8QVY=
+        b=eDQL+/m0NQCMn7eQioP6Nye4el9ZhK/GIa1v6rH4h90UQYV0H3uxQuWbP8uLNY345
+         ZFqGyT/AgHo2pno19IE6c2nkRq1jeG9ZVq5JVBGRy1COfAAn7MXOh8wdE7e1WS7jPJ
+         P7FOm6tL05TxC3fI6mzz+s9ix7BufcBTYzdl4YGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Saurabh Sengar <ssengar@linux.microsoft.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/381] x86/ioapic: Dont return 0 from arch_dynirq_lower_bound()
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Jes Sorensen <jes@trained-monkey.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 4.14 075/116] wifi: rtl8xxxu: RTL8192EU always needs full init
 Date:   Mon, 15 May 2023 18:26:12 +0200
-Message-Id: <20230515161742.298111129@linuxfoundation.org>
+Message-Id: <20230515161700.777115270@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,72 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 5af507bef93c09a94fb8f058213b489178f4cbe5 ]
+commit d46e04ccd40457a0119b76e11ab64a2ad403e138 upstream.
 
-arch_dynirq_lower_bound() is invoked by the core interrupt code to
-retrieve the lowest possible Linux interrupt number for dynamically
-allocated interrupts like MSI.
+Always run the entire init sequence (rtl8xxxu_init_device()) for
+RTL8192EU. It's what the vendor driver does too.
 
-The x86 implementation uses this to exclude the IO/APIC GSI space.
-This works correctly as long as there is an IO/APIC registered, but
-returns 0 if not. This has been observed in VMs where the BIOS does
-not advertise an IO/APIC.
+This fixes a bug where the device is unable to connect after
+rebooting:
 
-0 is an invalid interrupt number except for the legacy timer interrupt
-on x86. The return value is unchecked in the core code, so it ends up
-to allocate interrupt number 0 which is subsequently considered to be
-invalid by the caller, e.g. the MSI allocation code.
+wlp3s0f3u2: send auth to ... (try 1/3)
+wlp3s0f3u2: send auth to ... (try 2/3)
+wlp3s0f3u2: send auth to ... (try 3/3)
+wlp3s0f3u2: authentication with ... timed out
 
-The function has already a check for 0 in the case that an IO/APIC is
-registered, as ioapic_dynirq_base is 0 in case of device tree setups.
+Rebooting leaves the device powered on (partially? at least the
+firmware is still running), but not really in a working state.
 
-Consolidate this and zero check for both ioapic_dynirq_base and gsi_top,
-which is used in the case that no IO/APIC is registered.
-
-Fixes: 3e5bedc2c258 ("x86/apic: Fix arch_dynirq_lower_bound() bug for DT enabled machines")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/1679988604-20308-1-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Jes Sorensen <jes@trained-monkey.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/io_apic.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 25b1d5c6af969..74794387bf59d 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -2442,17 +2442,21 @@ static int io_apic_get_redir_entries(int ioapic)
- 
- unsigned int arch_dynirq_lower_bound(unsigned int from)
- {
-+	unsigned int ret;
-+
- 	/*
- 	 * dmar_alloc_hwirq() may be called before setup_IO_APIC(), so use
- 	 * gsi_top if ioapic_dynirq_base hasn't been initialized yet.
- 	 */
--	if (!ioapic_initialized)
--		return gsi_top;
-+	ret = ioapic_dynirq_base ? : gsi_top;
-+
- 	/*
--	 * For DT enabled machines ioapic_dynirq_base is irrelevant and not
--	 * updated. So simply return @from if ioapic_dynirq_base == 0.
-+	 * For DT enabled machines ioapic_dynirq_base is irrelevant and
-+	 * always 0. gsi_top can be 0 if there is no IO/APIC registered.
-+	 * 0 is an invalid interrupt number for dynamic allocations. Return
-+	 * @from instead.
- 	 */
--	return ioapic_dynirq_base ? : from;
-+	return ret ? : from;
- }
- 
- #ifdef CONFIG_X86_32
--- 
-2.39.2
-
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -1660,6 +1660,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops =
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+ 	.has_s0s1 = 0,
+ 	.gen2_thermal_meter = 1,
++	.needs_full_init = 1,
+ 	.adda_1t_init = 0x0fc01616,
+ 	.adda_1t_path_on = 0x0fc01616,
+ 	.adda_2t_path_on_a = 0x0fc01616,
 
 
