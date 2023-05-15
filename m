@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DAE87032FB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9AE670390E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242191AbjEOQcI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        id S244204AbjEORie (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:38:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241866AbjEOQcH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF142D4D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:31:55 -0700 (PDT)
+        with ESMTP id S244069AbjEORiP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9221560C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC6CD62770
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0EEC433EF;
-        Mon, 15 May 2023 16:31:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4F2562DD8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8176BC433D2;
+        Mon, 15 May 2023 17:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168314;
-        bh=h4uQvRzzEyAIzgQTNAEO1W0VpjgImdVdW22BAZO9a4Y=;
+        s=korg; t=1684172139;
+        bh=ZEvsQuva0xNOrYGykGwpQjElS5A1ix7RmXvxqguUFJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kGw7NfBHElxP+Gedjo0Od37hwEMvz7L1CPmRFV9uSek8GiJKRnl9LNP55IE/1D7rR
-         UwdtShYcTgeE7Lb2RB4nALdKsFQD0dufnm5hxpzIIOKCyD23Ijj/dQKr4MeRzxCTvM
-         Okmy6TrkNgJQTWVr1HqDb64zTtep4eYnB2yAEBuo=
+        b=0wvk2hkJYqmvzz74ydrV1gVrW4bfaANOR+JSnc50ZjSGfI9medyJ42DkdECa2w4Ub
+         hs1ycMhkopgARFl3AohKIygpTHPre6rUtA2M3ggIb5BlVV9dcyB+uvixQBuaqC7JZH
+         2vGEU3QbR/oanTskIkj5fEuOUlcJqaCeLbn/XCfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.14 010/116] ring-buffer: Sync IRQ works before buffer destruction
+        patches@lists.linux.dev, Tanmay Shah <tanmay.shah@amd.com>,
+        Michal Simek <michal.simek@amd.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 5.10 056/381] mailbox: zynqmp: Fix IPI isr handling
 Date:   Mon, 15 May 2023 18:25:07 +0200
-Message-Id: <20230515161658.631171369@linuxfoundation.org>
+Message-Id: <20230515161739.364096982@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,94 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tanmay Shah <tanmay.shah@amd.com>
 
-commit 675751bb20634f981498c7d66161584080cc061e upstream.
+commit 74ad37a30ffee3643bc34f9ca7225b20a66abaaf upstream.
 
-If something was written to the buffer just before destruction,
-it may be possible (maybe not in a real system, but it did
-happen in ARCH=um with time-travel) to destroy the ringbuffer
-before the IRQ work ran, leading this KASAN report (or a crash
-without KASAN):
+Multiple IPI channels are mapped to same interrupt handler.
+Current isr implementation handles only one channel per isr.
+Fix this behavior by checking isr status bit of all child
+mailbox nodes.
 
-    BUG: KASAN: slab-use-after-free in irq_work_run_list+0x11a/0x13a
-    Read of size 8 at addr 000000006d640a48 by task swapper/0
-
-    CPU: 0 PID: 0 Comm: swapper Tainted: G        W  O       6.3.0-rc1 #7
-    Stack:
-     60c4f20f 0c203d48 41b58ab3 60f224fc
-     600477fa 60f35687 60c4f20f 601273dd
-     00000008 6101eb00 6101eab0 615be548
-    Call Trace:
-     [<60047a58>] show_stack+0x25e/0x282
-     [<60c609e0>] dump_stack_lvl+0x96/0xfd
-     [<60c50d4c>] print_report+0x1a7/0x5a8
-     [<603078d3>] kasan_report+0xc1/0xe9
-     [<60308950>] __asan_report_load8_noabort+0x1b/0x1d
-     [<60232844>] irq_work_run_list+0x11a/0x13a
-     [<602328b4>] irq_work_tick+0x24/0x34
-     [<6017f9dc>] update_process_times+0x162/0x196
-     [<6019f335>] tick_sched_handle+0x1a4/0x1c3
-     [<6019fd9e>] tick_sched_timer+0x79/0x10c
-     [<601812b9>] __hrtimer_run_queues.constprop.0+0x425/0x695
-     [<60182913>] hrtimer_interrupt+0x16c/0x2c4
-     [<600486a3>] um_timer+0x164/0x183
-     [...]
-
-    Allocated by task 411:
-     save_stack_trace+0x99/0xb5
-     stack_trace_save+0x81/0x9b
-     kasan_save_stack+0x2d/0x54
-     kasan_set_track+0x34/0x3e
-     kasan_save_alloc_info+0x25/0x28
-     ____kasan_kmalloc+0x8b/0x97
-     __kasan_kmalloc+0x10/0x12
-     __kmalloc+0xb2/0xe8
-     load_elf_phdrs+0xee/0x182
-     [...]
-
-    The buggy address belongs to the object at 000000006d640800
-     which belongs to the cache kmalloc-1k of size 1024
-    The buggy address is located 584 bytes inside of
-     freed 1024-byte region [000000006d640800, 000000006d640c00)
-
-Add the appropriate irq_work_sync() so the work finishes before
-the buffers are destroyed.
-
-Prior to the commit in the Fixes tag below, there was only a
-single global IRQ work, so this issue didn't exist.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230427175920.a76159263122.I8295e405c44362a86c995e9c2c37e3e03810aa56@changeid
-
+Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
+Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 15693458c4bc ("tracing/ring-buffer: Move poll wake ups into ring buffer code")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20230311012407.1292118-3-tanmay.shah@amd.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mailbox/zynqmp-ipi-mailbox.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1269,6 +1269,8 @@ static void rb_free_cpu_buffer(struct ri
- 	struct list_head *head = cpu_buffer->pages;
- 	struct buffer_page *bpage, *tmp;
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -152,7 +152,7 @@ static irqreturn_t zynqmp_ipi_interrupt(
+ 	struct zynqmp_ipi_message *msg;
+ 	u64 arg0, arg3;
+ 	struct arm_smccc_res res;
+-	int ret, i;
++	int ret, i, status = IRQ_NONE;
  
-+	irq_work_sync(&cpu_buffer->irq_work.work);
-+
- 	free_buffer_page(cpu_buffer->reader_page);
+ 	(void)irq;
+ 	arg0 = SMC_IPI_MAILBOX_STATUS_ENQUIRY;
+@@ -170,11 +170,11 @@ static irqreturn_t zynqmp_ipi_interrupt(
+ 				memcpy_fromio(msg->data, mchan->req_buf,
+ 					      msg->len);
+ 				mbox_chan_received_data(chan, (void *)msg);
+-				return IRQ_HANDLED;
++				status = IRQ_HANDLED;
+ 			}
+ 		}
+ 	}
+-	return IRQ_NONE;
++	return status;
+ }
  
- 	if (head) {
-@@ -1374,6 +1376,8 @@ ring_buffer_free(struct ring_buffer *buf
- 
- 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
- 
-+	irq_work_sync(&buffer->irq_work.work);
-+
- 	for_each_buffer_cpu(buffer, cpu)
- 		rb_free_cpu_buffer(buffer->buffers[cpu]);
- 
+ /**
 
 
