@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE44703959
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E913670353D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244577AbjEORl3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:41:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
+        id S243261AbjEOQ5I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244451AbjEORlK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:10 -0400
+        with ESMTP id S243251AbjEOQ5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA5AD06C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:38:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9AE7A91
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D513562E0D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:38:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0E0C433D2;
-        Mon, 15 May 2023 17:38:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9497E62A1E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97913C433EF;
+        Mon, 15 May 2023 16:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172312;
-        bh=m+6T+M/1IasT4m4Mi9nv+CtYQwAoiQ2X5G2TiKynQU8=;
+        s=korg; t=1684169816;
+        bh=FtIGOI305kwy/6FOj8mlpzgLrPNp4dN8LNtHBq5MSRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0XvPcunpQn5zUMi/xeDSwATlcBwD8YINk6q8QI5lv4J9LDB8OpHB1Pk4R2xf808eN
-         8b9d+qplBcbE8JeqoXy5juzb5B77kgoyv3wV12NxV9KtYZIbgNt2ha5XedlAyEONGk
-         sB9yWEs2JeL6+bk/wEplkQuBUte9f02F09RefsI8=
+        b=Pl6S623NtW1IlF7+UuoHLlhP0o9b1/vMooPfRaGpCr84NQl1QYB1TgXfB8FjZrae5
+         5UGZ8Izj+8gY5604dwkhYDgTJ4dFLmPPPtCtbzXquX1TbyhkFtc+0ERhsvSIBnWrW3
+         7pmXU5pfYtU7n9lm8mCgcS/iSTvo4CuY3rtQ8oxY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/381] media: rcar_fdp1: Fix refcount leak in probe and remove function
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 6.3 152/246] sh: mcount.S: fix build error when PRINTK is not enabled
 Date:   Mon, 15 May 2023 18:26:04 +0200
-Message-Id: <20230515161741.924354086@linuxfoundation.org>
+Message-Id: <20230515161727.115359049@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,70 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit c766c90faf93897b77c9c5daa603cffab85ba907 ]
+commit c2bd1e18c6f85c0027da2e5e7753b9bfd9f8e6dc upstream.
 
-rcar_fcp_get() take reference, which should be balanced with
-rcar_fcp_put(). Add missing rcar_fcp_put() in fdp1_remove and
-the error paths of fdp1_probe() to fix this.
+Fix a build error in mcount.S when CONFIG_PRINTK is not enabled.
+Fixes this build error:
 
-Fixes: 4710b752e029 ("[media] v4l: Add Renesas R-Car FDP1 Driver")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-[hverkuil: resolve merge conflict, remove() is now void]
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sh2-linux-ld: arch/sh/lib/mcount.o: in function `stack_panic':
+(.text+0xec): undefined reference to `dump_stack'
+
+Fixes: e460ab27b6c3 ("sh: Fix up stack overflow check with ftrace disabled.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-8-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rcar_fdp1.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/sh/Kconfig.debug |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
-index 1dd8bebb66f53..44a57fa06e74a 100644
---- a/drivers/media/platform/rcar_fdp1.c
-+++ b/drivers/media/platform/rcar_fdp1.c
-@@ -2317,8 +2317,10 @@ static int fdp1_probe(struct platform_device *pdev)
+--- a/arch/sh/Kconfig.debug
++++ b/arch/sh/Kconfig.debug
+@@ -15,7 +15,7 @@ config SH_STANDARD_BIOS
  
- 	/* Determine our clock rate */
- 	clk = clk_get(&pdev->dev, NULL);
--	if (IS_ERR(clk))
--		return PTR_ERR(clk);
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto put_dev;
-+	}
- 
- 	fdp1->clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
-@@ -2327,7 +2329,7 @@ static int fdp1_probe(struct platform_device *pdev)
- 	ret = v4l2_device_register(&pdev->dev, &fdp1->v4l2_dev);
- 	if (ret) {
- 		v4l2_err(&fdp1->v4l2_dev, "Failed to register video device\n");
--		return ret;
-+		goto put_dev;
- 	}
- 
- 	/* M2M registration */
-@@ -2397,6 +2399,8 @@ static int fdp1_probe(struct platform_device *pdev)
- unreg_dev:
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 
-+put_dev:
-+	rcar_fcp_put(fdp1->fcp);
- 	return ret;
- }
- 
-@@ -2408,6 +2412,7 @@ static int fdp1_remove(struct platform_device *pdev)
- 	video_unregister_device(&fdp1->vfd);
- 	v4l2_device_unregister(&fdp1->v4l2_dev);
- 	pm_runtime_disable(&pdev->dev);
-+	rcar_fcp_put(fdp1->fcp);
- 
- 	return 0;
- }
--- 
-2.39.2
-
+ config STACK_DEBUG
+ 	bool "Check for stack overflows"
+-	depends on DEBUG_KERNEL
++	depends on DEBUG_KERNEL && PRINTK
+ 	help
+ 	  This option will cause messages to be printed if free stack space
+ 	  drops below a certain limit. Saying Y here will add overhead to
 
 
