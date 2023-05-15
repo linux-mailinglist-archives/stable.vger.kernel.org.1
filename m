@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6786C7022CE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E7C7022CF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbjEOEQr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 00:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57674 "EHLO
+        id S235181AbjEOEQt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 00:16:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232859AbjEOEQf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:16:35 -0400
+        with ESMTP id S235618AbjEOEQj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:16:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2582B19A4
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:16:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D58B171D
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:16:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A87E761840
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:16:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A31C433EF;
-        Mon, 15 May 2023 04:16:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E16C361E9F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB255C433D2;
+        Mon, 15 May 2023 04:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684124192;
-        bh=ijDl69w5M+vOmesOj8g6TfqgJODHFmywsj0c7QCJO+8=;
+        s=korg; t=1684124196;
+        bh=4AztUPAZOo2ZCJm1oXCgQsg+lXGJcfCaId9N7CAVIxE=;
         h=Subject:To:Cc:From:Date:From;
-        b=Vhkq2gnTumeE7pvJ9+STN7fxxNzeyv9nGu2Mst3uvvWV8vLt2gpMeduco5XSpba74
-         injmSjZy2hPwfvYKPJB0hmslpTKtyWvb0ZjY07zw/h9JYZ4draLV654BzJpKI9WCvz
-         UIiJY0dlykjGfqHgZd8jcjnbiQeaZ4H8mEb+wUFg=
-Subject: FAILED: patch "[PATCH] ext4: allow ext4_get_group_info() to fail" failed to apply to 6.3-stable tree
+        b=jTuV7VqoVYNLh5nnWfkhB59fjgo0HT9FzVEGWnquOVrOe8nstX1w0p0+NZdtKo7yU
+         5Mut6+fZ2i5fBv1nrB+eQ+ossKGLfnTtJizFZWDTvzvK9VqGQu+TtYbO+/hPFa5wsN
+         qL2Ad1e+pN6jShEBxRIi0YZFtYMm8XcHOnYU7pA4=
+Subject: FAILED: patch "[PATCH] ext4: allow ext4_get_group_info() to fail" failed to apply to 6.2-stable tree
 To:     tytso@mit.edu, jack@suse.cz
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 15 May 2023 06:16:29 +0200
-Message-ID: <2023051529-utility-unearned-246b@gregkh>
+Date:   Mon, 15 May 2023 06:16:30 +0200
+Message-ID: <2023051530-universal-caramel-97a9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.2-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.2.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5354b2af34064a4579be8bc0e2f15a7b70f14b5f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051529-utility-unearned-246b@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051530-universal-caramel-97a9@gregkh' --subject-prefix 'PATCH 6.2.y' HEAD^..
 
 Possible dependencies:
 
