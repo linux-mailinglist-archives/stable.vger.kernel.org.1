@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AA13703440
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8EF70398D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242962AbjEOQqh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:46:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50638 "EHLO
+        id S244491AbjEORng (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242973AbjEOQq3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:46:29 -0400
+        with ESMTP id S244591AbjEORnQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631BE4EF3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:46:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2578E17961
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E669B628F7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:46:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EDFC433D2;
-        Mon, 15 May 2023 16:46:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A89C462E49
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B373CC433D2;
+        Mon, 15 May 2023 17:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169181;
-        bh=ssgSVG3ia+fo3vsUV4rKrbwTfMtiCcmBF3U9aWDIi3Q=;
+        s=korg; t=1684172446;
+        bh=47PjqLfcZgiKyQ0PMPKM0AsUk2PMYL3XT6IbAyVxork=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VSMsY1l9/mL/UUNK+K55VqlPHCCc6UL6xY+EVrzVk4FOSIhEbuJjduxH4qvGLgqqD
-         DSyEjqpwJmL9ieeuSNuVUpb1oe9TwDVYcdpDOitcpT3V5d2NbC1kYYAVizQ0fOeKAH
-         3dkz0yB0q8WdLZ/cjCEmGPcMhU4zaQsYpPZ2vqdk=
+        b=RGH2JxcP4xlFD3kp0xl5wf3OzRTwKyMPGXYED849da47+UmrL7gAD/6aAkXRBeiCz
+         g++Ncs91ZV20vcL3hVd/PSEIVfBfMa2LWWrKZ8351JUDrP1M+MbI+VyHHS/tDTgkny
+         EaTE/FeVDVYJanX1Yxfjiv+r7yfBbf+57z5+p9Do=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Pawel Witek <pawel.ireneusz.witek@gmail.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 4.19 169/191] cifs: fix pcchunk length type in smb2_copychunk_range
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Gaurav Jain <gaurav.jain@nxp.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 155/381] crypto: caam - Clear some memory in instantiate_rng
 Date:   Mon, 15 May 2023 18:26:46 +0200
-Message-Id: <20230515161713.567518267@linuxfoundation.org>
+Message-Id: <20230515161743.827390111@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pawel Witek <pawel.ireneusz.witek@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit d66cde50c3c868af7abddafce701bb86e4a93039 upstream.
+[ Upstream commit 9c19fb86a8cb2ee82a832c95e139f29ea05c4d08 ]
 
-Change type of pcchunk->Length from u32 to u64 to match
-smb2_copychunk_range arguments type. Fixes the problem where performing
-server-side copy with CIFS_IOC_COPYCHUNK_FILE ioctl resulted in incomplete
-copy of large files while returning -EINVAL.
+According to the comment at the end of the 'for' loop just a few lines
+below, it looks needed to clear 'desc'.
 
-Fixes: 9bf0c9cd4314 ("CIFS: Fix SMB2/SMB3 Copy offload support (refcopy) for large files")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Pawel Witek <pawel.ireneusz.witek@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So it should also be cleared for the first iteration.
+
+Move the memset() to the beginning of the loop to be safe.
+
+Fixes: 281922a1d4f5 ("crypto: caam - add support for SEC v5.x RNG4")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2ops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/caam/ctrl.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -1180,7 +1180,7 @@ smb2_copychunk_range(const unsigned int
- 		pcchunk->SourceOffset = cpu_to_le64(src_off);
- 		pcchunk->TargetOffset = cpu_to_le64(dest_off);
- 		pcchunk->Length =
--			cpu_to_le32(min_t(u32, len, tcon->max_bytes_chunk));
-+			cpu_to_le32(min_t(u64, len, tcon->max_bytes_chunk));
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index f87aa2169e5f5..f9a1ec3c84851 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -284,6 +284,10 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
+ 		const u32 rdsta_if = RDSTA_IF0 << sh_idx;
+ 		const u32 rdsta_pr = RDSTA_PR0 << sh_idx;
+ 		const u32 rdsta_mask = rdsta_if | rdsta_pr;
++
++		/* Clear the contents before using the descriptor */
++		memset(desc, 0x00, CAAM_CMD_SZ * 7);
++
+ 		/*
+ 		 * If the corresponding bit is set, this state handle
+ 		 * was initialized by somebody else, so it's left alone.
+@@ -327,8 +331,6 @@ static int instantiate_rng(struct device *ctrldev, int state_handle_mask,
+ 		}
  
- 		/* Request server copy to target from src identified by key */
- 		kfree(retbuf);
+ 		dev_info(ctrldev, "Instantiated RNG4 SH%d\n", sh_idx);
+-		/* Clear the contents before recreating the descriptor */
+-		memset(desc, 0x00, CAAM_CMD_SZ * 7);
+ 	}
+ 
+ 	kfree(desc);
+-- 
+2.39.2
+
 
 
