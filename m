@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC00C703492
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEFD570338B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243037AbjEOQuF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54224 "EHLO
+        id S242823AbjEOQi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243027AbjEOQtk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:40 -0400
+        with ESMTP id S242817AbjEOQiZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509FA4EE1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC17540CB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D868462959
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E757EC433D2;
-        Mon, 15 May 2023 16:49:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40E2562333
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD5BC433EF;
+        Mon, 15 May 2023 16:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169378;
-        bh=xo/KuokBHLuydNpRif2y/UPXWTX7lRC6L2jK3ocdSac=;
+        s=korg; t=1684168703;
+        bh=3cNFj8giUvtENvPhG7x+kMyNyGY+hjIju/Mx1p19NUI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=amCNwot8f+qhxaZOkABuHpfHRrXkazscIrcuQOAn8GFSKP+fWUUVLGCiLr++OXyJB
-         xD/iF+q45A4XtB3oxWLMo2SG2lR2tqagu5bQgxqegU+ZJsoOhfFxD0b48q2vjjzBWQ
-         78KsLjpFPpsaTA/pMVihZshlU/JhMAHNDfP1Cf9M=
+        b=1GpfHWF3eMj34Y55e8MSZGyRSJ4e4iPqyH64Gjt7CyEcR0rBkPCkdiNCVlJ/5r0yP
+         TxbCbJiFGKmOrAwFlRn3hmXXRXXQcjb0na4/Csz1v33S+ngfuhGgEeLjZWdm6K1JHq
+         9FDx4AXSaS068h7BipxvdTb7iWYXiw8SYlZwTr7g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Antoine Tenart <atenart@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 039/246] net: ipv6: fix skb hash for some RST packets
-Date:   Mon, 15 May 2023 18:24:11 +0200
-Message-Id: <20230515161723.768696125@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.19 015/191] ring-buffer: Sync IRQ works before buffer destruction
+Date:   Mon, 15 May 2023 18:24:12 +0200
+Message-Id: <20230515161707.758535869@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +54,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit dc6456e938e938d64ffb6383a286b2ac9790a37f ]
+commit 675751bb20634f981498c7d66161584080cc061e upstream.
 
-The skb hash comes from sk->sk_txhash when using TCP, except for some
-IPv6 RST packets. This is because in tcp_v6_send_reset when not in
-TIME_WAIT the hash is taken from sk->sk_hash, while it should come from
-sk->sk_txhash as those two hashes are not computed the same way.
+If something was written to the buffer just before destruction,
+it may be possible (maybe not in a real system, but it did
+happen in ARCH=um with time-travel) to destroy the ringbuffer
+before the IRQ work ran, leading this KASAN report (or a crash
+without KASAN):
 
-Packetdrill script to test the above,
+    BUG: KASAN: slab-use-after-free in irq_work_run_list+0x11a/0x13a
+    Read of size 8 at addr 000000006d640a48 by task swapper/0
 
-   0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-  +0 fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
-  +0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
+    CPU: 0 PID: 0 Comm: swapper Tainted: G        W  O       6.3.0-rc1 #7
+    Stack:
+     60c4f20f 0c203d48 41b58ab3 60f224fc
+     600477fa 60f35687 60c4f20f 601273dd
+     00000008 6101eb00 6101eab0 615be548
+    Call Trace:
+     [<60047a58>] show_stack+0x25e/0x282
+     [<60c609e0>] dump_stack_lvl+0x96/0xfd
+     [<60c50d4c>] print_report+0x1a7/0x5a8
+     [<603078d3>] kasan_report+0xc1/0xe9
+     [<60308950>] __asan_report_load8_noabort+0x1b/0x1d
+     [<60232844>] irq_work_run_list+0x11a/0x13a
+     [<602328b4>] irq_work_tick+0x24/0x34
+     [<6017f9dc>] update_process_times+0x162/0x196
+     [<6019f335>] tick_sched_handle+0x1a4/0x1c3
+     [<6019fd9e>] tick_sched_timer+0x79/0x10c
+     [<601812b9>] __hrtimer_run_queues.constprop.0+0x425/0x695
+     [<60182913>] hrtimer_interrupt+0x16c/0x2c4
+     [<600486a3>] um_timer+0x164/0x183
+     [...]
 
-  +0 > (flowlabel 0x1) S 0:0(0) <...>
+    Allocated by task 411:
+     save_stack_trace+0x99/0xb5
+     stack_trace_save+0x81/0x9b
+     kasan_save_stack+0x2d/0x54
+     kasan_set_track+0x34/0x3e
+     kasan_save_alloc_info+0x25/0x28
+     ____kasan_kmalloc+0x8b/0x97
+     __kasan_kmalloc+0x10/0x12
+     __kmalloc+0xb2/0xe8
+     load_elf_phdrs+0xee/0x182
+     [...]
 
-  // Wrong ack seq, trigger a rst.
-  +0 < S. 0:0(0) ack 0 win 4000
+    The buggy address belongs to the object at 000000006d640800
+     which belongs to the cache kmalloc-1k of size 1024
+    The buggy address is located 584 bytes inside of
+     freed 1024-byte region [000000006d640800, 000000006d640c00)
 
-  // Check the flowlabel matches prior one from SYN.
-  +0 > (flowlabel 0x1) R 0:0(0) <...>
+Add the appropriate irq_work_sync() so the work finishes before
+the buffers are destroyed.
 
-Fixes: 9258b8b1be2e ("ipv6: tcp: send consistent autoflowlabel in RST packets")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prior to the commit in the Fixes tag below, there was only a
+single global IRQ work, so this issue didn't exist.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230427175920.a76159263122.I8295e405c44362a86c995e9c2c37e3e03810aa56@changeid
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 15693458c4bc ("tracing/ring-buffer: Move poll wake ups into ring buffer code")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/tcp_ipv6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 1e747241c7710..4d52e25deb9e3 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1064,7 +1064,7 @@ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb)
- 			if (np->repflow)
- 				label = ip6_flowlabel(ipv6h);
- 			priority = sk->sk_priority;
--			txhash = sk->sk_hash;
-+			txhash = sk->sk_txhash;
- 		}
- 		if (sk->sk_state == TCP_TIME_WAIT) {
- 			label = cpu_to_be32(inet_twsk(sk)->tw_flowlabel);
--- 
-2.39.2
-
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1326,6 +1326,8 @@ static void rb_free_cpu_buffer(struct ri
+ 	struct list_head *head = cpu_buffer->pages;
+ 	struct buffer_page *bpage, *tmp;
+ 
++	irq_work_sync(&cpu_buffer->irq_work.work);
++
+ 	free_buffer_page(cpu_buffer->reader_page);
+ 
+ 	if (head) {
+@@ -1431,6 +1433,8 @@ ring_buffer_free(struct ring_buffer *buf
+ 
+ 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
+ 
++	irq_work_sync(&buffer->irq_work.work);
++
+ 	for_each_buffer_cpu(buffer, cpu)
+ 		rb_free_cpu_buffer(buffer->buffers[cpu]);
+ 
 
 
