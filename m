@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A73217022C1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5AE7022C2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237512AbjEOEOI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 00:14:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
+        id S238957AbjEOEOO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 00:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238599AbjEOEOG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:14:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 613D8E50
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:14:05 -0700 (PDT)
+        with ESMTP id S238920AbjEOEOJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:14:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83824172B
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:14:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E98C3611E7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:14:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F24C433D2;
-        Mon, 15 May 2023 04:14:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 202E6611CB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:14:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F02CC433D2;
+        Mon, 15 May 2023 04:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684124044;
-        bh=FQWbxcTmVIFJ/+PyOZRfLfOAILEKg2jFayCJlzwa7EI=;
+        s=korg; t=1684124047;
+        bh=IU/5gxLmLcbyRH+ODYm65IR/yDaDJJxES/ymj5jQIyg=;
         h=Subject:To:Cc:From:Date:From;
-        b=gwv4J8FE/3JGcwMlzuSqnJLZLq/jGGYuU8lQ/9YaVm0MMnfk+y99O4hPeFNE5wodj
-         hc/PUuSp9kujUA0yn/2va534fArPif9ejtmUmIr+eYcdokT8ppY5kiKkdQvHevrbqS
-         zTyBOGgFvm8ZN5sQW+u0ydGfyRvo71yNr9X5V1WI=
-Subject: FAILED: patch "[PATCH] ext4: don't clear SB_RDONLY when remounting r/w until quota" failed to apply to 5.10-stable tree
+        b=Tjo67opb6i6KdSOPzdP3a+RR7UxjzQ5i2b093CopVOTzzNKcRv0AdRZseJ/hQuYYm
+         7JqdknN8Irv+nnjyqwSYJWmufnd7076jGsqPn+o/M8fUzEWOrxnPL70SnfTgYLc/1/
+         ui6phdgXH5M9KzFcnRI6TkRDMqhHcuZCbHaC99Uw=
+Subject: FAILED: patch "[PATCH] ext4: don't clear SB_RDONLY when remounting r/w until quota" failed to apply to 5.4-stable tree
 To:     tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 15 May 2023 06:13:52 +0200
-Message-ID: <2023051552-obscure-freefall-5242@gregkh>
+Date:   Mon, 15 May 2023 06:13:53 +0200
+Message-ID: <2023051553-gangrene-pliable-3d3b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x a44be64bbecb15a452496f60db6eacfee2b59c79
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051552-obscure-freefall-5242@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051553-gangrene-pliable-3d3b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,15 @@ c92dc856848f ("ext4: defer saving error info from atomic context")
 4067662388f9 ("ext4: move functions in super.c")
 014c9caa29d3 ("ext4: make ext4_abort() use __ext4_error()")
 b08070eca9e2 ("ext4: don't remount read-only with errors=continue on reboot")
+9b5f6c9b83d9 ("ext4: make s_mount_flags modifications atomic")
+f8f4acb6cded ("ext4: use generic casefolding support")
+ababea77bc50 ("ext4: use s_mount_flags instead of s_mount_state for fast commit state")
+8016e29f4362 ("ext4: fast commit recovery path")
+5b849b5f96b4 ("jbd2: fast commit recovery path")
+aa75f4d3daae ("ext4: main fast-commit commit path")
+ff780b91efe9 ("jbd2: add fast commit machinery")
+6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
+995a3ed67fc8 ("ext4: add fast_commit feature and handling for extended mount options")
 
 thanks,
 
