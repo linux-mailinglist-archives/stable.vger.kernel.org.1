@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 164987039A8
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A0070368F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244053AbjEORoy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38658 "EHLO
+        id S243779AbjEORLc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244643AbjEORoa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:30 -0400
+        with ESMTP id S243782AbjEORLL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADD615616
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FAF9EEC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA5C362E47
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDCFC433D2;
-        Mon, 15 May 2023 17:42:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0216E62B3A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E715BC433EF;
+        Mon, 15 May 2023 17:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172522;
-        bh=oLxQ6V22vMl3WyI8oM7fPVfVMSHUqVLB9KOIEKESpg0=;
+        s=korg; t=1684170557;
+        bh=kObBKs/YWMGRO4FZXSVuGYmPBwNUkmA0lb2ZvMVASGs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x+XqBP2ElzNFeDxZ7XmO94eXtJ41tMOwsCyVGTkUoOvKqqDz//7MwivEzzE53fDjS
-         7bnbsQXjLwrjeIrcc0L27gj/Wa8/f3FOFvf4Wyi0MiyqRYgaGEtwSpAeGIxefs7N2t
-         PeSpXQPA/b93z5qb1dF3wPk5AUgWcjrKClp8lT/k=
+        b=Dx9xiVPtuHPffWthn1CVZp2KFwWfJTXzibEr8OPvKx+AKwXq2qOOH9AXD4QQNQL4c
+         mCb376wyHvzlVWZuSn5J3UeMp1RUTui8VkkBiIeAHldYaJMPca2aPWJtRvdA5q9eHj
+         JuN2CRNFQ9T387lG+h+CzzMa6Q5Hnv9dmIGZmGV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 180/381] wifi: iwlwifi: mvm: check firmware response size
+        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
+        Tao Zhou <tao.zhou1@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 168/239] drm/amdgpu/gfx: disable gfx9 cp_ecc_error_irq only when enabling legacy gfx ras
 Date:   Mon, 15 May 2023 18:27:11 +0200
-Message-Id: <20230515161744.948600231@linuxfoundation.org>
+Message-Id: <20230515161726.713095627@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 13513cec93ac9902d0b896976d8bab3758a9881c ]
+commit 4a76680311330aefe5074bed8f06afa354b85c48 upstream.
 
-Check the firmware response size for responses to the
-memory read/write command in debugfs before using it.
+gfx9 cp_ecc_error_irq is only enabled when legacy gfx ras is assert.
+So in gfx_v9_0_hw_fini, interrupt disablement for cp_ecc_error_irq
+should be executed under such condition, otherwise, an amdgpu_irq_put
+calltrace will occur.
 
-Fixes: 2b55f43f8e47 ("iwlwifi: mvm: Add mem debugfs entry")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230417113648.0d56fcaf68ee.I70e9571f3ed7263929b04f8fabad23c9b999e4ea@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 7283.170322] RIP: 0010:amdgpu_irq_put+0x45/0x70 [amdgpu]
+[ 7283.170964] RSP: 0018:ffff9a5fc3967d00 EFLAGS: 00010246
+[ 7283.170967] RAX: ffff98d88afd3040 RBX: ffff98d89da20000 RCX: 0000000000000000
+[ 7283.170969] RDX: 0000000000000000 RSI: ffff98d89da2bef8 RDI: ffff98d89da20000
+[ 7283.170971] RBP: ffff98d89da20000 R08: ffff98d89da2ca18 R09: 0000000000000006
+[ 7283.170973] R10: ffffd5764243c008 R11: 0000000000000000 R12: 0000000000001050
+[ 7283.170975] R13: ffff98d89da38978 R14: ffffffff999ae15a R15: ffff98d880130105
+[ 7283.170978] FS:  0000000000000000(0000) GS:ffff98d996f00000(0000) knlGS:0000000000000000
+[ 7283.170981] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 7283.170983] CR2: 00000000f7a9d178 CR3: 00000001c42ea000 CR4: 00000000003506e0
+[ 7283.170986] Call Trace:
+[ 7283.170988]  <TASK>
+[ 7283.170989]  gfx_v9_0_hw_fini+0x1c/0x6d0 [amdgpu]
+[ 7283.171655]  amdgpu_device_ip_suspend_phase2+0x101/0x1a0 [amdgpu]
+[ 7283.172245]  amdgpu_device_suspend+0x103/0x180 [amdgpu]
+[ 7283.172823]  amdgpu_pmops_freeze+0x21/0x60 [amdgpu]
+[ 7283.173412]  pci_pm_freeze+0x54/0xc0
+[ 7283.173419]  ? __pfx_pci_pm_freeze+0x10/0x10
+[ 7283.173425]  dpm_run_callback+0x98/0x200
+[ 7283.173430]  __device_suspend+0x164/0x5f0
+
+v2: drop gfx11 as it's fixed in a different solution by retiring cp_ecc_irq funcs(Hawking)
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 3395c46759883..36f75d5946304 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -1885,6 +1885,11 @@ static ssize_t iwl_dbgfs_mem_read(struct file *file, char __user *user_buf,
- 	if (ret < 0)
- 		return ret;
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -3797,7 +3797,8 @@ static int gfx_v9_0_hw_fini(void *handle
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
-+	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
-+		ret = -EIO;
-+		goto out;
-+	}
-+
- 	rsp = (void *)hcmd.resp_pkt->data;
- 	if (le32_to_cpu(rsp->status) != DEBUG_MEM_STATUS_SUCCESS) {
- 		ret = -ENXIO;
-@@ -1962,6 +1967,11 @@ static ssize_t iwl_dbgfs_mem_write(struct file *file,
- 	if (ret < 0)
- 		return ret;
+-	amdgpu_irq_put(adev, &adev->gfx.cp_ecc_error_irq, 0);
++	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__GFX))
++		amdgpu_irq_put(adev, &adev->gfx.cp_ecc_error_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
  
-+	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
-+		ret = -EIO;
-+		goto out;
-+	}
-+
- 	rsp = (void *)hcmd.resp_pkt->data;
- 	if (rsp->status != DEBUG_MEM_STATUS_SUCCESS) {
- 		ret = -ENXIO;
--- 
-2.39.2
-
 
 
