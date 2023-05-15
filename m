@@ -2,42 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8094E703AF4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0C3703381
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240244AbjEOR52 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
+        id S242760AbjEOQh7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:37:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244977AbjEOR4t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:56:49 -0400
+        with ESMTP id S242812AbjEOQh6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B98D1BDD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800E940CC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF95462F8D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7FFC433EF;
-        Mon, 15 May 2023 17:54:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 175C362843
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D27C433D2;
+        Mon, 15 May 2023 16:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173281;
-        bh=sypC027um3qpwnK/xf8twdB7zMhShxVJ1WGqkiTBpIU=;
+        s=korg; t=1684168676;
+        bh=yTkGq3kBrx12LOsynq87csKMe2VWng1RFiNeptlLsEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mVEFQzmIblp9uRmfpFtIk7oo5VNO5YP46X2dM96jY3ABvWrgJmltpK7rv7PwwJEVq
-         5vXY8PBaWJwCCq1qhu23vLSm05+uV3vFnCtjcnlPRoHQ1+5pW4/qYLhFu4lW0sdWej
-         26bUlAKfZfC42C298VyLLGg29MJVKKd1GHr+jtrg=
+        b=r1zsiJ0iDgCiy/UpGdaZygJTytDvxA2uxvwpne/kkLplwkyy0cC40CbGGdxXGCxDk
+         8rKKuwdSYEI+0lqvm+J1fNBPfCcAzKmMNOvdEm4yS6PRBqPOTg7fHou4I6z2jVdabC
+         7CQf3j3yNFU+8yZQq0xw1rWZqoZ5+mF0pS7Ux2q0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 5.4 015/282] xhci: fix debugfs register accesses while suspended
+        patches@lists.linux.dev,
+        Will Ochowicz <Will.Ochowicz@genusplc.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Leo Yan <leo.yan@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 096/116] perf symbols: Fix return incorrect build_id size in elf_read_build_id()
 Date:   Mon, 15 May 2023 18:26:33 +0200
-Message-Id: <20230515161722.724408940@linuxfoundation.org>
+Message-Id: <20230515161701.437585649@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,33 +65,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Yang Jihong <yangjihong1@huawei.com>
 
-commit 735baf1b23458f71a8b15cb924af22c9ff9cd125 upstream.
+[ Upstream commit 1511e4696acb715a4fe48be89e1e691daec91c0e ]
 
-Wire up the debugfs regset device pointer so that the controller is
-resumed before accessing registers to avoid crashing or locking up if it
-happens to be runtime suspended.
+In elf_read_build_id(), if gnu build_id is found, should return the size of
+the actually copied data. If descsz is greater thanBuild_ID_SIZE,
+write_buildid data access may occur.
 
-Fixes: 02b6fdc2a153 ("usb: xhci: Add debugfs interface for xHCI driver")
-Cc: stable@vger.kernel.org # 4.15: 30332eeefec8: debugfs: regset32: Add Runtime PM support
-Cc: stable@vger.kernel.org # 4.15
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20230405090342.7363-1-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be96ea8ffa788dcc ("perf symbols: Fix issue with binaries using 16-bytes buildids (v2)")
+Reported-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
+Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
+Tested-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Link: https://lore.kernel.org/lkml/CWLP265MB49702F7BA3D6D8F13E4B1A719C649@CWLP265MB4970.GBRP265.PROD.OUTLOOK.COM/T/
+Link: https://lore.kernel.org/r/20230427012841.231729-1-yangjihong1@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-debugfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/symbol-elf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-debugfs.c
-+++ b/drivers/usb/host/xhci-debugfs.c
-@@ -132,6 +132,7 @@ static void xhci_debugfs_regset(struct x
- 	regset->regs = regs;
- 	regset->nregs = nregs;
- 	regset->base = hcd->regs + base;
-+	regset->dev = hcd->self.controller;
- 
- 	debugfs_create_regset32((const char *)rgs->name, 0444, parent, regset);
- }
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -504,7 +504,7 @@ static int elf_read_build_id(Elf *elf, v
+ 				size_t sz = min(size, descsz);
+ 				memcpy(bf, ptr, sz);
+ 				memset(bf + sz, 0, size - sz);
+-				err = descsz;
++				err = sz;
+ 				break;
+ 			}
+ 		}
 
 
