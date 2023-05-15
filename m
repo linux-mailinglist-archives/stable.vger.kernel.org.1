@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 512C1703364
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0909703AD9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242783AbjEOQgg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
+        id S242522AbjEOR4M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:56:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242730AbjEOQge (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:36:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816AF3C10;
-        Mon, 15 May 2023 09:36:33 -0700 (PDT)
+        with ESMTP id S244816AbjEORzd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F6919F34
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9799B62813;
-        Mon, 15 May 2023 16:36:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B042DC433D2;
-        Mon, 15 May 2023 16:36:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B6E62FC1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F61C433EF;
+        Mon, 15 May 2023 17:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168592;
-        bh=Nc25TSkVxVrXY64easAv0Dysj5N+r+hR4Ws0zUbzFD0=;
+        s=korg; t=1684173203;
+        bh=nmFQvOCzYYwpWKQu+Di3E93wuWGc7ZqlPuGOy0C+7c0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KpmpWG9t+DSdw9kZLUXidcUo/OiE0s203Bhs6CGpJb2fhDpLXwPr4v22r1CH8iUcA
-         7STfMJDjqtFl0idIoKfSQZGxQ1192WDxvGrWL4NJ884RL5wcNdzLBiilF+7dhGgzrF
-         jLzjuar8mF6wUNpBHKRrQWCY2x1p2+zwanBNfoXs=
+        b=sXh7G5Vu6VhyCjtfQWzSvU6TcCkgKZQmdcqLEX0tPB4B0+zD2dlPBxJOcZvdwIi5E
+         +6sSQOxfFrOqXYycR3PYLP7QUO7orehZd9NiFkVnZpLpAocE2Qp0W9Rxh3Nv0CFvlG
+         PpE9zNjiou+wqriNICJhyWr9wafEdt0OiCTXDf2w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 4.14 100/116] sh: math-emu: fix macro redefined warning
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.4 019/282] kheaders: Use array declaration instead of char
 Date:   Mon, 15 May 2023 18:26:37 +0200
-Message-Id: <20230515161701.575680024@linuxfoundation.org>
+Message-Id: <20230515161722.851502942@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,47 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Kees Cook <keescook@chromium.org>
 
-commit 58a49ad90939386a8682e842c474a0d2c00ec39c upstream.
+commit b69edab47f1da8edd8e7bfdf8c70f51a2a5d89fb upstream.
 
-Fix a warning that was reported by the kernel test robot:
+Under CONFIG_FORTIFY_SOURCE, memcpy() will check the size of destination
+and source buffers. Defining kernel_headers_data as "char" would trip
+this check. Since these addresses are treated as byte arrays, define
+them as arrays (as done everywhere else).
 
-In file included from ../include/math-emu/soft-fp.h:27,
-                 from ../arch/sh/math-emu/math.c:22:
-../arch/sh/include/asm/sfp-machine.h:17: warning: "__BYTE_ORDER" redefined
-   17 | #define __BYTE_ORDER __BIG_ENDIAN
-In file included from ../arch/sh/math-emu/math.c:21:
-../arch/sh/math-emu/sfp-util.h:71: note: this is the location of the previous definition
-   71 | #define __BYTE_ORDER __LITTLE_ENDIAN
+This was seen with:
 
-Fixes: b929926f01f2 ("sh: define __BIG_ENDIAN for math-emu")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: lore.kernel.org/r/202111121827.6v6SXtVv-lkp@intel.com
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+  $ cat /sys/kernel/kheaders.tar.xz >> /dev/null
+
+  detected buffer overflow in memcpy
+  kernel BUG at lib/string_helpers.c:1027!
+  ...
+  RIP: 0010:fortify_panic+0xf/0x20
+  [...]
+  Call Trace:
+   <TASK>
+   ikheaders_read+0x45/0x50 [kheaders]
+   kernfs_fop_read_iter+0x1a4/0x2f0
+  ...
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/bpf/20230302112130.6e402a98@kernel.org/
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 43d8ce9d65a5 ("Provide in-kernel headers to make extending kernel easier")
 Cc: stable@vger.kernel.org
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230306040037.20350-5-rdunlap@infradead.org
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230302224946.never.243-kees@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/math-emu/sfp-util.h |    4 ----
- 1 file changed, 4 deletions(-)
+ kernel/kheaders.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/sh/math-emu/sfp-util.h
-+++ b/arch/sh/math-emu/sfp-util.h
-@@ -67,7 +67,3 @@
-   } while (0)
+diff --git a/kernel/kheaders.c b/kernel/kheaders.c
+index 8f69772af77b..42163c9e94e5 100644
+--- a/kernel/kheaders.c
++++ b/kernel/kheaders.c
+@@ -26,15 +26,15 @@ asm (
+ "	.popsection				\n"
+ );
  
- #define abort()	return 0
--
--#define __BYTE_ORDER __LITTLE_ENDIAN
--
--
+-extern char kernel_headers_data;
+-extern char kernel_headers_data_end;
++extern char kernel_headers_data[];
++extern char kernel_headers_data_end[];
+ 
+ static ssize_t
+ ikheaders_read(struct file *file,  struct kobject *kobj,
+ 	       struct bin_attribute *bin_attr,
+ 	       char *buf, loff_t off, size_t len)
+ {
+-	memcpy(buf, &kernel_headers_data + off, len);
++	memcpy(buf, &kernel_headers_data[off], len);
+ 	return len;
+ }
+ 
+@@ -48,8 +48,8 @@ static struct bin_attribute kheaders_attr __ro_after_init = {
+ 
+ static int __init ikheaders_init(void)
+ {
+-	kheaders_attr.size = (&kernel_headers_data_end -
+-			      &kernel_headers_data);
++	kheaders_attr.size = (kernel_headers_data_end -
++			      kernel_headers_data);
+ 	return sysfs_create_bin_file(kernel_kobj, &kheaders_attr);
+ }
+ 
+-- 
+2.40.1
+
 
 
