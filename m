@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0AC703824
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F960703B64
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244290AbjEOR1m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49462 "EHLO
+        id S242470AbjEOSCj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244289AbjEOR1Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:25 -0400
+        with ESMTP id S242567AbjEOSCR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8444132BA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE751561C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:59:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A485762CEA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62F6C4339B;
-        Mon, 15 May 2023 17:26:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D04B63014
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC56C433D2;
+        Mon, 15 May 2023 17:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171573;
-        bh=KKwPQ8kao6k5K4eGOxs7YwsiIPpaz3Tj3lI6CqRGrYQ=;
+        s=korg; t=1684173571;
+        bh=pQN/Jmu8I3/JA5vHX9Y99uUm6MsuHlTfZEJESmagVok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BOePyzu0j7Z4nfL+h40XMhc7ggHdUVxLq3nBut06H3mgC0ArxqH/FT0U2IEeF3g7b
-         WlZ2BGvGCNvsd0DLF4h67VmPCq9cwAnNwULzDJ4GsTuNLhcbqbS8pY91yRFUsWKWwp
-         XGvjVwpsAv1dBf1C34k8pTjt31BhDMQ64SdRYRHw=
+        b=eCXVRjjfpwGJfVrQhDdQuFR+o/hRLx/vAJb4gefLq2YmyLwYAQCxWrCzJq2d7S2e/
+         lY5b32+YsoJqzxfKT8NXQExisOnRZfRKxiwuOLwDAJrVgvXA8sFRO5ckrez4YBM8DE
+         CGid2V+dcYuWvcgt/2gOJbOTuMrqg3ZJwzxHkcvw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tanmay Shah <tanmay.shah@amd.com>,
-        Michal Simek <michal.simek@amd.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/134] mailbox: zynqmp: Fix counts of child nodes
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.4 109/282] ixgbe: Enable setting RSS table to default values
 Date:   Mon, 15 May 2023 18:28:07 +0200
-Message-Id: <20230515161703.302570091@linuxfoundation.org>
+Message-Id: <20230515161725.515622700@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +56,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tanmay Shah <tanmay.shah@amd.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit f72f805e72882c361e2a612c64a6e549f3da7152 ]
+[ Upstream commit e85d3d55875f7a1079edfbc4e4e98d6f8aea9ac7 ]
 
-If child mailbox node status is disabled it causes
-crash in interrupt handler. Fix this by assigning
-only available child node during driver probe.
+ethtool uses `ETHTOOL_GRXRINGS` to compute how many queues are supported
+by RSS. The driver should return the smaller of either:
+  - The maximum number of RSS queues the device supports, OR
+  - The number of RX queues configured
 
-Fixes: 4981b82ba2ff ("mailbox: ZynqMP IPI mailbox controller")
-Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230311012407.1292118-2-tanmay.shah@amd.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Prior to this change, running `ethtool -X $iface default` fails if the
+number of queues configured is larger than the number supported by RSS,
+even though changing the queue count correctly resets the flowhash to
+use all supported queues.
+
+Other drivers (for example, i40e) will succeed but the flow hash will
+reset to support the maximum number of queues supported by RSS, even if
+that amount is smaller than the configured amount.
+
+Prior to this change:
+
+$ sudo ethtool -L eth1 combined 20
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 20 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+   24:      8     9    10    11    12    13    14    15
+   32:      0     1     2     3     4     5     6     7
+...
+
+You can see that the flowhash was correctly set to use the maximum
+number of queues supported by the driver (16).
+
+However, asking the NIC to reset to "default" fails:
+
+$ sudo ethtool -X eth1 default
+Cannot set RX flow hash configuration: Invalid argument
+
+After this change, the flowhash can be reset to default which will use
+all of the available RSS queues (16) or the configured queue count,
+whichever is smaller.
+
+Starting with eth1 which has 10 queues and a flowhash distributing to
+all 10 queues:
+
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 10 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9     0     1     2     3     4     5
+   16:      6     7     8     9     0     1     2     3
+...
+
+Increasing the queue count to 48 resets the flowhash to distribute to 16
+queues, as it did before this patch:
+
+$ sudo ethtool -L eth1 combined 48
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Due to the other bugfix in this series, the flowhash can be set to use
+queues 0-5:
+
+$ sudo ethtool -X eth1 equal 5
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     0     1     2
+    8:      3     4     0     1     2     3     4     0
+   16:      1     2     3     4     0     1     2     3
+...
+
+Due to this bugfix, the flowhash can be reset to default and use 16
+queues:
+
+$ sudo ethtool -X eth1 default
+$ sudo ethtool -x eth1
+RX flow hash indirection table for eth1 with 16 RX ring(s):
+    0:      0     1     2     3     4     5     6     7
+    8:      8     9    10    11    12    13    14    15
+   16:      0     1     2     3     4     5     6     7
+...
+
+Fixes: 91cd94bfe4f0 ("ixgbe: add basic support for setting and getting nfc controls")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/zynqmp-ipi-mailbox.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
-index 136a84ad871cc..be06de791c544 100644
---- a/drivers/mailbox/zynqmp-ipi-mailbox.c
-+++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
-@@ -634,7 +634,12 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
- 	struct zynqmp_ipi_mbox *mbox;
- 	int num_mboxes, ret = -EINVAL;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index babe16ece5aa6..a43cb7bfcccd7 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -2542,6 +2542,14 @@ static int ixgbe_get_rss_hash_opts(struct ixgbe_adapter *adapter,
+ 	return 0;
+ }
  
--	num_mboxes = of_get_child_count(np);
-+	num_mboxes = of_get_available_child_count(np);
-+	if (num_mboxes == 0) {
-+		dev_err(dev, "mailbox nodes not available\n");
-+		return -EINVAL;
-+	}
++static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
++{
++	if (adapter->hw.mac.type < ixgbe_mac_X550)
++		return 16;
++	else
++		return 64;
++}
 +
- 	pdata = devm_kzalloc(dev, struct_size(pdata, ipi_mboxes, num_mboxes),
- 			     GFP_KERNEL);
- 	if (!pdata)
+ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 			   u32 *rule_locs)
+ {
+@@ -2550,7 +2558,8 @@ static int ixgbe_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 
+ 	switch (cmd->cmd) {
+ 	case ETHTOOL_GRXRINGS:
+-		cmd->data = adapter->num_rx_queues;
++		cmd->data = min_t(int, adapter->num_rx_queues,
++				  ixgbe_rss_indir_tbl_max(adapter));
+ 		ret = 0;
+ 		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+@@ -2952,14 +2961,6 @@ static int ixgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
+ 	return ret;
+ }
+ 
+-static int ixgbe_rss_indir_tbl_max(struct ixgbe_adapter *adapter)
+-{
+-	if (adapter->hw.mac.type < ixgbe_mac_X550)
+-		return 16;
+-	else
+-		return 64;
+-}
+-
+ static u32 ixgbe_get_rxfh_key_size(struct net_device *netdev)
+ {
+ 	return IXGBE_RSS_KEY_SIZE;
 -- 
 2.39.2
 
