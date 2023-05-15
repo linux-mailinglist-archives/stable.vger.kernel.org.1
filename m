@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B6E77039EF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D75B17036D6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244693AbjEORqw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:46:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
+        id S243704AbjEORO3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244622AbjEORqg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:36 -0400
+        with ESMTP id S243518AbjEOROP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44AE10E6C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD30100D2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44C5B62EAD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CA1C4339B;
-        Mon, 15 May 2023 17:45:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7423562B87
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7B4C433D2;
+        Mon, 15 May 2023 17:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172709;
-        bh=/wXyAaDEVcjCdwyKN8Nli+AOqcWw9TEOKqmSVBsIuPM=;
+        s=korg; t=1684170752;
+        bh=bMM3M3/6iaUkQz5bnBelOCDckOMOPVJg0H7sSqX7GwU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ele8y36wOzC20uTJK1pNXOWh4SVUAF1wSyhQpapm15NbF9uqHcL6RZkJ7ju0ByX7g
-         Z5kiLniujdx/pAYkWj/xqlVIZDm2FWCG/IPROm8nLb6BWFpUvuB0keAyXxDXZzsAMM
-         9hsPVtcGLG+5nH43ks9s3qFmVFT/a59ymMNpy6ZU=
+        b=NZrcgKR4txfVWLQYiEOWLJkb5YZzt2F+sheazYAtI2zI55BU9AMmPyGwaW66CCPRH
+         jtOUfagj11Rzjbe7ZJ7FW3ZTvYeyZ98kk6lbCk92bsXlxcrc2RMe9OjQE9FCiVwNNp
+         UAALs3NcC+90qouoPq/SgA5zugv83k5QTZJ6ERSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 241/381] RDMA/mlx4: Prevent shift wrapping in set_user_sq_size()
-Date:   Mon, 15 May 2023 18:28:12 +0200
-Message-Id: <20230515161747.588226808@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+e2efa3efc15a1c9e95c3@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 230/239] ext4: remove a BUG_ON in ext4_mb_release_group_pa()
+Date:   Mon, 15 May 2023 18:28:13 +0200
+Message-Id: <20230515161728.612909807@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <error27@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit d50b3c73f1ac20dabc53dc6e9d64ce9c79a331eb ]
+commit 463808f237cf73e98a1a45ff7460c2406a150a0b upstream.
 
-The ucmd->log_sq_bb_count variable is controlled by the user so this
-shift can wrap.  Fix it by using check_shl_overflow() in the same way
-that it was done in commit 515f60004ed9 ("RDMA/hns: Prevent undefined
-behavior in hns_roce_set_user_sq_size()").
+If a malicious fuzzer overwrites the ext4 superblock while it is
+mounted such that the s_first_data_block is set to a very large
+number, the calculation of the block group can underflow, and trigger
+a BUG_ON check.  Change this to be an ext4_warning so that we don't
+crash the kernel.
 
-Fixes: 839041329fd3 ("IB/mlx4: Sanity check userspace send queue sizes")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/a8dfbd1d-c019-4556-930b-bab1ded73b10@kili.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230430154311.579720-3-tytso@mit.edu
+Reported-by: syzbot+e2efa3efc15a1c9e95c3@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=69b28112e098b070f639efb356393af3ffec4220
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx4/qp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index c6a815a705fef..255194029e2d8 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -412,9 +412,13 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
- 			    struct mlx4_ib_qp *qp,
- 			    struct mlx4_ib_create_qp *ucmd)
- {
-+	u32 cnt;
-+
- 	/* Sanity check SQ size before proceeding */
--	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
--	    ucmd->log_sq_stride >
-+	if (check_shl_overflow(1, ucmd->log_sq_bb_count, &cnt) ||
-+	    cnt > dev->dev->caps.max_wqes)
-+		return -EINVAL;
-+	if (ucmd->log_sq_stride >
- 		ilog2(roundup_pow_of_two(dev->dev->caps.max_sq_desc_sz)) ||
- 	    ucmd->log_sq_stride < MLX4_IB_MIN_SQ_STRIDE)
- 		return -EINVAL;
--- 
-2.39.2
-
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4820,7 +4820,11 @@ ext4_mb_release_group_pa(struct ext4_bud
+ 	trace_ext4_mb_release_group_pa(sb, pa);
+ 	BUG_ON(pa->pa_deleted == 0);
+ 	ext4_get_group_no_and_offset(sb, pa->pa_pstart, &group, &bit);
+-	BUG_ON(group != e4b->bd_group && pa->pa_len != 0);
++	if (unlikely(group != e4b->bd_group && pa->pa_len != 0)) {
++		ext4_warning(sb, "bad group: expected %u, group %u, pa_start %llu",
++			     e4b->bd_group, group, pa->pa_pstart);
++		return 0;
++	}
+ 	mb_free_blocks(pa->pa_inode, e4b, bit, pa->pa_len);
+ 	atomic_add(pa->pa_len, &EXT4_SB(sb)->s_mb_discarded);
+ 	trace_ext4_mballoc_discard(sb, NULL, group, bit, pa->pa_len);
 
 
