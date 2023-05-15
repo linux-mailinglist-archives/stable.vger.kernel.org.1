@@ -2,45 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC627037F5
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EEA6703884
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244169AbjEOR0I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:26:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        id S244378AbjEORc4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244172AbjEORZp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:45 -0400
+        with ESMTP id S244331AbjEORcj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC46E723
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52404D87C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:30:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00EC662C99
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDD0C433A1;
-        Mon, 15 May 2023 17:24:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2CBF62D23
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:30:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A3BC4339B;
+        Mon, 15 May 2023 17:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171470;
-        bh=XURPeCvrUWTcOcQM7aBFDLH+SOba1tSvMHlhrbFXblE=;
+        s=korg; t=1684171800;
+        bh=pj0kDBaCy7ECh9q6njUY6bdeNB/dOZlVpGDCznG8/bo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X/itHRE/O3eVeE6iBu/eSSwtyHTBjdPlIzWkLXw8ZMxjHAzfx44EakDgvegFSMigE
-         yBRsQcn4qpyM5ZV8BcRAH8kED6RwWYphcydghjojSZY9NcpxjPJ2cyUug0y8JQ0M49
-         4Umzs5RtUSB6ICY2VrJe4RL2yGFGjQ4Kib6jrsW0=
+        b=vNPprpAX/OFjZi8M6RBi87k55uo8rRjV7dp7YllGwWk7tulEAUguwXDNa25Oj+TYU
+         +mFHZQPzgn9KuokE4C62O7dVBPk1/HAH6kArGRygK6OgL2Msnq//xX/k48qz0G7KxR
+         Ns7fGz+k4peNXc6zM84shqfW3MuGuROf3MRII0xE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Lijo Lazar <lijo.lazar@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.2 202/242] drm/amd/pm: avoid potential UBSAN issue on legacy asics
-Date:   Mon, 15 May 2023 18:28:48 +0200
-Message-Id: <20230515161728.001211007@linuxfoundation.org>
+        patches@lists.linux.dev, elfring@users.sourceforge.net,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        German Gomez <german.gomez@arm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 052/134] perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
+Date:   Mon, 15 May 2023 18:28:49 +0200
+Message-Id: <20230515161704.881517720@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +63,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Markus Elfring <Markus.Elfring@web.de>
 
-commit 5247f05eadf1081a74b2233f291cee2efed25e3a upstream.
+[ Upstream commit c160118a90d4acf335993d8d59b02ae2147a524e ]
 
-Prevent further dpm casting on legacy asics without od_enabled in
-amdgpu_dpm_is_overdrive_supported. This can avoid UBSAN complain
-in init sequence.
+Addresses of two data structure members were determined before
+corresponding null pointer checks in the implementation of the function
+“sort__sym_from_cmp”.
 
-v2: add a macro to check legacy dpm instead of checking asic family/type
-v3: refine macro name for naming consistency
+Thus avoid the risk for undefined behaviour by removing extra
+initialisations for the local variables “from_l” and “from_r” (also
+because they were already reassigned with the same value behind this
+pointer check).
 
-Suggested-by: Evan Quan <evan.quan@amd.com>
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue was detected by using the Coccinelle software.
+
+Fixes: 1b9e97a2a95e4941 ("perf tools: Fix report -F symbol_from for data without branch info")
+Signed-off-by: <elfring@users.sourceforge.net>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/cocci/54a21fea-64e3-de67-82ef-d61b90ffad05@web.de/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/perf/util/sort.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-@@ -36,6 +36,8 @@
- #define amdgpu_dpm_enable_bapm(adev, e) \
- 		((adev)->powerplay.pp_funcs->enable_bapm((adev)->powerplay.pp_handle, (e)))
- 
-+#define amdgpu_dpm_is_legacy_dpm(adev) ((adev)->powerplay.pp_handle == (adev))
-+
- int amdgpu_dpm_get_sclk(struct amdgpu_device *adev, bool low)
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index a111065b484ef..a4f2ffe2bdb6d 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -876,8 +876,7 @@ static int hist_entry__dso_to_filter(struct hist_entry *he, int type,
+ static int64_t
+ sort__sym_from_cmp(struct hist_entry *left, struct hist_entry *right)
  {
- 	const struct amd_pm_funcs *pp_funcs = adev->powerplay.pp_funcs;
-@@ -1421,8 +1423,11 @@ int amdgpu_dpm_is_overdrive_supported(st
- 	} else {
- 		struct pp_hwmgr *hwmgr;
+-	struct addr_map_symbol *from_l = &left->branch_info->from;
+-	struct addr_map_symbol *from_r = &right->branch_info->from;
++	struct addr_map_symbol *from_l, *from_r;
  
--		/* SI asic does not carry od_enabled */
--		if (adev->family == AMDGPU_FAMILY_SI)
-+		/*
-+		 * dpm on some legacy asics don't carry od_enabled member
-+		 * as its pp_handle is casted directly from adev.
-+		 */
-+		if (amdgpu_dpm_is_legacy_dpm(adev))
- 			return false;
- 
- 		hwmgr = (struct pp_hwmgr *)adev->powerplay.pp_handle;
+ 	if (!left->branch_info || !right->branch_info)
+ 		return cmp_null(left->branch_info, right->branch_info);
+-- 
+2.39.2
+
 
 
