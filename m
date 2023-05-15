@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FB5703744
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B06A70365C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243959AbjEORTH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34382 "EHLO
+        id S243715AbjEORJW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:09:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244014AbjEORSc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:18:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E87E10F5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:51 -0700 (PDT)
+        with ESMTP id S243714AbjEORJA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48208DC7D;
+        Mon, 15 May 2023 10:07:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 073DC62C08
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02423C433D2;
-        Mon, 15 May 2023 17:16:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1F9462B15;
+        Mon, 15 May 2023 17:07:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C06C433EF;
+        Mon, 15 May 2023 17:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171009;
-        bh=nEI/eOx7zUkaeigj2ydAZtMduAjAzCGKwrId/1zLzM4=;
+        s=korg; t=1684170444;
+        bh=h5mK51aebmM7frvlZj9/VAIXXGKmEyWTQHFtggW+AO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b1g1lhBIPWcscqJiHdAQhn8yxpxA3fkhOTNA9rD5jJkMR199ww+n/ZJCng3tavq8M
-         YXW8/hbAK9wrjsu2MGqTFK7DfISG44xmVkwcPDkx5w0n2TuEFeYvIlaz9Ncd9qJGH/
-         Q0kARpVAU+N+t9Pg4BYiWUsu7n0cyHm3TSF0MHd0=
+        b=TUUex4b+EBVZSy5aCJ4ugxmMLgITfSGXFhnfrrNiH2GVkg946j0O4BSyETxD78HqG
+         sIav+/u1PBHfUcmAn2QutjTvKUwYPoXRrS87z4hJTr3RmalU1a88F2rQq73dhVp4HH
+         s+iHM6TdUoksFmQ++gIrAGIQ/27dL96OZF3MY0cI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 070/242] octeontx2-af: Add validation for lmac type
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        devicetree@vger.kernel.org, Rich Felker <dalias@libc.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-sh@vger.kernel.org
+Subject: [PATCH 6.1 133/239] sh: init: use OF_EARLY_FLATTREE for early init
 Date:   Mon, 15 May 2023 18:26:36 +0200
-Message-Id: <20230515161724.004460211@linuxfoundation.org>
+Message-Id: <20230515161725.683902109@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,60 +59,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit cb5edce271764524b88b1a6866b3e626686d9a33 ]
+commit 6cba655543c7959f8a6d2979b9d40a6a66b7ed4f upstream.
 
-Upon physical link change, firmware reports to the kernel about the
-change along with the details like speed, lmac_type_id, etc.
-Kernel derives lmac_type based on lmac_type_id received from firmware.
+When CONFIG_OF_EARLY_FLATTREE and CONFIG_SH_DEVICE_TREE are not set,
+SH3 build fails with a call to early_init_dt_scan(), so in
+arch/sh/kernel/setup.c and arch/sh/kernel/head_32.S, use
+CONFIG_OF_EARLY_FLATTREE instead of CONFIG_OF_FLATTREE.
 
-In a few scenarios, firmware returns an invalid lmac_type_id, which
-is resulting in below kernel panic. This patch adds the missing
-validation of the lmac_type_id field.
+Fixes this build error:
+../arch/sh/kernel/setup.c: In function 'sh_fdt_init':
+../arch/sh/kernel/setup.c:262:26: error: implicit declaration of function 'early_init_dt_scan' [-Werror=implicit-function-declaration]
+  262 |         if (!dt_virt || !early_init_dt_scan(dt_virt)) {
 
-Internal error: Oops: 96000005 [#1] PREEMPT SMP
-[   35.321595] Modules linked in:
-[   35.328982] CPU: 0 PID: 31 Comm: kworker/0:1 Not tainted
-5.4.210-g2e3169d8e1bc-dirty #17
-[   35.337014] Hardware name: Marvell CN103XX board (DT)
-[   35.344297] Workqueue: events work_for_cpu_fn
-[   35.352730] pstate: 40400089 (nZcv daIf +PAN -UAO)
-[   35.360267] pc : strncpy+0x10/0x30
-[   35.366595] lr : cgx_link_change_handler+0x90/0x180
-
-Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 03767daa1387 ("sh: fix build regression with CONFIG_OF && !CONFIG_OF_FLATTREE")
+Fixes: eb6b6930a70f ("sh: fix memory corruption of unflattened device tree")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: devicetree@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
+Cc: stable@vger.kernel.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-4-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/sh/kernel/head_32.S |    6 +++---
+ arch/sh/kernel/setup.c   |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 724df6398bbe2..bd77152bb8d7c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1231,6 +1231,14 @@ static inline void link_status_user_format(u64 lstat,
- 	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
- 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
- 	linfo->lmac_type_id = FIELD_GET(RESP_LINKSTAT_LMAC_TYPE, lstat);
-+
-+	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
-+		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
-+			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
-+		strncpy(linfo->lmac_type, "Unknown", LMACTYPE_STR_LEN - 1);
-+		return;
-+	}
-+
- 	lmac_string = cgx_lmactype_string[linfo->lmac_type_id];
- 	strncpy(linfo->lmac_type, lmac_string, LMACTYPE_STR_LEN - 1);
+--- a/arch/sh/kernel/head_32.S
++++ b/arch/sh/kernel/head_32.S
+@@ -64,7 +64,7 @@ ENTRY(_stext)
+ 	ldc	r0, r6_bank
+ #endif
+ 
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	mov	r4, r12		! Store device tree blob pointer in r12
+ #endif
+ 	
+@@ -315,7 +315,7 @@ ENTRY(_stext)
+ 10:		
+ #endif
+ 
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ 	mov.l	8f, r0		! Make flat device tree available early.
+ 	jsr	@r0
+ 	 mov	r12, r4
+@@ -346,7 +346,7 @@ ENTRY(stack_start)
+ 5:	.long	start_kernel
+ 6:	.long	cpu_init
+ 7:	.long	init_thread_union
+-#if defined(CONFIG_OF_FLATTREE)
++#if defined(CONFIG_OF_EARLY_FLATTREE)
+ 8:	.long	sh_fdt_init
+ #endif
+ 
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -244,7 +244,7 @@ void __init __weak plat_early_device_set
+ {
  }
--- 
-2.39.2
-
+ 
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ void __ref sh_fdt_init(phys_addr_t dt_phys)
+ {
+ 	static int done = 0;
+@@ -326,7 +326,7 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Let earlyprintk output early console messages */
+ 	sh_early_platform_driver_probe("earlyprintk", 1, 1);
+ 
+-#ifdef CONFIG_OF_FLATTREE
++#ifdef CONFIG_OF_EARLY_FLATTREE
+ #ifdef CONFIG_USE_BUILTIN_DTB
+ 	unflatten_and_copy_device_tree();
+ #else
 
 
