@@ -2,149 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 078D77038FF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DDEB70393A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244480AbjEORhh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:37:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
+        id S244517AbjEORkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244485AbjEORhR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B7A14E68;
-        Mon, 15 May 2023 10:34:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB9A862DBD;
-        Mon, 15 May 2023 17:34:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F4C4339B;
-        Mon, 15 May 2023 17:34:33 +0000 (UTC)
-Date:   Mon, 15 May 2023 18:34:30 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Peter Collingbourne <pcc@google.com>,
-        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>, will@kernel.org,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: Move arch_do_swap_page() call to before
- swap_free()
-Message-ID: <ZGJtJobLrBg3PtHm@arm.com>
-References: <20230512235755.1589034-1-pcc@google.com>
- <20230512235755.1589034-2-pcc@google.com>
- <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
+        with ESMTP id S244603AbjEORkA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:00 -0400
+Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020022.outbound.protection.outlook.com [52.101.56.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D1217949;
+        Mon, 15 May 2023 10:37:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AbYQSxd9kQu97xiP88PEJVSaH8jl9ftE1J7P5SYAoy4L7lbB2XKiKZNcl65r/93gpZE6d0iJNLHBnt34I2azNDFto31Hm4KQjNMf7mpL41lUDDdDU+EgedOifq1XXSYNbRZDgddPlfzwx/av+DLmKbMAOB8e+b8hAwFh+WgRAByYm+TmKQaMU1sqSBPJdpevZlV2aW3MAfoiPeXPeRGerVGytyrIJDpyEU9cUPM94UGJEPZNfxD1cb0K5gDYCp70XsozlkbnQcgxmXvdXUNKcYsu7gwbXL4qByshfKrPmZRR3WMXCsaQxNN0Tz0/TSounH0m/tM4V5OBAv3KHy48jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aWanXxub6PVOdWcTgaj2bViU9c6HBFRKr2kMxERQeeA=;
+ b=gj3p29MboES0pNUGRKcDJj5To2DAmLTr/obynOEIoxexrK1l4/FzmQNH9qKSVYcuaHHkYL9GZpdN9EDzjKMwjOG97oK6T2n8BVEEtDUF78TUFjVBK6DFVnZIQSdfm9Ha8UUaQkN2tr72ei8CNiZG11aOtBrnC8im33DjvlnqjpFx9SQmCSCeDov60OSuQThOqlDmE3oeRZK/D2Z+AhWFxIr97yI9mYS7erBw21zpF4Kx+hvqJGlF4OD0/HCh4EuTDoFCBnpwJl409JQNoFCHKRGdnumjpj9IPMwSe3uQyjDTqia3OlzR3tgYw7cpKEtrTD0qIDSa0qPypKqgo0TM0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aWanXxub6PVOdWcTgaj2bViU9c6HBFRKr2kMxERQeeA=;
+ b=FIYwOUSXgAvxXda6tfNjRXpsYKTUFCkYi8ZyNMX4oIIzR/a7wKW7LkjO1sFD14XsUi96zDp+3k508igq5Jca0Yhhb+NEiU59EjVXnYEA0RqteYCfSoa1SYixkAHH+G2rCU9zaPGLguuq5xrr6ZMWBizFhIEyqeX1KHxuVzZiuyo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from DM6PR21MB1370.namprd21.prod.outlook.com (2603:10b6:5:16b::28)
+ by DS7PR21MB3597.namprd21.prod.outlook.com (2603:10b6:8:92::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.3; Mon, 15 May
+ 2023 17:36:58 +0000
+Received: from DM6PR21MB1370.namprd21.prod.outlook.com
+ ([fe80::b7e9:4da1:3c23:35f]) by DM6PR21MB1370.namprd21.prod.outlook.com
+ ([fe80::b7e9:4da1:3c23:35f%6]) with mapi id 15.20.6433.001; Mon, 15 May 2023
+ 17:36:58 +0000
+From:   Michael Kelley <mikelley@microsoft.com>
+To:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        vkuznets@redhat.com, decui@microsoft.com
+Cc:     mikelley@microsoft.com, stable@vger.kernel.org
+Subject: [PATCH 1/1] Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+Date:   Mon, 15 May 2023 10:36:31 -0700
+Message-Id: <1684172191-17100-1-git-send-email-mikelley@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MW4PR04CA0127.namprd04.prod.outlook.com
+ (2603:10b6:303:84::12) To DM6PR21MB1370.namprd21.prod.outlook.com
+ (2603:10b6:5:16b::28)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7471013e-4afb-e445-5985-2441155fc82c@redhat.com>
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR21MB1370:EE_|DS7PR21MB3597:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70865899-3c26-4255-2a98-08db556afb94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7mF9D/nsv7R8FG+OAqpwQdTrm8Jnv7f7LwUy2cPelPSq+O0d4phWveh8I/eHfP0UkdfSoRgFfpv5MXRc0cIxMk0uxedeIwM6eAc9jT4fBt7v5klkTxKZpRYiYuZYEMmYG8tdWO2gtsgj3xiT4hrFmw9DVkZ2k8YU8WOEt7lM/XLE8n92s5sC9edI+YfB4bOCoNs2c2tZuOwQzwsN6MM4wUjiP1SwSfOVdpxo4ZAzZh5SVt3vM9dQcyxgxA+y5RT3X6OwhfqKw9M85ik0VqJLtQWz6i2zrK7E1FwAXPoheIjYp293qwlSgwgXpZsZ0lh/PCDHl0OgleG5lrfopzQNCmvc3ZXBSbwbw3gfHRcczykgmF7J87JnonxGKwJrjGmgLqSMRoTMrCPN7jsUxECMzjY22cR9BIe6qN6BAy+kl2tTzgN0i4MjvL0NiaFqIso1h9fbWRKkChMgOOmd2/b/D3UueAUyOypjsiMi0zzJ8ePWVP1L35yDEYj6CAK19nxv2OfpdGhYb6o+h0o0YbCGXVnOE0o0ec7FERrcCIZjme7Xtihtvk6gqTl7Vd2D9xjUJKglpHWt18xv7PTUShY5ouP94c7MMahI+tpa3nQvDfgu9CfXTsAeEDTl9Mcge4eVkBYg3M0vW8RaFngnjicHozb6NWBmMaApU523KDaCFA0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1370.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(136003)(376002)(346002)(396003)(451199021)(786003)(2616005)(2906002)(6666004)(83380400001)(6486002)(66556008)(66946007)(66476007)(478600001)(10290500003)(52116002)(8936002)(8676002)(6512007)(26005)(186003)(6506007)(5660300002)(316002)(41300700001)(4326008)(6636002)(82960400001)(82950400001)(38100700002)(38350700002)(86362001)(36756003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gakDbq4vEPLi14pO5nZeauzbIrzSOKEEmqvsbq4HPE4EE3aZnQVT5RXpn31s?=
+ =?us-ascii?Q?XRIyxh3fPOpuD0ZeFksobDYO/APfiFzXNtf6WX3At1rN8ypVjm9q9qOvSYi7?=
+ =?us-ascii?Q?aG6ia0Gl0a+afHTp6djyvT1PxECCIAVLPk4T/24Ozbz5TCinqi14RA5ecX+r?=
+ =?us-ascii?Q?QmhXnNy/MrVeZ/nm1AaSKzoO5Y+60zELhS5Mq4OoZ4P6YW9qNl2A/XehJLik?=
+ =?us-ascii?Q?E2c3mbZfuPyaBM3xLoTG1mZXl6Tp8n4F6CuH9KZ0ZeJ2sU6/m87c6rCIBfZh?=
+ =?us-ascii?Q?LMHO5TKoq6EaXK+bxt2oDA8bHoHoMpUm7KZBT4IKRqr/ksc5JOZ2p9Lfv30+?=
+ =?us-ascii?Q?L8kgFyJyLtuF/anQEiQ4MXaJDAZq2GLEl/I7bmfYfzkWznnEHEPJnoFng/NX?=
+ =?us-ascii?Q?NZDiId+7viYSjvpPxkiyk1kRB5W4Ok2b5F3/HlsVtFIdCbonHSjeoo2fUiHL?=
+ =?us-ascii?Q?ihLgdSjSyR3UtW2gPGYN8UOf7HlHQ8Ywfre5t2H8U0sQQm/paaH2I5ODToVG?=
+ =?us-ascii?Q?jALy3i/aMoLvUzvFJPDQpTnhYNnP0FtBGMC3xKOxulNRz8PZN/0y+5F0mQqH?=
+ =?us-ascii?Q?k5Y+GcM8D6E+dA6iZX5Pq0N5ukaaP7TtqHAaAQ+kaNeqOl4xJa5I43BvU8ne?=
+ =?us-ascii?Q?/zoNLYKMBWCIENpELtu+wYFmWa0UU+s5dfg+NQ9hlo4eVk08/kp+4FdgRFE2?=
+ =?us-ascii?Q?OAdAVSmkFjLVi2Pla1pqnXWUVnbRCrMKMlSlhnScR6Msq50vkyFXTLQOllpa?=
+ =?us-ascii?Q?jSb1ROyKxEL5qK5qI6l++6Uwm9lu631yDYWwLZ5VQqIBY0tzxOF3SeLDgecQ?=
+ =?us-ascii?Q?0m8dxFBkAwuKY03fOvwR6HIBU5+7RpNGuch+Rz8RVJaeAx3ldCdaAIw3Gi21?=
+ =?us-ascii?Q?gdkR2ElWGqlaj0ND8hSPEvmM6GGeI7Q3y8h+DPvnVLMlbm7EPlA7HRVe/2xc?=
+ =?us-ascii?Q?9hV1AsKzTBHQLx0NIt3stkBadlzFeey/82nS55j+cnQw5pwbJVd8orSaPm6W?=
+ =?us-ascii?Q?vfWqO7nJy2EI9ep7W9Tc1S2joWn8RKyKXGR9+cDXFZSG2+nhRXJ/BIJ6OQJW?=
+ =?us-ascii?Q?aF+8sMTJone5y7QDbB8W5nJvIp/vlTC4O7DUdQEART06ijDi8ixU8VwYOZvP?=
+ =?us-ascii?Q?1Fmvdv0+Wf4CBsqvzvGx/kUXNp05AeZpJpN2p+iovexYGBb+55iQcMHF/srY?=
+ =?us-ascii?Q?z9M2uAA7SHtqckZx/yvf0jsxGh+BgWLeuY56n0HrHb76GG1Zsni1zxWzZzQI?=
+ =?us-ascii?Q?2cu0YHPg5AG5m4/W5aPHu5xyYtiggoQiJ4HYt9wHaXs3xT7aBpBTYxXEtz9Q?=
+ =?us-ascii?Q?eDAUlxHpSP/dK+vSxalFOH9DyRBT7ve8qcYuwOK7AWl4pXpU88BZydT5L1YL?=
+ =?us-ascii?Q?GOMRZHvvsdgz+sRcrSjdm6WIYQ+yvPWEZ12mTV4Pr6zc9adQJtaYf2JZYRh4?=
+ =?us-ascii?Q?uDHx3gpWqktfwTXx6r8sEIwXvSiNo+IfC5X3ANrCDhVihXY/aUkmNoLOpibo?=
+ =?us-ascii?Q?Wq9xOxHT/m2u9n3Af0XJNkluoZRv3aklDJlnTkpSrjpfGUcw7FxHbune3hbd?=
+ =?us-ascii?Q?ca6+pFt4S/AJc29UAzxnUxbmoyYc4+rhk5g6gfgp2SAVqQFVEtQvAPjJqh1H?=
+ =?us-ascii?Q?wQ=3D=3D?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70865899-3c26-4255-2a98-08db556afb94
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1370.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 17:36:57.9735
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uU9yU4N+0QPe7W64eI345tt8TXP2knOgwMir+nwmXK+f1pMnoRsn3qXgBBYJPiIfXkfugL+zLhm+5gPid9FGqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR21MB3597
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, May 13, 2023 at 05:29:53AM +0200, David Hildenbrand wrote:
-> On 13.05.23 01:57, Peter Collingbourne wrote:
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 01a23ad48a04..83268d287ff1 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -3914,19 +3914,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >   		}
-> >   	}
-> > -	/*
-> > -	 * Remove the swap entry and conditionally try to free up the swapcache.
-> > -	 * We're already holding a reference on the page but haven't mapped it
-> > -	 * yet.
-> > -	 */
-> > -	swap_free(entry);
-> > -	if (should_try_to_free_swap(folio, vma, vmf->flags))
-> > -		folio_free_swap(folio);
-> > -
-> > -	inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> > -	dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> >   	pte = mk_pte(page, vma->vm_page_prot);
-> > -
-> >   	/*
-> >   	 * Same logic as in do_wp_page(); however, optimize for pages that are
-> >   	 * certainly not shared either because we just allocated them without
-> > @@ -3946,8 +3934,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >   		pte = pte_mksoft_dirty(pte);
-> >   	if (pte_swp_uffd_wp(vmf->orig_pte))
-> >   		pte = pte_mkuffd_wp(pte);
-> > +	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
-> >   	vmf->orig_pte = pte;
-> > +	/*
-> > +	 * Remove the swap entry and conditionally try to free up the swapcache.
-> > +	 * We're already holding a reference on the page but haven't mapped it
-> > +	 * yet.
-> > +	 */
-> > +	swap_free(entry);
-> > +	if (should_try_to_free_swap(folio, vma, vmf->flags))
-> > +		folio_free_swap(folio);
-> > +
-> > +	inc_mm_counter(vma->vm_mm, MM_ANONPAGES);
-> > +	dec_mm_counter(vma->vm_mm, MM_SWAPENTS);
-> > +
-> >   	/* ksm created a completely new copy */
-> >   	if (unlikely(folio != swapcache && swapcache)) {
-> >   		page_add_new_anon_rmap(page, vma, vmf->address);
-> > @@ -3959,7 +3960,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >   	VM_BUG_ON(!folio_test_anon(folio) ||
-> >   			(pte_write(pte) && !PageAnonExclusive(page)));
-> >   	set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
-> > -	arch_do_swap_page(vma->vm_mm, vma, vmf->address, pte, vmf->orig_pte);
-> >   	folio_unlock(folio);
-> >   	if (folio != swapcache && swapcache) {
-> 
-> 
-> You are moving the folio_free_swap() call after the folio_ref_count(folio)
-> == 1 check, which means that such (previously) swapped pages that are
-> exclusive cannot be detected as exclusive.
-> 
-> There must be a better way to handle MTE here.
-> 
-> Where are the tags stored, how is the location identified, and when are they
-> effectively restored right now?
+vmbus_wait_for_unload() may be called in the panic path after other
+CPUs are stopped. vmbus_wait_for_unload() currently loops through
+online CPUs looking for the UNLOAD response message. But the values of
+CONFIG_KEXEC_CORE and crash_kexec_post_notifiers affect the path used
+to stop the other CPUs, and in one of the paths the stopped CPUs
+are removed from cpu_online_mask. This removal happens in both
+x86/x64 and arm64 architectures. In such a case, vmbus_wait_for_unload()
+only checks the panic'ing CPU, and misses the UNLOAD response message
+except when the panic'ing CPU is CPU 0. vmbus_wait_for_unload()
+eventually times out, but only after waiting 100 seconds.
 
-I haven't gone through Peter's patches yet but a pretty good description
-of the problem is here:
-https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/.
-I couldn't reproduce it with my swap setup but both Qun-wei and Peter
-triggered it.
+Fix this by looping through *present* CPUs in vmbus_wait_for_unload().
+The cpu_present_mask is not modified by stopping the other CPUs in the
+panic path, nor should it be.  Furthermore, the synic_message_page
+being checked in vmbus_wait_for_unload() is allocated in
+hv_synic_alloc() for all present CPUs. So looping through the
+present CPUs is more consistent.
 
-When a tagged page is swapped out, the arm64 code stores the metadata
-(tags) in a local xarray indexed by the swap pte. When restoring from
-swap, the arm64 set_pte_at() checks this xarray using the old swap pte
-and spills the tags onto the new page. Apparently something changed in
-the kernel recently that causes swap_range_free() to be called before
-set_pte_at(). The arm64 arch_swap_invalidate_page() frees the metadata
-from the xarray and the subsequent set_pte_at() won't find it.
+For additional safety, also add a check for the message_page being
+NULL before looking for the UNLOAD response message.
 
-If we have the page, the metadata can be restored before set_pte_at()
-and I guess that's what Peter is trying to do (again, I haven't looked
-at the details yet; leaving it for tomorrow).
+Reported-by: John Starks <jostarks@microsoft.com>
+Fixes: cd95aad55793 ("Drivers: hv: vmbus: handle various crash scenarios")
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+---
+ drivers/hv/channel_mgmt.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Is there any other way of handling this? E.g. not release the metadata
-in arch_swap_invalidate_page() but later in set_pte_at() once it was
-restored. But then we may leak this metadata if there's no set_pte_at()
-(the process mapping the swap entry died).
-
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 007f26d..df2ba20 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -829,11 +829,14 @@ static void vmbus_wait_for_unload(void)
+ 		if (completion_done(&vmbus_connection.unload_event))
+ 			goto completed;
+ 
+-		for_each_online_cpu(cpu) {
++		for_each_present_cpu(cpu) {
+ 			struct hv_per_cpu_context *hv_cpu
+ 				= per_cpu_ptr(hv_context.cpu_context, cpu);
+ 
+ 			page_addr = hv_cpu->synic_message_page;
++			if (!page_addr)
++				continue;
++
+ 			msg = (struct hv_message *)page_addr
+ 				+ VMBUS_MESSAGE_SINT;
+ 
+@@ -867,11 +870,14 @@ static void vmbus_wait_for_unload(void)
+ 	 * maybe-pending messages on all CPUs to be able to receive new
+ 	 * messages after we reconnect.
+ 	 */
+-	for_each_online_cpu(cpu) {
++	for_each_present_cpu(cpu) {
+ 		struct hv_per_cpu_context *hv_cpu
+ 			= per_cpu_ptr(hv_context.cpu_context, cpu);
+ 
+ 		page_addr = hv_cpu->synic_message_page;
++		if (!page_addr)
++			continue;
++
+ 		msg = (struct hv_message *)page_addr + VMBUS_MESSAGE_SINT;
+ 		msg->header.message_type = HVMSG_NONE;
+ 	}
 -- 
-Catalin
+1.8.3.1
+
