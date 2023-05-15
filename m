@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7D0703846
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E8877037E6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:25:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244157AbjEORbH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47246 "EHLO
+        id S243947AbjEORZC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:25:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244146AbjEORa1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:30:27 -0400
+        with ESMTP id S243997AbjEORYk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD3910E73
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:27:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAB8A11D90
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:23:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3173262CDA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C55C433D2;
-        Mon, 15 May 2023 17:26:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53F4162C92
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:23:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BFBC433EF;
+        Mon, 15 May 2023 17:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171610;
-        bh=0vDZkXo7iqL5MhtjA2oBHl5lIuBEy8GvvYG17NnNJ4c=;
+        s=korg; t=1684171419;
+        bh=UN20jy19sAMcDfa9TOxDAd6YRxQA7hWvRgp/9mMGqjc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bnqFuGhU8yD+ydkQvpcb56FTZz6Y9lFGu14mAD9hcBz4A6KrbiAWfzLPouQ0wJoEt
-         LaMR6m53SVqWcJp3YQKxmSusmNiTvkGNFlT+jaCHeRUmImqJ1W0OwIKsStxLQ/bQK+
-         JMJZrPMqLwMZVyiRVQHrSv3lNW5O/dDNFcckbGMc=
+        b=JOFsjX3gVxGjo5tgD6QjOngJ8BY6sTEfiepIAVibebWxfeuEb1VW4cUwszd8w+IEF
+         OdaYodArOFb3jpa6GENyUc8MNLeuUcnvjzF+P3Q9uUFpt9yIBHkQ4rm01obmKUThJ/
+         /rDp7ut24iCT30PB6TovaxwgxbZv7FcjR1zFP9vw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Palash Oswal <oswalpalash@gmail.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Cong Wang <cong.wang@bytedance.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/134] sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.2 173/242] drm/msm: fix drm device leak on bind errors
 Date:   Mon, 15 May 2023 18:28:19 +0200
-Message-Id: <20230515161703.742223883@linuxfoundation.org>
+Message-Id: <20230515161727.067878746@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,69 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c88f8d5cd95fd039cff95d682b8e71100c001df0 ]
+commit 214b09db61978497df24efcb3959616814bca46b upstream.
 
-When a tunnel device is bound with the underlying device, its
-dev->needed_headroom needs to be updated properly. IPv4 tunnels
-already do the same in ip_tunnel_bind_dev(). Otherwise we may
-not have enough header room for skb, especially after commit
-b17f709a2401 ("gue: TX support for using remote checksum offload option").
+Make sure to free the DRM device also in case of early errors during
+bind().
 
-Fixes: 32b8a8e59c9c ("sit: add IPv4 over IPv4 support")
-Reported-by: Palash Oswal <oswalpalash@gmail.com>
-Link: https://lore.kernel.org/netdev/CAGyP=7fDcSPKu6nttbGwt7RXzE3uyYxLjCSE97J64pRxJP8jPA@mail.gmail.com/
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2027e5b3413d ("drm/msm: Initialize MDSS irq domain at probe time")
+Cc: stable@vger.kernel.org      # 5.17
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/525097/
+Link: https://lore.kernel.org/r/20230306100722.28485-6-johan+linaro@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/sit.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index d4cdc2b1b4689..3bc02ab9ceaca 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -1101,12 +1101,13 @@ static netdev_tx_t sit_tunnel_xmit(struct sk_buff *skb,
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -443,12 +443,12 @@ static int msm_drm_init(struct device *d
  
- static void ipip6_tunnel_bind_dev(struct net_device *dev)
- {
-+	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
- 	struct net_device *tdev = NULL;
--	struct ip_tunnel *tunnel;
-+	int hlen = LL_MAX_HEADER;
- 	const struct iphdr *iph;
- 	struct flowi4 fl4;
+ 	ret = msm_init_vram(ddev);
+ 	if (ret)
+-		return ret;
++		goto err_put_dev;
  
--	tunnel = netdev_priv(dev);
- 	iph = &tunnel->parms.iph;
+ 	/* Bind all our sub-components: */
+ 	ret = component_bind_all(dev, ddev);
+ 	if (ret)
+-		return ret;
++		goto err_put_dev;
  
- 	if (iph->daddr) {
-@@ -1129,14 +1130,15 @@ static void ipip6_tunnel_bind_dev(struct net_device *dev)
- 		tdev = __dev_get_by_index(tunnel->net, tunnel->parms.link);
+ 	dma_set_max_seg_size(dev, UINT_MAX);
  
- 	if (tdev && !netif_is_l3_master(tdev)) {
--		int t_hlen = tunnel->hlen + sizeof(struct iphdr);
- 		int mtu;
+@@ -543,6 +543,12 @@ static int msm_drm_init(struct device *d
  
- 		mtu = tdev->mtu - t_hlen;
- 		if (mtu < IPV6_MIN_MTU)
- 			mtu = IPV6_MIN_MTU;
- 		WRITE_ONCE(dev->mtu, mtu);
-+		hlen = tdev->hard_header_len + tdev->needed_headroom;
- 	}
-+	dev->needed_headroom = t_hlen + hlen;
+ err_msm_uninit:
+ 	msm_drm_uninit(dev);
++
++	return ret;
++
++err_put_dev:
++	drm_dev_put(ddev);
++
+ 	return ret;
  }
  
- static void ipip6_tunnel_update(struct ip_tunnel *t, struct ip_tunnel_parm *p,
--- 
-2.39.2
-
 
 
