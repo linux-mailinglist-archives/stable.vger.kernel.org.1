@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7A3703ADC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B02F70376D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243824AbjEOR4R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54074 "EHLO
+        id S244061AbjEORVI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244957AbjEORzi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:38 -0400
+        with ESMTP id S244060AbjEORUy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E859915EC0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C91E712E84
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 083EC62FB1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0FBC433D2;
-        Mon, 15 May 2023 17:53:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E75C46210B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20DFC433D2;
+        Mon, 15 May 2023 17:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173215;
-        bh=p9ehA8kDIhNZ/CZqFEVodDpkS0KwISdHL5eMKx61uGc=;
+        s=korg; t=1684171109;
+        bh=Jd3aJODT4d4LfBTMdpjN8/ygqz9655eDj8d0HUGLa6A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zLV+MhhYC2ecM+cKjG830Pvmu6XYxlzmEkBDIQp7M26W/+d5mS3gffrqeZvsdUGLo
-         3T2JS9n5DAjV+LcIhxdhaX4l5Hl+z39LcrbZXK0MKTRFX3NG6g/1QBDkhknUzcjZRZ
-         o9sjLjqdqwEJ0Jui3K+dCnrOsLjyLNPblO3gMXYg=
+        b=ecV13AUZClXN9gFLJVZnZR3ez3LLqlUL8qbJmIO+g9te9VB50jIhdKP8d1nkfq/8b
+         EcKP62tNd/w7nXG+MUKyIQGIt9IRksUX6LCmTbWUS533hSGEa1GLfspO7pfK1Hsdz8
+         bK65pvfTn/Uh3KxzCGBNMZ1Ksa1jgMZousNVR0Pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.4 023/282] reiserfs: Add security prefix to xattr name in reiserfs_security_write()
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 075/242] octeontx2-pf: Disable packet I/O for graceful exit
 Date:   Mon, 15 May 2023 18:26:41 +0200
-Message-Id: <20230515161722.966620840@linuxfoundation.org>
+Message-Id: <20230515161724.151934784@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,54 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit d82dcd9e21b77d338dc4875f3d4111f0db314a7c upstream.
+[ Upstream commit c926252205c424c4842dbdbe02f8e3296f623204 ]
 
-Reiserfs sets a security xattr at inode creation time in two stages: first,
-it calls reiserfs_security_init() to obtain the xattr from active LSMs;
-then, it calls reiserfs_security_write() to actually write that xattr.
+At the stage of enabling packet I/O in otx2_open, If mailbox
+timeout occurs then interface ends up in down state where as
+hardware packet I/O is enabled. Hence disable packet I/O also
+before bailing out.
 
-Unfortunately, it seems there is a wrong expectation that LSMs provide the
-full xattr name in the form 'security.<suffix>'. However, LSMs always
-provided just the suffix, causing reiserfs to not write the xattr at all
-(if the suffix is shorter than the prefix), or to write an xattr with the
-wrong name.
-
-Add a temporary buffer in reiserfs_security_write(), and write to it the
-full xattr name, before passing it to reiserfs_xattr_set_handle().
-
-Also replace the name length check with a check that the full xattr name is
-not larger than XATTR_NAME_MAX.
-
-Cc: stable@vger.kernel.org # v2.6.x
-Fixes: 57fe60df6241 ("reiserfs: add atomic addition of selinux attributes during inode creation")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ea0166da050 ("octeontx2-pf: Fix the device state on error")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/reiserfs/xattr_security.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/fs/reiserfs/xattr_security.c
-+++ b/fs/reiserfs/xattr_security.c
-@@ -81,11 +81,15 @@ int reiserfs_security_write(struct reise
- 			    struct inode *inode,
- 			    struct reiserfs_security_handle *sec)
- {
-+	char xattr_name[XATTR_NAME_MAX + 1] = XATTR_SECURITY_PREFIX;
- 	int error;
--	if (strlen(sec->name) < sizeof(XATTR_SECURITY_PREFIX))
-+
-+	if (XATTR_SECURITY_PREFIX_LEN + strlen(sec->name) > XATTR_NAME_MAX)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 3489553ad7010..23eee2b3d4081 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1835,13 +1835,22 @@ int otx2_open(struct net_device *netdev)
+ 		otx2_dmacflt_reinstall_flows(pf);
  
--	error = reiserfs_xattr_set_handle(th, inode, sec->name, sec->value,
-+	strlcat(xattr_name, sec->name, sizeof(xattr_name));
-+
-+	error = reiserfs_xattr_set_handle(th, inode, xattr_name, sec->value,
- 					  sec->length, XATTR_CREATE);
- 	if (error == -ENODATA || error == -EOPNOTSUPP)
- 		error = 0;
+ 	err = otx2_rxtx_enable(pf, true);
+-	if (err)
++	/* If a mbox communication error happens at this point then interface
++	 * will end up in a state such that it is in down state but hardware
++	 * mcam entries are enabled to receive the packets. Hence disable the
++	 * packet I/O.
++	 */
++	if (err == EIO)
++		goto err_disable_rxtx;
++	else if (err)
+ 		goto err_tx_stop_queues;
+ 
+ 	otx2_do_set_rx_mode(pf);
+ 
+ 	return 0;
+ 
++err_disable_rxtx:
++	otx2_rxtx_enable(pf, false);
+ err_tx_stop_queues:
+ 	netif_tx_stop_all_queues(netdev);
+ 	netif_carrier_off(netdev);
+-- 
+2.39.2
+
 
 
