@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E635703A54
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4819470387E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244857AbjEORui (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:50:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
+        id S243890AbjEORcv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244856AbjEORuT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:19 -0400
+        with ESMTP id S242000AbjEORce (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5879B15506
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E367D11B4B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D40B262F07
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C207EC433D2;
-        Mon, 15 May 2023 17:48:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 798B062D16
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA85C433EF;
+        Mon, 15 May 2023 17:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172892;
-        bh=QQBEp5i7ROCH6hrCJjJJ6bTfN34uM97nfboYK1Sn2aE=;
+        s=korg; t=1684171784;
+        bh=FtIGOI305kwy/6FOj8mlpzgLrPNp4dN8LNtHBq5MSRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NW7EquGs+ZYWjDl0i0I6dwFPlpQa55lGrqz+HkZhlscz/vhTxOM8osWvstXtEen2s
-         Eaa3cdPtsFOewlptls+wLZdoWoZmx8Ic2ATLcgj28Ht96TvUs6QEfeQm3x8PUbFSs0
-         0WrNpFlpI/FUqQzObBcDVAOkXZeez+UCA8lxVwQg=
+        b=j7rV1dnLEtGUh/wS8yISpKo5qlZN9pjqV4apmU9G81qxtCRau9AAMPVwQVdnx62Vs
+         G6SVR+eS5orIUExbMIgelcERcN5m7kt6cm6Xy4MgDMGMDrpyLK9FeZwR6WtkcpQZ4F
+         vQVoyvUAxuzUDic8YBa9ko+fF/pkyq7jhIfZrbyc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 301/381] tty: Prevent writing chars during tcsetattr TCSADRAIN/FLUSH
-Date:   Mon, 15 May 2023 18:29:12 +0200
-Message-Id: <20230515161750.408389029@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 5.15 076/134] sh: mcount.S: fix build error when PRINTK is not enabled
+Date:   Mon, 15 May 2023 18:29:13 +0200
+Message-Id: <20230515161705.708758312@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,133 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 094fb49a2d0d6827c86d2e0840873e6db0c491d2 ]
+commit c2bd1e18c6f85c0027da2e5e7753b9bfd9f8e6dc upstream.
 
-If userspace races tcsetattr() with a write, the drained condition
-might not be guaranteed by the kernel. There is a race window after
-checking Tx is empty before tty_set_termios() takes termios_rwsem for
-write. During that race window, more characters can be queued by a
-racing writer.
+Fix a build error in mcount.S when CONFIG_PRINTK is not enabled.
+Fixes this build error:
 
-Any ongoing transmission might produce garbage during HW's
-->set_termios() call. The intent of TCSADRAIN/FLUSH seems to be
-preventing such a character corruption. If those flags are set, take
-tty's write lock to stop any writer before performing the lower layer
-Tx empty check and wait for the pending characters to be sent (if any).
+sh2-linux-ld: arch/sh/lib/mcount.o: in function `stack_panic':
+(.text+0xec): undefined reference to `dump_stack'
 
-The initial wait for all-writers-done must be placed outside of tty's
-write lock to avoid deadlock which makes it impossible to use
-tty_wait_until_sent(). The write lock is retried if a racing write is
-detected.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: e460ab27b6c3 ("sh: Fix up stack overflow check with ftrace disabled.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230317113318.31327-2-ilpo.jarvinen@linux.intel.com
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-8-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty.h       |  2 ++
- drivers/tty/tty_io.c    |  4 ++--
- drivers/tty/tty_ioctl.c | 45 ++++++++++++++++++++++++++++++-----------
- 3 files changed, 37 insertions(+), 14 deletions(-)
+ arch/sh/Kconfig.debug |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/tty.h b/drivers/tty/tty.h
-index 74ed99bc5449a..1908f27a795a0 100644
---- a/drivers/tty/tty.h
-+++ b/drivers/tty/tty.h
-@@ -63,6 +63,8 @@ int __tty_check_change(struct tty_struct *tty, int sig);
- int tty_check_change(struct tty_struct *tty);
- void __stop_tty(struct tty_struct *tty);
- void __start_tty(struct tty_struct *tty);
-+void tty_write_unlock(struct tty_struct *tty);
-+int tty_write_lock(struct tty_struct *tty, int ndelay);
- void tty_vhangup_session(struct tty_struct *tty);
- void tty_open_proc_set_tty(struct file *filp, struct tty_struct *tty);
- int tty_signal_session_leader(struct tty_struct *tty, int exit_session);
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 86fbfe42ce0ac..094e82a12d298 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -942,13 +942,13 @@ static ssize_t tty_read(struct kiocb *iocb, struct iov_iter *to)
- 	return i;
- }
+--- a/arch/sh/Kconfig.debug
++++ b/arch/sh/Kconfig.debug
+@@ -15,7 +15,7 @@ config SH_STANDARD_BIOS
  
--static void tty_write_unlock(struct tty_struct *tty)
-+void tty_write_unlock(struct tty_struct *tty)
- {
- 	mutex_unlock(&tty->atomic_write_lock);
- 	wake_up_interruptible_poll(&tty->write_wait, EPOLLOUT);
- }
- 
--static int tty_write_lock(struct tty_struct *tty, int ndelay)
-+int tty_write_lock(struct tty_struct *tty, int ndelay)
- {
- 	if (!mutex_trylock(&tty->atomic_write_lock)) {
- 		if (ndelay)
-diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
-index 50e65784fbf77..68b07250dcb60 100644
---- a/drivers/tty/tty_ioctl.c
-+++ b/drivers/tty/tty_ioctl.c
-@@ -398,21 +398,42 @@ static int set_termios(struct tty_struct *tty, void __user *arg, int opt)
- 	tmp_termios.c_ispeed = tty_termios_input_baud_rate(&tmp_termios);
- 	tmp_termios.c_ospeed = tty_termios_baud_rate(&tmp_termios);
- 
--	ld = tty_ldisc_ref(tty);
-+	if (opt & (TERMIOS_FLUSH|TERMIOS_WAIT)) {
-+retry_write_wait:
-+		retval = wait_event_interruptible(tty->write_wait, !tty_chars_in_buffer(tty));
-+		if (retval < 0)
-+			return retval;
- 
--	if (ld != NULL) {
--		if ((opt & TERMIOS_FLUSH) && ld->ops->flush_buffer)
--			ld->ops->flush_buffer(tty);
--		tty_ldisc_deref(ld);
--	}
-+		if (tty_write_lock(tty, 0) < 0)
-+			goto retry_write_wait;
- 
--	if (opt & TERMIOS_WAIT) {
--		tty_wait_until_sent(tty, 0);
--		if (signal_pending(current))
--			return -ERESTARTSYS;
--	}
-+		/* Racing writer? */
-+		if (tty_chars_in_buffer(tty)) {
-+			tty_write_unlock(tty);
-+			goto retry_write_wait;
-+		}
- 
--	tty_set_termios(tty, &tmp_termios);
-+		ld = tty_ldisc_ref(tty);
-+		if (ld != NULL) {
-+			if ((opt & TERMIOS_FLUSH) && ld->ops->flush_buffer)
-+				ld->ops->flush_buffer(tty);
-+			tty_ldisc_deref(ld);
-+		}
-+
-+		if ((opt & TERMIOS_WAIT) && tty->ops->wait_until_sent) {
-+			tty->ops->wait_until_sent(tty, 0);
-+			if (signal_pending(current)) {
-+				tty_write_unlock(tty);
-+				return -ERESTARTSYS;
-+			}
-+		}
-+
-+		tty_set_termios(tty, &tmp_termios);
-+
-+		tty_write_unlock(tty);
-+	} else {
-+		tty_set_termios(tty, &tmp_termios);
-+	}
- 
- 	/* FIXME: Arguably if tmp_termios == tty->termios AND the
- 	   actual requested termios was not tmp_termios then we may
--- 
-2.39.2
-
+ config STACK_DEBUG
+ 	bool "Check for stack overflows"
+-	depends on DEBUG_KERNEL
++	depends on DEBUG_KERNEL && PRINTK
+ 	help
+ 	  This option will cause messages to be printed if free stack space
+ 	  drops below a certain limit. Saying Y here will add overhead to
 
 
