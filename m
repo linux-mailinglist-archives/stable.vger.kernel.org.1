@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8578703859
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 462E7703A39
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:49:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244311AbjEORcF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52802 "EHLO
+        id S244602AbjEORt6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:49:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244307AbjEORbc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:32 -0400
+        with ESMTP id S244708AbjEORtf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3B4F14E47
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1D81C393
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:47:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C288462D16
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBD1C433EF;
-        Mon, 15 May 2023 17:27:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A84EE62F0B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:47:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C9BC4339B;
+        Mon, 15 May 2023 17:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171644;
-        bh=hCrY4jyxNQ4CJJLdiS9xm5clus0qWcE3FDl2BQsYHoc=;
+        s=korg; t=1684172855;
+        bh=E96wm37hDQN0w5JwnNAUziKWKUfQ63CLexhqGYF9EUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sbRzK5KT0psmwb0g20WbDxMJl5BrCIqo4C+2x1czSlOePB93YgEX9bo90uyGezv25
-         4Q4BoIlj3Vw1INGBB13A73vNRkUAcqFK+QSTgPyedD9/2YTEc+GQgJ76XfxJYrNFKs
-         NwM9cPTXBQEIHYD55iqKFKP26IbhalQCEie7lz4g=
+        b=F4T+gwMOP1RDEDptyy7EbzPwI3wKzzvAfY8RW2bfJJ/wGA735//GOwWMdB2AP0vOc
+         6wmMsgLPnR6CIKt0tc9uFfTqOsQiDQV9dtv42p1yaDDm5giiYGujPdWt1PYWH3FI/E
+         WHA5artDy04MHlwCEloILSo2gM3HFtSHkzk76ygs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andy Moreton <andy.moreton@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
+        Maor Gottlieb <maorg@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/134] sfc: Fix module EEPROM reporting for QSFP modules
+Subject: [PATCH 5.10 258/381] RDMA/mlx5: Use correct device num_ports when modify DC
 Date:   Mon, 15 May 2023 18:28:29 +0200
-Message-Id: <20230515161704.151803780@linuxfoundation.org>
+Message-Id: <20230515161748.382059558@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Moreton <andy.moreton@amd.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 281900a923d4c50df109b52a22ae3cdac150159b ]
+[ Upstream commit 746aa3c8cb1a650ff2583497ac646e505831b9b9 ]
 
-The sfc driver does not report QSFP module EEPROM contents correctly
-as only the first page is fetched from hardware.
+Just like other QP types, when modify DC, the port_num should be compared
+with dev->num_ports, instead of HCA_CAP.num_ports.  Otherwise Multi-port
+vHCA on DC may not work.
 
-Commit 0e1a2a3e6e7d ("ethtool: Add SFF-8436 and SFF-8636 max EEPROM
-length definitions") added ETH_MODULE_SFF_8436_MAX_LEN for the overall
-size of the EEPROM info, so use that to report the full EEPROM contents.
-
-Fixes: 9b17010da57a ("sfc: Add ethtool -m support for QSFP modules")
-Signed-off-by: Andy Moreton <andy.moreton@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 776a3906b692 ("IB/mlx5: Add support for DC target QP")
+Link: https://lore.kernel.org/r/20230420013906.1244185-1-markzhang@nvidia.com
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/mcdi_port_common.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sfc/mcdi_port_common.c b/drivers/net/ethernet/sfc/mcdi_port_common.c
-index c4fe3c48ac46a..eccb97a5d9387 100644
---- a/drivers/net/ethernet/sfc/mcdi_port_common.c
-+++ b/drivers/net/ethernet/sfc/mcdi_port_common.c
-@@ -974,12 +974,15 @@ static u32 efx_mcdi_phy_module_type(struct efx_nic *efx)
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 0caff276f2c18..0c47e3e24b2a4 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -4164,7 +4164,7 @@ static int mlx5_ib_modify_dct(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 			return -EINVAL;
  
- 	/* A QSFP+ NIC may actually have an SFP+ module attached.
- 	 * The ID is page 0, byte 0.
-+	 * QSFP28 is of type SFF_8636, however, this is treated
-+	 * the same by ethtool, so we can also treat them the same.
- 	 */
- 	switch (efx_mcdi_phy_get_module_eeprom_byte(efx, 0, 0)) {
--	case 0x3:
-+	case 0x3: /* SFP */
- 		return MC_CMD_MEDIA_SFP_PLUS;
--	case 0xc:
--	case 0xd:
-+	case 0xc: /* QSFP */
-+	case 0xd: /* QSFP+ */
-+	case 0x11: /* QSFP28 */
- 		return MC_CMD_MEDIA_QSFP_PLUS;
- 	default:
- 		return 0;
-@@ -1077,7 +1080,7 @@ int efx_mcdi_phy_get_module_info(struct efx_nic *efx, struct ethtool_modinfo *mo
- 
- 	case MC_CMD_MEDIA_QSFP_PLUS:
- 		modinfo->type = ETH_MODULE_SFF_8436;
--		modinfo->eeprom_len = ETH_MODULE_SFF_8436_LEN;
-+		modinfo->eeprom_len = ETH_MODULE_SFF_8436_MAX_LEN;
- 		break;
- 
- 	default:
+ 		if (attr->port_num == 0 ||
+-		    attr->port_num > MLX5_CAP_GEN(dev->mdev, num_ports)) {
++		    attr->port_num > dev->num_ports) {
+ 			mlx5_ib_dbg(dev, "invalid port number %d. number of ports is %d\n",
+ 				    attr->port_num, dev->num_ports);
+ 			return -EINVAL;
 -- 
 2.39.2
 
