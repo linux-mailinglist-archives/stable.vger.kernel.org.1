@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E906470380F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7DB703A57
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244244AbjEOR1A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47960 "EHLO
+        id S244865AbjEORul (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:50:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244044AbjEOR0n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23277120B1
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:27 -0700 (PDT)
+        with ESMTP id S244785AbjEORuX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DFD7683
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0D3162CD4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61B6C433D2;
-        Mon, 15 May 2023 17:24:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B308F62F34
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EC3C433A4;
+        Mon, 15 May 2023 17:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171495;
-        bh=IXVypuYfdIA4hvBRGfHyzzSAQBboT2YQXxf6UGxAQeA=;
+        s=korg; t=1684172895;
+        bh=lHhIiqYt+rIljfPY/wQT6/g6xOoPVbENZ5tSkJfZ3oc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WK6uZgMSmOc2jncSJ+N2ftlPo/M+GyWSH7HnmCJ0Lvrecq4YS5wUR3a1SGH1Wd5Ey
-         givcTZPm2ewIUzU9yMch/HPVoIOHLcd3SPpzd1jy86Z6s2+JGIa+RvNXucpV0wBEAC
-         cwMNtmrpNgP5TShWMf0MjY3qNxXW2A4krLwnXp6Y=
+        b=gDTHtbqYLjsiIGolSF4PfEB0r2nkffI4KgwoysQl488dz5UeglLInpRQOLQWf/+J+
+         fj+KOMJZ9lpViC+T3FGYEUj20l9T1+pM8hNmadQL1z02USIQtHT+DrQxPTarTP1cvw
+         sYsrzQguf2BW+6SqxPfHOyjqrIHdTrSonRsrmBZk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+6898da502aef574c5f8a@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 227/242] ext4: avoid deadlock in fs reclaim with page writeback
+        patches@lists.linux.dev, mhiramat@kernel.org, npiggin@gmail.com,
+        Cheng-Jui Wang <cheng-jui.wang@mediatek.com>,
+        Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 302/381] ring-buffer: Ensure proper resetting of atomic variables in ring_buffer_reset_online_cpus
 Date:   Mon, 15 May 2023 18:29:13 +0200
-Message-Id: <20230515161728.727845316@linuxfoundation.org>
+Message-Id: <20230515161750.459521450@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,218 +56,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
 
-commit 00d873c17e29cc32d90ca852b82685f1673acaa5 upstream.
+[ Upstream commit 7c339fb4d8577792378136c15fde773cfb863cb8 ]
 
-Ext4 has a filesystem wide lock protecting ext4_writepages() calls to
-avoid races with switching of journalled data flag or inode format. This
-lock can however cause a deadlock like:
+In ring_buffer_reset_online_cpus, the buffer_size_kb write operation
+may permanently fail if the cpu_online_mask changes between two
+for_each_online_buffer_cpu loops. The number of increases and decreases
+on both cpu_buffer->resize_disabled and cpu_buffer->record_disabled may be
+inconsistent, causing some CPUs to have non-zero values for these atomic
+variables after the function returns.
 
-CPU0                            CPU1
+This issue can be reproduced by "echo 0 > trace" while hotplugging cpu.
+After reproducing success, we can find out buffer_size_kb will not be
+functional anymore.
 
-ext4_writepages()
-  percpu_down_read(sbi->s_writepages_rwsem);
-                                ext4_change_inode_journal_flag()
-                                  percpu_down_write(sbi->s_writepages_rwsem);
-                                    - blocks, all readers block from now on
-  ext4_do_writepages()
-    ext4_init_io_end()
-      kmem_cache_zalloc(io_end_cachep, GFP_KERNEL)
-        fs_reclaim frees dentry...
-          dentry_unlink_inode()
-            iput() - last ref =>
-              iput_final() - inode dirty =>
-                write_inode_now()...
-                  ext4_writepages() tries to acquire sbi->s_writepages_rwsem
-                    and blocks forever
+To prevent leaving 'resize_disabled' and 'record_disabled' non-zero after
+ring_buffer_reset_online_cpus returns, we ensure that each atomic variable
+has been set up before atomic_sub() to it.
 
-Make sure we cannot recurse into filesystem reclaim from writeback code
-to avoid the deadlock.
+Link: https://lore.kernel.org/linux-trace-kernel/20230426062027.17451-1-Tze-nan.Wu@mediatek.com
 
-Reported-by: syzbot+6898da502aef574c5f8a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000004c66b405fa108e27@google.com
-Fixes: c8585c6fcaf2 ("ext4: fix races between changing inode journal mode and ext4_writepages")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230504124723.20205-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Cc: <mhiramat@kernel.org>
+Cc: npiggin@gmail.com
+Fixes: b23d7a5f4a07 ("ring-buffer: speed up buffer resets by avoiding synchronize_rcu for each CPU")
+Reviewed-by: Cheng-Jui Wang <cheng-jui.wang@mediatek.com>
+Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h    |   24 ++++++++++++++++++++++++
- fs/ext4/inode.c   |   18 ++++++++++--------
- fs/ext4/migrate.c |   11 ++++++-----
- 3 files changed, 40 insertions(+), 13 deletions(-)
+ kernel/trace/ring_buffer.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1774,6 +1774,30 @@ static inline struct ext4_inode_info *EX
- 	return container_of(inode, struct ext4_inode_info, vfs_inode);
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 1fe6b29366f10..f08904914166b 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5051,6 +5051,9 @@ void ring_buffer_reset_cpu(struct trace_buffer *buffer, int cpu)
  }
+ EXPORT_SYMBOL_GPL(ring_buffer_reset_cpu);
  
-+static inline int ext4_writepages_down_read(struct super_block *sb)
-+{
-+	percpu_down_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+	return memalloc_nofs_save();
-+}
++/* Flag to ensure proper resetting of atomic variables */
++#define RESET_BIT	(1 << 30)
 +
-+static inline void ext4_writepages_up_read(struct super_block *sb, int ctx)
-+{
-+	memalloc_nofs_restore(ctx);
-+	percpu_up_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+}
-+
-+static inline int ext4_writepages_down_write(struct super_block *sb)
-+{
-+	percpu_down_write(&EXT4_SB(sb)->s_writepages_rwsem);
-+	return memalloc_nofs_save();
-+}
-+
-+static inline void ext4_writepages_up_write(struct super_block *sb, int ctx)
-+{
-+	memalloc_nofs_restore(ctx);
-+	percpu_up_write(&EXT4_SB(sb)->s_writepages_rwsem);
-+}
-+
- static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
- {
- 	return ino == EXT4_ROOT_INO ||
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -2957,13 +2957,14 @@ static int ext4_writepages(struct addres
- 		.can_map = 1,
- 	};
- 	int ret;
-+	int alloc_ctx;
+ /**
+  * ring_buffer_reset_cpu - reset a ring buffer per CPU buffer
+  * @buffer: The ring buffer to reset a per cpu buffer of
+@@ -5067,20 +5070,27 @@ void ring_buffer_reset_online_cpus(struct trace_buffer *buffer)
+ 	for_each_online_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
  
- 	if (unlikely(ext4_forced_shutdown(EXT4_SB(sb))))
- 		return -EIO;
- 
--	percpu_down_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_read(sb);
- 	ret = ext4_do_writepages(&mpd);
--	percpu_up_read(&EXT4_SB(sb)->s_writepages_rwsem);
-+	ext4_writepages_up_read(sb, alloc_ctx);
- 
- 	return ret;
- }
-@@ -2991,17 +2992,18 @@ static int ext4_dax_writepages(struct ad
- 	long nr_to_write = wbc->nr_to_write;
- 	struct inode *inode = mapping->host;
- 	struct ext4_sb_info *sbi = EXT4_SB(mapping->host->i_sb);
-+	int alloc_ctx;
- 
- 	if (unlikely(ext4_forced_shutdown(EXT4_SB(inode->i_sb))))
- 		return -EIO;
- 
--	percpu_down_read(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_read(inode->i_sb);
- 	trace_ext4_writepages(inode, wbc);
- 
- 	ret = dax_writeback_mapping_range(mapping, sbi->s_daxdev, wbc);
- 	trace_ext4_writepages_result(inode, wbc, ret,
- 				     nr_to_write - wbc->nr_to_write);
--	percpu_up_read(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_read(inode->i_sb, alloc_ctx);
- 	return ret;
- }
- 
-@@ -6124,7 +6126,7 @@ int ext4_change_inode_journal_flag(struc
- 	journal_t *journal;
- 	handle_t *handle;
- 	int err;
--	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
-+	int alloc_ctx;
- 
- 	/*
- 	 * We have to be very careful here: changing a data block's
-@@ -6162,7 +6164,7 @@ int ext4_change_inode_journal_flag(struc
- 		}
+-		atomic_inc(&cpu_buffer->resize_disabled);
++		atomic_add(RESET_BIT, &cpu_buffer->resize_disabled);
+ 		atomic_inc(&cpu_buffer->record_disabled);
  	}
  
--	percpu_down_write(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_write(inode->i_sb);
- 	jbd2_journal_lock_updates(journal);
+ 	/* Make sure all commits have finished */
+ 	synchronize_rcu();
  
- 	/*
-@@ -6179,7 +6181,7 @@ int ext4_change_inode_journal_flag(struc
- 		err = jbd2_journal_flush(journal, 0);
- 		if (err < 0) {
- 			jbd2_journal_unlock_updates(journal);
--			percpu_up_write(&sbi->s_writepages_rwsem);
-+			ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 			return err;
- 		}
- 		ext4_clear_inode_flag(inode, EXT4_INODE_JOURNAL_DATA);
-@@ -6187,7 +6189,7 @@ int ext4_change_inode_journal_flag(struc
- 	ext4_set_aops(inode);
+-	for_each_online_buffer_cpu(buffer, cpu) {
++	for_each_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
  
- 	jbd2_journal_unlock_updates(journal);
--	percpu_up_write(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
++		/*
++		 * If a CPU came online during the synchronize_rcu(), then
++		 * ignore it.
++		 */
++		if (!(atomic_read(&cpu_buffer->resize_disabled) & RESET_BIT))
++			continue;
++
+ 		reset_disabled_cpu_buffer(cpu_buffer);
  
- 	if (val)
- 		filemap_invalidate_unlock(inode->i_mapping);
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -408,7 +408,6 @@ static int free_ext_block(handle_t *hand
+ 		atomic_dec(&cpu_buffer->record_disabled);
+-		atomic_dec(&cpu_buffer->resize_disabled);
++		atomic_sub(RESET_BIT, &cpu_buffer->resize_disabled);
+ 	}
  
- int ext4_ext_migrate(struct inode *inode)
- {
--	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	handle_t *handle;
- 	int retval = 0, i;
- 	__le32 *i_data;
-@@ -418,6 +417,7 @@ int ext4_ext_migrate(struct inode *inode
- 	unsigned long max_entries;
- 	__u32 goal, tmp_csum_seed;
- 	uid_t owner[2];
-+	int alloc_ctx;
- 
- 	/*
- 	 * If the filesystem does not support extents, or the inode
-@@ -434,7 +434,7 @@ int ext4_ext_migrate(struct inode *inode
- 		 */
- 		return retval;
- 
--	percpu_down_write(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_write(inode->i_sb);
- 
- 	/*
- 	 * Worst case we can touch the allocation bitmaps and a block
-@@ -586,7 +586,7 @@ out_tmp_inode:
- 	unlock_new_inode(tmp_inode);
- 	iput(tmp_inode);
- out_unlock:
--	percpu_up_write(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return retval;
- }
- 
-@@ -605,6 +605,7 @@ int ext4_ind_migrate(struct inode *inode
- 	ext4_fsblk_t			blk;
- 	handle_t			*handle;
- 	int				ret, ret2 = 0;
-+	int				alloc_ctx;
- 
- 	if (!ext4_has_feature_extents(inode->i_sb) ||
- 	    (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
-@@ -621,7 +622,7 @@ int ext4_ind_migrate(struct inode *inode
- 	if (test_opt(inode->i_sb, DELALLOC))
- 		ext4_alloc_da_blocks(inode);
- 
--	percpu_down_write(&sbi->s_writepages_rwsem);
-+	alloc_ctx = ext4_writepages_down_write(inode->i_sb);
- 
- 	handle = ext4_journal_start(inode, EXT4_HT_MIGRATE, 1);
- 	if (IS_ERR(handle)) {
-@@ -665,6 +666,6 @@ errout:
- 	ext4_journal_stop(handle);
- 	up_write(&EXT4_I(inode)->i_data_sem);
- out_unlock:
--	percpu_up_write(&sbi->s_writepages_rwsem);
-+	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return ret;
- }
+ 	mutex_unlock(&buffer->mutex);
+-- 
+2.39.2
+
 
 
