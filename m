@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 602D1703400
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3076B703334
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242894AbjEOQnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46902 "EHLO
+        id S242759AbjEOQec (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242466AbjEOQnk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:40 -0400
+        with ESMTP id S242749AbjEOQeZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB85446B0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B4B10F3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BE3C6280E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E3DC433D2;
-        Mon, 15 May 2023 16:43:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA3A9627CB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B6FC433EF;
+        Mon, 15 May 2023 16:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169015;
-        bh=qonoS5KuDxf1VuDrNx8O3V5Q9HdjLNeq40HFhFAjnXI=;
+        s=korg; t=1684168457;
+        bh=gLbZkO7xSdLFvxVHi8FHbnFZcOSRJv88/qAESEmgFn0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xbNtOC4RS+A9NF6jJUBDxsY2aL6w9P8sijk4Cn5CGTUNkHZEo5MJewGpQ6eI33v8N
-         s8YTD2b6Vgqgn3H5QnttEyWrtd4+sJ3OPgmOjMLF4jngPHaI0IhKgB7VijiiNEs81w
-         ArhTslInqKsP4LWnl+0piuIRQ6FmHEF1i8YK38K8=
+        b=tj5zmzvKPDLjT4zLhPsNuRW9Cs98Q0l30+hYv0huC41Bo3rmNkCzxHnPlBYU7Vpal
+         8Fi9nws96OG1DIBys/KA5wuS/b+SrpF2el3LbFGIluuGFZmje8bD8i5zL81is5ZdnZ
+         kA29bZLEnJLQStiPjEAQHyq7SfJHz4hCvjiIBrjs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Florian Fainelli <f.fainelli@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 114/191] clk: add missing of_node_put() in "assigned-clocks" property parsing
+Subject: [PATCH 4.14 054/116] serial: 8250: Add missing wakeup event reporting
 Date:   Mon, 15 May 2023 18:25:51 +0200
-Message-Id: <20230515161711.399915015@linuxfoundation.org>
+Message-Id: <20230515161700.061737554@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clément Léger <clement.leger@bootlin.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit 27a6e1b09a782517fddac91259970ac466a3f7b6 ]
+[ Upstream commit 0ba9e3a13c6adfa99e32b2576d20820ab10ad48a ]
 
-When returning from of_parse_phandle_with_args(), the np member of the
-of_phandle_args structure should be put after usage. Add missing
-of_node_put() calls in both __set_clk_parents() and __set_clk_rates().
+An 8250 UART configured as a wake-up source would not have reported
+itself through sysfs as being the source of wake-up, correct that.
 
-Fixes: 86be408bfbd8 ("clk: Support for clock parents and rates assigned from device tree")
-Signed-off-by: Clément Léger <clement.leger@bootlin.com>
-Link: https://lore.kernel.org/r/20230131083227.10990-1-clement.leger@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: b3b708fa2780 ("wake up from a serial port")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://lore.kernel.org/r/20230414170241.2016255-1-f.fainelli@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-conf.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_port.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
-index 49819b546134b..5c6760e45a16e 100644
---- a/drivers/clk/clk-conf.c
-+++ b/drivers/clk/clk-conf.c
-@@ -36,9 +36,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
- 			else
- 				return rc;
- 		}
--		if (clkspec.np == node && !clk_supplier)
-+		if (clkspec.np == node && !clk_supplier) {
-+			of_node_put(clkspec.np);
- 			return 0;
-+		}
- 		pclk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(pclk)) {
- 			if (PTR_ERR(pclk) != -EPROBE_DEFER)
- 				pr_warn("clk: couldn't get parent clock %d for %pOF\n",
-@@ -51,10 +54,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
- 		if (rc < 0)
- 			goto err;
- 		if (clkspec.np == node && !clk_supplier) {
-+			of_node_put(clkspec.np);
- 			rc = 0;
- 			goto err;
- 		}
- 		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(clk)) {
- 			if (PTR_ERR(clk) != -EPROBE_DEFER)
- 				pr_warn("clk: couldn't get assigned clock %d for %pOF\n",
-@@ -96,10 +101,13 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
- 				else
- 					return rc;
- 			}
--			if (clkspec.np == node && !clk_supplier)
-+			if (clkspec.np == node && !clk_supplier) {
-+				of_node_put(clkspec.np);
- 				return 0;
-+			}
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index fe1de63269d1a..cdc1b2b0f4bc6 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -23,6 +23,7 @@
+ #include <linux/moduleparam.h>
+ #include <linux/ioport.h>
+ #include <linux/init.h>
++#include <linux/irq.h>
+ #include <linux/console.h>
+ #include <linux/sysrq.h>
+ #include <linux/delay.h>
+@@ -1886,6 +1887,7 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
+ 	unsigned char status;
+ 	unsigned long flags;
+ 	struct uart_8250_port *up = up_to_u8250p(port);
++	struct tty_port *tport = &port->state->port;
+ 	bool skip_rx = false;
  
- 			clk = of_clk_get_from_provider(&clkspec);
-+			of_node_put(clkspec.np);
- 			if (IS_ERR(clk)) {
- 				if (PTR_ERR(clk) != -EPROBE_DEFER)
- 					pr_warn("clk: couldn't get clock %d for %pOF\n",
+ 	if (iir & UART_IIR_NO_INT)
+@@ -1909,6 +1911,8 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
+ 		skip_rx = true;
+ 
+ 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
++		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
++			pm_wakeup_event(tport->tty->dev, 0);
+ 		if (!up->dma || handle_rx_dma(up, iir))
+ 			status = serial8250_rx_chars(up, status);
+ 	}
 -- 
 2.39.2
 
