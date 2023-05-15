@@ -2,43 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4598B703AE5
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02389703550
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbjEOR4l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
+        id S243288AbjEOQ5q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239148AbjEORzv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:51 -0400
+        with ESMTP id S243313AbjEOQ5j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D988183D8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:54:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF5B7AB3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFC6B62FA9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E8FC433D2;
-        Mon, 15 May 2023 17:53:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE72B62A07
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3420C433EF;
+        Mon, 15 May 2023 16:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173231;
-        bh=W5b+sfXG6vdvGdFoAhDY6Q/wLz64qFKhxa/mkAulGxE=;
+        s=korg; t=1684169856;
+        bh=uj+gcVHHknqsuUYqH19xmCR92HGJ0Y0REI1UsmLYbgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CD4xk2+j3rL5tWCv7n8Ifz1XhWQZM/40dKdlN0Ub7usgzalSQAz7wFvRrobhDiZ2l
-         gfYdFdgHSDOMAr37XtnT1f0Xk+msMQzN7zs7+tbiv0mFLDrxW2aNWJl9BiUCK9q0LP
-         DWy8OC4FNQz8urbIyz2+wZAsLl6rIjE3i5L3lvhw=
+        b=OyTVa2ETnu/Ql6S5m4Hx8rLo3x39+RTflx0F9Q3jmKZkGbc/+zbJuvJVtRMs5KJq/
+         kYhqvFYKbZX9p+5l8H3mXunsDP66zrZZYmYy4ww4g8gFK+SeQIX9oDcUoFDWXnQelC
+         B2Y9DwOQu99VwU0fsoA/YY4c/4+svA0xo0r+ExwE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.4 027/282] ubifs: Fix memleak when insert_old_idx() failed
+        patches@lists.linux.dev,
+        =?UTF-8?q?Nikl=C4=81vs=20Ko=C4=BCes=C5=86ikovs?= 
+        <89q1r14hd@relay.firefox.com>,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 193/246] drm/amd/display: fix access hdcp_workqueue assert
 Date:   Mon, 15 May 2023 18:26:45 +0200
-Message-Id: <20230515161723.093045688@linuxfoundation.org>
+Message-Id: <20230515161728.406610761@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,222 +59,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit b5fda08ef213352ac2df7447611eb4d383cce929 upstream.
+commit 3cf7cd3f770a0b89dc5f06e19edb52e65b93b214 upstream.
 
-Following process will cause a memleak for copied up znode:
+[Why] hdcp are enabled for asics from raven. for old asics
+which hdcp are not enabled, hdcp_workqueue are null. some
+access to hdcp work queue are not guarded with pointer check.
 
-dirty_cow_znode
-  zn = copy_znode(c, znode);
-  err = insert_old_idx(c, zbr->lnum, zbr->offs);
-  if (unlikely(err))
-     return ERR_PTR(err);   // No one refers to zn.
+[How] add hdcp_workqueue pointer check before access workqueue.
 
-Fetch a reproducer in [Link].
-
-Function copy_znode() is split into 2 parts: resource allocation
-and znode replacement, insert_old_idx() is split in similar way,
-so resource cleanup could be done in error handling path without
-corrupting metadata(mem & disk).
-It's okay that old index inserting is put behind of add_idx_dirt(),
-old index is used in layout_leb_in_gaps(), so the two processes do
-not depend on each other.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216705
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Fixes: 82986fd631fa ("drm/amd/display: save restore hdcp state when display is unplugged from mst hub")
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2444
+Reported-by: Niklāvs Koļesņikovs <89q1r14hd@relay.firefox.com>
+Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/tnc.c |  137 ++++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 87 insertions(+), 50 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           |    6 ++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   16 +++++++-----
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -44,6 +44,33 @@ enum {
- 	NOT_ON_MEDIA = 3,
- };
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8533,6 +8533,9 @@ static void amdgpu_dm_atomic_commit_tail
+ 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
+ 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
  
-+static void do_insert_old_idx(struct ubifs_info *c,
-+			      struct ubifs_old_idx *old_idx)
-+{
-+	struct ubifs_old_idx *o;
-+	struct rb_node **p, *parent = NULL;
++		if (!adev->dm.hdcp_workqueue)
++			continue;
 +
-+	p = &c->old_idx.rb_node;
-+	while (*p) {
-+		parent = *p;
-+		o = rb_entry(parent, struct ubifs_old_idx, rb);
-+		if (old_idx->lnum < o->lnum)
-+			p = &(*p)->rb_left;
-+		else if (old_idx->lnum > o->lnum)
-+			p = &(*p)->rb_right;
-+		else if (old_idx->offs < o->offs)
-+			p = &(*p)->rb_left;
-+		else if (old_idx->offs > o->offs)
-+			p = &(*p)->rb_right;
-+		else {
-+			ubifs_err(c, "old idx added twice!");
-+			kfree(old_idx);
-+		}
-+	}
-+	rb_link_node(&old_idx->rb, parent, p);
-+	rb_insert_color(&old_idx->rb, &c->old_idx);
-+}
-+
- /**
-  * insert_old_idx - record an index node obsoleted since the last commit start.
-  * @c: UBIFS file-system description object
-@@ -69,35 +96,15 @@ enum {
-  */
- static int insert_old_idx(struct ubifs_info *c, int lnum, int offs)
- {
--	struct ubifs_old_idx *old_idx, *o;
--	struct rb_node **p, *parent = NULL;
-+	struct ubifs_old_idx *old_idx;
+ 		pr_debug("[HDCP_DM] -------------- i : %x ----------\n", i);
  
- 	old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
- 	if (unlikely(!old_idx))
- 		return -ENOMEM;
- 	old_idx->lnum = lnum;
- 	old_idx->offs = offs;
-+	do_insert_old_idx(c, old_idx);
+ 		if (!connector)
+@@ -8581,6 +8584,9 @@ static void amdgpu_dm_atomic_commit_tail
+ 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
+ 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
  
--	p = &c->old_idx.rb_node;
--	while (*p) {
--		parent = *p;
--		o = rb_entry(parent, struct ubifs_old_idx, rb);
--		if (lnum < o->lnum)
--			p = &(*p)->rb_left;
--		else if (lnum > o->lnum)
--			p = &(*p)->rb_right;
--		else if (offs < o->offs)
--			p = &(*p)->rb_left;
--		else if (offs > o->offs)
--			p = &(*p)->rb_right;
--		else {
--			ubifs_err(c, "old idx added twice!");
--			kfree(old_idx);
--			return 0;
--		}
--	}
--	rb_link_node(&old_idx->rb, parent, p);
--	rb_insert_color(&old_idx->rb, &c->old_idx);
- 	return 0;
- }
++		if (!adev->dm.hdcp_workqueue)
++			continue;
++
+ 		new_crtc_state = NULL;
+ 		old_crtc_state = NULL;
  
-@@ -199,23 +206,6 @@ static struct ubifs_znode *copy_znode(st
- 	__set_bit(DIRTY_ZNODE, &zn->flags);
- 	__clear_bit(COW_ZNODE, &zn->flags);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -385,13 +385,17 @@ static int dm_dp_mst_get_modes(struct dr
+ 		if (aconnector->dc_sink && connector->state) {
+ 			struct drm_device *dev = connector->dev;
+ 			struct amdgpu_device *adev = drm_to_adev(dev);
+-			struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
+-			struct hdcp_workqueue *hdcp_w = &hdcp_work[aconnector->dc_link->link_index];
  
--	ubifs_assert(c, !ubifs_zn_obsolete(znode));
--	__set_bit(OBSOLETE_ZNODE, &znode->flags);
--
--	if (znode->level != 0) {
--		int i;
--		const int n = zn->child_cnt;
--
--		/* The children now have new parent */
--		for (i = 0; i < n; i++) {
--			struct ubifs_zbranch *zbr = &zn->zbranch[i];
--
--			if (zbr->znode)
--				zbr->znode->parent = zn;
--		}
--	}
--
--	atomic_long_inc(&c->dirty_zn_cnt);
- 	return zn;
- }
+-			connector->state->hdcp_content_type =
+-			hdcp_w->hdcp_content_type[connector->index];
+-			connector->state->content_protection =
+-			hdcp_w->content_protection[connector->index];
++			if (adev->dm.hdcp_workqueue) {
++				struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
++				struct hdcp_workqueue *hdcp_w =
++					&hdcp_work[aconnector->dc_link->link_index];
++
++				connector->state->hdcp_content_type =
++				hdcp_w->hdcp_content_type[connector->index];
++				connector->state->content_protection =
++				hdcp_w->content_protection[connector->index];
++			}
+ 		}
+ #endif
  
-@@ -234,6 +224,42 @@ static int add_idx_dirt(struct ubifs_inf
- }
- 
- /**
-+ * replace_znode - replace old znode with new znode.
-+ * @c: UBIFS file-system description object
-+ * @new_zn: new znode
-+ * @old_zn: old znode
-+ * @zbr: the branch of parent znode
-+ *
-+ * Replace old znode with new znode in TNC.
-+ */
-+static void replace_znode(struct ubifs_info *c, struct ubifs_znode *new_zn,
-+			  struct ubifs_znode *old_zn, struct ubifs_zbranch *zbr)
-+{
-+	ubifs_assert(c, !ubifs_zn_obsolete(old_zn));
-+	__set_bit(OBSOLETE_ZNODE, &old_zn->flags);
-+
-+	if (old_zn->level != 0) {
-+		int i;
-+		const int n = new_zn->child_cnt;
-+
-+		/* The children now have new parent */
-+		for (i = 0; i < n; i++) {
-+			struct ubifs_zbranch *child = &new_zn->zbranch[i];
-+
-+			if (child->znode)
-+				child->znode->parent = new_zn;
-+		}
-+	}
-+
-+	zbr->znode = new_zn;
-+	zbr->lnum = 0;
-+	zbr->offs = 0;
-+	zbr->len = 0;
-+
-+	atomic_long_inc(&c->dirty_zn_cnt);
-+}
-+
-+/**
-  * dirty_cow_znode - ensure a znode is not being committed.
-  * @c: UBIFS file-system description object
-  * @zbr: branch of znode to check
-@@ -265,21 +291,32 @@ static struct ubifs_znode *dirty_cow_zno
- 		return zn;
- 
- 	if (zbr->len) {
--		err = insert_old_idx(c, zbr->lnum, zbr->offs);
--		if (unlikely(err))
--			return ERR_PTR(err);
-+		struct ubifs_old_idx *old_idx;
-+
-+		old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
-+		if (unlikely(!old_idx)) {
-+			err = -ENOMEM;
-+			goto out;
-+		}
-+		old_idx->lnum = zbr->lnum;
-+		old_idx->offs = zbr->offs;
-+
- 		err = add_idx_dirt(c, zbr->lnum, zbr->len);
--	} else
--		err = 0;
-+		if (err) {
-+			kfree(old_idx);
-+			goto out;
-+		}
- 
--	zbr->znode = zn;
--	zbr->lnum = 0;
--	zbr->offs = 0;
--	zbr->len = 0;
-+		do_insert_old_idx(c, old_idx);
-+	}
-+
-+	replace_znode(c, zn, znode, zbr);
- 
--	if (unlikely(err))
--		return ERR_PTR(err);
- 	return zn;
-+
-+out:
-+	kfree(zn);
-+	return ERR_PTR(err);
- }
- 
- /**
 
 
