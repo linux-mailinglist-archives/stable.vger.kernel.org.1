@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D92703517
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B9270331C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbjEOQzj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
+        id S242748AbjEOQdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243135AbjEOQzT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F286EAF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:17 -0700 (PDT)
+        with ESMTP id S242749AbjEOQdV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8460A4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C5A4629ED
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A027C433D2;
-        Mon, 15 May 2023 16:55:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9B8D62526
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B984CC4339B;
+        Mon, 15 May 2023 16:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169716;
-        bh=8z5yXFlNasZ1rri+oVWZ3attzAR6SXce5X0Om3gSaCU=;
+        s=korg; t=1684168391;
+        bh=CfGu6EML5xBb7HV+OP2vX533lH2DCQtnOq0m43aOvv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MEQgQi4TRNENaBUkazrc6doH/KQ78IRHmQ07zhbzkdEV1qRyspBqH+0+nrFAILIQC
-         DbX/7DCyFgmRGSx/ImmvQdRKrBupzkzg2o26zIvLODUNlWywekEACWLbzjNDUjdTyJ
-         kM8Tq2nICOAqeqdNXiDHNibfPc4v0BhDzLWlLH+Y=
+        b=tFmA291YUcdMdnIiBVedZ4qTpRAym7kLvipugQ7K0gSo1c+AwnI//ANwSMNhplxlZ
+         LYMTUO0hRSD913rcPhfFUqIKQR3abc+srEw+U5NWpyf9H+DYS3SXATdZYUhAHy4hnT
+         1r3CywrIca6ou5r4xwh5az53WPynrTxSCObp6lAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Dmitrii Dolgov <9erthalion6@gmail.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Danila Chernetsov <listdansp@mail.ru>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 120/246] perf stat: Separate bperf from bpf_profiler
+Subject: [PATCH 4.14 035/116] scsi: megaraid: Fix mega_cmd_done() CMDID_INT_CMDS
 Date:   Mon, 15 May 2023 18:25:32 +0200
-Message-Id: <20230515161726.169240860@linuxfoundation.org>
+Message-Id: <20230515161659.440064243@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,101 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitrii Dolgov <9erthalion6@gmail.com>
+From: Danila Chernetsov <listdansp@mail.ru>
 
-[ Upstream commit ecc68ee216c6c5b2f84915e1441adf436f1b019b ]
+[ Upstream commit 75cb113cd43f06aaf4f1bda0069cfd5b98e909eb ]
 
-It seems that perf stat -b <prog id> doesn't produce any results:
+When cmdid == CMDID_INT_CMDS, the 'cmds' pointer is NULL but is
+dereferenced below.
 
-    $ perf stat -e cycles -b 4 -I 10000 -vvv
-    Control descriptor is not initialized
-    cycles: 0 0 0
-                time        counts unit      events
-	10.007641640    <not supported>      cycles
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Looks like this happens because fentry/fexit progs are getting loaded, but the
-corresponding perf event is not enabled and not added into the events bpf map.
-I think there is some mixing up between two type of bpf support, one for bperf
-and one for bpf_profiler. Both are identified via evsel__is_bpf, based on which
-perf events are enabled, but for the latter (bpf_profiler) a perf event is
-required. Using evsel__is_bperf to check only bperf produces expected results:
-
-    $ perf stat -e cycles -b 4 -I 10000 -vvv
-    Control descriptor is not initialized
-    ------------------------------------------------------------
-    perf_event_attr:
-      size                             136
-      sample_type                      IDENTIFIER
-      read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-      disabled                         1
-      exclude_guest                    1
-    ------------------------------------------------------------
-    sys_perf_event_open: pid -1  cpu 0  group_fd -1  flags 0x8 = 3
-    ------------------------------------------------------------
-    [...perf_event_attr for other CPUs...]
-    ------------------------------------------------------------
-    cycles: 309426 169009 169009
-		time             counts unit events
-	10.010091271             309426      cycles
-
-The final numbers correspond (at least in the level of magnitude) to the
-same metric obtained via bpftool.
-
-Fixes: 112cb56164bc2108 ("perf stat: Introduce config stat.bpf-counter-events")
-Reviewed-by: Song Liu <song@kernel.org>
-Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
-Tested-by: Song Liu <song@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230412182316.11628-1-9erthalion6@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 0f2bb84d2a68 ("[SCSI] megaraid: simplify internal command handling")
+Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+Link: https://lore.kernel.org/r/20230317175109.18585-1-listdansp@mail.ru
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 4 ++--
- tools/perf/util/evsel.h   | 5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/scsi/megaraid.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index fa7c40956d0fa..eeba93ae3b584 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -773,7 +773,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
- 		counter->reset_group = false;
- 		if (bpf_counter__load(counter, &target))
- 			return -1;
--		if (!evsel__is_bpf(counter))
-+		if (!(evsel__is_bperf(counter)))
- 			all_counters_use_bpf = false;
- 	}
+diff --git a/drivers/scsi/megaraid.c b/drivers/scsi/megaraid.c
+index eed6d45b80251..b6a62c8c26715 100644
+--- a/drivers/scsi/megaraid.c
++++ b/drivers/scsi/megaraid.c
+@@ -1443,6 +1443,7 @@ mega_cmd_done(adapter_t *adapter, u8 completed[], int nstatus, int status)
+ 		 */
+ 		if (cmdid == CMDID_INT_CMDS) {
+ 			scb = &adapter->int_scb;
++			cmd = scb->cmd;
  
-@@ -789,7 +789,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
- 
- 		if (counter->reset_group || counter->errored)
- 			continue;
--		if (evsel__is_bpf(counter))
-+		if (evsel__is_bperf(counter))
- 			continue;
- try_again:
- 		if (create_perf_stat_counter(counter, &stat_config, &target,
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index 24cb807ef6ce0..1a7358b46ad4e 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -267,6 +267,11 @@ static inline bool evsel__is_bpf(struct evsel *evsel)
- 	return evsel->bpf_counter_ops != NULL;
- }
- 
-+static inline bool evsel__is_bperf(struct evsel *evsel)
-+{
-+	return evsel->bpf_counter_ops != NULL && list_empty(&evsel->bpf_counter_list);
-+}
-+
- #define EVSEL__MAX_ALIASES 8
- 
- extern const char *const evsel__hw_cache[PERF_COUNT_HW_CACHE_MAX][EVSEL__MAX_ALIASES];
+ 			list_del_init(&scb->list);
+ 			scb->state = SCB_FREE;
 -- 
 2.39.2
 
