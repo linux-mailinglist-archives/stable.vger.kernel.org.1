@@ -2,53 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D530703627
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B925D703519
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243393AbjEORHS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47286 "EHLO
+        id S243184AbjEOQzl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:55:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243423AbjEORHC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:02 -0400
+        with ESMTP id S243186AbjEOQzZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:55:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3730DD851
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F209E6E9A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:55:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8C4162A99
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13F9C433EF;
-        Mon, 15 May 2023 17:05:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68B1E6151B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:55:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE9DC433D2;
+        Mon, 15 May 2023 16:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170329;
-        bh=dqxySuChDSnKavwJeBlvMwA1aYg2sOw+y4pyMIHWGCc=;
+        s=korg; t=1684169722;
+        bh=ecRzZTC14Y082V1XWJK204NohrP7IYeyAEnOOPYXe8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uiFqzlmEXO/ih33wtSQrTRv2VkhmKer9cz4kN/At36JgU4sy9Q8KO7V6HlemYAmM8
-         FTj3wmClSl0RLmTWVCPRd4uuEEkQjrEDE/pbzVLhXli/20wGC/XnFAVRIAGrlfTLPh
-         /ogW/7B/1nsEzW54rUXcnfQQvA/l3d9ND+PiXIzM=
+        b=qMrbdE8JJjaMqZT7/fSlML8Fbe602IYu+Hf4rYwMyjTo9Gkn3dvnDIcMbBPK/lq1l
+         LwYjgM6GXtzV1jGjyiEthEauJzhT/BlQYgi/r8xsKYCieaSvXn9s7HOzFbEJuOOYbo
+         za0PmGDi9DnQiJUikPQApEgQTLQq7mW5yogmD8nE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, elfring@users.sourceforge.net,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        German Gomez <german.gomez@arm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/239] perf map: Delete two variable initialisations before null pointer checks in sort__sym_from_cmp()
+        patches@lists.linux.dev,
+        syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com,
+        Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.3 148/246] inotify: Avoid reporting event with invalid wd
 Date:   Mon, 15 May 2023 18:26:00 +0200
-Message-Id: <20230515161724.584189622@linuxfoundation.org>
+Message-Id: <20230515161726.995421314@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -63,56 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Markus Elfring <Markus.Elfring@web.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit c160118a90d4acf335993d8d59b02ae2147a524e ]
+commit c915d8f5918bea7c3962b09b8884ca128bfd9b0c upstream.
 
-Addresses of two data structure members were determined before
-corresponding null pointer checks in the implementation of the function
-“sort__sym_from_cmp”.
+When inotify_freeing_mark() races with inotify_handle_inode_event() it
+can happen that inotify_handle_inode_event() sees that i_mark->wd got
+already reset to -1 and reports this value to userspace which can
+confuse the inotify listener. Avoid the problem by validating that wd is
+sensible (and pretend the mark got removed before the event got
+generated otherwise).
 
-Thus avoid the risk for undefined behaviour by removing extra
-initialisations for the local variables “from_l” and “from_r” (also
-because they were already reassigned with the same value behind this
-pointer check).
-
-This issue was detected by using the Coccinelle software.
-
-Fixes: 1b9e97a2a95e4941 ("perf tools: Fix report -F symbol_from for data without branch info")
-Signed-off-by: <elfring@users.sourceforge.net>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/cocci/54a21fea-64e3-de67-82ef-d61b90ffad05@web.de/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 7e790dd5fc93 ("inotify: fix error paths in inotify_update_watch")
+Message-Id: <20230424163219.9250-1-jack@suse.cz>
+Reported-by: syzbot+4a06d4373fd52f0b2f9c@syzkaller.appspotmail.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/sort.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/notify/inotify/inotify_fsnotify.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 2e7330867e2ef..6882b17144994 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -876,8 +876,7 @@ static int hist_entry__dso_to_filter(struct hist_entry *he, int type,
- static int64_t
- sort__sym_from_cmp(struct hist_entry *left, struct hist_entry *right)
- {
--	struct addr_map_symbol *from_l = &left->branch_info->from;
--	struct addr_map_symbol *from_r = &right->branch_info->from;
-+	struct addr_map_symbol *from_l, *from_r;
+--- a/fs/notify/inotify/inotify_fsnotify.c
++++ b/fs/notify/inotify/inotify_fsnotify.c
+@@ -65,7 +65,7 @@ int inotify_handle_inode_event(struct fs
+ 	struct fsnotify_event *fsn_event;
+ 	struct fsnotify_group *group = inode_mark->group;
+ 	int ret;
+-	int len = 0;
++	int len = 0, wd;
+ 	int alloc_len = sizeof(struct inotify_event_info);
+ 	struct mem_cgroup *old_memcg;
  
- 	if (!left->branch_info || !right->branch_info)
- 		return cmp_null(left->branch_info, right->branch_info);
--- 
-2.39.2
-
+@@ -81,6 +81,13 @@ int inotify_handle_inode_event(struct fs
+ 			      fsn_mark);
+ 
+ 	/*
++	 * We can be racing with mark being detached. Don't report event with
++	 * invalid wd.
++	 */
++	wd = READ_ONCE(i_mark->wd);
++	if (wd == -1)
++		return 0;
++	/*
+ 	 * Whoever is interested in the event, pays for the allocation. Do not
+ 	 * trigger OOM killer in the target monitoring memcg as it may have
+ 	 * security repercussion.
+@@ -110,7 +117,7 @@ int inotify_handle_inode_event(struct fs
+ 	fsn_event = &event->fse;
+ 	fsnotify_init_event(fsn_event);
+ 	event->mask = mask;
+-	event->wd = i_mark->wd;
++	event->wd = wd;
+ 	event->sync_cookie = cookie;
+ 	event->name_len = len;
+ 	if (len)
 
 
