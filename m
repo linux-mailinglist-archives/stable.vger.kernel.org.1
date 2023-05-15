@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8020B70357C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08E2B703AFE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243335AbjEOQ72 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:59:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
+        id S241578AbjEOR6e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243314AbjEOQ70 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B9D7AB0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:25 -0700 (PDT)
+        with ESMTP id S243469AbjEOR6I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEA419F10
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0097862A59
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E3BC433EF;
-        Mon, 15 May 2023 16:59:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B69662FE0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB61AC4339B;
+        Mon, 15 May 2023 17:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169964;
-        bh=Vwa8JKZRtTAvJAtKCEv+2u0ADSxHhhw7xFghJ1Ey4cM=;
+        s=korg; t=1684173340;
+        bh=xEI/SGk3dVUjk/+bYPMd8dWbnHNJOerA/s83AmY6AC8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LivzOJE6JhOR96C+abp9SwPVPZl2foGI9Q80rp1pjE10Pv3rq3mGkuplfXgLKw+2z
-         qtgs2qOTXZtatN2DNLoVXEfIupGjiDWwG3fVYpT37kbAPxoiHB+oUc4ntz9zLr4WWf
-         DwjKayu6WZZc5/WzPJAhLATQymYsQ5HGhVHjce6M=
+        b=MK6xQ9PHZHg1kgR1XHIzu/TPA+fWjyb4VviykDjrC0B8Z2AC10ddRvFbHmjB/jDNR
+         r/R9794vSHAJUxi+LDQFhre+V+jBFYYaP4z2aS2ihC9UZi15ctwLXCfbMKUHfJpZDv
+         VaWYMjaxnYjiDdN6FpmznE3eCgkI8ytJM30sLzA8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com,
-        syzbot+8785e41224a3afd04321@syzkaller.appspotmail.com,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.3 228/246] ext4: avoid a potential slab-out-of-bounds in ext4_group_desc_csum
+        patches@lists.linux.dev, Miaoqian Lin <linmq006@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 062/282] media: rcar_fdp1: Fix refcount leak in probe and remove function
 Date:   Mon, 15 May 2023 18:27:20 +0200
-Message-Id: <20230515161729.451186594@linuxfoundation.org>
+Message-Id: <20230515161724.101708306@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,99 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 4f04351888a83e595571de672e0a4a8b74f4fb31 upstream.
+[ Upstream commit c766c90faf93897b77c9c5daa603cffab85ba907 ]
 
-When modifying the block device while it is mounted by the filesystem,
-syzbot reported the following:
+rcar_fcp_get() take reference, which should be balanced with
+rcar_fcp_put(). Add missing rcar_fcp_put() in fdp1_remove and
+the error paths of fdp1_probe() to fix this.
 
-BUG: KASAN: slab-out-of-bounds in crc16+0x206/0x280 lib/crc16.c:58
-Read of size 1 at addr ffff888075f5c0a8 by task syz-executor.2/15586
-
-CPU: 1 PID: 15586 Comm: syz-executor.2 Not tainted 6.2.0-rc5-syzkaller-00205-gc96618275234 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
- print_address_description+0x74/0x340 mm/kasan/report.c:306
- print_report+0x107/0x1f0 mm/kasan/report.c:417
- kasan_report+0xcd/0x100 mm/kasan/report.c:517
- crc16+0x206/0x280 lib/crc16.c:58
- ext4_group_desc_csum+0x81b/0xb20 fs/ext4/super.c:3187
- ext4_group_desc_csum_set+0x195/0x230 fs/ext4/super.c:3210
- ext4_mb_clear_bb fs/ext4/mballoc.c:6027 [inline]
- ext4_free_blocks+0x191a/0x2810 fs/ext4/mballoc.c:6173
- ext4_remove_blocks fs/ext4/extents.c:2527 [inline]
- ext4_ext_rm_leaf fs/ext4/extents.c:2710 [inline]
- ext4_ext_remove_space+0x24ef/0x46a0 fs/ext4/extents.c:2958
- ext4_ext_truncate+0x177/0x220 fs/ext4/extents.c:4416
- ext4_truncate+0xa6a/0xea0 fs/ext4/inode.c:4342
- ext4_setattr+0x10c8/0x1930 fs/ext4/inode.c:5622
- notify_change+0xe50/0x1100 fs/attr.c:482
- do_truncate+0x200/0x2f0 fs/open.c:65
- handle_truncate fs/namei.c:3216 [inline]
- do_open fs/namei.c:3561 [inline]
- path_openat+0x272b/0x2dd0 fs/namei.c:3714
- do_filp_open+0x264/0x4f0 fs/namei.c:3741
- do_sys_openat2+0x124/0x4e0 fs/open.c:1310
- do_sys_open fs/open.c:1326 [inline]
- __do_sys_creat fs/open.c:1402 [inline]
- __se_sys_creat fs/open.c:1396 [inline]
- __x64_sys_creat+0x11f/0x160 fs/open.c:1396
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f72f8a8c0c9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f72f97e3168 EFLAGS: 00000246 ORIG_RAX: 0000000000000055
-RAX: ffffffffffffffda RBX: 00007f72f8bac050 RCX: 00007f72f8a8c0c9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000280
-RBP: 00007f72f8ae7ae9 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffd165348bf R14: 00007f72f97e3300 R15: 0000000000022000
-
-Replace
-	le16_to_cpu(sbi->s_es->s_desc_size)
-with
-	sbi->s_desc_size
-
-It reduces ext4's compiled text size, and makes the code more efficient
-(we remove an extra indirect reference and a potential byte
-swap on big endian systems), and there is no downside. It also avoids the
-potential KASAN / syzkaller failure, as a bonus.
-
-Reported-by: syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com
-Reported-by: syzbot+8785e41224a3afd04321@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=70d28d11ab14bd7938f3e088365252aa923cff42
-Link: https://syzkaller.appspot.com/bug?id=b85721b38583ecc6b5e72ff524c67302abbc30f3
-Link: https://lore.kernel.org/all/000000000000ece18705f3b20934@google.com/
-Fixes: 717d50e4971b ("Ext4: Uninitialized Block Groups")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20230504121525.3275886-1-tudor.ambarus@linaro.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4710b752e029 ("[media] v4l: Add Renesas R-Car FDP1 Driver")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+[hverkuil: resolve merge conflict, remove() is now void]
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/media/platform/rcar_fdp1.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -3184,11 +3184,9 @@ static __le16 ext4_group_desc_csum(struc
- 	crc = crc16(crc, (__u8 *)gdp, offset);
- 	offset += sizeof(gdp->bg_checksum); /* skip checksum */
- 	/* for checksum of struct ext4_group_desc do the rest...*/
--	if (ext4_has_feature_64bit(sb) &&
--	    offset < le16_to_cpu(sbi->s_es->s_desc_size))
-+	if (ext4_has_feature_64bit(sb) && offset < sbi->s_desc_size)
- 		crc = crc16(crc, (__u8 *)gdp + offset,
--			    le16_to_cpu(sbi->s_es->s_desc_size) -
--				offset);
-+			    sbi->s_desc_size - offset);
+diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
+index 0967b10a459b1..af2408b4856e6 100644
+--- a/drivers/media/platform/rcar_fdp1.c
++++ b/drivers/media/platform/rcar_fdp1.c
+@@ -2317,8 +2317,10 @@ static int fdp1_probe(struct platform_device *pdev)
  
- out:
- 	return cpu_to_le16(crc);
+ 	/* Determine our clock rate */
+ 	clk = clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto put_dev;
++	}
+ 
+ 	fdp1->clk_rate = clk_get_rate(clk);
+ 	clk_put(clk);
+@@ -2327,7 +2329,7 @@ static int fdp1_probe(struct platform_device *pdev)
+ 	ret = v4l2_device_register(&pdev->dev, &fdp1->v4l2_dev);
+ 	if (ret) {
+ 		v4l2_err(&fdp1->v4l2_dev, "Failed to register video device\n");
+-		return ret;
++		goto put_dev;
+ 	}
+ 
+ 	/* M2M registration */
+@@ -2397,6 +2399,8 @@ static int fdp1_probe(struct platform_device *pdev)
+ unreg_dev:
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 
++put_dev:
++	rcar_fcp_put(fdp1->fcp);
+ 	return ret;
+ }
+ 
+@@ -2408,6 +2412,7 @@ static int fdp1_remove(struct platform_device *pdev)
+ 	video_unregister_device(&fdp1->vfd);
+ 	v4l2_device_unregister(&fdp1->v4l2_dev);
+ 	pm_runtime_disable(&pdev->dev);
++	rcar_fcp_put(fdp1->fcp);
+ 
+ 	return 0;
+ }
+-- 
+2.39.2
+
 
 
