@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4141F703B5C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B9A7036C7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244669AbjEOSCS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:02:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60712 "EHLO
+        id S243799AbjEORN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:13:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242616AbjEOSBt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:49 -0400
+        with ESMTP id S243793AbjEORNf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:13:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883951899E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:59:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4112C10A27
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DF6863028
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E04C4339B;
-        Mon, 15 May 2023 17:59:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C23A762B69
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13BFC433EF;
+        Mon, 15 May 2023 17:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173552;
-        bh=d2g8r34r6Fykdy3qK+w4b5Jn62s9byIjD07l5jtW9SA=;
+        s=korg; t=1684170715;
+        bh=M/copmAjhGeQYpsI5ttyFcJzqH1oBN5vjwjcsRJY2Bg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kxPLv0YztSL9ppEND8/dLB/FzN3VN3gW70ruoFH3nGrkgorOhJ3dqul1BHXEJ52sD
-         2TwA1LO01oNL5d1MSieF5yoJig2ogYmnkfe7olne7edIirmvigXryPKh7TEEMhg7au
-         8F/yfNLm1NMLEb/QZ5cNPkF3OGcyKcBGMOEva+zo=
+        b=SFgF7FrUqj18MIJT4fw/966W871G9GnBVg+jWUCNxJj0eLAtCJTl3jZSjVe82AQpt
+         mTm/C0VSCZnZks8Z0vVG7Xu2Vwpwkix9xjSz/ut8f603zXcAbqYIvrnaqPKnVXKVrE
+         Gba/zwxFspqIE3DxW6ZbgiP3bV8EbUT4B1kEVwcY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Song Liu <song@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 104/282] md: update the optimal I/O size on reshape
+        patches@lists.linux.dev, Tim Murray <timmurray@google.com>,
+        John Stultz <jstultz@google.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.1 219/239] locking/rwsem: Add __always_inline annotation to __down_read_common() and inlined callers
 Date:   Mon, 15 May 2023 18:28:02 +0200
-Message-Id: <20230515161725.370156269@linuxfoundation.org>
+Message-Id: <20230515161728.295674057@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,119 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 16ef510139315a2147ee7525796f8dbd4e4b7864 ]
+commit 92cc5d00a431e96e5a49c0b97e5ad4fa7536bd4b upstream.
 
-The raid5 and raid10 drivers currently update the read-ahead size,
-but not the optimal I/O size on reshape.  To prepare for deriving the
-read-ahead size from the optimal I/O size make sure it is updated
-as well.
+Apparently despite it being marked inline, the compiler
+may not inline __down_read_common() which makes it difficult
+to identify the cause of lock contention, as the blocked
+function in traceevents will always be listed as
+__down_read_common().
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: f0ddb83da3cb ("md/raid10: fix memleak of md thread")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So this patch adds __always_inline annotation to the common
+function (as well as the inlined helper callers) to force it to
+be inlined so the blocking function will be listed (via Wchan)
+in traceevents.
+
+Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
+Reported-by: Tim Murray <timmurray@google.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20230503023351.2832796-1-jstultz@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 22 ++++++++++++++--------
- drivers/md/raid5.c  | 10 ++++++++--
- 2 files changed, 22 insertions(+), 10 deletions(-)
+ kernel/locking/rwsem.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 68447e1525057..b37e3cd4e3673 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3735,10 +3735,20 @@ static struct r10conf *setup_conf(struct mddev *mddev)
- 	return ERR_PTR(err);
- }
- 
-+static void raid10_set_io_opt(struct r10conf *conf)
-+{
-+	int raid_disks = conf->geo.raid_disks;
-+
-+	if (!(conf->geo.raid_disks % conf->geo.near_copies))
-+		raid_disks /= conf->geo.near_copies;
-+	blk_queue_io_opt(conf->mddev->queue, (conf->mddev->chunk_sectors << 9) *
-+			 raid_disks);
-+}
-+
- static int raid10_run(struct mddev *mddev)
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1251,7 +1251,7 @@ static struct rw_semaphore *rwsem_downgr
+ /*
+  * lock for reading
+  */
+-static inline int __down_read_common(struct rw_semaphore *sem, int state)
++static __always_inline int __down_read_common(struct rw_semaphore *sem, int state)
  {
- 	struct r10conf *conf;
--	int i, disk_idx, chunk_size;
-+	int i, disk_idx;
- 	struct raid10_info *disk;
- 	struct md_rdev *rdev;
- 	sector_t size;
-@@ -3774,18 +3784,13 @@ static int raid10_run(struct mddev *mddev)
- 	mddev->thread = conf->thread;
- 	conf->thread = NULL;
- 
--	chunk_size = mddev->chunk_sectors << 9;
- 	if (mddev->queue) {
- 		blk_queue_max_discard_sectors(mddev->queue,
- 					      mddev->chunk_sectors);
- 		blk_queue_max_write_same_sectors(mddev->queue, 0);
- 		blk_queue_max_write_zeroes_sectors(mddev->queue, 0);
--		blk_queue_io_min(mddev->queue, chunk_size);
--		if (conf->geo.raid_disks % conf->geo.near_copies)
--			blk_queue_io_opt(mddev->queue, chunk_size * conf->geo.raid_disks);
--		else
--			blk_queue_io_opt(mddev->queue, chunk_size *
--					 (conf->geo.raid_disks / conf->geo.near_copies));
-+		blk_queue_io_min(mddev->queue, mddev->chunk_sectors << 9);
-+		raid10_set_io_opt(conf);
- 	}
- 
- 	rdev_for_each(rdev, mddev) {
-@@ -4748,6 +4753,7 @@ static void end_reshape(struct r10conf *conf)
- 		stripe /= conf->geo.near_copies;
- 		if (conf->mddev->queue->backing_dev_info->ra_pages < 2 * stripe)
- 			conf->mddev->queue->backing_dev_info->ra_pages = 2 * stripe;
-+		raid10_set_io_opt(conf);
- 	}
- 	conf->fullsync = 0;
- }
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index d0c3f49c8c162..113ba084fab45 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -7159,6 +7159,12 @@ static int only_parity(int raid_disk, int algo, int raid_disks, int max_degraded
- 	return 0;
+ 	int ret = 0;
+ 	long count;
+@@ -1269,17 +1269,17 @@ out:
+ 	return ret;
  }
  
-+static void raid5_set_io_opt(struct r5conf *conf)
-+{
-+	blk_queue_io_opt(conf->mddev->queue, (conf->chunk_sectors << 9) *
-+			 (conf->raid_disks - conf->max_degraded));
-+}
-+
- static int raid5_run(struct mddev *mddev)
+-static inline void __down_read(struct rw_semaphore *sem)
++static __always_inline void __down_read(struct rw_semaphore *sem)
  {
- 	struct r5conf *conf;
-@@ -7448,8 +7454,7 @@ static int raid5_run(struct mddev *mddev)
- 
- 		chunk_size = mddev->chunk_sectors << 9;
- 		blk_queue_io_min(mddev->queue, chunk_size);
--		blk_queue_io_opt(mddev->queue, chunk_size *
--				 (conf->raid_disks - conf->max_degraded));
-+		raid5_set_io_opt(conf);
- 		mddev->queue->limits.raid_partial_stripes_expensive = 1;
- 		/*
- 		 * We can only discard a whole stripe. It doesn't make sense to
-@@ -8043,6 +8048,7 @@ static void end_reshape(struct r5conf *conf)
- 						   / PAGE_SIZE);
- 			if (conf->mddev->queue->backing_dev_info->ra_pages < 2 * stripe)
- 				conf->mddev->queue->backing_dev_info->ra_pages = 2 * stripe;
-+			raid5_set_io_opt(conf);
- 		}
- 	}
+ 	__down_read_common(sem, TASK_UNINTERRUPTIBLE);
  }
--- 
-2.39.2
-
+ 
+-static inline int __down_read_interruptible(struct rw_semaphore *sem)
++static __always_inline int __down_read_interruptible(struct rw_semaphore *sem)
+ {
+ 	return __down_read_common(sem, TASK_INTERRUPTIBLE);
+ }
+ 
+-static inline int __down_read_killable(struct rw_semaphore *sem)
++static __always_inline int __down_read_killable(struct rw_semaphore *sem)
+ {
+ 	return __down_read_common(sem, TASK_KILLABLE);
+ }
 
 
