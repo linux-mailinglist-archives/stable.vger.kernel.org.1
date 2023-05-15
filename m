@@ -2,281 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4161B7030AB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 16:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E31C37030E9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 17:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241846AbjEOO4F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 10:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42392 "EHLO
+        id S241116AbjEOPFJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 11:05:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241376AbjEOOz6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 10:55:58 -0400
-Received: from mail-m127104.qiye.163.com (mail-m127104.qiye.163.com [115.236.127.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6419B171F;
-        Mon, 15 May 2023 07:55:49 -0700 (PDT)
-Received: from [IPV6:240e:3b7:3270:1980:1173:5169:256c:13b8] (unknown [IPV6:240e:3b7:3270:1980:1173:5169:256c:13b8])
-        by mail-m127104.qiye.163.com (Hmail) with ESMTPA id 015F4A4025D;
-        Mon, 15 May 2023 22:55:39 +0800 (CST)
-Message-ID: <0c007040-be5b-a372-6fb6-8ce1b601d74b@sangfor.com.cn>
-Date:   Mon, 15 May 2023 22:55:11 +0800
+        with ESMTP id S234849AbjEOPEs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 11:04:48 -0400
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2087.outbound.protection.outlook.com [40.107.212.87])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A95911C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 08:04:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kHV4rKQWoFmR9LSK78TlCRgSg/B9BHMyKJbxSbPzI1ZPiJENB5GfWNjYdR4+O1bEWGsPKiooqNhoHkBhAU08EBVOHJ11pcSmEBZWOtkTdcMlseBagb4M3sQjgKiYnlivdaZI5XZI7rNBEnNljcbDCPZZUjKMgeUWxAGQ9dsBaETZ6vgfWhT5cLuQFZU1PnituVBAqUM5C9asDbC7843pexANlh5TzxKASmVe2pjucnl2rwWaXtcyrhuxx6U0ljc2u+Wu6Vsrv418OTXttvf3oBbtIrZqsSnivSVGF5vvvDE5s3cx3FUqh/K/Tt9Bra3flMJjH91iMOVYWXYa10kAVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u9hJRwHKEPUEP4ICHaUGKgXNmaOuSiQ1AxyIWmGINb0=;
+ b=mX1WbEPPgby5bs3nIlxYok52cVG+Z/w4zbO4JTXFfQzT2NB7OpnuFO0Brv2PXS4Hdn7ssyJPOyN6bqYEYfTHBegFIHkut7l3K9FBjSxzsF+2eEGJ6SDtTsYsR/hK06RW0SVFyzBts1YEjaTGlhMmhKkptmsLkULDg+IQO/fGG9uA/jChPlC9A5bkYcI4iBW1knefS1/M+Xy2vfyXZyLD1YkyrqkZV1P61JNJJ5/tMpFc9If/cv83iykwBGxrsKfjIVmumfi3PQQ/XlwVA6nJ84+/li1Azptrg+tjhOY0OQFnWf25E7gnIefmhlvjBAUBSh1Pdd1f4E3My92QYjHWtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linuxfoundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u9hJRwHKEPUEP4ICHaUGKgXNmaOuSiQ1AxyIWmGINb0=;
+ b=GoctSpj9CGMNiLE3+s/kJcYKADOvVMFCOc9EIc4M780i84ziheeZcFlUU3UkVkgEhUjoCchtXXI7u2UoPkhtkJS7vFBGbyD6mhHM52ptQYx4TLJ6Lsdf1lVYrOae8G32NWyT/aEcLZjaQ/9rsY9CS29nffKEmQQ7ISdGGW0QtI0=
+Received: from BN8PR03CA0019.namprd03.prod.outlook.com (2603:10b6:408:94::32)
+ by MN0PR12MB5884.namprd12.prod.outlook.com (2603:10b6:208:37c::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.22; Mon, 15 May
+ 2023 15:04:43 +0000
+Received: from BN8NAM11FT093.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:94:cafe::a7) by BN8PR03CA0019.outlook.office365.com
+ (2603:10b6:408:94::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.30 via Frontend
+ Transport; Mon, 15 May 2023 15:04:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT093.mail.protection.outlook.com (10.13.177.22) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6411.15 via Frontend Transport; Mon, 15 May 2023 15:04:43 +0000
+Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 15 May
+ 2023 10:04:42 -0500
+From:   Alex Deucher <alexander.deucher@amd.com>
+To:     <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC:     Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Alvin Lee <Alvin.Lee2@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] drm/amd/display: Fix hang when skipping modeset
+Date:   Mon, 15 May 2023 11:04:26 -0400
+Message-ID: <20230515150426.2197413-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
-To:     Chuck Lever III <chuck.lever@oracle.com>
-Cc:     Jeff Layton <jlayton@kernel.org>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230515021307.3072-1-dinghui@sangfor.com.cn>
- <65AFD2EF-E5D3-4461-B23A-D294486D5F65@oracle.com>
-From:   Ding Hui <dinghui@sangfor.com.cn>
-In-Reply-To: <65AFD2EF-E5D3-4461-B23A-D294486D5F65@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGksaVksfQkpKQkoZQhpIS1UTARMWGhIXJBQOD1
-        lXWRgSC1lBWUlPSx5BSBlMQUhJTEtBSkJDS0FKSkxIQU5KTUJBSU5NGEFKSBlDWVdZFhoPEhUdFF
-        lBWU9LSFVKSktISkxVSktLVUtZBg++
-X-HM-Tid: 0a881fe8f37db282kuuu015f4a4025d
-X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NjY6FBw*SD0KPx8jFE0UVjBN
-        GT5PCRRVSlVKTUNPSk1JTk9LQkhPVTMWGhIXVR8SFRwTDhI7CBoVHB0UCVUYFBZVGBVFWVdZEgtZ
-        QVlJT0seQUgZTEFISUxLQUpCQ0tBSkpMSEFOSk1CQUlOTRhBSkgZQ1lXWQgBWUFKS0pOTDcG
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT093:EE_|MN0PR12MB5884:EE_
+X-MS-Office365-Filtering-Correlation-Id: b090fbca-a820-4950-ec53-08db5555b738
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pocsa69lIDhIubL48sM84PXU++2IzuU5Q4oE3LHTLDKGx8lmimhOfm28WaC81NJtb875XUQUeMjmX20F9kicmeBwDRGwbq2VtV+WeALoxwbVTcxrQ8yT4sXjo2DhiOxX6Hl2xYUUG0Pz/FN/mxsvQBn3G/TBDZIE8i4x9ng4xlJix4UKf+k5vltzu+TxULUGZ+yomUzLNrtIUY9ZaZrJdeIZB+9eVw/vjacELehkk5FWSFtcwAAPtF755FwpzLA1flo5dKinyI0+hVv+m55wZDBjsXh6qJmU8rU50BtMaujGasGGwFpW+wOZusa1I74XCAyI6xVLHm0uSRfechYzfpATpA28UtwFZPzgyOja4ChK84x6wavhO/S4e3RNQTCjvuoW0w+TVHoNXjR9a4ahWSlJMYwTxNIsomkJ90+cQOn3vbux3ejqZtt3b8K4DWWrm7bN4chVmskWGsFZWGThIJ1Wgd/P1WC6FIbqkWENzl0tw6gUXbHLcQ7NjIJij1ZdOKxYwCZ0MTmXIRRUVTWe5uyoN1e8qHAiyynJS7Cw2bmYWWDyLFic31au0mx5CE3nweM0G/YKFLjGHCMct3X165x2I4ohaftvpn/UfQVL0lQU/pzmW9ZQjS47v0mnlMi4E9GvyfPQYA22jubIPJMKRVYxFhnOqnqK8eByd1WT7Wjb3KR8l+bfg6O3TizTicFFMLIRhmn/xdxpF6olaHI04FIuCkpfvlbmD3T4yziu+PXC4IsYYpazGH79S/Vfj8kE+keIUV6M5+Vir7QFKoaV6w==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(346002)(39860400002)(376002)(451199021)(40470700004)(36840700001)(46966006)(40460700003)(4326008)(70586007)(70206006)(7696005)(316002)(110136005)(54906003)(478600001)(86362001)(81166007)(36756003)(83380400001)(336012)(47076005)(186003)(36860700001)(2616005)(426003)(16526019)(1076003)(6666004)(26005)(8676002)(8936002)(2906002)(5660300002)(40480700001)(82310400005)(356005)(82740400003)(41300700001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 15:04:43.7130
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b090fbca-a820-4950-ec53-08db5555b738
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT093.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5884
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023/5/15 20:01, Chuck Lever III wrote:
-> 
-> 
->> On May 14, 2023, at 10:13 PM, Ding Hui <dinghui@sangfor.com.cn> wrote:
->>
->> After the listener svc_sock be freed, and before invoking svc_tcp_accept()
->> for the established child sock, there is a window that the newsock
->> retaining a freed listener svc_sock in sk_user_data which cloning from
->> parent.
-> 
-> Thank you, I will apply this (after testing it).
-> 
-> The next step is to figure out why SUNRPC is trying to accept
-> on a dead listener. Any thoughts about that?
-> 
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-A child sock is cloned from the listener sock, it inherits sk_data_ready
-and sk_user_data from its parent sock, which is svc_tcp_listen_data_ready()
-and listener svc_sock, the sk_state of the child becomes ESTABLISHED once
-after TCP handshake in protocol stack.
+[Why&How]
 
-Case 1:
+When skipping full modeset since the only state change was a front porch
+change, the DC commit sequence requires extra checks to handle non
+existant plane states being asked to be removed from context.
 
-listener sock      | child sock            |   nfsd thread
-=>sk_data_ready    | =>sk_data_ready       |
--------------------+-----------------------+----------------------
-svc_tcp_listen_data_ready
-   svsk is listener svc_sock
-   set_bit(XPT_CONN)
-                                              svc_recv
-                                                svc_tcp_accept(listener)
-                                                  kernel_accept get child sock as newsock
-                                                  svc_setup_socket(newsock)
-                                                    newsock->sk_data_ready=svc_data_ready
-                                                    newsock->sk_user_data=newsvsk
-                     svc_data_ready
-                       svsk is newsvsk
+Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit da5e14909776edea4462672fb4a3007802d262e7)
+Cc: stable@vger.kernel.org
+---
 
+Fixes a hang with freesync video enabled.
 
-Case 2:
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-listener sock      | child sock            |   nfsd thread
-=>sk_data_ready    | =>sk_data_ready       |
--------------------+-----------------------+----------------------
-svc_tcp_listen_data_ready
-   svsk is listener svc_sock
-   set_bit(XPT_CONN)
-                     svc_tcp_listen_data_ready
-                       svsk is listener svc_sock
-                                              svc_recv
-                                                svc_tcp_accept(listener)
-                                                  kernel_accept get the child sock as newsock
-                                                  svc_setup_socket(newsock)
-                                                    newsock->sk_data_ready=svc_data_ready
-                                                    newsock->sk_user_data=newsvsk
-                     svc_data_ready
-                       svsk is newsvsk
-
-
-The UAF case:
-
-listener sock      | child sock            |   rpc.nfsd 0
-=>sk_data_ready    | =>sk_data_ready       |
--------------------+-----------------------+----------------------
-svc_tcp_listen_data_ready
-   svsk is listener svc_sock
-   set_bit(XPT_CONN)
-                                             svc_xprt_destroy_all
-                                               svc_xprt_free
-                                                 kfree listener svc_sock
-                                             // the child sock has not yet been accepted,
-                                             // so it is not managed by SUNRPC for now.
-                     svc_tcp_listen_data_ready
-                       svsk is listener svc_sock
-                       svsk->sk_odata // UAF!
-
-> 
->> In the race windows if data is received on the newsock, we will
->> observe use-after-free report in svc_tcp_listen_data_ready().
->>
->> Reproduce by two tasks:
->>
->> 1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
->> 2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
-> 
-> I will continue attempting to reproduce, as I would like a
-> root cause for this issue.
-> 
-> 
->> KASAN report:
->>
->>   ==================================================================
->>   BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
->>   Read of size 8 at addr ffff888139d96228 by task nc/102553
->>   CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
->>   Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
->>   Call Trace:
->>    <IRQ>
->>    dump_stack_lvl+0x33/0x50
->>    print_address_description.constprop.0+0x27/0x310
->>    print_report+0x3e/0x70
->>    kasan_report+0xae/0xe0
->>    svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
->>    tcp_data_queue+0x9f4/0x20e0
->>    tcp_rcv_established+0x666/0x1f60
->>    tcp_v4_do_rcv+0x51c/0x850
->>    tcp_v4_rcv+0x23fc/0x2e80
->>    ip_protocol_deliver_rcu+0x62/0x300
->>    ip_local_deliver_finish+0x267/0x350
->>    ip_local_deliver+0x18b/0x2d0
->>    ip_rcv+0x2fb/0x370
->>    __netif_receive_skb_one_core+0x166/0x1b0
->>    process_backlog+0x24c/0x5e0
->>    __napi_poll+0xa2/0x500
->>    net_rx_action+0x854/0xc90
->>    __do_softirq+0x1bb/0x5de
->>    do_softirq+0xcb/0x100
->>    </IRQ>
->>    <TASK>
->>    ...
->>    </TASK>
->>
->>   Allocated by task 102371:
->>    kasan_save_stack+0x1e/0x40
->>    kasan_set_track+0x21/0x30
->>    __kasan_kmalloc+0x7b/0x90
->>    svc_setup_socket+0x52/0x4f0 [sunrpc]
->>    svc_addsock+0x20d/0x400 [sunrpc]
->>    __write_ports_addfd+0x209/0x390 [nfsd]
->>    write_ports+0x239/0x2c0 [nfsd]
->>    nfsctl_transaction_write+0xac/0x110 [nfsd]
->>    vfs_write+0x1c3/0xae0
->>    ksys_write+0xed/0x1c0
->>    do_syscall_64+0x38/0x90
->>    entry_SYSCALL_64_after_hwframe+0x72/0xdc
->>
->>   Freed by task 102551:
->>    kasan_save_stack+0x1e/0x40
->>    kasan_set_track+0x21/0x30
->>    kasan_save_free_info+0x2a/0x50
->>    __kasan_slab_free+0x106/0x190
->>    __kmem_cache_free+0x133/0x270
->>    svc_xprt_free+0x1e2/0x350 [sunrpc]
->>    svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
->>    nfsd_put+0x125/0x240 [nfsd]
->>    nfsd_svc+0x2cb/0x3c0 [nfsd]
->>    write_threads+0x1ac/0x2a0 [nfsd]
->>    nfsctl_transaction_write+0xac/0x110 [nfsd]
->>    vfs_write+0x1c3/0xae0
->>    ksys_write+0xed/0x1c0
->>    do_syscall_64+0x38/0x90
->>    entry_SYSCALL_64_after_hwframe+0x72/0xdc
->>
->> Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
->> if state != TCP_LISTEN, that will avoid dereferencing svsk for all
->> child socket.
->>
->> Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
->> Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
->> Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
->> Cc: <stable@vger.kernel.org>
->> ---
->> net/sunrpc/svcsock.c | 23 +++++++++++------------
->> 1 file changed, 11 insertions(+), 12 deletions(-)
->>
->> diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
->> index a51c9b989d58..9aca6e1e78e4 100644
->> --- a/net/sunrpc/svcsock.c
->> +++ b/net/sunrpc/svcsock.c
->> @@ -825,12 +825,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
->>
->> trace_sk_data_ready(sk);
->>
->> - if (svsk) {
->> - /* Refer to svc_setup_socket() for details. */
->> - rmb();
->> - svsk->sk_odata(sk);
->> - }
->> -
->> /*
->> * This callback may called twice when a new connection
->> * is established as a child socket inherits everything
->> @@ -839,13 +833,18 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
->> *    when one of child sockets become ESTABLISHED.
->> * 2) data_ready method of the child socket may be called
->> *    when it receives data before the socket is accepted.
->> - * In case of 2, we should ignore it silently.
->> + * In case of 2, we should ignore it silently and DO NOT
->> + * dereference svsk.
->> */
->> - if (sk->sk_state == TCP_LISTEN) {
->> - if (svsk) {
->> - set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
->> - svc_xprt_enqueue(&svsk->sk_xprt);
->> - }
->> + if (sk->sk_state != TCP_LISTEN)
->> + return;
->> +
->> + if (svsk) {
->> + /* Refer to svc_setup_socket() for details. */
->> + rmb();
->> + svsk->sk_odata(sk);
->> + set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
->> + svc_xprt_enqueue(&svsk->sk_xprt);
->> }
->> }
->>
->> -- 
->> 2.17.1
->>
-> 
-> --
-> Chuck Lever
-> 
-> 
-> 
-
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 62af874f26e0..a1ac06eca37a 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7950,6 +7950,8 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 			continue;
+ 
+ 		dc_plane = dm_new_plane_state->dc_state;
++		if (!dc_plane)
++			continue;
+ 
+ 		bundle->surface_updates[planes_count].surface = dc_plane;
+ 		if (new_pcrtc_state->color_mgmt_changed) {
+@@ -9601,8 +9603,9 @@ static int dm_update_plane_state(struct dc *dc,
+ 			return -EINVAL;
+ 		}
+ 
++		if (dm_old_plane_state->dc_state)
++			dc_plane_state_release(dm_old_plane_state->dc_state);
+ 
+-		dc_plane_state_release(dm_old_plane_state->dc_state);
+ 		dm_new_plane_state->dc_state = NULL;
+ 
+ 		*lock_and_validation_needed = true;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index d9f2ef242b0f..0ae6dcc403a4 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1707,6 +1707,9 @@ bool dc_remove_plane_from_context(
+ 	struct dc_stream_status *stream_status = NULL;
+ 	struct resource_pool *pool = dc->res_pool;
+ 
++	if (!plane_state)
++		return true;
++
+ 	for (i = 0; i < context->stream_count; i++)
+ 		if (context->streams[i] == stream) {
+ 			stream_status = &context->stream_status[i];
 -- 
-Thanks,
--dinghui
+2.40.1
 
