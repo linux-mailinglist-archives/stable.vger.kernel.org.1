@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B347870355F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7F07036A3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243286AbjEOQ6T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38004 "EHLO
+        id S243809AbjEORML (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243287AbjEOQ6S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0A87AA4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:17 -0700 (PDT)
+        with ESMTP id S243676AbjEORLu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C614C23
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECEC161E7F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE93BC433EF;
-        Mon, 15 May 2023 16:58:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3759362B0A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E0C433EF;
+        Mon, 15 May 2023 17:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169896;
-        bh=kewpXlK0JDFtRsuBvkage/Kpsy3PG8r0SvYbjvEL6eY=;
+        s=korg; t=1684170604;
+        bh=Xtq3oH+sWQ25JFIWjhmDhQcdnHPdaqB/3DTC6A7/U0w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UnRUTYyUcxSL0q5qBghB47y0K/0gMy3VsMqfnGpQIrCfduhiRWh0wb0NO6/DG9QKe
-         d22wFX7eMDYMm6ZSeTDW5b3IFFI58rmC90SIV2yMlpS/TI5unOOCJ+Y9nBGpPiK9Dn
-         sEnfaxnZfEKkQmwjwROJGVpAaS9SW+wxqDtUZi1k=
+        b=IqgKL6qXJB4sHtlqsfLVsdPEX/XBlAjcZgXU4FKwV4NiZrtUYz1qoTIbH2fM0qvw2
+         3VVwWvjF4u3HJa4+rPySAN/imfRuIi+gDnJTnqqJK60ntHjOYUocNx93vmCPjrniWr
+         D/1UkJcyvpeErBarZa6dZk4B7DVD+jC1E0u+wg0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 205/246] drm/amd/pm: parse pp_handle under appropriate conditions
+        patches@lists.linux.dev, Rob Clark <robdclark@gmail.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.1 154/239] drm/msm: fix workqueue leak on bind errors
 Date:   Mon, 15 May 2023 18:26:57 +0200
-Message-Id: <20230515161728.756132208@linuxfoundation.org>
+Message-Id: <20230515161726.301425347@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,59 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 58d9b9a14b47c2a3da6effcbb01607ad7edc0275 upstream.
+commit a75b49db6529b2af049eafd938fae888451c3685 upstream.
 
-amdgpu_dpm_is_overdrive_supported is a common API across all
-asics, so we should cast pp_handle into correct structure
-under different power frameworks.
+Make sure to destroy the workqueue also in case of early errors during
+bind (e.g. a subcomponent failing to bind).
 
-v2: using return directly to simplify code
-v3: SI asic does not carry od_enabled member in pp_handle, and update Fixes tag
+Since commit c3b790ea07a1 ("drm: Manage drm_mode_config_init with
+drmm_") the mode config will be freed when the drm device is released
+also when using the legacy interface, but add an explicit cleanup for
+consistency and to facilitate backporting.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2541
-Fixes: eb4900aa4c49 ("drm/amdgpu: Fix kernel NULL pointer dereference in dpm functions")
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 060530f1ea67 ("drm/msm: use componentised device support")
+Cc: stable@vger.kernel.org      # 3.15
+Cc: Rob Clark <robdclark@gmail.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/525093/
+Link: https://lore.kernel.org/r/20230306100722.28485-9-johan+linaro@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-@@ -1432,15 +1432,21 @@ int amdgpu_dpm_get_smu_prv_buf_details(s
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -456,7 +456,7 @@ static int msm_drm_init(struct device *d
  
- int amdgpu_dpm_is_overdrive_supported(struct amdgpu_device *adev)
- {
--	struct pp_hwmgr *hwmgr = adev->powerplay.pp_handle;
--	struct smu_context *smu = adev->powerplay.pp_handle;
-+	if (is_support_sw_smu(adev)) {
-+		struct smu_context *smu = adev->powerplay.pp_handle;
+ 	ret = msm_init_vram(ddev);
+ 	if (ret)
+-		goto err_put_dev;
++		goto err_cleanup_mode_config;
  
--	if ((is_support_sw_smu(adev) && smu->od_enabled) ||
--	    (is_support_sw_smu(adev) && smu->is_apu) ||
--		(!is_support_sw_smu(adev) && hwmgr->od_enabled))
--		return true;
-+		return (smu->od_enabled || smu->is_apu);
-+	} else {
-+		struct pp_hwmgr *hwmgr;
+ 	/* Bind all our sub-components: */
+ 	ret = component_bind_all(dev, ddev);
+@@ -561,6 +561,9 @@ err_msm_uninit:
  
--	return false;
-+		/* SI asic does not carry od_enabled */
-+		if (adev->family == AMDGPU_FAMILY_SI)
-+			return false;
-+
-+		hwmgr = (struct pp_hwmgr *)adev->powerplay.pp_handle;
-+
-+		return hwmgr->od_enabled;
-+	}
- }
+ err_deinit_vram:
+ 	msm_deinit_vram(ddev);
++err_cleanup_mode_config:
++	drm_mode_config_cleanup(ddev);
++	destroy_workqueue(priv->wq);
+ err_put_dev:
+ 	drm_dev_put(ddev);
  
- int amdgpu_dpm_set_pp_table(struct amdgpu_device *adev,
 
 
