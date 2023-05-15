@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 892317038EE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154EE7033A7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244304AbjEORgo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:36:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55396 "EHLO
+        id S242867AbjEOQkF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244313AbjEORg2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:36:28 -0400
+        with ESMTP id S242897AbjEOQj5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C329014904
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C594219
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 800EE62DAB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EF7C433D2;
-        Mon, 15 May 2023 17:34:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB0EF62867
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992C4C433D2;
+        Mon, 15 May 2023 16:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172042;
-        bh=HEYw3oZHss1TYFer8WLrAXSiqgR99bFvofa/vzJDCnA=;
+        s=korg; t=1684168782;
+        bh=0rA4eYM5UuckOLg09kPwgQB0speykBb3UIQzUBkg+Ts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qAmvjzyO8QD+k5xdKYh5keVruiOFgbz/NIuKpF161jKvx9+NTxsRGzil7W+3xM/D5
-         mLAdRiqNvVhMSFjGacAVMxJbVK4X+zO7+qFgWguR7ahCL0pYvW+j48N9AbSYWB7UCZ
-         Qy0NsC9F5mGOaUGHTbdLQwepyVN6hKsiUHjrqy/4=
+        b=Dlb+Bzb3UPecLbqY4abcZi4wACnHPjy8SMLVqaq94cmPq8jQ0FuOCokeobbXOtygC
+         H9bE2mD6Pwj1xNbnWDzMMMxlDmLS+kOFl7qllRcgQ8Kx7O9nwdNe/h9b1m3s5N4sEv
+         rs8yKtgopVhmRXc2J+fPIQn7Z3XQc+2hjh5PF+/g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Biggers <ebiggers@google.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 025/381] blk-crypto: make blk_crypto_evict_key() return void
-Date:   Mon, 15 May 2023 18:24:36 +0200
-Message-Id: <20230515161737.922936206@linuxfoundation.org>
+        patches@lists.linux.dev, Tang Bin <tangbin@cmss.chinamobile.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 040/191] media: rcar_fdp1: Fix the correct variable assignments
+Date:   Mon, 15 May 2023 18:24:37 +0200
+Message-Id: <20230515161708.649543401@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,79 +57,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
+From: Tang Bin <tangbin@cmss.chinamobile.com>
 
-commit 70493a63ba04f754f7a7dd53a4fcc82700181490 upstream.
+[ Upstream commit af88c2adbb72a09ab1bb5c37ba388c98fecca69b ]
 
-blk_crypto_evict_key() is only called in contexts such as inode eviction
-where failure is not an option.  So there is nothing the caller can do
-with errors except log them.  (dm-table.c does "use" the error code, but
-only to pass on to upper layers, so it doesn't really count.)
+In the function fdp1_probe(), when get irq failed, the
+function platform_get_irq() log an error message, so
+remove redundant message here. And the variable type
+of "ret" is int, the "fdp1->irq" is unsigned int, when
+irq failed, this place maybe wrong, thus fix it.
 
-Just make blk_crypto_evict_key() return void and log errors itself.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230315183907.53675-2-ebiggers@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto.c         |   22 ++++++++++------------
- include/linux/blk-crypto.h |    4 ++--
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ drivers/media/platform/rcar_fdp1.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/block/blk-crypto.c
-+++ b/block/blk-crypto.c
-@@ -13,6 +13,7 @@
- #include <linux/blkdev.h>
- #include <linux/keyslot-manager.h>
- #include <linux/module.h>
-+#include <linux/ratelimit.h>
- #include <linux/slab.h>
+diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
+index 2bd5898a62044..e1c8701d44ade 100644
+--- a/drivers/media/platform/rcar_fdp1.c
++++ b/drivers/media/platform/rcar_fdp1.c
+@@ -2287,11 +2287,10 @@ static int fdp1_probe(struct platform_device *pdev)
+ 		return PTR_ERR(fdp1->regs);
  
- #include "blk-crypto-internal.h"
-@@ -393,19 +394,16 @@ int blk_crypto_start_using_key(const str
-  * Upper layers (filesystems) must call this function to ensure that a key is
-  * evicted from any hardware that it might have been programmed into.  The key
-  * must not be in use by any in-flight IO when this function is called.
-- *
-- * Return: 0 on success or if key is not present in the q's ksm, -err on error.
-  */
--int blk_crypto_evict_key(struct request_queue *q,
--			 const struct blk_crypto_key *key)
-+void blk_crypto_evict_key(struct request_queue *q,
-+			  const struct blk_crypto_key *key)
- {
--	if (blk_ksm_crypto_cfg_supported(q->ksm, &key->crypto_cfg))
--		return blk_ksm_evict_key(q->ksm, key);
-+	int err;
+ 	/* Interrupt service routine registration */
+-	fdp1->irq = ret = platform_get_irq(pdev, 0);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "cannot find IRQ\n");
++	ret = platform_get_irq(pdev, 0);
++	if (ret < 0)
+ 		return ret;
+-	}
++	fdp1->irq = ret;
  
--	/*
--	 * If the request queue's associated inline encryption hardware didn't
--	 * have support for the key, then the key might have been programmed
--	 * into the fallback keyslot manager, so try to evict from there.
--	 */
--	return blk_crypto_fallback_evict_key(key);
-+	if (blk_ksm_crypto_cfg_supported(q->ksm, &key->crypto_cfg))
-+		err = blk_ksm_evict_key(q->ksm, key);
-+	else
-+		err = blk_crypto_fallback_evict_key(key);
-+	if (err)
-+		pr_warn_ratelimited("error %d evicting key\n", err);
- }
---- a/include/linux/blk-crypto.h
-+++ b/include/linux/blk-crypto.h
-@@ -97,8 +97,8 @@ int blk_crypto_init_key(struct blk_crypt
- int blk_crypto_start_using_key(const struct blk_crypto_key *key,
- 			       struct request_queue *q);
- 
--int blk_crypto_evict_key(struct request_queue *q,
--			 const struct blk_crypto_key *key);
-+void blk_crypto_evict_key(struct request_queue *q,
-+			  const struct blk_crypto_key *key);
- 
- bool blk_crypto_config_supported(struct request_queue *q,
- 				 const struct blk_crypto_config *cfg);
+ 	ret = devm_request_irq(&pdev->dev, fdp1->irq, fdp1_irq_handler, 0,
+ 			       dev_name(&pdev->dev), fdp1);
+-- 
+2.39.2
+
 
 
