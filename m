@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B246C703938
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EEDF70333B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244506AbjEORkY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33744 "EHLO
+        id S242440AbjEOQei (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244604AbjEORkA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:00 -0400
+        with ESMTP id S242552AbjEOQeh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:34:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF5E1B766
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C7E35B3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF8DA62DEA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D465AC433EF;
-        Mon, 15 May 2023 17:36:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9085627E1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52E6C433EF;
+        Mon, 15 May 2023 16:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172204;
-        bh=yNNOQDUTepK3CVuIAj0W+0yKY+IttWeLcLyIp9e+2Cg=;
+        s=korg; t=1684168475;
+        bh=LkAPXPK0lll2/jfzIHfKXU86S2yvHjGHlLhMFb+Wo4U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zxhA8b8wQTV/HWNq3f/RT8rrKAJMMOzFyJsSTwKQ3wMbkb6KUfWblaVId6ITY7l9X
-         K9ys8E5TJy4XeRdtgJpCapG8tTnJP4lE8wrm73nvlMhsc/xFGCtBD5bS+9K8ubTq41
-         zqiezwdVlOUzSaE/jY7FbGVhdDstEMQmyL/IZXR4=
+        b=XFWq/aLL7NJQ3/NELZPTAtgmVu4PxSLb7zaQ6Jvr4uR8k1lyDxqmBEvD+khwfr3Ge
+         cGcuD+DY4JRqbYp8rUN7kKmgd+QJCEC56cG7Z402+Y9VLXWYh3xGZBK9d4O2b/ZiZR
+         acdE5MipoZIQ3fpF+ZYPdtWz4FBQyX9SpeX1eFN0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/381] arm64: dts: renesas: r8a77990: Remove bogus voltages from OPP table
+Subject: [PATCH 4.14 032/116] net/packet: convert po->origdev to an atomic flag
 Date:   Mon, 15 May 2023 18:25:29 +0200
-Message-Id: <20230515161740.337883098@linuxfoundation.org>
+Message-Id: <20230515161659.336552154@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +55,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fb76b0fae3ca880363214e1dcd6513ab8bd529e7 ]
+[ Upstream commit ee5675ecdf7a4e713ed21d98a70c2871d6ebed01 ]
 
-According to the R-Car Series, 3rd Generation Hardware User’s Manual
-Rev. 2.30, the System CPU cores on R-Car E3 do not have their own power
-supply, but use the common internal power supply (typical 1.03V).
+syzbot/KCAN reported that po->origdev can be read
+while another thread is changing its value.
 
-Hence remove the "opp-microvolt" properties from the Operating
-Performance Points table.  They are optional, and unused, when none of
-the CPU nodes is tied to a regulator using the "cpu-supply" property.
+We can avoid this splat by converting this field
+to an actual bit.
 
-Fixes: dd7188eb4ed128dc ("arm64: dts: renesas: r8a77990: Add OPPs table for cpu devices")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/9232578d9d395d529f64db3333a371e31327f459.1676560856.git.geert+renesas@glider.be
+Following patches will convert remaining 1bit fields.
+
+Fixes: 80feaacb8a64 ("[AF_PACKET]: Add option to return orig_dev to userspace.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a77990.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ net/packet/af_packet.c | 10 ++++------
+ net/packet/diag.c      |  2 +-
+ net/packet/internal.h  | 22 +++++++++++++++++++++-
+ 3 files changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a77990.dtsi b/arch/arm64/boot/dts/renesas/r8a77990.dtsi
-index 37159b9408e8a..e91d197a4c0b4 100644
---- a/arch/arm64/boot/dts/renesas/r8a77990.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a77990.dtsi
-@@ -60,17 +60,14 @@
- 		opp-shared;
- 		opp-800000000 {
- 			opp-hz = /bits/ 64 <800000000>;
--			opp-microvolt = <820000>;
- 			clock-latency-ns = <300000>;
- 		};
- 		opp-1000000000 {
- 			opp-hz = /bits/ 64 <1000000000>;
--			opp-microvolt = <820000>;
- 			clock-latency-ns = <300000>;
- 		};
- 		opp-1200000000 {
- 			opp-hz = /bits/ 64 <1200000000>;
--			opp-microvolt = <820000>;
- 			clock-latency-ns = <300000>;
- 			opp-suspend;
- 		};
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 1be5fb6af0178..ce6afdb50933b 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2144,7 +2144,7 @@ static int packet_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll = &PACKET_SKB_CB(skb)->sa.ll;
+ 	sll->sll_hatype = dev->type;
+ 	sll->sll_pkttype = skb->pkt_type;
+-	if (unlikely(po->origdev))
++	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+ 	else
+ 		sll->sll_ifindex = dev->ifindex;
+@@ -2410,7 +2410,7 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll->sll_hatype = dev->type;
+ 	sll->sll_protocol = skb->protocol;
+ 	sll->sll_pkttype = skb->pkt_type;
+-	if (unlikely(po->origdev))
++	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+ 	else
+ 		sll->sll_ifindex = dev->ifindex;
+@@ -3879,9 +3879,7 @@ packet_setsockopt(struct socket *sock, int level, int optname, char __user *optv
+ 		if (copy_from_user(&val, optval, sizeof(val)))
+ 			return -EFAULT;
+ 
+-		lock_sock(sk);
+-		po->origdev = !!val;
+-		release_sock(sk);
++		packet_sock_flag_set(po, PACKET_SOCK_ORIGDEV, val);
+ 		return 0;
+ 	}
+ 	case PACKET_VNET_HDR:
+@@ -4014,7 +4012,7 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
+ 		val = po->auxdata;
+ 		break;
+ 	case PACKET_ORIGDEV:
+-		val = po->origdev;
++		val = packet_sock_flag(po, PACKET_SOCK_ORIGDEV);
+ 		break;
+ 	case PACKET_VNET_HDR:
+ 		val = po->has_vnet_hdr;
+diff --git a/net/packet/diag.c b/net/packet/diag.c
+index 7ef1c881ae741..bf5928e5df035 100644
+--- a/net/packet/diag.c
++++ b/net/packet/diag.c
+@@ -24,7 +24,7 @@ static int pdiag_put_info(const struct packet_sock *po, struct sk_buff *nlskb)
+ 		pinfo.pdi_flags |= PDI_RUNNING;
+ 	if (po->auxdata)
+ 		pinfo.pdi_flags |= PDI_AUXDATA;
+-	if (po->origdev)
++	if (packet_sock_flag(po, PACKET_SOCK_ORIGDEV))
+ 		pinfo.pdi_flags |= PDI_ORIGDEV;
+ 	if (po->has_vnet_hdr)
+ 		pinfo.pdi_flags |= PDI_VNETHDR;
+diff --git a/net/packet/internal.h b/net/packet/internal.h
+index f10294800aafb..f39dcc7608bc6 100644
+--- a/net/packet/internal.h
++++ b/net/packet/internal.h
+@@ -115,9 +115,9 @@ struct packet_sock {
+ 	int			copy_thresh;
+ 	spinlock_t		bind_lock;
+ 	struct mutex		pg_vec_lock;
++	unsigned long		flags;
+ 	unsigned int		running;	/* bind_lock must be held */
+ 	unsigned int		auxdata:1,	/* writer must hold sock lock */
+-				origdev:1,
+ 				has_vnet_hdr:1,
+ 				tp_loss:1,
+ 				tp_tx_has_off:1;
+@@ -142,4 +142,24 @@ static struct packet_sock *pkt_sk(struct sock *sk)
+ 	return (struct packet_sock *)sk;
+ }
+ 
++enum packet_sock_flags {
++	PACKET_SOCK_ORIGDEV,
++};
++
++static inline void packet_sock_flag_set(struct packet_sock *po,
++					enum packet_sock_flags flag,
++					bool val)
++{
++	if (val)
++		set_bit(flag, &po->flags);
++	else
++		clear_bit(flag, &po->flags);
++}
++
++static inline bool packet_sock_flag(const struct packet_sock *po,
++				    enum packet_sock_flags flag)
++{
++	return test_bit(flag, &po->flags);
++}
++
+ #endif
 -- 
 2.39.2
 
