@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B68B703924
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75C107034BE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244446AbjEORjc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
+        id S243087AbjEOQvz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243915AbjEORjQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:39:16 -0400
+        with ESMTP id S243165AbjEOQvi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04AF510E4C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51095FC4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DDD662DDB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:36:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4137DC4339C;
-        Mon, 15 May 2023 17:36:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B12562970
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421D4C433EF;
+        Mon, 15 May 2023 16:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172191;
-        bh=ovHfEM0fyjLv6XsaWbJU/Bs5Arfg6u26HFvANVF/FWM=;
+        s=korg; t=1684169491;
+        bh=PvErCNWy9upi3n+FPP0v22rDzyW1zD8pthpoUcTZ12w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s7NTaVHsU6yqfFhVV82HDMSqPnRjhm34jNYrVphJLUKYyykrzbal3Q8Gt5rK7z1Lw
-         MDk4+7wWN2Nk9ju0cnhpo3hJgk1RBV2ieeDCBaeutPubdSrhiL9KiBnMdZpWZjGOxN
-         RHygD0oEjlUkFS2Dux+u0+zULvWY0Rbkwdh0HeJk=
+        b=sY/6zsYqO7Y7cMoq9jW7htadmwvlYlweLoZfXND/nrWq/C0Gu8Zvyts5yzgprZMY9
+         fRuA9vJXm1vmsYM0873qodoDLkW8PkqEmrKXvSqtRAA8ztze0rN2AcRmCmHa+BEwZw
+         IgsUUo1MtHnWEDlnIEZRJGeUhSg0BdIlbOWC05AY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.10 034/381] kheaders: Use array declaration instead of char
-Date:   Mon, 15 May 2023 18:24:45 +0200
-Message-Id: <20230515161738.346763618@linuxfoundation.org>
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 074/246] octeontx2-pf: Disable packet I/O for graceful exit
+Date:   Mon, 15 May 2023 18:24:46 +0200
+Message-Id: <20230515161724.790822644@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,75 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit b69edab47f1da8edd8e7bfdf8c70f51a2a5d89fb upstream.
+[ Upstream commit c926252205c424c4842dbdbe02f8e3296f623204 ]
 
-Under CONFIG_FORTIFY_SOURCE, memcpy() will check the size of destination
-and source buffers. Defining kernel_headers_data as "char" would trip
-this check. Since these addresses are treated as byte arrays, define
-them as arrays (as done everywhere else).
+At the stage of enabling packet I/O in otx2_open, If mailbox
+timeout occurs then interface ends up in down state where as
+hardware packet I/O is enabled. Hence disable packet I/O also
+before bailing out.
 
-This was seen with:
-
-  $ cat /sys/kernel/kheaders.tar.xz >> /dev/null
-
-  detected buffer overflow in memcpy
-  kernel BUG at lib/string_helpers.c:1027!
-  ...
-  RIP: 0010:fortify_panic+0xf/0x20
-  [...]
-  Call Trace:
-   <TASK>
-   ikheaders_read+0x45/0x50 [kheaders]
-   kernfs_fop_read_iter+0x1a4/0x2f0
-  ...
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/bpf/20230302112130.6e402a98@kernel.org/
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Jakub Kicinski <kuba@kernel.org>
-Fixes: 43d8ce9d65a5 ("Provide in-kernel headers to make extending kernel easier")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230302224946.never.243-kees@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ea0166da050 ("octeontx2-pf: Fix the device state on error")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kheaders.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/kernel/kheaders.c
-+++ b/kernel/kheaders.c
-@@ -26,15 +26,15 @@ asm (
- "	.popsection				\n"
- );
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index a75c944cc739d..18284ad751572 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1835,13 +1835,22 @@ int otx2_open(struct net_device *netdev)
+ 		otx2_dmacflt_reinstall_flows(pf);
  
--extern char kernel_headers_data;
--extern char kernel_headers_data_end;
-+extern char kernel_headers_data[];
-+extern char kernel_headers_data_end[];
+ 	err = otx2_rxtx_enable(pf, true);
+-	if (err)
++	/* If a mbox communication error happens at this point then interface
++	 * will end up in a state such that it is in down state but hardware
++	 * mcam entries are enabled to receive the packets. Hence disable the
++	 * packet I/O.
++	 */
++	if (err == EIO)
++		goto err_disable_rxtx;
++	else if (err)
+ 		goto err_tx_stop_queues;
  
- static ssize_t
- ikheaders_read(struct file *file,  struct kobject *kobj,
- 	       struct bin_attribute *bin_attr,
- 	       char *buf, loff_t off, size_t len)
- {
--	memcpy(buf, &kernel_headers_data + off, len);
-+	memcpy(buf, &kernel_headers_data[off], len);
- 	return len;
- }
+ 	otx2_do_set_rx_mode(pf);
  
-@@ -48,8 +48,8 @@ static struct bin_attribute kheaders_att
+ 	return 0;
  
- static int __init ikheaders_init(void)
- {
--	kheaders_attr.size = (&kernel_headers_data_end -
--			      &kernel_headers_data);
-+	kheaders_attr.size = (kernel_headers_data_end -
-+			      kernel_headers_data);
- 	return sysfs_create_bin_file(kernel_kobj, &kheaders_attr);
- }
- 
++err_disable_rxtx:
++	otx2_rxtx_enable(pf, false);
+ err_tx_stop_queues:
+ 	netif_tx_stop_all_queues(netdev);
+ 	netif_carrier_off(netdev);
+-- 
+2.39.2
+
 
 
