@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA01370369C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBE27039AF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243781AbjEORL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55462 "EHLO
+        id S244646AbjEORpP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243605AbjEORLc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:32 -0400
+        with ESMTP id S244706AbjEORox (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 498DD72B3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58DC61B090
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28925620FF
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C792C433D2;
-        Mon, 15 May 2023 17:09:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A351B62E6F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A00C433EF;
+        Mon, 15 May 2023 17:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170585;
-        bh=/BZDfdZh+7pjby76Bk5kvnrPm/wW7RJBSV9FyR+uujE=;
+        s=korg; t=1684172547;
+        bh=QLwEUQ8r5I1I2kHhKLZebL/h2n+2wf1rb1yeKN38Q7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1uC1NFWER4TLQ9tmm8vCnIJKmEnVZjsLRFRbbDVLoL1mvJTb1nVEw5j0zVxKti/Ei
-         cQsEEep3CX9TAPBy6fIwDJ4mQPu07WwoHb2asFkJzoT50zwW8hNbc2TumiuLtjy965
-         f8/x8ETTQXTzyisjarY9BPJ1NzsqT7KG52nvwJQw=
+        b=cPcGkGv/Nv6tX4p4vjH43NGU1f05/lhbyS0aXLjQz7tJn1emogthN//nY9sgd+z+E
+         fkJmKOpB5ZMS5SxLkYOnT6P4gbDZQQthIWETIeN6ecvZCtVBq+v96YZ1TE1TvWmbxa
+         4jt4WoRmnHsfubk9pF2BbVybuqCMd0gMfML4BBvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Graham Sider <Graham.Sider@amd.com>,
-        Jack Xiao <Jack.Xiao@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 176/239] drm/amdgpu: remove deprecated MES version vars
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 188/381] Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work"
 Date:   Mon, 15 May 2023 18:27:19 +0200
-Message-Id: <20230515161726.944845799@linuxfoundation.org>
+Message-Id: <20230515161745.303860687@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Graham Sider <Graham.Sider@amd.com>
+From: Liu Jian <liujian56@huawei.com>
 
-commit 6040517e4a29d3828160c571681eec9ffe10043f upstream.
+[ Upstream commit db2bf510bd5d57f064d9e1db395ed86a08320c54 ]
 
-MES scheduler and kiq versions are stored in mes.sched_version and
-mes.kiq_version, respectively, which are read from a register after
-their queues are initialized. Remove mes.ucode_fw_version and
-mes.data_fw_version which tried to read this versioning info from the
-firmware headers (which don't contain this information).
+This reverts commit 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
 
-Signed-off-by: Graham Sider <Graham.Sider@amd.com>
-Reviewed-by: Jack Xiao <Jack.Xiao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch introduces a possible null-ptr-def problem. Revert it. And the
+fixed bug by this patch have resolved by commit 73f7b171b7c0 ("Bluetooth:
+btsdio: fix use after free bug in btsdio_remove due to race condition").
+
+Fixes: 1e9ac114c442 ("Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |    2 --
- drivers/gpu/drm/amd/amdgpu/mes_v10_1.c  |    4 ----
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |    4 ----
- 3 files changed, 10 deletions(-)
+ drivers/bluetooth/btsdio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-@@ -91,14 +91,12 @@ struct amdgpu_mes {
- 	struct amdgpu_bo		*ucode_fw_obj[AMDGPU_MAX_MES_PIPES];
- 	uint64_t			ucode_fw_gpu_addr[AMDGPU_MAX_MES_PIPES];
- 	uint32_t			*ucode_fw_ptr[AMDGPU_MAX_MES_PIPES];
--	uint32_t                        ucode_fw_version[AMDGPU_MAX_MES_PIPES];
- 	uint64_t                        uc_start_addr[AMDGPU_MAX_MES_PIPES];
+diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
+index 7050a16e7efeb..199e8f7d426d9 100644
+--- a/drivers/bluetooth/btsdio.c
++++ b/drivers/bluetooth/btsdio.c
+@@ -352,7 +352,6 @@ static void btsdio_remove(struct sdio_func *func)
  
- 	/* mes ucode data */
- 	struct amdgpu_bo		*data_fw_obj[AMDGPU_MAX_MES_PIPES];
- 	uint64_t			data_fw_gpu_addr[AMDGPU_MAX_MES_PIPES];
- 	uint32_t			*data_fw_ptr[AMDGPU_MAX_MES_PIPES];
--	uint32_t                        data_fw_version[AMDGPU_MAX_MES_PIPES];
- 	uint64_t                        data_start_addr[AMDGPU_MAX_MES_PIPES];
+ 	BT_DBG("func %p", func);
  
- 	/* eop gpu obj */
---- a/drivers/gpu/drm/amd/amdgpu/mes_v10_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v10_1.c
-@@ -415,10 +415,6 @@ static int mes_v10_1_init_microcode(stru
+-	cancel_work_sync(&data->work);
+ 	if (!data)
+ 		return;
  
- 	mes_hdr = (const struct mes_firmware_header_v1_0 *)
- 		adev->mes.fw[pipe]->data;
--	adev->mes.ucode_fw_version[pipe] =
--		le32_to_cpu(mes_hdr->mes_ucode_version);
--	adev->mes.ucode_fw_version[pipe] =
--		le32_to_cpu(mes_hdr->mes_ucode_data_version);
- 	adev->mes.uc_start_addr[pipe] =
- 		le32_to_cpu(mes_hdr->mes_uc_start_addr_lo) |
- 		((uint64_t)(le32_to_cpu(mes_hdr->mes_uc_start_addr_hi)) << 32);
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -484,10 +484,6 @@ static int mes_v11_0_init_microcode(stru
- 
- 	mes_hdr = (const struct mes_firmware_header_v1_0 *)
- 		adev->mes.fw[pipe]->data;
--	adev->mes.ucode_fw_version[pipe] =
--		le32_to_cpu(mes_hdr->mes_ucode_version);
--	adev->mes.ucode_fw_version[pipe] =
--		le32_to_cpu(mes_hdr->mes_ucode_data_version);
- 	adev->mes.uc_start_addr[pipe] =
- 		le32_to_cpu(mes_hdr->mes_uc_start_addr_lo) |
- 		((uint64_t)(le32_to_cpu(mes_hdr->mes_uc_start_addr_hi)) << 32);
+-- 
+2.39.2
+
 
 
