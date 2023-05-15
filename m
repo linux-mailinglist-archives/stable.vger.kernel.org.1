@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6DC2703801
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71FA70387B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244192AbjEOR0a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:26:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47190 "EHLO
+        id S244288AbjEORct (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244194AbjEOR0K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:10 -0400
+        with ESMTP id S244303AbjEORca (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6005589
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C5A11D84
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6DD762C9D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC073C433EF;
-        Mon, 15 May 2023 17:24:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACB8A62D0F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788A0C4339B;
+        Mon, 15 May 2023 17:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171489;
-        bh=+7DkxtFzIOdif4hJ3kBkuIPQItBnwBZBBIBsXhy3dsk=;
+        s=korg; t=1684171779;
+        bh=76PnOE9v75Y2guwF1juenUlk/2HA0gRnsoBcKDL3FqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZsrKC169tTyM42OpXVOveIhzbU6rILsZFMxnktgY+U1tPfyiDfD43f3kc/GO804va
-         c+oOAY3k7hcpZqs+q+25D8HjYFllimu98WgrH3xLmdvrpZfUrIlrEOAOZPh4kwN8TB
-         pD9jDxd7DsHjwXqSx1rdjGiVdOpoZiiGGALK2ISE=
+        b=VBzYc16oKD7MQwQdK4PU5jiw5ryuHGz7YsypZNRFOt0tNm+aEqCgGH+N4vIGjVM+6
+         Gj7+fzm87mVGmr+DcbrocAYWw0NiXj8GRM5EWeu48sY7Dp3BTraTW1GfKfvRD16ISB
+         eCovD0FWLvm+slXalJBw9A1R03lwlimtiNUcStMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com,
-        syzbot+8785e41224a3afd04321@syzkaller.appspotmail.com,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 225/242] ext4: avoid a potential slab-out-of-bounds in ext4_group_desc_csum
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 074/134] SMB3: force unmount was failing to close deferred close files
 Date:   Mon, 15 May 2023 18:29:11 +0200
-Message-Id: <20230515161728.669961745@linuxfoundation.org>
+Message-Id: <20230515161705.634771653@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,99 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit 4f04351888a83e595571de672e0a4a8b74f4fb31 upstream.
+commit 2cb6f968775a9fd60c90a6042b9550bcec3ea087 upstream.
 
-When modifying the block device while it is mounted by the filesystem,
-syzbot reported the following:
+In investigating a failure with xfstest generic/392 it
+was noticed that mounts were reusing a superblock that should
+already have been freed. This turned out to be related to
+deferred close files keeping a reference count until the
+closetimeo expired.
 
-BUG: KASAN: slab-out-of-bounds in crc16+0x206/0x280 lib/crc16.c:58
-Read of size 1 at addr ffff888075f5c0a8 by task syz-executor.2/15586
+Currently the only way an fs knows that mount is beginning is
+when force unmount is called, but when this, ie umount_begin(),
+is called all deferred close files on the share (tree
+connection) should be closed immediately (unless shared by
+another mount) to avoid using excess resources on the server
+and to avoid reusing a superblock which should already be freed.
 
-CPU: 1 PID: 15586 Comm: syz-executor.2 Not tainted 6.2.0-rc5-syzkaller-00205-gc96618275234 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
- print_address_description+0x74/0x340 mm/kasan/report.c:306
- print_report+0x107/0x1f0 mm/kasan/report.c:417
- kasan_report+0xcd/0x100 mm/kasan/report.c:517
- crc16+0x206/0x280 lib/crc16.c:58
- ext4_group_desc_csum+0x81b/0xb20 fs/ext4/super.c:3187
- ext4_group_desc_csum_set+0x195/0x230 fs/ext4/super.c:3210
- ext4_mb_clear_bb fs/ext4/mballoc.c:6027 [inline]
- ext4_free_blocks+0x191a/0x2810 fs/ext4/mballoc.c:6173
- ext4_remove_blocks fs/ext4/extents.c:2527 [inline]
- ext4_ext_rm_leaf fs/ext4/extents.c:2710 [inline]
- ext4_ext_remove_space+0x24ef/0x46a0 fs/ext4/extents.c:2958
- ext4_ext_truncate+0x177/0x220 fs/ext4/extents.c:4416
- ext4_truncate+0xa6a/0xea0 fs/ext4/inode.c:4342
- ext4_setattr+0x10c8/0x1930 fs/ext4/inode.c:5622
- notify_change+0xe50/0x1100 fs/attr.c:482
- do_truncate+0x200/0x2f0 fs/open.c:65
- handle_truncate fs/namei.c:3216 [inline]
- do_open fs/namei.c:3561 [inline]
- path_openat+0x272b/0x2dd0 fs/namei.c:3714
- do_filp_open+0x264/0x4f0 fs/namei.c:3741
- do_sys_openat2+0x124/0x4e0 fs/open.c:1310
- do_sys_open fs/open.c:1326 [inline]
- __do_sys_creat fs/open.c:1402 [inline]
- __se_sys_creat fs/open.c:1396 [inline]
- __x64_sys_creat+0x11f/0x160 fs/open.c:1396
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f72f8a8c0c9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f72f97e3168 EFLAGS: 00000246 ORIG_RAX: 0000000000000055
-RAX: ffffffffffffffda RBX: 00007f72f8bac050 RCX: 00007f72f8a8c0c9
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000280
-RBP: 00007f72f8ae7ae9 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffd165348bf R14: 00007f72f97e3300 R15: 0000000000022000
+In umount_begin, close all deferred close handles for that
+share if this is the last mount using that share on this
+client (ie send the SMB3 close request over the wire for those
+that have been already closed by the app but that we have
+kept a handle lease open for and have not sent closes to the
+server for yet).
 
-Replace
-	le16_to_cpu(sbi->s_es->s_desc_size)
-with
-	sbi->s_desc_size
-
-It reduces ext4's compiled text size, and makes the code more efficient
-(we remove an extra indirect reference and a potential byte
-swap on big endian systems), and there is no downside. It also avoids the
-potential KASAN / syzkaller failure, as a bonus.
-
-Reported-by: syzbot+fc51227e7100c9294894@syzkaller.appspotmail.com
-Reported-by: syzbot+8785e41224a3afd04321@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=70d28d11ab14bd7938f3e088365252aa923cff42
-Link: https://syzkaller.appspot.com/bug?id=b85721b38583ecc6b5e72ff524c67302abbc30f3
-Link: https://lore.kernel.org/all/000000000000ece18705f3b20934@google.com/
-Fixes: 717d50e4971b ("Ext4: Uninitialized Block Groups")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20230504121525.3275886-1-tudor.ambarus@linaro.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: David Howells <dhowells@redhat.com>
+Acked-by: Bharath SM <bharathsm@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 78c09634f7dc ("Cifs: Fix kernel oops caused by deferred close for files.")
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/cifs/cifsfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -3195,11 +3195,9 @@ static __le16 ext4_group_desc_csum(struc
- 	crc = crc16(crc, (__u8 *)gdp, offset);
- 	offset += sizeof(gdp->bg_checksum); /* skip checksum */
- 	/* for checksum of struct ext4_group_desc do the rest...*/
--	if (ext4_has_feature_64bit(sb) &&
--	    offset < le16_to_cpu(sbi->s_es->s_desc_size))
-+	if (ext4_has_feature_64bit(sb) && offset < sbi->s_desc_size)
- 		crc = crc16(crc, (__u8 *)gdp + offset,
--			    le16_to_cpu(sbi->s_es->s_desc_size) -
--				offset);
-+			    sbi->s_desc_size - offset);
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -715,6 +715,7 @@ static void cifs_umount_begin(struct sup
+ 		tcon->tidStatus = CifsExiting;
+ 	spin_unlock(&cifs_tcp_ses_lock);
  
- out:
- 	return cpu_to_le16(crc);
++	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
 
 
