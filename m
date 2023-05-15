@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F077038D2
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A91B703A9A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244314AbjEORfR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54480 "EHLO
+        id S244956AbjEORxD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:53:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244313AbjEORev (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:51 -0400
+        with ESMTP id S244883AbjEORwp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:52:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32344C9E7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:33:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D8C211D89;
+        Mon, 15 May 2023 10:50:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14B2F62D76
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A10AC433EF;
-        Mon, 15 May 2023 17:33:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BF3662F5D;
+        Mon, 15 May 2023 17:50:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C90DC433D2;
+        Mon, 15 May 2023 17:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171981;
-        bh=1O3SMvTGFm3hQCJ79tdKQ9yjpHspQL5nzyUZz/PHxGs=;
+        s=korg; t=1684173028;
+        bh=FWrdJUOVDUfaF82ePCRRUrLyhKUa8xyRp8tooUuq0sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J8GZpNs0gA2/IV6OgkDcs4wgtpaS0dZ4wVGK0HffdHST7Mk6uiFVXmLVx9vcJsqws
-         rQjoVUFhWWk9vhDW3/dUedOh4oSBY1j0puZD/ClUxoqmX7MBZb+NsU8/0/3iag1/2m
-         sd8lirSNNU+GBA0P+PzR5oaALfUMl/JDl4GBSFrg=
+        b=S/IPdxKwIUV/FsDryI7XekHI8RU9Gg9e4dwi8weWjdDFeP02U8d3lCvuvh67mJjrs
+         aWdMp/TPjtqdo/UwYQjhMPptlFnG8XRMLOOw0ETFObMFw1usaEFJ8DMp6yW6J5JWKj
+         Cb6NmrGTkdAOO6ZB5cjt7Mum/ZuHLN2jFrmbj+58=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tim Murray <timmurray@google.com>,
-        John Stultz <jstultz@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Waiman Long <longman@redhat.com>
-Subject: [PATCH 5.15 118/134] locking/rwsem: Add __always_inline annotation to __down_read_common() and inlined callers
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Igor Zhbanov <izh1979@gmail.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Subject: [PATCH 5.10 344/381] sh: nmi_debug: fix return value of __setup handler
 Date:   Mon, 15 May 2023 18:29:55 +0200
-Message-Id: <20230515161707.067231801@linuxfoundation.org>
+Message-Id: <20230515161752.406414800@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Stultz <jstultz@google.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 92cc5d00a431e96e5a49c0b97e5ad4fa7536bd4b upstream.
+commit d1155e4132de712a9d3066e2667ceaad39a539c5 upstream.
 
-Apparently despite it being marked inline, the compiler
-may not inline __down_read_common() which makes it difficult
-to identify the cause of lock contention, as the blocked
-function in traceevents will always be listed as
-__down_read_common().
+__setup() handlers should return 1 to obsolete_checksetup() in
+init/main.c to indicate that the boot option has been handled.
+A return of 0 causes the boot option/value to be listed as an Unknown
+kernel parameter and added to init's (limited) argument or environment
+strings. Also, error return codes don't mean anything to
+obsolete_checksetup() -- only non-zero (usually 1) or zero.
+So return 1 from nmi_debug_setup().
 
-So this patch adds __always_inline annotation to the common
-function (as well as the inlined helper callers) to force it to
-be inlined so the blocking function will be listed (via Wchan)
-in traceevents.
-
-Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
-Reported-by: Tim Murray <timmurray@google.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
+Fixes: 1e1030dccb10 ("sh: nmi_debug support.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <izh1979@gmail.com>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20230503023351.2832796-1-jstultz@google.com
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-3-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/rwsem.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/sh/kernel/nmi_debug.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1221,7 +1221,7 @@ static struct rw_semaphore *rwsem_downgr
- /*
-  * lock for reading
-  */
--static inline int __down_read_common(struct rw_semaphore *sem, int state)
-+static __always_inline int __down_read_common(struct rw_semaphore *sem, int state)
- {
- 	int ret = 0;
- 	long count;
-@@ -1239,17 +1239,17 @@ out:
- 	return ret;
- }
+--- a/arch/sh/kernel/nmi_debug.c
++++ b/arch/sh/kernel/nmi_debug.c
+@@ -49,7 +49,7 @@ static int __init nmi_debug_setup(char *
+ 	register_die_notifier(&nmi_debug_nb);
  
--static inline void __down_read(struct rw_semaphore *sem)
-+static __always_inline void __down_read(struct rw_semaphore *sem)
- {
- 	__down_read_common(sem, TASK_UNINTERRUPTIBLE);
- }
+ 	if (*str != '=')
+-		return 0;
++		return 1;
  
--static inline int __down_read_interruptible(struct rw_semaphore *sem)
-+static __always_inline int __down_read_interruptible(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_INTERRUPTIBLE);
- }
+ 	for (p = str + 1; *p; p = sep + 1) {
+ 		sep = strchr(p, ',');
+@@ -70,6 +70,6 @@ static int __init nmi_debug_setup(char *
+ 			break;
+ 	}
  
--static inline int __down_read_killable(struct rw_semaphore *sem)
-+static __always_inline int __down_read_killable(struct rw_semaphore *sem)
- {
- 	return __down_read_common(sem, TASK_KILLABLE);
+-	return 0;
++	return 1;
  }
+ __setup("nmi_debug", nmi_debug_setup);
 
 
