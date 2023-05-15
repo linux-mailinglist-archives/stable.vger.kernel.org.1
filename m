@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 423CB703974
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C19470373C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244522AbjEORml (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34332 "EHLO
+        id S243955AbjEORSc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244514AbjEORmU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:20 -0400
+        with ESMTP id S243892AbjEORSH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:18:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7F2185
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:39:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E22A1208E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E52CD62E23
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:39:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEDAC433D2;
-        Mon, 15 May 2023 17:39:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA08D62BF2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A45AC433D2;
+        Mon, 15 May 2023 17:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172393;
-        bh=5Xz6DNewh+6cg6nd7xwBDceSdpGCKhYyujgZh2gky+s=;
+        s=korg; t=1684170987;
+        bh=m+7bGDcI+9DDsW0W0xRZViwW26Ueg+FnpAL8s9AlPgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TFR8+3P3dS54o7D4Dy6rlq8tVYVRNL4n+GIYKhLcEbygmeQ1t8fXMdWmsa+CpWivl
-         4qw3xx+NSH8yZzpq7bbsR8OZtwSvGzCqeYbmqR5wFJ/snDJdTu3okS7YvRAJhgbCIe
-         ubXwl7pVIZ0In6ONa0b6bD8kuttqTiihSE5pKpUg=
+        b=K1z+fb91W6NAy33a6u7BQ79hRygzKpSPEyfFBQsUsdnab6sltCVZ6g2JmQcFJp97r
+         GOshEjDTuHB+/3+xybUyekO56ytA1weXAhmovYGGbdRGAjCqjy9q73MXCcCJ6iqEcS
+         aDN2IvNf5yJrZPsDSlJeoh13AaGNG6LbUDPHk+UA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
+        Haridhar Kalvala <haridhar.kalvala@intel.com>,
+        Gustavo Sousa <gustavo.sousa@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/381] scm: fix MSG_CTRUNC setting condition for SO_PASSSEC
+Subject: [PATCH 6.2 064/242] drm/i915/mtl: Add the missing CPU transcoder mask in intel_device_info
 Date:   Mon, 15 May 2023 18:26:30 +0200
-Message-Id: <20230515161743.115415582@linuxfoundation.org>
+Message-Id: <20230515161723.823772300@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,75 +59,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
 
-[ Upstream commit a02d83f9947d8f71904eda4de046630c3eb6802c ]
+[ Upstream commit 6ece90e3665a9b7fb2637fcca26cebd42991580b ]
 
-Currently, kernel would set MSG_CTRUNC flag if msg_control buffer
-wasn't provided and SO_PASSCRED was set or if there was pending SCM_RIGHTS.
+CPU transcoder mask is used to iterate over the available
+CPU transcoders in the macro for_each_cpu_transcoder().
 
-For some reason we have no corresponding check for SO_PASSSEC.
+The macro is broken on MTL and got highlighted when audio
+state was being tracked for each transcoder added in [1].
 
-In the recvmsg(2) doc we have:
-       MSG_CTRUNC
-              indicates that some control data was discarded due to lack
-              of space in the buffer for ancillary data.
+Add the missing CPU transcoder mask which is similar to ADL-P
+mask but without DSI transcoders.
 
-So, we need to set MSG_CTRUNC flag for all types of SCM.
+[1]: https://patchwork.freedesktop.org/patch/523723/
 
-This change can break applications those don't check MSG_CTRUNC flag.
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-v2:
-- commit message was rewritten according to Eric's suggestion
-Acked-by: Paul Moore <paul@paul-moore.com>
-
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 7835303982d1 ("drm/i915/mtl: Add MeteorLake PCI IDs")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+Acked-by: Haridhar Kalvala <haridhar.kalvala@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230420221248.2511314-1-radhakrishna.sripada@intel.com
+(cherry picked from commit bddc18913bd44adae5c828fd514d570f43ba1576)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/scm.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index 1ce365f4c2560..585adc1346bd0 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -105,16 +105,27 @@ static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct sc
- 		}
- 	}
- }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return test_bit(SOCK_PASSSEC, &sock->flags);
-+}
- #else
- static inline void scm_passec(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm)
- { }
-+
-+static inline bool scm_has_secdata(struct socket *sock)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SECURITY_NETWORK */
- 
- static __inline__ void scm_recv(struct socket *sock, struct msghdr *msg,
- 				struct scm_cookie *scm, int flags)
- {
- 	if (!msg->msg_control) {
--		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp)
-+		if (test_bit(SOCK_PASSCRED, &sock->flags) || scm->fp ||
-+		    scm_has_secdata(sock))
- 			msg->msg_flags |= MSG_CTRUNC;
- 		scm_destroy(scm);
- 		return;
+diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i915_pci.c
+index 4fada7ebe8d82..36cc4fc87c48c 100644
+--- a/drivers/gpu/drm/i915/i915_pci.c
++++ b/drivers/gpu/drm/i915/i915_pci.c
+@@ -1133,6 +1133,8 @@ static const struct intel_gt_definition xelpmp_extra_gt[] = {
+ static const struct intel_device_info mtl_info = {
+ 	XE_HP_FEATURES,
+ 	XE_LPDP_FEATURES,
++	.__runtime.cpu_transcoder_mask = BIT(TRANSCODER_A) | BIT(TRANSCODER_B) |
++			       BIT(TRANSCODER_C) | BIT(TRANSCODER_D),
+ 	/*
+ 	 * Real graphics IP version will be obtained from hardware GMD_ID
+ 	 * register.  Value provided here is just for sanity checking.
 -- 
 2.39.2
 
