@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0BB5703B9C
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AC9703BA7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243251AbjEOSEe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39812 "EHLO
+        id S244946AbjEOSFP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244863AbjEOSEP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:04:15 -0400
+        with ESMTP id S245003AbjEOSEz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:04:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07DD219979
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:01:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52BA0183D8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:02:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBE1263041
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:01:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9E4C433EF;
-        Mon, 15 May 2023 18:01:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC0B363075
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:02:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9758C433D2;
+        Mon, 15 May 2023 18:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173717;
-        bh=G0tGC8k0SBDCDGJ6Iv4A5FGuN2gQNmpMbtGLNVHDqD8=;
+        s=korg; t=1684173752;
+        bh=/cuxQjA9Rb5GNUDebYWUDoUYJutjfz/vMw0V/FMfP5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hh3Cit5jdj6/8oqUP+ll+73C3B+VadPGV92PbXNOCmd3an6crfe3rIWBtVag5hiSg
-         KlTcLmIaONLyUjzE4J1UasP2EEmLyRdcH5tRxQoU4VHeZAkc3tOPmR4Z786tkOi4Zg
-         SqNiDyMcuk/PVglCdXRtZ6EGdFPZh7ItpIDKJTeE=
+        b=G/RqtUekAFFelpYj5j7578tfAZZz5tdZXvZvHTDqueDjz6lkvwCHBV3Lgj9CFrL4U
+         F0ntOSWfUX4U378lUzQMZNJwAdIkj5ehsrhsont5p5zPRGRoThuhHdJm87adS8zZ6/
+         BITf8L4rhnsz2t20aEMlw7IJFL8UJ3nMT4V2YMfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 167/282] clk: add missing of_node_put() in "assigned-clocks" property parsing
-Date:   Mon, 15 May 2023 18:29:05 +0200
-Message-Id: <20230515161727.219072066@linuxfoundation.org>
+Subject: [PATCH 5.4 168/282] RDMA/siw: Remove namespace check from siw_netdev_event()
+Date:   Mon, 15 May 2023 18:29:06 +0200
+Message-Id: <20230515161727.247966643@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -55,69 +58,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clément Léger <clement.leger@bootlin.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 27a6e1b09a782517fddac91259970ac466a3f7b6 ]
+[ Upstream commit 266e9b3475ba82212062771fdbc40be0e3c06ec8 ]
 
-When returning from of_parse_phandle_with_args(), the np member of the
-of_phandle_args structure should be put after usage. Add missing
-of_node_put() calls in both __set_clk_parents() and __set_clk_rates().
+syzbot is reporting that siw_netdev_event(NETDEV_UNREGISTER) cannot destroy
+siw_device created after unshare(CLONE_NEWNET) due to net namespace check.
+It seems that this check was by error there and should be removed.
 
-Fixes: 86be408bfbd8 ("clk: Support for clock parents and rates assigned from device tree")
-Signed-off-by: Clément Léger <clement.leger@bootlin.com>
-Link: https://lore.kernel.org/r/20230131083227.10990-1-clement.leger@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reported-by: syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=5e70d01ee8985ae62a3b
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Suggested-by: Leon Romanovsky <leon@kernel.org>
+Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/a44e9ac5-44e2-d575-9e30-02483cc7ffd1@I-love.SAKURA.ne.jp
+Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-conf.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_main.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/clk/clk-conf.c b/drivers/clk/clk-conf.c
-index 2ef819606c417..1a4e6340f95ce 100644
---- a/drivers/clk/clk-conf.c
-+++ b/drivers/clk/clk-conf.c
-@@ -33,9 +33,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
- 			else
- 				return rc;
- 		}
--		if (clkspec.np == node && !clk_supplier)
-+		if (clkspec.np == node && !clk_supplier) {
-+			of_node_put(clkspec.np);
- 			return 0;
-+		}
- 		pclk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(pclk)) {
- 			if (PTR_ERR(pclk) != -EPROBE_DEFER)
- 				pr_warn("clk: couldn't get parent clock %d for %pOF\n",
-@@ -48,10 +51,12 @@ static int __set_clk_parents(struct device_node *node, bool clk_supplier)
- 		if (rc < 0)
- 			goto err;
- 		if (clkspec.np == node && !clk_supplier) {
-+			of_node_put(clkspec.np);
- 			rc = 0;
- 			goto err;
- 		}
- 		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(clk)) {
- 			if (PTR_ERR(clk) != -EPROBE_DEFER)
- 				pr_warn("clk: couldn't get assigned clock %d for %pOF\n",
-@@ -93,10 +98,13 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
- 				else
- 					return rc;
- 			}
--			if (clkspec.np == node && !clk_supplier)
-+			if (clkspec.np == node && !clk_supplier) {
-+				of_node_put(clkspec.np);
- 				return 0;
-+			}
+diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
+index dbbf8c6c16d38..a462c2fc6f311 100644
+--- a/drivers/infiniband/sw/siw/siw_main.c
++++ b/drivers/infiniband/sw/siw/siw_main.c
+@@ -472,9 +472,6 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
  
- 			clk = of_clk_get_from_provider(&clkspec);
-+			of_node_put(clkspec.np);
- 			if (IS_ERR(clk)) {
- 				if (PTR_ERR(clk) != -EPROBE_DEFER)
- 					pr_warn("clk: couldn't get clock %d for %pOF\n",
+ 	dev_dbg(&netdev->dev, "siw: event %lu\n", event);
+ 
+-	if (dev_net(netdev) != &init_net)
+-		return NOTIFY_OK;
+-
+ 	base_dev = ib_device_get_by_netdev(netdev, RDMA_DRIVER_SIW);
+ 	if (!base_dev)
+ 		return NOTIFY_OK;
 -- 
 2.39.2
 
