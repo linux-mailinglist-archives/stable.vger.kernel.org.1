@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2688F70397B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 269CE70356B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244504AbjEORm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
+        id S243323AbjEOQ64 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244561AbjEORmn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:42:43 -0400
+        with ESMTP id S243355AbjEOQ6s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 900D51B77A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D267B7A95
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70E4162E35
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFF5C433D2;
-        Mon, 15 May 2023 17:40:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DA8562A45
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37BCC433EF;
+        Mon, 15 May 2023 16:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172414;
-        bh=DyG4DGvXl5x2kdCGk41xAZDPzJygjmMm6pEHgex+9v4=;
+        s=korg; t=1684169924;
+        bh=4m9WUvZG61KQPOHZvdylmdVpjIVfjslntFbLEp/+F18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0s5uPdjgBIeDo2wpL38ekAhDFDWL5EUyMBEDsVL++n3IeZbnGwb/5UAhk4PBqiaLj
-         ojgQ+9ADgSmLvI8h8W60VWyN8whGLKKK4WyrLhGsLvrFolKDb332mTKS2V0Ry3opOG
-         /fZBiSVRO6kGmSF1QXeInENxMQh7OI6Yw6g6KRp4=
+        b=Ap+9Xb1SjlIyoHOU5rpADeJjevVNmG0xTlh3Imo39AROG0G2r/OFRer+V3ga67/sg
+         89Zjaa47RZvffT5kG0uFl6LbMR076NoHifCpVTBrD2Lqa+RGcFu/ty0fjPRZ5Avbye
+         5KwuojrnKyd9a0ZYEMgbOreQyIcmlEpgO1tGLfqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mike Christie <michael.christie@oracle.com>,
-        David Disseldorp <ddiss@suse.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/381] scsi: target: Rename cmd.bad_sector to cmd.sense_info
+        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.3 185/246] irqchip/loongson-pch-pic: Fix registration of syscore_ops
 Date:   Mon, 15 May 2023 18:26:37 +0200
-Message-Id: <20230515161743.447934128@linuxfoundation.org>
+Message-Id: <20230515161728.173914179@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,130 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Disseldorp <ddiss@suse.de>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-[ Upstream commit 8dd992fb67f33a0777fb4bee1e22a5ee5530f024 ]
+commit c84efbba46901b187994558ee0edb15f7076c9a7 upstream.
 
-cmd.bad_sector currently gets packed into the sense INFORMATION field for
-TCM_LOGICAL_BLOCK_{GUARD,APP_TAG,REF_TAG}_CHECK_FAILED errors, which carry
-an .add_sector_info flag in the sense_detail_table to ensure this.
+When support suspend/resume for loongson-pch-pic, the syscore_ops
+is registered twice in dual-bridges machines where there are two
+pch-pic IRQ domains. Repeated registration of an same syscore_ops
+broke syscore_ops_list, so the patch will corret it.
 
-In preparation for propagating a byte offset on COMPARE AND WRITE
-TCM_MISCOMPARE_VERIFY error, rename cmd.bad_sector to cmd.sense_info and
-sense_detail.add_sector_info to sense_detail.add_sense_info so that it
-better reflects the sense INFORMATION field destination.
-
-[ddiss: update previously overlooked ib_isert]
-
-Link: https://lore.kernel.org/r/20201031233211.5207-3-ddiss@suse.de
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 673db054d7a2 ("scsi: target: Fix multiple LUN_RESET handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ed008a2c331 ("irqchip/loongson-pch-pic: Add suspend/resume support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230407083453.6305-5-lvjianmin@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c |  4 ++--
- drivers/target/target_core_sbc.c        |  2 +-
- drivers/target/target_core_transport.c  | 12 ++++++------
- include/target/target_core_base.h       |  2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/irqchip/irq-loongson-pch-pic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index edea37da8a5bd..2d0d966fba2c8 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -1553,12 +1553,12 @@ isert_check_pi_status(struct se_cmd *se_cmd, struct ib_mr *sig_mr)
- 		}
- 		sec_offset_err = mr_status.sig_err.sig_err_offset;
- 		do_div(sec_offset_err, block_size);
--		se_cmd->bad_sector = sec_offset_err + se_cmd->t_task_lba;
-+		se_cmd->sense_info = sec_offset_err + se_cmd->t_task_lba;
+--- a/drivers/irqchip/irq-loongson-pch-pic.c
++++ b/drivers/irqchip/irq-loongson-pch-pic.c
+@@ -311,7 +311,8 @@ static int pch_pic_init(phys_addr_t addr
+ 	pch_pic_handle[nr_pics] = domain_handle;
+ 	pch_pic_priv[nr_pics++] = priv;
  
- 		isert_err("PI error found type %d at sector 0x%llx "
- 			  "expected 0x%x vs actual 0x%x\n",
- 			  mr_status.sig_err.err_type,
--			  (unsigned long long)se_cmd->bad_sector,
-+			  (unsigned long long)se_cmd->sense_info,
- 			  mr_status.sig_err.expected,
- 			  mr_status.sig_err.actual);
- 		ret = 1;
-diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-index eaf8551ebc612..47c5f26e6012d 100644
---- a/drivers/target/target_core_sbc.c
-+++ b/drivers/target/target_core_sbc.c
-@@ -1438,7 +1438,7 @@ sbc_dif_verify(struct se_cmd *cmd, sector_t start, unsigned int sectors,
- 			if (rc) {
- 				kunmap_atomic(daddr - dsg->offset);
- 				kunmap_atomic(paddr - psg->offset);
--				cmd->bad_sector = sector;
-+				cmd->sense_info = sector;
- 				return rc;
- 			}
- next:
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index ce521d3d30470..84d654c14917c 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3135,7 +3135,7 @@ struct sense_detail {
- 	u8 key;
- 	u8 asc;
- 	u8 ascq;
--	bool add_sector_info;
-+	bool add_sense_info;
- };
+-	register_syscore_ops(&pch_pic_syscore_ops);
++	if (nr_pics == 1)
++		register_syscore_ops(&pch_pic_syscore_ops);
  
- static const struct sense_detail sense_detail_table[] = {
-@@ -3238,19 +3238,19 @@ static const struct sense_detail sense_detail_table[] = {
- 		.key = ABORTED_COMMAND,
- 		.asc = 0x10,
- 		.ascq = 0x01, /* LOGICAL BLOCK GUARD CHECK FAILED */
--		.add_sector_info = true,
-+		.add_sense_info = true,
- 	},
- 	[TCM_LOGICAL_BLOCK_APP_TAG_CHECK_FAILED] = {
- 		.key = ABORTED_COMMAND,
- 		.asc = 0x10,
- 		.ascq = 0x02, /* LOGICAL BLOCK APPLICATION TAG CHECK FAILED */
--		.add_sector_info = true,
-+		.add_sense_info = true,
- 	},
- 	[TCM_LOGICAL_BLOCK_REF_TAG_CHECK_FAILED] = {
- 		.key = ABORTED_COMMAND,
- 		.asc = 0x10,
- 		.ascq = 0x03, /* LOGICAL BLOCK REFERENCE TAG CHECK FAILED */
--		.add_sector_info = true,
-+		.add_sense_info = true,
- 	},
- 	[TCM_COPY_TARGET_DEVICE_NOT_REACHABLE] = {
- 		.key = COPY_ABORTED,
-@@ -3330,10 +3330,10 @@ static void translate_sense_reason(struct se_cmd *cmd, sense_reason_t reason)
- 	cmd->scsi_status = SAM_STAT_CHECK_CONDITION;
- 	cmd->scsi_sense_length  = TRANSPORT_SENSE_BUFFER;
- 	scsi_build_sense_buffer(desc_format, buffer, key, asc, ascq);
--	if (sd->add_sector_info)
-+	if (sd->add_sense_info)
- 		WARN_ON_ONCE(scsi_set_sense_information(buffer,
- 							cmd->scsi_sense_length,
--							cmd->bad_sector) < 0);
-+							cmd->sense_info) < 0);
- }
+ 	return 0;
  
- int
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index 18a5dcd275f88..16992ba455deb 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -540,7 +540,7 @@ struct se_cmd {
- 	struct scatterlist	*t_prot_sg;
- 	unsigned int		t_prot_nents;
- 	sense_reason_t		pi_err;
--	sector_t		bad_sector;
-+	u64			sense_info;
- 	int			cpuid;
- };
- 
--- 
-2.39.2
-
 
 
