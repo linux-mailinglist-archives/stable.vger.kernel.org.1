@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA0E703324
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CACF703945
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242166AbjEOQdw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36922 "EHLO
+        id S243818AbjEORkm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:40:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242618AbjEOQds (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D51B1FEE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:41 -0700 (PDT)
+        with ESMTP id S244128AbjEORkK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:40:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF66014E57
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:37:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02F7061F96
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7318C433EF;
-        Mon, 15 May 2023 16:33:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 345F262DFE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23596C433EF;
+        Mon, 15 May 2023 17:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168420;
-        bh=9Ew0Z4GvGT1idRXRSUmaiQGiEpcbYCEd36ai2ZMxikA=;
+        s=korg; t=1684172241;
+        bh=w3oIuv6wWR6yQ5nMUlxAmFCl6HZGDk0DhfnFdTdNzDk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kBgRSy37bCyDz68rlLqpHcd06RtQbEKaM/ghP6lgz18eF/DUgP80BvxvXBKG2XMhS
-         /umgq9bQgC0SuYXfP+pK0oaGs9GtRPjmR7yQZrzY/J6TEb4TIllggPg+mMKJkv/mk2
-         hbmy6cib0SBERW7XYRNftWqqCc5uh/658JhUJQ2g=
+        b=AAd5l/J9DWTmGROktCJvo0FvVODdm/ImiObZJJh6r3snNWxptdF5/2hbSs+IBIiaE
+         kyrdwyq00ab2U3/d8rxpJS/GzsHUWBoKDj1iQ7rHYxDRT2Q59Da5EVTsmWoLVNc74j
+         oe8CYz7FyzuB41lZar4wiiFkyjsd8JPKD0vWhUIA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gan Gecen <gangecen@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
+        Jonathan McDowell <noodles@earth.li>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 043/116] net: amd: Fix link leak when verifying config failed
+Subject: [PATCH 5.10 089/381] ARM: dts: qcom: ipq8064: reduce pci IO size to 64K
 Date:   Mon, 15 May 2023 18:25:40 +0200
-Message-Id: <20230515161659.688513237@linuxfoundation.org>
+Message-Id: <20230515161740.822104670@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,45 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gencen Gan <gangecen@hust.edu.cn>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit d325c34d9e7e38d371c0a299d415e9b07f66a1fb ]
+[ Upstream commit 8fafb7e5c041814876266259e5e439f93571dcef ]
 
-After failing to verify configuration, it returns directly without
-releasing link, which may cause memory leak.
+The current value for pci IO is problematic for ath10k wifi card
+commonly connected to ipq8064 SoC.
+The current value is probably a typo and is actually uncommon to find
+1MB IO space even on a x86 arch. Also with recent changes to the pci
+driver, pci1 and pci2 now fails to function as any connected device
+fails any reg read/write. Reduce this to 64K as it should be more than
+enough and 3 * 64K of total IO space doesn't exceed the IO_SPACE_LIMIT
+hardcoded for the ARM arch.
 
-Paolo Abeni thinks that the whole code of this driver is quite
-"suboptimal" and looks unmainatained since at least ~15y, so he
-suggests that we could simply remove the whole driver, please
-take it into consideration.
-
-Simon Horman suggests that the fix label should be set to
-"Linux-2.6.12-rc2" considering that the problem has existed
-since the driver was introduced and the commit above doesn't
-seem to exist in net/net-next.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Gan Gecen <gangecen@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Tested-by: Jonathan McDowell <noodles@earth.li>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Link: https://lore.kernel.org/r/20220707010943.20857-7-ansuelsmth@gmail.com
+Stable-dep-of: 0b16b34e4916 ("ARM: dts: qcom: ipq8064: Fix the PCI I/O port range")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/nmclan_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-ipq8064.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/nmclan_cs.c b/drivers/net/ethernet/amd/nmclan_cs.c
-index 9c152d85840d7..c9d2a6f150624 100644
---- a/drivers/net/ethernet/amd/nmclan_cs.c
-+++ b/drivers/net/ethernet/amd/nmclan_cs.c
-@@ -652,7 +652,7 @@ static int nmclan_config(struct pcmcia_device *link)
-     } else {
-       pr_notice("mace id not found: %x %x should be 0x40 0x?9\n",
- 		sig[0], sig[1]);
--      return -ENODEV;
-+      goto failed;
-     }
-   }
+diff --git a/arch/arm/boot/dts/qcom-ipq8064.dtsi b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+index c51481405e7f8..f7ed87a35e34d 100644
+--- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+@@ -465,7 +465,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
+-			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00100000   /* downstream I/O */
++			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00010000   /* downstream I/O */
+ 				  0x82000000 0 0x08000000 0x08000000 0 0x07e00000>; /* non-prefetchable memory */
+ 
+ 			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+@@ -516,7 +516,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+-			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00100000   /* downstream I/O */
++			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00010000   /* downstream I/O */
+ 				  0x82000000 0 0x2e000000 0x2e000000 0 0x03e00000>; /* non-prefetchable memory */
+ 
+ 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+@@ -567,7 +567,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
+-			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00100000   /* downstream I/O */
++			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00010000   /* downstream I/O */
+ 				  0x82000000 0 0x32000000 0x32000000 0 0x03e00000>; /* non-prefetchable memory */
+ 
+ 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.39.2
 
