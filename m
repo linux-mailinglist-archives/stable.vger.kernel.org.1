@@ -2,61 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 345E0703865
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5AD2703810
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244218AbjEORcT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
+        id S244074AbjEOR1D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244175AbjEORbk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F2C11565
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:43 -0700 (PDT)
+        with ESMTP id S244085AbjEOR0p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5647A265
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B265162104
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D35C433D2;
-        Mon, 15 May 2023 17:28:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5F1A62CEC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C5AC433D2;
+        Mon, 15 May 2023 17:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171722;
-        bh=2BTqrsOuX2qndCyFcL+iyjJMwm6ee14bEwr9jjFRtts=;
+        s=korg; t=1684171529;
+        bh=6bc4r8hhPwLpn7u/K2gooVQoh0VagQRG8DT/taaWISk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PSbGbA1ePKA196ZAhqhyDLfXVf6mVgk23urOzZuxh9Jrf3SoGjzP+z/wkSdQ1GZa5
-         2ZwC3lQJDvy85RGRytQjdjMKj8L2w0j4fhzjvMXNqCaEq3KbxQD6bmxbWgmu+9kRJG
-         j4GaVaAUbrdqS2FWVsnsQ40KMntWazhMdvx2mO5o=
+        b=as8XZoejRq+EaiHNFos9ShTahpiRirVqO3t3b/97O/UIku9WOEOaVAGA4sQXWXUdv
+         Plk4BM0LZgernK7Si+4zORTFD3Naa6xlNayjkyvwaT+5Dkco0/3DWwZECF9taA/p/W
+         mtQOIW5E/2Va2Da3FeSk2zULAOYM1+8trNe+UVlw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Will Ochowicz <Will.Ochowicz@genusplc.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/134] perf symbols: Fix return incorrect build_id size in elf_read_build_id()
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.2 209/242] drm/msm/adreno: adreno_gpu: Use suspend() instead of idle() on load error
 Date:   Mon, 15 May 2023 18:28:55 +0200
-Message-Id: <20230515161705.086872464@linuxfoundation.org>
+Message-Id: <20230515161728.204147882@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,51 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 1511e4696acb715a4fe48be89e1e691daec91c0e ]
+commit 3eeca5e5f3100435b06a5b5d86daa3d135a8a4bd upstream.
 
-In elf_read_build_id(), if gnu build_id is found, should return the size of
-the actually copied data. If descsz is greater thanBuild_ID_SIZE,
-write_buildid data access may occur.
+The adreno_load_gpu() path is guarded by an error check on
+adreno_load_fw(). This function is responsible for loading
+Qualcomm-only-signed binaries (e.g. SQE and GMU FW for A6XX), but it
+does not take the vendor-signed ZAP blob into account.
 
-Fixes: be96ea8ffa788dcc ("perf symbols: Fix issue with binaries using 16-bytes buildids (v2)")
-Reported-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Tested-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/lkml/CWLP265MB49702F7BA3D6D8F13E4B1A719C649@CWLP265MB4970.GBRP265.PROD.OUTLOOK.COM/T/
-Link: https://lore.kernel.org/r/20230427012841.231729-1-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By embedding the SQE (and GMU, if necessary) firmware into the
+initrd/kernel, we can trigger and unfortunate path that would not bail
+out early and proceed with gpu->hw_init(). That will fail, as the ZAP
+loader path will not find the firmware and return back to
+adreno_load_gpu().
+
+This error path involves pm_runtime_put_sync() which then calls idle()
+instead of suspend(). This is suboptimal, as it means that we're not
+going through the clean shutdown sequence. With at least A619_holi, this
+makes the GPU not wake up until it goes through at least one more
+start-fail-stop cycle. The pm_runtime_put_sync that appears in the error
+path actually does not guarantee that because of the earlier enabling of
+runtime autosuspend.
+
+Fix that by using pm_runtime_put_sync_suspend to force a clean shutdown.
+
+Test cases:
+1. All firmware baked into kernel
+2. error loading ZAP fw in initrd -> load from rootfs at DE start
+
+Both succeed on A619_holi (SM6375) and A630 (SDM845).
+
+Fixes: 0d997f95b70f ("drm/msm/adreno: fix runtime PM imbalance at gpu load")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/530001/
+Link: https://lore.kernel.org/r/20230330231517.2747024-1-konrad.dybcio@linaro.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/symbol-elf.c | 2 +-
+ drivers/gpu/drm/msm/adreno/adreno_device.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-index fd42f768e5848..bbc3a150597a4 100644
---- a/tools/perf/util/symbol-elf.c
-+++ b/tools/perf/util/symbol-elf.c
-@@ -553,7 +553,7 @@ static int elf_read_build_id(Elf *elf, void *bf, size_t size)
- 				size_t sz = min(size, descsz);
- 				memcpy(bf, ptr, sz);
- 				memset(bf + sz, 0, size - sz);
--				err = descsz;
-+				err = sz;
- 				break;
- 			}
- 		}
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -465,7 +465,7 @@ struct msm_gpu *adreno_load_gpu(struct d
+ 	return gpu;
+ 
+ err_put_rpm:
+-	pm_runtime_put_sync(&pdev->dev);
++	pm_runtime_put_sync_suspend(&pdev->dev);
+ err_disable_rpm:
+ 	pm_runtime_disable(&pdev->dev);
+ 
 
 
