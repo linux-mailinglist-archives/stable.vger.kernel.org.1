@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E50B70367F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72417703B10
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243652AbjEORKp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:10:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
+        id S242391AbjEOR7K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243653AbjEORKM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:12 -0400
+        with ESMTP id S242907AbjEOR6h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FABE701
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208401A3B9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:56:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 332DB621C5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AB1C433A1;
-        Mon, 15 May 2023 17:08:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6C4062FD1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:56:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97BBC4339E;
+        Mon, 15 May 2023 17:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170519;
-        bh=LVpWq8KK4eavK1xI6jm03aQP/9kRIgTgC9yVhjwlqBU=;
+        s=korg; t=1684173367;
+        bh=BHKMJO0q5DnuWPoEmOzNW0qr/YCP2W7iTSW5zsdl3Mk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H8u0LDBTSyDrjr+mGwLPw63EJedUQOmUOwZAfZYE7IVomYcnd2ksGpavGOYVr/0xs
-         GkYQMgkRMLNz5VF4qLoSHqhP1GazxdXbvAnVACKjonFPCldd2jCSSuOEQVOiT5DX8C
-         sAURYPqaOQE7N17y0274DKzhYFLfBTHrkQ8K5miE=
+        b=TG3FuCgkGzD6L/6nWf5J8aRElnElnryzFwo23IFRpRWaJ8P/FSkSThbvL9DODAfza
+         aTy4l5vzhuJVXdd/f8qDGW+DPfNqriIqTxP1aTr80swhDDrFKeERlhr4GC767nojn4
+         8g1h3FMI6p9CN+iWT/M6AhPipq+/X+uTa7601cQQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 157/239] f2fs: fix potential corruption when moving a directory
+        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
+        Jonathan McDowell <noodles@earth.li>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 042/282] ARM: dts: qcom: ipq8064: reduce pci IO size to 64K
 Date:   Mon, 15 May 2023 18:27:00 +0200
-Message-Id: <20230515161726.388432173@linuxfoundation.org>
+Message-Id: <20230515161723.526763563@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,65 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit d94772154e524b329a168678836745d2773a6e02 upstream.
+[ Upstream commit 8fafb7e5c041814876266259e5e439f93571dcef ]
 
-F2FS has the same issue in ext4_rename causing crash revealed by
-xfstests/generic/707.
+The current value for pci IO is problematic for ath10k wifi card
+commonly connected to ipq8064 SoC.
+The current value is probably a typo and is actually uncommon to find
+1MB IO space even on a x86 arch. Also with recent changes to the pci
+driver, pci1 and pci2 now fails to function as any connected device
+fails any reg read/write. Reduce this to 64K as it should be more than
+enough and 3 * 64K of total IO space doesn't exceed the IO_SPACE_LIMIT
+hardcoded for the ARM arch.
 
-See also commit 0813299c586b ("ext4: Fix possible corruption when moving a directory")
-
-CC: stable@vger.kernel.org
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Tested-by: Jonathan McDowell <noodles@earth.li>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Link: https://lore.kernel.org/r/20220707010943.20857-7-ansuelsmth@gmail.com
+Stable-dep-of: 0b16b34e4916 ("ARM: dts: qcom: ipq8064: Fix the PCI I/O port range")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-ipq8064.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1002,12 +1002,20 @@ static int f2fs_rename(struct user_names
- 			goto out;
- 	}
+diff --git a/arch/arm/boot/dts/qcom-ipq8064.dtsi b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+index 16c0da97932c1..f2653600f47f8 100644
+--- a/arch/arm/boot/dts/qcom-ipq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq8064.dtsi
+@@ -451,7 +451,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
-+	/*
-+	 * Copied from ext4_rename: we need to protect against old.inode
-+	 * directory getting converted from inline directory format into
-+	 * a normal one.
-+	 */
-+	if (S_ISDIR(old_inode->i_mode))
-+		inode_lock_nested(old_inode, I_MUTEX_NONDIR2);
-+
- 	err = -ENOENT;
- 	old_entry = f2fs_find_entry(old_dir, &old_dentry->d_name, &old_page);
- 	if (!old_entry) {
- 		if (IS_ERR(old_page))
- 			err = PTR_ERR(old_page);
--		goto out;
-+		goto out_unlock_old;
- 	}
+-			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00100000   /* downstream I/O */
++			ranges = <0x81000000 0 0x0fe00000 0x0fe00000 0 0x00010000   /* downstream I/O */
+ 				  0x82000000 0 0x08000000 0x08000000 0 0x07e00000>; /* non-prefetchable memory */
  
- 	if (S_ISDIR(old_inode->i_mode)) {
-@@ -1115,6 +1123,9 @@ static int f2fs_rename(struct user_names
+ 			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+@@ -502,7 +502,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
- 	f2fs_unlock_op(sbi);
+-			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00100000   /* downstream I/O */
++			ranges = <0x81000000 0 0x31e00000 0x31e00000 0 0x00010000   /* downstream I/O */
+ 				  0x82000000 0 0x2e000000 0x2e000000 0 0x03e00000>; /* non-prefetchable memory */
  
-+	if (S_ISDIR(old_inode->i_mode))
-+		inode_unlock(old_inode);
-+
- 	if (IS_DIRSYNC(old_dir) || IS_DIRSYNC(new_dir))
- 		f2fs_sync_fs(sbi->sb, 1);
+ 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+@@ -553,7 +553,7 @@
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
  
-@@ -1129,6 +1140,9 @@ out_dir:
- 		f2fs_put_page(old_dir_page, 0);
- out_old:
- 	f2fs_put_page(old_page, 0);
-+out_unlock_old:
-+	if (S_ISDIR(old_inode->i_mode))
-+		inode_unlock(old_inode);
- out:
- 	iput(whiteout);
- 	return err;
+-			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00100000   /* downstream I/O */
++			ranges = <0x81000000 0 0x35e00000 0x35e00000 0 0x00010000   /* downstream I/O */
+ 				  0x82000000 0 0x32000000 0x32000000 0 0x03e00000>; /* non-prefetchable memory */
+ 
+ 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+-- 
+2.39.2
+
 
 
