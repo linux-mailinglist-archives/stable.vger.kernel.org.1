@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CBF703498
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A514703903
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243058AbjEOQuT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:50:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55796 "EHLO
+        id S244303AbjEORh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243076AbjEOQuG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5A65FC8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:00 -0700 (PDT)
+        with ESMTP id S244295AbjEORhc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:37:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1EDA19BDA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:34:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FC6F6295D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E11C433D2;
-        Mon, 15 May 2023 16:49:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CDE662DB8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:34:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641B1C433EF;
+        Mon, 15 May 2023 17:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169399;
-        bh=v2FjJd2V0/+q+5jzoEIchjJyOj54CXhm1HIZf4Bg5J8=;
+        s=korg; t=1684172073;
+        bh=I3liXfzhcubWUArSIqYShYhEWxsWBCNHe+zM7ilHZK4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gugQCH1F5zKTnDzGVVGEcfYeHQwaps3chSIAHxN8VQ9QIyFmgbH9AF+aovGkrc2Es
-         tNx8r3qfvay44gF5THXAw3ggq45Sq3wSVdX57mRtuUbv5hMihF8nCG2v0XzZCE7oNE
-         wXY1oXtMpZJmHP9atnwVYmdWeyewKsAcniLxdO7U=
+        b=kBjlil14FqtgXxfjN+jh8QAutmgMb8GKpNgc49smbfjgB96Cb08dlu6bi7/OeFqM8
+         B1LlRRU8F0ZoGZ4l4ESVmT4GMAUueomZxsL5HDTtgBN/0cL8PAvKfveGk0Rq7cZ31z
+         TF1WSVfvY0l4wqoOS0tFqbOCxbLYTyRDzhslYhdM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-        Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-        Mason Huo <mason.huo@starfivetech.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 044/246] RISC-V: mm: Enable huge page support to kernel_page_present() function
-Date:   Mon, 15 May 2023 18:24:16 +0200
-Message-Id: <20230515161723.912603218@linuxfoundation.org>
+        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 006/381] bluetooth: Perform careful capability checks in hci_sock_ioctl()
+Date:   Mon, 15 May 2023 18:24:17 +0200
+Message-Id: <20230515161737.059788627@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,62 +53,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-[ Upstream commit a15c90b67a662c75f469822a7f95c7aaa049e28f ]
+commit 25c150ac103a4ebeed0319994c742a90634ddf18 upstream.
 
-Currently kernel_page_present() function doesn't support huge page
-detection causes the function to mistakenly return false to the
-hibernation core.
+Previously, capability was checked using capable(), which verified that the
+caller of the ioctl system call had the required capability. In addition,
+the result of the check would be stored in the HCI_SOCK_TRUSTED flag,
+making it persistent for the socket.
 
-Add huge page detection to the function to solve the problem.
+However, malicious programs can abuse this approach by deliberately sharing
+an HCI socket with a privileged task. The HCI socket will be marked as
+trusted when the privileged task occasionally makes an ioctl call.
 
-Fixes: 9e953cda5cdf ("riscv: Introduce huge page support for 32/64bit kernel")
-Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Reviewed-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Reviewed-by: Mason Huo <mason.huo@starfivetech.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20230330064321.1008373-4-jeeheng.sia@starfivetech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This problem can be solved by using sk_capable() to check capability, which
+ensures that not only the current task but also the socket opener has the
+specified capability, thus reducing the risk of privilege escalation
+through the previously identified vulnerability.
+
+Cc: stable@vger.kernel.org
+Fixes: f81f5b2db869 ("Bluetooth: Send control open and close messages for HCI raw sockets")
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/pageattr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/bluetooth/hci_sock.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index 86c56616e5dea..ea3d61de065b3 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -217,18 +217,26 @@ bool kernel_page_present(struct page *page)
- 	pgd = pgd_offset_k(addr);
- 	if (!pgd_present(*pgd))
- 		return false;
-+	if (pgd_leaf(*pgd))
-+		return true;
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -996,7 +996,14 @@ static int hci_sock_ioctl(struct socket
+ 	if (hci_sock_gen_cookie(sk)) {
+ 		struct sk_buff *skb;
  
- 	p4d = p4d_offset(pgd, addr);
- 	if (!p4d_present(*p4d))
- 		return false;
-+	if (p4d_leaf(*p4d))
-+		return true;
+-		if (capable(CAP_NET_ADMIN))
++		/* Perform careful checks before setting the HCI_SOCK_TRUSTED
++		 * flag. Make sure that not only the current task but also
++		 * the socket opener has the required capability, since
++		 * privileged programs can be tricked into making ioctl calls
++		 * on HCI sockets, and the socket should not be marked as
++		 * trusted simply because the ioctl caller is privileged.
++		 */
++		if (sk_capable(sk, CAP_NET_ADMIN))
+ 			hci_sock_set_flag(sk, HCI_SOCK_TRUSTED);
  
- 	pud = pud_offset(p4d, addr);
- 	if (!pud_present(*pud))
- 		return false;
-+	if (pud_leaf(*pud))
-+		return true;
- 
- 	pmd = pmd_offset(pud, addr);
- 	if (!pmd_present(*pmd))
- 		return false;
-+	if (pmd_leaf(*pmd))
-+		return true;
- 
- 	pte = pte_offset_kernel(pmd, addr);
- 	return pte_present(*pte);
--- 
-2.39.2
-
+ 		/* Send event to monitor */
 
 
