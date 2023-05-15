@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5C577036AA
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B73017035D7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243807AbjEORMb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:12:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57152 "EHLO
+        id S243584AbjEORDa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:03:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243808AbjEORMK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:10 -0400
+        with ESMTP id S243392AbjEORDP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:03:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921D0DC52
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E14A5E4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:01:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B3CD62B60
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19747C433EF;
-        Mon, 15 May 2023 17:10:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97FCF62A62
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C14C433EF;
+        Mon, 15 May 2023 17:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170623;
-        bh=FNxsBtphh2BOEWK9HVw+90AG3qzM8POaUZ6FlbdtfXw=;
+        s=korg; t=1684170049;
+        bh=CxbJiUdoOwWCub5oUT4dciourSL24OIe77Bt3433Y8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2X2T9jbnEcYKVjmwB7EJOybDPhS+a8aiA7w0zlAf7bUiPv9cPb3fp5BehAcVjRhSD
-         J/VsKUlaBphxdDyHAhm60jQpWiq8VQ7FbfM5FetUvrwn4aLMl76EN3eM2qjnKO9w8T
-         I4/fRNErKqx9MQSLpz76zrReQUMBFNg3QsqQx1Co=
+        b=sEV2fdxTvxaRZL2UgClFvwNHIGpRKv3QA3yHqbMOU0rIU++hc2vXjVn9Hq01UDv0s
+         Yrv6YEBWjgKdFRR25/pwzOhPFEtLfmWFzHEtjtNTrn4k2BYei0defKsSxLx3PEIyv8
+         MfCPpfr6GL5xSwgg1R54x7f9yEMOx9RWL+fcGK60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Akhil P Oommen <quic_akhilpo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/239] drm/msm/adreno: Simplify read64/write64 helpers
+        patches@lists.linux.dev,
+        syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>,
+        Borislav Petkov <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 6.3 241/246] x86: fix clear_user_rep_good() exception handling annotation
 Date:   Mon, 15 May 2023 18:27:33 +0200
-Message-Id: <20230515161727.356262050@linuxfoundation.org>
+Message-Id: <20230515161729.882088074@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,293 +54,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit cade05b2a88558847984287dd389fae0c7de31d6 ]
+This code no longer exists in mainline, because it was removed in
+commit d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory
+clearing") upstream.
 
-The _HI reg is always following the _LO reg, so no need to pass these
-offsets seprately.
+However, rather than backport the full range of x86 memory clearing and
+copying cleanups, fix the exception table annotation placement for the
+final 'rep movsb' in clear_user_rep_good(): rather than pointing at the
+actual instruction that did the user space access, it pointed to the
+register move just before it.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/511581/
-Link: https://lore.kernel.org/r/20221114193049.1533391-2-robdclark@gmail.com
-Stable-dep-of: ca090c837b43 ("drm/msm: fix missing wq allocation error handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That made sense from a code flow standpoint, but not from an actual
+usage standpoint: it means that if user access takes an exception, the
+exception handler won't actually find the instruction in the exception
+tables.
+
+As a result, rather than fixing it up and returning -EFAULT, it would
+then turn it into a kernel oops report instead, something like:
+
+    BUG: unable to handle page fault for address: 0000000020081000
+    #PF: supervisor write access in kernel mode
+    #PF: error_code(0x0002) - not-present page
+    ...
+    RIP: 0010:clear_user_rep_good+0x1c/0x30 arch/x86/lib/clear_page_64.S:147
+    ...
+    Call Trace:
+      __clear_user arch/x86/include/asm/uaccess_64.h:103 [inline]
+      clear_user arch/x86/include/asm/uaccess_64.h:124 [inline]
+      iov_iter_zero+0x709/0x1290 lib/iov_iter.c:800
+      iomap_dio_hole_iter fs/iomap/direct-io.c:389 [inline]
+      iomap_dio_iter fs/iomap/direct-io.c:440 [inline]
+      __iomap_dio_rw+0xe3d/0x1cd0 fs/iomap/direct-io.c:601
+      iomap_dio_rw+0x40/0xa0 fs/iomap/direct-io.c:689
+      ext4_dio_read_iter fs/ext4/file.c:94 [inline]
+      ext4_file_read_iter+0x4be/0x690 fs/ext4/file.c:145
+      call_read_iter include/linux/fs.h:2183 [inline]
+      do_iter_readv_writev+0x2e0/0x3b0 fs/read_write.c:733
+      do_iter_read+0x2f2/0x750 fs/read_write.c:796
+      vfs_readv+0xe5/0x150 fs/read_write.c:916
+      do_preadv+0x1b6/0x270 fs/read_write.c:1008
+      __do_sys_preadv2 fs/read_write.c:1070 [inline]
+      __se_sys_preadv2 fs/read_write.c:1061 [inline]
+      __x64_sys_preadv2+0xef/0x150 fs/read_write.c:1061
+      do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+      do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+      entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+which then looks like a filesystem bug rather than the incorrect
+exception annotation that it is.
+
+[ The alternative to this one-liner fix is to take the upstream series
+  that cleans this all up:
+
+    68674f94ffc9 ("x86: don't use REP_GOOD or ERMS for small memory copies")
+    20f3337d350c ("x86: don't use REP_GOOD or ERMS for small memory clearing")
+    adfcf4231b8c ("x86: don't use REP_GOOD or ERMS for user memory copies")
+  * d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory clearing")
+    3639a535587d ("x86: move stac/clac from user copy routines into callers")
+    577e6a7fd50d ("x86: inline the 'rep movs' in user copies for the FSRM case")
+    8c9b6a88b7e2 ("x86: improve on the non-rep 'clear_user' function")
+    427fda2c8a49 ("x86: improve on the non-rep 'copy_user' function")
+  * e046fe5a36a9 ("x86: set FSRS automatically on AMD CPUs that have FSRM")
+    e1f2750edc4a ("x86: remove 'zerorest' argument from __copy_user_nocache()")
+    034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
+
+  with either the whole series or at a minimum the two marked commits
+  being needed to fix this issue ]
+
+Reported-by: syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=401145a9a237779feb26
+Fixes: 0db7058e8e23 ("x86/clear_user: Make it faster")
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a4xx_gpu.c       |  3 +--
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c       | 27 ++++++++-------------
- drivers/gpu/drm/msm/adreno/a5xx_preempt.c   |  4 +--
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c       | 24 ++++++------------
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |  3 +--
- drivers/gpu/drm/msm/msm_gpu.h               | 12 ++++-----
- 6 files changed, 27 insertions(+), 46 deletions(-)
+ arch/x86/lib/clear_page_64.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a4xx_gpu.c b/drivers/gpu/drm/msm/adreno/a4xx_gpu.c
-index 7cb8d9849c073..a10feb8a4194a 100644
---- a/drivers/gpu/drm/msm/adreno/a4xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a4xx_gpu.c
-@@ -606,8 +606,7 @@ static int a4xx_pm_suspend(struct msm_gpu *gpu) {
+--- a/arch/x86/lib/clear_page_64.S
++++ b/arch/x86/lib/clear_page_64.S
+@@ -142,8 +142,8 @@ SYM_FUNC_START(clear_user_rep_good)
+ 	and $7, %edx
+ 	jz .Lrep_good_exit
  
- static int a4xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
- {
--	*value = gpu_read64(gpu, REG_A4XX_RBBM_PERFCTR_CP_0_LO,
--		REG_A4XX_RBBM_PERFCTR_CP_0_HI);
-+	*value = gpu_read64(gpu, REG_A4XX_RBBM_PERFCTR_CP_0_LO);
+-.Lrep_good_bytes:
+ 	mov %edx, %ecx
++.Lrep_good_bytes:
+ 	rep stosb
  
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 02ff306f96f42..24feae285ccd6 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -605,11 +605,9 @@ static int a5xx_ucode_init(struct msm_gpu *gpu)
- 		a5xx_ucode_check_version(a5xx_gpu, a5xx_gpu->pfp_bo);
- 	}
- 
--	gpu_write64(gpu, REG_A5XX_CP_ME_INSTR_BASE_LO,
--		REG_A5XX_CP_ME_INSTR_BASE_HI, a5xx_gpu->pm4_iova);
-+	gpu_write64(gpu, REG_A5XX_CP_ME_INSTR_BASE_LO, a5xx_gpu->pm4_iova);
- 
--	gpu_write64(gpu, REG_A5XX_CP_PFP_INSTR_BASE_LO,
--		REG_A5XX_CP_PFP_INSTR_BASE_HI, a5xx_gpu->pfp_iova);
-+	gpu_write64(gpu, REG_A5XX_CP_PFP_INSTR_BASE_LO, a5xx_gpu->pfp_iova);
- 
- 	return 0;
- }
-@@ -868,8 +866,7 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 	 * memory rendering at this point in time and we don't want to block off
- 	 * part of the virtual memory space.
- 	 */
--	gpu_write64(gpu, REG_A5XX_RBBM_SECVID_TSB_TRUSTED_BASE_LO,
--		REG_A5XX_RBBM_SECVID_TSB_TRUSTED_BASE_HI, 0x00000000);
-+	gpu_write64(gpu, REG_A5XX_RBBM_SECVID_TSB_TRUSTED_BASE_LO, 0x00000000);
- 	gpu_write(gpu, REG_A5XX_RBBM_SECVID_TSB_TRUSTED_SIZE, 0x00000000);
- 
- 	/* Put the GPU into 64 bit by default */
-@@ -908,8 +905,7 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 		return ret;
- 
- 	/* Set the ringbuffer address */
--	gpu_write64(gpu, REG_A5XX_CP_RB_BASE, REG_A5XX_CP_RB_BASE_HI,
--		gpu->rb[0]->iova);
-+	gpu_write64(gpu, REG_A5XX_CP_RB_BASE, gpu->rb[0]->iova);
- 
- 	/*
- 	 * If the microcode supports the WHERE_AM_I opcode then we can use that
-@@ -936,7 +932,7 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 		}
- 
- 		gpu_write64(gpu, REG_A5XX_CP_RB_RPTR_ADDR,
--			REG_A5XX_CP_RB_RPTR_ADDR_HI, shadowptr(a5xx_gpu, gpu->rb[0]));
-+			    shadowptr(a5xx_gpu, gpu->rb[0]));
- 	} else if (gpu->nr_rings > 1) {
- 		/* Disable preemption if WHERE_AM_I isn't available */
- 		a5xx_preempt_fini(gpu);
-@@ -1239,9 +1235,9 @@ static void a5xx_fault_detect_irq(struct msm_gpu *gpu)
- 		gpu_read(gpu, REG_A5XX_RBBM_STATUS),
- 		gpu_read(gpu, REG_A5XX_CP_RB_RPTR),
- 		gpu_read(gpu, REG_A5XX_CP_RB_WPTR),
--		gpu_read64(gpu, REG_A5XX_CP_IB1_BASE, REG_A5XX_CP_IB1_BASE_HI),
-+		gpu_read64(gpu, REG_A5XX_CP_IB1_BASE),
- 		gpu_read(gpu, REG_A5XX_CP_IB1_BUFSZ),
--		gpu_read64(gpu, REG_A5XX_CP_IB2_BASE, REG_A5XX_CP_IB2_BASE_HI),
-+		gpu_read64(gpu, REG_A5XX_CP_IB2_BASE),
- 		gpu_read(gpu, REG_A5XX_CP_IB2_BUFSZ));
- 
- 	/* Turn off the hangcheck timer to keep it from bothering us */
-@@ -1427,8 +1423,7 @@ static int a5xx_pm_suspend(struct msm_gpu *gpu)
- 
- static int a5xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
- {
--	*value = gpu_read64(gpu, REG_A5XX_RBBM_ALWAYSON_COUNTER_LO,
--		REG_A5XX_RBBM_ALWAYSON_COUNTER_HI);
-+	*value = gpu_read64(gpu, REG_A5XX_RBBM_ALWAYSON_COUNTER_LO);
- 
- 	return 0;
- }
-@@ -1465,8 +1460,7 @@ static int a5xx_crashdumper_run(struct msm_gpu *gpu,
- 	if (IS_ERR_OR_NULL(dumper->ptr))
- 		return -EINVAL;
- 
--	gpu_write64(gpu, REG_A5XX_CP_CRASH_SCRIPT_BASE_LO,
--		REG_A5XX_CP_CRASH_SCRIPT_BASE_HI, dumper->iova);
-+	gpu_write64(gpu, REG_A5XX_CP_CRASH_SCRIPT_BASE_LO, dumper->iova);
- 
- 	gpu_write(gpu, REG_A5XX_CP_CRASH_DUMP_CNTL, 1);
- 
-@@ -1666,8 +1660,7 @@ static u64 a5xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate)
- {
- 	u64 busy_cycles;
- 
--	busy_cycles = gpu_read64(gpu, REG_A5XX_RBBM_PERFCTR_RBBM_0_LO,
--			REG_A5XX_RBBM_PERFCTR_RBBM_0_HI);
-+	busy_cycles = gpu_read64(gpu, REG_A5XX_RBBM_PERFCTR_RBBM_0_LO);
- 	*out_sample_rate = clk_get_rate(gpu->core_clk);
- 
- 	return busy_cycles;
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-index e0eef47dae632..f58dd564d122b 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-@@ -137,7 +137,6 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
- 
- 	/* Set the address of the incoming preemption record */
- 	gpu_write64(gpu, REG_A5XX_CP_CONTEXT_SWITCH_RESTORE_ADDR_LO,
--		REG_A5XX_CP_CONTEXT_SWITCH_RESTORE_ADDR_HI,
- 		a5xx_gpu->preempt_iova[ring->id]);
- 
- 	a5xx_gpu->next_ring = ring;
-@@ -212,8 +211,7 @@ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
- 	}
- 
- 	/* Write a 0 to signal that we aren't switching pagetables */
--	gpu_write64(gpu, REG_A5XX_CP_CONTEXT_SWITCH_SMMU_INFO_LO,
--		REG_A5XX_CP_CONTEXT_SWITCH_SMMU_INFO_HI, 0);
-+	gpu_write64(gpu, REG_A5XX_CP_CONTEXT_SWITCH_SMMU_INFO_LO, 0);
- 
- 	/* Reset the preemption state */
- 	set_preempt_state(a5xx_gpu, PREEMPT_NONE);
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 9d7fc44c1e2a9..dc53466864b05 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -247,8 +247,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	OUT_RING(ring, submit->seqno);
- 
- 	trace_msm_gpu_submit_flush(submit,
--		gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER_LO,
--			REG_A6XX_CP_ALWAYS_ON_COUNTER_HI));
-+		gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER_LO));
- 
- 	a6xx_flush(gpu, ring);
- }
-@@ -947,8 +946,7 @@ static int a6xx_ucode_init(struct msm_gpu *gpu)
- 		}
- 	}
- 
--	gpu_write64(gpu, REG_A6XX_CP_SQE_INSTR_BASE,
--		REG_A6XX_CP_SQE_INSTR_BASE+1, a6xx_gpu->sqe_iova);
-+	gpu_write64(gpu, REG_A6XX_CP_SQE_INSTR_BASE, a6xx_gpu->sqe_iova);
- 
- 	return 0;
- }
-@@ -999,8 +997,7 @@ static int hw_init(struct msm_gpu *gpu)
- 	 * memory rendering at this point in time and we don't want to block off
- 	 * part of the virtual memory space.
- 	 */
--	gpu_write64(gpu, REG_A6XX_RBBM_SECVID_TSB_TRUSTED_BASE_LO,
--		REG_A6XX_RBBM_SECVID_TSB_TRUSTED_BASE_HI, 0x00000000);
-+	gpu_write64(gpu, REG_A6XX_RBBM_SECVID_TSB_TRUSTED_BASE_LO, 0x00000000);
- 	gpu_write(gpu, REG_A6XX_RBBM_SECVID_TSB_TRUSTED_SIZE, 0x00000000);
- 
- 	/* Turn on 64 bit addressing for all blocks */
-@@ -1049,11 +1046,9 @@ static int hw_init(struct msm_gpu *gpu)
- 
- 	if (!adreno_is_a650_family(adreno_gpu)) {
- 		/* Set the GMEM VA range [0x100000:0x100000 + gpu->gmem - 1] */
--		gpu_write64(gpu, REG_A6XX_UCHE_GMEM_RANGE_MIN_LO,
--			REG_A6XX_UCHE_GMEM_RANGE_MIN_HI, 0x00100000);
-+		gpu_write64(gpu, REG_A6XX_UCHE_GMEM_RANGE_MIN_LO, 0x00100000);
- 
- 		gpu_write64(gpu, REG_A6XX_UCHE_GMEM_RANGE_MAX_LO,
--			REG_A6XX_UCHE_GMEM_RANGE_MAX_HI,
- 			0x00100000 + adreno_gpu->gmem - 1);
- 	}
- 
-@@ -1145,8 +1140,7 @@ static int hw_init(struct msm_gpu *gpu)
- 		goto out;
- 
- 	/* Set the ringbuffer address */
--	gpu_write64(gpu, REG_A6XX_CP_RB_BASE, REG_A6XX_CP_RB_BASE_HI,
--		gpu->rb[0]->iova);
-+	gpu_write64(gpu, REG_A6XX_CP_RB_BASE, gpu->rb[0]->iova);
- 
- 	/* Targets that support extended APRIV can use the RPTR shadow from
- 	 * hardware but all the other ones need to disable the feature. Targets
-@@ -1178,7 +1172,6 @@ static int hw_init(struct msm_gpu *gpu)
- 		}
- 
- 		gpu_write64(gpu, REG_A6XX_CP_RB_RPTR_ADDR_LO,
--			REG_A6XX_CP_RB_RPTR_ADDR_HI,
- 			shadowptr(a6xx_gpu, gpu->rb[0]));
- 	}
- 
-@@ -1506,9 +1499,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
- 		gpu_read(gpu, REG_A6XX_RBBM_STATUS),
- 		gpu_read(gpu, REG_A6XX_CP_RB_RPTR),
- 		gpu_read(gpu, REG_A6XX_CP_RB_WPTR),
--		gpu_read64(gpu, REG_A6XX_CP_IB1_BASE, REG_A6XX_CP_IB1_BASE_HI),
-+		gpu_read64(gpu, REG_A6XX_CP_IB1_BASE),
- 		gpu_read(gpu, REG_A6XX_CP_IB1_REM_SIZE),
--		gpu_read64(gpu, REG_A6XX_CP_IB2_BASE, REG_A6XX_CP_IB2_BASE_HI),
-+		gpu_read64(gpu, REG_A6XX_CP_IB2_BASE),
- 		gpu_read(gpu, REG_A6XX_CP_IB2_REM_SIZE));
- 
- 	/* Turn off the hangcheck timer to keep it from bothering us */
-@@ -1719,8 +1712,7 @@ static int a6xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
- 	/* Force the GPU power on so we can read this register */
- 	a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
- 
--	*value = gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER_LO,
--			    REG_A6XX_CP_ALWAYS_ON_COUNTER_HI);
-+	*value = gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER_LO);
- 
- 	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
- 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index a5c3d1ed255a6..a023d5f962dce 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -147,8 +147,7 @@ static int a6xx_crashdumper_run(struct msm_gpu *gpu,
- 	/* Make sure all pending memory writes are posted */
- 	wmb();
- 
--	gpu_write64(gpu, REG_A6XX_CP_CRASH_SCRIPT_BASE_LO,
--		REG_A6XX_CP_CRASH_SCRIPT_BASE_HI, dumper->iova);
-+	gpu_write64(gpu, REG_A6XX_CP_CRASH_SCRIPT_BASE_LO, dumper->iova);
- 
- 	gpu_write(gpu, REG_A6XX_CP_CRASH_DUMP_CNTL, 1);
- 
-diff --git a/drivers/gpu/drm/msm/msm_gpu.h b/drivers/gpu/drm/msm/msm_gpu.h
-index a89bfdc3d7f90..7a36e0784f067 100644
---- a/drivers/gpu/drm/msm/msm_gpu.h
-+++ b/drivers/gpu/drm/msm/msm_gpu.h
-@@ -548,7 +548,7 @@ static inline void gpu_rmw(struct msm_gpu *gpu, u32 reg, u32 mask, u32 or)
- 	msm_rmw(gpu->mmio + (reg << 2), mask, or);
- }
- 
--static inline u64 gpu_read64(struct msm_gpu *gpu, u32 lo, u32 hi)
-+static inline u64 gpu_read64(struct msm_gpu *gpu, u32 reg)
- {
- 	u64 val;
- 
-@@ -566,17 +566,17 @@ static inline u64 gpu_read64(struct msm_gpu *gpu, u32 lo, u32 hi)
- 	 * when the lo is read, so make sure to read the lo first to trigger
- 	 * that
- 	 */
--	val = (u64) msm_readl(gpu->mmio + (lo << 2));
--	val |= ((u64) msm_readl(gpu->mmio + (hi << 2)) << 32);
-+	val = (u64) msm_readl(gpu->mmio + (reg << 2));
-+	val |= ((u64) msm_readl(gpu->mmio + ((reg + 1) << 2)) << 32);
- 
- 	return val;
- }
- 
--static inline void gpu_write64(struct msm_gpu *gpu, u32 lo, u32 hi, u64 val)
-+static inline void gpu_write64(struct msm_gpu *gpu, u32 reg, u64 val)
- {
- 	/* Why not a writeq here? Read the screed above */
--	msm_writel(lower_32_bits(val), gpu->mmio + (lo << 2));
--	msm_writel(upper_32_bits(val), gpu->mmio + (hi << 2));
-+	msm_writel(lower_32_bits(val), gpu->mmio + (reg << 2));
-+	msm_writel(upper_32_bits(val), gpu->mmio + ((reg + 1) << 2));
- }
- 
- int msm_gpu_pm_suspend(struct msm_gpu *gpu);
--- 
-2.39.2
-
+ .Lrep_good_exit:
 
 
