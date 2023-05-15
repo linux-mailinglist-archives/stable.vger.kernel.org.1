@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AECD3703348
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C070703707
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242544AbjEOQfR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38420 "EHLO
+        id S243605AbjEORQU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:16:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242584AbjEOQfR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:17 -0400
+        with ESMTP id S242563AbjEORPj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50287A4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDEADDA3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E17E8627F2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68F5C433EF;
-        Mon, 15 May 2023 16:35:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E42CF62BB7
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043CAC433D2;
+        Mon, 15 May 2023 17:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168515;
-        bh=ke6IBrxQa/Z0rVtosGv/WT0YqEmh9i+aENIf2DcZNzo=;
+        s=korg; t=1684170874;
+        bh=dHW02TEX4HRwZjYJpY7MjbGKJ2AYw+w85shl+OROI10=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xZEvXXp6hyy3zn4EzfUCJ5KhYozHz3DErKzDixyiz5A3hpcRdj1+NfJjOLKba/aN+
-         vRBI3gUiygEzoqNPFeIFVZ1oP1dVab2Vfh/5T0Hm3or/NZDNJkbWLyq4JoGHbsc7N/
-         etLlGV6C+hadxj7OEGKaV7zn8KbJRibHgZewzMrY=
+        b=fB/l9DKaxhOu1ciyoirSbm746eGRAJ8Lghy3Ih8gtaGwLmNZ7nyY5pxxhRLAGBhIK
+         1q6963ogmAGaKPFcofJpYXGzEfy4nEIQ4MXMnyVbmizxK0fywze4lP8jDa8D6GMn38
+         2HN9Hr9FhmxOmxUF8pKzAgHUKpPSJ+FhF1pZ/0hY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang He <windhl@126.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Cruise Hung <Cruise.Hung@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 057/116] macintosh/windfarm_smu_sat: Add missing of_node_put()
+Subject: [PATCH 6.2 028/242] drm/amd/display: Reset OUTBOX0 r/w pointer on DMUB reset
 Date:   Mon, 15 May 2023 18:25:54 +0200
-Message-Id: <20230515161700.163846425@linuxfoundation.org>
+Message-Id: <20230515161722.771147549@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,32 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liang He <windhl@126.com>
+From: Cruise Hung <Cruise.Hung@amd.com>
 
-[ Upstream commit 631cf002826007ab7415258ee647dcaf8845ad5a ]
+[ Upstream commit 425afa0ac99a05b39e6cd00704fa0e3e925cee2b ]
 
-We call of_node_get() in wf_sat_probe() after sat is created,
-so we need the of_node_put() before *kfree(sat)*.
+[Why & How]
+We missed resetting OUTBOX0 mailbox r/w pointer on DMUB reset.
+Fix it.
 
-Fixes: ac171c46667c ("[PATCH] powerpc: Thermal control for dual core G5s")
-Signed-off-by: Liang He <windhl@126.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230330033558.2562778-1-windhl@126.com
+Fixes: 6ecf9773a503 ("drm/amd/display: Fix DMUB outbox trace in S4 (#4465)")
+Signed-off-by: Cruise Hung <Cruise.Hung@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/windfarm_smu_sat.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/macintosh/windfarm_smu_sat.c b/drivers/macintosh/windfarm_smu_sat.c
-index a0f61eb853c55..644e123510c52 100644
---- a/drivers/macintosh/windfarm_smu_sat.c
-+++ b/drivers/macintosh/windfarm_smu_sat.c
-@@ -172,6 +172,7 @@ static void wf_sat_release(struct kref *ref)
- 
- 	if (sat->nr >= 0)
- 		sats[sat->nr] = NULL;
-+	of_node_put(sat->node);
- 	kfree(sat);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
+index a76da0131addd..b0adbf783aae9 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
+@@ -130,6 +130,8 @@ void dmub_dcn32_reset(struct dmub_srv *dmub)
+ 	REG_WRITE(DMCUB_INBOX1_WPTR, 0);
+ 	REG_WRITE(DMCUB_OUTBOX1_RPTR, 0);
+ 	REG_WRITE(DMCUB_OUTBOX1_WPTR, 0);
++	REG_WRITE(DMCUB_OUTBOX0_RPTR, 0);
++	REG_WRITE(DMCUB_OUTBOX0_WPTR, 0);
+ 	REG_WRITE(DMCUB_SCRATCH0, 0);
  }
  
 -- 
