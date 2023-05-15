@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98F33703546
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73591703344
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243245AbjEOQ51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36964 "EHLO
+        id S242478AbjEOQfG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:35:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243273AbjEOQ5W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:22 -0400
+        with ESMTP id S242544AbjEOQfE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C7AB6E88
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F26170C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13EDB62A1B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E81C433EF;
-        Mon, 15 May 2023 16:57:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72EFA627F6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761A0C433EF;
+        Mon, 15 May 2023 16:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169831;
-        bh=Kd0NWkY0y7jCOTkO6lIGUyZ2q02mDPaJKTU8wMhqGfQ=;
+        s=korg; t=1684168502;
+        bh=dbV5rgEEDAArATgYAHkEvBS6FI1duv/4NLhTehqiZ10=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e2OHw+cvquEtb1p2M4TCFGkf4m1+S8EPHbOGBNpzMgct+m1sO7/wf9vPIjCFfoy7h
-         7fJKNbn9quLsgUVYM0fcW140tHlqgJl9tD2BI00Y73S1QzXVnLNstg0LgJqtiXroJb
-         zNu1mstcRzy+v5xfWe5ECltl4CyIhfF8UeLTwzYk=
+        b=R2tM09M60Fdp5iTTv4PreYLEEddq3+G9uNPR3bsnEp5ja8cH+9OLnNH1IUkZ4YnJp
+         CpTrTyX8KzSld0F3h+wQ3XBgkvvY5hAHayvMNR3swMdAnOue3DtGYDRB1xsdSqWEGL
+         L5+LTDWKmuNlV+h/hoHyzhG+VvjqrhWOqQArFDRg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.3 155/246] proc_sysctl: update docs for __register_sysctl_table()
-Date:   Mon, 15 May 2023 18:26:07 +0200
-Message-Id: <20230515161727.205115750@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 071/116] dmaengine: at_xdmac: do not enable all cyclic channels
+Date:   Mon, 15 May 2023 18:26:08 +0200
+Message-Id: <20230515161700.649133155@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,72 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-commit 67ff32289acad9ed338cd9f2351b44939e55163e upstream.
+[ Upstream commit f8435befd81dd85b7b610598551fadf675849bc1 ]
 
-Update the docs for __register_sysctl_table() to make it clear no child
-entries can be passed. When the child is true these are non-leaf entries
-on the ctl table and sysctl treats these as directories. The point to
-__register_sysctl_table() is to deal only with directories not part of
-the ctl table where thay may riside, to be simple and avoid recursion.
+Do not global enable all the cyclic channels in at_xdmac_resume(). Instead
+save the global status in at_xdmac_suspend() and re-enable the cyclic
+channel only if it was active before suspend.
 
-While at it, hint towards using long on extra1 and extra2 later.
-
-Cc: stable@vger.kernel.org # v5.17
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-6-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/proc_sysctl.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/dma/at_xdmac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1287,7 +1287,7 @@ out:
-  * __register_sysctl_table - register a leaf sysctl table
-  * @set: Sysctl tree to register on
-  * @path: The path to the directory the sysctl table is in.
-- * @table: the top-level table structure
-+ * @table: the top-level table structure without any child
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-@@ -1308,9 +1308,12 @@ out:
-  * proc_handler - the text handler routine (described below)
-  *
-  * extra1, extra2 - extra pointers usable by the proc handler routines
-+ * XXX: we should eventually modify these to use long min / max [0]
-+ * [0] https://lkml.kernel.org/87zgpte9o4.fsf@email.froward.int.ebiederm.org
-  *
-  * Leaf nodes in the sysctl tree will be represented by a single file
-- * under /proc; non-leaf nodes will be represented by directories.
-+ * under /proc; non-leaf nodes (where child is not NULL) are not allowed,
-+ * sysctl_check_table() verifies this.
-  *
-  * There must be a proc_handler routine for any terminal nodes.
-  * Several default handlers are available to cover common cases -
-@@ -1352,7 +1355,7 @@ struct ctl_table_header *__register_sysc
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index c8dd0eef0b67b..3f9f1d6e3b501 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -223,6 +223,7 @@ struct at_xdmac {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	u32			save_gim;
++	u32			save_gs;
+ 	struct dma_pool		*at_xdmac_desc_pool;
+ 	struct at_xdmac_chan	chan[0];
+ };
+@@ -1880,6 +1881,7 @@ static int atmel_xdmac_suspend(struct device *dev)
+ 		}
+ 	}
+ 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
++	atxdmac->save_gs = at_xdmac_read(atxdmac, AT_XDMAC_GS);
  
- 	spin_lock(&sysctl_lock);
- 	dir = &set->dir;
--	/* Reference moved down the diretory tree get_subdir */
-+	/* Reference moved down the directory tree get_subdir */
- 	dir->header.nreg++;
- 	spin_unlock(&sysctl_lock);
- 
-@@ -1369,6 +1372,11 @@ struct ctl_table_header *__register_sysc
- 		if (namelen == 0)
- 			continue;
- 
-+		/*
-+		 * namelen ensures if name is "foo/bar/yay" only foo is
-+		 * registered first. We traverse as if using mkdir -p and
-+		 * return a ctl_dir for the last directory entry.
-+		 */
- 		dir = get_subdir(dir, name, namelen);
- 		if (IS_ERR(dir))
- 			goto fail;
+ 	at_xdmac_off(atxdmac);
+ 	clk_disable_unprepare(atxdmac->clk);
+@@ -1917,7 +1919,8 @@ static int atmel_xdmac_resume(struct device *dev)
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
+ 			wmb();
+-			at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
++			if (atxdmac->save_gs & atchan->mask)
++				at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
+ 		}
+ 	}
+ 	return 0;
+-- 
+2.39.2
+
 
 
