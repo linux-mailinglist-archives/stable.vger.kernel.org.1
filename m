@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F4827033C7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86BCC70391F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242857AbjEOQlU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44216 "EHLO
+        id S244418AbjEORjX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:39:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242600AbjEOQlU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580A440F4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:19 -0700 (PDT)
+        with ESMTP id S242536AbjEORi5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E951BBA0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:36:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1AF86288B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB033C433EF;
-        Mon, 15 May 2023 16:41:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0262A62DD1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E8BC433EF;
+        Mon, 15 May 2023 17:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168878;
-        bh=X1X0/twsuXsKQ2K4g6enurbyjNWyT9rU+N52SREuXvQ=;
+        s=korg; t=1684172145;
+        bh=4jZS4/7cSvQYJyhGaZdVRbyRbuYHV9RLtKh3jRDH1wo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1X+g/6xNxmv7cEn5JX8awqUwf9kqrr+NBiGjuGP5Fq3wWyBtbu+SE8m+fcbEwk2Ii
-         SqZhgM/j458ywYmaABHfPXt/8MTnPtw3wAyiL6Zahfa8b1FGrPeztAYNNkllM7f1EE
-         i+8pns2g84UDzct8QHYfwLPljEvZqVbOC5i5mvAU=
+        b=04CPpyCV7nzWw0a1wF81lV/TF5rekJ96sYIabN9Kxd4fc9vaiG+uXJYnHW2AS7uIH
+         GpmWOEg6FHaPskHlI1BjVhaaQ5kB/bVjDZ1gNad1QHmn/9tuhnVmDheeBptTRjqbTC
+         lXwAisCyd2LeCEzLM6OsMFskxmQFbkO1F5FAHPW4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Lorenzo Zolfanelli <lorenzo@zolfa.nl>
-Subject: [PATCH 4.19 071/191] wifi: iwlwifi: make the loop for card preparation effective
-Date:   Mon, 15 May 2023 18:25:08 +0200
-Message-Id: <20230515161709.828236772@linuxfoundation.org>
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Jes Sorensen <jes@trained-monkey.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.10 058/381] wifi: rtl8xxxu: RTL8192EU always needs full init
+Date:   Mon, 15 May 2023 18:25:09 +0200
+Message-Id: <20230515161739.448012864@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,50 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 28965ec0b5d9112585f725660e2ff13218505ace ]
+commit d46e04ccd40457a0119b76e11ab64a2ad403e138 upstream.
 
-Since we didn't reset t to 0, only the first iteration of the loop
-did checked the ready bit several times.
->From the second iteration and on, we just tested the bit once and
-continued to the next iteration.
+Always run the entire init sequence (rtl8xxxu_init_device()) for
+RTL8192EU. It's what the vendor driver does too.
 
-Reported-and-tested-by: Lorenzo Zolfanelli <lorenzo@zolfa.nl>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216452
-Fixes: 289e5501c314 ("iwlwifi: fix the preparation of the card")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230416154301.615b683ab9c8.Ic52c3229d3345b0064fa34263293db095d88daf8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a bug where the device is unable to connect after
+rebooting:
+
+wlp3s0f3u2: send auth to ... (try 1/3)
+wlp3s0f3u2: send auth to ... (try 2/3)
+wlp3s0f3u2: send auth to ... (try 3/3)
+wlp3s0f3u2: authentication with ... timed out
+
+Rebooting leaves the device powered on (partially? at least the
+firmware is still running), but not really in a working state.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Jes Sorensen <jes@trained-monkey.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 2d2afc1758304..c69c13e762bbe 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -666,7 +666,6 @@ static int iwl_pcie_set_hw_ready(struct iwl_trans *trans)
- int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
- {
- 	int ret;
--	int t = 0;
- 	int iter;
- 
- 	IWL_DEBUG_INFO(trans, "iwl_trans_prepare_card_hw enter\n");
-@@ -681,6 +680,8 @@ int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
- 	usleep_range(1000, 2000);
- 
- 	for (iter = 0; iter < 10; iter++) {
-+		int t = 0;
-+
- 		/* If HW is not ready, prepare the conditions to check again */
- 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
- 			    CSR_HW_IF_CONFIG_REG_PREPARE);
--- 
-2.39.2
-
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -1702,6 +1702,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops =
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+ 	.has_s0s1 = 0,
+ 	.gen2_thermal_meter = 1,
++	.needs_full_init = 1,
+ 	.adda_1t_init = 0x0fc01616,
+ 	.adda_1t_path_on = 0x0fc01616,
+ 	.adda_2t_path_on_a = 0x0fc01616,
 
 
