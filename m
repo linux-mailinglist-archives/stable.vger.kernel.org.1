@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D55703479
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB8D47034AD
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242733AbjEOQtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54102 "EHLO
+        id S242975AbjEOQu7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243013AbjEOQsl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B61A5243
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:48:40 -0700 (PDT)
+        with ESMTP id S243090AbjEOQuu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:50:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE1F55BB5
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:50:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F17AA62009
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A48C433EF;
-        Mon, 15 May 2023 16:48:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C74262973
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E26DC433D2;
+        Mon, 15 May 2023 16:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169319;
-        bh=D7f9Y9tCw+eV4lrKpXoQ6qRhWOFr7E2ILvqLevZBWm8=;
+        s=korg; t=1684169448;
+        bh=BrgvXij3p0YCVC0fEjMbECjcdxKbY6oYm2mV2Bbpu8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1a+r3Fe9Y7Ue/Jjq2urzEBqvpYiPgND9Lyk1j/itiY6GY4A/+7M1WcujZ9ffUkw9U
-         l+j83X2l7pNbCYQfTpWTOsgoOrwCy/eoevQiOCkQdh+PzBGfr7Ztw7tvn8JbwDVUQ/
-         iTovvxhrpnE2l3tHOfzHILCHueapFcpqR8XkK8M8=
+        b=2HT3F1TkZGFLHFKOdp8T6wXA2jBec00qk6f90a2E+chzAcmMaqEa4aMatMLF424f3
+         wIKeNg66oPM6DgePsEjup2QCtTi+3sQFTrk/KtNw10I77DNE+olLP3LqFKRP/Y6SQq
+         y2TbwYK8w4MPD/vw1eD6uDi697okRiL79B9L6Vgs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Daniel Wheeler <daniel.wheeler@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 020/246] drm/amd/display: Do not clear GPINT register when releasing DMUB from reset
-Date:   Mon, 15 May 2023 18:23:52 +0200
-Message-Id: <20230515161723.216239224@linuxfoundation.org>
+Subject: [PATCH 6.3 021/246] drm/amd/display: Update bounding box values for DCN321
+Date:   Mon, 15 May 2023 18:23:53 +0200
+Message-Id: <20230515161723.245346828@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
 References: <20230515161722.610123835@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,34 +58,70 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit 99d92eaca5d915763b240aae24669f5bf3227ecf ]
+[ Upstream commit 989cd3e76a4aab76fe7dd50090ac3fa501c537f6 ]
 
-[Why & How]
-There's no need to clear GPINT register for DMUB
-when releasing it from reset. Fix that.
+[Why&how]
 
-Fixes: ac2e555e0a7f ("drm/amd/display: Add DMCUB source files and changes for DCN32/321")
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Update bounding box values as per hardware spec
+
+Fixes: 197485c69543 ("drm/amd/display: Create dcn321_fpu file")
+Acked-by: Leo Li <sunpeng.li@amd.com>
 Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../amd/display/dc/dml/dcn321/dcn321_fpu.c    | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
-index b0adbf783aae9..9c20516be066c 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
-@@ -137,7 +137,6 @@ void dmub_dcn32_reset(struct dmub_srv *dmub)
- 
- void dmub_dcn32_reset_release(struct dmub_srv *dmub)
- {
--	REG_WRITE(DMCUB_GPINT_DATAIN1, 0);
- 	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 0);
- 	REG_WRITE(DMCUB_SCRATCH15, dmub->psp_version & 0x001100FF);
- 	REG_UPDATE_2(DMCUB_CNTL, DMCUB_ENABLE, 1, DMCUB_TRACEPORT_EN, 1);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
+index b80cef70fa60f..383a409a3f54c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
+@@ -106,16 +106,16 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_21_soc = {
+ 	.clock_limits = {
+ 		{
+ 			.state = 0,
+-			.dcfclk_mhz = 1564.0,
+-			.fabricclk_mhz = 400.0,
+-			.dispclk_mhz = 2150.0,
+-			.dppclk_mhz = 2150.0,
++			.dcfclk_mhz = 1434.0,
++			.fabricclk_mhz = 2250.0,
++			.dispclk_mhz = 1720.0,
++			.dppclk_mhz = 1720.0,
+ 			.phyclk_mhz = 810.0,
+ 			.phyclk_d18_mhz = 667.0,
+-			.phyclk_d32_mhz = 625.0,
++			.phyclk_d32_mhz = 313.0,
+ 			.socclk_mhz = 1200.0,
+-			.dscclk_mhz = 716.667,
+-			.dram_speed_mts = 1600.0,
++			.dscclk_mhz = 573.333,
++			.dram_speed_mts = 16000.0,
+ 			.dtbclk_mhz = 1564.0,
+ 		},
+ 	},
+@@ -125,14 +125,14 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_21_soc = {
+ 	.sr_exit_z8_time_us = 285.0,
+ 	.sr_enter_plus_exit_z8_time_us = 320,
+ 	.writeback_latency_us = 12.0,
+-	.round_trip_ping_latency_dcfclk_cycles = 263,
++	.round_trip_ping_latency_dcfclk_cycles = 207,
+ 	.urgent_latency_pixel_data_only_us = 4,
+ 	.urgent_latency_pixel_mixed_with_vm_data_us = 4,
+ 	.urgent_latency_vm_data_only_us = 4,
+-	.fclk_change_latency_us = 20,
+-	.usr_retraining_latency_us = 2,
+-	.smn_latency_us = 2,
+-	.mall_allocated_for_dcn_mbytes = 64,
++	.fclk_change_latency_us = 7,
++	.usr_retraining_latency_us = 0,
++	.smn_latency_us = 0,
++	.mall_allocated_for_dcn_mbytes = 32,
+ 	.urgent_out_of_order_return_per_channel_pixel_only_bytes = 4096,
+ 	.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes = 4096,
+ 	.urgent_out_of_order_return_per_channel_vm_only_bytes = 4096,
 -- 
 2.39.2
 
