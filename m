@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F2C703BB3
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2370C703BC8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:06:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244988AbjEOSFk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:05:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39858 "EHLO
+        id S244813AbjEOSGr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244989AbjEOSFT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:05:19 -0400
+        with ESMTP id S244724AbjEOSGd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:06:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A167618A96
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:03:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D4A1691F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:04:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61D4462F55
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:52:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77593C433EF;
-        Mon, 15 May 2023 17:52:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FD4D630AC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 18:04:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED80C433EF;
+        Mon, 15 May 2023 18:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173140;
-        bh=ievWxEhbBq7mV8V6xO4LaLgceP9f+5E9mizu868TEKI=;
+        s=korg; t=1684173847;
+        bh=Nyw79H1gj221F+uOs18pj/6bugQmv7o8G5hIDTKe4Mg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rj8zFWbJYBdP7xKN8OAOfA1f5P37BWfDbel53QdESk/OsopqdG01ikedHezG18Qq1
-         P0Ciw9KLlz9ddV1b+rdv2MjA5b76KuRe20Kt98bHUXsKT0hfB2IRrA3Azo5qs/D0lD
-         lb6tE/3TYaV6R8GFfKJYm686N8KrHpA7UQgRfqxc=
+        b=xr9coWJ9TcF2AGSikdOckSgz8LCn2mQJj+USt/cp1vuobbqAK+fWwov2u1z9RrDse
+         hYNnDtVZRnKWzVbT0o19WE3UHfjzOFlrhnCXxbMwl+hI2ALI2PF3zN+eqzUs3P3AH1
+         M8z96715ZJlGThvhIc4Z6HhggeJnZzcuHoPE5RhU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 351/381] drm/amdgpu: fix an amdgpu_irq_put() issue in gmc_v9_0_hw_fini()
-Date:   Mon, 15 May 2023 18:30:02 +0200
-Message-Id: <20230515161752.726160368@linuxfoundation.org>
+        Maxim Korotkov <korotkov.maxim.s@gmail.com>,
+        Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 225/282] writeback: fix call of incorrect macro
+Date:   Mon, 15 May 2023 18:30:03 +0200
+Message-Id: <20230515161728.974087090@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
 
-commit 922a76ba31adf84e72bc947267385be420c689ee upstream.
+[ Upstream commit 3e46c89c74f2c38e5337d2cf44b0b551adff1cb4 ]
 
-As made mention of in commit 08c677cb0b43 ("drm/amdgpu: fix
-amdgpu_irq_put call trace in gmc_v10_0_hw_fini") and commit 13af556104fa
-("drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v11_0_hw_fini"). It
-is meaningless to call amdgpu_irq_put() for gmc.ecc_irq. So, remove it
-from gmc_v9_0_hw_fini().
+ the variable 'history' is of type u16, it may be an error
+ that the hweight32 macro was used for it
+ I guess macro hweight16 should be used
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Fixes: 3029c855d79f ("drm/amdgpu: Fix desktop freezed after gpu-reset")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2a81490811d0 ("writeback: implement foreign cgroup inode detection")
+Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230119104443.3002-1-korotkov.maxim.s@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/fs-writeback.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1686,7 +1686,6 @@ static int gmc_v9_0_hw_fini(void *handle
- 		return 0;
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 5b3a288e0f14b..3ec2c16abece3 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -700,7 +700,7 @@ void wbc_detach_inode(struct writeback_control *wbc)
+ 		 * is okay.  The main goal is avoiding keeping an inode on
+ 		 * the wrong wb for an extended period of time.
+ 		 */
+-		if (hweight32(history) > WB_FRN_HIST_THR_SLOTS)
++		if (hweight16(history) > WB_FRN_HIST_THR_SLOTS)
+ 			inode_switch_wbs(inode, max_id);
  	}
  
--	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
- 
- 	return 0;
+-- 
+2.39.2
+
 
 
