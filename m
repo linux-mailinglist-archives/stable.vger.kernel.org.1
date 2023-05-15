@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB64703B72
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECF00703B6F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244732AbjEOSDJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:03:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
+        id S242567AbjEOSDB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244740AbjEOSCw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 925C31A3A2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:00:25 -0700 (PDT)
+        with ESMTP id S244545AbjEOSCj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:02:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1E2160B2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 11:00:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECA9A62FDC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E327EC433D2;
-        Mon, 15 May 2023 17:55:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7515B62FFA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8660FC433EF;
+        Mon, 15 May 2023 17:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173324;
-        bh=7dmUiiLIqmSJh3Nu5guEigdCSnBpIDB7gUp91C6eAcM=;
+        s=korg; t=1684173564;
+        bh=V8oPrjeKtaJJyT2im+G+Sa4pDTScJLM7CULtk0mDrgg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iogGTG4gx3hgvYMKfAg/WXR6rNYcoDxAngJUYggaaWE6Sc3c56WgVrbUGcnb/Rvrp
-         W0ps7FAk5qbxQA34liT5hAYQTeKJruxHbYocHZyln1zUJ5OvcN4f/nChv7ECllDjon
-         jzhHrUI5DoM9wfQ88XGr8H0boM+zZeA1ddUQSufE=
+        b=cdN8tvWXh5o6J/ekD1Bag7H3dajOY7eLhWlVrr3zYX/NfWbKui/u5WE+fS2OKb65g
+         aZrh86RU1wIYaeBIvSBFoijpaDSlpIs+nNRPbGdCPeJRQw3hIMYewblkogmoYm4LEh
+         x05yoLig9vAqn783fC/S+APA6Fx9A+zKOMXkirg0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Feng Xu <feng.f.xu@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/282] EDAC/skx: Fix overflows on the DRAM row address mapping arrays
-Date:   Mon, 15 May 2023 18:26:58 +0200
-Message-Id: <20230515161723.469621926@linuxfoundation.org>
+Subject: [PATCH 5.4 107/282] wifi: iwlwifi: mvm: check firmware response size
+Date:   Mon, 15 May 2023 18:28:05 +0200
+Message-Id: <20230515161725.457367202@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
 References: <20230515161722.146344674@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,53 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 71b1e3ba3fed5a34c5fac6d3a15c2634b04c1eb7 ]
+[ Upstream commit 13513cec93ac9902d0b896976d8bab3758a9881c ]
 
-The current DRAM row address mapping arrays skx_{open,close}_row[]
-only support ranks with sizes up to 16G. Decoding a rank address
-to a DRAM row address for a 32G rank by using either one of the
-above arrays by the skx_edac driver, will result in an overflow on
-the array.
+Check the firmware response size for responses to the
+memory read/write command in debugfs before using it.
 
-For a 32G rank, the most significant DRAM row address bit (the
-bit17) is mapped from the bit34 of the rank address. Add this new
-mapping item to both arrays to fix the overflow issue.
-
-Fixes: 4ec656bdf43a ("EDAC, skx_edac: Add EDAC driver for Skylake")
-Reported-by: Feng Xu <feng.f.xu@intel.com>
-Tested-by: Feng Xu <feng.f.xu@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/all/20230211011728.71764-1-qiuxu.zhuo@intel.com
+Fixes: 2b55f43f8e47 ("iwlwifi: mvm: Add mem debugfs entry")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230417113648.0d56fcaf68ee.I70e9571f3ed7263929b04f8fabad23c9b999e4ea@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_base.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/edac/skx_base.c b/drivers/edac/skx_base.c
-index b1d717cb8df9f..f382cc70f9aaa 100644
---- a/drivers/edac/skx_base.c
-+++ b/drivers/edac/skx_base.c
-@@ -459,7 +459,7 @@ static bool skx_rir_decode(struct decoded_addr *res)
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 524f9dd2323dc..f8785c70842dc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1877,6 +1877,11 @@ static ssize_t iwl_dbgfs_mem_read(struct file *file, char __user *user_buf,
+ 	if (ret < 0)
+ 		return ret;
  
- static u8 skx_close_row[] = {
--	15, 16, 17, 18, 20, 21, 22, 28, 10, 11, 12, 13, 29, 30, 31, 32, 33
-+	15, 16, 17, 18, 20, 21, 22, 28, 10, 11, 12, 13, 29, 30, 31, 32, 33, 34
- };
++	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
++		ret = -EIO;
++		goto out;
++	}
++
+ 	rsp = (void *)hcmd.resp_pkt->data;
+ 	if (le32_to_cpu(rsp->status) != DEBUG_MEM_STATUS_SUCCESS) {
+ 		ret = -ENXIO;
+@@ -1954,6 +1959,11 @@ static ssize_t iwl_dbgfs_mem_write(struct file *file,
+ 	if (ret < 0)
+ 		return ret;
  
- static u8 skx_close_column[] = {
-@@ -467,7 +467,7 @@ static u8 skx_close_column[] = {
- };
- 
- static u8 skx_open_row[] = {
--	14, 15, 16, 20, 28, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33
-+	14, 15, 16, 20, 28, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34
- };
- 
- static u8 skx_open_column[] = {
++	if (iwl_rx_packet_payload_len(hcmd.resp_pkt) < sizeof(*rsp)) {
++		ret = -EIO;
++		goto out;
++	}
++
+ 	rsp = (void *)hcmd.resp_pkt->data;
+ 	if (rsp->status != DEBUG_MEM_STATUS_SUCCESS) {
+ 		ret = -ENXIO;
 -- 
 2.39.2
 
