@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDBFE7033B5
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADD937034C1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242569AbjEOQkl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43490 "EHLO
+        id S243097AbjEOQwB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242868AbjEOQkY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564FB19A5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:40:23 -0700 (PDT)
+        with ESMTP id S243098AbjEOQvn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332C15B91
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF2366286D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5301C433D2;
-        Mon, 15 May 2023 16:40:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A76962973
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5AFC4339B;
+        Mon, 15 May 2023 16:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168822;
-        bh=mL9IqeOTDY5qvD7RbRhPLVUFxeLZ1fy4lIvumxqdPx0=;
+        s=korg; t=1684169501;
+        bh=gbvDJcgdwIrhoDmWaxHzrev8B3cRtuP47LC7W19xLiA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gajx7O4h2yRak4DVkBU5QlvniXsg7Whh3gsRAfQ7WhsI+1pWCYLcTKJsivDkLOMPx
-         wgYwxMYI6Hx0cyN2TrKSKQaiFPnPLtgdtO6arTFhwUX71j06E91yw3UO+EiNurpjMv
-         x7CcaIwDFb48I36iv5hKcqQRBw/PcAzIfwILL28w=
+        b=EIFZpwxpCSl36UEeipBbo4Atscc/TTdAwB2EWZz2XezU0Ewf+AMsh2QIguyFnftqG
+         L/Jw8P8c+RV2TWiy0urCmdHvmHleML3jhZPUcdup0GNDUt5fvyCxhVKVTEfRhGevbi
+         p5Af3QpvloxwMA+HUnriW0oEJYYA48mqVQZDqs5w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luis Gerhorst <gerhorst@cs.fau.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Quentin Monnet <quentin@isovalent.com>,
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/191] tools: bpftool: Remove invalid \ json escape
+Subject: [PATCH 6.3 077/246] r8152: fix the autosuspend doesnt work
 Date:   Mon, 15 May 2023 18:24:49 +0200
-Message-Id: <20230515161709.098026245@linuxfoundation.org>
+Message-Id: <20230515161724.880284047@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,51 +54,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Gerhorst <gerhorst@cs.fau.de>
+From: Hayes Wang <hayeswang@realtek.com>
 
-[ Upstream commit c679bbd611c08b0559ffae079330bc4e5574696a ]
+[ Upstream commit 0fbd79c01a9a657348f7032df70c57a406468c86 ]
 
-RFC8259 ("The JavaScript Object Notation (JSON) Data Interchange
-Format") only specifies \", \\, \/, \b, \f, \n, \r, and \r as valid
-two-character escape sequences. This does not include \', which is not
-required in JSON because it exclusively uses double quotes as string
-separators.
+Set supports_autosuspend = 1 for the rtl8152_cfgselector_driver.
 
-Solidus (/) may be escaped, but does not have to. Only reverse
-solidus (\), double quotes ("), and the control characters have to be
-escaped. Therefore, with this fix, bpftool correctly supports all valid
-two-character escape sequences (but still does not support characters
-that require multi-character escape sequences).
-
-Witout this fix, attempting to load a JSON file generated by bpftool
-using Python 3.10.6's default json.load() may fail with the error
-"Invalid \escape" if the file contains the invalid escaped single
-quote (\').
-
-Fixes: b66e907cfee2 ("tools: bpftool: copy JSON writer from iproute2 repository")
-Signed-off-by: Luis Gerhorst <gerhorst@cs.fau.de>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <quentin@isovalent.com>
-Link: https://lore.kernel.org/bpf/20230227150853.16863-1-gerhorst@cs.fau.de
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/json_writer.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/bpf/bpftool/json_writer.c b/tools/bpf/bpftool/json_writer.c
-index c6eef76322ae9..0c38c41269bee 100644
---- a/tools/bpf/bpftool/json_writer.c
-+++ b/tools/bpf/bpftool/json_writer.c
-@@ -84,9 +84,6 @@ static void jsonw_puts(json_writer_t *self, const char *str)
- 		case '"':
- 			fputs("\\\"", self->out);
- 			break;
--		case '\'':
--			fputs("\\\'", self->out);
--			break;
- 		default:
- 			putc(*str, self->out);
- 		}
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 755b0f72dd44f..0999a58ca9d26 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9910,6 +9910,7 @@ static struct usb_device_driver rtl8152_cfgselector_driver = {
+ 	.probe =	rtl8152_cfgselector_probe,
+ 	.id_table =	rtl8152_table,
+ 	.generic_subclass = 1,
++	.supports_autosuspend = 1,
+ };
+ 
+ static int __init rtl8152_driver_init(void)
 -- 
 2.39.2
 
