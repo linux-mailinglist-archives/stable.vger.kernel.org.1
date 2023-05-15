@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E6787039BE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23E617036A9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:12:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244445AbjEORpi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:45:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
+        id S243441AbjEORMX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:12:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244489AbjEORpR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:45:17 -0400
+        with ESMTP id S243824AbjEORMH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72C2415253
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:43:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB74CDD80
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:10:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C837362E7F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DFEC433EF;
-        Mon, 15 May 2023 17:43:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1666C62B49
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A100FC433D2;
+        Mon, 15 May 2023 17:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172583;
-        bh=XQrvVhVgKXNaw9K9RIjQPNV8DyDEiEI2kTBviESiwVM=;
+        s=korg; t=1684170620;
+        bh=in+w6K3fjxmyFwk71DdaAfdlQ01O4kvSwjjehtxMYv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NT3tm8SFuGcua4q2hdYdwEGSuq4SORLScdVBgrWT8DnW6yNypfeLfGWcPLhpbWyI4
-         BVt/bcBYPuyhGk8KrKYtkhl2f1dkp5t1ECCVArsXZkCQJqHwmFiry7MLdJ5E05OPvo
-         /nlew1uSTkdvhpKuH6QGGL3T4sXcSIpvnpuLL+BI=
+        b=sUUjf4bdBE4giWO4LO6PcQI8U5RzYcVZhCbph+JQ9U62IWBESSH7O28vCd7oOnJwG
+         exaNSk/tS7MsVgJ7y0E2xIwUG/dqd6GWISD6kcpXm1Wrf8tm4DQkVul1iZRCixS5l3
+         eG9XFZdrUfn7QESGLBXoODQxZ4M/tpGz3VwBPt+c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 201/381] PCI: imx6: Install the fault handler only on compatible match
+Subject: [PATCH 6.1 189/239] f2fs: factor out victim_entry usage from general rb_tree use
 Date:   Mon, 15 May 2023 18:27:32 +0200
-Message-Id: <20230515161745.891154802@linuxfoundation.org>
+Message-Id: <20230515161727.327219425@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,76 +54,425 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 5f5ac460dfe7f4e11f99de9870f240e39189cf72 ]
+[ Upstream commit 043d2d00b44310f84c0593c63e51fae88c829cdd ]
 
-commit bb38919ec56e ("PCI: imx6: Add support for i.MX6 PCIe controller")
-added a fault hook to this driver in the probe function. So it was only
-installed if needed.
+Let's reduce the complexity of mixed use of rb_tree in victim_entry from
+extent_cache and discard_cmd.
 
-commit bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
-moved it from probe to driver init which installs the hook unconditionally
-as soon as the driver is compiled into a kernel.
+This should fix arm32 memory alignment issue caused by shared rb_entry.
 
-When this driver is compiled as a module, the hook is not registered
-until after the driver has been matched with a .compatible and
-loaded.
+[struct victim_entry]              [struct rb_entry]
+[0] struct rb_node rb_node;        [0] struct rb_node rb_node;
+                                       union {
+                                         struct {
+                                           unsigned int ofs;
+                                           unsigned int len;
+                                         };
+[16] unsigned long long mtime;     [12] unsigned long long key;
+                                       } __packed;
 
-commit 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
-extended the fault handling code.
-
-commit 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-added some protection for non-ARM architectures, but this does not
-protect non-i.MX ARM architectures.
-
-Since fault handlers can be triggered on any architecture for different
-reasons, there is no guarantee that they will be triggered only for the
-assumed situation, leading to improper error handling (i.MX6-specific
-imx6q_pcie_abort_handler) on foreign systems.
-
-I had seen strange L3 imprecise external abort messages several times on
-OMAP4 and OMAP5 devices and couldn't make sense of them until I realized
-they were related to this unused imx6q driver because I had
-CONFIG_PCI_IMX6=y.
-
-Note that CONFIG_PCI_IMX6=y is useful for kernel binaries that are designed
-to run on different ARM SoC and be differentiated only by device tree
-binaries. So turning off CONFIG_PCI_IMX6 is not a solution.
-
-Therefore we check the compatible in the init function before registering
-the fault handler.
-
-Link: https://lore.kernel.org/r/e1bcfc3078c82b53aa9b78077a89955abe4ea009.1678380991.git.hns@goldelico.com
-Fixes: bde4a5a00e76 ("PCI: imx6: Allow probe deferral by reset GPIO")
-Fixes: 415b6185c541 ("PCI: imx6: Fix config read timeout handling")
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 093749e296e2 ("f2fs: support age threshold based garbage collection")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/f2fs/extent_cache.c |  36 +----------
+ fs/f2fs/f2fs.h         |  15 +----
+ fs/f2fs/gc.c           | 139 +++++++++++++++++++++++++----------------
+ fs/f2fs/gc.h           |  14 +----
+ fs/f2fs/segment.c      |   4 +-
+ 5 files changed, 93 insertions(+), 115 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index ceb4815379cd4..8117f2dad86c4 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1272,6 +1272,13 @@ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_SYNOPSYS, 0xabcd,
- static int __init imx6_pcie_init(void)
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 794a8134687ae..cb8fb2fdfce2a 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -149,29 +149,6 @@ struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
+ 	return re;
+ }
+ 
+-struct rb_node **f2fs_lookup_rb_tree_ext(struct f2fs_sb_info *sbi,
+-					struct rb_root_cached *root,
+-					struct rb_node **parent,
+-					unsigned long long key, bool *leftmost)
+-{
+-	struct rb_node **p = &root->rb_root.rb_node;
+-	struct rb_entry *re;
+-
+-	while (*p) {
+-		*parent = *p;
+-		re = rb_entry(*parent, struct rb_entry, rb_node);
+-
+-		if (key < re->key) {
+-			p = &(*p)->rb_left;
+-		} else {
+-			p = &(*p)->rb_right;
+-			*leftmost = false;
+-		}
+-	}
+-
+-	return p;
+-}
+-
+ struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+ 				struct rb_root_cached *root,
+ 				struct rb_node **parent,
+@@ -280,7 +257,7 @@ struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
+ }
+ 
+ bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+-				struct rb_root_cached *root, bool check_key)
++				struct rb_root_cached *root)
  {
- #ifdef CONFIG_ARM
-+	struct device_node *np;
+ #ifdef CONFIG_F2FS_CHECK_FS
+ 	struct rb_node *cur = rb_first_cached(root), *next;
+@@ -297,23 +274,12 @@ bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+ 		cur_re = rb_entry(cur, struct rb_entry, rb_node);
+ 		next_re = rb_entry(next, struct rb_entry, rb_node);
+ 
+-		if (check_key) {
+-			if (cur_re->key > next_re->key) {
+-				f2fs_info(sbi, "inconsistent rbtree, "
+-					"cur(%llu) next(%llu)",
+-					cur_re->key, next_re->key);
+-				return false;
+-			}
+-			goto next;
+-		}
+-
+ 		if (cur_re->ofs + cur_re->len > next_re->ofs) {
+ 			f2fs_info(sbi, "inconsistent rbtree, cur(%u, %u) next(%u, %u)",
+ 				  cur_re->ofs, cur_re->len,
+ 				  next_re->ofs, next_re->len);
+ 			return false;
+ 		}
+-next:
+ 		cur = next;
+ 	}
+ #endif
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 3fc9d98112166..6fb08b3520a68 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -612,13 +612,8 @@ enum extent_type {
+ 
+ struct rb_entry {
+ 	struct rb_node rb_node;		/* rb node located in rb-tree */
+-	union {
+-		struct {
+-			unsigned int ofs;	/* start offset of the entry */
+-			unsigned int len;	/* length of the entry */
+-		};
+-		unsigned long long key;		/* 64-bits key */
+-	} __packed;
++	unsigned int ofs;		/* start offset of the entry */
++	unsigned int len;		/* length of the entry */
+ };
+ 
+ struct extent_info {
+@@ -4132,10 +4127,6 @@ void f2fs_leave_shrinker(struct f2fs_sb_info *sbi);
+  */
+ struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
+ 				struct rb_entry *cached_re, unsigned int ofs);
+-struct rb_node **f2fs_lookup_rb_tree_ext(struct f2fs_sb_info *sbi,
+-				struct rb_root_cached *root,
+-				struct rb_node **parent,
+-				unsigned long long key, bool *left_most);
+ struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+ 				struct rb_root_cached *root,
+ 				struct rb_node **parent,
+@@ -4146,7 +4137,7 @@ struct rb_entry *f2fs_lookup_rb_tree_ret(struct rb_root_cached *root,
+ 		struct rb_node ***insert_p, struct rb_node **insert_parent,
+ 		bool force, bool *leftmost);
+ bool f2fs_check_rb_tree_consistence(struct f2fs_sb_info *sbi,
+-				struct rb_root_cached *root, bool check_key);
++				struct rb_root_cached *root);
+ void f2fs_init_extent_tree(struct inode *inode);
+ void f2fs_drop_extent_tree(struct inode *inode);
+ void f2fs_destroy_extent_node(struct inode *inode);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 543de12bf88c2..5cd19fdc10596 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -389,40 +389,95 @@ static unsigned int count_bits(const unsigned long *addr,
+ 	return sum;
+ }
+ 
+-static struct victim_entry *attach_victim_entry(struct f2fs_sb_info *sbi,
+-				unsigned long long mtime, unsigned int segno,
+-				struct rb_node *parent, struct rb_node **p,
+-				bool left_most)
++static bool f2fs_check_victim_tree(struct f2fs_sb_info *sbi,
++				struct rb_root_cached *root)
++{
++#ifdef CONFIG_F2FS_CHECK_FS
++	struct rb_node *cur = rb_first_cached(root), *next;
++	struct victim_entry *cur_ve, *next_ve;
 +
-+	np = of_find_matching_node(NULL, imx6_pcie_of_match);
-+	if (!np)
-+		return -ENODEV;
-+	of_node_put(np);
++	while (cur) {
++		next = rb_next(cur);
++		if (!next)
++			return true;
 +
- 	/*
- 	 * Since probe() can be deferred we need to make sure that
- 	 * hook_fault_code is not called after __init memory is freed
++		cur_ve = rb_entry(cur, struct victim_entry, rb_node);
++		next_ve = rb_entry(next, struct victim_entry, rb_node);
++
++		if (cur_ve->mtime > next_ve->mtime) {
++			f2fs_info(sbi, "broken victim_rbtree, "
++				"cur_mtime(%llu) next_mtime(%llu)",
++				cur_ve->mtime, next_ve->mtime);
++			return false;
++		}
++		cur = next;
++	}
++#endif
++	return true;
++}
++
++static struct victim_entry *__lookup_victim_entry(struct f2fs_sb_info *sbi,
++					unsigned long long mtime)
++{
++	struct atgc_management *am = &sbi->am;
++	struct rb_node *node = am->root.rb_root.rb_node;
++	struct victim_entry *ve = NULL;
++
++	while (node) {
++		ve = rb_entry(node, struct victim_entry, rb_node);
++
++		if (mtime < ve->mtime)
++			node = node->rb_left;
++		else
++			node = node->rb_right;
++	}
++	return ve;
++}
++
++static struct victim_entry *__create_victim_entry(struct f2fs_sb_info *sbi,
++		unsigned long long mtime, unsigned int segno)
+ {
+ 	struct atgc_management *am = &sbi->am;
+ 	struct victim_entry *ve;
+ 
+-	ve =  f2fs_kmem_cache_alloc(victim_entry_slab,
+-				GFP_NOFS, true, NULL);
++	ve =  f2fs_kmem_cache_alloc(victim_entry_slab, GFP_NOFS, true, NULL);
+ 
+ 	ve->mtime = mtime;
+ 	ve->segno = segno;
+ 
+-	rb_link_node(&ve->rb_node, parent, p);
+-	rb_insert_color_cached(&ve->rb_node, &am->root, left_most);
+-
+ 	list_add_tail(&ve->list, &am->victim_list);
+-
+ 	am->victim_count++;
+ 
+ 	return ve;
+ }
+ 
+-static void insert_victim_entry(struct f2fs_sb_info *sbi,
++static void __insert_victim_entry(struct f2fs_sb_info *sbi,
+ 				unsigned long long mtime, unsigned int segno)
+ {
+ 	struct atgc_management *am = &sbi->am;
+-	struct rb_node **p;
++	struct rb_root_cached *root = &am->root;
++	struct rb_node **p = &root->rb_root.rb_node;
+ 	struct rb_node *parent = NULL;
++	struct victim_entry *ve;
+ 	bool left_most = true;
+ 
+-	p = f2fs_lookup_rb_tree_ext(sbi, &am->root, &parent, mtime, &left_most);
+-	attach_victim_entry(sbi, mtime, segno, parent, p, left_most);
++	/* look up rb tree to find parent node */
++	while (*p) {
++		parent = *p;
++		ve = rb_entry(parent, struct victim_entry, rb_node);
++
++		if (mtime < ve->mtime) {
++			p = &(*p)->rb_left;
++		} else {
++			p = &(*p)->rb_right;
++			left_most = false;
++		}
++	}
++
++	ve = __create_victim_entry(sbi, mtime, segno);
++
++	rb_link_node(&ve->rb_node, parent, p);
++	rb_insert_color_cached(&ve->rb_node, root, left_most);
+ }
+ 
+ static void add_victim_entry(struct f2fs_sb_info *sbi,
+@@ -458,19 +513,7 @@ static void add_victim_entry(struct f2fs_sb_info *sbi,
+ 	if (sit_i->dirty_max_mtime - mtime < p->age_threshold)
+ 		return;
+ 
+-	insert_victim_entry(sbi, mtime, segno);
+-}
+-
+-static struct rb_node *lookup_central_victim(struct f2fs_sb_info *sbi,
+-						struct victim_sel_policy *p)
+-{
+-	struct atgc_management *am = &sbi->am;
+-	struct rb_node *parent = NULL;
+-	bool left_most;
+-
+-	f2fs_lookup_rb_tree_ext(sbi, &am->root, &parent, p->age, &left_most);
+-
+-	return parent;
++	__insert_victim_entry(sbi, mtime, segno);
+ }
+ 
+ static void atgc_lookup_victim(struct f2fs_sb_info *sbi,
+@@ -480,7 +523,6 @@ static void atgc_lookup_victim(struct f2fs_sb_info *sbi,
+ 	struct atgc_management *am = &sbi->am;
+ 	struct rb_root_cached *root = &am->root;
+ 	struct rb_node *node;
+-	struct rb_entry *re;
+ 	struct victim_entry *ve;
+ 	unsigned long long total_time;
+ 	unsigned long long age, u, accu;
+@@ -507,12 +549,10 @@ static void atgc_lookup_victim(struct f2fs_sb_info *sbi,
+ 
+ 	node = rb_first_cached(root);
+ next:
+-	re = rb_entry_safe(node, struct rb_entry, rb_node);
+-	if (!re)
++	ve = rb_entry_safe(node, struct victim_entry, rb_node);
++	if (!ve)
+ 		return;
+ 
+-	ve = (struct victim_entry *)re;
+-
+ 	if (ve->mtime >= max_mtime || ve->mtime < min_mtime)
+ 		goto skip;
+ 
+@@ -554,8 +594,6 @@ static void atssr_lookup_victim(struct f2fs_sb_info *sbi,
+ {
+ 	struct sit_info *sit_i = SIT_I(sbi);
+ 	struct atgc_management *am = &sbi->am;
+-	struct rb_node *node;
+-	struct rb_entry *re;
+ 	struct victim_entry *ve;
+ 	unsigned long long age;
+ 	unsigned long long max_mtime = sit_i->dirty_max_mtime;
+@@ -565,25 +603,22 @@ static void atssr_lookup_victim(struct f2fs_sb_info *sbi,
+ 	unsigned int dirty_threshold = max(am->max_candidate_count,
+ 					am->candidate_ratio *
+ 					am->victim_count / 100);
+-	unsigned int cost;
+-	unsigned int iter = 0;
++	unsigned int cost, iter;
+ 	int stage = 0;
+ 
+ 	if (max_mtime < min_mtime)
+ 		return;
+ 	max_mtime += 1;
+ next_stage:
+-	node = lookup_central_victim(sbi, p);
++	iter = 0;
++	ve = __lookup_victim_entry(sbi, p->age);
+ next_node:
+-	re = rb_entry_safe(node, struct rb_entry, rb_node);
+-	if (!re) {
+-		if (stage == 0)
+-			goto skip_stage;
++	if (!ve) {
++		if (stage++ == 0)
++			goto next_stage;
+ 		return;
+ 	}
+ 
+-	ve = (struct victim_entry *)re;
+-
+ 	if (ve->mtime >= max_mtime || ve->mtime < min_mtime)
+ 		goto skip_node;
+ 
+@@ -609,24 +644,20 @@ static void atssr_lookup_victim(struct f2fs_sb_info *sbi,
+ 	}
+ skip_node:
+ 	if (iter < dirty_threshold) {
+-		if (stage == 0)
+-			node = rb_prev(node);
+-		else if (stage == 1)
+-			node = rb_next(node);
++		ve = rb_entry(stage == 0 ? rb_prev(&ve->rb_node) :
++					rb_next(&ve->rb_node),
++					struct victim_entry, rb_node);
+ 		goto next_node;
+ 	}
+-skip_stage:
+-	if (stage < 1) {
+-		stage++;
+-		iter = 0;
++
++	if (stage++ == 0)
+ 		goto next_stage;
+-	}
+ }
++
+ static void lookup_victim_by_age(struct f2fs_sb_info *sbi,
+ 						struct victim_sel_policy *p)
+ {
+-	f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+-						&sbi->am.root, true));
++	f2fs_bug_on(sbi, !f2fs_check_victim_tree(sbi, &sbi->am.root));
+ 
+ 	if (p->gc_mode == GC_AT)
+ 		atgc_lookup_victim(sbi, p);
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index 19b956c2d697a..ca84024b9c9e7 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -55,20 +55,10 @@ struct gc_inode_list {
+ 	struct radix_tree_root iroot;
+ };
+ 
+-struct victim_info {
+-	unsigned long long mtime;	/* mtime of section */
+-	unsigned int segno;		/* section No. */
+-};
+-
+ struct victim_entry {
+ 	struct rb_node rb_node;		/* rb node located in rb-tree */
+-	union {
+-		struct {
+-			unsigned long long mtime;	/* mtime of section */
+-			unsigned int segno;		/* segment No. */
+-		};
+-		struct victim_info vi;	/* victim info */
+-	};
++	unsigned long long mtime;	/* mtime of section */
++	unsigned int segno;		/* segment No. */
+ 	struct list_head list;
+ };
+ 
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 7d5bea9d92641..cbbf95b995414 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1474,7 +1474,7 @@ static int __issue_discard_cmd(struct f2fs_sb_info *sbi,
+ 			goto next;
+ 		if (unlikely(dcc->rbtree_check))
+ 			f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+-							&dcc->root, false));
++							&dcc->root));
+ 		blk_start_plug(&plug);
+ 		list_for_each_entry_safe(dc, tmp, pend_list, list) {
+ 			f2fs_bug_on(sbi, dc->state != D_PREP);
+@@ -3002,7 +3002,7 @@ static unsigned int __issue_discard_cmd_range(struct f2fs_sb_info *sbi,
+ 	mutex_lock(&dcc->cmd_lock);
+ 	if (unlikely(dcc->rbtree_check))
+ 		f2fs_bug_on(sbi, !f2fs_check_rb_tree_consistence(sbi,
+-							&dcc->root, false));
++							&dcc->root));
+ 
+ 	dc = (struct discard_cmd *)f2fs_lookup_rb_tree_ret(&dcc->root,
+ 					NULL, start,
 -- 
 2.39.2
 
