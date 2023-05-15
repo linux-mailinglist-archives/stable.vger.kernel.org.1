@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C06527036DF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 031477039ED
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243750AbjEOROp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
+        id S244594AbjEORqv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243660AbjEORO0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:26 -0400
+        with ESMTP id S244616AbjEORq3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95F5310A09
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CEB716EBA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C2EF62B92
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB30C4339B;
-        Mon, 15 May 2023 17:12:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EE4C62EAE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103D1C433EF;
+        Mon, 15 May 2023 17:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170739;
-        bh=Kra88e1xBRKhOzdO16W7/YyxQdwURgp/5mQpythfczo=;
+        s=korg; t=1684172703;
+        bh=7Zf61SUObHrdsdm8g725yGyBBc4+P2tZoJMiUsQk+M8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iiRf6nzJUWjxYoj/FYUBVlAD31teb2JkhnTHQnWwyqS3cCnGIzveWnNNFPdKRr9Yp
-         F5n39wPiBW2hN1H/kN1lH8MM8kXVwyTocWI+veQbBoLBq06uyI57Bt7TEJUwIdqLkN
-         SQcVTfMB0I4u8Q48+a2R25rDO2NgfAz6+HvuSUCg=
+        b=EsCcSywDukWjjLIaAytxLv2aoPUXgW+T7iyScApy+01IXn0BVTpH0KHAVWW2g9uS4
+         A47Wdis5nwQ545Q9yjnQU6a5ZF6To9ngwntXwrInQNLhT6d3llNfASMN/BereuKq+x
+         GdyBertRYM7Mk0ymiYthuaR4qLv/mm/1DyNbKeck=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com,
-        stable@kernel.org, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 227/239] ext4: add bounds checking in get_max_inline_xattr_value_size()
-Date:   Mon, 15 May 2023 18:28:10 +0200
-Message-Id: <20230515161728.525959192@linuxfoundation.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 240/381] rtc: omap: include header for omap_rtc_power_off_program prototype
+Date:   Mon, 15 May 2023 18:28:11 +0200
+Message-Id: <20230515161747.548674006@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 2220eaf90992c11d888fe771055d4de330385f01 upstream.
+[ Upstream commit f69c2b5420497b7a54181ce170d682cbeb1f119f ]
 
-Normally the extended attributes in the inode body would have been
-checked when the inode is first opened, but if someone is writing to
-the block device while the file system is mounted, it's possible for
-the inode table to get corrupted.  Add bounds checking to avoid
-reading beyond the end of allocated memory if this happens.
+Non-static functions should have a prototype:
 
-Reported-by: syzbot+1966db24521e5f6e23f7@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=1966db24521e5f6e23f7
-Cc: stable@kernel.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  drivers/rtc/rtc-omap.c:410:5: error: no previous prototype for ‘omap_rtc_power_off_program’ [-Werror=missing-prototypes]
+
+Fixes: 6256f7f7f217 ("rtc: OMAP: Add support for rtc-only mode")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230311094021.79730-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-omap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -34,6 +34,7 @@ static int get_max_inline_xattr_value_si
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_xattr_entry *entry;
- 	struct ext4_inode *raw_inode;
-+	void *end;
- 	int free, min_offs;
+diff --git a/drivers/rtc/rtc-omap.c b/drivers/rtc/rtc-omap.c
+index c20fc7937dfa8..18ae2a4f26eab 100644
+--- a/drivers/rtc/rtc-omap.c
++++ b/drivers/rtc/rtc-omap.c
+@@ -25,6 +25,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/rtc.h>
++#include <linux/rtc/rtc-omap.h>
  
- 	if (!EXT4_INODE_HAS_XATTR_SPACE(inode))
-@@ -57,14 +58,23 @@ static int get_max_inline_xattr_value_si
- 	raw_inode = ext4_raw_inode(iloc);
- 	header = IHDR(inode, raw_inode);
- 	entry = IFIRST(header);
-+	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
- 
- 	/* Compute min_offs. */
--	for (; !IS_LAST_ENTRY(entry); entry = EXT4_XATTR_NEXT(entry)) {
-+	while (!IS_LAST_ENTRY(entry)) {
-+		void *next = EXT4_XATTR_NEXT(entry);
-+
-+		if (next >= end) {
-+			EXT4_ERROR_INODE(inode,
-+					 "corrupt xattr in inline inode");
-+			return 0;
-+		}
- 		if (!entry->e_value_inum && entry->e_value_size) {
- 			size_t offs = le16_to_cpu(entry->e_value_offs);
- 			if (offs < min_offs)
- 				min_offs = offs;
- 		}
-+		entry = next;
- 	}
- 	free = min_offs -
- 		((void *)entry - (void *)IFIRST(header)) - sizeof(__u32);
+ /*
+  * The OMAP RTC is a year/month/day/hours/minutes/seconds BCD clock
+-- 
+2.39.2
+
 
 
