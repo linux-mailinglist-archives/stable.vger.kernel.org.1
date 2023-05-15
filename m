@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E76703622
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E79F703722
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243625AbjEORHE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49460 "EHLO
+        id S243844AbjEORRL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243463AbjEORGt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:49 -0400
+        with ESMTP id S243818AbjEORQv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9DEA26F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A23A10E7E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EA2661FBB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB6BC433EF;
-        Mon, 15 May 2023 17:04:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B936662BDA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE992C433A7;
+        Mon, 15 May 2023 17:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170245;
-        bh=aWGv5J55n4jDodOGPq/iKCDA5Rlbfa+UD/+Mu3xU/I8=;
+        s=korg; t=1684170931;
+        bh=1JrCvhACJG3XIdoGF23okqvudLlr2PKQ40wi+gkY0zA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uvh65VIFmK0IwwXu9BQTeWXATAlfRzBzNMnFEf+Ifu+zAeN5LreqJBRWlYoewVKvg
-         LTVe62L4N5wT1wSleB801ak8UvT/qfx7GZxRrpPVtVb2aLgJroT748C6LuPFvf4OB7
-         /sC/a0x6VJ4LPvuJUhmug64fYjY1RgcSic5mYQNI=
+        b=DFZaMkstn7As5wFuVQ0u0yuCpBt/pvfCmc+m3I/fzzYgwlInnfULV0WxbBgbSlx47
+         0HUH08rb6q6tp92PYPA24QOSng/jURBKe+b3YaAfuKSUovzcJC51QWV+99yPS0vDDz
+         gIjZ8JD8/bmoKSujqobSywx+83G8uJGUovWtPCPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/239] octeontx2-pf: Add additional checks while configuring ucast/bcast/mcast rules
+Subject: [PATCH 6.2 007/242] mtd: spi-nor: spansion: Enable JFFS2 write buffer for Infineon s28hx SEMPER flash
 Date:   Mon, 15 May 2023 18:25:33 +0200
-Message-Id: <20230515161723.793162050@linuxfoundation.org>
+Message-Id: <20230515161722.033603276@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,315 +54,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit 674b3e164238a31f236ac63f82d5d160f7d4c201 ]
+[ Upstream commit 9fd0945fe6fadfb6b54a9cd73be101c02b3e8134 ]
 
-1. If a profile does not support DMAC extraction then avoid installing NPC
-flow rules for unicast. Similarly, if LXMB(L2 and L3) extraction is not
-supported by the profile then avoid installing broadcast and multicast
-rules.
-2. Allow MCAM entry insertion for promiscuous mode.
-3. For the profiles where DMAC is not extracted in MKEX key default
-unicast entry installed by AF is not valid. Hence do not use action
-from the AF installed default unicast entry for such cases.
-4. Adjacent packet header fields in a packet like IP header source
-and destination addresses or UDP/TCP header source port and destination
-can be extracted together in MKEX profile. Therefore MKEX profile can be
-configured to in two ways:
-	a. Total of 4 bytes from start of UDP header(src port
-	   + destination port)
-	or
-	b. Two bytes from start and two bytes from offset 2
+Infineon(Cypress) SEMPER NOR flash family has on-die ECC and its program
+granularity is 16-byte ECC data unit size. JFFS2 supports write buffer
+mode for ECC'd NOR flash. Provide a way to clear the MTD_BIT_WRITEABLE
+flag in order to enable JFFS2 write buffer mode support.
 
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://lore.kernel.org/r/20221118053329.2288486-1-sumang@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 406bed11fb91 ("octeontx2-af: Update/Fix NPC field hash extract feature")
+A new SNOR_F_ECC flag is introduced to determine if the part has on-die
+ECC and if it has, MTD_BIT_WRITEABLE is unset.
+
+In vendor specific driver, a common cypress_nor_ecc_init() helper is
+added. This helper takes care for ECC related initialization for SEMPER
+flash family by setting up params->writesize and SNOR_F_ECC.
+
+Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
+Suggested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/d586723f6f12aaff44fbcd7b51e674b47ed554ed.1680760742.git.Takahiro.Kuwano@infineon.com
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mbox.h  | 14 ++++
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  1 +
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 22 ++++++
- .../marvell/octeontx2/af/rvu_npc_fs.c         | 76 +++++++++++++++----
- .../marvell/octeontx2/nic/otx2_flows.c        | 27 ++++++-
- 5 files changed, 124 insertions(+), 16 deletions(-)
+ drivers/mtd/spi-nor/core.c     |  3 +++
+ drivers/mtd/spi-nor/core.h     |  1 +
+ drivers/mtd/spi-nor/debugfs.c  |  1 +
+ drivers/mtd/spi-nor/spansion.c | 13 ++++++++++++-
+ 4 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 8d5d5a0f68c44..c7c92c7510fa6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -245,6 +245,9 @@ M(NPC_MCAM_GET_STATS, 0x6012, npc_mcam_entry_stats,                     \
- M(NPC_GET_SECRET_KEY, 0x6013, npc_get_secret_key,                     \
- 				   npc_get_secret_key_req,              \
- 				   npc_get_secret_key_rsp)              \
-+M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
-+				   npc_get_field_status_req,              \
-+				   npc_get_field_status_rsp)              \
- /* NIX mbox IDs (range 0x8000 - 0xFFFF) */				\
- M(NIX_LF_ALLOC,		0x8000, nix_lf_alloc,				\
- 				 nix_lf_alloc_req, nix_lf_alloc_rsp)	\
-@@ -1541,6 +1544,17 @@ struct ptp_rsp {
- 	u64 clk;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 767b1faa32b0e..d75db50767938 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2983,6 +2983,9 @@ static void spi_nor_set_mtd_info(struct spi_nor *nor)
+ 		mtd->name = dev_name(dev);
+ 	mtd->type = MTD_NORFLASH;
+ 	mtd->flags = MTD_CAP_NORFLASH;
++	/* Unset BIT_WRITEABLE to enable JFFS2 write buffer for ECC'd NOR */
++	if (nor->flags & SNOR_F_ECC)
++		mtd->flags &= ~MTD_BIT_WRITEABLE;
+ 	if (nor->info->flags & SPI_NOR_NO_ERASE)
+ 		mtd->flags |= MTD_NO_ERASE;
+ 	else
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 57e8916965ea8..75ec2e5604247 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -131,6 +131,7 @@ enum spi_nor_option_flags {
+ 	SNOR_F_SOFT_RESET	= BIT(12),
+ 	SNOR_F_SWP_IS_VOLATILE	= BIT(13),
+ 	SNOR_F_RWW		= BIT(14),
++	SNOR_F_ECC		= BIT(15),
  };
  
-+struct npc_get_field_status_req {
-+	struct mbox_msghdr hdr;
-+	u8 intf;
-+	u8 field;
-+};
-+
-+struct npc_get_field_status_rsp {
-+	struct mbox_msghdr hdr;
-+	u8 enable;
-+};
-+
- struct set_vf_perm  {
- 	struct  mbox_msghdr hdr;
- 	u16	vf;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 3ca8d2e5f979b..d493b533cf76e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -851,6 +851,7 @@ int npc_install_mcam_drop_rule(struct rvu *rvu, int mcam_idx, u16 *counter_idx,
- 			       u64 chan_val, u64 chan_mask, u64 exact_val, u64 exact_mask,
- 			       u64 bcast_mcast_val, u64 bcast_mcast_mask);
- void npc_mcam_rsrcs_reserve(struct rvu *rvu, int blkaddr, int entry_idx);
-+bool npc_is_feature_supported(struct rvu *rvu, u64 features, u8 intf);
- 
- /* CPT APIs */
- int rvu_cpt_register_interrupts(struct rvu *rvu);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 1e348fd0d930e..16cfc802e348d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -617,6 +617,12 @@ void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
- 	if (blkaddr < 0)
- 		return;
- 
-+	/* Ucast rule should not be installed if DMAC
-+	 * extraction is not supported by the profile.
-+	 */
-+	if (!npc_is_feature_supported(rvu, BIT_ULL(NPC_DMAC), pfvf->nix_rx_intf))
-+		return;
-+
- 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
- 					 nixlf, NIXLF_UCAST_ENTRY);
- 
-@@ -778,6 +784,14 @@ void rvu_npc_install_bcast_match_entry(struct rvu *rvu, u16 pcifunc,
- 	/* Get 'pcifunc' of PF device */
- 	pcifunc = pcifunc & ~RVU_PFVF_FUNC_MASK;
- 	pfvf = rvu_get_pfvf(rvu, pcifunc);
-+
-+	/* Bcast rule should not be installed if both DMAC
-+	 * and LXMB extraction is not supported by the profile.
-+	 */
-+	if (!npc_is_feature_supported(rvu, BIT_ULL(NPC_DMAC), pfvf->nix_rx_intf) &&
-+	    !npc_is_feature_supported(rvu, BIT_ULL(NPC_LXMB), pfvf->nix_rx_intf))
-+		return;
-+
- 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
- 					 nixlf, NIXLF_BCAST_ENTRY);
- 
-@@ -848,6 +862,14 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
- 	vf_func = pcifunc & RVU_PFVF_FUNC_MASK;
- 	pcifunc = pcifunc & ~RVU_PFVF_FUNC_MASK;
- 	pfvf = rvu_get_pfvf(rvu, pcifunc);
-+
-+	/* Mcast rule should not be installed if both DMAC
-+	 * and LXMB extraction is not supported by the profile.
-+	 */
-+	if (!npc_is_feature_supported(rvu, BIT_ULL(NPC_DMAC), pfvf->nix_rx_intf) &&
-+	    !npc_is_feature_supported(rvu, BIT_ULL(NPC_LXMB), pfvf->nix_rx_intf))
-+		return;
-+
- 	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
- 					 nixlf, NIXLF_ALLMULTI_ENTRY);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index 282d85846647a..0a3b591c1ef5a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -47,6 +47,19 @@ static const char * const npc_flow_names[] = {
- 	[NPC_UNKNOWN]	= "unknown",
+ struct spi_nor_read_command {
+diff --git a/drivers/mtd/spi-nor/debugfs.c b/drivers/mtd/spi-nor/debugfs.c
+index bd8a18da49c04..285bdcbaa1134 100644
+--- a/drivers/mtd/spi-nor/debugfs.c
++++ b/drivers/mtd/spi-nor/debugfs.c
+@@ -26,6 +26,7 @@ static const char *const snor_f_names[] = {
+ 	SNOR_F_NAME(SOFT_RESET),
+ 	SNOR_F_NAME(SWP_IS_VOLATILE),
+ 	SNOR_F_NAME(RWW),
++	SNOR_F_NAME(ECC),
  };
+ #undef SNOR_F_NAME
  
-+bool npc_is_feature_supported(struct rvu *rvu, u64 features, u8 intf)
-+{
-+	struct npc_mcam *mcam = &rvu->hw->mcam;
-+	u64 mcam_features;
-+	u64 unsupported;
-+
-+	mcam_features = is_npc_intf_tx(intf) ? mcam->tx_features : mcam->rx_features;
-+	unsupported = (mcam_features ^ features) & ~mcam_features;
-+
-+	/* Return false if at least one of the input flows is not extracted */
-+	return !unsupported;
-+}
-+
- const char *npc_get_field_name(u8 hdr)
- {
- 	if (hdr >= ARRAY_SIZE(npc_flow_names))
-@@ -436,8 +449,6 @@ static void npc_scan_ldata(struct rvu *rvu, int blkaddr, u8 lid,
- 	nr_bytes = FIELD_GET(NPC_BYTESM, cfg) + 1;
- 	hdr = FIELD_GET(NPC_HDR_OFFSET, cfg);
- 	key = FIELD_GET(NPC_KEY_OFFSET, cfg);
--	start_kwi = key / 8;
--	offset = (key * 8) % 64;
- 
- 	/* For Tx, Layer A has NIX_INST_HDR_S(64 bytes) preceding
- 	 * ethernet header.
-@@ -452,13 +463,18 @@ static void npc_scan_ldata(struct rvu *rvu, int blkaddr, u8 lid,
- 
- #define NPC_SCAN_HDR(name, hlid, hlt, hstart, hlen)			       \
- do {									       \
-+	start_kwi = key / 8;						       \
-+	offset = (key * 8) % 64;					       \
- 	if (lid == (hlid) && lt == (hlt)) {				       \
- 		if ((hstart) >= hdr &&					       \
- 		    ((hstart) + (hlen)) <= (hdr + nr_bytes)) {	               \
- 			bit_offset = (hdr + nr_bytes - (hstart) - (hlen)) * 8; \
- 			npc_set_layer_mdata(mcam, (name), cfg, lid, lt, intf); \
-+			offset += bit_offset;				       \
-+			start_kwi += offset / 64;			       \
-+			offset %= 64;					       \
- 			npc_set_kw_masks(mcam, (name), (hlen) * 8,	       \
--					 start_kwi, offset + bit_offset, intf);\
-+					 start_kwi, offset, intf);	       \
- 		}							       \
- 	}								       \
- } while (0)
-@@ -649,9 +665,9 @@ static int npc_check_unsupported_flows(struct rvu *rvu, u64 features, u8 intf)
- 
- 	unsupported = (*mcam_features ^ features) & ~(*mcam_features);
- 	if (unsupported) {
--		dev_info(rvu->dev, "Unsupported flow(s):\n");
-+		dev_warn(rvu->dev, "Unsupported flow(s):\n");
- 		for_each_set_bit(bit, (unsigned long *)&unsupported, 64)
--			dev_info(rvu->dev, "%s ", npc_get_field_name(bit));
-+			dev_warn(rvu->dev, "%s ", npc_get_field_name(bit));
- 		return -EOPNOTSUPP;
- 	}
- 
-@@ -1006,8 +1022,20 @@ static void npc_update_rx_entry(struct rvu *rvu, struct rvu_pfvf *pfvf,
- 	action.match_id = req->match_id;
- 	action.flow_key_alg = req->flow_key_alg;
- 
--	if (req->op == NIX_RX_ACTION_DEFAULT && pfvf->def_ucast_rule)
--		action = pfvf->def_ucast_rule->rx_action;
-+	if (req->op == NIX_RX_ACTION_DEFAULT) {
-+		if (pfvf->def_ucast_rule) {
-+			action = pfvf->def_ucast_rule->rx_action;
-+		} else {
-+			/* For profiles which do not extract DMAC, the default
-+			 * unicast entry is unused. Hence modify action for the
-+			 * requests which use same action as default unicast
-+			 * entry
-+			 */
-+			*(u64 *)&action = 0;
-+			action.pf_func = target;
-+			action.op = NIX_RX_ACTIONOP_UCAST;
-+		}
-+	}
- 
- 	entry->action = *(u64 *)&action;
- 
-@@ -1238,18 +1266,19 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
- 	if (npc_check_field(rvu, blkaddr, NPC_DMAC, req->intf))
- 		goto process_flow;
- 
--	if (is_pffunc_af(req->hdr.pcifunc)) {
-+	if (is_pffunc_af(req->hdr.pcifunc) &&
-+	    req->features & BIT_ULL(NPC_DMAC)) {
- 		if (is_unicast_ether_addr(req->packet.dmac)) {
--			dev_err(rvu->dev,
--				"%s: mkex profile does not support ucast flow\n",
--				__func__);
-+			dev_warn(rvu->dev,
-+				 "%s: mkex profile does not support ucast flow\n",
-+				 __func__);
- 			return NPC_FLOW_NOT_SUPPORTED;
- 		}
- 
- 		if (!npc_is_field_present(rvu, NPC_LXMB, req->intf)) {
--			dev_err(rvu->dev,
--				"%s: mkex profile does not support bcast/mcast flow",
--				__func__);
-+			dev_warn(rvu->dev,
-+				 "%s: mkex profile does not support bcast/mcast flow",
-+				 __func__);
- 			return NPC_FLOW_NOT_SUPPORTED;
- 		}
- 
-@@ -1602,3 +1631,22 @@ int npc_install_mcam_drop_rule(struct rvu *rvu, int mcam_idx, u16 *counter_idx,
- 
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 07fe0f6fdfe3e..f4e9a1738234a 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -218,6 +218,17 @@ static int cypress_nor_set_page_size(struct spi_nor *nor)
  	return 0;
  }
-+
-+int rvu_mbox_handler_npc_get_field_status(struct rvu *rvu,
-+					  struct npc_get_field_status_req *req,
-+					  struct npc_get_field_status_rsp *rsp)
-+{
-+	int blkaddr;
-+
-+	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
-+	if (blkaddr < 0)
-+		return NPC_MCAM_INVALID_REQ;
-+
-+	if (!is_npc_interface_valid(rvu, req->intf))
-+		return NPC_FLOW_INTF_INVALID;
-+
-+	if (npc_check_field(rvu, blkaddr, req->field, req->intf))
-+		rsp->enable = 1;
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-index 0f7345a96965b..d0554f6d26731 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-@@ -164,6 +164,8 @@ EXPORT_SYMBOL(otx2_alloc_mcam_entries);
- static int otx2_mcam_entry_init(struct otx2_nic *pfvf)
- {
- 	struct otx2_flow_config *flow_cfg = pfvf->flow_cfg;
-+	struct npc_get_field_status_req *freq;
-+	struct npc_get_field_status_rsp *frsp;
- 	struct npc_mcam_alloc_entry_req *req;
- 	struct npc_mcam_alloc_entry_rsp *rsp;
- 	int vf_vlan_max_flows;
-@@ -214,8 +216,29 @@ static int otx2_mcam_entry_init(struct otx2_nic *pfvf)
- 	flow_cfg->rx_vlan_offset = flow_cfg->unicast_offset +
- 					OTX2_MAX_UNICAST_FLOWS;
- 	pfvf->flags |= OTX2_FLAG_UCAST_FLTR_SUPPORT;
--	pfvf->flags |= OTX2_FLAG_RX_VLAN_SUPPORT;
--	pfvf->flags |= OTX2_FLAG_VF_VLAN_SUPPORT;
-+
-+	/* Check if NPC_DMAC field is supported
-+	 * by the mkex profile before setting VLAN support flag.
-+	 */
-+	freq = otx2_mbox_alloc_msg_npc_get_field_status(&pfvf->mbox);
-+	if (!freq) {
-+		mutex_unlock(&pfvf->mbox.lock);
-+		return -ENOMEM;
-+	}
-+
-+	freq->field = NPC_DMAC;
-+	if (otx2_sync_mbox_msg(&pfvf->mbox)) {
-+		mutex_unlock(&pfvf->mbox.lock);
-+		return -EINVAL;
-+	}
-+
-+	frsp = (struct npc_get_field_status_rsp *)otx2_mbox_get_rsp
-+	       (&pfvf->mbox.mbox, 0, &freq->hdr);
-+
-+	if (frsp->enable) {
-+		pfvf->flags |= OTX2_FLAG_RX_VLAN_SUPPORT;
-+		pfvf->flags |= OTX2_FLAG_VF_VLAN_SUPPORT;
-+	}
  
- 	pfvf->flags |= OTX2_FLAG_MCAM_ENTRIES_ALLOC;
- 	mutex_unlock(&pfvf->mbox.lock);
++static void cypress_nor_ecc_init(struct spi_nor *nor)
++{
++	/*
++	 * Programming is supported only in 16-byte ECC data unit granularity.
++	 * Byte-programming, bit-walking, or multiple program operations to the
++	 * same ECC data unit without an erase are not allowed.
++	 */
++	nor->params->writesize = 16;
++	nor->flags |= SNOR_F_ECC;
++}
++
+ static int
+ s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ 			const struct sfdp_parameter_header *bfpt_header,
+@@ -324,7 +335,7 @@ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ static void s28hx_t_late_init(struct spi_nor *nor)
+ {
+ 	nor->params->octal_dtr_enable = cypress_nor_octal_dtr_enable;
+-	nor->params->writesize = 16;
++	cypress_nor_ecc_init(nor);
+ }
+ 
+ static const struct spi_nor_fixups s28hx_t_fixups = {
 -- 
 2.39.2
 
