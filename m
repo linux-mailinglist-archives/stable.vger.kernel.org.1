@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA3FF703342
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9BAB703723
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242754AbjEOQfD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:35:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38138 "EHLO
+        id S243970AbjEORRN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242478AbjEOQfA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:00 -0400
+        with ESMTP id S243856AbjEORQy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF0F1FEE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:34:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F7D100C3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75820627CB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806A8C433D2;
-        Mon, 15 May 2023 16:34:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEF8762BC8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA651C433D2;
+        Mon, 15 May 2023 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168496;
-        bh=Yqc+NXA9J0/UpiDzriuKFaSMD5cOuLG4XqSWh50Z51c=;
+        s=korg; t=1684170934;
+        bh=D+nVR6YJ6wziewKaom6jQtPAN2+qliognPODIvsi3EE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fhDsHzRF1wFEKwkt+ZMukq/qnKueBM5VjuCvV24FVl5uzy/VDmsM1yGBPAzBD9YOO
-         pbuXANRlDLI/XLeMfuyIdZBoZVuiSUaDh4FvMlG2AIVh4zhq7Sj8pY9OGgzPDMc7Tq
-         O47NE7Z8a9Hqg+Jey6B6xGAHWJb8G7T6cTok43Ms=
+        b=MzAQFrV3F7019OxfuoHItjZHcW2QshyLTnmqtqbAjbphwhXmbSVOj/M1eMQ4bqUwf
+         TeVuhQH5fXshqULuxUSyQMHODpdYAl53w6L9ZmazrvDkHVyhWs6y7nXDQmtkiF6H5w
+         TjZvFnFfna7AxswHksoGyiVKstx8qehEv2rAaO0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helen Chao <helen.chao@oracle.com>,
-        Dai Ngo <dai.ngo@oracle.com>, Jeff Layton <jlayton@kernel.org>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 069/116] SUNRPC: remove the maximum number of retries in call_bind_status
+Subject: [PATCH 6.2 040/242] octeontx2-pf: mcs: Fix shared counters logic
 Date:   Mon, 15 May 2023 18:26:06 +0200
-Message-Id: <20230515161700.584878950@linuxfoundation.org>
+Message-Id: <20230515161723.121451298@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,72 +57,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 691d0b782066a6eeeecbfceb7910a8f6184e6105 ]
+[ Upstream commit 9bdfe61054fb2b989eb58df20bf99c0cf67e3038 ]
 
-Currently call_bind_status places a hard limit of 3 to the number of
-retries on EACCES error. This limit was done to prevent NLM unlock
-requests from being hang forever when the server keeps returning garbage.
-However this change causes problem for cases when NLM service takes
-longer than 9 seconds to register with the port mapper after a restart.
+Macsec stats like InPktsLate and InPktsDelayed share
+same counter in hardware. If SecY replay_protect is true
+then counter represents InPktsLate otherwise InPktsDelayed.
+This mode change was tracked based on protect_frames
+instead of replay_protect mistakenly. Similarly InPktsUnchecked
+and InPktsOk share same counter and mode change was tracked
+based on validate_check instead of validate_disabled.
+This patch fixes those problems.
 
-This patch removes this hard coded limit and let the RPC handles
-the retry based on the standard hard/soft task semantics.
-
-Fixes: 0b760113a3a1 ("NLM: Don't hang forever on NLM unlock requests")
-Reported-by: Helen Chao <helen.chao@oracle.com>
-Tested-by: Helen Chao <helen.chao@oracle.com>
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/sched.h | 3 +--
- net/sunrpc/clnt.c            | 3 ---
- net/sunrpc/sched.c           | 1 -
- 3 files changed, 1 insertion(+), 6 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  | 14 +++++++-------
+ .../ethernet/marvell/octeontx2/nic/otx2_common.h   |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index c9548a63d09bb..0f7c8f820aa3f 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -88,8 +88,7 @@ struct rpc_task {
- #endif
- 	unsigned char		tk_priority : 2,/* Task priority */
- 				tk_garb_retry : 2,
--				tk_cred_retry : 2,
--				tk_rebind_retry : 2;
-+				tk_cred_retry : 2;
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 13faca9add9f4..3ad8d7ef20be6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -1014,7 +1014,7 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
  
- typedef void			(*rpc_action)(struct rpc_task *);
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 411925b043cce..de917d45e512a 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -1827,9 +1827,6 @@ call_bind_status(struct rpc_task *task)
- 			status = -EOPNOTSUPP;
- 			break;
- 		}
--		if (task->tk_rebind_retry == 0)
--			break;
--		task->tk_rebind_retry--;
- 		rpc_delay(task, 3*HZ);
- 		goto retry_timeout;
- 	case -ETIMEDOUT:
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 4e0ebb4780df8..b368f5aabe291 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -697,7 +697,6 @@ rpc_init_task_statistics(struct rpc_task *task)
- 	/* Initialize retry counters */
- 	task->tk_garb_retry = 2;
- 	task->tk_cred_retry = 2;
--	task->tk_rebind_retry = 2;
+ 	/* Check if sync is really needed */
+ 	if (secy->validate_frames == txsc->last_validate_frames &&
+-	    secy->protect_frames == txsc->last_protect_frames)
++	    secy->replay_protect == txsc->last_replay_protect)
+ 		return;
  
- 	/* starting timestamp */
- 	task->tk_start = ktime_get();
+ 	cn10k_mcs_secy_stats(pfvf, txsc->hw_secy_id_rx, &rx_rsp, MCS_RX, true);
+@@ -1036,19 +1036,19 @@ static void cn10k_mcs_sync_stats(struct otx2_nic *pfvf, struct macsec_secy *secy
+ 		rxsc->stats.InPktsInvalid += sc_rsp.pkt_invalid_cnt;
+ 		rxsc->stats.InPktsNotValid += sc_rsp.pkt_notvalid_cnt;
+ 
+-		if (txsc->last_protect_frames)
++		if (txsc->last_replay_protect)
+ 			rxsc->stats.InPktsLate += sc_rsp.pkt_late_cnt;
+ 		else
+ 			rxsc->stats.InPktsDelayed += sc_rsp.pkt_late_cnt;
+ 
+-		if (txsc->last_validate_frames == MACSEC_VALIDATE_CHECK)
++		if (txsc->last_validate_frames == MACSEC_VALIDATE_DISABLED)
+ 			rxsc->stats.InPktsUnchecked += sc_rsp.pkt_unchecked_cnt;
+ 		else
+ 			rxsc->stats.InPktsOK += sc_rsp.pkt_unchecked_cnt;
+ 	}
+ 
+ 	txsc->last_validate_frames = secy->validate_frames;
+-	txsc->last_protect_frames = secy->protect_frames;
++	txsc->last_replay_protect = secy->replay_protect;
+ }
+ 
+ static int cn10k_mdo_open(struct macsec_context *ctx)
+@@ -1117,7 +1117,7 @@ static int cn10k_mdo_add_secy(struct macsec_context *ctx)
+ 	txsc->sw_secy = secy;
+ 	txsc->encoding_sa = secy->tx_sc.encoding_sa;
+ 	txsc->last_validate_frames = secy->validate_frames;
+-	txsc->last_protect_frames = secy->protect_frames;
++	txsc->last_replay_protect = secy->replay_protect;
+ 
+ 	list_add(&txsc->entry, &cfg->txsc_list);
+ 
+@@ -1538,12 +1538,12 @@ static int cn10k_mdo_get_rx_sc_stats(struct macsec_context *ctx)
+ 	rxsc->stats.InPktsInvalid += rsp.pkt_invalid_cnt;
+ 	rxsc->stats.InPktsNotValid += rsp.pkt_notvalid_cnt;
+ 
+-	if (secy->protect_frames)
++	if (secy->replay_protect)
+ 		rxsc->stats.InPktsLate += rsp.pkt_late_cnt;
+ 	else
+ 		rxsc->stats.InPktsDelayed += rsp.pkt_late_cnt;
+ 
+-	if (secy->validate_frames == MACSEC_VALIDATE_CHECK)
++	if (secy->validate_frames == MACSEC_VALIDATE_DISABLED)
+ 		rxsc->stats.InPktsUnchecked += rsp.pkt_unchecked_cnt;
+ 	else
+ 		rxsc->stats.InPktsOK += rsp.pkt_unchecked_cnt;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index 3d22cc6a2804a..f42b2b65bfd7b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -389,7 +389,7 @@ struct cn10k_mcs_txsc {
+ 	struct cn10k_txsc_stats stats;
+ 	struct list_head entry;
+ 	enum macsec_validation_type last_validate_frames;
+-	bool last_protect_frames;
++	bool last_replay_protect;
+ 	u16 hw_secy_id_tx;
+ 	u16 hw_secy_id_rx;
+ 	u16 hw_flow_id;
 -- 
 2.39.2
 
