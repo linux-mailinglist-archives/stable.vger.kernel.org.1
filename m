@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8BE8703811
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AED9703A59
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244125AbjEOR1F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:27:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47100 "EHLO
+        id S244781AbjEORun (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244239AbjEOR0s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:48 -0400
+        with ESMTP id S244799AbjEORuZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D90811D9E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F276D15537
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B5ED62CBD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB66C433D2;
-        Mon, 15 May 2023 17:24:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02F5062F36
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E612DC433EF;
+        Mon, 15 May 2023 17:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171498;
-        bh=6pFuLsP4/ES8z+UpXCqEUg1rr0+0k867N7d418oEVLk=;
+        s=korg; t=1684172898;
+        bh=T0CeFnq3CHc5Xe1O31FYeiX17Q66noo5q2ST0EwTdNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y7bhRcDG3jRqD1hR4XNuDR37O2PF6yRFfX1DrKQ8LtoeAAeXV5D/JJCfnoWAwM6pF
-         XSL2bm22j9O/sWXpyeRt4a/C4zDWSUMq1EqFZ6QzNe/jE0YZW4YNqBEol6Bs/pSmqu
-         7cCJza2+Oypt83PfhLrRR0SQFe/UIrMmzHcYI87g=
+        b=GZM1aAuWRR3u35YCPrKPuWZFETbl7NRXJgSRODrQsWqOLqEJmnlshMohVkU4ql2tl
+         1r0BftT5/0jPvKMy9niYLUCPkmhIEcPRVtJLjDedX3XEw4wkKueXm6V/xLXgdNnQ9I
+         1Esy4h4r5q0M3FiE3S0W1nxbHqQTTLnwMob3qq0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+08106c4b7d60702dbc14@syzkaller.appspotmail.com,
-        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 228/242] ext4: check iomap type only if ext4_iomap_begin() does not fail
+        patches@lists.linux.dev,
+        Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 303/381] crypto: ccp - Clear PSP interrupt status register before calling handler
 Date:   Mon, 15 May 2023 18:29:14 +0200
-Message-Id: <20230515161728.756338266@linuxfoundation.org>
+Message-Id: <20230515161750.511276964@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 
-commit fa83c34e3e56b3c672af38059e066242655271b1 upstream.
+[ Upstream commit 45121ad4a1750ca47ce3f32bd434bdb0cdbf0043 ]
 
-When ext4_iomap_overwrite_begin() calls ext4_iomap_begin() map blocks may
-fail for some reason (e.g. memory allocation failure, bare disk write), and
-later because "iomap->type ! = IOMAP_MAPPED" triggers WARN_ON(). When ext4
-iomap_begin() returns an error, it is normal that the type of iomap->type
-may not match the expectation. Therefore, we only determine if iomap->type
-is as expected when ext4_iomap_begin() is executed successfully.
+The PSP IRQ is edge-triggered (MSI or MSI-X) in all cases supported by
+the psp module so clear the interrupt status register early in the
+handler to prevent missed interrupts. sev_irq_handler() calls wake_up()
+on a wait queue, which can result in a new command being submitted from
+a different CPU. This then races with the clearing of isr and can result
+in missed interrupts. A missed interrupt results in a command waiting
+until it times out, which results in the psp being declared dead.
 
-Cc: stable@kernel.org
-Reported-by: syzbot+08106c4b7d60702dbc14@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/00000000000015760b05f9b4eee9@google.com
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230505132429.714648-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is unlikely on bare metal, but has been observed when running
+virtualized. In the cases where this is observed, sev->cmdresp_reg has
+PSP_CMDRESP_RESP set which indicates that the command was processed
+correctly but no interrupt was asserted.
+
+The full sequence of events looks like this:
+
+CPU 1: submits SEV cmd #1
+CPU 1: calls wait_event_timeout()
+CPU 0: enters psp_irq_handler()
+CPU 0: calls sev_handler()->wake_up()
+CPU 1: wakes up; finishes processing cmd #1
+CPU 1: submits SEV cmd #2
+CPU 1: calls wait_event_timeout()
+PSP:   finishes processing cmd #2; interrupt status is still set; no interrupt
+CPU 0: clears intsts
+CPU 0: exits psp_irq_handler()
+CPU 1: wait_event_timeout() times out; psp_dead=true
+
+Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/ccp/psp-dev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -3577,7 +3577,7 @@ static int ext4_iomap_overwrite_begin(st
- 	 */
- 	flags &= ~IOMAP_WRITE;
- 	ret = ext4_iomap_begin(inode, offset, length, flags, iomap, srcmap);
--	WARN_ON_ONCE(iomap->type != IOMAP_MAPPED);
-+	WARN_ON_ONCE(!ret && iomap->type != IOMAP_MAPPED);
- 	return ret;
+diff --git a/drivers/crypto/ccp/psp-dev.c b/drivers/crypto/ccp/psp-dev.c
+index ae7b445999144..4bf9eaab4456f 100644
+--- a/drivers/crypto/ccp/psp-dev.c
++++ b/drivers/crypto/ccp/psp-dev.c
+@@ -42,6 +42,9 @@ static irqreturn_t psp_irq_handler(int irq, void *data)
+ 	/* Read the interrupt status: */
+ 	status = ioread32(psp->io_regs + psp->vdata->intsts_reg);
+ 
++	/* Clear the interrupt status by writing the same value we read. */
++	iowrite32(status, psp->io_regs + psp->vdata->intsts_reg);
++
+ 	/* invoke subdevice interrupt handlers */
+ 	if (status) {
+ 		if (psp->sev_irq_handler)
+@@ -51,9 +54,6 @@ static irqreturn_t psp_irq_handler(int irq, void *data)
+ 			psp->tee_irq_handler(irq, psp->tee_irq_data, status);
+ 	}
+ 
+-	/* Clear the interrupt status by writing the same value we read. */
+-	iowrite32(status, psp->io_regs + psp->vdata->intsts_reg);
+-
+ 	return IRQ_HANDLED;
  }
  
+-- 
+2.39.2
+
 
 
