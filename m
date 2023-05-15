@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 089F8703634
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F257703303
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243622AbjEORHp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49510 "EHLO
+        id S237721AbjEOQcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243448AbjEORHU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:20 -0400
+        with ESMTP id S242515AbjEOQcV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3544A5EB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:05:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9371BCC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C35A62AB8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312E8C433D2;
-        Mon, 15 May 2023 17:05:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E3D262782
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8475EC4339B;
+        Mon, 15 May 2023 16:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170310;
-        bh=CZtlbKuVuQqiLBRWX3p9POy9pp38dWu11JsRZsH9qdA=;
+        s=korg; t=1684168338;
+        bh=2Nm+yVJWGVYDw15PoDFgYsrDd2FnMcOOI5uFrYOuwQU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F1DQ/rH+z+bzhRpBVjjjQGDz3N4iTRGi6I2O9kCiJEvAMLmekLLOCKtpu8vYxw0Cy
-         z/deMHWjSnYCgeckIir4SbBgE+G+jR58dgRHE/W3ijI+2qmbUGq3Ga6RpPWWVodiKG
-         8lSPZGKgb4CX7q1DenZto+fB5I+hKrSioO3je1Ug=
+        b=wShpJRH00fswt34Xde9kEbg+vc6Wr4GiXo6QGeQialmJenTN2Xz8AhGBhGK6H5yT1
+         kjC6VHvUgc995l/fN5pv6k3Gsm0YLCb8JrCwiojFOiPLKRghFPJN4nBSw5LfkwYVt/
+         HnKGeTZPU/B54k/aRLASM40n4/42BIeqNGlCaydk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maxim Korotkov <korotkov.maxim.s@gmail.com>,
-        Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/239] writeback: fix call of incorrect macro
-Date:   Mon, 15 May 2023 18:25:14 +0200
-Message-Id: <20230515161723.238344690@linuxfoundation.org>
+Subject: [PATCH 4.14 018/116] drm/rockchip: Drop unbalanced obj unref
+Date:   Mon, 15 May 2023 18:25:15 +0200
+Message-Id: <20230515161658.898088391@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 3e46c89c74f2c38e5337d2cf44b0b551adff1cb4 ]
+[ Upstream commit 8ee3b0e85f6ccd9e6c527bc50eaba774c3bb18d0 ]
 
- the variable 'history' is of type u16, it may be an error
- that the hweight32 macro was used for it
- I guess macro hweight16 should be used
+In the error path, rockchip_drm_gem_object_mmap() is dropping an obj
+reference that it doesn't own.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2a81490811d0 ("writeback: implement foreign cgroup inode detection")
-Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230119104443.3002-1-korotkov.maxim.s@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 41315b793e13 ("drm/rockchip: use drm_gem_mmap helpers")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230119231734.2884543-1-robdclark@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_gem.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index aa33c39be1829..d387708977a50 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -827,7 +827,7 @@ void wbc_detach_inode(struct writeback_control *wbc)
- 		 * is okay.  The main goal is avoiding keeping an inode on
- 		 * the wrong wb for an extended period of time.
- 		 */
--		if (hweight32(history) > WB_FRN_HIST_THR_SLOTS)
-+		if (hweight16(history) > WB_FRN_HIST_THR_SLOTS)
- 			inode_switch_wbs(inode, max_id);
- 	}
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+index bde65186a3c37..8ba3a682dd9ad 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
+@@ -268,9 +268,6 @@ static int rockchip_drm_gem_object_mmap(struct drm_gem_object *obj,
+ 	else
+ 		ret = rockchip_drm_gem_object_mmap_dma(obj, vma);
+ 
+-	if (ret)
+-		drm_gem_vm_close(vma);
+-
+ 	return ret;
+ }
  
 -- 
 2.39.2
