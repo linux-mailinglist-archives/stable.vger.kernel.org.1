@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37E547035F4
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DAE87032FB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243415AbjEORFP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:05:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41474 "EHLO
+        id S242191AbjEOQcI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243483AbjEOREi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:04:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCD293D4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:10 -0700 (PDT)
+        with ESMTP id S241866AbjEOQcH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:32:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF142D4D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:31:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46FE762AA7
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:02:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B386C433D2;
-        Mon, 15 May 2023 17:02:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC6CD62770
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:31:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0EEC433EF;
+        Mon, 15 May 2023 16:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170164;
-        bh=rCR/umXWjr3fBettugLtcE2iJQTWkq6+wtzDClOh1uI=;
+        s=korg; t=1684168314;
+        bh=h4uQvRzzEyAIzgQTNAEO1W0VpjgImdVdW22BAZO9a4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ig7FQOcZtYaaxDsgpMVqohA58Y6rvQ+yY9yMrT268jqPSIiyStPl6IjXAcKkvqdhD
-         h69ik/cI6K8583vC1NVnjRLrC5FheETK7vqNWIcPOUD6DWCgik8RL6M8p97ZRBL6wv
-         8VrF8NnKJntZq42PEMnSAqqJg4i091LZo4DMoeNg=
+        b=kGw7NfBHElxP+Gedjo0Od37hwEMvz7L1CPmRFV9uSek8GiJKRnl9LNP55IE/1D7rR
+         UwdtShYcTgeE7Lb2RB4nALdKsFQD0dufnm5hxpzIIOKCyD23Ijj/dQKr4MeRzxCTvM
+         Okmy6TrkNgJQTWVr1HqDb64zTtep4eYnB2yAEBuo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cosmo Chou <chou.cosmo@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/239] net/ncsi: clear Tx enable mode when handling a Config required AEN
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.14 010/116] ring-buffer: Sync IRQ works before buffer destruction
 Date:   Mon, 15 May 2023 18:25:07 +0200
-Message-Id: <20230515161723.032642999@linuxfoundation.org>
+Message-Id: <20230515161658.631171369@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,41 +54,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cosmo Chou <chou.cosmo@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6f75cd166a5a3c0bc50441faa8b8304f60522fdd ]
+commit 675751bb20634f981498c7d66161584080cc061e upstream.
 
-ncsi_channel_is_tx() determines whether a given channel should be
-used for Tx or not. However, when reconfiguring the channel by
-handling a Configuration Required AEN, there is a misjudgment that
-the channel Tx has already been enabled, which results in the Enable
-Channel Network Tx command not being sent.
+If something was written to the buffer just before destruction,
+it may be possible (maybe not in a real system, but it did
+happen in ARCH=um with time-travel) to destroy the ringbuffer
+before the IRQ work ran, leading this KASAN report (or a crash
+without KASAN):
 
-Clear the channel Tx enable flag before reconfiguring the channel to
-avoid the misjudgment.
+    BUG: KASAN: slab-use-after-free in irq_work_run_list+0x11a/0x13a
+    Read of size 8 at addr 000000006d640a48 by task swapper/0
 
-Fixes: 8d951a75d022 ("net/ncsi: Configure multi-package, multi-channel modes with failover")
-Signed-off-by: Cosmo Chou <chou.cosmo@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    CPU: 0 PID: 0 Comm: swapper Tainted: G        W  O       6.3.0-rc1 #7
+    Stack:
+     60c4f20f 0c203d48 41b58ab3 60f224fc
+     600477fa 60f35687 60c4f20f 601273dd
+     00000008 6101eb00 6101eab0 615be548
+    Call Trace:
+     [<60047a58>] show_stack+0x25e/0x282
+     [<60c609e0>] dump_stack_lvl+0x96/0xfd
+     [<60c50d4c>] print_report+0x1a7/0x5a8
+     [<603078d3>] kasan_report+0xc1/0xe9
+     [<60308950>] __asan_report_load8_noabort+0x1b/0x1d
+     [<60232844>] irq_work_run_list+0x11a/0x13a
+     [<602328b4>] irq_work_tick+0x24/0x34
+     [<6017f9dc>] update_process_times+0x162/0x196
+     [<6019f335>] tick_sched_handle+0x1a4/0x1c3
+     [<6019fd9e>] tick_sched_timer+0x79/0x10c
+     [<601812b9>] __hrtimer_run_queues.constprop.0+0x425/0x695
+     [<60182913>] hrtimer_interrupt+0x16c/0x2c4
+     [<600486a3>] um_timer+0x164/0x183
+     [...]
+
+    Allocated by task 411:
+     save_stack_trace+0x99/0xb5
+     stack_trace_save+0x81/0x9b
+     kasan_save_stack+0x2d/0x54
+     kasan_set_track+0x34/0x3e
+     kasan_save_alloc_info+0x25/0x28
+     ____kasan_kmalloc+0x8b/0x97
+     __kasan_kmalloc+0x10/0x12
+     __kmalloc+0xb2/0xe8
+     load_elf_phdrs+0xee/0x182
+     [...]
+
+    The buggy address belongs to the object at 000000006d640800
+     which belongs to the cache kmalloc-1k of size 1024
+    The buggy address is located 584 bytes inside of
+     freed 1024-byte region [000000006d640800, 000000006d640c00)
+
+Add the appropriate irq_work_sync() so the work finishes before
+the buffers are destroyed.
+
+Prior to the commit in the Fixes tag below, there was only a
+single global IRQ work, so this issue didn't exist.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230427175920.a76159263122.I8295e405c44362a86c995e9c2c37e3e03810aa56@changeid
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 15693458c4bc ("tracing/ring-buffer: Move poll wake ups into ring buffer code")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-aen.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/ring_buffer.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
-index b635c194f0a85..62fb1031763d1 100644
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -165,6 +165,7 @@ static int ncsi_aen_handler_cr(struct ncsi_dev_priv *ndp,
- 	nc->state = NCSI_CHANNEL_INACTIVE;
- 	list_add_tail_rcu(&nc->link, &ndp->channel_queue);
- 	spin_unlock_irqrestore(&ndp->lock, flags);
-+	nc->modes[NCSI_MODE_TX_ENABLE].enable = 0;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1269,6 +1269,8 @@ static void rb_free_cpu_buffer(struct ri
+ 	struct list_head *head = cpu_buffer->pages;
+ 	struct buffer_page *bpage, *tmp;
  
- 	return ncsi_process_next_channel(ndp);
- }
--- 
-2.39.2
-
++	irq_work_sync(&cpu_buffer->irq_work.work);
++
+ 	free_buffer_page(cpu_buffer->reader_page);
+ 
+ 	if (head) {
+@@ -1374,6 +1376,8 @@ ring_buffer_free(struct ring_buffer *buf
+ 
+ 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
+ 
++	irq_work_sync(&buffer->irq_work.work);
++
+ 	for_each_buffer_cpu(buffer, cpu)
+ 		rb_free_cpu_buffer(buffer->buffers[cpu]);
+ 
 
 
