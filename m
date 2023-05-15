@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75C107034BE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B1E87033B1
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243087AbjEOQvz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:51:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57264 "EHLO
+        id S242853AbjEOQkS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:40:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243165AbjEOQvi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:38 -0400
+        with ESMTP id S242857AbjEOQkR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51095FC4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CB84212
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:40:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B12562970
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421D4C433EF;
-        Mon, 15 May 2023 16:51:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78CAE62876
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F396C433D2;
+        Mon, 15 May 2023 16:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169491;
-        bh=PvErCNWy9upi3n+FPP0v22rDzyW1zD8pthpoUcTZ12w=;
+        s=korg; t=1684168812;
+        bh=9q3V2uXKJCwW/Oj8E79RPaAn/1LEgjFVlwfJ6CvJsec=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sY/6zsYqO7Y7cMoq9jW7htadmwvlYlweLoZfXND/nrWq/C0Gu8Zvyts5yzgprZMY9
-         fRuA9vJXm1vmsYM0873qodoDLkW8PkqEmrKXvSqtRAA8ztze0rN2AcRmCmHa+BEwZw
-         IgsUUo1MtHnWEDlnIEZRJGeUhSg0BdIlbOWC05AY=
+        b=xiNC8UE4kQmSJOl85/EOUjyAFYAB4GyK6x+KnYeWhIat91SjXwQSHziqPxJ0yrALQ
+         wTc9Y+SkG9j/2+Kv3VA3nd12xDf1BIx/VPs8meO1Q6lRfGb0njpx7Gs/Y3yJLsWbkT
+         pn/ehyf8R4XKN87GCKj8JwqJFFdts2zY1ognd++I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-        Sai Krishna <saikrishnag@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 074/246] octeontx2-pf: Disable packet I/O for graceful exit
+Subject: [PATCH 4.19 049/191] wifi: ath9k: hif_usb: fix memory leak of remain_skbs
 Date:   Mon, 15 May 2023 18:24:46 +0200
-Message-Id: <20230515161724.790822644@linuxfoundation.org>
+Message-Id: <20230515161708.982527001@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit c926252205c424c4842dbdbe02f8e3296f623204 ]
+[ Upstream commit 7654cc03eb699297130b693ec34e25f77b17c947 ]
 
-At the stage of enabling packet I/O in otx2_open, If mailbox
-timeout occurs then interface ends up in down state where as
-hardware packet I/O is enabled. Hence disable packet I/O also
-before bailing out.
+hif_dev->remain_skb is allocated and used exclusively in
+ath9k_hif_usb_rx_stream(). It is implied that an allocated remain_skb is
+processed and subsequently freed (in error paths) only during the next
+call of ath9k_hif_usb_rx_stream().
 
-Fixes: 1ea0166da050 ("octeontx2-pf: Fix the device state on error")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+So, if the urbs are deallocated between those two calls due to the device
+deinitialization or suspend, it is possible that ath9k_hif_usb_rx_stream()
+is not called next time and the allocated remain_skb is leaked. Our local
+Syzkaller instance was able to trigger that.
+
+remain_skb makes sense when receiving two consecutive urbs which are
+logically linked together, i.e. a specific data field from the first skb
+indicates a cached skb to be allocated, memcpy'd with some data and
+subsequently processed in the next call to ath9k_hif_usb_rx_stream(). Urbs
+deallocation supposedly makes that link irrelevant so we need to free the
+cached skb in those cases.
+
+Fix the leak by introducing a function to explicitly free remain_skb (if
+it is not NULL) when the rx urbs have been deallocated. remain_skb is NULL
+when it has not been allocated at all (hif_dev struct is kzalloced) or
+when it has been processed in next call to ath9k_hif_usb_rx_stream().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230216192301.171225-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index a75c944cc739d..18284ad751572 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1835,13 +1835,22 @@ int otx2_open(struct net_device *netdev)
- 		otx2_dmacflt_reinstall_flows(pf);
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index e23d58f83dd6f..3aa915d215545 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -534,6 +534,24 @@ static struct ath9k_htc_hif hif_usb = {
+ 	.send = hif_usb_send,
+ };
  
- 	err = otx2_rxtx_enable(pf, true);
--	if (err)
-+	/* If a mbox communication error happens at this point then interface
-+	 * will end up in a state such that it is in down state but hardware
-+	 * mcam entries are enabled to receive the packets. Hence disable the
-+	 * packet I/O.
-+	 */
-+	if (err == EIO)
-+		goto err_disable_rxtx;
-+	else if (err)
- 		goto err_tx_stop_queues;
++/* Need to free remain_skb allocated in ath9k_hif_usb_rx_stream
++ * in case ath9k_hif_usb_rx_stream wasn't called next time to
++ * process the buffer and subsequently free it.
++ */
++static void ath9k_hif_usb_free_rx_remain_skb(struct hif_device_usb *hif_dev)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&hif_dev->rx_lock, flags);
++	if (hif_dev->remain_skb) {
++		dev_kfree_skb_any(hif_dev->remain_skb);
++		hif_dev->remain_skb = NULL;
++		hif_dev->rx_remain_len = 0;
++		RX_STAT_INC(hif_dev, skb_dropped);
++	}
++	spin_unlock_irqrestore(&hif_dev->rx_lock, flags);
++}
++
+ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
+ 				    struct sk_buff *skb)
+ {
+@@ -868,6 +886,7 @@ static int ath9k_hif_usb_alloc_tx_urbs(struct hif_device_usb *hif_dev)
+ static void ath9k_hif_usb_dealloc_rx_urbs(struct hif_device_usb *hif_dev)
+ {
+ 	usb_kill_anchored_urbs(&hif_dev->rx_submitted);
++	ath9k_hif_usb_free_rx_remain_skb(hif_dev);
+ }
  
- 	otx2_do_set_rx_mode(pf);
- 
- 	return 0;
- 
-+err_disable_rxtx:
-+	otx2_rxtx_enable(pf, false);
- err_tx_stop_queues:
- 	netif_tx_stop_all_queues(netdev);
- 	netif_carrier_off(netdev);
+ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
 -- 
 2.39.2
 
