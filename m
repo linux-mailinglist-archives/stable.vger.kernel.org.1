@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEFD570338B
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BBF703493
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242823AbjEOQi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41720 "EHLO
+        id S243092AbjEOQuL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242817AbjEOQiZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:38:25 -0400
+        with ESMTP id S243097AbjEOQtv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC17540CB
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:38:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824765BAE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 40E2562333
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:38:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD5BC433EF;
-        Mon, 15 May 2023 16:38:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCB5F62925
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F261BC433D2;
+        Mon, 15 May 2023 16:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168703;
-        bh=3cNFj8giUvtENvPhG7x+kMyNyGY+hjIju/Mx1p19NUI=;
+        s=korg; t=1684169384;
+        bh=NiUqJCUm//Z3xu2kMU0f+9NVKAwbNGoTZUzMUXqxWcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1GpfHWF3eMj34Y55e8MSZGyRSJ4e4iPqyH64Gjt7CyEcR0rBkPCkdiNCVlJ/5r0yP
-         TxbCbJiFGKmOrAwFlRn3hmXXRXXQcjb0na4/Csz1v33S+ngfuhGgEeLjZWdm6K1JHq
-         9FDx4AXSaS068h7BipxvdTb7iWYXiw8SYlZwTr7g=
+        b=Nsf5ZWw9MJSwi6WWq8xSiCYReCzE+8VX35D9FTACXcOt3QZrtafje1QRAKOxpOcsu
+         Ylgd73YBhvZ0UhOQcVQev9ecS7F8Rp2KNTw4l9rmfr4affRqEp8M/rzI/pdkHtsRkn
+         IJNo0XWy6CXuJEe60Y0INHDSl5zX4Xndo5grYAb0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.19 015/191] ring-buffer: Sync IRQ works before buffer destruction
+        patches@lists.linux.dev,
+        Angelo Dureghello <angelo.dureghello@timesys.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 040/246] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
 Date:   Mon, 15 May 2023 18:24:12 +0200
-Message-Id: <20230515161707.758535869@linuxfoundation.org>
+Message-Id: <20230515161723.797161274@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,94 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Angelo Dureghello <angelo.dureghello@timesys.com>
 
-commit 675751bb20634f981498c7d66161584080cc061e upstream.
+[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
 
-If something was written to the buffer just before destruction,
-it may be possible (maybe not in a real system, but it did
-happen in ARCH=um with time-travel) to destroy the ringbuffer
-before the IRQ work ran, leading this KASAN report (or a crash
-without KASAN):
+Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
+processing.
 
-    BUG: KASAN: slab-use-after-free in irq_work_run_list+0x11a/0x13a
-    Read of size 8 at addr 000000006d640a48 by task swapper/0
-
-    CPU: 0 PID: 0 Comm: swapper Tainted: G        W  O       6.3.0-rc1 #7
-    Stack:
-     60c4f20f 0c203d48 41b58ab3 60f224fc
-     600477fa 60f35687 60c4f20f 601273dd
-     00000008 6101eb00 6101eab0 615be548
-    Call Trace:
-     [<60047a58>] show_stack+0x25e/0x282
-     [<60c609e0>] dump_stack_lvl+0x96/0xfd
-     [<60c50d4c>] print_report+0x1a7/0x5a8
-     [<603078d3>] kasan_report+0xc1/0xe9
-     [<60308950>] __asan_report_load8_noabort+0x1b/0x1d
-     [<60232844>] irq_work_run_list+0x11a/0x13a
-     [<602328b4>] irq_work_tick+0x24/0x34
-     [<6017f9dc>] update_process_times+0x162/0x196
-     [<6019f335>] tick_sched_handle+0x1a4/0x1c3
-     [<6019fd9e>] tick_sched_timer+0x79/0x10c
-     [<601812b9>] __hrtimer_run_queues.constprop.0+0x425/0x695
-     [<60182913>] hrtimer_interrupt+0x16c/0x2c4
-     [<600486a3>] um_timer+0x164/0x183
-     [...]
-
-    Allocated by task 411:
-     save_stack_trace+0x99/0xb5
-     stack_trace_save+0x81/0x9b
-     kasan_save_stack+0x2d/0x54
-     kasan_set_track+0x34/0x3e
-     kasan_save_alloc_info+0x25/0x28
-     ____kasan_kmalloc+0x8b/0x97
-     __kasan_kmalloc+0x10/0x12
-     __kmalloc+0xb2/0xe8
-     load_elf_phdrs+0xee/0x182
-     [...]
-
-    The buggy address belongs to the object at 000000006d640800
-     which belongs to the cache kmalloc-1k of size 1024
-    The buggy address is located 584 bytes inside of
-     freed 1024-byte region [000000006d640800, 000000006d640c00)
-
-Add the appropriate irq_work_sync() so the work finishes before
-the buffers are destroyed.
-
-Prior to the commit in the Fixes tag below, there was only a
-single global IRQ work, so this issue didn't exist.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230427175920.a76159263122.I8295e405c44362a86c995e9c2c37e3e03810aa56@changeid
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 15693458c4bc ("tracing/ring-buffer: Move poll wake ups into ring buffer code")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1326,6 +1326,8 @@ static void rb_free_cpu_buffer(struct ri
- 	struct list_head *head = cpu_buffer->pages;
- 	struct buffer_page *bpage, *tmp;
- 
-+	irq_work_sync(&cpu_buffer->irq_work.work);
-+
- 	free_buffer_page(cpu_buffer->reader_page);
- 
- 	if (head) {
-@@ -1431,6 +1433,8 @@ ring_buffer_free(struct ring_buffer *buf
- 
- 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
- 
-+	irq_work_sync(&buffer->irq_work.work);
-+
- 	for_each_buffer_cpu(buffer, cpu)
- 		rb_free_cpu_buffer(buffer->buffers[cpu]);
- 
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 7108f745fbf01..902f407213404 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5182,6 +5182,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
+ 	.set_egress_port = mv88e6095_g1_set_egress_port,
+ 	.watchdog_ops = &mv88e6390_watchdog_ops,
++	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.reset = mv88e6352_g1_reset,
+ 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
+ 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
+-- 
+2.39.2
+
 
 
