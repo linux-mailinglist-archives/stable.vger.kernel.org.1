@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26FF170398F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BBA2703553
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244615AbjEORnm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:43:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
+        id S243263AbjEOQ5y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243060AbjEORnW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:22 -0400
+        with ESMTP id S243251AbjEOQ5x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E6711565
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:40:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C755278
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B511862E4A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5508C4339E;
-        Mon, 15 May 2023 17:40:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1DEA62A2C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F2C433D2;
+        Mon, 15 May 2023 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172452;
-        bh=ht4eD109vJ3wW+ZjBtY5hoH5e2hvHJKXeQfGyZOYbrI=;
+        s=korg; t=1684169865;
+        bh=QZhYRkOFQiVLrhGHtoI9Hs0G+I1WS7Z++H6m1o4v2zc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EFUENSkEX+/k+PX5f32KrBMYz+8GPKtGDbsTliNXMTlCt0xWNSqCfiDSHCPrFDyVQ
-         dhHJ56eoD6ofKGBgTMVg7lDwyAzEa1nLyfK5fasyg5ycPNPU2G8fG92yHMY5T/Ggzo
-         kC/It514Gaa1C7nsn2NNcWXzwy+eO6Xqw6iGPYMo=
+        b=R+nj5ymwtZB5kuksfO243/fuDZ+RhFF72DL9hWCse/I0wabtUOxxBTT9m0DWnFH7i
+         R/QkQKGqGQxh2bWhdPCguTnzjvmV3BM1IC1ckSw/UeT+8UARVjZDCtOqUkZECMyktP
+         +3BqlXzOAbqr51OVoAUroeDuPmGPI49zntew3gJ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/381] wifi: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
+        patches@lists.linux.dev,
+        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Alan Liu <HaoPing.Liu@amd.com>, Leo Chen <sancchen@amd.com>
+Subject: [PATCH 6.3 196/246] drm/amd/display: Change default Z8 watermark values
 Date:   Mon, 15 May 2023 18:26:48 +0200
-Message-Id: <20230515161743.924320938@linuxfoundation.org>
+Message-Id: <20230515161728.494225171@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Leo Chen <sancchen@amd.com>
 
-[ Upstream commit 905a9241e4e8c15d2c084fee916280514848fe35 ]
+commit 8f586cc16c1fc3c2202c9d54563db8c7ed365f82 upstream.
 
-If there is a failure during copy_from_user or user-provided data buffer
-is invalid, rtl_debugfs_set_write_rfreg should return negative error code
-instead of a positive value count.
+[Why & How]
+Previous Z8 watermark values were causing flickering and OTC underflow.
+Updating Z8 watermark values based on the measurement.
 
-Fix this bug by returning correct error code. Moreover, the check of buffer
-against null is removed since it will be handled by copy_from_user.
-
-Fixes: 610247f46feb ("rtlwifi: Improve debugging by using debugfs")
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230326053138.91338-1-harperchen1110@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Alan Liu <HaoPing.Liu@amd.com>
+Signed-off-by: Leo Chen <sancchen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
-index 0b1bc04cb6adb..602717928887d 100644
---- a/drivers/net/wireless/realtek/rtlwifi/debug.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
-@@ -375,8 +375,8 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
- 
- 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
- 
--	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
--		return count;
-+	if (copy_from_user(tmp, buffer, tmp_len))
-+		return -EFAULT;
- 
- 	tmp[tmp_len] = '\0';
- 
-@@ -386,7 +386,7 @@ static ssize_t rtl_debugfs_set_write_rfreg(struct file *filp,
- 	if (num != 4) {
- 		rtl_dbg(rtlpriv, COMP_ERR, DBG_DMESG,
- 			"Format is <path> <addr> <mask> <data>\n");
--		return count;
-+		return -EINVAL;
- 	}
- 
- 	rtl_set_rfreg(hw, path, addr, bitmask, data);
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -149,8 +149,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3
+ 	.num_states = 5,
+ 	.sr_exit_time_us = 16.5,
+ 	.sr_enter_plus_exit_time_us = 18.5,
+-	.sr_exit_z8_time_us = 210.0,
+-	.sr_enter_plus_exit_z8_time_us = 310.0,
++	.sr_exit_z8_time_us = 268.0,
++	.sr_enter_plus_exit_z8_time_us = 393.0,
+ 	.writeback_latency_us = 12.0,
+ 	.dram_channel_width_bytes = 4,
+ 	.round_trip_ping_latency_dcfclk_cycles = 106,
 
 
