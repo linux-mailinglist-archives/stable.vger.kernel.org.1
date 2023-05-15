@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3177037CC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F09E4703B5A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244066AbjEORYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
+        id S244411AbjEOSCN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:02:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244162AbjEORXr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0056BDC55
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:28 -0700 (PDT)
+        with ESMTP id S244505AbjEOSBo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:01:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDD319F31
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:59:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FF9E62C7B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F80C433D2;
-        Mon, 15 May 2023 17:22:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D3C363026
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2E1C433D2;
+        Mon, 15 May 2023 17:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171347;
-        bh=tPSVz4NBhSMOYeOgTzwDoMxs1IxWrZOBVBJI9KE2Op8=;
+        s=korg; t=1684173546;
+        bh=ubNsDCEXG/g/8P9mF/NJsnpHpnAIkBf3ZagEe5ppvAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6ktQme2uEGEHXhgkqROzEKKBOFaeGxz3QcztTH11EHXEeuzkauq05atl71hG4UG5
-         wO5ahVMeDnaNXHM6CPlkRxb4G5yTAJbZpAd6bM1SXqwfa4CK3P8byBGeEjEZ7mAnqZ
-         iHo9ubEH9cKAw43Sm52aZZIt+IuUCycWvF0IIIuU=
+        b=C1W1crp42hrrQJkAJCYPTQdMuKrfcyMMmy9zAbUVO9sZfsYBXoLadm8MuqbRBwa+g
+         2pRDGtoeRr35SgDq671sLpauLLMs6iNM82QuZJ++4qrpTbcmp1N06dfKsYCUzT93+6
+         v2P9b46N50lItKbpXKrtZM3PQ7QS72JH6mgz6axU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.2 181/242] irqchip/loongson-pch-pic: Fix pch_pic_acpi_init calling
+        patches@lists.linux.dev,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 129/282] ASoC: es8316: Handle optional IRQ assignment
 Date:   Mon, 15 May 2023 18:28:27 +0200
-Message-Id: <20230515161727.304047490@linuxfoundation.org>
+Message-Id: <20230515161726.094253880@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,68 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianmin Lv <lvjianmin@loongson.cn>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 48ce2d722f7f108f27bedddf54bee3423a57ce57 upstream.
+[ Upstream commit 39db65a0a17b54915b269d3685f253a4731f344c ]
 
-For dual-bridges scenario, pch_pic_acpi_init() will be called
-in following path:
+The driver is able to work fine without relying on a mandatory interrupt
+being assigned to the I2C device. This is only needed when making use of
+the jack-detect support.
 
-cpuintc_acpi_init
-  acpi_cascade_irqdomain_init(in cpuintc driver)
-    acpi_table_parse_madt
-      eiointc_parse_madt
-        eiointc_acpi_init /* this will be called two times
-                             correspondingto parsing two
-                             eiointc entries in MADT under
-                             dual-bridges scenario*/
-          acpi_cascade_irqdomain_init(in eiointc driver)
-            acpi_table_parse_madt
-              pch_pic_parse_madt
-                pch_pic_acpi_init /* this will be called depend
-                                     on valid parent IRQ domain
-                                     handle for one or two times
-                                     corresponding to parsing
-                                     two pchpic entries in MADT
-                                     druring calling
-                                     eiointc_acpi_init() under
-                                     dual-bridges scenario*/
+However, the following warning message is always emitted when there is
+no such interrupt available:
 
-During the first eiointc_acpi_init() calling, the
-pch_pic_acpi_init() will be called just one time since only
-one valid parent IRQ domain handle will be found for current
-eiointc IRQ domain.
+  es8316 0-0011: Failed to get IRQ 0: -22
 
-During the second eiointc_acpi_init() calling, the
-pch_pic_acpi_init() will be called two times since two valid
-parent IRQ domain handles will be found. So in pch_pic_acpi_init(),
-we must have a reasonable way to prevent from creating second same
-pch_pic IRQ domain.
+Do not attempt to request an IRQ if it is not available/valid. This also
+ensures the rather misleading message is not displayed anymore.
 
-The patch matches gsi base information in created pch_pic IRQ
-domains to check if the target domain has been created to avoid the
-bug mentioned above.
+Also note the IRQ validation relies on commit dab472eb931bc291 ("i2c /
+ACPI: Use 0 to indicate that device does not have interrupt assigned").
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230407083453.6305-6-lvjianmin@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 822257661031 ("ASoC: es8316: Add jack-detect support")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230328094901.50763-1-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-pch-pic.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/es8316.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/irqchip/irq-loongson-pch-pic.c
-+++ b/drivers/irqchip/irq-loongson-pch-pic.c
-@@ -403,6 +403,9 @@ int __init pch_pic_acpi_init(struct irq_
- 	int ret, vec_base;
- 	struct fwnode_handle *domain_handle;
+diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
+index 573085f7cfd1e..efeffa0bf2d78 100644
+--- a/sound/soc/codecs/es8316.c
++++ b/sound/soc/codecs/es8316.c
+@@ -806,12 +806,14 @@ static int es8316_i2c_probe(struct i2c_client *i2c_client,
+ 	es8316->irq = i2c_client->irq;
+ 	mutex_init(&es8316->lock);
  
-+	if (find_pch_pic(acpi_pchpic->gsi_base) >= 0)
-+		return 0;
-+
- 	vec_base = acpi_pchpic->gsi_base - GSI_MIN_PCH_IRQ;
+-	ret = devm_request_threaded_irq(dev, es8316->irq, NULL, es8316_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT | IRQF_NO_AUTOEN,
+-					"es8316", es8316);
+-	if (ret) {
+-		dev_warn(dev, "Failed to get IRQ %d: %d\n", es8316->irq, ret);
+-		es8316->irq = -ENXIO;
++	if (es8316->irq > 0) {
++		ret = devm_request_threaded_irq(dev, es8316->irq, NULL, es8316_irq,
++						IRQF_TRIGGER_HIGH | IRQF_ONESHOT | IRQF_NO_AUTOEN,
++						"es8316", es8316);
++		if (ret) {
++			dev_warn(dev, "Failed to get IRQ %d: %d\n", es8316->irq, ret);
++			es8316->irq = -ENXIO;
++		}
+ 	}
  
- 	domain_handle = irq_domain_alloc_fwnode(&acpi_pchpic->address);
+ 	return devm_snd_soc_register_component(&i2c_client->dev,
+-- 
+2.39.2
+
 
 
