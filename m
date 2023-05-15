@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3D8C7037CF
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8578703859
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243778AbjEORYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40148 "EHLO
+        id S244311AbjEORcF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244167AbjEORXs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:48 -0400
+        with ESMTP id S244307AbjEORbc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50C4DC5A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3B4F14E47
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5F8562C65
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC453C433D2;
-        Mon, 15 May 2023 17:22:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C288462D16
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBD1C433EF;
+        Mon, 15 May 2023 17:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171354;
-        bh=0M0FAuG3Qyhr2jqM0j3vbsgcmFZMleMWj3HaMudskG4=;
+        s=korg; t=1684171644;
+        bh=hCrY4jyxNQ4CJJLdiS9xm5clus0qWcE3FDl2BQsYHoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DtgqIYl9JteYGlo7hewWd+b4LXy7plGmcQK8ENtYRO7iTmxBMmswKCyNWs7bw8RvK
-         9h+oaxGORMsMFIApN7bjDBYOWYtk0qt6JSAyQTDEsUv6MAkfdAjPZDIym5PRNKoWAS
-         Lg876TEr0aVGnRyRbb5h5qO7uJCU449NCkoJ43Fg=
+        b=sbRzK5KT0psmwb0g20WbDxMJl5BrCIqo4C+2x1czSlOePB93YgEX9bo90uyGezv25
+         4Q4BoIlj3Vw1INGBB13A73vNRkUAcqFK+QSTgPyedD9/2YTEc+GQgJ76XfxJYrNFKs
+         NwM9cPTXBQEIHYD55iqKFKP26IbhalQCEie7lz4g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.2 183/242] irqchip/loongson-eiointc: Fix returned value on parsing MADT
+        patches@lists.linux.dev, Andy Moreton <andy.moreton@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/134] sfc: Fix module EEPROM reporting for QSFP modules
 Date:   Mon, 15 May 2023 18:28:29 +0200
-Message-Id: <20230515161727.361596443@linuxfoundation.org>
+Message-Id: <20230515161704.151803780@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,52 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianmin Lv <lvjianmin@loongson.cn>
+From: Andy Moreton <andy.moreton@amd.com>
 
-commit 112eaa8fec5ea75f1be003ec55760b09a86799f8 upstream.
+[ Upstream commit 281900a923d4c50df109b52a22ae3cdac150159b ]
 
-In pch_pic_parse_madt(), a NULL parent pointer will be
-returned from acpi_get_vec_parent() for second pch-pic domain
-related to second bridge while calling eiointc_acpi_init() at
-first time, where the parent of it has not been initialized
-yet, and will be initialized during second time calling
-eiointc_acpi_init(). So, it's reasonable to return zero so
-that failure of acpi_table_parse_madt() will be avoided, or else
-acpi_cascade_irqdomain_init() will return and initialization of
-followed pch_msi domain will be skipped.
+The sfc driver does not report QSFP module EEPROM contents correctly
+as only the first page is fetched from hardware.
 
-Although it does not matter when pch_msi_parse_madt() returns
--EINVAL if no invalid parent is found, it's also reasonable to
-return zero for that.
+Commit 0e1a2a3e6e7d ("ethtool: Add SFF-8436 and SFF-8636 max EEPROM
+length definitions") added ETH_MODULE_SFF_8436_MAX_LEN for the overall
+size of the EEPROM info, so use that to report the full EEPROM contents.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230407083453.6305-2-lvjianmin@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9b17010da57a ("sfc: Add ethtool -m support for QSFP modules")
+Signed-off-by: Andy Moreton <andy.moreton@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-eiointc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/sfc/mcdi_port_common.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -343,7 +343,7 @@ static int __init pch_pic_parse_madt(uni
- 	if (parent)
- 		return pch_pic_acpi_init(parent, pchpic_entry);
+diff --git a/drivers/net/ethernet/sfc/mcdi_port_common.c b/drivers/net/ethernet/sfc/mcdi_port_common.c
+index c4fe3c48ac46a..eccb97a5d9387 100644
+--- a/drivers/net/ethernet/sfc/mcdi_port_common.c
++++ b/drivers/net/ethernet/sfc/mcdi_port_common.c
+@@ -974,12 +974,15 @@ static u32 efx_mcdi_phy_module_type(struct efx_nic *efx)
  
--	return -EINVAL;
-+	return 0;
- }
+ 	/* A QSFP+ NIC may actually have an SFP+ module attached.
+ 	 * The ID is page 0, byte 0.
++	 * QSFP28 is of type SFF_8636, however, this is treated
++	 * the same by ethtool, so we can also treat them the same.
+ 	 */
+ 	switch (efx_mcdi_phy_get_module_eeprom_byte(efx, 0, 0)) {
+-	case 0x3:
++	case 0x3: /* SFP */
+ 		return MC_CMD_MEDIA_SFP_PLUS;
+-	case 0xc:
+-	case 0xd:
++	case 0xc: /* QSFP */
++	case 0xd: /* QSFP+ */
++	case 0x11: /* QSFP28 */
+ 		return MC_CMD_MEDIA_QSFP_PLUS;
+ 	default:
+ 		return 0;
+@@ -1077,7 +1080,7 @@ int efx_mcdi_phy_get_module_info(struct efx_nic *efx, struct ethtool_modinfo *mo
  
- static int __init pch_msi_parse_madt(union acpi_subtable_headers *header,
-@@ -355,7 +355,7 @@ static int __init pch_msi_parse_madt(uni
- 	if (parent)
- 		return pch_msi_acpi_init(parent, pchmsi_entry);
+ 	case MC_CMD_MEDIA_QSFP_PLUS:
+ 		modinfo->type = ETH_MODULE_SFF_8436;
+-		modinfo->eeprom_len = ETH_MODULE_SFF_8436_LEN;
++		modinfo->eeprom_len = ETH_MODULE_SFF_8436_MAX_LEN;
+ 		break;
  
--	return -EINVAL;
-+	return 0;
- }
- 
- static int __init acpi_cascade_irqdomain_init(void)
+ 	default:
+-- 
+2.39.2
+
 
 
