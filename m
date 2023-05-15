@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF6E703AFC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F16A7039AE
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239367AbjEOR6c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58404 "EHLO
+        id S244629AbjEORpG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239357AbjEOR6A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:58:00 -0400
+        with ESMTP id S244674AbjEORot (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D9F16EAC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:55:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D2A12EA8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87E7E62FE4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:55:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE35C433EF;
-        Mon, 15 May 2023 17:55:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4477D62E73
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A60C433D2;
+        Mon, 15 May 2023 17:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173334;
-        bh=67jMBgXnE4m972y0CrvABDfaDDFYYJZHcEc9tYU95vw=;
+        s=korg; t=1684172543;
+        bh=twRz+W8kYTkgotW7HxaRV4S6MqhdIjVzdrWEQHRcPvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CUbyJCP92vaFPhYbySyIai4oL/m5HuOTrFvZOmXM4UzFk4bHhehRm+/7o+2y0JIM/
-         OzAX0kgtuBOGaIKE6xBGDL+dj6GTGs0Zgl2LiHJB/28JVaUDeramhV6l0ZNOBHVcaT
-         xJWdPhtg7rGiRBjct9oDU0kuhZrtm58uLxGmBYK8=
+        b=JxtE3pQS2aXwtA4qpnJv/K3lbHuwhJahg6yE29HLOTVf1btlrg3U3sNpKB4Rrszge
+         3I7YvWNZ05ZFdpf+VvBlHOUpaN/cGuXZMplxj4enz/yAH5VUiOz4yo7w9A6/X9l88y
+         H2R2Oug5d1/RWFIcExkT+uaYIiIOOZeCjcGPGjPY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cai Huoqing <caihuoqing@baidu.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/282] media: rcar_fdp1: Make use of the helper function devm_platform_ioremap_resource()
+Subject: [PATCH 5.10 187/381] ipv4: Fix potential uninit variable access bug in __ip_make_skb()
 Date:   Mon, 15 May 2023 18:27:18 +0200
-Message-Id: <20230515161724.044001233@linuxfoundation.org>
+Message-Id: <20230515161745.263360163@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cai Huoqing <caihuoqing@baidu.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 736cce12fa630e28705de06570d74f0513d948d5 ]
+[ Upstream commit 99e5acae193e369b71217efe6f1dad42f3f18815 ]
 
-Use the devm_platform_ioremap_resource() helper instead of
-calling platform_get_resource() and devm_ioremap_resource()
-separately
+Like commit ea30388baebc ("ipv6: Fix an uninit variable access bug in
+__ip6_make_skb()"). icmphdr does not in skb linear region under the
+scenario of SOCK_RAW socket. Access icmp_hdr(skb)->type directly will
+trigger the uninit variable access bug.
 
-Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: c766c90faf93 ("media: rcar_fdp1: Fix refcount leak in probe and remove function")
+Use a local variable icmp_type to carry the correct value in different
+scenarios.
+
+Fixes: 96793b482540 ("[IPV4]: Add ICMPMsgStats MIB (RFC 4293)")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rcar_fdp1.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/ipv4/ip_output.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/rcar_fdp1.c b/drivers/media/platform/rcar_fdp1.c
-index 9caddc8387b46..90575a58ad880 100644
---- a/drivers/media/platform/rcar_fdp1.c
-+++ b/drivers/media/platform/rcar_fdp1.c
-@@ -2260,7 +2260,6 @@ static int fdp1_probe(struct platform_device *pdev)
- 	struct fdp1_dev *fdp1;
- 	struct video_device *vfd;
- 	struct device_node *fcp_node;
--	struct resource *res;
- 	struct clk *clk;
- 	unsigned int i;
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 0dbf950de832f..1e07df2821773 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1564,9 +1564,19 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
+ 	cork->dst = NULL;
+ 	skb_dst_set(skb, &rt->dst);
  
-@@ -2287,8 +2286,7 @@ static int fdp1_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, fdp1);
+-	if (iph->protocol == IPPROTO_ICMP)
+-		icmp_out_count(net, ((struct icmphdr *)
+-			skb_transport_header(skb))->type);
++	if (iph->protocol == IPPROTO_ICMP) {
++		u8 icmp_type;
++
++		/* For such sockets, transhdrlen is zero when do ip_append_data(),
++		 * so icmphdr does not in skb linear region and can not get icmp_type
++		 * by icmp_hdr(skb)->type.
++		 */
++		if (sk->sk_type == SOCK_RAW && !inet_sk(sk)->hdrincl)
++			icmp_type = fl4->fl4_icmp_type;
++		else
++			icmp_type = icmp_hdr(skb)->type;
++		icmp_out_count(net, icmp_type);
++	}
  
- 	/* Memory-mapped registers */
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	fdp1->regs = devm_ioremap_resource(&pdev->dev, res);
-+	fdp1->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(fdp1->regs))
- 		return PTR_ERR(fdp1->regs);
- 
+ 	ip_cork_release(cork);
+ out:
 -- 
 2.39.2
 
