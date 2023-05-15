@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A84DE70340A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAC2470360E
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240586AbjEOQoN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47544 "EHLO
+        id S243479AbjEORFx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242947AbjEOQoG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:44:06 -0400
+        with ESMTP id S243477AbjEORFS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:05:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223E84C32
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:44:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6BFAD02
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:03:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9885B627C4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:44:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFABC433D2;
-        Mon, 15 May 2023 16:43:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B88C5620F0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:03:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4622C433EF;
+        Mon, 15 May 2023 17:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169040;
-        bh=LBuqxzUURxy6JBHyX4sQ1p/puLomcRGyhP/qbfuoyCw=;
+        s=korg; t=1684170231;
+        bh=Wb0wlfftRgkkzvY/px0J6djogRQJsVWPjHgTUsOpi1I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hEAmjGCrCUKgCcxMf6cy+0Kq9Lr4Gr828iKJ8cxp5NYl+3GoeuZ6LK4lBuEF/oUoz
-         00tH9LSuyk3O5Qzdxbq9Gm8JEya23wJ+ruOM8rvs3iz0QBu6kyFFCt3P42VrvaQclb
-         XdGwSQelGSXj3a5q2XuXrIhITmOLb5wXOF1j7Gow=
+        b=L4ci/EuwZV+A0SsB5PK50lWi6F32AOfy9OtbTOyRxnJq7Rx6AraaY8KHyYxUXPf8y
+         LVE9fOYVjYk54x5k7cy8qFcrltCfsKDjzlBFWEgxYu9SzzIeQINuvnj83ECdPU2i+F
+         /HoIF9FXSwh9R6wG5ZB4o3Xs9lRsNl5OwjqsrETw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 092/191] ia64: salinfo: placate defined-but-not-used warning
+Subject: [PATCH 6.1 066/239] octeontx2-af: Fix start and end bit for scan config
 Date:   Mon, 15 May 2023 18:25:29 +0200
-Message-Id: <20230515161710.609453330@linuxfoundation.org>
+Message-Id: <20230515161723.677097660@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[ Upstream commit 0de155752b152d6bcd96b5b5bf20af336abd183a ]
+[ Upstream commit c60a6b90e7890453f09e0d2163d6acadabe3415b ]
 
-When CONFIG_PROC_FS is not set, proc_salinfo_show() is not used.  Mark the
-function as __maybe_unused to quieten the warning message.
+In the current driver, NPC exact match feature was not getting
+enabled as configured bit was not read properly.
+for_each_set_bit_from() need end bit as one bit post
+position in the bit map to read NPC exact nibble enable
+bits properly. This patch fixes the same.
 
-../arch/ia64/kernel/salinfo.c:584:12: warning: 'proc_salinfo_show' defined but not used [-Wunused-function]
-  584 | static int proc_salinfo_show(struct seq_file *m, void *v)
-      |            ^~~~~~~~~~~~~~~~~
-
-Link: https://lkml.kernel.org/r/20230223034309.13375-1-rdunlap@infradead.org
-Fixes: 3f3942aca6da ("proc: introduce proc_create_single{,_data}")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b747923afff8 ("octeontx2-af: Exact match support")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/ia64/kernel/salinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/ia64/kernel/salinfo.c b/arch/ia64/kernel/salinfo.c
-index aba1f463a8dd4..b889db4492c8d 100644
---- a/arch/ia64/kernel/salinfo.c
-+++ b/arch/ia64/kernel/salinfo.c
-@@ -580,7 +580,7 @@ static int salinfo_cpu_pre_down(unsigned int cpu)
-  * 'data' contains an integer that corresponds to the feature we're
-  * testing
-  */
--static int proc_salinfo_show(struct seq_file *m, void *v)
-+static int __maybe_unused proc_salinfo_show(struct seq_file *m, void *v)
- {
- 	unsigned long data = (unsigned long)v;
- 	seq_puts(m, (sal_platform_features & data) ? "1\n" : "0\n");
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index 7c4e1acd0f77b..67c85382eef62 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -553,8 +553,7 @@ static int npc_scan_kex(struct rvu *rvu, int blkaddr, u8 intf)
+ 	 */
+ 	masked_cfg = cfg & NPC_EXACT_NIBBLE;
+ 	bitnr = NPC_EXACT_NIBBLE_START;
+-	for_each_set_bit_from(bitnr, (unsigned long *)&masked_cfg,
+-			      NPC_EXACT_NIBBLE_START) {
++	for_each_set_bit_from(bitnr, (unsigned long *)&masked_cfg, NPC_EXACT_NIBBLE_END + 1) {
+ 		npc_scan_exact_result(mcam, bitnr, key_nibble, intf);
+ 		key_nibble++;
+ 	}
 -- 
 2.39.2
 
