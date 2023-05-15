@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E79F703722
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A2870331D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243844AbjEORRL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60978 "EHLO
+        id S240191AbjEOQd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243818AbjEORQv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:51 -0400
+        with ESMTP id S242641AbjEOQdW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A23A10E7E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:15:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6851330ED
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:33:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B936662BDA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:15:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE992C433A7;
-        Mon, 15 May 2023 17:15:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27726627CA
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:33:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6062C4331D;
+        Mon, 15 May 2023 16:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170931;
-        bh=1JrCvhACJG3XIdoGF23okqvudLlr2PKQ40wi+gkY0zA=;
+        s=korg; t=1684168394;
+        bh=dRyiwq1nUQtL5NOufKmCIlMFB8i1MmgpfVMshoGjhpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DFZaMkstn7As5wFuVQ0u0yuCpBt/pvfCmc+m3I/fzzYgwlInnfULV0WxbBgbSlx47
-         0HUH08rb6q6tp92PYPA24QOSng/jURBKe+b3YaAfuKSUovzcJC51QWV+99yPS0vDDz
-         gIjZ8JD8/bmoKSujqobSywx+83G8uJGUovWtPCPA=
+        b=RWy9AeOWc3uG38NUiIx7HanJBvkszptknahK4l0YlvSWTBE5RorjzmHF+gyycV2vG
+         by0cBxeUedwTZ2cQh/LWIf9PTcMr1JTwMALTQ+GHwcBrGpJT1zfhkFZKk9mESQH9B2
+         foyDbmzT/cr+050LbvBvHfEyEy7BezM5+O9twIJ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 007/242] mtd: spi-nor: spansion: Enable JFFS2 write buffer for Infineon s28hx SEMPER flash
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 036/116] md/raid10: fix leak of r10bio->remaining for recovery
 Date:   Mon, 15 May 2023 18:25:33 +0200
-Message-Id: <20230515161722.033603276@linuxfoundation.org>
+Message-Id: <20230515161659.470873652@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
+References: <20230515161658.228491273@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,105 +53,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 9fd0945fe6fadfb6b54a9cd73be101c02b3e8134 ]
+[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
 
-Infineon(Cypress) SEMPER NOR flash family has on-die ECC and its program
-granularity is 16-byte ECC data unit size. JFFS2 supports write buffer
-mode for ECC'd NOR flash. Provide a way to clear the MTD_BIT_WRITEABLE
-flag in order to enable JFFS2 write buffer mode support.
+raid10_sync_request() will add 'r10bio->remaining' for both rdev and
+replacement rdev. However, if the read io fails, recovery_request_write()
+returns without issuing the write io, in this case, end_sync_request()
+is only called once and 'remaining' is leaked, cause an io hang.
 
-A new SNOR_F_ECC flag is introduced to determine if the part has on-die
-ECC and if it has, MTD_BIT_WRITEABLE is unset.
+Fix the problem by decreasing 'remaining' according to if 'bio' and
+'repl_bio' is valid.
 
-In vendor specific driver, a common cypress_nor_ecc_init() helper is
-added. This helper takes care for ECC related initialization for SEMPER
-flash family by setting up params->writesize and SNOR_F_ECC.
-
-Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
-Suggested-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/d586723f6f12aaff44fbcd7b51e674b47ed554ed.1680760742.git.Takahiro.Kuwano@infineon.com
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.c     |  3 +++
- drivers/mtd/spi-nor/core.h     |  1 +
- drivers/mtd/spi-nor/debugfs.c  |  1 +
- drivers/mtd/spi-nor/spansion.c | 13 ++++++++++++-
- 4 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/md/raid10.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 767b1faa32b0e..d75db50767938 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2983,6 +2983,9 @@ static void spi_nor_set_mtd_info(struct spi_nor *nor)
- 		mtd->name = dev_name(dev);
- 	mtd->type = MTD_NORFLASH;
- 	mtd->flags = MTD_CAP_NORFLASH;
-+	/* Unset BIT_WRITEABLE to enable JFFS2 write buffer for ECC'd NOR */
-+	if (nor->flags & SNOR_F_ECC)
-+		mtd->flags &= ~MTD_BIT_WRITEABLE;
- 	if (nor->info->flags & SPI_NOR_NO_ERASE)
- 		mtd->flags |= MTD_NO_ERASE;
- 	else
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index 57e8916965ea8..75ec2e5604247 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -131,6 +131,7 @@ enum spi_nor_option_flags {
- 	SNOR_F_SOFT_RESET	= BIT(12),
- 	SNOR_F_SWP_IS_VOLATILE	= BIT(13),
- 	SNOR_F_RWW		= BIT(14),
-+	SNOR_F_ECC		= BIT(15),
- };
- 
- struct spi_nor_read_command {
-diff --git a/drivers/mtd/spi-nor/debugfs.c b/drivers/mtd/spi-nor/debugfs.c
-index bd8a18da49c04..285bdcbaa1134 100644
---- a/drivers/mtd/spi-nor/debugfs.c
-+++ b/drivers/mtd/spi-nor/debugfs.c
-@@ -26,6 +26,7 @@ static const char *const snor_f_names[] = {
- 	SNOR_F_NAME(SOFT_RESET),
- 	SNOR_F_NAME(SWP_IS_VOLATILE),
- 	SNOR_F_NAME(RWW),
-+	SNOR_F_NAME(ECC),
- };
- #undef SNOR_F_NAME
- 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index 07fe0f6fdfe3e..f4e9a1738234a 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -218,6 +218,17 @@ static int cypress_nor_set_page_size(struct spi_nor *nor)
- 	return 0;
- }
- 
-+static void cypress_nor_ecc_init(struct spi_nor *nor)
-+{
-+	/*
-+	 * Programming is supported only in 16-byte ECC data unit granularity.
-+	 * Byte-programming, bit-walking, or multiple program operations to the
-+	 * same ECC data unit without an erase are not allowed.
-+	 */
-+	nor->params->writesize = 16;
-+	nor->flags |= SNOR_F_ECC;
-+}
-+
- static int
- s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
- 			const struct sfdp_parameter_header *bfpt_header,
-@@ -324,7 +335,7 @@ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
- static void s28hx_t_late_init(struct spi_nor *nor)
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 3ad0a1460eb77..95c3a21cd7335 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2234,11 +2234,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
  {
- 	nor->params->octal_dtr_enable = cypress_nor_octal_dtr_enable;
--	nor->params->writesize = 16;
-+	cypress_nor_ecc_init(nor);
- }
+ 	struct r10conf *conf = mddev->private;
+ 	int d;
+-	struct bio *wbio, *wbio2;
++	struct bio *wbio = r10_bio->devs[1].bio;
++	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
++
++	/* Need to test wbio2->bi_end_io before we call
++	 * generic_make_request as if the former is NULL,
++	 * the latter is free to free wbio2.
++	 */
++	if (wbio2 && !wbio2->bi_end_io)
++		wbio2 = NULL;
  
- static const struct spi_nor_fixups s28hx_t_fixups = {
+ 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
+ 		fix_recovery_read_error(r10_bio);
+-		end_sync_request(r10_bio);
++		if (wbio->bi_end_io)
++			end_sync_request(r10_bio);
++		if (wbio2)
++			end_sync_request(r10_bio);
+ 		return;
+ 	}
+ 
+@@ -2247,14 +2258,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ 	 * and submit the write request
+ 	 */
+ 	d = r10_bio->devs[1].devnum;
+-	wbio = r10_bio->devs[1].bio;
+-	wbio2 = r10_bio->devs[1].repl_bio;
+-	/* Need to test wbio2->bi_end_io before we call
+-	 * generic_make_request as if the former is NULL,
+-	 * the latter is free to free wbio2.
+-	 */
+-	if (wbio2 && !wbio2->bi_end_io)
+-		wbio2 = NULL;
+ 	if (wbio->bi_end_io) {
+ 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
+ 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
 -- 
 2.39.2
 
