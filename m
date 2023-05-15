@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6006D70383D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 378857037D0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244239AbjEORag (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:30:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47928 "EHLO
+        id S243965AbjEORYW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244355AbjEOR3w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:29:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1CB12EBE;
-        Mon, 15 May 2023 10:27:29 -0700 (PDT)
+        with ESMTP id S244180AbjEORXw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:23:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D94106EF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9EDB62D12;
-        Mon, 15 May 2023 17:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADAFC433D2;
-        Mon, 15 May 2023 17:27:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D210362C7A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4138C433D2;
+        Mon, 15 May 2023 17:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171647;
-        bh=43pq+UjSaKTzdKcTZSc3BjZWUVTfug1scezW8PiZqrk=;
+        s=korg; t=1684171357;
+        bh=3vij6U0ufvDorV8dwbJtqPUbB6k3SOEXRBsLswKss14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JpvNX+YaG4tJFhX2g+ta2Lqd9ttaBntmdSfOrmrkY7aEGcTxyzXlcD3EZB3yHD+Hk
-         3yjGOczbSA/wFXK4bdAiutdai1L9kf9sETK0MltEP1VeWS7hiL24IruwpOHUGWxDKD
-         b4HYyFnL7fEbP8VTH8Vk75cHc1BuEu7CKM/Buqt4=
+        b=WfTrt/7k5xFJ9RpCPq3eZUBgoGKdvHhN5TsvuA2dpgpdMMM2ziURsF3dBvHioP3dO
+         9IddFnbEWOlAuKS/lWRpC9DabylawqsvmUpeYj4MHKAjqSP0U/02m0kUzcTdFJgHXB
+         eVBm4+gSvqjLtJh8L2rfbAAsO+gw+OqzgYraezVg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/134] rxrpc: Fix hard call timeout units
+        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.2 184/242] irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent
 Date:   Mon, 15 May 2023 18:28:30 +0200
-Message-Id: <20230515161704.200160555@linuxfoundation.org>
+Message-Id: <20230515161727.466746919@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,45 +53,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-[ Upstream commit 0d098d83c5d9e107b2df7f5e11f81492f56d2fe7 ]
+commit 64cc451e45e146b2140211b4f45f278b93b24ac0 upstream.
 
-The hard call timeout is specified in the RXRPC_SET_CALL_TIMEOUT cmsg in
-seconds, so fix the point at which sendmsg() applies it to the call to
-convert to jiffies from seconds, not milliseconds.
+In eiointc_acpi_init(), a *eiointc* node is passed into
+acpi_get_vec_parent() instead of a required *NUMA* node (on some chip
+like 3C5000L, a *NUMA* node means a *eiointc* node, but on some chip
+like 3C5000, a *NUMA* node contains 4 *eiointc* nodes), and node in
+struct acpi_vector_group is essentially a *NUMA* node, which will
+lead to no parent matched for passed *eiointc* node. so the patch
+adjusts code to use *NUMA* node for parameter node of
+acpi_set_vec_parent/acpi_get_vec_parent.
 
-Fixes: a158bdd3247b ("rxrpc: Fix timeout of a call that hasn't yet been granted a channel")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230407083453.6305-3-lvjianmin@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/sendmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-loongson-eiointc.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index d4e4e94f4f987..71e40f91dd398 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -736,7 +736,7 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
- 		fallthrough;
- 	case 1:
- 		if (p.call.timeouts.hard > 0) {
--			j = msecs_to_jiffies(p.call.timeouts.hard);
-+			j = p.call.timeouts.hard * HZ;
- 			now = jiffies;
- 			j += now;
- 			WRITE_ONCE(call->expect_term_by, j);
--- 
-2.39.2
-
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -280,9 +280,6 @@ static void acpi_set_vec_parent(int node
+ {
+ 	int i;
+ 
+-	if (cpu_has_flatmode)
+-		node = cpu_to_node(node * CORES_PER_EIO_NODE);
+-
+ 	for (i = 0; i < MAX_IO_PICS; i++) {
+ 		if (node == vec_group[i].node) {
+ 			vec_group[i].parent = parent;
+@@ -349,8 +346,16 @@ static int __init pch_pic_parse_madt(uni
+ static int __init pch_msi_parse_madt(union acpi_subtable_headers *header,
+ 					const unsigned long end)
+ {
++	struct irq_domain *parent;
+ 	struct acpi_madt_msi_pic *pchmsi_entry = (struct acpi_madt_msi_pic *)header;
+-	struct irq_domain *parent = acpi_get_vec_parent(eiointc_priv[nr_pics - 1]->node, msi_group);
++	int node;
++
++	if (cpu_has_flatmode)
++		node = cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
++	else
++		node = eiointc_priv[nr_pics - 1]->node;
++
++	parent = acpi_get_vec_parent(node, msi_group);
+ 
+ 	if (parent)
+ 		return pch_msi_acpi_init(parent, pchmsi_entry);
+@@ -379,6 +384,7 @@ int __init eiointc_acpi_init(struct irq_
+ 	int i, ret, parent_irq;
+ 	unsigned long node_map;
+ 	struct eiointc_priv *priv;
++	int node;
+ 
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -421,8 +427,12 @@ int __init eiointc_acpi_init(struct irq_
+ 				  "irqchip/loongarch/intc:starting",
+ 				  eiointc_router_init, NULL);
+ 
+-	acpi_set_vec_parent(acpi_eiointc->node, priv->eiointc_domain, pch_group);
+-	acpi_set_vec_parent(acpi_eiointc->node, priv->eiointc_domain, msi_group);
++	if (cpu_has_flatmode)
++		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
++	else
++		node = acpi_eiointc->node;
++	acpi_set_vec_parent(node, priv->eiointc_domain, pch_group);
++	acpi_set_vec_parent(node, priv->eiointc_domain, msi_group);
+ 	ret = acpi_cascade_irqdomain_init();
+ 
+ 	return ret;
 
 
