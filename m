@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A04FB70395D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46DFC703547
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244530AbjEORle (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S243279AbjEOQ53 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244537AbjEORlQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:41:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931EB6A6D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:38:45 -0700 (PDT)
+        with ESMTP id S243267AbjEOQ5Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F2F6EA6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 73BA062E00
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:38:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB73C433EF;
-        Mon, 15 May 2023 17:38:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14B8962A29
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D8AC433A1;
+        Mon, 15 May 2023 16:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172324;
-        bh=gDY07EIPdHipUGspStemNluDEyVzMy5F4+wU9EnXIQ8=;
+        s=korg; t=1684169834;
+        bh=4Ny3p2o9OM+jC1Iv2+g7vg/8g1qFfvD4X9sbg8Vc5wc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=baSsHJ5YUFMQyEc1HssehEhjnmHAWwy/V47BZM+2/k08VKxPo3/kp94W3xN8LMOdZ
-         4oJARNJB1N+T9cn2RMqN2yM+MqusfI+nFavxuV+dELk1sZlTuWjeIc2+SxhANgLsOw
-         nUtdB/Jns9oqmPElLmciK7LoOxtwWGFyVYCk97f8=
+        b=n1jlcEK+O2rVA0eXuW9VTxcXBKdekRM3c7/aYMgZT/rwxXQgSYn7DbZHvwok3wffV
+         mAlTQ1GtBEKhgoveAJXyLv1TaF73mXgs8YHw21q6EY9jVywpC2XPjHSvsPTQ8V+O3Q
+         nJOX5AP8LYIm7JHuP9z7ZYQ2h9pEGBY6Ss4/VrT8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandre Courbot <acourbot@chromium.org>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 117/381] media: venus: preserve DRC state across seeks
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.3 156/246] proc_sysctl: enhance documentation
 Date:   Mon, 15 May 2023 18:26:08 +0200
-Message-Id: <20230515161742.116525236@linuxfoundation.org>
+Message-Id: <20230515161727.235198314@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,74 +54,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandre Courbot <acourbot@chromium.org>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-[ Upstream commit d5ee32d7e5929592ad9b6e7a919dcdf89d05221b ]
+commit 1dc8689e4cc651e21566e10206a84c4006e81fb1 upstream.
 
-DRC events can happen virtually at anytime, including when we are
-starting a seek. Should this happen, we must make sure to return to the
-DRC state, otherwise the firmware will expect buffers of the new
-resolution whereas userspace will still work with the old one.
+Expand documentation to clarify:
 
-Returning to the DRC state upon resume for seeking makes sure that the
-client will get the DRC event and will reallocate the buffers to fit the
-firmware's expectations.
+  o that paths don't need to exist for the new API callers
+  o clarify that we *require* callers to keep the memory of
+    the table around during the lifetime of the sysctls
+  o annotate routines we are trying to deprecate and later remove
 
-Signed-off-by: Alexandre Courbot <acourbot@chromium.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 50248ad9f190 ("media: venus: dec: Fix handling of the start cmd")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.17
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/proc/proc_sysctl.c |   25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 3adff10fce6a7..1bb2350408cf2 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -987,7 +987,10 @@ static int vdec_start_output(struct venus_inst *inst)
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1287,7 +1287,10 @@ out:
+  * __register_sysctl_table - register a leaf sysctl table
+  * @set: Sysctl tree to register on
+  * @path: The path to the directory the sysctl table is in.
+- * @table: the top-level table structure without any child
++ * @table: the top-level table structure without any child. This table
++ * 	 should not be free'd after registration. So it should not be
++ * 	 used on stack. It can either be a global or dynamically allocated
++ * 	 by the caller and free'd later after sysctl unregistration.
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
+@@ -1402,8 +1405,15 @@ fail:
  
- 	if (inst->codec_state == VENUS_DEC_STATE_SEEK) {
- 		ret = venus_helper_process_initial_out_bufs(inst);
--		inst->codec_state = VENUS_DEC_STATE_DECODING;
-+		if (inst->next_buf_last)
-+			inst->codec_state = VENUS_DEC_STATE_DRC;
-+		else
-+			inst->codec_state = VENUS_DEC_STATE_DECODING;
- 		goto done;
- 	}
+ /**
+  * register_sysctl - register a sysctl table
+- * @path: The path to the directory the sysctl table is in.
+- * @table: the table structure
++ * @path: The path to the directory the sysctl table is in. If the path
++ * 	doesn't exist we will create it for you.
++ * @table: the table structure. The calller must ensure the life of the @table
++ * 	will be kept during the lifetime use of the syctl. It must not be freed
++ * 	until unregister_sysctl_table() is called with the given returned table
++ * 	with this registration. If your code is non modular then you don't need
++ * 	to call unregister_sysctl_table() and can instead use something like
++ * 	register_sysctl_init() which does not care for the result of the syctl
++ * 	registration.
+  *
+  * Register a sysctl table. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
+@@ -1419,8 +1429,11 @@ EXPORT_SYMBOL(register_sysctl);
  
-@@ -1093,8 +1096,10 @@ static int vdec_stop_capture(struct venus_inst *inst)
- 		ret = hfi_session_flush(inst, HFI_FLUSH_ALL, true);
- 		fallthrough;
- 	case VENUS_DEC_STATE_DRAIN:
--		vdec_cancel_dst_buffers(inst);
- 		inst->codec_state = VENUS_DEC_STATE_STOPPED;
-+		fallthrough;
-+	case VENUS_DEC_STATE_SEEK:
-+		vdec_cancel_dst_buffers(inst);
- 		break;
- 	case VENUS_DEC_STATE_DRC:
- 		ret = hfi_session_flush(inst, HFI_FLUSH_OUTPUT, true);
-@@ -1116,6 +1121,7 @@ static int vdec_stop_output(struct venus_inst *inst)
- 	case VENUS_DEC_STATE_DECODING:
- 	case VENUS_DEC_STATE_DRAIN:
- 	case VENUS_DEC_STATE_STOPPED:
-+	case VENUS_DEC_STATE_DRC:
- 		ret = hfi_session_flush(inst, HFI_FLUSH_ALL, true);
- 		inst->codec_state = VENUS_DEC_STATE_SEEK;
- 		break;
-@@ -1375,6 +1381,7 @@ static void vdec_event_change(struct venus_inst *inst,
- 			dev_dbg(dev, VDBGH "flush output error %d\n", ret);
- 	}
- 
-+	inst->next_buf_last = true;
- 	inst->reconfig = true;
- 	v4l2_event_queue_fh(&inst->fh, &ev);
- 	wake_up(&inst->reconf_wait);
--- 
-2.39.2
-
+ /**
+  * __register_sysctl_init() - register sysctl table to path
+- * @path: path name for sysctl base
+- * @table: This is the sysctl table that needs to be registered to the path
++ * @path: path name for sysctl base. If that path doesn't exist we will create
++ * 	it for you.
++ * @table: This is the sysctl table that needs to be registered to the path.
++ * 	The caller must ensure the life of the @table will be kept during the
++ * 	lifetime use of the sysctl.
+  * @table_name: The name of sysctl table, only used for log printing when
+  *              registration fails
+  *
+@@ -1565,6 +1578,7 @@ out:
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
++ * We are slowly deprecating this call so avoid its use.
+  *
+  * See __register_sysctl_table for more details.
+  */
+@@ -1636,6 +1650,7 @@ err_register_leaves:
+  *
+  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
+  * array. A completely 0 filled entry terminates the table.
++ * We are slowly deprecating this caller so avoid future uses of it.
+  *
+  * See __register_sysctl_paths for more details.
+  */
 
 
