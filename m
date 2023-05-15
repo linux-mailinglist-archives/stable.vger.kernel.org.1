@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8777703697
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E607039B0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243813AbjEORLv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:11:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49420 "EHLO
+        id S244509AbjEORpR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:45:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243777AbjEORLY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:11:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78CAA5E9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:37 -0700 (PDT)
+        with ESMTP id S244493AbjEORoz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157AF147D8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D1D9162B4B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C337CC433EF;
-        Mon, 15 May 2023 17:09:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1583562E49
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A609C433D2;
+        Mon, 15 May 2023 17:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170576;
-        bh=ZnrBVfKxTl5Xc6ux1pwz3Ml/tdKN1jh9iMv8venI6NI=;
+        s=korg; t=1684172540;
+        bh=l6rsCTSFTCMjI4GKTuScnHvQWEmc0pH+0RJIw/l1xu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Eb0qt+sNSz6X5Yd/Igi7DvsjuauPfZS8heOJvOFVpYcjvyzSvQ5UcGkDIQkWsqxb+
-         O0RYelzMiafgO3fSu8r3xuRgJ3q5VOCbRVPKCcSW/Hvko9ZkyPTNguQughqYJZSlNH
-         K5WyGAFFfeU+SlJEI+W7pYuob2hTyoHsc4RMbtqQ=
+        b=UFNAsCNSRXFjtIGHlnN2rrqXYJd+d2PRYlDs4BWUSL3ChzSlabaN6FtURfOTwj68U
+         s7pzLC6Jvb132babkFaghsBquBewdyy9nZ9XdDeoKJT5wdOL22MFfb3ZCI9j5M6kCa
+         MBZASfSb3STc7ZuVnFi9hJ80XLJb3mz/YALSGFgg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
-        Tao Zhou <tao.zhou1@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 174/239] drm/amdgpu: disable sdma ecc irq only when sdma RAS is enabled in suspend
+        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Davide Caratti <dcaratti@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 186/381] net/sched: sch_fq: fix integer overflow of "credit"
 Date:   Mon, 15 May 2023 18:27:17 +0200
-Message-Id: <20230515161726.887792110@linuxfoundation.org>
+Message-Id: <20230515161745.223113927@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,60 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit 8b229ada2669b74fdae06c83fbfda5a5a99fc253 upstream.
+[ Upstream commit 7041101ff6c3073fd8f2e99920f535b111c929cb ]
 
-sdma_v4_0_ip is shared on a few asics, but in sdma_v4_0_hw_fini,
-driver unconditionally disables ecc_irq which is only enabled on
-those asics enabling sdma ecc. This will introduce a warning in
-suspend cycle on those chips with sdma ip v4.0, while without
-sdma ecc. So this patch correct this.
+if sch_fq is configured with "initial quantum" having values greater than
+INT_MAX, the first assignment of "credit" does signed integer overflow to
+a very negative value.
+In this situation, the syzkaller script provided by Cristoph triggers the
+CPU soft-lockup warning even with few sockets. It's not an infinite loop,
+but "credit" wasn't probably meant to be minus 2Gb for each new flow.
+Capping "initial quantum" to INT_MAX proved to fix the issue.
 
-[ 7283.166354] RIP: 0010:amdgpu_irq_put+0x45/0x70 [amdgpu]
-[ 7283.167001] RSP: 0018:ffff9a5fc3967d08 EFLAGS: 00010246
-[ 7283.167019] RAX: ffff98d88afd3770 RBX: 0000000000000001 RCX: 0000000000000000
-[ 7283.167023] RDX: 0000000000000000 RSI: ffff98d89da30390 RDI: ffff98d89da20000
-[ 7283.167025] RBP: ffff98d89da20000 R08: 0000000000036838 R09: 0000000000000006
-[ 7283.167028] R10: ffffd5764243c008 R11: 0000000000000000 R12: ffff98d89da30390
-[ 7283.167030] R13: ffff98d89da38978 R14: ffffffff999ae15a R15: ffff98d880130105
-[ 7283.167032] FS:  0000000000000000(0000) GS:ffff98d996f00000(0000) knlGS:0000000000000000
-[ 7283.167036] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7283.167039] CR2: 00000000f7a9d178 CR3: 00000001c42ea000 CR4: 00000000003506e0
-[ 7283.167041] Call Trace:
-[ 7283.167046]  <TASK>
-[ 7283.167048]  sdma_v4_0_hw_fini+0x38/0xa0 [amdgpu]
-[ 7283.167704]  amdgpu_device_ip_suspend_phase2+0x101/0x1a0 [amdgpu]
-[ 7283.168296]  amdgpu_device_suspend+0x103/0x180 [amdgpu]
-[ 7283.168875]  amdgpu_pmops_freeze+0x21/0x60 [amdgpu]
-[ 7283.169464]  pci_pm_freeze+0x54/0xc0
+v2: validation of "initial quantum" is done in fq_policy, instead of open
+    coding in fq_change() _ suggested by Jakub Kicinski
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/377
+Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://lore.kernel.org/r/7b3a3c7e36d03068707a021760a194a8eb5ad41a.1682002300.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/sched/sch_fq.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -1941,9 +1941,11 @@ static int sdma_v4_0_hw_fini(void *handl
- 		return 0;
- 	}
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index 2fb76fc0cc31b..5a1274199fe33 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -779,13 +779,17 @@ static int fq_resize(struct Qdisc *sch, u32 log)
+ 	return 0;
+ }
  
--	for (i = 0; i < adev->sdma.num_instances; i++) {
--		amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
--			       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+	if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__SDMA)) {
-+		for (i = 0; i < adev->sdma.num_instances; i++) {
-+			amdgpu_irq_put(adev, &adev->sdma.ecc_irq,
-+				       AMDGPU_SDMA_IRQ_INSTANCE0 + i);
-+		}
- 	}
++static struct netlink_range_validation iq_range = {
++	.max = INT_MAX,
++};
++
+ static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
+ 	[TCA_FQ_UNSPEC]			= { .strict_start_type = TCA_FQ_TIMER_SLACK },
  
- 	sdma_v4_0_ctx_switch_enable(adev, false);
+ 	[TCA_FQ_PLIMIT]			= { .type = NLA_U32 },
+ 	[TCA_FQ_FLOW_PLIMIT]		= { .type = NLA_U32 },
+ 	[TCA_FQ_QUANTUM]		= { .type = NLA_U32 },
+-	[TCA_FQ_INITIAL_QUANTUM]	= { .type = NLA_U32 },
++	[TCA_FQ_INITIAL_QUANTUM]	= NLA_POLICY_FULL_RANGE(NLA_U32, &iq_range),
+ 	[TCA_FQ_RATE_ENABLE]		= { .type = NLA_U32 },
+ 	[TCA_FQ_FLOW_DEFAULT_RATE]	= { .type = NLA_U32 },
+ 	[TCA_FQ_FLOW_MAX_RATE]		= { .type = NLA_U32 },
+-- 
+2.39.2
+
 
 
