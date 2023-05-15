@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0C4703A70
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB33703817
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244904AbjEORvI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
+        id S244265AbjEOR1O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244903AbjEORum (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898471B75C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:53 -0700 (PDT)
+        with ESMTP id S244272AbjEOR05 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54361328B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6122262F21
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573FAC433D2;
-        Mon, 15 May 2023 17:48:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBFB062CF1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD03C433D2;
+        Mon, 15 May 2023 17:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172928;
-        bh=jMuUOgIu8Yv/QEghRySHjIYMRgs8xq45SiW/u5cuJLo=;
+        s=korg; t=1684171548;
+        bh=M7GBqfX5ce6zJ8h0MOog4Pd7G7biwvALEcKTt4Qkmj8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sKXnS96+IsdbXD91kS4lVf5vDS4w5LxkXrKqSUNZWWSNcddbIEXxcHRtB8+ifo+rU
-         KiBdaRlpgglogTQG5w5L/w/nWUlXWD1PhP4YqFfxHZEaZVDcEOG8Ru2vOxRaBacqNt
-         FiQ0R782oeZzmATZO5l1s8xWUO6Uy/spHyabtHu0=
+        b=dJvoL/zqyxMxcwtyWyX12Tec0Mt0z/NO5yWMObQzxmTrdI++e2OzFapiobfwFiCpf
+         z5OVPAE7ss7K4j0FxmlPb3gRhZY3NaBDfxk7mEojq8geepmfYkOWsVkeKRZ7zzLMel
+         u561ghfViSy3j4CMxsoUQyAi/xZGEOgBnddgJnLw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Angelo Dureghello <angelo.dureghello@timesys.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 312/381] net: dsa: mv88e6xxx: add mv88e6321 rsvd2cpu
+        Vinod Govindapillai <vinod.govindapillai@intel.com>,
+        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: [PATCH 6.2 237/242] drm/dsc: fix DP_DSC_MAX_BPP_DELTA_* macro values
 Date:   Mon, 15 May 2023 18:29:23 +0200
-Message-Id: <20230515161750.928104459@linuxfoundation.org>
+Message-Id: <20230515161729.017310801@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,36 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Angelo Dureghello <angelo.dureghello@timesys.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 6686317855c6997671982d4489ccdd946f644957 ]
+commit 0d68683838f2850dd8ff31f1121e05bfb7a2def0 upstream.
 
-Add rsvd2cpu capability for mv88e6321 model, to allow proper bpdu
-processing.
+The macro values just don't match the specs. Fix them.
 
-Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
-Fixes: 51c901a775621 ("net: dsa: mv88e6xxx: distinguish Global 2 Rsvd2CPU")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1482ec00be4a ("drm: Add missing DP DSC extended capability definitions.")
+Cc: Vinod Govindapillai <vinod.govindapillai@intel.com>
+Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230406134615.1422509-2-jani.nikula@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/drm/display/drm_dp.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 0b104a90c0d80..321c821876f65 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -4182,6 +4182,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.set_cpu_port = mv88e6095_g1_set_cpu_port,
- 	.set_egress_port = mv88e6095_g1_set_egress_port,
- 	.watchdog_ops = &mv88e6390_watchdog_ops,
-+	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
--- 
-2.39.2
-
+--- a/include/drm/display/drm_dp.h
++++ b/include/drm/display/drm_dp.h
+@@ -286,8 +286,8 @@
+ 
+ #define DP_DSC_MAX_BITS_PER_PIXEL_HI        0x068   /* eDP 1.4 */
+ # define DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK  (0x3 << 0)
+-# define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  0x06
+-# define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  0x08
++# define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  (0x3 << 5)	/* eDP 1.5 & DP 2.0 */
++# define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  (1 << 7)	/* eDP 1.5 & DP 2.0 */
+ 
+ #define DP_DSC_DEC_COLOR_FORMAT_CAP         0x069
+ # define DP_DSC_RGB                         (1 << 0)
 
 
