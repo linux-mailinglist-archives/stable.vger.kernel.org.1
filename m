@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B42703787
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C10C27035C0
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244073AbjEORWP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41740 "EHLO
+        id S243525AbjEORCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244084AbjEORV4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63EC011B51
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:04 -0700 (PDT)
+        with ESMTP id S243528AbjEORBU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:01:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135B57ECC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 951ED62C35
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567C1C433D2;
-        Mon, 15 May 2023 17:19:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82B7A62A5E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F80DC433D2;
+        Mon, 15 May 2023 16:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171172;
-        bh=O0tUuKde/RdhX0mbcPVYduL/FB+PD5/RgB6fpP6thNc=;
+        s=korg; t=1684169996;
+        bh=WChcO2BEzLe/4FNxulPQ+wAtj0Ph2Ry9S5Mq1MViCzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a9TszwjWawOYhONsOTp6OhBxwOH0c9oMToLW8q6g06glUbMjJPAXOkiJPn0mIC30N
-         Ke2oFftjivmEqQcHNlEn/YrwtKUMqXscAmO8aRkWUUajUsH80Q/1ein8JxRije0FNR
-         ofcg1KunOSD8uLZl0Ms69FxGkfb//B429AqpxJmo=
+        b=OcpvHlA4Rmc3OptsOmQsXx+DGOg9sio+rUPb/uwtBQZQSZN5nQI4/ymYX/Icn8nTv
+         RYzKyxrSdQq9pfwCB3qdXuvo2gMoKfQVFWhm4EVYN73tgV5SFy1zYF601Dp5HeWTyB
+         1PfYFtmHqI026RjdDXa9KHeyfdmifGWGrCttddSs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 123/242] cifs: avoid potential races when handling multiple dfs tcons
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>,
+        Christian Brauner <brauner@kernel.org>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.3 237/246] ext4: fix lockdep warning when enabling MMP
 Date:   Mon, 15 May 2023 18:27:29 +0200
-Message-Id: <20230515161725.595492216@linuxfoundation.org>
+Message-Id: <20230515161729.755712466@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,392 +56,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 6be2ea33a4093402252724a00c4af8033725184c ]
+commit 949f95ff39bf188e594e7ecd8e29b82eb108f5bf upstream.
 
-Now that a DFS tcon manages its own list of DFS referrals and
-sessions, there is no point in having a single worker to refresh
-referrals of all DFS tcons.  Make it faster and less prone to race
-conditions when having several mounts by queueing a worker per DFS
-tcon that will take care of refreshing only the DFS referrals related
-to it.
+When we enable MMP in ext4_multi_mount_protect() during mount or
+remount, we end up calling sb_start_write() from write_mmp_block(). This
+triggers lockdep warning because freeze protection ranks above s_umount
+semaphore we are holding during mount / remount. The problem is harmless
+because we are guaranteed the filesystem is not frozen during mount /
+remount but still let's fix the warning by not grabbing freeze
+protection from ext4_multi_mount_protect().
 
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Reported-by: syzbot+6b7df7d5506b32467149@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?id=ab7e5b6f400b7778d46f01841422e5718fb81843
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/r/20230411121019.21940-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifsglob.h  |   2 +-
- fs/cifs/connect.c   |   7 ++-
- fs/cifs/dfs.c       |   4 ++
- fs/cifs/dfs_cache.c | 137 +++++++++++++++++++-------------------------
- fs/cifs/dfs_cache.h |   9 +++
- 5 files changed, 80 insertions(+), 79 deletions(-)
+ fs/ext4/mmp.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/fs/cifs/cifsglob.h b/fs/cifs/cifsglob.h
-index ea216e9d0f944..e6d12a6563887 100644
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -1244,8 +1244,8 @@ struct cifs_tcon {
- 	struct cached_fids *cfids;
- 	/* BB add field for back pointer to sb struct(s)? */
- #ifdef CONFIG_CIFS_DFS_UPCALL
--	struct list_head ulist; /* cache update list */
- 	struct list_head dfs_ses_list;
-+	struct delayed_work dfs_cache_work;
- #endif
- 	struct delayed_work	query_interfaces; /* query interfaces workqueue job */
- };
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index af491ae70678a..d71c2fb117c9e 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -2386,6 +2386,9 @@ cifs_put_tcon(struct cifs_tcon *tcon)
- 
- 	/* cancel polling of interfaces */
- 	cancel_delayed_work_sync(&tcon->query_interfaces);
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	cancel_delayed_work_sync(&tcon->dfs_cache_work);
-+#endif
- 
- 	if (tcon->use_witness) {
- 		int rc;
-@@ -2633,7 +2636,9 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
- 	}
--
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+	INIT_DELAYED_WORK(&tcon->dfs_cache_work, dfs_cache_refresh);
-+#endif
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_add(&tcon->tcon_list, &ses->tcon_list);
- 	spin_unlock(&cifs_tcp_ses_lock);
-diff --git a/fs/cifs/dfs.c b/fs/cifs/dfs.c
-index f02f8d3b92ee8..a93dbca1411b2 100644
---- a/fs/cifs/dfs.c
-+++ b/fs/cifs/dfs.c
-@@ -157,6 +157,8 @@ static int get_dfs_conn(struct cifs_mount_ctx *mnt_ctx, const char *ref_path, co
- 		rc = cifs_is_path_remote(mnt_ctx);
- 	}
- 
-+	dfs_cache_noreq_update_tgthint(ref_path + 1, tit);
-+
- 	if (rc == -EREMOTE && is_refsrv) {
- 		rc2 = add_root_smb_session(mnt_ctx);
- 		if (rc2)
-@@ -259,6 +261,8 @@ static int __dfs_mount_share(struct cifs_mount_ctx *mnt_ctx)
- 		if (list_empty(&tcon->dfs_ses_list)) {
- 			list_replace_init(&mnt_ctx->dfs_ses_list,
- 					  &tcon->dfs_ses_list);
-+			queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
-+					   dfs_cache_get_ttl() * HZ);
- 		} else {
- 			dfs_put_root_smb_sessions(&mnt_ctx->dfs_ses_list);
- 		}
-diff --git a/fs/cifs/dfs_cache.c b/fs/cifs/dfs_cache.c
-index 6557d7b2798a0..1513b2709889b 100644
---- a/fs/cifs/dfs_cache.c
-+++ b/fs/cifs/dfs_cache.c
-@@ -20,12 +20,14 @@
- #include "cifs_unicode.h"
- #include "smb2glob.h"
- #include "dns_resolve.h"
-+#include "dfs.h"
- 
- #include "dfs_cache.h"
- 
--#define CACHE_HTABLE_SIZE 32
--#define CACHE_MAX_ENTRIES 64
--#define CACHE_MIN_TTL 120 /* 2 minutes */
-+#define CACHE_HTABLE_SIZE	32
-+#define CACHE_MAX_ENTRIES	64
-+#define CACHE_MIN_TTL		120 /* 2 minutes */
-+#define CACHE_DEFAULT_TTL	300 /* 5 minutes */
- 
- #define IS_DFS_INTERLINK(v) (((v) & DFSREF_REFERRAL_SERVER) && !((v) & DFSREF_STORAGE_SERVER))
- 
-@@ -50,10 +52,9 @@ struct cache_entry {
- };
- 
- static struct kmem_cache *cache_slab __read_mostly;
--static struct workqueue_struct *dfscache_wq __read_mostly;
-+struct workqueue_struct *dfscache_wq;
- 
--static int cache_ttl;
--static DEFINE_SPINLOCK(cache_ttl_lock);
-+atomic_t dfs_cache_ttl;
- 
- static struct nls_table *cache_cp;
- 
-@@ -65,10 +66,6 @@ static atomic_t cache_count;
- static struct hlist_head cache_htable[CACHE_HTABLE_SIZE];
- static DECLARE_RWSEM(htable_rw_lock);
- 
--static void refresh_cache_worker(struct work_struct *work);
--
--static DECLARE_DELAYED_WORK(refresh_task, refresh_cache_worker);
--
- /**
-  * dfs_cache_canonical_path - get a canonical DFS path
-  *
-@@ -290,7 +287,9 @@ int dfs_cache_init(void)
- 	int rc;
- 	int i;
- 
--	dfscache_wq = alloc_workqueue("cifs-dfscache", WQ_FREEZABLE | WQ_UNBOUND, 1);
-+	dfscache_wq = alloc_workqueue("cifs-dfscache",
-+				      WQ_UNBOUND|WQ_FREEZABLE|WQ_MEM_RECLAIM,
-+				      0);
- 	if (!dfscache_wq)
- 		return -ENOMEM;
- 
-@@ -306,6 +305,7 @@ int dfs_cache_init(void)
- 		INIT_HLIST_HEAD(&cache_htable[i]);
- 
- 	atomic_set(&cache_count, 0);
-+	atomic_set(&dfs_cache_ttl, CACHE_DEFAULT_TTL);
- 	cache_cp = load_nls("utf8");
- 	if (!cache_cp)
- 		cache_cp = load_nls_default();
-@@ -480,6 +480,7 @@ static struct cache_entry *add_cache_entry_locked(struct dfs_info3_param *refs,
- 	int rc;
- 	struct cache_entry *ce;
- 	unsigned int hash;
-+	int ttl;
- 
- 	WARN_ON(!rwsem_is_locked(&htable_rw_lock));
- 
-@@ -496,15 +497,8 @@ static struct cache_entry *add_cache_entry_locked(struct dfs_info3_param *refs,
- 	if (IS_ERR(ce))
- 		return ce;
- 
--	spin_lock(&cache_ttl_lock);
--	if (!cache_ttl) {
--		cache_ttl = ce->ttl;
--		queue_delayed_work(dfscache_wq, &refresh_task, cache_ttl * HZ);
--	} else {
--		cache_ttl = min_t(int, cache_ttl, ce->ttl);
--		mod_delayed_work(dfscache_wq, &refresh_task, cache_ttl * HZ);
--	}
--	spin_unlock(&cache_ttl_lock);
-+	ttl = min_t(int, atomic_read(&dfs_cache_ttl), ce->ttl);
-+	atomic_set(&dfs_cache_ttl, ttl);
- 
- 	hlist_add_head(&ce->hlist, &cache_htable[hash]);
- 	dump_ce(ce);
-@@ -616,7 +610,6 @@ static struct cache_entry *lookup_cache_entry(const char *path)
+--- a/fs/ext4/mmp.c
++++ b/fs/ext4/mmp.c
+@@ -39,28 +39,36 @@ static void ext4_mmp_csum_set(struct sup
+  * Write the MMP block using REQ_SYNC to try to get the block on-disk
+  * faster.
   */
- void dfs_cache_destroy(void)
+-static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
++static int write_mmp_block_thawed(struct super_block *sb,
++				  struct buffer_head *bh)
  {
--	cancel_delayed_work_sync(&refresh_task);
- 	unload_nls(cache_cp);
- 	flush_cache_ents();
- 	kmem_cache_destroy(cache_slab);
-@@ -1142,6 +1135,7 @@ static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, c
-  * target shares in @refs.
-  */
- static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
-+					 const char *path,
- 					 struct dfs_cache_tgt_list *old_tl,
- 					 struct dfs_cache_tgt_list *new_tl)
- {
-@@ -1153,8 +1147,10 @@ static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
- 		     nit = dfs_cache_get_next_tgt(new_tl, nit)) {
- 			if (target_share_equal(server,
- 					       dfs_cache_get_tgt_name(oit),
--					       dfs_cache_get_tgt_name(nit)))
-+					       dfs_cache_get_tgt_name(nit))) {
-+				dfs_cache_noreq_update_tgthint(path, nit);
- 				return;
-+			}
- 		}
- 	}
+ 	struct mmp_struct *mmp = (struct mmp_struct *)(bh->b_data);
  
-@@ -1162,13 +1158,28 @@ static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
- 	cifs_signal_cifsd_for_reconnect(server, true);
- }
- 
-+static bool is_ses_good(struct cifs_ses *ses)
-+{
-+	struct TCP_Server_Info *server = ses->server;
-+	struct cifs_tcon *tcon = ses->tcon_ipc;
-+	bool ret;
-+
-+	spin_lock(&ses->ses_lock);
-+	spin_lock(&ses->chan_lock);
-+	ret = !cifs_chan_needs_reconnect(ses, server) &&
-+		ses->ses_status == SES_GOOD &&
-+		!tcon->need_reconnect;
-+	spin_unlock(&ses->chan_lock);
-+	spin_unlock(&ses->ses_lock);
-+	return ret;
-+}
-+
- /* Refresh dfs referral of tcon and mark it for reconnect if needed */
--static int __refresh_tcon(const char *path, struct cifs_tcon *tcon, bool force_refresh)
-+static int __refresh_tcon(const char *path, struct cifs_ses *ses, bool force_refresh)
- {
- 	struct dfs_cache_tgt_list old_tl = DFS_CACHE_TGT_LIST_INIT(old_tl);
- 	struct dfs_cache_tgt_list new_tl = DFS_CACHE_TGT_LIST_INIT(new_tl);
--	struct cifs_ses *ses = CIFS_DFS_ROOT_SES(tcon->ses);
--	struct cifs_tcon *ipc = ses->tcon_ipc;
-+	struct TCP_Server_Info *server = ses->server;
- 	bool needs_refresh = false;
- 	struct cache_entry *ce;
- 	unsigned int xid;
-@@ -1190,20 +1201,19 @@ static int __refresh_tcon(const char *path, struct cifs_tcon *tcon, bool force_r
- 		goto out;
- 	}
- 
--	spin_lock(&ipc->tc_lock);
--	if (ipc->status != TID_GOOD) {
--		spin_unlock(&ipc->tc_lock);
--		cifs_dbg(FYI, "%s: skip cache refresh due to disconnected ipc\n", __func__);
-+	ses = CIFS_DFS_ROOT_SES(ses);
-+	if (!is_ses_good(ses)) {
-+		cifs_dbg(FYI, "%s: skip cache refresh due to disconnected ipc\n",
-+			 __func__);
- 		goto out;
- 	}
--	spin_unlock(&ipc->tc_lock);
- 
- 	ce = cache_refresh_path(xid, ses, path, true);
- 	if (!IS_ERR(ce)) {
- 		rc = get_targets(ce, &new_tl);
- 		up_read(&htable_rw_lock);
- 		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
--		mark_for_reconnect_if_needed(tcon->ses->server, &old_tl, &new_tl);
-+		mark_for_reconnect_if_needed(server, path, &old_tl, &new_tl);
- 	}
- 
- out:
-@@ -1216,10 +1226,11 @@ static int __refresh_tcon(const char *path, struct cifs_tcon *tcon, bool force_r
- static int refresh_tcon(struct cifs_tcon *tcon, bool force_refresh)
- {
- 	struct TCP_Server_Info *server = tcon->ses->server;
-+	struct cifs_ses *ses = tcon->ses;
- 
- 	mutex_lock(&server->refpath_lock);
- 	if (server->leaf_fullpath)
--		__refresh_tcon(server->leaf_fullpath + 1, tcon, force_refresh);
-+		__refresh_tcon(server->leaf_fullpath + 1, ses, force_refresh);
- 	mutex_unlock(&server->refpath_lock);
+-	/*
+-	 * We protect against freezing so that we don't create dirty buffers
+-	 * on frozen filesystem.
+-	 */
+-	sb_start_write(sb);
+ 	ext4_mmp_csum_set(sb, mmp);
+ 	lock_buffer(bh);
+ 	bh->b_end_io = end_buffer_write_sync;
+ 	get_bh(bh);
+ 	submit_bh(REQ_OP_WRITE | REQ_SYNC | REQ_META | REQ_PRIO, bh);
+ 	wait_on_buffer(bh);
+-	sb_end_write(sb);
+ 	if (unlikely(!buffer_uptodate(bh)))
+ 		return -EIO;
+-
  	return 0;
  }
-@@ -1263,60 +1274,32 @@ int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb)
- 	return refresh_tcon(tcon, true);
- }
  
--/*
-- * Worker that will refresh DFS cache from all active mounts based on lowest TTL value
-- * from a DFS referral.
-- */
--static void refresh_cache_worker(struct work_struct *work)
-+/* Refresh all DFS referrals related to DFS tcon */
-+void dfs_cache_refresh(struct work_struct *work)
- {
- 	struct TCP_Server_Info *server;
--	struct cifs_tcon *tcon, *ntcon;
--	struct list_head tcons;
-+	struct dfs_root_ses *rses;
-+	struct cifs_tcon *tcon;
- 	struct cifs_ses *ses;
- 
--	INIT_LIST_HEAD(&tcons);
-+	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
-+	ses = tcon->ses;
-+	server = ses->server;
- 
--	spin_lock(&cifs_tcp_ses_lock);
--	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
--		spin_lock(&server->srv_lock);
--		if (!server->leaf_fullpath) {
--			spin_unlock(&server->srv_lock);
--			continue;
--		}
--		spin_unlock(&server->srv_lock);
--
--		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
--			if (ses->tcon_ipc) {
--				ses->ses_count++;
--				list_add_tail(&ses->tcon_ipc->ulist, &tcons);
--			}
--			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
--				if (!tcon->ipc) {
--					tcon->tc_count++;
--					list_add_tail(&tcon->ulist, &tcons);
--				}
--			}
--		}
--	}
--	spin_unlock(&cifs_tcp_ses_lock);
--
--	list_for_each_entry_safe(tcon, ntcon, &tcons, ulist) {
--		struct TCP_Server_Info *server = tcon->ses->server;
--
--		list_del_init(&tcon->ulist);
-+	mutex_lock(&server->refpath_lock);
-+	if (server->leaf_fullpath)
-+		__refresh_tcon(server->leaf_fullpath + 1, ses, false);
-+	mutex_unlock(&server->refpath_lock);
- 
-+	list_for_each_entry(rses, &tcon->dfs_ses_list, list) {
-+		ses = rses->ses;
-+		server = ses->server;
- 		mutex_lock(&server->refpath_lock);
- 		if (server->leaf_fullpath)
--			__refresh_tcon(server->leaf_fullpath + 1, tcon, false);
-+			__refresh_tcon(server->leaf_fullpath + 1, ses, false);
- 		mutex_unlock(&server->refpath_lock);
--
--		if (tcon->ipc)
--			cifs_put_smb_ses(tcon->ses);
--		else
--			cifs_put_tcon(tcon);
- 	}
- 
--	spin_lock(&cache_ttl_lock);
--	queue_delayed_work(dfscache_wq, &refresh_task, cache_ttl * HZ);
--	spin_unlock(&cache_ttl_lock);
-+	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
-+			   atomic_read(&dfs_cache_ttl) * HZ);
- }
-diff --git a/fs/cifs/dfs_cache.h b/fs/cifs/dfs_cache.h
-index e0d39393035a9..c6d89cd6d4fd7 100644
---- a/fs/cifs/dfs_cache.h
-+++ b/fs/cifs/dfs_cache.h
-@@ -13,6 +13,9 @@
- #include <linux/uuid.h>
- #include "cifsglob.h"
- 
-+extern struct workqueue_struct *dfscache_wq;
-+extern atomic_t dfs_cache_ttl;
-+
- #define DFS_CACHE_TGT_LIST_INIT(var) { .tl_numtgts = 0, .tl_list = LIST_HEAD_INIT((var).tl_list), }
- 
- struct dfs_cache_tgt_list {
-@@ -42,6 +45,7 @@ int dfs_cache_get_tgt_share(char *path, const struct dfs_cache_tgt_iterator *it,
- 			    char **prefix);
- char *dfs_cache_canonical_path(const char *path, const struct nls_table *cp, int remap);
- int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb);
-+void dfs_cache_refresh(struct work_struct *work);
- 
- static inline struct dfs_cache_tgt_iterator *
- dfs_cache_get_next_tgt(struct dfs_cache_tgt_list *tl,
-@@ -89,4 +93,9 @@ dfs_cache_get_nr_tgts(const struct dfs_cache_tgt_list *tl)
- 	return tl ? tl->tl_numtgts : 0;
- }
- 
-+static inline int dfs_cache_get_ttl(void)
++static int write_mmp_block(struct super_block *sb, struct buffer_head *bh)
 +{
-+	return atomic_read(&dfs_cache_ttl);
++	int err;
++
++	/*
++	 * We protect against freezing so that we don't create dirty buffers
++	 * on frozen filesystem.
++	 */
++	sb_start_write(sb);
++	err = write_mmp_block_thawed(sb, bh);
++	sb_end_write(sb);
++	return err;
 +}
 +
- #endif /* _CIFS_DFS_CACHE_H */
--- 
-2.39.2
-
+ /*
+  * Read the MMP block. It _must_ be read from disk and hence we clear the
+  * uptodate flag on the buffer.
+@@ -340,7 +348,11 @@ skip:
+ 	seq = mmp_new_seq();
+ 	mmp->mmp_seq = cpu_to_le32(seq);
+ 
+-	retval = write_mmp_block(sb, bh);
++	/*
++	 * On mount / remount we are protected against fs freezing (by s_umount
++	 * semaphore) and grabbing freeze protection upsets lockdep
++	 */
++	retval = write_mmp_block_thawed(sb, bh);
+ 	if (retval)
+ 		goto failed;
+ 
 
 
