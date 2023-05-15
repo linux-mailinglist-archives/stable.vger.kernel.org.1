@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5028470365F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9F770356D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243717AbjEORJ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47496 "EHLO
+        id S243307AbjEOQ7B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:59:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243718AbjEORJE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD775D2F3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:07:37 -0700 (PDT)
+        with ESMTP id S243337AbjEOQ6x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610FB76B4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E5D562B21
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:07:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927E7C433EF;
-        Mon, 15 May 2023 17:07:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E4BC62A44
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0DAC433D2;
+        Mon, 15 May 2023 16:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170457;
-        bh=XnMNx8MwxhSfis/j+qXCiZxa+vofvgVGhJnIpneWtOY=;
+        s=korg; t=1684169930;
+        bh=3vij6U0ufvDorV8dwbJtqPUbB6k3SOEXRBsLswKss14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T5oeMVhmYGQjz/I1A+cjDXXETkGnJtaPcx0c13f/frhSNoroGZkCzcuWY9HVfyLrb
-         rcn0Pn7ehYk/TecBkLXFCbGTnN6YBZiMphIfruStOg247vI7RFLD8N1k6462kKjIWy
-         ELp348O6n+vMcPJPmaDi0uMwEPUQzqMJCUC+NIdU=
+        b=gUMBk5m/s1XvhhK008zxJPJFzJtxQ7pzP0GqujwiYxoskRCOcHHfuYO7jak0OKNrJ
+         KwTp3ICF1yD2uTtX2gfTvRz5KxBqvkXqhT6rN3b4zKvchLJZFZvX0ssE+UUaF7RSdj
+         zL3/oEXpVrNESvpxmE5z9Tift6/F1ZeThJI1GfCk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.1 136/239] proc_sysctl: enhance documentation
+        patches@lists.linux.dev, Jianmin Lv <lvjianmin@loongson.cn>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.3 187/246] irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent
 Date:   Mon, 15 May 2023 18:26:39 +0200
-Message-Id: <20230515161725.773067405@linuxfoundation.org>
+Message-Id: <20230515161728.231239804@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,87 +53,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Jianmin Lv <lvjianmin@loongson.cn>
 
-commit 1dc8689e4cc651e21566e10206a84c4006e81fb1 upstream.
+commit 64cc451e45e146b2140211b4f45f278b93b24ac0 upstream.
 
-Expand documentation to clarify:
+In eiointc_acpi_init(), a *eiointc* node is passed into
+acpi_get_vec_parent() instead of a required *NUMA* node (on some chip
+like 3C5000L, a *NUMA* node means a *eiointc* node, but on some chip
+like 3C5000, a *NUMA* node contains 4 *eiointc* nodes), and node in
+struct acpi_vector_group is essentially a *NUMA* node, which will
+lead to no parent matched for passed *eiointc* node. so the patch
+adjusts code to use *NUMA* node for parameter node of
+acpi_set_vec_parent/acpi_get_vec_parent.
 
-  o that paths don't need to exist for the new API callers
-  o clarify that we *require* callers to keep the memory of
-    the table around during the lifetime of the sysctls
-  o annotate routines we are trying to deprecate and later remove
-
-Cc: stable@vger.kernel.org # v5.17
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230407083453.6305-3-lvjianmin@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c |   25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-loongson-eiointc.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1281,7 +1281,10 @@ out:
-  * __register_sysctl_table - register a leaf sysctl table
-  * @set: Sysctl tree to register on
-  * @path: The path to the directory the sysctl table is in.
-- * @table: the top-level table structure without any child
-+ * @table: the top-level table structure without any child. This table
-+ * 	 should not be free'd after registration. So it should not be
-+ * 	 used on stack. It can either be a global or dynamically allocated
-+ * 	 by the caller and free'd later after sysctl unregistration.
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-@@ -1396,8 +1399,15 @@ fail:
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -280,9 +280,6 @@ static void acpi_set_vec_parent(int node
+ {
+ 	int i;
  
- /**
-  * register_sysctl - register a sysctl table
-- * @path: The path to the directory the sysctl table is in.
-- * @table: the table structure
-+ * @path: The path to the directory the sysctl table is in. If the path
-+ * 	doesn't exist we will create it for you.
-+ * @table: the table structure. The calller must ensure the life of the @table
-+ * 	will be kept during the lifetime use of the syctl. It must not be freed
-+ * 	until unregister_sysctl_table() is called with the given returned table
-+ * 	with this registration. If your code is non modular then you don't need
-+ * 	to call unregister_sysctl_table() and can instead use something like
-+ * 	register_sysctl_init() which does not care for the result of the syctl
-+ * 	registration.
-  *
-  * Register a sysctl table. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-@@ -1413,8 +1423,11 @@ EXPORT_SYMBOL(register_sysctl);
+-	if (cpu_has_flatmode)
+-		node = cpu_to_node(node * CORES_PER_EIO_NODE);
+-
+ 	for (i = 0; i < MAX_IO_PICS; i++) {
+ 		if (node == vec_group[i].node) {
+ 			vec_group[i].parent = parent;
+@@ -349,8 +346,16 @@ static int __init pch_pic_parse_madt(uni
+ static int __init pch_msi_parse_madt(union acpi_subtable_headers *header,
+ 					const unsigned long end)
+ {
++	struct irq_domain *parent;
+ 	struct acpi_madt_msi_pic *pchmsi_entry = (struct acpi_madt_msi_pic *)header;
+-	struct irq_domain *parent = acpi_get_vec_parent(eiointc_priv[nr_pics - 1]->node, msi_group);
++	int node;
++
++	if (cpu_has_flatmode)
++		node = cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
++	else
++		node = eiointc_priv[nr_pics - 1]->node;
++
++	parent = acpi_get_vec_parent(node, msi_group);
  
- /**
-  * __register_sysctl_init() - register sysctl table to path
-- * @path: path name for sysctl base
-- * @table: This is the sysctl table that needs to be registered to the path
-+ * @path: path name for sysctl base. If that path doesn't exist we will create
-+ * 	it for you.
-+ * @table: This is the sysctl table that needs to be registered to the path.
-+ * 	The caller must ensure the life of the @table will be kept during the
-+ * 	lifetime use of the sysctl.
-  * @table_name: The name of sysctl table, only used for log printing when
-  *              registration fails
-  *
-@@ -1559,6 +1572,7 @@ out:
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-+ * We are slowly deprecating this call so avoid its use.
-  *
-  * See __register_sysctl_table for more details.
-  */
-@@ -1630,6 +1644,7 @@ err_register_leaves:
-  *
-  * Register a sysctl table hierarchy. @table should be a filled in ctl_table
-  * array. A completely 0 filled entry terminates the table.
-+ * We are slowly deprecating this caller so avoid future uses of it.
-  *
-  * See __register_sysctl_paths for more details.
-  */
+ 	if (parent)
+ 		return pch_msi_acpi_init(parent, pchmsi_entry);
+@@ -379,6 +384,7 @@ int __init eiointc_acpi_init(struct irq_
+ 	int i, ret, parent_irq;
+ 	unsigned long node_map;
+ 	struct eiointc_priv *priv;
++	int node;
+ 
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -421,8 +427,12 @@ int __init eiointc_acpi_init(struct irq_
+ 				  "irqchip/loongarch/intc:starting",
+ 				  eiointc_router_init, NULL);
+ 
+-	acpi_set_vec_parent(acpi_eiointc->node, priv->eiointc_domain, pch_group);
+-	acpi_set_vec_parent(acpi_eiointc->node, priv->eiointc_domain, msi_group);
++	if (cpu_has_flatmode)
++		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
++	else
++		node = acpi_eiointc->node;
++	acpi_set_vec_parent(node, priv->eiointc_domain, pch_group);
++	acpi_set_vec_parent(node, priv->eiointc_domain, msi_group);
+ 	ret = acpi_cascade_irqdomain_init();
+ 
+ 	return ret;
 
 
