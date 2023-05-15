@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C081A703A17
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2056470386F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244769AbjEORsh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46554 "EHLO
+        id S244316AbjEORcb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244705AbjEORsV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:48:21 -0400
+        with ESMTP id S244351AbjEORcH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AD94DC7F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:46:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C587B100F3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68AA562EF3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:46:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A48C433D2;
-        Mon, 15 May 2023 17:46:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 59BC562055
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCFCC433D2;
+        Mon, 15 May 2023 17:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172805;
-        bh=J4AVjOhdgoKA6tbGyE2GMQGj5UKqTe7o3/u9jpdWzAI=;
+        s=korg; t=1684171741;
+        bh=6Fgw64fpYc87AhTpLHs2vEyrQdL3rfavMM6jVgfeCvU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ERXOGQecmg8sRIf9dQFZWNqme3oiq5uNYiQ+s2IlXB5uWpxay/FwqzR3URC0tv7R9
-         GtpsBAkiwBxHFEalt27sIPfzPjf6Qk2CT+LibSRDo+g1a0UMlnfEXCR73SQ5tu4c0L
-         IcOTv+RxdQpf0SVYAtgLyvuC8JcxZjuseD/b+Mh0=
+        b=nsqHNvzk8fk5V5N/TLLDlDiyLNwwN37utzLpRKkFTiOjo50S3K8pEalQB3wfhl9e+
+         2lcbGtyPmDApq9aS785IrDu6l54j5ynrp9tpfv7gEPB31JJvQ5ujWYdtInurpQqBWv
+         AeOrVtQtZiizXN3mYl9E3mFY+0B6Go2zJN8DD7IE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kang Chen <void0red@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        patches@lists.linux.dev,
+        Wenliang Wang <wangwenliang.1995@bytedance.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 272/381] thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe
+Subject: [PATCH 5.15 046/134] virtio_net: suppress cpu stall when free_unused_bufs
 Date:   Mon, 15 May 2023 18:28:43 +0200
-Message-Id: <20230515161749.062237687@linuxfoundation.org>
+Message-Id: <20230515161704.669232348@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,60 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kang Chen <void0red@hust.edu.cn>
+From: Wenliang Wang <wangwenliang.1995@bytedance.com>
 
-[ Upstream commit f05c7b7d9ea9477fcc388476c6f4ade8c66d2d26 ]
+[ Upstream commit f8bb5104394560e29017c25bcade4c6b7aabd108 ]
 
-Smatch reports:
-1. mtk_thermal_probe() warn: 'apmixed_base' from of_iomap() not released.
-2. mtk_thermal_probe() warn: 'auxadc_base' from of_iomap() not released.
+For multi-queue and large ring-size use case, the following error
+occurred when free_unused_bufs:
+rcu: INFO: rcu_sched self-detected stall on CPU.
 
-The original code forgets to release iomap resource when handling errors,
-fix it by switch to devm_of_iomap.
-
-Fixes: 89945047b166 ("thermal: mediatek: Add tsensor support for V2 thermal system")
-Signed-off-by: Kang Chen <void0red@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230419020749.621257-1-void0red@hust.edu.cn
+Fixes: 986a4f4d452d ("virtio_net: multiqueue support")
+Signed-off-by: Wenliang Wang <wangwenliang.1995@bytedance.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mtk_thermal.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/thermal/mtk_thermal.c b/drivers/thermal/mtk_thermal.c
-index 0bd7aa564bc25..9fe169dbed887 100644
---- a/drivers/thermal/mtk_thermal.c
-+++ b/drivers/thermal/mtk_thermal.c
-@@ -1026,7 +1026,12 @@ static int mtk_thermal_probe(struct platform_device *pdev)
- 		return -ENODEV;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index cff3e2a7ce7fc..9f2d691908b42 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2844,12 +2844,14 @@ static void free_unused_bufs(struct virtnet_info *vi)
+ 		struct virtqueue *vq = vi->sq[i].vq;
+ 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+ 			virtnet_sq_free_unused_buf(vq, buf);
++		cond_resched();
  	}
  
--	auxadc_base = of_iomap(auxadc, 0);
-+	auxadc_base = devm_of_iomap(&pdev->dev, auxadc, 0, NULL);
-+	if (IS_ERR(auxadc_base)) {
-+		of_node_put(auxadc);
-+		return PTR_ERR(auxadc_base);
-+	}
-+
- 	auxadc_phys_base = of_get_phys_base(auxadc);
- 
- 	of_node_put(auxadc);
-@@ -1042,7 +1047,12 @@ static int mtk_thermal_probe(struct platform_device *pdev)
- 		return -ENODEV;
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		struct virtqueue *vq = vi->rq[i].vq;
+ 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+ 			virtnet_rq_free_unused_buf(vq, buf);
++		cond_resched();
  	}
+ }
  
--	apmixed_base = of_iomap(apmixedsys, 0);
-+	apmixed_base = devm_of_iomap(&pdev->dev, apmixedsys, 0, NULL);
-+	if (IS_ERR(apmixed_base)) {
-+		of_node_put(apmixedsys);
-+		return PTR_ERR(apmixed_base);
-+	}
-+
- 	apmixed_phys_base = of_get_phys_base(apmixedsys);
- 
- 	of_node_put(apmixedsys);
 -- 
 2.39.2
 
