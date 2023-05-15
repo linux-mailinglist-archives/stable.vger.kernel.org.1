@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6617022D1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 360D67022D3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 06:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238174AbjEOEQw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 00:16:52 -0400
+        id S235618AbjEOEQy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 00:16:54 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232859AbjEOEQt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:16:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F082B10C1
-        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:16:46 -0700 (PDT)
+        with ESMTP id S232665AbjEOEQw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 00:16:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00444171D
+        for <stable@vger.kernel.org>; Sun, 14 May 2023 21:16:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E79A61207
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:16:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7308BC433D2;
-        Mon, 15 May 2023 04:16:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82D2061207
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 04:16:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E3DC433EF;
+        Mon, 15 May 2023 04:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684124205;
-        bh=cZFH55v7jVbFb87g3ruyj0sy4VhOIn91EBRKCZTAxAM=;
+        s=korg; t=1684124209;
+        bh=Wynx6kRjsm9jpuGpNPBPXsDhvUaVrfoBcZ8Ig0JiryE=;
         h=Subject:To:Cc:From:Date:From;
-        b=dlu0Er2u0DZEj1VheG5ePBevoyIiMCTq7OzA8hYHeXxo/w1mNI3nTK29wgsmidAa2
-         WbZna23QXGK2yev+HnfCTjwdXTRR3aCnmb2vsXGns6YvgFfBLQnN4zHSXN67Tvccjs
-         2WLwD0W64wpWFIcN63L9o0u5DY88HTDdMe3sDQyw=
-Subject: FAILED: patch "[PATCH] ext4: allow ext4_get_group_info() to fail" failed to apply to 5.10-stable tree
+        b=pOVC/TBSHbi7sbHE9wVdpMn3Yf35AWAXhaAnz5nTBDb2hPz+e9QgHlgoFH1xyKV2F
+         BJITkvfw3J8Z3nk6Y5+mDPJfiLomiZa4Z5lDkirpKkFhGGpxNWz+K+gv3reGheI43R
+         UDFajNK0rTYjonpwNNJb9iJ+06U+fLyGPUSI91Tc=
+Subject: FAILED: patch "[PATCH] ext4: allow ext4_get_group_info() to fail" failed to apply to 5.4-stable tree
 To:     tytso@mit.edu, jack@suse.cz
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 15 May 2023 06:16:35 +0200
-Message-ID: <2023051535-gosling-dupe-fda8@gregkh>
+Date:   Mon, 15 May 2023 06:16:36 +0200
+Message-ID: <2023051536-tripping-expire-2e97@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5354b2af34064a4579be8bc0e2f15a7b70f14b5f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051535-gosling-dupe-fda8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023051536-tripping-expire-2e97@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,6 +69,21 @@ fa08a7b61dff ("ext4: fix WARNING in mb_find_extent")
 01e4ca294517 ("ext4: allow to find by goal if EXT4_MB_HINT_GOAL_ONLY is set")
 a6c75eaf1103 ("ext4: add mballoc stats proc file")
 67d251860461 ("ext4: drop s_mb_bal_lock and convert protected fields to atomic")
+8016e29f4362 ("ext4: fast commit recovery path")
+5b849b5f96b4 ("jbd2: fast commit recovery path")
+aa75f4d3daae ("ext4: main fast-commit commit path")
+ff780b91efe9 ("jbd2: add fast commit machinery")
+6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
+995a3ed67fc8 ("ext4: add fast_commit feature and handling for extended mount options")
+2d069c0889ef ("ext4: use common helpers in all places reading metadata buffers")
+d9befedaafcf ("ext4: clear buffer verified flag if read meta block from disk")
+15ed2851b0f4 ("ext4: remove unused argument from ext4_(inc|dec)_count")
+dddcd2f9ebde ("ext4: optimize the implementation of ext4_mb_good_group()")
+3d392b2676bf ("ext4: add prefetch_block_bitmaps mount option")
+ab74c7b23f37 ("ext4: indicate via a block bitmap read is prefetched via a tracepoint")
+bc71726c7257 ("ext4: abort the filesystem if failed to async write metadata buffer")
+cfd732377221 ("ext4: add prefetching for block allocation bitmaps")
+e5f78159d62f ("ext4: lost matching-pair of trace in ext4_unlink")
 
 thanks,
 
