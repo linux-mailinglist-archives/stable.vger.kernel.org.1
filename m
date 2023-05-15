@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5314370385A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F180A7037D6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:24:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244293AbjEORcG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52804 "EHLO
+        id S244050AbjEORYa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244313AbjEORbc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:32 -0400
+        with ESMTP id S244085AbjEORYL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:24:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A23F14E59
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E8C010A15
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:22:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 657AE62D26
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:27:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65817C433EF;
-        Mon, 15 May 2023 17:27:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C123E62C52
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B790FC433D2;
+        Mon, 15 May 2023 17:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171662;
-        bh=OerQnOIuDBjhVc3hTuv+VZuKuALPTUWPIj4W/+zK+M8=;
+        s=korg; t=1684171376;
+        bh=8JDlbxaHCXppQq+a//4xQ21vo96uMP4M8S8H5M7uD7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PyiG1Ciq3zZXaUvPWDLliRtqSnDTmKLWi63eqUeDrBnJ5gnn6YHaKGV4W7HdpSz3W
-         lof6RHdE6nodTa0UsCqFD7/pS7WQKVrBsInWo8YSzZf3AgWBLJ5g9SxZOnmZ06moD6
-         I24XunRj8v3iYhiA1qMOaKnHyGN4aI3+xznTGgo8=
+        b=jul/0xP4nZXcYgRY1USniiLzzQiaFmdHzAo/z3vVBt7ATS733BirSjKxQkiDQrHzb
+         monWqrB20S+8e6D1v73kM9C5BS3yx1xtHe97BtuMY1Vuxs567/8KzL8L1CiuAsvjJX
+         mjQgfqq/TizBCe6yF9c0sLTDbQYj7Z5prp9ILdtA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/134] ionic: remove noise from ethtool rxnfc error msg
+        patches@lists.linux.dev, Alvin Lee <Alvin.Lee2@amd.com>,
+        Alan Liu <HaoPing.Liu@amd.com>,
+        Samson Tam <Samson.Tam@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.2 189/242] drm/amd/display: filter out invalid bits in pipe_fuses
 Date:   Mon, 15 May 2023 18:28:35 +0200
-Message-Id: <20230515161704.405804825@linuxfoundation.org>
+Message-Id: <20230515161727.616693089@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +55,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Samson Tam <Samson.Tam@amd.com>
 
-[ Upstream commit 3711d44fac1f80ea69ecb7315fed05b3812a7401 ]
+commit 682439fffad9fa9a38d37dd1b1318e9374232213 upstream.
 
-It seems that ethtool is calling into .get_rxnfc more often with
-ETHTOOL_GRXCLSRLCNT which ionic doesn't know about.  We don't
-need to log a message about it, just return not supported.
+[Why]
+Reading pipe_fuses from register may have invalid bits set, which may
+ affect the num_pipes erroneously.
 
-Fixes: aa3198819bea6 ("ionic: Add RSS support")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+Add read_pipes_fuses() call and filter bits based on expected number
+ of pipes.
+
+Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Acked-by: Alan Liu <HaoPing.Liu@amd.com>
+Signed-off-by: Samson Tam <Samson.Tam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c   |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c |   10 +++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index 3de1a03839e25..2fa116c3694c4 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -724,7 +724,7 @@ static int ionic_get_rxnfc(struct net_device *netdev,
- 		info->data = lif->nxqs;
- 		break;
- 	default:
--		netdev_err(netdev, "Command parameter %d is not supported\n",
-+		netdev_dbg(netdev, "Command parameter %d is not supported\n",
- 			   info->cmd);
- 		err = -EOPNOTSUPP;
- 	}
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+@@ -2077,6 +2077,14 @@ static struct resource_funcs dcn32_res_p
+ 	.restore_mall_state = dcn32_restore_mall_state,
+ };
+ 
++static uint32_t read_pipe_fuses(struct dc_context *ctx)
++{
++	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
++	/* DCN32 support max 4 pipes */
++	value = value & 0xf;
++	return value;
++}
++
+ 
+ static bool dcn32_resource_construct(
+ 	uint8_t num_virtual_links,
+@@ -2119,7 +2127,7 @@ static bool dcn32_resource_construct(
+ 	pool->base.res_cap = &res_cap_dcn32;
+ 	/* max number of pipes for ASIC before checking for pipe fuses */
+ 	num_pipes  = pool->base.res_cap->num_timing_generator;
+-	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
++	pipe_fuses = read_pipe_fuses(ctx);
+ 
+ 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
+ 		if (pipe_fuses & 1 << i)
+--- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+@@ -1626,6 +1626,14 @@ static struct resource_funcs dcn321_res_
+ 	.restore_mall_state = dcn32_restore_mall_state,
+ };
+ 
++static uint32_t read_pipe_fuses(struct dc_context *ctx)
++{
++	uint32_t value = REG_READ(CC_DC_PIPE_DIS);
++	/* DCN321 support max 4 pipes */
++	value = value & 0xf;
++	return value;
++}
++
+ 
+ static bool dcn321_resource_construct(
+ 	uint8_t num_virtual_links,
+@@ -1668,7 +1676,7 @@ static bool dcn321_resource_construct(
+ 	pool->base.res_cap = &res_cap_dcn321;
+ 	/* max number of pipes for ASIC before checking for pipe fuses */
+ 	num_pipes  = pool->base.res_cap->num_timing_generator;
+-	pipe_fuses = REG_READ(CC_DC_PIPE_DIS);
++	pipe_fuses = read_pipe_fuses(ctx);
+ 
+ 	for (i = 0; i < pool->base.res_cap->num_timing_generator; i++)
+ 		if (pipe_fuses & 1 << i)
 
 
