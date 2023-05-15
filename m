@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58AF7703399
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2142703489
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242790AbjEOQjO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:39:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
+        id S243023AbjEOQtj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242841AbjEOQjG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:39:06 -0400
+        with ESMTP id S243038AbjEOQtS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:49:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A2B19A5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D0055B4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A66CF62858
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B50DC433D2;
-        Mon, 15 May 2023 16:39:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C6E06294B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B009FC433D2;
+        Mon, 15 May 2023 16:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168744;
-        bh=Gw9H2vxwSHMyyQmTAnR7TTD1ym8iPaoaSVSwo76Ffxc=;
+        s=korg; t=1684169357;
+        bh=qTsrLSqGAkEBd9UiyRLMI7cQ0VBHbsj8urXUfkpEl78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w2+IQ7Nvgg3SZ0bep4gD/JxLVwDmppCtZyvLqb+OuJkF90R/PXvRGaMTycsggFMg3
-         KT5f1+Xb5CJS3BJKRl4uwNwM3XI66ZV6hlTGF2ct+yQTqn1brTonzecV9842p+Ie1j
-         2xzPpMdtjIMxbwfGNxAjgehBnTjFKdpYw2YVJEp4=
+        b=YKhF+bNi9v+QDUOAl8vjrACt56hmP3gLPiwcdAQTh83+uSBRHMuWCwIYIP0O/eya5
+         WS5P56kE5YupLPTAMpLMyrj1+tenC2lHGwxQRmYQO6D4Xs7p6HwlnZY2xx4ptNO7+z
+         kp7jJxtItC96NpvYNRW8U0D1HdxgsN8M8wFdc58I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 4.19 007/191] IMA: allow/fix UML builds
-Date:   Mon, 15 May 2023 18:24:04 +0200
-Message-Id: <20230515161707.460071056@linuxfoundation.org>
+        patches@lists.linux.dev, Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 033/246] octeontx2-pf: mcs: Do not reset PN while updating secy
+Date:   Mon, 15 May 2023 18:24:05 +0200
+Message-Id: <20230515161723.595334159@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,51 +57,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit 644f17412f5acf01a19af9d04a921937a2bc86c6 upstream.
+[ Upstream commit 3c99bace4ad08ad0264285ba8ad73117560992c2 ]
 
-UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
-NO_IOMEM).
+After creating SecYs, SCs and SAs a SecY can be modified
+to change attributes like validation mode, protect frames
+mode etc. During this SecY update, packet number is reset to
+initial user given value by mistake. Hence do not reset
+PN when updating SecY parameters.
 
-Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
-
-ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
-ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
-ld: security/integrity/ima/ima_init.o: in function `ima_init':
-ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
-ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
-ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
-ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
-
-Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
-is set, regardless of the UML Kconfig setting.
-This updates TCG_TPM from =m to =y and fixes the linker errors.
-
-Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
-Cc: Stable <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -7,7 +7,7 @@ config IMA
- 	select CRYPTO_HMAC
- 	select CRYPTO_SHA1
- 	select CRYPTO_HASH_INFO
--	select TCG_TPM if HAS_IOMEM && !UML
-+	select TCG_TPM if HAS_IOMEM
- 	select TCG_TIS if TCG_TPM && X86
- 	select TCG_CRB if TCG_TPM && ACPI
- 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 3ad8d7ef20be6..a487a98eac88c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -1134,6 +1134,7 @@ static int cn10k_mdo_upd_secy(struct macsec_context *ctx)
+ 	struct macsec_secy *secy = ctx->secy;
+ 	struct macsec_tx_sa *sw_tx_sa;
+ 	struct cn10k_mcs_txsc *txsc;
++	bool active;
+ 	u8 sa_num;
+ 	int err;
+ 
+@@ -1141,15 +1142,19 @@ static int cn10k_mdo_upd_secy(struct macsec_context *ctx)
+ 	if (!txsc)
+ 		return -ENOENT;
+ 
+-	txsc->encoding_sa = secy->tx_sc.encoding_sa;
+-
+-	sa_num = txsc->encoding_sa;
+-	sw_tx_sa = rcu_dereference_bh(secy->tx_sc.sa[sa_num]);
++	/* Encoding SA got changed */
++	if (txsc->encoding_sa != secy->tx_sc.encoding_sa) {
++		txsc->encoding_sa = secy->tx_sc.encoding_sa;
++		sa_num = txsc->encoding_sa;
++		sw_tx_sa = rcu_dereference_bh(secy->tx_sc.sa[sa_num]);
++		active = sw_tx_sa ? sw_tx_sa->active : false;
++		cn10k_mcs_link_tx_sa2sc(pfvf, secy, txsc, sa_num, active);
++	}
+ 
+ 	if (netif_running(secy->netdev)) {
+ 		cn10k_mcs_sync_stats(pfvf, secy, txsc);
+ 
+-		err = cn10k_mcs_secy_tx_cfg(pfvf, secy, txsc, sw_tx_sa, sa_num);
++		err = cn10k_mcs_secy_tx_cfg(pfvf, secy, txsc, NULL, 0);
+ 		if (err)
+ 			return err;
+ 	}
+-- 
+2.39.2
+
 
 
