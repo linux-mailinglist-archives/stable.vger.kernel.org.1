@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B73017035D7
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7DFC703B39
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243584AbjEORDa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42622 "EHLO
+        id S243469AbjEOSA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243392AbjEORDP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:03:15 -0400
+        with ESMTP id S243726AbjEOSAa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E14A5E4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:01:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3DC18AA2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97FCF62A62
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C14C433EF;
-        Mon, 15 May 2023 17:00:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 107C362F5E
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BDAC433EF;
+        Mon, 15 May 2023 17:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170049;
-        bh=CxbJiUdoOwWCub5oUT4dciourSL24OIe77Bt3433Y8Q=;
+        s=korg; t=1684173469;
+        bh=jn/KJPtko9C4vM80ZJrD0xZOWj4M0n48uYm3g9CACgw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sEV2fdxTvxaRZL2UgClFvwNHIGpRKv3QA3yHqbMOU0rIU++hc2vXjVn9Hq01UDv0s
-         Yrv6YEBWjgKdFRR25/pwzOhPFEtLfmWFzHEtjtNTrn4k2BYei0defKsSxLx3PEIyv8
-         MfCPpfr6GL5xSwgg1R54x7f9yEMOx9RWL+fcGK60=
+        b=hQzt8zM0UeICA2Y3B8qaNyzde6PNf5zlWJ2jub2SK7uWhtyiWpZbXnsb+5kPZwFyL
+         R2SR46/Y6HWCX58hNqbukNjXplPhOXS1TeUCj4J00h8eMe1FzrZ6Lf+J8qZwsGMjr1
+         tm4nsmRqXGvE+fqLl/yUDmsOad2oLBVNOwl5OPRs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>,
-        Borislav Petkov <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 6.3 241/246] x86: fix clear_user_rep_good() exception handling annotation
-Date:   Mon, 15 May 2023 18:27:33 +0200
-Message-Id: <20230515161729.882088074@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 076/282] wifi: ath5k: fix an off by one check in ath5k_eeprom_read_freq_list()
+Date:   Mon, 15 May 2023 18:27:34 +0200
+Message-Id: <20230515161724.520119785@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,97 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Dan Carpenter <error27@gmail.com>
 
-This code no longer exists in mainline, because it was removed in
-commit d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory
-clearing") upstream.
+[ Upstream commit 4c856ee12df85aabd437c3836ed9f68d94268358 ]
 
-However, rather than backport the full range of x86 memory clearing and
-copying cleanups, fix the exception table annotation placement for the
-final 'rep movsb' in clear_user_rep_good(): rather than pointing at the
-actual instruction that did the user space access, it pointed to the
-register move just before it.
+This loop checks that i < max at the start of loop but then it does
+i++ which could put it past the end of the array.  It's harmless to
+check again and prevent a potential out of bounds.
 
-That made sense from a code flow standpoint, but not from an actual
-usage standpoint: it means that if user access takes an exception, the
-exception handler won't actually find the instruction in the exception
-tables.
-
-As a result, rather than fixing it up and returning -EFAULT, it would
-then turn it into a kernel oops report instead, something like:
-
-    BUG: unable to handle page fault for address: 0000000020081000
-    #PF: supervisor write access in kernel mode
-    #PF: error_code(0x0002) - not-present page
-    ...
-    RIP: 0010:clear_user_rep_good+0x1c/0x30 arch/x86/lib/clear_page_64.S:147
-    ...
-    Call Trace:
-      __clear_user arch/x86/include/asm/uaccess_64.h:103 [inline]
-      clear_user arch/x86/include/asm/uaccess_64.h:124 [inline]
-      iov_iter_zero+0x709/0x1290 lib/iov_iter.c:800
-      iomap_dio_hole_iter fs/iomap/direct-io.c:389 [inline]
-      iomap_dio_iter fs/iomap/direct-io.c:440 [inline]
-      __iomap_dio_rw+0xe3d/0x1cd0 fs/iomap/direct-io.c:601
-      iomap_dio_rw+0x40/0xa0 fs/iomap/direct-io.c:689
-      ext4_dio_read_iter fs/ext4/file.c:94 [inline]
-      ext4_file_read_iter+0x4be/0x690 fs/ext4/file.c:145
-      call_read_iter include/linux/fs.h:2183 [inline]
-      do_iter_readv_writev+0x2e0/0x3b0 fs/read_write.c:733
-      do_iter_read+0x2f2/0x750 fs/read_write.c:796
-      vfs_readv+0xe5/0x150 fs/read_write.c:916
-      do_preadv+0x1b6/0x270 fs/read_write.c:1008
-      __do_sys_preadv2 fs/read_write.c:1070 [inline]
-      __se_sys_preadv2 fs/read_write.c:1061 [inline]
-      __x64_sys_preadv2+0xef/0x150 fs/read_write.c:1061
-      do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-      do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-      entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-which then looks like a filesystem bug rather than the incorrect
-exception annotation that it is.
-
-[ The alternative to this one-liner fix is to take the upstream series
-  that cleans this all up:
-
-    68674f94ffc9 ("x86: don't use REP_GOOD or ERMS for small memory copies")
-    20f3337d350c ("x86: don't use REP_GOOD or ERMS for small memory clearing")
-    adfcf4231b8c ("x86: don't use REP_GOOD or ERMS for user memory copies")
-  * d2c95f9d6802 ("x86: don't use REP_GOOD or ERMS for user memory clearing")
-    3639a535587d ("x86: move stac/clac from user copy routines into callers")
-    577e6a7fd50d ("x86: inline the 'rep movs' in user copies for the FSRM case")
-    8c9b6a88b7e2 ("x86: improve on the non-rep 'clear_user' function")
-    427fda2c8a49 ("x86: improve on the non-rep 'copy_user' function")
-  * e046fe5a36a9 ("x86: set FSRS automatically on AMD CPUs that have FSRM")
-    e1f2750edc4a ("x86: remove 'zerorest' argument from __copy_user_nocache()")
-    034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
-
-  with either the whole series or at a minimum the two marked commits
-  being needed to fix this issue ]
-
-Reported-by: syzbot <syzbot+401145a9a237779feb26@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=401145a9a237779feb26
-Fixes: 0db7058e8e23 ("x86/clear_user: Make it faster")
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1048643ea94d ("ath5k: Clean up eeprom parsing and add missing calibration data")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/Y+D9hPQrHfWBJhXz@kili
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/clear_page_64.S |    2 +-
+ drivers/net/wireless/ath/ath5k/eeprom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/lib/clear_page_64.S
-+++ b/arch/x86/lib/clear_page_64.S
-@@ -142,8 +142,8 @@ SYM_FUNC_START(clear_user_rep_good)
- 	and $7, %edx
- 	jz .Lrep_good_exit
+diff --git a/drivers/net/wireless/ath/ath5k/eeprom.c b/drivers/net/wireless/ath/ath5k/eeprom.c
+index 01163b3339451..92f5c8e830901 100644
+--- a/drivers/net/wireless/ath/ath5k/eeprom.c
++++ b/drivers/net/wireless/ath/ath5k/eeprom.c
+@@ -529,7 +529,7 @@ ath5k_eeprom_read_freq_list(struct ath5k_hw *ah, int *offset, int max,
+ 		ee->ee_n_piers[mode]++;
  
--.Lrep_good_bytes:
- 	mov %edx, %ecx
-+.Lrep_good_bytes:
- 	rep stosb
+ 		freq2 = (val >> 8) & 0xff;
+-		if (!freq2)
++		if (!freq2 || i >= max)
+ 			break;
  
- .Lrep_good_exit:
+ 		pc[i++].freq = ath5k_eeprom_bin2freq(ee,
+-- 
+2.39.2
+
 
 
