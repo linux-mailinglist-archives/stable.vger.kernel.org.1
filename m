@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC5C5703A49
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5F67037FB
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244873AbjEORu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
+        id S244087AbjEOR0T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:26:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244752AbjEORt7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:49:59 -0400
+        with ESMTP id S244058AbjEORZy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:25:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1EA41C3B4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0FB10A2B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:24:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CBB562F22
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32296C433EF;
-        Mon, 15 May 2023 17:47:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9904562CA9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908F3C433EF;
+        Mon, 15 May 2023 17:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172879;
-        bh=L4jDGtev27TReWHRZCBduzZwjPFoB9nhDPtCPdj+hTQ=;
+        s=korg; t=1684171480;
+        bh=ivP3k2WFf+n9kzd7MuXC+9aumpovZM0r0BZvFDK/bM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XGAc6b80d7NTMYCPCBdlrkdDK2qyqWbnVVnH54s+JyaQ+lkLxFsE2AKCq2WSsPjn0
-         AwWO+yekT4nRzrNYesMOpHZcoH03LQTHbd8fHvDtkTksLJ1Zmf0pS+QGqpOd8LRhM+
-         ITQHXMcuU0zDr7N/4LSGzhy5aVIPAO4WpQZUjhj8=
+        b=XF05FMsGoDMJZSF13ffIQ011wRyLHsfl6rkgQBZSj0zN+C4/wh41Oc9Fx+kyXi9Nv
+         CdWgtfspRR4sbVhc6fAjRK/BUmywRELVGCZh/GLpyHN0KmjPcrZs63HUQEGrTuwzPy
+         2CBbfneD+yldL/g7i8CUkpXqHngmaRDa528rjkCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
+        patches@lists.linux.dev,
+        Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
+        Manasi Navare <navaremanasi@google.com>,
+        Anusha Srivatsa <anusha.srivatsa@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 297/381] tty: audit: move some local functions out of tty.h
+Subject: [PATCH 6.2 222/242] drm/dsc: fix drm_edp_dsc_sink_output_bpp() DPCD high byte usage
 Date:   Mon, 15 May 2023 18:29:08 +0200
-Message-Id: <20230515161750.208873154@linuxfoundation.org>
+Message-Id: <20230515161728.582511184@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,85 +58,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit da5d669e00d2c437b3f508d60add417fc74f4bb6 ]
+[ Upstream commit 13525645e2246ebc8a21bd656248d86022a6ee8f ]
 
-The functions tty_audit_add_data() and tty_audit_tiocsti() are local to
-the tty core code, and do not need to be in a "kernel-wide" header file
-so move them to drivers/tty/tty.h
+The operator precedence between << and & is wrong, leading to the high
+byte being completely ignored. For example, with the 6.4 format, 32
+becomes 0 and 24 becomes 8. Fix it, and remove the slightly confusing
+and unnecessary DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT macro while at it.
 
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20210408125134.3016837-9-gregkh@linuxfoundation.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 094fb49a2d0d ("tty: Prevent writing chars during tcsetattr TCSADRAIN/FLUSH")
+Fixes: 0575650077ea ("drm/dp: DRM DP helper/macros to get DP sink DSC parameters")
+Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
+Cc: <stable@vger.kernel.org> # v5.0+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230406134615.1422509-1-jani.nikula@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty.h       | 14 ++++++++++++++
- drivers/tty/tty_audit.c |  1 +
- include/linux/tty.h     | 10 ----------
- 3 files changed, 15 insertions(+), 10 deletions(-)
+ include/drm/display/drm_dp.h        | 1 -
+ include/drm/display/drm_dp_helper.h | 5 ++---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/tty.h b/drivers/tty/tty.h
-index f4cd20261e914..f131d538b62b9 100644
---- a/drivers/tty/tty.h
-+++ b/drivers/tty/tty.h
-@@ -18,4 +18,18 @@
- #define tty_info_ratelimited(tty, f, ...) \
- 		tty_msg(pr_info_ratelimited, tty, f, ##__VA_ARGS__)
+diff --git a/include/drm/display/drm_dp.h b/include/drm/display/drm_dp.h
+index 9bc22a02874d9..50428ba92ce8b 100644
+--- a/include/drm/display/drm_dp.h
++++ b/include/drm/display/drm_dp.h
+@@ -286,7 +286,6 @@
  
-+/* tty_audit.c */
-+#ifdef CONFIG_AUDIT
-+void tty_audit_add_data(struct tty_struct *tty, const void *data, size_t size);
-+void tty_audit_tiocsti(struct tty_struct *tty, char ch);
-+#else
-+static inline void tty_audit_add_data(struct tty_struct *tty, const void *data,
-+				      size_t size)
-+{
-+}
-+static inline void tty_audit_tiocsti(struct tty_struct *tty, char ch)
-+{
-+}
-+#endif
-+
- #endif
-diff --git a/drivers/tty/tty_audit.c b/drivers/tty/tty_audit.c
-index 9f906a5b8e810..9b30edee71fe9 100644
---- a/drivers/tty/tty_audit.c
-+++ b/drivers/tty/tty_audit.c
-@@ -10,6 +10,7 @@
- #include <linux/audit.h>
- #include <linux/slab.h>
- #include <linux/tty.h>
-+#include "tty.h"
+ #define DP_DSC_MAX_BITS_PER_PIXEL_HI        0x068   /* eDP 1.4 */
+ # define DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK  (0x3 << 0)
+-# define DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT 8
+ # define DP_DSC_MAX_BPP_DELTA_VERSION_MASK  0x06
+ # define DP_DSC_MAX_BPP_DELTA_AVAILABILITY  0x08
  
- struct tty_audit_buf {
- 	struct mutex mutex;	/* Protects all data below */
-diff --git a/include/linux/tty.h b/include/linux/tty.h
-index 9e3725589214e..a1a9c4b8210ea 100644
---- a/include/linux/tty.h
-+++ b/include/linux/tty.h
-@@ -731,20 +731,10 @@ static inline void n_tty_init(void) { }
- 
- /* tty_audit.c */
- #ifdef CONFIG_AUDIT
--extern void tty_audit_add_data(struct tty_struct *tty, const void *data,
--			       size_t size);
- extern void tty_audit_exit(void);
- extern void tty_audit_fork(struct signal_struct *sig);
--extern void tty_audit_tiocsti(struct tty_struct *tty, char ch);
- extern int tty_audit_push(void);
- #else
--static inline void tty_audit_add_data(struct tty_struct *tty, const void *data,
--				      size_t size)
--{
--}
--static inline void tty_audit_tiocsti(struct tty_struct *tty, char ch)
--{
--}
- static inline void tty_audit_exit(void)
+diff --git a/include/drm/display/drm_dp_helper.h b/include/drm/display/drm_dp_helper.h
+index ab55453f2d2cd..ade9df59e156a 100644
+--- a/include/drm/display/drm_dp_helper.h
++++ b/include/drm/display/drm_dp_helper.h
+@@ -181,9 +181,8 @@ static inline u16
+ drm_edp_dsc_sink_output_bpp(const u8 dsc_dpcd[DP_DSC_RECEIVER_CAP_SIZE])
  {
+ 	return dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_LOW - DP_DSC_SUPPORT] |
+-		(dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_HI - DP_DSC_SUPPORT] &
+-		 DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK <<
+-		 DP_DSC_MAX_BITS_PER_PIXEL_HI_SHIFT);
++		((dsc_dpcd[DP_DSC_MAX_BITS_PER_PIXEL_HI - DP_DSC_SUPPORT] &
++		  DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK) << 8);
  }
+ 
+ static inline u32
 -- 
 2.39.2
 
