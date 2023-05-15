@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4868703A8A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252927038A2
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243390AbjEORwR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:52:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
+        id S242990AbjEORdy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244667AbjEORv6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:51:58 -0400
+        with ESMTP id S243997AbjEORdf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:33:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596B5183FC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8001613C03
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:31:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CEDE162F44
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A999CC4339C;
-        Mon, 15 May 2023 17:49:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 058E162D3D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:31:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB242C433EF;
+        Mon, 15 May 2023 17:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172990;
-        bh=Aro/OgqKSF15tHH1Ttb0CZSqe2RnmpN9aKkd4cWJXSs=;
+        s=korg; t=1684171884;
+        bh=C8fpXxlXdkI/pEhNWeQ/Hjjrs+FOJk7f3tzr1NuarGM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B+eTtDbpFvvedmq8N1crFeg2ee8xEwf27Ld7B9MW7OZV7KnNSCzRJwH6OIMZTzKvq
-         qDkX22W2LLupL6ZjYf6AlGeOQ2fCdBqXVd+faZZnehqTy/F/vJJIYiUlLyyedK6UTP
-         agshhJj3PfPXAbwW+NvQD6tmhPqlLmjq9Kh/NxNI=
+        b=LVSDuWsIbrWtU+m0rRU25hOXCGMV6EdKA6xW0eFWNwrYuXDbHvCtS4p1n764T0Zo+
+         +c7azky+BXQ1svxTo0HOqDR+EP45/ZFQEmWEcj7mROM4quS914DuIRZOuqFLm9jaCp
+         49b+j1R1TqKZgKe9510W8GQbLyyeN2nytJAcEdXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Will Ochowicz <Will.Ochowicz@genusplc.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Stephane Eranian <eranian@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Charlene Liu <Charlene.Liu@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 333/381] perf symbols: Fix return incorrect build_id size in elf_read_build_id()
-Date:   Mon, 15 May 2023 18:29:44 +0200
-Message-Id: <20230515161751.871650372@linuxfoundation.org>
+Subject: [PATCH 5.15 108/134] drm/amd/display: Add NULL plane_state check for cursor disable logic
+Date:   Mon, 15 May 2023 18:29:45 +0200
+Message-Id: <20230515161706.721514512@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -65,49 +59,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 1511e4696acb715a4fe48be89e1e691daec91c0e ]
+[ Upstream commit d29fb7baab09b6a1dc484c9c67933253883e770a ]
 
-In elf_read_build_id(), if gnu build_id is found, should return the size of
-the actually copied data. If descsz is greater thanBuild_ID_SIZE,
-write_buildid data access may occur.
+[Why]
+While scanning the top_pipe connections we can run into a case where
+the bottom pipe is still connected to a top_pipe but with a NULL
+plane_state.
 
-Fixes: be96ea8ffa788dcc ("perf symbols: Fix issue with binaries using 16-bytes buildids (v2)")
-Reported-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Tested-by: Will Ochowicz <Will.Ochowicz@genusplc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/lkml/CWLP265MB49702F7BA3D6D8F13E4B1A719C649@CWLP265MB4970.GBRP265.PROD.OUTLOOK.COM/T/
-Link: https://lore.kernel.org/r/20230427012841.231729-1-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+[How]
+Treat a NULL plane_state the same as the plane being invisible for
+pipe cursor disable logic.
+
+Cc: stable@vger.kernel.org
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol-elf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-index 5221f272f85c6..b171d134ce87a 100644
---- a/tools/perf/util/symbol-elf.c
-+++ b/tools/perf/util/symbol-elf.c
-@@ -548,7 +548,7 @@ static int elf_read_build_id(Elf *elf, void *bf, size_t size)
- 				size_t sz = min(size, descsz);
- 				memcpy(bf, ptr, sz);
- 				memset(bf + sz, 0, size - sz);
--				err = descsz;
-+				err = sz;
- 				break;
- 			}
- 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+index eef6e4c80a37f..73457c32f3e7f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+@@ -3225,7 +3225,9 @@ static bool dcn10_can_pipe_disable_cursor(struct pipe_ctx *pipe_ctx)
+ 	for (test_pipe = pipe_ctx->top_pipe; test_pipe;
+ 	     test_pipe = test_pipe->top_pipe) {
+ 		// Skip invisible layer and pipe-split plane on same layer
+-		if (!test_pipe->plane_state->visible || test_pipe->plane_state->layer_index == cur_layer)
++		if (!test_pipe->plane_state ||
++		    !test_pipe->plane_state->visible ||
++		    test_pipe->plane_state->layer_index == cur_layer)
+ 			continue;
+ 
+ 		r2 = test_pipe->plane_res.scl_data.recout;
 -- 
 2.39.2
 
