@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6724B703777
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F147B7036B6
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:13:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243998AbjEORVf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40968 "EHLO
+        id S243676AbjEORNF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243997AbjEORVR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE2010F5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:19:07 -0700 (PDT)
+        with ESMTP id S243687AbjEORMs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:12:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7869DD9C
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:11:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83023621F4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:19:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744FFC433D2;
-        Mon, 15 May 2023 17:19:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CE5562B49
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:10:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04ECC433D2;
+        Mon, 15 May 2023 17:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171146;
-        bh=k+cJLmla7ETwv/mcGBrtTjlSaoCAuqq1xkY13Tu4t3o=;
+        s=korg; t=1684170648;
+        bh=gfKhUyKw0CX2PeLVIE8ww3bHJUVtkPZriPj0BxQava8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c32Eagn1+mVQxv8wYQZhUL8GZFa3/cEOR+DzyLnRkCzV6wVrNYyeBOt7JA9JqDMmm
-         IgH63AZM33yJodhnMje4SJI0Wa0R5OH6ctoo+ArUo4RWZKH/uwDAzehzXL/uHAWD3H
-         6t21m7nd2Jcq2s8r4HQifGgaNwlcOaX1TDXp3qqs=
+        b=f7kIGSQXo3viZMaC3UysbInNKX0w6moQQIjPq+87/vQWcvK51B1NNEtKJhjsTDz3r
+         UGE+ZqJLr8UZ3P05Eq/BndYepe3VAfXuuAHe73K7qUtNKpfJEvkWu37eAkGDR6Qk1o
+         d4K7R3CQB/Vyhyd32/0wk0Dfc8nROP40zviWnulU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dawei Li <set_pte_at@outlook.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 116/242] ksmbd: Implements sess->ksmbd_chann_list as xarray
-Date:   Mon, 15 May 2023 18:27:22 +0200
-Message-Id: <20230515161725.388830315@linuxfoundation.org>
+        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Subject: [PATCH 6.1 180/239] HID: wacom: Set a default resolution for older tablets
+Date:   Mon, 15 May 2023 18:27:23 +0200
+Message-Id: <20230515161727.065826484@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,278 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dawei Li <set_pte_at@outlook.com>
+From: Ping Cheng <pinglinux@gmail.com>
 
-[ Upstream commit 1d9c4172110e645b383ff13eee759728d74f1a5d ]
+commit 08a46b4190d345544d04ce4fe2e1844b772b8535 upstream.
 
-For some ops on channel:
-1. lookup_chann_list(), possibly on high frequency.
-2. ksmbd_chann_del().
+Some older tablets may not report physical maximum for X/Y
+coordinates. Set a default to prevent undefined resolution.
 
-Connection is used as indexing key to lookup channel, in that case,
-linear search based on list may suffer a bit for performance.
-
-Implements sess->ksmbd_chann_list as xarray.
-
-Signed-off-by: Dawei Li <set_pte_at@outlook.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: f5c779b7ddbd ("ksmbd: fix racy issue from session setup and logoff")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Link: https://lore.kernel.org/r/20230409164229.29777-1-ping.cheng@wacom.com
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/mgmt/user_session.c | 61 ++++++++++++++----------------------
- fs/ksmbd/mgmt/user_session.h |  4 +--
- fs/ksmbd/smb2pdu.c           | 34 +++-----------------
- 3 files changed, 30 insertions(+), 69 deletions(-)
+ drivers/hid/wacom_wac.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
-index 92b1603b5abeb..a2b128dedcfcf 100644
---- a/fs/ksmbd/mgmt/user_session.c
-+++ b/fs/ksmbd/mgmt/user_session.c
-@@ -30,15 +30,15 @@ struct ksmbd_session_rpc {
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1895,6 +1895,7 @@ static void wacom_map_usage(struct input
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
++	int resolution = hidinput_calc_abs_res(field, resolution_code);
  
- static void free_channel_list(struct ksmbd_session *sess)
- {
--	struct channel *chann, *tmp;
-+	struct channel *chann;
-+	unsigned long index;
- 
--	write_lock(&sess->chann_lock);
--	list_for_each_entry_safe(chann, tmp, &sess->ksmbd_chann_list,
--				 chann_list) {
--		list_del(&chann->chann_list);
-+	xa_for_each(&sess->ksmbd_chann_list, index, chann) {
-+		xa_erase(&sess->ksmbd_chann_list, index);
- 		kfree(chann);
- 	}
--	write_unlock(&sess->chann_lock);
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
+@@ -1915,8 +1916,15 @@ static void wacom_map_usage(struct input
+ 	switch (type) {
+ 	case EV_ABS:
+ 		input_set_abs_params(input, code, fmin, fmax, fuzz, 0);
+-		input_abs_set_res(input, code,
+-				  hidinput_calc_abs_res(field, resolution_code));
 +
-+	xa_destroy(&sess->ksmbd_chann_list);
- }
- 
- static void __session_rpc_close(struct ksmbd_session *sess,
-@@ -190,21 +190,15 @@ int ksmbd_session_register(struct ksmbd_conn *conn,
- 
- static int ksmbd_chann_del(struct ksmbd_conn *conn, struct ksmbd_session *sess)
- {
--	struct channel *chann, *tmp;
--
--	write_lock(&sess->chann_lock);
--	list_for_each_entry_safe(chann, tmp, &sess->ksmbd_chann_list,
--				 chann_list) {
--		if (chann->conn == conn) {
--			list_del(&chann->chann_list);
--			kfree(chann);
--			write_unlock(&sess->chann_lock);
--			return 0;
--		}
--	}
--	write_unlock(&sess->chann_lock);
-+	struct channel *chann;
-+
-+	chann = xa_erase(&sess->ksmbd_chann_list, (long)conn);
-+	if (!chann)
-+		return -ENOENT;
- 
--	return -ENOENT;
-+	kfree(chann);
-+
-+	return 0;
- }
- 
- void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
-@@ -234,7 +228,7 @@ void ksmbd_sessions_deregister(struct ksmbd_conn *conn)
- 	return;
- 
- sess_destroy:
--	if (list_empty(&sess->ksmbd_chann_list)) {
-+	if (xa_empty(&sess->ksmbd_chann_list)) {
- 		xa_erase(&conn->sessions, sess->id);
- 		ksmbd_session_destroy(sess);
- 	}
-@@ -320,6 +314,9 @@ static struct ksmbd_session *__session_create(int protocol)
- 	struct ksmbd_session *sess;
- 	int ret;
- 
-+	if (protocol != CIFDS_SESSION_FLAG_SMB2)
-+		return NULL;
-+
- 	sess = kzalloc(sizeof(struct ksmbd_session), GFP_KERNEL);
- 	if (!sess)
- 		return NULL;
-@@ -329,30 +326,20 @@ static struct ksmbd_session *__session_create(int protocol)
- 
- 	set_session_flag(sess, protocol);
- 	xa_init(&sess->tree_conns);
--	INIT_LIST_HEAD(&sess->ksmbd_chann_list);
-+	xa_init(&sess->ksmbd_chann_list);
- 	INIT_LIST_HEAD(&sess->rpc_handle_list);
- 	sess->sequence_number = 1;
--	rwlock_init(&sess->chann_lock);
--
--	switch (protocol) {
--	case CIFDS_SESSION_FLAG_SMB2:
--		ret = __init_smb2_session(sess);
--		break;
--	default:
--		ret = -EINVAL;
--		break;
--	}
- 
-+	ret = __init_smb2_session(sess);
- 	if (ret)
- 		goto error;
- 
- 	ida_init(&sess->tree_conn_ida);
- 
--	if (protocol == CIFDS_SESSION_FLAG_SMB2) {
--		down_write(&sessions_table_lock);
--		hash_add(sessions_table, &sess->hlist, sess->id);
--		up_write(&sessions_table_lock);
--	}
-+	down_write(&sessions_table_lock);
-+	hash_add(sessions_table, &sess->hlist, sess->id);
-+	up_write(&sessions_table_lock);
-+
- 	return sess;
- 
- error:
-diff --git a/fs/ksmbd/mgmt/user_session.h b/fs/ksmbd/mgmt/user_session.h
-index 8934b8ee275ba..44a3c67b2bd92 100644
---- a/fs/ksmbd/mgmt/user_session.h
-+++ b/fs/ksmbd/mgmt/user_session.h
-@@ -21,7 +21,6 @@ struct ksmbd_file_table;
- struct channel {
- 	__u8			smb3signingkey[SMB3_SIGN_KEY_SIZE];
- 	struct ksmbd_conn	*conn;
--	struct list_head	chann_list;
- };
- 
- struct preauth_session {
-@@ -50,8 +49,7 @@ struct ksmbd_session {
- 	char				sess_key[CIFS_KEY_SIZE];
- 
- 	struct hlist_node		hlist;
--	rwlock_t			chann_lock;
--	struct list_head		ksmbd_chann_list;
-+	struct xarray			ksmbd_chann_list;
- 	struct xarray			tree_conns;
- 	struct ida			tree_conn_ida;
- 	struct list_head		rpc_handle_list;
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index decaef3592f43..fe70d36df735b 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -74,14 +74,7 @@ static inline bool check_session_id(struct ksmbd_conn *conn, u64 id)
- 
- struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn *conn)
- {
--	struct channel *chann;
--
--	list_for_each_entry(chann, &sess->ksmbd_chann_list, chann_list) {
--		if (chann->conn == conn)
--			return chann;
--	}
--
--	return NULL;
-+	return xa_load(&sess->ksmbd_chann_list, (long)conn);
- }
- 
- /**
-@@ -592,6 +585,7 @@ static void destroy_previous_session(struct ksmbd_conn *conn,
- 	struct ksmbd_session *prev_sess = ksmbd_session_lookup_slowpath(id);
- 	struct ksmbd_user *prev_user;
- 	struct channel *chann;
-+	long index;
- 
- 	if (!prev_sess)
- 		return;
-@@ -605,10 +599,8 @@ static void destroy_previous_session(struct ksmbd_conn *conn,
- 		return;
- 
- 	prev_sess->state = SMB2_SESSION_EXPIRED;
--	write_lock(&prev_sess->chann_lock);
--	list_for_each_entry(chann, &prev_sess->ksmbd_chann_list, chann_list)
-+	xa_for_each(&prev_sess->ksmbd_chann_list, index, chann)
- 		chann->conn->status = KSMBD_SESS_EXITING;
--	write_unlock(&prev_sess->chann_lock);
- }
- 
- /**
-@@ -1521,19 +1513,14 @@ static int ntlm_authenticate(struct ksmbd_work *work)
- 
- binding_session:
- 	if (conn->dialect >= SMB30_PROT_ID) {
--		read_lock(&sess->chann_lock);
- 		chann = lookup_chann_list(sess, conn);
--		read_unlock(&sess->chann_lock);
- 		if (!chann) {
- 			chann = kmalloc(sizeof(struct channel), GFP_KERNEL);
- 			if (!chann)
- 				return -ENOMEM;
- 
- 			chann->conn = conn;
--			INIT_LIST_HEAD(&chann->chann_list);
--			write_lock(&sess->chann_lock);
--			list_add(&chann->chann_list, &sess->ksmbd_chann_list);
--			write_unlock(&sess->chann_lock);
-+			xa_store(&sess->ksmbd_chann_list, (long)conn, chann, GFP_KERNEL);
- 		}
- 	}
- 
-@@ -1608,19 +1595,14 @@ static int krb5_authenticate(struct ksmbd_work *work)
- 	}
- 
- 	if (conn->dialect >= SMB30_PROT_ID) {
--		read_lock(&sess->chann_lock);
- 		chann = lookup_chann_list(sess, conn);
--		read_unlock(&sess->chann_lock);
- 		if (!chann) {
- 			chann = kmalloc(sizeof(struct channel), GFP_KERNEL);
- 			if (!chann)
- 				return -ENOMEM;
- 
- 			chann->conn = conn;
--			INIT_LIST_HEAD(&chann->chann_list);
--			write_lock(&sess->chann_lock);
--			list_add(&chann->chann_list, &sess->ksmbd_chann_list);
--			write_unlock(&sess->chann_lock);
-+			xa_store(&sess->ksmbd_chann_list, (long)conn, chann, GFP_KERNEL);
- 		}
- 	}
- 
-@@ -8434,14 +8416,11 @@ int smb3_check_sign_req(struct ksmbd_work *work)
- 	if (le16_to_cpu(hdr->Command) == SMB2_SESSION_SETUP_HE) {
- 		signing_key = work->sess->smb3signingkey;
- 	} else {
--		read_lock(&work->sess->chann_lock);
- 		chann = lookup_chann_list(work->sess, conn);
- 		if (!chann) {
--			read_unlock(&work->sess->chann_lock);
- 			return 0;
- 		}
- 		signing_key = chann->smb3signingkey;
--		read_unlock(&work->sess->chann_lock);
- 	}
- 
- 	if (!signing_key) {
-@@ -8501,14 +8480,11 @@ void smb3_set_sign_rsp(struct ksmbd_work *work)
- 	    le16_to_cpu(hdr->Command) == SMB2_SESSION_SETUP_HE) {
- 		signing_key = work->sess->smb3signingkey;
- 	} else {
--		read_lock(&work->sess->chann_lock);
- 		chann = lookup_chann_list(work->sess, work->conn);
- 		if (!chann) {
--			read_unlock(&work->sess->chann_lock);
- 			return;
- 		}
- 		signing_key = chann->smb3signingkey;
--		read_unlock(&work->sess->chann_lock);
- 	}
- 
- 	if (!signing_key)
--- 
-2.39.2
-
++		/* older tablet may miss physical usage */
++		if ((code == ABS_X || code == ABS_Y) && !resolution) {
++			resolution = WACOM_INTUOS_RES;
++			hid_warn(input,
++				 "Wacom usage (%d) missing resolution \n",
++				 code);
++		}
++		input_abs_set_res(input, code, resolution);
+ 		break;
+ 	case EV_KEY:
+ 	case EV_MSC:
 
 
