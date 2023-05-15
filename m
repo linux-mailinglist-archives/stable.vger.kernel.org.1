@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7AD6703529
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A069D70363B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243186AbjEOQ4J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35054 "EHLO
+        id S243570AbjEORIG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:08:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243245AbjEOQ4F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:56:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8030B5BAA
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:56:04 -0700 (PDT)
+        with ESMTP id S243666AbjEORHr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F5E7DB0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:06:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1784862A0A
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:56:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D71C4339B;
-        Mon, 15 May 2023 16:56:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECF7C62AC2
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:06:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2ECC433EF;
+        Mon, 15 May 2023 17:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169763;
-        bh=EHZdEFikuq5C15kwAohAv2iL7b6AvDtlU+hmCPbmZrE=;
+        s=korg; t=1684170377;
+        bh=HVumA9j7KJ2Z528g7Ke4Cw+a8ioXO3kqIauA2FU7E+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2opzFiITjcr7A7u5ChgrSsF0O7q2zFF3C9Sxoa3qSibL1XHNncHCSSDU2BnDvfDod
-         x+PbX7XQpMP3oMTBuh1jIp88N11p2yF4x37fqeaYerq4+RgscWuNjn2iFKZKrGev8t
-         nb5Y8m2cfgZ7FWdnTctyUzXZxex5NymHtIXU9zj8=
+        b=mDGrnWXqXsKytPEdrd7y5V0d8jKNrPBYKP9ORair2StXPQ1m9utrF+zOkJuBmi4ob
+         ka/vP/Hq0aUbW0meN26myIVFf1fmhrSEPHGiz5g7fRzzuc16p12urWLbjbw34e7Eef
+         a1IDqK/iHrYvb4Mj1H6FEKden5i/uoqFh9qAWdY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
-        Joel Stanley <joel@jms.id.au>
-Subject: [PATCH 6.3 163/246] ARM: dts: aspeed: asrock: Correct firmware flash SPI clocks
+        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 112/239] btrfs: fix assertion of exclop condition when starting balance
 Date:   Mon, 15 May 2023 18:26:15 +0200
-Message-Id: <20230515161727.526148256@linuxfoundation.org>
+Message-Id: <20230515161725.057707027@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,47 +53,180 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: xiaoshoukui <xiaoshoukui@gmail.com>
 
-commit 9dedb724446913ea7b1591b4b3d2e3e909090980 upstream.
+commit ac868bc9d136cde6e3eb5de77019a63d57a540ff upstream.
 
-While I'm not aware of any problems that have occurred running these
-at 100 MHz, the official word from ASRock is that 50 MHz is the
-correct speed to use, so let's be safe and use that instead.
+Balance as exclusive state is compatible with paused balance and device
+add, which makes some things more complicated. The assertion of valid
+states when starting from paused balance needs to take into account two
+more states, the combinations can be hit when there are several threads
+racing to start balance and device add. This won't typically happen when
+the commands are started from command line.
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Cc: stable@vger.kernel.org
-Fixes: 2b81613ce417 ("ARM: dts: aspeed: Add ASRock E3C246D4I BMC")
-Fixes: a9a3d60b937a ("ARM: dts: aspeed: Add ASRock ROMED8HM3 BMC")
-Link: https://lore.kernel.org/r/20230224000400.12226-4-zev@bewilderbeest.net
-Signed-off-by: Joel Stanley <joel@jms.id.au>
+Scenario 1: With exclusive_operation state == BTRFS_EXCLOP_NONE.
+
+Concurrently adding multiple devices to the same mount point and
+btrfs_exclop_finish executed finishes before assertion in
+btrfs_exclop_balance, exclusive_operation will changed to
+BTRFS_EXCLOP_NONE state which lead to assertion failed:
+
+  fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE ||
+  fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD,
+  in fs/btrfs/ioctl.c:456
+  Call Trace:
+   <TASK>
+   btrfs_exclop_balance+0x13c/0x310
+   ? memdup_user+0xab/0xc0
+   ? PTR_ERR+0x17/0x20
+   btrfs_ioctl_add_dev+0x2ee/0x320
+   btrfs_ioctl+0x9d5/0x10d0
+   ? btrfs_ioctl_encoded_write+0xb80/0xb80
+   __x64_sys_ioctl+0x197/0x210
+   do_syscall_64+0x3c/0xb0
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Scenario 2: With exclusive_operation state == BTRFS_EXCLOP_BALANCE_PAUSED.
+
+Concurrently adding multiple devices to the same mount point and
+btrfs_exclop_balance executed finish before the latter thread execute
+assertion in btrfs_exclop_balance, exclusive_operation will changed to
+BTRFS_EXCLOP_BALANCE_PAUSED state which lead to assertion failed:
+
+  fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE ||
+  fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD ||
+  fs_info->exclusive_operation == BTRFS_EXCLOP_NONE,
+  fs/btrfs/ioctl.c:458
+  Call Trace:
+   <TASK>
+   btrfs_exclop_balance+0x240/0x410
+   ? memdup_user+0xab/0xc0
+   ? PTR_ERR+0x17/0x20
+   btrfs_ioctl_add_dev+0x2ee/0x320
+   btrfs_ioctl+0x9d5/0x10d0
+   ? btrfs_ioctl_encoded_write+0xb80/0xb80
+   __x64_sys_ioctl+0x197/0x210
+   do_syscall_64+0x3c/0xb0
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+An example of the failed assertion is below, which shows that the
+paused balance is also needed to be checked.
+
+  root@syzkaller:/home/xsk# ./repro
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  [  416.611428][ T7970] BTRFS info (device loop0): fs_info exclusive_operation: 0
+  Failed to add device /dev/vda, errno 14
+  [  416.613973][ T7971] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.615456][ T7972] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.617528][ T7973] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.618359][ T7974] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.622589][ T7975] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.624034][ T7976] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.626420][ T7977] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.627643][ T7978] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.629006][ T7979] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  [  416.630298][ T7980] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  Failed to add device /dev/vda, errno 14
+  [  416.632787][ T7981] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.634282][ T7982] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  Failed to add device /dev/vda, errno 14
+  [  416.636202][ T7983] BTRFS info (device loop0): fs_info exclusive_operation: 3
+  [  416.637012][ T7984] BTRFS info (device loop0): fs_info exclusive_operation: 1
+  Failed to add device /dev/vda, errno 14
+  [  416.637759][ T7984] assertion failed: fs_info->exclusive_operation ==
+  BTRFS_EXCLOP_BALANCE || fs_info->exclusive_operation ==
+  BTRFS_EXCLOP_DEV_ADD || fs_info->exclusive_operation ==
+  BTRFS_EXCLOP_NONE, in fs/btrfs/ioctl.c:458
+  [  416.639845][ T7984] invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+  [  416.640485][ T7984] CPU: 0 PID: 7984 Comm: repro Not tainted 6.2.0 #7
+  [  416.641172][ T7984] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+  [  416.642090][ T7984] RIP: 0010:btrfs_assertfail+0x2c/0x2e
+  [  416.644423][ T7984] RSP: 0018:ffffc90003ea7e28 EFLAGS: 00010282
+  [  416.645018][ T7984] RAX: 00000000000000cc RBX: 0000000000000000 RCX: 0000000000000000
+  [  416.645763][ T7984] RDX: ffff88801d030000 RSI: ffffffff81637e7c RDI: fffff520007d4fb7
+  [  416.646554][ T7984] RBP: ffffffff8a533de0 R08: 00000000000000cc R09: 0000000000000000
+  [  416.647299][ T7984] R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8a533da0
+  [  416.648041][ T7984] R13: 00000000000001ca R14: 000000005000940a R15: 0000000000000000
+  [  416.648785][ T7984] FS:  00007fa2985d4640(0000) GS:ffff88802cc00000(0000) knlGS:0000000000000000
+  [  416.649616][ T7984] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  416.650238][ T7984] CR2: 0000000000000000 CR3: 0000000018e5e000 CR4: 0000000000750ef0
+  [  416.650980][ T7984] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [  416.651725][ T7984] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [  416.652502][ T7984] PKRU: 55555554
+  [  416.652888][ T7984] Call Trace:
+  [  416.653241][ T7984]  <TASK>
+  [  416.653527][ T7984]  btrfs_exclop_balance+0x240/0x410
+  [  416.654036][ T7984]  ? memdup_user+0xab/0xc0
+  [  416.654465][ T7984]  ? PTR_ERR+0x17/0x20
+  [  416.654874][ T7984]  btrfs_ioctl_add_dev+0x2ee/0x320
+  [  416.655380][ T7984]  btrfs_ioctl+0x9d5/0x10d0
+  [  416.655822][ T7984]  ? btrfs_ioctl_encoded_write+0xb80/0xb80
+  [  416.656400][ T7984]  __x64_sys_ioctl+0x197/0x210
+  [  416.656874][ T7984]  do_syscall_64+0x3c/0xb0
+  [  416.657346][ T7984]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  [  416.657922][ T7984] RIP: 0033:0x4546af
+  [  416.660170][ T7984] RSP: 002b:00007fa2985d4150 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  [  416.660972][ T7984] RAX: ffffffffffffffda RBX: 00007fa2985d4640 RCX: 00000000004546af
+  [  416.661714][ T7984] RDX: 0000000000000000 RSI: 000000005000940a RDI: 0000000000000003
+  [  416.662449][ T7984] RBP: 00007fa2985d41d0 R08: 0000000000000000 R09: 00007ffee37a4c4f
+  [  416.663195][ T7984] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fa2985d4640
+  [  416.663951][ T7984] R13: 0000000000000009 R14: 000000000041b320 R15: 00007fa297dd4000
+  [  416.664703][ T7984]  </TASK>
+  [  416.665040][ T7984] Modules linked in:
+  [  416.665590][ T7984] ---[ end trace 0000000000000000 ]---
+  [  416.666176][ T7984] RIP: 0010:btrfs_assertfail+0x2c/0x2e
+  [  416.668775][ T7984] RSP: 0018:ffffc90003ea7e28 EFLAGS: 00010282
+  [  416.669425][ T7984] RAX: 00000000000000cc RBX: 0000000000000000 RCX: 0000000000000000
+  [  416.670235][ T7984] RDX: ffff88801d030000 RSI: ffffffff81637e7c RDI: fffff520007d4fb7
+  [  416.671050][ T7984] RBP: ffffffff8a533de0 R08: 00000000000000cc R09: 0000000000000000
+  [  416.671867][ T7984] R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8a533da0
+  [  416.672685][ T7984] R13: 00000000000001ca R14: 000000005000940a R15: 0000000000000000
+  [  416.673501][ T7984] FS:  00007fa2985d4640(0000) GS:ffff88802cc00000(0000) knlGS:0000000000000000
+  [  416.674425][ T7984] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  416.675114][ T7984] CR2: 0000000000000000 CR3: 0000000018e5e000 CR4: 0000000000750ef0
+  [  416.675933][ T7984] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [  416.676760][ T7984] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Link: https://lore.kernel.org/linux-btrfs/20230324031611.98986-1-xiaoshoukui@gmail.com/
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts |    2 +-
- arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/ioctl.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts
-+++ b/arch/arm/boot/dts/aspeed-bmc-asrock-e3c246d4i.dts
-@@ -63,7 +63,7 @@
- 		status = "okay";
- 		m25p,fast-read;
- 		label = "bmc";
--		spi-max-frequency = <100000000>; /* 100 MHz */
-+		spi-max-frequency = <50000000>; /* 50 MHz */
- #include "openbmc-flash-layout.dtsi"
- 	};
- };
---- a/arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts
-+++ b/arch/arm/boot/dts/aspeed-bmc-asrock-romed8hm3.dts
-@@ -51,7 +51,7 @@
- 		status = "okay";
- 		m25p,fast-read;
- 		label = "bmc";
--		spi-max-frequency = <100000000>; /* 100 MHz */
-+		spi-max-frequency = <50000000>; /* 50 MHz */
- #include "openbmc-flash-layout-64.dtsi"
- 	};
- };
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -443,7 +443,9 @@ void btrfs_exclop_balance(struct btrfs_f
+ 	case BTRFS_EXCLOP_BALANCE_PAUSED:
+ 		spin_lock(&fs_info->super_lock);
+ 		ASSERT(fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE ||
+-		       fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD);
++		       fs_info->exclusive_operation == BTRFS_EXCLOP_DEV_ADD ||
++		       fs_info->exclusive_operation == BTRFS_EXCLOP_NONE ||
++		       fs_info->exclusive_operation == BTRFS_EXCLOP_BALANCE_PAUSED);
+ 		fs_info->exclusive_operation = BTRFS_EXCLOP_BALANCE_PAUSED;
+ 		spin_unlock(&fs_info->super_lock);
+ 		break;
 
 
