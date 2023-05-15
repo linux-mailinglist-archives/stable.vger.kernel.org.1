@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 768EB703763
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00920703567
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243938AbjEORUj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:20:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33370 "EHLO
+        id S243348AbjEOQ6r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243953AbjEORUT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:19 -0400
+        with ESMTP id S243322AbjEOQ6i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92DB11D8B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC2B7D98
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A364621A5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7FEC4339B;
-        Mon, 15 May 2023 17:18:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FA6562A39
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B0FC433D2;
+        Mon, 15 May 2023 16:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171087;
-        bh=dZtHtjEDhabK99/kGex+4xlCkg9nxyvLDJnOtkP2mzU=;
+        s=korg; t=1684169911;
+        bh=gfKhUyKw0CX2PeLVIE8ww3bHJUVtkPZriPj0BxQava8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rg5mHVXiYv1DytPAo+CLFDyhgKgRpb05GqzSaEHVkUdzEzq2f3+N/JpPOs329OTOy
-         2rsKs56LMNHFTlx8qgN1l15wIhOD18ve/XTAbommYl+MBtZnZ3BUKD3lGrhrQHgrdw
-         R9A5ogEdGNrqm7BZM017y0FXcEQzaJw251prgf9M=
+        b=FMISDRvK3TaZ/wwPjBY9AN2FGbf9uIlW8ksvBW0MhuyeE/4OcelyQJXSHP1lg6ZD6
+         SsiZXV5q8AoyCwM61ZRHTm3wOJ8N1XKlO89XOlkfuEg6fUYVWJFHGC4dAYSfMlBdsv
+         pxXlIyXqDSxSL11+u3MyyDY4VByJ2H7PXZicmrZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 096/242] perf script: Fix Python support when no libtraceevent
+        patches@lists.linux.dev, Ping Cheng <ping.cheng@wacom.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Subject: [PATCH 6.3 210/246] HID: wacom: Set a default resolution for older tablets
 Date:   Mon, 15 May 2023 18:27:02 +0200
-Message-Id: <20230515161724.789246388@linuxfoundation.org>
+Message-Id: <20230515161728.899808073@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,370 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Ping Cheng <pinglinux@gmail.com>
 
-[ Upstream commit 80c3a7d9f20401169283b5670dbb8d7ac07a1d55 ]
+commit 08a46b4190d345544d04ce4fe2e1844b772b8535 upstream.
 
-Python scripting can be used without libtraceevent. In particular,
-scripting for Intel PT does not use tracepoints, and so does not need
-libtraceevent support.
+Some older tablets may not report physical maximum for X/Y
+coordinates. Set a default to prevent undefined resolution.
 
-Alter the build and employ conditional compilation to allow Python
-scripting without libtraceevent.
-
-Example:
-
- Before:
-
-    $ ldd `which perf` | grep -i python
-    $ ldd `which perf` | grep -i libtraceevent
-    $ perf record -e intel_pt//u uname
-    Linux
-    [ perf record: Woken up 1 times to write data ]
-    [ perf record: Captured and wrote 0.031 MB perf.data ]
-    $ perf script intel-pt-events.py |& head -3
-      Error: Couldn't find script `intel-pt-events.py'
-
-     See perf script -l for available scripts.
-
- After:
-
-    $ ldd `which perf` | grep -i python
-            libpython3.10.so.1.0 => /lib/x86_64-linux-gnu/libpython3.10.so.1.0 (0x00007f4bac400000)
-    $ ldd `which perf` | grep -i libtraceevent
-    $ perf script intel-pt-events.py | head
-    Intel PT Branch Trace, Power Events, Event Trace and PTWRITE
-         Switch In    8021/8021  [000]     11234.097713404     0/0
-           perf-exec  8021/8021  [000]     11234.098041726       psb                        offset: 0x0                0 [unknown] ([unknown])
-           perf-exec  8021/8021  [000]     11234.098041726       cbr                         45  freq: 4505 MHz  (161%)                0 [unknown] ([unknown])
-               uname  8021/8021  [000]     11234.098082170  branches:uH  tr strt                              0 [unknown] ([unknown]) => 7f3a8b9422b0 _start+0x0 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               uname  8021/8021  [000]     11234.098082379  branches:uH  tr end                    7f3a8b9422b0 _start+0x0 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2) => 0 [unknown] ([unknown])
-               uname  8021/8021  [000]     11234.098083629  branches:uH  tr strt                              0 [unknown] ([unknown]) => 7f3a8b9422b0 _start+0x0 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               uname  8021/8021  [000]     11234.098083629  branches:uH  call                      7f3a8b9422b3 _start+0x3 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2) => 7f3a8b943050 _dl_start+0x0 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-               uname  8021/8021  [000]     11234.098083837  branches:uH  tr end                    7f3a8b943060 _dl_start+0x10 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2) => 0 [unknown] ([unknown])  IPC: 0.01 (9/938)
-               uname  8021/8021  [000]     11234.098084670  branches:uH  tr strt                              0 [unknown] ([unknown]) => 7f3a8b943060 _dl_start+0x10 (/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
-
-Fixes: 378ef0f5d9d7f465 ("perf build: Use libtraceevent from the system")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20230315084321.14563-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Link: https://lore.kernel.org/r/20230409164229.29777-1-ping.cheng@wacom.com
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/Build                              |  2 +-
- tools/perf/builtin-script.c                   |  2 +-
- tools/perf/scripts/Build                      |  4 +-
- .../perf/scripts/python/Perf-Trace-Util/Build |  2 +-
- .../scripts/python/Perf-Trace-Util/Context.c  |  4 +
- tools/perf/util/Build                         |  2 +-
- tools/perf/util/scripting-engines/Build       |  2 +-
- .../scripting-engines/trace-event-python.c    | 75 +++++++++++++------
- tools/perf/util/trace-event-scripting.c       |  9 ++-
- 9 files changed, 72 insertions(+), 30 deletions(-)
+ drivers/hid/wacom_wac.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/Build b/tools/perf/Build
-index 6dd67e5022955..aa76236228349 100644
---- a/tools/perf/Build
-+++ b/tools/perf/Build
-@@ -56,6 +56,6 @@ CFLAGS_builtin-report.o	   += -DDOCDIR="BUILD_STR($(srcdir_SQ)/Documentation)"
- perf-y += util/
- perf-y += arch/
- perf-y += ui/
--perf-$(CONFIG_LIBTRACEEVENT) += scripts/
-+perf-y += scripts/
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1895,6 +1895,7 @@ static void wacom_map_usage(struct input
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
++	int resolution = hidinput_calc_abs_res(field, resolution_code);
  
- gtk-y += ui/gtk/
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index 69394ac0a20dc..2f185012b9dda 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -2288,8 +2288,8 @@ static void setup_scripting(void)
- {
- #ifdef HAVE_LIBTRACEEVENT
- 	setup_perl_scripting();
--	setup_python_scripting();
- #endif
-+	setup_python_scripting();
- }
- 
- static int flush_scripting(void)
-diff --git a/tools/perf/scripts/Build b/tools/perf/scripts/Build
-index 68d4b54574adb..7d8e2e57faac5 100644
---- a/tools/perf/scripts/Build
-+++ b/tools/perf/scripts/Build
-@@ -1,2 +1,4 @@
--perf-$(CONFIG_LIBPERL)   += perl/Perf-Trace-Util/
-+ifeq ($(CONFIG_LIBTRACEEVENT),y)
-+  perf-$(CONFIG_LIBPERL)   += perl/Perf-Trace-Util/
-+endif
- perf-$(CONFIG_LIBPYTHON) += python/Perf-Trace-Util/
-diff --git a/tools/perf/scripts/python/Perf-Trace-Util/Build b/tools/perf/scripts/python/Perf-Trace-Util/Build
-index d5fed4e426179..7d0e33ce6aba4 100644
---- a/tools/perf/scripts/python/Perf-Trace-Util/Build
-+++ b/tools/perf/scripts/python/Perf-Trace-Util/Build
-@@ -1,3 +1,3 @@
--perf-$(CONFIG_LIBTRACEEVENT) += Context.o
-+perf-y += Context.o
- 
- CFLAGS_Context.o += $(PYTHON_EMBED_CCOPTS) -Wno-redundant-decls -Wno-strict-prototypes -Wno-unused-parameter -Wno-nested-externs
-diff --git a/tools/perf/scripts/python/Perf-Trace-Util/Context.c b/tools/perf/scripts/python/Perf-Trace-Util/Context.c
-index 895f5fc239653..b0d449f41650f 100644
---- a/tools/perf/scripts/python/Perf-Trace-Util/Context.c
-+++ b/tools/perf/scripts/python/Perf-Trace-Util/Context.c
-@@ -59,6 +59,7 @@ static struct scripting_context *get_scripting_context(PyObject *args)
- 	return get_args(args, "context", NULL);
- }
- 
-+#ifdef HAVE_LIBTRACEEVENT
- static PyObject *perf_trace_context_common_pc(PyObject *obj, PyObject *args)
- {
- 	struct scripting_context *c = get_scripting_context(args);
-@@ -90,6 +91,7 @@ static PyObject *perf_trace_context_common_lock_depth(PyObject *obj,
- 
- 	return Py_BuildValue("i", common_lock_depth(c));
- }
-+#endif
- 
- static PyObject *perf_sample_insn(PyObject *obj, PyObject *args)
- {
-@@ -178,12 +180,14 @@ static PyObject *perf_sample_srccode(PyObject *obj, PyObject *args)
- }
- 
- static PyMethodDef ContextMethods[] = {
-+#ifdef HAVE_LIBTRACEEVENT
- 	{ "common_pc", perf_trace_context_common_pc, METH_VARARGS,
- 	  "Get the common preempt count event field value."},
- 	{ "common_flags", perf_trace_context_common_flags, METH_VARARGS,
- 	  "Get the common flags event field value."},
- 	{ "common_lock_depth", perf_trace_context_common_lock_depth,
- 	  METH_VARARGS,	"Get the common lock depth event field value."},
-+#endif
- 	{ "perf_sample_insn", perf_sample_insn,
- 	  METH_VARARGS,	"Get the machine code instruction."},
- 	{ "perf_set_itrace_options", perf_set_itrace_options,
-diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-index 79b9498886a20..fa87597398780 100644
---- a/tools/perf/util/Build
-+++ b/tools/perf/util/Build
-@@ -78,7 +78,7 @@ perf-y += pmu-bison.o
- perf-y += pmu-hybrid.o
- perf-y += svghelper.o
- perf-$(CONFIG_LIBTRACEEVENT) += trace-event-info.o
--perf-$(CONFIG_LIBTRACEEVENT) += trace-event-scripting.o
-+perf-y += trace-event-scripting.o
- perf-$(CONFIG_LIBTRACEEVENT) += trace-event.o
- perf-$(CONFIG_LIBTRACEEVENT) += trace-event-parse.o
- perf-$(CONFIG_LIBTRACEEVENT) += trace-event-read.o
-diff --git a/tools/perf/util/scripting-engines/Build b/tools/perf/util/scripting-engines/Build
-index 2c96aa3cc1ec8..c220fec970324 100644
---- a/tools/perf/util/scripting-engines/Build
-+++ b/tools/perf/util/scripting-engines/Build
-@@ -1,7 +1,7 @@
- ifeq ($(CONFIG_LIBTRACEEVENT),y)
-   perf-$(CONFIG_LIBPERL)   += trace-event-perl.o
--  perf-$(CONFIG_LIBPYTHON) += trace-event-python.o
- endif
-+perf-$(CONFIG_LIBPYTHON) += trace-event-python.o
- 
- CFLAGS_trace-event-perl.o += $(PERL_EMBED_CCOPTS) -Wno-redundant-decls -Wno-strict-prototypes -Wno-unused-parameter -Wno-shadow -Wno-nested-externs -Wno-undef -Wno-switch-default -Wno-bad-function-cast -Wno-declaration-after-statement -Wno-switch-enum
- 
-diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
-index e930f5f1f36d2..53c32b75c0cab 100644
---- a/tools/perf/util/scripting-engines/trace-event-python.c
-+++ b/tools/perf/util/scripting-engines/trace-event-python.c
-@@ -30,7 +30,9 @@
- #include <linux/bitmap.h>
- #include <linux/compiler.h>
- #include <linux/time64.h>
-+#ifdef HAVE_LIBTRACEEVENT
- #include <traceevent/event-parse.h>
-+#endif
- 
- #include "../build-id.h"
- #include "../counts.h"
-@@ -87,18 +89,21 @@ PyMODINIT_FUNC initperf_trace_context(void);
- PyMODINIT_FUNC PyInit_perf_trace_context(void);
- #endif
- 
-+#ifdef HAVE_LIBTRACEEVENT
- #define TRACE_EVENT_TYPE_MAX				\
- 	((1 << (sizeof(unsigned short) * 8)) - 1)
- 
- static DECLARE_BITMAP(events_defined, TRACE_EVENT_TYPE_MAX);
- 
--#define MAX_FIELDS	64
- #define N_COMMON_FIELDS	7
- 
--extern struct scripting_context *scripting_context;
--
- static char *cur_field_name;
- static int zero_flag_atom;
-+#endif
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
+@@ -1915,8 +1916,15 @@ static void wacom_map_usage(struct input
+ 	switch (type) {
+ 	case EV_ABS:
+ 		input_set_abs_params(input, code, fmin, fmax, fuzz, 0);
+-		input_abs_set_res(input, code,
+-				  hidinput_calc_abs_res(field, resolution_code));
 +
-+#define MAX_FIELDS	64
-+
-+extern struct scripting_context *scripting_context;
- 
- static PyObject *main_module, *main_dict;
- 
-@@ -153,6 +158,26 @@ static PyObject *get_handler(const char *handler_name)
- 	return handler;
- }
- 
-+static void call_object(PyObject *handler, PyObject *args, const char *die_msg)
-+{
-+	PyObject *retval;
-+
-+	retval = PyObject_CallObject(handler, args);
-+	if (retval == NULL)
-+		handler_call_die(die_msg);
-+	Py_DECREF(retval);
-+}
-+
-+static void try_call_object(const char *handler_name, PyObject *args)
-+{
-+	PyObject *handler;
-+
-+	handler = get_handler(handler_name);
-+	if (handler)
-+		call_object(handler, args, handler_name);
-+}
-+
-+#ifdef HAVE_LIBTRACEEVENT
- static int get_argument_count(PyObject *handler)
- {
- 	int arg_count = 0;
-@@ -181,25 +206,6 @@ static int get_argument_count(PyObject *handler)
- 	return arg_count;
- }
- 
--static void call_object(PyObject *handler, PyObject *args, const char *die_msg)
--{
--	PyObject *retval;
--
--	retval = PyObject_CallObject(handler, args);
--	if (retval == NULL)
--		handler_call_die(die_msg);
--	Py_DECREF(retval);
--}
--
--static void try_call_object(const char *handler_name, PyObject *args)
--{
--	PyObject *handler;
--
--	handler = get_handler(handler_name);
--	if (handler)
--		call_object(handler, args, handler_name);
--}
--
- static void define_value(enum tep_print_arg_type field_type,
- 			 const char *ev_name,
- 			 const char *field_name,
-@@ -379,6 +385,7 @@ static PyObject *get_field_numeric_entry(struct tep_event *event,
- 		obj = list;
- 	return obj;
- }
-+#endif
- 
- static const char *get_dsoname(struct map *map)
- {
-@@ -906,6 +913,7 @@ static PyObject *get_perf_sample_dict(struct perf_sample *sample,
- 	return dict;
- }
- 
-+#ifdef HAVE_LIBTRACEEVENT
- static void python_process_tracepoint(struct perf_sample *sample,
- 				      struct evsel *evsel,
- 				      struct addr_location *al,
-@@ -1037,6 +1045,16 @@ static void python_process_tracepoint(struct perf_sample *sample,
- 
- 	Py_DECREF(t);
- }
-+#else
-+static void python_process_tracepoint(struct perf_sample *sample __maybe_unused,
-+				      struct evsel *evsel __maybe_unused,
-+				      struct addr_location *al __maybe_unused,
-+				      struct addr_location *addr_al __maybe_unused)
-+{
-+	fprintf(stderr, "Tracepoint events are not supported because "
-+			"perf is not linked with libtraceevent.\n");
-+}
-+#endif
- 
- static PyObject *tuple_new(unsigned int sz)
- {
-@@ -1967,6 +1985,7 @@ static int python_stop_script(void)
- 	return 0;
- }
- 
-+#ifdef HAVE_LIBTRACEEVENT
- static int python_generate_script(struct tep_handle *pevent, const char *outfile)
- {
- 	int i, not_first, count, nr_events;
-@@ -2157,6 +2176,18 @@ static int python_generate_script(struct tep_handle *pevent, const char *outfile
- 
- 	return 0;
- }
-+#else
-+static int python_generate_script(struct tep_handle *pevent __maybe_unused,
-+				  const char *outfile __maybe_unused)
-+{
-+	fprintf(stderr, "Generating Python perf-script is not supported."
-+		"  Install libtraceevent and rebuild perf to enable it.\n"
-+		"For example:\n  # apt install libtraceevent-dev (ubuntu)"
-+		"\n  # yum install libtraceevent-devel (Fedora)"
-+		"\n  etc.\n");
-+	return -1;
-+}
-+#endif
- 
- struct scripting_ops python_scripting_ops = {
- 	.name			= "Python",
-diff --git a/tools/perf/util/trace-event-scripting.c b/tools/perf/util/trace-event-scripting.c
-index 56175c53f9af7..bd0000300c774 100644
---- a/tools/perf/util/trace-event-scripting.c
-+++ b/tools/perf/util/trace-event-scripting.c
-@@ -9,7 +9,9 @@
- #include <stdlib.h>
- #include <string.h>
- #include <errno.h>
-+#ifdef HAVE_LIBTRACEEVENT
- #include <traceevent/event-parse.h>
-+#endif
- 
- #include "debug.h"
- #include "trace-event.h"
-@@ -27,10 +29,11 @@ void scripting_context__update(struct scripting_context *c,
- 			       struct addr_location *addr_al)
- {
- 	c->event_data = sample->raw_data;
-+	c->pevent = NULL;
-+#ifdef HAVE_LIBTRACEEVENT
- 	if (evsel->tp_format)
- 		c->pevent = evsel->tp_format->tep;
--	else
--		c->pevent = NULL;
-+#endif
- 	c->event = event;
- 	c->sample = sample;
- 	c->evsel = evsel;
-@@ -122,6 +125,7 @@ void setup_python_scripting(void)
- }
- #endif
- 
-+#ifdef HAVE_LIBTRACEEVENT
- static void print_perl_unsupported_msg(void)
- {
- 	fprintf(stderr, "Perl scripting not supported."
-@@ -186,3 +190,4 @@ void setup_perl_scripting(void)
- 	register_perl_scripting(&perl_scripting_ops);
- }
- #endif
-+#endif
--- 
-2.39.2
-
++		/* older tablet may miss physical usage */
++		if ((code == ABS_X || code == ABS_Y) && !resolution) {
++			resolution = WACOM_INTUOS_RES;
++			hid_warn(input,
++				 "Wacom usage (%d) missing resolution \n",
++				 code);
++		}
++		input_abs_set_res(input, code, resolution);
+ 		break;
+ 	case EV_KEY:
+ 	case EV_MSC:
 
 
