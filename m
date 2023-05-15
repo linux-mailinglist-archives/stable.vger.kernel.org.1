@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 728917038BB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A71F703A9C
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243997AbjEORe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53986 "EHLO
+        id S244949AbjEORxY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:53:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244313AbjEOReM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:12 -0400
+        with ESMTP id S239357AbjEORxE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:53:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 989D91797B
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1B0A14E59
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:51:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D401D62D2D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31E4C4339B;
-        Mon, 15 May 2023 17:32:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9336B62F82
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BC1C433A1;
+        Mon, 15 May 2023 17:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171922;
-        bh=Besva30iFwyG+2KD4zO//IOalOfoNdvb8+A0O+ujqsw=;
+        s=korg; t=1684173063;
+        bh=bHLnU0CQOXFjbYb5TL3KJlsyc7RZHqYse06TDIzXJ9Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YpLhrBdFA4tm20j5VzFlCiR9VaugGJvM+njY1r7oscCaVgqWsCTKfebk+VWYPzv/Q
-         UcsKlk9s6Sw4ZWBXRSzIAMaHd+ygBf/+48DfYNIIehT+is7Z78UO3U/b/3LH6MtGqv
-         L1aCojrRxtQOx+KUqyEU3tkVOwHRlCgxMe+7+ka8=
+        b=zHi1KSe+GI9450c0YWkacqosKNykSTdGWwo6TzJcdAdL18Y9p5U8NdrE3dC64K0jF
+         SO7Kj+BKcQ07WddI6n3PLVs2IgSW1XoAedV7xXshRSRU+v4EM/pVf+bxCPOe+j3Sde
+         WhfQQnZVJxC2ihMvkW8Kh5WjW14VLzJGCPi62KdE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+08106c4b7d60702dbc14@syzkaller.appspotmail.com,
-        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 122/134] ext4: check iomap type only if ext4_iomap_begin() does not fail
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.10 348/381] ARM: dts: s5pv210: correct MIPI CSIS clock name
 Date:   Mon, 15 May 2023 18:29:59 +0200
-Message-Id: <20230515161707.204948230@linuxfoundation.org>
+Message-Id: <20230515161752.581339322@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +53,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit fa83c34e3e56b3c672af38059e066242655271b1 upstream.
+commit 665b9459bb53b8f19bd1541567e1fe9782c83c4b upstream.
 
-When ext4_iomap_overwrite_begin() calls ext4_iomap_begin() map blocks may
-fail for some reason (e.g. memory allocation failure, bare disk write), and
-later because "iomap->type ! = IOMAP_MAPPED" triggers WARN_ON(). When ext4
-iomap_begin() returns an error, it is normal that the type of iomap->type
-may not match the expectation. Therefore, we only determine if iomap->type
-is as expected when ext4_iomap_begin() is executed successfully.
+The Samsung S5P/Exynos MIPI CSIS bindings and Linux driver expect first
+clock name to be "csis".  Otherwise the driver fails to probe.
 
-Cc: stable@kernel.org
-Reported-by: syzbot+08106c4b7d60702dbc14@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/00000000000015760b05f9b4eee9@google.com
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230505132429.714648-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 94ad0f6d9278 ("ARM: dts: Add Device tree for s5pv210 SoC")
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230212185818.43503-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    2 +-
+ arch/arm/boot/dts/s5pv210.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -3478,7 +3478,7 @@ static int ext4_iomap_overwrite_begin(st
- 	 */
- 	flags &= ~IOMAP_WRITE;
- 	ret = ext4_iomap_begin(inode, offset, length, flags, iomap, srcmap);
--	WARN_ON_ONCE(iomap->type != IOMAP_MAPPED);
-+	WARN_ON_ONCE(!ret && iomap->type != IOMAP_MAPPED);
- 	return ret;
- }
- 
+--- a/arch/arm/boot/dts/s5pv210.dtsi
++++ b/arch/arm/boot/dts/s5pv210.dtsi
+@@ -583,7 +583,7 @@
+ 				interrupts = <29>;
+ 				clocks = <&clocks CLK_CSIS>,
+ 						<&clocks SCLK_CSIS>;
+-				clock-names = "clk_csis",
++				clock-names = "csis",
+ 						"sclk_csis";
+ 				bus-width = <4>;
+ 				status = "disabled";
 
 
