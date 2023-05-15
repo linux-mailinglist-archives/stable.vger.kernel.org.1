@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7047036D1
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D8F703B3B
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243853AbjEOROZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
+        id S243991AbjEOSA7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243653AbjEOROK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:10 -0400
+        with ESMTP id S244435AbjEOSAh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0A3100DE
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BBC40D3
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:57:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24FDF62B83
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B4C433EF;
-        Mon, 15 May 2023 17:12:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8DF162FD1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BB3C433EF;
+        Mon, 15 May 2023 17:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170746;
-        bh=TWL+qJQugE93zVVjjl/DucUP3g1jjUx+LRRUZuSZzDg=;
+        s=korg; t=1684173445;
+        bh=tx446CERGG2QXVKQQ+SElxkn1eqcKqCAtwZ1Ch+lybo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wwwi80CWxehsdAWcuVEsCDCvxL6xAg+1jOrTxfCSW8/sbjWnLFwonZFZ6nms3hoip
-         EXaRFpgCwwsOppAdlJ6kaYhstqK8AzuGQ962UHUc6yJY9GNs1fnnQT1yMycdgFhI9f
-         27ikXe8PgkbbWIS95pGFmEK/otCDWRlwLieZeN4A=
+        b=hSP8AHOOrl6ShMPbJFGX4GXqUa8DEBUvVS0mEghUrvSgHHB03GTK6TZnkT7+EdZIJ
+         TKqRFE6Z2rbaAruZDR6GwTPPhqzlfAt5vbORFAhOueVYH1QP5uXsLdUl8tlSk8YqwB
+         yYIxpIEpWiEDh3wQzyGdANjMb3NLat/xB9w0BLpU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Alan Liu <HaoPing.Liu@amd.com>, Leo Chen <sancchen@amd.com>,
+        patches@lists.linux.dev, Shuchang Li <lishuchang@hust.edu.cn>,
+        Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/239] drm/amd/display: Change default Z8 watermark values
+Subject: [PATCH 5.4 096/282] scsi: lpfc: Fix ioremap issues in lpfc_sli4_pci_mem_setup()
 Date:   Mon, 15 May 2023 18:27:54 +0200
-Message-Id: <20230515161728.057662301@linuxfoundation.org>
+Message-Id: <20230515161725.138534356@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,41 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leo Chen <sancchen@amd.com>
+From: Shuchang Li <lishuchang@hust.edu.cn>
 
-[ Upstream commit 8f586cc16c1fc3c2202c9d54563db8c7ed365f82 ]
+[ Upstream commit 91a0c0c1413239d0548b5aac4c82f38f6d53a91e ]
 
-[Why & How]
-Previous Z8 watermark values were causing flickering and OTC underflow.
-Updating Z8 watermark values based on the measurement.
+When if_type equals zero and pci_resource_start(pdev, PCI_64BIT_BAR4)
+returns false, drbl_regs_memmap_p is not remapped. This passes a NULL
+pointer to iounmap(), which can trigger a WARN() on certain arches.
 
-Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Alan Liu <HaoPing.Liu@amd.com>
-Signed-off-by: Leo Chen <sancchen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+When if_type equals six and pci_resource_start(pdev, PCI_64BIT_BAR4)
+returns true, drbl_regs_memmap_p may has been remapped and
+ctrl_regs_memmap_p is not remapped. This is a resource leak and passes a
+NULL pointer to iounmap().
+
+To fix these issues, we need to add null checks before iounmap(), and
+change some goto labels.
+
+Fixes: 1351e69fc6db ("scsi: lpfc: Add push-to-adapter support to sli4")
+Signed-off-by: Shuchang Li <lishuchang@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230404072133.1022-1-lishuchang@hust.edu.cn
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_init.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 2c99193b63fa6..4f91e64754239 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -148,8 +148,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_14_soc = {
- 	.num_states = 5,
- 	.sr_exit_time_us = 16.5,
- 	.sr_enter_plus_exit_time_us = 18.5,
--	.sr_exit_z8_time_us = 210.0,
--	.sr_enter_plus_exit_z8_time_us = 310.0,
-+	.sr_exit_z8_time_us = 268.0,
-+	.sr_enter_plus_exit_z8_time_us = 393.0,
- 	.writeback_latency_us = 12.0,
- 	.dram_channel_width_bytes = 4,
- 	.round_trip_ping_latency_dcfclk_cycles = 106,
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 8930696021fbd..af5238ab63094 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -10226,7 +10226,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 				goto out_iounmap_all;
+ 		} else {
+ 			error = -ENOMEM;
+-			goto out_iounmap_all;
++			goto out_iounmap_ctrl;
+ 		}
+ 	}
+ 
+@@ -10244,7 +10244,7 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 			dev_err(&pdev->dev,
+ 			   "ioremap failed for SLI4 HBA dpp registers.\n");
+ 			error = -ENOMEM;
+-			goto out_iounmap_ctrl;
++			goto out_iounmap_all;
+ 		}
+ 		phba->pci_bar4_memmap_p = phba->sli4_hba.dpp_regs_memmap_p;
+ 	}
+@@ -10269,9 +10269,11 @@ lpfc_sli4_pci_mem_setup(struct lpfc_hba *phba)
+ 	return 0;
+ 
+ out_iounmap_all:
+-	iounmap(phba->sli4_hba.drbl_regs_memmap_p);
++	if (phba->sli4_hba.drbl_regs_memmap_p)
++		iounmap(phba->sli4_hba.drbl_regs_memmap_p);
+ out_iounmap_ctrl:
+-	iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
++	if (phba->sli4_hba.ctrl_regs_memmap_p)
++		iounmap(phba->sli4_hba.ctrl_regs_memmap_p);
+ out_iounmap_conf:
+ 	iounmap(phba->sli4_hba.conf_regs_memmap_p);
+ 
 -- 
 2.39.2
 
