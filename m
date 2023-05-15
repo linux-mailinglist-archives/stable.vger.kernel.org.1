@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7EFA7038BC
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA7BD703AAC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244389AbjEORea (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
+        id S229850AbjEORyA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:54:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244376AbjEOReN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:34:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D82E51797E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:32:07 -0700 (PDT)
+        with ESMTP id S239975AbjEORxh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:53:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDCA18841
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:51:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E999A62D46
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C7EC433EF;
-        Mon, 15 May 2023 17:32:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C7A462F9B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:51:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD68C433D2;
+        Mon, 15 May 2023 17:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171925;
-        bh=WUleg2nu1z/eCBZ2nAPeAEztLdGKybjjphwy7fALPys=;
+        s=korg; t=1684173098;
+        bh=iitImpDgGmwmMZHxjqTf7HR7xO/FUPNLehp02kgZ0ck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L29mcYOooD8Bri2tGTerLSljd9la1FKmzYXgr8D269IuVX8R0Uk7wvUTCgILGDTyG
-         7N51Ep0w5zvwUhdhxd44a1A3YTuLSUZk9dY8ZXYsDFPFsazpp/IUcWEU4plk96AHY3
-         8FIW+UC8btYsm+hiJXpLGPR9n/bSsPaFHnzRsnVc=
+        b=GLieDViwgt1nYwXEyaEV0EeKp74qDZg954MUkPphp/+7yjL1hObmKgbeVyf795655
+         gzF8/kCIoGV+KopA5of2sJciQY1pGHfBD7WGSXiELYs6KtNFnu8KCjBZLGmDy7sgAV
+         4Ys0OLC9Aor+6Z2UCzwuTgzxkQjA8vEaaTRx2wTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 123/134] ext4: improve error recovery code paths in __ext4_remount()
+        patches@lists.linux.dev, Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.10 349/381] f2fs: fix potential corruption when moving a directory
 Date:   Mon, 15 May 2023 18:30:00 +0200
-Message-Id: <20230515161707.234662578@linuxfoundation.org>
+Message-Id: <20230515161752.627711794@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,62 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-commit 4c0b4818b1f636bc96359f7817a2d8bab6370162 upstream.
+commit d94772154e524b329a168678836745d2773a6e02 upstream.
 
-If there are failures while changing the mount options in
-__ext4_remount(), we need to restore the old mount options.
+F2FS has the same issue in ext4_rename causing crash revealed by
+xfstests/generic/707.
 
-This commit fixes two problem.  The first is there is a chance that we
-will free the old quota file names before a potential failure leading
-to a use-after-free.  The second problem addressed in this commit is
-if there is a failed read/write to read-only transition, if the quota
-has already been suspended, we need to renable quota handling.
+See also commit 0813299c586b ("ext4: Fix possible corruption when moving a directory")
 
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230506142419.984260-2-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+CC: stable@vger.kernel.org
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/f2fs/namei.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5985,9 +5985,6 @@ static int ext4_remount(struct super_blo
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -969,12 +969,20 @@ static int f2fs_rename(struct inode *old
+ 			goto out;
  	}
  
- #ifdef CONFIG_QUOTA
--	/* Release old quota file names */
--	for (i = 0; i < EXT4_MAXQUOTAS; i++)
--		kfree(old_opts.s_qf_names[i]);
- 	if (enable_quota) {
- 		if (sb_any_quota_suspended(sb))
- 			dquot_resume(sb, -1);
-@@ -5997,6 +5994,9 @@ static int ext4_remount(struct super_blo
- 				goto restore_opts;
- 		}
- 	}
-+	/* Release old quota file names */
-+	for (i = 0; i < EXT4_MAXQUOTAS; i++)
-+		kfree(old_opts.s_qf_names[i]);
- #endif
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
-@@ -6017,6 +6017,13 @@ static int ext4_remount(struct super_blo
- 	return 0;
- 
- restore_opts:
 +	/*
-+	 * If there was a failing r/w to ro transition, we may need to
-+	 * re-enable quota
++	 * Copied from ext4_rename: we need to protect against old.inode
++	 * directory getting converted from inline directory format into
++	 * a normal one.
 +	 */
-+	if ((sb->s_flags & SB_RDONLY) && !(old_sb_flags & SB_RDONLY) &&
-+	    sb_any_quota_suspended(sb))
-+		dquot_resume(sb, -1);
- 	sb->s_flags = old_sb_flags;
- 	sbi->s_mount_opt = old_opts.s_mount_opt;
- 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
++	if (S_ISDIR(old_inode->i_mode))
++		inode_lock_nested(old_inode, I_MUTEX_NONDIR2);
++
+ 	err = -ENOENT;
+ 	old_entry = f2fs_find_entry(old_dir, &old_dentry->d_name, &old_page);
+ 	if (!old_entry) {
+ 		if (IS_ERR(old_page))
+ 			err = PTR_ERR(old_page);
+-		goto out;
++		goto out_unlock_old;
+ 	}
+ 
+ 	if (S_ISDIR(old_inode->i_mode)) {
+@@ -1082,6 +1090,9 @@ static int f2fs_rename(struct inode *old
+ 
+ 	f2fs_unlock_op(sbi);
+ 
++	if (S_ISDIR(old_inode->i_mode))
++		inode_unlock(old_inode);
++
+ 	if (IS_DIRSYNC(old_dir) || IS_DIRSYNC(new_dir))
+ 		f2fs_sync_fs(sbi->sb, 1);
+ 
+@@ -1096,6 +1107,9 @@ out_dir:
+ 		f2fs_put_page(old_dir_page, 0);
+ out_old:
+ 	f2fs_put_page(old_page, 0);
++out_unlock_old:
++	if (S_ISDIR(old_inode->i_mode))
++		inode_unlock(old_inode);
+ out:
+ 	if (whiteout)
+ 		iput(whiteout);
 
 
