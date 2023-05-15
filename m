@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B169C70390A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF717033C3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244467AbjEORiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
+        id S242738AbjEOQlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244472AbjEORiE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:38:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 491D0120A3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:35:24 -0700 (PDT)
+        with ESMTP id S242869AbjEOQlH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:41:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EFA40DD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:41:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 254D162DD3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:35:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12740C433D2;
-        Mon, 15 May 2023 17:35:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EFC562889
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:41:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED40C433EF;
+        Mon, 15 May 2023 16:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172123;
-        bh=4ZDjMyZlTE9Oi+5UsaZHV9CcbRHm4y+tdZZZXlM/SyQ=;
+        s=korg; t=1684168865;
+        bh=RHNrHL0hD+30pfAnkHDt9tD47LElKvHl0zCm6wNh4FE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GRDc0SP4r1cc6aZ9Wk2FacI+DJyBJ9I6fsCiApgBW+N0fowPxN1OsFIu9jyQGdVOs
-         nGmZix0W2oGx1SmNSyPt/h0F7VQ0kyyTsP4tehjjQBe94+PoNBDjo7D7EJVt23SsqR
-         1jJAD9ZKjmWu5ctzB+PC8Hpa5+/yJrbr0Eiekjzw=
+        b=XHDg7uxFmZJHlb6V/tk9YlXgMsRd+R35mTBGfAMqj73JAe4I1supJFfi6JY2LHlXK
+         6VNfEuCCjqZWUq2UikHTUFaKFGIA1Zffx+q0hLLgQvfn6PQ7LAswGy+ck2puwvhXAe
+         ywjWPRrVr5cd2EtRJYmZriCZCYExqlrWJR/JvOAg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 052/381] parisc: Fix argument pointer in real64_call_asm()
-Date:   Mon, 15 May 2023 18:25:03 +0200
-Message-Id: <20230515161739.186432324@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 067/191] md/raid10: fix leak of r10bio->remaining for recovery
+Date:   Mon, 15 May 2023 18:25:04 +0200
+Message-Id: <20230515161709.655561560@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,48 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 6e3220ba3323a2c24be834aebf5d6e9f89d0993f upstream.
+[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
 
-Fix the argument pointer (ap) to point to real-mode memory
-instead of virtual memory.
+raid10_sync_request() will add 'r10bio->remaining' for both rdev and
+replacement rdev. However, if the read io fails, recovery_request_write()
+returns without issuing the write io, in this case, end_sync_request()
+is only called once and 'remaining' is leaked, cause an io hang.
 
-It's interesting that this issue hasn't shown up earlier, as this could
-have happened with any 64-bit PDC ROM code.
+Fix the problem by decreasing 'remaining' according to if 'bio' and
+'repl_bio' is valid.
 
-I just noticed it because I suddenly faced a HPMC while trying to execute
-the 64-bit STI ROM code of an Visualize-FXe graphics card for the STI
-text console.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/real2.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/md/raid10.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/arch/parisc/kernel/real2.S
-+++ b/arch/parisc/kernel/real2.S
-@@ -248,9 +248,6 @@ ENTRY_CFI(real64_call_asm)
- 	/* save fn */
- 	copy	%arg2, %r31
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 9f9cd2fadc1e7..8181d9a375f0b 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -2266,11 +2266,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ {
+ 	struct r10conf *conf = mddev->private;
+ 	int d;
+-	struct bio *wbio, *wbio2;
++	struct bio *wbio = r10_bio->devs[1].bio;
++	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
++
++	/* Need to test wbio2->bi_end_io before we call
++	 * generic_make_request as if the former is NULL,
++	 * the latter is free to free wbio2.
++	 */
++	if (wbio2 && !wbio2->bi_end_io)
++		wbio2 = NULL;
  
--	/* set up the new ap */
--	ldo	64(%arg1), %r29
--
- 	/* load up the arg registers from the saved arg area */
- 	/* 32-bit calling convention passes first 4 args in registers */
- 	ldd	0*REG_SZ(%arg1), %arg0		/* note overwriting arg0 */
-@@ -262,7 +259,9 @@ ENTRY_CFI(real64_call_asm)
- 	ldd	7*REG_SZ(%arg1), %r19
- 	ldd	1*REG_SZ(%arg1), %arg1		/* do this one last! */
+ 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
+ 		fix_recovery_read_error(r10_bio);
+-		end_sync_request(r10_bio);
++		if (wbio->bi_end_io)
++			end_sync_request(r10_bio);
++		if (wbio2)
++			end_sync_request(r10_bio);
+ 		return;
+ 	}
  
-+	/* set up real-mode stack and real-mode ap */
- 	tophys_r1 %sp
-+	ldo	-16(%sp), %r29			/* Reference param save area */
- 
- 	b,l	rfi_virt2real,%r2
- 	nop
+@@ -2279,14 +2290,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+ 	 * and submit the write request
+ 	 */
+ 	d = r10_bio->devs[1].devnum;
+-	wbio = r10_bio->devs[1].bio;
+-	wbio2 = r10_bio->devs[1].repl_bio;
+-	/* Need to test wbio2->bi_end_io before we call
+-	 * generic_make_request as if the former is NULL,
+-	 * the latter is free to free wbio2.
+-	 */
+-	if (wbio2 && !wbio2->bi_end_io)
+-		wbio2 = NULL;
+ 	if (wbio->bi_end_io) {
+ 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
+ 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
+-- 
+2.39.2
+
 
 
