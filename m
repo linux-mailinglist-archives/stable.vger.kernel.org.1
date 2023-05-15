@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92CB5703790
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24AF3703B3F
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244016AbjEORWv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:22:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41750 "EHLO
+        id S243684AbjEOSBO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 14:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244018AbjEORWg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:22:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8A376B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:20:37 -0700 (PDT)
+        with ESMTP id S244754AbjEOSAo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0C71FA4D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38EF162BEC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:20:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5BEC4339B;
-        Mon, 15 May 2023 17:20:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A74DA62FCE
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:57:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B670FC433EF;
+        Mon, 15 May 2023 17:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171236;
-        bh=v0LR2KYR8PyyF39lOMybbrGeHTn4QIJZBer4850tj4c=;
+        s=korg; t=1684173436;
+        bh=53YffIpCKJJArZLDQiOeo/YoB/OhL7KayjvtOlSRLe8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W1iOhxvMnValwFOPjrUJBfTjFaRSTXQyynCDsmEXUiohsM/JEheQPeshscqjcUq/V
-         q27HBK6tsSc2pB44/wpX8G30m9+zs7JqTv0jM2zrgYNCaAx2M/UzWpKteaRTxzoHrn
-         OAb6vXGOTdTdaK/VeeKCPyvXPhK+u5hMBOo2p+CU=
+        b=B5rt6eFMhj8+abIgUc1N1hCZGgI5IEb61f4vjlRZWT3BlhHpO479jgnyqjgL9yf0n
+         LA5uIQS3NM1N55E7Yzff/0vjzB/lYzTgi8SyFWRPoULR2Xu9T0L6xRxbg/xAVBQFmS
+         qdC9LqgmnxWjGaPO8pLw6ms+TtYdQxwRfrNigSWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.2 145/242] platform/x86: thinkpad_acpi: Fix platform profiles on T490
+        patches@lists.linux.dev, Quentin Monnet <quentin@isovalent.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 093/282] bpftool: Fix bug for long instructions in program CFG dumps
 Date:   Mon, 15 May 2023 18:27:51 +0200
-Message-Id: <20230515161726.249615394@linuxfoundation.org>
+Message-Id: <20230515161725.052390064@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,47 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Quentin Monnet <quentin@isovalent.com>
 
-commit 0c0cd3e25a5b64b541dd83ba6e032475a9d77432 upstream.
+[ Upstream commit 67cf52cdb6c8fa6365d29106555dacf95c9fd374 ]
 
-I had incorrectly thought that PSC profiles were not usable on Intel
-platforms so had blocked them in the driver initialistion. This broke
-platform profiles on the T490.
+When dumping the control flow graphs for programs using the 16-byte long
+load instruction, we need to skip the second part of this instruction
+when looking for the next instruction to process. Otherwise, we end up
+printing "BUG_ld_00" from the kernel disassembler in the CFG.
 
-After discussion with the FW team PSC does work on Intel platforms and
-should be allowed.
-
-Note - it's possible this may impact other platforms where it is advertised
-but special driver support that only Windows has is needed. But if it does
-then they will need fixing via quirks. Please report any issues to me so I
-can get them addressed - but I haven't found any problems in testing...yet
-
-Fixes: bce6243f767f ("platform/x86: thinkpad_acpi: do not use PSC mode on Intel platforms")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2177962
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20230505132523.214338-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efcef17a6d65 ("tools: bpftool: generate .dot graph from CFG information")
+Signed-off-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/r/20230405132120.59886-3-quentin@isovalent.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c |    5 -----
- 1 file changed, 5 deletions(-)
+ tools/bpf/bpftool/xlated_dumper.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10593,11 +10593,6 @@ static int tpacpi_dytc_profile_init(stru
- 				dytc_mmc_get_available = true;
- 		}
- 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
--		/* Support for this only works on AMD platforms */
--		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD) {
--			dbg_printk(TPACPI_DBG_INIT, "PSC not support on Intel platforms\n");
--			return -ENODEV;
--		}
- 		pr_debug("PSC is supported\n");
- 	} else {
- 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
+diff --git a/tools/bpf/bpftool/xlated_dumper.c b/tools/bpf/bpftool/xlated_dumper.c
+index 5b91ee65a0802..762ca450d1980 100644
+--- a/tools/bpf/bpftool/xlated_dumper.c
++++ b/tools/bpf/bpftool/xlated_dumper.c
+@@ -363,8 +363,15 @@ void dump_xlated_for_graph(struct dump_data *dd, void *buf_start, void *buf_end,
+ 	struct bpf_insn *insn_start = buf_start;
+ 	struct bpf_insn *insn_end = buf_end;
+ 	struct bpf_insn *cur = insn_start;
++	bool double_insn = false;
+ 
+ 	for (; cur <= insn_end; cur++) {
++		if (double_insn) {
++			double_insn = false;
++			continue;
++		}
++		double_insn = cur->code == (BPF_LD | BPF_IMM | BPF_DW);
++
+ 		printf("% 4d: ", (int)(cur - insn_start + start_idx));
+ 		print_bpf_insn(&cbs, cur, true);
+ 		if (cur != insn_end)
+-- 
+2.39.2
+
 
 
