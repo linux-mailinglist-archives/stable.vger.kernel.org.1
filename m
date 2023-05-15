@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1D4703509
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1522C7036FF
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243252AbjEOQzN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:55:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
+        id S243660AbjEORP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243301AbjEOQyx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:54:53 -0400
+        with ESMTP id S243910AbjEORP0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BEE5FD9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:54:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1BCF6A79
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02F55629C8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAEDC433D2;
-        Mon, 15 May 2023 16:54:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ED3362B9F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75020C433D2;
+        Mon, 15 May 2023 17:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169679;
-        bh=TU+tnQ2Ae9mEfDDSV50Mz2VLeYfxmFTYpNP8fYWtdf0=;
+        s=korg; t=1684170852;
+        bh=WBQ9hH3nxmTiJJgOZHvBVBhVH2U49nOnCXS4krNfZu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H5ir6PP+YhTZtAA+hcshhd6eou5Zw3Yw1TiE7H3Egd+DooRzq7LPOb5w4yPcR74dU
-         UpoTZ4+Y1mqppXm1wnQ5yJ1in060vr+SQAzBfNSi1t7jEIVdrYIjK/Fes1jBfQVR5o
-         sKkXaQd489lsZpMW2EY/sLizNRyE86q1hFBk6HGw=
+        b=tQiS8y/OwX56m2WTeRo7c30iVq3tKH5no+FDplwCKRC94wOLIFtvnPK4xdiKkYpPV
+         SzhXcH2QRSwp7CRgNAE216GdIlFETmLrucjZX1vTkL5c4Z7T7QChYgPvV7YfOR6IPZ
+         00+cUhQg7gcAXtizVwZImK1iss/c5tgonIMp+e+M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.3 136/246] btrfs: fix space cache inconsistency after error loading it from disk
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 022/242] RDMA/rxe: Extend dbg log messages to err and info
 Date:   Mon, 15 May 2023 18:25:48 +0200
-Message-Id: <20230515161726.645809109@linuxfoundation.org>
+Message-Id: <20230515161722.597355728@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +54,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-commit 0004ff15ea26015a0a3a6182dca3b9d1df32e2b7 upstream.
+[ Upstream commit 9ac01f434a1eb56ea94611bd75cf62fa276b41f4 ]
 
-When loading a free space cache from disk, at __load_free_space_cache(),
-if we fail to insert a bitmap entry, we still increment the number of
-total bitmaps in the btrfs_free_space_ctl structure, which is incorrect
-since we failed to add the bitmap entry. On error we then empty the
-cache by calling __btrfs_remove_free_space_cache(), which will result
-in getting the total bitmaps counter set to 1.
+Extend the dbg log messages (e.g. rxe_dbg_xxx) to include
+err and info types. rxe.c is modified to use these new log
+messages as examples.
 
-A failure to load a free space cache is not critical, so if a failure
-happens we just rebuild the cache by scanning the extent tree, which
-happens at block-group.c:caching_thread(). Yet the failure will result
-in having the total bitmaps of the btrfs_free_space_ctl always bigger
-by 1 then the number of bitmap entries we have. So fix this by having
-the total bitmaps counter be incremented only if we successfully added
-the bitmap entry.
-
-Fixes: a67509c30079 ("Btrfs: add a io_ctl struct and helpers for dealing with the space cache")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-CC: stable@vger.kernel.org # 4.4+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230303221623.8053-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 78b26a335310 ("RDMA/rxe: Remove tasklet call from rxe_cq.c")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-cache.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/infiniband/sw/rxe/rxe.c |  8 ++++---
+ drivers/infiniband/sw/rxe/rxe.h | 42 +++++++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -870,15 +870,16 @@ static int __load_free_space_cache(struc
- 			}
- 			spin_lock(&ctl->tree_lock);
- 			ret = link_free_space(ctl, e);
--			ctl->total_bitmaps++;
--			recalculate_thresholds(ctl);
--			spin_unlock(&ctl->tree_lock);
- 			if (ret) {
-+				spin_unlock(&ctl->tree_lock);
- 				btrfs_err(fs_info,
- 					"Duplicate entries in free space cache, dumping");
- 				kmem_cache_free(btrfs_free_space_cachep, e);
- 				goto free_cache;
- 			}
-+			ctl->total_bitmaps++;
-+			recalculate_thresholds(ctl);
-+			spin_unlock(&ctl->tree_lock);
- 			list_add_tail(&e->list, &bitmaps);
- 		}
+diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
+index d57ba7a5964b9..7a7e713de52db 100644
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -160,6 +160,8 @@ void rxe_set_mtu(struct rxe_dev *rxe, unsigned int ndev_mtu)
  
+ 	port->attr.active_mtu = mtu;
+ 	port->mtu_cap = ib_mtu_enum_to_int(mtu);
++
++	rxe_info_dev(rxe, "Set mtu to %d", port->mtu_cap);
+ }
+ 
+ /* called by ifc layer to create new rxe device.
+@@ -179,7 +181,7 @@ static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
+ 	int err = 0;
+ 
+ 	if (is_vlan_dev(ndev)) {
+-		pr_err("rxe creation allowed on top of a real device only\n");
++		rxe_err("rxe creation allowed on top of a real device only");
+ 		err = -EPERM;
+ 		goto err;
+ 	}
+@@ -187,14 +189,14 @@ static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
+ 	rxe = rxe_get_dev_from_net(ndev);
+ 	if (rxe) {
+ 		ib_device_put(&rxe->ib_dev);
+-		rxe_dbg_dev(rxe, "already configured on %s\n", ndev->name);
++		rxe_err_dev(rxe, "already configured on %s", ndev->name);
+ 		err = -EEXIST;
+ 		goto err;
+ 	}
+ 
+ 	err = rxe_net_add(ibdev_name, ndev);
+ 	if (err) {
+-		pr_debug("failed to add %s\n", ndev->name);
++		rxe_err("failed to add %s\n", ndev->name);
+ 		goto err;
+ 	}
+ err:
+diff --git a/drivers/infiniband/sw/rxe/rxe.h b/drivers/infiniband/sw/rxe/rxe.h
+index 0757acc381038..bd8a8ea4ea8fd 100644
+--- a/drivers/infiniband/sw/rxe/rxe.h
++++ b/drivers/infiniband/sw/rxe/rxe.h
+@@ -58,6 +58,48 @@
+ #define rxe_dbg_mw(mw, fmt, ...) ibdev_dbg((mw)->ibmw.device,		\
+ 		"mw#%d %s:  " fmt, (mw)->elem.index, __func__, ##__VA_ARGS__)
+ 
++#define rxe_err(fmt, ...) pr_err_ratelimited("%s: " fmt "\n", __func__, \
++					##__VA_ARGS__)
++#define rxe_err_dev(rxe, fmt, ...) ibdev_err_ratelimited(&(rxe)->ib_dev, \
++		"%s: " fmt, __func__, ##__VA_ARGS__)
++#define rxe_err_uc(uc, fmt, ...) ibdev_err_ratelimited((uc)->ibuc.device, \
++		"uc#%d %s: " fmt, (uc)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_pd(pd, fmt, ...) ibdev_err_ratelimited((pd)->ibpd.device, \
++		"pd#%d %s: " fmt, (pd)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_ah(ah, fmt, ...) ibdev_err_ratelimited((ah)->ibah.device, \
++		"ah#%d %s: " fmt, (ah)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_srq(srq, fmt, ...) ibdev_err_ratelimited((srq)->ibsrq.device, \
++		"srq#%d %s: " fmt, (srq)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_qp(qp, fmt, ...) ibdev_err_ratelimited((qp)->ibqp.device, \
++		"qp#%d %s: " fmt, (qp)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_cq(cq, fmt, ...) ibdev_err_ratelimited((cq)->ibcq.device, \
++		"cq#%d %s: " fmt, (cq)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_mr(mr, fmt, ...) ibdev_err_ratelimited((mr)->ibmr.device, \
++		"mr#%d %s:  " fmt, (mr)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_err_mw(mw, fmt, ...) ibdev_err_ratelimited((mw)->ibmw.device, \
++		"mw#%d %s:  " fmt, (mw)->elem.index, __func__, ##__VA_ARGS__)
++
++#define rxe_info(fmt, ...) pr_info_ratelimited("%s: " fmt "\n", __func__, \
++					##__VA_ARGS__)
++#define rxe_info_dev(rxe, fmt, ...) ibdev_info_ratelimited(&(rxe)->ib_dev, \
++		"%s: " fmt, __func__, ##__VA_ARGS__)
++#define rxe_info_uc(uc, fmt, ...) ibdev_info_ratelimited((uc)->ibuc.device, \
++		"uc#%d %s: " fmt, (uc)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_pd(pd, fmt, ...) ibdev_info_ratelimited((pd)->ibpd.device, \
++		"pd#%d %s: " fmt, (pd)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_ah(ah, fmt, ...) ibdev_info_ratelimited((ah)->ibah.device, \
++		"ah#%d %s: " fmt, (ah)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_srq(srq, fmt, ...) ibdev_info_ratelimited((srq)->ibsrq.device, \
++		"srq#%d %s: " fmt, (srq)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_qp(qp, fmt, ...) ibdev_info_ratelimited((qp)->ibqp.device, \
++		"qp#%d %s: " fmt, (qp)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_cq(cq, fmt, ...) ibdev_info_ratelimited((cq)->ibcq.device, \
++		"cq#%d %s: " fmt, (cq)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_mr(mr, fmt, ...) ibdev_info_ratelimited((mr)->ibmr.device, \
++		"mr#%d %s:  " fmt, (mr)->elem.index, __func__, ##__VA_ARGS__)
++#define rxe_info_mw(mw, fmt, ...) ibdev_info_ratelimited((mw)->ibmw.device, \
++		"mw#%d %s:  " fmt, (mw)->elem.index, __func__, ##__VA_ARGS__)
++
+ /* responder states */
+ enum resp_states {
+ 	RESPST_NONE,
+-- 
+2.39.2
+
 
 
