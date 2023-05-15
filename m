@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3DA703378
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D11770368D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242800AbjEOQhY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40886 "EHLO
+        id S243772AbjEORLQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242723AbjEOQhX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:37:23 -0400
+        with ESMTP id S243596AbjEORK7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:10:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A94823C22
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:37:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003E9A256
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:09:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4750762837
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:37:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E409C433EF;
-        Mon, 15 May 2023 16:37:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1BA462B33
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:09:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40B7C433EF;
+        Mon, 15 May 2023 17:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168641;
-        bh=XlUpJ7Pi01HnD8swK0ZTBWvr6cUn/YaGoA7TnB+qEKU=;
+        s=korg; t=1684170548;
+        bh=C1EHBejhltQUJsb+n597kPRcWUmcmrDTBbB4j7w2Thc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J3Jbkfd0gGRzSLOfmVHIJm6S7Mj3X1FMQ8+NdUXW7OPhZdK5yoAOIJI+p0lWcddKS
-         NoefYJNxdbYjlpYvRfg3I/1RN4p5ytARR+y1RD2VGw7r6yuw0OeeTXnOe1HAVi/jwP
-         hohFeX+8xJMy60P/Q53bhUL5RrBWVrG5LNSQb9tE=
+        b=IliYm0U/BgdzYzz/Nx5lrfoYC5dQy450Sna9HaE0RYfOV9vL771HIusKR13GosnTX
+         gXC7hsNdfUjiPb5Fd5KTO1jUOk2hPRex58Ws1n9PeHAMT52C1A5JIQyV/wnK5fho7W
+         IS8fGb1cK7cO7iyprcrgnSmT3RZR5yJFxhIuJQZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
-        Thomas Voegtle <tv@lio96.de>,
-        =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= 
-        <christoph.boehmwalder@linbit.com>, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.14 114/116] drbd: correctly submit flush bio on barrier
+        patches@lists.linux.dev,
+        Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 6.1 148/239] drm/bridge: lt8912b: Fix DSI Video Mode
 Date:   Mon, 15 May 2023 18:26:51 +0200
-Message-Id: <20230515161702.018761516@linuxfoundation.org>
+Message-Id: <20230515161726.122852148@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 3899d94e3831ee07ea6821c032dc297aec80586a upstream.
+commit f435b7ef3b360d689df2ffa8326352cd07940d92 upstream.
 
-When we receive a flush command (or "barrier" in DRBD), we currently use
-a REQ_OP_FLUSH with the REQ_PREFLUSH flag set.
+LT8912 DSI port supports only Non-Burst mode video operation with Sync
+Events and continuous clock on clock lane, correct dsi mode flags
+according to that removing MIPI_DSI_MODE_VIDEO_BURST flag.
 
-The correct way to submit a flush bio is by using a REQ_OP_WRITE without
-any data, and set the REQ_PREFLUSH flag.
-
-Since commit b4a6bb3a67aa ("block: add a sanity check for non-write
-flush/fua bios"), this triggers a warning in the block layer, but this
-has been broken for quite some time before that.
-
-So use the correct set of flags to actually make the flush happen.
-
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: stable@vger.kernel.org
-Fixes: f9ff0da56437 ("drbd: allow parallel flushes for multi-volume resources")
-Reported-by: Thomas Voegtle <tv@lio96.de>
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230503121937.17232-1-christoph.boehmwalder@linbit.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: <stable@vger.kernel.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230330093131.424828-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/drbd/drbd_receiver.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/block/drbd/drbd_receiver.c
-+++ b/drivers/block/drbd/drbd_receiver.c
-@@ -1309,7 +1309,7 @@ static void submit_one_flush(struct drbd
- 	bio_set_dev(bio, device->ldev->backing_bdev);
- 	bio->bi_private = octx;
- 	bio->bi_end_io = one_flush_endio;
--	bio->bi_opf = REQ_OP_FLUSH | REQ_PREFLUSH;
-+	bio->bi_opf = REQ_OP_WRITE | REQ_PREFLUSH;
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -504,7 +504,6 @@ static int lt8912_attach_dsi(struct lt89
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
  
- 	device->flush_jif = jiffies;
- 	set_bit(FLUSH_PENDING, &device->flags);
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO |
+-			  MIPI_DSI_MODE_VIDEO_BURST |
+ 			  MIPI_DSI_MODE_LPM |
+ 			  MIPI_DSI_MODE_NO_EOT_PACKET;
+ 
 
 
