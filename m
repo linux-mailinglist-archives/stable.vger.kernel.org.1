@@ -2,52 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 652C870376A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A375F703468
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244013AbjEORVC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:21:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S242073AbjEOQsN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:48:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244011AbjEORUr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:20:47 -0400
+        with ESMTP id S243011AbjEOQsL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B076124BD
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1125265
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1E18621F0
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA531C4339B;
-        Mon, 15 May 2023 17:18:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D88D62933
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43143C433EF;
+        Mon, 15 May 2023 16:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171106;
-        bh=CQLT/bsvAJd2jCdkCfQb3EdAHZfQbieJuhsfPHb1y0o=;
+        s=korg; t=1684169272;
+        bh=i85woA/nIQjKXSQHYXMZfVPIDi+H7XpMfgsy3qmfci0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1w3AbR2ZctyE/41zpFERtG9PFOHK/0OIWWyTFAyld1KTGJzr1qsNg9DSvhp9FfD3B
-         hE6DiyijDL56OPhR8DqHAeVEqP+I84b5Q0Oqo7nHnohraqcVgWNhWlLkSAzqUuG3oi
-         jvfm2amlVN2Ct65Bxkm1lQ9V2QFyS3THtjB93b4k=
+        b=s4Y8v4rYrFm7lvtG+KVgbOAyCymMgiZLznurZh+55rk1YDCGFWllIA/hOCtGWqwBd
+         a1n2T3qQiAxI5aTtn3n7AnVf7nMPsc2n/Iac4l+xF+3HgvL8n+tCPHht3iI+RX3MXW
+         Y+vLdPXDLXi6S2dXy2qEqM7Hjf6+TUkH7Mz48YMc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@kernel.com>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 101/242] perf vendor events power9: Remove UTF-8 characters from JSON files
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Petr Mladek <pmladek@suse.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 4.19 190/191] printk: declare printk_deferred_{enter,safe}() in include/linux/printk.h
 Date:   Mon, 15 May 2023 18:27:07 +0200
-Message-Id: <20230515161724.935020376@linuxfoundation.org>
+Message-Id: <20230515161714.398385368@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -62,108 +54,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 5d9df8731c0941f3add30f96745a62586a0c9d52 ]
+commit 85e3e7fbbb720b9897fba9a99659e31cbd1c082e upstream.
 
-Commit 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9
-events") added and updated power9 PMU JSON events. However some of the
-JSON events which are part of other.json and pipeline.json files,
-contains UTF-8 characters in their brief description.  Having UTF-8
-character could breaks the perf build on some distros.
+[This patch implements subset of original commit 85e3e7fbbb72 ("printk:
+remove NMI tracking") where commit 1007843a9190 ("mm/page_alloc: fix
+potential deadlock on zonelist_update_seq seqlock") depends on, for
+commit 3d36424b3b58 ("mm/page_alloc: fix race condition between
+build_all_zonelists and page allocation") was backported to stable.]
 
-Fix this issue by removing the UTF-8 characters from other.json and
-pipeline.json files.
+All NMI contexts are handled the same as the safe context: store the
+message and defer printing. There is no need to have special NMI
+context tracking for this. Using in_nmi() is enough.
 
-Result without the fix:
+There are several parts of the kernel that are manually calling into
+the printk NMI context tracking in order to cause general printk
+deferred printing:
 
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=utf-8
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
+    arch/arm/kernel/smp.c
+    arch/powerpc/kexec/crash.c
+    kernel/trace/trace.c
 
-Result with the fix:
+For arm/kernel/smp.c and powerpc/kexec/crash.c, provide a new
+function pair printk_deferred_enter/exit that explicitly achieves the
+same objective.
 
-  [command]# file -i pmu-events/arch/powerpc/power9/*
-  pmu-events/arch/powerpc/power9/cache.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/floating-point.json: application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/frontend.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/marked.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/memory.json:         application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/metrics.json:        application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/nest_metrics.json:   application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/other.json:          application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pipeline.json:       application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/pmc.json:            application/json; charset=us-ascii
-  pmu-events/arch/powerpc/power9/translation.json:    application/json; charset=us-ascii
-  [command]#
+For ftrace, remove the printk context manipulation completely. It was
+added in commit 03fc7f9c99c1 ("printk/nmi: Prevent deadlock when
+accessing the main log buffer in NMI"). The purpose was to enforce
+storing messages directly into the ring buffer even in NMI context.
+It really should have only modified the behavior in NMI context.
+There is no need for a special behavior any longer. All messages are
+always stored directly now. The console deferring is handled
+transparently in vprintk().
 
-Fixes: 3c22ba5243040c13 ("perf vendor events powerpc: Update POWER9 events")
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/lkml/ZBxP77deq7ikTxwG@kernel.org/
-Link: https://lore.kernel.org/r/20230328112908.113158-1-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+[pmladek@suse.com: Remove special handling in ftrace.c completely.
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20210715193359.25946-5-john.ogness@linutronix.de
+[penguin-kernel: Copy only printk_deferred_{enter,safe}() definition ]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/pmu-events/arch/powerpc/power9/other.json    | 4 ++--
- tools/perf/pmu-events/arch/powerpc/power9/pipeline.json | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/printk.h |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 3f69422c21f99..f10bd554521a0 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -1417,7 +1417,7 @@
-   {
-     "EventCode": "0x45054",
-     "EventName": "PM_FMA_CMPL",
--    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only. "
-+    "BriefDescription": "two flops operation completed (fmadd, fnmadd, fmsub, fnmsub) Scalar instructions only."
-   },
-   {
-     "EventCode": "0x201E8",
-@@ -2017,7 +2017,7 @@
-   {
-     "EventCode": "0xC0BC",
-     "EventName": "PM_LSU_FLUSH_OTHER",
--    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the “bad dval” back and flush all younger ops)"
-+    "BriefDescription": "Other LSU flushes including: Sync (sync ack from L2 caused search of LRQ for oldest snooped load, This will either signal a Precise Flush of the oldest snooped loa or a Flush Next PPC); Data Valid Flush Next (several cases of this, one example is store and reload are lined up such that a store-hit-reload scenario exists and the CDF has already launched and has gotten bad/stale data); Bad Data Valid Flush Next (might be a few cases of this, one example is a larxa (D$ hit) return data and dval but can't allocate to LMQ (LMQ full or other reason). Already gave dval but can't watch it for snoop_hit_larx. Need to take the 'bad dval' back and flush all younger ops)"
-   },
-   {
-     "EventCode": "0x5094",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-index d0265f255de2b..723bffa41c448 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/pipeline.json
-@@ -442,7 +442,7 @@
-   {
-     "EventCode": "0x4D052",
-     "EventName": "PM_2FLOP_CMPL",
--    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg "
-+    "BriefDescription": "DP vector version of fmul, fsub, fcmp, fsel, fabs, fnabs, fres ,fsqrte, fneg"
-   },
-   {
-     "EventCode": "0x1F142",
--- 
-2.39.2
-
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -525,4 +525,23 @@ static inline void print_hex_dump_debug(
+ }
+ #endif
+ 
++#ifdef CONFIG_PRINTK
++extern void __printk_safe_enter(void);
++extern void __printk_safe_exit(void);
++/*
++ * The printk_deferred_enter/exit macros are available only as a hack for
++ * some code paths that need to defer all printk console printing. Interrupts
++ * must be disabled for the deferred duration.
++ */
++#define printk_deferred_enter __printk_safe_enter
++#define printk_deferred_exit __printk_safe_exit
++#else
++static inline void printk_deferred_enter(void)
++{
++}
++static inline void printk_deferred_exit(void)
++{
++}
++#endif
++
+ #endif
 
 
