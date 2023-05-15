@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBE9D703804
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AEC5703889
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244236AbjEOR0o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:26:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
+        id S244210AbjEORdC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244074AbjEOR0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:26:19 -0400
+        with ESMTP id S242712AbjEORcl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C2C83D9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:25:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC0E7120A1;
+        Mon, 15 May 2023 10:30:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AE9562CDC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:25:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEFCC433D2;
-        Mon, 15 May 2023 17:25:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CE3462083;
+        Mon, 15 May 2023 17:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3763FC433D2;
+        Mon, 15 May 2023 17:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171501;
-        bh=gQq2xVRv8/8GryM5IcFKqgvF5LV4B+izOJUSd2yOJ88=;
+        s=korg; t=1684171809;
+        bh=FWrdJUOVDUfaF82ePCRRUrLyhKUa8xyRp8tooUuq0sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RuwxpcG11dny7Vq9vF+YL41SNa4ZuX0kZNPKrjDKQO+85nkVveAbdGvo8MATXjHfB
-         KtgsTfwg1N7QEChA/oZ1M3kDAy+GQ8C4KjVCHCpXdr18bzRIqOX7b1d90gFtA5xVLw
-         eNYj+qDx16Z4ZqJepPoZR40swTS5C+n70OLav6T8=
+        b=hj689cbq7clSdkznzG0doK/FbfFy7gRgEEGbZWldBMBBteHkSX6eaqWDSlAukeCoz
+         h2Tt1UZ+3j4e4Qt6ez5NIngwfmkmCo8gUhGOq83fNxSPnN2WDrMGh6E9jxlwlYXhu0
+         qzPyJzn6IaYjNsfCUE0sRMfpYXauLyDj6YepJSvE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.2 229/242] ext4: improve error recovery code paths in __ext4_remount()
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Igor Zhbanov <izh1979@gmail.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org
+Subject: [PATCH 5.15 078/134] sh: nmi_debug: fix return value of __setup handler
 Date:   Mon, 15 May 2023 18:29:15 +0200
-Message-Id: <20230515161728.785258841@linuxfoundation.org>
+Message-Id: <20230515161705.779834317@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,62 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 4c0b4818b1f636bc96359f7817a2d8bab6370162 upstream.
+commit d1155e4132de712a9d3066e2667ceaad39a539c5 upstream.
 
-If there are failures while changing the mount options in
-__ext4_remount(), we need to restore the old mount options.
+__setup() handlers should return 1 to obsolete_checksetup() in
+init/main.c to indicate that the boot option has been handled.
+A return of 0 causes the boot option/value to be listed as an Unknown
+kernel parameter and added to init's (limited) argument or environment
+strings. Also, error return codes don't mean anything to
+obsolete_checksetup() -- only non-zero (usually 1) or zero.
+So return 1 from nmi_debug_setup().
 
-This commit fixes two problem.  The first is there is a chance that we
-will free the old quota file names before a potential failure leading
-to a use-after-free.  The second problem addressed in this commit is
-if there is a failed read/write to read-only transition, if the quota
-has already been suspended, we need to renable quota handling.
-
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230506142419.984260-2-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 1e1030dccb10 ("sh: nmi_debug support.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <izh1979@gmail.com>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
+Cc: stable@vger.kernel.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230306040037.20350-3-rdunlap@infradead.org
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/sh/kernel/nmi_debug.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6566,9 +6566,6 @@ static int __ext4_remount(struct fs_cont
+--- a/arch/sh/kernel/nmi_debug.c
++++ b/arch/sh/kernel/nmi_debug.c
+@@ -49,7 +49,7 @@ static int __init nmi_debug_setup(char *
+ 	register_die_notifier(&nmi_debug_nb);
+ 
+ 	if (*str != '=')
+-		return 0;
++		return 1;
+ 
+ 	for (p = str + 1; *p; p = sep + 1) {
+ 		sep = strchr(p, ',');
+@@ -70,6 +70,6 @@ static int __init nmi_debug_setup(char *
+ 			break;
  	}
  
- #ifdef CONFIG_QUOTA
--	/* Release old quota file names */
--	for (i = 0; i < EXT4_MAXQUOTAS; i++)
--		kfree(old_opts.s_qf_names[i]);
- 	if (enable_quota) {
- 		if (sb_any_quota_suspended(sb))
- 			dquot_resume(sb, -1);
-@@ -6578,6 +6575,9 @@ static int __ext4_remount(struct fs_cont
- 				goto restore_opts;
- 		}
- 	}
-+	/* Release old quota file names */
-+	for (i = 0; i < EXT4_MAXQUOTAS; i++)
-+		kfree(old_opts.s_qf_names[i]);
- #endif
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
-@@ -6588,6 +6588,13 @@ static int __ext4_remount(struct fs_cont
- 	return 0;
- 
- restore_opts:
-+	/*
-+	 * If there was a failing r/w to ro transition, we may need to
-+	 * re-enable quota
-+	 */
-+	if ((sb->s_flags & SB_RDONLY) && !(old_sb_flags & SB_RDONLY) &&
-+	    sb_any_quota_suspended(sb))
-+		dquot_resume(sb, -1);
- 	sb->s_flags = old_sb_flags;
- 	sbi->s_mount_opt = old_opts.s_mount_opt;
- 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
+-	return 0;
++	return 1;
+ }
+ __setup("nmi_debug", nmi_debug_setup);
 
 
