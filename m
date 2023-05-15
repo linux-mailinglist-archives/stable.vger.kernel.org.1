@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 789837039A9
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16CDC7035C8
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244433AbjEORoy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40220 "EHLO
+        id S243396AbjEORCq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:02:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244514AbjEORog (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:44:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F01715615
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:42:09 -0700 (PDT)
+        with ESMTP id S243366AbjEORCU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:02:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A82901B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:00:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E06B362E3F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:42:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2613C433EF;
-        Mon, 15 May 2023 17:42:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85BF462A87
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8507BC4339C;
+        Mon, 15 May 2023 17:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172528;
-        bh=uIrlw0eurPgLSZGUiyHhwEST69r6Evsb5jPhLbr3OAM=;
+        s=korg; t=1684170024;
+        bh=9El609+Nibho81bobFPB1/SB183PIIVPQUPL50EmM54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f0a+csk9X6+MV2HLGejFEhbPsIh9hpaqK6VVfILAaPPS+Acqrnv0Lxb17tzABPqJS
-         OUvwVd15660K5cpRQ7X03hxx1yQ6WuYarSblDwqMK4bOev8Ks6ik5Nm2Aq3/IgELHC
-         ihM49XuIcmYvJ4qNyD06tamE+5s1GkH6BR+CVr2I=
+        b=rvX5Y84UbdSl08pxLhOFXkCJll/XEdtTrXWnhhPnq5upBGSZPhadsDwMVeI9cRptt
+         QIsSDMxDTpbomRVCsYGF1FDx2Kn4wuYR879aP7OwSmlrA/i4fKlFrGKjXjWw5DM8E3
+         yQEA5+vJjk9dE+nx3yqyoQWBzyveHnApi0QHy0Vo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
-        Sridhar Samudrala <sridhar.samudrala@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 182/381] ixgbe: Allow flow hash to be set via ethtool
+        patches@lists.linux.dev, Jun Lei <Jun.Lei@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 221/246] drm/amd/display: Add minimum Z8 residency debug option
 Date:   Mon, 15 May 2023 18:27:13 +0200
-Message-Id: <20230515161745.048138716@linuxfoundation.org>
+Message-Id: <20230515161729.223087980@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,66 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joe Damato <jdamato@fastly.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 4f3ed1293feb9502dc254b05802faf1ad3317ac6 ]
+[ Upstream commit 0db13eae41fcc67f408dbb3dfda59633c4fa03fb ]
 
-ixgbe currently returns `EINVAL` whenever the flowhash it set by ethtool
-because the ethtool code in the kernel passes a non-zero value for hfunc
-that ixgbe should allow.
+[Why]
+Allows finer control and tuning for debug and profiling.
 
-When ethtool is called with `ETHTOOL_SRXFHINDIR`,
-`ethtool_set_rxfh_indir` will call ixgbe's set_rxfh function
-with `ETH_RSS_HASH_NO_CHANGE`. This value should be accepted.
+[How]
+Add the debug option into DC. The default remains the same as before
+for now.
 
-When ethtool is called with `ETHTOOL_SRSSH`, `ethtool_set_rxfh` will
-call ixgbe's set_rxfh function with `rxfh.hfunc`, which appears to be
-hardcoded in ixgbe to always be `ETH_RSS_HASH_TOP`. This value should
-also be accepted.
-
-Before this patch:
-
-$ sudo ethtool -L eth1 combined 10
-$ sudo ethtool -X eth1 default
-Cannot set RX flow hash configuration: Invalid argument
-
-After this patch:
-
-$ sudo ethtool -L eth1 combined 10
-$ sudo ethtool -X eth1 default
-$ sudo ethtool -x eth1
-RX flow hash indirection table for eth1 with 10 RX ring(s):
-    0:      0     1     2     3     4     5     6     7
-    8:      8     9     0     1     2     3     4     5
-   16:      6     7     8     9     0     1     2     3
-   24:      4     5     6     7     8     9     0     1
-   ...
-
-Fixes: 1c7cf0784e4d ("ixgbe: support for ethtool set_rxfh")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: d893f39320e1 ("drm/amd/display: Lowering min Z8 residency time")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc.h                     | 1 +
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c | 1 +
+ drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c    | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 55983904b6df1..472ea068ea7b0 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3107,8 +3107,8 @@ static int ixgbe_set_rxfh(struct net_device *netdev, const u32 *indir,
- 	int i;
- 	u32 reta_entries = ixgbe_rss_indir_tbl_entries(adapter);
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 84caf1f6b9e0e..3fb868f2f6f5b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -795,6 +795,7 @@ struct dc_debug_options {
+ 	unsigned int force_odm_combine; //bit vector based on otg inst
+ 	unsigned int seamless_boot_odm_combine;
+ 	unsigned int force_odm_combine_4to1; //bit vector based on otg inst
++	int minimum_z8_residency_time;
+ 	bool disable_z9_mpc;
+ 	unsigned int force_fclk_khz;
+ 	bool enable_tri_buf;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+index 9ffba4c6fe550..5c23c934c9751 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+@@ -887,6 +887,7 @@ static const struct dc_plane_cap plane_cap = {
+ static const struct dc_debug_options debug_defaults_drv = {
+ 	.disable_z10 = false,
+ 	.enable_z9_disable_interface = true,
++	.minimum_z8_residency_time = 1000,
+ 	.psr_skip_crtc_disable = true,
+ 	.disable_dmcu = true,
+ 	.force_abm_enable = false,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index d3ba65efe1d2e..f3cfc144e3587 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -973,7 +973,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
+ 		struct dc_link *link = context->streams[0]->sink->link;
+ 		struct dc_stream_status *stream_status = &context->stream_status[0];
+-		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > 1000.0;
++		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
++		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
+ 		bool is_pwrseq0 = link->link_index == 0;
  
--	if (hfunc)
--		return -EINVAL;
-+	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
-+		return -EOPNOTSUPP;
- 
- 	/* Fill out the redirection table */
- 	if (indir) {
+ 		if (dc_extended_blank_supported(dc)) {
 -- 
 2.39.2
 
