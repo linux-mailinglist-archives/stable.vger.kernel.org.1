@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CDA3703566
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 176C670346A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243326AbjEOQ6l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:58:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
+        id S243015AbjEOQsU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243313AbjEOQ6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:58:34 -0400
+        with ESMTP id S243001AbjEOQsR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:48:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB0B7AAC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:58:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5B75598
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:47:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6111C61F7D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:58:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55992C433EF;
-        Mon, 15 May 2023 16:58:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BBA162917
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:47:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F21C433EF;
+        Mon, 15 May 2023 16:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169908;
-        bh=JW545nhLk1RCYnKAJDDWHqWoYnPRADpqDVQ/UZpANlg=;
+        s=korg; t=1684169278;
+        bh=Oxm6zcFUt0i3P6Kq1dvEAUv3ijIXeY7QiQnwrPW2fRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rWKoO8PpgAqzQTVDDnPoa15uIN5o2wgGqVk6GLf3AIhPMmXAf2B9fqb9pdFbAl5rS
-         yxXg6bIUkDv8Q1HBD3rt1G8mYKPpNppNIcFDxFP0P3hK5b6oaOqI7zF6UIpQtvHTSA
-         pPsDj84XRnpltK7EkmcQHMWfHl59PSwH8Gr4gSEs=
+        b=WJf3jovCkR19pNIU0J7PoIwyMpZ76G5XM/3zpmLqeqkL5TKglY11iI/9pFrRlle9w
+         jDeXfjOu9TrXufckKD3uE5Z7fQ7VaDh/Ir98xnl8NHDZ55vLVAPrea0q3zzNE5gYsK
+         WUi+YIP7SXcn+qIAAmf+kQTVlCUVAMGzUdarD5ys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.3 209/246] firewire: net: fix unexpected release of object for asynchronous request packet
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com,
+        syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 184/191] ext4: fix invalid free tracking in ext4_xattr_move_to_block()
 Date:   Mon, 15 May 2023 18:27:01 +0200
-Message-Id: <20230515161728.871413483@linuxfoundation.org>
+Message-Id: <20230515161714.172862462@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,65 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit f7dcc5e33c1e4b0d278a30f7d2f0c9a63d7b40ca upstream.
+commit b87c7cdf2bed4928b899e1ce91ef0d147017ba45 upstream.
 
-The lifetime of object for asynchronous request packet is now maintained
-by reference counting, while current implementation of firewire-net
-releases the passed object in the handler.
+In ext4_xattr_move_to_block(), the value of the extended attribute
+which we need to move to an external block may be allocated by
+kvmalloc() if the value is stored in an external inode.  So at the end
+of the function the code tried to check if this was the case by
+testing entry->e_value_inum.
 
-This commit fixes the bug.
+However, at this point, the pointer to the xattr entry is no longer
+valid, because it was removed from the original location where it had
+been stored.  So we could end up calling kvfree() on a pointer which
+was not allocated by kvmalloc(); or we could also potentially leak
+memory by not freeing the buffer when it should be freed.  Fix this by
+storing whether it should be freed in a separate variable.
 
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/lkml/Y%2Fymx6WZIAlrtjLc@workstation/
-Fixes: 13a55d6bb15f ("firewire: core: use kref structure to maintain lifetime of data for fw_request structure")
-Link: https://lore.kernel.org/lkml/20230510031205.782032-1-o-takashi@sakamocchi.jp/
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230430160426.581366-1-tytso@mit.edu
+Link: https://syzkaller.appspot.com/bug?id=5c2aee8256e30b55ccf57312c16d88417adbd5e1
+Link: https://syzkaller.appspot.com/bug?id=41a6b5d4917c0412eb3b3c3c604965bed7d7420b
+Reported-by: syzbot+64b645917ce07d89bde5@syzkaller.appspotmail.com
+Reported-by: syzbot+0d042627c4f2ad332195@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/net.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ fs/ext4/xattr.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
-index af22be84034b..538bd677c254 100644
---- a/drivers/firewire/net.c
-+++ b/drivers/firewire/net.c
-@@ -706,21 +706,22 @@ static void fwnet_receive_packet(struct fw_card *card, struct fw_request *r,
- 	int rcode;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2573,6 +2573,7 @@ static int ext4_xattr_move_to_block(hand
+ 		.in_inode = !!entry->e_value_inum,
+ 	};
+ 	struct ext4_xattr_ibody_header *header = IHDR(inode, raw_inode);
++	int needs_kvfree = 0;
+ 	int error;
  
- 	if (destination == IEEE1394_ALL_NODES) {
--		kfree(r);
+ 	is = kzalloc(sizeof(struct ext4_xattr_ibody_find), GFP_NOFS);
+@@ -2595,7 +2596,7 @@ static int ext4_xattr_move_to_block(hand
+ 			error = -ENOMEM;
+ 			goto out;
+ 		}
 -
--		return;
--	}
--
--	if (offset != dev->handler.offset)
-+		// Although the response to the broadcast packet is not necessarily required, the
-+		// fw_send_response() function should still be called to maintain the reference
-+		// counting of the object. In the case, the call of function just releases the
-+		// object as a result to decrease the reference counting.
-+		rcode = RCODE_COMPLETE;
-+	} else if (offset != dev->handler.offset) {
- 		rcode = RCODE_ADDRESS_ERROR;
--	else if (tcode != TCODE_WRITE_BLOCK_REQUEST)
-+	} else if (tcode != TCODE_WRITE_BLOCK_REQUEST) {
- 		rcode = RCODE_TYPE_ERROR;
--	else if (fwnet_incoming_packet(dev, payload, length,
--				       source, generation, false) != 0) {
-+	} else if (fwnet_incoming_packet(dev, payload, length,
-+					 source, generation, false) != 0) {
- 		dev_err(&dev->netdev->dev, "incoming packet failure\n");
- 		rcode = RCODE_CONFLICT_ERROR;
--	} else
-+	} else {
- 		rcode = RCODE_COMPLETE;
-+	}
++		needs_kvfree = 1;
+ 		error = ext4_xattr_inode_get(inode, entry, buffer, value_size);
+ 		if (error)
+ 			goto out;
+@@ -2634,7 +2635,7 @@ static int ext4_xattr_move_to_block(hand
  
- 	fw_send_response(card, r, rcode);
- }
--- 
-2.40.1
-
+ out:
+ 	kfree(b_entry_name);
+-	if (entry->e_value_inum && buffer)
++	if (needs_kvfree && buffer)
+ 		kvfree(buffer);
+ 	if (is)
+ 		brelse(is->iloc.bh);
 
 
