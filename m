@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CBF97033F5
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F4D703618
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242896AbjEOQnk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46922 "EHLO
+        id S243658AbjEORGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242740AbjEOQng (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:43:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D494C27
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:43:23 -0700 (PDT)
+        with ESMTP id S243595AbjEORGV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862D28A6D
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:04:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 060A7620A8
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:43:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F048CC433D2;
-        Mon, 15 May 2023 16:43:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66ADC62AAB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77433C433D2;
+        Mon, 15 May 2023 17:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168993;
-        bh=5Vi8SFSi5y9LeCUt1u8PLiMWdPJokZMze00l6jbOiQo=;
+        s=korg; t=1684170285;
+        bh=QxKW70SDUOcM4ZzlccBHnO5C9wSOqYL2IMHRXM7Zdjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j2Y9j4q/yCnZyJRKGkSaFcp9p3IXXwkQfGYhpRqT/dU2rfAbEoRPtxxDyp8Trbi0v
-         mVwlzCpESsx73Y76jU0U9QdlOx2uQlSAxJOqOyHzBrDhQt7j9yb6WxSbt/enbnGPcF
-         XH8jPaLt62CecIZ7tkk7Ocup0QD1G5qmuA4mHAvI=
+        b=gJF2ncf0HhENnTh+GrY/buGVQ9o5XyG68LRxwbESc6Yh/G7pCl3+0Bv7um0p0FolZ
+         kPQDjGpoEN6XY36ldtaVkJTAU8DncgVVakyhIbMlDjX2kgDPGO0UHnK8XpYBQ6IUsg
+         b1friiRlCjn+IBt6Vnjwez10a7eQXM6eCPDDOklk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Ruliang Lin <u202112092@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Daniel Mack <daniel@zonque.org>, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 107/191] powerpc/sysdev/tsi108: fix resource printk format warnings
+Subject: [PATCH 6.1 081/239] ALSA: caiaq: input: Add error handling for unsupported input methods in `snd_usb_caiaq_input_init`
 Date:   Mon, 15 May 2023 18:25:44 +0200
-Message-Id: <20230515161711.129139137@linuxfoundation.org>
+Message-Id: <20230515161724.110919145@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,43 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ruliang Lin <u202112092@hust.edu.cn>
 
-[ Upstream commit 55d8bd02cc1b9f1063993b5c42c9cabf4af67dea ]
+[ Upstream commit 0d727e1856ef22dd9337199430258cb64cbbc658 ]
 
-Use "%pa" format specifier for resource_size_t to avoid a compiler
-printk format warning.
+Smatch complains that:
+snd_usb_caiaq_input_init() warn: missing error code 'ret'
 
-  arch/powerpc/sysdev/tsi108_pci.c: In function 'tsi108_setup_pci':
-  include/linux/kern_levels.h:5:25: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'resource_size_t'
+This patch adds a new case to handle the situation where the
+device does not support any input methods in the
+`snd_usb_caiaq_input_init` function. It returns an `-EINVAL` error code
+to indicate that no input methods are supported on the device.
 
-Fixes: c4342ff92bed ("[POWERPC] Update mpc7448hpc2 board irq support using device tree")
-Fixes: 2b9d7467a6db ("[POWERPC] Add tsi108 pci and platform device data register function")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-[mpe: Use pr_info() and unsplit string]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230223070116.660-5-rdunlap@infradead.org
+Fixes: 523f1dce3743 ("[ALSA] Add Native Instrument usb audio device support")
+Signed-off-by: Ruliang Lin <u202112092@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Acked-by: Daniel Mack <daniel@zonque.org>
+Link: https://lore.kernel.org/r/20230504065054.3309-1-u202112092@hust.edu.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/tsi108_pci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/usb/caiaq/input.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/sysdev/tsi108_pci.c b/arch/powerpc/sysdev/tsi108_pci.c
-index 28ff1f53cefc1..6bd50c690006f 100644
---- a/arch/powerpc/sysdev/tsi108_pci.c
-+++ b/arch/powerpc/sysdev/tsi108_pci.c
-@@ -229,9 +229,8 @@ int __init tsi108_setup_pci(struct device_node *dev, u32 cfg_phys, int primary)
+diff --git a/sound/usb/caiaq/input.c b/sound/usb/caiaq/input.c
+index 1e2cf2f08eecd..84f26dce7f5d0 100644
+--- a/sound/usb/caiaq/input.c
++++ b/sound/usb/caiaq/input.c
+@@ -804,6 +804,7 @@ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev)
  
- 	(hose)->ops = &tsi108_direct_pci_ops;
+ 	default:
+ 		/* no input methods supported on this device */
++		ret = -EINVAL;
+ 		goto exit_free_idev;
+ 	}
  
--	printk(KERN_INFO "Found tsi108 PCI host bridge at 0x%08x. "
--	       "Firmware bus number: %d->%d\n",
--	       rsrc.start, hose->first_busno, hose->last_busno);
-+	pr_info("Found tsi108 PCI host bridge at 0x%pa. Firmware bus number: %d->%d\n",
-+		&rsrc.start, hose->first_busno, hose->last_busno);
- 
- 	/* Interpret the "ranges" property */
- 	/* This also maps the I/O region and sets isa_io/mem_base */
 -- 
 2.39.2
 
