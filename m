@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F62B70364D
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81777033AC
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243581AbjEORIu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:08:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47190 "EHLO
+        id S242847AbjEOQkJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243676AbjEORIc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:08:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C659016
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:06:54 -0700 (PDT)
+        with ESMTP id S242855AbjEOQkB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AD0240C6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:39:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF0CA62A59
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:01:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E5CC433EF;
-        Mon, 15 May 2023 17:01:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0771662860
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E82C433EF;
+        Mon, 15 May 2023 16:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170079;
-        bh=u3uetNtMJx3vMZfvf6xWbYWJdP02c3dOHouwG3q0SmU=;
+        s=korg; t=1684168797;
+        bh=KpME67pG9ORsPNnLkZxMYRv1H1BJO5ATgK4Y5USyRN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uhR/eamxUnjbQJ8fD+IG8wF8odBWNPzYiLI4jV+F2i64KHVcPU+bxLq5maXtwxZik
-         0lhSsIIZRPuuBpd7oqDXjyYY7uT2dIWQ3xt/gXtlo9EgUO8N9Sun4LXnwxc0VofnnU
-         asYHQyEfICWmNLiJ9NVz1MyWX6Q2Lautb4y5EOpA=
+        b=Z0zBal9iOU7wBN7ORt/xa8DdV8SFsP9xd8i/TTvJG155T5pp2Vbtsi2t8H3p2K4o8
+         nkqxrkRVVBaNk2z8JbH087UF+sbgTzlD2qrSdbiewRMi72/mY+RCYDg0Y7s2NRhJbZ
+         H3Kv5tV0NwrWDZC9/wk5fzGDdhiVzOWwln9m5ZHE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com,
-        ZhangPeng <zhangpeng362@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/239] fs/ntfs3: Fix null-ptr-deref on inode->i_op in ntfs_lookup()
+        patches@lists.linux.dev, Wei Li <liwei391@huawei.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 044/191] arm64: kgdb: Set PSTATE.SS to 1 to re-enable single-step
 Date:   Mon, 15 May 2023 18:24:41 +0200
-Message-Id: <20230515161722.136228784@linuxfoundation.org>
+Message-Id: <20230515161708.793862741@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,78 +56,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ZhangPeng <zhangpeng362@huawei.com>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-[ Upstream commit 254e69f284d7270e0abdc023ee53b71401c3ba0c ]
+[ Upstream commit af6c0bd59f4f3ad5daad2f7b777954b1954551d5 ]
 
-Syzbot reported a null-ptr-deref bug:
+Currently only the first attempt to single-step has any effect. After
+that all further stepping remains "stuck" at the same program counter
+value.
 
-ntfs3: loop0: Different NTFS' sector size (1024) and media sector size
-(512)
-ntfs3: loop0: Mark volume as dirty due to NTFS errors
-general protection fault, probably for non-canonical address
-0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-RIP: 0010:d_flags_for_inode fs/dcache.c:1980 [inline]
-RIP: 0010:__d_add+0x5ce/0x800 fs/dcache.c:2796
-Call Trace:
- <TASK>
- d_splice_alias+0x122/0x3b0 fs/dcache.c:3191
- lookup_open fs/namei.c:3391 [inline]
- open_last_lookups fs/namei.c:3481 [inline]
- path_openat+0x10e6/0x2df0 fs/namei.c:3688
- do_filp_open+0x264/0x4f0 fs/namei.c:3718
- do_sys_openat2+0x124/0x4e0 fs/open.c:1310
- do_sys_open fs/open.c:1326 [inline]
- __do_sys_open fs/open.c:1334 [inline]
- __se_sys_open fs/open.c:1330 [inline]
- __x64_sys_open+0x221/0x270 fs/open.c:1330
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Refer to the ARM Architecture Reference Manual (ARM DDI 0487E.a) D2.12,
+PSTATE.SS=1 should be set at each step before transferring the PE to the
+'Active-not-pending' state. The problem here is PSTATE.SS=1 is not set
+since the second single-step.
 
-If the MFT record of ntfs inode is not a base record, inode->i_op can be
-NULL. And a null-ptr-deref may happen:
+After the first single-step, the PE transferes to the 'Inactive' state,
+with PSTATE.SS=0 and MDSCR.SS=1, thus PSTATE.SS won't be set to 1 due to
+kernel_active_single_step()=true. Then the PE transferes to the
+'Active-pending' state when ERET and returns to the debugger by step
+exception.
 
-ntfs_lookup()
-    dir_search_u() # inode->i_op is set to NULL
-    d_splice_alias()
-        __d_add()
-            d_flags_for_inode() # inode->i_op->get_link null-ptr-deref
+Before this patch:
+==================
+Entering kdb (current=0xffff3376039f0000, pid 1) on processor 0 due to Keyboard Entry
+[0]kdb>
 
-Fix this by adding a Check on inode->i_op before calling the
-d_splice_alias() function.
+[0]kdb>
+[0]kdb> bp write_sysrq_trigger
+Instruction(i) BP #0 at 0xffffa45c13d09290 (write_sysrq_trigger)
+    is enabled   addr at ffffa45c13d09290, hardtype=0 installed=0
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Reported-by: syzbot+a8f26a403c169b7593fe@syzkaller.appspotmail.com
-Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+[0]kdb> go
+$ echo h > /proc/sysrq-trigger
+
+Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to Breakpoint @ 0xffffad651a309290
+[1]kdb> ss
+
+Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to SS trap @ 0xffffad651a309294
+[1]kdb> ss
+
+Entering kdb (current=0xffff4f7e453f8000, pid 175) on processor 1 due to SS trap @ 0xffffad651a309294
+[1]kdb>
+
+After this patch:
+=================
+Entering kdb (current=0xffff6851c39f0000, pid 1) on processor 0 due to Keyboard Entry
+[0]kdb> bp write_sysrq_trigger
+Instruction(i) BP #0 at 0xffffc02d2dd09290 (write_sysrq_trigger)
+    is enabled   addr at ffffc02d2dd09290, hardtype=0 installed=0
+
+[0]kdb> go
+$ echo h > /proc/sysrq-trigger
+
+Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to Breakpoint @ 0xffffc02d2dd09290
+[1]kdb> ss
+
+Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd09294
+[1]kdb> ss
+
+Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd09298
+[1]kdb> ss
+
+Entering kdb (current=0xffff6851c53c1840, pid 174) on processor 1 due to SS trap @ 0xffffc02d2dd0929c
+[1]kdb>
+
+Fixes: 44679a4f142b ("arm64: KGDB: Add step debugging support")
+Co-developed-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Tested-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://lore.kernel.org/r/20230202073148.657746-3-sumit.garg@linaro.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/namei.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/include/asm/debug-monitors.h | 1 +
+ arch/arm64/kernel/debug-monitors.c      | 5 +++++
+ arch/arm64/kernel/kgdb.c                | 2 ++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index bc22cc321a74b..7760aedc06728 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -86,6 +86,16 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
- 		__putname(uni);
- 	}
+diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include/asm/debug-monitors.h
+index 41b065f1be88c..13630e8078ff4 100644
+--- a/arch/arm64/include/asm/debug-monitors.h
++++ b/arch/arm64/include/asm/debug-monitors.h
+@@ -125,6 +125,7 @@ void user_regs_reset_single_step(struct user_pt_regs *regs,
+ void kernel_enable_single_step(struct pt_regs *regs);
+ void kernel_disable_single_step(void);
+ int kernel_active_single_step(void);
++void kernel_rewind_single_step(struct pt_regs *regs);
  
-+	/*
-+	 * Check for a null pointer
-+	 * If the MFT record of ntfs inode is not a base record, inode->i_op can be NULL.
-+	 * This causes null pointer dereference in d_splice_alias().
-+	 */
-+	if (!IS_ERR(inode) && inode->i_op == NULL) {
-+		iput(inode);
-+		inode = ERR_PTR(-EINVAL);
-+	}
-+
- 	return d_splice_alias(inode, dentry);
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ int reinstall_suspended_bps(struct pt_regs *regs);
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index 501e835c65007..f5837937cd932 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -437,6 +437,11 @@ int kernel_active_single_step(void)
  }
+ NOKPROBE_SYMBOL(kernel_active_single_step);
  
++void kernel_rewind_single_step(struct pt_regs *regs)
++{
++	set_regs_spsr_ss(regs);
++}
++
+ /* ptrace API */
+ void user_enable_single_step(struct task_struct *task)
+ {
+diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
+index 8815b5457dd0b..d7847ef10e9d3 100644
+--- a/arch/arm64/kernel/kgdb.c
++++ b/arch/arm64/kernel/kgdb.c
+@@ -234,6 +234,8 @@ int kgdb_arch_handle_exception(int exception_vector, int signo,
+ 		 */
+ 		if (!kernel_active_single_step())
+ 			kernel_enable_single_step(linux_regs);
++		else
++			kernel_rewind_single_step(linux_regs);
+ 		err = 0;
+ 		break;
+ 	default:
 -- 
 2.39.2
 
