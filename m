@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB43703993
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4C9703555
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244397AbjEORnt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40388 "EHLO
+        id S243296AbjEOQ6F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:58:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244408AbjEORne (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:43:34 -0400
+        with ESMTP id S243281AbjEOQ57 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325E111624
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:41:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02447AA8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1DCF62E3F
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7192C433EF;
-        Mon, 15 May 2023 17:41:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52E8662A34
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4342AC433EF;
+        Mon, 15 May 2023 16:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172461;
-        bh=WzX49OhwakmUby6LoSKSVcP9ojRGrNGMXs2Kok2j3oQ=;
+        s=korg; t=1684169871;
+        bh=9YbtXNfaYgGHmTrvIHMNLRrMfAnhI9WMriY+wbvRpqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y0W+Ly56sEurdL4bDhb1vae7mmX3HbZAD0NoFdoicUcJXUPkgtdrEUX6PgiDMAtb0
-         sf/c2YaNyosel5GPgiUwPUjHAeR3eYZZpalrGQNtDj+INLZuEKOfU7/3/7Te5Se1J/
-         mfo863Nz8lWFdzjwqsD8J4ZjZbyBXQfpUAe7wtQg=
+        b=C7i09IirhOZrSaIa/vGed2dzt2ZX/GUsR45500VYCmWrKFwtpPv4k9cPtG5YYgSaX
+         /fGZE/uJyNU1kH02ag/pSeKrI6+X/uBYgM9VCOoeROkdjZEeQ/GKCNddfymllzNU5U
+         62HNjRu/f3K90XoHPjnkfHNg0fmdhEz+PFpJBYdk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 159/381] net: qrtr: correct types of trace event parameters
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 198/246] drm/amdgpu: fix an amdgpu_irq_put() issue in gmc_v9_0_hw_fini()
 Date:   Mon, 15 May 2023 18:26:50 +0200
-Message-Id: <20230515161743.996934270@linuxfoundation.org>
+Message-Id: <20230515161728.552537687@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,108 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Horman <horms@kernel.org>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 054fbf7ff8143d35ca7d3bb5414bb44ee1574194 ]
+commit 922a76ba31adf84e72bc947267385be420c689ee upstream.
 
-The arguments passed to the trace events are of type unsigned int,
-however the signature of the events used __le32 parameters.
+As made mention of in commit 08c677cb0b43 ("drm/amdgpu: fix
+amdgpu_irq_put call trace in gmc_v10_0_hw_fini") and commit 13af556104fa
+("drm/amdgpu: fix amdgpu_irq_put call trace in gmc_v11_0_hw_fini"). It
+is meaningless to call amdgpu_irq_put() for gmc.ecc_irq. So, remove it
+from gmc_v9_0_hw_fini().
 
-I may be missing the point here, but sparse flagged this and it
-does seem incorrect to me.
-
-  net/qrtr/ns.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/qrtr.h):
-  ./include/trace/events/qrtr.h:11:1: warning: cast to restricted __le32
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ./include/trace/events/qrtr.h:11:1: warning: restricted __le32 degrades to integer
-  ... (a lot more similar warnings)
-  net/qrtr/ns.c:115:47:    expected restricted __le32 [usertype] service
-  net/qrtr/ns.c:115:47:    got unsigned int service
-  net/qrtr/ns.c:115:61: warning: incorrect type in argument 2 (different base types)
-  ... (a lot more similar warnings)
-
-Fixes: dfddb54043f0 ("net: qrtr: Add tracepoint support")
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230402-qrtr-trace-types-v1-1-92ad55008dd3@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2522
+Fixes: 3029c855d79f ("drm/amdgpu: Fix desktop freezed after gpu-reset")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/qrtr.h | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/trace/events/qrtr.h b/include/trace/events/qrtr.h
-index b1de14c3bb934..441132c67133f 100644
---- a/include/trace/events/qrtr.h
-+++ b/include/trace/events/qrtr.h
-@@ -10,15 +10,16 @@
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
+@@ -1987,7 +1987,6 @@ static int gmc_v9_0_hw_fini(void *handle
+ 	if (adev->mmhub.funcs->update_power_gating)
+ 		adev->mmhub.funcs->update_power_gating(adev, false);
  
- TRACE_EVENT(qrtr_ns_service_announce_new,
+-	amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
  
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
-@@ -36,15 +37,16 @@ TRACE_EVENT(qrtr_ns_service_announce_new,
- 
- TRACE_EVENT(qrtr_ns_service_announce_del,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
-@@ -62,15 +64,16 @@ TRACE_EVENT(qrtr_ns_service_announce_del,
- 
- TRACE_EVENT(qrtr_ns_server_add,
- 
--	TP_PROTO(__le32 service, __le32 instance, __le32 node, __le32 port),
-+	TP_PROTO(unsigned int service, unsigned int instance,
-+		 unsigned int node, unsigned int port),
- 
- 	TP_ARGS(service, instance, node, port),
- 
- 	TP_STRUCT__entry(
--		__field(__le32, service)
--		__field(__le32, instance)
--		__field(__le32, node)
--		__field(__le32, port)
-+		__field(unsigned int, service)
-+		__field(unsigned int, instance)
-+		__field(unsigned int, node)
-+		__field(unsigned int, port)
- 	),
- 
- 	TP_fast_assign(
--- 
-2.39.2
-
+ 	return 0;
 
 
