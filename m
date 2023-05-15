@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C836703A75
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B819570386D
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244792AbjEORvN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:51:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47424 "EHLO
+        id S244254AbjEORc0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:32:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244805AbjEORur (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:50:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCB21CA45
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:48:58 -0700 (PDT)
+        with ESMTP id S244275AbjEORbz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:31:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2385C14E73
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:28:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1651062E06
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:48:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D56DC433EF;
-        Mon, 15 May 2023 17:48:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD78362CF9
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:28:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D88C4339B;
+        Mon, 15 May 2023 17:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684172937;
-        bh=qAWGRpUIBnXMdNJmWOeWjj6QEEvjuwCCa1UXsR7N9AE=;
+        s=korg; t=1684171735;
+        bh=m0leyK6JmemnPRnYMoyC1BnaXkj94cgxvPK4oCk1EBs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OsR/6XuZ3I9h6qtcCVlDdjWo1IDse/1zeiXoTHhWHJxgLpN3zmbfqOXn2P7Ux7PKn
-         erCM/On7l02VSI3cyD38S9m2dEhNhI97nyBieayXeN7rY6t/HD7Gx7K9IYfLgEszCa
-         RhqU+qWANi42XnDAXXZnoDro5+fpW3vmbYug752A=
+        b=2oMN7s/Nmfj1U3kIS/t3UcgWBtSELC2ecHLYkIqnqbis9Zx70k7V+adtbe9PqBrVu
+         Eg2OLYVN5tVcqFUjHhUZNwKSsSQFmjwWjr3/FSbJjx+Q7gcFH/J3SbBItYYJ+kF+m0
+         9iz1BWtkdx5yGPBNpg5YfjnuYSE4Ty3htR0tv48w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 5.10 288/381] perf intel-pt: Fix CYC timestamps after standalone CBR
+        patches@lists.linux.dev, Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 062/134] btrfs: zoned: fix wrong use of bitops API in btrfs_ensure_empty_zones
 Date:   Mon, 15 May 2023 18:28:59 +0200
-Message-Id: <20230515161749.791786782@linuxfoundation.org>
+Message-Id: <20230515161705.209303577@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
-References: <20230515161736.775969473@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,38 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit 430635a0ef1ce958b7b4311f172694ece2c692b8 upstream.
+commit 631003e2333c12cc1b52df06a707365b7363a159 upstream.
 
-After a standalone CBR (not associated with TSC), update the cycles
-reference timestamp and reset the cycle count, so that CYC timestamps
-are calculated relative to that point with the new frequency.
+find_next_bit and find_next_zero_bit take @size as the second parameter and
+@offset as the third parameter. They are specified opposite in
+btrfs_ensure_empty_zones(). Thanks to the later loop, it never failed to
+detect the empty zones. Fix them and (maybe) return the result a bit
+faster.
 
-Fixes: cc33618619cefc6d ("perf tools: Add Intel PT support for decoding CYC packets")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230403154831.8651-2-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Note: the naming is a bit confusing, size has two meanings here, bitmap
+and our range size.
+
+Fixes: 1cd6121f2a38 ("btrfs: zoned: implement zoned chunk allocator")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/intel-pt-decoder/intel-pt-decoder.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/zoned.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-+++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-@@ -1639,6 +1639,8 @@ static void intel_pt_calc_cbr(struct int
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1014,12 +1014,12 @@ int btrfs_ensure_empty_zones(struct btrf
+ 		return -ERANGE;
  
- 	decoder->cbr = cbr;
- 	decoder->cbr_cyc_to_tsc = decoder->max_non_turbo_ratio_fp / cbr;
-+	decoder->cyc_ref_timestamp = decoder->timestamp;
-+	decoder->cycle_cnt = 0;
+ 	/* All the zones are conventional */
+-	if (find_next_bit(zinfo->seq_zones, begin, end) == end)
++	if (find_next_bit(zinfo->seq_zones, end, begin) == end)
+ 		return 0;
  
- 	intel_pt_mtc_cyc_cnt_cbr(decoder);
- }
+ 	/* All the zones are sequential and empty */
+-	if (find_next_zero_bit(zinfo->seq_zones, begin, end) == end &&
+-	    find_next_zero_bit(zinfo->empty_zones, begin, end) == end)
++	if (find_next_zero_bit(zinfo->seq_zones, end, begin) == end &&
++	    find_next_zero_bit(zinfo->empty_zones, end, begin) == end)
+ 		return 0;
+ 
+ 	for (pos = start; pos < start + size; pos += zinfo->zone_size) {
 
 
