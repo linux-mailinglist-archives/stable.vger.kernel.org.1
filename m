@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BEF703874
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E54D2703A82
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:51:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244231AbjEORco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
+        id S242547AbjEORvo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:51:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244370AbjEORcV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:32:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47215113
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:29:18 -0700 (PDT)
+        with ESMTP id S244772AbjEORvU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:51:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A24214C9F1
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:49:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF33962CB3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:29:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2F7C433EF;
-        Mon, 15 May 2023 17:29:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64A8362F32
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:49:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55363C4339B;
+        Mon, 15 May 2023 17:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171757;
-        bh=Za5uzRIxnRJiwpO/qHlEJZLLEAOfoFzVhAXClj0R4wo=;
+        s=korg; t=1684172962;
+        bh=OkX61BRkrqTYY7gOCAiC+bBABkapBqMZaWEuZC2gpZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kLtEy8DEIGIoQ9aPNfSqB49C9OvL9tO/ZGrKwtOnSha4gL5Abhu2a+yDKgr87CWLF
-         x6TuX0BndWLgZkLtPorbuJ8nmienIySPcBFHvN0/B/DtYx6fb3sHfCrHnbf6JM/hsg
-         f57XaHQjL5+m5D2XwL2agiUcwKOVf40vMBsp1YFw=
+        b=HvaZA301ib5GYgjRa0OZUFdyP7dE5VlkEiebA9GIeqM1uj4nuZkd54YIjQJpUU+hi
+         z5tOhtIdhweptplSaVXA0gv9urVqGnGMT6CTiG/NWbWO21rINIcFuy/rjlDEOsDrZy
+         rQQedwPyMSbuwRwLWAkdjRCGGwH1KGYWdx9lC/zk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Pawel Witek <pawel.ireneusz.witek@gmail.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 068/134] cifs: fix pcchunk length type in smb2_copychunk_range
+        Mike Christie <michael.christie@oracle.com>,
+        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 294/381] scsi: target: core: Avoid smp_processor_id() in preemptible code
 Date:   Mon, 15 May 2023 18:29:05 +0200
-Message-Id: <20230515161705.422784067@linuxfoundation.org>
+Message-Id: <20230515161750.071005176@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
-References: <20230515161702.887638251@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +55,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pawel Witek <pawel.ireneusz.witek@gmail.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit d66cde50c3c868af7abddafce701bb86e4a93039 upstream.
+commit 70ca3c57ff914113f681e657634f7fbfa68e1ad1 upstream.
 
-Change type of pcchunk->Length from u32 to u64 to match
-smb2_copychunk_range arguments type. Fixes the problem where performing
-server-side copy with CIFS_IOC_COPYCHUNK_FILE ioctl resulted in incomplete
-copy of large files while returning -EINVAL.
+The BUG message "BUG: using smp_processor_id() in preemptible [00000000]
+code" was observed for TCMU devices with kernel config DEBUG_PREEMPT.
 
-Fixes: 9bf0c9cd4314 ("CIFS: Fix SMB2/SMB3 Copy offload support (refcopy) for large files")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Pawel Witek <pawel.ireneusz.witek@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The message was observed when blktests block/005 was run on TCMU devices
+with fileio backend or user:zbc backend [1]. The commit 1130b499b4a7
+("scsi: target: tcm_loop: Use LIO wq cmd submission helper") triggered the
+symptom. The commit modified work queue to handle commands and changed
+'current->nr_cpu_allowed' at smp_processor_id() call.
+
+The message was also observed at system shutdown when TCMU devices were not
+cleaned up [2]. The function smp_processor_id() was called in SCSI host
+work queue for abort handling, and triggered the BUG message. This symptom
+was observed regardless of the commit 1130b499b4a7 ("scsi: target:
+tcm_loop: Use LIO wq cmd submission helper").
+
+To avoid the preemptible code check at smp_processor_id(), get CPU ID with
+raw_smp_processor_id() instead. The CPU ID is used for performance
+improvement then thread move to other CPU will not affect the code.
+
+[1]
+
+[   56.468103] run blktests block/005 at 2021-05-12 14:16:38
+[   57.369473] check_preemption_disabled: 85 callbacks suppressed
+[   57.369480] BUG: using smp_processor_id() in preemptible [00000000] code: fio/1511
+[   57.369506] BUG: using smp_processor_id() in preemptible [00000000] code: fio/1510
+[   57.369512] BUG: using smp_processor_id() in preemptible [00000000] code: fio/1506
+[   57.369552] caller is __target_init_cmd+0x157/0x170 [target_core_mod]
+[   57.369606] CPU: 4 PID: 1506 Comm: fio Not tainted 5.13.0-rc1+ #34
+[   57.369613] Hardware name: System manufacturer System Product Name/PRIME Z270-A, BIOS 1302 03/15/2018
+[   57.369617] Call Trace:
+[   57.369621] BUG: using smp_processor_id() in preemptible [00000000] code: fio/1507
+[   57.369628]  dump_stack+0x6d/0x89
+[   57.369642]  check_preemption_disabled+0xc8/0xd0
+[   57.369628] caller is __target_init_cmd+0x157/0x170 [target_core_mod]
+[   57.369655]  __target_init_cmd+0x157/0x170 [target_core_mod]
+[   57.369695]  target_init_cmd+0x76/0x90 [target_core_mod]
+[   57.369732]  tcm_loop_queuecommand+0x109/0x210 [tcm_loop]
+[   57.369744]  scsi_queue_rq+0x38e/0xc40
+[   57.369761]  __blk_mq_try_issue_directly+0x109/0x1c0
+[   57.369779]  blk_mq_try_issue_directly+0x43/0x90
+[   57.369790]  blk_mq_submit_bio+0x4e5/0x5d0
+[   57.369812]  submit_bio_noacct+0x46e/0x4e0
+[   57.369830]  __blkdev_direct_IO_simple+0x1a3/0x2d0
+[   57.369859]  ? set_init_blocksize.isra.0+0x60/0x60
+[   57.369880]  generic_file_read_iter+0x89/0x160
+[   57.369898]  blkdev_read_iter+0x44/0x60
+[   57.369906]  new_sync_read+0x102/0x170
+[   57.369929]  vfs_read+0xd4/0x160
+[   57.369941]  __x64_sys_pread64+0x6e/0xa0
+[   57.369946]  ? lockdep_hardirqs_on+0x79/0x100
+[   57.369958]  do_syscall_64+0x3a/0x70
+[   57.369965]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[   57.369973] RIP: 0033:0x7f7ed4c1399f
+[   57.369979] Code: 08 89 3c 24 48 89 4c 24 18 e8 7d f3 ff ff 4c 8b 54 24 18 48 8b 54 24 10 41 89 c0 48 8b 74 24 08 8b 3c 24 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 04 24 e8 cd f3 ff ff 48 8b
+[   57.369983] RSP: 002b:00007ffd7918c580 EFLAGS: 00000293 ORIG_RAX: 0000000000000011
+[   57.369990] RAX: ffffffffffffffda RBX: 00000000015b4540 RCX: 00007f7ed4c1399f
+[   57.369993] RDX: 0000000000001000 RSI: 00000000015de000 RDI: 0000000000000009
+[   57.369996] RBP: 00000000015b4540 R08: 0000000000000000 R09: 0000000000000001
+[   57.369999] R10: 0000000000e5c000 R11: 0000000000000293 R12: 00007f7eb5269a70
+[   57.370002] R13: 0000000000000000 R14: 0000000000001000 R15: 00000000015b4568
+[   57.370031] CPU: 7 PID: 1507 Comm: fio Not tainted 5.13.0-rc1+ #34
+[   57.370036] Hardware name: System manufacturer System Product Name/PRIME Z270-A, BIOS 1302 03/15/2018
+[   57.370039] Call Trace:
+[   57.370045]  dump_stack+0x6d/0x89
+[   57.370056]  check_preemption_disabled+0xc8/0xd0
+[   57.370068]  __target_init_cmd+0x157/0x170 [target_core_mod]
+[   57.370121]  target_init_cmd+0x76/0x90 [target_core_mod]
+[   57.370178]  tcm_loop_queuecommand+0x109/0x210 [tcm_loop]
+[   57.370197]  scsi_queue_rq+0x38e/0xc40
+[   57.370224]  __blk_mq_try_issue_directly+0x109/0x1c0
+...
+
+[2]
+
+[  117.458597] BUG: using smp_processor_id() in preemptible [00000000] code: kworker/u16:8
+[  117.467279] caller is __target_init_cmd+0x157/0x170 [target_core_mod]
+[  117.473893] CPU: 1 PID: 418 Comm: kworker/u16:6 Not tainted 5.13.0-rc1+ #34
+[  117.481150] Hardware name: System manufacturer System Product Name/PRIME Z270-A, BIOS 8
+[  117.481153] Workqueue: scsi_tmf_7 scmd_eh_abort_handler
+[  117.481156] Call Trace:
+[  117.481158]  dump_stack+0x6d/0x89
+[  117.481162]  check_preemption_disabled+0xc8/0xd0
+[  117.512575]  target_submit_tmr+0x41/0x150 [target_core_mod]
+[  117.519705]  tcm_loop_issue_tmr+0xa7/0x100 [tcm_loop]
+[  117.524913]  tcm_loop_abort_task+0x43/0x60 [tcm_loop]
+[  117.530137]  scmd_eh_abort_handler+0x7b/0x230
+[  117.534681]  process_one_work+0x268/0x580
+[  117.538862]  worker_thread+0x55/0x3b0
+[  117.542652]  ? process_one_work+0x580/0x580
+[  117.548351]  kthread+0x143/0x160
+[  117.551675]  ? kthread_create_worker_on_cpu+0x40/0x40
+[  117.556873]  ret_from_fork+0x1f/0x30
+
+Link: https://lore.kernel.org/r/20210515070315.215801-1-shinichiro.kawasaki@wdc.com
+Fixes: 1526d9f10c61 ("scsi: target: Make state_list per CPU")
+Cc: stable@vger.kernel.org # v5.11+
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c |    2 +-
+ drivers/target/target_core_transport.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -1893,7 +1893,7 @@ smb2_copychunk_range(const unsigned int
- 		pcchunk->SourceOffset = cpu_to_le64(src_off);
- 		pcchunk->TargetOffset = cpu_to_le64(dest_off);
- 		pcchunk->Length =
--			cpu_to_le32(min_t(u32, len, tcon->max_bytes_chunk));
-+			cpu_to_le32(min_t(u64, len, tcon->max_bytes_chunk));
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -1396,7 +1396,7 @@ void transport_init_se_cmd(
+ 	cmd->orig_fe_lun = unpacked_lun;
  
- 		/* Request server copy to target from src identified by key */
- 		kfree(retbuf);
+ 	if (!(cmd->se_cmd_flags & SCF_USE_CPUID))
+-		cmd->cpuid = smp_processor_id();
++		cmd->cpuid = raw_smp_processor_id();
+ 
+ 	cmd->state_active = false;
+ }
 
 
