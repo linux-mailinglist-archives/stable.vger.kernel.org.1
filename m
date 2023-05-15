@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 332217033E8
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7922D70361A
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242410AbjEOQmx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:42:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46082 "EHLO
+        id S243626AbjEORGt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:06:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242228AbjEOQmv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:42:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC8649C5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:42:40 -0700 (PDT)
+        with ESMTP id S243448AbjEORGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:06:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BA4902A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:04:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4E926289E
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:42:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CFBC433EF;
-        Mon, 15 May 2023 16:42:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DC9862A83
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:04:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B91CC433EF;
+        Mon, 15 May 2023 17:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168959;
-        bh=gbsgF0jUZQHzoprFJRgaCygFbigEFv3rZN2HwzN1HcM=;
+        s=korg; t=1684170252;
+        bh=m2lkswpJOp0oKDZg8Uah530RHxko+TYz2w3YLEY3548=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wap682dZmZjaxS9yXejc+fTfAiKMVBfAuSLbN9hunOeBgDp3vjuzfTa4Twtq8XZkY
-         karWe1LenYtv1KywPJwjdinDSQA+NRal9lXBx/gZr5OkrTUzNmnzzldqFAn6FbXCHA
-         1Ni+04q+bAVmMLXHQRFgfinXY4hEaL57/+rYyl+w=
+        b=qMH9R63mTgtTJK6tBLNShnzZw/NeLE6SjrK0oygUiV/pN5FxfYq867Kk3FiP8NLQT
+         72nco0OPLz9qjoT+Ij5cb3s0LqUc4/xaUYtJGYiYPpbpmWaIgAfhKvAUSzD9ISOx5r
+         wxzXtawegxbKTdl76UuEPp4H31vFujZpzXJTRYI8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Brodsky <kevin.brodsky@arm.com>,
-        Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>,
-        Petr Vorel <pvorel@suse.cz>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/191] uapi/linux/const.h: prefer ISO-friendly __typeof__
+Subject: [PATCH 6.1 071/239] octeontx2-af: Update/Fix NPC field hash extract feature
 Date:   Mon, 15 May 2023 18:25:34 +0200
-Message-Id: <20230515161710.797568285@linuxfoundation.org>
+Message-Id: <20230515161723.821731298@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
+References: <20230515161721.545370111@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,63 +57,195 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[ Upstream commit 31088f6f7906253ef4577f6a9b84e2d42447dba0 ]
+[ Upstream commit 406bed11fb91a0b35c26fe633d8700febaec6439 ]
 
-typeof is (still) a GNU extension, which means that it cannot be used when
-building ISO C (e.g.  -std=c99).  It should therefore be avoided in uapi
-headers in favour of the ISO-friendly __typeof__.
+1. As per previous implementation, mask and control parameter to
+generate the field hash value was not passed to the caller program.
+Updated the secret key mbox to share that information as well,
+as a part of the fix.
+2. Earlier implementation did not consider hash reduction of both
+source and destination IPv6 addresses. Only source IPv6 address
+was considered. This fix solves that and provides option to hash
 
-Unfortunately this issue could not be detected by
-CONFIG_UAPI_HEADER_TEST=y as the __ALIGN_KERNEL() macro is not expanded in
-any uapi header.
-
-This matters from a userspace perspective, not a kernel one. uapi
-headers and their contents are expected to be usable in a variety of
-situations, and in particular when building ISO C applications (with
--std=c99 or similar).
-
-This particular problem can be reproduced by trying to use the
-__ALIGN_KERNEL macro directly in application code, say:
-
-#include <linux/const.h>
-
-int align(int x, int a)
-{
-	return __KERNEL_ALIGN(x, a);
-}
-
-and trying to build that with -std=c99.
-
-Link: https://lkml.kernel.org/r/20230411092747.3759032-1-kevin.brodsky@arm.com
-Fixes: a79ff731a1b2 ("netfilter: xtables: make XT_ALIGN() usable in exported headers by exporting __ALIGN_KERNEL()")
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Reported-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
-Tested-by: Ruben Ayrapetyan <ruben.ayrapetyan@arm.com>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 56d9f5fd2246 ("octeontx2-af: Use hashed field in MCAM key")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/const.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  | 16 +++++---
+ .../marvell/octeontx2/af/rvu_npc_hash.c       | 37 ++++++++++++-------
+ .../marvell/octeontx2/af/rvu_npc_hash.h       |  6 +++
+ 3 files changed, 41 insertions(+), 18 deletions(-)
 
-diff --git a/include/uapi/linux/const.h b/include/uapi/linux/const.h
-index af2a44c08683d..a429381e7ca50 100644
---- a/include/uapi/linux/const.h
-+++ b/include/uapi/linux/const.h
-@@ -28,7 +28,7 @@
- #define _BITUL(x)	(_UL(1) << (x))
- #define _BITULL(x)	(_ULL(1) << (x))
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index c7c92c7510fa6..5921a78661e41 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -242,9 +242,9 @@ M(NPC_MCAM_READ_BASE_RULE, 0x6011, npc_read_base_steer_rule,            \
+ M(NPC_MCAM_GET_STATS, 0x6012, npc_mcam_entry_stats,                     \
+ 				   npc_mcam_get_stats_req,              \
+ 				   npc_mcam_get_stats_rsp)              \
+-M(NPC_GET_SECRET_KEY, 0x6013, npc_get_secret_key,                     \
+-				   npc_get_secret_key_req,              \
+-				   npc_get_secret_key_rsp)              \
++M(NPC_GET_FIELD_HASH_INFO, 0x6013, npc_get_field_hash_info,                     \
++				   npc_get_field_hash_info_req,              \
++				   npc_get_field_hash_info_rsp)              \
+ M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
+ 				   npc_get_field_status_req,              \
+ 				   npc_get_field_status_rsp)              \
+@@ -1513,14 +1513,20 @@ struct npc_mcam_get_stats_rsp {
+ 	u8 stat_ena; /* enabled */
+ };
  
--#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-+#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
- #define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
+-struct npc_get_secret_key_req {
++struct npc_get_field_hash_info_req {
+ 	struct mbox_msghdr hdr;
+ 	u8 intf;
+ };
  
- #define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
+-struct npc_get_secret_key_rsp {
++struct npc_get_field_hash_info_rsp {
+ 	struct mbox_msghdr hdr;
+ 	u64 secret_key[3];
++#define NPC_MAX_HASH 2
++#define NPC_MAX_HASH_MASK 2
++	/* NPC_AF_INTF(0..1)_HASH(0..1)_MASK(0..1) */
++	u64 hash_mask[NPC_MAX_INTF][NPC_MAX_HASH][NPC_MAX_HASH_MASK];
++	/* NPC_AF_INTF(0..1)_HASH(0..1)_RESULT_CTRL */
++	u64 hash_ctrl[NPC_MAX_INTF][NPC_MAX_HASH];
+ };
+ 
+ enum ptp_op {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
+index 5aed3dbf3b991..18f12f9156544 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
+@@ -110,8 +110,8 @@ static u64 npc_update_use_hash(int lt, int ld)
+ 		 * in KEX_LD_CFG
+ 		 */
+ 		cfg = KEX_LD_CFG_USE_HASH(0x1, 0x03,
+-					  ld ? 0x8 : 0x18,
+-					  0x1, 0x0, 0x10);
++					  ld ? 0x18 : 0x8,
++					  0x1, 0x0, ld ? 0x14 : 0x10);
+ 		break;
+ 	}
+ 
+@@ -134,7 +134,6 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
+ 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
+ 					u64 cfg = npc_update_use_hash(lt, ld);
+ 
+-					hash_cnt++;
+ 					if (hash_cnt == NPC_MAX_HASH)
+ 						return;
+ 
+@@ -149,6 +148,8 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
+ 							     mkex_hash->hash_mask[intf][ld][1]);
+ 					SET_KEX_LD_HASH_CTRL(intf, ld,
+ 							     mkex_hash->hash_ctrl[intf][ld]);
++
++					hash_cnt++;
+ 				}
+ 			}
+ 		}
+@@ -171,7 +172,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
+ 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
+ 					u64 cfg = npc_update_use_hash(lt, ld);
+ 
+-					hash_cnt++;
+ 					if (hash_cnt == NPC_MAX_HASH)
+ 						return;
+ 
+@@ -187,8 +187,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
+ 					SET_KEX_LD_HASH_CTRL(intf, ld,
+ 							     mkex_hash->hash_ctrl[intf][ld]);
+ 					hash_cnt++;
+-					if (hash_cnt == NPC_MAX_HASH)
+-						return;
+ 				}
+ 		}
+ 	}
+@@ -242,8 +240,8 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
+ 			   struct flow_msg *omask)
+ {
+ 	struct npc_mcam_kex_hash *mkex_hash = rvu->kpu.mkex_hash;
+-	struct npc_get_secret_key_req req;
+-	struct npc_get_secret_key_rsp rsp;
++	struct npc_get_field_hash_info_req req;
++	struct npc_get_field_hash_info_rsp rsp;
+ 	u64 ldata[2], cfg;
+ 	u32 field_hash;
+ 	u8 hash_idx;
+@@ -254,7 +252,7 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
+ 	}
+ 
+ 	req.intf = intf;
+-	rvu_mbox_handler_npc_get_secret_key(rvu, &req, &rsp);
++	rvu_mbox_handler_npc_get_field_hash_info(rvu, &req, &rsp);
+ 
+ 	for (hash_idx = 0; hash_idx < NPC_MAX_HASH; hash_idx++) {
+ 		cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_CFG(intf, hash_idx));
+@@ -315,13 +313,13 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
+ 	}
+ }
+ 
+-int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
+-					struct npc_get_secret_key_req *req,
+-					struct npc_get_secret_key_rsp *rsp)
++int rvu_mbox_handler_npc_get_field_hash_info(struct rvu *rvu,
++					     struct npc_get_field_hash_info_req *req,
++					     struct npc_get_field_hash_info_rsp *rsp)
+ {
+ 	u64 *secret_key = rsp->secret_key;
+ 	u8 intf = req->intf;
+-	int blkaddr;
++	int i, j, blkaddr;
+ 
+ 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+ 	if (blkaddr < 0) {
+@@ -333,6 +331,19 @@ int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
+ 	secret_key[1] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY1(intf));
+ 	secret_key[2] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY2(intf));
+ 
++	for (i = 0; i < NPC_MAX_HASH; i++) {
++		for (j = 0; j < NPC_MAX_HASH_MASK; j++) {
++			rsp->hash_mask[NIX_INTF_RX][i][j] =
++				GET_KEX_LD_HASH_MASK(NIX_INTF_RX, i, j);
++			rsp->hash_mask[NIX_INTF_TX][i][j] =
++				GET_KEX_LD_HASH_MASK(NIX_INTF_TX, i, j);
++		}
++	}
++
++	for (i = 0; i < NPC_MAX_INTF; i++)
++		for (j = 0; j < NPC_MAX_HASH; j++)
++			rsp->hash_ctrl[i][j] = GET_KEX_LD_HASH_CTRL(i, j);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
+index 3efeb09c58dec..65936f4aeaacf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
+@@ -31,6 +31,12 @@
+ 	rvu_write64(rvu, blkaddr,	\
+ 		    NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx), cfg)
+ 
++#define GET_KEX_LD_HASH_CTRL(intf, ld)	\
++	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld))
++
++#define GET_KEX_LD_HASH_MASK(intf, ld, mask_idx)	\
++	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx))
++
+ #define SET_KEX_LD_HASH_CTRL(intf, ld, cfg) \
+ 	rvu_write64(rvu, blkaddr,	\
+ 		    NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld), cfg)
 -- 
 2.39.2
 
