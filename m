@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D0DC703B3E
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 20:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C17703827
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243414AbjEOSBG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 14:01:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60866 "EHLO
+        id S244110AbjEOR1t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243053AbjEOSAn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 14:00:43 -0400
+        with ESMTP id S244194AbjEOR1c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:27:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061E61FA43
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:58:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E1914341
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:26:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8537F62FF2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92939C433AE;
-        Mon, 15 May 2023 17:58:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAE0C62CEB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:26:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B918DC433EF;
+        Mon, 15 May 2023 17:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684173484;
-        bh=L4lpl+2vkeKeDOZJQLgs10LXlF6v6HNV8C3e7YI+k1Y=;
+        s=korg; t=1684171579;
+        bh=Sl9uHhQsKqr1GZzNJuE9C36hdrfw1GyfWUq3AnEfEj4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GyxetUhjzgTJyW+ens0/y6MaT3yJiHEUlEXN5aatfmV6jITTaHBnU39li/1K/Buk8
-         kx1TY5xrDHvCNklY9R+E+9pl7Rb7wY4vzj8yBIlNUfR7jKCAyzKfL9XnEewzpSEkRJ
-         4mNh7lzW8TcuH9gMf6v2e5RdIjLWgUHzgWNRv7Y4=
+        b=sVMwsXGIjmG6fmPTra2qnlQpoRwFkPpdW6OyAaymMQOdMOYe/plIE1s3zawT7j8ci
+         OFBaNC0BBhGmPZvgO0qdhkTXCyqHk3kCx/vf81nS9kNyCmTfvlIuDpfNw4p9Df+gc8
+         IhmZx1X/GTJkoqZXEWBs5YBiaABxGPbVdNj7ml+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 102/282] md/raid10: fix leak of r10bio->remaining for recovery
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Richard Weinberger <richard@nod.at>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 003/134] ubifs: Fix AA deadlock when setting xattr for encrypted file
 Date:   Mon, 15 May 2023 18:28:00 +0200
-Message-Id: <20230515161725.311544345@linuxfoundation.org>
+Message-Id: <20230515161703.024684686@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
-References: <20230515161722.146344674@linuxfoundation.org>
+In-Reply-To: <20230515161702.887638251@linuxfoundation.org>
+References: <20230515161702.887638251@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,71 +54,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 26208a7cffd0c7cbf14237ccd20c7270b3ffeb7e ]
+[ Upstream commit a0c51565730729f0df2ee886e34b4da6d359a10b ]
 
-raid10_sync_request() will add 'r10bio->remaining' for both rdev and
-replacement rdev. However, if the read io fails, recovery_request_write()
-returns without issuing the write io, in this case, end_sync_request()
-is only called once and 'remaining' is leaked, cause an io hang.
+Following process:
+vfs_setxattr(host)
+  ubifs_xattr_set
+    down_write(host_ui->xattr_sem)   <- lock first time
+      create_xattr
+        ubifs_new_inode(host)
+          fscrypt_prepare_new_inode(host)
+            fscrypt_policy_to_inherit(host)
+              if (IS_ENCRYPTED(inode))
+                fscrypt_require_key(host)
+                  fscrypt_get_encryption_info(host)
+                    ubifs_xattr_get(host)
+                      down_read(host_ui->xattr_sem) <- AA deadlock
 
-Fix the problem by decreasing 'remaining' according to if 'bio' and
-'repl_bio' is valid.
+, which may trigger an AA deadlock problem:
 
-Fixes: 24afd80d99f8 ("md/raid10: handle recovery of replacement devices.")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230310073855.1337560-5-yukuai1@huaweicloud.com
+[  102.620871] INFO: task setfattr:1599 blocked for more than 10 seconds.
+[  102.625298]       Not tainted 5.19.0-rc7-00001-gb666b6823ce0-dirty #711
+[  102.628732] task:setfattr        state:D stack:    0 pid: 1599
+[  102.628749] Call Trace:
+[  102.628753]  <TASK>
+[  102.628776]  __schedule+0x482/0x1060
+[  102.629964]  schedule+0x92/0x1a0
+[  102.629976]  rwsem_down_read_slowpath+0x287/0x8c0
+[  102.629996]  down_read+0x84/0x170
+[  102.630585]  ubifs_xattr_get+0xd1/0x370 [ubifs]
+[  102.630730]  ubifs_crypt_get_context+0x1f/0x30 [ubifs]
+[  102.630791]  fscrypt_get_encryption_info+0x7d/0x1c0
+[  102.630810]  fscrypt_policy_to_inherit+0x56/0xc0
+[  102.630817]  fscrypt_prepare_new_inode+0x35/0x160
+[  102.630830]  ubifs_new_inode+0xcc/0x4b0 [ubifs]
+[  102.630873]  ubifs_xattr_set+0x591/0x9f0 [ubifs]
+[  102.630961]  xattr_set+0x8c/0x3e0 [ubifs]
+[  102.631003]  __vfs_setxattr+0x71/0xc0
+[  102.631026]  vfs_setxattr+0x105/0x270
+[  102.631034]  do_setxattr+0x6d/0x110
+[  102.631041]  setxattr+0xa0/0xd0
+[  102.631087]  __x64_sys_setxattr+0x2f/0x40
+
+Fetch a reproducer in [Link].
+
+Just like ext4 does, which skips encrypting for inode with
+EXT4_EA_INODE_FL flag. Stop encypting xattr inode for ubifs.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216260
+Fixes: f4e3634a3b64222 ("ubifs: Fix races between xattr_{set|get} ...")
+Fixes: d475a507457b5ca ("ubifs: Add skeleton for fscrypto")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Stable-dep-of: 3a36d20e0129 ("ubifs: Fix memory leak in do_rename")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ fs/ubifs/dir.c   | 25 ++++++++++++++-----------
+ fs/ubifs/ubifs.h |  2 +-
+ fs/ubifs/xattr.c |  2 +-
+ 3 files changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 9fcc141e1ad64..dd91385a3526f 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -2229,11 +2229,22 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
+diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
+index 7717d23906dbe..005566bc6dc13 100644
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -68,13 +68,14 @@ static int inherit_flags(const struct inode *dir, umode_t mode)
+  * @c: UBIFS file-system description object
+  * @dir: parent directory inode
+  * @mode: inode mode flags
++ * @is_xattr: whether the inode is xattr inode
+  *
+  * This function finds an unused inode number, allocates new inode and
+  * initializes it. Returns new inode in case of success and an error code in
+  * case of failure.
+  */
+ struct inode *ubifs_new_inode(struct ubifs_info *c, struct inode *dir,
+-			      umode_t mode)
++			      umode_t mode, bool is_xattr)
  {
- 	struct r10conf *conf = mddev->private;
- 	int d;
--	struct bio *wbio, *wbio2;
-+	struct bio *wbio = r10_bio->devs[1].bio;
-+	struct bio *wbio2 = r10_bio->devs[1].repl_bio;
-+
-+	/* Need to test wbio2->bi_end_io before we call
-+	 * generic_make_request as if the former is NULL,
-+	 * the latter is free to free wbio2.
-+	 */
-+	if (wbio2 && !wbio2->bi_end_io)
-+		wbio2 = NULL;
+ 	int err;
+ 	struct inode *inode;
+@@ -99,10 +100,12 @@ struct inode *ubifs_new_inode(struct ubifs_info *c, struct inode *dir,
+ 			 current_time(inode);
+ 	inode->i_mapping->nrpages = 0;
  
- 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state)) {
- 		fix_recovery_read_error(r10_bio);
--		end_sync_request(r10_bio);
-+		if (wbio->bi_end_io)
-+			end_sync_request(r10_bio);
-+		if (wbio2)
-+			end_sync_request(r10_bio);
- 		return;
+-	err = fscrypt_prepare_new_inode(dir, inode, &encrypted);
+-	if (err) {
+-		ubifs_err(c, "fscrypt_prepare_new_inode failed: %i", err);
+-		goto out_iput;
++	if (!is_xattr) {
++		err = fscrypt_prepare_new_inode(dir, inode, &encrypted);
++		if (err) {
++			ubifs_err(c, "fscrypt_prepare_new_inode failed: %i", err);
++			goto out_iput;
++		}
  	}
  
-@@ -2242,14 +2253,6 @@ static void recovery_request_write(struct mddev *mddev, struct r10bio *r10_bio)
- 	 * and submit the write request
- 	 */
- 	d = r10_bio->devs[1].devnum;
--	wbio = r10_bio->devs[1].bio;
--	wbio2 = r10_bio->devs[1].repl_bio;
--	/* Need to test wbio2->bi_end_io before we call
--	 * generic_make_request as if the former is NULL,
--	 * the latter is free to free wbio2.
--	 */
--	if (wbio2 && !wbio2->bi_end_io)
--		wbio2 = NULL;
- 	if (wbio->bi_end_io) {
- 		atomic_inc(&conf->mirrors[d].rdev->nr_pending);
- 		md_sync_acct(conf->mirrors[d].rdev->bdev, bio_sectors(wbio));
+ 	switch (mode & S_IFMT) {
+@@ -309,7 +312,7 @@ static int ubifs_create(struct user_namespace *mnt_userns, struct inode *dir,
+ 
+ 	sz_change = CALC_DENT_SIZE(fname_len(&nm));
+ 
+-	inode = ubifs_new_inode(c, dir, mode);
++	inode = ubifs_new_inode(c, dir, mode, false);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+ 		goto out_fname;
+@@ -370,7 +373,7 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
+ 	if (err)
+ 		return ERR_PTR(err);
+ 
+-	inode = ubifs_new_inode(c, dir, mode);
++	inode = ubifs_new_inode(c, dir, mode, false);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+ 		goto out_free;
+@@ -462,7 +465,7 @@ static int ubifs_tmpfile(struct user_namespace *mnt_userns, struct inode *dir,
+ 		return err;
+ 	}
+ 
+-	inode = ubifs_new_inode(c, dir, mode);
++	inode = ubifs_new_inode(c, dir, mode, false);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+ 		goto out_budg;
+@@ -1005,7 +1008,7 @@ static int ubifs_mkdir(struct user_namespace *mnt_userns, struct inode *dir,
+ 
+ 	sz_change = CALC_DENT_SIZE(fname_len(&nm));
+ 
+-	inode = ubifs_new_inode(c, dir, S_IFDIR | mode);
++	inode = ubifs_new_inode(c, dir, S_IFDIR | mode, false);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+ 		goto out_fname;
+@@ -1092,7 +1095,7 @@ static int ubifs_mknod(struct user_namespace *mnt_userns, struct inode *dir,
+ 
+ 	sz_change = CALC_DENT_SIZE(fname_len(&nm));
+ 
+-	inode = ubifs_new_inode(c, dir, mode);
++	inode = ubifs_new_inode(c, dir, mode, false);
+ 	if (IS_ERR(inode)) {
+ 		kfree(dev);
+ 		err = PTR_ERR(inode);
+@@ -1174,7 +1177,7 @@ static int ubifs_symlink(struct user_namespace *mnt_userns, struct inode *dir,
+ 
+ 	sz_change = CALC_DENT_SIZE(fname_len(&nm));
+ 
+-	inode = ubifs_new_inode(c, dir, S_IFLNK | S_IRWXUGO);
++	inode = ubifs_new_inode(c, dir, S_IFLNK | S_IRWXUGO, false);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+ 		goto out_fname;
+diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
+index efbb4554a4a6f..398551bef5986 100644
+--- a/fs/ubifs/ubifs.h
++++ b/fs/ubifs/ubifs.h
+@@ -2002,7 +2002,7 @@ int ubifs_update_time(struct inode *inode, struct timespec64 *time, int flags);
+ 
+ /* dir.c */
+ struct inode *ubifs_new_inode(struct ubifs_info *c, struct inode *dir,
+-			      umode_t mode);
++			      umode_t mode, bool is_xattr);
+ int ubifs_getattr(struct user_namespace *mnt_userns, const struct path *path, struct kstat *stat,
+ 		  u32 request_mask, unsigned int flags);
+ int ubifs_check_dir_empty(struct inode *dir);
+diff --git a/fs/ubifs/xattr.c b/fs/ubifs/xattr.c
+index e4f193eae4b2b..9ff2614bdeca0 100644
+--- a/fs/ubifs/xattr.c
++++ b/fs/ubifs/xattr.c
+@@ -110,7 +110,7 @@ static int create_xattr(struct ubifs_info *c, struct inode *host,
+ 	if (err)
+ 		return err;
+ 
+-	inode = ubifs_new_inode(c, host, S_IFREG | S_IRWXUGO);
++	inode = ubifs_new_inode(c, host, S_IFREG | S_IRWXUGO, true);
+ 	if (IS_ERR(inode)) {
+ 		err = PTR_ERR(inode);
+ 		goto out_budg;
 -- 
 2.39.2
 
