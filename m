@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 489C7703677
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B895703731
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:18:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243711AbjEORKU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47496 "EHLO
+        id S243940AbjEORSC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243783AbjEORJs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:09:48 -0400
+        with ESMTP id S243871AbjEORRh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:17:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC1A83D9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:08:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 858DF86AC
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:16:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D01F26230D
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:08:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AE3C4339E;
-        Mon, 15 May 2023 17:08:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 657C362BE6
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:16:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564D4C433EF;
+        Mon, 15 May 2023 17:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170498;
-        bh=SwcfSbyF22f00+J9BzrX51UzmE/6vyvBEuK4F6dGxQc=;
+        s=korg; t=1684170962;
+        bh=EXFqXdXwVAsr36WwgbkX5Eo9j0ymXd0jAADfZQlwtuU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yS5WIonH3wjXbxV7AZOqyH1U+fq+v5qe5ln0sp7BUtz/I9mkXA8IVpwLy/MGfhfS5
-         rkz02oMaK0Rnkh7ZGNb8dPP4L46Vx517nuG5oYEtVC8KKqyqKRPOBBROQTVLkuksOe
-         GG7lLYaAAj0CuYG/T2eb4K0iYVF0pOWCrpcIWmb0=
+        b=flAZhgmuhmQD9DZzuMd9GfTF77ZMxTGV9XGsBaM2uYdHgQ46rzGeo/DrEk6Y+Wq98
+         1yBeS98Z6+zuVCQiSZIFSk4QccJta5nzEmeEvIES0kextDbQKsycjRkGVfbgJy8wrI
+         Jo+Cdhm2BXHZfcDmZy2bukrVuVUz+/0YSNmewOUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 120/239] btrfs: zoned: fix full zone super block reading on ZNS
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 057/242] r8152: move setting r8153b_rx_agg_chg_indicate()
 Date:   Mon, 15 May 2023 18:26:23 +0200
-Message-Id: <20230515161725.305715996@linuxfoundation.org>
+Message-Id: <20230515161723.618827343@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Naohiro Aota <Naohiro.Aota@wdc.com>
+From: Hayes Wang <hayeswang@realtek.com>
 
-commit 02ca9e6fb5f66a031df4fac508b8e477ca69e918 upstream.
+[ Upstream commit cce8334f4aacd9936309a002d4a4de92a07cd2c2 ]
 
-When both of the superblock zones are full, we need to check which
-superblock is newer. The calculation of last superblock position is wrong
-as it does not consider zone_capacity and uses the length.
+Move setting r8153b_rx_agg_chg_indicate() for 2.5G devices. The
+r8153b_rx_agg_chg_indicate() has to be called after enabling tx/rx.
+Otherwise, the coalescing settings are useless.
 
-Fixes: 9658b72ef300 ("btrfs: zoned: locate superblock position using zone capacity")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 195aae321c82 ("r8152: support new chips")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/usb/r8152.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -119,10 +119,9 @@ static int sb_write_pointer(struct block
- 		int i;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index a7665accc81c8..059d610901d84 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -3027,12 +3027,16 @@ static int rtl_enable(struct r8152 *tp)
+ 	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_CR, ocp_data);
  
- 		for (i = 0; i < BTRFS_NR_SB_LOG_ZONES; i++) {
--			u64 bytenr;
--
--			bytenr = ((zones[i].start + zones[i].len)
--				   << SECTOR_SHIFT) - BTRFS_SUPER_INFO_SIZE;
-+			u64 zone_end = (zones[i].start + zones[i].capacity) << SECTOR_SHIFT;
-+			u64 bytenr = ALIGN_DOWN(zone_end, BTRFS_SUPER_INFO_SIZE) -
-+						BTRFS_SUPER_INFO_SIZE;
+ 	switch (tp->version) {
+-	case RTL_VER_08:
+-	case RTL_VER_09:
+-	case RTL_VER_14:
+-		r8153b_rx_agg_chg_indicate(tp);
++	case RTL_VER_01:
++	case RTL_VER_02:
++	case RTL_VER_03:
++	case RTL_VER_04:
++	case RTL_VER_05:
++	case RTL_VER_06:
++	case RTL_VER_07:
+ 		break;
+ 	default:
++		r8153b_rx_agg_chg_indicate(tp);
+ 		break;
+ 	}
  
- 			page[i] = read_cache_page_gfp(mapping,
- 					bytenr >> PAGE_SHIFT, GFP_NOFS);
+@@ -3086,7 +3090,6 @@ static void r8153_set_rx_early_timeout(struct r8152 *tp)
+ 			       640 / 8);
+ 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EXTRA_AGGR_TMR,
+ 			       ocp_data);
+-		r8153b_rx_agg_chg_indicate(tp);
+ 		break;
+ 
+ 	default:
+@@ -3120,7 +3123,6 @@ static void r8153_set_rx_early_size(struct r8152 *tp)
+ 	case RTL_VER_15:
+ 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_SIZE,
+ 			       ocp_data / 8);
+-		r8153b_rx_agg_chg_indicate(tp);
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+-- 
+2.39.2
+
 
 
