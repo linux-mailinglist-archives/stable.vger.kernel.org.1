@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DADF77036DB
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD617039F3
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243775AbjEOROj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:14:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
+        id S244681AbjEORqz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243850AbjEOROW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:14:22 -0400
+        with ESMTP id S244641AbjEORqj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:46:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED78106F5
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:12:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDEF147E8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:45:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE05962B7C
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:12:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE62C433EF;
-        Mon, 15 May 2023 17:12:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72C1562EAD
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:45:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621D5C4339B;
+        Mon, 15 May 2023 17:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170762;
-        bh=28zpl+vi9TUr1cBvEqV4Hs4FqPM7lFkNXM+E3bBIidI=;
+        s=korg; t=1684172721;
+        bh=dgAQ5VvnJFKq2LJJ21i33e3dV3dJnp0HqaUwd+ikY+4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B3J8KSkH1VytSZHeC7/E+rfHTi9YgrzlMlQi/6zrhhrdsWnX7sSSVqfPtjqwHsbyO
-         rKYC5GeL27UfEV5tr4vwi29FZkGwrKcMCEncnznfbWqib2gxShBFRZABLSvHnrZ/YY
-         m2MmiTw8BlvDM32UKUo3KCX4vAECN9Ly3AZedvtM=
+        b=jE3/ElsoKTncyl1c2b2a1y+VfmYVU9EOS8Y1vIkfZexJRbcVP4ZNzKzX4yRK8h9cC
+         AmlR+ncmRUoSUm8lVsZYEPFnrgOkzgZgxtREInlq3m9+19yTT+Rl8txu7tPLaN1uLK
+         I5dYspqgqP8kbJJNxkQUgPdeJJ1HD2fsZZkNhzdg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 233/239] f2fs: fix to do sanity check on extent cache correctly
+        patches@lists.linux.dev,
+        syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 245/381] RDMA/siw: Remove namespace check from siw_netdev_event()
 Date:   Mon, 15 May 2023 18:28:16 +0200
-Message-Id: <20230515161728.699732174@linuxfoundation.org>
+Message-Id: <20230515161747.778638134@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161736.775969473@linuxfoundation.org>
+References: <20230515161736.775969473@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,48 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit d48a7b3a72f121655d95b5157c32c7d555e44c05 upstream.
+[ Upstream commit 266e9b3475ba82212062771fdbc40be0e3c06ec8 ]
 
-In do_read_inode(), sanity_check_inode() should be called after
-f2fs_init_read_extent_tree(), fix it.
+syzbot is reporting that siw_netdev_event(NETDEV_UNREGISTER) cannot destroy
+siw_device created after unshare(CLONE_NEWNET) due to net namespace check.
+It seems that this check was by error there and should be removed.
 
-Fixes: 72840cccc0a1 ("f2fs: allocate the extent_cache by default")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+5e70d01ee8985ae62a3b@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=5e70d01ee8985ae62a3b
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Suggested-by: Leon Romanovsky <leon@kernel.org>
+Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/a44e9ac5-44e2-d575-9e30-02483cc7ffd1@I-love.SAKURA.ne.jp
+Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/infiniband/sw/siw/siw_main.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -413,12 +413,6 @@ static int do_read_inode(struct inode *i
- 		fi->i_inline_xattr_size = 0;
- 	}
+diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
+index 32a553a1b905e..5ba0893f1f017 100644
+--- a/drivers/infiniband/sw/siw/siw_main.c
++++ b/drivers/infiniband/sw/siw/siw_main.c
+@@ -458,9 +458,6 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
  
--	if (!sanity_check_inode(inode, node_page)) {
--		f2fs_put_page(node_page, 1);
--		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
--		return -EFSCORRUPTED;
--	}
+ 	dev_dbg(&netdev->dev, "siw: event %lu\n", event);
+ 
+-	if (dev_net(netdev) != &init_net)
+-		return NOTIFY_OK;
 -
- 	/* check data exist */
- 	if (f2fs_has_inline_data(inode) && !f2fs_exist_data(inode))
- 		__recover_inline_status(inode, node_page);
-@@ -481,6 +475,12 @@ static int do_read_inode(struct inode *i
- 	/* Need all the flag bits */
- 	f2fs_init_read_extent_tree(inode, node_page);
- 
-+	if (!sanity_check_inode(inode, node_page)) {
-+		f2fs_put_page(node_page, 1);
-+		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	f2fs_put_page(node_page, 1);
- 
- 	stat_inc_inline_xattr(inode);
+ 	base_dev = ib_device_get_by_netdev(netdev, RDMA_DRIVER_SIW);
+ 	if (!base_dev)
+ 		return NOTIFY_OK;
+-- 
+2.39.2
+
 
 
