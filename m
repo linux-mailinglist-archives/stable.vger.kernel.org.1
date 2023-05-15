@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCB207033AE
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A39D67034B7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242463AbjEOQkM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42842 "EHLO
+        id S243029AbjEOQvw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:51:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242869AbjEOQkG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:40:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DA740F3
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:40:04 -0700 (PDT)
+        with ESMTP id S243163AbjEOQv2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:51:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836FD61B4
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:51:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 473A462868
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:40:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39179C433D2;
-        Mon, 15 May 2023 16:40:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B1A2E62988
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A423AC433D2;
+        Mon, 15 May 2023 16:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168803;
-        bh=1N7eNSNY1ukaWHXW3Xn2yQuREBJugGp2vtfk62fbrx8=;
+        s=korg; t=1684169479;
+        bh=38VOvIjYb8mF1p9TGzQuNVI0AQz2UA/nhKziWfKr+Gc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jvym79zmUitlcH2cfFihMBuPgJp85Asza9IoIqmpPucEn/BZwQGPHa5otBD7+WUos
-         KLkB5Y14cRQn6Mn0klJkoXTLb4FJ+gvQwBgO6XUx5tu7m9OveUA7GkS1v1GclzGjq8
-         gnOXFeV//4Eq+hY60kvFsMFluk3Vrr4HoKfyYCBA=
+        b=Sq5QpIYo1n+35TgaesQhQACzL1MFEyGMbHLwHHDR/uo4UmyygNaqPo6N4phKXzxy4
+         xrSiGHQsWWzS6ImxUI+RbhnPoMJAzhBPJCvcxl8g0YhoJ2+6LaQUfAQoAX3K7lrnWb
+         h6DCuqcrOUpZ8iuC5bIA+N1M4Pff+d3SRRdh7z8s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yang Shi <yang.shi@linux.alibaba.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Qian Cai <cai@gmx.us>, Zhong Jiang <zhongjiang@huawei.com>,
+        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Sai Krishna <saikrishnag@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 046/191] debugobjects: Move printk out of db->lock critical sections
+Subject: [PATCH 6.3 071/246] octeontx2-af: Update/Fix NPC field hash extract feature
 Date:   Mon, 15 May 2023 18:24:43 +0200
-Message-Id: <20230515161708.872191992@linuxfoundation.org>
+Message-Id: <20230515161724.702958908@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
-References: <20230515161707.203549282@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,254 +57,195 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Waiman Long <longman@redhat.com>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[ Upstream commit d5f34153e526903abe71869dbbc898bfc0f69373 ]
+[ Upstream commit 406bed11fb91a0b35c26fe633d8700febaec6439 ]
 
-The db->lock is a raw spinlock and so the lock hold time is supposed
-to be short. This will not be the case when printk() is being involved
-in some of the critical sections. In order to avoid the long hold time,
-in case some messages need to be printed, the debug_object_is_on_stack()
-and debug_print_object() calls are now moved out of those critical
-sections.
+1. As per previous implementation, mask and control parameter to
+generate the field hash value was not passed to the caller program.
+Updated the secret key mbox to share that information as well,
+as a part of the fix.
+2. Earlier implementation did not consider hash reduction of both
+source and destination IPv6 addresses. Only source IPv6 address
+was considered. This fix solves that and provides option to hash
 
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yang Shi <yang.shi@linux.alibaba.com>
-Cc: "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc: Qian Cai <cai@gmx.us>
-Cc: Zhong Jiang <zhongjiang@huawei.com>
-Link: https://lkml.kernel.org/r/20190520141450.7575-6-longman@redhat.com
-Stable-dep-of: 63a759694eed ("debugobject: Prevent init race with static objects")
+Fixes: 56d9f5fd2246 ("octeontx2-af: Use hashed field in MCAM key")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c | 58 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 39 insertions(+), 19 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  | 16 +++++---
+ .../marvell/octeontx2/af/rvu_npc_hash.c       | 37 ++++++++++++-------
+ .../marvell/octeontx2/af/rvu_npc_hash.h       |  6 +++
+ 3 files changed, 41 insertions(+), 18 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 6e2baf9e9eb27..6909a6e51de83 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -429,6 +429,7 @@ static void
- __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index 5727d67e0259c..0ce533848536e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -245,9 +245,9 @@ M(NPC_MCAM_READ_BASE_RULE, 0x6011, npc_read_base_steer_rule,            \
+ M(NPC_MCAM_GET_STATS, 0x6012, npc_mcam_entry_stats,                     \
+ 				   npc_mcam_get_stats_req,              \
+ 				   npc_mcam_get_stats_rsp)              \
+-M(NPC_GET_SECRET_KEY, 0x6013, npc_get_secret_key,                     \
+-				   npc_get_secret_key_req,              \
+-				   npc_get_secret_key_rsp)              \
++M(NPC_GET_FIELD_HASH_INFO, 0x6013, npc_get_field_hash_info,                     \
++				   npc_get_field_hash_info_req,              \
++				   npc_get_field_hash_info_rsp)              \
+ M(NPC_GET_FIELD_STATUS, 0x6014, npc_get_field_status,                     \
+ 				   npc_get_field_status_req,              \
+ 				   npc_get_field_status_rsp)              \
+@@ -1524,14 +1524,20 @@ struct npc_mcam_get_stats_rsp {
+ 	u8 stat_ena; /* enabled */
+ };
+ 
+-struct npc_get_secret_key_req {
++struct npc_get_field_hash_info_req {
+ 	struct mbox_msghdr hdr;
+ 	u8 intf;
+ };
+ 
+-struct npc_get_secret_key_rsp {
++struct npc_get_field_hash_info_rsp {
+ 	struct mbox_msghdr hdr;
+ 	u64 secret_key[3];
++#define NPC_MAX_HASH 2
++#define NPC_MAX_HASH_MASK 2
++	/* NPC_AF_INTF(0..1)_HASH(0..1)_MASK(0..1) */
++	u64 hash_mask[NPC_MAX_INTF][NPC_MAX_HASH][NPC_MAX_HASH_MASK];
++	/* NPC_AF_INTF(0..1)_HASH(0..1)_RESULT_CTRL */
++	u64 hash_ctrl[NPC_MAX_INTF][NPC_MAX_HASH];
+ };
+ 
+ enum ptp_op {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
+index 6597af84aa367..68f813040363d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
+@@ -110,8 +110,8 @@ static u64 npc_update_use_hash(int lt, int ld)
+ 		 * in KEX_LD_CFG
+ 		 */
+ 		cfg = KEX_LD_CFG_USE_HASH(0x1, 0x03,
+-					  ld ? 0x8 : 0x18,
+-					  0x1, 0x0, 0x10);
++					  ld ? 0x18 : 0x8,
++					  0x1, 0x0, ld ? 0x14 : 0x10);
+ 		break;
+ 	}
+ 
+@@ -134,7 +134,6 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
+ 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
+ 					u64 cfg = npc_update_use_hash(lt, ld);
+ 
+-					hash_cnt++;
+ 					if (hash_cnt == NPC_MAX_HASH)
+ 						return;
+ 
+@@ -149,6 +148,8 @@ static void npc_program_mkex_hash_rx(struct rvu *rvu, int blkaddr,
+ 							     mkex_hash->hash_mask[intf][ld][1]);
+ 					SET_KEX_LD_HASH_CTRL(intf, ld,
+ 							     mkex_hash->hash_ctrl[intf][ld]);
++
++					hash_cnt++;
+ 				}
+ 			}
+ 		}
+@@ -171,7 +172,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
+ 				if (mkex_hash->lid_lt_ld_hash_en[intf][lid][lt][ld]) {
+ 					u64 cfg = npc_update_use_hash(lt, ld);
+ 
+-					hash_cnt++;
+ 					if (hash_cnt == NPC_MAX_HASH)
+ 						return;
+ 
+@@ -187,8 +187,6 @@ static void npc_program_mkex_hash_tx(struct rvu *rvu, int blkaddr,
+ 					SET_KEX_LD_HASH_CTRL(intf, ld,
+ 							     mkex_hash->hash_ctrl[intf][ld]);
+ 					hash_cnt++;
+-					if (hash_cnt == NPC_MAX_HASH)
+-						return;
+ 				}
+ 		}
+ 	}
+@@ -238,8 +236,8 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
+ 			   struct flow_msg *omask)
  {
- 	enum debug_obj_state state;
-+	bool check_stack = false;
- 	struct debug_bucket *db;
- 	struct debug_obj *obj;
- 	unsigned long flags;
-@@ -448,7 +449,7 @@ __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
- 			debug_objects_oom();
- 			return;
- 		}
--		debug_object_is_on_stack(addr, onstack);
-+		check_stack = true;
+ 	struct npc_mcam_kex_hash *mkex_hash = rvu->kpu.mkex_hash;
+-	struct npc_get_secret_key_req req;
+-	struct npc_get_secret_key_rsp rsp;
++	struct npc_get_field_hash_info_req req;
++	struct npc_get_field_hash_info_rsp rsp;
+ 	u64 ldata[2], cfg;
+ 	u32 field_hash;
+ 	u8 hash_idx;
+@@ -250,7 +248,7 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
  	}
  
- 	switch (obj->state) {
-@@ -459,20 +460,23 @@ __debug_object_init(void *addr, struct debug_obj_descr *descr, int onstack)
- 		break;
+ 	req.intf = intf;
+-	rvu_mbox_handler_npc_get_secret_key(rvu, &req, &rsp);
++	rvu_mbox_handler_npc_get_field_hash_info(rvu, &req, &rsp);
  
- 	case ODEBUG_STATE_ACTIVE:
--		debug_print_object(obj, "init");
- 		state = obj->state;
- 		raw_spin_unlock_irqrestore(&db->lock, flags);
-+		debug_print_object(obj, "init");
- 		debug_object_fixup(descr->fixup_init, addr, state);
- 		return;
- 
- 	case ODEBUG_STATE_DESTROYED:
-+		raw_spin_unlock_irqrestore(&db->lock, flags);
- 		debug_print_object(obj, "init");
--		break;
-+		return;
- 	default:
- 		break;
+ 	for (hash_idx = 0; hash_idx < NPC_MAX_HASH; hash_idx++) {
+ 		cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_CFG(intf, hash_idx));
+@@ -311,13 +309,13 @@ void npc_update_field_hash(struct rvu *rvu, u8 intf,
  	}
- 
- 	raw_spin_unlock_irqrestore(&db->lock, flags);
-+	if (check_stack)
-+		debug_object_is_on_stack(addr, onstack);
  }
  
- /**
-@@ -530,6 +534,8 @@ int debug_object_activate(void *addr, struct debug_obj_descr *descr)
+-int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
+-					struct npc_get_secret_key_req *req,
+-					struct npc_get_secret_key_rsp *rsp)
++int rvu_mbox_handler_npc_get_field_hash_info(struct rvu *rvu,
++					     struct npc_get_field_hash_info_req *req,
++					     struct npc_get_field_hash_info_rsp *rsp)
+ {
+ 	u64 *secret_key = rsp->secret_key;
+ 	u8 intf = req->intf;
+-	int blkaddr;
++	int i, j, blkaddr;
  
- 	obj = lookup_object(addr, db);
- 	if (obj) {
-+		bool print_object = false;
-+
- 		switch (obj->state) {
- 		case ODEBUG_STATE_INIT:
- 		case ODEBUG_STATE_INACTIVE:
-@@ -538,14 +544,14 @@ int debug_object_activate(void *addr, struct debug_obj_descr *descr)
- 			break;
+ 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+ 	if (blkaddr < 0) {
+@@ -329,6 +327,19 @@ int rvu_mbox_handler_npc_get_secret_key(struct rvu *rvu,
+ 	secret_key[1] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY1(intf));
+ 	secret_key[2] = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_SECRET_KEY2(intf));
  
- 		case ODEBUG_STATE_ACTIVE:
--			debug_print_object(obj, "activate");
- 			state = obj->state;
- 			raw_spin_unlock_irqrestore(&db->lock, flags);
-+			debug_print_object(obj, "activate");
- 			ret = debug_object_fixup(descr->fixup_activate, addr, state);
- 			return ret ? 0 : -EINVAL;
- 
- 		case ODEBUG_STATE_DESTROYED:
--			debug_print_object(obj, "activate");
-+			print_object = true;
- 			ret = -EINVAL;
- 			break;
- 		default:
-@@ -553,10 +559,13 @@ int debug_object_activate(void *addr, struct debug_obj_descr *descr)
- 			break;
- 		}
- 		raw_spin_unlock_irqrestore(&db->lock, flags);
-+		if (print_object)
-+			debug_print_object(obj, "activate");
- 		return ret;
- 	}
- 
- 	raw_spin_unlock_irqrestore(&db->lock, flags);
-+
- 	/*
- 	 * We are here when a static object is activated. We
- 	 * let the type specific code confirm whether this is
-@@ -588,6 +597,7 @@ void debug_object_deactivate(void *addr, struct debug_obj_descr *descr)
- 	struct debug_bucket *db;
- 	struct debug_obj *obj;
- 	unsigned long flags;
-+	bool print_object = false;
- 
- 	if (!debug_objects_enabled)
- 		return;
-@@ -605,24 +615,27 @@ void debug_object_deactivate(void *addr, struct debug_obj_descr *descr)
- 			if (!obj->astate)
- 				obj->state = ODEBUG_STATE_INACTIVE;
- 			else
--				debug_print_object(obj, "deactivate");
-+				print_object = true;
- 			break;
- 
- 		case ODEBUG_STATE_DESTROYED:
--			debug_print_object(obj, "deactivate");
-+			print_object = true;
- 			break;
- 		default:
- 			break;
- 		}
--	} else {
++	for (i = 0; i < NPC_MAX_HASH; i++) {
++		for (j = 0; j < NPC_MAX_HASH_MASK; j++) {
++			rsp->hash_mask[NIX_INTF_RX][i][j] =
++				GET_KEX_LD_HASH_MASK(NIX_INTF_RX, i, j);
++			rsp->hash_mask[NIX_INTF_TX][i][j] =
++				GET_KEX_LD_HASH_MASK(NIX_INTF_TX, i, j);
++		}
 +	}
 +
-+	raw_spin_unlock_irqrestore(&db->lock, flags);
-+	if (!obj) {
- 		struct debug_obj o = { .object = addr,
- 				       .state = ODEBUG_STATE_NOTAVAILABLE,
- 				       .descr = descr };
- 
- 		debug_print_object(&o, "deactivate");
-+	} else if (print_object) {
-+		debug_print_object(obj, "deactivate");
- 	}
--
--	raw_spin_unlock_irqrestore(&db->lock, flags);
- }
- EXPORT_SYMBOL_GPL(debug_object_deactivate);
- 
-@@ -637,6 +650,7 @@ void debug_object_destroy(void *addr, struct debug_obj_descr *descr)
- 	struct debug_bucket *db;
- 	struct debug_obj *obj;
- 	unsigned long flags;
-+	bool print_object = false;
- 
- 	if (!debug_objects_enabled)
- 		return;
-@@ -656,20 +670,22 @@ void debug_object_destroy(void *addr, struct debug_obj_descr *descr)
- 		obj->state = ODEBUG_STATE_DESTROYED;
- 		break;
- 	case ODEBUG_STATE_ACTIVE:
--		debug_print_object(obj, "destroy");
- 		state = obj->state;
- 		raw_spin_unlock_irqrestore(&db->lock, flags);
-+		debug_print_object(obj, "destroy");
- 		debug_object_fixup(descr->fixup_destroy, addr, state);
- 		return;
- 
- 	case ODEBUG_STATE_DESTROYED:
--		debug_print_object(obj, "destroy");
-+		print_object = true;
- 		break;
- 	default:
- 		break;
- 	}
- out_unlock:
- 	raw_spin_unlock_irqrestore(&db->lock, flags);
-+	if (print_object)
-+		debug_print_object(obj, "destroy");
- }
- EXPORT_SYMBOL_GPL(debug_object_destroy);
- 
-@@ -698,9 +714,9 @@ void debug_object_free(void *addr, struct debug_obj_descr *descr)
- 
- 	switch (obj->state) {
- 	case ODEBUG_STATE_ACTIVE:
--		debug_print_object(obj, "free");
- 		state = obj->state;
- 		raw_spin_unlock_irqrestore(&db->lock, flags);
-+		debug_print_object(obj, "free");
- 		debug_object_fixup(descr->fixup_free, addr, state);
- 		return;
- 	default:
-@@ -773,6 +789,7 @@ debug_object_active_state(void *addr, struct debug_obj_descr *descr,
- 	struct debug_bucket *db;
- 	struct debug_obj *obj;
- 	unsigned long flags;
-+	bool print_object = false;
- 
- 	if (!debug_objects_enabled)
- 		return;
-@@ -788,22 +805,25 @@ debug_object_active_state(void *addr, struct debug_obj_descr *descr,
- 			if (obj->astate == expect)
- 				obj->astate = next;
- 			else
--				debug_print_object(obj, "active_state");
-+				print_object = true;
- 			break;
- 
- 		default:
--			debug_print_object(obj, "active_state");
-+			print_object = true;
- 			break;
- 		}
--	} else {
-+	}
++	for (i = 0; i < NPC_MAX_INTF; i++)
++		for (j = 0; j < NPC_MAX_HASH; j++)
++			rsp->hash_ctrl[i][j] = GET_KEX_LD_HASH_CTRL(i, j);
 +
-+	raw_spin_unlock_irqrestore(&db->lock, flags);
-+	if (!obj) {
- 		struct debug_obj o = { .object = addr,
- 				       .state = ODEBUG_STATE_NOTAVAILABLE,
- 				       .descr = descr };
- 
- 		debug_print_object(&o, "active_state");
-+	} else if (print_object) {
-+		debug_print_object(obj, "active_state");
- 	}
--
--	raw_spin_unlock_irqrestore(&db->lock, flags);
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(debug_object_active_state);
  
-@@ -839,10 +859,10 @@ static void __debug_check_no_obj_freed(const void *address, unsigned long size)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
+index 3efeb09c58dec..65936f4aeaacf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.h
+@@ -31,6 +31,12 @@
+ 	rvu_write64(rvu, blkaddr,	\
+ 		    NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx), cfg)
  
- 			switch (obj->state) {
- 			case ODEBUG_STATE_ACTIVE:
--				debug_print_object(obj, "free");
- 				descr = obj->descr;
- 				state = obj->state;
- 				raw_spin_unlock_irqrestore(&db->lock, flags);
-+				debug_print_object(obj, "free");
- 				debug_object_fixup(descr->fixup_free,
- 						   (void *) oaddr, state);
- 				goto repeat;
++#define GET_KEX_LD_HASH_CTRL(intf, ld)	\
++	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld))
++
++#define GET_KEX_LD_HASH_MASK(intf, ld, mask_idx)	\
++	rvu_read64(rvu, blkaddr, NPC_AF_INTFX_HASHX_MASKX(intf, ld, mask_idx))
++
+ #define SET_KEX_LD_HASH_CTRL(intf, ld, cfg) \
+ 	rvu_write64(rvu, blkaddr,	\
+ 		    NPC_AF_INTFX_HASHX_RESULT_CTRL(intf, ld), cfg)
 -- 
 2.39.2
 
