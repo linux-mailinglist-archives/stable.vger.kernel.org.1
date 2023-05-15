@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ADD570374F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24F0703552
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243921AbjEORTe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:19:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60822 "EHLO
+        id S243262AbjEOQ5u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243760AbjEORTM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:19:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A942A11558
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:17:18 -0700 (PDT)
+        with ESMTP id S243291AbjEOQ5r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:57:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5673C1BC0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:57:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF20262BF9
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F16C4339B;
-        Mon, 15 May 2023 17:17:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D115962A1B
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:57:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03C1C4339B;
+        Mon, 15 May 2023 16:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684171037;
-        bh=Fy1TiHkbTaEi1fw06xSCWC0V11qSGjZg9LOrFxrMTOM=;
+        s=korg; t=1684169862;
+        bh=PtXfU9XZ99giHsN57o7gksXNtphka7orWQzhN12a0jA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=poxbamNTWssQgRWSbO5gCdJA3J3LozZkCYt53jP6mnWQ12wye1mbkt5BJ+ahKSS5/
-         1HF4tdO2jHkztRm1w9aAspxPYCX3wn91J8QLMDXbpdG3akXr7MUtFx0tnWy4rGgEpX
-         Sfg5kRaxzgfWAGyPdrj3o3kcZb4MyeoRbv9vmCLA=
+        b=USCt2DE5kDDO09bSpUyr5sVOKgEQo72juJisjygIjfaEAEzR9Lk76vgM7tKBto8rv
+         BjybqO5QPB5nTjCRc0kDH7/hv3XU4er8xJkQppD3tBdYLEBfXlI0PouhD2GI7U/SJG
+         xMQmlnRVeyv3YmHWlR/HDuMsPvvmkmRPSxmFlGUY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
+        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
         =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 081/242] drm/amdgpu: add a missing lock for AMDGPU_SCHED
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 195/246] drm/amdgpu: drop redundant sched job cleanup when cs is aborted
 Date:   Mon, 15 May 2023 18:26:47 +0200
-Message-Id: <20230515161724.324404677@linuxfoundation.org>
+Message-Id: <20230515161728.465097267@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
+References: <20230515161722.610123835@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,51 +54,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 2397e3d8d2e120355201a8310b61929f5a8bd2c0 ]
+commit 1253685f0d3eb3eab0bfc4bf15ab341a5f3da0c8 upstream.
 
-mgr->ctx_handles should be protected by mgr->lock.
+Once command submission failed due to userptr invalidation in
+amdgpu_cs_submit, legacy code will perform cleanup of scheduler
+job. However, it's not needed at all, as former commit has integrated
+job cleanup stuff into amdgpu_job_free. Otherwise, because of double
+free, a NULL pointer dereference will occur in such scenario.
 
-v2: improve commit message
-v3: add a Fixes tag
-
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/2457
+Fixes: f7d66fb2ea43 ("drm/amdgpu: cleanup scheduler job initialization v2")
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
 Reviewed-by: Christian König <christian.koenig@amd.com>
-Fixes: 52c6a62c64fa ("drm/amdgpu: add interface for editing a foreign process's priority v3")
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |   13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
-index e9b45089a28a6..863b2a34b2d64 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sched.c
-@@ -38,6 +38,7 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
- {
- 	struct fd f = fdget(fd);
- 	struct amdgpu_fpriv *fpriv;
-+	struct amdgpu_ctx_mgr *mgr;
- 	struct amdgpu_ctx *ctx;
- 	uint32_t id;
- 	int r;
-@@ -51,8 +52,11 @@ static int amdgpu_sched_process_priority_override(struct amdgpu_device *adev,
- 		return r;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1276,7 +1276,7 @@ static int amdgpu_cs_submit(struct amdgp
+ 		r = drm_sched_job_add_dependency(&leader->base, fence);
+ 		if (r) {
+ 			dma_fence_put(fence);
+-			goto error_cleanup;
++			return r;
+ 		}
  	}
  
--	idr_for_each_entry(&fpriv->ctx_mgr.ctx_handles, ctx, id)
-+	mgr = &fpriv->ctx_mgr;
-+	mutex_lock(&mgr->lock);
-+	idr_for_each_entry(&mgr->ctx_handles, ctx, id)
- 		amdgpu_ctx_priority_override(ctx, priority);
-+	mutex_unlock(&mgr->lock);
+@@ -1303,7 +1303,8 @@ static int amdgpu_cs_submit(struct amdgp
+ 	}
+ 	if (r) {
+ 		r = -EAGAIN;
+-		goto error_unlock;
++		mutex_unlock(&p->adev->notifier_lock);
++		return r;
+ 	}
  
- 	fdput(f);
+ 	p->fence = dma_fence_get(&leader->base.s_fence->finished);
+@@ -1350,14 +1351,6 @@ static int amdgpu_cs_submit(struct amdgp
+ 	mutex_unlock(&p->adev->notifier_lock);
+ 	mutex_unlock(&p->bo_list->bo_list_mutex);
  	return 0;
--- 
-2.39.2
-
+-
+-error_unlock:
+-	mutex_unlock(&p->adev->notifier_lock);
+-
+-error_cleanup:
+-	for (i = 0; i < p->gang_size; ++i)
+-		drm_sched_job_cleanup(&p->jobs[i]->base);
+-	return r;
+ }
+ 
+ /* Cleanup the parser structure */
 
 
