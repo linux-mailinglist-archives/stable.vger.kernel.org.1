@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC9B70370F
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B367F703430
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243942AbjEORQg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:16:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56384 "EHLO
+        id S242959AbjEOQpk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:45:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243935AbjEORQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:16:03 -0400
+        with ESMTP id S242926AbjEOQph (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD22106DC
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:14:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F304EE0
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A396F62BB4
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:14:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9684BC4339B;
-        Mon, 15 May 2023 17:14:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C3BC628EF
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7D6C433D2;
+        Mon, 15 May 2023 16:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170897;
-        bh=oB6qp4/appCghgeW6B/Tad0CDAkgf6irVMf/gh+KV9E=;
+        s=korg; t=1684169135;
+        bh=SSDsLax/oxSZpWirU66ATXQyxPSeqpHAfv/U2GK4HIo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y1nUxiwrHnZHTgg1g0nVMeNfSNZ2w4L4fJQ8hiJh0O7775reOW+Sz6h2TaGrdqQ6L
-         UYL+12RxyXTxQpDRTjFxdCvkERWq7ng7S9VGC28I/vkgsVvds1cce5K8PFNKBpKF+d
-         jURqoM4OvQJnoKYhsxPnQ90INDGsp+ys0oyBoLeM=
+        b=FTE4BiSB9Nt42QbP/RFSz0OOmffmeiQjOlIMLroP7xc7gsK7TlseMzFJrNN+6s8Om
+         +QxtiZo9k3lnsW/JOCVVkxEgRK/o1gCKjyy9PNovtR8dp5EFFmFj+YGLQEyN+0N+WS
+         Dc+cDSVhR7D2C01wOPu8nm5pWjg3wj1KF8gvJ2WM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.2 035/242] octeontx2-af: mcs: Config parser to skip 8B header
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 124/191] dmaengine: at_xdmac: do not enable all cyclic channels
 Date:   Mon, 15 May 2023 18:26:01 +0200
-Message-Id: <20230515161722.974747888@linuxfoundation.org>
+Message-Id: <20230515161711.818772531@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
-References: <20230515161721.802179972@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,122 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 65cdc2b637a5749c7dec0ce14fe2c48f1f91f671 ]
+[ Upstream commit f8435befd81dd85b7b610598551fadf675849bc1 ]
 
-When ptp timestamp is enabled in RPM, RPM will append 8B
-timestamp header for all RX traffic. MCS need to skip these
-8 bytes header while parsing the packet header, so that
-correct tcam key is created for lookup.
-This patch fixes the mcs parser configuration to skip this
-8B header for ptp packets.
+Do not global enable all the cyclic channels in at_xdmac_resume(). Instead
+save the global status in at_xdmac_suspend() and re-enable the cyclic
+channel only if it was active before suspend.
 
-Fixes: ca7f49ff8846 ("octeontx2-af: cn10k: Introduce driver for macsec block.")
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-6-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/af/mcs_reg.h   |  1 +
- .../marvell/octeontx2/af/mcs_rvu_if.c         | 37 +++++++++++++++++++
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  1 +
- .../ethernet/marvell/octeontx2/af/rvu_cgx.c   |  2 +
- 4 files changed, 41 insertions(+)
+ drivers/dma/at_xdmac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-index c95a8b8f5eaf7..7427e3b1490f4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-@@ -97,6 +97,7 @@
- #define MCSX_PEX_TX_SLAVE_VLAN_CFGX(a)          (0x46f8ull + (a) * 0x8ull)
- #define MCSX_PEX_TX_SLAVE_CUSTOM_TAG_REL_MODE_SEL(a)	(0x788ull + (a) * 0x8ull)
- #define MCSX_PEX_TX_SLAVE_PORT_CONFIG(a)		(0x4738ull + (a) * 0x8ull)
-+#define MCSX_PEX_RX_SLAVE_PORT_CFGX(a)		(0x3b98ull + (a) * 0x8ull)
- #define MCSX_PEX_RX_SLAVE_RULE_ETYPE_CFGX(a) ({	\
- 	u64 offset;					\
- 							\
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-index eb25e458266ca..dfd23580e3b8e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-@@ -11,6 +11,7 @@
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index a451ecae16692..33ea7abd8cc97 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -223,6 +223,7 @@ struct at_xdmac {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	u32			save_gim;
++	u32			save_gs;
+ 	struct dma_pool		*at_xdmac_desc_pool;
+ 	struct at_xdmac_chan	chan[0];
+ };
+@@ -1878,6 +1879,7 @@ static int atmel_xdmac_suspend(struct device *dev)
+ 		}
+ 	}
+ 	atxdmac->save_gim = at_xdmac_read(atxdmac, AT_XDMAC_GIM);
++	atxdmac->save_gs = at_xdmac_read(atxdmac, AT_XDMAC_GS);
  
- #include "mcs.h"
- #include "rvu.h"
-+#include "mcs_reg.h"
- #include "lmac_common.h"
- 
- #define M(_name, _id, _fn_name, _req_type, _rsp_type)			\
-@@ -32,6 +33,42 @@ static struct _req_type __maybe_unused					\
- MBOX_UP_MCS_MESSAGES
- #undef M
- 
-+void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena)
-+{
-+	struct mcs *mcs;
-+	u64 cfg;
-+	u8 port;
-+
-+	if (!rvu->mcs_blk_cnt)
-+		return;
-+
-+	/* When ptp is enabled, RPM appends 8B header for all
-+	 * RX packets. MCS PEX need to configure to skip 8B
-+	 * during packet parsing.
-+	 */
-+
-+	/* CNF10K-B */
-+	if (rvu->mcs_blk_cnt > 1) {
-+		mcs = mcs_get_pdata(rpm_id);
-+		cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION);
-+		if (ena)
-+			cfg |= BIT_ULL(lmac_id);
-+		else
-+			cfg &= ~BIT_ULL(lmac_id);
-+		mcs_reg_write(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION, cfg);
-+		return;
-+	}
-+	/* CN10KB */
-+	mcs = mcs_get_pdata(0);
-+	port = (rpm_id * rvu->hw->lmac_per_cgx) + lmac_id;
-+	cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PORT_CFGX(port));
-+	if (ena)
-+		cfg |= BIT_ULL(0);
-+	else
-+		cfg &= ~BIT_ULL(0);
-+	mcs_reg_write(mcs, MCSX_PEX_RX_SLAVE_PORT_CFGX(port), cfg);
-+}
-+
- int rvu_mbox_handler_mcs_set_lmac_mode(struct rvu *rvu,
- 				       struct mcs_set_lmac_mode *req,
- 				       struct msg_rsp *rsp)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index f6c45cf27caf4..f0502556d127f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -899,6 +899,7 @@ int rvu_get_hwvf(struct rvu *rvu, int pcifunc);
- /* CN10K MCS */
- int rvu_mcs_init(struct rvu *rvu);
- int rvu_mcs_flr_handler(struct rvu *rvu, u16 pcifunc);
-+void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena);
- void rvu_mcs_exit(struct rvu *rvu);
- 
- #endif /* RVU_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 438b212fb54a7..83b342fa8d753 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -773,6 +773,8 @@ static int rvu_cgx_ptp_rx_cfg(struct rvu *rvu, u16 pcifunc, bool enable)
- 	/* This flag is required to clean up CGX conf if app gets killed */
- 	pfvf->hw_rx_tstamp_en = enable;
- 
-+	/* Inform MCS about 8B RX header */
-+	rvu_mcs_ptp_cfg(rvu, cgx_id, lmac_id, enable);
+ 	at_xdmac_off(atxdmac);
+ 	clk_disable_unprepare(atxdmac->clk);
+@@ -1914,7 +1916,8 @@ static int atmel_xdmac_resume(struct device *dev)
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
+ 			wmb();
+-			at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
++			if (atxdmac->save_gs & atchan->mask)
++				at_xdmac_write(atxdmac, AT_XDMAC_GE, atchan->mask);
+ 		}
+ 	}
  	return 0;
- }
- 
 -- 
 2.39.2
 
