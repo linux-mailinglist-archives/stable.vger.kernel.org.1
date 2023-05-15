@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 704AD703577
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8A4F703774
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243319AbjEOQ70 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40044 "EHLO
+        id S244032AbjEORVW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243314AbjEOQ7Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:59:24 -0400
+        with ESMTP id S244044AbjEORVF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:21:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753BF76B2
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:59:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5DF13285
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:18:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A9F562A49
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE053C433D2;
-        Mon, 15 May 2023 16:59:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 025E762386
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1ECC433EF;
+        Mon, 15 May 2023 17:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684169961;
-        bh=wSUrz+NeO/lYyL3E4TXSTgZljsA16Z692dL1f7VyAE0=;
+        s=korg; t=1684171137;
+        bh=WWm1e4X6FZkoCIAqPMw3RQVHBSQtlnzoJPRmGDNyKEo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nzIEC6lWsda9LGBS+sG/Pn95x5O2GSU+sw2wGVq5lNtLoU7hdXI2UrBpyHQZarVpw
-         Fk4vPG3bQVEbiS5z3cf1fTiiIR+Agr7rOqIzwCoScMwpsMLewzIKTnSi7F6Tm0Dzxj
-         RezapNg64wut7x60hNA0CmY0shafxKzC1VgSWGy0=
+        b=ghvmeAo0E0EDSsRCvWRETUV/p+s2Va/4q08z1Drye35B5SkLed5OQWToZhW2plxO4
+         oQSYO+Vrlre+pCnnkwSVp/ysmePis+mgqLbvaV+Tz9ugpIPlsbQZzLNgC1jz5ViqOk
+         mqR3SRDx+/74csZQIzCntrsI9K6XEhbjeMz5fxLg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com,
-        Ye Bin <yebin10@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.3 227/246] ext4: fix WARNING in mb_find_extent
+        patches@lists.linux.dev, David Matlack <dmatlack@google.com>,
+        Isaku Yamahata <isaku.yamahata@intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.2 113/242] KVM: x86/mmu: Move TDP MMU VM init/uninit behind tdp_mmu_enabled
 Date:   Mon, 15 May 2023 18:27:19 +0200
-Message-Id: <20230515161729.412192447@linuxfoundation.org>
+Message-Id: <20230515161725.296901564@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161722.610123835@linuxfoundation.org>
-References: <20230515161722.610123835@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,129 +55,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ye Bin <yebin10@huawei.com>
+From: David Matlack <dmatlack@google.com>
 
-commit fa08a7b61dff8a4df11ff1e84abfc214b487caf7 upstream.
+[ Upstream commit 991c8047b740f192a057d5f22df2f91f087cdb72 ]
 
-Syzbot found the following issue:
+Move kvm_mmu_{init,uninit}_tdp_mmu() behind tdp_mmu_enabled. This makes
+these functions consistent with the rest of the calls into the TDP MMU
+from mmu.c, and which is now possible since tdp_mmu_enabled is only
+modified when the x86 vendor module is loaded. i.e. It will never change
+during the lifetime of a VM.
 
-EXT4-fs: Warning: mounting with data=journal disables delayed allocation, dioread_nolock, O_DIRECT and fast_commit support!
-EXT4-fs (loop0): orphan cleanup on readonly fs
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 5067 at fs/ext4/mballoc.c:1869 mb_find_extent+0x8a1/0xe30
-Modules linked in:
-CPU: 1 PID: 5067 Comm: syz-executor307 Not tainted 6.2.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-RIP: 0010:mb_find_extent+0x8a1/0xe30 fs/ext4/mballoc.c:1869
-RSP: 0018:ffffc90003c9e098 EFLAGS: 00010293
-RAX: ffffffff82405731 RBX: 0000000000000041 RCX: ffff8880783457c0
-RDX: 0000000000000000 RSI: 0000000000000041 RDI: 0000000000000040
-RBP: 0000000000000040 R08: ffffffff82405723 R09: ffffed10053c9402
-R10: ffffed10053c9402 R11: 1ffff110053c9401 R12: 0000000000000000
-R13: ffffc90003c9e538 R14: dffffc0000000000 R15: ffffc90003c9e2cc
-FS:  0000555556665300(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056312f6796f8 CR3: 0000000022437000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ext4_mb_complex_scan_group+0x353/0x1100 fs/ext4/mballoc.c:2307
- ext4_mb_regular_allocator+0x1533/0x3860 fs/ext4/mballoc.c:2735
- ext4_mb_new_blocks+0xddf/0x3db0 fs/ext4/mballoc.c:5605
- ext4_ext_map_blocks+0x1868/0x6880 fs/ext4/extents.c:4286
- ext4_map_blocks+0xa49/0x1cc0 fs/ext4/inode.c:651
- ext4_getblk+0x1b9/0x770 fs/ext4/inode.c:864
- ext4_bread+0x2a/0x170 fs/ext4/inode.c:920
- ext4_quota_write+0x225/0x570 fs/ext4/super.c:7105
- write_blk fs/quota/quota_tree.c:64 [inline]
- get_free_dqblk+0x34a/0x6d0 fs/quota/quota_tree.c:130
- do_insert_tree+0x26b/0x1aa0 fs/quota/quota_tree.c:340
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- do_insert_tree+0x722/0x1aa0 fs/quota/quota_tree.c:375
- dq_insert_tree fs/quota/quota_tree.c:401 [inline]
- qtree_write_dquot+0x3b6/0x530 fs/quota/quota_tree.c:420
- v2_write_dquot+0x11b/0x190 fs/quota/quota_v2.c:358
- dquot_acquire+0x348/0x670 fs/quota/dquot.c:444
- ext4_acquire_dquot+0x2dc/0x400 fs/ext4/super.c:6740
- dqget+0x999/0xdc0 fs/quota/dquot.c:914
- __dquot_initialize+0x3d0/0xcf0 fs/quota/dquot.c:1492
- ext4_process_orphan+0x57/0x2d0 fs/ext4/orphan.c:329
- ext4_orphan_cleanup+0xb60/0x1340 fs/ext4/orphan.c:474
- __ext4_fill_super fs/ext4/super.c:5516 [inline]
- ext4_fill_super+0x81cd/0x8700 fs/ext4/super.c:5644
- get_tree_bdev+0x400/0x620 fs/super.c:1282
- vfs_get_tree+0x88/0x270 fs/super.c:1489
- do_new_mount+0x289/0xad0 fs/namespace.c:3145
- do_mount fs/namespace.c:3488 [inline]
- __do_sys_mount fs/namespace.c:3697 [inline]
- __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+This change also enabled removing the stub definitions for 32-bit KVM,
+as the compiler will just optimize the calls out like it does for all
+the other TDP MMU functions.
 
-Add some debug information:
-mb_find_extent: mb_find_extent block=41, order=0 needed=64 next=0 ex=0/41/1@3735929054 64 64 7
-block_bitmap: ff 3f 0c 00 fc 01 00 00 d2 3d 00 00 00 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+No functional change intended.
 
-Acctually, blocks per group is 64, but block bitmap indicate at least has
-128 blocks. Now, ext4_validate_block_bitmap() didn't check invalid block's
-bitmap if set.
-To resolve above issue, add check like fsck "Padding at end of block bitmap is
-not set".
-
-Cc: stable@kernel.org
-Reported-by: syzbot+68223fe9f6c95ad43bed@syzkaller.appspotmail.com
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230116020015.1506120-1-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <20220921173546.2674386-3-dmatlack@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: edbdb43fc96b ("KVM: x86: Preserve TDP MMU roots until they are explicitly invalidated")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/x86/kvm/mmu/mmu.c     | 11 +++++++----
+ arch/x86/kvm/mmu/tdp_mmu.c |  6 ------
+ arch/x86/kvm/mmu/tdp_mmu.h |  7 +++----
+ 3 files changed, 10 insertions(+), 14 deletions(-)
 
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -303,6 +303,22 @@ struct ext4_group_desc * ext4_get_group_
- 	return desc;
- }
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 583979755bd4f..8666e8ff48a6e 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6051,9 +6051,11 @@ int kvm_mmu_init_vm(struct kvm *kvm)
+ 	INIT_LIST_HEAD(&kvm->arch.possible_nx_huge_pages);
+ 	spin_lock_init(&kvm->arch.mmu_unsync_pages_lock);
  
-+static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
-+						    ext4_group_t block_group,
-+						    struct buffer_head *bh)
-+{
-+	ext4_grpblk_t next_zero_bit;
-+	unsigned long bitmap_size = sb->s_blocksize * 8;
-+	unsigned int offset = num_clusters_in_group(sb, block_group);
-+
-+	if (bitmap_size <= offset)
-+		return 0;
-+
-+	next_zero_bit = ext4_find_next_zero_bit(bh->b_data, bitmap_size, offset);
-+
-+	return (next_zero_bit < bitmap_size ? next_zero_bit : 0);
-+}
-+
- /*
-  * Return the block number which was discovered to be invalid, or 0 if
-  * the block bitmap is valid.
-@@ -401,6 +417,15 @@ static int ext4_validate_block_bitmap(st
- 					EXT4_GROUP_INFO_BBITMAP_CORRUPT);
- 		return -EFSCORRUPTED;
- 	}
-+	blk = ext4_valid_block_bitmap_padding(sb, block_group, bh);
-+	if (unlikely(blk != 0)) {
-+		ext4_unlock_group(sb, block_group);
-+		ext4_error(sb, "bg %u: block %llu: padding at end of block bitmap is not set",
-+			   block_group, blk);
-+		ext4_mark_group_bitmap_corrupted(sb, block_group,
-+						 EXT4_GROUP_INFO_BBITMAP_CORRUPT);
-+		return -EFSCORRUPTED;
+-	r = kvm_mmu_init_tdp_mmu(kvm);
+-	if (r < 0)
+-		return r;
++	if (tdp_mmu_enabled) {
++		r = kvm_mmu_init_tdp_mmu(kvm);
++		if (r < 0)
++			return r;
 +	}
- 	set_buffer_verified(bh);
- verified:
- 	ext4_unlock_group(sb, block_group);
+ 
+ 	node->track_write = kvm_mmu_pte_write;
+ 	node->track_flush_slot = kvm_mmu_invalidate_zap_pages_in_memslot;
+@@ -6083,7 +6085,8 @@ void kvm_mmu_uninit_vm(struct kvm *kvm)
+ 
+ 	kvm_page_track_unregister_notifier(kvm, node);
+ 
+-	kvm_mmu_uninit_tdp_mmu(kvm);
++	if (tdp_mmu_enabled)
++		kvm_mmu_uninit_tdp_mmu(kvm);
+ 
+ 	mmu_free_vm_memory_caches(kvm);
+ }
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 03511e83050fa..7e5952e95d3bf 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -15,9 +15,6 @@ int kvm_mmu_init_tdp_mmu(struct kvm *kvm)
+ {
+ 	struct workqueue_struct *wq;
+ 
+-	if (!tdp_mmu_enabled)
+-		return 0;
+-
+ 	wq = alloc_workqueue("kvm", WQ_UNBOUND|WQ_MEM_RECLAIM|WQ_CPU_INTENSIVE, 0);
+ 	if (!wq)
+ 		return -ENOMEM;
+@@ -42,9 +39,6 @@ static __always_inline bool kvm_lockdep_assert_mmu_lock_held(struct kvm *kvm,
+ 
+ void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm)
+ {
+-	if (!tdp_mmu_enabled)
+-		return;
+-
+ 	/* Also waits for any queued work items.  */
+ 	destroy_workqueue(kvm->arch.tdp_mmu_zap_wq);
+ 
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.h b/arch/x86/kvm/mmu/tdp_mmu.h
+index d3714200b932a..e4ab2dac269d6 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.h
++++ b/arch/x86/kvm/mmu/tdp_mmu.h
+@@ -7,6 +7,9 @@
+ 
+ #include "spte.h"
+ 
++int kvm_mmu_init_tdp_mmu(struct kvm *kvm);
++void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm);
++
+ hpa_t kvm_tdp_mmu_get_vcpu_root_hpa(struct kvm_vcpu *vcpu);
+ 
+ __must_check static inline bool kvm_tdp_mmu_get_root(struct kvm_mmu_page *root)
+@@ -68,8 +71,6 @@ u64 *kvm_tdp_mmu_fast_pf_get_last_sptep(struct kvm_vcpu *vcpu, u64 addr,
+ 					u64 *spte);
+ 
+ #ifdef CONFIG_X86_64
+-int kvm_mmu_init_tdp_mmu(struct kvm *kvm);
+-void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm);
+ static inline bool is_tdp_mmu_page(struct kvm_mmu_page *sp) { return sp->tdp_mmu_page; }
+ 
+ static inline bool is_tdp_mmu(struct kvm_mmu *mmu)
+@@ -89,8 +90,6 @@ static inline bool is_tdp_mmu(struct kvm_mmu *mmu)
+ 	return sp && is_tdp_mmu_page(sp) && sp->root_count;
+ }
+ #else
+-static inline int kvm_mmu_init_tdp_mmu(struct kvm *kvm) { return 0; }
+-static inline void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm) {}
+ static inline bool is_tdp_mmu_page(struct kvm_mmu_page *sp) { return false; }
+ static inline bool is_tdp_mmu(struct kvm_mmu *mmu) { return false; }
+ #endif
+-- 
+2.39.2
+
 
 
