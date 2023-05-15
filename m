@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C9B70332A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 716B77036F9
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242736AbjEOQd6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:33:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36974 "EHLO
+        id S243917AbjEORPf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242629AbjEOQdy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:33:54 -0400
+        with ESMTP id S243885AbjEORPS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:15:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D3673596;
-        Mon, 15 May 2023 09:33:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563B39ECB
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:13:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CC0F62767;
-        Mon, 15 May 2023 16:33:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC97C433EF;
-        Mon, 15 May 2023 16:33:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A98F62B9F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:13:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B985C4339B;
+        Mon, 15 May 2023 17:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168429;
-        bh=GnuTKGySGlfr07daI7HAiFk0boCdBF/4zjHSMFSEV+4=;
+        s=korg; t=1684170837;
+        bh=dRS81WWg0jYaBJyI66OsbQxd5x1bWDi8u0eUc3vkcus=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1aIdYLMOHA1hZ1ACdhSlfahkkVrnJw5/tcISA0f4/g5E7BpAJqL+0lb/EM20GH5Dz
-         iufl1rmSfm4upXI4e1ytXJobyFWN6F+lS4Ps9QTgm54XJ3BcQTcwWU8++u1FDMlGp8
-         9Dr7ZGOiAJYUwKsv7TZthJ8PM5NJ12sWQzp15amA=
+        b=Ga9WHWUH7eNt0wJEakg2PIJruFCV9aMDkQFdOrM7liWCLp+udf13zgpQbq0cocLR7
+         wD9q/SD+LQ7BkXpMU+Ihwvd2AUoNKloaXftkYiODjP6RhXKaNk2EVJZkGn/ra/Mc9E
+         Px7yRShdS+Oj3Cfs9DMJB7PpFi1iG6In9kclPkNI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
+        Sean Christopherson <seanjc@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 046/116] linux/vt_buffer.h: allow either builtin or modular for macros
+Subject: [PATCH 6.2 017/242] KVM: x86: Make use of kvm_read_cr*_bits() when testing bits
 Date:   Mon, 15 May 2023 18:25:43 +0200
-Message-Id: <20230515161659.786548194@linuxfoundation.org>
+Message-Id: <20230515161722.347245498@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161721.802179972@linuxfoundation.org>
+References: <20230515161721.802179972@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,56 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mathias Krause <minipli@grsecurity.net>
 
-[ Upstream commit 2b76ffe81e32afd6d318dc4547e2ba8c46207b77 ]
+[ Upstream commit 74cdc836919bf34684ef66f995273f35e2189daf ]
 
-Fix build errors on ARCH=alpha when CONFIG_MDA_CONSOLE=m.
-This allows the ARCH macros to be the only ones defined.
+Make use of the kvm_read_cr{0,4}_bits() helper functions when we only
+want to know the state of certain bits instead of the whole register.
 
-In file included from ../drivers/video/console/mdacon.c:37:
-../arch/alpha/include/asm/vga.h:17:40: error: expected identifier or '(' before 'volatile'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                                        ^~~~~~~~
-../include/linux/vt_buffer.h:24:34: note: in definition of macro 'scr_writew'
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                  ^~~~
-../include/linux/vt_buffer.h:24:40: error: expected ')' before '=' token
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                        ^
-../arch/alpha/include/asm/vga.h:17:20: note: in expansion of macro 'scr_writew'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                    ^~~~~~~~~~
-../arch/alpha/include/asm/vga.h:25:29: error: expected identifier or '(' before 'volatile'
-   25 | static inline u16 scr_readw(volatile const u16 *addr)
-      |                             ^~~~~~~~
+This not only makes the intent cleaner, it also avoids a potential
+VMREAD in case the tested bits aren't guest owned.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Link: https://lore.kernel.org/r/20230329021529.16188-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Link: https://lore.kernel.org/r/20230322013731.102955-5-minipli@grsecurity.net
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vt_buffer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/pmu.c     | 4 ++--
+ arch/x86/kvm/vmx/vmx.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/vt_buffer.h b/include/linux/vt_buffer.h
-index 848db1b1569ff..919d999a8c1db 100644
---- a/include/linux/vt_buffer.h
-+++ b/include/linux/vt_buffer.h
-@@ -16,7 +16,7 @@
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index eb594620dd75a..8be583a05de70 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -438,9 +438,9 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ 	if (!pmc)
+ 		return 1;
  
- #include <linux/string.h>
+-	if (!(kvm_read_cr4(vcpu) & X86_CR4_PCE) &&
++	if (!(kvm_read_cr4_bits(vcpu, X86_CR4_PCE)) &&
+ 	    (static_call(kvm_x86_get_cpl)(vcpu) != 0) &&
+-	    (kvm_read_cr0(vcpu) & X86_CR0_PE))
++	    (kvm_read_cr0_bits(vcpu, X86_CR0_PE)))
+ 		return 1;
  
--#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_MDA_CONSOLE)
-+#if IS_ENABLED(CONFIG_VGA_CONSOLE) || IS_ENABLED(CONFIG_MDA_CONSOLE)
- #include <asm/vga.h>
- #endif
+ 	*data = pmc_read_counter(pmc) & mask;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 53034045cb6e6..ca8eca4ec0e38 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5450,7 +5450,7 @@ static int handle_cr(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case 3: /* lmsw */
+ 		val = (exit_qualification >> LMSW_SOURCE_DATA_SHIFT) & 0x0f;
+-		trace_kvm_cr_write(0, (kvm_read_cr0(vcpu) & ~0xful) | val);
++		trace_kvm_cr_write(0, (kvm_read_cr0_bits(vcpu, ~0xful) | val));
+ 		kvm_lmsw(vcpu, val);
  
+ 		return kvm_skip_emulated_instruction(vcpu);
+@@ -7531,7 +7531,7 @@ static u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
+ 	if (!kvm_arch_has_noncoherent_dma(vcpu->kvm))
+ 		return (MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT) | VMX_EPT_IPAT_BIT;
+ 
+-	if (kvm_read_cr0(vcpu) & X86_CR0_CD) {
++	if (kvm_read_cr0_bits(vcpu, X86_CR0_CD)) {
+ 		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_CD_NW_CLEARED))
+ 			cache = MTRR_TYPE_WRBACK;
+ 		else
 -- 
 2.39.2
 
