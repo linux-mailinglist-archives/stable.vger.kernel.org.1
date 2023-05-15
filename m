@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3AE70363A
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72DC703434
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243665AbjEORIG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 13:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47068 "EHLO
+        id S242946AbjEOQpu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 12:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243570AbjEORHr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:07:47 -0400
+        with ESMTP id S242949AbjEOQpt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:45:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3123D7A85
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:06:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274E14C3A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:45:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5357C62A30
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:05:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6459AC433EF;
-        Mon, 15 May 2023 17:05:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 905C4628F8
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EFCC433D2;
+        Mon, 15 May 2023 16:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684170341;
-        bh=00FmT+z1PKLvoKIRJY9/jHXNtjJzgtWwtcL1SvPB5gM=;
+        s=korg; t=1684169145;
+        bh=/psOibmtnnkcz1+tirmhsBiDgkCvd5+0ZG4x9ICNoaM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DYzZYOmY/uRD3+WrgVk8/7XVa8SNH6MPjfNiWIL1lgLSjmMF4vrVoA6QKmayrvDSI
-         0kWn9t0HqqDFEgDq0XwT2lgqub1RmOwW7bQwoc9XjAFueIITPS1qVwss4H79VOMC8m
-         RQ1N+AY070dFdfqMYt7fjm3y7WkmbQWdpsznKotQ=
+        b=EvlvoFyjxHYiZH95gksnfDne9WNDMyq+/hYZaXkB4JesVG3okW+heuXFpQgAJardC
+         xWXDKuRB1vfVHRIpBkqiCV3CNAYQHa7eQNUNX5oE1Hk9ybbSLbqMd86w0C8SunJ2AM
+         lRJgcqj4+GE9P/O2cbBgRco7hB0zqWfdiKKJcnBQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/239] crypto: engine - Use crypto_request_complete
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 127/191] nilfs2: fix infinite loop in nilfs_mdt_get_block()
 Date:   Mon, 15 May 2023 18:26:04 +0200
-Message-Id: <20230515161724.713458235@linuxfoundation.org>
+Message-Id: <20230515161711.951499733@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161721.545370111@linuxfoundation.org>
-References: <20230515161721.545370111@linuxfoundation.org>
+In-Reply-To: <20230515161707.203549282@linuxfoundation.org>
+References: <20230515161707.203549282@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,53 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 6909823d47c17cba84e9244d04050b5db8d53789 ]
+commit a6a491c048882e7e424d407d32cba0b52d9ef2bf upstream.
 
-Use the crypto_request_complete helper instead of calling the
-completion function directly.
+If the disk image that nilfs2 mounts is corrupted and a virtual block
+address obtained by block lookup for a metadata file is invalid,
+nilfs_bmap_lookup_at_level() may return the same internal return code as
+-ENOENT, meaning the block does not exist in the metadata file.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 4140aafcff16 ("crypto: engine - fix crypto_queue backlog handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This duplication of return codes confuses nilfs_mdt_get_block(), causing
+it to read and create a metadata block indefinitely.
+
+In particular, if this happens to the inode metadata file, ifile,
+semaphore i_rwsem can be left held, causing task hangs in lock_mount.
+
+Fix this issue by making nilfs_bmap_lookup_at_level() treat virtual block
+address translation failures with -ENOENT as metadata corruption instead
+of returning the error code.
+
+Link: https://lkml.kernel.org/r/20230430193046.6769-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+221d75710bde87fa0e97@syzkaller.appspotmail.com
+  Link: https://syzkaller.appspot.com/bug?extid=221d75710bde87fa0e97
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/crypto_engine.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nilfs2/bmap.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/crypto_engine.c b/crypto/crypto_engine.c
-index bb8e77077f020..48c15f4079bb8 100644
---- a/crypto/crypto_engine.c
-+++ b/crypto/crypto_engine.c
-@@ -54,7 +54,7 @@ static void crypto_finalize_request(struct crypto_engine *engine,
- 		}
- 	}
- 	lockdep_assert_in_softirq();
--	req->complete(req, err);
-+	crypto_request_complete(req, err);
+--- a/fs/nilfs2/bmap.c
++++ b/fs/nilfs2/bmap.c
+@@ -67,20 +67,28 @@ int nilfs_bmap_lookup_at_level(struct ni
  
- 	kthread_queue_work(engine->kworker, &engine->pump_requests);
+ 	down_read(&bmap->b_sem);
+ 	ret = bmap->b_ops->bop_lookup(bmap, key, level, ptrp);
+-	if (ret < 0) {
+-		ret = nilfs_bmap_convert_error(bmap, __func__, ret);
++	if (ret < 0)
+ 		goto out;
+-	}
++
+ 	if (NILFS_BMAP_USE_VBN(bmap)) {
+ 		ret = nilfs_dat_translate(nilfs_bmap_get_dat(bmap), *ptrp,
+ 					  &blocknr);
+ 		if (!ret)
+ 			*ptrp = blocknr;
++		else if (ret == -ENOENT) {
++			/*
++			 * If there was no valid entry in DAT for the block
++			 * address obtained by b_ops->bop_lookup, then pass
++			 * internal code -EINVAL to nilfs_bmap_convert_error
++			 * to treat it as metadata corruption.
++			 */
++			ret = -EINVAL;
++		}
+ 	}
+ 
+  out:
+ 	up_read(&bmap->b_sem);
+-	return ret;
++	return nilfs_bmap_convert_error(bmap, __func__, ret);
  }
-@@ -130,7 +130,7 @@ static void crypto_pump_requests(struct crypto_engine *engine,
- 		engine->cur_req = async_req;
  
- 	if (backlog)
--		backlog->complete(backlog, -EINPROGRESS);
-+		crypto_request_complete(backlog, -EINPROGRESS);
- 
- 	if (engine->busy)
- 		was_busy = true;
-@@ -214,7 +214,7 @@ static void crypto_pump_requests(struct crypto_engine *engine,
- 	}
- 
- req_err_2:
--	async_req->complete(async_req, ret);
-+	crypto_request_complete(async_req, ret);
- 
- retry:
- 	/* If retry mechanism is supported, send new requests to engine */
--- 
-2.39.2
-
+ int nilfs_bmap_lookup_contig(struct nilfs_bmap *bmap, __u64 key, __u64 *ptrp,
 
 
