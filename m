@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E82D9703356
-	for <lists+stable@lfdr.de>; Mon, 15 May 2023 18:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B74F9703AC7
+	for <lists+stable@lfdr.de>; Mon, 15 May 2023 19:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242773AbjEOQf7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 15 May 2023 12:35:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39236 "EHLO
+        id S235256AbjEORzu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 15 May 2023 13:55:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242774AbjEOQf6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 12:35:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12243C12
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 09:35:52 -0700 (PDT)
+        with ESMTP id S245088AbjEORzH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 15 May 2023 13:55:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3C91A39A
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 10:53:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4367462806
-        for <stable@vger.kernel.org>; Mon, 15 May 2023 16:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B06C433D2;
-        Mon, 15 May 2023 16:35:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B083A62F5F
+        for <stable@vger.kernel.org>; Mon, 15 May 2023 17:53:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6566C4339B;
+        Mon, 15 May 2023 17:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684168551;
-        bh=mPVHQG3wkykm4b9DcExtlMVpVjuKR6KpDR1/7/KdtCI=;
+        s=korg; t=1684173181;
+        bh=Ryr/Rq4IiAQ+qha+9rw2bVrpqB17MVa8mli6FI60AiA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rhj6CVwg6Plv2KMkKTIZ626WcJAfSIBwNrbj3/fdV9fWzOBFWdQ1848S7eZ84hqLx
-         sCjEpFK16l4vYkWXFu/pvyKk+fLXrRhi8T/okIC3MdwrzR3z/OmFS7MKix/ABLcJBn
-         N3bsYP51gW7bgcpRc6SiVc3ZX8iwHbZwCSDm+mds=
+        b=Hw2/w5z+syV1sZn8Z/q1m3jUOBo+Pz/2Kup1T4PaLFJmu1UA99YF2Weon7LqNoLe2
+         NpFQm/KlUrpCkLxSdT5LoLIzs+mlKWQxRRw1hd4vJ1K0sYAHXqEk0N+MM/LW4bHPd8
+         HVuEhxQ4r4g/vIiijZV/0DXjnHrtjnpgGJIMwh1Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 085/116] netfilter: nft_hash: fix nft_hash_deactivate
+        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.4 004/282] bluetooth: Perform careful capability checks in hci_sock_ioctl()
 Date:   Mon, 15 May 2023 18:26:22 +0200
-Message-Id: <20230515161701.107297105@linuxfoundation.org>
+Message-Id: <20230515161722.292733247@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230515161658.228491273@linuxfoundation.org>
-References: <20230515161658.228491273@linuxfoundation.org>
+In-Reply-To: <20230515161722.146344674@linuxfoundation.org>
+References: <20230515161722.146344674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +53,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-[ backport for 4.14 of 7f4dae2d7f03d2aaf3b7d8343d4509c8d9d7ca9b ]
+commit 25c150ac103a4ebeed0319994c742a90634ddf18 upstream.
 
-Jindřich Makovička says:
-  The logical OR looks fishy to me. Shouldn't be && there instead?
+Previously, capability was checked using capable(), which verified that the
+caller of the ioctl system call had the required capability. In addition,
+the result of the check would be stored in the HCI_SOCK_TRUSTED flag,
+making it persistent for the socket.
 
-Link: https://bugzilla.netfilter.org/show_bug.cgi?id=1199
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, malicious programs can abuse this approach by deliberately sharing
+an HCI socket with a privileged task. The HCI socket will be marked as
+trusted when the privileged task occasionally makes an ioctl call.
+
+This problem can be solved by using sk_capable() to check capability, which
+ensures that not only the current task but also the socket opener has the
+specified capability, thus reducing the risk of privilege escalation
+through the previously identified vulnerability.
+
+Cc: stable@vger.kernel.org
+Fixes: f81f5b2db869 ("Bluetooth: Send control open and close messages for HCI raw sockets")
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sock.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index a684234bd229c..eb7db31dd1733 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -520,7 +520,7 @@ static void *nft_hash_deactivate(const struct net *net,
- 	hash = nft_jhash(set, priv, &this->ext);
- 	hlist_for_each_entry(he, &priv->table[hash], node) {
- 		if (!memcmp(nft_set_ext_key(&this->ext), &elem->key.val,
--			    set->klen) ||
-+			    set->klen) &&
- 		    nft_set_elem_active(&he->ext, genmask)) {
- 			nft_set_elem_change_active(net, set, &he->ext);
- 			return he;
--- 
-2.39.2
-
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -989,7 +989,14 @@ static int hci_sock_ioctl(struct socket
+ 	if (hci_sock_gen_cookie(sk)) {
+ 		struct sk_buff *skb;
+ 
+-		if (capable(CAP_NET_ADMIN))
++		/* Perform careful checks before setting the HCI_SOCK_TRUSTED
++		 * flag. Make sure that not only the current task but also
++		 * the socket opener has the required capability, since
++		 * privileged programs can be tricked into making ioctl calls
++		 * on HCI sockets, and the socket should not be marked as
++		 * trusted simply because the ioctl caller is privileged.
++		 */
++		if (sk_capable(sk, CAP_NET_ADMIN))
+ 			hci_sock_set_flag(sk, HCI_SOCK_TRUSTED);
+ 
+ 		/* Send event to monitor */
 
 
